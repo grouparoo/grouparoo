@@ -16,7 +16,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-NjQ1ZmQwZDA5MzAwNDM3YmI2ZTNjOTQ2MTY3OGNlYzQ=';style-src 'self' 'nonce-ZGI5MWM4ZWRjN2ZhNDE2NjkwNGRjMThhODNmYzk2OWI=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-MzFiMGE5OWIzY2ZiNGE5MjhiNzFjNjE4NmM5MDA3ZDI=';style-src 'self' 'nonce-ZjhjNDczYmFmMjBmNGM1Y2JlNTc2NjJiZTEyOWFmYWU=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -26,7 +26,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:36 GMT',
+  'Mon, 21 Jun 2021 19:35:45 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -45,7 +45,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'bb44940da87c44f08bbee0d887afa3f7/23325665374',
+  '92b6834cb38d430e96009e2d0c330801/23429541330',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -55,7 +55,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:36 GMT',
+  'Mon, 21 Jun 2021 19:35:46 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -74,7 +74,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '72c5af88b6c34e24be9a436a304304be/23325665633',
+  'c34c8fbe1d8845d891c8df9563106e1c/23429541611',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -84,7 +84,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:36 GMT',
+  'Mon, 21 Jun 2021 19:35:46 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -103,7 +103,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c363f8fd502c48aa82ded5d7b96a74fa/23325665834',
+  '7cdd855a3d424423a207bd2aa10fed3d/23429541844',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -113,7 +113,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:37 GMT',
+  'Mon, 21 Jun 2021 19:35:47 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -132,7 +132,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8d9e3a1465364a30b08425b9da0a8d6d/23325666114',
+  'e10da2dafc774536b7d878c3c79d2780/23429542218',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -142,7 +142,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:37 GMT',
+  'Mon, 21 Jun 2021 19:35:48 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -161,7 +161,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '9b23a0ad525c4924b6de7a5d23aea9f2/23325666381',
+  '5dc09427553d4dfb84f17978e08ade6c/23429542424',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -171,7 +171,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:39 GMT',
+  'Mon, 21 Jun 2021 19:35:48 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -190,7 +190,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ee3fb55689fd4e549ce7a03fd27aa446/23325666611',
+  '8ee428d710854498b7a3fbba3c8c3f4f/23429542665',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -200,7 +200,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:40 GMT',
+  'Mon, 21 Jun 2021 19:35:49 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -219,7 +219,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '84f88c3ac0734f7b8953bdeb05ddb102/23325667035',
+  'fc47c25c73eb4447a117c030731d52c0/23429542887',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -229,7 +229,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:40 GMT',
+  'Mon, 21 Jun 2021 19:35:50 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -248,7 +248,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '82abbe303e0f461ba89f88e0efe923a2/23325667262',
+  '39c0596dc8464759974628a662430d5a/23429543078',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -258,7 +258,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:41 GMT',
+  'Mon, 21 Jun 2021 19:35:50 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -277,7 +277,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'b107170c42d64912b2c6cdac1cdc2222/23325671604',
+  '04e50c484c2748f882b51350e23ad8b9/23429546971',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -287,7 +287,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:52 GMT',
+  'Mon, 21 Jun 2021 19:36:01 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -306,7 +306,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd43dd0bbd0534c448e95dac5ecc4257b/23325671845',
+  '6595f5a1e16340e597056e07c904784e/23429547200',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -316,7 +316,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:52 GMT',
+  'Mon, 21 Jun 2021 19:36:02 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -335,7 +335,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '136b0bfec4764b5c91d206e337e9b8ec/23325672059',
+  '342d0eb009fb4ac8ac124e9fe896db89/23429547427',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -345,7 +345,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:53 GMT',
+  'Mon, 21 Jun 2021 19:36:02 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -363,7 +363,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '514b4f4288da445c87e5387e7e8b1410/23325672284',
+  '29dc86560ea94f8a88edc4e9955bf214/23429547626',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -373,15 +373,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:53 GMT',
+  'Mon, 21 Jun 2021 19:36:02 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984174619","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984174619","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/865","createdBy":"t3st","createdAt":"2021-06-18T02:42:55.0812516Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:42:55.0812516Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/893","createdBy":"t3st","createdAt":"2021-06-21T19:36:04.7484870Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:36:04.7484870Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -391,7 +391,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'cd95f80b72ed4af3a1f3cbf0f313c839/23325672725',
+  'd81c4a1c61a742769687c5cc0347c5d1/23429548091',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -401,14 +401,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:54 GMT',
+  'Mon, 21 Jun 2021 19:36:03 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '459'
+  '473'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/865/data', {"emailAddress":"grouparoo@demo.com","profileId":"pro1","firstName":"John"})
+  .post('/api/bulk/2.0/contacts/imports/893/data', {"emailAddress":"grouparoo@demo.com","profileId":"pro1","firstName":"John"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -417,7 +417,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '517dd32ee95940ee8a1a2e895b54b2c8/23325672977',
+  '9ebb2be6f2594dc7bf62a36ed471ce12/23429548301',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -427,13 +427,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:55 GMT',
+  'Mon, 21 Jun 2021 19:36:04 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/865"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/865","status":"pending","createdAt":"2021-06-18T02:42:56.2555452Z","createdBy":"t3st","uri":"/syncs/684"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/893"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/893","status":"pending","createdAt":"2021-06-21T19:36:06.0714990Z","createdBy":"t3st","uri":"/syncs/712"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -443,7 +443,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'de07e8ac7f774830baf4e9bf397d080a/23325673217',
+  '3fe0ded57d624f88b38aa1dd1873656d/23429548511',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -453,7 +453,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:42:55 GMT',
+  'Mon, 21 Jun 2021 19:36:06 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -462,7 +462,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984177","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304168","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -472,7 +472,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '7f21a95742ec4bae9ef1fecf53b27a4c/23325677531',
+  '339cab52bb03448f92aeba0eead1067e/23429552422',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -482,7 +482,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:06 GMT',
+  'Mon, 21 Jun 2021 19:36:16 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -491,7 +491,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984177","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304168","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -501,7 +501,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '881d7eb3a39f4f87aa67aea31c4ce3e8/23325677898',
+  'cd1ee92de627455499bf6bd7232191f8/23429552717',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -511,7 +511,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:07 GMT',
+  'Mon, 21 Jun 2021 19:36:16 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -520,7 +520,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984177","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304168","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -530,7 +530,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '4117cafaa0c04b939f6fb13eb01e6373/23325682322',
+  '94899a090c7947f79d1e03acc3885a9d/23429556353',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -540,7 +540,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:17 GMT',
+  'Mon, 21 Jun 2021 19:36:27 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -559,7 +559,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e15fd19f9c544527a7aaa7ed42852687/23325682567',
+  '5e0d70ef29e7420781a1452257ab4ef4/23429556585',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -569,7 +569,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:18 GMT',
+  'Mon, 21 Jun 2021 19:36:28 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -578,7 +578,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984177","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304168","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -588,7 +588,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2b210a12cbcb44c99593a813a109e430/23325682770',
+  'c25c630701eb4dc5acefbe7c811cf0b8/23429556963',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -598,7 +598,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:18 GMT',
+  'Mon, 21 Jun 2021 19:36:29 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -617,7 +617,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6be2abd8d97b45689257fbdc24c72695/23325683013',
+  '2d47edc9f6f54188bf7f7b99235345d1/23429557214',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -627,7 +627,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:19 GMT',
+  'Mon, 21 Jun 2021 19:36:29 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -645,7 +645,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '650f86187dd3416694baea7961a7468d/23325683240',
+  'bb2a09ecdb8b4013b8a2dda478d7c16d/23429557395',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -655,15 +655,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:20 GMT',
+  'Mon, 21 Jun 2021 19:36:30 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984200889","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984200889","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/866","createdBy":"t3st","createdAt":"2021-06-18T02:43:21.3731523Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:43:21.3731523Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/894","createdBy":"t3st","createdAt":"2021-06-21T19:36:32.6921744Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:36:32.6921744Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -673,7 +673,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '89f122c4c91e4130aea1d762098ce40b/23325683624',
+  '12c2f6b3b18b443fa4f3423c2c2f91eb/23429557820',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -683,14 +683,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:20 GMT',
+  'Mon, 21 Jun 2021 19:36:32 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '502'
+  '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/866/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"John","lastName":"Doe"})
+  .post('/api/bulk/2.0/contacts/imports/894/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"John","lastName":"Doe"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -699,7 +699,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '83fd6f888fb0400aa6b43b498bd9a039/23325683824',
+  'ed5f6ad6a1d54c02a366a370ab5ef2b8/23429558092',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -709,12 +709,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:21 GMT',
+  'Mon, 21 Jun 2021 19:36:33 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/866/data', {"emailAddress":"grouparoo2@demo.com","profileId":"pro2","firstName":"Pete"})
+  .post('/api/bulk/2.0/contacts/imports/894/data', {"emailAddress":"grouparoo2@demo.com","profileId":"pro2","firstName":"Pete"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -723,7 +723,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1641e91bc0fe4342a5f9d16a57f840be/23325684113',
+  '83af0441e53f42c883a53668b0532fdf/23429558434',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -733,13 +733,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:22 GMT',
+  'Mon, 21 Jun 2021 19:36:33 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/866"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/866","status":"pending","createdAt":"2021-06-18T02:43:23.1720630Z","createdBy":"t3st","uri":"/syncs/685"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/894"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/894","status":"pending","createdAt":"2021-06-21T19:36:34.8555116Z","createdBy":"t3st","uri":"/syncs/713"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -749,7 +749,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6c625c0aeb844447b36eb055820cd272/23325684333',
+  '12861f62a3ec44b0ae0cdfe4398a2d1d/23429558662',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -759,7 +759,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:22 GMT',
+  'Mon, 21 Jun 2021 19:36:34 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -768,7 +768,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984204","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Doe","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304197","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Doe","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -778,7 +778,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1bd915d543a9462ab4e989047f5aaf41/23325688627',
+  '809ad2b212e040c590bb2e38b1ebb052/23429562707',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -788,7 +788,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:32 GMT',
+  'Mon, 21 Jun 2021 19:36:44 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -797,7 +797,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984204","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Pete","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304197","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Pete","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -807,7 +807,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '5cd583dda63e4b098e206fcbe3b23ebb/23325688838',
+  'e1ee3a15e39145be9038d7091e112064/23429562915',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -817,7 +817,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:33 GMT',
+  'Mon, 21 Jun 2021 19:36:45 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -826,7 +826,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984204","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Doe","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304197","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Doe","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -836,7 +836,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'fb03b6fb746f43a1853148485c4473d6/23325689098',
+  '7a5c75d747664e1bbc7e3a0be0a8a111/23429563113',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -846,7 +846,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:33 GMT',
+  'Mon, 21 Jun 2021 19:36:45 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -864,7 +864,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2a9d0f86d10b4d5a9c58ba072e262133/23325689325',
+  '0baf2f51baf24f9ab504a3f09473f98b/23429563334',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -874,15 +874,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:34 GMT',
+  'Mon, 21 Jun 2021 19:36:46 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984216054","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984216054","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/867","createdBy":"t3st","createdAt":"2021-06-18T02:43:36.5246973Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:43:36.5246973Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/895","createdBy":"t3st","createdAt":"2021-06-21T19:36:48.2185033Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:36:48.2185033Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -892,7 +892,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '9c568541832542abb9ca49e5f0ce06ee/23325689775',
+  'b69677c18bb341f58a22792e0cd2b588/23429563728',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -902,14 +902,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:35 GMT',
+  'Mon, 21 Jun 2021 19:36:47 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '502'
+  '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/867/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"John","lastName":""})
+  .post('/api/bulk/2.0/contacts/imports/895/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"John","lastName":""})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -918,7 +918,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1c5007f33bf749da917eca7fd42e2a4c/23325689992',
+  '323ac9cb936c4c7c889e3d536f5078a4/23429563939',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -928,13 +928,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:36 GMT',
+  'Mon, 21 Jun 2021 19:36:47 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/867"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/867","status":"pending","createdAt":"2021-06-18T02:43:37.7214114Z","createdBy":"t3st","uri":"/syncs/686"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/895"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/895","status":"pending","createdAt":"2021-06-21T19:36:49.3675399Z","createdBy":"t3st","uri":"/syncs/714"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -944,7 +944,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2773b78cf29b4538918c322a0ad78ea8/23325690273',
+  '8a8f5a29455441b296b2f05d612fa5bc/23429564153',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -954,7 +954,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:36 GMT',
+  'Mon, 21 Jun 2021 19:36:48 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -963,7 +963,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -973,7 +973,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '16e470c2d2da411a84455a48ed3b9e5e/23325694495',
+  '971af6547a344d8ca154777016f2b2a2/23429568223',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -983,7 +983,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:47 GMT',
+  'Mon, 21 Jun 2021 19:36:59 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1002,7 +1002,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'eb79a32a2f8e4407a817cb8c58d0c155/23325694716',
+  '4a45d452d94e4971b74b503ec708038b/23429568444',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1012,7 +1012,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:47 GMT',
+  'Mon, 21 Jun 2021 19:37:00 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1021,7 +1021,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1031,7 +1031,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'acc9fd57604d4e698606a5bc6af4eae2/23325694931',
+  'e6de98182c5b42709206b366c5038328/23429568683',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1041,7 +1041,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:49 GMT',
+  'Mon, 21 Jun 2021 19:37:00 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1059,7 +1059,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'de1c5073714b4897bf0aa9db458779de/23325695170',
+  '302d74b200284d65a9f2efd8c2622a58/23429568927',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1069,15 +1069,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:49 GMT',
+  'Mon, 21 Jun 2021 19:37:01 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984230492","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984230492","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/868","createdBy":"t3st","createdAt":"2021-06-18T02:43:50.9537011Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:43:50.9537011Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/896","createdBy":"t3st","createdAt":"2021-06-21T19:37:02.9714317Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:37:02.9714317Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1087,7 +1087,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e47a34b187ef43c5a40a391eb3420cc3/23325695605',
+  '6b1a8fb00edb445b9ac6787dcb1a0360/23429569397',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1097,14 +1097,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:50 GMT',
+  'Mon, 21 Jun 2021 19:37:02 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '502'
+  '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/868/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"John"})
+  .post('/api/bulk/2.0/contacts/imports/896/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"John"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -1113,7 +1113,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '31a909e522e242b3a3333ed8dda2ad5e/23325695834',
+  'cc8b7f43a60d46c0a8296a42612cf67e/23429569662',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1123,13 +1123,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:51 GMT',
+  'Mon, 21 Jun 2021 19:37:03 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/868"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/868","status":"pending","createdAt":"2021-06-18T02:43:52.1451711Z","createdBy":"t3st","uri":"/syncs/687"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/896"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/896","status":"pending","createdAt":"2021-06-21T19:37:04.1665269Z","createdBy":"t3st","uri":"/syncs/715"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1139,7 +1139,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '10c52dcd4c2d4b509d769ba530fb9323/23325696070',
+  'e813a9953d264b06a4773a6bf2d04492/23429569929',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1149,7 +1149,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:43:51 GMT',
+  'Mon, 21 Jun 2021 19:37:03 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1171,7 +1171,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-OTBhZTg1Y2VjYWNmNDc5Njg4MDY5NDBjOTM3OGY0NGU=';style-src 'self' 'nonce-ODlhYjQ1MDk1Y2U0NDhiNDk4ZDg4Y2YxYTA5ZmVkYjI=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-ZDAxN2ExODMxOWRmNGMyMjgyMTNmM2RiN2IwZjdlY2Y=';style-src 'self' 'nonce-YWY5MDAwOWExODg2NGE4MTkzYjI5NGRiYjYyZmRhYjU=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1181,15 +1181,15 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:02 GMT',
+  'Mon, 21 Jun 2021 19:37:15 GMT',
   'Connection',
   'close',
   'Content-Length',
   '732'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/bulk/2.0/syncs/687')
-  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/868","syncStartedAt":"2021-06-18T02:43:52.0430000Z","syncEndedAt":"2021-06-18T02:43:52.7800000Z","status":"warning","createdAt":"2021-06-18T02:43:51.9200000Z","createdBy":"t3st","uri":"/syncs/687"}, [
+  .get('/api/bulk/2.0/syncs/715')
+  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/896","syncStartedAt":"2021-06-21T19:37:04.0930000Z","syncEndedAt":"2021-06-21T19:37:04.7670000Z","status":"warning","createdAt":"2021-06-21T19:37:03.8900000Z","createdBy":"t3st","uri":"/syncs/715"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1199,7 +1199,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e008e61423a147dbb40bfbd45a7adc6b/23325700862',
+  '20c86a930e104fb2a0d4f40caff1a097/23429574555',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1209,7 +1209,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:02 GMT',
+  'Mon, 21 Jun 2021 19:37:16 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1228,7 +1228,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '9d93167e970b4ff6ab713bc61916ac71/23325701075',
+  '5cead5e15d8f49bca1df253d69b76ed8/23429574791',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1238,7 +1238,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:03 GMT',
+  'Mon, 21 Jun 2021 19:37:16 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1246,7 +1246,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/REST/1.0/assets/contact/list', {"name":"(test) High Value"})
-  .once().reply(201, {"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984244","updatedBy":"222","count":"0","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}, [
+  .once().reply(201, {"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304237","updatedBy":"222","count":"0","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1256,7 +1256,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'eb91a26ddac34da4a2762892d7e4d096/23325701292',
+  'bc9da7618df040d78b250dcf0eaa5e8f/23429575013',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1266,7 +1266,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:04 GMT',
+  'Mon, 21 Jun 2021 19:37:17 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1275,7 +1275,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1285,7 +1285,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd37b50c0d5584db6a4f405185f24950d/23325701665',
+  '22cceb23de3a4d1fa7117787858c38ce/23429575386',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1295,15 +1295,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:05 GMT',
+  'Mon, 21 Jun 2021 19:37:17 GMT',
   'Connection',
   'close',
   'Content-Length',
   '383'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5990', {"id":"5990","name":"(test) High Value","membershipAdditions":["1984312"],"membershipDeletions":[]})
-  .once().reply(200, {"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984246","updatedBy":"222","count":"1","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/5994', {"id":"5994","name":"(test) High Value","membershipAdditions":["1984322"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304238","updatedBy":"222","count":"1","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1313,7 +1313,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '31a249c2cde9475db08247b6b5072950/23325701874',
+  'aba418808e144f4ab7ac13ab981cbd73/23429575634',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1323,7 +1323,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:05 GMT',
+  'Mon, 21 Jun 2021 19:37:18 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1332,7 +1332,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984246","updatedBy":"222","count":"1","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304238","updatedBy":"222","count":"1","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1342,7 +1342,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '511f7443155545f68ab2818b8f6616c6/23325702100',
+  '4e9b258fd26343e0afe78da6f12783a0/23429575854',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1352,15 +1352,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:06 GMT',
+  'Mon, 21 Jun 2021 19:37:18 GMT',
   'Connection',
   'close',
   'Content-Length',
   '342'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/2.0/data/contact/1984312/membership')
-  .once().reply(200, [{"type":"ContactList","id":"5990","name":"(test) High Value"}], [
+  .get('/api/REST/2.0/data/contact/1984322/membership')
+  .once().reply(200, [{"type":"ContactList","id":"5994","name":"(test) High Value"}], [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1370,7 +1370,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '11d8c994c60e4a08ab5c020f36a04192/23325702350',
+  '229107b929e64151a2997ded6f442761/23429576048',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1380,7 +1380,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:06 GMT',
+  'Mon, 21 Jun 2021 19:37:19 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1399,7 +1399,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e3264f4b5f064bf08b61fb6f6dcb7eae/23325702532',
+  '6b06623c62c242219100961d57523420/23429576287',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1409,7 +1409,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:07 GMT',
+  'Mon, 21 Jun 2021 19:37:19 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1418,7 +1418,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1428,7 +1428,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ff7774c83cd540b6bcf62140390d9ec8/23325702776',
+  '0ce902f34255479bb513bef85efc1fb3/23429576455',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1438,7 +1438,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:07 GMT',
+  'Mon, 21 Jun 2021 19:37:20 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1447,7 +1447,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984204","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Pete","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304197","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Pete","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1457,7 +1457,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd1eba0f383114b3f8980cdc9884c485d/23325703029',
+  'e3781c054d7443d08cc1c518af205912/23429576706',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1467,7 +1467,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:08 GMT',
+  'Mon, 21 Jun 2021 19:37:21 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1485,7 +1485,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '7196fa11be954d04b441ff46cb5c0ab2/23325703254',
+  'de38e1ca0eec42189055fad59739c71b/23429576940',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1495,15 +1495,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:09 GMT',
+  'Mon, 21 Jun 2021 19:37:22 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984250332","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984250332","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/869","createdBy":"t3st","createdAt":"2021-06-18T02:44:11.0988739Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:44:11.0988739Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/897","createdBy":"t3st","createdAt":"2021-06-21T19:37:23.5589030Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:37:23.5589030Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1513,7 +1513,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ab4e954e45eb4456bed504a403fd93e5/23325703687',
+  '1861045cdc484e55845301d9c46619ed/23429577283',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1523,14 +1523,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:10 GMT',
+  'Mon, 21 Jun 2021 19:37:23 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '502'
+  '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/869/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"John"})
+  .post('/api/bulk/2.0/contacts/imports/897/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"John"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -1539,7 +1539,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '7048fe14b2a34236b0281ff78dce24a9/23325704084',
+  'd82b6dec8d8e4e6e9d3d20adb0a6e103/23429577598',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1549,12 +1549,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:10 GMT',
+  'Mon, 21 Jun 2021 19:37:23 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/869/data', {"emailAddress":"grouparoo2@demo.com","id":"1984313","profileId":"pro2","firstName":"Sally"})
+  .post('/api/bulk/2.0/contacts/imports/897/data', {"emailAddress":"grouparoo2@demo.com","id":"1984323","profileId":"pro2","firstName":"Sally"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -1563,7 +1563,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '3a8c27bec87540a5bd0809b125f41818/23325704335',
+  'd2e49540707a4cd598a2590a157f057b/23429577820',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1573,13 +1573,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:11 GMT',
+  'Mon, 21 Jun 2021 19:37:24 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/869"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/869","status":"pending","createdAt":"2021-06-18T02:44:12.9748031Z","createdBy":"t3st","uri":"/syncs/688"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/897"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/897","status":"pending","createdAt":"2021-06-21T19:37:25.2766381Z","createdBy":"t3st","uri":"/syncs/716"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1589,7 +1589,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8893f00582c241929073f4558d3f682c/23325704543',
+  '6e9df4bcbbda4912931b945cc054d46e/23429578051',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1599,7 +1599,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:12 GMT',
+  'Mon, 21 Jun 2021 19:37:24 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1621,7 +1621,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-NWM1ZjkyNGVjYTZiNDBkZmI1ZWIxMDliNGM1YWZlYTI=';style-src 'self' 'nonce-ZGRlMWI1YTgzOTY1NDZhYjljZTQzZDljYWQ5OWFhZjg=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-MDVlNTQ2Mjk4MDZjNDdjYTlhOGE0ODEzN2Y0NGY0Yjk=';style-src 'self' 'nonce-NzY0MzEyZmQ2YjRmNDQzZjk4NmU1Y2U0ZTRiYTA3ZTE=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1631,15 +1631,15 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:22 GMT',
+  'Mon, 21 Jun 2021 19:37:36 GMT',
   'Connection',
   'close',
   'Content-Length',
   '732'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/bulk/2.0/syncs/688')
-  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/869","syncStartedAt":"2021-06-18T02:44:13.1730000Z","syncEndedAt":"2021-06-18T02:44:14.4700000Z","status":"warning","createdAt":"2021-06-18T02:44:12.7500000Z","createdBy":"t3st","uri":"/syncs/688"}, [
+  .get('/api/bulk/2.0/syncs/716')
+  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/897","syncStartedAt":"2021-06-21T19:37:25.3300000Z","syncEndedAt":"2021-06-21T19:37:26.3130000Z","status":"warning","createdAt":"2021-06-21T19:37:25.0000000Z","createdBy":"t3st","uri":"/syncs/716"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1649,7 +1649,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'cc25fccc318b4c9d913e22df0478b293/23325709380',
+  'bc086a578af8444fbb4a5f698f73acf5/23429583055',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1659,7 +1659,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:24 GMT',
+  'Mon, 21 Jun 2021 19:37:36 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1668,7 +1668,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984246","updatedBy":"222","count":"1","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304238","updatedBy":"222","count":"1","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1678,7 +1678,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e9a58cf37183436cacc0ca815aae6d1f/23325709614',
+  '4f5a28d8c4e444f5a7dba721151762a4/23429583325',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1688,7 +1688,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:24 GMT',
+  'Mon, 21 Jun 2021 19:37:37 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1697,7 +1697,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1707,7 +1707,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c5c302d4603e4ccb89e80eebdf379df5/23325709908',
+  '2b6076a66d0443ce88cf7870b9c49409/23429583668',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1717,7 +1717,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:24 GMT',
+  'Mon, 21 Jun 2021 19:37:38 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1736,7 +1736,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c2965f561bdb4fda93bfb4c0278e6a39/23325710175',
+  'c00988244fe448489d40acb0c5af799e/23429583947',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1746,7 +1746,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:25 GMT',
+  'Mon, 21 Jun 2021 19:37:38 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1754,7 +1754,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/REST/1.0/assets/contact/list', {"name":"(test) Churned"})
-  .once().reply(201, {"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984266","updatedBy":"222","count":"0","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}, [
+  .once().reply(201, {"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304259","updatedBy":"222","count":"0","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1764,7 +1764,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'b39ccb13ab5940b08770959790da67e2/23325710490',
+  '794c352b4aee4e9488f78a32030d91e4/23429584134',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1774,7 +1774,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:26 GMT',
+  'Mon, 21 Jun 2021 19:37:39 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1783,7 +1783,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1793,7 +1793,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8a8ea5ea1d09441a8cf09fbb6915917c/23325710788',
+  '749dcf6b8ceb44718c08aa986df004f6/23429584486',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1803,7 +1803,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:26 GMT',
+  'Mon, 21 Jun 2021 19:37:40 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1812,7 +1812,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984246","updatedBy":"222","count":"1","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304238","updatedBy":"222","count":"1","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1822,7 +1822,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '4fbca78810314c84ac74e3ae0df55dd7/23325711009',
+  '98725cd281e44a8c904413ea1e0746ec/23429584768',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1832,7 +1832,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:27 GMT',
+  'Mon, 21 Jun 2021 19:37:41 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1841,7 +1841,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984254","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304246","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1851,7 +1851,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'cb231e0d967f40a4876cfccfe37ef72c/23325711207',
+  '3fe03b6d49b6483bbdcd23144cba897e/23429584978',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1861,15 +1861,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:27 GMT',
+  'Mon, 21 Jun 2021 19:37:41 GMT',
   'Connection',
   'close',
   'Content-Length',
   '386'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5990', {"id":"5990","name":"(test) High Value","membershipAdditions":["1984312","1984313"],"membershipDeletions":[]})
-  .once().reply(200, {"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/5994', {"id":"5994","name":"(test) High Value","membershipAdditions":["1984322","1984323"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304263","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1879,7 +1879,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ccf3b59b0dcc4922af4eb7d1a86bc1eb/23325711476',
+  '7c9e83d2a3794b2d91e64d3c683b4276/23429585243',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1889,15 +1889,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:28 GMT',
+  'Mon, 21 Jun 2021 19:37:43 GMT',
   'Connection',
   'close',
   'Content-Length',
   '293'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5991', {"id":"5991","name":"(test) Churned","membershipAdditions":["1984312"],"membershipDeletions":[]})
-  .once().reply(200, {"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"1","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/5995', {"id":"5995","name":"(test) Churned","membershipAdditions":["1984322"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304264","updatedBy":"222","count":"1","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1907,7 +1907,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '0ad9d184d247425ebbb91d5ffbb54165/23325711709',
+  'ff358d5730f94e8dba8cb7bf139657ba/23429585768',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1917,7 +1917,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:30 GMT',
+  'Mon, 21 Jun 2021 19:37:43 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1926,7 +1926,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"1","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304264","updatedBy":"222","count":"1","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1936,7 +1936,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '276583d544d54c10bad7edafdd73ee24/23325711965',
+  '508e7df996564a958af305be41e7ee89/23429586075',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1946,15 +1946,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:30 GMT',
+  'Mon, 21 Jun 2021 19:37:44 GMT',
   'Connection',
   'close',
   'Content-Length',
   '339'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/2.0/data/contact/1984312/membership')
-  .once().reply(200, [{"type":"ContactList","id":"5990","name":"(test) High Value"},{"type":"ContactList","id":"5991","name":"(test) Churned"}], [
+  .get('/api/REST/2.0/data/contact/1984322/membership')
+  .once().reply(200, [{"type":"ContactList","id":"5994","name":"(test) High Value"},{"type":"ContactList","id":"5995","name":"(test) Churned"}], [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1964,7 +1964,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '025407c89e6a473787a9eb8a7161e994/23325712177',
+  'cfa21dc11cf74ff592145d9e786778eb/23429586349',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1974,7 +1974,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:31 GMT',
+  'Mon, 21 Jun 2021 19:37:45 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1983,7 +1983,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984254","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304246","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1993,7 +1993,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '90e8b8dcf58f4e8084566c7168082583/23325712378',
+  '27339b9b0d0245f7baa21dcf6aa45339/23429586618',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2003,15 +2003,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:31 GMT',
+  'Mon, 21 Jun 2021 19:37:46 GMT',
   'Connection',
   'close',
   'Content-Length',
   '386'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/2.0/data/contact/1984313/membership')
-  .once().reply(200, [{"type":"ContactList","id":"5990","name":"(test) High Value"}], [
+  .get('/api/REST/2.0/data/contact/1984323/membership')
+  .once().reply(200, [{"type":"ContactList","id":"5994","name":"(test) High Value"}], [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2021,7 +2021,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '58fadb38578c43b88ad6af88873f4dbd/23325712664',
+  '9a59af9a08d94630a0fd6143edbc4e60/23429586905',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2031,7 +2031,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:32 GMT',
+  'Mon, 21 Jun 2021 19:37:47 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2040,7 +2040,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2050,7 +2050,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '467ed95206e545be971247506f0675e6/23325712850',
+  '739fcc0390964c749d8a70e84528bd4d/23429587100',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2060,7 +2060,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:32 GMT',
+  'Mon, 21 Jun 2021 19:37:47 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2069,7 +2069,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984254","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304246","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2079,7 +2079,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '5d0fceba8cde4f7da20ea07f909151e2/23325713062',
+  '93efdc6fd1fc4b4dab2201c3edc9587c/23429587441',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2089,7 +2089,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:33 GMT',
+  'Mon, 21 Jun 2021 19:37:48 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2107,7 +2107,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '41d37f3eda3d480b9a88609542aa9d46/23325713277',
+  '8675816a9b7d42d2b4f4741325db86c1/23429587718',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2117,15 +2117,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:33 GMT',
+  'Mon, 21 Jun 2021 19:37:49 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984274773","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984274773","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/870","createdBy":"t3st","createdAt":"2021-06-18T02:44:35.2643526Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:44:35.2643526Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/898","createdBy":"t3st","createdAt":"2021-06-21T19:37:51.3838749Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:37:51.3838749Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2135,7 +2135,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1990038ce7eb448885df39a5167f0ce3/23325713668',
+  '6f06c75b4b39478ba5793a978bec6d48/23429588186',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2145,14 +2145,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:34 GMT',
+  'Mon, 21 Jun 2021 19:37:50 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '502'
+  '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/870/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"John"})
+  .post('/api/bulk/2.0/contacts/imports/898/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"John"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -2161,7 +2161,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c12f5299d37e49e7b4dddd5223b01b6f/23325713977',
+  'f3b297747b504e58b2a3d26149155e30/23429588425',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2171,12 +2171,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:35 GMT',
+  'Mon, 21 Jun 2021 19:37:51 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/870/data', {"emailAddress":"grouparoo2@demo.com","id":"1984313","profileId":"pro2","firstName":"Sally"})
+  .post('/api/bulk/2.0/contacts/imports/898/data', {"emailAddress":"grouparoo2@demo.com","id":"1984323","profileId":"pro2","firstName":"Sally"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -2185,7 +2185,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '56a44d7677f94f7d9fb3e11d627b2b84/23325714527',
+  'c872652ad2624cc6b225a7ff3e0f8b04/23429588714',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2195,13 +2195,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:36 GMT',
+  'Mon, 21 Jun 2021 19:37:52 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/870"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/870","status":"pending","createdAt":"2021-06-18T02:44:37.6147740Z","createdBy":"t3st","uri":"/syncs/689"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/898"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/898","status":"pending","createdAt":"2021-06-21T19:37:53.6189172Z","createdBy":"t3st","uri":"/syncs/717"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2211,7 +2211,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '5c9057d6bb1a4111a7a92e564d5061ed/23325714816',
+  '21a9fdf979f54744845664a18e7dba26/23429588956',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2221,7 +2221,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:37 GMT',
+  'Mon, 21 Jun 2021 19:37:52 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2243,7 +2243,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-N2JiMDY4MzYxOWFhNGVjMzk2NmNlZDZjMjE2OGU3YjU=';style-src 'self' 'nonce-YmQ3NGFjMTAwYjYxNDAyODg3MjE4YTQ4ZGQwN2FmM2Q=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-ZGZkZDcyOTA4YmM4NGU5NjhmYjFjMDE5ZGEzODE4ZTM=';style-src 'self' 'nonce-ZmI3MTBkMzBmODhkNDdmMjg1NjQ2NDRlMGE2NDk1MGI=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2253,15 +2253,15 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:48 GMT',
+  'Mon, 21 Jun 2021 19:38:04 GMT',
   'Connection',
   'close',
   'Content-Length',
   '732'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/bulk/2.0/syncs/689')
-  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/870","syncStartedAt":"2021-06-18T02:44:38.1100000Z","syncEndedAt":"2021-06-18T02:44:38.9230000Z","status":"warning","createdAt":"2021-06-18T02:44:37.3900000Z","createdBy":"t3st","uri":"/syncs/689"}, [
+  .get('/api/bulk/2.0/syncs/717')
+  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/898","syncStartedAt":"2021-06-21T19:37:53.9570000Z","syncEndedAt":"2021-06-21T19:37:56.4570000Z","status":"warning","createdAt":"2021-06-21T19:37:53.3470000Z","createdBy":"t3st","uri":"/syncs/717"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2271,7 +2271,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'b430ed7be96649a99488fd4bb131983b/23325719352',
+  '6eb5a0ccdce34a24bc3fa57c1fcb554f/23429593449',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2281,7 +2281,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:48 GMT',
+  'Mon, 21 Jun 2021 19:38:05 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2290,7 +2290,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304263","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2300,7 +2300,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '5e34c716d02c4461888fb20da58faaff/23325719565',
+  'fdcfef4bae054b7f9b3a92caf6d9c28e/23429593640',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2310,7 +2310,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:49 GMT',
+  'Mon, 21 Jun 2021 19:38:05 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2319,7 +2319,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2329,7 +2329,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ffc7146e455a4c77bece83e4c7b5226c/23325719804',
+  '0eb9ef19a3a44c8faf096a054d9230c1/23429593806',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2339,7 +2339,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:49 GMT',
+  'Mon, 21 Jun 2021 19:38:06 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2348,7 +2348,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"1","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304264","updatedBy":"222","count":"1","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2358,7 +2358,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '3b0941852bbd4d628207ffa3f8f16ebb/23325720056',
+  '0f171c9a1d4a48c6849c3364e543a2dc/23429594041',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2368,7 +2368,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:50 GMT',
+  'Mon, 21 Jun 2021 19:38:06 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2377,7 +2377,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2387,7 +2387,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1d12f50af0bd4d17bd2c444f4ace6193/23325720296',
+  '27e2ae66a2e94db19b5194b9f2847134/23429594258',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2397,7 +2397,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:50 GMT',
+  'Mon, 21 Jun 2021 19:38:07 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2406,7 +2406,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304263","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2416,7 +2416,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd3d2a84fd48b470182e497448bdf6847/23325720525',
+  '839354400a09412ba74933662a10c9ca/23429594456',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2426,7 +2426,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:51 GMT',
+  'Mon, 21 Jun 2021 19:38:07 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2435,7 +2435,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984254","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304246","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2445,7 +2445,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e3f651d842a34c33a024590975abd6d6/23325720719',
+  '3ee247897e854485a95fdcd7af7d78ec/23429594642',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2455,7 +2455,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:52 GMT',
+  'Mon, 21 Jun 2021 19:38:08 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2464,7 +2464,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"1","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304264","updatedBy":"222","count":"1","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2474,7 +2474,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1a312d959a7e4bb8ab949579f3c60212/23325720937',
+  '16ccc426260a40e590d4daf817377885/23429594843',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2484,7 +2484,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:52 GMT',
+  'Mon, 21 Jun 2021 19:38:08 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2493,7 +2493,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984254","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304246","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2503,7 +2503,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'f02ef9a69d4d4b8ba4384bbace23bda0/23325721120',
+  'ec947f6f136149588d7160242dbaea58/23429595012',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2513,15 +2513,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:53 GMT',
+  'Mon, 21 Jun 2021 19:38:09 GMT',
   'Connection',
   'close',
   'Content-Length',
   '386'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5990', {"id":"5990","name":"(test) High Value","membershipAdditions":["1984312","1984313"],"membershipDeletions":[]})
-  .once().reply(200, {"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984294","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/5994', {"id":"5994","name":"(test) High Value","membershipAdditions":["1984322","1984323"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304290","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2531,7 +2531,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '54493c8f857c42288511d5e4faeee6b6/23325721332',
+  '45a56977f75d4f67a27d3120f08f539f/23429595197',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2541,15 +2541,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:53 GMT',
+  'Mon, 21 Jun 2021 19:38:09 GMT',
   'Connection',
   'close',
   'Content-Length',
   '293'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5991', {"id":"5991","name":"(test) Churned","membershipAdditions":[],"membershipDeletions":["1984312","1984313"]})
-  .once().reply(200, {"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984294","updatedBy":"222","count":"0","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/5995', {"id":"5995","name":"(test) Churned","membershipAdditions":[],"membershipDeletions":["1984322","1984323"]})
+  .once().reply(200, {"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304290","updatedBy":"222","count":"0","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2559,7 +2559,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2e46ea3fa4584fa98ca7f542d37f00ad/23325721576',
+  '98365924ed414ae19c50299e6ae91633/23429595422',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2569,15 +2569,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:54 GMT',
+  'Mon, 21 Jun 2021 19:38:10 GMT',
   'Connection',
   'close',
   'Content-Length',
   '290'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/2.0/data/contact/1984312/membership')
-  .once().reply(200, [{"type":"ContactList","id":"5990","name":"(test) High Value"}], [
+  .get('/api/REST/2.0/data/contact/1984322/membership')
+  .once().reply(200, [{"type":"ContactList","id":"5994","name":"(test) High Value"}], [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2587,7 +2587,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '97b10a84c7cb4cb198f2351e45921da2/23325721826',
+  'db30c6ec412b499095dab5775fee1dea/23429595673',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2597,15 +2597,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:54 GMT',
+  'Mon, 21 Jun 2021 19:38:11 GMT',
   'Connection',
   'close',
   'Content-Length',
   '63'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/2.0/data/contact/1984313/membership')
-  .once().reply(200, [{"type":"ContactList","id":"5990","name":"(test) High Value"}], [
+  .get('/api/REST/2.0/data/contact/1984323/membership')
+  .once().reply(200, [{"type":"ContactList","id":"5994","name":"(test) High Value"}], [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2615,7 +2615,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '379eb8810fb047dc93c0e7580b60187c/23325722027',
+  '55002475093b48cab2ddbab41e41d3a4/23429595986',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2625,7 +2625,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:55 GMT',
+  'Mon, 21 Jun 2021 19:38:11 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2644,7 +2644,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '244cd45ee2df4a63ab292f11a86347b3/23325722266',
+  '186f07772a2e4860a2376931b66847f0/23429596185',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2654,7 +2654,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:55 GMT',
+  'Mon, 21 Jun 2021 19:38:12 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2663,7 +2663,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984254","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304246","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2673,7 +2673,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '00df027150e047128638c1d23d0ece5a/23325722513',
+  '026490b4bfd44f0a9fdf44861d3d0256/23429596399',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2683,7 +2683,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:57 GMT',
+  'Mon, 21 Jun 2021 19:38:12 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2701,7 +2701,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '02f3abd9b60344eca830118fd83a205d/23325722720',
+  'e87d95178e8e44369d8723d5b9672059/23429596620',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2711,15 +2711,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:57 GMT',
+  'Mon, 21 Jun 2021 19:38:14 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984298162","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984298162","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/871","createdBy":"t3st","createdAt":"2021-06-18T02:44:58.6297565Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:44:58.6297565Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/899","createdBy":"t3st","createdAt":"2021-06-21T19:38:15.6161407Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:38:15.6161407Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2729,7 +2729,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '13e311dd3bc445b282a9595cc3346745/23325723037',
+  'd4235087bdd945e6b9cb763de990a055/23429597117',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2739,14 +2739,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:58 GMT',
+  'Mon, 21 Jun 2021 19:38:15 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '502'
+  '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/871/data', {"emailAddress":"notgrouparoo@demo.com","id":"1984184","profileId":"pro1","firstName":"John","lastName":"Test"})
+  .post('/api/bulk/2.0/contacts/imports/899/data', {"emailAddress":"notgrouparoo@demo.com","id":"1984184","profileId":"pro1","firstName":"John","lastName":"Test"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -2755,7 +2755,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '880fe6772e92412eac7d0d5b118adfd9/23325723239',
+  'd11d67abfc1a4875a4568819d2533201/23429597312',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2765,12 +2765,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:58 GMT',
+  'Mon, 21 Jun 2021 19:38:16 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/871/data', {"emailAddress":"grouparoo2@demo.com","id":"1984313","profileId":"pro2","firstName":"Evan"})
+  .post('/api/bulk/2.0/contacts/imports/899/data', {"emailAddress":"grouparoo2@demo.com","id":"1984323","profileId":"pro2","firstName":"Evan"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -2779,7 +2779,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '463be7064ba4477db2e1bf7ce2e33848/23325723433',
+  '5ca8ddcf4ccd410c91af7649ba86fce3/23429597631',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2789,13 +2789,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:59 GMT',
+  'Mon, 21 Jun 2021 19:38:17 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/871"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/871","status":"pending","createdAt":"2021-06-18T02:45:00.3918968Z","createdBy":"t3st","uri":"/syncs/690"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/899"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/899","status":"pending","createdAt":"2021-06-21T19:38:18.0669649Z","createdBy":"t3st","uri":"/syncs/718"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2805,7 +2805,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '87b86eab8e264372b070e34c8b2e9a02/23325723652',
+  '93e65e1775214030aef62b0896870a1b/23429597945',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2815,7 +2815,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:44:59 GMT',
+  'Mon, 21 Jun 2021 19:38:17 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2837,7 +2837,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-YjZhNTY1ODMwMDg1NGRkYzkyMWQ1ZGY5OTFjMDQ2Yjc=';style-src 'self' 'nonce-N2JkNjg0NjRjODNkNGMyZTk0YjgyNGY1NWFjNGZkZWY=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-NmNkNWM2ODk5MTdmNDhhNmI3MzJhZDRhYmY4YTMyYTE=';style-src 'self' 'nonce-NjMxNzM2YTJiYTlkNDgxM2IzZTk4ZmIyM2M2MzIzMGM=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2847,15 +2847,15 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:10 GMT',
+  'Mon, 21 Jun 2021 19:38:28 GMT',
   'Connection',
   'close',
   'Content-Length',
   '732'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/bulk/2.0/syncs/690')
-  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/871","syncStartedAt":"2021-06-18T02:45:00.5830000Z","syncEndedAt":"2021-06-18T02:45:01.7230000Z","status":"warning","createdAt":"2021-06-18T02:45:00.1630000Z","createdBy":"t3st","uri":"/syncs/690"}, [
+  .get('/api/bulk/2.0/syncs/718')
+  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/899","syncStartedAt":"2021-06-21T19:38:18.5970000Z","syncEndedAt":"2021-06-21T19:38:19.7370000Z","status":"warning","createdAt":"2021-06-21T19:38:17.8000000Z","createdBy":"t3st","uri":"/syncs/718"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2865,7 +2865,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'f41ff9268de44c499534d677fb7365a9/23325728354',
+  '82224e48bdf24235a795c4a4a1567f9c/23429602530',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2875,7 +2875,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:11 GMT',
+  'Mon, 21 Jun 2021 19:38:29 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2884,7 +2884,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984294","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304290","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2894,7 +2894,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'cd825298c40e4681bf9f6629dd33316c/23325728631',
+  'e9ced9c2b82c4b9b831e48c6b47107c3/23429602721',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2904,7 +2904,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:12 GMT',
+  'Mon, 21 Jun 2021 19:38:30 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2923,7 +2923,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '07e07b3058b44a05bbde8e1b2dc18b9f/23325728802',
+  '9ae502737f6140cdbbbf534e79870630/23429602953',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2933,7 +2933,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:12 GMT',
+  'Mon, 21 Jun 2021 19:38:30 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2942,7 +2942,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984294","updatedBy":"222","count":"0","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304291","updatedBy":"222","count":"0","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2952,7 +2952,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'bfc831adbda443548d268b9c634e181f/23325729021',
+  '338c938570ac41c591d41472c2bd0244/23429603185',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2962,7 +2962,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:13 GMT',
+  'Mon, 21 Jun 2021 19:38:31 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2981,7 +2981,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ea3a201a22a9426aa8551798823c1624/23325729242',
+  '1b41478be16c494780d8607dd9a8a29b/23429603473',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2991,7 +2991,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:13 GMT',
+  'Mon, 21 Jun 2021 19:38:31 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3000,7 +3000,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984294","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304290","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3010,7 +3010,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '112c524c00ee40d5889023d28aa2e19a/23325729467',
+  'bf9cd543d5764fe783af0abb1b7ee30c/23429603730',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3020,7 +3020,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:14 GMT',
+  'Mon, 21 Jun 2021 19:38:32 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3029,7 +3029,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984301","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304299","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3039,7 +3039,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '0914b9ed2ca14575a4a7a3fadd90f305/23325729676',
+  'fc1716fcc46f49068b49ba7db60cb176/23429603942',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3049,15 +3049,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:14 GMT',
+  'Mon, 21 Jun 2021 19:38:33 GMT',
   'Connection',
   'close',
   'Content-Length',
   '385'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5990', {"id":"5990","name":"(test) High Value","membershipAdditions":["1984184"],"membershipDeletions":["1984313"]})
-  .once().reply(200, {"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984315","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/5994', {"id":"5994","name":"(test) High Value","membershipAdditions":["1984184"],"membershipDeletions":["1984323"]})
+  .once().reply(200, {"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304313","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3067,7 +3067,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e48f2247db5c4f2f8a118605eff7bd06/23325729973',
+  '1f7a82cbd9b245228a129cb05edb99c7/23429604194',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3077,15 +3077,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:15 GMT',
+  'Mon, 21 Jun 2021 19:38:33 GMT',
   'Connection',
   'close',
   'Content-Length',
   '293'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5991', {"id":"5991","name":"(test) Churned","membershipAdditions":["1984184"],"membershipDeletions":[]})
-  .once().reply(200, {"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984316","updatedBy":"222","count":"1","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/5995', {"id":"5995","name":"(test) Churned","membershipAdditions":["1984184"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304314","updatedBy":"222","count":"1","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3095,7 +3095,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ed6431f5e28e4325813db309b0568896/23325730219',
+  'c5cf8f1f4cc64b6eb13fbf24ad976e7d/23429604419',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3105,7 +3105,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:16 GMT',
+  'Mon, 21 Jun 2021 19:38:34 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3114,7 +3114,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3124,7 +3124,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '4059adf9728140fcbe8995ad7853b71f/23325730536',
+  '30150c82514d4cf0a157d78df1e935b0/23429604631',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3134,7 +3134,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:16 GMT',
+  'Mon, 21 Jun 2021 19:38:34 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3153,7 +3153,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ea2123d0c1234c028dc86dd34c6ac163/23325730765',
+  'db5b5e9cacd04a5181742644414adea3/23429604853',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3163,7 +3163,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:17 GMT',
+  'Mon, 21 Jun 2021 19:38:35 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3172,7 +3172,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984301","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304299","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3182,7 +3182,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '613583df8dd34033b3005b62f83dfe80/23325730986',
+  '2afeed263f65409d8b86b882cccc53c0/23429605089',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3192,7 +3192,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:17 GMT',
+  'Mon, 21 Jun 2021 19:38:35 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3200,7 +3200,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/2.0/data/contact/1984184/membership')
-  .once().reply(200, [{"type":"ContactList","id":"5990","name":"(test) High Value"},{"type":"ContactList","id":"5991","name":"(test) Churned"}], [
+  .once().reply(200, [{"type":"ContactList","id":"5994","name":"(test) High Value"},{"type":"ContactList","id":"5995","name":"(test) Churned"}], [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3210,7 +3210,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '428a1b1d49c841fb868b1cd30e14ce74/23325731186',
+  '8b39e4b756ef424da17838dac0f4aac5/23429605292',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3220,14 +3220,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:18 GMT',
+  'Mon, 21 Jun 2021 19:38:36 GMT',
   'Connection',
   'close',
   'Content-Length',
   '122'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/2.0/data/contact/1984313/membership')
+  .get('/api/REST/2.0/data/contact/1984323/membership')
   .once().reply(200, [], [
   'Cache-Control',
   'no-store',
@@ -3238,7 +3238,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '9b82cfac0dcb488ab24edaf41ce9af6a/23325731401',
+  '2bd789bb393f42a4a471a01aa11940db/23429605526',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3248,7 +3248,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:18 GMT',
+  'Mon, 21 Jun 2021 19:38:36 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3267,7 +3267,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '3cc066bbffe74e03aa8ccf83318f13d7/23325731599',
+  '4d7706bacf1f406aa765bc63a3b8c709/23429605739',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3277,7 +3277,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:19 GMT',
+  'Mon, 21 Jun 2021 19:38:37 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3296,7 +3296,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6c0d75095d4e4c45b45bb7c5062f71f9/23325731865',
+  '80f074ad5e7d474080f351a8abe55819/23429605972',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3306,7 +3306,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:19 GMT',
+  'Mon, 21 Jun 2021 19:38:38 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3315,7 +3315,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3325,7 +3325,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '428bbdd0c7ba47ffbc300baae9025599/23325732081',
+  'dbc164aff09e42c8886c3f5b295505dd/23429606249',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3335,7 +3335,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:20 GMT',
+  'Mon, 21 Jun 2021 19:38:38 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3344,7 +3344,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984301","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304299","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3354,7 +3354,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '59ca928e4a1e4384a7799e259a3b24b9/23325732320',
+  '2a87cbb4bf1c4a15b0f455fa2d57a55f/23429606453',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3364,14 +3364,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:20 GMT',
+  'Mon, 21 Jun 2021 19:38:39 GMT',
   'Connection',
   'close',
   'Content-Length',
   '385'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/data/contact/1984313')
+  .delete('/api/REST/1.0/data/contact/1984323')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -3380,7 +3380,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1d94bb4e06db46788b1c62ed81800458/23325732565',
+  'd4e606040f394b7dbfc9f8354775f863/23429606683',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3390,7 +3390,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:21 GMT',
+  'Mon, 21 Jun 2021 19:38:39 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3408,7 +3408,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '7b66af56a6b54b6a9c5371f870d980cb/23325732822',
+  '7665c2dec54d462aa818e12a44c7f40b/23429606967',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3418,15 +3418,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:22 GMT',
+  'Mon, 21 Jun 2021 19:38:40 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984323184","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984323184","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/872","createdBy":"t3st","createdAt":"2021-06-18T02:45:23.6461514Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:45:23.6461514Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/900","createdBy":"t3st","createdAt":"2021-06-21T19:38:41.9627034Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:38:41.9627034Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3436,7 +3436,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2cfa82a86d60408ebf7b6c8ca3f4ee6e/23325733177',
+  '29d0aedb56864e05bd13532e5af7344a/23429607336',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3446,14 +3446,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:22 GMT',
+  'Mon, 21 Jun 2021 19:38:41 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '502'
+  '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/872/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"John","lastName":"Test"})
+  .post('/api/bulk/2.0/contacts/imports/900/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"John","lastName":"Test"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -3462,7 +3462,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '0d2d7e326041483e86d8068e7bdb87ac/23325733422',
+  '238aaf9216bd420aada000e06c4defa2/23429607532',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3472,13 +3472,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:23 GMT',
+  'Mon, 21 Jun 2021 19:38:41 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/872"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/872","status":"pending","createdAt":"2021-06-18T02:45:24.8482622Z","createdBy":"t3st","uri":"/syncs/691"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/900"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/900","status":"pending","createdAt":"2021-06-21T19:38:43.1269117Z","createdBy":"t3st","uri":"/syncs/719"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3488,7 +3488,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2b7b567891304557ba17797abdbb2469/23325733652',
+  '76b65dcc5cbc4a6498074758d121a9e1/23429607791',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3498,7 +3498,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:24 GMT',
+  'Mon, 21 Jun 2021 19:38:42 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3507,7 +3507,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984325","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304324","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3517,7 +3517,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '15cb61dd8a0247058f99abfe0e0a2584/23325737803',
+  'c79cd68143934b86bba03cd27570221d/23429611906',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3527,7 +3527,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:34 GMT',
+  'Mon, 21 Jun 2021 19:38:53 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3546,7 +3546,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8f2c0db52c684398b839b7e2e0099f09/23325738021',
+  '2aa133a964a34d7da9a3762fbcf559e7/23429612229',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3556,7 +3556,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:35 GMT',
+  'Mon, 21 Jun 2021 19:38:53 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3575,7 +3575,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '98030cc97a374e788f48dc873089b026/23325738239',
+  '715258f7813a42b88a2d7b35cc602ce3/23429612423',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3585,7 +3585,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:35 GMT',
+  'Mon, 21 Jun 2021 19:38:54 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3603,7 +3603,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '249d34f9cca34b51ab90e37ece239e30/23325738462',
+  '509cb42c49484691aa600eab8a873ab6/23429612674',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3613,15 +3613,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:36 GMT',
+  'Mon, 21 Jun 2021 19:38:54 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984337558","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984337558","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/873","createdBy":"t3st","createdAt":"2021-06-18T02:45:38.0437912Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:45:38.0437912Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/901","createdBy":"t3st","createdAt":"2021-06-21T19:38:56.5448012Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:38:56.5448012Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3631,7 +3631,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '239dafa82f01496ca74268cf68308846/23325738836',
+  '7885d4843b974d42b7fb3714fec9e25b/23429612990',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3641,14 +3641,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:37 GMT',
+  'Mon, 21 Jun 2021 19:38:56 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '551'
+  '565'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/873/data', {"emailAddress":"grouparoo2@demo.com","profileId":"pro2","firstName":"Evan","lastName":"Saran","mobilePhone":"+5583999999999"})
+  .post('/api/bulk/2.0/contacts/imports/901/data', {"emailAddress":"grouparoo2@demo.com","profileId":"pro2","firstName":"Evan","lastName":"Saran","mobilePhone":"+5583999999999"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -3657,7 +3657,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd56c8cc1d5fc451582096516cae0e463/23325739039',
+  '90c9bcad98ea465ab095aac041e69a9a/23429613207',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3667,13 +3667,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:38 GMT',
+  'Mon, 21 Jun 2021 19:38:57 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/873"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/873","status":"pending","createdAt":"2021-06-18T02:45:39.2659400Z","createdBy":"t3st","uri":"/syncs/692"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/901"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/901","status":"pending","createdAt":"2021-06-21T19:38:57.8787148Z","createdBy":"t3st","uri":"/syncs/720"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3683,7 +3683,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'f85adfe0424b46c883d9acc648f64beb/23325739297',
+  '07bac91c392f4bb7a98eb6596a02b843/23429613427',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3693,7 +3693,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:38 GMT',
+  'Mon, 21 Jun 2021 19:38:57 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3702,7 +3702,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984314","createdAt":"1623984339","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984339","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984324","createdAt":"1624304340","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304340","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3712,7 +3712,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'b1ae599f2eaa42d6aad49972e51cedb4/23325743516',
+  'da36216a65b348fcb3aee12e426a3a5b/23429617454',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3722,7 +3722,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:49 GMT',
+  'Mon, 21 Jun 2021 19:39:08 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3741,7 +3741,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1d68b38be1a84a9f83c0052a02e7f907/23325743770',
+  '94f4c23c87c64aa3a717bcd1391d51cc/23429617824',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3751,7 +3751,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:49 GMT',
+  'Mon, 21 Jun 2021 19:39:09 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3769,7 +3769,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '480ea332c1ae414ca1de9cf7cf48498c/23325743999',
+  'e3b8ed002de640d781b7dbc41651d019/23429618042',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3779,15 +3779,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:50 GMT',
+  'Mon, 21 Jun 2021 19:39:09 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984351528","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984351528","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/874","createdBy":"t3st","createdAt":"2021-06-18T02:45:52.0070305Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:45:52.0070305Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/902","createdBy":"t3st","createdAt":"2021-06-21T19:39:11.3934148Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:39:11.3934148Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3797,7 +3797,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'eba2a4a75ea748dfbef30bdec67ffbbe/23325744388',
+  'ba3cfbd6d8884981a89cc3958d4982a7/23429618441',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3807,14 +3807,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:51 GMT',
+  'Mon, 21 Jun 2021 19:39:10 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '551'
+  '565'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/874/data', {"emailAddress":"notanemail","profileId":"pro2","firstName":"Maria"})
+  .post('/api/bulk/2.0/contacts/imports/902/data', {"emailAddress":"notanemail","profileId":"pro2","firstName":"Maria"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -3823,7 +3823,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'cfbeb38c9c6b47aa93f35f1fd04fdb35/23325744615',
+  'cb289b3b96c54ab0be9681a045c25a24/23429618713',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3833,13 +3833,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:52 GMT',
+  'Mon, 21 Jun 2021 19:39:11 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/874"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/874","status":"pending","createdAt":"2021-06-18T02:45:53.2837315Z","createdBy":"t3st","uri":"/syncs/693"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/902"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/902","status":"pending","createdAt":"2021-06-21T19:39:12.9917751Z","createdBy":"t3st","uri":"/syncs/721"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3849,7 +3849,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c792a63cd58b460b85c4dea5b6717238/23325744875',
+  'a8b1de8e22324657a5ab374868e2d294/23429619038',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3859,7 +3859,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:45:52 GMT',
+  'Mon, 21 Jun 2021 19:39:12 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3868,7 +3868,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984314","createdAt":"1623984339","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984339","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984324","createdAt":"1624304340","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304340","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3878,7 +3878,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '084348bddd094678b71af5c031068ee5/23325749026',
+  'bcacb678545349a5bee8a2d9dac6cfde/23429623290',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3888,7 +3888,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:02 GMT',
+  'Mon, 21 Jun 2021 19:39:23 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3907,7 +3907,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '045cf418d1674805bd6020dd8e3548ec/23325749257',
+  'ffb33ff266ed4aa39613b70412f2ba0b/23429623562',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3917,7 +3917,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:03 GMT',
+  'Mon, 21 Jun 2021 19:39:23 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3936,7 +3936,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c24537de7182405f8c219b1a9a6a0b2d/23325749482',
+  'ff1702d5874446f18fba40c4d70abd4e/23429623771',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3946,7 +3946,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:03 GMT',
+  'Mon, 21 Jun 2021 19:39:24 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3955,7 +3955,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984314","createdAt":"1623984339","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984339","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984324","createdAt":"1624304340","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304340","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3965,7 +3965,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd9f3857b54b64260a032937610b51097/23325754020',
+  '43387f3f33e344109ceffba8e1803030/23429627863',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3975,7 +3975,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:15 GMT',
+  'Mon, 21 Jun 2021 19:39:34 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3994,7 +3994,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '4840b65d439f438c925953c163f402e0/23325754260',
+  'cd742d5cbfcc496b9820c77ee5f670ed/23429628208',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4004,7 +4004,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:15 GMT',
+  'Mon, 21 Jun 2021 19:39:35 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4013,7 +4013,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984325","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304324","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4023,7 +4023,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1c9081fc7e0b40ffb3665f74989cd658/23325754486',
+  '713fc438784d40b7a4028b571348fabb/23429628497',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4033,7 +4033,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:16 GMT',
+  'Mon, 21 Jun 2021 19:39:36 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4052,7 +4052,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '4776771555624c4e9ff9f99610888134/23325754716',
+  '9619f3bba91845d0967bcceac5d7d129/23429628800',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4062,7 +4062,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:17 GMT',
+  'Mon, 21 Jun 2021 19:39:37 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4081,7 +4081,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '5ada8bef60f3452cbab7726acdf9be4c/23325754938',
+  '0134c23818f2409d86b5a10a965d0f9a/23429629047',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4091,7 +4091,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:17 GMT',
+  'Mon, 21 Jun 2021 19:39:37 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4109,7 +4109,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ae2eb9e69e064ee485b61b49f08bc1b2/23325755158',
+  '3b3afe77a5804f9aacbd9a09622b5e38/23429629268',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4119,15 +4119,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:17 GMT',
+  'Mon, 21 Jun 2021 19:39:38 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984378881","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984378881","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/875","createdBy":"t3st","createdAt":"2021-06-18T02:46:19.3632731Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:46:19.3632731Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/903","createdBy":"t3st","createdAt":"2021-06-21T19:39:40.0958612Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:39:40.0958612Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4137,7 +4137,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2f4cc4c824f5420889e45311c0462776/23325755578',
+  '9c6903a6cc374e2f8082755eaa9e72e2/23429629590',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4147,14 +4147,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:18 GMT',
+  'Mon, 21 Jun 2021 19:39:39 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '551'
+  '565'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/875/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"Sam","lastName":"Test"})
+  .post('/api/bulk/2.0/contacts/imports/903/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"Sam","lastName":"Test"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -4163,7 +4163,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '799c73ae3f004ba18cb2effa30296c25/23325755795',
+  '35bb70329d5648e7b86c817f0499f798/23429629797',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4173,12 +4173,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:20 GMT',
+  'Mon, 21 Jun 2021 19:39:40 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/875/data', {"emailAddress":"bademail","profileId":"pro2","firstName":"William"})
+  .post('/api/bulk/2.0/contacts/imports/903/data', {"emailAddress":"bademail","profileId":"pro2","firstName":"William"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -4187,7 +4187,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '76de7cd9fa2746a2846ea1d1243c3cb7/23325756049',
+  'a74db0c9c34c47b2af08bf2d36f3cd0e/23429630033',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4197,12 +4197,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:20 GMT',
+  'Mon, 21 Jun 2021 19:39:40 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/875/data', {"emailAddress":"grouparoo3@demo.com","profileId":"pro3","firstName":"Liz"})
+  .post('/api/bulk/2.0/contacts/imports/903/data', {"emailAddress":"grouparoo3@demo.com","profileId":"pro3","firstName":"Liz"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -4211,7 +4211,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'a96f2f478e6b48179117e83b9679acf2/23325756306',
+  'f247667f28c648ba95d6d4d06bc86e7c/23429630271',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4221,13 +4221,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:21 GMT',
+  'Mon, 21 Jun 2021 19:39:41 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/875"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/875","status":"pending","createdAt":"2021-06-18T02:46:21.7363884Z","createdBy":"t3st","uri":"/syncs/694"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/903"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/903","status":"pending","createdAt":"2021-06-21T19:39:42.3714924Z","createdBy":"t3st","uri":"/syncs/722"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4237,7 +4237,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'b0fc3b638bed4142a0eac799c216adfa/23325756552',
+  '4f005fdf081f4a619d1d85ce5d0524a1/23429630494',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4247,7 +4247,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:21 GMT',
+  'Mon, 21 Jun 2021 19:39:42 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4256,7 +4256,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984382","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"Sam","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304385","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"Sam","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4266,7 +4266,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '5ff0771d70534ceda6d40d3f6fcc7b26/23325760849',
+  '31f3e4d078a5473a9dfee02ec6552712/23429634644',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4276,7 +4276,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:31 GMT',
+  'Mon, 21 Jun 2021 19:39:53 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4285,7 +4285,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984314","createdAt":"1623984339","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984339","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984324","createdAt":"1624304340","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304340","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4295,7 +4295,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c5625967108543e4a6800a6c42553917/23325761062',
+  'c60ab797da334a149cb4fb2dd5a6c619/23429635317',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4305,7 +4305,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:31 GMT',
+  'Mon, 21 Jun 2021 19:39:54 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4314,7 +4314,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo3%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984315","createdAt":"1623984382","depth":"partial","name":"grouparoo3@demo.com","updatedAt":"1623984382","emailAddress":"grouparoo3@demo.com","emailFormatPreference":"unspecified","firstName":"Liz","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623980518"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984325","createdAt":"1624304384","depth":"partial","name":"grouparoo3@demo.com","updatedAt":"1624304384","emailAddress":"grouparoo3@demo.com","emailFormatPreference":"unspecified","firstName":"Liz","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623980518"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4324,7 +4324,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'eb98eb93ad4948dbb62465ec2621fce8/23325761270',
+  'fc0bf7b6bba74ba2b9e290b54ec8f179/23429635525',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4334,7 +4334,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:32 GMT',
+  'Mon, 21 Jun 2021 19:39:55 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4353,7 +4353,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'db1a4bf34b064c8f8f7b3a874481ec6f/23325761501',
+  '0120661e43ac4f01940e59237e2ff38a/23429635837',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4363,7 +4363,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:33 GMT',
+  'Mon, 21 Jun 2021 19:39:55 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4381,7 +4381,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8b0658ce62b04c0c8f135bb72f22f927/23325761759',
+  'd043e7e7e9de421a85f27f46f3f33141/23429636171',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4391,15 +4391,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:34 GMT',
+  'Mon, 21 Jun 2021 19:39:56 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984395109","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984395109","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/876","createdBy":"t3st","createdAt":"2021-06-18T02:46:35.7395275Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:46:35.7395275Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/904","createdBy":"t3st","createdAt":"2021-06-21T19:39:58.1330334Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:39:58.1330334Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4409,7 +4409,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e5f1811ce5fb412ea44d3d8c59e4d1cb/23325762162',
+  '3e307630afc6488190c04852639b5679/23429636584',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4419,14 +4419,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:35 GMT',
+  'Mon, 21 Jun 2021 19:39:57 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '551'
+  '565'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/876/data', {"emailAddress":"grouparoo+test@demo.com","profileId":"pro4","firstName":"Special"})
+  .post('/api/bulk/2.0/contacts/imports/904/data', {"emailAddress":"grouparoo+test@demo.com","profileId":"pro4","firstName":"Special"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -4435,7 +4435,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '340ec8c1f47b48d392d650095d83c0f9/23325762625',
+  '97065b24800b428ba7dbea42a8553dfe/23429636995',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4445,13 +4445,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:36 GMT',
+  'Mon, 21 Jun 2021 19:39:58 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/876"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/876","status":"pending","createdAt":"2021-06-18T02:46:37.1907953Z","createdBy":"t3st","uri":"/syncs/695"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/904"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/904","status":"pending","createdAt":"2021-06-21T19:39:59.6647551Z","createdBy":"t3st","uri":"/syncs/723"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4461,7 +4461,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'a8fa3aecbf7646ea83f042224a45a96d/23325763039',
+  '77908cb22f2440cea525d94904d477e6/23429637201',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4471,7 +4471,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:37 GMT',
+  'Mon, 21 Jun 2021 19:39:58 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4480,7 +4480,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984316","createdAt":"1623984398","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1623984398","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984326","createdAt":"1624304400","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1624304400","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4490,7 +4490,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '79c2a8cf72914fc190e89a9d18c1160d/23325767568',
+  'bc94ade364c347bf97a8d4521592fe20/23429641643',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4500,7 +4500,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:46 GMT',
+  'Mon, 21 Jun 2021 19:40:09 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4509,7 +4509,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984316","createdAt":"1623984398","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1623984398","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984326","createdAt":"1624304400","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1624304400","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4519,7 +4519,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '69e6a8a078ee45eb9fdba5d23aa6f605/23325767786',
+  '6518acd842554603a28a374bc085cf32/23429641923',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4529,7 +4529,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:48 GMT',
+  'Mon, 21 Jun 2021 19:40:10 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4547,7 +4547,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6d5c58ea9407473a957ed286a3e59f75/23325768015',
+  '4b3b4def6de2409f9fa18a84a3a9f151/23429642144',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4557,15 +4557,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:47 GMT',
+  'Mon, 21 Jun 2021 19:40:11 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984409305","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984409305","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/877","createdBy":"t3st","createdAt":"2021-06-18T02:46:49.7819653Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:46:49.7819653Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/905","createdBy":"t3st","createdAt":"2021-06-21T19:40:12.5601554Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:40:12.5601554Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4575,7 +4575,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '65bb7c4b704d4dae9a7d81bc931428a5/23325768377',
+  '00d4c9983ebe4bc1aaced99b7ecae056/23429642551',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4585,14 +4585,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:48 GMT',
+  'Mon, 21 Jun 2021 19:40:12 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '551'
+  '565'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/877/data', {"emailAddress":"grouparoo+test@demo.com","id":"1984316","profileId":"pro4","firstName":"Special","lastName":"User"})
+  .post('/api/bulk/2.0/contacts/imports/905/data', {"emailAddress":"grouparoo+test@demo.com","id":"1984326","profileId":"pro4","firstName":"Special","lastName":"User"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -4601,7 +4601,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6d14c203ba0e47b8a353465e5fb1293d/23325768626',
+  'ebd7e60ea26849329d850177acb23c55/23429642779',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4611,13 +4611,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:50 GMT',
+  'Mon, 21 Jun 2021 19:40:12 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/877"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/877","status":"pending","createdAt":"2021-06-18T02:46:50.9901905Z","createdBy":"t3st","uri":"/syncs/696"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/905"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/905","status":"pending","createdAt":"2021-06-21T19:40:13.7079591Z","createdBy":"t3st","uri":"/syncs/724"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4627,7 +4627,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '86c9d0b382ef407a89e231409e3f71c6/23325768884',
+  'd65e85c3af2848b39ab24db29684f876/23429643017',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4637,7 +4637,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:46:50 GMT',
+  'Mon, 21 Jun 2021 19:40:13 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4646,7 +4646,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984316","createdAt":"1623984398","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1623984412","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","lastName":"User","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984326","createdAt":"1624304400","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1624304414","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","lastName":"User","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4656,7 +4656,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '34203d04439449c0a7bf708b48d88d27/23325773299',
+  '0f457987908848209cf2e13d547f0653/23429647523',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4666,7 +4666,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:00 GMT',
+  'Mon, 21 Jun 2021 19:40:24 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4675,7 +4675,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984316","createdAt":"1623984398","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1623984412","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","lastName":"User","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984326","createdAt":"1624304400","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1624304414","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","lastName":"User","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4685,7 +4685,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8b9a38783410414eb8afd68e874e22ae/23325773522',
+  '03a93ee389c240f4803bfc53409ae135/23429647868',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4695,14 +4695,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:01 GMT',
+  'Mon, 21 Jun 2021 19:40:25 GMT',
   'Connection',
   'close',
   'Content-Length',
   '414'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/data/contact/1984316')
+  .delete('/api/REST/1.0/data/contact/1984326')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -4711,7 +4711,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'a61dd15c7b84466da63d12d4cd2c3634/23325773756',
+  'a26304bd1d5d4ead8ed92ce2bf2b3590/23429648173',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4721,7 +4721,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:01 GMT',
+  'Mon, 21 Jun 2021 19:40:26 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4740,7 +4740,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '07f1b99412c54f3aa53084c7c0c78384/23325778516',
+  '1f55acebb4fa4a2fb53255be90f1bd2a/23429652563',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4750,7 +4750,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:12 GMT',
+  'Mon, 21 Jun 2021 19:40:36 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4769,7 +4769,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'bc4e37c76d3e4e6d94254d8e71971c42/23325778749',
+  'a2300a9016c342e885c94a34f9369835/23429652797',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4779,7 +4779,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:13 GMT',
+  'Mon, 21 Jun 2021 19:40:37 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4798,7 +4798,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '696fae7e3eb34163b676b824f21a750c/23325779099',
+  'b163fdc9f0e54de3abc2cf7e29c2e606/23429653030',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4808,7 +4808,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:14 GMT',
+  'Mon, 21 Jun 2021 19:40:38 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4827,7 +4827,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'faac77029fcf46b9b910167cbc505390/23325779352',
+  'a18dd36945be4bf08aa10768abd1627a/23429653308',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4837,7 +4837,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:14 GMT',
+  'Mon, 21 Jun 2021 19:40:38 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4856,7 +4856,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '5ef91c316d734138ae8ef736974add84/23325779623',
+  '0710e39e0a224636ae3585910eb3ab2a/23429653529',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4866,7 +4866,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:15 GMT',
+  'Mon, 21 Jun 2021 19:40:39 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4885,7 +4885,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '35eeb60e049e4a068e53433d3fde09b9/23325779933',
+  '5785514e180e4248b7ff5fdc560e9cbd/23429653794',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4895,7 +4895,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:16 GMT',
+  'Mon, 21 Jun 2021 19:40:40 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4914,7 +4914,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'fe59311256cf486097dee2697985ed77/23325780319',
+  '62798a84001f4ab8a9fd4f2bf62738ed/23429654042',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4924,7 +4924,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:16 GMT',
+  'Mon, 21 Jun 2021 19:40:40 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4943,7 +4943,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ed6bf94c82ad421d9b4b4dd00a223728/23325780723',
+  '2b09302c83ae4f2ba94fe18db64ee976/23429654283',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4953,7 +4953,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:17 GMT',
+  'Mon, 21 Jun 2021 19:40:41 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4972,7 +4972,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '209b48cdf2d74ff08104b0ba013d5586/23325781073',
+  'ec2dbded35344a278dcf467da5ea1b3c/23429654524',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4982,7 +4982,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:18 GMT',
+  'Mon, 21 Jun 2021 19:40:41 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5001,7 +5001,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8ba4fb24bbba49dfad2a06ec82b71dbb/23325781385',
+  'd57079d47fa24c1fbde4a10dd29a1b5b/23429654829',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5011,7 +5011,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:18 GMT',
+  'Mon, 21 Jun 2021 19:40:42 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5030,7 +5030,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'f55f553e5df249e0b1ae9a3f014f761d/23325781617',
+  '62fff6682de44cafb270f179650de03d/23429655104',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5040,7 +5040,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:19 GMT',
+  'Mon, 21 Jun 2021 19:40:43 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5058,7 +5058,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '9fa0988807c94eb7af181cf6dad54bc0/23325781919',
+  '74bbf747fedd411788c99fd261b637e8/23429655332',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5068,15 +5068,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:20 GMT',
+  'Mon, 21 Jun 2021 19:40:44 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984441116","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-1623984441116","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/878","createdBy":"t3st","createdAt":"2021-06-18T02:47:21.5995319Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:47:21.5995319Z"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/906","createdBy":"t3st","createdAt":"2021-06-21T19:40:45.3042702Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:40:45.3042702Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5086,7 +5086,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'a7e4339aff88493b97c6d9cfa61eeba7/23325782342',
+  '8e9de4e7a3de482b878e07918aa6340e/23429655756',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5096,14 +5096,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:21 GMT',
+  'Mon, 21 Jun 2021 19:40:45 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '551'
+  '565'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user0@demo.com","id":"1984257","profileId":"pro0","firstName":"User0","lastName":"Demo0"})
+  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user0@demo.com","id":"1984257","profileId":"pro0","firstName":"User0","lastName":"Demo0"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -5112,7 +5112,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ce9a19c1eb78427fb597ecc2415e9629/23325782631',
+  '2d77e9e835834163a263cec007cfaaf6/23429656009',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5122,12 +5122,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:22 GMT',
+  'Mon, 21 Jun 2021 19:40:45 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user1@demo.com","id":"1984258","profileId":"pro1","firstName":"User1","lastName":"Demo1"})
+  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user1@demo.com","id":"1984258","profileId":"pro1","firstName":"User1","lastName":"Demo1"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -5136,7 +5136,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '0f621f8c9e4143f3a64acd43c2dd76be/23325782930',
+  'f235eff756a24280bceb47167c3ada94/23429656205',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5146,12 +5146,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:22 GMT',
+  'Mon, 21 Jun 2021 19:40:46 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user2@demo.com","id":"1984259","profileId":"pro2","firstName":"User2","lastName":"Demo2"})
+  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user2@demo.com","id":"1984259","profileId":"pro2","firstName":"User2","lastName":"Demo2"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -5160,7 +5160,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd9a93b79fa8c48eda4c013e74ac98702/23325783208',
+  '31f90517482143e8891c2dba2e79ad5c/23429656460',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5170,12 +5170,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:23 GMT',
+  'Mon, 21 Jun 2021 19:40:46 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user3@demo.com","id":"1984260","profileId":"pro3","firstName":"User3","lastName":"Demo3"})
+  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user3@demo.com","id":"1984260","profileId":"pro3","firstName":"User3","lastName":"Demo3"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -5184,7 +5184,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'dd01b0db935d423ebd519acaef490384/23325783472',
+  'ac9b50a5e63f48719b601f5e31522f26/23429656673',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5194,12 +5194,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:23 GMT',
+  'Mon, 21 Jun 2021 19:40:47 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user4@demo.com","id":"1984261","profileId":"pro4","firstName":"User4","lastName":"Demo4"})
+  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user4@demo.com","id":"1984261","profileId":"pro4","firstName":"User4","lastName":"Demo4"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -5208,7 +5208,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '91e8cb1e19664f5f96eb005546040e25/23325783770',
+  '144b08ea5342452a9a57719b8bc7e989/23429656924',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5218,12 +5218,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:24 GMT',
+  'Mon, 21 Jun 2021 19:40:47 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user5@demo.com","id":"1984262","profileId":"pro5","firstName":"User5","lastName":"Demo5"})
+  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user5@demo.com","id":"1984262","profileId":"pro5","firstName":"User5","lastName":"Demo5"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -5232,7 +5232,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '38fa8187d60f463986283969c2ccfaf1/23325784034',
+  '47b9356c628446908c4d08c7010a4676/23429657162',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5242,12 +5242,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:24 GMT',
+  'Mon, 21 Jun 2021 19:40:48 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user6@demo.com","id":"1984263","profileId":"pro6","firstName":"User6","lastName":"Demo6"})
+  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user6@demo.com","id":"1984263","profileId":"pro6","firstName":"User6","lastName":"Demo6"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -5256,7 +5256,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '91a90e3a7de6478c9877303582c35d23/23325784328',
+  '30ad348d831244088c56f570fe2db503/23429657428',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5266,12 +5266,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:25 GMT',
+  'Mon, 21 Jun 2021 19:40:49 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user7@demo.com","id":"1984264","profileId":"pro7","firstName":"User7","lastName":"Demo7"})
+  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user7@demo.com","id":"1984264","profileId":"pro7","firstName":"User7","lastName":"Demo7"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -5280,7 +5280,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'af979de0451a4f6baf137d0aa2b03fcc/23325784578',
+  '38077466ae1f44b095c6aa40270471a6/23429657638',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5290,12 +5290,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:26 GMT',
+  'Mon, 21 Jun 2021 19:40:49 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user8@demo.com","id":"1984265","profileId":"pro8","firstName":"User8","lastName":"Demo8"})
+  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user8@demo.com","id":"1984265","profileId":"pro8","firstName":"User8","lastName":"Demo8"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -5304,7 +5304,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '4c37085fdd024273ac56ea4c62b301a1/23325784970',
+  '508e7899edf44ea0a12736fa3eff8c61/23429657842',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5314,12 +5314,12 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:26 GMT',
+  'Mon, 21 Jun 2021 19:40:50 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user9@demo.com","id":"1984266","profileId":"pro9","firstName":"User9","lastName":"Demo9"})
+  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user9@demo.com","id":"1984266","profileId":"pro9","firstName":"User9","lastName":"Demo9"})
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -5328,7 +5328,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '05f5507a0cec4128a3a3be110f8499bf/23325785234',
+  '4e6c79ff4749402f8388a24a3627e9aa/23429658048',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5338,13 +5338,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:27 GMT',
+  'Mon, 21 Jun 2021 19:40:50 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/878"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/878","status":"pending","createdAt":"2021-06-18T02:47:28.4060170Z","createdBy":"t3st","uri":"/syncs/697"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/906"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/906","status":"pending","createdAt":"2021-06-21T19:40:51.5072995Z","createdBy":"t3st","uri":"/syncs/725"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5354,7 +5354,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '881a9c5a9f584b26938aa9f41158d8de/23325785501',
+  'a683eb3e491d4c0c9bb07d0bddd7b8c0/23429658256',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5364,7 +5364,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:28 GMT',
+  'Mon, 21 Jun 2021 19:40:51 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5383,7 +5383,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '796be6c6c12f416d98f211f4631c14ca/23325790275',
+  '34f9eae8769a4c089d22bd916b83065d/23429662492',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5393,7 +5393,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:38 GMT',
+  'Mon, 21 Jun 2021 19:41:01 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5412,7 +5412,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8f2c4068c482432a9ea95ecc8466fc7c/23325790575',
+  '6050a7f952ea4931811c994ac3c32225/23429662739',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5422,7 +5422,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:38 GMT',
+  'Mon, 21 Jun 2021 19:41:02 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5441,7 +5441,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '30169ebd525a4964af8379334ece1d54/23325790787',
+  'e840b6ef68c44c0185e41407d95c08f5/23429662966',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5451,7 +5451,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:39 GMT',
+  'Mon, 21 Jun 2021 19:41:03 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5470,7 +5470,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '36e0f344045a4fe9b52f58e24900607d/23325791036',
+  'f3ee14c57cdb4fb28cbcae04775376b4/23429663220',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5480,7 +5480,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:39 GMT',
+  'Mon, 21 Jun 2021 19:41:03 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5499,7 +5499,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c355d16ebcb046278162ca48f55466a2/23325791263',
+  '8d1817efe9494d6b9a133acab4900385/23429663447',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5509,7 +5509,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:40 GMT',
+  'Mon, 21 Jun 2021 19:41:04 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5528,7 +5528,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '09b66980e63a4e3a923af628d0fee55b/23325791492',
+  'f0b19f17020a4d68a9ba7e03c210d832/23429663639',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5538,7 +5538,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:40 GMT',
+  'Mon, 21 Jun 2021 19:41:04 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5557,7 +5557,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '7a67389b34f94b4cb84fa0db785667f6/23325791760',
+  '0f2fa2f33edb402680c26cdc4d2c706f/23429663864',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5567,7 +5567,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:42 GMT',
+  'Mon, 21 Jun 2021 19:41:05 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5586,7 +5586,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '3569fa7765b84283aff88fe648342128/23325791974',
+  'ba5bf025ffdd4feba0db432f5c01dd40/23429664108',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5596,7 +5596,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:42 GMT',
+  'Mon, 21 Jun 2021 19:41:05 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5615,7 +5615,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '497e18d7f0444e2b9c95cd8e1ebaee46/23325792179',
+  '19c398d7ec134c20bd6650d57d07ca08/23429664342',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5625,7 +5625,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:43 GMT',
+  'Mon, 21 Jun 2021 19:41:06 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5644,7 +5644,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6ca52de72b744b46856b52ace8dd92f1/23325792440',
+  '7011d34890d143088e1fd77fb8b01046/23429664609',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5654,7 +5654,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:43 GMT',
+  'Mon, 21 Jun 2021 19:41:07 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5663,7 +5663,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984315","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304313","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5673,7 +5673,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'adb94c2abd504cab950c59a705076a11/23325792747',
+  'a8dac5beb8db4960ab5bc68ca3c139f8/23429664905',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5683,14 +5683,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:44 GMT',
+  'Mon, 21 Jun 2021 19:41:07 GMT',
   'Connection',
   'close',
   'Content-Length',
   '342'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/assets/contact/list/5990')
+  .delete('/api/REST/1.0/assets/contact/list/5994')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -5699,7 +5699,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6429e2b3a1644ef2aec76c926dc29a5d/23325793026',
+  '6cfd9f26159044659458533aa5461563/23429665168',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5709,7 +5709,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:45 GMT',
+  'Mon, 21 Jun 2021 19:41:08 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5718,7 +5718,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984316","updatedBy":"222","count":"1","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304314","updatedBy":"222","count":"1","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5728,7 +5728,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '28dbe5bec8c84f19a90690a078a97184/23325793402',
+  '1482bbf85b05476c97e3d985c36d3d23/23429665505',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5738,14 +5738,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:45 GMT',
+  'Mon, 21 Jun 2021 19:41:09 GMT',
   'Connection',
   'close',
   'Content-Length',
   '339'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/assets/contact/list/5991')
+  .delete('/api/REST/1.0/assets/contact/list/5995')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -5754,7 +5754,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'b304bbdb7afe4ebfabe01403fb0b11ad/23325793602',
+  '8ffa0d97a21146b48dec43e75b67ca39/23429665800',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5764,7 +5764,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:46 GMT',
+  'Mon, 21 Jun 2021 19:41:10 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5773,7 +5773,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984382","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"Sam","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304385","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"Sam","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5783,7 +5783,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '3bfc8c6ea58242e89edf143b72e1b2ba/23325793956',
+  '12a1e35f655d475ea0fbf0af7c71679e/23429666118',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5793,14 +5793,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:46 GMT',
+  'Mon, 21 Jun 2021 19:41:10 GMT',
   'Connection',
   'close',
   'Content-Length',
   '400'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/data/contact/1984312')
+  .delete('/api/REST/1.0/data/contact/1984322')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -5809,7 +5809,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2f831a3498b0485f98a75630d858925b/23325794206',
+  'c00b5c3af398462da47d22676ce5e60b/23429666385',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5819,7 +5819,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:47 GMT',
+  'Mon, 21 Jun 2021 19:41:11 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5828,7 +5828,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984314","createdAt":"1623984339","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984339","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984324","createdAt":"1624304340","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304340","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5838,7 +5838,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '197d5ffaf196442cb8fde645f43ce903/23325794448',
+  '0b299e3134dc4c35a8002e2a8133d968/23429666589',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5848,14 +5848,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:47 GMT',
+  'Mon, 21 Jun 2021 19:41:11 GMT',
   'Connection',
   'close',
   'Content-Length',
   '435'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/data/contact/1984314')
+  .delete('/api/REST/1.0/data/contact/1984324')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -5864,7 +5864,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '985fbb62e75044da8204420cfb0cf145/23325794718',
+  '5e7572dc12d34d8abc6c8e08e6ec6c78/23429666830',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5874,7 +5874,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:48 GMT',
+  'Mon, 21 Jun 2021 19:41:12 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5883,7 +5883,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo3%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984315","createdAt":"1623984382","depth":"partial","name":"grouparoo3@demo.com","updatedAt":"1623984382","emailAddress":"grouparoo3@demo.com","emailFormatPreference":"unspecified","firstName":"Liz","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623980518"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984325","createdAt":"1624304384","depth":"partial","name":"grouparoo3@demo.com","updatedAt":"1624304384","emailAddress":"grouparoo3@demo.com","emailFormatPreference":"unspecified","firstName":"Liz","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623980518"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5893,7 +5893,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2fb3eaba23904d688195219a64ba7488/23325794970',
+  '946a7695260a493c9abd66bb5527ae46/23429667068',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5903,14 +5903,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:48 GMT',
+  'Mon, 21 Jun 2021 19:41:13 GMT',
   'Connection',
   'close',
   'Content-Length',
   '384'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/data/contact/1984315')
+  .delete('/api/REST/1.0/data/contact/1984325')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -5919,7 +5919,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c878f53023574740b2b03aa2cb421125/23325795204',
+  '8fa2954f70614b2b940a2dd7d921338f/23429667360',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5929,7 +5929,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:49 GMT',
+  'Mon, 21 Jun 2021 19:41:13 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5948,7 +5948,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '9229348784f1430da7f74b53dbc8bbc8/23325795571',
+  '73d9cc40f0de40e5ab915660f3b0ac6c/23429667542',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5958,7 +5958,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:50 GMT',
+  'Mon, 21 Jun 2021 19:41:14 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5977,7 +5977,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c92a92613d984f73bbd569e7d2c862c2/23325795780',
+  '162f489e484e4961b236c939209520b0/23429667879',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5987,7 +5987,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:50 GMT',
+  'Mon, 21 Jun 2021 19:41:14 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -6006,7 +6006,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '9bad627f9c0d4315800d688b9b38dbbe/23325796007',
+  'dbca3964e15f49eba37a11bcf33fedee/23429668182',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6016,7 +6016,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:51 GMT',
+  'Mon, 21 Jun 2021 19:41:15 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -6035,7 +6035,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'eae0e01a126c411aaea4fbff51786775/23325796299',
+  '03285315590149578798d34088cc2b60/23429668469',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6045,7 +6045,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:51 GMT',
+  'Mon, 21 Jun 2021 19:41:16 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -6064,7 +6064,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e2dc92677fea411e8f049873dc952401/23325796502',
+  '89d65f2b4c6147c99271dbddc242f3d5/23429668694',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6074,7 +6074,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:52 GMT',
+  'Mon, 21 Jun 2021 19:41:16 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -6093,7 +6093,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '06b2bfe4a3f8487e849f53a06092cc27/23325796730',
+  'c663c0a8cce64f3a9adf8e313f4c6dff/23429668970',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6103,7 +6103,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:52 GMT',
+  'Mon, 21 Jun 2021 19:41:17 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -6122,7 +6122,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '50b3278bf9e14a1f96bc911ca2c4dc73/23325796953',
+  'ee3d6445cf634fcfa56ad7659d96d465/23429669209',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6132,7 +6132,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:53 GMT',
+  'Mon, 21 Jun 2021 19:41:17 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -6151,7 +6151,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '68a29806e2f24a44a72f3cb420781e42/23325797177',
+  'cd679bb79f94468996ef0329e30d22b1/23429669466',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6161,7 +6161,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:53 GMT',
+  'Mon, 21 Jun 2021 19:41:18 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -6180,7 +6180,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1dc26fb4c0e1434181ae4d809869dc56/23325797433',
+  '87a1fb1de309415cb5d6578dc95f992f/23429669649',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6190,7 +6190,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:55 GMT',
+  'Mon, 21 Jun 2021 19:41:18 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -6209,7 +6209,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '85c84e0ca8934510b3d5530a68d0c418/23325797704',
+  '416af70e929d40e2a8a175ff52a0116f/23429669868',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6219,7 +6219,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:55 GMT',
+  'Mon, 21 Jun 2021 19:41:19 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -6238,7 +6238,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'b27c50db860045258927b78841203da9/23325797949',
+  'a43c33ee6c9f496e81713c1ef7cdb6e6/23429670061',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6248,7 +6248,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Fri, 18 Jun 2021 02:47:56 GMT',
+  'Mon, 21 Jun 2021 19:41:19 GMT',
   'Connection',
   'close',
   'Content-Length',

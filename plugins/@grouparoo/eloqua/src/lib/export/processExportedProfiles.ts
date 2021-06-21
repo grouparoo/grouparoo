@@ -10,20 +10,7 @@ export const processExportedProfiles: ProcessExportedProfilesPluginMethod =
     client = await connect(appOptions);
     const sync = await client.bulk.checkSync(remoteKey);
 
-    // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^ACTION^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    // console.log(sync.status);
-    // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^ACTION^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    //
-    // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^EXPORTS^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    // console.log(_exports);
-    // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^EXPORTS^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-
     if (sync.status === "error") {
-      console.log(sync);
       throw new Error("Something went wrong");
     }
 

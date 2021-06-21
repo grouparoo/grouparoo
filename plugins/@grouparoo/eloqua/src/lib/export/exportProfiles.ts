@@ -35,7 +35,7 @@ const findAndSetDestinationIds = async ({ appId, appOptions, exports }) => {
   return exports;
 };
 
-const buildImportDefinition = async ({ exports }) => {
+const buildImportDefinition = async ({ appId }) => {
   const allFields = await getAllContactFields(client);
   const fields = {};
   for (const field of allFields) {
@@ -43,7 +43,7 @@ const buildImportDefinition = async ({ exports }) => {
       fields[field.key] = field.statement;
     }
   }
-  const importName = `grouparoo-import-${new Date().getTime()}`;
+  const importName = `grouparoo-import-${appId}`;
   return await client.bulk.createImport(importName, "emailAddress", fields);
 };
 
@@ -196,7 +196,7 @@ export async function exportBatch({
 
   const errors = checkErrors(exports);
   if (addOrUpdateImportDefinitionData.length > 0) {
-    const importDefinition = await buildImportDefinition({ exports });
+    const importDefinition = await buildImportDefinition({ appId });
     const exportsBatches = buildBatches(addOrUpdateImportDefinitionData);
     await execImportDefinitionRequests(importDefinition.uri, exportsBatches);
     const sync = await client.bulk.createSync(importDefinition.uri);

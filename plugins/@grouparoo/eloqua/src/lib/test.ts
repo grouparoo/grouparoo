@@ -6,7 +6,6 @@ export const test: TestPluginMethod = async ({ appOptions }) => {
 
   try {
     const lists = await client.lists.getAll();
-    console.log(lists);
     return {
       success: true,
       message: `Found ${lists.elements.length} lists`,
