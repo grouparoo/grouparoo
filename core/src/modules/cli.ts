@@ -149,7 +149,8 @@ export namespace GrouparooCLI {
         | FinalSummaryReporters.Profiles.ProfileData[]
         | FinalSummaryReporters.Sources.SourceData[]
         | FinalSummaryReporters.Destinations.DestinationData[]
-        | FinalSummaryReporters.Warnings.WarningData[]
+        | FinalSummaryReporters.Warnings.WarningData[],
+      logBlock
     ) {
       if (categorySummary.length === 0) {
         GrouparooCLI.logger.log(`${cyanBold("|")} None affected`);
@@ -171,17 +172,28 @@ export namespace GrouparooCLI {
             );
           }
 
-          for (const property in category) {
-            if (property !== "name") {
-              GrouparooCLI.logger.log(
-                category[property] === null
-                  ? `${cyanBold("|")}   * ${deCamelAndCapitalize(
-                      property
-                    )}: none`
-                  : `${cyanBold("|")}   * ${deCamelAndCapitalize(property)}: ${
-                      category[property]
-                    }`
-              );
+          if (logBlock === "WARNINGS") {
+            for (const property in category) {
+              if (property !== "name") {
+                GrouparooCLI.logger.log(
+                  `${cyanBold("|")}     ${category[property]}`
+                );
+              }
+            }
+          } else {
+            for (const property in category) {
+              // GrouparooCLI.logger.log(logBlock);
+              if (property !== "name") {
+                GrouparooCLI.logger.log(
+                  category[property] === null
+                    ? `${cyanBold("|")}   * ${deCamelAndCapitalize(
+                        property
+                      )}: none`
+                    : `${cyanBold("|")}   * ${deCamelAndCapitalize(
+                        property
+                      )}: ${category[property]}`
+                );
+              }
             }
           }
         }
@@ -211,7 +223,7 @@ export namespace GrouparooCLI {
               "\n" +
               cyanBold(`|`)
           );
-          generateSummaryItems(log);
+          generateSummaryItems(log, headings[idx]);
         }
       });
 
