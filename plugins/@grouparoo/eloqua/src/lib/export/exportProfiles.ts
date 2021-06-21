@@ -5,13 +5,12 @@ import {
   ExportProfilesPluginMethod,
 } from "@grouparoo/core";
 import EloquaClient from "../client/client";
+import util from "util";
 import { getAllContactFields } from "./destinationMappingOptions";
 import { connect } from "../connect";
 import { getContact } from "./cachedMethods";
 import { log } from "actionhero";
 import { ErrorCheckExport } from "@grouparoo/app-templates/dist/destination/shared/batch";
-import { GrouparooCLI } from "@grouparoo/core/dist/modules/cli";
-import error = GrouparooCLI.logger.error;
 
 let client: EloquaClient;
 let exportedProfileFields = new Set<String>();
@@ -48,7 +47,7 @@ const buildImportDefinition = async ({ appId }) => {
 };
 
 const buildBatches = (addOrUpdateImportDefinitionsData) => {
-  const size = new TextEncoder().encode(
+  const size = new util.TextEncoder().encode(
     JSON.stringify(addOrUpdateImportDefinitionsData)
   ).length;
   const sizeInMegaBytes = size / 1024 / 1024;
