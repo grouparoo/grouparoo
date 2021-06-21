@@ -21,7 +21,7 @@
     "jest": "26.6.3"
   },
   "scripts": {
-    "config": "rm grouparoo_config.sqlite; CONFIG_DATABASE_URL=\"sqlite://grouparoo_config.sqlite\" NEXT_DEVELOPMENT_MODE=true ./node_modules/.bin/grouparoo config",
+    "dev": "rm -f grouparoo_config.sqlite && cd node_modules/@grouparoo/core && DATABASE_URL=\"sqlite://grouparoo_config.sqlite\" NEXT_DEVELOPMENT_MODE=true GROUPAROO_RUN_MODE=\"cli:config\" ./bin/dev",
     "demo": "./node_modules/.bin/grouparoo demo purchases --config"
   },
   "grouparoo": {
