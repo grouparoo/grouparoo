@@ -112,10 +112,7 @@ export class SetupStep extends LoggedModel<SetupStep> {
   }
 
   getSetupStepDescription() {
-    const setupSteps =
-      process.env.GROUPAROO_RUN_MODE === "cli:config"
-        ? SetupStepOps.configSetupStepDescriptions
-        : SetupStepOps.setupStepDescriptions;
+    const setupSteps = SetupStepOps.setupStepDescriptions();
     const ssdFilteredArray = setupSteps.filter((ssd) => ssd.key === this.key);
 
     if (ssdFilteredArray.length === 1) return ssdFilteredArray[0];

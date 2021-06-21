@@ -13,10 +13,7 @@ export class OnboardingSteps extends CLSInitializer {
 
   async startWithinTransaction() {
     // insert or update the setup steps we want
-    const setupSteps =
-      process.env.GROUPAROO_RUN_MODE === "cli:config"
-        ? SetupStepOps.configSetupStepDescriptions
-        : SetupStepOps.setupStepDescriptions;
+    const setupSteps = SetupStepOps.setupStepDescriptions();
     for (const ssd of setupSteps) {
       const onboardingStep = await SetupStep.findOne({
         where: { key: ssd.key },

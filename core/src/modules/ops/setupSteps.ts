@@ -151,65 +151,41 @@ export namespace SetupStepOps {
     },
   };
 
-  export const setupStepDescriptions: Array<setupStepDescription> = [
-    {
-      ...allSetupStepDescriptions.name_your_grouparoo_instance,
-      position: 1,
-    },
-    {
-      ...allSetupStepDescriptions.add_an_app,
-      position: 2,
-    },
-    {
-      ...allSetupStepDescriptions.create_a_source,
-      position: 3,
-    },
-    {
-      ...allSetupStepDescriptions.create_a_unique_profile_property,
-      position: 4,
-    },
-    {
-      ...allSetupStepDescriptions.create_a_schedule,
-      position: 5,
-    },
-    {
-      ...allSetupStepDescriptions.create_a_group,
-      position: 6,
-    },
-    {
-      ...allSetupStepDescriptions.create_a_destination,
-      position: 7,
-    },
-  ];
+  export const setupStepDescriptions = (): Array<setupStepDescription> => {
+    const firstStep =
+      process.env.GROUPAROO_RUN_MODE === "cli:config"
+        ? { ...allSetupStepDescriptions.install_grouparoo }
+        : { ...allSetupStepDescriptions.name_your_grouparoo_instance };
 
-  export const configSetupStepDescriptions: Array<setupStepDescription> = [
-    {
-      ...allSetupStepDescriptions.install_grouparoo,
-      position: 1,
-    },
-    {
-      ...allSetupStepDescriptions.add_an_app,
-      position: 2,
-    },
-    {
-      ...allSetupStepDescriptions.create_a_source,
-      position: 3,
-    },
-    {
-      ...allSetupStepDescriptions.create_a_unique_profile_property,
-      position: 4,
-    },
-    {
-      ...allSetupStepDescriptions.create_a_schedule,
-      position: 5,
-    },
-    {
-      ...allSetupStepDescriptions.create_a_group,
-      position: 6,
-    },
-    {
-      ...allSetupStepDescriptions.create_a_destination,
-      position: 7,
-    },
-  ];
+    return [
+      {
+        ...firstStep,
+        position: 1,
+      },
+      {
+        ...allSetupStepDescriptions.add_an_app,
+        position: 2,
+      },
+      {
+        ...allSetupStepDescriptions.create_a_source,
+        position: 3,
+      },
+      {
+        ...allSetupStepDescriptions.create_a_unique_profile_property,
+        position: 4,
+      },
+      {
+        ...allSetupStepDescriptions.create_a_schedule,
+        position: 5,
+      },
+      {
+        ...allSetupStepDescriptions.create_a_group,
+        position: 6,
+      },
+      {
+        ...allSetupStepDescriptions.create_a_destination,
+        position: 7,
+      },
+    ];
+  };
 }
