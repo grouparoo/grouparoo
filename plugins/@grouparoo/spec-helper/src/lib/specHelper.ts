@@ -156,6 +156,10 @@ export namespace helper {
     await api.resque.queue.connection.redis.flushdb();
   }
 
+  export async function truncateOne(model){
+    model.truncate();
+  }
+
   export async function resetSettings() {
     const settings = await Setting.findAll();
     for (const i in settings) {
