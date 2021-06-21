@@ -16,16 +16,18 @@ export default {
   },
 
   down: async function (migration) {
-    await migration.removeIndex("imports", ["createdProfile"], {
-      fields: ["createdProfile"],
-    });
+    await migration.sequelize.transaction(async () => {
+      await migration.removeIndex("imports", ["createdProfile"], {
+        fields: ["createdProfile"],
+      });
 
-    await migration.removeIndex("imports", ["exportedAt"], {
-      fields: ["exportedAt"],
-    });
+      await migration.removeIndex("imports", ["exportedAt"], {
+        fields: ["exportedAt"],
+      });
 
-    await migration.removeIndex("profileProperties", ["rawValue"], {
-      fields: ["rawValue"],
+      await migration.removeIndex("profileProperties", ["rawValue"], {
+        fields: ["rawValue"],
+      });
     });
   },
 };
