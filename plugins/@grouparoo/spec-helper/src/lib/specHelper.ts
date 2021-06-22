@@ -156,7 +156,7 @@ export namespace helper {
     await api.resque.queue.connection.redis.flushdb();
   }
 
-  export async function truncateOne(model){
+  export async function truncateOne(model) {
     model.truncate();
   }
 
