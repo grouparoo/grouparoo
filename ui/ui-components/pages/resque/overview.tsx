@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Actions } from "../../utils/apiData";
+import { useApi } from "../../hooks/useApi";
 import Link from "next/link";
 import { Row, Col, Card, Table, Alert } from "react-bootstrap";
 import {
@@ -8,98 +9,74 @@ import {
 } from "../../components/visualizations/grouparooChart";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/resque";
-import { StatusHandler } from "../../utils/statusHandler";
 
 const maxSampleLength = 30;
+const DELAY = 1000 * 3;
 
 export default function ResqueOverview(props) {
-  const { statusHandler }: { statusHandler: StatusHandler } = props;
-  const [queues, setQueues] = useState({});
-  const [workers, setWorkers] = useState({});
-  const [leader, setLeader] = useState("");
-  const [failedCount, setFailedCount] = useState(0);
-  const [stats, setStats] = useState({});
+  const { execApi } = useApi(props, props.errorHandler);
+  const {
+    resqueDetails,
+    failedCount: _failedCount,
+  }: {
+    resqueDetails: Actions.ResqueResqueDetails["resqueDetails"];
+    failedCount: Actions.ResqueResqueDetails["failedCount"];
+  } = props;
+  const [queues, setQueues] = useState(resqueDetails.queues);
+  const [workers, setWorkers] = useState(
+    formatWorkersForDisplay(resqueDetails.workers)
+  );
+  const [leader, setLeader] = useState(resqueDetails.leader);
+  const [failedCount, setFailedCount] = useState(_failedCount);
+  const [stats, setStats] = useState(resqueDetails.stats);
   const [chartData, setChartData] = useState<ChartLinData>([]);
+  const [unmounted, setUnmounted] = useState(false);
+
+  let timer;
 
   useEffect(() => {
-    statusHandler.subscribe("resque-overview", () => load(), {
-      topic: "resqueErrors",
-      collection: "cluster",
-    });
+    load();
 
     return () => {
-      statusHandler.unsubscribe("resque-overview");
+      setUnmounted(true);
+      clearInterval(timer);
     };
   }, []);
 
-  function load() {
-    const _chartData: ChartLinData = [];
+  async function load() {
+    const response: Actions.ResqueResqueDetails = await execApi(
+      "get",
+      "/resque/resqueDetails",
+      {},
+      undefined,
+      undefined,
+      false
+    );
 
-    let _queues = {};
-    let _workers = {};
-    let _stats = {};
-    let _leader = "";
-    let _failedCount = 0;
-
-    const resqueCollection = statusHandler.metrics["resqueDetails"];
-    if (!resqueCollection) return;
-    resqueCollection["cluster"].forEach(({ metric, timestamp }) => {
-      const resqueDetails: Actions.ResqueResqueDetails["resqueDetails"] =
-        JSON.parse(metric.metadata);
-
-      _workers = resqueDetails?.workers || _workers;
-      _stats = resqueDetails?.stats || _stats;
-      _leader = resqueDetails?.leader || _leader;
-
-      Object.keys(_workers).forEach((workerName) => {
-        const worker = _workers[workerName];
-        if (typeof worker === "string") {
-          _workers[workerName] = {
-            status: worker,
-            statusString: worker,
-          };
-        } else {
-          worker.delta = Math.round(
-            (new Date().getTime() - new Date(worker.run_at).getTime()) / 1000
-          );
-          worker.statusString =
-            "working on " +
-            worker.queue +
-            "#" +
-            worker.payload.class +
-            " for " +
-            worker.delta +
-            "s";
-        }
-      });
-
-      _queues = resqueDetails?.queues || _queues;
-      const queueNames = Object.keys(_queues);
+    if (response?.resqueDetails) {
+      const now = new Date().getTime();
+      const queueNames = Object.keys(response.resqueDetails.queues);
       for (const i in queueNames) {
-        if (!_chartData[i]) _chartData[i] = [];
-        _chartData[i].push({
-          x: timestamp,
-          y: _queues[queueNames[i]].length,
+        if (!chartData[i]) chartData[i] = [];
+        chartData[i].push({
+          x: now,
+          y: response.resqueDetails.queues[queueNames[i]].length,
         });
       }
-    });
 
-    for (const i in _chartData) {
-      if (_chartData[i].length > maxSampleLength) _chartData[i].shift();
+      for (const i in chartData) {
+        if (chartData[i].length > maxSampleLength) chartData[i].shift();
+      }
+
+      setQueues(response.resqueDetails.queues);
+      setWorkers(formatWorkersForDisplay(response.resqueDetails.workers));
+      setLeader(response.resqueDetails.leader);
+      setFailedCount(response.failedCount);
+      setStats(response.resqueDetails.stats);
+      setChartData(chartData);
     }
 
-    const failedCollection = statusHandler.metrics["resqueErrors"];
-    if (!resqueCollection) return;
-    _failedCount =
-      failedCollection["cluster"][failedCollection["cluster"].length - 1]
-        ?.metric.count;
-
-    setWorkers(_workers);
-    setStats(_stats);
-    setQueues(_queues);
-    setLeader(_leader);
-    setFailedCount(_failedCount);
-    setChartData(_chartData);
+    if (!unmounted) timer = setTimeout(load, DELAY);
   }
 
   return (
@@ -251,7 +228,7 @@ export default function ResqueOverview(props) {
                           <span
                             className={worker.delta > 0 ? "text-primary" : ""}
                           >
-                            {worker.statusString}
+                            {worker.status}
                           </span>
                         </td>
                       </tr>
@@ -265,4 +242,50 @@ export default function ResqueOverview(props) {
       </Row>
     </>
   );
+}
+
+ResqueOverview.getInitialProps = async function (ctx) {
+  const { execApi } = useApi(ctx);
+  const { resqueDetails, failedCount }: Actions.ResqueResqueDetails =
+    await execApi("get", "/resque/resqueDetails");
+
+  return { resqueDetails, failedCount };
+};
+
+function formatWorkersForDisplay(
+  _workers: Actions.ResqueResqueDetails["resqueDetails"]["workers"]
+) {
+  const response: {
+    [workerName: string]: {
+      status: string;
+      delta: number;
+    };
+  } = {};
+
+  Object.keys(_workers).forEach((workerName) => {
+    const worker = _workers[workerName];
+    if (typeof worker === "string") {
+      response[workerName] = {
+        status: worker,
+        delta: 0,
+      };
+    } else {
+      const delta = Math.ceil(
+        (new Date().getTime() - new Date(worker.run_at).getTime()) / 1000
+      );
+      response[workerName] = {
+        delta,
+        status:
+          "working on " +
+          worker.queue +
+          "#" +
+          worker.payload.class +
+          " for " +
+          delta +
+          "s",
+      };
+    }
+  });
+
+  return response;
 }
