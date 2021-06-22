@@ -150,7 +150,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       platformItems.push({
         type: "link",
         title: "Settings",
-        href: "/settings",
+        href: "/settings/core",
       });
 
       platformItems.push({
@@ -192,7 +192,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       platformItems.push({
         type: "link",
         title: "Resque",
-        href: "/resque",
+        href: "/resque/overview",
       });
     }
 
