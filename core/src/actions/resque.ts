@@ -72,7 +72,10 @@ export class ResqueResqueDetails extends ResqueActionRead {
   }
 
   async runWithinTransaction() {
-    return { resqueDetails: await task.details() };
+    const resqueDetails = await task.details();
+    const failedCount = await task.failedCount();
+
+    return { resqueDetails, failedCount };
   }
 }
 
