@@ -1,5 +1,4 @@
 import { api, log, task } from "actionhero";
-import { Schedule } from "../../../models/Schedule";
 import { GrouparooCLI } from "../../../modules/cli";
 import { APM } from "../../../modules/apm";
 import { Status, FinalSummary } from "../../../modules/status";

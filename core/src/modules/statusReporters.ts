@@ -21,7 +21,6 @@ import { TeamMember } from "../models/TeamMember";
 import { Notification } from "../models/Notification";
 import { GroupOps } from "../modules/ops/group";
 import { SourceOps } from "../modules/ops/source";
-import { SchedulesList } from "../actions/schedules";
 
 export interface StatusMetric {
   // the possible attributes for a metric are:

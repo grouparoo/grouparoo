@@ -366,7 +366,7 @@ describe("modules/status", () => {
     });
 
     test("runs with no source show warning", async () => {
-      await helper.truncateOne(Schedule);
+      await Schedule.truncate();
 
       const warnings = await FinalSummaryReporters.Warnings.getWarnings();
       const warning = warnings[0];
