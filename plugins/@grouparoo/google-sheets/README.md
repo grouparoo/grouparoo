@@ -1,4 +1,12 @@
-# @Grouparoo/GoogleSheets
+# @grouparoo/google-sheets
+
+A [Grouparoo](https://www.grouparoo.com) plugin for connecting to [Google Sheets](https://www.google.com/sheets/about/).
+
+Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/plugins](https://www.grouparoo.com/docs/plugins).
+
+## Installation
+
+In your Grouparoo project, run `grouparoo install @grouparoo/google-sheets`.
 
 ## Attribution
 

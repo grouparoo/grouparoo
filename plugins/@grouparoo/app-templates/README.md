@@ -1,4 +1,3 @@
-# @Grouparoo/app-templates
+# @grouparoo/app-templates
 
-This plugin is used by plugins that create apps, sources, and destinations.
-It formalizes common patterns.
+This is a A [Grouparoo](https://www.grouparoo.com) plugin that is used by other plugins that create apps, sources, and destinations and formalizes common patterns.

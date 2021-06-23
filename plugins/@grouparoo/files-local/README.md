@@ -1,6 +1,10 @@
 # @grouparoo/files-local
 
-Store Grouparoo files on your local hard drive.
+A [Grouparoo](https://www.grouparoo.com) plugin that stores files on your local hard drive.
+
+## Installation
+
+In your Grouparoo project, run `grouparoo install @grouparoo/files-local`.
 
 ## Configuration
 
