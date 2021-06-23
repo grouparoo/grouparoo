@@ -86,6 +86,17 @@ describe("modules/status", () => {
       await redis.set(`${cachePrefix}:undefined`, undefined);
       await redis.set(`${cachePrefix}:null`, null);
       await redis.set(`${cachePrefix}:not-json`, "{a:1");
+      await redis.set(
+        `${cachePrefix}:old-format-1`,
+        JSON.stringify({ timestamp: new Date().getTime(), thing: "stuff" })
+      );
+      await redis.set(
+        `${cachePrefix}:old-format-2`,
+        JSON.stringify({
+          timestamp: new Date().getTime(),
+          metric: { collection: "foo" },
+        })
+      );
 
       const foundMetrics = await Status.get(); // does not throw
       expect(foundMetrics["test"]["test"].length).toBe(1);
