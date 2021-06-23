@@ -23,9 +23,6 @@ export const DEFAULT = {
         "ah-sequelize-plugin": {
           path: getPluginPath("ah-sequelize-plugin"),
         },
-        "ah-next-plugin": {
-          path: getPluginPath("ah-next-plugin"),
-        },
       },
       parentPlugins,
       InjectedPlugins
