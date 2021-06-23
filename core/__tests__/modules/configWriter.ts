@@ -128,6 +128,8 @@ describe("modules/configWriter", () => {
 
       const files = glob.sync(configFilePattern);
       for (let file of files) fs.rmSync(file);
+
+      ConfigWriter.resetConfigFileCache();
     });
 
     test("does nothing unless in cli:config mode", async () => {
@@ -220,6 +222,22 @@ describe("modules/configWriter", () => {
       await ConfigWriter.run();
       files = glob.sync(configFilePattern);
       expect(files).toEqual([configFilePath]);
+    });
+
+    test("does not delete files when hitting an error while retrieving objects", async () => {
+      const app: App = await helper.factories.app();
+      await ConfigWriter.run();
+      let files = glob.sync(configFilePattern);
+      const filename = `${app.getConfigId()}.json`;
+      expect(files).toEqual([path.join(configDir, `apps/${filename}`)]);
+
+      await app.update({ name: "$$" }, {});
+      expect(app.name).toEqual("$$");
+      await expect(ConfigWriter.run()).rejects.toThrow(
+        "Could not generate ID from name."
+      );
+      files = glob.sync(configFilePattern);
+      expect(files).toEqual([path.join(configDir, `apps/${filename}`)]);
     });
   });
 

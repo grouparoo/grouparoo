@@ -87,10 +87,11 @@ export namespace ConfigWriter {
     // Any models we see before starting would be from existing code config
     // files.
     if (!api.process.started) return;
-
-    await deleteFiles();
-
+    // Get the config objects before deleting any of the current objects. Then,
+    // if we run into an error, we leave what we had before and don't rewrite
+    // the config files until the objects are fixed through the UI.
     const configObjects: WritableConfigObject[] = await getConfigObjects();
+    await deleteFiles();
     await writeFiles(configObjects);
     return configObjects;
   }
