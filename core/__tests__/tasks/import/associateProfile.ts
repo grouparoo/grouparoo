@@ -4,8 +4,8 @@ import { Profile, ProfileProperty } from "../../../src";
 
 describe("tasks/import:associateProfile", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
+  beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
 
   describe("import:associateProfile", () => {
     test("can be enqueued", async () => {
@@ -68,16 +68,36 @@ describe("tasks/import:associateProfile", () => {
       expect(run.profilesImported).toBe(0);
     });
 
-    test("if there is an error, the import will have the error appended", async () => {
+    test("if there is an error, the import will have the error appended after a few attempts", async () => {
       const run = await helper.factories.run();
       const _import = await helper.factories.import(run, {
         thing: "stuff",
       });
 
-      // I don't throw, but append the error to the Import
-      await specHelper.runTask("import:associateProfile", {
-        importId: _import.id,
-      });
+      let found = await specHelper.findEnqueuedTasks("import:associateProfile");
+      expect(found.length).toEqual(1);
+      expect(found[0].args[0]).toEqual({ importId: _import.id, attempts: 0 });
+
+      // attempt 1
+      await specHelper.runTask("import:associateProfile", found[0].args[0]);
+
+      await _import.reload();
+      expect(_import.errorMessage).toBeFalsy();
+      found = await specHelper.findEnqueuedTasks("import:associateProfile");
+      expect(found.length).toEqual(2);
+      expect(found[1].args[0]).toEqual({ importId: _import.id, attempts: 1 });
+
+      // attempt 2
+      await specHelper.runTask("import:associateProfile", found[1].args[0]);
+
+      await _import.reload();
+      expect(_import.errorMessage).toBeFalsy();
+      found = await specHelper.findEnqueuedTasks("import:associateProfile");
+      expect(found.length).toEqual(3);
+      expect(found[2].args[0]).toEqual({ importId: _import.id, attempts: 2 });
+
+      // attempt 3
+      await specHelper.runTask("import:associateProfile", found[2].args[0]);
 
       await _import.reload();
       expect(_import.errorMessage).toMatch(
