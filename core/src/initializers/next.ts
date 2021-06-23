@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { Initializer, Connection, api, log, config } from "actionhero";
+import { Initializer, Connection, api, log, config, route } from "actionhero";
 
 declare module "actionhero" {
   export interface Api {
@@ -15,10 +15,10 @@ declare module "actionhero" {
 export class Next extends Initializer {
   constructor() {
     super();
+    this.name = "next";
     this.loadPriority = 1000;
     this.startPriority = 899;
     this.stopPriority = 101;
-    this.name = "next";
   }
 
   async initialize() {
@@ -64,6 +64,10 @@ export class Next extends Initializer {
 
     api.next.handle = api.next.app.getRequestHandler();
     await api.next.app.prepare();
+
+    if (config.servers.web.enabled === true) {
+      route.registerRoute("get", "/", "next:render", null, true);
+    }
   }
 
   async stop() {
