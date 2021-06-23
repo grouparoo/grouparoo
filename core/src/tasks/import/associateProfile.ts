@@ -1,7 +1,9 @@
-import { log, env, Task } from "actionhero";
+import { log, env, config, task, Task } from "actionhero";
 import { Import } from "../../models/Import";
 import { APM } from "../../modules/apm";
 import { CLS } from "../../modules/cls";
+
+const maxAttempts = 3;
 
 export class ImportAssociateProfile extends Task {
   // This Task extends Task rather than CLSTask as we want to be able to view newly created profiles happening in parallel to this task/transaction
@@ -17,11 +19,13 @@ export class ImportAssociateProfile extends Task {
     this.pluginOptions = { JobLock: { reEnqueue: false } };
     this.inputs = {
       importId: { required: true },
+      attempts: { required: true, default: 0 },
     };
   }
 
   async run(params, worker) {
-    const { importId } = params;
+    const { importId, attempts }: { importId: string; attempts: number } =
+      params;
     let _import: Import;
 
     return APM.wrap(this.name, "task", worker, async () => {
@@ -39,8 +43,18 @@ export class ImportAssociateProfile extends Task {
           { write: true }
         );
       } catch (error) {
-        if (env !== "test") log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");
-        if (_import) await _import.setError(error, this.name);
+        const nextAttempt = attempts + 1;
+        if (nextAttempt >= maxAttempts) {
+          if (env !== "test") {
+            log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");
+          }
+          if (_import) await _import.setError(error, this.name);
+        } else {
+          await task.enqueueIn(config.tasks.timeout, this.name, {
+            importId,
+            attempts: nextAttempt,
+          });
+        }
       }
     });
   }
