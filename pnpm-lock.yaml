@@ -218,7 +218,7 @@ importers:
       '@types/pluralize': 0.0.29
       '@types/validator': '*'
       actionhero: 26.0.8
-      ah-next-plugin: 0.5.3
+      ah-next-plugin: 0.5.4
       ah-sequelize-plugin: 3.0.4
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
@@ -268,7 +268,7 @@ importers:
       '@types/node': 15.12.4
       '@types/validator': 13.1.4
       actionhero: 26.0.8
-      ah-next-plugin: 0.5.3_actionhero@26.0.8
+      ah-next-plugin: 0.5.4_actionhero@26.0.8
       ah-sequelize-plugin: 3.0.4_acb0c81dd9e61036fa300bedbdac0d70
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
@@ -3976,12 +3976,12 @@ packages:
       clean-stack: 2.2.0
       indent-string: 4.0.0
 
-  /ah-next-plugin/0.5.3_actionhero@26.0.8:
-    resolution: {integrity: sha512-4u1kneApr/h0t4QOHqc/W+rpuMfaIfGPKdm3l52zKl1jIMGRki/8Un7wSVJEQXksrpc+RNIv2pYoQOz/Cdrpjw==}
+  /ah-next-plugin/0.5.4_actionhero@26.0.8:
+    resolution: {integrity: sha512-/vnQLhzF05c7qMogauIpWpP+8ab+wPGhcSlOMJxZXZtAMYh1jkYb/FrExJeixgNhsU3efrpxaCLy1PHrNpWr5w==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       actionhero: '>=22'
-      next: '>=9.0.0'
+      next: ^9.x || ^10.x || ^11.x
       react: ^16.6.0 || ^17
       react-dom: ^16.6.0 || ^17
     dependencies:
