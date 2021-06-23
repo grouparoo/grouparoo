@@ -143,8 +143,4 @@ export namespace FinalSummary {
 
     return finalSummaryLogs;
   }
-
-  export async function checkSchedules() {
-    return await Schedule.count();
-  }
 }
