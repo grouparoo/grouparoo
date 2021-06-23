@@ -5,7 +5,7 @@ import {
   FinalSummaryReporters,
 } from "../../src/modules/statusReporters";
 import { Status } from "../../src/modules/status";
-import { Destination, Profile, Source } from "../../src";
+import { Destination, Profile, Source, Schedule } from "../../src";
 
 describe("modules/status", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -373,6 +373,20 @@ describe("modules/status", () => {
           expect(sources[0].profilesImported).toEqual(1);
           expect(sources[0].error).toEqual(null);
         }
+      );
+    });
+
+    test("runs with no source show warning", async () => {
+      await Schedule.truncate();
+
+      const warnings = await FinalSummaryReporters.Warnings.getWarnings();
+      const warning = warnings[0];
+      expect(warning.name).toBe("Schedules");
+      expect(warning.message).toBe(
+        `No schedules found.  The run command uses schedules to know what profiles to import.`
+      );
+      expect(warning.link).toBe(
+        `See this link for more info: https://www.grouparoo.com/docs/getting-started/product-concepts#schedule`
       );
     });
 

@@ -149,6 +149,8 @@ export namespace GrouparooCLI {
         | FinalSummaryReporters.Profiles.ProfileData[]
         | FinalSummaryReporters.Sources.SourceData[]
         | FinalSummaryReporters.Destinations.DestinationData[]
+        | FinalSummaryReporters.Warnings.WarningData[],
+      logBlock
     ) {
       if (categorySummary.length === 0) {
         GrouparooCLI.logger.log(`${cyanBold("|")} None affected`);
@@ -158,7 +160,8 @@ export namespace GrouparooCLI {
           category:
             | FinalSummaryReporters.Profiles.ProfileData
             | FinalSummaryReporters.Sources.SourceData
-            | FinalSummaryReporters.Destinations.DestinationData,
+            | FinalSummaryReporters.Destinations.DestinationData
+            | FinalSummaryReporters.Warnings.WarningData,
           idx
         ) => {
           if (idx > 0) logger.log(cyanBold(`|`));
@@ -169,17 +172,28 @@ export namespace GrouparooCLI {
             );
           }
 
-          for (const property in category) {
-            if (property !== "name") {
-              GrouparooCLI.logger.log(
-                category[property] === null
-                  ? `${cyanBold("|")}   * ${deCamelAndCapitalize(
-                      property
-                    )}: none`
-                  : `${cyanBold("|")}   * ${deCamelAndCapitalize(property)}: ${
-                      category[property]
-                    }`
-              );
+          if (logBlock === "WARNINGS") {
+            for (const property in category) {
+              if (property !== "name") {
+                GrouparooCLI.logger.log(
+                  `${cyanBold("|")}     ${category[property]}`
+                );
+              }
+            }
+          } else {
+            for (const property in category) {
+              // GrouparooCLI.logger.log(logBlock);
+              if (property !== "name") {
+                GrouparooCLI.logger.log(
+                  category[property] === null
+                    ? `${cyanBold("|")}   * ${deCamelAndCapitalize(
+                        property
+                      )}: none`
+                    : `${cyanBold("|")}   * ${deCamelAndCapitalize(
+                        property
+                      )}: ${category[property]}`
+                );
+              }
             }
           }
         }
@@ -196,17 +210,21 @@ export namespace GrouparooCLI {
       GrouparooCLI.logger.log("");
       GrouparooCLI.logger.log(cyanBold(formattedTitle));
       const headings = ["PROFILES", "SOURCES", "DESTINATIONS"];
+      if (finalSummaryLogs[3].length > 0) headings.push("WARNINGS");
+
       finalSummaryLogs.forEach((log, idx) => {
-        GrouparooCLI.logger.log(
-          cyanBold(`|`) +
-            "\n" +
+        if (headings[idx]) {
+          GrouparooCLI.logger.log(
             cyanBold(`|`) +
-            " " +
-            underlineBold(headings[idx]) +
-            "\n" +
-            cyanBold(`|`)
-        );
-        generateSummaryItems(log);
+              "\n" +
+              cyanBold(`|`) +
+              " " +
+              underlineBold(headings[idx]) +
+              "\n" +
+              cyanBold(`|`)
+          );
+          generateSummaryItems(log, headings[idx]);
+        }
       });
 
       GrouparooCLI.logger.log(
