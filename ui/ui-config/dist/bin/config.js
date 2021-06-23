@@ -1,5 +1,7 @@
 const cli = require("@grouparoo/core/dist/modules/cli");
 const actionhero = require("actionhero");
+const { log } = require("actionhero");
+const open = require("open");
 
 class Apply extends actionhero.CLI {
   constructor() {
@@ -27,6 +29,12 @@ class Apply extends actionhero.CLI {
     cli.GrouparooCLI.logCLI(this.name, false);
     const { main } = require("@grouparoo/core/dist/grouparoo");
     await main(); // run the server
+    try {
+      log("Opening Grouparoo Config in web browser", "info");
+      await open(`http://localhost:${process.env.PORT}`);
+    } catch (err) {
+      log(err.message, "error");
+    }
     return false;
   }
 }
