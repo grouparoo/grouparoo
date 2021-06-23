@@ -218,7 +218,6 @@ importers:
       '@types/pluralize': 0.0.29
       '@types/validator': '*'
       actionhero: 26.0.8
-      ah-next-plugin: 0.5.5
       ah-sequelize-plugin: 3.0.4
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
@@ -268,7 +267,6 @@ importers:
       '@types/node': 15.12.4
       '@types/validator': 13.1.4
       actionhero: 26.0.8
-      ah-next-plugin: 0.5.5_actionhero@26.0.8
       ah-sequelize-plugin: 3.0.4_acb0c81dd9e61036fa300bedbdac0d70
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
@@ -300,6 +298,7 @@ importers:
       sequelize-typescript: 2.1.0_fb0aa51423eb8f834cee16adf8b2a5f5
       sqlite3: 5.0.2
       ts-node: 10.0.0_83f53b0a0c5616d3fa00ed4e30b9ce1b
+      umzug: 3.0.0-beta.5
       uuid: 8.3.2
       validator: 13.6.0
       winston: 3.3.3
@@ -317,7 +316,6 @@ importers:
       type-fest: 1.2.1
       typedoc: 0.21.0_typescript@4.3.4
       typescript: 4.3.4
-      umzug: 3.0.0-beta.5
 
   plugins/@grouparoo/app-templates:
     specifiers:
@@ -3976,18 +3974,6 @@ packages:
       clean-stack: 2.2.0
       indent-string: 4.0.0
 
-  /ah-next-plugin/0.5.5_actionhero@26.0.8:
-    resolution: {integrity: sha512-CQl/CCe7Wb3HZbnOXbokBpqI8ue+EHskMecxZBTBg090TYRcdDez+o8Jw4hKFmLVu4aLtBSN/ZyLzaz65fWRtw==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      actionhero: '>=22'
-      next: '>=9.0.0'
-      react: '>=16.6.0'
-      react-dom: '>=16.6.0'
-    dependencies:
-      actionhero: 26.0.8
-    dev: false
-
   /ah-sequelize-plugin/3.0.4_acb0c81dd9e61036fa300bedbdac0d70:
     resolution: {integrity: sha512-vLxIF5AbwHJ0dy4kO+tzUFBb7pue2r7m1tNMikmXJj0PXc/U9Jml04+tFy0Y02rveU6JbYoUx16K/3LuwGrpOA==}
     engines: {node: '>=8.0.0'}
@@ -4013,6 +3999,7 @@ packages:
   /alpha-sort/3.1.0:
     resolution: {integrity: sha512-mRMFzTqMpyGsMUN/rytVErIFQ0nNtMQdyxop09082hTVYbfK2rts7E1XpTExaEyxKT5JZimdA7zGgVQMVgOfXA==}
     engines: {node: '>=8'}
+    dev: false
 
   /amdefine/1.0.1:
     resolution: {integrity: sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=}
@@ -6865,12 +6852,14 @@ packages:
     dependencies:
       minimatch: 3.0.4
       rimraf: 2.7.1
+    dev: false
 
   /fs-jetpack/3.2.0:
     resolution: {integrity: sha512-LMUQxf85b3y/IuQZM9gz7bPMH60Y+NpulmHdhv8nHvgu6daYd7DiSZJSgiHKk1h6vfv1VCOqpdJcR+ThO7sFVA==}
     dependencies:
       minimatch: 3.0.4
       rimraf: 2.7.1
+    dev: false
 
   /fs-minipass/1.2.7:
     resolution: {integrity: sha512-GWSSJGFy4e9GUeCcbIkED+bgAoFyj7XF1mV8rma3QW4NIqX9Kyx79N/PF61H5udOV3aY1IaMLs6pGbH71nlCTA==}
@@ -7458,6 +7447,7 @@ packages:
     dependencies:
       is-stream: 2.0.0
       type-fest: 0.8.1
+    dev: false
 
   /he/1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
@@ -13391,6 +13381,7 @@ packages:
     dependencies:
       arrify: 2.0.1
       dot-prop: 5.3.0
+    dev: false
 
   /source-map-resolve/0.5.3:
     resolution: {integrity: sha512-Htz+RnsXWk5+P2slx5Jh3Q66vhQj1Cllm0zvnaY98+NFx+Dv2CF/f5O/t8x+KaNdrdIAsruNzoh/KpialbqAnw==}
@@ -14142,6 +14133,7 @@ packages:
       fs-jetpack: 3.2.0
       hasha: 5.2.2
       sort-on: 4.1.1
+    dev: false
 
   /touch/3.1.0:
     resolution: {integrity: sha512-WBx8Uy5TLtOSRtIq+M03/sKDrXCLHxwDcquSP2c43Le03/9serjQBIztjRz6FkJez9D/hleyAXTBGLwwZUw9lA==}
@@ -14401,6 +14393,7 @@ packages:
       p-each-series: 2.2.0
       p-map: 4.0.0
       tory: 0.4.4
+    dev: false
 
   /unbox-primitive/1.0.1:
     resolution: {integrity: sha512-tZU/3NqK3dA5gpE1KtyiJUrEB0lxnGkMFHptJ7q6ewdZ8s12QrODwNbhIJStmJkd1QDXa1NRA8aF2A1zk/Ypyw==}
