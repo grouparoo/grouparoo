@@ -30,8 +30,6 @@
     "lint": "prettier --check src __tests__",
     "docs": "typedoc --out docs --theme default src/index.ts",
     "import": "./api/bin/import",
-    "thank-you": "./thank-you",
-    "postinstall": "npm run thank-you",
     "watch": "tsc --watch"
   },
   "dependencies": {
