@@ -6,6 +6,7 @@ export class ResqueInitializer extends Initializer {
   constructor() {
     super();
     this.name = `@grouparoo/resque`;
+    this.loadPriority = 1000;
   }
 
   async initialize() {
