@@ -31,7 +31,7 @@
     "@grouparoo/app-templates": "0.4.0-alpha.5",
     "pg": "8.6.0",
     "pg-format": "1.0.4",
-    "pg-hstore": "2.3.3",
+    "pg-hstore": "2.3.4",
     "postgres-date": "2.0.1"
   },
   "devDependencies": {
