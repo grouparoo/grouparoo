@@ -63,7 +63,14 @@ export namespace Status {
         } catch {}
         return parsed;
       })
-      .filter((v) => v && v.timestamp);
+      .filter(
+        (sample) =>
+          sample &&
+          sample.timestamp &&
+          sample.metric &&
+          sample.metric.topic &&
+          sample.metric.collection
+      );
 
     const response: StatusGetResponse = {};
 
