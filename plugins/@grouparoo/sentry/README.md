@@ -1,14 +1,14 @@
 # @grouparoo/sentry
 
-Performance and error tracking with Sentry.
+A [Grouparoo](https://www.grouparoo.com) plugin for performance and error tracking with [Sentry](https://sentry.io).
 
-Reports errors in the UI and background tasks.
+Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/plugins](https://www.grouparoo.com/docs/plugins).
 
-## Setup
+## Installation
 
-`grouparoo install @grouparoo/sentry`
+In your Grouparoo project, run `grouparoo install @grouparoo/sentry`.
 
-Then set the environment variables.
+Then set the environment variables:
 
 ```
 SENTRY_DSN="https://{user}@{account}.ingest.sentry.io/{project}"

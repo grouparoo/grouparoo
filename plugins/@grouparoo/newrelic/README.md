@@ -1,12 +1,12 @@
 # @grouparoo/newrelic
 
-Performance and error tracking with NewRelic.
+A [Grouparoo](https://www.grouparoo.com) plugin for sending errors and traces to [New Relic](https://newrelic.com/).
 
-Reports errors in the UI and background tasks.
+Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/plugins](https://www.grouparoo.com/docs/plugins).
 
-## Setup
+## Installation
 
-`grouparoo install @grouparoo/newrelic`
+In your Grouparoo project, run `grouparoo install @grouparoo/newrelic`.
 
 Then set the environment variables.
 

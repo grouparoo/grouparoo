@@ -1,6 +1,6 @@
-# @Grouparoo/Spec-Helper
+# @grouparoo/spec-helper
 
-Shared Utilities for testing Grouparoo and Grouparoo Plugins
+Shared Utilities for testing [Grouparoo](https://www.grouparoo.com) and Grouparoo Plugins. Learn more at https://www.grouparoo.com/docs/running/testing.
 
 A typical test file's shape:
 

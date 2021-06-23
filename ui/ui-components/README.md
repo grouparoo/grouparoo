@@ -1,3 +1,3 @@
-# @Grouparoo/ui-components
+# @grouparoo/ui-components
 
 Shared Grouparoo UI Components & Pages

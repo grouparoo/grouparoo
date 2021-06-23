@@ -1,4 +1,12 @@
-# @Grouparoo/Pipedrive
+# @grouparoo/pipedrive
+
+A [Grouparoo](https://www.grouparoo.com) plugin for connecting to [Pipedrive](https://www.pipedrive.com/).
+
+Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/plugins](https://www.grouparoo.com/docs/plugins).
+
+## Installation
+
+In your Grouparoo project, run `grouparoo install @grouparoo/pipedrive`.
 
 ## A note on permissions
 
