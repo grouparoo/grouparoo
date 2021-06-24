@@ -794,6 +794,22 @@ describe("modules/configWriter", () => {
       });
     });
 
+    test("manual groups do not provide rules", async () => {
+      const group: Group = await helper.factories.group({ type: "manual" });
+      const config = await group.getConfigObject();
+
+      expect(config.id).toBeTruthy();
+
+      const { name, type } = group;
+
+      expect(config).toEqual({
+        class: "Group",
+        id: group.getConfigId(),
+        type,
+        name,
+      });
+    });
+
     test("properties don't transform env vars", async () => {
       process.env.GROUPAROO_OPTION__PROPERTY__CONFIG_WRITER_ENV_VAR =
         faker.database.column();

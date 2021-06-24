@@ -655,13 +655,24 @@ export class Group extends LoggedModel<Group> {
 
     if (!name) return;
 
-    return {
+    let configObject: {
+      id: string;
+      class: string;
+      type: string;
+      name: string;
+      rules?: any[];
+    } = {
       id: this.getConfigId(),
       class: "Group",
       type,
       name,
-      rules,
     };
+
+    if (type === "calculated") {
+      configObject.rules = rules;
+    }
+
+    return configObject;
   }
 
   // --- Class Methods --- //
