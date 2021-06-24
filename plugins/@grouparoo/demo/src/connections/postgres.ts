@@ -1,6 +1,5 @@
 import { Client, ClientConfig } from "pg";
-import { log } from "../util/shared";
-import { api, config } from "actionhero";
+import { api, config, log } from "actionhero";
 import Connection from "../util/connection";
 
 export const SCHEMA_NAME = "demo";
@@ -199,7 +198,7 @@ export default class Postgres extends Connection {
   }
 
   async query(level, sql, params = null) {
-    log(level, sql, params);
+    log("query", "debug", { level, sql, params });
     const client = await this.connect();
     if (params) {
       return client.query(sql, params);

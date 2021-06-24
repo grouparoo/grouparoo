@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import { log } from "../util/shared";
+import { log } from "actionhero";
 import Connection from "../util/connection";
 
 const TYPES = {
@@ -270,13 +270,13 @@ export default class Mongo extends Connection {
 
     const { db } = await this.connect();
     try {
-      log(1, `Dropping collection ${collectionName}`);
+      log(`Dropping collection ${collectionName}`, "notice");
       await db.collection(collectionName).drop();
     } catch (err) {
       // ignores in case the collection doesn't exist.
     }
 
-    log(1, `Creating collection ${collectionName}`);
+    log(`Creating collection ${collectionName}`);
     await db.createCollection(collectionName, typeData);
   }
 
@@ -289,7 +289,7 @@ export default class Mongo extends Connection {
     const { db } = await this.connect();
     const doc = castRow(collectionName, row);
 
-    log(2, `Inserting ${tableName}: ${JSON.stringify(doc)}`);
+    log(`Inserting ${tableName}: ${JSON.stringify(doc)}`, "debug");
     await db.collection(collectionName).insertOne(doc);
   }
 }

@@ -1,6 +1,6 @@
 import Postgres from "../connections/postgres";
 import { readCsvTable } from "../util/sample_data";
-import { log } from "../util/shared";
+import { log } from "actionhero";
 
 export async function getPurchases(limit = null) {
   const out = [];
@@ -22,7 +22,7 @@ export async function getPurchaseCategories() {
   try {
     return await dbPurchaseCategories();
   } catch (error) {
-    log(0, "Purchases not available in database. Using CSV");
+    log("Purchases not available in database. Using CSV");
     return await csvPurchaseCategories();
   }
 }

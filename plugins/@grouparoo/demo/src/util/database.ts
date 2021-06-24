@@ -1,5 +1,4 @@
-import { log } from "./shared";
-import { api, config } from "actionhero";
+import { api, config, log } from "actionhero";
 
 export default class Database {
   dialect: string;
@@ -16,7 +15,7 @@ export default class Database {
     return { sql: object[0], params: object[1] };
   }
 
-  async query(level, { sqlite, postgres }) {
+  async query({ sqlite, postgres }) {
     let choice = null;
     switch (this.dialect) {
       case "postgres":
@@ -30,7 +29,7 @@ export default class Database {
     }
 
     const { sql, params } = this.extractSql(choice);
-    log(level, sql, params);
+    log("query", "debug", { sql, params });
     if (params) {
       return api.sequelize.query(sql, params);
     }
@@ -46,7 +45,7 @@ export default class Database {
     const schema = this.config.schema || "public";
     const db = this.config.database;
 
-    const results = await this.query(2, {
+    const results = await this.query({
       postgres: [
         `SELECT table_name AS name FROM INFORMATION_SCHEMA.TABLES WHERE table_catalog = :db AND table_schema = :schema`,
         { replacements: { db, schema } },
@@ -59,7 +58,7 @@ export default class Database {
       if (skipTables.includes(table.toLowerCase())) {
         continue;
       }
-      await this.query(2, {
+      await this.query({
         postgres: `TRUNCATE TABLE ${schema}."${table}";`,
         sqlite: `DELETE FROM "${table}";`,
       });

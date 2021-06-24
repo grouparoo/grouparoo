@@ -1,5 +1,4 @@
 import {
-  log,
   userCreatedAt,
   numberOfUsers,
   accountCreatedAt,
@@ -9,6 +8,7 @@ import Connection from "./connection";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
 import path from "path";
+import { log } from "actionhero";
 
 interface DataOptions {
   scale?: number;
@@ -99,7 +99,7 @@ async function createCsvTable(
   updatedAt: boolean,
   options: DataOptions = {}
 ) {
-  log(0, `Adding Sample Data: ${tableName}`);
+  log(`Adding Sample Data: ${tableName}`);
   await db.connect();
   await loadCsvTable(
     db,
@@ -127,7 +127,7 @@ async function loadCsvTable(
   if (!scale || scale < 1) {
     scale = 1;
   }
-  log(1, `Adding ${tableName}`);
+  log(`Adding ${tableName}`);
   // read from data file
   const rows = readCsvTable(dataset, tableName);
   const keys = Object.keys(rows[0]);
@@ -142,7 +142,7 @@ async function loadCsvTable(
   await db.createTable(tableName, typeColumn, keys);
 
   const fillTable = async function (page: number = 0) {
-    log(2, `   Page ${page}`);
+    log(`   Page ${page}`, "debug");
     const perPage = rows.length;
 
     for (const fileRow of rows) {

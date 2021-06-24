@@ -3,18 +3,10 @@ import { api } from "actionhero";
 import path from "path";
 import Database from "./database";
 import { Run } from "@grouparoo/core";
+import { log } from "actionhero";
 
-const LOG_LEVEL = 1;
-
-export function log(level: number, ...toLog) {
-  if (LOG_LEVEL >= level) {
-    console.log(...toLog);
-    // TODO, use actionhero LOG
-  }
-}
-
-export async function execSync(level: number, command) {
-  log(level, "    Running:", command);
+export async function execSync(command) {
+  log("    Running: " + command, "debug");
   await sharedExecSync(command);
 }
 
@@ -26,10 +18,7 @@ export async function prettier(fileOrDirPath) {
   const pConfig = path.resolve(
     path.join(__dirname, "..", "..", "..", "..", "..", ".prettierrc")
   );
-  await execSync(
-    2,
-    `'${pCmd}' --config '${pConfig}' --write '${fileOrDirPath}'`
-  );
+  await execSync(`'${pCmd}' --config '${pConfig}' --write '${fileOrDirPath}'`);
 }
 
 export async function sleep(time = 1000) {

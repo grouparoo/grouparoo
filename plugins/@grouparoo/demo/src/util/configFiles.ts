@@ -1,10 +1,10 @@
 import path from "path";
 import fs from "fs-extra";
 import os from "os";
-import { api } from "actionhero";
+import { api, log } from "actionhero";
 import { loadConfigDirectory } from "@grouparoo/core/dist/modules/configLoaders";
 import { getConfigDir } from "@grouparoo/core/dist/utils/pluginDetails";
-import { prettier, log } from "./shared";
+import { prettier } from "./shared";
 import Connection from "./connection";
 import { updateEnvVariables } from "./env";
 
@@ -54,7 +54,7 @@ async function generateConfig(
   configDir,
   subDirs: string[]
 ) {
-  log(1, `Config Directory: ${configDir}`);
+  log(`Config Directory: ${configDir}`, "debug");
   deleteDir(configDir);
 
   for (const subDir of subDirs) {
@@ -122,7 +122,7 @@ async function unlockAll() {
     // }
     const attributes = Model.rawAttributes;
     if (attributes.locked) {
-      log(3, `Unlocking ${name}`);
+      log(`Unlocking ${name}`, "debug");
       await Model.scope(null).update(
         { locked: null },
         {
