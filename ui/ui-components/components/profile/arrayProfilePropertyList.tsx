@@ -1,5 +1,6 @@
 import { Button } from "react-bootstrap";
 import { useState } from "react";
+import { formatTimestamp } from "../../utils/formatTimestamp";
 
 export default function ArrayProfilePropertyList({
   type,
@@ -16,7 +17,7 @@ export default function ArrayProfilePropertyList({
       // return <input type="checkbox" checked={value} readOnly />;
       return value.toString();
     } else if (type === "date") {
-      return value ? new Date(value).toLocaleString() : value;
+      return formatTimestamp(value);
     } else {
       return value;
     }
