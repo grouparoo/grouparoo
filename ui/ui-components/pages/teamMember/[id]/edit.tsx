@@ -4,10 +4,10 @@ import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import { useRouter } from "next/router";
-import Moment from "react-moment";
 import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
 import { Models, Actions } from "../../../utils/apiData";
 import TeamMemberTabs from "../../../components/tabs/teamMember";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page(props) {
   const { errorHandler, successHandler, teams } = props;
@@ -68,7 +68,7 @@ export default function Page(props) {
         <Col md={2}>
           <p>
             <small>
-              Last Login: <Moment fromNow>{teamMember.lastLoginAt}</Moment>{" "}
+              Last Login: {formatTimestamp(teamMember.lastLoginAt)}{" "}
             </small>
           </p>
 

@@ -9,10 +9,10 @@ import Link from "next/link";
 import EnterpriseLink from "../components/enterpriseLink";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
-import Moment from "react-moment";
 import AppIcon from "../components/appIcon";
 import StateBadge from "../components/badges/stateBadge";
 import { Models, Actions } from "../utils/apiData";
+import { formatTimestamp } from "../utils/formatTimestamp";
 
 export default function Page(props) {
   const { errorHandler } = props;
@@ -149,9 +149,7 @@ export default function Page(props) {
                     {pendingExports}
                   </Badge>
                 </td>
-                <td>
-                  <Moment fromNow>{destination.createdAt}</Moment>
-                </td>
+                <td>{formatTimestamp(destination.createdAt)}</td>
               </tr>
             );
           })}

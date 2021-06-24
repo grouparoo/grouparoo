@@ -2,9 +2,9 @@ import NotificationTabs from "../../../components/tabs/notification";
 import Head from "next/head";
 import { useApi } from "../../../hooks/useApi";
 import { Button } from "react-bootstrap";
-import Moment from "react-moment";
 import { Models } from "../../../utils/apiData";
 import Markdown from "react-markdown";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page(props) {
   const { notification }: { notification: Models.NotificationType } = props;
@@ -22,7 +22,7 @@ export default function Page(props) {
       <p>
         From: {notification.from}
         <br />
-        Created At: <Moment fromNow>{notification.createdAt}</Moment>
+        Created At: {formatTimestamp(notification.createdAt)}
       </p>
 
       <hr />

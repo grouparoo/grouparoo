@@ -8,8 +8,8 @@ import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Link from "../components/enterpriseLink";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
-import Moment from "react-moment";
 import { Models, Actions } from "../utils/apiData";
+import { formatTimestamp } from "../utils/formatTimestamp";
 
 export default function Page(props) {
   const { errorHandler } = props;
@@ -83,9 +83,7 @@ export default function Page(props) {
                 <td>
                   <code>{apiKey.apiKey}</code>
                 </td>
-                <td>
-                  <Moment fromNow>{apiKey.createdAt}</Moment>
-                </td>
+                <td>{formatTimestamp(apiKey.createdAt)}</td>
               </tr>
             );
           })}

@@ -2,8 +2,8 @@ import { Models } from "../../utils/apiData";
 import { Form, Card } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import LockedBadge from "../badges/lockedBadge";
-import Moment from "react-moment";
 import LoadingButton from "../loadingButton";
+import { formatTimestamp } from "../../utils/formatTimestamp";
 
 export default function SettingCard({
   setting,
@@ -87,9 +87,7 @@ export default function SettingCard({
           <Card.Text>
             <small>Default: {setting.defaultValue}</small>
             <br />
-            <small>
-              Last Updated: <Moment fromNow>{setting.updatedAt}</Moment>
-            </small>
+            <small>Last Updated: {formatTimestamp(setting.updatedAt)}</small>
           </Card.Text>
         </Card.Body>
       </Card>

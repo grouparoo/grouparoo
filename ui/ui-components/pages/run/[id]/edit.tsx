@@ -8,6 +8,7 @@ import RunTabs from "../../../components/tabs/run";
 import Head from "next/head";
 import LoadingButton from "../../../components/loadingButton";
 import { Models, Actions } from "../../../utils/apiData";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page(props) {
   const { quantizedTimeline, successHandler, errorHandler } = props;
@@ -73,7 +74,7 @@ export default function Page(props) {
             Completed{" "}
             {run.completedAt ? (
               <>
-                <Moment fromNow>{run.completedAt}</Moment>
+                {formatTimestamp(run.completedAt)}
                 <br />
                 <small>
                   Total Duration:{" "}

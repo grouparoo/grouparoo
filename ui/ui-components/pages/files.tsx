@@ -6,12 +6,12 @@ import { useState } from "react";
 import { useApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import LoadingButton from "../components/loadingButton";
 import { Models, Actions } from "../utils/apiData";
 import { FilePreview, downloadFile } from "../components/filePreview";
+import { formatTimestamp } from "../utils/formatTimestamp";
 
 const apiVersion = process.env.API_VERSION || "v1";
 
@@ -116,9 +116,7 @@ export default function Page(props) {
                   {Math.round((100 * file.sizeBytes) / 1024 / 1024) / 100}mb
                 </td>
                 <td>{file.mime}</td>
-                <td>
-                  <Moment fromNow>{file.createdAt}</Moment>
-                </td>
+                <td>{formatTimestamp(file.createdAt)}</td>
                 <td>
                   <Button
                     size="sm"

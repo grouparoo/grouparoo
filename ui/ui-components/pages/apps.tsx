@@ -5,13 +5,13 @@ import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "../components/enterpriseLink";
-import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import AppIcon from "../components/appIcon";
 import StateBadge from "../components/badges/stateBadge";
 import { Button } from "react-bootstrap";
 import { Models, Actions } from "../utils/apiData";
+import { formatTimestamp } from "../utils/formatTimestamp";
 
 export default function Page(props) {
   const { errorHandler } = props;
@@ -99,12 +99,8 @@ export default function Page(props) {
                 <td>
                   <StateBadge state={app.state} />
                 </td>
-                <td>
-                  <Moment fromNow>{app.createdAt}</Moment>
-                </td>
-                <td>
-                  <Moment fromNow>{app.updatedAt}</Moment>
-                </td>
+                <td>{formatTimestamp(app.createdAt)}</td>
+                <td>{formatTimestamp(app.updatedAt)}</td>
               </tr>
             );
           })}
