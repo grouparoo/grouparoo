@@ -33,7 +33,7 @@ describe("model/group", () => {
       test("groupRule can be saved without topLevel indicating they have a profileColumn", async () => {
         await group.setRules([
           {
-            key: "id",
+            key: "grouparooId",
             operation: { op: "exists" },
           },
         ]);
@@ -41,7 +41,7 @@ describe("model/group", () => {
         const rules = await group.getRules();
         expect(rules.length).toBe(1);
         expect(rules[0]).toEqual({
-          key: "id",
+          key: "grouparooId",
           topLevel: true,
           type: "string",
           operation: { op: "ne", description: "exists with any value" },
@@ -54,7 +54,7 @@ describe("model/group", () => {
         const groupRule = await GroupRule.findOne({
           where: { groupId: group.id },
         });
-        expect(groupRule.profileColumn).toBe("id");
+        expect(groupRule.profileColumn).toBe("grouparooId");
         expect(groupRule.propertyId).toBe(null);
 
         expect(await group.countPotentialMembers()).toBe(4);
@@ -89,7 +89,7 @@ describe("model/group", () => {
         // OK
         const count = await group.countPotentialMembers([
           {
-            key: "id",
+            key: "grouparooId",
             match: "pro%",
             operation: { op: "like" },
             topLevel: true,
@@ -109,11 +109,11 @@ describe("model/group", () => {
         ).rejects.toThrow(/cannot find type for Property id/);
       });
 
-      describe("id", () => {
+      describe("grouparooId", () => {
         test("exact matches", async () => {
           await group.setRules([
             {
-              key: "id",
+              key: "grouparooId",
               match: mario.id,
               operation: { op: "eq" },
             },
@@ -123,49 +123,53 @@ describe("model/group", () => {
 
         test("partial matches", async () => {
           await group.setRules([
-            { key: "id", match: "pro%", operation: { op: "like" } },
+            { key: "grouparooId", match: "pro%", operation: { op: "like" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("multiple rules with same key", async () => {
           await group.setRules([
-            { key: "id", match: "pro%", operation: { op: "like" } },
-            { key: "id", match: "pro_%", operation: { op: "like" } },
+            { key: "grouparooId", match: "pro%", operation: { op: "like" } },
+            { key: "grouparooId", match: "pro_%", operation: { op: "like" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("null match", async () => {
           await group.setRules([
-            { key: "id", match: "null", operation: { op: "eq" } },
+            { key: "grouparooId", match: "null", operation: { op: "eq" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
 
         test("not null match", async () => {
           await group.setRules([
-            { key: "id", match: "null", operation: { op: "ne" } },
+            { key: "grouparooId", match: "null", operation: { op: "ne" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("exists", async () => {
-          await group.setRules([{ key: "id", operation: { op: "exists" } }]);
+          await group.setRules([
+            { key: "grouparooId", operation: { op: "exists" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("notExists", async () => {
-          await group.setRules([{ key: "id", operation: { op: "notExists" } }]);
+          await group.setRules([
+            { key: "grouparooId", operation: { op: "notExists" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
       });
 
-      describe("createdAt", () => {
+      describe("grouparooCreatedAt", () => {
         test("exact matches", async () => {
           await group.setRules([
             {
-              key: "createdAt",
+              key: "grouparooCreatedAt",
               match: new Date(0).getTime(),
               operation: { op: "eq" },
             },
@@ -176,7 +180,7 @@ describe("model/group", () => {
         test("comparison matches", async () => {
           await group.setRules([
             {
-              key: "createdAt",
+              key: "grouparooCreatedAt",
               match: new Date(0).getTime(),
               operation: { op: "gt" },
             },
@@ -186,28 +190,36 @@ describe("model/group", () => {
 
         test("null match", async () => {
           await group.setRules([
-            { key: "createdAt", match: "null", operation: { op: "eq" } },
+            {
+              key: "grouparooCreatedAt",
+              match: "null",
+              operation: { op: "eq" },
+            },
           ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
 
         test("not null match", async () => {
           await group.setRules([
-            { key: "createdAt", match: "null", operation: { op: "ne" } },
+            {
+              key: "grouparooCreatedAt",
+              match: "null",
+              operation: { op: "ne" },
+            },
           ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("exists", async () => {
           await group.setRules([
-            { key: "createdAt", operation: { op: "exists" } },
+            { key: "grouparooCreatedAt", operation: { op: "exists" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("notExists", async () => {
           await group.setRules([
-            { key: "createdAt", operation: { op: "notExists" } },
+            { key: "grouparooCreatedAt", operation: { op: "notExists" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
@@ -217,7 +229,7 @@ describe("model/group", () => {
         test("comparison matches (with matches)", async () => {
           await group.setRules([
             {
-              key: "createdAt",
+              key: "grouparooCreatedAt",
               relativeMatchNumber: 2,
               relativeMatchUnit: "days",
               relativeMatchDirection: "subtract",
@@ -230,7 +242,7 @@ describe("model/group", () => {
         test("comparison matches (no matches)", async () => {
           await group.setRules([
             {
-              key: "createdAt",
+              key: "grouparooCreatedAt",
               relativeMatchNumber: 2,
               relativeMatchUnit: "days",
               relativeMatchDirection: "add",
