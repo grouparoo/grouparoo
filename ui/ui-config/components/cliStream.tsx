@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRealtimeStream } from "@grouparoo/ui-components/hooks/useRealtimeStream";
+import { formatTimestamp } from "@grouparoo/ui-components/utils/formatTimestamp";
 import AnsiToHTML from "ansi-to-html";
 
 type Message = { timestamp?: number; type?: string; message: string };
@@ -69,10 +70,4 @@ export function CLIStream(props) {
       </div>
     </>
   );
-}
-
-function formatTimestamp(t: number) {
-  if (!t) return "";
-  const [date, time] = new Date(t).toLocaleString().split(",");
-  return `[${date} ${time}] - `;
 }

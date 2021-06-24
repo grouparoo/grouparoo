@@ -8,6 +8,7 @@ import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { Alert } from "react-bootstrap";
 import { Models, Actions } from "../../utils/apiData";
+import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { ImportProfilePropertiesDiff, ImportGroupsDiff } from "./diff";
 
@@ -55,11 +56,6 @@ export default function ImportList(props) {
       setImports(response.imports);
       setTotal(response.total);
     }
-  }
-
-  function formatTimestamp(timestamp) {
-    const [date, time] = new Date(timestamp).toLocaleString().split(",");
-    return `${date} ${time}`;
   }
 
   return (

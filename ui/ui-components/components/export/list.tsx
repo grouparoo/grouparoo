@@ -13,6 +13,7 @@ import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { ExportGroupsDiff, ExportProfilePropertiesDiff } from "./diff";
 import { capitalize } from "../../utils/languageHelper";
+import { formatTimestamp } from "../../utils/formatTimestamp";
 import StateBadge from "../badges/stateBadge";
 
 const states = [
@@ -77,11 +78,6 @@ export default function ExportsList(props) {
         setOffset(0);
       }
     }
-  }
-
-  function formatTimestamp(timestamp) {
-    const [date, time] = new Date(timestamp).toLocaleString().split(",");
-    return `${date} ${time}`;
   }
 
   function getErrorRow(_export: Models.ExportType) {
