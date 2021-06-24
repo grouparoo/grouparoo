@@ -37,8 +37,13 @@ export class StatusTask extends CLSTask {
 
       const complete = await this.checkForComplete(samples);
       if (runMode === "cli:run" && complete) {
+        await task.enqueue("destroy", {});
+
         await this.logFinalSummary();
-        await this.stopServer(toStop);
+
+        const samples = await this.getSamples();
+        const complete = await this.checkForComplete(samples);
+        if (complete) await this.stopServer(toStop);
       }
 
       await this.updateTaskFrequency();
