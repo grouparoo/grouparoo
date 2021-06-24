@@ -1,5 +1,5 @@
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Table, Alert, Card } from "react-bootstrap";
+import { Row, Col, Table, Alert, Card, Badge } from "react-bootstrap";
 import Link from "next/link";
 import EnterpriseLink from "../../../components/enterpriseLink";
 import Head from "next/head";
@@ -63,7 +63,20 @@ export default function Page({
               <a>{_export.profileId}</a>
             </Link>
             <br />
-            Forced: {_export.force.toString()}
+            To Delete?{" "}
+            <Badge variant={_export.toDelete ? "danger" : "secondary"}>
+              {_export.toDelete.toString()}
+            </Badge>
+            <br />
+            Has Changes?{" "}
+            <Badge variant={_export.hasChanges ? "success" : "secondary"}>
+              {_export.hasChanges.toString()}
+            </Badge>
+            <br />
+            Forced:{" "}
+            <Badge variant={_export.force ? "warning" : "secondary"}>
+              {_export.force.toString()}
+            </Badge>
             <br />
             Retry Count: {_export.retryCount}
           </p>

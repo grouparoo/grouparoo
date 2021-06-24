@@ -5,11 +5,11 @@ import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import { Models, Actions } from "../utils/apiData";
 import { Badge } from "react-bootstrap";
+import { formatTimestamp } from "../utils/formatTimestamp";
 
 export default function Page(props) {
   const { errorHandler } = props;
@@ -96,9 +96,7 @@ export default function Page(props) {
                   </Link>
                 </td>
                 <td>{notification.from}</td>
-                <td>
-                  <Moment fromNow>{notification.createdAt}</Moment>
-                </td>
+                <td>{formatTimestamp(notification.createdAt)}</td>
               </tr>
             );
           })}

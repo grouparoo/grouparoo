@@ -6,11 +6,11 @@ import { useApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Link from "../components/enterpriseLink";
-import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import StateBadge from "../components/badges/stateBadge";
 import { Models, Actions } from "../utils/apiData";
+import { formatTimestamp } from "../utils/formatTimestamp";
 
 export default function Page(props) {
   const { errorHandler } = props;
@@ -103,19 +103,13 @@ export default function Page(props) {
                 </td>
                 {process.env.GROUPAROO_UI_EDITION !== "config" && (
                   <td>
-                    {group.calculatedAt ? (
-                      <Moment fromNow>{group.calculatedAt}</Moment>
-                    ) : (
-                      "Never"
-                    )}
+                    {group.calculatedAt
+                      ? formatTimestamp(group.calculatedAt)
+                      : "Never"}
                   </td>
                 )}
-                <td>
-                  <Moment fromNow>{group.createdAt}</Moment>
-                </td>
-                <td>
-                  <Moment fromNow>{group.updatedAt}</Moment>
-                </td>
+                <td>{formatTimestamp(group.createdAt)}</td>
+                <td>{formatTimestamp(group.updatedAt)}</td>
               </tr>
             );
           })}

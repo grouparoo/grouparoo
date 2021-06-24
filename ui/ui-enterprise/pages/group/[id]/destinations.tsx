@@ -5,11 +5,11 @@ import Head from "next/head";
 import GroupTabs from "@grouparoo/ui-components/components/tabs/group";
 import { useState } from "react";
 import Link from "next/link";
-import Moment from "react-moment";
 import LoadingTable from "@grouparoo/ui-components/components/loadingTable";
 import AppIcon from "@grouparoo/ui-components/components/appIcon";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { formatTimestamp } from "../../../../ui-components/utils/formatTimestamp";
 
 export default function Page(props) {
   const {
@@ -94,9 +94,7 @@ export default function Page(props) {
                     <a>{destination.app.name}</a>
                   </Link>
                 </td>
-                <td>
-                  <Moment fromNow>{destination.createdAt}</Moment>
-                </td>
+                <td>{formatTimestamp(destination.createdAt)}</td>
               </tr>
             );
           })}

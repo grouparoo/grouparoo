@@ -13,6 +13,7 @@ import LockedBadge from "../../../components/badges/lockedBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page(props) {
   const {
@@ -157,7 +158,7 @@ export default function Page(props) {
                             <br />
                             {run.createdAt ? (
                               <>
-                                Started <Moment fromNow>{run.createdAt}</Moment>
+                                Started {formatTimestamp(run.createdAt)}
                                 <ul>
                                   <li>Imports Created: {run.importsCreated}</li>
                                   <li>
@@ -173,8 +174,7 @@ export default function Page(props) {
                             )}
                             {run.completedAt ? (
                               <p>
-                                Completed{" "}
-                                <Moment fromNow>{run.completedAt}</Moment>
+                                Completed {formatTimestamp(run.completedAt)}
                               </p>
                             ) : null}
                             <p>

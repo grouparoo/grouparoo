@@ -6,13 +6,13 @@ import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Form, Row, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
-import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import LoadingButton from "../loadingButton";
 import { Models, Actions } from "../../utils/apiData";
 import ArrayProfilePropertyList from "./arrayProfilePropertyList";
 import StateBadge from "../badges/stateBadge";
+import { formatTimestamp } from "../../utils/formatTimestamp";
 
 export default function ProfilesList(props) {
   const { errorHandler, properties } = props;
@@ -335,12 +335,8 @@ export default function ProfilesList(props) {
                 <td>
                   <StateBadge state={profile.state} />
                 </td>
-                <td>
-                  <Moment fromNow>{profile.createdAt}</Moment>
-                </td>
-                <td>
-                  <Moment fromNow>{profile.updatedAt}</Moment>
-                </td>
+                <td>{formatTimestamp(profile.createdAt)}</td>
+                <td>{formatTimestamp(profile.updatedAt)}</td>
               </tr>
             );
           })}

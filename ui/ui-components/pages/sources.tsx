@@ -7,11 +7,11 @@ import Link from "../components/enterpriseLink";
 import { useRouter } from "next/router";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
-import Moment from "react-moment";
 import AppIcon from "../components/appIcon";
 import StateBadge from "../components/badges/stateBadge";
 import { Models, Actions } from "../utils/apiData";
 import { Button } from "react-bootstrap";
+import { formatTimestamp } from "../utils/formatTimestamp";
 
 export default function Page(props) {
   const { successHandler, errorHandler } = props;
@@ -142,9 +142,7 @@ export default function Page(props) {
                   <td>
                     <StateBadge state={source.state} />
                   </td>
-                  <td>
-                    <Moment fromNow>{source.createdAt}</Moment>
-                  </td>
+                  <td>{formatTimestamp(source.createdAt)}</td>
                   <td>
                     {schedule ? (
                       <>
@@ -156,11 +154,7 @@ export default function Page(props) {
                           <>
                             <br />
                             Last Run:{" "}
-                            {run ? (
-                              <Moment fromNow>{run?.createdAt}</Moment>
-                            ) : (
-                              "Never"
-                            )}
+                            {run ? formatTimestamp(run?.createdAt) : "Never"}
                             <br />
                             <Button
                               variant="outline-success"

@@ -6,9 +6,9 @@ import Link from "next/link";
 import EnterpriseLink from "../components/enterpriseLink";
 import { Form } from "react-bootstrap";
 import LoadingTable from "../components/loadingTable";
-import Moment from "react-moment";
 import ProfileImageFromEmail from "../components/visualizations/profileImageFromEmail";
 import { Models } from "../utils/apiData";
+import { formatTimestamp } from "../utils/formatTimestamp";
 
 export default function Page({
   teams,
@@ -125,15 +125,11 @@ export default function Page({
                   {teams.filter((t) => t.id === teamMember.teamId)[0].name}
                 </td>
                 <td>
-                  {teamMember.lastLoginAt ? (
-                    <Moment fromNow>{teamMember.lastLoginAt}</Moment>
-                  ) : (
-                    "Never"
-                  )}
+                  {teamMember.lastLoginAt
+                    ? formatTimestamp(teamMember.lastLoginAt)
+                    : "Never"}
                 </td>
-                <td>
-                  <Moment fromNow>{teamMember.createdAt}</Moment>
-                </td>
+                <td>{formatTimestamp(teamMember.createdAt)}</td>
               </tr>
             );
           })}

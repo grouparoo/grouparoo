@@ -7,12 +7,12 @@ import { useRouter } from "next/router";
 import Link from "../components/enterpriseLink";
 import { Button, Form, Alert } from "react-bootstrap";
 import LoadingButton from "../components/loadingButton";
-import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import StateBadge from "../components/badges/stateBadge";
 import { Models, Actions } from "../utils/apiData";
 import { ErrorHandler } from "../utils/errorHandler";
+import { formatTimestamp } from "../utils/formatTimestamp";
 
 export default function Page(props) {
   const {
@@ -197,9 +197,7 @@ export default function Page(props) {
                       : null}
                   </em>
                 </td>
-                <td>
-                  <Moment fromNow>{rule.updatedAt}</Moment>
-                </td>
+                <td>{formatTimestamp(rule.updatedAt)}</td>
               </tr>
             );
           })}

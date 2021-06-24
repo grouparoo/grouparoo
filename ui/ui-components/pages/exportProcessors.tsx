@@ -14,6 +14,7 @@ import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { Models, Actions } from "../utils/apiData";
 import { ErrorHandler } from "../utils/errorHandler";
 import { capitalize } from "../utils/languageHelper";
+import { formatTimestamp } from "../utils/formatTimestamp";
 
 const states = ["all", "pending", "failed", "complete"];
 
@@ -59,11 +60,6 @@ export default function Page(props) {
         setOffset(0);
       }
     }
-  }
-
-  function formatTimestamp(timestamp) {
-    const [date, time] = new Date(timestamp).toLocaleString().split(",");
-    return `${date} ${time}`;
   }
 
   function getErrorRow(_export: Models.ExportProcessorType) {

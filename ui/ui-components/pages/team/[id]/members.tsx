@@ -3,13 +3,13 @@ import { useApi } from "../../../hooks/useApi";
 import LoadingButton from "../../../components/loadingButton";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Moment from "react-moment";
 import LoadingTable from "../../../components/loadingTable";
 import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
 import { Models, Actions } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/team";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page(props) {
   const {
@@ -86,15 +86,11 @@ export default function Page(props) {
                 <td>{teamMember.firstName}</td>
                 <td>{teamMember.lastName}</td>
                 <td>
-                  {teamMember.lastLoginAt ? (
-                    <Moment fromNow>{teamMember.lastLoginAt}</Moment>
-                  ) : (
-                    "Never"
-                  )}
+                  {teamMember.lastLoginAt
+                    ? formatTimestamp(teamMember.lastLoginAt)
+                    : "Never"}
                 </td>
-                <td>
-                  <Moment fromNow>{teamMember.createdAt}</Moment>
-                </td>
+                <td>{formatTimestamp(teamMember.createdAt)}</td>
                 <td>
                   <LoadingButton
                     size="sm"

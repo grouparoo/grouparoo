@@ -3,13 +3,12 @@ import { useApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
-import EnterpriseLink from "../enterpriseLink";
 import { useRouter } from "next/router";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { Alert } from "react-bootstrap";
-import Moment from "react-moment";
 import { Models, Actions } from "../../utils/apiData";
+import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { ImportProfilePropertiesDiff, ImportGroupsDiff } from "./diff";
 
@@ -123,22 +122,22 @@ export default function ImportList(props) {
                     )}
                   </td>
                   <td>
-                    Created: <Moment fromNow>{_import.createdAt}</Moment>
+                    Created: {formatTimestamp(_import.createdAt)}
                     <br /> Profile Associated:{" "}
                     {_import.profileAssociatedAt ? (
-                      <Moment fromNow>{_import.profileAssociatedAt}</Moment>
+                      formatTimestamp(_import.profileAssociatedAt)
                     ) : (
                       <span>x</span>
                     )}
                     <br /> Profile Updated:{" "}
                     {_import.profileUpdatedAt ? (
-                      <Moment fromNow>{_import.profileUpdatedAt}</Moment>
+                      formatTimestamp(_import.profileUpdatedAt)
                     ) : (
                       <span>x</span>
                     )}
                     <br /> Groups Updated:{" "}
                     {_import.groupsUpdatedAt ? (
-                      <Moment fromNow>{_import.groupsUpdatedAt}</Moment>
+                      formatTimestamp(_import.groupsUpdatedAt)
                     ) : (
                       <span>x</span>
                     )}

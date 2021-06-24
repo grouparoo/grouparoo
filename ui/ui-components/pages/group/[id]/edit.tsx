@@ -3,13 +3,13 @@ import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
 import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
-import Moment from "react-moment";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import GroupTabs from "../../../components/tabs/group";
 import LoadingButton from "../../../components/loadingButton";
 
 import { Models, Actions } from "../../../utils/apiData";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page(props) {
   const { errorHandler, successHandler, groupHandler } = props;
@@ -78,8 +78,31 @@ export default function Page(props) {
       <GroupTabs group={group} />
       <h1>{group.name}</h1>
       <StateBadge state={group.state} /> <LockedBadge object={group} />
+      {group.type === "calculated" &&
+      process.env.GROUPAROO_UI_EDITION !== "config" ? (
+        <Row>
+          <Col>
+            <p>
+              {group.calculatedAt ? (
+                <span>
+                  Last Member Calculation: {formatTimestamp(group.calculatedAt)}
+                </span>
+              ) : (
+                "Never Calculated"
+              )}
+              <br />
+              {group.nextCalculatedAt ? (
+                <span>
+                  Next Member Calculation:{" "}
+                  {formatTimestamp(group.nextCalculatedAt)}
+                </span>
+              ) : null}
+            </p>
+          </Col>
+        </Row>
+      ) : null}
       <Row>
-        <Col md={group.type === "calculated" ? 8 : 12}>
+        <Col>
           <Form id="form" onSubmit={submit} autoComplete="off">
             <fieldset disabled={group.locked !== null}>
               <Form.Group controlId="name">
@@ -167,28 +190,6 @@ export default function Page(props) {
             </fieldset>
           </Form>
         </Col>
-        {group.type === "calculated" &&
-        process.env.GROUPAROO_UI_EDITION !== "config" ? (
-          <Col>
-            <p>
-              {group.calculatedAt ? (
-                <span>
-                  Last Member Calculation:{" "}
-                  <Moment fromNow>{group.calculatedAt}</Moment>
-                </span>
-              ) : (
-                "Never Calculated"
-              )}
-              <br />
-              {group.nextCalculatedAt ? (
-                <span>
-                  Next Member Calculation:{" "}
-                  <Moment fromNow>{group.nextCalculatedAt}</Moment>
-                </span>
-              ) : null}
-            </p>
-          </Col>
-        ) : null}
       </Row>
     </>
   );

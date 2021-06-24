@@ -11,6 +11,7 @@ import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import RunDurationChart from "../visualizations/runDurations";
 import { Models, Actions } from "../../utils/apiData";
+import { formatTimestamp } from "../../utils/formatTimestamp";
 
 export default function RunsList(props) {
   const { errorHandler, topic } = props;
@@ -177,11 +178,11 @@ export default function RunsList(props) {
                       </Link>
                     </td>
                     <td>
-                      Created: <Moment fromNow>{run.createdAt}</Moment>
+                      Created: {formatTimestamp(run.createdAt)}
                       {run.completedAt ? (
                         <>
                           <br />
-                          Completed: <Moment fromNow>{run.completedAt}</Moment>
+                          Completed: {formatTimestamp(run.completedAt)}
                           <br />
                           <small>
                             Duration:{" "}

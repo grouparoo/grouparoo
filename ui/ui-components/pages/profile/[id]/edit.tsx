@@ -7,7 +7,6 @@ import { Row, Col, Form, ListGroup } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import { useRouter } from "next/router";
 import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
-import Moment from "react-moment";
 import LoadingTable from "../../../components/loadingTable";
 import { getProfilePageTitle } from "../../../components/profile/getProfileDisplayName";
 import ArrayProfilePropertyList from "../../../components/profile/arrayProfilePropertyList";
@@ -16,6 +15,7 @@ import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { ProfileHandler } from "../../../utils/profileHandler";
 import StateBadge from "../../../components/badges/stateBadge";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page(props) {
   const {
@@ -217,9 +217,9 @@ export default function Page(props) {
                 );
               })}
               <span className="text-muted">Created: </span>
-              <Moment fromNow>{profile.createdAt}</Moment> /{" "}
+              {formatTimestamp(profile.createdAt)}/{" "}
               <span className="text-muted">Updated: </span>
-              <Moment fromNow>{profile.updatedAt}</Moment>
+              {formatTimestamp(profile.updatedAt)}
               <br />
               <StateBadge state={profile.state} />
             </td>
@@ -335,20 +335,14 @@ export default function Page(props) {
                         <StateBadge state={profileProperty.state} />
                       </td>
                       <td>
-                        {profileProperty.valueChangedAt ? (
-                          <Moment fromNow>
-                            {profileProperty.valueChangedAt}
-                          </Moment>
-                        ) : (
-                          "Never"
-                        )}
+                        {profileProperty.valueChangedAt
+                          ? formatTimestamp(profileProperty.valueChangedAt)
+                          : "Never"}
                       </td>
                       <td>
-                        {profileProperty.confirmedAt ? (
-                          <Moment fromNow>{profileProperty.confirmedAt}</Moment>
-                        ) : (
-                          "Never"
-                        )}
+                        {profileProperty.confirmedAt
+                          ? formatTimestamp(profileProperty.confirmedAt)
+                          : "Never"}
                       </td>
                     </tr>
                   );
