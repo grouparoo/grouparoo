@@ -195,15 +195,21 @@ export default function ExportsList(props) {
                     </EnterpriseLink>
                     <br />
                     To Delete?{" "}
-                    {_export.toDelete ? (
-                      <Badge variant="danger">true</Badge>
-                    ) : (
-                      "false"
-                    )}
+                    <Badge variant={_export.toDelete ? "danger" : "secondary"}>
+                      {_export.toDelete.toString()}
+                    </Badge>
                     <br />
-                    Has Changes? {_export.hasChanges.toString()}
+                    Has Changes?{" "}
+                    <Badge
+                      variant={_export.hasChanges ? "success" : "secondary"}
+                    >
+                      {_export.hasChanges.toString()}
+                    </Badge>
                     <br />
-                    Forced: {_export.force.toString()}
+                    Forced:{" "}
+                    <Badge variant={_export.force ? "warning" : "secondary"}>
+                      {_export.force.toString()}
+                    </Badge>
                   </td>
                   <td>
                     Created:{" "}
