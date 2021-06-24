@@ -18,7 +18,6 @@ export async function runAction(
   try {
     setupMiddleware();
 
-    // console.log("running....", actionName, input);
     const data = {
       type: "demo",
       rawConnection: {},
@@ -37,7 +36,6 @@ export async function runAction(
     };
 
     const processed = await actionProcessor.processAction();
-    // console.log("action processed....", processed);
     const { response } = processed;
     if (response.error) {
       throw response.error;
