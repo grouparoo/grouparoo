@@ -415,17 +415,19 @@ export default function Page(props) {
                   </Form.Control>
                 </Form.Group>
               </Col>
-              <Col md={3}>
-                <div style={{ paddingTop: 34 }} />
-                <LoadingButton
-                  variant="outline-primary"
-                  size="sm"
-                  type="submit"
-                  disabled={loading}
-                >
-                  Add
-                </LoadingButton>
-              </Col>
+              {process.env.GROUPAROO_RUN_MODE === "config" ? null : (
+                <Col md={3}>
+                  <div style={{ paddingTop: 34 }} />
+                  <LoadingButton
+                    variant="outline-primary"
+                    size="sm"
+                    type="submit"
+                    disabled={loading}
+                  >
+                    Add
+                  </LoadingButton>
+                </Col>
+              )}
             </Row>
           </Form>
         </Col>
