@@ -192,7 +192,7 @@ export namespace ConfigWriter {
 
   async function deleteFiles() {
     for (let { absFilePath } of CONFIG_FILE_CACHE) {
-      if (fs.existsSync(absFilePath)) fs.rmSync(absFilePath);
+      if (fs.existsSync(absFilePath)) fs.unlinkSync(absFilePath);
     }
     resetConfigFileCache();
   }
