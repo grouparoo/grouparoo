@@ -97,6 +97,7 @@ export class StatusTask extends CLSTask {
     const totalItems = [];
     const pendingItems = [];
     const pendingRuns = [];
+    const pendingDeletions = [];
 
     const pendingCollection = samples["Run"]
       ? samples["Run"]["pending"]
@@ -121,6 +122,12 @@ export class StatusTask extends CLSTask {
 
         if (latestMetric.collection === "pending") {
           pendingItems.push({
+            [latestMetric.topic]: [latestMetric.count],
+          });
+        }
+
+        if (latestMetric.collection === "deleted") {
+          pendingDeletions.push({
             [latestMetric.topic]: [latestMetric.count],
           });
         }
@@ -164,6 +171,12 @@ export class StatusTask extends CLSTask {
       logItems.push({
         header: "Active Runs",
         status: pendingRuns.reduce((s, arr) => Object.assign(s, arr), {}),
+      });
+    }
+    if (pendingDeletions.length > 0) {
+      logItems.push({
+        header: "Pending Deletions",
+        status: pendingDeletions.reduce((s, arr) => Object.assign(s, arr), {}),
       });
     }
 
