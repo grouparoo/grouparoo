@@ -376,7 +376,7 @@ export default function Page(props) {
                     &nbsp; &nbsp;
                   </>
                 ) : null}
-                {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+                {process.env.GROUPAROO_UI_EDITION !== "config" ? (
                   <EnterpriseLink
                     href="/group/[id]/members"
                     as={`/group/${group.id}/members`}
@@ -415,7 +415,7 @@ export default function Page(props) {
                   </Form.Control>
                 </Form.Group>
               </Col>
-              {process.env.GROUPAROO_RUN_MODE === "config" ? null : (
+              {process.env.GROUPAROO_UI_EDITION === "config" ? null : (
                 <Col md={3}>
                   <div style={{ paddingTop: 34 }} />
                   <LoadingButton
