@@ -63,7 +63,9 @@ describe("models/run", () => {
 
       await group.update({ type: "calculated" });
       await group.setRules(
-        group.fromConvenientRules([{ key: "id", operation: { op: "exists" } }])
+        group.fromConvenientRules([
+          { key: "grouparooId", operation: { op: "exists" } },
+        ])
       );
 
       profileA = await helper.factories.profile();

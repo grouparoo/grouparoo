@@ -19,9 +19,7 @@ import {
 } from "../../../src";
 import path from "path";
 import { api, specHelper } from "actionhero";
-import { Op } from "sequelize";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
-import { TopLevelGroupRules } from "../../../src/models/Group";
 
 describe("modules/codeConfig", () => {
   helper.grouparooTestServer({

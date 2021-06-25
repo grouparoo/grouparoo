@@ -125,7 +125,7 @@ describe("models/property", () => {
     });
 
     test("keys cannot be from the reserved list of keys", async () => {
-      const reservedKeys = ["id", "createdAt", "updatedAt"];
+      const reservedKeys = ["grouparooId", "grouparooCreatedAt"];
       for (const i in reservedKeys) {
         const key = reservedKeys[i];
         await expect(

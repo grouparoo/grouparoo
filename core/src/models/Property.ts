@@ -26,7 +26,7 @@ import { ProfileProperty } from "./ProfileProperty";
 import { App, SimpleAppOptions } from "./App";
 import { Source, SimpleSourceOptions, SourceMapping } from "./Source";
 import { Option } from "./Option";
-import { Group } from "./Group";
+import { Group, TopLevelGroupRules } from "./Group";
 import { Run } from "./Run";
 import { GroupRule } from "./GroupRule";
 import { PropertyFilter } from "./PropertyFilter";
@@ -569,7 +569,7 @@ export class Property extends LoggedModel<Property> {
 
   @BeforeSave
   static async validateReservedKeys(instance: Property) {
-    const reservedKeys = ["id", "createdAt", "updatedAt"];
+    const reservedKeys = TopLevelGroupRules.map((tlgr) => tlgr.key);
     if (reservedKeys.includes(instance.key)) {
       throw new Error(
         `${instance.key} is a reserved key and cannot be used as a property`

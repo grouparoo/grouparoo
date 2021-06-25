@@ -77,8 +77,8 @@ const STATE_TRANSITIONS = [
 ];
 
 export const TopLevelGroupRules = [
-  { key: "id", column: "id", type: "string" },
-  { key: "createdAt", column: "createdAt", type: "date" },
+  { key: "grouparooId", column: "id", type: "string" },
+  { key: "grouparooCreatedAt", column: "createdAt", type: "date" },
 ];
 
 @DefaultScope(() => ({
@@ -525,7 +525,11 @@ export class Group extends LoggedModel<Group> {
         ];
       } else {
         // when we are considering a column on the profiles table
-        const topLevelWhere = {};
+        const topLevelGroupRule = TopLevelGroupRules.find(
+          (tlgr) => tlgr.key === key
+        );
+        if (!topLevelGroupRule)
+          throw new Error(`cannot find TopLevelGroupRule where for key ${key}`);
 
         if (rawValueMatch[Op[operation.op]] && type === "date") {
           rawValueMatch[Op[operation.op]] = new Date(
@@ -533,7 +537,7 @@ export class Group extends LoggedModel<Group> {
           ).getTime();
         }
 
-        topLevelWhere[key] = rawValueMatch;
+        const topLevelWhere = { [topLevelGroupRule.column]: rawValueMatch };
         localWhereGroup[Op.and] = [topLevelWhere];
       }
 
