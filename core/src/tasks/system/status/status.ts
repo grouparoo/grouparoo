@@ -36,14 +36,11 @@ export class StatusTask extends CLSTask {
       if (runMode === "cli:run") this.logSamples(samples);
 
       const complete = await this.checkForComplete(samples);
-      if (runMode === "cli:run" && complete) {
-        await task.enqueue("destroy", {});
 
+      if (runMode === "cli:run" && complete) {
         await this.logFinalSummary();
 
-        const samples = await this.getSamples();
-        const complete = await this.checkForComplete(samples);
-        if (complete) await this.stopServer(toStop);
+        await this.stopServer(toStop);
       }
 
       await this.updateTaskFrequency();
@@ -63,14 +60,17 @@ export class StatusTask extends CLSTask {
       for (const collection in samples[topic]) {
         const metrics = samples[topic][collection];
         const { metric } = metrics[metrics.length - 1];
-        if (metric.collection === "pending") {
+        if (
+          metric.collection === "pending" ||
+          metric.collection === "deleted"
+        ) {
           pendingItems += metric.count;
           pendingCollections++;
         }
       }
     }
 
-    if (pendingCollections < 4) return false; // not every model has been checked yet (profile, runs, import, export)
+    if (pendingCollections < 4) return false; // not every model has been checked yet (PENDING: profile, runs, import, export; DELETED: group, destination, property, source, app)
     return pendingItems > 0 ? false : true;
   }
 

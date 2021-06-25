@@ -323,6 +323,57 @@ export namespace StatusReporters {
     }
   }
 
+  export namespace Deleted {
+    export async function deletedGroups(): Promise<StatusMetric> {
+      return {
+        collection: "deleted",
+        topic: "Group",
+        aggregation: "count",
+        count: await Group.count({
+          where: { state: "deleted" },
+        }),
+      };
+    }
+
+    export async function deletedDestinations(): Promise<StatusMetric> {
+      return {
+        collection: "deleted",
+        topic: "Destination",
+        aggregation: "count",
+        count: await Destination.count({
+          where: { state: "deleted" },
+        }),
+      };
+    }
+
+    export async function deletedProperties(): Promise<StatusMetric> {
+      return {
+        collection: "deleted",
+        topic: "Property",
+        aggregation: "count",
+        count: await Property.count({ where: { state: "deleted" } }),
+      };
+    }
+
+    export async function deletedSources(): Promise<StatusMetric> {
+      return {
+        collection: "deleted",
+        topic: "Source",
+        aggregation: "count",
+        count: await Source.count({ where: { state: "deleted" } }),
+      };
+    }
+  }
+
+  export async function deletedApps(): Promise<StatusMetric> {
+    return {
+      collection: "deleted",
+      topic: "App",
+      aggregation: "count",
+      count: await App.count({ where: { state: "deleted" } }),
+    };
+  }
+
   export namespace Groups {
     export async function byNewestMember() {
       const metrics: StatusMetric[] = [];

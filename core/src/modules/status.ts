@@ -45,6 +45,12 @@ export namespace Status {
     async () => StatusReporters.Pending.pendingProfiles(),
     async () => StatusReporters.Pending.pendingRuns(),
 
+    //things waiting to be deleted
+    async () => StatusReporters.Deleted.deletedDestinations(),
+    async () => StatusReporters.Deleted.deletedGroups(),
+    async () => StatusReporters.Deleted.deletedProperties(),
+    async () => StatusReporters.Deleted.deletedSources(),
+
     // additional things
     async () => StatusReporters.Groups.byNewestMember(),
     async () => StatusReporters.Sources.nextRuns(),
