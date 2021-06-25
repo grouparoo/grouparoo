@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/files-s3",
   "description": "The Grouparoo file transport for s3 file storage",
-  "version": "0.4.1",
+  "version": "0.4.2-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -32,7 +32,7 @@
     "fs-extra": "10.0.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.4.1",
+    "@grouparoo/core": "0.4.2-alpha.0",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "26.0.8",
