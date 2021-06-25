@@ -69,10 +69,7 @@ export class PluginInstall extends AuthenticatedAction {
     // Return if did not ask to restart
     if (!params.restart) return { success: response.success };
     // Otherwise, return, then restart the server.
-    setTimeout(() => {
-      clearPluginConfigCache();
-      api.process.restart();
-    }, restartSleepTime);
+    setTimeout(() => safelyRestart(), restartSleepTime);
     return { success: response.success, checkIn: restartSleepTime * 4 };
   }
 }
@@ -97,11 +94,21 @@ export class PluginUninstall extends AuthenticatedAction {
     // Return if did not ask to restart
     if (!params.restart) return { success: response.success };
     // Otherwise, return, then restart the server.
-    setTimeout(() => {
-      clearPluginConfigCache();
-      api.process.restart();
-    }, restartSleepTime);
+    setTimeout(() => safelyRestart(), restartSleepTime);
     return { success: response.success, checkIn: restartSleepTime * 4 };
+  }
+}
+
+async function safelyRestart() {
+  try {
+    clearPluginConfigCache();
+    await api.process.restart();
+  } catch (error) {
+    console.log("");
+    console.log("*** There was a problem restarting Grouparoo ***");
+    console.log(error.message ?? error);
+    console.log("Please restart the application");
+    process.exit(1);
   }
 }
 
