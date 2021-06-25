@@ -78,7 +78,10 @@ export default function Page(props) {
 
     setLoading(false);
     successHandler.set({
-      message: "Destination Updated and Profiles Exporting...",
+      message:
+        process.env.GROUPAROO_UI_EDITION === "config"
+          ? "Destination Updated"
+          : "Destination Updated and Profiles Exporting...",
     });
   };
 

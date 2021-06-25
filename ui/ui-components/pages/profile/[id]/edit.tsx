@@ -376,12 +376,16 @@ export default function Page(props) {
                     &nbsp; &nbsp;
                   </>
                 ) : null}
-                <EnterpriseLink
-                  href="/group/[id]/members"
-                  as={`/group/${group.id}/members`}
-                >
-                  <a>{group.name}</a>
-                </EnterpriseLink>
+                {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+                  <EnterpriseLink
+                    href="/group/[id]/members"
+                    as={`/group/${group.id}/members`}
+                  >
+                    <a>{group.name}</a>
+                  </EnterpriseLink>
+                ) : (
+                  <span>{group.name}</span>
+                )}
               </ListGroup.Item>
             ))}
           </ListGroup>
