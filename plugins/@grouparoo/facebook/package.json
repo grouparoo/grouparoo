@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.4.2-alpha.1",
-    "bluebird": "*",
     "currency-codes": "2.1.0",
     "facebook-nodejs-business-sdk": "10.0.1",
     "iso-3166-1-alpha-2": "1.0.0",
