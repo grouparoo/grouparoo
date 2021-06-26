@@ -376,54 +376,59 @@ export default function Page(props) {
                     &nbsp; &nbsp;
                   </>
                 ) : null}
-                <EnterpriseLink
-                  href="/group/[id]/members"
-                  as={`/group/${group.id}/members`}
-                >
-                  <a>{group.name}</a>
-                </EnterpriseLink>
+                {process.env.GROUPAROO_UI_EDITION !== "config" ? (
+                  <EnterpriseLink
+                    href="/group/[id]/members"
+                    as={`/group/${group.id}/members`}
+                  >
+                    <a>{group.name}</a>
+                  </EnterpriseLink>
+                ) : (
+                  <span>{group.name}</span>
+                )}
               </ListGroup.Item>
             ))}
           </ListGroup>
 
           <hr />
-
-          <Form onSubmit={(event) => handleAdd(event)} autoComplete="off">
-            <Row>
-              <Col md={9}>
-                <Form.Group controlId="groupId">
-                  <Form.Label>Add Group</Form.Label>
-                  <Form.Control as="select" disabled={loading}>
-                    {allGroups.map((group) => {
-                      const disabled =
-                        group.type !== "manual" ||
-                        groupMembershipIds.includes(group.id);
-                      return (
-                        <option
-                          disabled={disabled}
-                          value={group.id}
-                          key={`group-${group.id}`}
-                        >
-                          {group.name}
-                        </option>
-                      );
-                    })}
-                  </Form.Control>
-                </Form.Group>
-              </Col>
-              <Col md={3}>
-                <div style={{ paddingTop: 34 }} />
-                <LoadingButton
-                  variant="outline-primary"
-                  size="sm"
-                  type="submit"
-                  disabled={loading}
-                >
-                  Add
-                </LoadingButton>
-              </Col>
-            </Row>
-          </Form>
+          {process.env.GROUPAROO_UI_EDITION === "config" ? null : (
+            <Form onSubmit={(event) => handleAdd(event)} autoComplete="off">
+              <Row>
+                <Col md={9}>
+                  <Form.Group controlId="groupId">
+                    <Form.Label>Add Group</Form.Label>
+                    <Form.Control as="select" disabled={loading}>
+                      {allGroups.map((group) => {
+                        const disabled =
+                          group.type !== "manual" ||
+                          groupMembershipIds.includes(group.id);
+                        return (
+                          <option
+                            disabled={disabled}
+                            value={group.id}
+                            key={`group-${group.id}`}
+                          >
+                            {group.name}
+                          </option>
+                        );
+                      })}
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col md={3}>
+                  <div style={{ paddingTop: 34 }} />
+                  <LoadingButton
+                    variant="outline-primary"
+                    size="sm"
+                    type="submit"
+                    disabled={loading}
+                  >
+                    Add
+                  </LoadingButton>
+                </Col>
+              </Row>
+            </Form>
+          )}
         </Col>
       </Row>
     </>
