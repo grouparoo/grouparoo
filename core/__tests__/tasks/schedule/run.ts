@@ -83,21 +83,21 @@ describe("tasks/schedule:run", () => {
             app: "test-template-app",
             direction: "import" as "import",
             options: [],
-            scheduleOptions: [
-              {
-                key: "maxColumn",
-                required: true,
-                description: "the column to choose",
-                type: "list",
-                options: async () => {
-                  return [
-                    { key: "created_at", examples: [1, 2, 3] },
-                    { key: "updated_at", examples: [1, 2, 3] },
-                  ];
-                },
-              },
-            ],
             methods: {
+              scheduleOptions: async () => [
+                {
+                  key: "maxColumn",
+                  required: true,
+                  description: "the column to choose",
+                  type: "list",
+                  options: async () => {
+                    return [
+                      { key: "created_at", examples: [1, 2, 3] },
+                      { key: "updated_at", examples: [1, 2, 3] },
+                    ];
+                  },
+                },
+              ],
               profiles: async () => {
                 return {
                   highWaterMark: { updated_at: 200 },

@@ -1,4 +1,8 @@
-import { Property, PropertyFiltersWithKey } from "../../models/Property";
+import {
+  Property,
+  PropertyFiltersWithKey,
+  SimplePropertyOptions,
+} from "../../models/Property";
 import { Group } from "../../models/Group";
 import { Option } from "../../models/Option";
 import { Mapping } from "../../models/Mapping";
@@ -35,7 +39,10 @@ export namespace PropertyOps {
   /**
    * Get the options for a Property from its plugin
    */
-  export async function pluginOptions(property: Property) {
+  export async function pluginOptions(
+    property: Property,
+    propertyOptions?: SimplePropertyOptions
+  ) {
     const source = await property.$get("source", {
       scope: null,
       include: [Option, Mapping],
@@ -46,7 +53,7 @@ export namespace PropertyOps {
       throw new Error(`cannot find a pluginConnection for type ${source.type}`);
     }
 
-    if (!pluginConnection.propertyOptions) {
+    if (!pluginConnection.methods.propertyOptions) {
       throw new Error(`cannot find propertyOptions for type ${source.type}`);
     }
 
@@ -67,9 +74,23 @@ export namespace PropertyOps {
     const connection = await app.getConnection();
     const sourceOptions = await source.getOptions(true);
     const sourceMapping = await source.getMapping();
+    propertyOptions = propertyOptions ?? (await property.getOptions());
 
-    for (const i in pluginConnection.propertyOptions) {
-      const opt = pluginConnection.propertyOptions[i];
+    const propertyOptionOptions =
+      await pluginConnection.methods.propertyOptions({
+        connection,
+        app,
+        appId: app.id,
+        appOptions,
+        source,
+        sourceId: source.id,
+        property,
+        propertyId: property.id,
+        propertyOptions,
+      });
+
+    for (const i in propertyOptionOptions) {
+      const opt = propertyOptionOptions[i];
       const options = await opt.options({
         connection,
         app,

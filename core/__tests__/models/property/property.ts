@@ -522,23 +522,23 @@ describe("models/property", () => {
             app: "test-template-app",
             direction: "import",
             options: [],
-            propertyOptions: [
-              {
-                key: "column",
-                required: true,
-                description: "the column to choose",
-                type: "list",
-                options: async () => {
-                  return [
-                    {
-                      key: "id",
-                      examples: [1, 2, 3],
-                    },
-                  ];
-                },
-              },
-            ],
             methods: {
+              propertyOptions: async () => [
+                {
+                  key: "column",
+                  required: true,
+                  description: "the column to choose",
+                  type: "list",
+                  options: async () => {
+                    return [
+                      {
+                        key: "id",
+                        examples: [1, 2, 3],
+                      },
+                    ];
+                  },
+                },
+              ],
               sourceFilters: async () => {
                 return [
                   {

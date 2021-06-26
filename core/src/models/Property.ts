@@ -328,8 +328,8 @@ export class Property extends LoggedModel<Property> {
     return PropertyOps.enqueueRuns(this);
   }
 
-  async pluginOptions() {
-    return PropertyOps.pluginOptions(this);
+  async pluginOptions(propertyOptions?: SimplePropertyOptions) {
+    return PropertyOps.pluginOptions(this, propertyOptions);
   }
 
   async pluginFilterOptions() {

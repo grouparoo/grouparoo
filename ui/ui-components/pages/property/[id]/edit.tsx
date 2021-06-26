@@ -23,12 +23,14 @@ export default function Page(props) {
     propertiesHandler,
     types,
     filterOptions,
-    pluginOptions,
     properties,
     hydrationError,
   } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
+  const [pluginOptions, setPluginOptions] = useState<
+    Actions.PropertyPluginOptions["pluginOptions"]
+  >(props.pluginOptions);
   const [loading, setLoading] = useState(false);
   const [nextPage] = useState(router.query.nextPage?.toString()); // we want to store this when the page was initially loaded because we'll be updating the route for the profilePreview
   const [property, setProperty] = useState<Models.PropertyType>(props.property);
@@ -42,6 +44,10 @@ export default function Page(props) {
   useEffect(() => {
     newRuleDefaults();
   }, []);
+
+  useEffect(() => {
+    updatePluginOptions();
+  }, [JSON.stringify(property.options)]);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -88,6 +94,22 @@ export default function Page(props) {
         successHandler.set({ message: "Property Deleted" });
         router.push(nextPage || "/properties");
       }
+    }
+  }
+
+  async function updatePluginOptions() {
+    setLoading(true);
+    const pluginOptionsResponse: Actions.PropertyPluginOptions = await execApi(
+      "get",
+      `/property/${id}/pluginOptions`,
+      { options: property.options },
+      null,
+      null,
+      false
+    );
+    setLoading(false);
+    if (pluginOptionsResponse) {
+      setPluginOptions(pluginOptionsResponse.pluginOptions);
     }
   }
 

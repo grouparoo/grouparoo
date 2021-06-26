@@ -1,11 +1,14 @@
 import { PluginConnectionPropertyOption } from "@grouparoo/core";
+import { GetPropertyOptionsMethodInputs } from "../shared/types";
 import { queryKey } from "./pluginMethods";
 
 export interface GetPropertyOptionsMethod {
-  (): PluginConnectionPropertyOption[];
+  (args: GetPropertyOptionsMethodInputs): Promise<
+    PluginConnectionPropertyOption[]
+  >;
 }
 
-export const getPropertyOptions: GetPropertyOptionsMethod = () => {
+export const getPropertyOptions: GetPropertyOptionsMethod = async (args) => {
   return [
     {
       key: queryKey,

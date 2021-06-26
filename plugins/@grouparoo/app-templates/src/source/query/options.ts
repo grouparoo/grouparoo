@@ -9,5 +9,7 @@ export {
   PluginConnectionPropertyOption,
   PluginConnection,
   SourceOptionsMethod,
+  PropertyOptionsMethod,
+  ScheduleOptionsMethod,
   ProfilePropertyPluginMethod,
 } from "@grouparoo/core";

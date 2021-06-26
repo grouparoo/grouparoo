@@ -69,9 +69,9 @@ export class Plugins extends Initializer {
               description: "The url of the Google Sheet.",
             },
           ],
-          propertyOptions,
           methods: {
             sourcePreview,
+            propertyOptions,
             profiles,
             sourceRunPercentComplete,
           },

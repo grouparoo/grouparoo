@@ -9,12 +9,16 @@ import {
   tableNameKey,
 } from "./pluginMethods";
 import { getColumnExamples } from "./getExamples";
+import { GetPropertyOptionsMethodInputs } from "../shared/types";
 
 export interface GetPropertyOptionsMethod {
-  (argument: {
-    getSampleRows: GetSampleRowsMethod;
-    getColumns: GetColumnDefinitionsMethod;
-  }): PluginConnectionPropertyOption[];
+  (
+    args: GetPropertyOptionsMethodInputs,
+    argument: {
+      getSampleRows: GetSampleRowsMethod;
+      getColumns: GetColumnDefinitionsMethod;
+    }
+  ): Promise<PluginConnectionPropertyOption[]>;
 }
 
 const aggregationOptions = {
@@ -32,10 +36,10 @@ const aggregationOptions = {
   },
 };
 
-export const getPropertyOptions: GetPropertyOptionsMethod = ({
-  getSampleRows,
-  getColumns,
-}) => {
+export const getPropertyOptions: GetPropertyOptionsMethod = async (
+  { propertyOptions },
+  { getSampleRows, getColumns }
+) => {
   return [
     {
       key: columnNameKey,
@@ -73,7 +77,12 @@ export const getPropertyOptions: GetPropertyOptionsMethod = ({
     {
       key: sortColumnKey,
       displayName: "Sort Column",
-      required: false,
+      required: [
+        AggregationMethod.MostRecentValue as string,
+        AggregationMethod.LeastRecentValue as string,
+      ].includes(propertyOptions[aggregationMethodKey]?.toString())
+        ? true
+        : false,
       description:
         "which column to sort by for most and least recent properties",
       type: "typeahead",

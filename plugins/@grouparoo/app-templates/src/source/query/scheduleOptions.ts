@@ -1,6 +1,9 @@
 import { PluginConnectionScheduleOption } from "@grouparoo/core";
+import { GetScheduleOptionsMethodInputs } from "../shared/types";
 
-export const getScheduleOptions = () => {
+export const getScheduleOptions = async (
+  args: GetScheduleOptionsMethodInputs
+) => {
   const options: PluginConnectionScheduleOption[] = [
     {
       key: "query",

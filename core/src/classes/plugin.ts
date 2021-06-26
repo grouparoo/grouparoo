@@ -61,8 +61,6 @@ export interface PluginConnection {
   skipSourceMapping?: boolean;
   app: string;
   options: ConnectionOption[];
-  propertyOptions?: PluginConnectionPropertyOption[];
-  scheduleOptions?: PluginConnectionScheduleOption[];
   syncModes?: DestinationSyncMode[];
   defaultSyncMode?: DestinationSyncMode;
   methods?: {
@@ -71,6 +69,8 @@ export interface PluginConnection {
     sourceFilters?: SourceFilterMethod;
     sourceRunPercentComplete?: SourceRunPercentCompleteMethod;
     uniquePropertyBootstrapOptions?: UniquePropertyBootstrapOptions;
+    scheduleOptions?: ScheduleOptionsMethod;
+    propertyOptions?: PropertyOptionsMethod;
     profiles?: ProfilesPluginMethod;
     profileProperty?: ProfilePropertyPluginMethod;
     profileProperties?: ProfilePropertiesPluginMethod;
@@ -412,6 +412,40 @@ export interface SourceRunPercentCompleteMethod {
     run: Run;
     runId: string;
   }): Promise<number>;
+}
+
+/**
+ * Method to return the options available to this Schedule.
+ */
+export interface ScheduleOptionsMethod {
+  (argument: {
+    connection: any;
+    app: App;
+    appId: string;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceId: string;
+    schedule: Schedule;
+    scheduleId: string;
+    scheduleOptions: SimpleScheduleOptions;
+  }): Promise<PluginConnectionScheduleOption[]>;
+}
+
+/**
+ * Method to return the options available to this Property.
+ */
+export interface PropertyOptionsMethod {
+  (argument: {
+    connection: any;
+    app: App;
+    appId: string;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceId: string;
+    property: Property;
+    propertyId: string;
+    propertyOptions: SimplePropertyOptions;
+  }): Promise<PluginConnectionPropertyOption[]>;
 }
 
 /**

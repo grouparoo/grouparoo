@@ -1,7 +1,7 @@
-import { PluginConnectionPropertyOption } from "@grouparoo/core";
+import { PropertyOptionsMethod } from "@grouparoo/core";
 import { getFieldsAndExamples } from "./members";
 
-export const propertyOptions: PluginConnectionPropertyOption[] = [
+export const propertyOptions: PropertyOptionsMethod = async () => [
   {
     key: "field",
     required: true,

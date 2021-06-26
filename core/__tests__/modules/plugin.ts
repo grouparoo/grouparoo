@@ -34,8 +34,6 @@ describe("modules/plugin", () => {
             description: "import or update profiles from an uploaded file",
             app: "sample-plugin-app",
             options: [],
-            propertyOptions: [],
-            scheduleOptions: [],
             methods: {
               sourceOptions: async ({ sourceOptions }) => {
                 const response: SourceOptionsMethodResponse = {
@@ -46,6 +44,8 @@ describe("modules/plugin", () => {
               sourcePreview: async () => {
                 return [];
               },
+              propertyOptions: async () => [],
+              scheduleOptions: async () => [],
               uniquePropertyBootstrapOptions: async () => {
                 return {};
               },
@@ -91,8 +91,6 @@ describe("modules/plugin", () => {
               description: "export stuff",
               app: "sample-plugin-app",
               options: [],
-              propertyOptions: [],
-              scheduleOptions: [],
               methods: {},
             },
           ],

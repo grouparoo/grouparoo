@@ -6,18 +6,22 @@ import {
 } from "./pluginMethods";
 import { getSortableColumnExamples } from "./getExamples";
 import { PluginConnectionScheduleOption } from "@grouparoo/core";
+import { GetScheduleOptionsMethodInputs } from "../shared/types";
 
 export interface GetScheduleOptionsMethod {
-  (argument: {
-    getSampleRows: GetSampleRowsMethod;
-    getColumns: GetColumnDefinitionsMethod;
-  }): PluginConnectionScheduleOption[];
+  (
+    args: GetScheduleOptionsMethodInputs,
+    argument: {
+      getSampleRows: GetSampleRowsMethod;
+      getColumns: GetColumnDefinitionsMethod;
+    }
+  ): Promise<PluginConnectionScheduleOption[]>;
 }
 
-export const getScheduleOptions: GetScheduleOptionsMethod = ({
-  getSampleRows,
-  getColumns,
-}) => {
+export const getScheduleOptions: GetScheduleOptionsMethod = async (
+  args,
+  { getSampleRows, getColumns }
+) => {
   return [
     {
       key: columnNameKey,

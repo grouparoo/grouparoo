@@ -3,8 +3,9 @@ import {
   getScheduleOptions,
   PluginConnection,
   getProfilesMethod,
-  PluginConnectionPropertyOption,
   SourceOptionsMethod,
+  PropertyOptionsMethod,
+  ScheduleOptionsMethod,
   getSourceOptions,
   ProfilePropertyPluginMethod,
   getProfileProperty,
@@ -42,14 +43,20 @@ export const buildConnection: BuildConnectionMethod = ({
   validateQuery = validateGenericQuery,
   getTables,
 }) => {
-  const propertyOptions: PluginConnectionPropertyOption[] =
-    getPropertyOptions();
+  // const propertyOptions: PluginConnectionPropertyOption[] =
+  //   getPropertyOptions();
   const sourceOptions: SourceOptionsMethod = getSourceOptions({ getTables });
   const profileProperty: ProfilePropertyPluginMethod = getProfileProperty({
     executeQuery,
     validateQuery,
   });
-  const scheduleOptions = getChangedRows ? getScheduleOptions() : null;
+
+  const propertyOptions: PropertyOptionsMethod = async (args) =>
+    getPropertyOptions(args);
+  const scheduleOptions: ScheduleOptionsMethod = async (args) =>
+    getScheduleOptions(args);
+
+  // const scheduleOptions = getChangedRows ? getScheduleOptions() : null;
   const profiles = getChangedRows ? getProfilesMethod(getChangedRows) : null;
 
   return {

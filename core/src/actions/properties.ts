@@ -1,7 +1,7 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Op } from "sequelize";
 import { Profile } from "../models/Profile";
-import { Property } from "../models/Property";
+import { Property, SimplePropertyOptions } from "../models/Property";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { Group } from "../models/Group";
 import { GroupRule } from "../models/GroupRule";
@@ -277,13 +277,23 @@ export class PropertyPluginOptions extends AuthenticatedAction {
     this.permission = { topic: "property", mode: "read" };
     this.inputs = {
       id: { required: true },
+      options: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
     const property = await Property.findById(params.id);
 
-    return { pluginOptions: await property.pluginOptions() };
+    let propertyOptions: SimplePropertyOptions;
+    if (params.options) {
+      try {
+        propertyOptions = JSON.parse(params.options);
+      } catch (e) {
+        propertyOptions = params.options;
+      }
+    }
+
+    return { pluginOptions: await property.pluginOptions(propertyOptions) };
   }
 }
 
