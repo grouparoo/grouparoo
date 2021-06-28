@@ -3,15 +3,28 @@ import "@grouparoo/spec-helper";
 import { beforeData, afterData, getConfig } from "../utils/data";
 
 import { getConnection } from "../../src/lib/table-import/connection";
-const propertyOptions = getConnection().propertyOptions;
+const propertyOptionsMethod = getConnection().methods.propertyOptions;
 
 // these used and set by test
 const { appOptions, purchasesTableName } = getConfig();
 const sourceOptions = { table: purchasesTableName };
 let client;
 
-async function getOptionsForKey(keyName) {
+async function getOptionsForKey(keyName: string, existingPropertyOptions = {}) {
+  const propertyOptions = await propertyOptionsMethod({
+    connection: client,
+    appOptions,
+    app: null,
+    appId: null,
+    source: null,
+    sourceId: null,
+    property: null,
+    propertyId: null,
+    propertyOptions: existingPropertyOptions,
+  });
+
   const option = propertyOptions.find((rule) => rule.key === keyName);
+  if (!option) return [];
   expect(option.key).toBeTruthy();
 
   const optionMethod = option.options;
@@ -91,8 +104,15 @@ describe("sqlite/table/propertyOptions", () => {
     ]);
   });
 
-  test("gets sortColumn", async () => {
+  test("does not get sortColumn when not needed", async () => {
     const response = await getOptionsForKey("sortColumn");
+    expect(response).toEqual([]);
+  });
+
+  test("gets sortColumn when needed", async () => {
+    const response = await getOptionsForKey("sortColumn", {
+      aggregationMethod: "most recent value",
+    });
     const columnNames = response.map((r) => r.key).sort();
     expect(columnNames).toEqual([
       "amount",
