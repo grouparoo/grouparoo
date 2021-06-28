@@ -36,6 +36,10 @@ export default function Page(props) {
   const [property, setProperty] = useState<Models.PropertyType>(props.property);
   const [localFilters, setLocalFilters] = useState(props.property.filters);
 
+  const [debounceCounter, setDebounceCounter] = useState(0);
+  const sleep = debounceCounter === 0 ? 0 : 1000; // we only want to make one request every ~second, so wait for more input
+  let timer;
+
   const { id } = router.query;
   const source = sources.find((s) => s.id === property.sourceId);
 
@@ -47,6 +51,10 @@ export default function Page(props) {
 
   useEffect(() => {
     updatePluginOptions();
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [JSON.stringify(property.options)]);
 
   async function onSubmit(event) {
@@ -98,19 +106,24 @@ export default function Page(props) {
   }
 
   async function updatePluginOptions() {
-    setLoading(true);
-    const pluginOptionsResponse: Actions.PropertyPluginOptions = await execApi(
-      "get",
-      `/property/${id}/pluginOptions`,
-      { options: property.options },
-      null,
-      null,
-      false
-    );
-    setLoading(false);
-    if (pluginOptionsResponse) {
-      setPluginOptions(pluginOptionsResponse.pluginOptions);
-    }
+    // setLoading(true); // Do not set loading as we don't want to block the form mid-typing on a string field
+    setDebounceCounter(debounceCounter + 1);
+
+    timer = setTimeout(async () => {
+      const pluginOptionsResponse: Actions.PropertyPluginOptions =
+        await execApi("get", `/property/${id}/pluginOptions`, {
+          options: property.options,
+        });
+      // setLoading(false);
+      if (
+        pluginOptionsResponse &&
+        JSON.stringify(pluginOptionsResponse.pluginOptions) !==
+          JSON.stringify(pluginOptions)
+      ) {
+        console.log("SET!");
+        setPluginOptions(pluginOptionsResponse.pluginOptions);
+      }
+    }, sleep);
   }
 
   function newRuleDefaults() {
