@@ -498,6 +498,7 @@ export default function Page(props) {
               onClick={async () => {
                 await updateRules();
                 await getCounts();
+                window.location.reload();
               }}
             >
               Save Rules
