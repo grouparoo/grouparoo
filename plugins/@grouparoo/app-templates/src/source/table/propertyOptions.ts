@@ -40,49 +40,53 @@ export const getPropertyOptions: GetPropertyOptionsMethod = async (
   { propertyOptions },
   { getSampleRows, getColumns }
 ) => {
-  return [
-    {
-      key: columnNameKey,
-      displayName: "Column Name",
-      required: true,
-      description: "where the data comes from",
-      type: "typeahead",
-      options: async ({ connection, appOptions, appId, sourceOptions }) => {
-        const tableName = sourceOptions[tableNameKey]?.toString();
-        return getColumnExamples({
-          connection,
-          appOptions,
-          sourceOptions,
-          appId,
-          tableName,
-          getSampleRows,
-          getColumns,
-        });
-      },
+  const propertyOptionOptions: PluginConnectionPropertyOption[] = [];
+
+  propertyOptionOptions.push({
+    key: columnNameKey,
+    displayName: "Column Name",
+    required: true,
+    description: "where the data comes from",
+    type: "typeahead",
+    options: async ({ connection, appOptions, appId, sourceOptions }) => {
+      const tableName = sourceOptions[tableNameKey]?.toString();
+      return getColumnExamples({
+        connection,
+        appOptions,
+        sourceOptions,
+        appId,
+        tableName,
+        getSampleRows,
+        getColumns,
+      });
     },
-    {
-      key: aggregationMethodKey,
-      displayName: "Aggregation Method",
-      required: true,
-      description: "how we combine the data",
-      type: "list",
-      options: async () => {
-        const out = [];
-        for (const key in aggregationOptions) {
-          out.push(Object.assign({ key }, aggregationOptions[key]));
-        }
-        return out;
-      },
+  });
+
+  propertyOptionOptions.push({
+    key: aggregationMethodKey,
+    displayName: "Aggregation Method",
+    required: true,
+    description: "how we combine the data",
+    type: "list",
+    options: async () => {
+      const out = [];
+      for (const key in aggregationOptions) {
+        out.push(Object.assign({ key }, aggregationOptions[key]));
+      }
+      return out;
     },
-    {
+  });
+
+  if (
+    [
+      AggregationMethod.MostRecentValue as string,
+      AggregationMethod.LeastRecentValue as string,
+    ].includes(propertyOptions[aggregationMethodKey]?.toString())
+  ) {
+    propertyOptionOptions.push({
       key: sortColumnKey,
       displayName: "Sort Column",
-      required: [
-        AggregationMethod.MostRecentValue as string,
-        AggregationMethod.LeastRecentValue as string,
-      ].includes(propertyOptions[aggregationMethodKey]?.toString())
-        ? true
-        : false,
+      required: true,
       description:
         "which column to sort by for most and least recent properties",
       type: "typeahead",
@@ -98,6 +102,8 @@ export const getPropertyOptions: GetPropertyOptionsMethod = async (
           getColumns,
         });
       },
-    },
-  ];
+    });
+  }
+
+  return propertyOptionOptions;
 };
