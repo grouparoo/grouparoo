@@ -37,12 +37,19 @@ describe("models/setupStep", () => {
     );
   });
 
-  test("setupSteps ops returns config versions when in config mode", async () => {
-    let setupSteps = SetupStepOps.setupStepDescriptions();
+  test("setupSteps ops returns standard versions when not in config mode", async () => {
+    const setupSteps = SetupStepOps.setupStepDescriptions();
     expect(setupSteps[0].key).toEqual("name_your_grouparoo_instance");
+    expect(setupSteps[5].key).toEqual("create_a_group");
+    expect(setupSteps[6].key).toEqual("create_a_destination");
+  });
+
+  test("setupSteps ops returns config versions when in config mode", async () => {
     process.env.GROUPAROO_RUN_MODE = "cli:config";
-    setupSteps = SetupStepOps.setupStepDescriptions();
+    const setupSteps = SetupStepOps.setupStepDescriptions();
     expect(setupSteps[0].key).toEqual("install_grouparoo");
+    expect(setupSteps[5].key).toEqual("create_a_sample_profile");
+    expect(setupSteps[6].key).toEqual("create_a_group");
   });
 
   test("setup steps have unique keys", async () => {
