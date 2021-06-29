@@ -523,8 +523,10 @@ describe("models/property", () => {
             direction: "import",
             options: [],
             methods: {
-              propertyOptions: async () => [
-                {
+              propertyOptions: async ({ propertyOptions }) => {
+                const results = [];
+
+                results.push({
                   key: "column",
                   required: true,
                   description: "the column to choose",
@@ -537,8 +539,20 @@ describe("models/property", () => {
                       },
                     ];
                   },
-                },
-              ],
+                });
+
+                if (propertyOptions?.column === "more") {
+                  results.push({
+                    key: "extra",
+                    required: true,
+                    description: "extra stuff",
+                    type: "string",
+                    options: async () => [],
+                  });
+                }
+
+                return results;
+              },
               sourceFilters: async () => {
                 return [
                   {
@@ -766,126 +780,140 @@ describe("models/property", () => {
       });
     });
 
-    test.each(["deleted", "ready"])(
-      "properties can retrieve their options from the %p source",
-      async (state) => {
+    describe("options", () => {
+      test.each(["deleted", "ready"])(
+        "properties can retrieve their options from the %p source",
+        async (state) => {
+          const property = await Property.create({
+            key: "test",
+            type: "string",
+            sourceId: source.id,
+          });
+
+          await source.update({ state });
+          await app.update({ state });
+
+          const pluginOptions = await property.pluginOptions();
+          expect(pluginOptions).toEqual([
+            {
+              description: "the column to choose",
+              key: "column",
+              options: [{ examples: [1, 2, 3], key: "id" }],
+              required: true,
+              type: "list",
+            },
+          ]);
+
+          await property.destroy();
+          await source.update({ state: "ready" });
+          await app.update({ state: "ready" });
+        }
+      );
+
+      test("creating or editing a property options will test the query against a profile", async () => {
+        expect(queryCounter).toBe(0);
+
+        const profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({ userId: [1000] });
+
+        const property = await Property.create({
+          key: "test",
+          type: "string",
+          sourceId: source.id,
+        });
+        await property.setOptions({ column: "test" });
+        await property.update({ state: "ready" });
+
+        // not ready yet
+        await property.update({ state: "ready" });
+
+        // initial test
+        expect(queryCounter).toBeGreaterThanOrEqual(2);
+        await property.setOptions({ column: "id" });
+
+        // +2 checking the options
+        // +2 from the afterSave hook updating the rule
+        // +n for the mustache builder
+        expect(queryCounter).toBeGreaterThan(2);
+        await expect(property.setOptions({ column: "throw" })).rejects.toThrow(
+          /throw/
+        );
+
+        // no change
+        expect(queryCounter).toBeGreaterThan(2);
+        await property.destroy();
+        await profile.destroy();
+      });
+
+      test("options cannot be saved if they fail testing import against a profile", async () => {
+        const profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({ userId: [1000] });
+
         const property = await Property.create({
           key: "test",
           type: "string",
           sourceId: source.id,
         });
 
-        await source.update({ state });
-        await app.update({ state });
+        await expect(property.setOptions({ column: "throw" })).rejects.toThrow(
+          /throw/
+        );
 
-        const pluginOptions = await property.pluginOptions();
-        expect(pluginOptions).toEqual([
-          {
-            description: "the column to choose",
-            key: "column",
-            options: [{ examples: [1, 2, 3], key: "id" }],
-            required: true,
-            type: "list",
-          },
-        ]);
-
+        expect(await property.getOptions()).toEqual({});
         await property.destroy();
-        await source.update({ state: "ready" });
-        await app.update({ state: "ready" });
-      }
-    );
-
-    test("creating or editing a property options will test the query against a profile", async () => {
-      expect(queryCounter).toBe(0);
-
-      const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ userId: [1000] });
-
-      const property = await Property.create({
-        key: "test",
-        type: "string",
-        sourceId: source.id,
-      });
-      await property.setOptions({ column: "test" });
-      await property.update({ state: "ready" });
-
-      // not ready yet
-      await property.update({ state: "ready" });
-
-      // initial test
-      expect(queryCounter).toBeGreaterThanOrEqual(2);
-      await property.setOptions({ column: "id" });
-
-      // +2 checking the options
-      // +2 from the afterSave hook updating the rule
-      // +n for the mustache builder
-      expect(queryCounter).toBeGreaterThan(2);
-      await expect(property.setOptions({ column: "throw" })).rejects.toThrow(
-        /throw/
-      );
-
-      // no change
-      expect(queryCounter).toBeGreaterThan(2);
-      await property.destroy();
-      await profile.destroy();
-    });
-
-    test("options cannot be saved if they fail testing import against a profile", async () => {
-      const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ userId: [1000] });
-
-      const property = await Property.create({
-        key: "test",
-        type: "string",
-        sourceId: source.id,
+        await profile.destroy();
       });
 
-      await expect(property.setOptions({ column: "throw" })).rejects.toThrow(
-        /throw/
-      );
+      test("the property can be tested against the existing options or potential new options", async () => {
+        const profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({ userId: [1000] });
 
-      expect(await property.getOptions()).toEqual({});
-      await property.destroy();
-      await profile.destroy();
-    });
+        const property = await Property.create({
+          key: "test",
+          type: "string",
+          sourceId: source.id,
+        });
+        await property.setOptions({ column: "~" });
+        await property.update({ state: "ready" });
 
-    test("the property can be tested against the existing options or potential new options", async () => {
-      const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ userId: [1000] });
+        await profile.addOrUpdateProperties({ test: [true] });
 
-      const property = await Property.create({
-        key: "test",
-        type: "string",
-        sourceId: source.id,
+        // against saved query
+        const response = await property.test();
+        expect(response[0]).toMatch(`+ {"column":"~"}`);
+
+        // against new query
+        const responseAgain = await property.test({ column: "abc" });
+        expect(responseAgain[0]).toMatch('+ {"column":"abc"}');
+
+        await profile.destroy();
+        await property.destroy();
       });
-      await property.setOptions({ column: "~" });
-      await property.update({ state: "ready" });
 
-      await profile.addOrUpdateProperties({ test: [true] });
-
-      // against saved query
-      const response = await property.test();
-      expect(response[0]).toMatch(`+ {"column":"~"}`);
-
-      // against new query
-      const responseAgain = await property.test({ column: "abc" });
-      expect(responseAgain[0]).toMatch('+ {"column":"abc"}');
-
-      await profile.destroy();
-      await property.destroy();
-    });
-
-    test("apiData will include the options", async () => {
-      const property = await Property.create({
-        key: "test",
-        type: "string",
-        sourceId: source.id,
+      test("options will be dynamically validated", async () => {
+        const property = await Property.create({
+          key: "test-with-extra",
+          type: "string",
+          sourceId: source.id,
+        });
+        await expect(property.setOptions({ column: "more" })).rejects.toThrow(
+          /extra is required for a property/
+        );
+        await expect(property.update({ state: "ready" })).rejects.toThrow();
       });
-      await property.setOptions({ column: "id" });
 
-      const apiData = await property.apiData();
-      expect(apiData.options).toEqual({ column: "id" });
-      await property.destroy();
+      test("apiData will include the options", async () => {
+        const property = await Property.create({
+          key: "test",
+          type: "string",
+          sourceId: source.id,
+        });
+        await property.setOptions({ column: "id" });
+
+        const apiData = await property.apiData();
+        expect(apiData.options).toEqual({ column: "id" });
+        await property.destroy();
+      });
     });
 
     test("apiData will include the source", async () => {
