@@ -32,6 +32,7 @@ export {
   PropertyTypes,
   PropertyFiltersWithKey,
   PluginConnectionPropertyOption,
+  SimplePropertyOptions,
 } from "./models/Property";
 export { PropertyFilter } from "./models/PropertyFilter";
 export { ProfileMultipleAssociationShim } from "./models/ProfileMultipleAssociationShim";

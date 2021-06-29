@@ -114,7 +114,7 @@ export namespace ScheduleOps {
       throw new Error(`cannot find a pluginConnection for type ${source.type}`);
     }
 
-    if (!pluginConnection.scheduleOptions) return response;
+    if (!pluginConnection.methods.scheduleOptions) return response;
 
     const app = await source.$get("app", { scope: null, include: [Option] });
     const connection = await app.getConnection();
@@ -122,9 +122,17 @@ export namespace ScheduleOps {
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
     const properties = await Property.findAllWithCache();
+    const scheduleOptions = await schedule.getOptions();
 
-    for (const i in pluginConnection.scheduleOptions) {
-      const opt = pluginConnection.scheduleOptions[i];
+    const scheduleOptionOptions =
+      await pluginConnection.methods.scheduleOptions({
+        schedule,
+        scheduleId: schedule.id,
+        scheduleOptions,
+      });
+
+    for (const i in scheduleOptionOptions) {
+      const opt = scheduleOptionOptions[i];
       const options = await opt.options({
         connection,
         app,

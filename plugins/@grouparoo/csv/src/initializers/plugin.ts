@@ -68,11 +68,11 @@ export class Plugins extends Initializer {
                 "The fileId from a file previously uploaded to Grouparoo.",
             },
           ],
-          scheduleOptions: [],
-          propertyOptions: filePropertyOptions,
+
           methods: {
             sourceOptions: fileSourceOptions,
             sourcePreview: fileSourcePreview,
+            propertyOptions: filePropertyOptions,
             profiles: fileProfiles,
             sourceRunPercentComplete: fileSourceRunPercentComplete,
             uniquePropertyBootstrapOptions: fileUniquePropertyBootstrapOptions,
@@ -100,11 +100,11 @@ export class Plugins extends Initializer {
                 "How long can we cache the CSV file before re-downloading it?",
             },
           ],
-          scheduleOptions: [],
-          propertyOptions: remotePropertyOptions,
+
           methods: {
             sourceOptions: remoteSourceOptions,
             sourcePreview: remoteSourcePreview,
+            propertyOptions: remotePropertyOptions,
             profiles: remoteProfiles,
             sourceRunPercentComplete: remoteSourceRunPercentComplete,
             uniquePropertyBootstrapOptions:

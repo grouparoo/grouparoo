@@ -16,6 +16,8 @@ export {
   SourcePreviewMethod,
   SourceOptionsMethod,
   SourceFilterMethod,
+  PropertyOptionsMethod,
+  ScheduleOptionsMethod,
   ProfilePropertyPluginMethod,
   ProfilePropertiesPluginMethod,
   ProfilesPluginMethod,

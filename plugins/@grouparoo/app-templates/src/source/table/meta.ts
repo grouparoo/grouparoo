@@ -1,4 +1,3 @@
-import { ConnectionOption } from "@grouparoo/core";
 import {
   tableNameKey,
   GetSampleRowsMethod,
@@ -8,8 +7,8 @@ import {
   getSourceOptions,
   SourceOptionsMethod,
   getPropertyOptions,
-  PluginConnectionPropertyOption,
-  PluginConnectionScheduleOption,
+  PropertyOptionsMethod,
+  ScheduleOptionsMethod,
   PluginConnection,
   SourcePreviewMethod,
   getSourcePreview,
@@ -65,14 +64,16 @@ export const buildConnection: BuildConnectionMethod = ({
   getPropertyValues,
   getChangedRowCount,
 }) => {
-  const propertyOptions: PluginConnectionPropertyOption[] = getPropertyOptions({
-    getSampleRows,
-    getColumns,
-  });
-  const scheduleOptions: PluginConnectionScheduleOption[] = getScheduleOptions({
-    getSampleRows,
-    getColumns,
-  });
+  const propertyOptions: PropertyOptionsMethod = async (args) =>
+    getPropertyOptions(args, {
+      getSampleRows,
+      getColumns,
+    });
+  const scheduleOptions: ScheduleOptionsMethod = async (args) =>
+    getScheduleOptions(args, {
+      getSampleRows,
+      getColumns,
+    });
   const sourceOptions: SourceOptionsMethod = getSourceOptions({
     getTables,
     sourceOptions: additionalOptions,
@@ -117,12 +118,12 @@ export const buildConnection: BuildConnectionMethod = ({
     description,
     app,
     options,
-    propertyOptions,
-    scheduleOptions,
     methods: {
       sourceOptions,
       sourcePreview,
       sourceFilters,
+      propertyOptions,
+      scheduleOptions,
       uniquePropertyBootstrapOptions,
       profiles,
       profileProperty,

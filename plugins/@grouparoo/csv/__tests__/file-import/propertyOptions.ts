@@ -32,7 +32,13 @@ describe("csv/file/propertyOptions", () => {
   });
 
   test("can get property options", async () => {
-    const options = await propertyOptions[0].options({
+    const options = await propertyOptions({
+      property: null,
+      propertyId: null,
+      propertyOptions: {},
+    });
+
+    const columnOptions = await options[0].options({
       sourceOptions,
       propertyId: "source",
       connection: null,
@@ -45,7 +51,7 @@ describe("csv/file/propertyOptions", () => {
       property: null,
     });
 
-    expect(options.map((o) => o.key)).toEqual([
+    expect(columnOptions.map((o) => o.key)).toEqual([
       "id",
       "first_name",
       "last_name",
@@ -57,7 +63,9 @@ describe("csv/file/propertyOptions", () => {
       "vip",
       "ltv",
     ]);
-    expect(options.find((o) => o.key === "email").examples.sort()).toEqual([
+    expect(
+      columnOptions.find((o) => o.key === "email").examples.sort()
+    ).toEqual([
       "acotesford3@example.com",
       "ceate1@example.com",
       "diston9@example.com",

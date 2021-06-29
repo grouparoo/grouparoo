@@ -4,7 +4,7 @@ import path from "path";
 import { beforeData, afterData, getConfig } from "../utils/data";
 
 import { getConnection } from "../../src/lib/table-import/connection";
-const scheduleOptions = getConnection().scheduleOptions;
+const scheduleOptionsMethod = getConnection().methods.scheduleOptions;
 
 // these used and set by test
 const { appOptions, purchasesTableName } = getConfig();
@@ -12,6 +12,12 @@ const sourceOptions = { table: purchasesTableName };
 let client;
 
 async function getColumns() {
+  const scheduleOptions = await scheduleOptionsMethod({
+    schedule: null,
+    scheduleId: "",
+    scheduleOptions: {},
+  });
+
   const columnOption = scheduleOptions[0];
   const optionMethod = columnOption.options;
 

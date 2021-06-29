@@ -10,7 +10,7 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 import { SimpleAppOptions } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
-const propertyOptions = getConnection().propertyOptions;
+const propertyOptionsMethod = getConnection().methods.propertyOptions;
 
 const nockFile = path.join(
   __dirname,
@@ -30,12 +30,20 @@ require(nockFile);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const sourceOptions = { table: "PURCHASES" };
 
-async function getOptionsForKey(keyName) {
+async function getOptionsForKey(keyName: string, existingPropertyOptions = {}) {
+  const connection = await connect({ appOptions, app: null, appId: null });
+
+  const propertyOptions = await propertyOptionsMethod({
+    property: null,
+    propertyId: null,
+    propertyOptions: existingPropertyOptions,
+  });
+
   const option = propertyOptions.find((rule) => rule.key === keyName);
+  if (!option) return [];
   expect(option.key).toBeTruthy();
 
   const optionMethod = option.options;
-  const connection = await connect({ appOptions, app: null, appId: null });
 
   const response = await optionMethod({
     connection,
@@ -99,8 +107,15 @@ describe("snowflake/table/propertyOptions", () => {
     ]);
   });
 
-  test("gets sortColumn", async () => {
+  test("does not get sortColumn when not needed", async () => {
     const response = await getOptionsForKey("sortColumn");
+    expect(response).toEqual([]);
+  });
+
+  test("gets sortColumn when needed", async () => {
+    const response = await getOptionsForKey("sortColumn", {
+      aggregationMethod: "most recent value",
+    });
     const columnNames = response.map((r) => r.key).sort();
     expect(columnNames).toEqual([
       "AMOUNT",

@@ -3,8 +3,9 @@ import {
   getScheduleOptions,
   PluginConnection,
   getProfilesMethod,
-  PluginConnectionPropertyOption,
   SourceOptionsMethod,
+  PropertyOptionsMethod,
+  ScheduleOptionsMethod,
   getSourceOptions,
   ProfilePropertyPluginMethod,
   getProfileProperty,
@@ -13,7 +14,7 @@ import {
   validateGenericQuery,
   GetChangedRowsMethod,
 } from "./options";
-import { GetTablesMethod, tableNameKey } from "../table";
+import { GetTablesMethod } from "../table";
 import { ConnectionOption } from "@grouparoo/core";
 
 export interface BuildConnectionMethod {
@@ -42,14 +43,18 @@ export const buildConnection: BuildConnectionMethod = ({
   validateQuery = validateGenericQuery,
   getTables,
 }) => {
-  const propertyOptions: PluginConnectionPropertyOption[] =
-    getPropertyOptions();
   const sourceOptions: SourceOptionsMethod = getSourceOptions({ getTables });
   const profileProperty: ProfilePropertyPluginMethod = getProfileProperty({
     executeQuery,
     validateQuery,
   });
-  const scheduleOptions = getChangedRows ? getScheduleOptions() : null;
+
+  const propertyOptions: PropertyOptionsMethod = async (args) =>
+    getPropertyOptions(args);
+  const scheduleOptions: ScheduleOptionsMethod = async (args) =>
+    getScheduleOptions(args);
+
+  // const scheduleOptions = getChangedRows ? getScheduleOptions() : null;
   const profiles = getChangedRows ? getProfilesMethod(getChangedRows) : null;
 
   return {
@@ -58,13 +63,13 @@ export const buildConnection: BuildConnectionMethod = ({
     description,
     app,
     options,
-    propertyOptions,
-    scheduleOptions,
     skipSourceMapping: true,
     methods: {
       sourceOptions,
       profileProperty,
       profiles,
+      propertyOptions,
+      scheduleOptions,
     },
   };
 };

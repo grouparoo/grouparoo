@@ -23,16 +23,22 @@ export default function Page(props) {
     propertiesHandler,
     types,
     filterOptions,
-    pluginOptions,
     properties,
     hydrationError,
   } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
+  const [pluginOptions, setPluginOptions] = useState<
+    Actions.PropertyPluginOptions["pluginOptions"]
+  >(props.pluginOptions);
   const [loading, setLoading] = useState(false);
   const [nextPage] = useState(router.query.nextPage?.toString()); // we want to store this when the page was initially loaded because we'll be updating the route for the profilePreview
   const [property, setProperty] = useState<Models.PropertyType>(props.property);
   const [localFilters, setLocalFilters] = useState(props.property.filters);
+
+  const [debounceCounter, setDebounceCounter] = useState(0);
+  const sleep = debounceCounter === 0 ? 0 : 1000; // we only want to make one request every ~second, so wait for more input
+  let timer;
 
   const { id } = router.query;
   const source = sources.find((s) => s.id === property.sourceId);
@@ -42,6 +48,14 @@ export default function Page(props) {
   useEffect(() => {
     newRuleDefaults();
   }, []);
+
+  useEffect(() => {
+    updatePluginOptions();
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [JSON.stringify(property.options)]);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -89,6 +103,26 @@ export default function Page(props) {
         router.push(nextPage || "/properties");
       }
     }
+  }
+
+  async function updatePluginOptions() {
+    // setLoading(true); // Do not set loading as we don't want to block the form mid-typing on a string field
+    setDebounceCounter(debounceCounter + 1);
+
+    timer = setTimeout(async () => {
+      const pluginOptionsResponse: Actions.PropertyPluginOptions =
+        await execApi("get", `/property/${id}/pluginOptions`, {
+          options: property.options,
+        });
+      // setLoading(false);
+      if (
+        pluginOptionsResponse &&
+        JSON.stringify(pluginOptionsResponse.pluginOptions) !==
+          JSON.stringify(pluginOptions)
+      ) {
+        setPluginOptions(pluginOptionsResponse.pluginOptions);
+      }
+    }, sleep);
   }
 
   function newRuleDefaults() {

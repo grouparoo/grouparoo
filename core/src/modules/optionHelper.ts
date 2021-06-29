@@ -7,12 +7,13 @@ import {
 import { Option } from "./../models/Option";
 import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
-import { Schedule } from "./../models/Schedule";
-import { Property } from "../models/Property";
+import { Schedule, SimpleScheduleOptions } from "./../models/Schedule";
+import { Property, SimplePropertyOptions } from "../models/Property";
 import { App, AppOption } from "./../models/App";
 import { LoggedModel } from "../classes/loggedModel";
 import { LockableHelper } from "./lockableHelper";
 import { plural } from "pluralize";
+import { Mapping } from "../models/Mapping";
 
 export const ObfuscatedPasswordString = "__ObfuscatedPassword";
 
@@ -202,17 +203,17 @@ export namespace OptionHelper {
       const { pluginConnection } = await getPlugin(instance);
       allOptions = pluginConnection.options.map((o) => o.key);
     } else if (instance instanceof Schedule) {
-      requiredOptions = await getRequiredScheduleOptions(instance);
-      const { pluginConnection } = await getPlugin(instance);
-      allOptions = pluginConnection.scheduleOptions
-        ? pluginConnection.scheduleOptions.map((o) => o.key)
-        : [];
+      const scheduleOptions = await getScheduleOptions(instance, options);
+      allOptions = scheduleOptions.map((o) => o.key);
+      requiredOptions = scheduleOptions
+        .filter((o) => o.required)
+        .map((o) => o.key);
     } else if (instance instanceof Property) {
-      requiredOptions = await getRequiredPropertyOptions(instance);
-      const { pluginConnection } = await getPlugin(instance);
-      allOptions = pluginConnection.propertyOptions
-        ? pluginConnection.propertyOptions.map((o) => o.key)
-        : [];
+      const propertyOptions = await getPropertyOptions(instance, options);
+      allOptions = propertyOptions.map((o) => o.key);
+      requiredOptions = propertyOptions
+        .filter((o) => o.required)
+        .map((o) => o.key);
     } else if (instance instanceof App) {
       requiredOptions = await getRequiredAppOptions(instance);
       const { pluginApp } = await getPlugin(instance);
@@ -257,7 +258,10 @@ export namespace OptionHelper {
     return pluginConnection.options.filter((o) => o.required).map((o) => o.key);
   }
 
-  export async function getRequiredScheduleOptions(instance: Schedule) {
+  export async function getScheduleOptions(
+    instance: Schedule,
+    scheduleOptions: SimpleScheduleOptions
+  ) {
     const { pluginConnection } = await getPlugin(instance);
     const type = await getInstanceType(instance);
 
@@ -265,29 +269,38 @@ export namespace OptionHelper {
       throw new Error(`cannot find a pluginConnection for type ${type}`);
     }
 
-    if (!pluginConnection.scheduleOptions) {
-      return [];
-    }
+    if (!pluginConnection.methods.scheduleOptions) return [];
 
-    return pluginConnection.scheduleOptions
-      .filter((o) => o.required)
-      .map((o) => o.key);
+    const scheduleOptionOptions =
+      await pluginConnection.methods.scheduleOptions({
+        schedule: instance,
+        scheduleId: instance.id,
+        scheduleOptions,
+      });
+
+    return scheduleOptionOptions;
   }
 
-  export async function getRequiredPropertyOptions(instance: Property) {
+  export async function getPropertyOptions(
+    instance: Property,
+    propertyOptions: SimplePropertyOptions
+  ) {
     const { pluginConnection } = await getPlugin(instance);
     const type = await getInstanceType(instance);
     if (!pluginConnection) {
       throw new Error(`cannot find a pluginConnection for type ${type}`);
     }
 
-    if (!pluginConnection.propertyOptions) {
-      return [];
-    }
+    if (!pluginConnection.methods.propertyOptions) return [];
 
-    return pluginConnection.propertyOptions
-      .filter((o) => o.required)
-      .map((o) => o.key);
+    const propertyOptionOptions =
+      await pluginConnection.methods.propertyOptions({
+        property: instance,
+        propertyId: instance.id,
+        propertyOptions,
+      });
+
+    return propertyOptionOptions;
   }
 
   export async function getRequiredAppOptions(instance: App) {

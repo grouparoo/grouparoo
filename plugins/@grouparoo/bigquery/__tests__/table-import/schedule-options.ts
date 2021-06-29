@@ -8,7 +8,7 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 import { SimpleAppOptions } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
-const scheduleOptions = getConnection().scheduleOptions;
+const scheduleOptionsMethod = getConnection().methods.scheduleOptions;
 
 const nockFile = path.join(
   __dirname,
@@ -29,9 +29,16 @@ const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const sourceOptions = { table: "purchases" };
 
 async function getColumns() {
+  const connection = await connect({ appOptions, app: null, appId: null });
+
+  const scheduleOptions = await scheduleOptionsMethod({
+    schedule: null,
+    scheduleId: "",
+    scheduleOptions: {},
+  });
+
   const columnOption = scheduleOptions[0];
   const optionMethod = columnOption.options;
-  const connection = await connect({ appOptions, app: null, appId: null });
 
   const response = await optionMethod({
     connection,

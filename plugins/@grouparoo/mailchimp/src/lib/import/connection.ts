@@ -17,10 +17,10 @@ const connection: PluginConnection = {
       description: "Mailchimp list id",
     },
   ],
-  propertyOptions,
   methods: {
     sourceOptions: getSourceOptions(["listId"]),
     sourcePreview,
+    propertyOptions,
     profiles,
     sourceRunPercentComplete,
   },

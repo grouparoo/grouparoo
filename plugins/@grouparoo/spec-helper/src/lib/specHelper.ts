@@ -270,35 +270,6 @@ export namespace helper {
             { key: "table", required: true },
             { key: "where", required: false },
           ],
-          propertyOptions: [
-            {
-              key: "column",
-              required: true,
-              description: "the column to choose",
-              type: "list",
-              options: async () => {
-                return [
-                  { key: "id", examples: [1, 2, 3] },
-                  { key: "fname", examples: ["mario", "luigi", "peach"] },
-                  { key: "lname", examples: ["mario", "mario", "toadstool"] },
-                ];
-              },
-            },
-          ],
-          scheduleOptions: [
-            {
-              key: "maxColumn",
-              required: true,
-              description: "the column to choose",
-              type: "list",
-              options: async () => {
-                return [
-                  { key: "created_at", examples: [1, 2, 3] },
-                  { key: "updated_at", examples: [1, 2, 3] },
-                ];
-              },
-            },
-          ],
           methods: {
             sourceOptions: async ({ sourceOptions }) => {
               const response: SourceOptionsMethodResponse = {
@@ -317,6 +288,35 @@ export namespace helper {
                 { id: 2, fname: "luigi", lname: "mario" },
               ];
             },
+            propertyOptions: async () => [
+              {
+                key: "column",
+                required: true,
+                description: "the column to choose",
+                type: "list",
+                options: async () => {
+                  return [
+                    { key: "id", examples: [1, 2, 3] },
+                    { key: "fname", examples: ["mario", "luigi", "peach"] },
+                    { key: "lname", examples: ["mario", "mario", "toadstool"] },
+                  ];
+                },
+              },
+            ],
+            scheduleOptions: async () => [
+              {
+                key: "maxColumn",
+                required: true,
+                description: "the column to choose",
+                type: "list",
+                options: async () => {
+                  return [
+                    { key: "created_at", examples: [1, 2, 3] },
+                    { key: "updated_at", examples: [1, 2, 3] },
+                  ];
+                },
+              },
+            ],
             uniquePropertyBootstrapOptions: async () => {
               return {
                 column: "__default_column",

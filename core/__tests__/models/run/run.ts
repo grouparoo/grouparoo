@@ -624,18 +624,18 @@ describe("models/run", () => {
             app: "test-error-app",
             direction: "import",
             options: [{ key: "query", required: true }],
-            propertyOptions: [
-              {
-                key: "column",
-                required: true,
-                description: "the column to choose",
-                type: "list",
-                options: async () => {
-                  return [];
-                },
-              },
-            ],
             methods: {
+              propertyOptions: async () => [
+                {
+                  key: "column",
+                  required: true,
+                  description: "the column to choose",
+                  type: "list",
+                  options: async () => {
+                    return [];
+                  },
+                },
+              ],
               profileProperty: async ({ propertyOptions }) => {
                 if (propertyOptions.column) {
                   throw new Error(propertyOptions.column.toString());
