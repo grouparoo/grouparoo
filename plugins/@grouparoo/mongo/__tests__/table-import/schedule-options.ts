@@ -12,12 +12,6 @@ let client;
 
 async function getColumns(sourceOptions) {
   const scheduleOptions = await scheduleOptionsMethod({
-    connection: client,
-    appOptions,
-    app: null,
-    appId: null,
-    source: null,
-    sourceId: null,
     schedule: null,
     scheduleId: "",
     scheduleOptions: {},

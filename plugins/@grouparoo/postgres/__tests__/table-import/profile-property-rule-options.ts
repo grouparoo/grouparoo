@@ -12,12 +12,6 @@ let client;
 
 async function getOptionsForKey(keyName: string, existingPropertyOptions = {}) {
   const propertyOptions = await propertyOptionsMethod({
-    connection: client,
-    appOptions,
-    app: null,
-    appId: null,
-    source: null,
-    sourceId: null,
     property: null,
     propertyId: null,
     propertyOptions: existingPropertyOptions,

@@ -33,12 +33,6 @@ async function getOptionsForKey(keyName: string, existingPropertyOptions = {}) {
   const connection = await connect({ appOptions, app: null, appId: null });
 
   const propertyOptions = await propertyOptionsMethod({
-    connection,
-    appOptions,
-    app: null,
-    appId: null,
-    source: null,
-    sourceId: null,
     property: null,
     propertyId: null,
     propertyOptions: existingPropertyOptions,
