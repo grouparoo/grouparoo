@@ -58,8 +58,10 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
       }
       if (
         aggregationMethod === AggregationMethod.Average ||
-        aggregationMethod === AggregationMethod.Sum
+        aggregationMethod === AggregationMethod.Sum ||
+        aggregationMethod === AggregationMethod.Count
       ) {
+        //default all entries to 0 to start... will be replaced later if there is a response
         responsesById[profiles[i].id] = [];
         responsesById[profiles[i].id].push(0);
       }
@@ -95,7 +97,6 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
 
     for (const pk in responsesByPrimaryKey) {
       primaryKeysHash[pk].forEach((profileId) => {
-        responsesById[profileId] = [];
         responsesById[profileId] = responsesByPrimaryKey[pk];
       });
     }
