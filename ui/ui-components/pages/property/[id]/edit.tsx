@@ -120,7 +120,6 @@ export default function Page(props) {
         JSON.stringify(pluginOptionsResponse.pluginOptions) !==
           JSON.stringify(pluginOptions)
       ) {
-        console.log("SET!");
         setPluginOptions(pluginOptionsResponse.pluginOptions);
       }
     }, sleep);

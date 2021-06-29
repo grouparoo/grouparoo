@@ -35,8 +35,6 @@ export function CLIStream(props) {
     setLatestTimestamp(message.timestamp);
   }
 
-  console.log("render");
-
   return (
     <>
       <div
