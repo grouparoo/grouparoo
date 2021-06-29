@@ -557,6 +557,12 @@ describe("modules/configWriter", () => {
       expect(config).toBeUndefined();
     });
 
+    test("sources without a mapping will not add mappings to the config object", async () => {
+      const source: Source = await helper.factories.source();
+      const config = await source.getConfigObject();
+      expect(config.mapping).toBeUndefined();
+    });
+
     test("sources will also bring their own schedule", async () => {
       const schedule: Schedule = await helper.factories.schedule(source);
       const config = await source.getConfigObject();

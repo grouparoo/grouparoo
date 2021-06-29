@@ -297,7 +297,6 @@ export class Source extends LoggedModel<Source> {
     this.app = await this.$get("app");
     const appId = this.app?.getConfigId();
     const options = await this.getOptions(false);
-    const mapping = await MappingHelper.getConfigMapping(this);
 
     if (!appId || !name) return;
 
@@ -307,9 +306,13 @@ export class Source extends LoggedModel<Source> {
       name,
       type,
       appId,
-      mapping,
       options,
     };
+
+    const mapping = await MappingHelper.getConfigMapping(this);
+    if (Object.keys(mapping).length > 0) {
+      configObject.mapping = mapping;
+    }
 
     const setSchedule = async () => {
       if (!this.schedule) return;
