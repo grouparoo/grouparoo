@@ -88,6 +88,7 @@ describe("sqlite/table/profileProperties", () => {
       lastName: null,
     });
 
+    //profile w no purchases for testing null/0 in aggregate properties
     thirdProfile = await helper.factories.profile();
     await thirdProfile.addOrUpdateProperties({
       userId: [6],
@@ -357,7 +358,7 @@ describe("sqlite/table/profileProperties", () => {
           [{ op, key: "purchase", match: "Apple" }]
         );
         expect(values[profile.id]).toEqual([2]);
-        expect(otherProfile[profile.id]).toBeUndefined();
+        expect(values[otherProfile.id]).toEqual([3]);
         expect(values[thirdProfile.id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
