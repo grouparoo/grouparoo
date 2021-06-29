@@ -21,14 +21,8 @@ describe("csv/remote/propertyOptions", () => {
 
   test("can get property options", async () => {
     const options = await propertyOptions({
-      propertyId: "source",
-      connection: null,
-      app: null,
-      appId: null,
-      appOptions: null,
-      source: null,
-      sourceId: null,
       property: null,
+      propertyId: null,
       propertyOptions: {},
     });
 
