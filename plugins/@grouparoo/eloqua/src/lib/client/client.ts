@@ -14,7 +14,12 @@ export default class EloquaClient {
   contacts: Contact;
   lists: ContactList;
 
-  constructor(options: any) {
+  constructor(options: {
+    userName: string;
+    password: string;
+    siteName: string;
+    loginUrl?: string;
+  }) {
     this.auth = { username: undefined, password: undefined };
     this.setAuth(options);
     this.loginUrl = options.loginUrl || "https://login.eloqua.com/id";
@@ -23,7 +28,7 @@ export default class EloquaClient {
     this.bulk = new Bulk(this, "contacts");
   }
 
-  setAuth(options: any) {
+  setAuth(options: { userName: string; password: string; siteName: string }) {
     if (!options.siteName) {
       throw new Error("A siteName needs to be provided");
     } else if (!options.userName) {
@@ -37,7 +42,6 @@ export default class EloquaClient {
     };
   }
 
-  // tslint:disable-next-line: function-name
   async _init() {
     if (this.baseUrl) {
       return this.baseUrl;
@@ -46,13 +50,9 @@ export default class EloquaClient {
   }
 
   async getBaseUrl() {
-    // disable certificate checks - was getting inconsistent certificate results with this call
-    // const agent = new https.Agent({ rejectUnauthorized: false })
-
     const params: AxiosRequestConfig = {
       url: this.loginUrl,
       auth: this.auth,
-      // httpsAgent: agent,
     };
     const response = await axios(params);
     const { data = {} } = response;

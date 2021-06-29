@@ -6,8 +6,8 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "{{{__pluginName}}}",
       options: {
-        siteName: "...", // Eloqua Site Name
-        userName: "...", // Eloqua User Name
+        siteName: "myCompanySiteName", // Eloqua Site Name
+        userName: "user.name", // Eloqua User Name
         password: "..." // Eloqua Password
       }
     },

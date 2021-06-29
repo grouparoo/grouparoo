@@ -42,11 +42,11 @@ let batchEmails = [];
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profiles.js");
 
 // these comments to use nock
-const newNock = false;
-require("./../fixtures/export-profiles");
+// const newNock = false;
+// require("./../fixtures/export-profiles");
 // or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
+const newNock = true;
+helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
@@ -954,7 +954,7 @@ describe("eloqua/exportProfile", () => {
 
   test("can handle batches with lots of prospects", async () => {
     // generate profiles
-    const profiles = generateLongProfiles(10);
+    const profiles = generateLongProfiles(150);
 
     // run batch export
     const exports = makeExports(profiles);
@@ -970,14 +970,21 @@ describe("eloqua/exportProfile", () => {
     expect(success).toBe(true);
     expect(errors.length).toBe(0);
 
+    batchEmails = profiles.map((p) => p.emailAddress);
+    const users = await client.contacts.getContactsByEmail(batchEmails);
+
     // verify all were created properly
     for (const profile of profiles) {
-      const user = await client.contacts.getByEmail(profile.emailAddress);
+      let user = { emailAddress: null, firstName: null, lastName: null };
+      const filteredContacts = users.filter(
+        (u) => u.emailAddress === profile.emailAddress
+      );
+      if (filteredContacts.length > 0) {
+        user = filteredContacts[0];
+      }
       expect(user.emailAddress).toEqual(profile.emailAddress);
       expect(user.firstName).toEqual(profile.firstName);
       expect(user.lastName).toEqual(profile.lastName);
     }
-
-    batchEmails = profiles.map((p) => p.email);
   });
 });

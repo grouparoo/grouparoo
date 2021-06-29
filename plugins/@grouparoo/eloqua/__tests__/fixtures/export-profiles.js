@@ -16,7 +16,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-MzFiMGE5OWIzY2ZiNGE5MjhiNzFjNjE4NmM5MDA3ZDI=';style-src 'self' 'nonce-ZjhjNDczYmFmMjBmNGM1Y2JlNTc2NjJiZTEyOWFmYWU=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-ZTMyNDdlMDU4ZTUyNGRmYzk2ZTNhNTUyYTM5NTU0MzQ=';style-src 'self' 'nonce-OWE1MTU1OTVjZTBlNDU0NTkyNjllYTViZmFkNzgyYjc=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -26,7 +26,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:35:45 GMT',
+  'Mon, 28 Jun 2021 23:22:10 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -45,7 +45,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '92b6834cb38d430e96009e2d0c330801/23429541330',
+  '5d72c903eec846b19084091913d5899f/23671843694',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -55,7 +55,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:35:46 GMT',
+  'Mon, 28 Jun 2021 23:22:11 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -74,7 +74,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c34c8fbe1d8845d891c8df9563106e1c/23429541611',
+  'b47fe9c0d53d486395aad6a761ffeb5d/23671844266',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -84,7 +84,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:35:46 GMT',
+  'Mon, 28 Jun 2021 23:22:12 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -103,7 +103,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '7cdd855a3d424423a207bd2aa10fed3d/23429541844',
+  '459ccb84a4794fb59e27836fd746d72e/23671844602',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -113,7 +113,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:35:47 GMT',
+  'Mon, 28 Jun 2021 23:22:13 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -132,7 +132,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e10da2dafc774536b7d878c3c79d2780/23429542218',
+  '7ed07ffff8e8487997676472a8a6225f/23671844944',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -142,7 +142,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:35:48 GMT',
+  'Mon, 28 Jun 2021 23:22:13 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -161,7 +161,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '5dc09427553d4dfb84f17978e08ade6c/23429542424',
+  'bcef9307ec2040eeafc5302f7ca999ac/23671845250',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -171,7 +171,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:35:48 GMT',
+  'Mon, 28 Jun 2021 23:22:14 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -190,7 +190,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8ee428d710854498b7a3fbba3c8c3f4f/23429542665',
+  '193e7b6b6cef43cba2a5b72f31ae1bfb/23671845523',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -200,7 +200,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:35:49 GMT',
+  'Mon, 28 Jun 2021 23:22:15 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -219,7 +219,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'fc47c25c73eb4447a117c030731d52c0/23429542887',
+  '193823fc4e384cba8298a321c0559745/23671845778',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -229,7 +229,36 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:35:50 GMT',
+  'Mon, 28 Jun 2021 23:22:15 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo%40demo.com%27"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '697396d9da6e46ffb4f09545fce4a04f/23671846138',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:22:16 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -248,7 +277,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '39c0596dc8464759974628a662430d5a/23429543078',
+  '3fa4f88a3b344ee49c3585803b33f755/23671850662',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -258,7 +287,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:35:50 GMT',
+  'Mon, 28 Jun 2021 23:22:26 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -277,7 +306,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '04e50c484c2748f882b51350e23ad8b9/23429546971',
+  '7b7bf5a6abb740d89dba3f5e2a0d7d0c/23671850951',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -287,7 +316,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:01 GMT',
+  'Mon, 28 Jun 2021 23:22:27 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -295,7 +324,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo%40demo.com%27"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -306,7 +335,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6595f5a1e16340e597056e07c904784e/23429547200',
+  '9f81da081e71464d85946595fba04718/23671851184',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -316,36 +345,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:02 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '50'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '342d0eb009fb4ac8ac124e9fe896db89/23429547427',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:36:02 GMT',
+  'Mon, 28 Jun 2021 23:22:28 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -363,7 +363,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '29dc86560ea94f8a88edc4e9955bf214/23429547626',
+  'fabb1b79ad104416b38630ff54f6fa6f/23671851484',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -373,7 +373,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:02 GMT',
+  'Mon, 28 Jun 2021 23:22:29 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -381,7 +381,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/893","createdBy":"t3st","createdAt":"2021-06-21T19:36:04.7484870Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:36:04.7484870Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/975","createdBy":"t3st","createdAt":"2021-06-28T23:22:31.1242692Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:22:31.1242692Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -391,7 +391,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd81c4a1c61a742769687c5cc0347c5d1/23429548091',
+  '2ed7a46efea548a79dd57ece19eca4fd/23671852114',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -401,14 +401,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:03 GMT',
+  'Mon, 28 Jun 2021 23:22:30 GMT',
   'Connection',
   'close',
   'Content-Length',
   '473'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/893/data', {"emailAddress":"grouparoo@demo.com","profileId":"pro1","firstName":"John"})
+  .post('/api/bulk/2.0/contacts/imports/975/data', [{"emailAddress":"grouparoo@demo.com","profileId":"pro1","firstName":"John"}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -417,7 +417,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '9ebb2be6f2594dc7bf62a36ed471ce12/23429548301',
+  'f1150cdf7efb4c3884077ed9b462af28/23671852579',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -427,13 +427,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:04 GMT',
+  'Mon, 28 Jun 2021 23:22:31 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/893"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/893","status":"pending","createdAt":"2021-06-21T19:36:06.0714990Z","createdBy":"t3st","uri":"/syncs/712"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/975"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/975","status":"pending","createdAt":"2021-06-28T23:22:32.8811288Z","createdBy":"t3st","uri":"/syncs/785"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -443,7 +443,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '3fe0ded57d624f88b38aa1dd1873656d/23429548511',
+  'ee3ab6efb9914a7c87aed9e6ba3180e0/23671853024',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -453,7 +453,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:06 GMT',
+  'Mon, 28 Jun 2021 23:22:32 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -462,7 +462,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304168","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922554","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -472,7 +472,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '339cab52bb03448f92aeba0eead1067e/23429552422',
+  '6196cafc313f47cbbcc730254892707a/23671857567',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -482,7 +482,36 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:16 GMT',
+  'Mon, 28 Jun 2021 23:22:42 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922554","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'eec1a39e2b404eebb46d87db2586ed6e/23671858078',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:22:43 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -491,7 +520,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304168","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922554","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -501,7 +530,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'cd1ee92de627455499bf6bd7232191f8/23429552717',
+  'f4b769b27379469396e0ab3d2f462abf/23671862393',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -511,36 +540,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:16 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '383'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304168","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '94899a090c7947f79d1e03acc3885a9d/23429556353',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:36:27 GMT',
+  'Mon, 28 Jun 2021 23:22:55 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -559,7 +559,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '5e0d70ef29e7420781a1452257ab4ef4/23429556585',
+  'dd2e6f5f8e9c4562815be83fd3e57b80/23671862629',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -569,7 +569,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:28 GMT',
+  'Mon, 28 Jun 2021 23:22:55 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -577,8 +577,8 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304168","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo%40demo.com%27emailAddress%3D%27grouparoo2%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922554","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -588,7 +588,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c25c630701eb4dc5acefbe7c811cf0b8/23429556963',
+  'c18f92ee2c134451a513237c06f172aa/23671862954',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -598,40 +598,11 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:29 GMT',
+  'Mon, 28 Jun 2021 23:22:56 GMT',
   'Connection',
   'close',
   'Content-Length',
   '383'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '2d47edc9f6f54188bf7f7b99235345d1/23429557214',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:36:29 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '50'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/bulk/2.0/contacts/fields')
@@ -645,7 +616,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'bb2a09ecdb8b4013b8a2dda478d7c16d/23429557395',
+  '1f7153f2142a47459a9ca29f98fcca68/23671863276',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -655,7 +626,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:30 GMT',
+  'Mon, 28 Jun 2021 23:22:56 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -663,7 +634,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/894","createdBy":"t3st","createdAt":"2021-06-21T19:36:32.6921744Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:36:32.6921744Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/976","createdBy":"t3st","createdAt":"2021-06-28T23:22:58.8599025Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:22:58.8599025Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -673,7 +644,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '12c2f6b3b18b443fa4f3423c2c2f91eb/23429557820',
+  '7ab7ef17552841ffa8ce30bb4ea31fe9/23671863777',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -683,14 +654,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:32 GMT',
+  'Mon, 28 Jun 2021 23:22:58 GMT',
   'Connection',
   'close',
   'Content-Length',
   '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/894/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"John","lastName":"Doe"})
+  .post('/api/bulk/2.0/contacts/imports/976/data', [{"emailAddress":"grouparoo@demo.com","id":"1984553","profileId":"pro1","firstName":"John","lastName":"Doe"},{"emailAddress":"grouparoo2@demo.com","profileId":"pro2","firstName":"Pete"}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -699,7 +670,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ed5f6ad6a1d54c02a366a370ab5ef2b8/23429558092',
+  'a534ef657724407f89762e5e4daaed34/23671864078',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -709,37 +680,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:33 GMT',
+  'Mon, 28 Jun 2021 23:22:58 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/894/data', {"emailAddress":"grouparoo2@demo.com","profileId":"pro2","firstName":"Pete"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '83af0441e53f42c883a53668b0532fdf/23429558434',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:36:33 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/894"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/894","status":"pending","createdAt":"2021-06-21T19:36:34.8555116Z","createdBy":"t3st","uri":"/syncs/713"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/976"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/976","status":"pending","createdAt":"2021-06-28T23:23:00.4772598Z","createdBy":"t3st","uri":"/syncs/786"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -749,7 +696,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '12861f62a3ec44b0ae0cdfe4398a2d1d/23429558662',
+  '5ee01b73a4d34609951bdb78682a8ed2/23671864390',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -759,7 +706,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:34 GMT',
+  'Mon, 28 Jun 2021 23:22:59 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -768,7 +715,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304197","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Doe","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922581","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Doe","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -778,7 +725,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '809ad2b212e040c590bb2e38b1ebb052/23429562707',
+  'f077cd1f9ff04ea9a227f0d4c7a0268a/23671868764',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -788,7 +735,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:44 GMT',
+  'Mon, 28 Jun 2021 23:23:10 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -797,7 +744,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304197","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Pete","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984554","createdAt":"1624922581","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922581","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Pete","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -807,7 +754,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e1ee3a15e39145be9038d7091e112064/23429562915',
+  '94966390bf7f4eceb6d6b73c693bf920/23671869081',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -817,7 +764,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:45 GMT',
+  'Mon, 28 Jun 2021 23:23:11 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -825,8 +772,8 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304197","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Doe","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922581","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Doe","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -836,7 +783,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '7a5c75d747664e1bbc7e3a0be0a8a111/23429563113',
+  '2361d401ff6b4cdbba4e9c41f4beaad3/23671869429',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -846,7 +793,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:45 GMT',
+  'Mon, 28 Jun 2021 23:23:12 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -864,7 +811,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '0baf2f51baf24f9ab504a3f09473f98b/23429563334',
+  'd0e81d7b1d564ccc8182891ce18acc78/23671869803',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -874,7 +821,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:46 GMT',
+  'Mon, 28 Jun 2021 23:23:12 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -882,7 +829,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/895","createdBy":"t3st","createdAt":"2021-06-21T19:36:48.2185033Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:36:48.2185033Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/977","createdBy":"t3st","createdAt":"2021-06-28T23:23:15.0132125Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:23:15.0132125Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -892,7 +839,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'b69677c18bb341f58a22792e0cd2b588/23429563728',
+  'f9204011b1e34e9d81bff30c24b964c4/23671870372',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -902,14 +849,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:47 GMT',
+  'Mon, 28 Jun 2021 23:23:14 GMT',
   'Connection',
   'close',
   'Content-Length',
   '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/895/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"John","lastName":""})
+  .post('/api/bulk/2.0/contacts/imports/977/data', [{"emailAddress":"grouparoo@demo.com","id":"1984553","profileId":"pro1","firstName":"John","lastName":""}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -918,7 +865,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '323ac9cb936c4c7c889e3d536f5078a4/23429563939',
+  'c0f313200d5742128f7b18b58030a4bf/23671870710',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -928,13 +875,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:47 GMT',
+  'Mon, 28 Jun 2021 23:23:14 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/895"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/895","status":"pending","createdAt":"2021-06-21T19:36:49.3675399Z","createdBy":"t3st","uri":"/syncs/714"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/977"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/977","status":"pending","createdAt":"2021-06-28T23:23:16.6217738Z","createdBy":"t3st","uri":"/syncs/787"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -944,7 +891,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8a8f5a29455441b296b2f05d612fa5bc/23429564153',
+  '1b8d30a932cc400e963501c5f85ffb97/23671871037',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -954,7 +901,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:48 GMT',
+  'Mon, 28 Jun 2021 23:23:15 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -963,7 +910,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922597","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -973,7 +920,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '971af6547a344d8ca154777016f2b2a2/23429568223',
+  '0547901ded254d66914a7506477faebb/23671875825',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -983,7 +930,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:36:59 GMT',
+  'Mon, 28 Jun 2021 23:23:27 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1002,7 +949,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '4a45d452d94e4971b74b503ec708038b/23429568444',
+  '2212d8ad157c4ae9a5797994de8a7788/23671876190',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1012,7 +959,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:00 GMT',
+  'Mon, 28 Jun 2021 23:23:28 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1020,8 +967,8 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922597","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1031,7 +978,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e6de98182c5b42709206b366c5038328/23429568683',
+  'd25d9daed57f4cb79ae208a1e15b44f0/23671876477',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1041,7 +988,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:00 GMT',
+  'Mon, 28 Jun 2021 23:23:28 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1059,7 +1006,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '302d74b200284d65a9f2efd8c2622a58/23429568927',
+  'bd22d1190f5c4388b9db2cc4cf71f370/23671876681',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1069,7 +1016,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:01 GMT',
+  'Mon, 28 Jun 2021 23:23:30 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1077,7 +1024,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/896","createdBy":"t3st","createdAt":"2021-06-21T19:37:02.9714317Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:37:02.9714317Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/978","createdBy":"t3st","createdAt":"2021-06-28T23:23:30.9875976Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:23:30.9875976Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1087,7 +1034,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6b1a8fb00edb445b9ac6787dcb1a0360/23429569397',
+  '6a73c9d701cb4e5babb00db49e76f6fb/23671877075',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1097,14 +1044,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:02 GMT',
+  'Mon, 28 Jun 2021 23:23:30 GMT',
   'Connection',
   'close',
   'Content-Length',
   '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/896/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"John"})
+  .post('/api/bulk/2.0/contacts/imports/978/data', [{"emailAddress":"grouparoo@demo.com","id":"1984553","profileId":"pro1","firstName":"John"}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -1113,7 +1060,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'cc8b7f43a60d46c0a8296a42612cf67e/23429569662',
+  'f9c915634f864bc3906f98c4b9b20c2a/23671877393',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1123,13 +1070,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:03 GMT',
+  'Mon, 28 Jun 2021 23:23:31 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/896"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/896","status":"pending","createdAt":"2021-06-21T19:37:04.1665269Z","createdBy":"t3st","uri":"/syncs/715"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/978"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/978","status":"pending","createdAt":"2021-06-28T23:23:32.6590798Z","createdBy":"t3st","uri":"/syncs/788"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1139,7 +1086,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e813a9953d264b06a4773a6bf2d04492/23429569929',
+  '555a8a40f41841a2ba6e30809522ba7b/23671877730',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1149,7 +1096,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:03 GMT',
+  'Mon, 28 Jun 2021 23:23:32 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1171,7 +1118,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-ZDAxN2ExODMxOWRmNGMyMjgyMTNmM2RiN2IwZjdlY2Y=';style-src 'self' 'nonce-YWY5MDAwOWExODg2NGE4MTkzYjI5NGRiYjYyZmRhYjU=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-MWJmYmRiNTIzNDUyNDE0NGI4ZjlhMDYyZTE1MjRlMGI=';style-src 'self' 'nonce-MDgxZjY4YTdjY2M3NDQ2MWJlMzNiMTQzZmUzMGNlYmI=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1181,15 +1128,15 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:15 GMT',
+  'Mon, 28 Jun 2021 23:23:43 GMT',
   'Connection',
   'close',
   'Content-Length',
   '732'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/bulk/2.0/syncs/715')
-  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/896","syncStartedAt":"2021-06-21T19:37:04.0930000Z","syncEndedAt":"2021-06-21T19:37:04.7670000Z","status":"warning","createdAt":"2021-06-21T19:37:03.8900000Z","createdBy":"t3st","uri":"/syncs/715"}, [
+  .get('/api/bulk/2.0/syncs/788')
+  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/978","syncStartedAt":"2021-06-28T23:23:33.0700000Z","syncEndedAt":"2021-06-28T23:23:33.8830000Z","status":"warning","createdAt":"2021-06-28T23:23:32.5530000Z","createdBy":"t3st","uri":"/syncs/788"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1199,7 +1146,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '20c86a930e104fb2a0d4f40caff1a097/23429574555',
+  'c5df4e53fca0478ba71f9572241e5cdc/23671882998',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1209,7 +1156,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:16 GMT',
+  'Mon, 28 Jun 2021 23:23:44 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1228,7 +1175,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '5cead5e15d8f49bca1df253d69b76ed8/23429574791',
+  '896e871f950e4013b7fd619e9adc17f5/23671883221',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1238,7 +1185,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:16 GMT',
+  'Mon, 28 Jun 2021 23:23:45 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1246,7 +1193,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/REST/1.0/assets/contact/list', {"name":"(test) High Value"})
-  .once().reply(201, {"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304237","updatedBy":"222","count":"0","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}, [
+  .once().reply(201, {"type":"ContactList","id":"6000","createdAt":"1624922626","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624922626","updatedBy":"222","count":"0","dataLookupId":"1a5b348b-7e10-4a95-9558-48eee00130c3","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1256,7 +1203,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'bc9da7618df040d78b250dcf0eaa5e8f/23429575013',
+  'd31b4868bcb445fb947b42967bec0c82/23671883479',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1266,7 +1213,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:17 GMT',
+  'Mon, 28 Jun 2021 23:23:46 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1275,7 +1222,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922597","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1285,7 +1232,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '22cceb23de3a4d1fa7117787858c38ce/23429575386',
+  'b3c323ad9518488b9f49fcbc38b17347/23671883973',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1295,15 +1242,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:17 GMT',
+  'Mon, 28 Jun 2021 23:23:47 GMT',
   'Connection',
   'close',
   'Content-Length',
   '383'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5994', {"id":"5994","name":"(test) High Value","membershipAdditions":["1984322"],"membershipDeletions":[]})
-  .once().reply(200, {"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304238","updatedBy":"222","count":"1","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/6000', {"id":"6000","name":"(test) High Value","membershipAdditions":["1984553"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"6000","createdAt":"1624922626","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624922628","updatedBy":"222","count":"1","dataLookupId":"1a5b348b-7e10-4a95-9558-48eee00130c3","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1313,7 +1260,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'aba418808e144f4ab7ac13ab981cbd73/23429575634',
+  '4033fbb1c93742baa19da1b01434a6b2/23671884207',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1323,7 +1270,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:18 GMT',
+  'Mon, 28 Jun 2021 23:23:47 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1332,7 +1279,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304238","updatedBy":"222","count":"1","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"6000","createdAt":"1624922626","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624922628","updatedBy":"222","count":"1","dataLookupId":"1a5b348b-7e10-4a95-9558-48eee00130c3","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1342,7 +1289,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '4e9b258fd26343e0afe78da6f12783a0/23429575854',
+  'df7a3594721147bfa000ac8fd83b5fea/23671884497',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1352,15 +1299,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:18 GMT',
+  'Mon, 28 Jun 2021 23:23:48 GMT',
   'Connection',
   'close',
   'Content-Length',
   '342'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/2.0/data/contact/1984322/membership')
-  .once().reply(200, [{"type":"ContactList","id":"5994","name":"(test) High Value"}], [
+  .get('/api/REST/2.0/data/contact/1984553/membership')
+  .once().reply(200, [{"type":"ContactList","id":"6000","name":"(test) High Value"}], [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1370,7 +1317,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '229107b929e64151a2997ded6f442761/23429576048',
+  '8c2a40d447504d50b76f5d88949f3e61/23671884761',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1380,7 +1327,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:19 GMT',
+  'Mon, 28 Jun 2021 23:23:48 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1399,7 +1346,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6b06623c62c242219100961d57523420/23429576287',
+  'd794828d409f445ea581405e07b43a30/23671884996',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1409,7 +1356,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:19 GMT',
+  'Mon, 28 Jun 2021 23:23:49 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1417,8 +1364,8 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo%40demo.com%27emailAddress%3D%27grouparoo2%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922597","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984554","createdAt":"1624922581","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922581","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Pete","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":2}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1428,7 +1375,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '0ce902f34255479bb513bef85efc1fb3/23429576455',
+  'f5926c3f64a641029a11c556d7247d4f/23671885291',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1438,40 +1385,11 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:20 GMT',
+  'Mon, 28 Jun 2021 23:23:50 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '383'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304197","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Pete","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  'e3781c054d7443d08cc1c518af205912/23429576706',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:37:21 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '385'
+  '719'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/bulk/2.0/contacts/fields')
@@ -1485,7 +1403,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'de38e1ca0eec42189055fad59739c71b/23429576940',
+  '8963a074dbe644fb92861af5f9619095/23671885594',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1495,7 +1413,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:22 GMT',
+  'Mon, 28 Jun 2021 23:23:51 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1503,7 +1421,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/897","createdBy":"t3st","createdAt":"2021-06-21T19:37:23.5589030Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:37:23.5589030Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/979","createdBy":"t3st","createdAt":"2021-06-28T23:23:52.8795727Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:23:52.8795727Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1513,7 +1431,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1861045cdc484e55845301d9c46619ed/23429577283',
+  'd5a5a8ffa8f5443d8ad32f71899f4d97/23671886038',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1523,14 +1441,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:23 GMT',
+  'Mon, 28 Jun 2021 23:23:52 GMT',
   'Connection',
   'close',
   'Content-Length',
   '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/897/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"John"})
+  .post('/api/bulk/2.0/contacts/imports/979/data', [{"emailAddress":"grouparoo@demo.com","id":"1984553","profileId":"pro1","firstName":"John"},{"emailAddress":"grouparoo2@demo.com","id":"1984554","profileId":"pro2","firstName":"Sally"}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -1539,7 +1457,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd82b6dec8d8e4e6e9d3d20adb0a6e103/23429577598',
+  '1a48076420fb40908d57cfba8863ab07/23671886286',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1549,37 +1467,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:23 GMT',
+  'Mon, 28 Jun 2021 23:23:53 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/897/data', {"emailAddress":"grouparoo2@demo.com","id":"1984323","profileId":"pro2","firstName":"Sally"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  'd2e49540707a4cd598a2590a157f057b/23429577820',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:37:24 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/897"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/897","status":"pending","createdAt":"2021-06-21T19:37:25.2766381Z","createdBy":"t3st","uri":"/syncs/716"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/979"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/979","status":"pending","createdAt":"2021-06-28T23:23:54.2774178Z","createdBy":"t3st","uri":"/syncs/789"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1589,7 +1483,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6e9df4bcbbda4912931b945cc054d46e/23429578051',
+  '1a2831da8a24421ca54546e9b60c6c2a/23671886613',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1599,7 +1493,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:24 GMT',
+  'Mon, 28 Jun 2021 23:23:53 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1621,7 +1515,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-MDVlNTQ2Mjk4MDZjNDdjYTlhOGE0ODEzN2Y0NGY0Yjk=';style-src 'self' 'nonce-NzY0MzEyZmQ2YjRmNDQzZjk4NmU1Y2U0ZTRiYTA3ZTE=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-NTM3YTE2MTE0MjY0NDI4NmI0NzRjNmU5MDAwMjZkZGM=';style-src 'self' 'nonce-YzZiNjZjMmQ0YTQ1NDRhNDg3MDhlZjI2Y2RjYmFhMWM=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1631,15 +1525,15 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:36 GMT',
+  'Mon, 28 Jun 2021 23:24:08 GMT',
   'Connection',
   'close',
   'Content-Length',
   '732'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/bulk/2.0/syncs/716')
-  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/897","syncStartedAt":"2021-06-21T19:37:25.3300000Z","syncEndedAt":"2021-06-21T19:37:26.3130000Z","status":"warning","createdAt":"2021-06-21T19:37:25.0000000Z","createdBy":"t3st","uri":"/syncs/716"}, [
+  .get('/api/bulk/2.0/syncs/789')
+  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/979","syncStartedAt":"2021-06-28T23:23:54.6500000Z","syncEndedAt":"2021-06-28T23:23:55.5100000Z","status":"warning","createdAt":"2021-06-28T23:23:54.1800000Z","createdBy":"t3st","uri":"/syncs/789"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1649,7 +1543,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'bc086a578af8444fbb4a5f698f73acf5/23429583055',
+  '75f2cbea536041c5b623ca879be0e7d1/23671892746',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1659,7 +1553,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:36 GMT',
+  'Mon, 28 Jun 2021 23:24:08 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1668,7 +1562,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304238","updatedBy":"222","count":"1","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"6000","createdAt":"1624922626","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624922628","updatedBy":"222","count":"1","dataLookupId":"1a5b348b-7e10-4a95-9558-48eee00130c3","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1678,7 +1572,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '4f5a28d8c4e444f5a7dba721151762a4/23429583325',
+  '8f8f5cf20d2d44d993459d0b7c30d779/23671893021',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1688,7 +1582,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:37 GMT',
+  'Mon, 28 Jun 2021 23:24:09 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1697,7 +1591,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922597","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1707,7 +1601,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2b6076a66d0443ce88cf7870b9c49409/23429583668',
+  'b560de4b70924bb1a22d41cdb8cb196a/23671893281',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1717,7 +1611,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:38 GMT',
+  'Mon, 28 Jun 2021 23:24:09 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1736,7 +1630,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c00988244fe448489d40acb0c5af799e/23429583947',
+  '99cb750b88954c4bae197d0cff413c9b/23671893525',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1746,7 +1640,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:38 GMT',
+  'Mon, 28 Jun 2021 23:24:10 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1754,7 +1648,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/REST/1.0/assets/contact/list', {"name":"(test) Churned"})
-  .once().reply(201, {"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304259","updatedBy":"222","count":"0","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}, [
+  .once().reply(201, {"type":"ContactList","id":"6001","createdAt":"1624922651","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624922651","updatedBy":"222","count":"0","dataLookupId":"a05dd147-250a-4a6f-b425-1b3b4e84dfb7","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1764,7 +1658,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '794c352b4aee4e9488f78a32030d91e4/23429584134',
+  '31e3d36ec11e4e21a1af02322bf7d1ee/23671893891',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1774,7 +1668,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:39 GMT',
+  'Mon, 28 Jun 2021 23:24:11 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1783,7 +1677,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922597","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1793,7 +1687,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '749dcf6b8ceb44718c08aa986df004f6/23429584486',
+  '8cb0072517434a54b3abe7e861c41726/23671894236',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1803,7 +1697,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:40 GMT',
+  'Mon, 28 Jun 2021 23:24:11 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1812,7 +1706,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304238","updatedBy":"222","count":"1","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"6000","createdAt":"1624922626","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624922628","updatedBy":"222","count":"1","dataLookupId":"1a5b348b-7e10-4a95-9558-48eee00130c3","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1822,7 +1716,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '98725cd281e44a8c904413ea1e0746ec/23429584768',
+  '9e8b935f4d3a4d64a34f79f9725c57f1/23671894552',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1832,7 +1726,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:41 GMT',
+  'Mon, 28 Jun 2021 23:24:12 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1841,7 +1735,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304246","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984554","createdAt":"1624922581","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922635","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1851,7 +1745,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '3fe03b6d49b6483bbdcd23144cba897e/23429584978',
+  'ef7f163e4cd14dcb881f76eb4c86c4f2/23671894896',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1861,15 +1755,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:41 GMT',
+  'Mon, 28 Jun 2021 23:24:13 GMT',
   'Connection',
   'close',
   'Content-Length',
   '386'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5994', {"id":"5994","name":"(test) High Value","membershipAdditions":["1984322","1984323"],"membershipDeletions":[]})
-  .once().reply(200, {"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304263","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/6000', {"id":"6000","name":"(test) High Value","membershipAdditions":["1984553","1984554"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"6000","createdAt":"1624922626","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624922654","updatedBy":"222","count":"2","dataLookupId":"1a5b348b-7e10-4a95-9558-48eee00130c3","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1879,7 +1773,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '7c9e83d2a3794b2d91e64d3c683b4276/23429585243',
+  '8d3bcd0118284e13bfde0adefe01bf50/23671895190',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1889,15 +1783,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:43 GMT',
+  'Mon, 28 Jun 2021 23:24:13 GMT',
   'Connection',
   'close',
   'Content-Length',
   '293'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5995', {"id":"5995","name":"(test) Churned","membershipAdditions":["1984322"],"membershipDeletions":[]})
-  .once().reply(200, {"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304264","updatedBy":"222","count":"1","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/6001', {"id":"6001","name":"(test) Churned","membershipAdditions":["1984553"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"6001","createdAt":"1624922651","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624922654","updatedBy":"222","count":"1","dataLookupId":"a05dd147-250a-4a6f-b425-1b3b4e84dfb7","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1907,7 +1801,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ff358d5730f94e8dba8cb7bf139657ba/23429585768',
+  '4b2cbb305b234647a88f2ab996c4b9bc/23671895491',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1917,7 +1811,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:43 GMT',
+  'Mon, 28 Jun 2021 23:24:14 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1926,7 +1820,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304264","updatedBy":"222","count":"1","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"6001","createdAt":"1624922651","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624922654","updatedBy":"222","count":"1","dataLookupId":"a05dd147-250a-4a6f-b425-1b3b4e84dfb7","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1936,7 +1830,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '508e7df996564a958af305be41e7ee89/23429586075',
+  'ce57cc4af6d941ebaab5aa25eb225101/23671895815',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1946,15 +1840,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:44 GMT',
+  'Mon, 28 Jun 2021 23:24:15 GMT',
   'Connection',
   'close',
   'Content-Length',
   '339'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/2.0/data/contact/1984322/membership')
-  .once().reply(200, [{"type":"ContactList","id":"5994","name":"(test) High Value"},{"type":"ContactList","id":"5995","name":"(test) Churned"}], [
+  .get('/api/REST/2.0/data/contact/1984553/membership')
+  .once().reply(200, [{"type":"ContactList","id":"6000","name":"(test) High Value"},{"type":"ContactList","id":"6001","name":"(test) Churned"}], [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1964,7 +1858,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'cfa21dc11cf74ff592145d9e786778eb/23429586349',
+  '72b407f8864b4d6a84fa713f655211ab/23671896014',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1974,7 +1868,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:45 GMT',
+  'Mon, 28 Jun 2021 23:24:15 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1983,7 +1877,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304246","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984554","createdAt":"1624922581","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922635","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -1993,7 +1887,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '27339b9b0d0245f7baa21dcf6aa45339/23429586618',
+  '26d57e0ce68742b9a4e88b6f7b1aaf6d/23671896200',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2003,15 +1897,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:46 GMT',
+  'Mon, 28 Jun 2021 23:24:16 GMT',
   'Connection',
   'close',
   'Content-Length',
   '386'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/2.0/data/contact/1984323/membership')
-  .once().reply(200, [{"type":"ContactList","id":"5994","name":"(test) High Value"}], [
+  .get('/api/REST/2.0/data/contact/1984554/membership')
+  .once().reply(200, [{"type":"ContactList","id":"6000","name":"(test) High Value"}], [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2021,7 +1915,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '9a59af9a08d94630a0fd6143edbc4e60/23429586905',
+  'fa5212d056484b9caa560df4ed3585ad/23671896494',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2031,7 +1925,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:47 GMT',
+  'Mon, 28 Jun 2021 23:24:16 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2039,8 +1933,8 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo%40demo.com%27emailAddress%3D%27grouparoo2%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922597","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984554","createdAt":"1624922581","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922635","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":2}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2050,7 +1944,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '739fcc0390964c749d8a70e84528bd4d/23429587100',
+  '805d7556c7c04963a6d56cf26e627104/23671896718',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2060,40 +1954,11 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:47 GMT',
+  'Mon, 28 Jun 2021 23:24:17 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '383'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304246","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '93efdc6fd1fc4b4dab2201c3edc9587c/23429587441',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:37:48 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '386'
+  '720'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/bulk/2.0/contacts/fields')
@@ -2107,7 +1972,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8675816a9b7d42d2b4f4741325db86c1/23429587718',
+  '176a47655d7d4151b71085ca539fa9a5/23671896970',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2117,7 +1982,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:49 GMT',
+  'Mon, 28 Jun 2021 23:24:17 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2125,7 +1990,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/898","createdBy":"t3st","createdAt":"2021-06-21T19:37:51.3838749Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:37:51.3838749Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/980","createdBy":"t3st","createdAt":"2021-06-28T23:24:19.7626692Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:24:19.7626692Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2135,7 +2000,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6f06c75b4b39478ba5793a978bec6d48/23429588186',
+  '8554734ae6364bfe84af2883eb58771c/23671897533',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2145,14 +2010,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:50 GMT',
+  'Mon, 28 Jun 2021 23:24:19 GMT',
   'Connection',
   'close',
   'Content-Length',
   '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/898/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"John"})
+  .post('/api/bulk/2.0/contacts/imports/980/data', [{"emailAddress":"grouparoo@demo.com","id":"1984553","profileId":"pro1","firstName":"John"},{"emailAddress":"grouparoo2@demo.com","id":"1984554","profileId":"pro2","firstName":"Sally"}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -2161,7 +2026,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'f3b297747b504e58b2a3d26149155e30/23429588425',
+  '9f74fc0028e54789a2553fa7c4dca926/23671897870',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2171,37 +2036,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:51 GMT',
+  'Mon, 28 Jun 2021 23:24:19 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/898/data', {"emailAddress":"grouparoo2@demo.com","id":"1984323","profileId":"pro2","firstName":"Sally"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  'c872652ad2624cc6b225a7ff3e0f8b04/23429588714',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:37:52 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/898"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/898","status":"pending","createdAt":"2021-06-21T19:37:53.6189172Z","createdBy":"t3st","uri":"/syncs/717"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/980"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/980","status":"pending","createdAt":"2021-06-28T23:24:21.1483471Z","createdBy":"t3st","uri":"/syncs/790"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2211,7 +2052,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '21a9fdf979f54744845664a18e7dba26/23429588956',
+  'ffd73f54f1c04d7c9f829d2e1b97ae68/23671898097',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2221,7 +2062,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:37:52 GMT',
+  'Mon, 28 Jun 2021 23:24:20 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2243,7 +2084,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-ZGZkZDcyOTA4YmM4NGU5NjhmYjFjMDE5ZGEzODE4ZTM=';style-src 'self' 'nonce-ZmI3MTBkMzBmODhkNDdmMjg1NjQ2NDRlMGE2NDk1MGI=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-OTdkMWM3ZThkNjMyNGRjNWJiNmM3ZGZkZjEwMGUwODE=';style-src 'self' 'nonce-MWFjYTdiYzhiNWI1NDgwNGFmZjdjYTNmN2IxOTUwZjA=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2253,15 +2094,15 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:04 GMT',
+  'Mon, 28 Jun 2021 23:24:32 GMT',
   'Connection',
   'close',
   'Content-Length',
   '732'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/bulk/2.0/syncs/717')
-  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/898","syncStartedAt":"2021-06-21T19:37:53.9570000Z","syncEndedAt":"2021-06-21T19:37:56.4570000Z","status":"warning","createdAt":"2021-06-21T19:37:53.3470000Z","createdBy":"t3st","uri":"/syncs/717"}, [
+  .get('/api/bulk/2.0/syncs/790')
+  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/980","syncStartedAt":"2021-06-28T23:24:21.3700000Z","syncEndedAt":"2021-06-28T23:24:22.0730000Z","status":"warning","createdAt":"2021-06-28T23:24:21.0400000Z","createdBy":"t3st","uri":"/syncs/790"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2271,7 +2112,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6eb5a0ccdce34a24bc3fa57c1fcb554f/23429593449',
+  '961dd28d607446fe9410f26d5d1034e1/23671903184',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2281,7 +2122,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:05 GMT',
+  'Mon, 28 Jun 2021 23:24:32 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2290,7 +2131,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304263","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"6000","createdAt":"1624922626","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624922654","updatedBy":"222","count":"2","dataLookupId":"1a5b348b-7e10-4a95-9558-48eee00130c3","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2300,7 +2141,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'fdcfef4bae054b7f9b3a92caf6d9c28e/23429593640',
+  '13d7e94ebde2477494bb9e809aab77fc/23671903442',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2310,7 +2151,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:05 GMT',
+  'Mon, 28 Jun 2021 23:24:32 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2319,7 +2160,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922597","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2329,7 +2170,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '0eb9ef19a3a44c8faf096a054d9230c1/23429593806',
+  'e8986f7845c044bcacfc33d3be4ec505/23671903700',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2339,7 +2180,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:06 GMT',
+  'Mon, 28 Jun 2021 23:24:34 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2348,7 +2189,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304264","updatedBy":"222","count":"1","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"6001","createdAt":"1624922651","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624922654","updatedBy":"222","count":"1","dataLookupId":"a05dd147-250a-4a6f-b425-1b3b4e84dfb7","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2358,7 +2199,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '0f171c9a1d4a48c6849c3364e543a2dc/23429594041',
+  '2e99f80a497343f59034f6140d6bbd3c/23671904032',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2368,7 +2209,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:06 GMT',
+  'Mon, 28 Jun 2021 23:24:34 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2377,7 +2218,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922597","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2387,7 +2228,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '27e2ae66a2e94db19b5194b9f2847134/23429594258',
+  'c7d5940d35c24a8bb8acd4859ee3c45c/23671904265',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2397,7 +2238,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:07 GMT',
+  'Mon, 28 Jun 2021 23:24:35 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2406,7 +2247,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304263","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"6000","createdAt":"1624922626","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624922654","updatedBy":"222","count":"2","dataLookupId":"1a5b348b-7e10-4a95-9558-48eee00130c3","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2416,7 +2257,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '839354400a09412ba74933662a10c9ca/23429594456',
+  '74015418a70e4bda99229de1afe10f4f/23671904463',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2426,7 +2267,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:07 GMT',
+  'Mon, 28 Jun 2021 23:24:36 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2435,7 +2276,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304246","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984554","createdAt":"1624922581","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922635","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2445,7 +2286,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '3ee247897e854485a95fdcd7af7d78ec/23429594642',
+  '625a96fdd393455ca7dc29dafdceb81e/23671904703',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2455,7 +2296,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:08 GMT',
+  'Mon, 28 Jun 2021 23:24:36 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2464,7 +2305,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304264","updatedBy":"222","count":"1","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"6001","createdAt":"1624922651","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624922654","updatedBy":"222","count":"1","dataLookupId":"a05dd147-250a-4a6f-b425-1b3b4e84dfb7","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2474,7 +2315,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '16ccc426260a40e590d4daf817377885/23429594843',
+  '597f2a9506374d4bbc1a9a518e6bf6b1/23671904896',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2484,7 +2325,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:08 GMT',
+  'Mon, 28 Jun 2021 23:24:37 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2493,7 +2334,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304246","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984554","createdAt":"1624922581","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922635","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2503,7 +2344,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ec947f6f136149588d7160242dbaea58/23429595012',
+  '493c663bd9164a709db2c0950aac05c4/23671905161',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2513,15 +2354,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:09 GMT',
+  'Mon, 28 Jun 2021 23:24:37 GMT',
   'Connection',
   'close',
   'Content-Length',
   '386'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5994', {"id":"5994","name":"(test) High Value","membershipAdditions":["1984322","1984323"],"membershipDeletions":[]})
-  .once().reply(200, {"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304290","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/6000', {"id":"6000","name":"(test) High Value","membershipAdditions":["1984553","1984554"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"6000","createdAt":"1624922626","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624922678","updatedBy":"222","count":"2","dataLookupId":"1a5b348b-7e10-4a95-9558-48eee00130c3","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2531,7 +2372,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '45a56977f75d4f67a27d3120f08f539f/23429595197',
+  '8dd9fd76ca4045a893fbee76baa4716d/23671905393',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2541,15 +2382,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:09 GMT',
+  'Mon, 28 Jun 2021 23:24:38 GMT',
   'Connection',
   'close',
   'Content-Length',
   '293'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5995', {"id":"5995","name":"(test) Churned","membershipAdditions":[],"membershipDeletions":["1984322","1984323"]})
-  .once().reply(200, {"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304290","updatedBy":"222","count":"0","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/6001', {"id":"6001","name":"(test) Churned","membershipAdditions":[],"membershipDeletions":["1984553","1984554"]})
+  .once().reply(200, {"type":"ContactList","id":"6001","createdAt":"1624922651","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624922678","updatedBy":"222","count":"0","dataLookupId":"a05dd147-250a-4a6f-b425-1b3b4e84dfb7","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2559,7 +2400,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '98365924ed414ae19c50299e6ae91633/23429595422',
+  'b92b2daa7eb748ed9b9eef11230d931b/23671905624',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2569,15 +2410,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:10 GMT',
+  'Mon, 28 Jun 2021 23:24:38 GMT',
   'Connection',
   'close',
   'Content-Length',
   '290'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/2.0/data/contact/1984322/membership')
-  .once().reply(200, [{"type":"ContactList","id":"5994","name":"(test) High Value"}], [
+  .get('/api/REST/2.0/data/contact/1984553/membership')
+  .once().reply(200, [{"type":"ContactList","id":"6000","name":"(test) High Value"}], [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2587,7 +2428,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'db30c6ec412b499095dab5775fee1dea/23429595673',
+  '167d3f410e67432480b5f2aadd2b727e/23671905815',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2597,15 +2438,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:11 GMT',
+  'Mon, 28 Jun 2021 23:24:39 GMT',
   'Connection',
   'close',
   'Content-Length',
   '63'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/2.0/data/contact/1984323/membership')
-  .once().reply(200, [{"type":"ContactList","id":"5994","name":"(test) High Value"}], [
+  .get('/api/REST/2.0/data/contact/1984554/membership')
+  .once().reply(200, [{"type":"ContactList","id":"6000","name":"(test) High Value"}], [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2615,7 +2456,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '55002475093b48cab2ddbab41e41d3a4/23429595986',
+  '54e892fcf0b641d6bff9aabcd2034226/23671906148',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2625,7 +2466,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:11 GMT',
+  'Mon, 28 Jun 2021 23:24:40 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2633,8 +2474,8 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dnotgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984184","createdAt":"1623960611","depth":"partial","name":"notgrouparoo@demo.com","updatedAt":"1623969152","emailAddress":"notgrouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623960611"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27notgrouparoo%40demo.com%27emailAddress%3D%27grouparoo2%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984184","createdAt":"1623960611","depth":"partial","name":"notgrouparoo@demo.com","updatedAt":"1623969152","emailAddress":"notgrouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623960611"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984554","createdAt":"1624922581","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922635","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":2}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2644,7 +2485,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '186f07772a2e4860a2376931b66847f0/23429596185',
+  '128a43e4deb5461793eb29724bebb5ac/23671906319',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2654,40 +2495,11 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:12 GMT',
+  'Mon, 28 Jun 2021 23:24:40 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '407'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304246","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '026490b4bfd44f0a9fdf44861d3d0256/23429596399',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:38:12 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '386'
+  '744'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/bulk/2.0/contacts/fields')
@@ -2701,7 +2513,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e87d95178e8e44369d8723d5b9672059/23429596620',
+  '6d0d3e66e1834e8cac68fa9d7ddd17cc/23671906531',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2711,7 +2523,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:14 GMT',
+  'Mon, 28 Jun 2021 23:24:40 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2719,7 +2531,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/899","createdBy":"t3st","createdAt":"2021-06-21T19:38:15.6161407Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:38:15.6161407Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/981","createdBy":"t3st","createdAt":"2021-06-28T23:24:42.1796010Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:24:42.1796010Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2729,7 +2541,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd4235087bdd945e6b9cb763de990a055/23429597117',
+  '9ff2dd02eebf4a34866c06dc9c564f0f/23671907026',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2739,14 +2551,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:15 GMT',
+  'Mon, 28 Jun 2021 23:24:42 GMT',
   'Connection',
   'close',
   'Content-Length',
   '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/899/data', {"emailAddress":"notgrouparoo@demo.com","id":"1984184","profileId":"pro1","firstName":"John","lastName":"Test"})
+  .post('/api/bulk/2.0/contacts/imports/981/data', [{"emailAddress":"notgrouparoo@demo.com","id":"1984184","profileId":"pro1","firstName":"John","lastName":"Test"},{"emailAddress":"grouparoo2@demo.com","id":"1984554","profileId":"pro2","firstName":"Evan"}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -2755,7 +2567,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd11d67abfc1a4875a4568819d2533201/23429597312',
+  '5f9cc729bb714d8d8dae055fa1443ed5/23671907291',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2765,37 +2577,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:16 GMT',
+  'Mon, 28 Jun 2021 23:24:42 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/899/data', {"emailAddress":"grouparoo2@demo.com","id":"1984323","profileId":"pro2","firstName":"Evan"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '5ca8ddcf4ccd410c91af7649ba86fce3/23429597631',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:38:17 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/899"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/899","status":"pending","createdAt":"2021-06-21T19:38:18.0669649Z","createdBy":"t3st","uri":"/syncs/718"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/981"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/981","status":"pending","createdAt":"2021-06-28T23:24:43.3536904Z","createdBy":"t3st","uri":"/syncs/791"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2805,7 +2593,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '93e65e1775214030aef62b0896870a1b/23429597945',
+  'c8a28b1785864de5840700dee0630789/23671907507',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2815,7 +2603,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:17 GMT',
+  'Mon, 28 Jun 2021 23:24:43 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2837,7 +2625,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-NmNkNWM2ODk5MTdmNDhhNmI3MzJhZDRhYmY4YTMyYTE=';style-src 'self' 'nonce-NjMxNzM2YTJiYTlkNDgxM2IzZTk4ZmIyM2M2MzIzMGM=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-OWI4OWYwNjFmNjUyNGU0MWJiODAwYzZmYTRiZjc5MWU=';style-src 'self' 'nonce-ZjI3ZGVkOTA1NGE2NGQ5MWFmZTY0NzMwMDhmMjZlNmU=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2847,15 +2635,15 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:28 GMT',
+  'Mon, 28 Jun 2021 23:24:53 GMT',
   'Connection',
   'close',
   'Content-Length',
   '732'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/bulk/2.0/syncs/718')
-  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/899","syncStartedAt":"2021-06-21T19:38:18.5970000Z","syncEndedAt":"2021-06-21T19:38:19.7370000Z","status":"warning","createdAt":"2021-06-21T19:38:17.8000000Z","createdBy":"t3st","uri":"/syncs/718"}, [
+  .get('/api/bulk/2.0/syncs/791')
+  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/981","syncStartedAt":"2021-06-28T23:24:43.4000000Z","syncEndedAt":"2021-06-28T23:24:44.2600000Z","status":"warning","createdAt":"2021-06-28T23:24:43.2430000Z","createdBy":"t3st","uri":"/syncs/791"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2865,7 +2653,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '82224e48bdf24235a795c4a4a1567f9c/23429602530',
+  '5550e68329d44623b9d213bf9338f8c3/23671912513',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2875,7 +2663,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:29 GMT',
+  'Mon, 28 Jun 2021 23:24:54 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2884,7 +2672,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304290","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"6000","createdAt":"1624922626","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624922678","updatedBy":"222","count":"2","dataLookupId":"1a5b348b-7e10-4a95-9558-48eee00130c3","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2894,7 +2682,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e9ced9c2b82c4b9b831e48c6b47107c3/23429602721',
+  '90626e9ba260404eb9f75927e0135731/23671912838',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2904,7 +2692,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:30 GMT',
+  'Mon, 28 Jun 2021 23:24:55 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2923,7 +2711,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '9ae502737f6140cdbbbf534e79870630/23429602953',
+  '47c8aa31fbcd4a9d93e861d9a6039e9d/23671913098',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2933,7 +2721,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:30 GMT',
+  'Mon, 28 Jun 2021 23:24:56 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2942,7 +2730,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304291","updatedBy":"222","count":"0","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"6001","createdAt":"1624922651","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624922678","updatedBy":"222","count":"0","dataLookupId":"a05dd147-250a-4a6f-b425-1b3b4e84dfb7","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -2952,7 +2740,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '338c938570ac41c591d41472c2bd0244/23429603185',
+  '1b5dc5b283cb404984b99519cd83fd73/23671913398',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2962,7 +2750,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:31 GMT',
+  'Mon, 28 Jun 2021 23:24:56 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -2981,7 +2769,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1b41478be16c494780d8607dd9a8a29b/23429603473',
+  'acf62a6c9f2341dc9d701fb68e9feaea/23671915101',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -2991,7 +2779,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:31 GMT',
+  'Mon, 28 Jun 2021 23:25:00 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3000,7 +2788,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304290","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"6000","createdAt":"1624922626","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624922678","updatedBy":"222","count":"2","dataLookupId":"1a5b348b-7e10-4a95-9558-48eee00130c3","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3010,7 +2798,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'bf9cd543d5764fe783af0abb1b7ee30c/23429603730',
+  'f2f46653783f4c8ab74378930299bb3c/23671915446',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3020,7 +2808,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:32 GMT',
+  'Mon, 28 Jun 2021 23:25:01 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3029,7 +2817,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304299","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984554","createdAt":"1624922581","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922684","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3039,7 +2827,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'fc1716fcc46f49068b49ba7db60cb176/23429603942',
+  'e0ad4a3884b74339a1476d930ca2414f/23671915644',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3049,15 +2837,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:33 GMT',
+  'Mon, 28 Jun 2021 23:25:01 GMT',
   'Connection',
   'close',
   'Content-Length',
   '385'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5994', {"id":"5994","name":"(test) High Value","membershipAdditions":["1984184"],"membershipDeletions":["1984323"]})
-  .once().reply(200, {"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304313","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/6000', {"id":"6000","name":"(test) High Value","membershipAdditions":["1984184"],"membershipDeletions":["1984554"]})
+  .once().reply(200, {"type":"ContactList","id":"6000","createdAt":"1624922626","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624922702","updatedBy":"222","count":"2","dataLookupId":"1a5b348b-7e10-4a95-9558-48eee00130c3","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3067,7 +2855,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1f7a82cbd9b245228a129cb05edb99c7/23429604194',
+  '89c5df2f74884603b2f688c71bd55581/23671915900',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3077,15 +2865,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:33 GMT',
+  'Mon, 28 Jun 2021 23:25:02 GMT',
   'Connection',
   'close',
   'Content-Length',
   '293'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/assets/contact/list/5995', {"id":"5995","name":"(test) Churned","membershipAdditions":["1984184"],"membershipDeletions":[]})
-  .once().reply(200, {"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304314","updatedBy":"222","count":"1","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}, [
+  .put('/api/REST/1.0/assets/contact/list/6001', {"id":"6001","name":"(test) Churned","membershipAdditions":["1984184"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"6001","createdAt":"1624922651","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624922703","updatedBy":"222","count":"1","dataLookupId":"a05dd147-250a-4a6f-b425-1b3b4e84dfb7","scope":"global"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3095,7 +2883,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c5cf8f1f4cc64b6eb13fbf24ad976e7d/23429604419',
+  '1f36c9dd56c543b686d5db330c307dd4/23671916211',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3105,7 +2893,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:34 GMT',
+  'Mon, 28 Jun 2021 23:25:03 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3114,7 +2902,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922597","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3124,7 +2912,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '30150c82514d4cf0a157d78df1e935b0/23429604631',
+  '41c07592c9534a23be3a7aa90425c923/23671916541',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3134,7 +2922,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:34 GMT',
+  'Mon, 28 Jun 2021 23:25:03 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3153,7 +2941,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'db5b5e9cacd04a5181742644414adea3/23429604853',
+  '07c3b408cf194ddbaee694c2d0eee4c5/23671916767',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3163,7 +2951,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:35 GMT',
+  'Mon, 28 Jun 2021 23:25:04 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3172,7 +2960,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304299","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984554","createdAt":"1624922581","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922684","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3182,7 +2970,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2afeed263f65409d8b86b882cccc53c0/23429605089',
+  '4807691b911344e28cec71e3b8b4c2e4/23671917100',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3192,7 +2980,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:35 GMT',
+  'Mon, 28 Jun 2021 23:25:04 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3200,7 +2988,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/2.0/data/contact/1984184/membership')
-  .once().reply(200, [{"type":"ContactList","id":"5994","name":"(test) High Value"},{"type":"ContactList","id":"5995","name":"(test) Churned"}], [
+  .once().reply(200, [{"type":"ContactList","id":"6000","name":"(test) High Value"},{"type":"ContactList","id":"6001","name":"(test) Churned"}], [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3210,7 +2998,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8b39e4b756ef424da17838dac0f4aac5/23429605292',
+  '3515d84052eb43f58bd4a3ca2fc980b3/23671917446',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3220,14 +3008,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:36 GMT',
+  'Mon, 28 Jun 2021 23:25:05 GMT',
   'Connection',
   'close',
   'Content-Length',
   '122'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/2.0/data/contact/1984323/membership')
+  .get('/api/REST/2.0/data/contact/1984554/membership')
   .once().reply(200, [], [
   'Cache-Control',
   'no-store',
@@ -3238,7 +3026,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2bd789bb393f42a4a471a01aa11940db/23429605526',
+  'b45ab398fd714623b9f35488eba8e6b0/23671917749',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3248,7 +3036,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:36 GMT',
+  'Mon, 28 Jun 2021 23:25:06 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3256,7 +3044,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dnotgrouparoo%40demo.com"})
+  .query({"depth":"partial","search":"emailAddress%3D%27notgrouparoo%40demo.com%27"})
   .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984184","createdAt":"1623960611","depth":"partial","name":"notgrouparoo@demo.com","updatedAt":"1623969152","emailAddress":"notgrouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623960611"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
@@ -3267,7 +3055,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '4d7706bacf1f406aa765bc63a3b8c709/23429605739',
+  'f6fe20f1aab041e0b3cc797b44ecd755/23671918036',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3277,7 +3065,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:37 GMT',
+  'Mon, 28 Jun 2021 23:25:06 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3296,7 +3084,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '80f074ad5e7d474080f351a8abe55819/23429605972',
+  '5149ba77774e4ada90a6bc4912a4e1a1/23671918354',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3306,7 +3094,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:38 GMT',
+  'Mon, 28 Jun 2021 23:25:07 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3314,8 +3102,8 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304210","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo%40demo.com%27emailAddress%3D%27grouparoo2%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922597","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984554","createdAt":"1624922581","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922684","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":2}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3325,7 +3113,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'dbc164aff09e42c8886c3f5b295505dd/23429606249',
+  '2699705d820448f18aaa2c733dc76fd6/23671918694',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3335,43 +3123,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:38 GMT',
+  'Mon, 28 Jun 2021 23:25:08 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '383'
+  '719'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984323","createdAt":"1624304197","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304299","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '2a87cbb4bf1c4a15b0f455fa2d57a55f/23429606453',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:38:39 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '385'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/data/contact/1984323')
+  .delete('/api/REST/1.0/data/contact/1984554')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -3380,7 +3139,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd4e606040f394b7dbfc9f8354775f863/23429606683',
+  '3a6b25afe2f64a47b2dba35e85291a74/23671919054',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3390,7 +3149,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:39 GMT',
+  'Mon, 28 Jun 2021 23:25:09 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3408,7 +3167,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '7665c2dec54d462aa818e12a44c7f40b/23429606967',
+  'acebc235be1f49eeb5257b59052e02a3/23671919508',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3418,7 +3177,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:40 GMT',
+  'Mon, 28 Jun 2021 23:25:10 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3426,7 +3185,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/900","createdBy":"t3st","createdAt":"2021-06-21T19:38:41.9627034Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:38:41.9627034Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/982","createdBy":"t3st","createdAt":"2021-06-28T23:25:11.8164562Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:25:11.8164562Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3436,7 +3195,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '29d0aedb56864e05bd13532e5af7344a/23429607336',
+  'f78d0d2118a04a7ab2a47e17c08f46a5/23671920051',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3446,14 +3205,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:41 GMT',
+  'Mon, 28 Jun 2021 23:25:11 GMT',
   'Connection',
   'close',
   'Content-Length',
   '516'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/900/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"John","lastName":"Test"})
+  .post('/api/bulk/2.0/contacts/imports/982/data', [{"emailAddress":"grouparoo@demo.com","id":"1984553","profileId":"pro1","firstName":"John","lastName":"Test"}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -3462,7 +3221,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '238aaf9216bd420aada000e06c4defa2/23429607532',
+  '3fe41c716fb945c4b8567bb490ab5596/23671920332',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3472,13 +3231,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:41 GMT',
+  'Mon, 28 Jun 2021 23:25:12 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/900"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/900","status":"pending","createdAt":"2021-06-21T19:38:43.1269117Z","createdBy":"t3st","uri":"/syncs/719"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/982"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/982","status":"pending","createdAt":"2021-06-28T23:25:12.9925637Z","createdBy":"t3st","uri":"/syncs/792"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3488,7 +3247,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '76b65dcc5cbc4a6498074758d121a9e1/23429607791',
+  'd2eed95b6507462f9fcfa83eb5246d14/23671920596',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3498,7 +3257,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:42 GMT',
+  'Mon, 28 Jun 2021 23:25:12 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3507,7 +3266,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304324","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922715","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3517,7 +3276,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c79cd68143934b86bba03cd27570221d/23429611906',
+  '0aa51ef6fa3a4b778a1e55cd5ce94777/23671925332',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3527,7 +3286,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:53 GMT',
+  'Mon, 28 Jun 2021 23:25:23 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3546,7 +3305,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2aa133a964a34d7da9a3762fbcf559e7/23429612229',
+  '7470307bf2f1490785112e10bd885f27/23671925756',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3556,7 +3315,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:53 GMT',
+  'Mon, 28 Jun 2021 23:25:23 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3564,7 +3323,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo2%40demo.com%27"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -3575,7 +3334,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '715258f7813a42b88a2d7b35cc602ce3/23429612423',
+  '81a16e050c4e4d02a40e81bf525371a4/23671926063',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3585,7 +3344,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:54 GMT',
+  'Mon, 28 Jun 2021 23:25:24 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3603,7 +3362,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '509cb42c49484691aa600eab8a873ab6/23429612674',
+  '82400f2c414e4034bf6ff4dd06e3afec/23671926292',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3613,7 +3372,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:54 GMT',
+  'Mon, 28 Jun 2021 23:25:25 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3621,7 +3380,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/901","createdBy":"t3st","createdAt":"2021-06-21T19:38:56.5448012Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:38:56.5448012Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/983","createdBy":"t3st","createdAt":"2021-06-28T23:25:26.6359173Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:25:26.6359173Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3631,7 +3390,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '7885d4843b974d42b7fb3714fec9e25b/23429612990',
+  '7a0fd41eecb045529bae120cbe10f9a9/23671926614',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3641,14 +3400,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:56 GMT',
+  'Mon, 28 Jun 2021 23:25:25 GMT',
   'Connection',
   'close',
   'Content-Length',
   '565'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/901/data', {"emailAddress":"grouparoo2@demo.com","profileId":"pro2","firstName":"Evan","lastName":"Saran","mobilePhone":"+5583999999999"})
+  .post('/api/bulk/2.0/contacts/imports/983/data', [{"emailAddress":"grouparoo2@demo.com","profileId":"pro2","firstName":"Evan","lastName":"Saran","mobilePhone":"+5583999999999"}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -3657,7 +3416,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '90c9bcad98ea465ab095aac041e69a9a/23429613207',
+  '170d307e270d454f8413d33224101218/23671926923',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3667,13 +3426,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:57 GMT',
+  'Mon, 28 Jun 2021 23:25:26 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/901"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/901","status":"pending","createdAt":"2021-06-21T19:38:57.8787148Z","createdBy":"t3st","uri":"/syncs/720"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/983"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/983","status":"pending","createdAt":"2021-06-28T23:25:28.0753706Z","createdBy":"t3st","uri":"/syncs/793"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3683,7 +3442,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '07bac91c392f4bb7a98eb6596a02b843/23429613427',
+  '0a526cd1e01f44efa121e3a37da74668/23671927257',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3693,7 +3452,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:38:57 GMT',
+  'Mon, 28 Jun 2021 23:25:27 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3702,7 +3461,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984324","createdAt":"1624304340","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304340","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984555","createdAt":"1624922728","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922728","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3712,7 +3471,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'da36216a65b348fcb3aee12e426a3a5b/23429617454',
+  'db3a57bf17ff4de39f929e68e759bf76/23671931985',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3722,7 +3481,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:08 GMT',
+  'Mon, 28 Jun 2021 23:25:37 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3730,7 +3489,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dnotanemail"})
+  .query({"depth":"partial","search":"emailAddress%3D%27notanemail%27"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -3741,7 +3500,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '94f4c23c87c64aa3a717bcd1391d51cc/23429617824',
+  '0d79e4668c29449baabbf6c0fe6d6a3f/23671932186',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3751,7 +3510,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:09 GMT',
+  'Mon, 28 Jun 2021 23:25:39 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3769,7 +3528,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e3b8ed002de640d781b7dbc41651d019/23429618042',
+  '26e7d82e445a43f58c7541bc9650b2a8/23671932378',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3779,7 +3538,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:09 GMT',
+  'Mon, 28 Jun 2021 23:25:39 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3787,7 +3546,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/902","createdBy":"t3st","createdAt":"2021-06-21T19:39:11.3934148Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:39:11.3934148Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/984","createdBy":"t3st","createdAt":"2021-06-28T23:25:40.4460794Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:25:40.4460794Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3797,7 +3556,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ba3cfbd6d8884981a89cc3958d4982a7/23429618441',
+  '6d1d15455a3e4197888ebb26cd178916/23671932705',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3807,14 +3566,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:10 GMT',
+  'Mon, 28 Jun 2021 23:25:39 GMT',
   'Connection',
   'close',
   'Content-Length',
   '565'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/902/data', {"emailAddress":"notanemail","profileId":"pro2","firstName":"Maria"})
+  .post('/api/bulk/2.0/contacts/imports/984/data', [{"emailAddress":"notanemail","profileId":"pro2","firstName":"Maria"}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -3823,7 +3582,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'cb289b3b96c54ab0be9681a045c25a24/23429618713',
+  'f760e27e774240d8a03a522b62eaeeb3/23671932935',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3833,13 +3592,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:11 GMT',
+  'Mon, 28 Jun 2021 23:25:40 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/902"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/902","status":"pending","createdAt":"2021-06-21T19:39:12.9917751Z","createdBy":"t3st","uri":"/syncs/721"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/984"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/984","status":"pending","createdAt":"2021-06-28T23:25:41.5426910Z","createdBy":"t3st","uri":"/syncs/794"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3849,7 +3608,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'a8b1de8e22324657a5ab374868e2d294/23429619038',
+  '94a31a6772f645698013a0ba1cbe495b/23671933137',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3859,7 +3618,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:12 GMT',
+  'Mon, 28 Jun 2021 23:25:40 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3868,7 +3627,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984324","createdAt":"1624304340","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304340","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984555","createdAt":"1624922728","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922728","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3878,7 +3637,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'bcacb678545349a5bee8a2d9dac6cfde/23429623290',
+  'c65d11d251f4440c971c94ea8e750ebb/23671937257',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3888,7 +3647,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:23 GMT',
+  'Mon, 28 Jun 2021 23:25:51 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3896,7 +3655,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
+  .query({"depth":"partial","search":"emailAddress%3D%27undefined%27emailAddress%3D%27undefined%27"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -3907,7 +3666,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ffb33ff266ed4aa39613b70412f2ba0b/23429623562',
+  '9d65365d816847aabaf279ff1b0b96e8/23671937504',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3917,36 +3676,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:23 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '50'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  'ff1702d5874446f18fba40c4d70abd4e/23429623771',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:39:24 GMT',
+  'Mon, 28 Jun 2021 23:25:52 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3955,7 +3685,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984324","createdAt":"1624304340","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304340","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984555","createdAt":"1624922728","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922728","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -3965,7 +3695,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '43387f3f33e344109ceffba8e1803030/23429627863',
+  '3c27488f2d96457da99c498ca93e2878/23671941619',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -3975,7 +3705,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:34 GMT',
+  'Mon, 28 Jun 2021 23:26:02 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -3994,7 +3724,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'cd742d5cbfcc496b9820c77ee5f670ed/23429628208',
+  '0ecb213144474ce78272e7180d0cddc9/23671941890',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4004,7 +3734,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:35 GMT',
+  'Mon, 28 Jun 2021 23:26:03 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4012,8 +3742,8 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304324","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo%40demo.com%27emailAddress%3D%27bademail%27emailAddress%3D%27grouparoo3%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922715","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4023,7 +3753,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '713fc438784d40b7a4028b571348fabb/23429628497',
+  '05ba0117e6704a0a83721f3773d395b0/23671942141',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4033,71 +3763,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:36 GMT',
+  'Mon, 28 Jun 2021 23:26:04 GMT',
   'Connection',
   'close',
   'Content-Length',
   '401'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dbademail"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '9619f3bba91845d0967bcceac5d7d129/23429628800',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:39:37 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '50'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo3%40demo.com"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '0134c23818f2409d86b5a10a965d0f9a/23429629047',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:39:37 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '50'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/bulk/2.0/contacts/fields')
   .once().reply(200, {"items":[{"name":"Email Address","internalName":"C_EmailAddress","dataType":"emailAddress","hasReadOnlyConstraint":false,"hasNotNullConstraint":true,"hasUniquenessConstraint":true,"statement":"{{Contact.Field(C_EmailAddress)}}","uri":"/contacts/fields/100001","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First Name","internalName":"C_FirstName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstName)}}","uri":"/contacts/fields/100002","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6270000Z"},{"name":"Last Name","internalName":"C_LastName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastName)}}","uri":"/contacts/fields/100003","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6300000Z"},{"name":"Company","internalName":"C_Company","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company)}}","uri":"/contacts/fields/100004","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6200000Z"},{"name":"Email Display Name","internalName":"C_EmailDisplayName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailDisplayName)}}","uri":"/contacts/fields/100005","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Address 1","internalName":"C_Address1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address1)}}","uri":"/contacts/fields/100006","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6070000Z"},{"name":"Address 2","internalName":"C_Address2","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address2)}}","uri":"/contacts/fields/100007","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6100000Z"},{"name":"Address 3","internalName":"C_Address3","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address3)}}","uri":"/contacts/fields/100008","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"City","internalName":"C_City","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_City)}}","uri":"/contacts/fields/100009","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6170000Z"},{"name":"State or Province","internalName":"C_State_Prov","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_State_Prov)}}","uri":"/contacts/fields/100010","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-01-18T18:44:17.5630000Z"},{"name":"Zip or Postal Code","internalName":"C_Zip_Postal","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Zip_Postal)}}","uri":"/contacts/fields/100011","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6370000Z"},{"name":"Country","internalName":"C_Country","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Country)}}","uri":"/contacts/fields/100012","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6230000Z"},{"name":"Business Phone","internalName":"C_BusPhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_BusPhone)}}","uri":"/contacts/fields/100013","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6130000Z"},{"name":"Mobile Phone","internalName":"C_MobilePhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MobilePhone)}}","uri":"/contacts/fields/100014","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Fax","internalName":"C_Fax","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Fax)}}","uri":"/contacts/fields/100015","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Title","internalName":"C_Title","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Title)}}","uri":"/contacts/fields/100016","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6330000Z"},{"name":"salutation_sfdc","internalName":"C_Salutation","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salutation)}}","uri":"/contacts/fields/100017","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:42.0370000Z"},{"name":"Salesperson","internalName":"C_Salesperson","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salesperson)}}","uri":"/contacts/fields/100022","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Contact ID","internalName":"C_SFDCContactID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCContactID)}}","uri":"/contacts/fields/100023","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Lead ID","internalName":"C_SFDCLeadID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLeadID)}}","uri":"/contacts/fields/100024","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Created","internalName":"C_DateCreated","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateCreated)}}","uri":"/contacts/fields/100026","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Modified","internalName":"C_DateModified","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateModified)}}","uri":"/contacts/fields/100027","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Eloqua Contact ID","internalName":"ContactIDExt","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(ContactIDExt)}}","uri":"/contacts/fields/100032","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Account ID","internalName":"C_SFDCAccountID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCAccountID)}}","uri":"/contacts/fields/100033","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last Modified by CRM System","internalName":"C_LastModifiedByExtIntegrateSystem","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastModifiedByExtIntegrateSystem)}}","uri":"/contacts/fields/100034","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last SFDC Campaign ID","internalName":"C_SFDCLastCampaignID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignID)}}","uri":"/contacts/fields/100035","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6000000Z"},{"name":"Last SFDC Campaign Status","internalName":"C_SFDCLastCampaignStatus","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignStatus)}}","uri":"/contacts/fields/100036","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6030000Z"},{"name":"Company Revenue","internalName":"C_Company_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Revenue1)}}","uri":"/contacts/fields/100041","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Email Opt Out","internalName":"C_SFDC_EmailOptOut1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_EmailOptOut1)}}","uri":"/contacts/fields/100043","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Source - Most Recent","internalName":"C_Lead_Source___Most_Recent1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Most_Recent1)}}","uri":"/contacts/fields/100044","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6470000Z"},{"name":"Lead Source - Original","internalName":"C_Lead_Source___Original1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Original1)}}","uri":"/contacts/fields/100045","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-09-04T22:38:01.9400000Z"},{"name":"industry_sfdc","internalName":"C_Industry1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Industry1)}}","uri":"/contacts/fields/100046","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:47.2370000Z"},{"name":"annual_revenue_sfdc","internalName":"C_Annual_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue1)}}","uri":"/contacts/fields/100047","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:40:02.5230000Z"},{"name":"lead_status_sfdc","internalName":"C_Lead_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Status1)}}","uri":"/contacts/fields/100048","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:59.4500000Z"},{"name":"Job Role","internalName":"C_Job_Role1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Job_Role1)}}","uri":"/contacts/fields/100049","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6400000Z"},{"name":"Lead Score - High Value Website Content","internalName":"C_LS___High_Value_Website_Content1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LS___High_Value_Website_Content1)}}","uri":"/contacts/fields/100051","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Score Date - Engagement - Most Recent","internalName":"C_Lead_Score_Date___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Most_Recent1)}}","uri":"/contacts/fields/100065","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"2010-03-12T23:45:43.8670000Z"},{"name":"Integrated Marketing and Sales Funnel Stage","internalName":"C_Integrated_Marketing_and_Sales_Funnel_Stage","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Integrated_Marketing_and_Sales_Funnel_Stage)}}","uri":"/contacts/fields/100066","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Product/Solution of Interest","internalName":"C_Product_Solution_of_Interest1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Product_Solution_of_Interest1)}}","uri":"/contacts/fields/100068","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Region","internalName":"C_Region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Region1)}}","uri":"/contacts/fields/100069","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name (Default Hypersite)","internalName":"C_elqPURLName1","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_elqPURLName1)}}","uri":"/contacts/fields/100072","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"lead_rating_combined_sfdc","internalName":"C_Lead_Rating___Combined1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Combined1)}}","uri":"/contacts/fields/100081","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:24.7570000Z"},{"name":"Email Address Domain","internalName":"C_EmailAddressDomain","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailAddressDomain)}}","uri":"/contacts/fields/100171","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First and Last Name","internalName":"C_FirstAndLastName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstAndLastName)}}","uri":"/contacts/fields/100172","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"company_size_sfdc","internalName":"C_Company_Size1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Size1)}}","uri":"/contacts/fields/100174","createdAt":"2010-02-24T16:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-13T16:47:15.1830000Z"},{"name":"Lead Score - Last High Touch Event Date","internalName":"C_Lead_Score___Last_High_Touch_Event_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Last_High_Touch_Event_Date1)}}","uri":"/contacts/fields/100175","createdAt":"2010-02-24T16:11:00.0000000Z","updatedAt":"2010-02-24T16:11:00.0000000Z"},{"name":"Lead Rating - Profile (Explicit)","internalName":"C_Lead_Rating___Explicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Explicit1)}}","uri":"/contacts/fields/100176","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-04T22:51:34.9600000Z"},{"name":"Lead Rating - Engagement (Implicit)","internalName":"C_Lead_Rating___Implicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Implicit1)}}","uri":"/contacts/fields/100177","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-22T16:47:47.9130000Z"},{"name":"Lead Score - Profile (Explicit)","internalName":"C_Lead_Score___Explicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Explicit1)}}","uri":"/contacts/fields/100178","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T01:18:27.8500000Z"},{"name":"Lead Score - Engagement (Implicit)","internalName":"C_Lead_Score___Implicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Implicit1)}}","uri":"/contacts/fields/100179","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T22:19:18.9770000Z"},{"name":"Lead Score Date - Profile - Most Recent","internalName":"C_Lead_Score_Date___Profile___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Profile___Most_Recent1)}}","uri":"/contacts/fields/100180","createdAt":"2010-03-12T23:46:00.0000000Z","updatedAt":"2010-03-12T23:47:19.1900000Z"},{"name":"employees_sfdc","internalName":"C_Employees1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employees1)}}","uri":"/contacts/fields/100184","createdAt":"2011-05-27T17:24:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:19.4670000Z"},{"name":"Territory","internalName":"C_Territory","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Territory)}}","uri":"/contacts/fields/100187","createdAt":"2012-09-09T09:25:43.7430000Z","updatedAt":"2012-09-09T09:25:43.7430000Z"},{"name":"MD5 Hashed Email Address","internalName":"C_MD5HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedEmailAddress)}}","uri":"/contacts/fields/100188","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Email Address","internalName":"C_SHA256HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedEmailAddress)}}","uri":"/contacts/fields/100189","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Business Phone","internalName":"C_MD5HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedBusPhone)}}","uri":"/contacts/fields/100190","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Business Phone","internalName":"C_SHA256HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedBusPhone)}}","uri":"/contacts/fields/100191","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Mobile Phone","internalName":"C_MD5HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedMobilePhone)}}","uri":"/contacts/fields/100192","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Mobile Phone","internalName":"C_SHA256HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedMobilePhone)}}","uri":"/contacts/fields/100193","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name","internalName":"C_ElqPURLName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqPURLName)}}","uri":"/contacts/fields/100194","createdAt":"2016-05-06T09:23:00.0000000Z","updatedAt":"2016-05-06T09:23:00.0000000Z"},{"name":"Last SFDC Campaign Name","internalName":"C_SFDCLastCampaignName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignName)}}","uri":"/contacts/fields/100195","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"SFDC Lead Rating","internalName":"C_SFDC_Lead_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_Lead_Rating1)}}","uri":"/contacts/fields/100196","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Most Recent Activity Date","internalName":"C_ElqDiscover__MostRecentActivityDate","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__MostRecentActivityDate)}}","uri":"/contacts/fields/100197","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Total Inbound Activity","internalName":"C_ElqDiscover__TotalInboundActivity","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__TotalInboundActivity)}}","uri":"/contacts/fields/100198","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Lead Buy Signals","internalName":"C_ElqDiscover__BuySignals","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__BuySignals)}}","uri":"/contacts/fields/100199","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"description_sfdc","internalName":"C_description_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_description_sfdc1)}}","uri":"/contacts/fields/100200","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:42:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:42:00.0000000Z"},{"name":"lead_rating_sfdc","internalName":"C_lead_rating_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lead_rating_sfdc1)}}","uri":"/contacts/fields/100201","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:49:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:00.0000000Z"},{"name":"website_sfdc","internalName":"C_website_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_sfdc1)}}","uri":"/contacts/fields/100202","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:51:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:51:00.0000000Z"},{"name":"client_newsletter_sfdc","internalName":"C_client_newsletter_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_client_newsletter_sfdc1)}}","uri":"/contacts/fields/100203","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:08:00.0000000Z"},{"name":"department_sfdc","internalName":"C_department_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_department_sfdc1)}}","uri":"/contacts/fields/100204","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:10:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:10:00.0000000Z"},{"name":"jumbo_account_contact_sfdc","internalName":"C_jumbo_account_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_jumbo_account_contact_sfdc1)}}","uri":"/contacts/fields/100205","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:17:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:17:00.0000000Z"},{"name":"primary_contact_sfdc","internalName":"C_primary_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_primary_contact_sfdc1)}}","uri":"/contacts/fields/100206","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:18:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:18:00.0000000Z"},{"name":"Account ID","internalName":"C_Account_ID1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_ID1)}}","uri":"/contacts/fields/100221","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:55:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:55:00.0000000Z"},{"name":"Annual Revenue","internalName":"C_Annual_Revenue11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue11)}}","uri":"/contacts/fields/100222","createdBy":"Laura.Marty","createdAt":"2016-07-06T00:01:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-06T00:01:00.0000000Z"},{"name":"Rating","internalName":"C_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Rating1)}}","uri":"/contacts/fields/100223","createdBy":"Laura.Marty","createdAt":"2016-07-07T16:26:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-07T16:26:00.0000000Z"},{"name":"Employment Status","internalName":"C_Employment_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employment_Status1)}}","uri":"/contacts/fields/100225","createdBy":"Rob.Lopez","createdAt":"2016-07-11T21:05:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-11T21:05:00.0000000Z"},{"name":"patient_id","internalName":"C_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_patient_id1)}}","uri":"/contacts/fields/100226","createdAt":"2016-07-22T18:18:00.0000000Z","updatedAt":"2016-07-22T18:18:00.0000000Z"},{"name":"middle_name","internalName":"C_middle_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_middle_name1)}}","uri":"/contacts/fields/100227","createdAt":"2016-07-22T18:22:00.0000000Z","updatedAt":"2016-07-22T18:22:00.0000000Z"},{"name":"preferred_name_1life","internalName":"C_preferred_name_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_preferred_name_1life1)}}","uri":"/contacts/fields/100228","createdAt":"2016-07-22T18:23:00.0000000Z","updatedAt":"2016-07-22T18:23:00.0000000Z"},{"name":"suffix_1life","internalName":"C_suffix_1lfe1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_suffix_1lfe1)}}","uri":"/contacts/fields/100229","createdAt":"2016-07-22T18:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-02T21:49:30.7770000Z"},{"name":"gender_1life","internalName":"C_gender_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_gender_1life1)}}","uri":"/contacts/fields/100230","createdAt":"2016-07-22T18:24:00.0000000Z","updatedAt":"2016-07-22T18:24:00.0000000Z"},{"name":"deceased_1life","internalName":"C_deceased_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_deceased_1life1)}}","uri":"/contacts/fields/100232","createdAt":"2016-07-22T18:27:00.0000000Z","updatedAt":"2016-07-22T18:27:00.0000000Z"},{"name":"is_member_1life","internalName":"C_is_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_is_member_1life1)}}","uri":"/contacts/fields/100233","createdAt":"2016-07-22T18:28:00.0000000Z","updatedAt":"2016-07-22T18:28:00.0000000Z"},{"name":"member_type_1life","internalName":"C_member_type_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_member_type_1life1)}}","uri":"/contacts/fields/100234","createdAt":"2016-07-22T18:29:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:20.7930000Z"},{"name":"membership_status_1life","internalName":"C_membership_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_membership_status_1life1)}}","uri":"/contacts/fields/100235","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:34:25.8970000Z"},{"name":"renewal_date_1life","internalName":"C_renewal_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_date_1life1)}}","uri":"/contacts/fields/100236","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-05-14T19:11:51.7000000Z"},{"name":"date_of_birth_1life","internalName":"C_date_of_birth_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_date_of_birth_1life1)}}","uri":"/contacts/fields/100237","createdAt":"2016-07-22T18:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-25T23:11:07.1270000Z"},{"name":"renewal_status_1life","internalName":"C_renewal_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_status_1life1)}}","uri":"/contacts/fields/100238","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"payment_status_1life","internalName":"C_payment_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_payment_status_1life1)}}","uri":"/contacts/fields/100239","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"home_office","internalName":"C_home_office1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_home_office1)}}","uri":"/contacts/fields/100240","createdAt":"2016-07-22T18:33:00.0000000Z","updatedAt":"2016-07-22T18:33:00.0000000Z"},{"name":"service_area","internalName":"C_service_area1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_service_area1)}}","uri":"/contacts/fields/100241","createdAt":"2016-07-22T18:33:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:41.6100000Z"},{"name":"district","internalName":"C_district1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_district1)}}","uri":"/contacts/fields/100242","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pcp","internalName":"C_pcp1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pcp1)}}","uri":"/contacts/fields/100243","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pi_customer","internalName":"C_pi_customer1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pi_customer1)}}","uri":"/contacts/fields/100244","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"test_account_1life","internalName":"C_test_account_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_test_account_1life1)}}","uri":"/contacts/fields/100245","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"seed_contact","internalName":"C_seed_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_seed_contact1)}}","uri":"/contacts/fields/100246","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"proof_contact","internalName":"C_proof_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_proof_contact1)}}","uri":"/contacts/fields/100247","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"current_period_start_1life","internalName":"C_current_period_start_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_current_period_start_1life1)}}","uri":"/contacts/fields/100248","createdAt":"2016-07-22T18:38:00.0000000Z","updatedAt":"2016-07-22T18:38:00.0000000Z"},{"name":"waived_1life","internalName":"C_waived_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_waived_1life1)}}","uri":"/contacts/fields/100249","createdBy":"Rob.Lopez","createdAt":"2016-07-26T23:36:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-26T23:36:00.0000000Z"},{"name":"sfdc_sync","internalName":"C_sfdc_sync1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_sfdc_sync1)}}","uri":"/contacts/fields/100251","createdAt":"2016-07-29T16:34:00.0000000Z","updatedAt":"2016-07-29T16:34:00.0000000Z"},{"name":"Headquarter State","internalName":"C_Headquarter_State1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Headquarter_State1)}}","uri":"/contacts/fields/100252","createdBy":"Rob.Lopez","createdAt":"2016-08-03T21:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-03T21:31:00.0000000Z"},{"name":"import_date_1life","internalName":"C_import_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_date_1life1)}}","uri":"/contacts/fields/100254","createdBy":"Rob.Lopez","createdAt":"2016-08-29T17:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-29T17:49:00.0000000Z"},{"name":"pk_login_email_1life","internalName":"C_pk_login_email_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pk_login_email_1life1)}}","uri":"/contacts/fields/100255","createdBy":"Rob.Lopez","createdAt":"2016-08-30T21:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-30T21:24:00.0000000Z"},{"name":"import_source","internalName":"C_import_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_source1)}}","uri":"/contacts/fields/100256","createdBy":"Rob.Lopez","createdAt":"2016-09-14T18:09:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-08-21T15:58:20.4900000Z"},{"name":"contacts_client_services_owner_sfdc","internalName":"C_contacts_client_services_owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_contacts_client_services_owner_sfdc1)}}","uri":"/contacts/fields/100257","createdBy":"Rob.Lopez","createdAt":"2016-09-27T15:09:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-09-27T15:09:00.0000000Z"},{"name":"age","internalName":"C_age1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_age1)}}","uri":"/contacts/fields/100258","createdBy":"Rob.Lopez","createdAt":"2016-10-07T20:27:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-07T20:27:00.0000000Z"},{"name":"lname_dob","internalName":"C_lname_dob1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lname_dob1)}}","uri":"/contacts/fields/100259","createdBy":"Rob.Lopez","createdAt":"2016-12-27T18:14:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-12-27T18:14:00.0000000Z"},{"name":"Hard Bounce","internalName":"C_Hard_Bounce1","dataType":"string","defaultValue":"False","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Hard_Bounce1)}}","uri":"/contacts/fields/100260","createdBy":"Laura.Marty","createdAt":"2017-01-27T20:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-09-20T22:25:40.2100000Z"},{"name":"chart_link_eloqua","internalName":"C_chart_link_eloqua1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_eloqua1)}}","uri":"/contacts/fields/100262","createdBy":"Rob.Lopez","createdAt":"2017-02-21T21:32:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-21T21:32:00.0000000Z"},{"name":"washing_machine_staging","internalName":"C_chart_link_clean1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_clean1)}}","uri":"/contacts/fields/100263","createdBy":"Rob.Lopez","createdAt":"2017-02-22T01:25:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-22T01:26:02.3670000Z"},{"name":"birthday_current_year","internalName":"C_birthday_current_year1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_birthday_current_year1)}}","uri":"/contacts/fields/100264","createdBy":"Rob.Lopez","createdAt":"2017-03-11T00:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-11T00:49:00.0000000Z"},{"name":"archived_account_1life","internalName":"C_archived_account_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_archived_account_1life1)}}","uri":"/contacts/fields/100265","createdBy":"Rob.Lopez","createdAt":"2017-03-30T14:22:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-30T14:22:00.0000000Z"},{"name":"MixPanel CDO Name","internalName":"C_MixPanel_CDO_Name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MixPanel_CDO_Name1)}}","uri":"/contacts/fields/100266","createdBy":"Kim.Amato","createdAt":"2017-06-26T22:09:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-26T22:09:00.0000000Z"},{"name":"mixpanel_event_name","internalName":"C_event_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_name1)}}","uri":"/contacts/fields/100267","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:47:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:43:49.0500000Z"},{"name":"mixpanel_event_time","internalName":"C_event_time1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_time1)}}","uri":"/contacts/fields/100268","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:49:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.3800000Z"},{"name":"mixpanel_external_id","internalName":"C_mixpanel_external_id1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_external_id1)}}","uri":"/contacts/fields/100269","createdBy":"Kim.Amato","createdAt":"2017-06-29T16:02:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T16:02:00.0000000Z"},{"name":"mixpanel_patient_id","internalName":"C_mixpanel_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_patient_id1)}}","uri":"/contacts/fields/100270","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.0000000Z"},{"name":"mixpanel_app_version","internalName":"C_mixpanel_app_version1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_app_version1)}}","uri":"/contacts/fields/100271","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_city","internalName":"C_mixpanel_city1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_city1)}}","uri":"/contacts/fields/100272","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_os","internalName":"C_mixpanel_os1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_os1)}}","uri":"/contacts/fields/100273","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"mixpanel_region","internalName":"C_mixpanel_region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_region1)}}","uri":"/contacts/fields/100274","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"HealthFusion_Amount","internalName":"C_HealthFusion_Amount1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_HealthFusion_Amount1)}}","uri":"/contacts/fields/100276","createdBy":"Frank.Chan","createdAt":"2017-11-09T21:57:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-11-09T21:57:00.0000000Z"},{"name":"utm_campaign","internalName":"C_utm_campaign1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_campaign1)}}","uri":"/contacts/fields/100277","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:07.4600000Z"},{"name":"utm_source","internalName":"C_utm_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_source1)}}","uri":"/contacts/fields/100278","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:34:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:22.4800000Z"},{"name":"utm_medium","internalName":"C_utm_medium1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_medium1)}}","uri":"/contacts/fields/100279","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:16.8800000Z"},{"name":"utm_content","internalName":"C_utm_content1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_content1)}}","uri":"/contacts/fields/100280","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:11.7830000Z"},{"name":"B2B_Company_CF","internalName":"C_B2B_Company_CF1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Company_CF1)}}","uri":"/contacts/fields/100281","createdBy":"Frank.Chan","createdAt":"2017-12-01T00:12:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-01T00:12:00.0000000Z"},{"name":"LP_Source","internalName":"C_LP_Source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LP_Source1)}}","uri":"/contacts/fields/100282","createdBy":"Frank.Chan","createdAt":"2017-12-23T02:44:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-23T02:44:00.0000000Z"},{"name":"B2B_Targeting_Filter","internalName":"C_B2B_Targeting_Filter1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter1)}}","uri":"/contacts/fields/100283","createdBy":"Frank.Chan","createdAt":"2018-01-12T19:28:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-01-12T19:28:00.0000000Z"},{"name":"utm_term","internalName":"C_utm_term1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_term1)}}","uri":"/contacts/fields/100284","createdBy":"Mark.Gopez","createdAt":"2018-02-13T18:36:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:37.9170000Z"},{"name":"B2B_Comment","internalName":"C_b2b_comment1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_b2b_comment1)}}","uri":"/contacts/fields/100285","createdBy":"Mark.Gopez","createdAt":"2018-02-14T21:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:51:52.5270000Z"},{"name":"Adhoc_Field_1","internalName":"C_Adhoc_Field_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_11)}}","uri":"/contacts/fields/100286","createdBy":"Frank.Chan","createdAt":"2018-05-04T20:22:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-04T20:22:00.0000000Z"},{"name":"B2B_Comment_long","internalName":"C_B2B_Comment_long1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Comment_long1)}}","uri":"/contacts/fields/100287","createdBy":"Jason.Ferrier","createdAt":"2018-05-05T01:37:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:53:30.9900000Z"},{"name":"Adhoc_Filter_1","internalName":"C_Adhoc_Filter_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Filter_11)}}","uri":"/contacts/fields/100288","createdBy":"Frank.Chan","createdAt":"2018-05-08T17:16:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-08T17:16:00.0000000Z"},{"name":"B2B_Targeting_Filter_2","internalName":"C_B2B_Targeting_Filter_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter_21)}}","uri":"/contacts/fields/100289","createdBy":"Frank.Chan","createdAt":"2018-05-11T20:58:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-11T20:58:00.0000000Z"},{"name":"Contact_Role_sfdc","internalName":"C_Untitled_Contact_Field1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Untitled_Contact_Field1)}}","uri":"/contacts/fields/100290","createdBy":"Frank.Chan","createdAt":"2018-05-21T17:38:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-21T17:38:50.2770000Z"},{"name":"Account_Owner_sfdc","internalName":"C_Account_Owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Owner_sfdc1)}}","uri":"/contacts/fields/100291","createdBy":"Nadim.Fetaih","createdAt":"2018-05-22T16:27:00.0000000Z","updatedBy":"Nadim.Fetaih","updatedAt":"2018-05-22T16:27:00.0000000Z"},{"name":"Adhoc_URL_1","internalName":"C_Adhoc_URL_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_URL_11)}}","uri":"/contacts/fields/100293","createdBy":"Frank.Chan","createdAt":"2018-06-13T16:15:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-06-13T16:15:00.0000000Z"},{"name":"website_contactus_picklist","internalName":"C_website_contactus_picklist1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_contactus_picklist1)}}","uri":"/contacts/fields/100294","createdBy":"Frank.Chan","createdAt":"2018-10-08T21:50:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-10-08T21:50:00.0000000Z"},{"name":"Account Manager","internalName":"C_Account_Manager1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Manager1)}}","uri":"/contacts/fields/100295","createdBy":"Henry.Tran","createdAt":"2019-05-06T19:13:00.0000000Z","updatedBy":"Henry.Tran","updatedAt":"2019-05-06T19:13:00.0000000Z"},{"name":"B2B_Conversion_Flag","internalName":"C_TEST_B2B_Conversion_Flag1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_TEST_B2B_Conversion_Flag1)}}","uri":"/contacts/fields/100296","createdBy":"Andy.Shaw","createdAt":"2019-10-05T15:18:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:44:25.1670000Z"},{"name":"B2B Discount Code","internalName":"C_B2B_Discount_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Discount_Code1)}}","uri":"/contacts/fields/100297","createdBy":"Andy.Shaw","createdAt":"2019-10-07T19:45:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:45:00.0000000Z"},{"name":"Adhoc_Field_2","internalName":"C_Adhoc_Field_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_21)}}","uri":"/contacts/fields/100298","createdBy":"Andy.Shaw","createdAt":"2019-11-22T16:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-11-22T16:30:00.0000000Z"},{"name":"type_sfdc","internalName":"C_type_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_type_sfdc1)}}","uri":"/contacts/fields/100299","createdBy":"Jesse.Nobbe","createdAt":"2019-12-05T23:04:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-12-05T23:04:00.0000000Z"},{"name":"T7 Date","internalName":"C_T7_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_T7_Date1)}}","uri":"/contacts/fields/100300","createdBy":"Andy.Shaw","createdAt":"2019-12-16T18:03:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-12-16T18:03:00.0000000Z"},{"name":"virtual_member_1life","internalName":"C_virtual_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_virtual_member_1life1)}}","uri":"/contacts/fields/100301","createdBy":"Jesse.Nobbe","createdAt":"2020-01-28T17:48:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-02-20T18:20:04.3000000Z"},{"name":"Adhoc_Date_1","internalName":"C_Adhoc_Date_11","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Date_11)}}","uri":"/contacts/fields/100302","createdBy":"Andy.Shaw","createdAt":"2020-03-03T23:40:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-09T18:50:14.4200000Z"},{"name":"send_date_plus10","internalName":"C_send_date_plus101","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_send_date_plus101)}}","uri":"/contacts/fields/100303","createdBy":"Andy.Shaw","createdAt":"2020-03-10T17:05:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-10T17:05:00.0000000Z"},{"name":"Adhoc_Field_3","internalName":"C_Adhoc_Field_31","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_31)}}","uri":"/contacts/fields/100305","createdBy":"Andy.Shaw","createdAt":"2020-11-12T19:01:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-11-12T19:01:00.0000000Z"},{"name":"Webinar Redemption Code","internalName":"C_Webinar_Redemption_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Webinar_Redemption_Code1)}}","uri":"/contacts/fields/100306","createdBy":"Peter.Chen","createdAt":"2020-12-08T03:44:00.0000000Z","updatedBy":"Peter.Chen","updatedAt":"2020-12-08T03:44:00.0000000Z"}],"totalResults":150,"limit":1000,"offset":0,"count":150,"hasMore":false}, [
   'Cache-Control',
@@ -4109,7 +3781,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '3b3afe77a5804f9aacbd9a09622b5e38/23429629268',
+  '4887bed026c7412883fff8cc3df36f40/23671942464',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4119,7 +3791,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:38 GMT',
+  'Mon, 28 Jun 2021 23:26:05 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4127,7 +3799,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/903","createdBy":"t3st","createdAt":"2021-06-21T19:39:40.0958612Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:39:40.0958612Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/985","createdBy":"t3st","createdAt":"2021-06-28T23:26:11.3880647Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:26:11.3880647Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4137,7 +3809,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '9c6903a6cc374e2f8082755eaa9e72e2/23429629590',
+  '2a06af1d4fe74854ac573e6b1cd02876/23671945066',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4147,14 +3819,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:39 GMT',
+  'Mon, 28 Jun 2021 23:26:10 GMT',
   'Connection',
   'close',
   'Content-Length',
   '565'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/903/data', {"emailAddress":"grouparoo@demo.com","id":"1984322","profileId":"pro1","firstName":"Sam","lastName":"Test"})
+  .post('/api/bulk/2.0/contacts/imports/985/data', [{"emailAddress":"grouparoo@demo.com","id":"1984553","profileId":"pro1","firstName":"Sam","lastName":"Test"},{"emailAddress":"bademail","profileId":"pro2","firstName":"William"},{"emailAddress":"grouparoo3@demo.com","profileId":"pro3","firstName":"Liz"}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -4163,7 +3835,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '35bb70329d5648e7b86c817f0499f798/23429629797',
+  '64c774e832b9473384f84195f5e34d10/23671945303',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4173,61 +3845,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:40 GMT',
+  'Mon, 28 Jun 2021 23:26:11 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/903/data', {"emailAddress":"bademail","profileId":"pro2","firstName":"William"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  'a74db0c9c34c47b2af08bf2d36f3cd0e/23429630033',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:39:40 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/903/data', {"emailAddress":"grouparoo3@demo.com","profileId":"pro3","firstName":"Liz"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  'f247667f28c648ba95d6d4d06bc86e7c/23429630271',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:39:41 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/903"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/903","status":"pending","createdAt":"2021-06-21T19:39:42.3714924Z","createdBy":"t3st","uri":"/syncs/722"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/985"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/985","status":"pending","createdAt":"2021-06-28T23:26:12.6311672Z","createdBy":"t3st","uri":"/syncs/795"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4237,7 +3861,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '4f005fdf081f4a619d1d85ce5d0524a1/23429630494',
+  'f8fd7eac89514f98b2fb01b1ece54df0/23671945574',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4247,7 +3871,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:42 GMT',
+  'Mon, 28 Jun 2021 23:26:11 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4256,7 +3880,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304385","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"Sam","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922773","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"Sam","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4266,7 +3890,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '31f3e4d078a5473a9dfee02ec6552712/23429634644',
+  'c262e4f3271441a0a2ea0ebb1666cef9/23671949886',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4276,7 +3900,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:53 GMT',
+  'Mon, 28 Jun 2021 23:26:22 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4285,7 +3909,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984324","createdAt":"1624304340","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304340","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984555","createdAt":"1624922728","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922728","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4295,7 +3919,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c60ab797da334a149cb4fb2dd5a6c619/23429635317',
+  '033496aa593646af95a0c79db967707e/23671950090',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4305,7 +3929,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:54 GMT',
+  'Mon, 28 Jun 2021 23:26:23 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4314,7 +3938,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo3%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984325","createdAt":"1624304384","depth":"partial","name":"grouparoo3@demo.com","updatedAt":"1624304384","emailAddress":"grouparoo3@demo.com","emailFormatPreference":"unspecified","firstName":"Liz","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623980518"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984556","createdAt":"1624922773","depth":"partial","name":"grouparoo3@demo.com","updatedAt":"1624922773","emailAddress":"grouparoo3@demo.com","emailFormatPreference":"unspecified","firstName":"Liz","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623980518"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4324,7 +3948,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'fc0bf7b6bba74ba2b9e290b54ec8f179/23429635525',
+  '31a64bc00f1c4141add9305cd45e9c08/23671950367',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4334,7 +3958,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:55 GMT',
+  'Mon, 28 Jun 2021 23:26:23 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4342,7 +3966,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo%2Btest%40demo.com%27"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -4353,7 +3977,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '0120661e43ac4f01940e59237e2ff38a/23429635837',
+  '2aea0c002f6546e0aaf58c58d41f42fb/23671950641',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4363,7 +3987,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:55 GMT',
+  'Mon, 28 Jun 2021 23:26:24 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4381,7 +4005,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd043e7e7e9de421a85f27f46f3f33141/23429636171',
+  '3b54b229a41641b3bacb75e1e68ce559/23671950939',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4391,7 +4015,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:56 GMT',
+  'Mon, 28 Jun 2021 23:26:25 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4399,7 +4023,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/904","createdBy":"t3st","createdAt":"2021-06-21T19:39:58.1330334Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:39:58.1330334Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/986","createdBy":"t3st","createdAt":"2021-06-28T23:26:26.9986939Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:26:26.9986939Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4409,7 +4033,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '3e307630afc6488190c04852639b5679/23429636584',
+  'd2b8d92331bb4f1b99de5a10b4632c8e/23671951317',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4419,14 +4043,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:57 GMT',
+  'Mon, 28 Jun 2021 23:26:26 GMT',
   'Connection',
   'close',
   'Content-Length',
   '565'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/904/data', {"emailAddress":"grouparoo+test@demo.com","profileId":"pro4","firstName":"Special"})
+  .post('/api/bulk/2.0/contacts/imports/986/data', [{"emailAddress":"grouparoo+test@demo.com","profileId":"pro4","firstName":"Special"}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -4435,7 +4059,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '97065b24800b428ba7dbea42a8553dfe/23429636995',
+  '614cd12c69a341bd92426441d3d8bbb3/23671951532',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4445,13 +4069,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:58 GMT',
+  'Mon, 28 Jun 2021 23:26:26 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/904"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/904","status":"pending","createdAt":"2021-06-21T19:39:59.6647551Z","createdBy":"t3st","uri":"/syncs/723"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/986"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/986","status":"pending","createdAt":"2021-06-28T23:26:28.1846775Z","createdBy":"t3st","uri":"/syncs/796"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4461,7 +4085,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '77908cb22f2440cea525d94904d477e6/23429637201',
+  '3f1659e5ecaf4e4da7779b3bf89065ef/23671951791',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4471,7 +4095,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:39:58 GMT',
+  'Mon, 28 Jun 2021 23:26:28 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4480,7 +4104,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984326","createdAt":"1624304400","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1624304400","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984557","createdAt":"1624922788","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1624922788","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4490,7 +4114,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'bc94ade364c347bf97a8d4521592fe20/23429641643',
+  '87375b372aa344c595944783c3456b28/23671956210',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4500,7 +4124,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:09 GMT',
+  'Mon, 28 Jun 2021 23:26:37 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4508,8 +4132,8 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984326","createdAt":"1624304400","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1624304400","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo%2Btest%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984557","createdAt":"1624922788","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1624922788","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4519,7 +4143,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6518acd842554603a28a374bc085cf32/23429641923',
+  '5652fab1e47b413985e1b78b2b52a1c2/23671956546',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4529,7 +4153,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:10 GMT',
+  'Mon, 28 Jun 2021 23:26:38 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4547,7 +4171,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '4b3b4def6de2409f9fa18a84a3a9f151/23429642144',
+  '8deadc7732b24fe58ceb525d100c23d1/23671956771',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4557,7 +4181,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:11 GMT',
+  'Mon, 28 Jun 2021 23:26:39 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4565,7 +4189,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/905","createdBy":"t3st","createdAt":"2021-06-21T19:40:12.5601554Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:40:12.5601554Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/987","createdBy":"t3st","createdAt":"2021-06-28T23:26:41.0908886Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:26:41.0908886Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4575,7 +4199,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '00d4c9983ebe4bc1aaced99b7ecae056/23429642551',
+  '8c8a5868af30470b803653d97866e1f2/23671957138',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4585,14 +4209,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:12 GMT',
+  'Mon, 28 Jun 2021 23:26:40 GMT',
   'Connection',
   'close',
   'Content-Length',
   '565'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/905/data', {"emailAddress":"grouparoo+test@demo.com","id":"1984326","profileId":"pro4","firstName":"Special","lastName":"User"})
+  .post('/api/bulk/2.0/contacts/imports/987/data', [{"emailAddress":"grouparoo+test@demo.com","id":"1984557","profileId":"pro4","firstName":"Special","lastName":"User"}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -4601,7 +4225,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ebd7e60ea26849329d850177acb23c55/23429642779',
+  '10227f1f5a124450989e93aa3160578e/23671957424',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4611,13 +4235,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:12 GMT',
+  'Mon, 28 Jun 2021 23:26:40 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/905"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/905","status":"pending","createdAt":"2021-06-21T19:40:13.7079591Z","createdBy":"t3st","uri":"/syncs/724"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/987"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/987","status":"pending","createdAt":"2021-06-28T23:26:42.5737204Z","createdBy":"t3st","uri":"/syncs/797"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4627,7 +4251,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd65e85c3af2848b39ab24db29684f876/23429643017',
+  '01a2de9989174c5bab6be0159afb1fd2/23671957705',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4637,7 +4261,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:13 GMT',
+  'Mon, 28 Jun 2021 23:26:42 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4646,7 +4270,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984326","createdAt":"1624304400","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1624304414","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","lastName":"User","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984557","createdAt":"1624922788","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1624922803","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","lastName":"User","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4656,7 +4280,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '0f457987908848209cf2e13d547f0653/23429647523',
+  '8d511e8956af4a3bbc2ff26aca6a44d5/23671962197',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4666,7 +4290,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:24 GMT',
+  'Mon, 28 Jun 2021 23:26:53 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4674,8 +4298,8 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984326","createdAt":"1624304400","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1624304414","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","lastName":"User","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27grouparoo%2Btest%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984557","createdAt":"1624922788","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1624922803","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","lastName":"User","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4685,7 +4309,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '03a93ee389c240f4803bfc53409ae135/23429647868',
+  '9f987a5f0cec4d199f859eafcbd4969c/23671962514',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4695,14 +4319,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:25 GMT',
+  'Mon, 28 Jun 2021 23:26:53 GMT',
   'Connection',
   'close',
   'Content-Length',
   '414'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/data/contact/1984326')
+  .delete('/api/REST/1.0/data/contact/1984557')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -4711,7 +4335,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'a26304bd1d5d4ead8ed92ce2bf2b3590/23429648173',
+  '0b1ea0174ae14522a5098a13cf39d133/23671962758',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4721,7 +4345,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:26 GMT',
+  'Mon, 28 Jun 2021 23:26:54 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4740,7 +4364,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1f55acebb4fa4a2fb53255be90f1bd2a/23429652563',
+  'a77f4e1beb4a4e5da5f6b82c802c7c79/23671967145',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4750,7 +4374,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:36 GMT',
+  'Mon, 28 Jun 2021 23:27:04 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -4758,8 +4382,8 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser0%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984257","createdAt":"1623982688","depth":"partial","name":"user0@demo.com","updatedAt":"1623982688","emailAddress":"user0@demo.com","emailFormatPreference":"unspecified","firstName":"User0","isBounceback":"false","isSubscribed":"true","lastName":"Demo0","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27user0%40demo.com%27emailAddress%3D%27user1%40demo.com%27emailAddress%3D%27user2%40demo.com%27emailAddress%3D%27user3%40demo.com%27emailAddress%3D%27user4%40demo.com%27emailAddress%3D%27user5%40demo.com%27emailAddress%3D%27user6%40demo.com%27emailAddress%3D%27user7%40demo.com%27emailAddress%3D%27user8%40demo.com%27emailAddress%3D%27user9%40demo.com%27emailAddress%3D%27user10%40demo.com%27emailAddress%3D%27user11%40demo.com%27emailAddress%3D%27user12%40demo.com%27emailAddress%3D%27user13%40demo.com%27emailAddress%3D%27user14%40demo.com%27emailAddress%3D%27user15%40demo.com%27emailAddress%3D%27user16%40demo.com%27emailAddress%3D%27user17%40demo.com%27emailAddress%3D%27user18%40demo.com%27emailAddress%3D%27user19%40demo.com%27emailAddress%3D%27user20%40demo.com%27emailAddress%3D%27user21%40demo.com%27emailAddress%3D%27user22%40demo.com%27emailAddress%3D%27user23%40demo.com%27emailAddress%3D%27user24%40demo.com%27emailAddress%3D%27user25%40demo.com%27emailAddress%3D%27user26%40demo.com%27emailAddress%3D%27user27%40demo.com%27emailAddress%3D%27user28%40demo.com%27emailAddress%3D%27user29%40demo.com%27emailAddress%3D%27user30%40demo.com%27emailAddress%3D%27user31%40demo.com%27emailAddress%3D%27user32%40demo.com%27emailAddress%3D%27user33%40demo.com%27emailAddress%3D%27user34%40demo.com%27emailAddress%3D%27user35%40demo.com%27emailAddress%3D%27user36%40demo.com%27emailAddress%3D%27user37%40demo.com%27emailAddress%3D%27user38%40demo.com%27emailAddress%3D%27user39%40demo.com%27emailAddress%3D%27user40%40demo.com%27emailAddress%3D%27user41%40demo.com%27emailAddress%3D%27user42%40demo.com%27emailAddress%3D%27user43%40demo.com%27emailAddress%3D%27user44%40demo.com%27emailAddress%3D%27user45%40demo.com%27emailAddress%3D%27user46%40demo.com%27emailAddress%3D%27user47%40demo.com%27emailAddress%3D%27user48%40demo.com%27emailAddress%3D%27user49%40demo.com%27emailAddress%3D%27user49%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984489","createdAt":"1624922337","depth":"partial","name":"user0@demo.com","updatedAt":"1624922337","emailAddress":"user0@demo.com","emailFormatPreference":"unspecified","firstName":"User0","isBounceback":"false","isSubscribed":"true","lastName":"Demo0","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984490","createdAt":"1624922337","depth":"partial","name":"user1@demo.com","updatedAt":"1624922337","emailAddress":"user1@demo.com","emailFormatPreference":"unspecified","firstName":"User1","isBounceback":"false","isSubscribed":"true","lastName":"Demo1","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984491","createdAt":"1624922337","depth":"partial","name":"user2@demo.com","updatedAt":"1624922337","emailAddress":"user2@demo.com","emailFormatPreference":"unspecified","firstName":"User2","isBounceback":"false","isSubscribed":"true","lastName":"Demo2","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984492","createdAt":"1624922337","depth":"partial","name":"user3@demo.com","updatedAt":"1624922337","emailAddress":"user3@demo.com","emailFormatPreference":"unspecified","firstName":"User3","isBounceback":"false","isSubscribed":"true","lastName":"Demo3","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984493","createdAt":"1624922337","depth":"partial","name":"user4@demo.com","updatedAt":"1624922337","emailAddress":"user4@demo.com","emailFormatPreference":"unspecified","firstName":"User4","isBounceback":"false","isSubscribed":"true","lastName":"Demo4","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984494","createdAt":"1624922337","depth":"partial","name":"user5@demo.com","updatedAt":"1624922337","emailAddress":"user5@demo.com","emailFormatPreference":"unspecified","firstName":"User5","isBounceback":"false","isSubscribed":"true","lastName":"Demo5","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984495","createdAt":"1624922337","depth":"partial","name":"user6@demo.com","updatedAt":"1624922337","emailAddress":"user6@demo.com","emailFormatPreference":"unspecified","firstName":"User6","isBounceback":"false","isSubscribed":"true","lastName":"Demo6","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984496","createdAt":"1624922337","depth":"partial","name":"user7@demo.com","updatedAt":"1624922337","emailAddress":"user7@demo.com","emailFormatPreference":"unspecified","firstName":"User7","isBounceback":"false","isSubscribed":"true","lastName":"Demo7","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984497","createdAt":"1624922337","depth":"partial","name":"user8@demo.com","updatedAt":"1624922337","emailAddress":"user8@demo.com","emailFormatPreference":"unspecified","firstName":"User8","isBounceback":"false","isSubscribed":"true","lastName":"Demo8","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984498","createdAt":"1624922337","depth":"partial","name":"user9@demo.com","updatedAt":"1624922337","emailAddress":"user9@demo.com","emailFormatPreference":"unspecified","firstName":"User9","isBounceback":"false","isSubscribed":"true","lastName":"Demo9","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984499","createdAt":"1624922337","depth":"partial","name":"user10@demo.com","updatedAt":"1624922337","emailAddress":"user10@demo.com","emailFormatPreference":"unspecified","firstName":"User10","isBounceback":"false","isSubscribed":"true","lastName":"Demo10","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984500","createdAt":"1624922337","depth":"partial","name":"user11@demo.com","updatedAt":"1624922337","emailAddress":"user11@demo.com","emailFormatPreference":"unspecified","firstName":"User11","isBounceback":"false","isSubscribed":"true","lastName":"Demo11","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984501","createdAt":"1624922337","depth":"partial","name":"user12@demo.com","updatedAt":"1624922337","emailAddress":"user12@demo.com","emailFormatPreference":"unspecified","firstName":"User12","isBounceback":"false","isSubscribed":"true","lastName":"Demo12","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984502","createdAt":"1624922337","depth":"partial","name":"user13@demo.com","updatedAt":"1624922337","emailAddress":"user13@demo.com","emailFormatPreference":"unspecified","firstName":"User13","isBounceback":"false","isSubscribed":"true","lastName":"Demo13","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984503","createdAt":"1624922337","depth":"partial","name":"user14@demo.com","updatedAt":"1624922337","emailAddress":"user14@demo.com","emailFormatPreference":"unspecified","firstName":"User14","isBounceback":"false","isSubscribed":"true","lastName":"Demo14","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984504","createdAt":"1624922337","depth":"partial","name":"user15@demo.com","updatedAt":"1624922337","emailAddress":"user15@demo.com","emailFormatPreference":"unspecified","firstName":"User15","isBounceback":"false","isSubscribed":"true","lastName":"Demo15","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984505","createdAt":"1624922337","depth":"partial","name":"user16@demo.com","updatedAt":"1624922337","emailAddress":"user16@demo.com","emailFormatPreference":"unspecified","firstName":"User16","isBounceback":"false","isSubscribed":"true","lastName":"Demo16","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984506","createdAt":"1624922337","depth":"partial","name":"user17@demo.com","updatedAt":"1624922337","emailAddress":"user17@demo.com","emailFormatPreference":"unspecified","firstName":"User17","isBounceback":"false","isSubscribed":"true","lastName":"Demo17","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984507","createdAt":"1624922337","depth":"partial","name":"user18@demo.com","updatedAt":"1624922337","emailAddress":"user18@demo.com","emailFormatPreference":"unspecified","firstName":"User18","isBounceback":"false","isSubscribed":"true","lastName":"Demo18","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984508","createdAt":"1624922337","depth":"partial","name":"user19@demo.com","updatedAt":"1624922337","emailAddress":"user19@demo.com","emailFormatPreference":"unspecified","firstName":"User19","isBounceback":"false","isSubscribed":"true","lastName":"Demo19","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984509","createdAt":"1624922337","depth":"partial","name":"user20@demo.com","updatedAt":"1624922337","emailAddress":"user20@demo.com","emailFormatPreference":"unspecified","firstName":"User20","isBounceback":"false","isSubscribed":"true","lastName":"Demo20","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984510","createdAt":"1624922337","depth":"partial","name":"user21@demo.com","updatedAt":"1624922337","emailAddress":"user21@demo.com","emailFormatPreference":"unspecified","firstName":"User21","isBounceback":"false","isSubscribed":"true","lastName":"Demo21","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984511","createdAt":"1624922337","depth":"partial","name":"user22@demo.com","updatedAt":"1624922337","emailAddress":"user22@demo.com","emailFormatPreference":"unspecified","firstName":"User22","isBounceback":"false","isSubscribed":"true","lastName":"Demo22","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984512","createdAt":"1624922337","depth":"partial","name":"user23@demo.com","updatedAt":"1624922337","emailAddress":"user23@demo.com","emailFormatPreference":"unspecified","firstName":"User23","isBounceback":"false","isSubscribed":"true","lastName":"Demo23","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984513","createdAt":"1624922337","depth":"partial","name":"user24@demo.com","updatedAt":"1624922337","emailAddress":"user24@demo.com","emailFormatPreference":"unspecified","firstName":"User24","isBounceback":"false","isSubscribed":"true","lastName":"Demo24","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984514","createdAt":"1624922337","depth":"partial","name":"user25@demo.com","updatedAt":"1624922337","emailAddress":"user25@demo.com","emailFormatPreference":"unspecified","firstName":"User25","isBounceback":"false","isSubscribed":"true","lastName":"Demo25","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984515","createdAt":"1624922337","depth":"partial","name":"user26@demo.com","updatedAt":"1624922337","emailAddress":"user26@demo.com","emailFormatPreference":"unspecified","firstName":"User26","isBounceback":"false","isSubscribed":"true","lastName":"Demo26","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984516","createdAt":"1624922337","depth":"partial","name":"user27@demo.com","updatedAt":"1624922337","emailAddress":"user27@demo.com","emailFormatPreference":"unspecified","firstName":"User27","isBounceback":"false","isSubscribed":"true","lastName":"Demo27","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984517","createdAt":"1624922337","depth":"partial","name":"user28@demo.com","updatedAt":"1624922337","emailAddress":"user28@demo.com","emailFormatPreference":"unspecified","firstName":"User28","isBounceback":"false","isSubscribed":"true","lastName":"Demo28","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984518","createdAt":"1624922337","depth":"partial","name":"user29@demo.com","updatedAt":"1624922337","emailAddress":"user29@demo.com","emailFormatPreference":"unspecified","firstName":"User29","isBounceback":"false","isSubscribed":"true","lastName":"Demo29","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984519","createdAt":"1624922337","depth":"partial","name":"user30@demo.com","updatedAt":"1624922337","emailAddress":"user30@demo.com","emailFormatPreference":"unspecified","firstName":"User30","isBounceback":"false","isSubscribed":"true","lastName":"Demo30","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984520","createdAt":"1624922337","depth":"partial","name":"user31@demo.com","updatedAt":"1624922337","emailAddress":"user31@demo.com","emailFormatPreference":"unspecified","firstName":"User31","isBounceback":"false","isSubscribed":"true","lastName":"Demo31","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984521","createdAt":"1624922337","depth":"partial","name":"user32@demo.com","updatedAt":"1624922337","emailAddress":"user32@demo.com","emailFormatPreference":"unspecified","firstName":"User32","isBounceback":"false","isSubscribed":"true","lastName":"Demo32","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984522","createdAt":"1624922337","depth":"partial","name":"user33@demo.com","updatedAt":"1624922337","emailAddress":"user33@demo.com","emailFormatPreference":"unspecified","firstName":"User33","isBounceback":"false","isSubscribed":"true","lastName":"Demo33","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984523","createdAt":"1624922337","depth":"partial","name":"user34@demo.com","updatedAt":"1624922337","emailAddress":"user34@demo.com","emailFormatPreference":"unspecified","firstName":"User34","isBounceback":"false","isSubscribed":"true","lastName":"Demo34","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984524","createdAt":"1624922337","depth":"partial","name":"user35@demo.com","updatedAt":"1624922337","emailAddress":"user35@demo.com","emailFormatPreference":"unspecified","firstName":"User35","isBounceback":"false","isSubscribed":"true","lastName":"Demo35","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984525","createdAt":"1624922337","depth":"partial","name":"user36@demo.com","updatedAt":"1624922337","emailAddress":"user36@demo.com","emailFormatPreference":"unspecified","firstName":"User36","isBounceback":"false","isSubscribed":"true","lastName":"Demo36","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984526","createdAt":"1624922337","depth":"partial","name":"user37@demo.com","updatedAt":"1624922337","emailAddress":"user37@demo.com","emailFormatPreference":"unspecified","firstName":"User37","isBounceback":"false","isSubscribed":"true","lastName":"Demo37","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984527","createdAt":"1624922337","depth":"partial","name":"user38@demo.com","updatedAt":"1624922337","emailAddress":"user38@demo.com","emailFormatPreference":"unspecified","firstName":"User38","isBounceback":"false","isSubscribed":"true","lastName":"Demo38","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984528","createdAt":"1624922337","depth":"partial","name":"user39@demo.com","updatedAt":"1624922337","emailAddress":"user39@demo.com","emailFormatPreference":"unspecified","firstName":"User39","isBounceback":"false","isSubscribed":"true","lastName":"Demo39","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984529","createdAt":"1624922337","depth":"partial","name":"user40@demo.com","updatedAt":"1624922337","emailAddress":"user40@demo.com","emailFormatPreference":"unspecified","firstName":"User40","isBounceback":"false","isSubscribed":"true","lastName":"Demo40","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984530","createdAt":"1624922337","depth":"partial","name":"user41@demo.com","updatedAt":"1624922337","emailAddress":"user41@demo.com","emailFormatPreference":"unspecified","firstName":"User41","isBounceback":"false","isSubscribed":"true","lastName":"Demo41","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984531","createdAt":"1624922337","depth":"partial","name":"user42@demo.com","updatedAt":"1624922337","emailAddress":"user42@demo.com","emailFormatPreference":"unspecified","firstName":"User42","isBounceback":"false","isSubscribed":"true","lastName":"Demo42","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984532","createdAt":"1624922337","depth":"partial","name":"user43@demo.com","updatedAt":"1624922337","emailAddress":"user43@demo.com","emailFormatPreference":"unspecified","firstName":"User43","isBounceback":"false","isSubscribed":"true","lastName":"Demo43","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984533","createdAt":"1624922337","depth":"partial","name":"user44@demo.com","updatedAt":"1624922337","emailAddress":"user44@demo.com","emailFormatPreference":"unspecified","firstName":"User44","isBounceback":"false","isSubscribed":"true","lastName":"Demo44","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984534","createdAt":"1624922337","depth":"partial","name":"user45@demo.com","updatedAt":"1624922337","emailAddress":"user45@demo.com","emailFormatPreference":"unspecified","firstName":"User45","isBounceback":"false","isSubscribed":"true","lastName":"Demo45","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984535","createdAt":"1624922337","depth":"partial","name":"user46@demo.com","updatedAt":"1624922337","emailAddress":"user46@demo.com","emailFormatPreference":"unspecified","firstName":"User46","isBounceback":"false","isSubscribed":"true","lastName":"Demo46","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984536","createdAt":"1624922337","depth":"partial","name":"user47@demo.com","updatedAt":"1624922337","emailAddress":"user47@demo.com","emailFormatPreference":"unspecified","firstName":"User47","isBounceback":"false","isSubscribed":"true","lastName":"Demo47","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984537","createdAt":"1624922337","depth":"partial","name":"user48@demo.com","updatedAt":"1624922337","emailAddress":"user48@demo.com","emailFormatPreference":"unspecified","firstName":"User48","isBounceback":"false","isSubscribed":"true","lastName":"Demo48","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984538","createdAt":"1624922337","depth":"partial","name":"user49@demo.com","updatedAt":"1624922337","emailAddress":"user49@demo.com","emailFormatPreference":"unspecified","firstName":"User49","isBounceback":"false","isSubscribed":"true","lastName":"Demo49","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":50}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4769,7 +4393,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'a2300a9016c342e885c94a34f9369835/23429652797',
+  'd7dd63ef1405408db0d31c162ace3455/23671967314',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4779,16 +4403,16 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:37 GMT',
+  'Mon, 28 Jun 2021 23:27:05 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '395'
+  '17510'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser1%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984258","createdAt":"1623982688","depth":"partial","name":"user1@demo.com","updatedAt":"1623982688","emailAddress":"user1@demo.com","emailFormatPreference":"unspecified","firstName":"User1","isBounceback":"false","isSubscribed":"true","lastName":"Demo1","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27user50%40demo.com%27emailAddress%3D%27user51%40demo.com%27emailAddress%3D%27user52%40demo.com%27emailAddress%3D%27user53%40demo.com%27emailAddress%3D%27user54%40demo.com%27emailAddress%3D%27user55%40demo.com%27emailAddress%3D%27user56%40demo.com%27emailAddress%3D%27user57%40demo.com%27emailAddress%3D%27user58%40demo.com%27emailAddress%3D%27user59%40demo.com%27emailAddress%3D%27user60%40demo.com%27emailAddress%3D%27user61%40demo.com%27emailAddress%3D%27user62%40demo.com%27emailAddress%3D%27user63%40demo.com%27emailAddress%3D%27user64%40demo.com%27emailAddress%3D%27user65%40demo.com%27emailAddress%3D%27user66%40demo.com%27emailAddress%3D%27user67%40demo.com%27emailAddress%3D%27user68%40demo.com%27emailAddress%3D%27user69%40demo.com%27emailAddress%3D%27user70%40demo.com%27emailAddress%3D%27user71%40demo.com%27emailAddress%3D%27user72%40demo.com%27emailAddress%3D%27user73%40demo.com%27emailAddress%3D%27user74%40demo.com%27emailAddress%3D%27user75%40demo.com%27emailAddress%3D%27user76%40demo.com%27emailAddress%3D%27user77%40demo.com%27emailAddress%3D%27user78%40demo.com%27emailAddress%3D%27user79%40demo.com%27emailAddress%3D%27user80%40demo.com%27emailAddress%3D%27user81%40demo.com%27emailAddress%3D%27user82%40demo.com%27emailAddress%3D%27user83%40demo.com%27emailAddress%3D%27user84%40demo.com%27emailAddress%3D%27user85%40demo.com%27emailAddress%3D%27user86%40demo.com%27emailAddress%3D%27user87%40demo.com%27emailAddress%3D%27user88%40demo.com%27emailAddress%3D%27user89%40demo.com%27emailAddress%3D%27user90%40demo.com%27emailAddress%3D%27user91%40demo.com%27emailAddress%3D%27user92%40demo.com%27emailAddress%3D%27user93%40demo.com%27emailAddress%3D%27user94%40demo.com%27emailAddress%3D%27user95%40demo.com%27emailAddress%3D%27user96%40demo.com%27emailAddress%3D%27user97%40demo.com%27emailAddress%3D%27user98%40demo.com%27emailAddress%3D%27user99%40demo.com%27emailAddress%3D%27user99%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984341","createdAt":"1624906007","depth":"partial","name":"user64@demo.com","updatedAt":"1624906007","emailAddress":"user64@demo.com","emailFormatPreference":"unspecified","firstName":"User64","isBounceback":"false","isSubscribed":"true","lastName":"Demo64","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984342","createdAt":"1624906007","depth":"partial","name":"user65@demo.com","updatedAt":"1624906007","emailAddress":"user65@demo.com","emailFormatPreference":"unspecified","firstName":"User65","isBounceback":"false","isSubscribed":"true","lastName":"Demo65","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984343","createdAt":"1624906007","depth":"partial","name":"user66@demo.com","updatedAt":"1624906007","emailAddress":"user66@demo.com","emailFormatPreference":"unspecified","firstName":"User66","isBounceback":"false","isSubscribed":"true","lastName":"Demo66","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984344","createdAt":"1624906007","depth":"partial","name":"user67@demo.com","updatedAt":"1624906007","emailAddress":"user67@demo.com","emailFormatPreference":"unspecified","firstName":"User67","isBounceback":"false","isSubscribed":"true","lastName":"Demo67","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984345","createdAt":"1624906007","depth":"partial","name":"user68@demo.com","updatedAt":"1624906007","emailAddress":"user68@demo.com","emailFormatPreference":"unspecified","firstName":"User68","isBounceback":"false","isSubscribed":"true","lastName":"Demo68","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984346","createdAt":"1624906007","depth":"partial","name":"user69@demo.com","updatedAt":"1624906007","emailAddress":"user69@demo.com","emailFormatPreference":"unspecified","firstName":"User69","isBounceback":"false","isSubscribed":"true","lastName":"Demo69","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984347","createdAt":"1624906007","depth":"partial","name":"user70@demo.com","updatedAt":"1624906007","emailAddress":"user70@demo.com","emailFormatPreference":"unspecified","firstName":"User70","isBounceback":"false","isSubscribed":"true","lastName":"Demo70","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984348","createdAt":"1624906007","depth":"partial","name":"user71@demo.com","updatedAt":"1624906007","emailAddress":"user71@demo.com","emailFormatPreference":"unspecified","firstName":"User71","isBounceback":"false","isSubscribed":"true","lastName":"Demo71","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984349","createdAt":"1624906007","depth":"partial","name":"user72@demo.com","updatedAt":"1624906007","emailAddress":"user72@demo.com","emailFormatPreference":"unspecified","firstName":"User72","isBounceback":"false","isSubscribed":"true","lastName":"Demo72","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984350","createdAt":"1624906007","depth":"partial","name":"user73@demo.com","updatedAt":"1624906007","emailAddress":"user73@demo.com","emailFormatPreference":"unspecified","firstName":"User73","isBounceback":"false","isSubscribed":"true","lastName":"Demo73","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984351","createdAt":"1624906007","depth":"partial","name":"user74@demo.com","updatedAt":"1624906007","emailAddress":"user74@demo.com","emailFormatPreference":"unspecified","firstName":"User74","isBounceback":"false","isSubscribed":"true","lastName":"Demo74","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984352","createdAt":"1624906007","depth":"partial","name":"user75@demo.com","updatedAt":"1624906007","emailAddress":"user75@demo.com","emailFormatPreference":"unspecified","firstName":"User75","isBounceback":"false","isSubscribed":"true","lastName":"Demo75","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984353","createdAt":"1624906007","depth":"partial","name":"user76@demo.com","updatedAt":"1624906007","emailAddress":"user76@demo.com","emailFormatPreference":"unspecified","firstName":"User76","isBounceback":"false","isSubscribed":"true","lastName":"Demo76","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984354","createdAt":"1624906007","depth":"partial","name":"user77@demo.com","updatedAt":"1624906007","emailAddress":"user77@demo.com","emailFormatPreference":"unspecified","firstName":"User77","isBounceback":"false","isSubscribed":"true","lastName":"Demo77","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984355","createdAt":"1624906007","depth":"partial","name":"user78@demo.com","updatedAt":"1624906007","emailAddress":"user78@demo.com","emailFormatPreference":"unspecified","firstName":"User78","isBounceback":"false","isSubscribed":"true","lastName":"Demo78","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984356","createdAt":"1624906007","depth":"partial","name":"user79@demo.com","updatedAt":"1624906007","emailAddress":"user79@demo.com","emailFormatPreference":"unspecified","firstName":"User79","isBounceback":"false","isSubscribed":"true","lastName":"Demo79","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984357","createdAt":"1624906007","depth":"partial","name":"user80@demo.com","updatedAt":"1624906007","emailAddress":"user80@demo.com","emailFormatPreference":"unspecified","firstName":"User80","isBounceback":"false","isSubscribed":"true","lastName":"Demo80","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984358","createdAt":"1624906007","depth":"partial","name":"user81@demo.com","updatedAt":"1624906007","emailAddress":"user81@demo.com","emailFormatPreference":"unspecified","firstName":"User81","isBounceback":"false","isSubscribed":"true","lastName":"Demo81","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984359","createdAt":"1624906007","depth":"partial","name":"user82@demo.com","updatedAt":"1624906007","emailAddress":"user82@demo.com","emailFormatPreference":"unspecified","firstName":"User82","isBounceback":"false","isSubscribed":"true","lastName":"Demo82","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984360","createdAt":"1624906007","depth":"partial","name":"user83@demo.com","updatedAt":"1624906007","emailAddress":"user83@demo.com","emailFormatPreference":"unspecified","firstName":"User83","isBounceback":"false","isSubscribed":"true","lastName":"Demo83","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984361","createdAt":"1624906007","depth":"partial","name":"user84@demo.com","updatedAt":"1624906007","emailAddress":"user84@demo.com","emailFormatPreference":"unspecified","firstName":"User84","isBounceback":"false","isSubscribed":"true","lastName":"Demo84","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984362","createdAt":"1624906007","depth":"partial","name":"user85@demo.com","updatedAt":"1624906007","emailAddress":"user85@demo.com","emailFormatPreference":"unspecified","firstName":"User85","isBounceback":"false","isSubscribed":"true","lastName":"Demo85","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984363","createdAt":"1624906007","depth":"partial","name":"user86@demo.com","updatedAt":"1624906007","emailAddress":"user86@demo.com","emailFormatPreference":"unspecified","firstName":"User86","isBounceback":"false","isSubscribed":"true","lastName":"Demo86","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984364","createdAt":"1624906007","depth":"partial","name":"user87@demo.com","updatedAt":"1624906007","emailAddress":"user87@demo.com","emailFormatPreference":"unspecified","firstName":"User87","isBounceback":"false","isSubscribed":"true","lastName":"Demo87","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984365","createdAt":"1624906007","depth":"partial","name":"user88@demo.com","updatedAt":"1624906007","emailAddress":"user88@demo.com","emailFormatPreference":"unspecified","firstName":"User88","isBounceback":"false","isSubscribed":"true","lastName":"Demo88","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984366","createdAt":"1624906007","depth":"partial","name":"user89@demo.com","updatedAt":"1624906007","emailAddress":"user89@demo.com","emailFormatPreference":"unspecified","firstName":"User89","isBounceback":"false","isSubscribed":"true","lastName":"Demo89","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984367","createdAt":"1624906007","depth":"partial","name":"user90@demo.com","updatedAt":"1624906007","emailAddress":"user90@demo.com","emailFormatPreference":"unspecified","firstName":"User90","isBounceback":"false","isSubscribed":"true","lastName":"Demo90","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984368","createdAt":"1624906007","depth":"partial","name":"user91@demo.com","updatedAt":"1624906007","emailAddress":"user91@demo.com","emailFormatPreference":"unspecified","firstName":"User91","isBounceback":"false","isSubscribed":"true","lastName":"Demo91","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984369","createdAt":"1624906007","depth":"partial","name":"user92@demo.com","updatedAt":"1624906007","emailAddress":"user92@demo.com","emailFormatPreference":"unspecified","firstName":"User92","isBounceback":"false","isSubscribed":"true","lastName":"Demo92","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984370","createdAt":"1624906007","depth":"partial","name":"user93@demo.com","updatedAt":"1624906007","emailAddress":"user93@demo.com","emailFormatPreference":"unspecified","firstName":"User93","isBounceback":"false","isSubscribed":"true","lastName":"Demo93","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984371","createdAt":"1624906007","depth":"partial","name":"user94@demo.com","updatedAt":"1624906007","emailAddress":"user94@demo.com","emailFormatPreference":"unspecified","firstName":"User94","isBounceback":"false","isSubscribed":"true","lastName":"Demo94","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984372","createdAt":"1624906007","depth":"partial","name":"user95@demo.com","updatedAt":"1624906007","emailAddress":"user95@demo.com","emailFormatPreference":"unspecified","firstName":"User95","isBounceback":"false","isSubscribed":"true","lastName":"Demo95","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984373","createdAt":"1624906007","depth":"partial","name":"user96@demo.com","updatedAt":"1624906007","emailAddress":"user96@demo.com","emailFormatPreference":"unspecified","firstName":"User96","isBounceback":"false","isSubscribed":"true","lastName":"Demo96","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984374","createdAt":"1624906007","depth":"partial","name":"user97@demo.com","updatedAt":"1624906007","emailAddress":"user97@demo.com","emailFormatPreference":"unspecified","firstName":"User97","isBounceback":"false","isSubscribed":"true","lastName":"Demo97","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984375","createdAt":"1624906007","depth":"partial","name":"user98@demo.com","updatedAt":"1624906007","emailAddress":"user98@demo.com","emailFormatPreference":"unspecified","firstName":"User98","isBounceback":"false","isSubscribed":"true","lastName":"Demo98","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984376","createdAt":"1624906007","depth":"partial","name":"user99@demo.com","updatedAt":"1624906007","emailAddress":"user99@demo.com","emailFormatPreference":"unspecified","firstName":"User99","isBounceback":"false","isSubscribed":"true","lastName":"Demo99","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984539","createdAt":"1624922337","depth":"partial","name":"user50@demo.com","updatedAt":"1624922337","emailAddress":"user50@demo.com","emailFormatPreference":"unspecified","firstName":"User50","isBounceback":"false","isSubscribed":"true","lastName":"Demo50","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984540","createdAt":"1624922337","depth":"partial","name":"user51@demo.com","updatedAt":"1624922337","emailAddress":"user51@demo.com","emailFormatPreference":"unspecified","firstName":"User51","isBounceback":"false","isSubscribed":"true","lastName":"Demo51","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984541","createdAt":"1624922337","depth":"partial","name":"user52@demo.com","updatedAt":"1624922337","emailAddress":"user52@demo.com","emailFormatPreference":"unspecified","firstName":"User52","isBounceback":"false","isSubscribed":"true","lastName":"Demo52","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984542","createdAt":"1624922337","depth":"partial","name":"user53@demo.com","updatedAt":"1624922337","emailAddress":"user53@demo.com","emailFormatPreference":"unspecified","firstName":"User53","isBounceback":"false","isSubscribed":"true","lastName":"Demo53","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984543","createdAt":"1624922337","depth":"partial","name":"user54@demo.com","updatedAt":"1624922337","emailAddress":"user54@demo.com","emailFormatPreference":"unspecified","firstName":"User54","isBounceback":"false","isSubscribed":"true","lastName":"Demo54","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984544","createdAt":"1624922337","depth":"partial","name":"user55@demo.com","updatedAt":"1624922337","emailAddress":"user55@demo.com","emailFormatPreference":"unspecified","firstName":"User55","isBounceback":"false","isSubscribed":"true","lastName":"Demo55","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984545","createdAt":"1624922337","depth":"partial","name":"user56@demo.com","updatedAt":"1624922337","emailAddress":"user56@demo.com","emailFormatPreference":"unspecified","firstName":"User56","isBounceback":"false","isSubscribed":"true","lastName":"Demo56","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984546","createdAt":"1624922337","depth":"partial","name":"user57@demo.com","updatedAt":"1624922337","emailAddress":"user57@demo.com","emailFormatPreference":"unspecified","firstName":"User57","isBounceback":"false","isSubscribed":"true","lastName":"Demo57","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984547","createdAt":"1624922337","depth":"partial","name":"user58@demo.com","updatedAt":"1624922337","emailAddress":"user58@demo.com","emailFormatPreference":"unspecified","firstName":"User58","isBounceback":"false","isSubscribed":"true","lastName":"Demo58","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984548","createdAt":"1624922337","depth":"partial","name":"user59@demo.com","updatedAt":"1624922337","emailAddress":"user59@demo.com","emailFormatPreference":"unspecified","firstName":"User59","isBounceback":"false","isSubscribed":"true","lastName":"Demo59","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984549","createdAt":"1624922337","depth":"partial","name":"user60@demo.com","updatedAt":"1624922337","emailAddress":"user60@demo.com","emailFormatPreference":"unspecified","firstName":"User60","isBounceback":"false","isSubscribed":"true","lastName":"Demo60","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984550","createdAt":"1624922337","depth":"partial","name":"user61@demo.com","updatedAt":"1624922337","emailAddress":"user61@demo.com","emailFormatPreference":"unspecified","firstName":"User61","isBounceback":"false","isSubscribed":"true","lastName":"Demo61","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984551","createdAt":"1624922337","depth":"partial","name":"user62@demo.com","updatedAt":"1624922337","emailAddress":"user62@demo.com","emailFormatPreference":"unspecified","firstName":"User62","isBounceback":"false","isSubscribed":"true","lastName":"Demo62","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984552","createdAt":"1624922337","depth":"partial","name":"user63@demo.com","updatedAt":"1624922337","emailAddress":"user63@demo.com","emailFormatPreference":"unspecified","firstName":"User63","isBounceback":"false","isSubscribed":"true","lastName":"Demo63","subscriptionDate":"1624906007"}],"page":1,"pageSize":1000,"total":50}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4798,7 +4422,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'b163fdc9f0e54de3abc2cf7e29c2e606/23429653030',
+  '57f9b396cc9b476e89986776e11a4afa/23671967674',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4808,16 +4432,16 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:38 GMT',
+  'Mon, 28 Jun 2021 23:27:06 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '395'
+  '17550'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984259","createdAt":"1623982688","depth":"partial","name":"user2@demo.com","updatedAt":"1623982688","emailAddress":"user2@demo.com","emailFormatPreference":"unspecified","firstName":"User2","isBounceback":"false","isSubscribed":"true","lastName":"Demo2","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27user100%40demo.com%27emailAddress%3D%27user101%40demo.com%27emailAddress%3D%27user102%40demo.com%27emailAddress%3D%27user103%40demo.com%27emailAddress%3D%27user104%40demo.com%27emailAddress%3D%27user105%40demo.com%27emailAddress%3D%27user106%40demo.com%27emailAddress%3D%27user107%40demo.com%27emailAddress%3D%27user108%40demo.com%27emailAddress%3D%27user109%40demo.com%27emailAddress%3D%27user110%40demo.com%27emailAddress%3D%27user111%40demo.com%27emailAddress%3D%27user112%40demo.com%27emailAddress%3D%27user113%40demo.com%27emailAddress%3D%27user114%40demo.com%27emailAddress%3D%27user115%40demo.com%27emailAddress%3D%27user116%40demo.com%27emailAddress%3D%27user117%40demo.com%27emailAddress%3D%27user118%40demo.com%27emailAddress%3D%27user119%40demo.com%27emailAddress%3D%27user120%40demo.com%27emailAddress%3D%27user121%40demo.com%27emailAddress%3D%27user122%40demo.com%27emailAddress%3D%27user123%40demo.com%27emailAddress%3D%27user124%40demo.com%27emailAddress%3D%27user125%40demo.com%27emailAddress%3D%27user126%40demo.com%27emailAddress%3D%27user127%40demo.com%27emailAddress%3D%27user128%40demo.com%27emailAddress%3D%27user129%40demo.com%27emailAddress%3D%27user130%40demo.com%27emailAddress%3D%27user131%40demo.com%27emailAddress%3D%27user132%40demo.com%27emailAddress%3D%27user133%40demo.com%27emailAddress%3D%27user134%40demo.com%27emailAddress%3D%27user135%40demo.com%27emailAddress%3D%27user136%40demo.com%27emailAddress%3D%27user137%40demo.com%27emailAddress%3D%27user138%40demo.com%27emailAddress%3D%27user139%40demo.com%27emailAddress%3D%27user140%40demo.com%27emailAddress%3D%27user141%40demo.com%27emailAddress%3D%27user142%40demo.com%27emailAddress%3D%27user143%40demo.com%27emailAddress%3D%27user144%40demo.com%27emailAddress%3D%27user145%40demo.com%27emailAddress%3D%27user146%40demo.com%27emailAddress%3D%27user147%40demo.com%27emailAddress%3D%27user148%40demo.com%27emailAddress%3D%27user149%40demo.com%27emailAddress%3D%27user149%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984427","createdAt":"1624910679","depth":"partial","name":"user100@demo.com","updatedAt":"1624910679","emailAddress":"user100@demo.com","emailFormatPreference":"unspecified","firstName":"User100","isBounceback":"false","isSubscribed":"true","lastName":"Demo100","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984428","createdAt":"1624910679","depth":"partial","name":"user101@demo.com","updatedAt":"1624910679","emailAddress":"user101@demo.com","emailFormatPreference":"unspecified","firstName":"User101","isBounceback":"false","isSubscribed":"true","lastName":"Demo101","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984429","createdAt":"1624910679","depth":"partial","name":"user102@demo.com","updatedAt":"1624910679","emailAddress":"user102@demo.com","emailFormatPreference":"unspecified","firstName":"User102","isBounceback":"false","isSubscribed":"true","lastName":"Demo102","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984430","createdAt":"1624910679","depth":"partial","name":"user103@demo.com","updatedAt":"1624910679","emailAddress":"user103@demo.com","emailFormatPreference":"unspecified","firstName":"User103","isBounceback":"false","isSubscribed":"true","lastName":"Demo103","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984431","createdAt":"1624910679","depth":"partial","name":"user104@demo.com","updatedAt":"1624910679","emailAddress":"user104@demo.com","emailFormatPreference":"unspecified","firstName":"User104","isBounceback":"false","isSubscribed":"true","lastName":"Demo104","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984432","createdAt":"1624910679","depth":"partial","name":"user105@demo.com","updatedAt":"1624910679","emailAddress":"user105@demo.com","emailFormatPreference":"unspecified","firstName":"User105","isBounceback":"false","isSubscribed":"true","lastName":"Demo105","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984433","createdAt":"1624910679","depth":"partial","name":"user106@demo.com","updatedAt":"1624910679","emailAddress":"user106@demo.com","emailFormatPreference":"unspecified","firstName":"User106","isBounceback":"false","isSubscribed":"true","lastName":"Demo106","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984434","createdAt":"1624910679","depth":"partial","name":"user107@demo.com","updatedAt":"1624910679","emailAddress":"user107@demo.com","emailFormatPreference":"unspecified","firstName":"User107","isBounceback":"false","isSubscribed":"true","lastName":"Demo107","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984435","createdAt":"1624910679","depth":"partial","name":"user108@demo.com","updatedAt":"1624910679","emailAddress":"user108@demo.com","emailFormatPreference":"unspecified","firstName":"User108","isBounceback":"false","isSubscribed":"true","lastName":"Demo108","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984436","createdAt":"1624910679","depth":"partial","name":"user109@demo.com","updatedAt":"1624910679","emailAddress":"user109@demo.com","emailFormatPreference":"unspecified","firstName":"User109","isBounceback":"false","isSubscribed":"true","lastName":"Demo109","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984437","createdAt":"1624910679","depth":"partial","name":"user110@demo.com","updatedAt":"1624910679","emailAddress":"user110@demo.com","emailFormatPreference":"unspecified","firstName":"User110","isBounceback":"false","isSubscribed":"true","lastName":"Demo110","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984438","createdAt":"1624910679","depth":"partial","name":"user111@demo.com","updatedAt":"1624910679","emailAddress":"user111@demo.com","emailFormatPreference":"unspecified","firstName":"User111","isBounceback":"false","isSubscribed":"true","lastName":"Demo111","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984439","createdAt":"1624910679","depth":"partial","name":"user112@demo.com","updatedAt":"1624910679","emailAddress":"user112@demo.com","emailFormatPreference":"unspecified","firstName":"User112","isBounceback":"false","isSubscribed":"true","lastName":"Demo112","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984440","createdAt":"1624910679","depth":"partial","name":"user113@demo.com","updatedAt":"1624910679","emailAddress":"user113@demo.com","emailFormatPreference":"unspecified","firstName":"User113","isBounceback":"false","isSubscribed":"true","lastName":"Demo113","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984441","createdAt":"1624910679","depth":"partial","name":"user114@demo.com","updatedAt":"1624910679","emailAddress":"user114@demo.com","emailFormatPreference":"unspecified","firstName":"User114","isBounceback":"false","isSubscribed":"true","lastName":"Demo114","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984442","createdAt":"1624910679","depth":"partial","name":"user115@demo.com","updatedAt":"1624910679","emailAddress":"user115@demo.com","emailFormatPreference":"unspecified","firstName":"User115","isBounceback":"false","isSubscribed":"true","lastName":"Demo115","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984443","createdAt":"1624910679","depth":"partial","name":"user116@demo.com","updatedAt":"1624910679","emailAddress":"user116@demo.com","emailFormatPreference":"unspecified","firstName":"User116","isBounceback":"false","isSubscribed":"true","lastName":"Demo116","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984444","createdAt":"1624910679","depth":"partial","name":"user117@demo.com","updatedAt":"1624910679","emailAddress":"user117@demo.com","emailFormatPreference":"unspecified","firstName":"User117","isBounceback":"false","isSubscribed":"true","lastName":"Demo117","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984445","createdAt":"1624910679","depth":"partial","name":"user118@demo.com","updatedAt":"1624910679","emailAddress":"user118@demo.com","emailFormatPreference":"unspecified","firstName":"User118","isBounceback":"false","isSubscribed":"true","lastName":"Demo118","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984446","createdAt":"1624910679","depth":"partial","name":"user119@demo.com","updatedAt":"1624910679","emailAddress":"user119@demo.com","emailFormatPreference":"unspecified","firstName":"User119","isBounceback":"false","isSubscribed":"true","lastName":"Demo119","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984447","createdAt":"1624910679","depth":"partial","name":"user120@demo.com","updatedAt":"1624910679","emailAddress":"user120@demo.com","emailFormatPreference":"unspecified","firstName":"User120","isBounceback":"false","isSubscribed":"true","lastName":"Demo120","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984448","createdAt":"1624910679","depth":"partial","name":"user121@demo.com","updatedAt":"1624910679","emailAddress":"user121@demo.com","emailFormatPreference":"unspecified","firstName":"User121","isBounceback":"false","isSubscribed":"true","lastName":"Demo121","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984449","createdAt":"1624910679","depth":"partial","name":"user122@demo.com","updatedAt":"1624910679","emailAddress":"user122@demo.com","emailFormatPreference":"unspecified","firstName":"User122","isBounceback":"false","isSubscribed":"true","lastName":"Demo122","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984450","createdAt":"1624910679","depth":"partial","name":"user123@demo.com","updatedAt":"1624910679","emailAddress":"user123@demo.com","emailFormatPreference":"unspecified","firstName":"User123","isBounceback":"false","isSubscribed":"true","lastName":"Demo123","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984451","createdAt":"1624910679","depth":"partial","name":"user124@demo.com","updatedAt":"1624910679","emailAddress":"user124@demo.com","emailFormatPreference":"unspecified","firstName":"User124","isBounceback":"false","isSubscribed":"true","lastName":"Demo124","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984452","createdAt":"1624910679","depth":"partial","name":"user125@demo.com","updatedAt":"1624910679","emailAddress":"user125@demo.com","emailFormatPreference":"unspecified","firstName":"User125","isBounceback":"false","isSubscribed":"true","lastName":"Demo125","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984453","createdAt":"1624910679","depth":"partial","name":"user126@demo.com","updatedAt":"1624910679","emailAddress":"user126@demo.com","emailFormatPreference":"unspecified","firstName":"User126","isBounceback":"false","isSubscribed":"true","lastName":"Demo126","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984454","createdAt":"1624910679","depth":"partial","name":"user127@demo.com","updatedAt":"1624910679","emailAddress":"user127@demo.com","emailFormatPreference":"unspecified","firstName":"User127","isBounceback":"false","isSubscribed":"true","lastName":"Demo127","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984455","createdAt":"1624910679","depth":"partial","name":"user128@demo.com","updatedAt":"1624910679","emailAddress":"user128@demo.com","emailFormatPreference":"unspecified","firstName":"User128","isBounceback":"false","isSubscribed":"true","lastName":"Demo128","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984456","createdAt":"1624910679","depth":"partial","name":"user129@demo.com","updatedAt":"1624910679","emailAddress":"user129@demo.com","emailFormatPreference":"unspecified","firstName":"User129","isBounceback":"false","isSubscribed":"true","lastName":"Demo129","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984457","createdAt":"1624910679","depth":"partial","name":"user130@demo.com","updatedAt":"1624910679","emailAddress":"user130@demo.com","emailFormatPreference":"unspecified","firstName":"User130","isBounceback":"false","isSubscribed":"true","lastName":"Demo130","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984458","createdAt":"1624910679","depth":"partial","name":"user131@demo.com","updatedAt":"1624910679","emailAddress":"user131@demo.com","emailFormatPreference":"unspecified","firstName":"User131","isBounceback":"false","isSubscribed":"true","lastName":"Demo131","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984459","createdAt":"1624910679","depth":"partial","name":"user132@demo.com","updatedAt":"1624910679","emailAddress":"user132@demo.com","emailFormatPreference":"unspecified","firstName":"User132","isBounceback":"false","isSubscribed":"true","lastName":"Demo132","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984460","createdAt":"1624910679","depth":"partial","name":"user133@demo.com","updatedAt":"1624910679","emailAddress":"user133@demo.com","emailFormatPreference":"unspecified","firstName":"User133","isBounceback":"false","isSubscribed":"true","lastName":"Demo133","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984461","createdAt":"1624910679","depth":"partial","name":"user134@demo.com","updatedAt":"1624910679","emailAddress":"user134@demo.com","emailFormatPreference":"unspecified","firstName":"User134","isBounceback":"false","isSubscribed":"true","lastName":"Demo134","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984462","createdAt":"1624910679","depth":"partial","name":"user135@demo.com","updatedAt":"1624910679","emailAddress":"user135@demo.com","emailFormatPreference":"unspecified","firstName":"User135","isBounceback":"false","isSubscribed":"true","lastName":"Demo135","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984463","createdAt":"1624910679","depth":"partial","name":"user136@demo.com","updatedAt":"1624910679","emailAddress":"user136@demo.com","emailFormatPreference":"unspecified","firstName":"User136","isBounceback":"false","isSubscribed":"true","lastName":"Demo136","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984464","createdAt":"1624910679","depth":"partial","name":"user137@demo.com","updatedAt":"1624910679","emailAddress":"user137@demo.com","emailFormatPreference":"unspecified","firstName":"User137","isBounceback":"false","isSubscribed":"true","lastName":"Demo137","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984465","createdAt":"1624910679","depth":"partial","name":"user138@demo.com","updatedAt":"1624910679","emailAddress":"user138@demo.com","emailFormatPreference":"unspecified","firstName":"User138","isBounceback":"false","isSubscribed":"true","lastName":"Demo138","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984466","createdAt":"1624910679","depth":"partial","name":"user139@demo.com","updatedAt":"1624910679","emailAddress":"user139@demo.com","emailFormatPreference":"unspecified","firstName":"User139","isBounceback":"false","isSubscribed":"true","lastName":"Demo139","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984467","createdAt":"1624910679","depth":"partial","name":"user140@demo.com","updatedAt":"1624910679","emailAddress":"user140@demo.com","emailFormatPreference":"unspecified","firstName":"User140","isBounceback":"false","isSubscribed":"true","lastName":"Demo140","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984468","createdAt":"1624910679","depth":"partial","name":"user141@demo.com","updatedAt":"1624910679","emailAddress":"user141@demo.com","emailFormatPreference":"unspecified","firstName":"User141","isBounceback":"false","isSubscribed":"true","lastName":"Demo141","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984469","createdAt":"1624910679","depth":"partial","name":"user142@demo.com","updatedAt":"1624910679","emailAddress":"user142@demo.com","emailFormatPreference":"unspecified","firstName":"User142","isBounceback":"false","isSubscribed":"true","lastName":"Demo142","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984470","createdAt":"1624910679","depth":"partial","name":"user143@demo.com","updatedAt":"1624910679","emailAddress":"user143@demo.com","emailFormatPreference":"unspecified","firstName":"User143","isBounceback":"false","isSubscribed":"true","lastName":"Demo143","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984471","createdAt":"1624910679","depth":"partial","name":"user144@demo.com","updatedAt":"1624910679","emailAddress":"user144@demo.com","emailFormatPreference":"unspecified","firstName":"User144","isBounceback":"false","isSubscribed":"true","lastName":"Demo144","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984472","createdAt":"1624910679","depth":"partial","name":"user145@demo.com","updatedAt":"1624910679","emailAddress":"user145@demo.com","emailFormatPreference":"unspecified","firstName":"User145","isBounceback":"false","isSubscribed":"true","lastName":"Demo145","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984473","createdAt":"1624910679","depth":"partial","name":"user146@demo.com","updatedAt":"1624910679","emailAddress":"user146@demo.com","emailFormatPreference":"unspecified","firstName":"User146","isBounceback":"false","isSubscribed":"true","lastName":"Demo146","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984474","createdAt":"1624910679","depth":"partial","name":"user147@demo.com","updatedAt":"1624910679","emailAddress":"user147@demo.com","emailFormatPreference":"unspecified","firstName":"User147","isBounceback":"false","isSubscribed":"true","lastName":"Demo147","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984475","createdAt":"1624910679","depth":"partial","name":"user148@demo.com","updatedAt":"1624910679","emailAddress":"user148@demo.com","emailFormatPreference":"unspecified","firstName":"User148","isBounceback":"false","isSubscribed":"true","lastName":"Demo148","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984476","createdAt":"1624910679","depth":"partial","name":"user149@demo.com","updatedAt":"1624910679","emailAddress":"user149@demo.com","emailFormatPreference":"unspecified","firstName":"User149","isBounceback":"false","isSubscribed":"true","lastName":"Demo149","subscriptionDate":"1624910679"}],"page":1,"pageSize":1000,"total":50}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -4827,7 +4451,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'a18dd36945be4bf08aa10768abd1627a/23429653308',
+  '44c4fac708dc4cabbdbd8f4008e661cd/23671967967',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -4837,214 +4461,11 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:38 GMT',
+  'Mon, 28 Jun 2021 23:27:07 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser3%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984260","createdAt":"1623982688","depth":"partial","name":"user3@demo.com","updatedAt":"1623982688","emailAddress":"user3@demo.com","emailFormatPreference":"unspecified","firstName":"User3","isBounceback":"false","isSubscribed":"true","lastName":"Demo3","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '0710e39e0a224636ae3585910eb3ab2a/23429653529',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:39 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser4%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984261","createdAt":"1623982688","depth":"partial","name":"user4@demo.com","updatedAt":"1623982688","emailAddress":"user4@demo.com","emailFormatPreference":"unspecified","firstName":"User4","isBounceback":"false","isSubscribed":"true","lastName":"Demo4","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '5785514e180e4248b7ff5fdc560e9cbd/23429653794',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:40 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser5%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984262","createdAt":"1623982688","depth":"partial","name":"user5@demo.com","updatedAt":"1623982688","emailAddress":"user5@demo.com","emailFormatPreference":"unspecified","firstName":"User5","isBounceback":"false","isSubscribed":"true","lastName":"Demo5","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '62798a84001f4ab8a9fd4f2bf62738ed/23429654042',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:40 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser6%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984263","createdAt":"1623982688","depth":"partial","name":"user6@demo.com","updatedAt":"1623982688","emailAddress":"user6@demo.com","emailFormatPreference":"unspecified","firstName":"User6","isBounceback":"false","isSubscribed":"true","lastName":"Demo6","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '2b09302c83ae4f2ba94fe18db64ee976/23429654283',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:41 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser7%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984264","createdAt":"1623982688","depth":"partial","name":"user7@demo.com","updatedAt":"1623982688","emailAddress":"user7@demo.com","emailFormatPreference":"unspecified","firstName":"User7","isBounceback":"false","isSubscribed":"true","lastName":"Demo7","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  'ec2dbded35344a278dcf467da5ea1b3c/23429654524',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:41 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser8%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984265","createdAt":"1623982688","depth":"partial","name":"user8@demo.com","updatedAt":"1623982688","emailAddress":"user8@demo.com","emailFormatPreference":"unspecified","firstName":"User8","isBounceback":"false","isSubscribed":"true","lastName":"Demo8","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  'd57079d47fa24c1fbde4a10dd29a1b5b/23429654829',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:42 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser9%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984266","createdAt":"1623982688","depth":"partial","name":"user9@demo.com","updatedAt":"1623982688","emailAddress":"user9@demo.com","emailFormatPreference":"unspecified","firstName":"User9","isBounceback":"false","isSubscribed":"true","lastName":"Demo9","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '62fff6682de44cafb270f179650de03d/23429655104',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:43 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
+  '17750'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/bulk/2.0/contacts/fields')
@@ -5058,7 +4479,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '74bbf747fedd411788c99fd261b637e8/23429655332',
+  '1f7265f8349d4fe295f2dfba1f281e58/23671968220',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5068,7 +4489,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:44 GMT',
+  'Mon, 28 Jun 2021 23:27:07 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5076,7 +4497,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
-  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/906","createdBy":"t3st","createdAt":"2021-06-21T19:40:45.3042702Z","updatedBy":"t3st","updatedAt":"2021-06-21T19:40:45.3042702Z"}, [
+  .once().reply(201, {"name":"grouparoo-import-app_789-po09-EOEP-HKp8-3039","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/988","createdBy":"t3st","createdAt":"2021-06-28T23:27:08.6467488Z","updatedBy":"t3st","updatedAt":"2021-06-28T23:27:08.6467488Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5086,7 +4507,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8e9de4e7a3de482b878e07918aa6340e/23429655756',
+  '978c6894dbfc4337b15c1940a68fc7a3/23671968535',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5096,14 +4517,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:45 GMT',
+  'Mon, 28 Jun 2021 23:27:07 GMT',
   'Connection',
   'close',
   'Content-Length',
   '565'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user0@demo.com","id":"1984257","profileId":"pro0","firstName":"User0","lastName":"Demo0"})
+  .post('/api/bulk/2.0/contacts/imports/988/data', [{"emailAddress":"user0@demo.com","id":"1984489","profileId":"pro0","firstName":"User0","lastName":"Demo0"},{"emailAddress":"user1@demo.com","id":"1984490","profileId":"pro1","firstName":"User1","lastName":"Demo1"},{"emailAddress":"user2@demo.com","id":"1984491","profileId":"pro2","firstName":"User2","lastName":"Demo2"},{"emailAddress":"user3@demo.com","id":"1984492","profileId":"pro3","firstName":"User3","lastName":"Demo3"},{"emailAddress":"user4@demo.com","id":"1984493","profileId":"pro4","firstName":"User4","lastName":"Demo4"},{"emailAddress":"user5@demo.com","id":"1984494","profileId":"pro5","firstName":"User5","lastName":"Demo5"},{"emailAddress":"user6@demo.com","id":"1984495","profileId":"pro6","firstName":"User6","lastName":"Demo6"},{"emailAddress":"user7@demo.com","id":"1984496","profileId":"pro7","firstName":"User7","lastName":"Demo7"},{"emailAddress":"user8@demo.com","id":"1984497","profileId":"pro8","firstName":"User8","lastName":"Demo8"},{"emailAddress":"user9@demo.com","id":"1984498","profileId":"pro9","firstName":"User9","lastName":"Demo9"},{"emailAddress":"user10@demo.com","id":"1984499","profileId":"pro10","firstName":"User10","lastName":"Demo10"},{"emailAddress":"user11@demo.com","id":"1984500","profileId":"pro11","firstName":"User11","lastName":"Demo11"},{"emailAddress":"user12@demo.com","id":"1984501","profileId":"pro12","firstName":"User12","lastName":"Demo12"},{"emailAddress":"user13@demo.com","id":"1984502","profileId":"pro13","firstName":"User13","lastName":"Demo13"},{"emailAddress":"user14@demo.com","id":"1984503","profileId":"pro14","firstName":"User14","lastName":"Demo14"},{"emailAddress":"user15@demo.com","id":"1984504","profileId":"pro15","firstName":"User15","lastName":"Demo15"},{"emailAddress":"user16@demo.com","id":"1984505","profileId":"pro16","firstName":"User16","lastName":"Demo16"},{"emailAddress":"user17@demo.com","id":"1984506","profileId":"pro17","firstName":"User17","lastName":"Demo17"},{"emailAddress":"user18@demo.com","id":"1984507","profileId":"pro18","firstName":"User18","lastName":"Demo18"},{"emailAddress":"user19@demo.com","id":"1984508","profileId":"pro19","firstName":"User19","lastName":"Demo19"},{"emailAddress":"user20@demo.com","id":"1984509","profileId":"pro20","firstName":"User20","lastName":"Demo20"},{"emailAddress":"user21@demo.com","id":"1984510","profileId":"pro21","firstName":"User21","lastName":"Demo21"},{"emailAddress":"user22@demo.com","id":"1984511","profileId":"pro22","firstName":"User22","lastName":"Demo22"},{"emailAddress":"user23@demo.com","id":"1984512","profileId":"pro23","firstName":"User23","lastName":"Demo23"},{"emailAddress":"user24@demo.com","id":"1984513","profileId":"pro24","firstName":"User24","lastName":"Demo24"},{"emailAddress":"user25@demo.com","id":"1984514","profileId":"pro25","firstName":"User25","lastName":"Demo25"},{"emailAddress":"user26@demo.com","id":"1984515","profileId":"pro26","firstName":"User26","lastName":"Demo26"},{"emailAddress":"user27@demo.com","id":"1984516","profileId":"pro27","firstName":"User27","lastName":"Demo27"},{"emailAddress":"user28@demo.com","id":"1984517","profileId":"pro28","firstName":"User28","lastName":"Demo28"},{"emailAddress":"user29@demo.com","id":"1984518","profileId":"pro29","firstName":"User29","lastName":"Demo29"},{"emailAddress":"user30@demo.com","id":"1984519","profileId":"pro30","firstName":"User30","lastName":"Demo30"},{"emailAddress":"user31@demo.com","id":"1984520","profileId":"pro31","firstName":"User31","lastName":"Demo31"},{"emailAddress":"user32@demo.com","id":"1984521","profileId":"pro32","firstName":"User32","lastName":"Demo32"},{"emailAddress":"user33@demo.com","id":"1984522","profileId":"pro33","firstName":"User33","lastName":"Demo33"},{"emailAddress":"user34@demo.com","id":"1984523","profileId":"pro34","firstName":"User34","lastName":"Demo34"},{"emailAddress":"user35@demo.com","id":"1984524","profileId":"pro35","firstName":"User35","lastName":"Demo35"},{"emailAddress":"user36@demo.com","id":"1984525","profileId":"pro36","firstName":"User36","lastName":"Demo36"},{"emailAddress":"user37@demo.com","id":"1984526","profileId":"pro37","firstName":"User37","lastName":"Demo37"},{"emailAddress":"user38@demo.com","id":"1984527","profileId":"pro38","firstName":"User38","lastName":"Demo38"},{"emailAddress":"user39@demo.com","id":"1984528","profileId":"pro39","firstName":"User39","lastName":"Demo39"},{"emailAddress":"user40@demo.com","id":"1984529","profileId":"pro40","firstName":"User40","lastName":"Demo40"},{"emailAddress":"user41@demo.com","id":"1984530","profileId":"pro41","firstName":"User41","lastName":"Demo41"},{"emailAddress":"user42@demo.com","id":"1984531","profileId":"pro42","firstName":"User42","lastName":"Demo42"},{"emailAddress":"user43@demo.com","id":"1984532","profileId":"pro43","firstName":"User43","lastName":"Demo43"},{"emailAddress":"user44@demo.com","id":"1984533","profileId":"pro44","firstName":"User44","lastName":"Demo44"},{"emailAddress":"user45@demo.com","id":"1984534","profileId":"pro45","firstName":"User45","lastName":"Demo45"},{"emailAddress":"user46@demo.com","id":"1984535","profileId":"pro46","firstName":"User46","lastName":"Demo46"},{"emailAddress":"user47@demo.com","id":"1984536","profileId":"pro47","firstName":"User47","lastName":"Demo47"},{"emailAddress":"user48@demo.com","id":"1984537","profileId":"pro48","firstName":"User48","lastName":"Demo48"},{"emailAddress":"user49@demo.com","id":"1984538","profileId":"pro49","firstName":"User49","lastName":"Demo49"},{"emailAddress":"user50@demo.com","id":"1984539","profileId":"pro50","firstName":"User50","lastName":"Demo50"},{"emailAddress":"user51@demo.com","id":"1984540","profileId":"pro51","firstName":"User51","lastName":"Demo51"},{"emailAddress":"user52@demo.com","id":"1984541","profileId":"pro52","firstName":"User52","lastName":"Demo52"},{"emailAddress":"user53@demo.com","id":"1984542","profileId":"pro53","firstName":"User53","lastName":"Demo53"},{"emailAddress":"user54@demo.com","id":"1984543","profileId":"pro54","firstName":"User54","lastName":"Demo54"},{"emailAddress":"user55@demo.com","id":"1984544","profileId":"pro55","firstName":"User55","lastName":"Demo55"},{"emailAddress":"user56@demo.com","id":"1984545","profileId":"pro56","firstName":"User56","lastName":"Demo56"},{"emailAddress":"user57@demo.com","id":"1984546","profileId":"pro57","firstName":"User57","lastName":"Demo57"},{"emailAddress":"user58@demo.com","id":"1984547","profileId":"pro58","firstName":"User58","lastName":"Demo58"},{"emailAddress":"user59@demo.com","id":"1984548","profileId":"pro59","firstName":"User59","lastName":"Demo59"},{"emailAddress":"user60@demo.com","id":"1984549","profileId":"pro60","firstName":"User60","lastName":"Demo60"},{"emailAddress":"user61@demo.com","id":"1984550","profileId":"pro61","firstName":"User61","lastName":"Demo61"},{"emailAddress":"user62@demo.com","id":"1984551","profileId":"pro62","firstName":"User62","lastName":"Demo62"},{"emailAddress":"user63@demo.com","id":"1984552","profileId":"pro63","firstName":"User63","lastName":"Demo63"},{"emailAddress":"user64@demo.com","id":"1984341","profileId":"pro64","firstName":"User64","lastName":"Demo64"},{"emailAddress":"user65@demo.com","id":"1984342","profileId":"pro65","firstName":"User65","lastName":"Demo65"},{"emailAddress":"user66@demo.com","id":"1984343","profileId":"pro66","firstName":"User66","lastName":"Demo66"},{"emailAddress":"user67@demo.com","id":"1984344","profileId":"pro67","firstName":"User67","lastName":"Demo67"},{"emailAddress":"user68@demo.com","id":"1984345","profileId":"pro68","firstName":"User68","lastName":"Demo68"},{"emailAddress":"user69@demo.com","id":"1984346","profileId":"pro69","firstName":"User69","lastName":"Demo69"},{"emailAddress":"user70@demo.com","id":"1984347","profileId":"pro70","firstName":"User70","lastName":"Demo70"},{"emailAddress":"user71@demo.com","id":"1984348","profileId":"pro71","firstName":"User71","lastName":"Demo71"},{"emailAddress":"user72@demo.com","id":"1984349","profileId":"pro72","firstName":"User72","lastName":"Demo72"},{"emailAddress":"user73@demo.com","id":"1984350","profileId":"pro73","firstName":"User73","lastName":"Demo73"},{"emailAddress":"user74@demo.com","id":"1984351","profileId":"pro74","firstName":"User74","lastName":"Demo74"},{"emailAddress":"user75@demo.com","id":"1984352","profileId":"pro75","firstName":"User75","lastName":"Demo75"},{"emailAddress":"user76@demo.com","id":"1984353","profileId":"pro76","firstName":"User76","lastName":"Demo76"},{"emailAddress":"user77@demo.com","id":"1984354","profileId":"pro77","firstName":"User77","lastName":"Demo77"},{"emailAddress":"user78@demo.com","id":"1984355","profileId":"pro78","firstName":"User78","lastName":"Demo78"},{"emailAddress":"user79@demo.com","id":"1984356","profileId":"pro79","firstName":"User79","lastName":"Demo79"},{"emailAddress":"user80@demo.com","id":"1984357","profileId":"pro80","firstName":"User80","lastName":"Demo80"},{"emailAddress":"user81@demo.com","id":"1984358","profileId":"pro81","firstName":"User81","lastName":"Demo81"},{"emailAddress":"user82@demo.com","id":"1984359","profileId":"pro82","firstName":"User82","lastName":"Demo82"},{"emailAddress":"user83@demo.com","id":"1984360","profileId":"pro83","firstName":"User83","lastName":"Demo83"},{"emailAddress":"user84@demo.com","id":"1984361","profileId":"pro84","firstName":"User84","lastName":"Demo84"},{"emailAddress":"user85@demo.com","id":"1984362","profileId":"pro85","firstName":"User85","lastName":"Demo85"},{"emailAddress":"user86@demo.com","id":"1984363","profileId":"pro86","firstName":"User86","lastName":"Demo86"},{"emailAddress":"user87@demo.com","id":"1984364","profileId":"pro87","firstName":"User87","lastName":"Demo87"},{"emailAddress":"user88@demo.com","id":"1984365","profileId":"pro88","firstName":"User88","lastName":"Demo88"},{"emailAddress":"user89@demo.com","id":"1984366","profileId":"pro89","firstName":"User89","lastName":"Demo89"},{"emailAddress":"user90@demo.com","id":"1984367","profileId":"pro90","firstName":"User90","lastName":"Demo90"},{"emailAddress":"user91@demo.com","id":"1984368","profileId":"pro91","firstName":"User91","lastName":"Demo91"},{"emailAddress":"user92@demo.com","id":"1984369","profileId":"pro92","firstName":"User92","lastName":"Demo92"},{"emailAddress":"user93@demo.com","id":"1984370","profileId":"pro93","firstName":"User93","lastName":"Demo93"},{"emailAddress":"user94@demo.com","id":"1984371","profileId":"pro94","firstName":"User94","lastName":"Demo94"},{"emailAddress":"user95@demo.com","id":"1984372","profileId":"pro95","firstName":"User95","lastName":"Demo95"},{"emailAddress":"user96@demo.com","id":"1984373","profileId":"pro96","firstName":"User96","lastName":"Demo96"},{"emailAddress":"user97@demo.com","id":"1984374","profileId":"pro97","firstName":"User97","lastName":"Demo97"},{"emailAddress":"user98@demo.com","id":"1984375","profileId":"pro98","firstName":"User98","lastName":"Demo98"},{"emailAddress":"user99@demo.com","id":"1984376","profileId":"pro99","firstName":"User99","lastName":"Demo99"},{"emailAddress":"user100@demo.com","id":"1984427","profileId":"pro100","firstName":"User100","lastName":"Demo100"},{"emailAddress":"user101@demo.com","id":"1984428","profileId":"pro101","firstName":"User101","lastName":"Demo101"},{"emailAddress":"user102@demo.com","id":"1984429","profileId":"pro102","firstName":"User102","lastName":"Demo102"},{"emailAddress":"user103@demo.com","id":"1984430","profileId":"pro103","firstName":"User103","lastName":"Demo103"},{"emailAddress":"user104@demo.com","id":"1984431","profileId":"pro104","firstName":"User104","lastName":"Demo104"},{"emailAddress":"user105@demo.com","id":"1984432","profileId":"pro105","firstName":"User105","lastName":"Demo105"},{"emailAddress":"user106@demo.com","id":"1984433","profileId":"pro106","firstName":"User106","lastName":"Demo106"},{"emailAddress":"user107@demo.com","id":"1984434","profileId":"pro107","firstName":"User107","lastName":"Demo107"},{"emailAddress":"user108@demo.com","id":"1984435","profileId":"pro108","firstName":"User108","lastName":"Demo108"},{"emailAddress":"user109@demo.com","id":"1984436","profileId":"pro109","firstName":"User109","lastName":"Demo109"},{"emailAddress":"user110@demo.com","id":"1984437","profileId":"pro110","firstName":"User110","lastName":"Demo110"},{"emailAddress":"user111@demo.com","id":"1984438","profileId":"pro111","firstName":"User111","lastName":"Demo111"},{"emailAddress":"user112@demo.com","id":"1984439","profileId":"pro112","firstName":"User112","lastName":"Demo112"},{"emailAddress":"user113@demo.com","id":"1984440","profileId":"pro113","firstName":"User113","lastName":"Demo113"},{"emailAddress":"user114@demo.com","id":"1984441","profileId":"pro114","firstName":"User114","lastName":"Demo114"},{"emailAddress":"user115@demo.com","id":"1984442","profileId":"pro115","firstName":"User115","lastName":"Demo115"},{"emailAddress":"user116@demo.com","id":"1984443","profileId":"pro116","firstName":"User116","lastName":"Demo116"},{"emailAddress":"user117@demo.com","id":"1984444","profileId":"pro117","firstName":"User117","lastName":"Demo117"},{"emailAddress":"user118@demo.com","id":"1984445","profileId":"pro118","firstName":"User118","lastName":"Demo118"},{"emailAddress":"user119@demo.com","id":"1984446","profileId":"pro119","firstName":"User119","lastName":"Demo119"},{"emailAddress":"user120@demo.com","id":"1984447","profileId":"pro120","firstName":"User120","lastName":"Demo120"},{"emailAddress":"user121@demo.com","id":"1984448","profileId":"pro121","firstName":"User121","lastName":"Demo121"},{"emailAddress":"user122@demo.com","id":"1984449","profileId":"pro122","firstName":"User122","lastName":"Demo122"},{"emailAddress":"user123@demo.com","id":"1984450","profileId":"pro123","firstName":"User123","lastName":"Demo123"},{"emailAddress":"user124@demo.com","id":"1984451","profileId":"pro124","firstName":"User124","lastName":"Demo124"},{"emailAddress":"user125@demo.com","id":"1984452","profileId":"pro125","firstName":"User125","lastName":"Demo125"},{"emailAddress":"user126@demo.com","id":"1984453","profileId":"pro126","firstName":"User126","lastName":"Demo126"},{"emailAddress":"user127@demo.com","id":"1984454","profileId":"pro127","firstName":"User127","lastName":"Demo127"},{"emailAddress":"user128@demo.com","id":"1984455","profileId":"pro128","firstName":"User128","lastName":"Demo128"},{"emailAddress":"user129@demo.com","id":"1984456","profileId":"pro129","firstName":"User129","lastName":"Demo129"},{"emailAddress":"user130@demo.com","id":"1984457","profileId":"pro130","firstName":"User130","lastName":"Demo130"},{"emailAddress":"user131@demo.com","id":"1984458","profileId":"pro131","firstName":"User131","lastName":"Demo131"},{"emailAddress":"user132@demo.com","id":"1984459","profileId":"pro132","firstName":"User132","lastName":"Demo132"},{"emailAddress":"user133@demo.com","id":"1984460","profileId":"pro133","firstName":"User133","lastName":"Demo133"},{"emailAddress":"user134@demo.com","id":"1984461","profileId":"pro134","firstName":"User134","lastName":"Demo134"},{"emailAddress":"user135@demo.com","id":"1984462","profileId":"pro135","firstName":"User135","lastName":"Demo135"},{"emailAddress":"user136@demo.com","id":"1984463","profileId":"pro136","firstName":"User136","lastName":"Demo136"},{"emailAddress":"user137@demo.com","id":"1984464","profileId":"pro137","firstName":"User137","lastName":"Demo137"},{"emailAddress":"user138@demo.com","id":"1984465","profileId":"pro138","firstName":"User138","lastName":"Demo138"},{"emailAddress":"user139@demo.com","id":"1984466","profileId":"pro139","firstName":"User139","lastName":"Demo139"},{"emailAddress":"user140@demo.com","id":"1984467","profileId":"pro140","firstName":"User140","lastName":"Demo140"},{"emailAddress":"user141@demo.com","id":"1984468","profileId":"pro141","firstName":"User141","lastName":"Demo141"},{"emailAddress":"user142@demo.com","id":"1984469","profileId":"pro142","firstName":"User142","lastName":"Demo142"},{"emailAddress":"user143@demo.com","id":"1984470","profileId":"pro143","firstName":"User143","lastName":"Demo143"},{"emailAddress":"user144@demo.com","id":"1984471","profileId":"pro144","firstName":"User144","lastName":"Demo144"},{"emailAddress":"user145@demo.com","id":"1984472","profileId":"pro145","firstName":"User145","lastName":"Demo145"},{"emailAddress":"user146@demo.com","id":"1984473","profileId":"pro146","firstName":"User146","lastName":"Demo146"},{"emailAddress":"user147@demo.com","id":"1984474","profileId":"pro147","firstName":"User147","lastName":"Demo147"},{"emailAddress":"user148@demo.com","id":"1984475","profileId":"pro148","firstName":"User148","lastName":"Demo148"},{"emailAddress":"user149@demo.com","id":"1984476","profileId":"pro149","firstName":"User149","lastName":"Demo149"}])
   .once().reply(204, "", [
   'Cache-Control',
   'no-store',
@@ -5112,7 +4533,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '2d77e9e835834163a263cec007cfaaf6/23429656009',
+  '605e0aed6c1b446b8eedd1ec5baf3ff2/23671968747',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5122,229 +4543,13 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:45 GMT',
+  'Mon, 28 Jun 2021 23:27:08 GMT',
   'Connection',
   'close'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user1@demo.com","id":"1984258","profileId":"pro1","firstName":"User1","lastName":"Demo1"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  'f235eff756a24280bceb47167c3ada94/23429656205',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:46 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user2@demo.com","id":"1984259","profileId":"pro2","firstName":"User2","lastName":"Demo2"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '31f90517482143e8891c2dba2e79ad5c/23429656460',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:46 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user3@demo.com","id":"1984260","profileId":"pro3","firstName":"User3","lastName":"Demo3"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  'ac9b50a5e63f48719b601f5e31522f26/23429656673',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:47 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user4@demo.com","id":"1984261","profileId":"pro4","firstName":"User4","lastName":"Demo4"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '144b08ea5342452a9a57719b8bc7e989/23429656924',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:47 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user5@demo.com","id":"1984262","profileId":"pro5","firstName":"User5","lastName":"Demo5"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '47b9356c628446908c4d08c7010a4676/23429657162',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:48 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user6@demo.com","id":"1984263","profileId":"pro6","firstName":"User6","lastName":"Demo6"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '30ad348d831244088c56f570fe2db503/23429657428',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:49 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user7@demo.com","id":"1984264","profileId":"pro7","firstName":"User7","lastName":"Demo7"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '38077466ae1f44b095c6aa40270471a6/23429657638',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:49 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user8@demo.com","id":"1984265","profileId":"pro8","firstName":"User8","lastName":"Demo8"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '508e7899edf44ea0a12736fa3eff8c61/23429657842',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:50 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/contacts/imports/906/data', {"emailAddress":"user9@demo.com","id":"1984266","profileId":"pro9","firstName":"User9","lastName":"Demo9"})
-  .once().reply(204, "", [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '4e6c79ff4749402f8388a24a3627e9aa/23429658048',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:40:50 GMT',
-  'Connection',
-  'close'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/906"})
-  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/906","status":"pending","createdAt":"2021-06-21T19:40:51.5072995Z","createdBy":"t3st","uri":"/syncs/725"}, [
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/988"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/988","status":"pending","createdAt":"2021-06-28T23:27:09.7689548Z","createdBy":"t3st","uri":"/syncs/798"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5354,7 +4559,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'a683eb3e491d4c0c9bb07d0bddd7b8c0/23429658256',
+  'e8590cea08a54d31862b21f9b573cf45/23671968987',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5364,7 +4569,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:40:51 GMT',
+  'Mon, 28 Jun 2021 23:27:08 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5372,8 +4577,8 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser0%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984257","createdAt":"1623982688","depth":"partial","name":"user0@demo.com","updatedAt":"1623982688","emailAddress":"user0@demo.com","emailFormatPreference":"unspecified","firstName":"User0","isBounceback":"false","isSubscribed":"true","lastName":"Demo0","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27user0%40demo.com%27emailAddress%3D%27user1%40demo.com%27emailAddress%3D%27user2%40demo.com%27emailAddress%3D%27user3%40demo.com%27emailAddress%3D%27user4%40demo.com%27emailAddress%3D%27user5%40demo.com%27emailAddress%3D%27user6%40demo.com%27emailAddress%3D%27user7%40demo.com%27emailAddress%3D%27user8%40demo.com%27emailAddress%3D%27user9%40demo.com%27emailAddress%3D%27user10%40demo.com%27emailAddress%3D%27user11%40demo.com%27emailAddress%3D%27user12%40demo.com%27emailAddress%3D%27user13%40demo.com%27emailAddress%3D%27user14%40demo.com%27emailAddress%3D%27user15%40demo.com%27emailAddress%3D%27user16%40demo.com%27emailAddress%3D%27user17%40demo.com%27emailAddress%3D%27user18%40demo.com%27emailAddress%3D%27user19%40demo.com%27emailAddress%3D%27user20%40demo.com%27emailAddress%3D%27user21%40demo.com%27emailAddress%3D%27user22%40demo.com%27emailAddress%3D%27user23%40demo.com%27emailAddress%3D%27user24%40demo.com%27emailAddress%3D%27user25%40demo.com%27emailAddress%3D%27user26%40demo.com%27emailAddress%3D%27user27%40demo.com%27emailAddress%3D%27user28%40demo.com%27emailAddress%3D%27user29%40demo.com%27emailAddress%3D%27user30%40demo.com%27emailAddress%3D%27user31%40demo.com%27emailAddress%3D%27user32%40demo.com%27emailAddress%3D%27user33%40demo.com%27emailAddress%3D%27user34%40demo.com%27emailAddress%3D%27user35%40demo.com%27emailAddress%3D%27user36%40demo.com%27emailAddress%3D%27user37%40demo.com%27emailAddress%3D%27user38%40demo.com%27emailAddress%3D%27user39%40demo.com%27emailAddress%3D%27user40%40demo.com%27emailAddress%3D%27user41%40demo.com%27emailAddress%3D%27user42%40demo.com%27emailAddress%3D%27user43%40demo.com%27emailAddress%3D%27user44%40demo.com%27emailAddress%3D%27user45%40demo.com%27emailAddress%3D%27user46%40demo.com%27emailAddress%3D%27user47%40demo.com%27emailAddress%3D%27user48%40demo.com%27emailAddress%3D%27user49%40demo.com%27emailAddress%3D%27user49%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984489","createdAt":"1624922337","depth":"partial","name":"user0@demo.com","updatedAt":"1624922337","emailAddress":"user0@demo.com","emailFormatPreference":"unspecified","firstName":"User0","isBounceback":"false","isSubscribed":"true","lastName":"Demo0","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984490","createdAt":"1624922337","depth":"partial","name":"user1@demo.com","updatedAt":"1624922337","emailAddress":"user1@demo.com","emailFormatPreference":"unspecified","firstName":"User1","isBounceback":"false","isSubscribed":"true","lastName":"Demo1","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984491","createdAt":"1624922337","depth":"partial","name":"user2@demo.com","updatedAt":"1624922337","emailAddress":"user2@demo.com","emailFormatPreference":"unspecified","firstName":"User2","isBounceback":"false","isSubscribed":"true","lastName":"Demo2","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984492","createdAt":"1624922337","depth":"partial","name":"user3@demo.com","updatedAt":"1624922337","emailAddress":"user3@demo.com","emailFormatPreference":"unspecified","firstName":"User3","isBounceback":"false","isSubscribed":"true","lastName":"Demo3","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984493","createdAt":"1624922337","depth":"partial","name":"user4@demo.com","updatedAt":"1624922337","emailAddress":"user4@demo.com","emailFormatPreference":"unspecified","firstName":"User4","isBounceback":"false","isSubscribed":"true","lastName":"Demo4","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984494","createdAt":"1624922337","depth":"partial","name":"user5@demo.com","updatedAt":"1624922337","emailAddress":"user5@demo.com","emailFormatPreference":"unspecified","firstName":"User5","isBounceback":"false","isSubscribed":"true","lastName":"Demo5","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984495","createdAt":"1624922337","depth":"partial","name":"user6@demo.com","updatedAt":"1624922337","emailAddress":"user6@demo.com","emailFormatPreference":"unspecified","firstName":"User6","isBounceback":"false","isSubscribed":"true","lastName":"Demo6","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984496","createdAt":"1624922337","depth":"partial","name":"user7@demo.com","updatedAt":"1624922337","emailAddress":"user7@demo.com","emailFormatPreference":"unspecified","firstName":"User7","isBounceback":"false","isSubscribed":"true","lastName":"Demo7","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984497","createdAt":"1624922337","depth":"partial","name":"user8@demo.com","updatedAt":"1624922337","emailAddress":"user8@demo.com","emailFormatPreference":"unspecified","firstName":"User8","isBounceback":"false","isSubscribed":"true","lastName":"Demo8","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984498","createdAt":"1624922337","depth":"partial","name":"user9@demo.com","updatedAt":"1624922337","emailAddress":"user9@demo.com","emailFormatPreference":"unspecified","firstName":"User9","isBounceback":"false","isSubscribed":"true","lastName":"Demo9","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984499","createdAt":"1624922337","depth":"partial","name":"user10@demo.com","updatedAt":"1624922337","emailAddress":"user10@demo.com","emailFormatPreference":"unspecified","firstName":"User10","isBounceback":"false","isSubscribed":"true","lastName":"Demo10","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984500","createdAt":"1624922337","depth":"partial","name":"user11@demo.com","updatedAt":"1624922337","emailAddress":"user11@demo.com","emailFormatPreference":"unspecified","firstName":"User11","isBounceback":"false","isSubscribed":"true","lastName":"Demo11","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984501","createdAt":"1624922337","depth":"partial","name":"user12@demo.com","updatedAt":"1624922337","emailAddress":"user12@demo.com","emailFormatPreference":"unspecified","firstName":"User12","isBounceback":"false","isSubscribed":"true","lastName":"Demo12","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984502","createdAt":"1624922337","depth":"partial","name":"user13@demo.com","updatedAt":"1624922337","emailAddress":"user13@demo.com","emailFormatPreference":"unspecified","firstName":"User13","isBounceback":"false","isSubscribed":"true","lastName":"Demo13","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984503","createdAt":"1624922337","depth":"partial","name":"user14@demo.com","updatedAt":"1624922337","emailAddress":"user14@demo.com","emailFormatPreference":"unspecified","firstName":"User14","isBounceback":"false","isSubscribed":"true","lastName":"Demo14","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984504","createdAt":"1624922337","depth":"partial","name":"user15@demo.com","updatedAt":"1624922337","emailAddress":"user15@demo.com","emailFormatPreference":"unspecified","firstName":"User15","isBounceback":"false","isSubscribed":"true","lastName":"Demo15","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984505","createdAt":"1624922337","depth":"partial","name":"user16@demo.com","updatedAt":"1624922337","emailAddress":"user16@demo.com","emailFormatPreference":"unspecified","firstName":"User16","isBounceback":"false","isSubscribed":"true","lastName":"Demo16","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984506","createdAt":"1624922337","depth":"partial","name":"user17@demo.com","updatedAt":"1624922337","emailAddress":"user17@demo.com","emailFormatPreference":"unspecified","firstName":"User17","isBounceback":"false","isSubscribed":"true","lastName":"Demo17","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984507","createdAt":"1624922337","depth":"partial","name":"user18@demo.com","updatedAt":"1624922337","emailAddress":"user18@demo.com","emailFormatPreference":"unspecified","firstName":"User18","isBounceback":"false","isSubscribed":"true","lastName":"Demo18","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984508","createdAt":"1624922337","depth":"partial","name":"user19@demo.com","updatedAt":"1624922337","emailAddress":"user19@demo.com","emailFormatPreference":"unspecified","firstName":"User19","isBounceback":"false","isSubscribed":"true","lastName":"Demo19","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984509","createdAt":"1624922337","depth":"partial","name":"user20@demo.com","updatedAt":"1624922337","emailAddress":"user20@demo.com","emailFormatPreference":"unspecified","firstName":"User20","isBounceback":"false","isSubscribed":"true","lastName":"Demo20","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984510","createdAt":"1624922337","depth":"partial","name":"user21@demo.com","updatedAt":"1624922337","emailAddress":"user21@demo.com","emailFormatPreference":"unspecified","firstName":"User21","isBounceback":"false","isSubscribed":"true","lastName":"Demo21","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984511","createdAt":"1624922337","depth":"partial","name":"user22@demo.com","updatedAt":"1624922337","emailAddress":"user22@demo.com","emailFormatPreference":"unspecified","firstName":"User22","isBounceback":"false","isSubscribed":"true","lastName":"Demo22","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984512","createdAt":"1624922337","depth":"partial","name":"user23@demo.com","updatedAt":"1624922337","emailAddress":"user23@demo.com","emailFormatPreference":"unspecified","firstName":"User23","isBounceback":"false","isSubscribed":"true","lastName":"Demo23","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984513","createdAt":"1624922337","depth":"partial","name":"user24@demo.com","updatedAt":"1624922337","emailAddress":"user24@demo.com","emailFormatPreference":"unspecified","firstName":"User24","isBounceback":"false","isSubscribed":"true","lastName":"Demo24","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984514","createdAt":"1624922337","depth":"partial","name":"user25@demo.com","updatedAt":"1624922337","emailAddress":"user25@demo.com","emailFormatPreference":"unspecified","firstName":"User25","isBounceback":"false","isSubscribed":"true","lastName":"Demo25","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984515","createdAt":"1624922337","depth":"partial","name":"user26@demo.com","updatedAt":"1624922337","emailAddress":"user26@demo.com","emailFormatPreference":"unspecified","firstName":"User26","isBounceback":"false","isSubscribed":"true","lastName":"Demo26","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984516","createdAt":"1624922337","depth":"partial","name":"user27@demo.com","updatedAt":"1624922337","emailAddress":"user27@demo.com","emailFormatPreference":"unspecified","firstName":"User27","isBounceback":"false","isSubscribed":"true","lastName":"Demo27","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984517","createdAt":"1624922337","depth":"partial","name":"user28@demo.com","updatedAt":"1624922337","emailAddress":"user28@demo.com","emailFormatPreference":"unspecified","firstName":"User28","isBounceback":"false","isSubscribed":"true","lastName":"Demo28","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984518","createdAt":"1624922337","depth":"partial","name":"user29@demo.com","updatedAt":"1624922337","emailAddress":"user29@demo.com","emailFormatPreference":"unspecified","firstName":"User29","isBounceback":"false","isSubscribed":"true","lastName":"Demo29","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984519","createdAt":"1624922337","depth":"partial","name":"user30@demo.com","updatedAt":"1624922337","emailAddress":"user30@demo.com","emailFormatPreference":"unspecified","firstName":"User30","isBounceback":"false","isSubscribed":"true","lastName":"Demo30","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984520","createdAt":"1624922337","depth":"partial","name":"user31@demo.com","updatedAt":"1624922337","emailAddress":"user31@demo.com","emailFormatPreference":"unspecified","firstName":"User31","isBounceback":"false","isSubscribed":"true","lastName":"Demo31","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984521","createdAt":"1624922337","depth":"partial","name":"user32@demo.com","updatedAt":"1624922337","emailAddress":"user32@demo.com","emailFormatPreference":"unspecified","firstName":"User32","isBounceback":"false","isSubscribed":"true","lastName":"Demo32","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984522","createdAt":"1624922337","depth":"partial","name":"user33@demo.com","updatedAt":"1624922337","emailAddress":"user33@demo.com","emailFormatPreference":"unspecified","firstName":"User33","isBounceback":"false","isSubscribed":"true","lastName":"Demo33","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984523","createdAt":"1624922337","depth":"partial","name":"user34@demo.com","updatedAt":"1624922337","emailAddress":"user34@demo.com","emailFormatPreference":"unspecified","firstName":"User34","isBounceback":"false","isSubscribed":"true","lastName":"Demo34","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984524","createdAt":"1624922337","depth":"partial","name":"user35@demo.com","updatedAt":"1624922337","emailAddress":"user35@demo.com","emailFormatPreference":"unspecified","firstName":"User35","isBounceback":"false","isSubscribed":"true","lastName":"Demo35","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984525","createdAt":"1624922337","depth":"partial","name":"user36@demo.com","updatedAt":"1624922337","emailAddress":"user36@demo.com","emailFormatPreference":"unspecified","firstName":"User36","isBounceback":"false","isSubscribed":"true","lastName":"Demo36","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984526","createdAt":"1624922337","depth":"partial","name":"user37@demo.com","updatedAt":"1624922337","emailAddress":"user37@demo.com","emailFormatPreference":"unspecified","firstName":"User37","isBounceback":"false","isSubscribed":"true","lastName":"Demo37","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984527","createdAt":"1624922337","depth":"partial","name":"user38@demo.com","updatedAt":"1624922337","emailAddress":"user38@demo.com","emailFormatPreference":"unspecified","firstName":"User38","isBounceback":"false","isSubscribed":"true","lastName":"Demo38","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984528","createdAt":"1624922337","depth":"partial","name":"user39@demo.com","updatedAt":"1624922337","emailAddress":"user39@demo.com","emailFormatPreference":"unspecified","firstName":"User39","isBounceback":"false","isSubscribed":"true","lastName":"Demo39","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984529","createdAt":"1624922337","depth":"partial","name":"user40@demo.com","updatedAt":"1624922337","emailAddress":"user40@demo.com","emailFormatPreference":"unspecified","firstName":"User40","isBounceback":"false","isSubscribed":"true","lastName":"Demo40","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984530","createdAt":"1624922337","depth":"partial","name":"user41@demo.com","updatedAt":"1624922337","emailAddress":"user41@demo.com","emailFormatPreference":"unspecified","firstName":"User41","isBounceback":"false","isSubscribed":"true","lastName":"Demo41","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984531","createdAt":"1624922337","depth":"partial","name":"user42@demo.com","updatedAt":"1624922337","emailAddress":"user42@demo.com","emailFormatPreference":"unspecified","firstName":"User42","isBounceback":"false","isSubscribed":"true","lastName":"Demo42","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984532","createdAt":"1624922337","depth":"partial","name":"user43@demo.com","updatedAt":"1624922337","emailAddress":"user43@demo.com","emailFormatPreference":"unspecified","firstName":"User43","isBounceback":"false","isSubscribed":"true","lastName":"Demo43","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984533","createdAt":"1624922337","depth":"partial","name":"user44@demo.com","updatedAt":"1624922337","emailAddress":"user44@demo.com","emailFormatPreference":"unspecified","firstName":"User44","isBounceback":"false","isSubscribed":"true","lastName":"Demo44","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984534","createdAt":"1624922337","depth":"partial","name":"user45@demo.com","updatedAt":"1624922337","emailAddress":"user45@demo.com","emailFormatPreference":"unspecified","firstName":"User45","isBounceback":"false","isSubscribed":"true","lastName":"Demo45","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984535","createdAt":"1624922337","depth":"partial","name":"user46@demo.com","updatedAt":"1624922337","emailAddress":"user46@demo.com","emailFormatPreference":"unspecified","firstName":"User46","isBounceback":"false","isSubscribed":"true","lastName":"Demo46","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984536","createdAt":"1624922337","depth":"partial","name":"user47@demo.com","updatedAt":"1624922337","emailAddress":"user47@demo.com","emailFormatPreference":"unspecified","firstName":"User47","isBounceback":"false","isSubscribed":"true","lastName":"Demo47","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984537","createdAt":"1624922337","depth":"partial","name":"user48@demo.com","updatedAt":"1624922337","emailAddress":"user48@demo.com","emailFormatPreference":"unspecified","firstName":"User48","isBounceback":"false","isSubscribed":"true","lastName":"Demo48","subscriptionDate":"1623982688"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984538","createdAt":"1624922337","depth":"partial","name":"user49@demo.com","updatedAt":"1624922337","emailAddress":"user49@demo.com","emailFormatPreference":"unspecified","firstName":"User49","isBounceback":"false","isSubscribed":"true","lastName":"Demo49","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":50}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5383,7 +4588,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '34f9eae8769a4c089d22bd916b83065d/23429662492',
+  '34c07198b75a47f192e9b27a3a91a945/23671973551',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5393,16 +4598,16 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:01 GMT',
+  'Mon, 28 Jun 2021 23:27:20 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '395'
+  '17510'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser1%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984258","createdAt":"1623982688","depth":"partial","name":"user1@demo.com","updatedAt":"1623982688","emailAddress":"user1@demo.com","emailFormatPreference":"unspecified","firstName":"User1","isBounceback":"false","isSubscribed":"true","lastName":"Demo1","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27user50%40demo.com%27emailAddress%3D%27user51%40demo.com%27emailAddress%3D%27user52%40demo.com%27emailAddress%3D%27user53%40demo.com%27emailAddress%3D%27user54%40demo.com%27emailAddress%3D%27user55%40demo.com%27emailAddress%3D%27user56%40demo.com%27emailAddress%3D%27user57%40demo.com%27emailAddress%3D%27user58%40demo.com%27emailAddress%3D%27user59%40demo.com%27emailAddress%3D%27user60%40demo.com%27emailAddress%3D%27user61%40demo.com%27emailAddress%3D%27user62%40demo.com%27emailAddress%3D%27user63%40demo.com%27emailAddress%3D%27user64%40demo.com%27emailAddress%3D%27user65%40demo.com%27emailAddress%3D%27user66%40demo.com%27emailAddress%3D%27user67%40demo.com%27emailAddress%3D%27user68%40demo.com%27emailAddress%3D%27user69%40demo.com%27emailAddress%3D%27user70%40demo.com%27emailAddress%3D%27user71%40demo.com%27emailAddress%3D%27user72%40demo.com%27emailAddress%3D%27user73%40demo.com%27emailAddress%3D%27user74%40demo.com%27emailAddress%3D%27user75%40demo.com%27emailAddress%3D%27user76%40demo.com%27emailAddress%3D%27user77%40demo.com%27emailAddress%3D%27user78%40demo.com%27emailAddress%3D%27user79%40demo.com%27emailAddress%3D%27user80%40demo.com%27emailAddress%3D%27user81%40demo.com%27emailAddress%3D%27user82%40demo.com%27emailAddress%3D%27user83%40demo.com%27emailAddress%3D%27user84%40demo.com%27emailAddress%3D%27user85%40demo.com%27emailAddress%3D%27user86%40demo.com%27emailAddress%3D%27user87%40demo.com%27emailAddress%3D%27user88%40demo.com%27emailAddress%3D%27user89%40demo.com%27emailAddress%3D%27user90%40demo.com%27emailAddress%3D%27user91%40demo.com%27emailAddress%3D%27user92%40demo.com%27emailAddress%3D%27user93%40demo.com%27emailAddress%3D%27user94%40demo.com%27emailAddress%3D%27user95%40demo.com%27emailAddress%3D%27user96%40demo.com%27emailAddress%3D%27user97%40demo.com%27emailAddress%3D%27user98%40demo.com%27emailAddress%3D%27user99%40demo.com%27emailAddress%3D%27user99%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984341","createdAt":"1624906007","depth":"partial","name":"user64@demo.com","updatedAt":"1624906007","emailAddress":"user64@demo.com","emailFormatPreference":"unspecified","firstName":"User64","isBounceback":"false","isSubscribed":"true","lastName":"Demo64","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984342","createdAt":"1624906007","depth":"partial","name":"user65@demo.com","updatedAt":"1624906007","emailAddress":"user65@demo.com","emailFormatPreference":"unspecified","firstName":"User65","isBounceback":"false","isSubscribed":"true","lastName":"Demo65","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984343","createdAt":"1624906007","depth":"partial","name":"user66@demo.com","updatedAt":"1624906007","emailAddress":"user66@demo.com","emailFormatPreference":"unspecified","firstName":"User66","isBounceback":"false","isSubscribed":"true","lastName":"Demo66","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984344","createdAt":"1624906007","depth":"partial","name":"user67@demo.com","updatedAt":"1624906007","emailAddress":"user67@demo.com","emailFormatPreference":"unspecified","firstName":"User67","isBounceback":"false","isSubscribed":"true","lastName":"Demo67","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984345","createdAt":"1624906007","depth":"partial","name":"user68@demo.com","updatedAt":"1624906007","emailAddress":"user68@demo.com","emailFormatPreference":"unspecified","firstName":"User68","isBounceback":"false","isSubscribed":"true","lastName":"Demo68","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984346","createdAt":"1624906007","depth":"partial","name":"user69@demo.com","updatedAt":"1624906007","emailAddress":"user69@demo.com","emailFormatPreference":"unspecified","firstName":"User69","isBounceback":"false","isSubscribed":"true","lastName":"Demo69","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984347","createdAt":"1624906007","depth":"partial","name":"user70@demo.com","updatedAt":"1624906007","emailAddress":"user70@demo.com","emailFormatPreference":"unspecified","firstName":"User70","isBounceback":"false","isSubscribed":"true","lastName":"Demo70","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984348","createdAt":"1624906007","depth":"partial","name":"user71@demo.com","updatedAt":"1624906007","emailAddress":"user71@demo.com","emailFormatPreference":"unspecified","firstName":"User71","isBounceback":"false","isSubscribed":"true","lastName":"Demo71","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984349","createdAt":"1624906007","depth":"partial","name":"user72@demo.com","updatedAt":"1624906007","emailAddress":"user72@demo.com","emailFormatPreference":"unspecified","firstName":"User72","isBounceback":"false","isSubscribed":"true","lastName":"Demo72","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984350","createdAt":"1624906007","depth":"partial","name":"user73@demo.com","updatedAt":"1624906007","emailAddress":"user73@demo.com","emailFormatPreference":"unspecified","firstName":"User73","isBounceback":"false","isSubscribed":"true","lastName":"Demo73","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984351","createdAt":"1624906007","depth":"partial","name":"user74@demo.com","updatedAt":"1624906007","emailAddress":"user74@demo.com","emailFormatPreference":"unspecified","firstName":"User74","isBounceback":"false","isSubscribed":"true","lastName":"Demo74","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984352","createdAt":"1624906007","depth":"partial","name":"user75@demo.com","updatedAt":"1624906007","emailAddress":"user75@demo.com","emailFormatPreference":"unspecified","firstName":"User75","isBounceback":"false","isSubscribed":"true","lastName":"Demo75","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984353","createdAt":"1624906007","depth":"partial","name":"user76@demo.com","updatedAt":"1624906007","emailAddress":"user76@demo.com","emailFormatPreference":"unspecified","firstName":"User76","isBounceback":"false","isSubscribed":"true","lastName":"Demo76","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984354","createdAt":"1624906007","depth":"partial","name":"user77@demo.com","updatedAt":"1624906007","emailAddress":"user77@demo.com","emailFormatPreference":"unspecified","firstName":"User77","isBounceback":"false","isSubscribed":"true","lastName":"Demo77","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984355","createdAt":"1624906007","depth":"partial","name":"user78@demo.com","updatedAt":"1624906007","emailAddress":"user78@demo.com","emailFormatPreference":"unspecified","firstName":"User78","isBounceback":"false","isSubscribed":"true","lastName":"Demo78","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984356","createdAt":"1624906007","depth":"partial","name":"user79@demo.com","updatedAt":"1624906007","emailAddress":"user79@demo.com","emailFormatPreference":"unspecified","firstName":"User79","isBounceback":"false","isSubscribed":"true","lastName":"Demo79","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984357","createdAt":"1624906007","depth":"partial","name":"user80@demo.com","updatedAt":"1624906007","emailAddress":"user80@demo.com","emailFormatPreference":"unspecified","firstName":"User80","isBounceback":"false","isSubscribed":"true","lastName":"Demo80","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984358","createdAt":"1624906007","depth":"partial","name":"user81@demo.com","updatedAt":"1624906007","emailAddress":"user81@demo.com","emailFormatPreference":"unspecified","firstName":"User81","isBounceback":"false","isSubscribed":"true","lastName":"Demo81","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984359","createdAt":"1624906007","depth":"partial","name":"user82@demo.com","updatedAt":"1624906007","emailAddress":"user82@demo.com","emailFormatPreference":"unspecified","firstName":"User82","isBounceback":"false","isSubscribed":"true","lastName":"Demo82","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984360","createdAt":"1624906007","depth":"partial","name":"user83@demo.com","updatedAt":"1624906007","emailAddress":"user83@demo.com","emailFormatPreference":"unspecified","firstName":"User83","isBounceback":"false","isSubscribed":"true","lastName":"Demo83","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984361","createdAt":"1624906007","depth":"partial","name":"user84@demo.com","updatedAt":"1624906007","emailAddress":"user84@demo.com","emailFormatPreference":"unspecified","firstName":"User84","isBounceback":"false","isSubscribed":"true","lastName":"Demo84","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984362","createdAt":"1624906007","depth":"partial","name":"user85@demo.com","updatedAt":"1624906007","emailAddress":"user85@demo.com","emailFormatPreference":"unspecified","firstName":"User85","isBounceback":"false","isSubscribed":"true","lastName":"Demo85","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984363","createdAt":"1624906007","depth":"partial","name":"user86@demo.com","updatedAt":"1624906007","emailAddress":"user86@demo.com","emailFormatPreference":"unspecified","firstName":"User86","isBounceback":"false","isSubscribed":"true","lastName":"Demo86","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984364","createdAt":"1624906007","depth":"partial","name":"user87@demo.com","updatedAt":"1624906007","emailAddress":"user87@demo.com","emailFormatPreference":"unspecified","firstName":"User87","isBounceback":"false","isSubscribed":"true","lastName":"Demo87","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984365","createdAt":"1624906007","depth":"partial","name":"user88@demo.com","updatedAt":"1624906007","emailAddress":"user88@demo.com","emailFormatPreference":"unspecified","firstName":"User88","isBounceback":"false","isSubscribed":"true","lastName":"Demo88","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984366","createdAt":"1624906007","depth":"partial","name":"user89@demo.com","updatedAt":"1624906007","emailAddress":"user89@demo.com","emailFormatPreference":"unspecified","firstName":"User89","isBounceback":"false","isSubscribed":"true","lastName":"Demo89","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984367","createdAt":"1624906007","depth":"partial","name":"user90@demo.com","updatedAt":"1624906007","emailAddress":"user90@demo.com","emailFormatPreference":"unspecified","firstName":"User90","isBounceback":"false","isSubscribed":"true","lastName":"Demo90","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984368","createdAt":"1624906007","depth":"partial","name":"user91@demo.com","updatedAt":"1624906007","emailAddress":"user91@demo.com","emailFormatPreference":"unspecified","firstName":"User91","isBounceback":"false","isSubscribed":"true","lastName":"Demo91","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984369","createdAt":"1624906007","depth":"partial","name":"user92@demo.com","updatedAt":"1624906007","emailAddress":"user92@demo.com","emailFormatPreference":"unspecified","firstName":"User92","isBounceback":"false","isSubscribed":"true","lastName":"Demo92","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984370","createdAt":"1624906007","depth":"partial","name":"user93@demo.com","updatedAt":"1624906007","emailAddress":"user93@demo.com","emailFormatPreference":"unspecified","firstName":"User93","isBounceback":"false","isSubscribed":"true","lastName":"Demo93","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984371","createdAt":"1624906007","depth":"partial","name":"user94@demo.com","updatedAt":"1624906007","emailAddress":"user94@demo.com","emailFormatPreference":"unspecified","firstName":"User94","isBounceback":"false","isSubscribed":"true","lastName":"Demo94","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984372","createdAt":"1624906007","depth":"partial","name":"user95@demo.com","updatedAt":"1624906007","emailAddress":"user95@demo.com","emailFormatPreference":"unspecified","firstName":"User95","isBounceback":"false","isSubscribed":"true","lastName":"Demo95","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984373","createdAt":"1624906007","depth":"partial","name":"user96@demo.com","updatedAt":"1624906007","emailAddress":"user96@demo.com","emailFormatPreference":"unspecified","firstName":"User96","isBounceback":"false","isSubscribed":"true","lastName":"Demo96","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984374","createdAt":"1624906007","depth":"partial","name":"user97@demo.com","updatedAt":"1624906007","emailAddress":"user97@demo.com","emailFormatPreference":"unspecified","firstName":"User97","isBounceback":"false","isSubscribed":"true","lastName":"Demo97","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984375","createdAt":"1624906007","depth":"partial","name":"user98@demo.com","updatedAt":"1624906007","emailAddress":"user98@demo.com","emailFormatPreference":"unspecified","firstName":"User98","isBounceback":"false","isSubscribed":"true","lastName":"Demo98","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984376","createdAt":"1624906007","depth":"partial","name":"user99@demo.com","updatedAt":"1624906007","emailAddress":"user99@demo.com","emailFormatPreference":"unspecified","firstName":"User99","isBounceback":"false","isSubscribed":"true","lastName":"Demo99","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984539","createdAt":"1624922337","depth":"partial","name":"user50@demo.com","updatedAt":"1624922337","emailAddress":"user50@demo.com","emailFormatPreference":"unspecified","firstName":"User50","isBounceback":"false","isSubscribed":"true","lastName":"Demo50","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984540","createdAt":"1624922337","depth":"partial","name":"user51@demo.com","updatedAt":"1624922337","emailAddress":"user51@demo.com","emailFormatPreference":"unspecified","firstName":"User51","isBounceback":"false","isSubscribed":"true","lastName":"Demo51","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984541","createdAt":"1624922337","depth":"partial","name":"user52@demo.com","updatedAt":"1624922337","emailAddress":"user52@demo.com","emailFormatPreference":"unspecified","firstName":"User52","isBounceback":"false","isSubscribed":"true","lastName":"Demo52","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984542","createdAt":"1624922337","depth":"partial","name":"user53@demo.com","updatedAt":"1624922337","emailAddress":"user53@demo.com","emailFormatPreference":"unspecified","firstName":"User53","isBounceback":"false","isSubscribed":"true","lastName":"Demo53","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984543","createdAt":"1624922337","depth":"partial","name":"user54@demo.com","updatedAt":"1624922337","emailAddress":"user54@demo.com","emailFormatPreference":"unspecified","firstName":"User54","isBounceback":"false","isSubscribed":"true","lastName":"Demo54","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984544","createdAt":"1624922337","depth":"partial","name":"user55@demo.com","updatedAt":"1624922337","emailAddress":"user55@demo.com","emailFormatPreference":"unspecified","firstName":"User55","isBounceback":"false","isSubscribed":"true","lastName":"Demo55","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984545","createdAt":"1624922337","depth":"partial","name":"user56@demo.com","updatedAt":"1624922337","emailAddress":"user56@demo.com","emailFormatPreference":"unspecified","firstName":"User56","isBounceback":"false","isSubscribed":"true","lastName":"Demo56","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984546","createdAt":"1624922337","depth":"partial","name":"user57@demo.com","updatedAt":"1624922337","emailAddress":"user57@demo.com","emailFormatPreference":"unspecified","firstName":"User57","isBounceback":"false","isSubscribed":"true","lastName":"Demo57","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984547","createdAt":"1624922337","depth":"partial","name":"user58@demo.com","updatedAt":"1624922337","emailAddress":"user58@demo.com","emailFormatPreference":"unspecified","firstName":"User58","isBounceback":"false","isSubscribed":"true","lastName":"Demo58","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984548","createdAt":"1624922337","depth":"partial","name":"user59@demo.com","updatedAt":"1624922337","emailAddress":"user59@demo.com","emailFormatPreference":"unspecified","firstName":"User59","isBounceback":"false","isSubscribed":"true","lastName":"Demo59","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984549","createdAt":"1624922337","depth":"partial","name":"user60@demo.com","updatedAt":"1624922337","emailAddress":"user60@demo.com","emailFormatPreference":"unspecified","firstName":"User60","isBounceback":"false","isSubscribed":"true","lastName":"Demo60","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984550","createdAt":"1624922337","depth":"partial","name":"user61@demo.com","updatedAt":"1624922337","emailAddress":"user61@demo.com","emailFormatPreference":"unspecified","firstName":"User61","isBounceback":"false","isSubscribed":"true","lastName":"Demo61","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984551","createdAt":"1624922337","depth":"partial","name":"user62@demo.com","updatedAt":"1624922337","emailAddress":"user62@demo.com","emailFormatPreference":"unspecified","firstName":"User62","isBounceback":"false","isSubscribed":"true","lastName":"Demo62","subscriptionDate":"1624906007"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984552","createdAt":"1624922337","depth":"partial","name":"user63@demo.com","updatedAt":"1624922337","emailAddress":"user63@demo.com","emailFormatPreference":"unspecified","firstName":"User63","isBounceback":"false","isSubscribed":"true","lastName":"Demo63","subscriptionDate":"1624906007"}],"page":1,"pageSize":1000,"total":50}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5412,7 +4617,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6050a7f952ea4931811c994ac3c32225/23429662739',
+  '1e0140a60f3744ce913495cd327b25f6/23671974059',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5422,16 +4627,16 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:02 GMT',
+  'Mon, 28 Jun 2021 23:27:21 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '395'
+  '17550'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984259","createdAt":"1623982688","depth":"partial","name":"user2@demo.com","updatedAt":"1623982688","emailAddress":"user2@demo.com","emailFormatPreference":"unspecified","firstName":"User2","isBounceback":"false","isSubscribed":"true","lastName":"Demo2","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"emailAddress%3D%27user100%40demo.com%27emailAddress%3D%27user101%40demo.com%27emailAddress%3D%27user102%40demo.com%27emailAddress%3D%27user103%40demo.com%27emailAddress%3D%27user104%40demo.com%27emailAddress%3D%27user105%40demo.com%27emailAddress%3D%27user106%40demo.com%27emailAddress%3D%27user107%40demo.com%27emailAddress%3D%27user108%40demo.com%27emailAddress%3D%27user109%40demo.com%27emailAddress%3D%27user110%40demo.com%27emailAddress%3D%27user111%40demo.com%27emailAddress%3D%27user112%40demo.com%27emailAddress%3D%27user113%40demo.com%27emailAddress%3D%27user114%40demo.com%27emailAddress%3D%27user115%40demo.com%27emailAddress%3D%27user116%40demo.com%27emailAddress%3D%27user117%40demo.com%27emailAddress%3D%27user118%40demo.com%27emailAddress%3D%27user119%40demo.com%27emailAddress%3D%27user120%40demo.com%27emailAddress%3D%27user121%40demo.com%27emailAddress%3D%27user122%40demo.com%27emailAddress%3D%27user123%40demo.com%27emailAddress%3D%27user124%40demo.com%27emailAddress%3D%27user125%40demo.com%27emailAddress%3D%27user126%40demo.com%27emailAddress%3D%27user127%40demo.com%27emailAddress%3D%27user128%40demo.com%27emailAddress%3D%27user129%40demo.com%27emailAddress%3D%27user130%40demo.com%27emailAddress%3D%27user131%40demo.com%27emailAddress%3D%27user132%40demo.com%27emailAddress%3D%27user133%40demo.com%27emailAddress%3D%27user134%40demo.com%27emailAddress%3D%27user135%40demo.com%27emailAddress%3D%27user136%40demo.com%27emailAddress%3D%27user137%40demo.com%27emailAddress%3D%27user138%40demo.com%27emailAddress%3D%27user139%40demo.com%27emailAddress%3D%27user140%40demo.com%27emailAddress%3D%27user141%40demo.com%27emailAddress%3D%27user142%40demo.com%27emailAddress%3D%27user143%40demo.com%27emailAddress%3D%27user144%40demo.com%27emailAddress%3D%27user145%40demo.com%27emailAddress%3D%27user146%40demo.com%27emailAddress%3D%27user147%40demo.com%27emailAddress%3D%27user148%40demo.com%27emailAddress%3D%27user149%40demo.com%27emailAddress%3D%27user149%40demo.com%27"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984427","createdAt":"1624910679","depth":"partial","name":"user100@demo.com","updatedAt":"1624910679","emailAddress":"user100@demo.com","emailFormatPreference":"unspecified","firstName":"User100","isBounceback":"false","isSubscribed":"true","lastName":"Demo100","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984428","createdAt":"1624910679","depth":"partial","name":"user101@demo.com","updatedAt":"1624910679","emailAddress":"user101@demo.com","emailFormatPreference":"unspecified","firstName":"User101","isBounceback":"false","isSubscribed":"true","lastName":"Demo101","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984429","createdAt":"1624910679","depth":"partial","name":"user102@demo.com","updatedAt":"1624910679","emailAddress":"user102@demo.com","emailFormatPreference":"unspecified","firstName":"User102","isBounceback":"false","isSubscribed":"true","lastName":"Demo102","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984430","createdAt":"1624910679","depth":"partial","name":"user103@demo.com","updatedAt":"1624910679","emailAddress":"user103@demo.com","emailFormatPreference":"unspecified","firstName":"User103","isBounceback":"false","isSubscribed":"true","lastName":"Demo103","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984431","createdAt":"1624910679","depth":"partial","name":"user104@demo.com","updatedAt":"1624910679","emailAddress":"user104@demo.com","emailFormatPreference":"unspecified","firstName":"User104","isBounceback":"false","isSubscribed":"true","lastName":"Demo104","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984432","createdAt":"1624910679","depth":"partial","name":"user105@demo.com","updatedAt":"1624910679","emailAddress":"user105@demo.com","emailFormatPreference":"unspecified","firstName":"User105","isBounceback":"false","isSubscribed":"true","lastName":"Demo105","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984433","createdAt":"1624910679","depth":"partial","name":"user106@demo.com","updatedAt":"1624910679","emailAddress":"user106@demo.com","emailFormatPreference":"unspecified","firstName":"User106","isBounceback":"false","isSubscribed":"true","lastName":"Demo106","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984434","createdAt":"1624910679","depth":"partial","name":"user107@demo.com","updatedAt":"1624910679","emailAddress":"user107@demo.com","emailFormatPreference":"unspecified","firstName":"User107","isBounceback":"false","isSubscribed":"true","lastName":"Demo107","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984435","createdAt":"1624910679","depth":"partial","name":"user108@demo.com","updatedAt":"1624910679","emailAddress":"user108@demo.com","emailFormatPreference":"unspecified","firstName":"User108","isBounceback":"false","isSubscribed":"true","lastName":"Demo108","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984436","createdAt":"1624910679","depth":"partial","name":"user109@demo.com","updatedAt":"1624910679","emailAddress":"user109@demo.com","emailFormatPreference":"unspecified","firstName":"User109","isBounceback":"false","isSubscribed":"true","lastName":"Demo109","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984437","createdAt":"1624910679","depth":"partial","name":"user110@demo.com","updatedAt":"1624910679","emailAddress":"user110@demo.com","emailFormatPreference":"unspecified","firstName":"User110","isBounceback":"false","isSubscribed":"true","lastName":"Demo110","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984438","createdAt":"1624910679","depth":"partial","name":"user111@demo.com","updatedAt":"1624910679","emailAddress":"user111@demo.com","emailFormatPreference":"unspecified","firstName":"User111","isBounceback":"false","isSubscribed":"true","lastName":"Demo111","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984439","createdAt":"1624910679","depth":"partial","name":"user112@demo.com","updatedAt":"1624910679","emailAddress":"user112@demo.com","emailFormatPreference":"unspecified","firstName":"User112","isBounceback":"false","isSubscribed":"true","lastName":"Demo112","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984440","createdAt":"1624910679","depth":"partial","name":"user113@demo.com","updatedAt":"1624910679","emailAddress":"user113@demo.com","emailFormatPreference":"unspecified","firstName":"User113","isBounceback":"false","isSubscribed":"true","lastName":"Demo113","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984441","createdAt":"1624910679","depth":"partial","name":"user114@demo.com","updatedAt":"1624910679","emailAddress":"user114@demo.com","emailFormatPreference":"unspecified","firstName":"User114","isBounceback":"false","isSubscribed":"true","lastName":"Demo114","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984442","createdAt":"1624910679","depth":"partial","name":"user115@demo.com","updatedAt":"1624910679","emailAddress":"user115@demo.com","emailFormatPreference":"unspecified","firstName":"User115","isBounceback":"false","isSubscribed":"true","lastName":"Demo115","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984443","createdAt":"1624910679","depth":"partial","name":"user116@demo.com","updatedAt":"1624910679","emailAddress":"user116@demo.com","emailFormatPreference":"unspecified","firstName":"User116","isBounceback":"false","isSubscribed":"true","lastName":"Demo116","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984444","createdAt":"1624910679","depth":"partial","name":"user117@demo.com","updatedAt":"1624910679","emailAddress":"user117@demo.com","emailFormatPreference":"unspecified","firstName":"User117","isBounceback":"false","isSubscribed":"true","lastName":"Demo117","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984445","createdAt":"1624910679","depth":"partial","name":"user118@demo.com","updatedAt":"1624910679","emailAddress":"user118@demo.com","emailFormatPreference":"unspecified","firstName":"User118","isBounceback":"false","isSubscribed":"true","lastName":"Demo118","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984446","createdAt":"1624910679","depth":"partial","name":"user119@demo.com","updatedAt":"1624910679","emailAddress":"user119@demo.com","emailFormatPreference":"unspecified","firstName":"User119","isBounceback":"false","isSubscribed":"true","lastName":"Demo119","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984447","createdAt":"1624910679","depth":"partial","name":"user120@demo.com","updatedAt":"1624910679","emailAddress":"user120@demo.com","emailFormatPreference":"unspecified","firstName":"User120","isBounceback":"false","isSubscribed":"true","lastName":"Demo120","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984448","createdAt":"1624910679","depth":"partial","name":"user121@demo.com","updatedAt":"1624910679","emailAddress":"user121@demo.com","emailFormatPreference":"unspecified","firstName":"User121","isBounceback":"false","isSubscribed":"true","lastName":"Demo121","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984449","createdAt":"1624910679","depth":"partial","name":"user122@demo.com","updatedAt":"1624910679","emailAddress":"user122@demo.com","emailFormatPreference":"unspecified","firstName":"User122","isBounceback":"false","isSubscribed":"true","lastName":"Demo122","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984450","createdAt":"1624910679","depth":"partial","name":"user123@demo.com","updatedAt":"1624910679","emailAddress":"user123@demo.com","emailFormatPreference":"unspecified","firstName":"User123","isBounceback":"false","isSubscribed":"true","lastName":"Demo123","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984451","createdAt":"1624910679","depth":"partial","name":"user124@demo.com","updatedAt":"1624910679","emailAddress":"user124@demo.com","emailFormatPreference":"unspecified","firstName":"User124","isBounceback":"false","isSubscribed":"true","lastName":"Demo124","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984452","createdAt":"1624910679","depth":"partial","name":"user125@demo.com","updatedAt":"1624910679","emailAddress":"user125@demo.com","emailFormatPreference":"unspecified","firstName":"User125","isBounceback":"false","isSubscribed":"true","lastName":"Demo125","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984453","createdAt":"1624910679","depth":"partial","name":"user126@demo.com","updatedAt":"1624910679","emailAddress":"user126@demo.com","emailFormatPreference":"unspecified","firstName":"User126","isBounceback":"false","isSubscribed":"true","lastName":"Demo126","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984454","createdAt":"1624910679","depth":"partial","name":"user127@demo.com","updatedAt":"1624910679","emailAddress":"user127@demo.com","emailFormatPreference":"unspecified","firstName":"User127","isBounceback":"false","isSubscribed":"true","lastName":"Demo127","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984455","createdAt":"1624910679","depth":"partial","name":"user128@demo.com","updatedAt":"1624910679","emailAddress":"user128@demo.com","emailFormatPreference":"unspecified","firstName":"User128","isBounceback":"false","isSubscribed":"true","lastName":"Demo128","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984456","createdAt":"1624910679","depth":"partial","name":"user129@demo.com","updatedAt":"1624910679","emailAddress":"user129@demo.com","emailFormatPreference":"unspecified","firstName":"User129","isBounceback":"false","isSubscribed":"true","lastName":"Demo129","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984457","createdAt":"1624910679","depth":"partial","name":"user130@demo.com","updatedAt":"1624910679","emailAddress":"user130@demo.com","emailFormatPreference":"unspecified","firstName":"User130","isBounceback":"false","isSubscribed":"true","lastName":"Demo130","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984458","createdAt":"1624910679","depth":"partial","name":"user131@demo.com","updatedAt":"1624910679","emailAddress":"user131@demo.com","emailFormatPreference":"unspecified","firstName":"User131","isBounceback":"false","isSubscribed":"true","lastName":"Demo131","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984459","createdAt":"1624910679","depth":"partial","name":"user132@demo.com","updatedAt":"1624910679","emailAddress":"user132@demo.com","emailFormatPreference":"unspecified","firstName":"User132","isBounceback":"false","isSubscribed":"true","lastName":"Demo132","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984460","createdAt":"1624910679","depth":"partial","name":"user133@demo.com","updatedAt":"1624910679","emailAddress":"user133@demo.com","emailFormatPreference":"unspecified","firstName":"User133","isBounceback":"false","isSubscribed":"true","lastName":"Demo133","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984461","createdAt":"1624910679","depth":"partial","name":"user134@demo.com","updatedAt":"1624910679","emailAddress":"user134@demo.com","emailFormatPreference":"unspecified","firstName":"User134","isBounceback":"false","isSubscribed":"true","lastName":"Demo134","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984462","createdAt":"1624910679","depth":"partial","name":"user135@demo.com","updatedAt":"1624910679","emailAddress":"user135@demo.com","emailFormatPreference":"unspecified","firstName":"User135","isBounceback":"false","isSubscribed":"true","lastName":"Demo135","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984463","createdAt":"1624910679","depth":"partial","name":"user136@demo.com","updatedAt":"1624910679","emailAddress":"user136@demo.com","emailFormatPreference":"unspecified","firstName":"User136","isBounceback":"false","isSubscribed":"true","lastName":"Demo136","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984464","createdAt":"1624910679","depth":"partial","name":"user137@demo.com","updatedAt":"1624910679","emailAddress":"user137@demo.com","emailFormatPreference":"unspecified","firstName":"User137","isBounceback":"false","isSubscribed":"true","lastName":"Demo137","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984465","createdAt":"1624910679","depth":"partial","name":"user138@demo.com","updatedAt":"1624910679","emailAddress":"user138@demo.com","emailFormatPreference":"unspecified","firstName":"User138","isBounceback":"false","isSubscribed":"true","lastName":"Demo138","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984466","createdAt":"1624910679","depth":"partial","name":"user139@demo.com","updatedAt":"1624910679","emailAddress":"user139@demo.com","emailFormatPreference":"unspecified","firstName":"User139","isBounceback":"false","isSubscribed":"true","lastName":"Demo139","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984467","createdAt":"1624910679","depth":"partial","name":"user140@demo.com","updatedAt":"1624910679","emailAddress":"user140@demo.com","emailFormatPreference":"unspecified","firstName":"User140","isBounceback":"false","isSubscribed":"true","lastName":"Demo140","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984468","createdAt":"1624910679","depth":"partial","name":"user141@demo.com","updatedAt":"1624910679","emailAddress":"user141@demo.com","emailFormatPreference":"unspecified","firstName":"User141","isBounceback":"false","isSubscribed":"true","lastName":"Demo141","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984469","createdAt":"1624910679","depth":"partial","name":"user142@demo.com","updatedAt":"1624910679","emailAddress":"user142@demo.com","emailFormatPreference":"unspecified","firstName":"User142","isBounceback":"false","isSubscribed":"true","lastName":"Demo142","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984470","createdAt":"1624910679","depth":"partial","name":"user143@demo.com","updatedAt":"1624910679","emailAddress":"user143@demo.com","emailFormatPreference":"unspecified","firstName":"User143","isBounceback":"false","isSubscribed":"true","lastName":"Demo143","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984471","createdAt":"1624910679","depth":"partial","name":"user144@demo.com","updatedAt":"1624910679","emailAddress":"user144@demo.com","emailFormatPreference":"unspecified","firstName":"User144","isBounceback":"false","isSubscribed":"true","lastName":"Demo144","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984472","createdAt":"1624910679","depth":"partial","name":"user145@demo.com","updatedAt":"1624910679","emailAddress":"user145@demo.com","emailFormatPreference":"unspecified","firstName":"User145","isBounceback":"false","isSubscribed":"true","lastName":"Demo145","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984473","createdAt":"1624910679","depth":"partial","name":"user146@demo.com","updatedAt":"1624910679","emailAddress":"user146@demo.com","emailFormatPreference":"unspecified","firstName":"User146","isBounceback":"false","isSubscribed":"true","lastName":"Demo146","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984474","createdAt":"1624910679","depth":"partial","name":"user147@demo.com","updatedAt":"1624910679","emailAddress":"user147@demo.com","emailFormatPreference":"unspecified","firstName":"User147","isBounceback":"false","isSubscribed":"true","lastName":"Demo147","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984475","createdAt":"1624910679","depth":"partial","name":"user148@demo.com","updatedAt":"1624910679","emailAddress":"user148@demo.com","emailFormatPreference":"unspecified","firstName":"User148","isBounceback":"false","isSubscribed":"true","lastName":"Demo148","subscriptionDate":"1624910679"},{"type":"Contact","currentStatus":"Awaiting action","id":"1984476","createdAt":"1624910679","depth":"partial","name":"user149@demo.com","updatedAt":"1624910679","emailAddress":"user149@demo.com","emailFormatPreference":"unspecified","firstName":"User149","isBounceback":"false","isSubscribed":"true","lastName":"Demo149","subscriptionDate":"1624910679"}],"page":1,"pageSize":1000,"total":50}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5441,7 +4646,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'e840b6ef68c44c0185e41407d95c08f5/23429662966',
+  '88008ea4599441df9fc41d530fd8e8b0/23671974915',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5451,219 +4656,16 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:03 GMT',
+  'Mon, 28 Jun 2021 23:27:24 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser3%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984260","createdAt":"1623982688","depth":"partial","name":"user3@demo.com","updatedAt":"1623982688","emailAddress":"user3@demo.com","emailFormatPreference":"unspecified","firstName":"User3","isBounceback":"false","isSubscribed":"true","lastName":"Demo3","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  'f3ee14c57cdb4fb28cbcae04775376b4/23429663220',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:41:03 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser4%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984261","createdAt":"1623982688","depth":"partial","name":"user4@demo.com","updatedAt":"1623982688","emailAddress":"user4@demo.com","emailFormatPreference":"unspecified","firstName":"User4","isBounceback":"false","isSubscribed":"true","lastName":"Demo4","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '8d1817efe9494d6b9a133acab4900385/23429663447',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:41:04 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser5%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984262","createdAt":"1623982688","depth":"partial","name":"user5@demo.com","updatedAt":"1623982688","emailAddress":"user5@demo.com","emailFormatPreference":"unspecified","firstName":"User5","isBounceback":"false","isSubscribed":"true","lastName":"Demo5","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  'f0b19f17020a4d68a9ba7e03c210d832/23429663639',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:41:04 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser6%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984263","createdAt":"1623982688","depth":"partial","name":"user6@demo.com","updatedAt":"1623982688","emailAddress":"user6@demo.com","emailFormatPreference":"unspecified","firstName":"User6","isBounceback":"false","isSubscribed":"true","lastName":"Demo6","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '0f2fa2f33edb402680c26cdc4d2c706f/23429663864',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:41:05 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser7%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984264","createdAt":"1623982688","depth":"partial","name":"user7@demo.com","updatedAt":"1623982688","emailAddress":"user7@demo.com","emailFormatPreference":"unspecified","firstName":"User7","isBounceback":"false","isSubscribed":"true","lastName":"Demo7","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  'ba5bf025ffdd4feba0db432f5c01dd40/23429664108',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:41:05 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser8%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984265","createdAt":"1623982688","depth":"partial","name":"user8@demo.com","updatedAt":"1623982688","emailAddress":"user8@demo.com","emailFormatPreference":"unspecified","firstName":"User8","isBounceback":"false","isSubscribed":"true","lastName":"Demo8","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '19c398d7ec134c20bd6650d57d07ca08/23429664342',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:41:06 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
-]);
-nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Duser9%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984266","createdAt":"1623982688","depth":"partial","name":"user9@demo.com","updatedAt":"1623982688","emailAddress":"user9@demo.com","emailFormatPreference":"unspecified","firstName":"User9","isBounceback":"false","isSubscribed":"true","lastName":"Demo9","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json',
-  'Expires',
-  '-1',
-  'X-Request-Id',
-  '7011d34890d143088e1fd77fb8b01046/23429664609',
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Mon, 21 Jun 2021 19:41:07 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '395'
+  '17750'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5994","createdAt":"1624304237","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624304313","updatedBy":"222","count":"2","dataLookupId":"9b1cf646-492b-4a60-8045-80c1676c6bcf","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"6000","createdAt":"1624922626","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1624922702","updatedBy":"222","count":"2","dataLookupId":"1a5b348b-7e10-4a95-9558-48eee00130c3","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5673,7 +4675,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'a8dac5beb8db4960ab5bc68ca3c139f8/23429664905',
+  '157756606f924b00b75923b73b154c5a/23671975338',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5683,14 +4685,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:07 GMT',
+  'Mon, 28 Jun 2021 23:27:25 GMT',
   'Connection',
   'close',
   'Content-Length',
   '342'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/assets/contact/list/5994')
+  .delete('/api/REST/1.0/assets/contact/list/6000')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -5699,7 +4701,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6cfd9f26159044659458533aa5461563/23429665168',
+  '5f9c8c5301644516a5b400330c93e66d/23671975631',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5709,7 +4711,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:08 GMT',
+  'Mon, 28 Jun 2021 23:27:25 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5718,7 +4720,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/assets/contact/lists')
   .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"ContactList","id":"5995","createdAt":"1624304259","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624304314","updatedBy":"222","count":"1","dataLookupId":"9a842b3c-45ad-49de-b5fb-8b995cf9af29","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"6001","createdAt":"1624922651","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1624922703","updatedBy":"222","count":"1","dataLookupId":"a05dd147-250a-4a6f-b425-1b3b4e84dfb7","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5728,7 +4730,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1482bbf85b05476c97e3d985c36d3d23/23429665505',
+  'eb3c8eef58254f44ab7c473c839f54b5/23671975959',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5738,14 +4740,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:09 GMT',
+  'Mon, 28 Jun 2021 23:27:26 GMT',
   'Connection',
   'close',
   'Content-Length',
   '339'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/assets/contact/list/5995')
+  .delete('/api/REST/1.0/assets/contact/list/6001')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -5754,7 +4756,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8ffa0d97a21146b48dec43e75b67ca39/23429665800',
+  'dcbdc694a9824dc19bc95ad5e7b4a94f/23671976099',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5764,7 +4766,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:10 GMT',
+  'Mon, 28 Jun 2021 23:27:27 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5773,7 +4775,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984322","createdAt":"1624304168","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624304385","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"Sam","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984553","createdAt":"1624922554","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1624922773","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"Sam","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5783,7 +4785,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '12a1e35f655d475ea0fbf0af7c71679e/23429666118',
+  'e66049860fae4a18946aa294793ec404/23671976456',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5793,14 +4795,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:10 GMT',
+  'Mon, 28 Jun 2021 23:27:27 GMT',
   'Connection',
   'close',
   'Content-Length',
   '400'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/data/contact/1984322')
+  .delete('/api/REST/1.0/data/contact/1984553')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -5809,7 +4811,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c00b5c3af398462da47d22676ce5e60b/23429666385',
+  '6fc56d73edb64003a9877ee3833b17aa/23671976670',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5819,7 +4821,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:11 GMT',
+  'Mon, 28 Jun 2021 23:27:28 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5828,7 +4830,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984324","createdAt":"1624304340","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624304340","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984555","createdAt":"1624922728","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1624922728","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5838,7 +4840,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '0b299e3134dc4c35a8002e2a8133d968/23429666589',
+  '1923c14c62f1488990e291a7964026bf/23671976893',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5848,14 +4850,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:11 GMT',
+  'Mon, 28 Jun 2021 23:27:28 GMT',
   'Connection',
   'close',
   'Content-Length',
   '435'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/data/contact/1984324')
+  .delete('/api/REST/1.0/data/contact/1984555')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -5864,7 +4866,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '5e7572dc12d34d8abc6c8e08e6ec6c78/23429666830',
+  '5cf51565f4ee4bc09bb595b774bfbd86/23671977204',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5874,7 +4876,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:12 GMT',
+  'Mon, 28 Jun 2021 23:27:29 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5883,7 +4885,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
   .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo3%40demo.com"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984325","createdAt":"1624304384","depth":"partial","name":"grouparoo3@demo.com","updatedAt":"1624304384","emailAddress":"grouparoo3@demo.com","emailFormatPreference":"unspecified","firstName":"Liz","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623980518"}],"page":1,"pageSize":1000,"total":1}, [
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984556","createdAt":"1624922773","depth":"partial","name":"grouparoo3@demo.com","updatedAt":"1624922773","emailAddress":"grouparoo3@demo.com","emailFormatPreference":"unspecified","firstName":"Liz","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623980518"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5893,7 +4895,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '946a7695260a493c9abd66bb5527ae46/23429667068',
+  '05e718f318b74975896be4741a84ed0b/23671977450',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5903,14 +4905,14 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:13 GMT',
+  'Mon, 28 Jun 2021 23:27:30 GMT',
   'Connection',
   'close',
   'Content-Length',
   '384'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/data/contact/1984325')
+  .delete('/api/REST/1.0/data/contact/1984556')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -5919,7 +4921,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8fa2954f70614b2b940a2dd7d921338f/23429667360',
+  '6839ac091c854892b88cf56990e80bfb/23671977668',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5929,7 +4931,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:13 GMT',
+  'Mon, 28 Jun 2021 23:27:30 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5948,7 +4950,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '73d9cc40f0de40e5ab915660f3b0ac6c/23429667542',
+  'fdb6702c18d64ae0afe58d761f170afe/23671977934',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5958,7 +4960,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:14 GMT',
+  'Mon, 28 Jun 2021 23:27:31 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -5966,8 +4968,8 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser0%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984489","createdAt":"1624922337","depth":"partial","name":"user0@demo.com","updatedAt":"1624922337","emailAddress":"user0@demo.com","emailFormatPreference":"unspecified","firstName":"User0","isBounceback":"false","isSubscribed":"true","lastName":"Demo0","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -5977,7 +4979,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '162f489e484e4961b236c939209520b0/23429667879',
+  '959b375cceef4943bf803026e3921b2b/23671978243',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -5987,16 +4989,42 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:14 GMT',
+  'Mon, 28 Jun 2021 23:27:32 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '50'
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984489')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '8010881d9a874389ac0e92aca086c351/23671978487',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:32 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser1%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984490","createdAt":"1624922337","depth":"partial","name":"user1@demo.com","updatedAt":"1624922337","emailAddress":"user1@demo.com","emailFormatPreference":"unspecified","firstName":"User1","isBounceback":"false","isSubscribed":"true","lastName":"Demo1","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -6006,7 +5034,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'dbca3964e15f49eba37a11bcf33fedee/23429668182',
+  'd94d8529af1149cd9c0c6631a4dcc8ad/23671978722',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6016,16 +5044,42 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:15 GMT',
+  'Mon, 28 Jun 2021 23:27:33 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '50'
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984490')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '5f0fcc7b60614262b1e9b25163a57c80/23671978974',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:34 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984491","createdAt":"1624922337","depth":"partial","name":"user2@demo.com","updatedAt":"1624922337","emailAddress":"user2@demo.com","emailFormatPreference":"unspecified","firstName":"User2","isBounceback":"false","isSubscribed":"true","lastName":"Demo2","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -6035,7 +5089,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '03285315590149578798d34088cc2b60/23429668469',
+  '79731a009339426abd7622fd72ed17c0/23671979275',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6045,16 +5099,42 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:16 GMT',
+  'Mon, 28 Jun 2021 23:27:34 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '50'
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984491')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '1700cd8a8dd447699facf2f7978d3c00/23671979582',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:35 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser3%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984492","createdAt":"1624922337","depth":"partial","name":"user3@demo.com","updatedAt":"1624922337","emailAddress":"user3@demo.com","emailFormatPreference":"unspecified","firstName":"User3","isBounceback":"false","isSubscribed":"true","lastName":"Demo3","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -6064,7 +5144,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '89d65f2b4c6147c99271dbddc242f3d5/23429668694',
+  '0fa90f2d396a486da895e9723cd7fed7/23671979836',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6074,16 +5154,42 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:16 GMT',
+  'Mon, 28 Jun 2021 23:27:36 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '50'
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984492')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '6e473cc667a348e4ac731a62579ffc12/23671980064',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:36 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser4%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984493","createdAt":"1624922337","depth":"partial","name":"user4@demo.com","updatedAt":"1624922337","emailAddress":"user4@demo.com","emailFormatPreference":"unspecified","firstName":"User4","isBounceback":"false","isSubscribed":"true","lastName":"Demo4","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -6093,7 +5199,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c663c0a8cce64f3a9adf8e313f4c6dff/23429668970',
+  'b5a76010f6f34e2dbb4ab76c6ef6a058/23671980286',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6103,16 +5209,42 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:17 GMT',
+  'Mon, 28 Jun 2021 23:27:37 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '50'
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984493')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'd49dd09a85b64a7c96aaf6cdd291b054/23671980551',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:38 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser5%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984494","createdAt":"1624922337","depth":"partial","name":"user5@demo.com","updatedAt":"1624922337","emailAddress":"user5@demo.com","emailFormatPreference":"unspecified","firstName":"User5","isBounceback":"false","isSubscribed":"true","lastName":"Demo5","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -6122,7 +5254,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ee3d6445cf634fcfa56ad7659d96d465/23429669209',
+  '993f5eb524ae4280ac1d3936ee05a097/23671980729',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6132,16 +5264,42 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:17 GMT',
+  'Mon, 28 Jun 2021 23:27:38 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '50'
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984494')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '7ba40682956849ed90aa2d7b55ce31b6/23671981050',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:39 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser6%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984495","createdAt":"1624922337","depth":"partial","name":"user6@demo.com","updatedAt":"1624922337","emailAddress":"user6@demo.com","emailFormatPreference":"unspecified","firstName":"User6","isBounceback":"false","isSubscribed":"true","lastName":"Demo6","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -6151,7 +5309,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'cd679bb79f94468996ef0329e30d22b1/23429669466',
+  'f14d05ff7d504fe2b0ebef22527d1825/23671981403',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6161,16 +5319,42 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:18 GMT',
+  'Mon, 28 Jun 2021 23:27:40 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '50'
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984495')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'cdbb00fdd0ba4b4092460e8b46c04a14/23671982085',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:41 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser7%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984496","createdAt":"1624922337","depth":"partial","name":"user7@demo.com","updatedAt":"1624922337","emailAddress":"user7@demo.com","emailFormatPreference":"unspecified","firstName":"User7","isBounceback":"false","isSubscribed":"true","lastName":"Demo7","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -6180,7 +5364,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '87a1fb1de309415cb5d6578dc95f992f/23429669649',
+  '9fb30121aa704e9a879bc16fbf63810c/23671982446',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6190,16 +5374,42 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:18 GMT',
+  'Mon, 28 Jun 2021 23:27:42 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '50'
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984496')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'd4afebc89c2f412d83bc6a129819f81f/23671982744',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:43 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser8%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984497","createdAt":"1624922337","depth":"partial","name":"user8@demo.com","updatedAt":"1624922337","emailAddress":"user8@demo.com","emailFormatPreference":"unspecified","firstName":"User8","isBounceback":"false","isSubscribed":"true","lastName":"Demo8","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -6209,7 +5419,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '416af70e929d40e2a8a175ff52a0116f/23429669868',
+  '4e69821fa0f148bc9ec35037f0fdeba6/23671983031',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6219,16 +5429,42 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:19 GMT',
+  'Mon, 28 Jun 2021 23:27:43 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '50'
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984497')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '8b31e3c350264a6e81830c6581ea4216/23671983301',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:44 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
-  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser9%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984498","createdAt":"1624922337","depth":"partial","name":"user9@demo.com","updatedAt":"1624922337","emailAddress":"user9@demo.com","emailFormatPreference":"unspecified","firstName":"User9","isBounceback":"false","isSubscribed":"true","lastName":"Demo9","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -6238,7 +5474,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'a43c33ee6c9f496e81713c1ef7cdb6e6/23429670061',
+  'f307dcc9184040a3b95fe1085545b28a/23671983503',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -6248,9 +5484,1769 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Mon, 21 Jun 2021 19:41:19 GMT',
+  'Mon, 28 Jun 2021 23:27:44 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '50'
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984498')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '6c30c9ce51c7475eb95354da491b679f/23671983751',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:45 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser10%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984499","createdAt":"1624922337","depth":"partial","name":"user10@demo.com","updatedAt":"1624922337","emailAddress":"user10@demo.com","emailFormatPreference":"unspecified","firstName":"User10","isBounceback":"false","isSubscribed":"true","lastName":"Demo10","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '366768548d654038b7209eac152ba7f0/23671984020',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:46 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984499')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'd3cb101be34b445eaf6b7f3c46a39a9d/23671984301',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:46 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser11%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984500","createdAt":"1624922337","depth":"partial","name":"user11@demo.com","updatedAt":"1624922337","emailAddress":"user11@demo.com","emailFormatPreference":"unspecified","firstName":"User11","isBounceback":"false","isSubscribed":"true","lastName":"Demo11","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '7046510ccb8547eabf659d84ec294137/23671984497',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:47 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984500')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'a5dc5d3a38ee403486f6678b76d05901/23671984741',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:47 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser12%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984501","createdAt":"1624922337","depth":"partial","name":"user12@demo.com","updatedAt":"1624922337","emailAddress":"user12@demo.com","emailFormatPreference":"unspecified","firstName":"User12","isBounceback":"false","isSubscribed":"true","lastName":"Demo12","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '9e3e47b4f6c6445fad2ea9b2b1e01695/23671984973',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:48 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984501')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '908acee5386b42f594eef65a2f314c43/23671985242',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:49 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser13%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984502","createdAt":"1624922337","depth":"partial","name":"user13@demo.com","updatedAt":"1624922337","emailAddress":"user13@demo.com","emailFormatPreference":"unspecified","firstName":"User13","isBounceback":"false","isSubscribed":"true","lastName":"Demo13","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'cb31b647aa2a4d909faf2d8dd362ed9d/23671985799',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:50 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984502')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '9abbf8e7763748f2afaa360ec8b48856/23671986002',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:50 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser14%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984503","createdAt":"1624922337","depth":"partial","name":"user14@demo.com","updatedAt":"1624922337","emailAddress":"user14@demo.com","emailFormatPreference":"unspecified","firstName":"User14","isBounceback":"false","isSubscribed":"true","lastName":"Demo14","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '54a53c55046d4caba97506945d787d67/23671986174',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:51 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984503')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'ffaecd222d2949d082a1ea34b6cb2b7e/23671986442',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:51 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser15%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984504","createdAt":"1624922337","depth":"partial","name":"user15@demo.com","updatedAt":"1624922337","emailAddress":"user15@demo.com","emailFormatPreference":"unspecified","firstName":"User15","isBounceback":"false","isSubscribed":"true","lastName":"Demo15","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '58d9aaa5ffb747eba522c7f7a67e6670/23671986785',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:52 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984504')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'e81c97128f7f4757b2e5c12a489c13f0/23671987029',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:53 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser16%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984505","createdAt":"1624922337","depth":"partial","name":"user16@demo.com","updatedAt":"1624922337","emailAddress":"user16@demo.com","emailFormatPreference":"unspecified","firstName":"User16","isBounceback":"false","isSubscribed":"true","lastName":"Demo16","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '76f6e7956b6341b4af676f1c563e2774/23671987163',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:53 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984505')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '9382cf7cd7fe40858b082290c2599bed/23671987509',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:54 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser17%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984506","createdAt":"1624922337","depth":"partial","name":"user17@demo.com","updatedAt":"1624922337","emailAddress":"user17@demo.com","emailFormatPreference":"unspecified","firstName":"User17","isBounceback":"false","isSubscribed":"true","lastName":"Demo17","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '0d785736da2243c1b83e1bb9e4669f21/23671987724',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:54 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984506')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '3c606f0c47f8483ea330dfe8666a479f/23671987939',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:55 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser18%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984507","createdAt":"1624922337","depth":"partial","name":"user18@demo.com","updatedAt":"1624922337","emailAddress":"user18@demo.com","emailFormatPreference":"unspecified","firstName":"User18","isBounceback":"false","isSubscribed":"true","lastName":"Demo18","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '68bd3ceae05348c4b2adbaeb9b0f2770/23671988212',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:56 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984507')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'd6b3eed3ad544647923960bf7d4738b6/23671988495',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:56 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser19%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984508","createdAt":"1624922337","depth":"partial","name":"user19@demo.com","updatedAt":"1624922337","emailAddress":"user19@demo.com","emailFormatPreference":"unspecified","firstName":"User19","isBounceback":"false","isSubscribed":"true","lastName":"Demo19","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '20784efb7b0e4379942ca900eb444d0d/23671988750',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:57 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984508')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '12da49d6ea3b4466a7e2421f87f52265/23671988994',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:57 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser20%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984509","createdAt":"1624922337","depth":"partial","name":"user20@demo.com","updatedAt":"1624922337","emailAddress":"user20@demo.com","emailFormatPreference":"unspecified","firstName":"User20","isBounceback":"false","isSubscribed":"true","lastName":"Demo20","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '0c419f2367ab43879eadf0414f0f7c93/23671989191',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:58 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984509')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'd7f3d373c3334727ac5aa252b2926c59/23671989476',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:59 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser21%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984510","createdAt":"1624922337","depth":"partial","name":"user21@demo.com","updatedAt":"1624922337","emailAddress":"user21@demo.com","emailFormatPreference":"unspecified","firstName":"User21","isBounceback":"false","isSubscribed":"true","lastName":"Demo21","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '66dd0129e7914fd39ccc8565237f21bc/23671989676',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:27:59 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984510')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '9ddb92d8248c45328fbb27dac85dc3fd/23671989892',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:00 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser22%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984511","createdAt":"1624922337","depth":"partial","name":"user22@demo.com","updatedAt":"1624922337","emailAddress":"user22@demo.com","emailFormatPreference":"unspecified","firstName":"User22","isBounceback":"false","isSubscribed":"true","lastName":"Demo22","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '95c22ff952b5483abfc7b6fc7304721e/23671990142',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:00 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984511')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '0398ff2c6a9d4170ad53c392da707a34/23671990439',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:01 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser23%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984512","createdAt":"1624922337","depth":"partial","name":"user23@demo.com","updatedAt":"1624922337","emailAddress":"user23@demo.com","emailFormatPreference":"unspecified","firstName":"User23","isBounceback":"false","isSubscribed":"true","lastName":"Demo23","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '1672aaf2a8b34b1294c36a125434edb3/23671990728',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:02 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984512')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '76b898bc4b514f61b5811d9180da0c03/23671991019',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:02 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser24%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984513","createdAt":"1624922337","depth":"partial","name":"user24@demo.com","updatedAt":"1624922337","emailAddress":"user24@demo.com","emailFormatPreference":"unspecified","firstName":"User24","isBounceback":"false","isSubscribed":"true","lastName":"Demo24","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '17cb197b3e0440cdadaa6699ccb367f3/23671991248',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:04 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984513')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '3af2d4f1685d4f26b371e1e6adeea88a/23671991585',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:04 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser25%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984514","createdAt":"1624922337","depth":"partial","name":"user25@demo.com","updatedAt":"1624922337","emailAddress":"user25@demo.com","emailFormatPreference":"unspecified","firstName":"User25","isBounceback":"false","isSubscribed":"true","lastName":"Demo25","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'a93bf839183c43df84abd37938a5e77b/23671991887',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:05 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984514')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'a1f9df672eb146e78d138d61d679e3a8/23671992220',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:06 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser26%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984515","createdAt":"1624922337","depth":"partial","name":"user26@demo.com","updatedAt":"1624922337","emailAddress":"user26@demo.com","emailFormatPreference":"unspecified","firstName":"User26","isBounceback":"false","isSubscribed":"true","lastName":"Demo26","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '2b25cc870ee244d4a7f3e8af02d54775/23671992778',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:07 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984515')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '7a82446fe7e941e28f26a15506304226/23671993257',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:08 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser27%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984516","createdAt":"1624922337","depth":"partial","name":"user27@demo.com","updatedAt":"1624922337","emailAddress":"user27@demo.com","emailFormatPreference":"unspecified","firstName":"User27","isBounceback":"false","isSubscribed":"true","lastName":"Demo27","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '5b0f1454da494cdabf682110df255d6a/23671993520',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:09 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984516')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '86155dca2e7d44da8dda4c19fa16c3e1/23671993822',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:10 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser28%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984517","createdAt":"1624922337","depth":"partial","name":"user28@demo.com","updatedAt":"1624922337","emailAddress":"user28@demo.com","emailFormatPreference":"unspecified","firstName":"User28","isBounceback":"false","isSubscribed":"true","lastName":"Demo28","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '6e276649573a423fad63761dc0057054/23671994030',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:10 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984517')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '9d3200e5392a40d1b9518b9242d49b4a/23671994189',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:11 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser29%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984518","createdAt":"1624922337","depth":"partial","name":"user29@demo.com","updatedAt":"1624922337","emailAddress":"user29@demo.com","emailFormatPreference":"unspecified","firstName":"User29","isBounceback":"false","isSubscribed":"true","lastName":"Demo29","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'b7c17f954e704d01a498686773ca7a71/23671994430',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:11 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984518')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '2f580c370a57400d9a873d01bfcb2b5c/23671997838',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:19 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser30%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984519","createdAt":"1624922337","depth":"partial","name":"user30@demo.com","updatedAt":"1624922337","emailAddress":"user30@demo.com","emailFormatPreference":"unspecified","firstName":"User30","isBounceback":"false","isSubscribed":"true","lastName":"Demo30","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '78a6402f8b3a46ab8984197d73fb8e80/23671998099',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:20 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984519')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'a882e5310a5b4a0496f4347d310a9feb/23671998414',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:20 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser31%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984520","createdAt":"1624922337","depth":"partial","name":"user31@demo.com","updatedAt":"1624922337","emailAddress":"user31@demo.com","emailFormatPreference":"unspecified","firstName":"User31","isBounceback":"false","isSubscribed":"true","lastName":"Demo31","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'b4b64d170ef84941b97e1fb326cebbcf/23671998669',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:21 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984520')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '0dff7b8fa8d84c63b0f1e9217b53165e/23671999046',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:22 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser32%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984521","createdAt":"1624922337","depth":"partial","name":"user32@demo.com","updatedAt":"1624922337","emailAddress":"user32@demo.com","emailFormatPreference":"unspecified","firstName":"User32","isBounceback":"false","isSubscribed":"true","lastName":"Demo32","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'e10d3262e3184fa193cd90c8fbf4b6ef/23671999335',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:23 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984521')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '0c137cb5e98849be9231ad31bbe9ac19/23671999618',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:23 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser33%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984522","createdAt":"1624922337","depth":"partial","name":"user33@demo.com","updatedAt":"1624922337","emailAddress":"user33@demo.com","emailFormatPreference":"unspecified","firstName":"User33","isBounceback":"false","isSubscribed":"true","lastName":"Demo33","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '7322736d0bba4bd18b99d9365899bc08/23671999829',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:24 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984522')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'c0afca45050b475b8eb5114e58f856f6/23672000034',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:24 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser34%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984523","createdAt":"1624922337","depth":"partial","name":"user34@demo.com","updatedAt":"1624922337","emailAddress":"user34@demo.com","emailFormatPreference":"unspecified","firstName":"User34","isBounceback":"false","isSubscribed":"true","lastName":"Demo34","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'aaebf816e6ca4724a3e4a45f3b70410e/23672000272',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:25 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984523')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'f2899b52f92f46969335044c35f8d0b9/23672000481',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:25 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser35%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984524","createdAt":"1624922337","depth":"partial","name":"user35@demo.com","updatedAt":"1624922337","emailAddress":"user35@demo.com","emailFormatPreference":"unspecified","firstName":"User35","isBounceback":"false","isSubscribed":"true","lastName":"Demo35","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '68a3adbcd2b24d4a979c470ecfe7d983/23672000739',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:26 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984524')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'a0cb294bdb1244a4b205ba57fee7d67a/23672001185',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:27 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser36%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984525","createdAt":"1624922337","depth":"partial","name":"user36@demo.com","updatedAt":"1624922337","emailAddress":"user36@demo.com","emailFormatPreference":"unspecified","firstName":"User36","isBounceback":"false","isSubscribed":"true","lastName":"Demo36","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '7343856754994006ae48729258267f2f/23672001417',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:28 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984525')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '595bd018a09645f39a021b6a50eb606e/23672001786',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:29 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser37%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984526","createdAt":"1624922337","depth":"partial","name":"user37@demo.com","updatedAt":"1624922337","emailAddress":"user37@demo.com","emailFormatPreference":"unspecified","firstName":"User37","isBounceback":"false","isSubscribed":"true","lastName":"Demo37","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '40bd340ca41d4c7faabb2ac671f667d0/23672002153',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:29 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984526')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '3a852f6b0dad4a8997d54e264e3ab14e/23672002397',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:30 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser38%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984527","createdAt":"1624922337","depth":"partial","name":"user38@demo.com","updatedAt":"1624922337","emailAddress":"user38@demo.com","emailFormatPreference":"unspecified","firstName":"User38","isBounceback":"false","isSubscribed":"true","lastName":"Demo38","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'fce30e1fae9c457eae4726fde9e1d5d1/23672002728',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:31 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984527')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '08b0bcf6591a4856afe63f9fd3ca0ffb/23672003058',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:31 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser39%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984528","createdAt":"1624922337","depth":"partial","name":"user39@demo.com","updatedAt":"1624922337","emailAddress":"user39@demo.com","emailFormatPreference":"unspecified","firstName":"User39","isBounceback":"false","isSubscribed":"true","lastName":"Demo39","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '6db59ca58d11416480a964080d77b414/23672003401',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:32 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984528')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '8b8a0c6d7f534696988d8b522613ab0a/23672003712',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:33 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser40%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984529","createdAt":"1624922337","depth":"partial","name":"user40@demo.com","updatedAt":"1624922337","emailAddress":"user40@demo.com","emailFormatPreference":"unspecified","firstName":"User40","isBounceback":"false","isSubscribed":"true","lastName":"Demo40","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '9db42b4c740c471f8ed67a40f3f7d775/23672004024',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:34 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984529')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '6a98a20e867c48dea124eabf3e5a7cf9/23672004648',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:35 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser41%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984530","createdAt":"1624922337","depth":"partial","name":"user41@demo.com","updatedAt":"1624922337","emailAddress":"user41@demo.com","emailFormatPreference":"unspecified","firstName":"User41","isBounceback":"false","isSubscribed":"true","lastName":"Demo41","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '546ffa49899a47438479364acaa1ef09/23672004913',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Mon, 28 Jun 2021 23:28:36 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '399'
 ]);

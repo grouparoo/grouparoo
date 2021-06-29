@@ -8,27 +8,21 @@ import EloquaClient from "../client/client";
 import util from "util";
 import { getAllContactFields } from "./destinationMappingOptions";
 import { connect } from "../connect";
-import { getContact } from "./cachedMethods";
 import { log } from "actionhero";
 import { ErrorCheckExport } from "@grouparoo/app-templates/dist/destination/shared/batch";
 
 let client: EloquaClient;
 let exportedProfileFields = new Set<String>();
 
-const findAndSetDestinationIds = async ({ appId, appOptions, exports }) => {
+const findAndSetDestinationIds = async ({ exports }) => {
+  const batchEmails = exports.map((p) => p.foreignKeyValue);
+  const allResults = await client.contacts.getContactsByEmail(batchEmails);
   for (const profile of exports) {
-    try {
-      const contact = await getContact(
-        client,
-        profile.foreignKeyValue,
-        appId,
-        appOptions
-      );
-      if (contact) {
-        profile.destinationId = contact.id;
-      }
-    } catch (error) {
-      profile.destinationId = null;
+    const filteredContacts = allResults.filter(
+      (c) => c.emailAddress === profile.foreignKeyValue
+    );
+    if (filteredContacts.length > 0) {
+      profile.destinationId = filteredContacts[0].id;
     }
   }
   return exports;
@@ -51,9 +45,10 @@ const buildBatches = (addOrUpdateImportDefinitionsData) => {
     JSON.stringify(addOrUpdateImportDefinitionsData)
   ).length;
   const sizeInMegaBytes = size / 1024 / 1024;
+
   // the limit is 32MB, keeping 20MB to mitigate eventual size divergences.
   if (sizeInMegaBytes < 20) {
-    return addOrUpdateImportDefinitionsData;
+    return [addOrUpdateImportDefinitionsData];
   }
   const chunkSize = Math.ceil(
     addOrUpdateImportDefinitionsData.length / Math.ceil(sizeInMegaBytes / 20)
@@ -186,7 +181,7 @@ export async function exportBatch({
     client = currentClient;
   }
   exports = buildBatchExports({ exports });
-  exports = await findAndSetDestinationIds({ appId, appOptions, exports });
+  exports = await findAndSetDestinationIds({ exports });
   exports = await deleteContacts({ syncOperations, exports });
   const addOrUpdateImportDefinitionData = processAddAndUpdatedExports({
     syncOperations,
