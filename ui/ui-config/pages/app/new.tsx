@@ -130,6 +130,14 @@ export default function Page(props) {
       await timeout(response.checkIn);
       await waitForServer();
 
+      //we only want the plugin type, not the '@grouparoo/'
+      const pluginName = plugin.plugin.name.substring(11);
+      const newApp: Actions.AppCreate = await execApi("post", `/app`, {
+        type: pluginName,
+      });
+      if (newApp?.app) {
+        return router.push("/app/[id]/edit", `/app/${newApp.app.id}/edit`);
+      }
       await resetPluginsAndApps();
       setLoading(false);
       setInstallingMessage(false);
