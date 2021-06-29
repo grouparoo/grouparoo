@@ -78,12 +78,6 @@ export namespace PropertyOps {
 
     const propertyOptionOptions =
       await pluginConnection.methods.propertyOptions({
-        connection,
-        app,
-        appId: app.id,
-        appOptions,
-        source,
-        sourceId: source.id,
         property,
         propertyId: property.id,
         propertyOptions,

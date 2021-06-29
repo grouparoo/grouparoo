@@ -126,12 +126,6 @@ export namespace ScheduleOps {
 
     const scheduleOptionOptions =
       await pluginConnection.methods.scheduleOptions({
-        connection,
-        app,
-        appId: app.id,
-        appOptions,
-        source,
-        sourceId: source.id,
         schedule,
         scheduleId: schedule.id,
         scheduleOptions,

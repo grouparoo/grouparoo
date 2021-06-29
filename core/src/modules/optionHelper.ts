@@ -268,23 +268,9 @@ export namespace OptionHelper {
 
     if (!pluginConnection.methods.scheduleOptions) return [];
 
-    const source = await instance.$get("source", {
-      scope: null,
-      include: [Option, Mapping],
-    });
-    const app = await source.$get("app", { scope: null, include: [Option] });
-    const connection = await app.getConnection();
-    const appOptions = await app.getOptions();
     const scheduleOptions = await instance.getOptions();
-
     const scheduleOptionOptions =
       await pluginConnection.methods.scheduleOptions({
-        connection,
-        app,
-        appId: app.id,
-        appOptions,
-        source,
-        sourceId: source.id,
         schedule: instance,
         scheduleId: instance.id,
         scheduleOptions,
@@ -302,23 +288,9 @@ export namespace OptionHelper {
 
     if (!pluginConnection.methods.propertyOptions) return [];
 
-    const source = await instance.$get("source", {
-      scope: null,
-      include: [Option, Mapping],
-    });
-    const app = await source.$get("app", { include: [Option], scope: null });
-    const appOptions = await app.getOptions(true);
-    const connection = await app.getConnection();
     const propertyOptions = await instance.getOptions();
-
     const propertyOptionOptions =
       await pluginConnection.methods.propertyOptions({
-        connection,
-        app,
-        appId: app.id,
-        appOptions,
-        source,
-        sourceId: source.id,
         property: instance,
         propertyId: instance.id,
         propertyOptions,

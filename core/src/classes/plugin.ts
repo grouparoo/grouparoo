@@ -419,12 +419,6 @@ export interface SourceRunPercentCompleteMethod {
  */
 export interface ScheduleOptionsMethod {
   (argument: {
-    connection: any;
-    app: App;
-    appId: string;
-    appOptions: SimpleAppOptions;
-    source: Source;
-    sourceId: string;
     schedule: Schedule;
     scheduleId: string;
     scheduleOptions: SimpleScheduleOptions;
@@ -436,12 +430,6 @@ export interface ScheduleOptionsMethod {
  */
 export interface PropertyOptionsMethod {
   (argument: {
-    connection: any;
-    app: App;
-    appId: string;
-    appOptions: SimpleAppOptions;
-    source: Source;
-    sourceId: string;
     property: Property;
     propertyId: string;
     propertyOptions: SimplePropertyOptions;
