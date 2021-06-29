@@ -7,8 +7,8 @@ import {
 import { Option } from "./../models/Option";
 import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
-import { Schedule } from "./../models/Schedule";
-import { Property } from "../models/Property";
+import { Schedule, SimpleScheduleOptions } from "./../models/Schedule";
+import { Property, SimplePropertyOptions } from "../models/Property";
 import { App, AppOption } from "./../models/App";
 import { LoggedModel } from "../classes/loggedModel";
 import { LockableHelper } from "./lockableHelper";
@@ -203,13 +203,13 @@ export namespace OptionHelper {
       const { pluginConnection } = await getPlugin(instance);
       allOptions = pluginConnection.options.map((o) => o.key);
     } else if (instance instanceof Schedule) {
-      const scheduleOptions = await getScheduleOptions(instance);
+      const scheduleOptions = await getScheduleOptions(instance, options);
       allOptions = scheduleOptions.map((o) => o.key);
       requiredOptions = scheduleOptions
         .filter((o) => o.required)
         .map((o) => o.key);
     } else if (instance instanceof Property) {
-      const propertyOptions = await getPropertyOptions(instance);
+      const propertyOptions = await getPropertyOptions(instance, options);
       allOptions = propertyOptions.map((o) => o.key);
       requiredOptions = propertyOptions
         .filter((o) => o.required)
@@ -258,7 +258,10 @@ export namespace OptionHelper {
     return pluginConnection.options.filter((o) => o.required).map((o) => o.key);
   }
 
-  export async function getScheduleOptions(instance: Schedule) {
+  export async function getScheduleOptions(
+    instance: Schedule,
+    scheduleOptions: SimpleScheduleOptions
+  ) {
     const { pluginConnection } = await getPlugin(instance);
     const type = await getInstanceType(instance);
 
@@ -268,7 +271,6 @@ export namespace OptionHelper {
 
     if (!pluginConnection.methods.scheduleOptions) return [];
 
-    const scheduleOptions = await instance.getOptions();
     const scheduleOptionOptions =
       await pluginConnection.methods.scheduleOptions({
         schedule: instance,
@@ -279,7 +281,10 @@ export namespace OptionHelper {
     return scheduleOptionOptions;
   }
 
-  export async function getPropertyOptions(instance: Property) {
+  export async function getPropertyOptions(
+    instance: Property,
+    propertyOptions: SimplePropertyOptions
+  ) {
     const { pluginConnection } = await getPlugin(instance);
     const type = await getInstanceType(instance);
     if (!pluginConnection) {
@@ -288,7 +293,6 @@ export namespace OptionHelper {
 
     if (!pluginConnection.methods.propertyOptions) return [];
 
-    const propertyOptions = await instance.getOptions();
     const propertyOptionOptions =
       await pluginConnection.methods.propertyOptions({
         property: instance,

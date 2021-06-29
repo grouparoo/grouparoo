@@ -15,7 +15,6 @@ import {
 import { init, finalize } from "../../../util/shared";
 import { getConfig } from "../../../util/config";
 import { log } from "actionhero";
-import { extensions } from "sequelize/types/lib/utils/validator-extras";
 
 export class Demo extends CLI {
   constructor() {
