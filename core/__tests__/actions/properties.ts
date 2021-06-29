@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Property, Source } from "../../src";
+import { plugin, App, Property, Source } from "../../src";
 
 describe("actions/properties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -120,20 +120,6 @@ describe("actions/properties", () => {
       expect(property.isArray).toBe(false);
       expect(property.unique).toBe(true);
       expect(property.sourceId).toBe(source.id);
-    });
-
-    test("an administrator can view a property's plugin options", async () => {
-      connection.params = {
-        csrfToken,
-        id,
-      };
-      const { error, pluginOptions } = await specHelper.runAction(
-        "property:pluginOptions",
-        connection
-      );
-
-      expect(error).toBeUndefined();
-      expect(pluginOptions[0].key).toBe("column");
     });
 
     test("an administrator can view the filter options for a property", async () => {
@@ -392,6 +378,128 @@ describe("actions/properties", () => {
       );
       expect(error).toBeUndefined();
       expect(success).toBe(true);
+    });
+
+    describe("dynamic property options", () => {
+      let app: App;
+      let source: Source;
+      let property: Property;
+
+      beforeAll(async () => {
+        plugin.registerPlugin({
+          name: "test-plugin",
+          apps: [
+            {
+              name: "test-dynamic-app",
+              options: [],
+              methods: {
+                test: async () => {
+                  return { success: true };
+                },
+              },
+            },
+          ],
+          connections: [
+            {
+              name: "dynamic-property-options-source",
+              description: "a test app connection",
+              app: "test-dynamic-app",
+              direction: "import",
+              options: [],
+              methods: {
+                propertyOptions: async ({ propertyOptions }) => {
+                  const response = [];
+
+                  response.push({
+                    key: "column",
+                    required: true,
+                    description: "set the column",
+                    type: "string",
+                    options: async () => [],
+                  });
+
+                  response.push({
+                    key: "aggregationMethod",
+                    required: true,
+                    description: "set the aggregationMethod",
+                    type: "string",
+                    options: async () => [],
+                  });
+
+                  if (propertyOptions?.aggregationMethod === true) {
+                    response.push({
+                      key: "sortColumn",
+                      required: true,
+                      description: "set the sortColumn",
+                      type: "string",
+                      options: async () => [],
+                    });
+                  }
+
+                  return response;
+                },
+                profiles: async () => {
+                  return {
+                    importsCount: 0,
+                    sourceOffset: 0,
+                    highWaterMark: {},
+                  };
+                },
+              },
+            },
+          ],
+        });
+
+        app = await App.create({
+          name: "testApp",
+          type: "test-dynamic-app",
+        });
+        await app.update({ state: "ready" });
+        source = await Source.create({
+          appId: app.id,
+          type: "dynamic-property-options-source",
+        });
+        await source.update({ state: "ready" });
+        property = await Property.create({
+          sourceId: source.id,
+          type: "string",
+          key: "test-property",
+        });
+      });
+
+      test("an administrator can view a property's plugin options", async () => {
+        connection.params = {
+          csrfToken,
+          id: property.id,
+        };
+        const { error, pluginOptions } = await specHelper.runAction(
+          "property:pluginOptions",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(pluginOptions.length).toBe(2);
+        expect(pluginOptions[0].key).toBe("column");
+        expect(pluginOptions[1].key).toBe("aggregationMethod");
+      });
+
+      test("an administrator can view a property's plugin options with a set of proposed options", async () => {
+        connection.params = {
+          csrfToken,
+          id: property.id,
+          options: { column: "countOfStuff", aggregationMethod: true },
+        };
+        const { error, pluginOptions } = await specHelper.runAction(
+          "property:pluginOptions",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(pluginOptions.length).toBe(3);
+        expect(pluginOptions[0].key).toBe("column");
+        expect(pluginOptions[1].key).toBe("aggregationMethod");
+        expect(pluginOptions[2].key).toBe("sortColumn");
+      });
     });
   });
 });
