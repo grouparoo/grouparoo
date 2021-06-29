@@ -65,7 +65,9 @@ export class RunCLI extends CLI {
 
   checkWorkers() {
     if (config.tasks.minTaskProcessors < 1) {
-      return GrouparooCLI.logger.fatal(`No Task Workers are enabled`);
+      return GrouparooCLI.logger.fatal(
+        `No Task Workers are enabled. Modify your environment to add Workers`
+      );
     }
   }
 
