@@ -1,6 +1,6 @@
 import { log } from "actionhero";
 import { PropertyFiltersWithKey } from "../models/Property";
-import { GroupRuleWithKey } from "../models/Group";
+import { GroupRuleWithKey, TopLevelGroupRules } from "../models/Group";
 import { topologicalSort, Graph } from "../modules/topologicalSort";
 import { DestinationSyncMode } from "../models/Destination";
 import { MustacheUtils } from "../modules/mustacheUtils";
@@ -330,7 +330,14 @@ export async function getParentIds(
       const recordKeys = Object.keys(record);
       for (const j in recordKeys) {
         if (recordKeys[j].match(/.+Id$/)) {
-          prerequisiteIds.push(`property:${record[recordKeys[j]]}`);
+          const value = record[recordKeys[j]];
+
+          // special case: topLevel properties
+          if (TopLevelGroupRules.map((r) => r.key).includes(value)) {
+            continue;
+          }
+
+          prerequisiteIds.push(`property:${value}`);
         }
       }
     }
