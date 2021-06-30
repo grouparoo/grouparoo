@@ -258,7 +258,7 @@ describe("mongo/table/profileProperties", () => {
         });
         expect(fixedLengthFloat(values[profile.id][0])).toEqual(1.73);
         expect(fixedLengthFloat(values[otherProfile.id][0])).toEqual(1.88);
-        expect(fixedLengthFloat(values[thirdProfile.id][0])).toEqual(0);
+        expect(fixedLengthFloat(values[thirdProfile.id][0])).toBeUndefined();
       });
       test("count", async () => {
         const values = await getPropertyValues({
