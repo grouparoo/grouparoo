@@ -37,7 +37,7 @@
     "@grouparoo/spec-helper": "0.4.2-alpha.3",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "26.0.8",
+    "actionhero": "26.1.0",
     "jest": "26.6.3",
     "nock": "13.1.0",
     "prettier": "2.3.1",
