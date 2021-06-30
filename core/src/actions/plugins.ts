@@ -107,6 +107,7 @@ async function safelyRestart() {
     console.log("");
     console.log("*** There was a problem restarting Grouparoo ***");
     console.log(error.message ?? error);
+    console.log("");
     console.log("Please restart the application");
     process.exit(1);
   }
