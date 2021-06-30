@@ -126,7 +126,7 @@ export class StatusTask extends CLSTask {
           });
         }
 
-        if (latestMetric.collection === "deleted") {
+        if (latestMetric.collection === "deleted" && latestMetric.count > 0) {
           pendingDeletions.push({
             [latestMetric.topic]: [latestMetric.count],
           });
