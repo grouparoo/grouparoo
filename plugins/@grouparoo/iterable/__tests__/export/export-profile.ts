@@ -32,7 +32,7 @@ const emailTwo = "carlos.solimoes@mailinator.com";
 const nameTwo = "Carlos";
 const userIdTwo = "testuser456";
 const street1 = "Alice Luna";
-const street2 = "Alice Luna";
+const street2 = "Emilio de Araujo";
 const number1 = 10;
 const number2 = 20;
 const zipcode = "555555555";
@@ -55,11 +55,11 @@ let listIds = {};
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
 // these comments to use nock
-const newNock = false;
-require("./../fixtures/export-profile");
+// const newNock = false;
+// require("./../fixtures/export-profile");
 // or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
+const newNock = true;
+helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
