@@ -1,6 +1,7 @@
 import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { addToList, removeFromList } from "./listMethods";
+import { getObjectUserFields } from "./destinationMappingOptions";
 
 export const exportProfile: ExportProfilePluginMethod = async (args) => {
   try {
@@ -68,12 +69,16 @@ export const sendProfile: ExportProfilePluginMethod = async ({
       deletePropertiesPayload,
       newProfileProperties
     );
-    const formattedDataFields = {};
+    let formattedDataFields = {};
+
     for (const key of Object.keys(dataFields)) {
       if (key !== "email") {
         formattedDataFields[key] = formatVar(dataFields[key]);
       }
     }
+
+    const objectFields = await getObjectUserFields(client);
+    formattedDataFields = formatPayloadKeys(objectFields, formattedDataFields);
     const payload = Object.assign(
       { email },
       { dataFields: formattedDataFields }
@@ -111,6 +116,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
       );
     }
 
+    payload["mergeNestedObjects"] = true;
     await client.users.update(payload);
 
     // add to lists
@@ -133,7 +139,43 @@ function formatVar(value) {
   }
   if (value instanceof Date) {
     return value.toISOString();
-  } else {
-    return value;
   }
+  return value;
+}
+
+function formatPayloadKeys(objectFields, payload) {
+  const keys = Object.keys(payload);
+  for (const key of keys) {
+    if (key.includes(".") && isIterableObjectKey(objectFields, key)) {
+      payload = parseDotNotation(payload, key, payload[key]);
+    }
+  }
+  return payload;
+}
+
+function parseDotNotation(payload, originalKey, value) {
+  let currentObj = payload;
+  const subKeys = originalKey.split(".");
+  for (let i = 0; i < subKeys.length - 1; ++i) {
+    const key = subKeys[i];
+    currentObj[key] = currentObj[key] || {};
+    currentObj = currentObj[key];
+  }
+  currentObj[subKeys[subKeys.length - 1]] = value;
+  delete payload[originalKey];
+
+  return payload;
+}
+
+function isIterableObjectKey(objectFields, key) {
+  if (key.includes(".")) {
+    const fieldKeys = key.split(".");
+    for (let i = 0; i < fieldKeys.length - 1; i++) {
+      if (!objectFields.includes(fieldKeys[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
 }

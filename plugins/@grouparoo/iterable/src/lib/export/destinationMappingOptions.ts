@@ -85,3 +85,16 @@ export const getUserFields = async (
   }
   return out;
 };
+
+export const getObjectUserFields = async (
+  client: any
+): Promise<Array<string>> => {
+  const fields = await client.users.getFields();
+  const out = [];
+  for (const [key, value] of Object.entries(fields["fields"])) {
+    if (value === "object") {
+      out.push(key);
+    }
+  }
+  return out;
+};

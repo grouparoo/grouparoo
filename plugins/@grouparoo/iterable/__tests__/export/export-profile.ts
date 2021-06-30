@@ -31,6 +31,11 @@ const otherName = "Lucas";
 const emailTwo = "carlos.solimoes@mailinator.com";
 const nameTwo = "Carlos";
 const userIdTwo = "testuser456";
+const street1 = "Alice Luna";
+const street2 = "Alice Luna";
+const number1 = 10;
+const number2 = 20;
+const zipcode = "555555555";
 const exampleDate = new Date(1597870204 * 1000);
 const listOne = "List One";
 const listTwo = "List Two";
@@ -93,7 +98,6 @@ async function deleteUsers(suppressErrors) {
       await apiClient.users.delete(emailToDelete);
     } catch (err) {
       if (!suppressErrors) {
-        console.log(err);
         throw err;
       }
     }
@@ -151,9 +155,6 @@ async function runExport({
 }
 
 describe("iterable/exportProfile", () => {
-  beforeAll(() => {
-    jest.setTimeout(helper.longTime);
-  });
   beforeAll(async () => {
     apiClient = await connect(appOptions);
     await cleanUp(false);
@@ -182,7 +183,15 @@ describe("iterable/exportProfile", () => {
 
     await runExport({
       oldProfileProperties: {},
-      newProfileProperties: { email, name },
+      newProfileProperties: {
+        email,
+        name,
+        defaultAddress: {
+          street: street1,
+          number: number1,
+          zipcode: zipcode,
+        },
+      },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -193,6 +202,9 @@ describe("iterable/exportProfile", () => {
     expect(user).not.toBe(null);
     expect(user.email).toBe(email);
     expect(user.dataFields.name).toBe(name);
+    expect(user.dataFields.defaultAddress.street).toBe(street1);
+    expect(user.dataFields.defaultAddress.number).toBe(number1);
+    expect(user.dataFields.defaultAddress.zipcode).toBe(zipcode);
   });
 
   test("can create profile on Iterable along with properties", async () => {
@@ -238,11 +250,50 @@ describe("iterable/exportProfile", () => {
     await indexContacts(newNock);
 
     const user = await getUser(email);
+
     expect(user.userId).toBe(userId);
     expect(user.dataFields.name).toBe(name);
     expect(user.dataFields.phoneNumber).toBe(phoneNumber);
     expect(user.dataFields.customField).toBe(customField);
     expect(user.dataFields.signupDate).toBe("2020-08-19 20:50:04 +00:00");
+  });
+
+  test("can add user variables using dot notation to existing object data fields.", async () => {
+    await runExport({
+      oldProfileProperties: {
+        email,
+        name,
+        userId,
+        phoneNumber,
+        signupDate: exampleDate,
+        customField,
+      },
+      newProfileProperties: {
+        email,
+        name,
+        userId,
+        phoneNumber,
+        signupDate: exampleDate,
+        customField,
+        "defaultAddress.number": number2,
+        "defaultAddress.street": street2,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+    await indexContacts(newNock);
+
+    const user = await getUser(email);
+
+    expect(user.userId).toBe(userId);
+    expect(user.dataFields.name).toBe(name);
+    expect(user.dataFields.phoneNumber).toBe(phoneNumber);
+    expect(user.dataFields.customField).toBe(customField);
+    expect(user.dataFields.signupDate).toBe("2020-08-19 20:50:04 +00:00");
+    expect(user.dataFields.defaultAddress.street).toBe(street2);
+    expect(user.dataFields.defaultAddress.number).toBe(number2);
+    expect(user.dataFields.defaultAddress.zipcode).toBe(zipcode);
   });
 
   test("can not update a Person if sync mode does not allow it", async () => {
