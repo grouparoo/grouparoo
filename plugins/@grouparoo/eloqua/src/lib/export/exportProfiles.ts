@@ -10,6 +10,7 @@ import { getAllContactFields } from "./destinationMappingOptions";
 import { connect } from "../connect";
 import { log } from "actionhero";
 import { ErrorCheckExport } from "@grouparoo/app-templates/dist/destination/shared/batch";
+import { invalidate } from "./cachedMethods";
 
 let client: EloquaClient;
 let exportedProfileFields = new Set<String>();
@@ -114,7 +115,7 @@ const buildImportDefinitionData = ({ profileToExport, syncOperations }) => {
   return payload;
 };
 
-export async function deleteContacts({ syncOperations, exports }) {
+export async function deleteContacts({ appId, syncOperations, exports }) {
   for (const profile of exports) {
     if (profile.processed || profile.error) {
       continue;
@@ -134,6 +135,7 @@ export async function deleteContacts({ syncOperations, exports }) {
         );
       }
       await client.contacts.delete(profile.destinationId);
+      await invalidate(appId);
       profile.processed = true;
     } catch (error) {
       profile.error = error;
@@ -142,7 +144,7 @@ export async function deleteContacts({ syncOperations, exports }) {
   return exports;
 }
 
-function assignForeignKeys(exportedProfile: BatchExport) {
+async function assignForeignKeys({ appId, exportedProfile }) {
   const { oldProfileProperties, newProfileProperties } = exportedProfile;
 
   let newValue = newProfileProperties.emailAddress;
@@ -165,6 +167,7 @@ function assignForeignKeys(exportedProfile: BatchExport) {
     oldValue = oldValue.toString();
     if (newValue !== oldValue && oldValue.length > 0) {
       exportedProfile.oldForeignKeyValue = oldValue;
+      await invalidate(appId);
     }
   }
   return exportedProfile;
@@ -180,9 +183,9 @@ export async function exportBatch({
   if (currentClient) {
     client = currentClient;
   }
-  exports = buildBatchExports({ exports });
+  exports = await buildBatchExports({ appId, exports });
   exports = await findAndSetDestinationIds({ exports });
-  exports = await deleteContacts({ syncOperations, exports });
+  exports = await deleteContacts({ appId, syncOperations, exports });
   const addOrUpdateImportDefinitionData = processAddAndUpdatedExports({
     syncOperations,
     exports,
@@ -208,12 +211,12 @@ export async function exportBatch({
   return { success: errors.length === 0, errors };
 }
 
-function buildBatchExports({ exports }) {
+async function buildBatchExports({ appId, exports }) {
   const batchExports: BatchExport[] = [];
   for (const exportedProfile of exports) {
     let info: BatchExport = Object.assign({}, exportedProfile);
     try {
-      info = assignForeignKeys(info);
+      info = await assignForeignKeys({ appId, exportedProfile: info });
     } catch (error) {
       info.error = error;
     }

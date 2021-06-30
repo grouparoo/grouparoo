@@ -1,4 +1,9 @@
-import { CacheKey, objectCache, SimpleAppOptions } from "@grouparoo/core";
+import {
+  CacheKey,
+  objectCache,
+  objectCacheInvalidate,
+  SimpleAppOptions,
+} from "@grouparoo/core";
 import EloquaClient from "../client/client";
 
 export async function getListId(
@@ -44,4 +49,8 @@ export async function getContact(
       return await client.contacts.getByEmail(email);
     }
   );
+}
+
+export async function invalidate(appId: string): Promise<void> {
+  await objectCacheInvalidate({ objectId: appId });
 }
