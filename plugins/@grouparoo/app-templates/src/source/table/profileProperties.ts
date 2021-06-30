@@ -57,7 +57,6 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
         primaryKeysHash[k].push(profiles[i].id);
       }
       if (
-        aggregationMethod === AggregationMethod.Average ||
         aggregationMethod === AggregationMethod.Sum ||
         aggregationMethod === AggregationMethod.Count
       ) {
