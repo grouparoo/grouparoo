@@ -1,3 +1,5 @@
+import { Op } from "sequelize";
+
 import {
   ConfigurationObject,
   getCodeConfigLockKey,
@@ -5,12 +7,10 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { Group } from "../..";
+import { Group } from "../../models/Group";
+import { TopLevelGroupRules } from "../../modules/topLevelGroupRules";
 import { Property } from "../../models/Property";
-import { Op } from "sequelize";
-
 import { ConfigWriter } from "../configWriter";
-import { TopLevelGroupRules } from "../../models/Group";
 
 export async function loadGroup(
   configObject: ConfigurationObject,
