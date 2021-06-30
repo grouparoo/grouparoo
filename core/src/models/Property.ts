@@ -26,7 +26,7 @@ import { ProfileProperty } from "./ProfileProperty";
 import { App, SimpleAppOptions } from "./App";
 import { Source, SimpleSourceOptions, SourceMapping } from "./Source";
 import { Option } from "./Option";
-import { Group, TopLevelGroupRules } from "./Group";
+import { Group } from "./Group";
 import { Run } from "./Run";
 import { GroupRule } from "./GroupRule";
 import { PropertyFilter } from "./PropertyFilter";
@@ -36,6 +36,7 @@ import { StateMachine } from "../modules/stateMachine";
 import { Mapping } from "./Mapping";
 import { PropertyOps } from "../modules/ops/property";
 import { LockableHelper } from "../modules/lockableHelper";
+import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
 import { APIData } from "../modules/apiData";
 import { CLS } from "../modules/cls";
 

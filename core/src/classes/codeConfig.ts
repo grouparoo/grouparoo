@@ -1,9 +1,11 @@
 import { log } from "actionhero";
 import { PropertyFiltersWithKey } from "../models/Property";
-import { GroupRuleWithKey, TopLevelGroupRules } from "../models/Group";
+import { GroupRuleWithKey } from "../models/Group";
 import { topologicalSort, Graph } from "../modules/topologicalSort";
 import { DestinationSyncMode } from "../models/Destination";
 import { MustacheUtils } from "../modules/mustacheUtils";
+import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
+
 export interface IdsByClass {
   app?: string[];
   source?: string[];
