@@ -10,7 +10,7 @@ export default function ProfileTabs({
   const tabs = ["edit", "imports", "exports", "logs"];
 
   if (process.env.GROUPAROO_UI_EDITION === "config") {
-    tabs.splice(tabs.indexOf("imports"), 2);
+    tabs.splice(tabs.indexOf("imports"), 1);
   }
 
   return <Tabs name={getProfileDisplayName(profile)} tabs={tabs} />;
