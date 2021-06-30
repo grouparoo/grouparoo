@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState, useEffect } from "react";
-import { Form, Modal, Spinner } from "react-bootstrap";
+import { Form, Modal, Spinner, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 
 import AppSelectorList from "@grouparoo/ui-components/components/appSelectorList";
@@ -48,6 +48,7 @@ export default function Page(props) {
   const [app, setApp] = useState<Models.AppType>({ type: "" });
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(true);
   const [installingMessage, setInstallingMessage]: [
     string | boolean,
     Function
@@ -109,7 +110,7 @@ export default function Page(props) {
     }
   }
 
-  function timeout(ms) {
+  function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
@@ -127,8 +128,9 @@ export default function Page(props) {
     if (response?.checkIn) {
       setInstallingMessage("Restarting application ...");
 
-      await timeout(response.checkIn);
-      await waitForServer();
+      const failTime = new Date().getTime() + response.checkIn * 38; // ~15 seconds
+      await sleep(response.checkIn);
+      await waitForServer(failTime);
 
       //we only want the plugin type, not the '@grouparoo/'
       const pluginName = plugin.plugin.name.substring(11);
@@ -147,7 +149,20 @@ export default function Page(props) {
     }
   }
 
-  async function waitForServer() {
+  async function waitForServer(failTime: number) {
+    const now = new Date().getTime();
+    if (failTime < now) {
+      setShowSpinner(false);
+      setInstallingMessage(
+        <Alert variant="warning">
+          There was a problem restarting Grouparoo. <br />
+          <br />
+          Please restart the application via the command line.
+        </Alert>
+      );
+      return;
+    }
+
     let response: Actions.PublicStatus = await execApi(
       "get",
       "/status/public",
@@ -159,8 +174,8 @@ export default function Page(props) {
 
     if (response["status"] !== "ok") {
       console.log("Server down. Trying again in 0.25 seconds ...");
-      await timeout(250);
-      response = await waitForServer();
+      await sleep(250);
+      response = await waitForServer(failTime);
     }
 
     return response;
@@ -181,14 +196,16 @@ export default function Page(props) {
           animation={false}
         >
           <Modal.Body>
-            <Spinner
-              animation="border"
-              role="status"
-              size="sm"
-              className="mr-2"
-            >
-              <span className="sr-only">Loading...</span>
-            </Spinner>
+            {showSpinner ? (
+              <Spinner
+                animation="border"
+                role="status"
+                size="sm"
+                className="mr-2"
+              >
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            ) : null}
             <span>{installingMessage}</span>
           </Modal.Body>
         </Modal>
