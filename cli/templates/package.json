@@ -12,6 +12,9 @@
     "@grouparoo/core": "~~VERSION~~",
     "@grouparoo/ui-community": "~~VERSION~~"
   },
+  "devDependencies": {
+    "@grouparoo/ui-config": "~~VERSION~~"
+  },
   "scripts": {
     "start": "cd node_modules/@grouparoo/core && ./bin/start"
   },
