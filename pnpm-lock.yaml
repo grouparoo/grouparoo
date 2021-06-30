@@ -217,7 +217,7 @@ importers:
       '@types/pacote': 11.1.0
       '@types/pluralize': 0.0.29
       '@types/validator': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       ah-sequelize-plugin: 3.0.4
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
@@ -266,8 +266,8 @@ importers:
       '@types/fs-extra': 9.0.11
       '@types/node': 15.12.4
       '@types/validator': 13.1.4
-      actionhero: 26.0.8
-      ah-sequelize-plugin: 3.0.4_acb0c81dd9e61036fa300bedbdac0d70
+      actionhero: 26.1.0
+      ah-sequelize-plugin: 3.0.4_88e1c7694848e4070e656c3ed0c4009f
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
@@ -324,7 +324,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       '@types/uuid': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       nock: 13.1.0
       prettier: 2.3.1
@@ -337,7 +337,7 @@ importers:
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
       '@types/uuid': 8.3.0
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       nock: 13.1.0
       prettier: 2.3.1
@@ -353,7 +353,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -369,7 +369,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -384,7 +384,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       axios: 0.21.1
       csv-parser: 3.0.0
       fs-extra: 10.0.0
@@ -401,7 +401,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.4
@@ -414,7 +414,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       axios: 0.21.1
       customerio-node: 2.1.1
       dotenv: 10.0.0
@@ -432,7 +432,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       axios: 0.21.1
       dotenv: 10.0.0
       fs-extra: 10.0.0
@@ -448,7 +448,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       js-yaml: 4.1.0
       nock: 13.1.0
@@ -462,7 +462,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       nock: 13.1.0
       prettier: 2.3.1
@@ -475,7 +475,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       csv-parse: 4.16.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
@@ -505,7 +505,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.4
       typescript: 4.3.4
@@ -517,7 +517,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       currency-codes: 2.1.0
       dotenv: 10.0.0
       facebook-nodejs-business-sdk: 10.0.1
@@ -540,7 +540,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -554,7 +554,7 @@ importers:
       '@grouparoo/core': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       fs-extra: 10.0.0
       jest: 26.6.3
       prettier: 2.3.1
@@ -566,7 +566,7 @@ importers:
       '@grouparoo/core': link:../../../core
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.4
@@ -577,7 +577,7 @@ importers:
       '@grouparoo/core': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       aws-sdk: 2.930.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -591,7 +591,7 @@ importers:
       '@grouparoo/core': link:../../../core
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.4
@@ -603,7 +603,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       google-spreadsheet: 3.1.15
@@ -619,7 +619,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -635,7 +635,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       axios: 0.21.1
       dotenv: 10.0.0
       fs-extra: 10.0.0
@@ -654,7 +654,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -670,7 +670,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       intercom-client: 2.11.2
@@ -687,7 +687,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -703,7 +703,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -720,7 +720,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -736,7 +736,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       prettier: 2.3.1
       ts-jest: 26.5.6
@@ -748,7 +748,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.4
@@ -761,7 +761,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -778,7 +778,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -795,7 +795,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -811,7 +811,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -827,7 +827,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -843,7 +843,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -859,7 +859,7 @@ importers:
       '@types/jest': '*'
       '@types/mysql': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       csv-parse: 4.16.0
       jest: 26.6.3
       mysql: 2.18.1
@@ -875,7 +875,7 @@ importers:
       '@types/jest': 26.0.23
       '@types/mysql': 2.15.18
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       csv-parse: 4.16.0
       jest: 26.6.3
       prettier: 2.3.1
@@ -888,7 +888,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       newrelic: 7.5.0
       prettier: 2.3.1
@@ -901,7 +901,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.4
@@ -914,7 +914,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -931,7 +931,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -947,7 +947,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       axios: 0.21.1
       dotenv: 10.0.0
       form-data: 4.0.0
@@ -968,7 +968,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -984,7 +984,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       axios: 0.21.1
       dotenv: 10.0.0
       fs-extra: 10.0.0
@@ -1001,7 +1001,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1018,7 +1018,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       '@types/pg': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       csv-parse: 4.16.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1041,7 +1041,7 @@ importers:
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
       '@types/pg': 8.6.0
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       csv-parse: 4.16.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1058,7 +1058,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       '@types/pg': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       prettier: 2.3.1
       ts-jest: 26.5.6
@@ -1072,7 +1072,7 @@ importers:
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
       '@types/pg': 8.6.0
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.4
@@ -1085,7 +1085,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1102,7 +1102,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1118,7 +1118,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1135,7 +1135,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1152,7 +1152,7 @@ importers:
       '@sendgrid/client': 7.4.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1168,7 +1168,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1185,7 +1185,7 @@ importers:
       '@sentry/tracing': 6.7.1
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       prettier: 2.3.1
       ts-jest: 26.5.6
@@ -1198,7 +1198,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       jest: 26.6.3
       prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.4
@@ -1211,7 +1211,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1230,7 +1230,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1245,7 +1245,7 @@ importers:
       '@types/faker': '*'
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       axios: 0.21.1
       faker: 5.5.3
       fs-extra: 10.0.0
@@ -1267,7 +1267,7 @@ importers:
       '@types/faker': 5.5.6
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       fs-extra: 10.0.0
       jest: 26.6.3
       prettier: 2.3.1
@@ -1283,7 +1283,7 @@ importers:
       '@types/node': '*'
       '@types/pg': '*'
       '@types/sqlite3': 3.1.7
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       csv-parse: 4.16.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1301,7 +1301,7 @@ importers:
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
       '@types/pg': 8.6.0
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       csv-parse: 4.16.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1316,7 +1316,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.2-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1333,7 +1333,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.23
       '@types/node': 15.12.4
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -1356,7 +1356,7 @@ importers:
       '@types/react-dom': '*'
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.2
       '@zeit/next-source-maps': 0.0.3
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       axios: 0.21.1
       date-fns: 2.22.1
       dotenv: 10.0.0
@@ -1418,7 +1418,7 @@ importers:
       '@types/react': 17.0.11
       '@types/react-dom': 17.0.8
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.2_fae758709a8810ba97b4c03852dde4d0
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       enzyme: 3.11.0
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0_jest@26.6.3
@@ -1523,7 +1523,7 @@ importers:
       '@types/react-dom': '*'
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.2
       '@zeit/next-source-maps': 0.0.3
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       ansi-to-html: 0.6.15
       axios: 0.21.1
       date-fns: 2.22.1
@@ -1589,7 +1589,7 @@ importers:
       '@types/react': 17.0.11
       '@types/react-dom': 17.0.8
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.2_fae758709a8810ba97b4c03852dde4d0
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       enzyme: 3.11.0
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0_jest@26.6.3
@@ -1612,7 +1612,7 @@ importers:
       '@types/react-dom': '*'
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.2
       '@zeit/next-source-maps': 0.0.3
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       axios: 0.21.1
       date-fns: 2.22.1
       dotenv: 10.0.0
@@ -1674,7 +1674,7 @@ importers:
       '@types/react': 17.0.11
       '@types/react-dom': 17.0.8
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.2_fae758709a8810ba97b4c03852dde4d0
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       enzyme: 3.11.0
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0_jest@26.6.3
@@ -3891,8 +3891,8 @@ packages:
     hasBin: true
     dev: true
 
-  /actionhero/26.0.8:
-    resolution: {integrity: sha512-K178/LdGIbikF8SADYwqeScuG3BUEyQx0f/TzECfjoBh5yRCs2OZpyhvgJRDy2Vy/y+jM3bRZLPHpWckhoEHSg==}
+  /actionhero/26.1.0:
+    resolution: {integrity: sha512-IqD0v/BNwQEB1JXsYG7n1wv2K9/+hRMj5IEA3XdT7HBQ86EG8NT4vUwizDkmOgmCPNXf5r3TAhhK88Hs4NaqEQ==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     requiresBuild: true
@@ -3916,7 +3916,7 @@ packages:
       uglify-js: 3.13.9
       uuid: 8.3.2
       winston: 3.3.3
-      ws: 7.4.6
+      ws: 7.5.0
     transitivePeerDependencies:
       - bufferutil
       - redis-commands
@@ -3976,7 +3976,7 @@ packages:
       clean-stack: 2.2.0
       indent-string: 4.0.0
 
-  /ah-sequelize-plugin/3.0.4_acb0c81dd9e61036fa300bedbdac0d70:
+  /ah-sequelize-plugin/3.0.4_88e1c7694848e4070e656c3ed0c4009f:
     resolution: {integrity: sha512-vLxIF5AbwHJ0dy4kO+tzUFBb7pue2r7m1tNMikmXJj0PXc/U9Jml04+tFy0Y02rveU6JbYoUx16K/3LuwGrpOA==}
     engines: {node: '>=8.0.0'}
     peerDependencies:
@@ -3984,7 +3984,7 @@ packages:
       sequelize: '>=6.4.0'
       sequelize-typescript: '>=2.0.0'
     dependencies:
-      actionhero: 26.0.8
+      actionhero: 26.1.0
       sequelize: 6.6.2_d5a6adc7a5499f0fbac77e524b4d43bb
       sequelize-typescript: 2.1.0_fb0aa51423eb8f834cee16adf8b2a5f5
       umzug: 3.0.0-beta.5
@@ -15255,6 +15255,7 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
+    dev: true
 
   /ws/7.5.0:
     resolution: {integrity: sha512-6ezXvzOZupqKj4jUqbQ9tXuJNo+BR2gU8fFRk3XCP3e0G6WT414u5ELe6Y0vtp7kmSJ3F7YWObSNr1ESsgi4vw==}
