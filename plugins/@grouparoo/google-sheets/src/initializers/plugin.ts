@@ -6,6 +6,7 @@ import { test } from "../lib/test";
 import { sourcePreview } from "../lib/sheet-import/sourcePreview";
 import { profiles } from "../lib/sheet-import/profiles";
 import { propertyOptions } from "../lib/sheet-import/propertyOptions";
+import { uniquePropertyBootstrapOptions } from "../lib/sheet-import/uniquePropertyBootstrapOptions";
 import { sourceRunPercentComplete } from "../lib/sheet-import/sourceRunPercentComplete";
 
 import {
@@ -74,6 +75,7 @@ export class Plugins extends Initializer {
             propertyOptions,
             profiles,
             sourceRunPercentComplete,
+            uniquePropertyBootstrapOptions,
           },
         },
       ],
