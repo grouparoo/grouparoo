@@ -33,6 +33,16 @@ export class SourceDestroy extends CLSTask {
       throw error;
     }
 
+    // check if the property is directly mapped
+    try {
+      await Source.ensureDirectlyMappedPropertyNotInUse(source);
+    } catch (error) {
+      if (error.message.match(/cannot delete property/)) {
+        return; // check back later
+      }
+      throw error;
+    }
+
     // no properties, let's delete it
     await source.destroy();
   }
