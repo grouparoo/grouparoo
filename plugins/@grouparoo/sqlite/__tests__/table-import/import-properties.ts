@@ -249,7 +249,7 @@ describe("sqlite/table/profileProperties", () => {
         });
         expect(values[profile.id]).toEqual([6]);
         expect(values[otherProfile.id]).toEqual([5]);
-        expect(fixedLengthFloat(values[thirdProfile.id][0])).toEqual(0);
+        expect(values[thirdProfile.id]).toEqual([0]);
       });
       test("sum", async () => {
         const values = await getPropertyValues({
