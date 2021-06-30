@@ -33,6 +33,7 @@ import { GroupOps } from "../modules/ops/group";
 import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
+import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -74,11 +75,6 @@ const STATE_TRANSITIONS = [
   { from: "updating", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
   { from: "deleted", to: "ready", checks: [] },
-];
-
-export const TopLevelGroupRules = [
-  { key: "grouparooId", column: "id", type: "string" },
-  { key: "grouparooCreatedAt", column: "createdAt", type: "date" },
 ];
 
 @DefaultScope(() => ({
@@ -648,7 +644,7 @@ export class Group extends LoggedModel<Group> {
     for (const rule of convenientRules) {
       const property = await Property.findOneWithCache(rule.key, "key");
       rules.push({
-        propertyId: property.getConfigId(),
+        propertyId: rule.topLevel ? rule.key : property.getConfigId(),
         operation: { op: rule.operation.op },
         match: rule.match,
         relativeMatchNumber: rule.relativeMatchNumber,

@@ -775,6 +775,25 @@ describe("modules/configWriter", () => {
       expect(group.getConfigId()).toEqual(group.id);
     });
 
+    test("group rules properly set IDs for profile column properties", async () => {
+      let group: Group = await helper.factories.group({ type: "calculated" });
+      await group.setRules([
+        { key: "grouparooId", match: "nobody", operation: { op: "eq" } },
+      ]);
+
+      const config = await group.getConfigObject();
+      expect(config.rules).toEqual([
+        {
+          propertyId: "grouparooId",
+          match: "nobody",
+          operation: { op: "eq" },
+          relativeMatchDirection: null,
+          relativeMatchNumber: null,
+          relativeMatchUnit: null,
+        },
+      ]);
+    });
+
     test("groups can provide their config objects", async () => {
       const config = await group.getConfigObject();
 

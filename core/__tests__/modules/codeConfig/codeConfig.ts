@@ -879,6 +879,73 @@ describe("modules/codeConfig", () => {
     });
   });
 
+  describe("Profile columns in calculated group rules", () => {
+    beforeAll(async () => {
+      api.codeConfig.allowLockedModelChanges = true;
+      const { errors, seenIds } = await loadConfigDirectory(
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "fixtures",
+          "codeConfig",
+          "top-level-group-rule"
+        )
+      );
+      expect(errors).toEqual([]);
+      expect(seenIds).toEqual({
+        apikey: [],
+        app: [],
+        destination: [],
+        group: ["group_exists", "group_recent"],
+        property: [],
+        schedule: [],
+        source: [],
+        team: [],
+        teammember: [],
+        profile: [],
+      });
+    });
+
+    test("topLevel rules for profile columns are created", async () => {
+      const group = await Group.findById("group_exists");
+      const rules = await group.getRules();
+      expect(rules).toEqual([
+        {
+          key: "grouparooId",
+          match: "null",
+          operation: { description: "is not equal to", op: "ne" },
+          relativeMatchDirection: null,
+          relativeMatchNumber: null,
+          relativeMatchUnit: null,
+          topLevel: true,
+          type: "string",
+        },
+      ]);
+    });
+
+    test("topLevel rules for date profile columns are correctly created", async () => {
+      const group = await Group.findById("group_recent");
+      const rules = await group.getRules();
+      expect(rules).toEqual([
+        {
+          key: "grouparooCreatedAt",
+          match: null,
+          operation: { description: "is after", op: "gt" },
+          relativeMatchDirection: "subtract",
+          relativeMatchNumber: 8,
+          relativeMatchUnit: "days",
+          topLevel: true,
+          type: "date",
+        },
+      ]);
+    });
+
+    afterAll(async () => {
+      await helper.truncate();
+    });
+  });
+
   describe("Dates in calculated group rules", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;

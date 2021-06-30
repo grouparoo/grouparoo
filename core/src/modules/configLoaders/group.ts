@@ -1,3 +1,5 @@
+import { Op } from "sequelize";
+
 import {
   ConfigurationObject,
   getCodeConfigLockKey,
@@ -5,10 +7,9 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { Group } from "../..";
+import { Group } from "../../models/Group";
+import { TopLevelGroupRules } from "../../modules/topLevelGroupRules";
 import { Property } from "../../models/Property";
-import { Op } from "sequelize";
-
 import { ConfigWriter } from "../configWriter";
 
 export async function loadGroup(
@@ -52,13 +53,25 @@ export async function loadGroup(
 
     for (const i in rules) {
       if (rules[i]["propertyId"]) {
-        const property = await Property.findById(rules[i]["propertyId"]);
+        let ruleKey: string, ruleType: string;
+        const topLevelProperty = TopLevelGroupRules.find(
+          (r) => r.key === rules[i]["propertyId"]
+        );
+        if (topLevelProperty) {
+          ruleKey = topLevelProperty.key;
+          ruleType = topLevelProperty.type;
+        } else {
+          const property = await Property.findById(rules[i]["propertyId"]);
+          ruleKey = property.key;
+          ruleType = property.type;
+        }
+
         delete rules[i]["propertyId"];
-        rules[i].key = property.key;
+        rules[i].key = ruleKey;
 
         // if calculating based on a date, parse to unix timestamp
         if (calculatesWithDate.includes(rules[i]["operation"]["op"])) {
-          if (property.type === "date") {
+          if (ruleType === "date") {
             rules[i]["match"] = Date.parse(rules[i]["match"].toString());
           }
         }

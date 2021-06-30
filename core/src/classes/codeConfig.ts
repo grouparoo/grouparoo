@@ -4,6 +4,8 @@ import { GroupRuleWithKey } from "../models/Group";
 import { topologicalSort, Graph } from "../modules/topologicalSort";
 import { DestinationSyncMode } from "../models/Destination";
 import { MustacheUtils } from "../modules/mustacheUtils";
+import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
+
 export interface IdsByClass {
   app?: string[];
   source?: string[];
@@ -330,7 +332,14 @@ export async function getParentIds(
       const recordKeys = Object.keys(record);
       for (const j in recordKeys) {
         if (recordKeys[j].match(/.+Id$/)) {
-          prerequisiteIds.push(`property:${record[recordKeys[j]]}`);
+          const value = record[recordKeys[j]];
+
+          // special case: topLevel properties
+          if (TopLevelGroupRules.map((r) => r.key).includes(value)) {
+            continue;
+          }
+
+          prerequisiteIds.push(`property:${value}`);
         }
       }
     }

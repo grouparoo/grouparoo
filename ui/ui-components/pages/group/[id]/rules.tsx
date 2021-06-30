@@ -92,7 +92,8 @@ export default function Page(props) {
     }
 
     _rules.push({
-      key: properties[0].key,
+      key: propertiesAndTopLevelGroupRules[0].key,
+      topLevel: properties.length === 0,
       match: null,
       operation: { op: "exists" },
     });
