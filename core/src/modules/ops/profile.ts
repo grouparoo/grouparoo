@@ -4,6 +4,7 @@ import { Property } from "../../models/Property";
 import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
+import { Export } from "../../models/Export";
 import { GroupMember } from "../../models/GroupMember";
 import { Log } from "../../models/Log";
 import { api } from "actionhero";
@@ -475,9 +476,39 @@ export namespace ProfileOps {
     const groups = await profile.$get("groups");
 
     const destinations = await Destination.destinationsForGroups([
-      ...groups,
       ...oldGroupsOverride,
+      ...groups,
     ]);
+
+    // We want to find destinations which aren't in the above set and already have an Export for this Profile.
+    // That's a sign that the Profile is about to get a toDelete export
+    const existingExportNotDeleted: { destinationId: string }[] =
+      await api.sequelize.query(
+        `
+    SELECT * from "exports"
+    JOIN (
+      SELECT "destinationId", MAX("createdAt") as "createdAt"
+      FROM "exports"
+      WHERE "profileId" = '${profile.id}'
+      GROUP BY "destinationId"
+    ) AS "latest"
+    ON "latest"."destinationId" = "exports"."destinationId" AND "latest"."createdAt" = "exports"."createdAt"
+    WHERE "profileId" = '${profile.id}'
+    AND "toDelete" = false
+    ;
+    `,
+        {
+          type: QueryTypes.SELECT,
+          model: Export,
+        }
+      );
+
+    for (const _export of existingExportNotDeleted) {
+      if (!destinations.map((d) => d.id).includes(_export.destinationId)) {
+        const destination = await Destination.findById(_export.destinationId);
+        destinations.push(destination);
+      }
+    }
 
     return Promise.all(
       destinations.map((destination) =>
@@ -500,11 +531,13 @@ export namespace ProfileOps {
     oldGroupsOverride?: Group[],
     toExport = true
   ) {
+    const oldGroups = oldGroupsOverride ?? (await profile.$get("groups"));
+
     await profile.markPending();
     await profile.import();
     await profile.updateGroupMembership();
     await profile.update({ state: "ready" });
-    if (toExport) await profile.export(force, oldGroupsOverride);
+    await ProfileOps._export(profile, force, oldGroups, toExport);
   }
 
   /**
