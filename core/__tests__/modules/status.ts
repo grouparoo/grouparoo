@@ -111,6 +111,20 @@ describe("modules/status", () => {
 
       const foundMetrics = await Status.get();
       expect(foundMetrics).toEqual({
+        Destination: {
+          deleted: [
+            {
+              metric: {
+                aggregation: "count",
+                collection: "deleted",
+                count: 0,
+                topic: "Destination",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+        },
+
         Export: {
           pending: [
             {
@@ -125,6 +139,17 @@ describe("modules/status", () => {
           ],
         },
         Group: {
+          deleted: [
+            {
+              metric: {
+                aggregation: "count",
+                collection: "deleted",
+                count: 0,
+                topic: "Group",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
           totals: [
             {
               metric: {
@@ -187,6 +212,19 @@ describe("modules/status", () => {
             },
           ],
         },
+        Property: {
+          deleted: [
+            {
+              metric: {
+                aggregation: "count",
+                collection: "deleted",
+                count: 0,
+                topic: "Property",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+        },
         Run: {
           pending: [
             {
@@ -215,6 +253,17 @@ describe("modules/status", () => {
           ],
         },
         Source: {
+          deleted: [
+            {
+              metric: {
+                aggregation: "count",
+                collection: "deleted",
+                count: 0,
+                topic: "Source",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
           nextRun: [
             {
               metric: {
