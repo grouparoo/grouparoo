@@ -84,7 +84,6 @@ export async function getClient() {
 
 export async function endClient() {
   if (client) {
-    await client.end();
     client = null;
   }
 }
