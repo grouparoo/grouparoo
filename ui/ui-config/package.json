@@ -55,7 +55,7 @@
     "stacktrace-js": "2.0.2",
     "styled-jsx": "3.4.4",
     "swagger-ui-dist": "3.51.1",
-    "victory": "35.8.6"
+    "victory": "35.9.0"
   },
   "devDependencies": {
     "@grouparoo/core": "0.4.2",
