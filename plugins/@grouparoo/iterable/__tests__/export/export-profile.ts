@@ -33,6 +33,10 @@ const nameTwo = "Carlos";
 const userIdTwo = "testuser456";
 const street1 = "Alice Luna";
 const street2 = "Emilio de Araujo";
+const city = "Campina Grande";
+const flatNumber = 405;
+const flatFloor = 4;
+const country = "BR";
 const number1 = 10;
 const number2 = 20;
 const zipcode = "555555555";
@@ -50,8 +54,6 @@ const nonexistentEmail = "pilo.paz@mailinator.com";
 const invalidEmail = "000";
 const invalidDate = "GGG";
 
-let listIds = {};
-
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
 // these comments to use nock
@@ -63,8 +65,8 @@ require("./../fixtures/export-profile");
 
 const appOptions = loadAppOptions(newNock);
 
-async function getUser(userEmail): Promise<any> {
-  const userResponse = await apiClient.users.get({ email: userEmail });
+async function getUser(email): Promise<any> {
+  const userResponse = await apiClient.users.get({ email });
   if ("user" in userResponse) {
     return userResponse.user;
   }
@@ -72,14 +74,10 @@ async function getUser(userEmail): Promise<any> {
 }
 
 async function getListId(listName): Promise<any> {
-  if (listName in listIds) {
-    return listIds[listName];
-  }
   const listsResponse = await apiClient.lists.get();
   const allLists = listsResponse.lists || [];
   const matchingList = allLists.filter((list) => list.name === listName)[0];
   if (matchingList) {
-    listIds[listName] = matchingList.id;
     return matchingList.id;
   }
   return null;
@@ -186,11 +184,6 @@ describe("iterable/exportProfile", () => {
       newProfileProperties: {
         email,
         name,
-        defaultAddress: {
-          street: street1,
-          number: number1,
-          zipcode: zipcode,
-        },
       },
       oldGroups: [],
       newGroups: [],
@@ -202,9 +195,6 @@ describe("iterable/exportProfile", () => {
     expect(user).not.toBe(null);
     expect(user.email).toBe(email);
     expect(user.dataFields.name).toBe(name);
-    expect(user.dataFields.defaultAddress.street).toBe(street1);
-    expect(user.dataFields.defaultAddress.number).toBe(number1);
-    expect(user.dataFields.defaultAddress.zipcode).toBe(zipcode);
   });
 
   test("can create profile on Iterable along with properties", async () => {
@@ -232,9 +222,12 @@ describe("iterable/exportProfile", () => {
     expect(user.dataFields.phoneNumber).toBe(secondPhoneNumber);
   });
 
-  test("can add user variables", async () => {
+  test("can add user variables including nested objects", async () => {
     await runExport({
-      oldProfileProperties: { email, name },
+      oldProfileProperties: {
+        email,
+        name,
+      },
       newProfileProperties: {
         email,
         name,
@@ -242,6 +235,56 @@ describe("iterable/exportProfile", () => {
         phoneNumber,
         signupDate: exampleDate,
         customField,
+        "defaultAddress.street": street1,
+        "defaultAddress.number": number1,
+        "defaultAddress.zipcode": zipcode,
+        "defaultAddress.city": city,
+        "defaultAddress.flat.number": flatNumber, // depth 3
+        "defaultAddress.flat.floor": flatFloor, // depth 3
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+    await indexContacts(newNock);
+    const user = await getUser(email);
+
+    expect(user.userId).toBe(userId);
+    expect(user.dataFields.name).toBe(name);
+    expect(user.dataFields.phoneNumber).toBe(phoneNumber);
+    expect(user.dataFields.customField).toBe(customField);
+    expect(user.dataFields.signupDate).toBe("2020-08-19 20:50:04 +00:00");
+    expect(user.dataFields.defaultAddress.street).toBe(street1);
+    expect(user.dataFields.defaultAddress.number).toBe(number1);
+    expect(user.dataFields.defaultAddress.zipcode).toBe(zipcode);
+    expect(user.dataFields.defaultAddress.city).toBe(city);
+    expect(user.dataFields.defaultAddress.flat.number).toBe(flatNumber);
+    expect(user.dataFields.defaultAddress.flat.floor).toBe(flatFloor);
+  });
+
+  test("can update user variables using dot notation to existing object data fields and leaving untracked nested properties untouched.", async () => {
+    await runExport({
+      oldProfileProperties: {
+        email,
+        name,
+        userId,
+        phoneNumber,
+        signupDate: exampleDate,
+        customField,
+        "defaultAddress.street": street1,
+        "defaultAddress.number": number1,
+        "defaultAddress.zipcode": zipcode,
+      },
+      newProfileProperties: {
+        email,
+        name,
+        userId,
+        phoneNumber,
+        signupDate: exampleDate,
+        customField,
+        "defaultAddress.street": street2,
+        "defaultAddress.number": number1,
+        "defaultAddress.zipcode": zipcode,
       },
       oldGroups: [],
       newGroups: [],
@@ -256,6 +299,10 @@ describe("iterable/exportProfile", () => {
     expect(user.dataFields.phoneNumber).toBe(phoneNumber);
     expect(user.dataFields.customField).toBe(customField);
     expect(user.dataFields.signupDate).toBe("2020-08-19 20:50:04 +00:00");
+    expect(user.dataFields.defaultAddress.street).toBe(street2);
+    expect(user.dataFields.defaultAddress.number).toBe(number1);
+    expect(user.dataFields.defaultAddress.zipcode).toBe(zipcode);
+    expect(user.dataFields.defaultAddress.city).toBe(city); // untouched
   });
 
   test("can add user variables using dot notation to existing object data fields.", async () => {
@@ -267,6 +314,10 @@ describe("iterable/exportProfile", () => {
         phoneNumber,
         signupDate: exampleDate,
         customField,
+        "defaultAddress.street": street2,
+        "defaultAddress.number": number1,
+        "defaultAddress.zipcode": zipcode,
+        "defaultAddress.city": city,
       },
       newProfileProperties: {
         email,
@@ -275,8 +326,11 @@ describe("iterable/exportProfile", () => {
         phoneNumber,
         signupDate: exampleDate,
         customField,
-        "defaultAddress.number": number2,
         "defaultAddress.street": street2,
+        "defaultAddress.number": number2,
+        "defaultAddress.zipcode": zipcode,
+        "defaultAddress.city": city,
+        "defaultAddress.country": country,
       },
       oldGroups: [],
       newGroups: [],
@@ -294,6 +348,8 @@ describe("iterable/exportProfile", () => {
     expect(user.dataFields.defaultAddress.street).toBe(street2);
     expect(user.dataFields.defaultAddress.number).toBe(number2);
     expect(user.dataFields.defaultAddress.zipcode).toBe(zipcode);
+    expect(user.dataFields.defaultAddress.city).toBe(city);
+    expect(user.dataFields.defaultAddress.country).toBe(country);
   });
 
   test("can not update a Person if sync mode does not allow it", async () => {
@@ -370,14 +426,22 @@ describe("iterable/exportProfile", () => {
     await runExport({
       oldProfileProperties: {
         email,
+        name,
         userId,
-        name: alternativeName,
-        phoneNumber: phoneNumberTwo,
+        phoneNumber,
         signupDate: exampleDate,
+        customField,
+        "defaultAddress.number": number2,
+        "defaultAddress.street": street2,
+        "defaultAddress.zipcode": zipcode,
+        "defaultAddress.city": city,
+        "defaultAddress.country": country,
       },
       newProfileProperties: {
         email,
         userId,
+        "defaultAddress.city": city,
+        "defaultAddress.country": country,
       },
       oldGroups: [],
       newGroups: [],
@@ -390,6 +454,12 @@ describe("iterable/exportProfile", () => {
     expect(user.dataFields.name).toBe(undefined);
     expect(user.dataFields.phoneNumber).toBe(undefined);
     expect(user.dataFields.signupDate).toBe(undefined);
+    expect(user.dataFields.customField).toBe(undefined);
+    expect(user.dataFields.defaultAddress.street).toBe(undefined);
+    expect(user.dataFields.defaultAddress.number).toBe(undefined);
+    expect(user.dataFields.defaultAddress.zipcode).toBe(undefined);
+    expect(user.dataFields.defaultAddress.city).toBe(city);
+    expect(user.dataFields.defaultAddress.country).toBe(country);
   });
 
   test("can add user to a list that doesn't exist yet", async () => {

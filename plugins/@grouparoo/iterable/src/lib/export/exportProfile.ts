@@ -1,7 +1,6 @@
 import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { addToList, removeFromList } from "./listMethods";
-import { getObjectUserFields } from "./destinationMappingOptions";
 
 export const exportProfile: ExportProfilePluginMethod = async (args) => {
   try {
@@ -77,8 +76,8 @@ export const sendProfile: ExportProfilePluginMethod = async ({
       }
     }
 
-    const objectFields = await getObjectUserFields(client);
-    formattedDataFields = formatPayloadKeys(objectFields, formattedDataFields);
+    formattedDataFields = formatPayloadKeys(formattedDataFields);
+
     const payload = Object.assign(
       { email },
       { dataFields: formattedDataFields }
@@ -143,10 +142,10 @@ function formatVar(value) {
   return value;
 }
 
-function formatPayloadKeys(objectFields, payload) {
+function formatPayloadKeys(payload) {
   const keys = Object.keys(payload);
   for (const key of keys) {
-    if (key.includes(".") && isIterableObjectKey(objectFields, key)) {
+    if (key.includes(".")) {
       payload = parseDotNotation(payload, key, payload[key]);
     }
   }
@@ -165,17 +164,4 @@ function parseDotNotation(payload, originalKey, value) {
   delete payload[originalKey];
 
   return payload;
-}
-
-function isIterableObjectKey(objectFields, key) {
-  if (key.includes(".")) {
-    const fieldKeys = key.split(".");
-    for (let i = 0; i < fieldKeys.length - 1; i++) {
-      if (!objectFields.includes(fieldKeys[i])) {
-        return false;
-      }
-    }
-    return true;
-  }
-  return false;
 }
