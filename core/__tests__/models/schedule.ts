@@ -140,6 +140,38 @@ describe("models/schedule", () => {
         await schedule.destroy();
       });
 
+      test("__options only includes options for schedules", async () => {
+        const schedule = await Schedule.create({
+          id: "myScheduleId",
+          type: "test-plugin-import",
+          name: "test schedule",
+          sourceId: source.id,
+        });
+
+        await Option.create({
+          ownerId: schedule.id,
+          ownerType: "schedule",
+          key: "maxColumn",
+          value: "abc",
+          type: "string",
+        });
+
+        await Option.create({
+          ownerId: schedule.id,
+          ownerType: "source",
+          key: "someOtherProperty",
+          value: "someValue",
+          type: "string",
+        });
+
+        const options = await schedule.$get("__options");
+        expect(options.length).toBe(1);
+        expect(options[0].ownerType).toBe("schedule");
+        expect(options[0].key).toBe("maxColumn");
+
+        await schedule.destroy();
+      });
+
       test("recurring schedules require a recurring frequency > 1 minute", async () => {
         const schedule = await helper.factories.schedule();
         await expect(
@@ -251,6 +283,39 @@ describe("models/schedule", () => {
         where: { ownerId: schedule.id },
       });
       expect(optionsCount).toBe(0);
+    });
+
+    test("deleting a schedule does not delete options for other models with the same id", async () => {
+      const schedule = await Schedule.create({
+        name: "incoming schedule A",
+        type: "test-plugin-import",
+        sourceId: source.id,
+      });
+
+      await schedule.setOptions({ maxColumn: "abc" });
+
+      const foreignOption = await Option.create({
+        ownerId: schedule.id,
+        ownerType: "other",
+        key: "someKey",
+        value: "someValue",
+        type: "string",
+      });
+
+      let count = await Option.count({
+        where: { ownerId: schedule.id },
+      });
+      expect(count).toBe(2);
+
+      await schedule.destroy();
+      const options = await Option.findAll({
+        where: { ownerId: schedule.id },
+      });
+      expect(options.length).toBe(1);
+      expect(options[0].ownerType).toBe("other");
+      expect(options[0].key).toBe("someKey");
+
+      await foreignOption.destroy();
     });
 
     test("deleting a schedule deletes the previous runs", async () => {
