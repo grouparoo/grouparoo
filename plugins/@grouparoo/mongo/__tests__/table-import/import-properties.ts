@@ -52,13 +52,13 @@ async function getPropertyArrays(
   return profileProperties({
     connection: client,
     appOptions,
-    profiles: [profile, otherProfile],
+    profiles: [profile, otherProfile, thirdProfile],
     sourceOptions,
     propertyOptions,
     sourceMapping,
     propertyFilters,
     property,
-    profileIds: [profile.id, otherProfile.id],
+    profileIds: [profile.id, otherProfile.id, thirdProfile.id],
     source: null,
     sourceId: null,
     app: null,
@@ -258,7 +258,7 @@ describe("mongo/table/profileProperties", () => {
         });
         expect(fixedLengthFloat(values[profile.id][0])).toEqual(1.73);
         expect(fixedLengthFloat(values[otherProfile.id][0])).toEqual(1.88);
-        expect(fixedLengthFloat(values[thirdProfile.id][0])).toBeUndefined();
+        expect(values[thirdProfile.id]).toBeUndefined();
       });
       test("count", async () => {
         const values = await getPropertyValues({
@@ -379,7 +379,7 @@ describe("mongo/table/profileProperties", () => {
           [{ op, key: "purchase", match: "Apple" }]
         );
         expect(values[profile.id]).toEqual([2]);
-        expect(values[otherProfile.id]).toEqual([0]);
+        expect(values[otherProfile.id]).toEqual([3]);
         expect(values[thirdProfile.id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
@@ -846,7 +846,7 @@ describe("mongo/table/profileProperties", () => {
           [{ op, key: "properties.gap", match: 85 }]
         );
         expect(values[profile.id]).toEqual([1]);
-        expect(values[otherProfile.id]).toBeUndefined();
+        expect(values[otherProfile.id]).toEqual([0]);
       });
       test("string", async () => {
         const values = await getPropertyValues(
@@ -869,8 +869,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "Earthquake" }]
         );
-        expect(values[profile.id]).toBeUndefined();
-        expect(otherProfile[profile.id]).toBeUndefined();
+        expect(values[profile.id]).toEqual([0]);
+        expect(values[profile.id]).toEqual([0]);
       });
       test("date", async () => {
         const values = await getPropertyValues(
@@ -888,7 +888,7 @@ describe("mongo/table/profileProperties", () => {
           ]
         );
         expect(values[profile.id]).toEqual([1]);
-        expect(values[otherProfile.id]).toBeUndefined();
+        expect(values[otherProfile.id]).toEqual([0]);
       });
       test("float", async () => {
         const values = await getPropertyValues(
@@ -915,7 +915,7 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "id", match: 1 }]
         );
-        expect(values[profile.id]).toBeUndefined();
+        expect(values[profile.id]).toEqual([0]);
         expect(values[otherProfile.id]).toEqual([2]);
       });
       test("string", async () => {
@@ -1041,7 +1041,7 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "id", match: 1 }]
         );
-        expect(values[profile.id]).toBeUndefined();
+        expect(values[profile.id]).toEqual([0]);
         expect(values[otherProfile.id]).toEqual([2]);
       });
       test("string", async () => {
@@ -1053,8 +1053,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "earthquake" }]
         );
-        expect(values[profile.id]).toBeUndefined();
-        expect(values[otherProfile.id]).toBeUndefined();
+        expect(values[profile.id]).toEqual([0]);
+        expect(values[otherProfile.id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         const values = await getPropertyValues(
@@ -1136,8 +1136,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "Z" }]
         );
-        expect(values[profile.id]).toBeUndefined();
-        expect(values[otherProfile.id]).toBeUndefined();
+        expect(values[profile.id]).toEqual([0]);
+        expect(values[otherProfile.id]).toEqual([0]);
       });
       test("date", async () => {
         const values = await getPropertyValues(
