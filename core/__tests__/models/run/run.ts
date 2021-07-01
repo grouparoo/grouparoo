@@ -272,6 +272,7 @@ describe("models/run", () => {
 
     afterAll(async () => {
       await teamMember.destroy();
+      await team.reload();
       if (!team.locked) await team.destroy();
       await group.destroy();
       await schedule.destroy();
