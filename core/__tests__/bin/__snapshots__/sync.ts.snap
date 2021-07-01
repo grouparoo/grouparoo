@@ -6,6 +6,7 @@ Object {
   "groups": Array [],
   "properties": Object {
     "email": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
       "directlyMapped": false,
@@ -24,6 +25,7 @@ Object {
       ],
     },
     "firstName": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
       "directlyMapped": false,
@@ -42,6 +44,7 @@ Object {
       ],
     },
     "isVIP": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
       "directlyMapped": false,
@@ -60,6 +63,7 @@ Object {
       ],
     },
     "lastLoginAt": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
       "directlyMapped": false,
@@ -78,6 +82,7 @@ Object {
       ],
     },
     "lastName": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
       "directlyMapped": false,
@@ -96,6 +101,7 @@ Object {
       ],
     },
     "ltv": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
       "directlyMapped": false,
@@ -114,6 +120,7 @@ Object {
       ],
     },
     "purchaseAmounts": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
       "directlyMapped": false,
@@ -133,6 +140,7 @@ Object {
       ],
     },
     "purchases": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
       "directlyMapped": false,
@@ -152,6 +160,7 @@ Object {
       ],
     },
     "userId": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
       "directlyMapped": true,

@@ -936,9 +936,12 @@ describe("modules/configWriter", () => {
       expect(options.table).toEqual("my_table_456");
     });
 
+    // --- Profile ---
+
     test("profiles can provide their config objects", async () => {
       const profile: Profile = await helper.factories.profile();
       const properties = { [bootstrapPropertyId]: [12] };
+      const bootstrapProperty = await Property.findByPk(bootstrapPropertyId);
 
       await profile.addOrUpdateProperties({
         ...properties,
@@ -950,7 +953,9 @@ describe("modules/configWriter", () => {
       expect(config).toEqual({
         class: "Profile",
         id: profile.id,
-        properties,
+        properties: {
+          [bootstrapProperty.getConfigId()]: [12],
+        },
       });
     });
 

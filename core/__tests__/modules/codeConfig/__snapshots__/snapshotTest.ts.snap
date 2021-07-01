@@ -76,6 +76,7 @@ Object {
   ],
   "properties": Object {
     "email": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -94,6 +95,7 @@ Object {
       ],
     },
     "first name": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -112,6 +114,7 @@ Object {
       ],
     },
     "last name": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -130,6 +133,7 @@ Object {
       ],
     },
     "userId": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": true,
@@ -227,6 +231,7 @@ Object {
   ],
   "properties": Object {
     "email": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -245,6 +250,7 @@ Object {
       ],
     },
     "first name": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -263,6 +269,7 @@ Object {
       ],
     },
     "last name": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -281,6 +288,7 @@ Object {
       ],
     },
     "userId": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": true,

@@ -18,6 +18,7 @@ export interface ProfilePropertyType {
     id: ProfileProperty["id"];
     state: ProfileProperty["state"];
     values: Array<string | number | boolean | Date>;
+    configId: ReturnType<Property["getConfigId"]>;
     type: Property["type"];
     unique: Property["unique"];
     directlyMapped: Property["directlyMapped"];
@@ -63,6 +64,7 @@ export namespace ProfileOps {
           id: profileProperties[i].propertyId,
           state: profileProperties[i].state,
           values: [],
+          configId: property.getConfigId(),
           type: property.type,
           unique: property.unique,
           directlyMapped: property.directlyMapped,

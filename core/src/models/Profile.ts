@@ -189,7 +189,7 @@ export class Profile extends LoggedModel<Profile> {
     for (const k in properties) {
       const property = properties[k];
       if (property.directlyMapped && property.values.length > 0) {
-        directlyMappedProps[property.id] = property.values;
+        directlyMappedProps[property.configId] = property.values;
       }
     }
 
