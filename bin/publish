@@ -108,7 +108,7 @@ echo ""
 echo "-----> PUSH TO NPM"
 echo ""
 
-./node_modules/.bin/lerna publish from-git --concurrency 2 --ignore-scripts --dist-tag $DIST_TAG --yes
+./node_modules/.bin/lerna publish from-git --concurrency 1 --ignore-scripts --dist-tag $DIST_TAG --yes
 
 ## COMPLETE
 
