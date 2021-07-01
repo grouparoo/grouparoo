@@ -291,6 +291,38 @@ describe("models/destination", () => {
         );
       });
 
+      test("__options only includes options for destinations", async () => {
+        const destination = await Destination.create({
+          id: "myDestinationId",
+          type: "test-plugin-export",
+          name: "test property",
+          appId: app.id,
+        });
+
+        await Option.create({
+          ownerId: destination.id,
+          ownerType: "destination",
+          key: "table",
+          value: "users",
+          type: "string",
+        });
+
+        await Option.create({
+          ownerId: destination.id,
+          ownerType: "app",
+          key: "someOtherProperty",
+          value: "someValue",
+          type: "string",
+        });
+
+        const options = await destination.$get("__options");
+        expect(options.length).toBe(1);
+        expect(options[0].ownerType).toBe("destination");
+        expect(options[0].key).toBe("table");
+
+        await destination.destroy();
+      });
+
       test("options must match the app options (extra options needed by connection)", async () => {
         destination = new Destination({
           name: "incoming destination - too many options",

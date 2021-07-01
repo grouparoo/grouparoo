@@ -140,6 +140,38 @@ describe("models/schedule", () => {
         await schedule.destroy();
       });
 
+      test("__options only includes options for schedules", async () => {
+        const schedule = await Schedule.create({
+          id: "myScheduleId",
+          type: "test-plugin-import",
+          name: "test schedule",
+          sourceId: source.id,
+        });
+
+        await Option.create({
+          ownerId: schedule.id,
+          ownerType: "schedule",
+          key: "maxColumn",
+          value: "abc",
+          type: "string",
+        });
+
+        await Option.create({
+          ownerId: schedule.id,
+          ownerType: "source",
+          key: "someOtherProperty",
+          value: "someValue",
+          type: "string",
+        });
+
+        const options = await schedule.$get("__options");
+        expect(options.length).toBe(1);
+        expect(options[0].ownerType).toBe("schedule");
+        expect(options[0].key).toBe("maxColumn");
+
+        await schedule.destroy();
+      });
+
       test("recurring schedules require a recurring frequency > 1 minute", async () => {
         const schedule = await helper.factories.schedule();
         await expect(

@@ -280,6 +280,44 @@ describe("models/property", () => {
     expect(options).toEqual({ column: "id" });
   });
 
+  test("__options only includes options for properties", async () => {
+    const source = await helper.factories.source();
+    await source.setOptions({ table: "test table" });
+    await source.setMapping({ id: "userId" });
+    await source.update({ state: "ready" });
+
+    const property = await Property.create({
+      id: "myPropertyId",
+      type: "string",
+      name: "test property",
+      sourceId: source.id,
+    });
+
+    await Option.create({
+      ownerId: property.id,
+      ownerType: "property",
+      key: "column",
+      value: "id",
+      type: "string",
+    });
+
+    await Option.create({
+      ownerId: property.id,
+      ownerType: "source",
+      key: "someOtherProperty",
+      value: "someValue",
+      type: "string",
+    });
+
+    const options = await property.$get("__options");
+    expect(options.length).toBe(1);
+    expect(options[0].ownerType).toBe("property");
+    expect(options[0].key).toBe("column");
+
+    await property.destroy();
+    await source.destroy();
+  });
+
   test("providing invalid options will result in an error", async () => {
     const property = await Property.findOne({
       where: { key: "email" },

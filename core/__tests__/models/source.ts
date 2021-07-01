@@ -223,6 +223,38 @@ describe("models/source", () => {
       await source.destroy();
     });
 
+    test("__options only includes options for sources", async () => {
+      const source = await Source.create({
+        id: "mySourceId",
+        type: "test-plugin-import",
+        name: "test source",
+        appId: app.id,
+      });
+
+      await Option.create({
+        ownerId: source.id,
+        ownerType: "source",
+        key: "table",
+        value: "users",
+        type: "string",
+      });
+
+      await Option.create({
+        ownerId: source.id,
+        ownerType: "app",
+        key: "someOtherProperty",
+        value: "someValue",
+        type: "string",
+      });
+
+      const options = await source.$get("__options");
+      expect(options.length).toBe(1);
+      expect(options[0].ownerType).toBe("source");
+      expect(options[0].key).toBe("table");
+
+      await source.destroy();
+    });
+
     test("options can be set and retrieved", async () => {
       const source = await Source.create({
         type: "test-plugin-import",

@@ -197,6 +197,37 @@ describe("models/app", () => {
       );
     });
 
+    test("__options only includes options for apps", async () => {
+      const app = await App.create({
+        id: "myAppId",
+        name: "test app",
+        type: "test-plugin-app",
+      });
+
+      await Option.create({
+        ownerId: app.id,
+        ownerType: "app",
+        key: "fileId",
+        value: "users",
+        type: "string",
+      });
+
+      await Option.create({
+        ownerId: app.id,
+        ownerType: "source",
+        key: "someOtherProperty",
+        value: "someValue",
+        type: "string",
+      });
+
+      const options = await app.$get("__options");
+      expect(options.length).toBe(1);
+      expect(options[0].ownerType).toBe("app");
+      expect(options[0].key).toBe("fileId");
+
+      await app.destroy();
+    });
+
     test("adding the wrong options for the app produces an error", async () => {
       const app = await App.create({
         name: "test app",
