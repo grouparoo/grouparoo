@@ -418,7 +418,7 @@ export class Source extends LoggedModel<Source> {
   @AfterDestroy
   static async destroyOptions(instance: Source) {
     return Option.destroy({
-      where: { ownerId: instance.id },
+      where: { ownerId: instance.id, ownerType: "source" },
     });
   }
 

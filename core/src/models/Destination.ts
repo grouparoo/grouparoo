@@ -685,7 +685,7 @@ export class Destination extends LoggedModel<Destination> {
   @AfterDestroy
   static async destroyDestinationOptions(instance: Destination) {
     return Option.destroy({
-      where: { ownerId: instance.id },
+      where: { ownerId: instance.id, ownerType: "destination" },
     });
   }
 

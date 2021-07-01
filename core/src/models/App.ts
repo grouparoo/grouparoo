@@ -368,6 +368,7 @@ export class App extends LoggedModel<App> {
     return Option.destroy({
       where: {
         ownerId: instance.id,
+        ownerType: "app",
       },
     });
   }

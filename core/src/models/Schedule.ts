@@ -312,7 +312,9 @@ export class Schedule extends LoggedModel<Schedule> {
 
   @AfterDestroy
   static async destroyAppOptions(instance: Schedule) {
-    return Option.destroy({ where: { ownerId: instance.id } });
+    return Option.destroy({
+      where: { ownerId: instance.id, ownerType: "schedule" },
+    });
   }
 
   @AfterDestroy

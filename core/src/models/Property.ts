@@ -648,7 +648,7 @@ export class Property extends LoggedModel<Property> {
   @AfterDestroy
   static async destroyOptions(instance: Property) {
     await Option.destroy({
-      where: { ownerId: instance.id },
+      where: { ownerId: instance.id, ownerType: "property" },
     });
   }
 
