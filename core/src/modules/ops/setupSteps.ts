@@ -115,6 +115,19 @@ export namespace SetupStepOps {
         return `${count} Runs created`;
       },
     },
+    create_a_sample_profile: {
+      key: "create_a_sample_profile",
+      title: "Create a Sample Profile",
+      description:
+        "Create a Sample Profile so you can validate your configuration is importing the correct data. These Profiles will allow you to test Group building and your Destination settings and mappings.",
+      href: "/profile/new",
+      cta: "Add a Sample Profile",
+      helpLink: `${configURL}/profiles`,
+      check: async () => {
+        const count = await Profile.count();
+        return count > 0;
+      },
+    },
     create_a_group: {
       key: "create_a_group",
       title: "Create a Group",
@@ -152,40 +165,75 @@ export namespace SetupStepOps {
   };
 
   export const setupStepDescriptions = (): Array<setupStepDescription> => {
-    const firstStep =
+    const setupSteps =
       process.env.GROUPAROO_RUN_MODE === "cli:config"
-        ? { ...allSetupStepDescriptions.install_grouparoo }
-        : { ...allSetupStepDescriptions.name_your_grouparoo_instance };
+        ? [
+            {
+              ...allSetupStepDescriptions.install_grouparoo,
+              position: 1,
+            },
+            {
+              ...allSetupStepDescriptions.add_an_app,
+              position: 2,
+            },
+            {
+              ...allSetupStepDescriptions.create_a_source,
+              position: 3,
+            },
+            {
+              ...allSetupStepDescriptions.create_a_unique_profile_property,
+              position: 4,
+            },
+            {
+              ...allSetupStepDescriptions.create_a_schedule,
+              position: 5,
+            },
+            {
+              ...allSetupStepDescriptions.create_a_sample_profile,
+              position: 6,
+            },
 
-    return [
-      {
-        ...firstStep,
-        position: 1,
-      },
-      {
-        ...allSetupStepDescriptions.add_an_app,
-        position: 2,
-      },
-      {
-        ...allSetupStepDescriptions.create_a_source,
-        position: 3,
-      },
-      {
-        ...allSetupStepDescriptions.create_a_unique_profile_property,
-        position: 4,
-      },
-      {
-        ...allSetupStepDescriptions.create_a_schedule,
-        position: 5,
-      },
-      {
-        ...allSetupStepDescriptions.create_a_group,
-        position: 6,
-      },
-      {
-        ...allSetupStepDescriptions.create_a_destination,
-        position: 7,
-      },
-    ];
+            {
+              ...allSetupStepDescriptions.create_a_group,
+              position: 7,
+            },
+            {
+              ...allSetupStepDescriptions.create_a_destination,
+              position: 8,
+            },
+          ]
+        : [
+            {
+              ...allSetupStepDescriptions.name_your_grouparoo_instance,
+              position: 1,
+            },
+            {
+              ...allSetupStepDescriptions.add_an_app,
+              position: 2,
+            },
+            {
+              ...allSetupStepDescriptions.create_a_source,
+              position: 3,
+            },
+            {
+              ...allSetupStepDescriptions.create_a_unique_profile_property,
+              position: 4,
+            },
+            {
+              ...allSetupStepDescriptions.create_a_schedule,
+              position: 5,
+            },
+
+            {
+              ...allSetupStepDescriptions.create_a_group,
+              position: 6,
+            },
+            {
+              ...allSetupStepDescriptions.create_a_destination,
+              position: 7,
+            },
+          ];
+
+    return setupSteps;
   };
 }
