@@ -82,6 +82,39 @@ describe("models/app", () => {
     expect(count).toBe(0);
   });
 
+  test("deleting an app does not delete options for other models with the same id", async () => {
+    const app = new App({
+      name: "test app",
+      type: "test-plugin-app",
+    });
+
+    await app.save();
+    await app.setOptions({ fileId: "abc123" });
+
+    const foreignOption = await Option.create({
+      ownerId: app.id,
+      ownerType: "other",
+      key: "someKey",
+      value: "someValue",
+      type: "string",
+    });
+
+    let count = await Option.count({
+      where: { ownerId: app.id },
+    });
+    expect(count).toBe(2);
+
+    await app.destroy();
+    const options = await Option.findAll({
+      where: { ownerId: app.id },
+    });
+    expect(options.length).toBe(1);
+    expect(options[0].ownerType).toBe("other");
+    expect(options[0].key).toBe("someKey");
+
+    await foreignOption.destroy();
+  });
+
   test("creating an app creates a log entry", async () => {
     const latestLog = await Log.findOne({
       where: { verb: "create", topic: "app" },

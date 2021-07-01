@@ -509,6 +509,46 @@ describe("models/property", () => {
     expect(optionsCount).toBe(0);
   });
 
+  test("deleting a property does not delete options for other models with the same id", async () => {
+    const source = await helper.factories.source();
+    await source.setOptions({ table: "some table" });
+    await source.setMapping({ id: "userId" });
+    await source.update({ state: "ready" });
+
+    const property = await Property.create({
+      sourceId: source.id,
+      key: "thing",
+      type: "string",
+      unique: false,
+    });
+
+    await property.setOptions({ column: "abc" });
+
+    const foreignOption = await Option.create({
+      ownerId: property.id,
+      ownerType: "other",
+      key: "someKey",
+      value: "someValue",
+      type: "string",
+    });
+
+    let count = await Option.count({
+      where: { ownerId: property.id },
+    });
+    expect(count).toBe(2);
+
+    await property.destroy();
+    const options = await Option.findAll({
+      where: { ownerId: property.id },
+    });
+    expect(options.length).toBe(1);
+    expect(options[0].ownerType).toBe("other");
+    expect(options[0].key).toBe("someKey");
+
+    await foreignOption.destroy();
+    await source.destroy();
+  });
+
   describe("directlyMapping", () => {
     let userIdProperty: Property;
     let emailProperty: Property;

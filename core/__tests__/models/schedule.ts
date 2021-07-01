@@ -285,6 +285,39 @@ describe("models/schedule", () => {
       expect(optionsCount).toBe(0);
     });
 
+    test("deleting a schedule does not delete options for other models with the same id", async () => {
+      const schedule = await Schedule.create({
+        name: "incoming schedule A",
+        type: "test-plugin-import",
+        sourceId: source.id,
+      });
+
+      await schedule.setOptions({ maxColumn: "abc" });
+
+      const foreignOption = await Option.create({
+        ownerId: schedule.id,
+        ownerType: "other",
+        key: "someKey",
+        value: "someValue",
+        type: "string",
+      });
+
+      let count = await Option.count({
+        where: { ownerId: schedule.id },
+      });
+      expect(count).toBe(2);
+
+      await schedule.destroy();
+      const options = await Option.findAll({
+        where: { ownerId: schedule.id },
+      });
+      expect(options.length).toBe(1);
+      expect(options[0].ownerType).toBe("other");
+      expect(options[0].key).toBe("someKey");
+
+      await foreignOption.destroy();
+    });
+
     test("deleting a schedule deletes the previous runs", async () => {
       const schedule = await Schedule.create({
         name: "incoming schedule A",
