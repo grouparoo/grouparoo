@@ -11,7 +11,6 @@ import {
   Log,
 } from "../../../src";
 import { ProfileOps } from "../../../src/modules/ops/profile";
-import { api, specHelper } from "actionhero";
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -408,7 +407,7 @@ describe("models/profile", () => {
         });
 
         afterAll(async () => {
-          await purchasesProperty.destroy();
+          if (purchasesProperty) await purchasesProperty.destroy();
         });
 
         test("changing a value sets valueChangedAt and confirmedAt", async () => {
@@ -623,7 +622,7 @@ describe("models/profile", () => {
         });
 
         afterAll(async () => {
-          await purchasesProperty.destroy();
+          if (purchasesProperty) await purchasesProperty.destroy();
         });
 
         test("multiple values can be set for array properties and the order is maintained", async () => {

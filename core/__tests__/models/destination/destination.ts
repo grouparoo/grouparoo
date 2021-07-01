@@ -222,8 +222,11 @@ describe("models/destination", () => {
         await destination.trackGroup(group);
       });
 
-      afterAll(async () => await destination.destroy());
-      afterAll(async () => await group.destroy());
+      afterAll(async () => {
+        await destination.unTrackGroup();
+        await destination.destroy();
+        await group.destroy();
+      });
 
       test("setting a destination's options triggers a group run", async () => {
         await destination.setOptions({ table: newTable });

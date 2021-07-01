@@ -21,7 +21,7 @@ describe("actions/config", () => {
     };
   });
 
-  afterAll(async () => {
+  beforeAll(async () => {
     await helper.resetSettings();
   });
 

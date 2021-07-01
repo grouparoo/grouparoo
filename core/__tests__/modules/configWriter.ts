@@ -969,6 +969,7 @@ describe("modules/configWriter", () => {
       expect(setting.getConfigId()).not.toEqual(setting.id);
       await setting.update({ key: "cluster-name--bak" });
 
+      await Setting.destroy({ where: { key: "cluster-name" } });
       const newSetting = await Setting.create({
         id: "hello-world",
         pluginName: "core",

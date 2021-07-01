@@ -7,6 +7,7 @@ import {
   Group,
   Profile,
   Property,
+  GroupMember,
 } from "../../../../src";
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
@@ -1115,6 +1116,7 @@ describe("models/destination", () => {
 
         afterAll(async () => {
           await destination.destroy();
+          await GroupMember.destroy({ where: { groupId: group.id } });
           await group.destroy();
           await profile.destroy();
         });
