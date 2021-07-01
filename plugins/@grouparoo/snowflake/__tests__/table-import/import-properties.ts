@@ -1002,6 +1002,7 @@ describe("snowflake/table/profileProperties", () => {
       });
       expect(values[profile.id]).toBeUndefined();
       expect(values[otherProfile.id]).toBeUndefined();
+      expect(values[thirdProfile.id]).toBeUndefined();
     });
   });
 });
