@@ -52,13 +52,13 @@ async function getPropertyArrays(
   return profileProperties({
     connection: client,
     appOptions,
-    profiles: [profile, otherProfile],
+    profiles: [profile, otherProfile, thirdProfile],
     sourceOptions,
     propertyOptions,
     sourceMapping,
     propertyFilters,
     property,
-    profileIds: [profile.id, otherProfile.id],
+    profileIds: [profile.id, otherProfile.id, thirdProfile.id],
     source: null,
     sourceId: null,
     app: null,
@@ -242,7 +242,7 @@ describe("mysql/table/profileProperties", () => {
         });
         expect(fixedLengthFloat(values[profile.id][0])).toEqual(1.73);
         expect(fixedLengthFloat(values[otherProfile.id][0])).toEqual(1.88);
-        expect(fixedLengthFloat(values[thirdProfile.id][0])).toBeUndefined();
+        expect(values[thirdProfile.id]).toBeUndefined();
       });
       test("count", async () => {
         const values = await getPropertyValues({
