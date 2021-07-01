@@ -64,7 +64,7 @@
     "pluralize": "8.0.0",
     "prettier": "2.3.2",
     "reflect-metadata": "0.1.13",
-    "sequelize": "6.6.2",
+    "sequelize": "6.6.4",
     "sequelize-typescript": "2.1.0",
     "sqlite3": "5.0.2",
     "ts-node": "10.0.0",
