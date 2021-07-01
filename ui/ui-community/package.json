@@ -40,7 +40,7 @@
     "md5": "2.3.0",
     "moment": "2.29.1",
     "next": "11.0.1",
-    "node-sass": "5.0.0",
+    "node-sass": "6.0.1",
     "nprogress": "0.2.0",
     "pluralize": "8.0.0",
     "react": "17.0.2",
