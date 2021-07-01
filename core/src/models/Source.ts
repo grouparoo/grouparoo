@@ -105,7 +105,10 @@ export class Source extends LoggedModel<Source> {
   @HasMany(() => Property)
   properties: Property[];
 
-  @HasMany(() => Option, "ownerId")
+  @HasMany(() => Option, {
+    foreignKey: "ownerId",
+    scope: { ownerType: "source" },
+  })
   __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
   async getOptions(sourceFromEnvironment = true) {

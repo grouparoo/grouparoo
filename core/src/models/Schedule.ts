@@ -108,7 +108,10 @@ export class Schedule extends LoggedModel<Schedule> {
   @Column
   recurringFrequency: number;
 
-  @HasMany(() => Option, "ownerId")
+  @HasMany(() => Option, {
+    foreignKey: "ownerId",
+    scope: { ownerType: "schedule" },
+  })
   __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
   @BelongsTo(() => Source)

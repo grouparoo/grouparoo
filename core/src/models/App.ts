@@ -82,7 +82,10 @@ export class App extends LoggedModel<App> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @HasMany(() => Option, "ownerId")
+  @HasMany(() => Option, {
+    foreignKey: "ownerId",
+    scope: { ownerType: "app" },
+  })
   __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
   @HasMany(() => Source)
