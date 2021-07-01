@@ -176,6 +176,7 @@ Object {
   ],
   "properties": Object {
     "email": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -194,6 +195,7 @@ Object {
       ],
     },
     "firstName": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -212,6 +214,7 @@ Object {
       ],
     },
     "isVIP": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -230,6 +233,7 @@ Object {
       ],
     },
     "lastLoginAt": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -248,6 +252,7 @@ Object {
       ],
     },
     "lastName": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -266,6 +271,7 @@ Object {
       ],
     },
     "ltv": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -284,6 +290,7 @@ Object {
       ],
     },
     "purchaseAmounts": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -303,6 +310,7 @@ Object {
       ],
     },
     "purchases": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": false,
@@ -322,6 +330,7 @@ Object {
       ],
     },
     "userId": Object {
+      "configId": Any<String>,
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
       "directlyMapped": true,
