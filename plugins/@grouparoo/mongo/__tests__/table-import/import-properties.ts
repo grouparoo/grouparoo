@@ -870,7 +870,7 @@ describe("mongo/table/profileProperties", () => {
           [{ op, key: "properties.type", match: "Earthquake" }]
         );
         expect(values[profile.id]).toEqual([0]);
-        expect(values[profile.id]).toEqual([0]);
+        expect(values[otherProfile.id]).toEqual([0]);
       });
       test("date", async () => {
         const values = await getPropertyValues(
