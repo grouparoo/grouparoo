@@ -323,7 +323,7 @@ describe("tasks/profile:export", () => {
           await profile.import();
           await profile.updateGroupMembership();
 
-          expect(_import.errorMessage).toBeNull();
+          expect(_import.errorMessage).toBeFalsy();
 
           // I don't throw, but append the error to the Export
           await specHelper.runTask("profile:export", {
