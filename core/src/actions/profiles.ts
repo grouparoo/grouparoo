@@ -178,13 +178,11 @@ export class ProfileEdit extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const profile = await Profile.findById(params.id);
 
-    const oldGroups = await profile.$get("groups");
-
     await profile.update(params);
     await profile.addOrUpdateProperties(params.properties);
     await profile.removeProperties(params.removedProperties);
 
-    await profile.sync(false, oldGroups);
+    await profile.sync(false);
 
     const groups = await profile.$get("groups");
 
