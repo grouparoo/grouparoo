@@ -287,7 +287,7 @@ describe("snowflake/table/profileProperties", () => {
         });
         expect(values[profile.id]).toEqual([1.42]);
         expect(values[otherProfile.id]).toEqual([0.78]);
-        expect(values[thirdProfile.id]).toBeUndefined;
+        expect(values[thirdProfile.id]).toBeUndefined();
       });
       test("max", async () => {
         const values = await getPropertyValues({
@@ -297,7 +297,7 @@ describe("snowflake/table/profileProperties", () => {
         });
         expect(values[profile.id]).toEqual([2.23]);
         expect(values[otherProfile.id]).toEqual([3.14]);
-        expect(values[thirdProfile.id]).toBeUndefined;
+        expect(values[thirdProfile.id]).toBeUndefined();
       });
 
       describe("dates", () => {
@@ -324,7 +324,7 @@ describe("snowflake/table/profileProperties", () => {
           expect(
             values[otherProfile.id].map((v) => (<Date>v).toISOString())
           ).toEqual(["2020-02-02T00:00:00.000Z"]);
-          expect(values[thirdProfile.id]).toBeUndefined;
+          expect(values[thirdProfile.id]).toBeUndefined();
         });
 
         test("max", async () => {
@@ -339,7 +339,7 @@ describe("snowflake/table/profileProperties", () => {
           expect(
             values[profile.id].map((v) => (<Date>v).toISOString())
           ).toEqual(["2020-02-20T00:00:00.000Z"]);
-          expect(values[thirdProfile.id]).toBeUndefined;
+          expect(values[thirdProfile.id]).toBeUndefined();
         });
       });
     });

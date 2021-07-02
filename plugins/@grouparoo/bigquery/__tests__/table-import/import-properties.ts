@@ -257,7 +257,7 @@ describe("bigquery/table/profileProperties", () => {
         });
         expect(values[profile.id]).toEqual([1.42]);
         expect(values[otherProfile.id]).toEqual([0.78]);
-        expect(values[thirdProfile.id]).toBeUndefined;
+        expect(values[thirdProfile.id]).toBeUndefined();
       });
       test("max", async () => {
         const values = await getPropertyValues({
@@ -267,7 +267,7 @@ describe("bigquery/table/profileProperties", () => {
         });
         expect(values[profile.id]).toEqual([2.23]);
         expect(values[otherProfile.id]).toEqual([3.14]);
-        expect(values[thirdProfile.id]).toBeUndefined;
+        expect(values[thirdProfile.id]).toBeUndefined();
       });
       describe("dates", () => {
         const column = "date";
@@ -289,7 +289,7 @@ describe("bigquery/table/profileProperties", () => {
           });
           expect(values[profile.id]).toEqual(["2020-02-01"]);
           expect(values[otherProfile.id]).toEqual(["2020-02-02"]);
-          expect(values[thirdProfile.id]).toBeUndefined;
+          expect(values[thirdProfile.id]).toBeUndefined();
         });
         test("max", async () => {
           const values = await getPropertyValues({
@@ -299,7 +299,7 @@ describe("bigquery/table/profileProperties", () => {
           });
           expect(values[profile.id]).toEqual(["2020-02-20"]);
           expect(values[otherProfile.id]).toEqual(["2020-02-19"]);
-          expect(values[thirdProfile.id]).toBeUndefined;
+          expect(values[thirdProfile.id]).toBeUndefined();
         });
       });
     });

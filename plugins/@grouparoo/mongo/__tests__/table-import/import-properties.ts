@@ -288,7 +288,7 @@ describe("mongo/table/profileProperties", () => {
         });
         expect(values[profile.id]).toEqual([1.42]);
         expect(values[otherProfile.id]).toEqual([0.78]);
-        expect(values[thirdProfile.id]).toBeUndefined;
+        expect(values[thirdProfile.id]).toBeUndefined();
       });
       test("max", async () => {
         const values = await getPropertyValues({
@@ -298,7 +298,7 @@ describe("mongo/table/profileProperties", () => {
         });
         expect(values[profile.id]).toEqual([2.23]);
         expect(values[otherProfile.id]).toEqual([3.14]);
-        expect(values[thirdProfile.id]).toBeUndefined;
+        expect(values[thirdProfile.id]).toBeUndefined();
       });
 
       describe("dates", () => {
@@ -325,7 +325,7 @@ describe("mongo/table/profileProperties", () => {
           expect((<Date[]>values[otherProfile.id])[0].toISOString()).toEqual(
             new Date("2020-02-02T00:00:00.000").toISOString()
           );
-          expect(values[thirdProfile.id]).toBeUndefined;
+          expect(values[thirdProfile.id]).toBeUndefined();
         });
         test("max", async () => {
           const values = await getPropertyValues({
@@ -339,7 +339,7 @@ describe("mongo/table/profileProperties", () => {
           expect((<Date[]>values[otherProfile.id])[0].toISOString()).toEqual(
             new Date("2020-02-19T00:00:00.000").toISOString()
           );
-          expect(values[thirdProfile.id]).toBeUndefined;
+          expect(values[thirdProfile.id]).toBeUndefined();
         });
       });
     });

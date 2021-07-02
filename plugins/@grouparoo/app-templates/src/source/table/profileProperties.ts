@@ -61,8 +61,7 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
         aggregationMethod === AggregationMethod.Count
       ) {
         //default all entries to 0 to start... will be replaced later if there is a response
-        responsesById[profiles[i].id] = [];
-        responsesById[profiles[i].id].push(0);
+        responsesById[profiles[i].id] = [0];
       }
     }
 

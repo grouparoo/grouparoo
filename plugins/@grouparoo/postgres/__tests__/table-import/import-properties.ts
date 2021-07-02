@@ -286,7 +286,7 @@ describe("postgres/table/profileProperties", () => {
         });
         expect(values[profile.id]).toEqual([1.42]);
         expect(values[otherProfile.id]).toEqual([0.78]);
-        expect(values[thirdProfile.id]).toBeUndefined;
+        expect(values[thirdProfile.id]).toBeUndefined();
       });
       test("max", async () => {
         const values = await getPropertyValues({
@@ -296,7 +296,7 @@ describe("postgres/table/profileProperties", () => {
         });
         expect(values[profile.id]).toEqual([2.23]);
         expect(values[otherProfile.id]).toEqual([3.14]);
-        expect(values[thirdProfile.id]).toBeUndefined;
+        expect(values[thirdProfile.id]).toBeUndefined();
       });
 
       describe("timestamps", () => {
@@ -324,7 +324,7 @@ describe("postgres/table/profileProperties", () => {
           expect((<Date[]>values[otherProfile.id])[0].toISOString()).toEqual(
             "2020-02-02T12:13:14.000Z"
           );
-          expect(values[thirdProfile.id]).toBeUndefined;
+          expect(values[thirdProfile.id]).toBeUndefined();
         });
 
         test("max", async () => {
@@ -339,7 +339,7 @@ describe("postgres/table/profileProperties", () => {
           expect((<Date[]>values[otherProfile.id])[0].toISOString()).toEqual(
             "2020-02-19T12:13:14.000Z"
           );
-          expect(values[thirdProfile.id]).toBeUndefined;
+          expect(values[thirdProfile.id]).toBeUndefined();
         });
 
         test("to get a timestamp - decimals or not", async () => {
@@ -376,7 +376,7 @@ describe("postgres/table/profileProperties", () => {
           });
           expect(values[profile.id]).toEqual(["2020-02-01"]);
           expect(values[profile.id]).toEqual(["2020-02-01"]);
-          expect(values[thirdProfile.id]).toBeUndefined;
+          expect(values[thirdProfile.id]).toBeUndefined();
         });
         test("max", async () => {
           const values = await getPropertyValues({
@@ -386,7 +386,7 @@ describe("postgres/table/profileProperties", () => {
           });
           expect(values[profile.id]).toEqual(["2020-02-20"]);
           expect(values[otherProfile.id]).toEqual(["2020-02-19"]);
-          expect(values[thirdProfile.id]).toBeUndefined;
+          expect(values[thirdProfile.id]).toBeUndefined();
         });
       });
     });
