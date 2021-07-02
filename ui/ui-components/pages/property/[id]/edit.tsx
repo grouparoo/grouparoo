@@ -59,31 +59,31 @@ export default function Page(props) {
 
   async function onSubmit(event) {
     event.preventDefault();
-    if (
-      window.confirm(
-        "Are you sure?  This will also update all profile properties with this key"
-      )
-    ) {
-      setLoading(true);
-      const response: Actions.PropertyEdit = await execApi(
-        "put",
-        `/property/${id}`,
-        Object.assign({}, property, { filters: localFilters, state: "ready" })
-      );
-      if (response?.property) {
-        setProperty(response.property);
-        propertiesHandler.set(response.property);
-        if (response.property.state === "ready" && property.state === "draft") {
-          successHandler.set({ message: "Property Created" });
-          router.push(nextPage || "/properties");
-        } else {
-          setLoading(false);
-          successHandler.set({ message: "Property Updated" });
-        }
+    // if (
+    //   window.confirm(
+    //     "Are you sure?  This will also update all profile properties with this key"
+    //   )
+    // ) {
+    setLoading(true);
+    const response: Actions.PropertyEdit = await execApi(
+      "put",
+      `/property/${id}`,
+      Object.assign({}, property, { filters: localFilters, state: "ready" })
+    );
+    if (response?.property) {
+      setProperty(response.property);
+      propertiesHandler.set(response.property);
+      if (response.property.state === "ready" && property.state === "draft") {
+        successHandler.set({ message: "Property Created" });
+        router.push(nextPage || "/properties");
       } else {
         setLoading(false);
+        successHandler.set({ message: "Property Updated" });
       }
+    } else {
+      setLoading(false);
     }
+    // }
   }
 
   async function handleDelete() {
