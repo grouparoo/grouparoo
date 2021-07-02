@@ -311,7 +311,7 @@ describe("models/option", () => {
           });
         });
 
-        afterAll(async () => {
+        beforeAll(async () => {
           await connection.destroy();
         });
 
