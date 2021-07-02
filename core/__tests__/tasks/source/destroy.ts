@@ -101,7 +101,7 @@ describe("tasks/source:destroy", () => {
       );
     });
 
-    test("will destroy its directly mapped property", async () => {
+    test("will destroy its directly mapped property if not used elsewhere", async () => {
       const source: Source = await helper.factories.source();
       const myUserIdProp = await source.bootstrapUniqueProperty(
         "myUserId",
