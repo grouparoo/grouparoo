@@ -68,12 +68,16 @@ export const sendProfile: ExportProfilePluginMethod = async ({
       deletePropertiesPayload,
       newProfileProperties
     );
-    const formattedDataFields = {};
+    let formattedDataFields = {};
+
     for (const key of Object.keys(dataFields)) {
       if (key !== "email") {
         formattedDataFields[key] = formatVar(dataFields[key]);
       }
     }
+
+    formattedDataFields = formatPayloadKeys(formattedDataFields);
+
     const payload = Object.assign(
       { email },
       { dataFields: formattedDataFields }
@@ -111,6 +115,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
       );
     }
 
+    payload["mergeNestedObjects"] = true;
     await client.users.update(payload);
 
     // add to lists
@@ -133,7 +138,30 @@ function formatVar(value) {
   }
   if (value instanceof Date) {
     return value.toISOString();
-  } else {
-    return value;
   }
+  return value;
+}
+
+function formatPayloadKeys(payload) {
+  const keys = Object.keys(payload);
+  for (const key of keys) {
+    if (key.includes(".")) {
+      payload = parseDotNotation(payload, key, payload[key]);
+    }
+  }
+  return payload;
+}
+
+function parseDotNotation(payload, originalKey, value) {
+  let currentObj = payload;
+  const subKeys = originalKey.split(".");
+  for (let i = 0; i < subKeys.length - 1; ++i) {
+    const key = subKeys[i];
+    currentObj[key] = currentObj[key] || {};
+    currentObj = currentObj[key];
+  }
+  currentObj[subKeys[subKeys.length - 1]] = value;
+  delete payload[originalKey];
+
+  return payload;
 }

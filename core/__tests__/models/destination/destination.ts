@@ -151,6 +151,39 @@ describe("models/destination", () => {
       await group.destroy();
     });
 
+    test("deleting a destination does not delete options for other models with the same id", async () => {
+      destination = await Destination.create({
+        name: "some destination",
+        type: "test-plugin-export",
+        appId: app.id,
+      });
+
+      await destination.setOptions({ table: "table" });
+
+      const foreignOption = await Option.create({
+        ownerId: destination.id,
+        ownerType: "other",
+        key: "someKey",
+        value: "someValue",
+        type: "string",
+      });
+
+      let count = await Option.count({
+        where: { ownerId: destination.id },
+      });
+      expect(count).toBe(2);
+
+      await destination.destroy();
+      const options = await Option.findAll({
+        where: { ownerId: destination.id },
+      });
+      expect(options.length).toBe(1);
+      expect(options[0].ownerType).toBe("other");
+      expect(options[0].key).toBe("someKey");
+
+      await foreignOption.destroy();
+    });
+
     test("destinations can retrieve related export totals", async () => {
       destination = await Destination.create({
         name: "bye destination",
@@ -292,6 +325,38 @@ describe("models/destination", () => {
         ).rejects.toThrow(
           /Cannot find a \"missing-destination\" connection available within the installed plugins. Current connections installed are:/
         );
+      });
+
+      test("__options only includes options for destinations", async () => {
+        const destination = await Destination.create({
+          id: "myDestinationId",
+          type: "test-plugin-export",
+          name: "test property",
+          appId: app.id,
+        });
+
+        await Option.create({
+          ownerId: destination.id,
+          ownerType: "destination",
+          key: "table",
+          value: "users",
+          type: "string",
+        });
+
+        await Option.create({
+          ownerId: destination.id,
+          ownerType: "app",
+          key: "someOtherProperty",
+          value: "someValue",
+          type: "string",
+        });
+
+        const options = await destination.$get("__options");
+        expect(options.length).toBe(1);
+        expect(options[0].ownerType).toBe("destination");
+        expect(options[0].key).toBe("table");
+
+        await destination.destroy();
       });
 
       test("options must match the app options (extra options needed by connection)", async () => {

@@ -82,6 +82,39 @@ describe("models/app", () => {
     expect(count).toBe(0);
   });
 
+  test("deleting an app does not delete options for other models with the same id", async () => {
+    const app = new App({
+      name: "test app",
+      type: "test-plugin-app",
+    });
+
+    await app.save();
+    await app.setOptions({ fileId: "abc123" });
+
+    const foreignOption = await Option.create({
+      ownerId: app.id,
+      ownerType: "other",
+      key: "someKey",
+      value: "someValue",
+      type: "string",
+    });
+
+    let count = await Option.count({
+      where: { ownerId: app.id },
+    });
+    expect(count).toBe(2);
+
+    await app.destroy();
+    const options = await Option.findAll({
+      where: { ownerId: app.id },
+    });
+    expect(options.length).toBe(1);
+    expect(options[0].ownerType).toBe("other");
+    expect(options[0].key).toBe("someKey");
+
+    await foreignOption.destroy();
+  });
+
   test("creating an app creates a log entry", async () => {
     const latestLog = await Log.findOne({
       where: { verb: "create", topic: "app" },
@@ -195,6 +228,37 @@ describe("models/app", () => {
       await expect(app.save()).rejects.toThrow(
         /Cannot find a \"oh no\" app available within the installed plugins. Current apps installed are:/
       );
+    });
+
+    test("__options only includes options for apps", async () => {
+      const app = await App.create({
+        id: "myAppId",
+        name: "test app",
+        type: "test-plugin-app",
+      });
+
+      await Option.create({
+        ownerId: app.id,
+        ownerType: "app",
+        key: "fileId",
+        value: "users",
+        type: "string",
+      });
+
+      await Option.create({
+        ownerId: app.id,
+        ownerType: "source",
+        key: "someOtherProperty",
+        value: "someValue",
+        type: "string",
+      });
+
+      const options = await app.$get("__options");
+      expect(options.length).toBe(1);
+      expect(options[0].ownerType).toBe("app");
+      expect(options[0].key).toBe("fileId");
+
+      await app.destroy();
     });
 
     test("adding the wrong options for the app produces an error", async () => {

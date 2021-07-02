@@ -223,6 +223,38 @@ describe("models/source", () => {
       await source.destroy();
     });
 
+    test("__options only includes options for sources", async () => {
+      const source = await Source.create({
+        id: "mySourceId",
+        type: "test-plugin-import",
+        name: "test source",
+        appId: app.id,
+      });
+
+      await Option.create({
+        ownerId: source.id,
+        ownerType: "source",
+        key: "table",
+        value: "users",
+        type: "string",
+      });
+
+      await Option.create({
+        ownerId: source.id,
+        ownerType: "app",
+        key: "someOtherProperty",
+        value: "someValue",
+        type: "string",
+      });
+
+      const options = await source.$get("__options");
+      expect(options.length).toBe(1);
+      expect(options[0].ownerType).toBe("source");
+      expect(options[0].key).toBe("table");
+
+      await source.destroy();
+    });
+
     test("options can be set and retrieved", async () => {
       const source = await Source.create({
         type: "test-plugin-import",
@@ -279,6 +311,39 @@ describe("models/source", () => {
         where: { ownerId: source.id },
       });
       expect(optionsCount).toBe(0);
+    });
+
+    test("deleting a schedule does not delete options for other models with the same id", async () => {
+      const source = await Source.create({
+        type: "test-plugin-import",
+        name: "test source",
+        appId: app.id,
+      });
+
+      await source.setOptions({ table: "abc" });
+
+      const foreignOption = await Option.create({
+        ownerId: source.id,
+        ownerType: "other",
+        key: "someKey",
+        value: "someValue",
+        type: "string",
+      });
+
+      let count = await Option.count({
+        where: { ownerId: source.id },
+      });
+      expect(count).toBe(2);
+
+      await source.destroy();
+      const options = await Option.findAll({
+        where: { ownerId: source.id },
+      });
+      expect(options.length).toBe(1);
+      expect(options[0].ownerType).toBe("other");
+      expect(options[0].key).toBe("someKey");
+
+      await foreignOption.destroy();
     });
 
     test("deleting a source deleted its directly mapped property", async () => {

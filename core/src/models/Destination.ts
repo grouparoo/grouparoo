@@ -170,7 +170,10 @@ export class Destination extends LoggedModel<Destination> {
   @HasMany(() => Mapping)
   mappings: Mapping[];
 
-  @HasMany(() => Option, "ownerId")
+  @HasMany(() => Option, {
+    foreignKey: "ownerId",
+    scope: { ownerType: "destination" },
+  })
   __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
   @HasMany(() => Export)
@@ -682,7 +685,7 @@ export class Destination extends LoggedModel<Destination> {
   @AfterDestroy
   static async destroyDestinationOptions(instance: Destination) {
     return Option.destroy({
-      where: { ownerId: instance.id },
+      where: { ownerId: instance.id, ownerType: "destination" },
     });
   }
 

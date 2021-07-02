@@ -191,7 +191,10 @@ export class Property extends LoggedModel<Property> {
   @BelongsTo(() => Source)
   source: Source;
 
-  @HasMany(() => Option, "ownerId")
+  @HasMany(() => Option, {
+    foreignKey: "ownerId",
+    scope: { ownerType: "property" },
+  })
   __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
   @HasMany(() => PropertyFilter)
@@ -645,7 +648,7 @@ export class Property extends LoggedModel<Property> {
   @AfterDestroy
   static async destroyOptions(instance: Property) {
     await Option.destroy({
-      where: { ownerId: instance.id },
+      where: { ownerId: instance.id, ownerType: "property" },
     });
   }
 

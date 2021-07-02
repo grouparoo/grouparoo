@@ -108,7 +108,10 @@ export class Schedule extends LoggedModel<Schedule> {
   @Column
   recurringFrequency: number;
 
-  @HasMany(() => Option, "ownerId")
+  @HasMany(() => Option, {
+    foreignKey: "ownerId",
+    scope: { ownerType: "schedule" },
+  })
   __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
   @BelongsTo(() => Source)
@@ -309,7 +312,9 @@ export class Schedule extends LoggedModel<Schedule> {
 
   @AfterDestroy
   static async destroyAppOptions(instance: Schedule) {
-    return Option.destroy({ where: { ownerId: instance.id } });
+    return Option.destroy({
+      where: { ownerId: instance.id, ownerType: "schedule" },
+    });
   }
 
   @AfterDestroy

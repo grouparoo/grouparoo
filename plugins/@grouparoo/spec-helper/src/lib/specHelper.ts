@@ -112,6 +112,7 @@ const models = [
 
 export namespace helper {
   export const setupTime = 60 * 1000; // 60 seconds
+  export const hugeTime = 60 * 2 * 1000; // 120 seconds
   export const longTime = 60 * 1000; // 60 seconds
   export const mediumTime = 20 * 1000; // 20 seconds
   export const shortTime = 10 * 1000; // 10 seconds
