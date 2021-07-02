@@ -11,7 +11,6 @@ import {
   Log,
 } from "../../../src";
 import { ProfileOps } from "../../../src/modules/ops/profile";
-import { api, specHelper } from "actionhero";
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);

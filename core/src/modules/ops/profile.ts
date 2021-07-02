@@ -470,13 +470,13 @@ export namespace ProfileOps {
   export async function _export(
     profile: Profile,
     force = false,
-    oldGroupsOverride: Group[] = [],
+    oldGroups: Group[] = [],
     saveExports = true
   ) {
     const groups = await profile.$get("groups");
 
     const destinations = await Destination.destinationsForGroups([
-      ...oldGroupsOverride,
+      ...oldGroups,
       ...groups,
     ]);
 
@@ -525,19 +525,14 @@ export namespace ProfileOps {
   /**
    * Fully Import and Export a profile
    */
-  export async function sync(
-    profile: Profile,
-    force = true,
-    oldGroupsOverride?: Group[],
-    toExport = true
-  ) {
-    const oldGroups = oldGroupsOverride ?? (await profile.$get("groups"));
+  export async function sync(profile: Profile, force = true, toExport = true) {
+    const oldGroups = await profile.$get("groups");
 
     await profile.markPending();
     await profile.import();
     await profile.updateGroupMembership();
     await profile.update({ state: "ready" });
-    await ProfileOps._export(profile, force, oldGroups, toExport);
+    return ProfileOps._export(profile, force, oldGroups, toExport);
   }
 
   /**
