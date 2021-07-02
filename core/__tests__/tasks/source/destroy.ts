@@ -69,7 +69,39 @@ describe("tasks/source:destroy", () => {
       );
     });
 
-    test("will also destroy its directly mapped property", async () => {
+    test("will not destroy source if there is a directly mapped property", async () => {
+      const source: Source = await helper.factories.source();
+      const myUserIdProp = await source.bootstrapUniqueProperty(
+        "myUserId",
+        "string",
+        "id"
+      );
+      await source.setOptions({ table: "some table" });
+      await source.setMapping({ id: "myUserId" });
+      await source.update({ state: "ready" });
+
+      await Property.determineDirectlyMapped(myUserIdProp);
+      expect(myUserIdProp.directlyMapped).toBe(true);
+
+      await source.update({ state: "deleted" });
+      await task.enqueue("source:destroy", { sourceId: source.id });
+
+      const foundTasks = await specHelper.findEnqueuedTasks("source:destroy");
+      expect(foundTasks.length).toBe(1);
+
+      const error = await specHelper.runTask(
+        "source:destroy",
+        foundTasks[0].args[0]
+      );
+      //will not throw an error
+      expect(error).toBeUndefined();
+
+      //but will also not destroy anything yet
+      expect(myUserIdProp.state).toBe("ready");
+      expect(source.state).toBe("deleted");
+    });
+
+    test("will destroy its directly mapped property", async () => {
       const source: Source = await helper.factories.source();
       const myUserIdProp = await source.bootstrapUniqueProperty(
         "myUserId",
