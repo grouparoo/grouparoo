@@ -1431,13 +1431,14 @@ importers:
       '@fortawesome/free-brands-svg-icons': 5.15.3
       '@fortawesome/free-solid-svg-icons': 5.15.3
       '@fortawesome/react-fontawesome': 0.1.14
-      '@grouparoo/spec-helper': 0.4.3-alpha.0
+      '@grouparoo/core': 0.4.3-alpha.0
       '@types/react': '*'
       '@types/react-dom': '*'
       axios: 0.21.1
       bootstrap: 4.6.0
       date-fns: 2.22.1
       isomorphic-fetch: 3.0.0
+      jest: 27.0.6
       md5: 2.3.0
       moment: 2.29.1
       next: 11.0.1
@@ -1471,6 +1472,7 @@ importers:
       bootstrap: 4.6.0
       date-fns: 2.22.1
       isomorphic-fetch: 3.0.0
+      jest: 27.0.6
       md5: 2.3.0
       moment: 2.29.1
       next: 11.0.1_356f9603e19128c62410edc7920d2e00
@@ -1488,7 +1490,7 @@ importers:
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       swagger-ui-dist: 3.51.1
-      ts-jest: 27.0.3_typescript@4.3.5
+      ts-jest: 27.0.3_jest@27.0.6+typescript@4.3.5
       type-fest: 1.2.1
       typescript: 4.3.5
       victory: 35.9.0
@@ -14544,28 +14546,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
-      jest: 27.0.6_ts-node@10.0.0
-      jest-util: 27.0.6
-      json5: 2.2.0
-      lodash: 4.17.21
-      make-error: 1.3.6
-      mkdirp: 1.0.4
-      semver: 7.3.5
-      typescript: 4.3.5
-      yargs-parser: 20.2.9
-    dev: true
-
-  /ts-jest/27.0.3_typescript@4.3.5:
-    resolution: {integrity: sha512-U5rdMjnYam9Ucw+h0QvtNDbc5+88nxt7tbIvqaZUhFrfG4+SkWhMXjejCLVGcpILTPuV+H3W/GZDZrnZFpPeXw==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    hasBin: true
-    peerDependencies:
-      jest: ^27.0.0
-      typescript: '>=3.8 <5.0'
-    dependencies:
-      bs-logger: 0.2.6
-      buffer-from: 1.1.1
-      fast-json-stable-stringify: 2.1.0
+      jest: 27.0.6
       jest-util: 27.0.6
       json5: 2.2.0
       lodash: 4.17.21

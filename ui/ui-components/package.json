@@ -22,8 +22,8 @@
   },
   "scripts": {
     "pretest": "npm run lint",
-    "test": "jest",
-    "lint": "prettier --check pages components classes client utils hooks __tests__"
+    "test": "echo 'no tests'",
+    "lint": "prettier --check pages components classes client utils hooks"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.35",
@@ -37,6 +37,7 @@
     "bootstrap": "4.6.0",
     "date-fns": "2.22.1",
     "isomorphic-fetch": "3.0.0",
+    "jest": "27.0.6",
     "md5": "2.3.0",
     "moment": "2.29.1",
     "next": "11.0.1",
