@@ -36,8 +36,10 @@ export class StatusTask extends CLSTask {
       if (runMode === "cli:run") this.logSamples(samples);
 
       const complete = await this.checkForComplete(samples);
+
       if (runMode === "cli:run" && complete) {
         await this.logFinalSummary();
+
         await this.stopServer(toStop);
       }
 
@@ -58,14 +60,17 @@ export class StatusTask extends CLSTask {
       for (const collection in samples[topic]) {
         const metrics = samples[topic][collection];
         const { metric } = metrics[metrics.length - 1];
-        if (metric.collection === "pending") {
+        if (
+          metric.collection === "pending" ||
+          metric.collection === "deleted"
+        ) {
           pendingItems += metric.count;
           pendingCollections++;
         }
       }
     }
 
-    if (pendingCollections < 4) return false; // not every model has been checked yet (profile, runs, import, export)
+    if (pendingCollections < 4) return false; // not every required model has been checked yet (PENDING: profile, runs, import, export)
     return pendingItems > 0 ? false : true;
   }
 
@@ -92,6 +97,7 @@ export class StatusTask extends CLSTask {
     const totalItems = [];
     const pendingItems = [];
     const pendingRuns = [];
+    const pendingDeletions = [];
 
     const pendingCollection = samples["Run"]
       ? samples["Run"]["pending"]
@@ -116,6 +122,12 @@ export class StatusTask extends CLSTask {
 
         if (latestMetric.collection === "pending") {
           pendingItems.push({
+            [latestMetric.topic]: [latestMetric.count],
+          });
+        }
+
+        if (latestMetric.collection === "deleted" && latestMetric.count > 0) {
+          pendingDeletions.push({
             [latestMetric.topic]: [latestMetric.count],
           });
         }
@@ -159,6 +171,12 @@ export class StatusTask extends CLSTask {
       logItems.push({
         header: "Active Runs",
         status: pendingRuns.reduce((s, arr) => Object.assign(s, arr), {}),
+      });
+    }
+    if (pendingDeletions.length > 0) {
+      logItems.push({
+        header: "Pending Deletions",
+        status: pendingDeletions.reduce((s, arr) => Object.assign(s, arr), {}),
       });
     }
 

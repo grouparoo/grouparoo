@@ -56,6 +56,7 @@ export class StatusCLI extends CLI {
 
       const pendingItems = [];
       const pendingRuns = [];
+      const pendingDeletions = [];
 
       for (const topic in samples) {
         for (const collection in samples[topic]) {
@@ -65,6 +66,10 @@ export class StatusCLI extends CLI {
             pendingItems.push({
               [metric.topic]: [metric.count],
             });
+          }
+
+          if (metric.collection === "deleted") {
+            pendingDeletions.push({ [metric.topic]: [metric.count] });
           }
 
           if (
@@ -92,6 +97,13 @@ export class StatusCLI extends CLI {
         {
           header: "Active Runs",
           status: pendingRuns.reduce((s, arr) => Object.assign(s, arr), {}),
+        },
+        {
+          header: "Pending Deletions",
+          status: pendingDeletions.reduce(
+            (s, arr) => Object.assign(s, arr),
+            {}
+          ),
         },
       ];
 
