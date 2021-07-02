@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/ui-config",
   "description": "The Grouparoo Config Web UI",
-  "version": "0.4.2",
+  "version": "0.4.3-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -58,9 +58,9 @@
     "victory": "35.9.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.4.2",
-    "@grouparoo/spec-helper": "0.4.2",
-    "@grouparoo/ui-components": "0.4.2",
+    "@grouparoo/core": "0.4.3-alpha.0",
+    "@grouparoo/spec-helper": "0.4.3-alpha.0",
+    "@grouparoo/ui-components": "0.4.3-alpha.0",
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
