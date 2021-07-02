@@ -45,7 +45,6 @@ export default function Page(props) {
       return errorHandler.set({ error: "select profile identification" });
     }
 
-    // if (confirm("are you sure?")) {
     setLoading(true);
     const response: Actions.SourceBootstrapUniqueProperty = await execApi(
       "post",
@@ -72,7 +71,6 @@ export default function Page(props) {
       ).checked = true;
     }
     setLoading(false);
-    // }
   };
 
   const updateMapping = async (event) => {

@@ -59,11 +59,6 @@ export default function Page(props) {
 
   async function onSubmit(event) {
     event.preventDefault();
-    // if (
-    //   window.confirm(
-    //     "Are you sure?  This will also update all profile properties with this key"
-    //   )
-    // ) {
     setLoading(true);
     const response: Actions.PropertyEdit = await execApi(
       "put",
@@ -83,7 +78,6 @@ export default function Page(props) {
     } else {
       setLoading(false);
     }
-    // }
   }
 
   async function handleDelete() {
