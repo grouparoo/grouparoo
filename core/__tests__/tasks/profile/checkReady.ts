@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, task, specHelper } from "actionhero";
-import { plugin, ProfileProperty } from "../../../src";
+import { api, config, task, specHelper } from "actionhero";
+import { Group, plugin, Profile, ProfileProperty } from "../../../src";
 
 describe("tasks/profile:checkReady", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -9,6 +9,23 @@ describe("tasks/profile:checkReady", () => {
 
   afterEach(async () => {
     await plugin.updateSetting("core", "runs-profile-batch-size", 100);
+  });
+
+  let group: Group;
+
+  beforeAll(async () => {
+    group = await helper.factories.group();
+    await group.update({ type: "calculated" });
+    await group.setRules([
+      {
+        key: "lastName",
+        match: "Mario",
+        operation: {
+          op: config.sequelize.dialect === "postgres" ? "iLike" : "like",
+        },
+      },
+    ]);
+    await group.update({ state: "ready" });
   });
 
   describe("profiles:checkReady", () => {
@@ -54,10 +71,6 @@ describe("tasks/profile:checkReady", () => {
 
       await specHelper.runTask("profiles:checkReady", {});
 
-      const found = await specHelper.findEnqueuedTasks(
-        "profile:completeImport"
-      );
-
       await mario.reload();
       await luigi.reload();
       await toad.reload();
@@ -69,10 +82,6 @@ describe("tasks/profile:checkReady", () => {
       expect(toad.state).toBe("ready");
       expect(peach.state).toBe("pending");
       expect(bowser.state).toBe("pending");
-
-      expect(found[0].args[0].profileIds.sort()).toEqual(
-        [mario.id, luigi.id].sort() // no toad, no peach, no bowser
-      );
 
       await mario.destroy();
       await luigi.destroy();
@@ -94,15 +103,127 @@ describe("tasks/profile:checkReady", () => {
 
       await specHelper.runTask("profiles:checkReady", {});
 
-      const found = await specHelper.findEnqueuedTasks(
-        "profile:completeImport"
-      );
-      expect(found.length).toBe(1);
-
       await mario.reload();
       await luigi.reload();
 
       expect([mario.state, luigi.state].sort()).toEqual(["pending", "ready"]);
+
+      await mario.destroy();
+      await luigi.destroy();
+    });
+
+    test("it updates the group memberships", async () => {
+      const profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({ lastName: ["Mario"] });
+      await profile.import();
+      await profile.update({ state: "pending" });
+
+      let groups = await profile.$get("groups");
+      expect(groups.length).toBe(0);
+
+      await specHelper.runTask("profiles:checkReady", {});
+
+      await profile.reload();
+      expect(profile.state).toBe("ready");
+
+      groups = await profile.$get("groups");
+      expect(groups.length).toBe(1);
+
+      await profile.destroy();
+    });
+
+    test("it updates the imports new data and updates the run counts", async () => {
+      const run = await helper.factories.run();
+
+      const _importA = await helper.factories.import(run, {
+        email: "mario@example.com",
+        firstName: "Mario",
+        noExist: "here",
+      });
+      const _importB = await helper.factories.import(run, {
+        email: "mario@example.com",
+        firstName: "Super",
+        lastName: "Mario",
+      });
+
+      await specHelper.runTask("import:associateProfile", {
+        importId: _importA.id,
+      });
+      await specHelper.runTask("import:associateProfile", {
+        importId: _importB.id,
+      });
+
+      const profile = await Profile.findOne();
+      await profile.import();
+      await profile.update({ state: "pending" });
+
+      expect(_importA.newGroupIds).toEqual([]);
+      expect(_importA.newProfileProperties).toEqual({});
+      expect(_importB.newGroupIds).toEqual([]);
+      expect(_importB.newProfileProperties).toEqual({});
+
+      expect(run.profilesCreated).toEqual(0);
+      expect(run.profilesImported).toEqual(0);
+
+      await specHelper.runTask("profiles:checkReady", {});
+
+      await profile.reload();
+      expect(profile.state).toBe("ready");
+
+      await _importA.reload();
+      await _importB.reload();
+      await run.updateTotals();
+
+      expect(_importA.newProfileProperties.email).toEqual([
+        "mario@example.com",
+      ]);
+      expect(_importA.newProfileProperties.firstName).toEqual(["Super"]);
+      expect(_importA.newProfileProperties.lastName).toEqual(["Mario"]);
+      expect(_importA.newGroupIds).toEqual([group.id]);
+      expect(_importB.newProfileProperties.email).toEqual([
+        "mario@example.com",
+      ]);
+      expect(_importB.newProfileProperties.firstName).toEqual(["Super"]);
+      expect(_importB.newProfileProperties.lastName).toEqual(["Mario"]);
+      expect(_importB.newGroupIds).toEqual([group.id]);
+
+      expect(run.profilesCreated).toEqual(1);
+      expect(run.profilesImported).toEqual(1);
+    });
+
+    test("it will enqueue a profile:export task", async () => {
+      const profile = await helper.factories.profile();
+      await profile.import();
+      await profile.update({ state: "pending" });
+
+      await specHelper.runTask("profiles:checkReady", {});
+
+      await profile.reload();
+      expect(profile.state).toBe("ready");
+
+      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
+      expect(foundTasks.length).toEqual(1);
+      expect(foundTasks[0].args[0]).toEqual({
+        force: false,
+        profileId: profile.id,
+      });
+    });
+
+    test("optionally enqueuing a profile:export task can be skipped", async () => {
+      const profile = await helper.factories.profile();
+      await profile.import();
+      await profile.update({ state: "pending" });
+
+      process.env.GROUPAROO_DISABLE_EXPORTS = "true";
+      await specHelper.runTask("profiles:checkReady", {});
+
+      await profile.reload();
+      expect(profile.state).toBe("ready");
+
+      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
+      expect(foundTasks.length).toEqual(0);
+
+      process.env.GROUPAROO_DISABLE_EXPORTS = "false";
     });
   });
 });

@@ -44,11 +44,4 @@ export async function ImportWorkflow() {
     await _import();
     attempts++;
   }
-
-  const completeTasks = await specHelper.findEnqueuedTasks(
-    "profile:completeImport"
-  );
-  for (const t of completeTasks) {
-    await specHelper.runTask("profile:completeImport", t.args[0]);
-  }
 }
