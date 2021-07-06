@@ -26,7 +26,7 @@ export default function SetupStepsNavProgressBar({
         getSetupSteps
       );
     };
-  }, [!shouldDisplay]);
+  }, []);
 
   async function getSetupSteps(newUrl?: string) {
     if (router.pathname.match(/^\/session\//)) return;
@@ -64,7 +64,7 @@ export default function SetupStepsNavProgressBar({
       <Row className="pt-1 px-4">
         <Col>
           <Link href="/setup">
-            <a>{isOnBoardingComplete ? "Setup Complete 🎉" : "Get Started:"}</a>
+            <a>Get Started:</a>
           </Link>
         </Col>
       </Row>
