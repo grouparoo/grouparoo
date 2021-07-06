@@ -57,7 +57,19 @@ export default function SetupStepsNavProgressBar({
     (100 * completeStepsCount) / totalStepsCount
   );
 
-  if (!shouldDisplay || percentComplete === 100) return null;
+  if (!shouldDisplay) return null;
+
+  if (isOnBoardingComplete) {
+    return (
+      <Row className="pt-1 px-4">
+        <Col>
+          <Link href="/setup">
+            <a>{isOnBoardingComplete ? "Setup Complete 🎉" : "Get Started:"}</a>
+          </Link>
+        </Col>
+      </Row>
+    );
+  }
 
   return (
     <div
