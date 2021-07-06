@@ -1,5 +1,5 @@
 export default {
-  up: async function (migration, DataTypes) {
+  up: async function (migration) {
     await migration.sequelize.transaction(async () => {
       // Kick profiles back to "pending" if they're ready but their imports are not
       await migration.sequelize.query(
@@ -9,9 +9,7 @@ export default {
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      throw new Error("irreversible migration");
-    });
+  down: async function () {
+    // nothing to do
   },
 };
