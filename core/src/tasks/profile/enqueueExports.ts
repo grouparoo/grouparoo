@@ -45,7 +45,5 @@ export class ProfilesEnqueueExports extends CLSTask {
         profileId: profile.id,
       });
     }
-
-    return profiles;
   }
 }
