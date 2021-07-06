@@ -26,7 +26,7 @@ let url: string;
 
 describe("integration", () => {
   beforeAll(async () => {
-    fs.rmSync(projectDir, { recursive: true });
+    fs.rmSync(projectDir, { recursive: true, force: true });
   });
 
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
