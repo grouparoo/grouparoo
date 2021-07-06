@@ -1,6 +1,6 @@
-import { api, task, specHelper } from "actionhero";
 import { helper } from "@grouparoo/spec-helper";
-import { Group, Import, plugin, Profile } from "../../../src";
+import { api, task, specHelper } from "actionhero";
+import { Import, plugin, Profile } from "../../../src";
 
 describe("tasks/profiles:enqueueExports", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -11,8 +11,6 @@ describe("tasks/profiles:enqueueExports", () => {
     await plugin.updateSetting("core", "runs-profile-batch-size", 100);
   });
 
-  let group: Group;
-
   describe("profiles:enqueueExports", () => {
     test("can be enqueued", async () => {
       await task.enqueue("profiles:enqueueExports", {
@@ -22,10 +20,6 @@ describe("tasks/profiles:enqueueExports", () => {
         "profiles:enqueueExports"
       );
       expect(found.length).toEqual(1);
-    });
-
-    test("it will not find profiles that are pending", async () => {
-      expect(1).toBe(1);
     });
 
     test("it will find profiles that are ready and have an import pending for export", async () => {
