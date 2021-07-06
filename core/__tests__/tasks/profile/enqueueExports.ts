@@ -132,14 +132,10 @@ describe("tasks/profiles:enqueueExports", () => {
 
       const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
       expect(foundTasks.length).toEqual(2);
-      expect(foundTasks[0].args[0]).toEqual({
-        force: false,
-        profileId: mario.id,
-      });
-      expect(foundTasks[1].args[0]).toEqual({
-        force: false,
-        profileId: luigi.id,
-      });
+
+      const profileIds = foundTasks.map((t) => t.args[0].profileId).sort();
+      expect(profileIds[0]).toEqual(mario.id);
+      expect(profileIds[0]).toEqual(luigi.id);
 
       await mario.destroy();
       await luigi.destroy();
