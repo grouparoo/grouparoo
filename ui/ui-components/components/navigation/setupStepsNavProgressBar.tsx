@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Models } from "../../utils/apiData";
-import { ProgressBar } from "react-bootstrap";
+import { ProgressBar, Row, Col } from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Actions } from "../../utils/apiData";
@@ -26,7 +26,7 @@ export default function SetupStepsNavProgressBar({
         getSetupSteps
       );
     };
-  }, []);
+  }, [!shouldDisplay]);
 
   async function getSetupSteps(newUrl?: string) {
     if (router.pathname.match(/^\/session\//)) return;
@@ -40,6 +40,7 @@ export default function SetupStepsNavProgressBar({
 
     if (setupSteps) {
       setShouldDisplay(toDisplay);
+
       setSteps(setupSteps);
     }
   }
@@ -56,38 +57,42 @@ export default function SetupStepsNavProgressBar({
     (100 * completeStepsCount) / totalStepsCount
   );
 
-  if (!shouldDisplay) return null;
+  if (!shouldDisplay || percentComplete === 100) return null;
 
   return (
     <div
+      className="m-2 px-1 pb-3 pt-1 rounded"
       style={{
         backgroundColor: "var(--grouparoo-background-blue)",
-        width: "100%",
-        padding: 20,
-        marginTop: 10,
       }}
     >
-      <div
+      <Row
+        className="px-3"
         style={{
           fontSize: 18,
-          paddingLeft: 0,
           color: "var(--secondary)",
         }}
       >
-        <Link href="/setup">
-          <a>{isOnBoardingComplete ? "Setup Complete 🎉" : "Get Started:"}</a>
-        </Link>
-      </div>
-      <div
-        style={{
-          paddingLeft: 0,
-          paddingBottom: 10,
-          color: "var(--secondary)",
-        }}
-      >
-        {activeStep?.title}
-      </div>
-      <ProgressBar now={percentComplete} />
+        <Col>
+          <Link href="/setup">
+            <a>{isOnBoardingComplete ? "Setup Complete 🎉" : "Get Started:"}</a>
+          </Link>
+        </Col>
+      </Row>
+      <Row className="px-3">
+        <Col>
+          <div
+            style={{
+              paddingLeft: 0,
+              paddingBottom: 10,
+              color: "var(--secondary)",
+            }}
+          >
+            {activeStep?.title}
+          </div>
+          <ProgressBar now={percentComplete} />
+        </Col>
+      </Row>
     </div>
   );
 }
