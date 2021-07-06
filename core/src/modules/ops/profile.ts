@@ -797,14 +797,6 @@ export namespace ProfileOps {
           }
         );
       }
-
-      // TODO call this from a recurring task
-      if (toExport) {
-        await CLS.enqueueTask("profile:export", {
-          profileId: profile.id,
-          force: false,
-        });
-      }
     }
   }
 }

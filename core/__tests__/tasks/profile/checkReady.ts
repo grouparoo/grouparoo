@@ -180,37 +180,36 @@ describe("tasks/profile:checkReady", () => {
       expect(_importA.newProfileProperties.firstName).toEqual(["Super"]);
       expect(_importA.newProfileProperties.lastName).toEqual(["Mario"]);
       expect(_importA.newGroupIds).toEqual([group.id]);
+      expect(_importA.groupsUpdatedAt).toBeTruthy();
+      expect(_importA.exportedAt).toBeNull();
+
       expect(_importB.newProfileProperties.email).toEqual([
         "mario@example.com",
       ]);
       expect(_importB.newProfileProperties.firstName).toEqual(["Super"]);
       expect(_importB.newProfileProperties.lastName).toEqual(["Mario"]);
       expect(_importB.newGroupIds).toEqual([group.id]);
+      expect(_importB.groupsUpdatedAt).toBeTruthy();
+      expect(_importB.exportedAt).toBeNull();
 
       expect(run.profilesCreated).toEqual(1);
       expect(run.profilesImported).toEqual(1);
     });
 
-    test("it will enqueue a profile:export task", async () => {
-      const profile = await helper.factories.profile();
-      await profile.import();
-      await profile.update({ state: "pending" });
+    test("it will optionally mark the imports as exported to complete the lifecycle", async () => {
+      const run = await helper.factories.run();
 
-      await specHelper.runTask("profiles:checkReady", {});
-
-      await profile.reload();
-      expect(profile.state).toBe("ready");
-
-      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
-      expect(foundTasks.length).toEqual(1);
-      expect(foundTasks[0].args[0]).toEqual({
-        force: false,
-        profileId: profile.id,
+      const _importA = await helper.factories.import(run, {
+        email: "mario@example.com",
+        firstName: "Mario",
+        noExist: "here",
       });
-    });
 
-    test("optionally enqueuing a profile:export task can be skipped", async () => {
-      const profile = await helper.factories.profile();
+      await specHelper.runTask("import:associateProfile", {
+        importId: _importA.id,
+      });
+
+      const profile = await Profile.findOne();
       await profile.import();
       await profile.update({ state: "pending" });
 
@@ -220,8 +219,10 @@ describe("tasks/profile:checkReady", () => {
       await profile.reload();
       expect(profile.state).toBe("ready");
 
-      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
-      expect(foundTasks.length).toEqual(0);
+      await _importA.reload();
+      expect(_importA.groupsUpdatedAt).toBeTruthy();
+      expect(_importA.profileUpdatedAt).toBeTruthy();
+      expect(_importA.exportedAt).toBeTruthy();
 
       process.env.GROUPAROO_DISABLE_EXPORTS = "false";
     });
