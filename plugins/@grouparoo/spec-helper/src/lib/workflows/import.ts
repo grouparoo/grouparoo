@@ -35,6 +35,7 @@ export async function ImportWorkflow() {
     }
 
     await specHelper.runTask("profiles:checkReady", {});
+    await specHelper.runTask("profiles:enqueueExports", {});
 
     pendingProfiles = await Profile.count({ where: { state: "pending" } });
   }
