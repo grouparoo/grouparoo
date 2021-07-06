@@ -35,6 +35,7 @@ export async function ImportWorkflow() {
     }
 
     await specHelper.runTask("profiles:checkReady", {});
+    await specHelper.runTask("profiles:enqueueExports", {});
 
     pendingProfiles = await Profile.count({ where: { state: "pending" } });
   }
@@ -43,12 +44,5 @@ export async function ImportWorkflow() {
   while (pendingProfiles > 0 && attempts < maxAttempts) {
     await _import();
     attempts++;
-  }
-
-  const completeTasks = await specHelper.findEnqueuedTasks(
-    "profile:completeImport"
-  );
-  for (const t of completeTasks) {
-    await specHelper.runTask("profile:completeImport", t.args[0]);
   }
 }
