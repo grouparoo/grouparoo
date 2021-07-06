@@ -43,8 +43,9 @@ const buildImportDefinition = async ({ appId }) => {
 
 const buildBatches = (addOrUpdateImportDefinitionsData) => {
   const payloads = addOrUpdateImportDefinitionsData.map((p) => {
-    delete p.profileId;
-    return p;
+    const cleanData = Object.assign({}, p);
+    delete cleanData.profileId;
+    return cleanData;
   });
 
   const size = new util.TextEncoder().encode(JSON.stringify(payloads)).length;

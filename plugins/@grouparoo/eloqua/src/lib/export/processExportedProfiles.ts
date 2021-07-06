@@ -1,8 +1,14 @@
-import { Errors, ProcessExportedProfilesPluginMethod } from "@grouparoo/core";
+import {
+  Errors,
+  ErrorWithProfileId,
+  ProcessExportedProfilesPluginMethod,
+} from "@grouparoo/core";
 import EloquaClient from "../client/client";
 import { connect } from "../connect";
 
 import { getListId, getContact, invalidate } from "./cachedMethods";
+import { GrouparooCLI } from "@grouparoo/core/dist/modules/cli";
+import error = GrouparooCLI.logger.error;
 let client: EloquaClient;
 
 export const processExportedProfiles: ProcessExportedProfilesPluginMethod =
@@ -15,24 +21,64 @@ export const processExportedProfiles: ProcessExportedProfilesPluginMethod =
   }) => {
     client = await connect(appOptions);
     const sync = await client.bulk.checkSync(remoteKey);
-    if (sync.status === "error") {
-      const logsResponse = await client.bulk.getSyncLogs(remoteKey);
-      let errorsMessages = [];
-      if (logsResponse.items.length > 0) {
-        for (const log of logsResponse.items) {
-          if (log["severity"] === "error") {
-            errorsMessages.push(log["message"]);
+    if (sync) {
+      if (sync.status === "error") {
+        const logsResponse = await client.bulk.getSyncLogs(remoteKey);
+        let errorsMessages = [];
+        if (logsResponse.items.length > 0) {
+          for (const log of logsResponse.items) {
+            if (log["severity"] === "error") {
+              errorsMessages.push(log["message"]);
+            }
           }
         }
+        throw new Error(
+          `Something went wrong. Here are the possible causes: ${errorsMessages.join(
+            " - "
+          )}`
+        );
+      } else if (sync.status === "pending") {
+        return {
+          success: true,
+          processExports: {
+            profileIds: _exports.map((e) => e.profileId),
+            remoteKey,
+            processDelay: 1000,
+          },
+        };
+      } else if (sync.status === "success" || sync.status === "warning") {
+        let success = true;
+        const errors = [];
+        if (sync.status === "warning") {
+          const rejectsResponse = await client.bulk.getSyncRejects(remoteKey);
+          for (const item of rejectsResponse.items) {
+            const rejected = <ErrorWithProfileId>new Error(item["message"]);
+            rejected.profileId = getContactProfileId({
+              email: item["fieldValues"].emailAddress,
+              exports: _exports,
+            });
+            rejected.errorLevel = "info";
+            errors.push(rejected);
+            success = false;
+          }
+        }
+        await postFKChange({
+          syncOperations,
+          appId,
+          exports: _exports,
+          errors,
+        });
+        await handleLists({ appId, appOptions, exports: _exports, errors });
+        return {
+          success,
+          errors,
+        };
+      } else {
+        return {
+          success: false,
+        };
       }
-      throw new Error(
-        `Something went wrong. Here are the possible causes: ${errorsMessages.join(
-          " - "
-        )}`
-      );
-    }
-
-    if (sync.status === "pending") {
+    } else {
       return {
         success: true,
         processExports: {
@@ -42,19 +88,19 @@ export const processExportedProfiles: ProcessExportedProfilesPluginMethod =
         },
       };
     }
-
-    if (sync.status === "success" || sync.status === "warning") {
-      await postFKChange({ syncOperations, appId, exports: _exports });
-      await handleLists(appId, appOptions, _exports);
-      return {
-        success: true,
-      };
-    }
   };
 
-async function postFKChange({ syncOperations, appId, exports: _exports }) {
+async function postFKChange({
+  syncOperations,
+  appId,
+  exports: _exports,
+  errors,
+}) {
   let exportsToDelete = [];
   for (const contact of _exports) {
+    if (errors.find((error) => error.profileId === contact.profileId)) {
+      continue;
+    }
     let newValue = contact.newProfileProperties.emailAddress;
     let oldValue = contact.oldProfileProperties.emailAddress;
     newValue = newValue.toString().toLowerCase().trim();
@@ -77,10 +123,13 @@ async function postFKChange({ syncOperations, appId, exports: _exports }) {
   }
 }
 
-async function handleLists(appId, appOptions, _exports) {
+async function handleLists({ appId, appOptions, exports: _exports, errors }) {
   let listsToUpdate = {};
 
   for (const contact of _exports) {
+    if (errors.find((error) => error.profileId === contact.profileId)) {
+      continue;
+    }
     // add to lists
     for (const listName of contact.newGroups) {
       const listId = await getListId(client, listName, appId, appOptions, true);
@@ -127,6 +176,22 @@ async function handleLists(appId, appOptions, _exports) {
       );
     }
   }
+}
+
+function getContactProfileId({ email, exports: _exports }): string {
+  // look for profile by id on newProfileProperties;
+  for (const profile of _exports) {
+    if (profile.newProfileProperties.emailAddress === email) {
+      return profile.profileId;
+    }
+  }
+  // look for profile by id on oldProfileProperties;
+  for (const profile of _exports) {
+    if (profile.oldProfileProperties.emailAddress === email) {
+      return profile.profileId;
+    }
+  }
+  return null;
 }
 
 async function getListUpdatePayload({

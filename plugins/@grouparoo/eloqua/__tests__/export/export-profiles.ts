@@ -183,9 +183,7 @@ describe("eloqua/exportProfile", () => {
         },
       ],
     });
-
     await indexUsers(newNock);
-
     expect(success).toBe(true);
 
     user1 = await client.contacts.getByEmail(email1);
@@ -696,28 +694,53 @@ describe("eloqua/exportProfile", () => {
   });
 
   test("can handle invalid email error", async () => {
-    const { success } = await exportBatch({
+    const exports = [
+      {
+        profileId: id2,
+        oldProfileProperties: { emailAddress: email2, firstName: "Maria" },
+        newProfileProperties: {
+          emailAddress: "notanemail",
+          firstName: "Maria",
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+        profile: null,
+      },
+    ];
+
+    const { success, processExports } = await exportBatch({
       client,
       appId,
       appOptions,
       syncOperations: DestinationSyncModeData.sync.operations,
-      exports: [
-        {
-          profileId: id2,
-          oldProfileProperties: { emailAddress: email2, firstName: "Maria" },
-          newProfileProperties: {
-            emailAddress: "notanemail",
-            firstName: "Maria",
-          },
-          oldGroups: [],
-          newGroups: [],
-          toDelete: false,
-          profile: null,
-        },
-      ],
+      exports,
     });
     await indexUsers(newNock);
     expect(success).toBe(true);
+
+    const { success: successProcessExportedProfiles, errors } =
+      await processExportedProfiles({
+        connection: null,
+        app: null,
+        destination: null,
+        destinationId: null,
+        destinationOptions: null,
+        appId,
+        appOptions,
+        remoteKey: processExports.remoteKey,
+        exports,
+        syncOperations: DestinationSyncModeData.sync.operations,
+      });
+    expect(successProcessExportedProfiles).toBe(false);
+    expect(errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          profileId: id2,
+          message: "Invalid email address.",
+        }),
+      ])
+    );
 
     // nothing changed
     user2 = await client.contacts.getByEmail(email2);
@@ -785,58 +808,83 @@ describe("eloqua/exportProfile", () => {
     user3 = await client.contacts.getByEmail(email3);
     expect(user3).toBe(null);
 
-    const { success, errors } = await exportBatch({
+    const exports = [
+      {
+        profileId: id1,
+        oldProfileProperties: {
+          emailAddress: email1,
+          firstName: "John",
+          lastName: "Test",
+        },
+        newProfileProperties: {
+          emailAddress: email1,
+          firstName: "Sam",
+          lastName: "Test",
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+        profile: null,
+      },
+      {
+        profileId: id2,
+        oldProfileProperties: { emailAddress: email2, firstName: "Maria" },
+        newProfileProperties: {
+          emailAddress: "bademail",
+          firstName: "William",
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+        profile: null,
+      },
+      {
+        profileId: id3,
+        oldProfileProperties: {},
+        newProfileProperties: {
+          emailAddress: email3,
+          firstName: "Liz",
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+        profile: null,
+      },
+    ];
+
+    const { success, processExports } = await exportBatch({
       client,
       appId,
       appOptions,
       syncOperations: DestinationSyncModeData.sync.operations,
-      exports: [
-        {
-          profileId: id1,
-          oldProfileProperties: {
-            emailAddress: email1,
-            firstName: "John",
-            lastName: "Test",
-          },
-          newProfileProperties: {
-            emailAddress: email1,
-            firstName: "Sam",
-            lastName: "Test",
-          },
-          oldGroups: [],
-          newGroups: [],
-          toDelete: false,
-          profile: null,
-        },
-        {
-          profileId: id2,
-          oldProfileProperties: { emailAddress: email2, firstName: "Maria" },
-          newProfileProperties: {
-            emailAddress: "bademail",
-            firstName: "William",
-          },
-          oldGroups: [],
-          newGroups: [],
-          toDelete: false,
-          profile: null,
-        },
-        {
-          profileId: id3,
-          oldProfileProperties: {},
-          newProfileProperties: {
-            emailAddress: email3,
-            firstName: "Liz",
-          },
-          oldGroups: [],
-          newGroups: [],
-          toDelete: false,
-          profile: null,
-        },
-      ],
+      exports,
     });
     await indexUsers(newNock);
-
     expect(success).toBe(true);
+
+    const { success: successProcessExportedProfiles, errors } =
+      await processExportedProfiles({
+        connection: null,
+        app: null,
+        destination: null,
+        destinationId: null,
+        destinationOptions: null,
+        appId,
+        appOptions,
+        remoteKey: processExports.remoteKey,
+        exports,
+        syncOperations: DestinationSyncModeData.sync.operations,
+      });
+
+    expect(successProcessExportedProfiles).toBe(false);
+    expect(errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          profileId: id2,
+          message: "Invalid email address.",
+        }),
+      ])
+    );
 
     user1 = await client.contacts.getByEmail(email1);
     expect(user1.emailAddress).toEqual(email1);
@@ -960,7 +1008,7 @@ describe("eloqua/exportProfile", () => {
 
     // run batch export
     const exports = makeExports(profiles);
-    const { success, errors } = await exportBatch({
+    const { success, errors, processExports } = await exportBatch({
       client,
       appId,
       appOptions,
@@ -976,17 +1024,24 @@ describe("eloqua/exportProfile", () => {
     const users = await client.contacts.getContactsByEmail(batchEmails);
 
     // verify all were created properly
-    for (const profile of profiles) {
+    for (const profile of exports) {
       let user = { emailAddress: null, firstName: null, lastName: null };
       const filteredContacts = users.filter(
-        (u) => u.emailAddress === profile.emailAddress
+        (u) => u.emailAddress === profile.newProfileProperties.emailAddress
       );
       if (filteredContacts.length > 0) {
         user = filteredContacts[0];
       }
-      expect(user.emailAddress).toEqual(profile.emailAddress);
-      expect(user.firstName).toEqual(profile.firstName);
-      expect(user.lastName).toEqual(profile.lastName);
+      expect(user.emailAddress).toEqual(
+        profile.newProfileProperties.emailAddress
+      );
+      expect(user.firstName).toEqual(profile.newProfileProperties.firstName);
+      expect(user.lastName).toEqual(profile.newProfileProperties.lastName);
+      expect(
+        processExports.profileIds.find(
+          (profileId) => profileId === profile.profileId
+        )
+      ).not.toBeUndefined();
     }
   });
 });
