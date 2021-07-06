@@ -84,7 +84,7 @@ describe("tasks/profiles:enqueueExports", () => {
     });
 
     test("batch size can be configured with a setting", async () => {
-      await plugin.updateSetting("core", "runs-profile-batch-size", 2);
+      await plugin.updateSetting("core", "runs-profile-batch-size", 1);
 
       const mario: Profile = await helper.factories.profile();
       await mario.import();
@@ -114,32 +114,13 @@ describe("tasks/profiles:enqueueExports", () => {
         exportedAt: null,
       });
 
-      const peach: Profile = await helper.factories.profile();
-      await peach.import();
-      await peach.update({ state: "ready" });
-      const peachImport: Import = await helper.factories.import(
-        null,
-        {},
-        peach.id
-      );
-      await peachImport.update({
-        groupsUpdatedAt: new Date(),
-        profileUpdatedAt: new Date(),
-        exportedAt: null,
-      });
-
       await specHelper.runTask("profiles:enqueueExports", {});
 
       const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
-      expect(foundTasks.length).toEqual(2);
-
-      const profileIds = foundTasks.map((t) => t.args[0].profileId).sort();
-      expect(profileIds[0]).toEqual(mario.id);
-      expect(profileIds[0]).toEqual(luigi.id);
+      expect(foundTasks.length).toEqual(1);
 
       await mario.destroy();
       await luigi.destroy();
-      await peach.destroy();
     });
   });
 });
