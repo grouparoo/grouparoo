@@ -22,8 +22,8 @@
   },
   "scripts": {
     "pretest": "npm run lint",
-    "test": "echo 'no tests'",
-    "lint": "prettier --check pages components classes client utils hooks"
+    "test": "jest",
+    "lint": "prettier --check pages components classes client utils hooks __tests__"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.35",
@@ -31,6 +31,8 @@
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
     "@grouparoo/core": "0.4.3-alpha.0",
+    "@testing-library/jest-dom": "5.14.1",
+    "@testing-library/react": "12.0.0",
     "@types/react": "*",
     "@types/react-dom": "*",
     "axios": "0.21.1",
