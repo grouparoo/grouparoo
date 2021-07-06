@@ -254,6 +254,7 @@ export interface ProcessExportedProfilesPluginMethod {
     destinationOptions: SimpleDestinationOptions;
     exports: ExportedProfile[];
     remoteKey: string;
+    syncOperations?: DestinationSyncOperations;
   }): Promise<ExportProfilesPluginMethodResponse>;
 }
 
