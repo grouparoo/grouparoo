@@ -68,10 +68,9 @@ describe("tasks/profiles:enqueueExports", () => {
         exportedAt: null,
       });
 
-      const res = await specHelper.runTask("profiles:enqueueExports", {});
-      expect(res.length).toBe(1);
+      await specHelper.runTask("profiles:enqueueExports", {});
 
-      let foundTasks = await specHelper.findEnqueuedTasks("profile:export");
+      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
       expect(foundTasks.length).toEqual(1);
       expect(foundTasks[0].args[0]).toEqual({
         force: false,
