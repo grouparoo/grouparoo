@@ -1441,6 +1441,7 @@ importers:
       date-fns: 2.22.1
       isomorphic-fetch: 3.0.0
       jest: 27.0.6
+      jest-mock-axios: 4.4.0
       md5: 2.3.0
       moment: 2.29.1
       next: 11.0.1
@@ -1477,6 +1478,7 @@ importers:
       date-fns: 2.22.1
       isomorphic-fetch: 3.0.0
       jest: 27.0.6
+      jest-mock-axios: 4.4.0
       md5: 2.3.0
       moment: 2.29.1
       next: 11.0.1_356f9603e19128c62410edc7920d2e00
@@ -9089,6 +9091,12 @@ packages:
       stack-utils: 2.0.3
     dev: true
 
+  /jest-mock-axios/4.4.0:
+    resolution: {integrity: sha512-MF5MbjIZcv2KCtO6oH/Fmy1sML1LxQoaGyIPRGArDdd9pcsfjWoCmFFUD12GgOTeJw8ChjuVYHN0s8QnhGriQA==}
+    dependencies:
+      synchronous-promise: 2.0.15
+    dev: true
+
   /jest-mock/26.6.2:
     resolution: {integrity: sha512-YyFjePHHp1LzpzYcmgqkJ0nm0gg/lJx2aZFzFy1S6eUqNjXsOqTK10zNRff2dNfssgokjkG65OlWNcIlgd3zew==}
     engines: {node: '>= 10.14.2'}
@@ -14350,6 +14358,10 @@ packages:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
     dev: true
 
+  /synchronous-promise/2.0.15:
+    resolution: {integrity: sha512-k8uzYIkIVwmT+TcglpdN50pS2y1BDcUnBPK9iJeGu0Pl1lOI8pD6wtzgw91Pjpe+RxtTncw32tLxs/R0yNL2Mg==}
+    dev: true
+
   /tar/2.2.2:
     resolution: {integrity: sha512-FCEhQ/4rE1zYv9rYXJw/msRqsnmlje5jHP6huWeBZ704jUTy02c5AZyWujpMR1ax6mVw9NyJMfuK2CMDWVIfgA==}
     dependencies:
@@ -14641,7 +14653,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
-      jest: 27.0.6_ts-node@10.0.0
+      jest: 27.0.6
       jest-util: 27.0.6
       json5: 2.2.0
       lodash: 4.17.21

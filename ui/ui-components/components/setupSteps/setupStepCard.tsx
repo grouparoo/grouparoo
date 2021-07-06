@@ -26,7 +26,10 @@ export default function SetupStepCard({
   return (
     <>
       <Accordion activeKey={activeKey}>
-        <Card border={step.complete ? "success" : null}>
+        <Card
+          border={step.complete ? "success" : null}
+          data-testid="setupStepCard"
+        >
           <Card.Header>
             <Row>
               <Col>

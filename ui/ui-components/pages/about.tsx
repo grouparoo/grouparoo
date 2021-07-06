@@ -44,8 +44,11 @@ export default function Page({
       <h2>API Version</h2>
       <p>
         <strong>
-          Connected to <Badge variant="info">{client.apiVersion}</Badge> of the
-          Grouparoo API.
+          Connected to{" "}
+          <Badge variant="info" data-testid="apiVersion">
+            {client.apiVersion}
+          </Badge>{" "}
+          of the Grouparoo API.
         </strong>
       </p>
 

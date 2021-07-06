@@ -9,7 +9,7 @@ function Welcome({ firstName }: { firstName: string }) {
   );
 }
 
-test("has correct welcome text", () => {
+test("has correct welcome text", async () => {
   render(<Welcome firstName="John" />);
   expect(screen.getByRole("heading")).toHaveTextContent("Welcome, John");
   expect(screen.getByTestId("p1")).toHaveTextContent(
