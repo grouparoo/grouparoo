@@ -1,6 +1,12 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Import, plugin, Profile } from "../../../src";
+import {
+  Import,
+  plugin,
+  Profile,
+  ProfileProperty,
+  Property,
+} from "../../../src";
 
 describe("tasks/profiles:enqueueExports", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -20,6 +26,60 @@ describe("tasks/profiles:enqueueExports", () => {
         "profiles:enqueueExports"
       );
       expect(found.length).toEqual(1);
+    });
+
+    test("it will not export the profile if it is not ready", async () => {
+      const profile = await helper.factories.profile();
+      await profile.import();
+      await profile.update({ state: "pending" });
+
+      const _import: Import = await helper.factories.import(
+        null,
+        {},
+        profile.id
+      );
+      await _import.update({
+        groupsUpdatedAt: new Date(),
+        profileUpdatedAt: new Date(),
+        exportedAt: null,
+      });
+
+      await specHelper.runTask("profiles:enqueueExports", {});
+
+      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
+      expect(foundTasks.length).toBe(0);
+
+      await profile.destroy();
+    });
+
+    test("it will not export the profile if a profile property is not ready", async () => {
+      const profile = await helper.factories.profile();
+      await profile.import();
+      await profile.update({ state: "ready" });
+
+      const _import: Import = await helper.factories.import(
+        null,
+        {},
+        profile.id
+      );
+      await _import.update({
+        groupsUpdatedAt: new Date(),
+        profileUpdatedAt: new Date(),
+        exportedAt: null,
+      });
+
+      const emailProperty = await Property.findOne({ where: { key: "email" } });
+      const profileProperty = await ProfileProperty.findOne({
+        where: { profileId: profile.id, propertyId: emailProperty.id },
+      });
+      await profileProperty.update({ state: "pending" });
+
+      await specHelper.runTask("profiles:enqueueExports", {});
+
+      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
+      expect(foundTasks.length).toBe(0);
+
+      await profile.destroy();
     });
 
     test("it will find profiles that are ready and have an import pending for export", async () => {

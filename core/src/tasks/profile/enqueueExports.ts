@@ -1,8 +1,9 @@
 import { Op } from "sequelize";
+import { Import } from "../../models/Import";
 import { Profile } from "../../models/Profile";
 import { CLSTask } from "../../classes/tasks/clsTask";
+import { ProfileProperty } from "../../models/ProfileProperty";
 import { plugin } from "../../modules/plugin";
-import { Import } from "../../models/Import";
 import { CLS } from "../../modules/cls";
 
 export class ProfilesEnqueueExports extends CLSTask {
@@ -36,10 +37,15 @@ export class ProfilesEnqueueExports extends CLSTask {
             exportedAt: null,
           },
         },
+        { model: ProfileProperty, attributes: ["state"], required: true },
       ],
     });
 
-    for (const profile of profiles) {
+    const readyProfiles = profiles.filter(
+      (profile) => !profile.profileProperties.find((p) => p.state !== "ready")
+    );
+
+    for (const profile of readyProfiles) {
       await CLS.enqueueTask("profile:export", {
         force: false,
         profileId: profile.id,
