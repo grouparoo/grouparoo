@@ -15,10 +15,10 @@ import { invalidate } from "./cachedMethods";
 let client: EloquaClient;
 let exportedProfileFields = new Set<String>();
 
-const findAndSetDestinationIds = async ({ exports }) => {
-  const batchEmails = exports.map((p) => p.foreignKeyValue);
+const findAndSetDestinationIds = async ({ exports: _exports }) => {
+  const batchEmails = _exports.map((p) => p.foreignKeyValue);
   const allResults = await client.contacts.getContactsByEmail(batchEmails);
-  for (const profile of exports) {
+  for (const profile of _exports) {
     const filteredContacts = allResults.filter(
       (c) => c.emailAddress === profile.foreignKeyValue
     );
@@ -26,7 +26,7 @@ const findAndSetDestinationIds = async ({ exports }) => {
       profile.destinationId = filteredContacts[0].id;
     }
   }
-  return exports;
+  return _exports;
 };
 
 const buildImportDefinition = async ({ appId }) => {
@@ -42,19 +42,22 @@ const buildImportDefinition = async ({ appId }) => {
 };
 
 const buildBatches = (addOrUpdateImportDefinitionsData) => {
-  const size = new util.TextEncoder().encode(
-    JSON.stringify(addOrUpdateImportDefinitionsData)
-  ).length;
+  const payloads = addOrUpdateImportDefinitionsData.map((p) => {
+    delete p.profileId;
+    return p;
+  });
+
+  const size = new util.TextEncoder().encode(JSON.stringify(payloads)).length;
   const sizeInMegaBytes = size / 1024 / 1024;
 
   // the limit is 32MB, keeping 20MB to mitigate eventual size divergences.
   if (sizeInMegaBytes < 20) {
-    return [addOrUpdateImportDefinitionsData];
+    return [payloads];
   }
   const chunkSize = Math.ceil(
-    addOrUpdateImportDefinitionsData.length / Math.ceil(sizeInMegaBytes / 20)
+    payloads.length / Math.ceil(sizeInMegaBytes / 20)
   );
-  return addOrUpdateImportDefinitionsData.reduce((resultArray, item, index) => {
+  return payloads.reduce((resultArray, item, index) => {
     const chunkIndex = Math.floor(index / chunkSize);
     if (!resultArray[chunkIndex]) {
       resultArray[chunkIndex] = []; // start a new chunk
@@ -115,8 +118,12 @@ const buildImportDefinitionData = ({ profileToExport, syncOperations }) => {
   return payload;
 };
 
-export async function deleteContacts({ appId, syncOperations, exports }) {
-  for (const profile of exports) {
+export async function deleteContacts({
+  appId,
+  syncOperations,
+  exports: _exports,
+}) {
+  for (const profile of _exports) {
     if (profile.processed || profile.error) {
       continue;
     }
@@ -141,7 +148,7 @@ export async function deleteContacts({ appId, syncOperations, exports }) {
       profile.error = error;
     }
   }
-  return exports;
+  return _exports;
 }
 
 async function assignForeignKeys({ appId, exportedProfile }) {
@@ -178,20 +185,20 @@ export async function exportBatch({
   appId,
   appOptions,
   syncOperations,
-  exports,
+  exports: _exports,
 }) {
   if (currentClient) {
     client = currentClient;
   }
-  exports = await buildBatchExports({ appId, exports });
-  exports = await findAndSetDestinationIds({ exports });
-  exports = await deleteContacts({ appId, syncOperations, exports });
+  _exports = await buildBatchExports({ appId, exports: _exports });
+  _exports = await findAndSetDestinationIds({ exports: _exports });
+  _exports = await deleteContacts({ appId, syncOperations, exports: _exports });
   const addOrUpdateImportDefinitionData = processAddAndUpdatedExports({
     syncOperations,
-    exports,
+    exports: _exports,
   });
 
-  const errors = checkErrors(exports);
+  const errors = checkErrors(_exports);
   if (addOrUpdateImportDefinitionData.length > 0) {
     const importDefinition = await buildImportDefinition({ appId });
     const exportsBatches = buildBatches(addOrUpdateImportDefinitionData);
@@ -211,9 +218,9 @@ export async function exportBatch({
   return { success: errors.length === 0, errors };
 }
 
-async function buildBatchExports({ appId, exports }) {
+async function buildBatchExports({ appId, exports: _exports }) {
   const batchExports: BatchExport[] = [];
-  for (const exportedProfile of exports) {
+  for (const exportedProfile of _exports) {
     let info: BatchExport = Object.assign({}, exportedProfile);
     try {
       info = await assignForeignKeys({ appId, exportedProfile: info });
@@ -276,9 +283,9 @@ function formatVar(value) {
   return value;
 }
 
-function processAddAndUpdatedExports({ syncOperations, exports }) {
+function processAddAndUpdatedExports({ syncOperations, exports: _exports }) {
   const addOrUpdateImportDefinitionData = [];
-  for (const profile of exports) {
+  for (const profile of _exports) {
     if (profile.processed || profile.error) {
       continue;
     }

@@ -358,6 +358,7 @@ describe("eloqua/exportProfile", () => {
           profile: null,
         },
       ],
+      syncOperations: DestinationSyncModeData.sync.operations,
     });
 
     expect(success).toBe(true);
@@ -417,6 +418,7 @@ describe("eloqua/exportProfile", () => {
       appOptions,
       remoteKey: processExports.remoteKey,
       exports,
+      syncOperations: DestinationSyncModeData.sync.operations,
     });
 
     expect(success).toBe(true);
@@ -483,6 +485,7 @@ describe("eloqua/exportProfile", () => {
       appOptions,
       remoteKey: processExports.remoteKey,
       exports,
+      syncOperations: DestinationSyncModeData.sync.operations,
     });
 
     expect(success).toBe(true);
@@ -543,14 +546,13 @@ describe("eloqua/exportProfile", () => {
       appOptions,
       remoteKey: processExports.remoteKey,
       exports,
+      syncOperations: DestinationSyncModeData.sync.operations,
     });
 
     expect(success).toBe(true);
 
-    user1 = await client.contacts.getByEmail(email1); // keep the old contact
-    expect(user1.emailAddress).toBe(email1);
-    expect(user1.firstName).toBe("John");
-    expect(user1.lastName).toBe(undefined);
+    user1 = await client.contacts.getByEmail(email1); // delete the old contact
+    expect(user1).toBe(null);
 
     user1 = await client.contacts.getByEmail(newEmail1); // create a new contact with the new emailAddress
     expect(user1.emailAddress).toBe(newEmail1);
@@ -952,7 +954,7 @@ describe("eloqua/exportProfile", () => {
     expect(await client.contacts.getByEmail(email4)).toBeNull();
   });
 
-  test("can handle batches with lots of prospects", async () => {
+  test("can handle batches with lots of profiles", async () => {
     // generate profiles
     const profiles = generateLongProfiles(150);
 

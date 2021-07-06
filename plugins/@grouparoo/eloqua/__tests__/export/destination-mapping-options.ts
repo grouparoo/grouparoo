@@ -1,7 +1,4 @@
 import path from "path";
-process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/eloqua": { path: path.join(__dirname, "..", "..") },
-});
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
@@ -11,8 +8,10 @@ import {
 } from "../../src/lib/export/destinationMappingOptions";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { exportBatch } from "../../../pardot/src/lib/export/exportProfiles";
-import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
+
+process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
+  "@grouparoo/eloqua": { path: path.join(__dirname, "..", "..") },
+});
 
 const nockFile = path.join(
   __dirname,
@@ -46,8 +45,15 @@ async function runDestinationMappingOptions({}) {
 describe("eloqua/destinationMappingOptions", () => {
   test("can fetch user fields", async () => {
     const client = await connect(appOptions);
+    // create custom field EDM playlist.
+    const edmPlaylist = await client.contacts.fields.create({
+      name: "edm playlist name",
+      dataType: "text",
+      displayType: "text",
+      updateType: "always",
+    });
+    expect(edmPlaylist).not.toBe(null);
     const fields = await getContactFields(client);
-
     const businessPhone = fields.find((f) => f.key === "businessPhone");
     const mobilePhone = fields.find((f) => f.key === "mobilePhone");
 
@@ -56,6 +62,7 @@ describe("eloqua/destinationMappingOptions", () => {
     const lastModifiedByCRM = fields.find(
       (f) => f.key === "lastModifiedByCRMSystem"
     );
+    const edmPlaylistName = fields.find((f) => f.key === "edmPlaylistName");
 
     expect(businessPhone.type).toBe("phoneNumber");
     expect(businessPhone.important).toBe(false);
@@ -67,6 +74,10 @@ describe("eloqua/destinationMappingOptions", () => {
     expect(lastName.important).toBe(true);
     expect(lastModifiedByCRM.type).toBe("date");
     expect(lastModifiedByCRM.important).toBe(false);
+    expect(edmPlaylistName.type).toBe("string");
+    expect(edmPlaylistName.important).toBe(false);
+    // delete custom field EDM playlist.
+    await client.contacts.fields.delete(edmPlaylist.id);
   });
 
   test("can load all destinationMappingOptions", async () => {

@@ -40,6 +40,13 @@ export default class List {
     });
   }
 
+  getSyncLogs(syncUri: string, limit: number = 50000, offset: number = 0) {
+    return this.client._request({
+      method: "GET",
+      url: `/api/bulk/2.0${syncUri}/logs`,
+    });
+  }
+
   createSync(importUri: string) {
     return this.client._request({
       method: "POST",

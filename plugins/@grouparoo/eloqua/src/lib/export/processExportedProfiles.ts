@@ -1,17 +1,35 @@
-import { ProcessExportedProfilesPluginMethod } from "@grouparoo/core";
+import { Errors, ProcessExportedProfilesPluginMethod } from "@grouparoo/core";
 import EloquaClient from "../client/client";
 import { connect } from "../connect";
 
-import { getListId, getContact } from "./cachedMethods";
+import { getListId, getContact, invalidate } from "./cachedMethods";
 let client: EloquaClient;
 
 export const processExportedProfiles: ProcessExportedProfilesPluginMethod =
-  async ({ appId, appOptions, remoteKey, exports: _exports }) => {
+  async ({
+    appId,
+    appOptions,
+    remoteKey,
+    exports: _exports,
+    syncOperations,
+  }) => {
     client = await connect(appOptions);
     const sync = await client.bulk.checkSync(remoteKey);
-
     if (sync.status === "error") {
-      throw new Error("Something went wrong");
+      const logsResponse = await client.bulk.getSyncLogs(remoteKey);
+      let errorsMessages = [];
+      if (logsResponse.items.length > 0) {
+        for (const log of logsResponse.items) {
+          if (log["severity"] === "error") {
+            errorsMessages.push(log["message"]);
+          }
+        }
+      }
+      throw new Error(
+        `Something went wrong. Here are the possible causes: ${errorsMessages.join(
+          " - "
+        )}`
+      );
     }
 
     if (sync.status === "pending") {
@@ -26,12 +44,38 @@ export const processExportedProfiles: ProcessExportedProfilesPluginMethod =
     }
 
     if (sync.status === "success" || sync.status === "warning") {
+      await postFKChange({ syncOperations, appId, exports: _exports });
       await handleLists(appId, appOptions, _exports);
       return {
         success: true,
       };
     }
   };
+
+async function postFKChange({ syncOperations, appId, exports: _exports }) {
+  let exportsToDelete = [];
+  for (const contact of _exports) {
+    let newValue = contact.newProfileProperties.emailAddress;
+    let oldValue = contact.oldProfileProperties.emailAddress;
+    newValue = newValue.toString().toLowerCase().trim();
+    if (oldValue) {
+      oldValue = oldValue.toString().toLowerCase().trim();
+    }
+    if (oldValue) {
+      oldValue = oldValue.toString();
+      if (newValue !== oldValue && oldValue.length > 0) {
+        exportsToDelete.push(contact);
+        if (syncOperations.delete) {
+          const user = await client.contacts.getByEmail(oldValue);
+          if (user) {
+            await client.contacts.delete(user["id"]);
+            await invalidate(appId);
+          }
+        }
+      }
+    }
+  }
+}
 
 async function handleLists(appId, appOptions, _exports) {
   let listsToUpdate = {};
@@ -40,7 +84,7 @@ async function handleLists(appId, appOptions, _exports) {
     // add to lists
     for (const listName of contact.newGroups) {
       const listId = await getListId(client, listName, appId, appOptions, true);
-      listsToUpdate = await treatListToUpdate({
+      listsToUpdate = await getListUpdatePayload({
         appId,
         appOptions,
         listsToUpdate,
@@ -60,7 +104,7 @@ async function handleLists(appId, appOptions, _exports) {
           appOptions,
           false
         );
-        listsToUpdate = await treatListToUpdate({
+        listsToUpdate = await getListUpdatePayload({
           appId,
           appOptions,
           listsToUpdate,
@@ -85,7 +129,7 @@ async function handleLists(appId, appOptions, _exports) {
   }
 }
 
-async function treatListToUpdate({
+async function getListUpdatePayload({
   appId,
   appOptions,
   listsToUpdate,

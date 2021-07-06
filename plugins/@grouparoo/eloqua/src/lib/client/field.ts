@@ -19,7 +19,6 @@ export default class Field {
     return this.client._request({
       method: "GET",
       url: `/api/bulk/2.0/${this.bulkObjectName}/fields`,
-      // url: `/api/REST/1.0/assets/${this.objectName}/fields`,
       params: options,
     });
   }
@@ -27,7 +26,6 @@ export default class Field {
   getAllWithDepth(options?: any) {
     return this.client._request({
       method: "GET",
-      // url: `/api/bulk/2.0/${this.bulkObjectName}/fields`,
       url: `/api/REST/1.0/assets/${this.objectName}/fields`,
       params: options,
     });
