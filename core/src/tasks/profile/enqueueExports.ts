@@ -37,7 +37,6 @@ export class ProfilesEnqueueExports extends CLSTask {
           },
         },
       ],
-      logging: console.log,
     });
 
     for (const profile of profiles) {
