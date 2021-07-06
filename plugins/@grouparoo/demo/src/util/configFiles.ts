@@ -66,7 +66,7 @@ async function generateConfig(
 
 function deleteDir(configDir) {
   if (fs.existsSync(configDir)) {
-    fs.rmdirSync(configDir, { recursive: true });
+    fs.rmSync(configDir, { recursive: true });
   }
 }
 
