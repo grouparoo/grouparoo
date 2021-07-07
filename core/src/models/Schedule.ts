@@ -174,6 +174,7 @@ export class Schedule extends LoggedModel<Schedule> {
 
   async apiData() {
     const options = await this.getOptions(null);
+    const filters = await this.getFilters();
 
     return {
       id: this.id,
@@ -183,6 +184,7 @@ export class Schedule extends LoggedModel<Schedule> {
       recurring: this.recurring,
       locked: this.locked,
       options,
+      filters,
       recurringFrequency: this.recurringFrequency,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),

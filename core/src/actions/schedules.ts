@@ -79,6 +79,7 @@ export class ScheduleCreate extends AuthenticatedAction {
       state: { required: false },
       options: { required: false },
       recurringFrequency: { required: true, default: 0 },
+      filters: { required: false },
     };
   }
 
@@ -91,6 +92,7 @@ export class ScheduleCreate extends AuthenticatedAction {
     });
 
     if (params.options) await schedule.setOptions(params.options);
+    if (params.filters) await schedule.setFilters(params.filters);
     if (params.state) await schedule.update({ state: params.state });
 
     await ConfigWriter.run();
@@ -117,6 +119,7 @@ export class ScheduleEdit extends AuthenticatedAction {
       state: { required: false },
       options: { required: false },
       recurringFrequency: { required: false },
+      filters: { required: false },
     };
   }
 
@@ -131,6 +134,7 @@ export class ScheduleEdit extends AuthenticatedAction {
     }
 
     if (params.options) await schedule.setOptions(params.options);
+    if (params.filters) await schedule.setFilters(params.filters);
 
     await schedule.update({ state: params.state, name: params.name });
 
@@ -149,7 +153,7 @@ export class ScheduleFilterOptions extends AuthenticatedAction {
     this.name = "schedule:filterOptions";
     this.description = "view a the filter options for a schedule";
     this.outputExample = {};
-    this.permission = { topic: "schedule", mode: "read" };
+    this.permission = { topic: "source", mode: "read" };
     this.inputs = {
       id: { required: true },
     };
