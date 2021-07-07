@@ -27,6 +27,7 @@ library.add(
   faFileExport,
   faFileImport,
   faHome,
+  faSlack,
   faStream,
   faTerminal,
   faThLarge,

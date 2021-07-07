@@ -3,20 +3,17 @@ import { Models } from "../../utils/apiData";
 import { ProgressBar, Row, Col, Button } from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import {
-  FontAwesomeIcon,
-  FontAwesomeIconProps,
-} from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Actions } from "../../utils/apiData";
 
 export default function SetupStepsNavProgressBar({
   execApi,
   setupStepHandler,
-  successHandler,
 }) {
   const [steps, setSteps] = useState<Models.SetupStepType[]>([]);
   const [shouldDisplay, setShouldDisplay] = useState(false);
   const [initialOnBoardingState, setInitialOnBoardingState] = useState(null);
+  //because shouldDisplay is set on every Setup Step call, track if a user manually hides setup steps separately
   const [hideCard, setHideCard] = useState(null);
   const router = useRouter();
 
@@ -55,7 +52,6 @@ export default function SetupStepsNavProgressBar({
   const isOnBoardingComplete = steps.every(
     (step) => step.complete || step.skipped
   );
-
   const totalStepsCount = steps.length;
   const completeStepsCount = steps.filter(
     (step) => step.complete || step.skipped
@@ -66,20 +62,10 @@ export default function SetupStepsNavProgressBar({
 
   let onBoardingState = percentComplete === 100 ? "complete" : "incomplete";
 
+  //make sure we've waited until percentComplete calculates to set initialOnBoardingState
   if (initialOnBoardingState === null && !isNaN(percentComplete)) {
-    console.log(`done: ${percentComplete}`);
     setInitialOnBoardingState(onBoardingState);
   }
-
-  useEffect(() => {
-    console.log(`was: ${initialOnBoardingState} now: ${onBoardingState}`);
-    if (
-      initialOnBoardingState === "incomplete" &&
-      onBoardingState === "complete"
-    ) {
-      console.log("done!!!");
-    }
-  }, [percentComplete]);
 
   if (
     !shouldDisplay ||
