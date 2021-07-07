@@ -1,6 +1,16 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
-import { plugin, App, Log, Schedule, Source, Option, Run } from "../../src";
+import {
+  plugin,
+  App,
+  Log,
+  Schedule,
+  Source,
+  Option,
+  Run,
+  Filter,
+} from "../../src";
+import { FilterHelper } from "../../src/modules/filterHelper";
 
 describe("models/schedule", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -421,6 +431,15 @@ describe("models/schedule", () => {
               profileProperty: async () => {
                 return [];
               },
+              sourceFilters: async () => {
+                return [
+                  {
+                    key: "id",
+                    ops: ["greater than", "less than"],
+                    canHaveRelativeMatch: false,
+                  },
+                ];
+              },
             },
           },
         ],
@@ -517,7 +536,8 @@ describe("models/schedule", () => {
       const plugin = api.plugins.plugins.filter(
         (p) => p.name === "test-plugin"
       )[0];
-      delete plugin.connections[0].methods.profiles;
+      const originalMethod = plugin.connections[0].methods.profiles;
+      plugin.connections[0].methods.profiles = undefined;
       expect(await source.scheduleAvailable()).toBe(false);
 
       await expect(
@@ -526,6 +546,171 @@ describe("models/schedule", () => {
           sourceId: source.id,
         })
       ).rejects.toThrow(/cannot have a schedule/);
+
+      // replace method
+      plugin.connections[0].methods.profiles = originalMethod;
+    });
+
+    describe("filters", () => {
+      test("we can determine if schedule's filters have been changed", async () => {
+        const schedule = await Schedule.create({
+          key: "test",
+          type: "string",
+          sourceId: source.id,
+        });
+
+        await schedule.setFilters([
+          { key: "id", match: "0", op: "greater than" },
+        ]);
+        const filters = await schedule.getFilters();
+
+        expect(FilterHelper.filtersAreEqual(filters, [])).toBe(false);
+        expect(
+          FilterHelper.filtersAreEqual(filters, [
+            { key: "id", match: "0", op: "greater than" },
+          ])
+        ).toBe(true);
+        expect(
+          FilterHelper.filtersAreEqual(filters, [
+            { key: "id", match: "1", op: "greater than" },
+          ])
+        ).toBe(false);
+        expect(
+          FilterHelper.filtersAreEqual(filters, [
+            { key: "id", match: "0", op: "less than" },
+          ])
+        ).toBe(false);
+
+        await schedule.destroy();
+      });
+
+      test("it can get the filter options from the plugin", async () => {
+        const schedule = await Schedule.create({
+          key: "test",
+          type: "string",
+          sourceId: source.id,
+        });
+
+        const filterOptions = await FilterHelper.pluginFilterOptions(schedule);
+        expect(filterOptions).toEqual([
+          {
+            key: "id",
+            ops: ["greater than", "less than"],
+            canHaveRelativeMatch: false,
+          },
+        ]);
+
+        await schedule.destroy();
+      });
+
+      test("it will memoize filters as they are set", async () => {
+        const schedule = await Schedule.create({
+          key: "test",
+          type: "string",
+          sourceId: source.id,
+        });
+
+        await schedule.setFilters([
+          { op: "greater than", match: 1, key: "id" },
+        ]);
+
+        expect(schedule.filters.length).toBe(1);
+        expect(schedule.filters[0].op).toBe("greater than");
+        expect(schedule.filters[0].match).toBe("1");
+        expect(schedule.filters[0].key).toBe("id");
+
+        await schedule.destroy();
+      });
+
+      test("it will use memoized filters if they exist", async () => {
+        const schedule = await Schedule.create({
+          key: "test",
+          type: "string",
+          sourceId: source.id,
+        });
+
+        await schedule.setFilters([
+          { op: "greater than", match: 999, key: "id" },
+        ]);
+
+        schedule.filters = [
+          Filter.build({
+            propertyId: schedule.id,
+            position: 1,
+            key: "foo",
+            match: "-1",
+            op: "less than",
+          }),
+        ];
+
+        const filters = await schedule.getFilters();
+        expect(filters.length).toBe(1);
+        expect(filters[0].key).toEqual("foo");
+        expect(filters[0].match).toEqual("-1");
+        expect(filters[0].op).toEqual("less than");
+
+        await schedule.destroy();
+      });
+
+      test("filters that match the options can be set", async () => {
+        const schedule = await Schedule.create({
+          key: "test",
+          type: "string",
+          sourceId: source.id,
+        });
+
+        await schedule.setFilters([
+          { op: "greater than", match: 1, key: "id" },
+          { op: "less than", match: 99, key: "id" },
+        ]);
+
+        const filters = await schedule.getFilters();
+        expect(filters).toEqual([
+          {
+            op: "greater than",
+            match: "1",
+            key: "id",
+            relativeMatchDirection: null,
+            relativeMatchNumber: null,
+            relativeMatchUnit: null,
+          },
+          {
+            op: "less than",
+            match: "99",
+            key: "id",
+            relativeMatchDirection: null,
+            relativeMatchNumber: null,
+            relativeMatchUnit: null,
+          },
+        ]);
+
+        await schedule.destroy();
+      });
+
+      test("deleting a schedule also deleted the filters", async () => {
+        const count = await Filter.count({ where: { ownerType: "schedule" } });
+        expect(count).toBe(0);
+      });
+
+      test("filters that do not match the options cannot be set", async () => {
+        const schedule = await Schedule.create({
+          key: "test",
+          type: "string",
+          sourceId: source.id,
+        });
+
+        await expect(
+          schedule.setFilters([
+            { op: "greater than", match: 1, key: "other-key" },
+          ])
+        ).rejects.toThrow("other-key is not filterable");
+
+        await expect(
+          schedule.setFilters([{ op: "max it out", match: 1, key: "id" }])
+        ).rejects.toThrow('"max it out" cannot be applied to id');
+
+        await schedule.destroy();
+      });
     });
   });
 });

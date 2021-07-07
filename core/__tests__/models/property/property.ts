@@ -834,7 +834,7 @@ describe("models/property", () => {
       });
 
       test("deleting a property also deleted the filters", async () => {
-        const count = await Filter.count();
+        const count = await Filter.count({ where: { ownerType: "property" } });
         expect(count).toBe(0);
       });
 
