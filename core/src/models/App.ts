@@ -125,7 +125,12 @@ export class App extends LoggedModel<App> {
 
   async afterSetOptions(hasChanges: boolean) {
     if (hasChanges && !this.isSoftDeleted) {
-      await redis.doCluster("api.rpc.app.disconnect", [this.id]);
+      await redis.doCluster(
+        "api.rpc.app.disconnect",
+        [this.id],
+        undefined,
+        true
+      );
     }
   }
 

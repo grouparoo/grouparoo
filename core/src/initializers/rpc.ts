@@ -42,9 +42,4 @@ export class GrouparooRPC extends Initializer {
       Property.invalidateLocalCache();
     };
   }
-
-  // We want to allow any RPC commands in-flight to have time to complete
-  async stop() {
-    await utils.sleep(101);
-  }
 }
