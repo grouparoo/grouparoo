@@ -12,9 +12,10 @@ export default function SetupStepsNavProgressBar({
 }) {
   const [steps, setSteps] = useState<Models.SetupStepType[]>([]);
   const [shouldDisplay, setShouldDisplay] = useState(false);
-  const [initialOnBoardingState, setInitialOnBoardingState] = useState(null);
+  const [initialOnBoardingState, setInitialOnBoardingState] =
+    useState<boolean>(null);
   //because shouldDisplay is set on every Setup Step call, track if a user manually hides setup steps separately
-  const [hideCard, setHideCard] = useState(null);
+  const [hideCard, setHideCard] = useState<boolean>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -60,18 +61,14 @@ export default function SetupStepsNavProgressBar({
     (100 * completeStepsCount) / totalStepsCount
   );
 
-  let onBoardingState = percentComplete === 100 ? "complete" : "incomplete";
+  let onBoardingState = percentComplete === 100 ? true : false;
 
   //make sure we've waited until percentComplete calculates to set initialOnBoardingState
   if (initialOnBoardingState === null && !isNaN(percentComplete)) {
     setInitialOnBoardingState(onBoardingState);
   }
 
-  if (
-    !shouldDisplay ||
-    initialOnBoardingState === "complete" ||
-    hideCard === true
-  )
+  if (!shouldDisplay || initialOnBoardingState === true || hideCard === true)
     return null;
 
   return (
@@ -81,8 +78,7 @@ export default function SetupStepsNavProgressBar({
         backgroundColor: "var(--grouparoo-background-blue)",
       }}
     >
-      {initialOnBoardingState === "incomplete" &&
-      onBoardingState === "complete" ? (
+      {initialOnBoardingState === false && onBoardingState === true ? (
         <Row>
           <Col className="d-flex justify-content-end mr-1 text-light">
             {" "}
