@@ -22,7 +22,7 @@
   },
   "scripts": {
     "pretest": "npm run lint",
-    "test": "../../node_modules/.pnpm/jest@27.0.6/node_modules/jest/bin/jest.js",
+    "test": "jest",
     "lint": "prettier --check pages components classes client utils hooks __tests__"
   },
   "devDependencies": {
