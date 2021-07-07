@@ -45,34 +45,32 @@ export default function Page(props) {
       return errorHandler.set({ error: "select profile identification" });
     }
 
-    if (confirm("are you sure?")) {
-      setLoading(true);
-      const response: Actions.SourceBootstrapUniqueProperty = await execApi(
-        "post",
-        `/source/${source.id}/bootstrapUniqueProperty`,
-        Object.assign(newProperty, { mappedColumn: newMappingKey })
+    setLoading(true);
+    const response: Actions.SourceBootstrapUniqueProperty = await execApi(
+      "post",
+      `/source/${source.id}/bootstrapUniqueProperty`,
+      Object.assign(newProperty, { mappedColumn: newMappingKey })
+    );
+    if (response?.property) {
+      successHandler.set({ message: "Property created" });
+
+      const prrResponse: Actions.PropertiesList = await execApi(
+        "get",
+        `/properties`,
+        { includeExamples: true, unique: true, state: "ready" }
       );
-      if (response?.property) {
-        successHandler.set({ message: "Property created" });
-
-        const prrResponse: Actions.PropertiesList = await execApi(
-          "get",
-          `/properties`,
-          { includeExamples: true, unique: true, state: "ready" }
-        );
-        if (prrResponse?.properties) {
-          setProperties(prrResponse.properties);
-          setPropertyExamples(prrResponse.examples);
-        }
-
-        setNewMappingValue(response.property.key);
-        document.getElementById(
-          response.property.id
-          // @ts-ignore
-        ).checked = true;
+      if (prrResponse?.properties) {
+        setProperties(prrResponse.properties);
+        setPropertyExamples(prrResponse.examples);
       }
-      setLoading(false);
+
+      setNewMappingValue(response.property.key);
+      document.getElementById(
+        response.property.id
+        // @ts-ignore
+      ).checked = true;
     }
+    setLoading(false);
   };
 
   const updateMapping = async (event) => {

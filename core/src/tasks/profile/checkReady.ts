@@ -22,6 +22,6 @@ export class ProfilesCheckReady extends CLSTask {
       ? process.env.GROUPAROO_DISABLE_EXPORTS !== "true"
       : true;
 
-    await ProfileOps.makeReady(limit, toExport);
+    await ProfileOps.makeReadyAndCompleteImports(limit, toExport);
   }
 }

@@ -4,6 +4,7 @@ import { Property } from "../../models/Property";
 import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
+import { Export } from "../../models/Export";
 import { GroupMember } from "../../models/GroupMember";
 import { Log } from "../../models/Log";
 import { api } from "actionhero";
@@ -12,6 +13,7 @@ import { waitForLock } from "../locks";
 import { ProfilePropertyOps } from "./profileProperty";
 import { CLS } from "../../modules/cls";
 import { GroupRule } from "../../models/GroupRule";
+import { Import } from "../../models/Import";
 
 export interface ProfilePropertyType {
   [key: string]: {
@@ -469,15 +471,45 @@ export namespace ProfileOps {
   export async function _export(
     profile: Profile,
     force = false,
-    oldGroupsOverride: Group[] = [],
+    oldGroups: Group[] = [],
     saveExports = true
   ) {
     const groups = await profile.$get("groups");
 
     const destinations = await Destination.destinationsForGroups([
+      ...oldGroups,
       ...groups,
-      ...oldGroupsOverride,
     ]);
+
+    // We want to find destinations which aren't in the above set and already have an Export for this Profile.
+    // That's a sign that the Profile is about to get a toDelete export
+    const existingExportNotDeleted: { destinationId: string }[] =
+      await api.sequelize.query(
+        `
+    SELECT * from "exports"
+    JOIN (
+      SELECT "destinationId", MAX("createdAt") as "createdAt"
+      FROM "exports"
+      WHERE "profileId" = '${profile.id}'
+      GROUP BY "destinationId"
+    ) AS "latest"
+    ON "latest"."destinationId" = "exports"."destinationId" AND "latest"."createdAt" = "exports"."createdAt"
+    WHERE "profileId" = '${profile.id}'
+    AND "toDelete" = false
+    ;
+    `,
+        {
+          type: QueryTypes.SELECT,
+          model: Export,
+        }
+      );
+
+    for (const _export of existingExportNotDeleted) {
+      if (!destinations.map((d) => d.id).includes(_export.destinationId)) {
+        const destination = await Destination.findById(_export.destinationId);
+        destinations.push(destination);
+      }
+    }
 
     return Promise.all(
       destinations.map((destination) =>
@@ -494,17 +526,14 @@ export namespace ProfileOps {
   /**
    * Fully Import and Export a profile
    */
-  export async function sync(
-    profile: Profile,
-    force = true,
-    oldGroupsOverride?: Group[],
-    toExport = true
-  ) {
+  export async function sync(profile: Profile, force = true, toExport = true) {
+    const oldGroups = await profile.$get("groups");
+
     await profile.markPending();
     await profile.import();
     await profile.updateGroupMembership();
     await profile.update({ state: "ready" });
-    if (toExport) await profile.export(force, oldGroupsOverride);
+    return ProfileOps._export(profile, force, oldGroups, toExport);
   }
 
   /**
@@ -692,9 +721,12 @@ export namespace ProfileOps {
 
   /**
    * Find profiles that are not ready but whose properties are and make them ready.
-   * Task `profile:completeImport` will then process the profiles.
+   * Then, process the related imports.
    */
-  export async function makeReady(limit = 100, toExport = true) {
+  export async function makeReadyAndCompleteImports(
+    limit = 100,
+    toExport = true
+  ) {
     let profiles: Profile[] = await api.sequelize.query(
       `
     SELECT "id" from "profiles" where "state" = 'pending'
@@ -725,11 +757,76 @@ export namespace ProfileOps {
 
     if (profiles.length === 0) return [];
 
-    await CLS.enqueueTask("profile:completeImport", {
-      profileIds: profiles.map((p) => p.id),
-      toExport,
-    });
+    await completeProfileImports(
+      profiles.map((p) => p.id),
+      toExport
+    );
 
     return profiles;
+  }
+
+  async function completeProfileImports(
+    profileIds: string[],
+    toExport: boolean
+  ) {
+    const properties = await Property.findAllWithCache();
+    const profiles = await Profile.findAll({
+      where: {
+        id: { [Op.in]: profileIds },
+      },
+      include: [
+        { model: ProfileProperty, required: true },
+        { model: Import, required: false, where: { profileUpdatedAt: null } },
+      ],
+    });
+    if (profiles.length === 0) return;
+
+    for (const profile of profiles) {
+      const mergedValues = {};
+      const imports = profile.imports;
+
+      for (const _import of imports.sort(
+        (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
+      )) {
+        const data = _import.data;
+        for (const key in data) {
+          // only if we still have property
+          if (properties.find((r) => r.key === key)) {
+            mergedValues[key] = data[key];
+          }
+        }
+      }
+
+      if (Object.keys(mergedValues).length > 0) {
+        await profile.addOrUpdateProperties(mergedValues);
+        delete profile.profileProperties; // will be reloaded
+      }
+    }
+
+    const memberships = await ProfileOps.updateGroupMemberships(profiles);
+    const now = new Date();
+
+    for (const profile of profiles) {
+      const imports = profile.imports;
+      if (imports.length > 0) {
+        const newProfileProperties = await profile.simplifiedProperties();
+        const newGroupIds = Object.keys(memberships[profile.id]).filter(
+          (groupId) => memberships[profile.id][groupId] === true
+        );
+
+        await Import.update(
+          {
+            newProfileProperties: newProfileProperties,
+            profileUpdatedAt: now,
+            newGroupIds: newGroupIds,
+            groupsUpdatedAt: now,
+            exportedAt: toExport ? undefined : now, // we want to indicate that the import's lifecycle is complete
+          },
+          {
+            where: { id: { [Op.in]: imports.map((i) => i.id) } },
+          }
+        );
+      }
+    }
   }
 }
