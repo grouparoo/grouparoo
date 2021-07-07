@@ -13,15 +13,9 @@ import { App, AppOption } from "./../models/App";
 import { LoggedModel } from "../classes/loggedModel";
 import { LockableHelper } from "./lockableHelper";
 import { plural } from "pluralize";
-import { Mapping } from "../models/Mapping";
+import { modelName } from "./modelName";
 
 export const ObfuscatedPasswordString = "__ObfuscatedPassword";
-
-function modelName(instance): string {
-  let name = instance.constructor.name;
-  name = name[0].toLowerCase() + name.substr(1);
-  return name;
-}
 
 export namespace OptionHelper {
   export interface SimpleOptions {
@@ -438,7 +432,7 @@ export namespace OptionHelper {
     options?: SimpleOptions
   ) {
     let sanitizedOptions: SimpleOptions = Object.assign({}, options);
-    const optionsFromDatabase = await instance.getOptions(true, false);
+    const optionsFromDatabase = await getOptions(instance, true, false);
 
     if (Object.keys(sanitizedOptions).length === 0) {
       sanitizedOptions = optionsFromDatabase;

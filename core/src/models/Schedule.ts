@@ -31,6 +31,8 @@ import { LockableHelper } from "../modules/lockableHelper";
 import { ConfigWriter } from "../modules/configWriter";
 import { CLS } from "../modules/cls";
 import { APIData } from "../modules/apiData";
+import { FilterHelper } from "../modules/filterHelper";
+import { Filter } from "./Filter";
 
 /**
  * Metadata and methods to return the options a Schedule for this connection/app.
@@ -59,6 +61,8 @@ export interface PluginConnectionScheduleOption {
     }>
   >;
 }
+
+export interface ScheduleFiltersWithKey extends FilterHelper.FiltersWithKey {}
 
 export interface SimpleScheduleOptions extends OptionHelper.SimpleOptions {}
 
@@ -114,6 +118,12 @@ export class Schedule extends LoggedModel<Schedule> {
   })
   __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
+  @HasMany(() => Filter, {
+    foreignKey: "ownerId",
+    scope: { ownerType: "schedule" },
+  })
+  filters: Filter[];
+
   @BelongsTo(() => Source)
   source: Source;
 
@@ -145,6 +155,17 @@ export class Schedule extends LoggedModel<Schedule> {
 
   async pluginOptions() {
     return ScheduleOps.pluginOptions(this);
+  }
+
+  async getFilters() {
+    return FilterHelper.getFilters(this);
+  }
+
+  async setFilters(
+    filters: ScheduleFiltersWithKey[],
+    externallyValidate = true
+  ) {
+    return FilterHelper.setFilters(this, filters, externallyValidate);
   }
 
   async runPercentComplete(run: Run) {
@@ -313,6 +334,13 @@ export class Schedule extends LoggedModel<Schedule> {
   @AfterDestroy
   static async destroyAppOptions(instance: Schedule) {
     return Option.destroy({
+      where: { ownerId: instance.id, ownerType: "schedule" },
+    });
+  }
+
+  @AfterDestroy
+  static async destroyFilters(instance: Property) {
+    await Filter.destroy({
       where: { ownerId: instance.id, ownerType: "schedule" },
     });
   }

@@ -1,10 +1,5 @@
 import { api } from "actionhero";
-
-function modelName(instance): string {
-  let name = instance.constructor.name;
-  name = name[0].toLowerCase() + name.substr(1);
-  return name;
-}
+import { modelName } from "./modelName";
 
 export namespace LockableHelper {
   export async function beforeSave(

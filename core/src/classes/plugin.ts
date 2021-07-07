@@ -20,6 +20,7 @@ import {
   Schedule,
   SimpleScheduleOptions,
   PluginConnectionScheduleOption,
+  ScheduleFiltersWithKey,
 } from "../models/Schedule";
 import { ConfigTemplate } from "./configTemplate";
 
@@ -94,6 +95,7 @@ export interface ProfilesPluginMethod {
     schedule: Schedule;
     scheduleId: string;
     scheduleOptions: SimpleScheduleOptions;
+    scheduleFilters: ScheduleFiltersWithKey[];
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -380,9 +382,12 @@ export interface SourceFilterMethod {
     sourceId: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
-    property: Property;
-    propertyId: string;
-    propertyOptions: SimplePropertyOptions;
+    property?: Property;
+    propertyId?: string;
+    propertyOptions?: SimplePropertyOptions;
+    schedule?: Schedule;
+    scheduleId?: string;
+    scheduleOptions?: SimpleScheduleOptions;
   }): Promise<Array<SourceFilterMethodResponseRow>>;
 }
 

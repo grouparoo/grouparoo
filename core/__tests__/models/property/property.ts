@@ -8,9 +8,10 @@ import {
   Source,
   Run,
   Option,
-  PropertyFilter,
+  Filter,
 } from "../../../src";
 import { PropertyOps } from "../../../src/modules/ops/property";
+import { FilterHelper } from "../../../src/modules/filterHelper";
 
 describe("models/property", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -709,19 +710,19 @@ describe("models/property", () => {
         ]);
         const filters = await property.getFilters();
 
-        expect(PropertyOps.filtersAreEqual(filters, [])).toBe(false);
+        expect(FilterHelper.filtersAreEqual(filters, [])).toBe(false);
         expect(
-          PropertyOps.filtersAreEqual(filters, [
+          FilterHelper.filtersAreEqual(filters, [
             { key: "id", match: "0", op: "greater than" },
           ])
         ).toBe(true);
         expect(
-          PropertyOps.filtersAreEqual(filters, [
+          FilterHelper.filtersAreEqual(filters, [
             { key: "id", match: "1", op: "greater than" },
           ])
         ).toBe(false);
         expect(
-          PropertyOps.filtersAreEqual(filters, [
+          FilterHelper.filtersAreEqual(filters, [
             { key: "id", match: "0", op: "less than" },
           ])
         ).toBe(false);
@@ -736,7 +737,7 @@ describe("models/property", () => {
           sourceId: source.id,
         });
 
-        const filterOptions = await property.pluginFilterOptions();
+        const filterOptions = await FilterHelper.pluginFilterOptions(property);
         expect(filterOptions).toEqual([
           {
             key: "id",
@@ -759,10 +760,10 @@ describe("models/property", () => {
           { op: "greater than", match: 1, key: "id" },
         ]);
 
-        expect(property.propertyFilters.length).toBe(1);
-        expect(property.propertyFilters[0].op).toBe("greater than");
-        expect(property.propertyFilters[0].match).toBe("1");
-        expect(property.propertyFilters[0].key).toBe("id");
+        expect(property.filters.length).toBe(1);
+        expect(property.filters[0].op).toBe("greater than");
+        expect(property.filters[0].match).toBe("1");
+        expect(property.filters[0].key).toBe("id");
 
         await property.destroy();
       });
@@ -778,8 +779,8 @@ describe("models/property", () => {
           { op: "greater than", match: 999, key: "id" },
         ]);
 
-        property.propertyFilters = [
-          PropertyFilter.build({
+        property.filters = [
+          Filter.build({
             propertyId: property.id,
             position: 1,
             key: "foo",
@@ -833,7 +834,7 @@ describe("models/property", () => {
       });
 
       test("deleting a property also deleted the filters", async () => {
-        const count = await PropertyFilter.count();
+        const count = await Filter.count();
         expect(count).toBe(0);
       });
 

@@ -15,7 +15,7 @@ import { Option } from "../models/Option";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { Property } from "../models/Property";
-import { PropertyFilter } from "../models/PropertyFilter";
+import { Filter } from "../models/Filter";
 import { Run } from "../models/Run";
 import { Schedule } from "../models/Schedule";
 import { SetupStep } from "../models/SetupStep";
@@ -48,7 +48,7 @@ export namespace Reset {
       Profile,
       ProfileProperty,
       Property,
-      PropertyFilter,
+      Filter,
       Run,
       Schedule,
       Source,

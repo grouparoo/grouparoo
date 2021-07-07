@@ -1,6 +1,7 @@
 import { Schedule } from "../models/Schedule";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ConfigWriter } from "../modules/configWriter";
+import { FilterHelper } from "../modules/filterHelper";
 
 export class SchedulesList extends AuthenticatedAction {
   constructor() {
@@ -139,6 +140,24 @@ export class ScheduleEdit extends AuthenticatedAction {
       schedule: await schedule.apiData(),
       pluginOptions: await schedule.pluginOptions(),
     };
+  }
+}
+
+export class ScheduleFilterOptions extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "schedule:filterOptions";
+    this.description = "view a the filter options for a schedule";
+    this.outputExample = {};
+    this.permission = { topic: "schedule", mode: "read" };
+    this.inputs = {
+      id: { required: true },
+    };
+  }
+
+  async runWithinTransaction({ params }) {
+    const schedule = await Schedule.findById(params.id);
+    return { options: await FilterHelper.pluginFilterOptions(schedule) };
   }
 }
 

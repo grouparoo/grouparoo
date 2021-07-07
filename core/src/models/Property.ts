@@ -29,7 +29,7 @@ import { Option } from "./Option";
 import { Group } from "./Group";
 import { Run } from "./Run";
 import { GroupRule } from "./GroupRule";
-import { PropertyFilter } from "./PropertyFilter";
+import { Filter } from "./Filter";
 import { OptionHelper } from "../modules/optionHelper";
 import { ConfigWriter } from "../modules/configWriter";
 import { StateMachine } from "../modules/stateMachine";
@@ -39,6 +39,7 @@ import { LockableHelper } from "../modules/lockableHelper";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
 import { APIData } from "../modules/apiData";
 import { CLS } from "../modules/cls";
+import { FilterHelper } from "../modules/filterHelper";
 
 export function propertyJSToSQLType(jsType: string) {
   const map = {
@@ -116,14 +117,7 @@ export interface PluginConnectionPropertyOption {
   >;
 }
 
-export interface PropertyFiltersWithKey {
-  key: string;
-  op: string;
-  match?: string | number | boolean;
-  relativeMatchNumber?: number;
-  relativeMatchUnit?: string;
-  relativeMatchDirection?: string;
-}
+export interface PropertyFiltersWithKey extends FilterHelper.FiltersWithKey {}
 
 export const CachedProperties: { expires: number; properties: Property[] } = {
   expires: 0,
@@ -197,8 +191,11 @@ export class Property extends LoggedModel<Property> {
   })
   __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
-  @HasMany(() => PropertyFilter)
-  propertyFilters: PropertyFilter[];
+  @HasMany(() => Filter, {
+    foreignKey: "ownerId",
+    scope: { ownerType: "property" },
+  })
+  filters: Filter[];
 
   @HasMany(() => ProfileProperty)
   ProfileProperties: ProfileProperty[];
@@ -266,96 +263,29 @@ export class Property extends LoggedModel<Property> {
   }
 
   async getFilters() {
-    const filtersWithCol: PropertyFiltersWithKey[] = [];
-    const filters = this.propertyFilters
-      ? this.propertyFilters.sort((a, b) => a.position - b.position)
-      : await this.$get("propertyFilters", {
-          order: [["position", "asc"]],
-        });
-
-    if (!this.propertyFilters) this.propertyFilters = filters;
-
-    for (const i in filters) {
-      const filter = filters[i];
-      filtersWithCol.push({
-        key: filter.key,
-        op: filter.op,
-        match: filter.match,
-        relativeMatchNumber: filter.relativeMatchNumber,
-        relativeMatchUnit: filter.relativeMatchUnit,
-        relativeMatchDirection: filter.relativeMatchDirection,
-      });
-    }
-
-    return filtersWithCol;
+    return FilterHelper.getFilters(this);
   }
 
   async setFilters(
     filters: PropertyFiltersWithKey[],
-
     externallyValidate = true
   ) {
-    delete this.propertyFilters;
+    return FilterHelper.setFilters(this, filters, externallyValidate);
+  }
 
-    if (externallyValidate) await this.validateFilters(filters);
-    const existingFilters = await this.getFilters();
-    const filtersAreEqual = await PropertyOps.filtersAreEqual(
-      filters,
-      existingFilters
-    );
-    if (filtersAreEqual) return;
-
-    await PropertyFilter.destroy({
-      where: { propertyId: this.id },
-    });
-
-    const newPropertyFilters: PropertyFilter[] = [];
-    for (const i in filters) {
-      const filter = filters[i];
-
-      const propertyFilter = await PropertyFilter.create({
-        position: parseInt(i) + 1,
-        propertyId: this.id,
-        key: filter.key,
-        op: filter.op,
-        match: filter.match?.toString() ?? null,
-        relativeMatchNumber: filter.relativeMatchNumber ?? null,
-        relativeMatchUnit: filter.relativeMatchUnit ?? null,
-        relativeMatchDirection: filter.relativeMatchDirection ?? null,
-      });
-      newPropertyFilters.push(propertyFilter);
+  async afterSetFilters(hasChanges: boolean) {
+    if (hasChanges) {
+      await Property.invalidateCache();
+      return PropertyOps.enqueueRuns(this);
     }
-
-    this.propertyFilters = newPropertyFilters;
-    await this.touch();
-    await Property.invalidateCache();
-    return PropertyOps.enqueueRuns(this);
   }
 
   async pluginOptions(propertyOptions?: SimplePropertyOptions) {
     return PropertyOps.pluginOptions(this, propertyOptions);
   }
 
-  async pluginFilterOptions() {
-    return PropertyOps.pluginFilterOptions(this);
-  }
-
   async validateFilters(filters: PropertyFiltersWithKey[]) {
-    if (!filters) filters = await this.getFilters();
-    const pluginFilterOptions = await this.pluginFilterOptions();
-
-    for (const i in filters) {
-      const filter = filters[i];
-      const relevantOption = pluginFilterOptions.filter(
-        (pfo) => pfo.key === filter.key
-      )[0];
-      if (!relevantOption) {
-        throw new Error(`${filter.key} is not filterable`);
-      }
-      if (!relevantOption.ops.includes(filter.op)) {
-        throw new Error(`"${filter.op}" cannot be applied to ${filter.key}`);
-      }
-    }
+    return FilterHelper.validateFilters(this, filters);
   }
 
   async makeIdentifying() {
@@ -664,9 +594,9 @@ export class Property extends LoggedModel<Property> {
   }
 
   @AfterDestroy
-  static async destroyPropertyFilters(instance: Property) {
-    await PropertyFilter.destroy({
-      where: { propertyId: instance.id },
+  static async destroyFilters(instance: Property) {
+    await Filter.destroy({
+      where: { ownerId: instance.id, ownerType: "property" },
     });
   }
 

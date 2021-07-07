@@ -21,7 +21,7 @@ import { Permission } from "../models/Permission";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { Property } from "../models/Property";
-import { PropertyFilter } from "../models/PropertyFilter";
+import { Filter } from "../models/Filter";
 import { ProfileMultipleAssociationShim } from "../models/ProfileMultipleAssociationShim";
 import { Run } from "../models/Run";
 import { Schedule } from "../models/Schedule";
@@ -43,6 +43,7 @@ const models = [
   Destination,
   DestinationGroupMembership,
   Option,
+  Filter,
   Import,
   Run,
   Export,
@@ -56,7 +57,6 @@ const models = [
   Profile,
   ProfileProperty,
   Property,
-  PropertyFilter,
   ProfileMultipleAssociationShim,
   Mapping,
   Notification,
