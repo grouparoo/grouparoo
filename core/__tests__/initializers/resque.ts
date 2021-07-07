@@ -28,7 +28,7 @@ jest.mock("../../src/config/tasks.ts", () => ({
 describe("initializers/resque", () => {
   helper.grouparooTestServer({ truncate: true });
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     await api.resque.queue.connection.redis.flushdb();
   });
 

@@ -89,7 +89,6 @@ describe("integration/runs/mailchimp-export", () => {
 
   afterAll(async () => {
     await cleanUp();
-    await client.end();
   });
 
   beforeAll(async () => {

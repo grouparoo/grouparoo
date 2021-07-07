@@ -40,12 +40,13 @@ function ensureNoSavedModels() {
 }
 
 describe("modules/codeConfig", () => {
+  afterAll(async () => await Setting.truncate());
+
   helper.grouparooTestServer({
     truncate: true,
     enableTestPlugin: true,
     resetSettings: true,
   });
-  afterAll(async () => await Setting.truncate());
 
   describe("validate command", () => {
     beforeAll(async () => {

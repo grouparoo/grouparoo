@@ -105,10 +105,10 @@ export default function ProfilePreview(props) {
     );
   }
 
-  let email;
+  let email: string;
   for (const key in profile.properties) {
     if (profile.properties[key].type === "email") {
-      email = profile.properties[key].values[0];
+      email = profile.properties[key]?.values[0];
     }
   }
 

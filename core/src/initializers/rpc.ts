@@ -27,7 +27,11 @@ export class GrouparooRPC extends Initializer {
      */
     api.rpc.app.disconnect = async (appId: string) => {
       await utils.sleep(100);
-      await App.disconnect(appId);
+      try {
+        await App.disconnect(appId);
+      } catch (error) {
+        console.error("Error disconnecting apps", error.message ?? error);
+      }
     };
 
     /**
@@ -36,5 +40,10 @@ export class GrouparooRPC extends Initializer {
     api.rpc.property.invalidateCache = async () => {
       Property.invalidateLocalCache();
     };
+  }
+
+  // We want to allow any RPC commands in-flight to have time to complete
+  async stop() {
+    await utils.sleep(101);
   }
 }

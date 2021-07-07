@@ -96,7 +96,6 @@ describe("integration/runs/mailchimp-export-id", () => {
 
   afterAll(async () => {
     await cleanUp(true);
-    await client.end();
   });
 
   beforeAll(async () => {

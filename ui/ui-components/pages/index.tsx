@@ -51,6 +51,7 @@ export default function Page(props) {
 
             <div style={{ textAlign: "center" }}>
               <Button
+                data-testid="cta"
                 variant="primary"
                 size="lg"
                 onClick={() => {

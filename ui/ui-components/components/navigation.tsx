@@ -114,6 +114,7 @@ export default function Navigation(props) {
   return (
     <div
       id="navigation"
+      data-testid="navigation"
       className={`position-fixed bg-dark ${
         navExpanded ? (hasBeenCollapsed ? "slide-in" : null) : "slide-out"
       }`}

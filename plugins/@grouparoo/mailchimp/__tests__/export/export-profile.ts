@@ -182,7 +182,6 @@ describe("mailchimp/exportProfile", () => {
 
   afterAll(async () => {
     await cleanUp(true);
-    await apiClient.end();
   }, helper.setupTime);
 
   test("cannot create profile on Mailchimp if sync mode does not allow it", async () => {
