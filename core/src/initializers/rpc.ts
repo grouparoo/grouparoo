@@ -27,7 +27,11 @@ export class GrouparooRPC extends Initializer {
      */
     api.rpc.app.disconnect = async (appId: string) => {
       await utils.sleep(100);
-      await App.disconnect(appId);
+      try {
+        await App.disconnect(appId);
+      } catch (error) {
+        console.error("Error disconnecting apps", error.message ?? error);
+      }
     };
 
     /**
