@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react";
 import { Models } from "../../utils/apiData";
-import { ProgressBar, Row, Col } from "react-bootstrap";
+import { ProgressBar, Row, Col, Button } from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import {
+  FontAwesomeIcon,
+  FontAwesomeIconProps,
+} from "@fortawesome/react-fontawesome";
 import { Actions } from "../../utils/apiData";
 
 export default function SetupStepsNavProgressBar({
   execApi,
   setupStepHandler,
+  successHandler,
 }) {
   const [steps, setSteps] = useState<Models.SetupStepType[]>([]);
   const [shouldDisplay, setShouldDisplay] = useState(false);
+  const [initialOnBoardingState, setInitialOnBoardingState] = useState(null);
+  const [hideCard, setHideCard] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -40,7 +47,6 @@ export default function SetupStepsNavProgressBar({
 
     if (setupSteps) {
       setShouldDisplay(toDisplay);
-
       setSteps(setupSteps);
     }
   }
@@ -49,6 +55,7 @@ export default function SetupStepsNavProgressBar({
   const isOnBoardingComplete = steps.every(
     (step) => step.complete || step.skipped
   );
+
   const totalStepsCount = steps.length;
   const completeStepsCount = steps.filter(
     (step) => step.complete || step.skipped
@@ -57,19 +64,29 @@ export default function SetupStepsNavProgressBar({
     (100 * completeStepsCount) / totalStepsCount
   );
 
-  if (!shouldDisplay) return null;
+  let onBoardingState = percentComplete === 100 ? "complete" : "incomplete";
 
-  if (isOnBoardingComplete) {
-    return (
-      <Row className="pt-1 px-4">
-        <Col>
-          <Link href="/setup">
-            <a>Get Started:</a>
-          </Link>
-        </Col>
-      </Row>
-    );
+  if (initialOnBoardingState === null && !isNaN(percentComplete)) {
+    console.log(`done: ${percentComplete}`);
+    setInitialOnBoardingState(onBoardingState);
   }
+
+  useEffect(() => {
+    console.log(`was: ${initialOnBoardingState} now: ${onBoardingState}`);
+    if (
+      initialOnBoardingState === "incomplete" &&
+      onBoardingState === "complete"
+    ) {
+      console.log("done!!!");
+    }
+  }, [percentComplete]);
+
+  if (
+    !shouldDisplay ||
+    initialOnBoardingState === "complete" ||
+    hideCard === true
+  )
+    return null;
 
   return (
     <div
@@ -78,6 +95,24 @@ export default function SetupStepsNavProgressBar({
         backgroundColor: "var(--grouparoo-background-blue)",
       }}
     >
+      {initialOnBoardingState === "incomplete" &&
+      onBoardingState === "complete" ? (
+        <Row>
+          <Col className="d-flex justify-content-end mr-1 text-light">
+            {" "}
+            <Button
+              variant="link"
+              className="p-0 m-0 text-light"
+              onClick={() => {
+                setHideCard(true);
+              }}
+            >
+              <FontAwesomeIcon icon="times" size="xs" />
+            </Button>
+          </Col>
+        </Row>
+      ) : null}
+
       <Row
         className="px-3"
         style={{
