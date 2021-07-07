@@ -7,6 +7,7 @@ export class GrouparooRPC extends Initializer {
     super();
     this.name = "grouparooRPC";
     this.loadPriority = 10;
+    this.stopPriority = 901;
   }
 
   async initialize() {
@@ -40,10 +41,5 @@ export class GrouparooRPC extends Initializer {
     api.rpc.property.invalidateCache = async () => {
       Property.invalidateLocalCache();
     };
-  }
-
-  // We want to allow any RPC commands in-flight to have time to complete
-  async stop() {
-    await utils.sleep(101);
   }
 }
