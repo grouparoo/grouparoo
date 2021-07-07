@@ -68,6 +68,7 @@ export default function SetupStepCard({
                     <Button
                       variant="outline-primary"
                       size="sm"
+                      className="m-1"
                       target="_blank"
                       href={step.helpLink}
                     >
@@ -77,7 +78,7 @@ export default function SetupStepCard({
                     {(process.env.GROUPAROO_UI_EDITION !== "community" ||
                       step.showCtaOnCommunity) &&
                       step.cta && (
-                        <Button size="sm" href={step.href}>
+                        <Button size="sm" className="m-1" href={step.href}>
                           {step.cta}
                         </Button>
                       )}
@@ -87,6 +88,7 @@ export default function SetupStepCard({
                       {step.skipped ? (
                         <Button
                           size="sm"
+                          className="m-1"
                           variant="outline-dark"
                           onClick={() => skip()}
                         >
@@ -95,6 +97,7 @@ export default function SetupStepCard({
                       ) : (
                         <Button
                           size="sm"
+                          className="m-1"
                           variant="outline-dark"
                           onClick={() => skip()}
                         >
