@@ -11,7 +11,6 @@ export default function SetupStepsNavProgressBar({
   setupStepHandler,
 }) {
   const [steps, setSteps] = useState<Models.SetupStepType[]>([]);
-  const [shouldDisplay, setShouldDisplay] = useState(false);
   const [initialOnBoardingState, setInitialOnBoardingState] =
     useState<boolean>(null);
   //because shouldDisplay is set on every Setup Step call, track if a user manually hides setup steps separately
@@ -38,13 +37,12 @@ export default function SetupStepsNavProgressBar({
     if (newUrl && newUrl.match(/^\/session\//)) return;
     if (newUrl && newUrl === "/") return;
 
-    const { setupSteps, toDisplay }: Actions.SetupStepsList = await execApi(
+    const { setupSteps }: Actions.SetupStepsList = await execApi(
       "get",
       `/setupSteps`
     );
 
     if (setupSteps) {
-      setShouldDisplay(toDisplay);
       setSteps(setupSteps);
     }
   }
@@ -68,7 +66,12 @@ export default function SetupStepsNavProgressBar({
     setInitialOnBoardingState(onBoardingState);
   }
 
-  if (!shouldDisplay || initialOnBoardingState === true || hideCard === true)
+  //if we haven't figured out initial state yet, or the initial state is complete, or someone chooses to... hide the card
+  if (
+    initialOnBoardingState === null ||
+    initialOnBoardingState === true ||
+    hideCard === true
+  )
     return null;
 
   return (

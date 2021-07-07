@@ -30,14 +30,7 @@ export class SetupStepsList extends AuthenticatedAction {
       await setupSteps[i].performCheck();
       responseSetupSteps.push(await setupSteps[i].apiData());
     }
-
-    const setting = await Setting.findOne({
-      where: { key: "display-startup-steps" },
-    });
-
-    const toDisplay = setting.value === "true";
-
-    return { toDisplay, setupSteps: responseSetupSteps };
+    return { setupSteps: responseSetupSteps };
   }
 }
 
