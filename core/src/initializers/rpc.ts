@@ -7,6 +7,7 @@ export class GrouparooRPC extends Initializer {
     super();
     this.name = "grouparooRPC";
     this.loadPriority = 10;
+    this.stopPriority = 901;
   }
 
   async initialize() {
