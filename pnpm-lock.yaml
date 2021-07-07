@@ -1431,6 +1431,10 @@ importers:
       '@fortawesome/free-brands-svg-icons': 5.15.3
       '@fortawesome/free-solid-svg-icons': 5.15.3
       '@fortawesome/react-fontawesome': 0.1.14
+      '@grouparoo/core': 0.4.3
+      '@testing-library/jest-dom': 5.14.1
+      '@testing-library/react': 12.0.0
+      '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
       axios: 0.21.1
@@ -1468,6 +1472,7 @@ importers:
       '@grouparoo/core': link:../../core
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.0.0_react-dom@17.0.2+react@17.0.2
+      '@types/jest': 26.0.24
       '@types/react': 17.0.13
       '@types/react-dom': 17.0.9
       axios: 0.21.1
@@ -13395,7 +13400,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
-      jest: 27.0.6
+      jest: 27.0.6_ts-node@10.0.0
       jest-util: 27.0.6
       json5: 2.2.0
       lodash: 4.17.21
