@@ -15,25 +15,25 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   matchConditions,
   highWaterMarkKey,
 }) => {
-  let query = {};
   let aggPipeline = [];
 
   if (highWaterMarkCondition) {
     highWaterMarkCondition.value = new Date(
       String(highWaterMarkCondition.value)
     );
-    query = makeFindQuery(highWaterMarkCondition);
+    const query = makeFindQuery(highWaterMarkCondition);
+    if (Object.keys(query).length > 0) {
+      aggPipeline.push({ $match: query });
+    }
   }
 
   for (const condition of matchConditions) {
-    query = makeFindQuery(condition, query);
+    const filterQuery = makeFindQuery(condition);
+    if (Object.keys(filterQuery).length > 0) {
+      aggPipeline.push({ $match: filterQuery });
+    }
   }
 
-  if (Object.keys(query).length > 0) {
-    aggPipeline.push({
-      $match: query,
-    });
-  }
   aggPipeline.push({
     $sort: {
       [highWaterMarkAndSortColumnASC]: 1,

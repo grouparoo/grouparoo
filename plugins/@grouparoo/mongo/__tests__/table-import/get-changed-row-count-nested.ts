@@ -81,6 +81,34 @@ describe("mongo/table/scheduleOptions", () => {
     expect(anotherRowCount).toBe(0);
   });
 
+  test("it can be filtered", async () => {
+    const rowCount = await getChangedRowCount({
+      connection: client,
+      appOptions,
+      appId: app.id,
+      tableName: locationsTableName,
+      matchConditions: [
+        {
+          columnName: "id",
+          filterOperation: FilterOperation.GreaterThan,
+          value: 4,
+        },
+        {
+          columnName: "id",
+          filterOperation: FilterOperation.LessThan,
+          value: 7,
+        },
+      ],
+      highWaterMarkCondition: {
+        columnName: "properties.updated",
+        value: new Date(0),
+        filterOperation: FilterOperation.GreaterThan,
+      },
+    });
+
+    expect(rowCount).toBe(2);
+  });
+
   test("gets the percentage complete of a run", async () => {
     const run = await helper.factories.run(schedule, { state: "running" });
     const percentComplete = await run.determinePercentComplete();

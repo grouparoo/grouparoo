@@ -5,12 +5,20 @@ import { validateQuery } from "../validateQuery";
 export const getChangedRowCount: GetChangedRowCountMethod = async ({
   connection,
   tableName,
+  matchConditions,
   highWaterMarkCondition,
 }) => {
   let query = `SELECT COUNT(*) AS __count FROM "${tableName}"`;
 
   if (highWaterMarkCondition) {
     query += ` WHERE ${makeWhereClause(highWaterMarkCondition)}`;
+  }
+
+  for (const [idx, condition] of matchConditions.entries()) {
+    const filterClause = makeWhereClause(condition);
+    query += ` ${
+      highWaterMarkCondition || idx > 0 ? "AND" : "WHERE"
+    } ${filterClause}`;
   }
 
   validateQuery(query);

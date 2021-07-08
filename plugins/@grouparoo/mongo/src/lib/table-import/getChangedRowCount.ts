@@ -7,21 +7,24 @@ export const getChangedRowCount: GetChangedRowCountMethod = async ({
   matchConditions,
   highWaterMarkCondition,
 }) => {
-  let query = {};
   let aggPipeline = [];
 
   if (highWaterMarkCondition) {
-    query = makeFindQuery(highWaterMarkCondition);
-  }
-  for (const condition of matchConditions) {
-    query = makeFindQuery(condition, query);
+    const query = makeFindQuery(highWaterMarkCondition);
+    if (Object.keys(query).length > 0) {
+      aggPipeline.push({
+        $match: query,
+      });
+    }
   }
 
-  if (Object.keys(query).length > 0) {
-    aggPipeline.push({
-      $match: query,
-    });
+  for (const condition of matchConditions) {
+    const filterQuery = makeFindQuery(condition);
+    if (Object.keys(filterQuery).length > 0) {
+      aggPipeline.push({ $match: filterQuery });
+    }
   }
+
   aggPipeline.push({
     $count: "__COUNT",
   });
