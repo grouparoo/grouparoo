@@ -377,6 +377,7 @@ export function PendingImports({
   function load() {
     const pendingProfileCollection = statusHandler.metrics["Profile"];
     if (!pendingProfileCollection) return;
+    if (!pendingProfileCollection["pending"]) return;
 
     const pendingProfileMetric =
       pendingProfileCollection["pending"][
@@ -476,6 +477,7 @@ export function PendingExports({
     function load() {
       const pendingExportCountCollection = statusHandler.metrics["Export"];
       if (!pendingExportCountCollection) return;
+      if (!pendingExportCountCollection["pending"]) return;
 
       const pendingExportCountMetric =
         pendingExportCountCollection["pending"][
