@@ -53,6 +53,7 @@ describe("mysql/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: usersTableName,
+      matchConditions: [],
       highWaterMarkCondition: {
         columnName: "stamp",
         value: 0,

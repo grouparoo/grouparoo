@@ -26,7 +26,10 @@ export enum MongoFilterOperation {
   In = "$in",
 }
 
-export function makeFindQuery(matchCondition: MatchCondition) {
+export function makeFindQuery(
+  matchCondition: MatchCondition,
+  findQuery: { [key: string]: any } = {}
+) {
   const { columnName, filterOperation, value, values } = matchCondition;
   let op;
   let regexOptions;
@@ -66,7 +69,6 @@ export function makeFindQuery(matchCondition: MatchCondition) {
       throw new Error(`Unknown filterOperation: ${filterOperation}`);
   }
 
-  const findQuery = {};
   if (Array.isArray(match)) {
     if (filterOperation === FilterOperation.In) {
       findQuery[columnName] = { [op]: match };

@@ -12,16 +12,23 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   sourceOffset,
   highWaterMarkAndSortColumnASC,
   secondarySortColumnASC,
+  matchConditions,
   highWaterMarkKey,
 }) => {
   let query = {};
   let aggPipeline = [];
+
   if (highWaterMarkCondition) {
     highWaterMarkCondition.value = new Date(
       String(highWaterMarkCondition.value)
     );
     query = makeFindQuery(highWaterMarkCondition);
   }
+
+  for (const condition of matchConditions) {
+    query = makeFindQuery(condition, query);
+  }
+
   if (Object.keys(query).length > 0) {
     aggPipeline.push({
       $match: query,

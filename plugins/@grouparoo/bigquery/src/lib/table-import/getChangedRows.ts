@@ -16,6 +16,7 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   sourceOffset,
   highWaterMarkAndSortColumnASC,
   secondarySortColumnASC,
+  matchConditions,
   highWaterMarkKey,
 }) => {
   const params = [];
@@ -23,12 +24,21 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   const columns = await getColumnsInternal({ connection, tableName });
 
   let query = `SELECT *, SAFE_CAST(\`${highWaterMarkAndSortColumnASC}\` as STRING) as \`${highWaterMarkKey}\` FROM \`${tableName}\``;
+
   query += await makeHighwaterWhereClause(
     columns,
     highWaterMarkCondition,
     params,
     types
   );
+
+  for (const [idx, condition] of matchConditions.entries()) {
+    const filterClause = makeWhereClause(columns, condition, params, types);
+    query += ` ${
+      highWaterMarkCondition || idx > 0 ? "AND" : "WHERE"
+    } ${filterClause}`;
+  }
+
   query += ` ORDER BY \`${highWaterMarkAndSortColumnASC}\` ASC, \`${secondarySortColumnASC}\` ASC`;
   query += ` LIMIT ${limit} OFFSET ${sourceOffset}`;
   validateQuery(query);

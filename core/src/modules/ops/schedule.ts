@@ -177,6 +177,7 @@ export namespace ScheduleOps {
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
     const scheduleOptions = await schedule.getOptions();
+    const scheduleFilters = await schedule.getFilters();
 
     // In this case, we want to us the highWaterMark from the previous run, not this run's, as it will be moving over the live of the run
     let highWaterMark = {};
@@ -197,6 +198,7 @@ export namespace ScheduleOps {
       schedule,
       scheduleId: schedule.id,
       scheduleOptions,
+      scheduleFilters,
       highWaterMark,
       run,
       runId: run.id,

@@ -67,6 +67,7 @@ describe("snowflake/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: "PROFILES",
+      matchConditions: [],
       highWaterMarkCondition: {
         columnName: "STAMP",
         value: new Date(0),

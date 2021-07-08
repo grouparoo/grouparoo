@@ -67,6 +67,7 @@ describe("bigquery/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: "profiles",
+      matchConditions: [],
       highWaterMarkCondition: {
         columnName: "stamp",
         value: 0,

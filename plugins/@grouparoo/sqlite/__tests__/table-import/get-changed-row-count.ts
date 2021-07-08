@@ -51,6 +51,7 @@ describe("sqlite/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: usersTableName,
+      matchConditions: [],
       highWaterMarkCondition: {
         columnName: "stamp",
         value: "2000/01/01 12:00:00",

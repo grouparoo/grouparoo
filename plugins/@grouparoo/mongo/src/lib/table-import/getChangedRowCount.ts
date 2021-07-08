@@ -4,13 +4,19 @@ import { makeFindQuery } from "./util";
 export const getChangedRowCount: GetChangedRowCountMethod = async ({
   connection,
   tableName,
+  matchConditions,
   highWaterMarkCondition,
 }) => {
   let query = {};
   let aggPipeline = [];
+
   if (highWaterMarkCondition) {
     query = makeFindQuery(highWaterMarkCondition);
   }
+  for (const condition of matchConditions) {
+    query = makeFindQuery(condition, query);
+  }
+
   if (Object.keys(query).length > 0) {
     aggPipeline.push({
       $match: query,

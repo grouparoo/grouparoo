@@ -5,6 +5,7 @@ import {
   MatchCondition,
   GetChangedRowsMethod,
 } from "./pluginMethods";
+import { getFilterOperation } from "./getFilterOperation";
 
 import {
   ProfilesPluginMethod,
@@ -30,6 +31,7 @@ export const getProfiles: GetProfilesMethod = ({ getChangedRows }) => {
     limit,
     highWaterMark,
     sourceOffset,
+    scheduleFilters,
   }) => {
     const { tableName, highWaterMarkCondition } = await getChangeVariables({
       run,
@@ -42,6 +44,17 @@ export const getProfiles: GetProfilesMethod = ({ getChangedRows }) => {
     const secondarySortColumnASC = Object.keys(sourceMapping)[0];
     const highWaterMarkKey = "__hwm";
 
+    const matchConditions: MatchCondition[] = [];
+
+    for (const filter of scheduleFilters) {
+      let { key, op, match } = filter;
+      matchConditions.push({
+        columnName: key,
+        value: match,
+        filterOperation: getFilterOperation(op),
+      });
+    }
+
     const results = await getChangedRows({
       connection,
       appOptions,
@@ -53,6 +66,7 @@ export const getProfiles: GetProfilesMethod = ({ getChangedRows }) => {
       sourceOffset,
       highWaterMarkKey,
       highWaterMarkCondition,
+      matchConditions,
     });
 
     let nextSourceOffset = 0;

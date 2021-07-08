@@ -51,6 +51,7 @@ describe("postgres/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: usersTableName,
+      matchConditions: [],
       highWaterMarkCondition: {
         columnName: "stamp",
         value: new Date(0),

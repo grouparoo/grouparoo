@@ -57,6 +57,7 @@ describe("mongo/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: locationsTableName,
+      matchConditions: [],
       highWaterMarkCondition: {
         columnName: "properties.updated",
         value: new Date(0),
@@ -70,6 +71,7 @@ describe("mongo/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: locationsTableName,
+      matchConditions: [],
       highWaterMarkCondition: {
         columnName: "properties.updated",
         value: new Date(),

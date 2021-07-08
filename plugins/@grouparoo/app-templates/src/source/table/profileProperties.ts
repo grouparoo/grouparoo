@@ -1,7 +1,6 @@
 import { ProfilePropertiesPluginMethod } from "@grouparoo/core";
 import {
   MatchCondition,
-  FilterOperation,
   GetPropertyValuesMethod,
   AggregationMethod,
   columnNameKey,
@@ -9,6 +8,7 @@ import {
   aggregationMethodKey,
   sortColumnKey,
 } from "./pluginMethods";
+import { getFilterOperation } from "./getFilterOperation";
 
 export interface GetProfilePropertiesMethod {
   (argument: {
@@ -104,15 +104,3 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
 
   return profileProperties;
 };
-
-function getFilterOperation(op): FilterOperation {
-  // op is one of the values
-  const operations = Object.keys(FilterOperation);
-  for (const key of operations) {
-    const value = FilterOperation[key];
-    if (value === op) {
-      return value;
-    }
-  }
-  throw `filter operation not found: ${op}`;
-}

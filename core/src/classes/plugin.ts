@@ -413,6 +413,7 @@ export interface SourceRunPercentCompleteMethod {
     schedule: Schedule;
     scheduleId: string;
     scheduleOptions: SimpleScheduleOptions;
+    scheduleFilters: ScheduleFiltersWithKey[];
     highWaterMark: HighWaterMark;
     run: Run;
     runId: string;
