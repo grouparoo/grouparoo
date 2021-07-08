@@ -15,6 +15,7 @@ import Head from "next/head";
 import PropertyTabs from "../../../components/tabs/property";
 import { Models, Actions } from "../../../utils/apiData";
 import { filtersAreEqual } from "../../../utils/filtersAreEqual";
+import { makeLocal } from "../../../utils/makeLocal";
 
 export default function Page(props) {
   const {
@@ -37,7 +38,7 @@ export default function Page(props) {
   const [property, setProperty] = useState<Models.PropertyType>(props.property);
   const [localFilters, setLocalFilters] = useState<
     Actions.PropertyView["property"]["filters"]
-  >(JSON.parse(JSON.stringify(props.property.filters)));
+  >(makeLocal(props.property.filters));
 
   const [debounceCounter, setDebounceCounter] = useState(0);
   const sleep = debounceCounter === 0 ? 0 : 1000; // we only want to make one request every ~second, so wait for more input

@@ -16,6 +16,7 @@ import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { filtersAreEqual } from "../../../utils/filtersAreEqual";
+import { makeLocal } from "../../../utils/makeLocal";
 
 export default function Page(props) {
   const {
@@ -39,7 +40,7 @@ export default function Page(props) {
   const [schedule, setSchedule] = useState<Models.ScheduleType>(props.schedule);
   const [localFilters, setLocalFilters] = useState<
     Actions.ScheduleView["schedule"]["filters"]
-  >(JSON.parse(JSON.stringify(props.schedule.filters)));
+  >(makeLocal(props.schedule.filters));
   const [recurringFrequencyMinutes, setRecurringFrequencyMinutes] = useState(
     schedule.recurringFrequency / (60 * 1000)
   );
