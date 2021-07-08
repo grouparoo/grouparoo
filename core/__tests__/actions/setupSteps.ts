@@ -45,7 +45,7 @@ describe("actions/setupSteps", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, setupSteps, toDisplay } = await specHelper.runAction(
+      const { error, setupSteps } = await specHelper.runAction(
         "setupSteps:list",
         connection
       );
@@ -70,26 +70,8 @@ describe("actions/setupSteps", () => {
       expect(setupSteps[0].outcome).toBe(null);
       expect(setupSteps[0].skipped).toBe(false);
       expect(setupSteps[0].complete).toBe(false);
-      expect(toDisplay).toBe(true);
 
       id = setupSteps[0].id;
-    });
-
-    test("toDisplay is false when the setting is disabled", async () => {
-      const setting = await Setting.findOne({
-        where: { key: "display-startup-steps" },
-      });
-      await setting.update({ value: false });
-
-      connection.params = {
-        csrfToken,
-      };
-      const { toDisplay } = await specHelper.runAction(
-        "setupSteps:list",
-        connection
-      );
-
-      expect(toDisplay).toBe(false);
     });
 
     test("setupSteps can be completed outside of the action and re-calculated when viewed", async () => {

@@ -36,9 +36,9 @@ export default function SignInForm(props) {
       if (nextPage) {
         router.push(nextPage.toString());
       } else {
-        const { setupSteps, toDisplay } = await getSetupSteps();
+        const { setupSteps } = await getSetupSteps();
         const isSetupComplete = setupSteps.every((step) => step.complete);
-        if (isSetupComplete || !toDisplay) {
+        if (isSetupComplete) {
           router.push("/dashboard");
         } else {
           router.push("/setup");
@@ -48,11 +48,11 @@ export default function SignInForm(props) {
   };
 
   async function getSetupSteps() {
-    const { setupSteps, toDisplay }: Actions.SetupStepsList = await execApi(
+    const { setupSteps }: Actions.SetupStepsList = await execApi(
       "get",
       `/setupSteps`
     );
-    return { setupSteps, toDisplay };
+    return { setupSteps };
   }
 
   return (
