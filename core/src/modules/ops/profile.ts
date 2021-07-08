@@ -672,12 +672,13 @@ export namespace ProfileOps {
     includeProperties = true
   ) {
     const nonDirectlyMappedRules = (await Property.findAllWithCache()).filter(
-      (p) => p.directlyMapped === false //true // get errrbody in here
+      (p) => true // get errrbody in herep.directlyMapped === false
     );
 
     console.log(
       "properties to mark pedning",
-      nonDirectlyMappedRules.map((r) => r.key)
+      nonDirectlyMappedRules.map((r) => r.key),
+      includeProperties
     );
 
     if (includeProperties && nonDirectlyMappedRules.length > 0) {
