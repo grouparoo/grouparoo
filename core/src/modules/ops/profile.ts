@@ -254,7 +254,7 @@ export namespace ProfileOps {
 
         const keys = Object.keys(profileProperties[profileOffset]);
         checkKeys: for (const key of keys) {
-          if (key === "id") continue checkKeys;
+          if (key === "id") continue checkKeys; // TODO check this out, do we need this?
           if (key === "_meta") continue checkKeys;
 
           const h: { [key: string]: Array<string | number | boolean | Date> } =
@@ -273,7 +273,9 @@ export namespace ProfileOps {
 
           // add new Profile Properties to batch
           let position = 0;
+          console.log("check key", key);
           buildQueries: for (const value of h[key]) {
+            console.log("buildQueries", key, value);
             if (position > 0 && !property.isArray) {
               throw new Error(
                 "cannot set multiple profile properties for a non-array property"
@@ -322,8 +324,32 @@ export namespace ProfileOps {
             position: { [Op.gte]: position },
           });
         }
+
+        console.log(keys);
+        // const missingExistingProps = existingProfileProperties.filter(
+        //   (p) =>
+        //     p.profileId === profile.id &&
+        //     !keys.includes(properties.find((pr) => pr.id === p.propertyId).key)
+        // );
+        // console.log(
+        //   "missing",
+        //   missingExistingProps.map((p) => p.propertyId)
+        // );
+        for (let existingProp of existingProfileProperties) {
+          if (existingProp.profileId !== profile.id) continue;
+          if (keys.includes(existingProp.propertyId)) continue;
+
+          bulkDeletes.where[Op.or].push({
+            profileId: profile.id,
+            propertyId: existingProp.propertyId,
+          });
+        }
+
         profileOffset++;
       }
+
+      console.log("bulkCreate", bulkCreates);
+      console.log("bulkDeletes", bulkDeletes.where[Op.or]);
 
       if (bulkCreates.length > 0) {
         await ProfileProperty.bulkCreate(bulkCreates, {
@@ -397,6 +423,8 @@ export namespace ProfileOps {
       }
     }
 
+    console.log("build nulls", bulkArgs);
+
     if (bulkArgs.length > 0) await ProfileProperty.bulkCreate(bulkArgs);
 
     return bulkArgs.length;
@@ -445,6 +473,8 @@ export namespace ProfileOps {
             .then((data) => (hash = Object.assign(hash, data)))
         )
       );
+
+      console.log("import", hash);
 
       if (toSave) {
         await addOrUpdateProperties([profile], [hash], false);
@@ -639,7 +669,12 @@ export namespace ProfileOps {
     includeProperties = true
   ) {
     const nonDirectlyMappedRules = (await Property.findAllWithCache()).filter(
-      (p) => p.directlyMapped === false
+      (p) => p.directlyMapped === false //true // get errrbody in here
+    );
+
+    console.log(
+      "properties to mark pedning",
+      nonDirectlyMappedRules.map((r) => r.key)
     );
 
     if (includeProperties && nonDirectlyMappedRules.length > 0) {
