@@ -85,6 +85,7 @@ export class ImportProfileProperties extends RetryableTask {
 
     let propertyValuesBatch: ProfilePropertiesPluginMethodResponse = {};
     try {
+      console.log("will import properties for", property.key);
       propertyValuesBatch = await source.importProfileProperties(
         profilesToImport,
         property
@@ -111,6 +112,12 @@ export class ImportProfileProperties extends RetryableTask {
       orderedHashes.push(hash);
     }
     if (orderedProfiles.length > 0) {
+      console.log(
+        "addOrUpdate vals",
+        property.key,
+        orderedProfiles,
+        orderedHashes
+      );
       await ProfileOps.addOrUpdateProperties(
         orderedProfiles,
         orderedHashes,
@@ -120,7 +127,12 @@ export class ImportProfileProperties extends RetryableTask {
 
     // update the properties that got no data back
     await ProfileProperty.update(
-      { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
+      {
+        state: "ready",
+        rawValue: null,
+        stateChangedAt: new Date(),
+        confirmedAt: new Date(),
+      },
       {
         where: {
           propertyId: property.id,
