@@ -222,7 +222,8 @@ export namespace ProfileOps {
     profileProperties: {
       [key: string]: Array<string | number | boolean | Date> | any;
     }[],
-    toLock = true
+    toLock = true,
+    deleteMissing = false
   ) {
     if (profiles.length === 0) return;
     if (profiles.length !== profileProperties.length) {
@@ -335,14 +336,16 @@ export namespace ProfileOps {
         //   "missing",
         //   missingExistingProps.map((p) => p.propertyId)
         // );
-        for (let existingProp of existingProfileProperties) {
-          if (existingProp.profileId !== profile.id) continue;
-          if (keys.includes(existingProp.propertyId)) continue;
+        if (deleteMissing) {
+          for (let existingProp of existingProfileProperties) {
+            if (existingProp.profileId !== profile.id) continue;
+            if (keys.includes(existingProp.propertyId)) continue;
 
-          bulkDeletes.where[Op.or].push({
-            profileId: profile.id,
-            propertyId: existingProp.propertyId,
-          });
+            bulkDeletes.where[Op.or].push({
+              profileId: profile.id,
+              propertyId: existingProp.propertyId,
+            });
+          }
         }
 
         profileOffset++;
@@ -477,7 +480,7 @@ export namespace ProfileOps {
       console.log("import", hash);
 
       if (toSave) {
-        await addOrUpdateProperties([profile], [hash], false);
+        await addOrUpdateProperties([profile], [hash], false, true);
         await buildNullProperties([profile]);
 
         await profile.save();
