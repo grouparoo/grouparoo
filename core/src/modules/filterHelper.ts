@@ -48,6 +48,7 @@ export namespace FilterHelper {
     externallyValidate = true
   ) {
     delete instance.filters;
+    const _modelName = modelName(instance);
 
     if (externallyValidate) await validateFilters(instance, filters);
     const existingFilters = await getFilters(instance);
@@ -60,7 +61,7 @@ export namespace FilterHelper {
     }
 
     await Filter.destroy({
-      where: { ownerId: instance.id, ownerType: "property" },
+      where: { ownerId: instance.id, ownerType: _modelName },
     });
 
     const newPropertyFilters: Filter[] = [];
@@ -69,7 +70,7 @@ export namespace FilterHelper {
 
       const propertyFilter = await Filter.create({
         ownerId: instance.id,
-        ownerType: "property",
+        ownerType: _modelName,
         position: parseInt(i) + 1,
         key: filter.key,
         op: filter.op,

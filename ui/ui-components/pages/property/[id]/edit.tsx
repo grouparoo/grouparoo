@@ -14,6 +14,7 @@ import LoadingButton from "../../../components/loadingButton";
 import Head from "next/head";
 import PropertyTabs from "../../../components/tabs/property";
 import { Models, Actions } from "../../../utils/apiData";
+import { filtersAreEqual } from "../../../utils/filtersAreEqual";
 
 export default function Page(props) {
   const {
@@ -34,7 +35,9 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
   const [nextPage] = useState(router.query.nextPage?.toString()); // we want to store this when the page was initially loaded because we'll be updating the route for the profilePreview
   const [property, setProperty] = useState<Models.PropertyType>(props.property);
-  const [localFilters, setLocalFilters] = useState(props.property.filters);
+  const [localFilters, setLocalFilters] = useState<
+    Actions.PropertyView["property"]["filters"]
+  >(props.property.filters);
 
   const [debounceCounter, setDebounceCounter] = useState(0);
   const sleep = debounceCounter === 0 ? 0 : 1000; // we only want to make one request every ~second, so wait for more input
@@ -491,7 +494,7 @@ export default function Page(props) {
                       {localFilters.map((localFilter, idx) => {
                         let rowChanged = false;
                         if (
-                          !rulesAreEqual(
+                          !filtersAreEqual(
                             property.filters[idx],
                             localFilters[idx]
                           )
@@ -577,7 +580,9 @@ export default function Page(props) {
                                   selected={
                                     localFilter.match &&
                                     localFilter.match !== "null"
-                                      ? new Date(parseInt(localFilter.match))
+                                      ? new Date(
+                                          parseInt(localFilter.match.toString())
+                                        )
                                       : new Date()
                                   }
                                   onChange={(d: Date) => {
@@ -707,38 +712,3 @@ Page.getInitialProps = async (ctx) => {
     hydrationError,
   };
 };
-
-function rulesAreEqual(a, b) {
-  let matched = true;
-
-  const keys = [
-    "key",
-    "op",
-    "match",
-    "relativeMatchNumber",
-    "relativeMatchUnit",
-    "relativeMatchDirection",
-  ];
-
-  if (!a || !b) {
-    return false;
-  }
-
-  for (const i in keys) {
-    const key = keys[i];
-
-    if (
-      (a[key] === undefined || a[key] == null) &&
-      (b[key] === undefined || b[key] == null)
-    ) {
-      continue;
-    }
-
-    if (a[key] !== b[key]) {
-      matched = false;
-      break;
-    }
-  }
-
-  return matched;
-}
