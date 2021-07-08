@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Form, Table, Badge, Button } from "react-bootstrap";
+import { Row, Col, Form, Table, Badge, Button, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Loader from "../../../components/loader";
@@ -56,6 +56,21 @@ export default function Page(props) {
       clearTimeout(timer);
     };
   }, [JSON.stringify(property.options)]);
+
+  if (sources.length === 0) {
+    return (
+      <>
+        <Alert variant="primary">
+          There are no Sources yet.
+          <br />
+          <br />
+          <Button size="sm" href="/sources">
+            Add Source
+          </Button>
+        </Alert>
+      </>
+    );
+  }
 
   async function onSubmit(event) {
     event.preventDefault();

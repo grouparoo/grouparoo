@@ -3,7 +3,7 @@ import EnterpriseLink from "../../../components/enterpriseLink";
 import ProfileTabs from "../../../components/tabs/profile";
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Form, ListGroup } from "react-bootstrap";
+import { Row, Col, Form, ListGroup, Alert, Button } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import { useRouter } from "next/router";
 import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
@@ -186,6 +186,21 @@ export default function Page(props) {
       email = profile.properties[rule.key].values.join(", ");
     }
   });
+
+  if (properties.length === 0) {
+    return (
+      <>
+        <Alert variant="primary">
+          There are no Properties added yet.
+          <br />
+          <br />
+          <Button size="sm" href="/properties">
+            Add a Property
+          </Button>
+        </Alert>
+      </>
+    );
+  }
 
   return (
     <>

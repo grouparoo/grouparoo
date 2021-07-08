@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { Form } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
@@ -20,6 +20,21 @@ export default function NewProfile(props) {
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
+
+  if (properties.length === 0) {
+    return (
+      <>
+        <Alert variant="primary">
+          There are no Properties added yet.
+          <br />
+          <br />
+          <Button size="sm" href="/properties">
+            Add a Property
+          </Button>
+        </Alert>
+      </>
+    );
+  }
 
   async function onSubmit(data) {
     setLoading(true);

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Form } from "react-bootstrap";
+import { Form, Alert, Button } from "react-bootstrap";
 import AppSelectorList from "../../../components/appSelectorList";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -30,14 +30,16 @@ export default function Page(props) {
 
   if (apps.length === 0) {
     return (
-      <p>
-        There are no Apps in the <code>ready</code> state which can be used to
-        create a Destination. Please create an{" "}
-        <Link href="/apps">
-          <a>App</a>
-        </Link>{" "}
-        first.
-      </p>
+      <>
+        <Alert variant="primary">
+          There are no Apps in the ready state yet yet.
+          <br />
+          <br />
+          <Button size="sm" href="/apps">
+            Add an App
+          </Button>
+        </Alert>
+      </>
     );
   }
 
