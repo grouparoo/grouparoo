@@ -39,7 +39,7 @@ export default function Page(props) {
   const [schedule, setSchedule] = useState<Models.ScheduleType>(props.schedule);
   const [localFilters, setLocalFilters] = useState<
     Actions.ScheduleView["schedule"]["filters"]
-  >(props.schedule.filters);
+  >(JSON.parse(JSON.stringify(props.schedule.filters)));
   const [recurringFrequencyMinutes, setRecurringFrequencyMinutes] = useState(
     schedule.recurringFrequency / (60 * 1000)
   );
