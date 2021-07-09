@@ -1,4 +1,4 @@
-# @grouparoo/mysql
+# @grouparoo/eloqua
 
 A [Grouparoo](https://www.grouparoo.com) plugin for connecting to [Eloqua](https://login.eloqua.com/).
 
