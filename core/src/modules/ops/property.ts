@@ -1,8 +1,4 @@
-import {
-  Property,
-  PropertyFiltersWithKey,
-  SimplePropertyOptions,
-} from "../../models/Property";
+import { Property, SimplePropertyOptions } from "../../models/Property";
 import { Group } from "../../models/Group";
 import { Option } from "../../models/Option";
 import { Mapping } from "../../models/Mapping";

@@ -10,7 +10,6 @@ import {
   Option,
   Filter,
 } from "../../../src";
-import { PropertyOps } from "../../../src/modules/ops/property";
 import { FilterHelper } from "../../../src/modules/filterHelper";
 
 describe("models/property", () => {
@@ -20,14 +19,14 @@ describe("models/property", () => {
     await helper.factories.properties();
   });
 
-  test("creating a property for non-manual apps with options enqueued an internalRun", async () => {
+  test("creating a property with options enqueued an internalRun", async () => {
     const runningRuns = await Run.findAll({ where: { state: "running" } });
     expect(runningRuns.length).toBe(1);
   });
 
   test("a property cannot be created if the source does not have all the required options set", async () => {
     const app = await helper.factories.app();
-    await app.update({ type: "manual" });
+    await app.update({ state: "ready" });
     const source = await helper.factories.source(app);
     const sourceOptions = await source.getOptions();
     await expect(source.validateOptions(sourceOptions)).rejects.toThrow(
@@ -46,7 +45,7 @@ describe("models/property", () => {
 
   test("a property cannot be created if the source is not ready", async () => {
     const app = await helper.factories.app();
-    await app.update({ type: "manual" });
+    await app.update({ state: "ready" });
     const source = await helper.factories.source(app);
     await source.setOptions({ table: "some table" });
     await source.setMapping({ id: "userId" });
@@ -246,12 +245,44 @@ describe("models/property", () => {
   });
 
   test("when a property with no options or filters first becomes ready, a run will be started", async () => {
-    const app = await App.create({ type: "manual" });
+    plugin.registerPlugin({
+      name: "test-plugin-no-options",
+      apps: [
+        {
+          name: "app-no-options",
+          options: [],
+          methods: {
+            test: async () => {
+              return { success: true };
+            },
+          },
+        },
+      ],
+      connections: [
+        {
+          name: "source-no-options",
+          description: "a test source",
+          app: "app-no-options",
+          direction: "import",
+          options: [],
+          methods: {
+            profileProperty: async () => {
+              return [];
+            },
+          },
+        },
+      ],
+    });
+
+    const app = await App.create({ type: "app-no-options" });
     await app.update({ state: "ready" });
-    const source = await Source.create({ appId: app.id, type: "manual" });
+    const source = await Source.create({
+      appId: app.id,
+      type: "source-no-options",
+    });
     await source.update({ state: "ready" });
     const property = await Property.create({
-      key: "manual-property",
+      key: "property-no-options",
       sourceId: source.id,
       type: "boolean",
     });

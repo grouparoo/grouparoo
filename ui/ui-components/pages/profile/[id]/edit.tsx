@@ -24,8 +24,6 @@ export default function Page(props) {
     properties,
     profileHandler,
     allGroups,
-    sources,
-    apps,
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
@@ -137,41 +135,6 @@ export default function Page(props) {
     }
     setLoading(false);
   }
-
-  async function handleUpdate(key) {
-    const hash = {};
-    hash[key] = profileProperties[key].values;
-    setLoading(true);
-    const response: Actions.ProfileEdit = await execApi(
-      "put",
-      `/profile/${profile.id}`,
-      {
-        properties: hash,
-      }
-    );
-    if (response?.profile?.properties) {
-      successHandler.set({ message: `property ${key} updated` });
-      load();
-    }
-    setLoading(false);
-  }
-
-  const updateExistingProperty = async (event) => {
-    const _profileProperties = Object.assign({}, profileProperties);
-    _profileProperties[event.target.id].values = [event.target.value];
-    setProfileProperties(_profileProperties);
-  };
-
-  // const manualProperties = [];
-  const manualAppIds = apps
-    .filter((app) => app.type === "manual")
-    .map((app) => app.id);
-  const manualSourceIds = sources
-    .filter((source) => manualAppIds.includes(source.appId))
-    .map((source) => source.id);
-  const manualProperties = properties
-    .filter((p) => manualSourceIds.includes(p.sourceId))
-    .map((p) => p.key);
 
   const groupMembershipIds = groups.map((g) => g.id);
 
@@ -286,44 +249,14 @@ export default function Page(props) {
                         <span style={{ fontWeight: "bold" }}>{key}</span>
                       </td>
                       <td>
-                        {manualProperties.includes(key) ? (
-                          <Form>
-                            <Form.Group controlId={key}>
-                              <Form.Control
-                                required
-                                type="text"
-                                disabled={loading}
-                                value={
-                                  profileProperty.values.length === 0
-                                    ? ""
-                                    : profileProperty.values.join(", ")
-                                }
-                                onChange={(e) => updateExistingProperty(e)}
-                              />
-                            </Form.Group>
-
-                            <LoadingButton
-                              size="sm"
-                              type="submit"
-                              variant="info"
-                              disabled={loading}
-                              onClick={() => {
-                                handleUpdate(key);
-                              }}
-                            >
-                              Update
-                            </LoadingButton>
-                          </Form>
-                        ) : (
-                          <span>
-                            <strong>
-                              <ArrayProfilePropertyList
-                                type={profileProperty.type}
-                                values={profileProperty.values}
-                              />
-                            </strong>
-                          </span>
-                        )}
+                        <span>
+                          <strong>
+                            <ArrayProfilePropertyList
+                              type={profileProperty.type}
+                              values={profileProperty.values}
+                            />
+                          </strong>
+                        </span>
                       </td>
                       <td>
                         <code>

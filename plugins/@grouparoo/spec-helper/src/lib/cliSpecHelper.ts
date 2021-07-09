@@ -104,11 +104,16 @@ export namespace CLISpecHelper {
   "private": true,
   "dependencies": {
     "@grouparoo/core": "file:${corePath()}",
+    ${
+      pluginName === "@grouparoo/sqlite"
+        ? ""
+        : `"@grouparoo/sqlite": "file:${corePath()}/../plugins/@grouparoo/sqlite",`
+    }
     "${pluginName}": "file:${pluginPath}"
   },
   "scripts": {},
   "grouparoo": {
-    "plugins": ["${pluginName}"]
+    "plugins": ["${pluginName}", "@grouparoo/sqlite"]
   }
 }
     `;
@@ -123,6 +128,13 @@ export namespace CLISpecHelper {
       path.join(projectPath, "node_modules", "@grouparoo", "core"),
       "dir"
     );
+    if (pluginName !== "@grouparoo/sqlite") {
+      fs.createSymlinkSync(
+        `${corePath()}/../plugins/@grouparoo/sqlite`,
+        path.join(projectPath, "node_modules", "@grouparoo", "sqlite"),
+        "dir"
+      );
+    }
     fs.createSymlinkSync(
       pluginPath,
       path.join(projectPath, "node_modules", pluginName),
@@ -266,19 +278,31 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
   }
 
   export async function generateUserSourceToPropertyProperty(
+    projectPath: string,
     runCliCommand: Function,
     propertyNames: string | string[] = "user_id"
   ) {
-    await runCliCommand(`generate manual:app manual_app --overwrite`);
+    // create app, source, & destinations with SQLite if not present
+
+    await runCliCommand(`generate sqlite:app sqlite_app --overwrite`);
     await runCliCommand(
-      `generate manual:source manual_source --parent manual_app --overwrite`
+      `generate sqlite:table:source sqlite_source --parent sqlite_app --overwrite`
     );
 
     if (typeof propertyNames === "string") propertyNames = [propertyNames];
     for (const propertyName of propertyNames) {
       await runCliCommand(
-        `generate manual:property ${propertyName} --parent manual_source --overwrite`
+        `generate sqlite:table:property ${propertyName} --parent sqlite_source --overwrite`
       );
+      const configFile = path.join(
+        projectPath,
+        "config",
+        "properties",
+        `${propertyName}.js`
+      );
+      let contents = fs.readFileSync(configFile).toString();
+      contents = contents.replace("unique: false", "unique: true");
+      fs.writeFileSync(configFile, contents);
     }
   }
 
@@ -445,7 +469,10 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
             test(`generate destination ${destination}`, async () => {
               if (idx === 0) await generateGroup(runCliCommand); // make a group to send to the destination
               if (idx === 0 && properties.length === 0) {
-                await generateUserSourceToPropertyProperty(runCliCommand); // if we have no properties, we will need at least one property
+                await generateUserSourceToPropertyProperty(
+                  projectPath,
+                  runCliCommand
+                ); // if we have no properties, we will need at least one property
               }
 
               const { exitCode, stdout, stderr } = await runCliCommand(
