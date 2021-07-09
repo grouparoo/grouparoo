@@ -17,11 +17,11 @@ describe(`${pluginName} CLI`, () => {
   );
 
   // The mailchimp sources needs some additional properties to map to
-  CLISpecHelper.generateUserSourceToPropertyProperty(runCliCommandSync, [
-    "user_id",
-    "email",
-    "first_name",
-  ]);
+  CLISpecHelper.generateUserSourceToPropertyProperty(
+    projectPath,
+    runCliCommandSync,
+    ["user_id", "email", "first_name"]
+  );
 
   CLISpecHelper.testAllPluginGenerators(
     generatorNames,
