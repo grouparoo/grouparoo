@@ -9,7 +9,7 @@ import { log } from "actionhero";
 export namespace ScheduleOps {
   export async function run(schedule: Schedule, run: Run) {
     const options = await schedule.getOptions();
-    const filters = await schedule.getFilters();
+    const scheduleFilters = await schedule.getFilters();
     const source = await schedule.$get("source", {
       scope: null,
       include: [Option, Mapping],
@@ -53,7 +53,7 @@ export namespace ScheduleOps {
         schedule,
         scheduleId: schedule.id,
         scheduleOptions: options,
-        scheduleFilters: filters,
+        scheduleFilters,
         connection,
         app,
         appId: app.id,
