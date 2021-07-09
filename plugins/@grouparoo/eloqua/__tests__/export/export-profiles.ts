@@ -17,6 +17,7 @@ let client: EloquaClient;
 const email1 = "grouparoo@demo.com";
 const id1 = "pro1";
 const newEmail1 = "notgrouparoo@demo.com";
+const newEmail2 = "1grouparoo2@demo.com";
 let user1 = null;
 
 const email2 = "grouparoo2@demo.com";
@@ -75,7 +76,14 @@ async function deleteLists(suppressErrors) {
 
 async function deleteUsers(suppressErrors) {
   try {
-    const emailsToDelete = [email1, email2, email3, email4].concat(batchEmails);
+    const emailsToDelete = [
+      email1,
+      email2,
+      email3,
+      email4,
+      newEmail1,
+      newEmail2,
+    ].concat(batchEmails);
     for (const emailToDelete of emailsToDelete) {
       const user = await client.contacts.getByEmail(emailToDelete);
       if (user) {
@@ -574,6 +582,136 @@ describe("eloqua/exportProfile", () => {
     expect(user2Lists.length).toBe(0);
   });
 
+  test("can add back a user", async () => {
+    const { success } = await exportBatch({
+      client,
+      appId,
+      appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
+      exports: [
+        {
+          profileId: id1,
+          oldProfileProperties: {},
+          newProfileProperties: {
+            emailAddress: email1,
+            firstName: "Evan",
+            lastName: "Saran",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+    await indexUsers(newNock);
+    expect(success).toBe(true);
+    user1 = await client.contacts.getByEmail(email1);
+    expect(user1.emailAddress).toEqual(email1);
+    expect(user1.firstName).toEqual("Evan");
+    expect(user1.lastName).toEqual("Saran");
+  });
+
+  test("can change the email address (both old and new emails exist) with ADDITIVE sync mode", async () => {
+    const exports = [
+      {
+        profileId: id1,
+        oldProfileProperties: { emailAddress: email1, firstName: "John" },
+        newProfileProperties: {
+          emailAddress: newEmail1,
+          firstName: "Other New",
+          lastName: "User",
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+        profile: null,
+      },
+    ];
+    const { success, processExports } = await exportBatch({
+      client,
+      appId,
+      appOptions,
+      syncOperations: DestinationSyncModeData.additive.operations,
+      exports,
+    });
+    await indexUsers(newNock);
+    await processExportedProfiles({
+      connection: null,
+      app: null,
+      destination: null,
+      destinationId: null,
+      destinationOptions: null,
+      appId,
+      appOptions,
+      remoteKey: processExports.remoteKey,
+      exports,
+      syncOperations: DestinationSyncModeData.additive.operations,
+    });
+
+    expect(success).toBe(true);
+
+    user1 = await client.contacts.getByEmail(email1); // orphan the old contact
+    expect(user1.emailAddress).toBe(email1);
+    expect(user1.firstName).toBe("Evan");
+    expect(user1.lastName).toBe("Saran");
+
+    user1 = await client.contacts.getByEmail(newEmail1); // create a new contact with the new emailAddress
+    expect(user1.emailAddress).toBe(newEmail1);
+    expect(user1.firstName).toBe("Other New");
+    expect(user1.lastName).toBe("User");
+  });
+
+  test("can change the email address with ADDITIVE sync mode", async () => {
+    const exports = [
+      {
+        profileId: id1,
+        oldProfileProperties: { emailAddress: email1, firstName: "John" },
+        newProfileProperties: {
+          emailAddress: newEmail2,
+          firstName: "New",
+          lastName: "User",
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+        profile: null,
+      },
+    ];
+    const { success, processExports } = await exportBatch({
+      client,
+      appId,
+      appOptions,
+      syncOperations: DestinationSyncModeData.additive.operations,
+      exports,
+    });
+    await indexUsers(newNock);
+    await processExportedProfiles({
+      connection: null,
+      app: null,
+      destination: null,
+      destinationId: null,
+      destinationOptions: null,
+      appId,
+      appOptions,
+      remoteKey: processExports.remoteKey,
+      exports,
+      syncOperations: DestinationSyncModeData.additive.operations,
+    });
+
+    expect(success).toBe(true);
+
+    user1 = await client.contacts.getByEmail(email1); // orphan the old contact
+    expect(user1.emailAddress).toBe(email1);
+    expect(user1.firstName).toBe("Evan");
+    expect(user1.lastName).toBe("Saran");
+
+    user1 = await client.contacts.getByEmail(newEmail2); // create a new contact with the new emailAddress
+    expect(user1.emailAddress).toBe(newEmail2);
+    expect(user1.firstName).toBe("New");
+    expect(user1.lastName).toBe("User");
+  });
+
   test("will not delete users if sync mode does not allow it, but will remove groups", async () => {
     const { success, errors } = await exportBatch({
       client,
@@ -585,13 +723,13 @@ describe("eloqua/exportProfile", () => {
           profileId: id1,
           oldProfileProperties: {
             emailAddress: newEmail1,
-            firstName: "John",
-            lastName: "Test",
+            firstName: "Other New",
+            lastName: "User",
           },
           newProfileProperties: {
             emailAddress: newEmail1,
             firstName: "John",
-            lastName: "Test2", // changed here
+            lastName: "Test", // changed here
           },
           oldGroups: [list1, list2],
           newGroups: [],
@@ -610,8 +748,8 @@ describe("eloqua/exportProfile", () => {
     user1 = await client.contacts.getByEmail(newEmail1); // not null!
     expect(user1).not.toBe(null);
     expect(user1.emailAddress).toBe(newEmail1);
-    expect(user1.firstName).toBe("John");
-    expect(user1.lastName).toBe("Test"); // not changed!
+    expect(user1.firstName).toBe("Other New");
+    expect(user1.lastName).toBe("User"); // not changed!
   });
 
   test("can delete a user", async () => {
@@ -662,6 +800,72 @@ describe("eloqua/exportProfile", () => {
   });
 
   test("can add back a user with other properties", async () => {
+    const { success } = await exportBatch({
+      client,
+      appId,
+      appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
+      exports: [
+        {
+          profileId: id2,
+          oldProfileProperties: {},
+          newProfileProperties: {
+            emailAddress: email2,
+            firstName: "Evan",
+            lastName: "Saran",
+            mobilePhone: "+5583999999999",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+    await indexUsers(newNock);
+    expect(success).toBe(true);
+    user2 = await client.contacts.getByEmail(email2);
+    expect(user2.emailAddress).toEqual(email2);
+    expect(user2.firstName).toEqual("Evan");
+    expect(user2.lastName).toEqual("Saran");
+    expect(user2.mobilePhone).toEqual("+5583999999999");
+  });
+
+  test("can delete a user while try to change email", async () => {
+    user2 = await client.contacts.getByEmail(email2);
+    expect(user2).not.toBeNull();
+
+    user3 = await client.contacts.getByEmail(email3);
+    expect(user3).toBeNull(); // nonexistent.
+
+    const { success } = await exportBatch({
+      client,
+      appId,
+      appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
+      exports: [
+        {
+          profileId: id2,
+          oldProfileProperties: { emailAddress: email2, firstName: "Evan" },
+          newProfileProperties: { emailAddress: email3, firstName: "Evan" },
+          oldGroups: [],
+          newGroups: [list1], // but he's being deleted!
+          toDelete: true,
+          profile: null,
+        },
+      ],
+    });
+    await indexUsers(newNock);
+    expect(success).toBe(true);
+
+    user2 = await client.contacts.getByEmail(email2);
+    expect(user2).toBeNull(); // deleted!
+
+    user3 = await client.contacts.getByEmail(email3);
+    expect(user3).toBeNull(); // do nothing!
+  });
+
+  test("can add back a user with the same properties", async () => {
     const { success } = await exportBatch({
       client,
       appId,

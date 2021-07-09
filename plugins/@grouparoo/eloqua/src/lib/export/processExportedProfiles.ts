@@ -75,7 +75,7 @@ export const processExportedProfiles: ProcessExportedProfilesPluginMethod =
         };
       } else {
         return {
-          success: false,
+          success: true,
         };
       }
     } else {
@@ -96,7 +96,6 @@ async function postFKChange({
   exports: _exports,
   errors,
 }) {
-  let exportsToDelete = [];
   for (const contact of _exports) {
     if (errors.find((error) => error.profileId === contact.profileId)) {
       continue;
@@ -110,7 +109,6 @@ async function postFKChange({
     if (oldValue) {
       oldValue = oldValue.toString();
       if (newValue !== oldValue && oldValue.length > 0) {
-        exportsToDelete.push(contact);
         if (syncOperations.delete) {
           const user = await client.contacts.getByEmail(oldValue);
           if (user) {

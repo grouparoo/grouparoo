@@ -137,12 +137,25 @@ export async function deleteContacts({
           "Destination sync mode does not delete contacts."
         );
       }
-      if (!profile.destinationId) {
+      let contactIdToDelete = profile.destinationId;
+      if (profile.oldForeignKeyValue) {
+        const user = await client.contacts.getByEmail(
+          profile.oldForeignKeyValue
+        );
+        if (user) {
+          contactIdToDelete = user["id"];
+        }
+      }
+      if (!contactIdToDelete) {
         throw new Errors.InfoError(
-          `destinationId not found to delete: ${profile.foreignKeyValue}`
+          `destinationId not found to delete: ${
+            profile.oldForeignKeyValue
+              ? profile.oldForeignKeyValue
+              : profile.foreignKeyValue
+          }`
         );
       }
-      await client.contacts.delete(profile.destinationId);
+      await client.contacts.delete(contactIdToDelete);
       await invalidate(appId);
       profile.processed = true;
     } catch (error) {
