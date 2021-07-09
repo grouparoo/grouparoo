@@ -15,12 +15,29 @@ export default {
         type: DataTypes.STRING(191),
         allowNull: false,
       });
+
+      await migration.addIndex(
+        "filters",
+        ["ownerId", "ownerType", "position"],
+        {
+          fields: ["ownerId", "ownerType", "position"],
+          unique: true,
+        }
+      );
     });
   },
 
   down: async function (migration) {
     await migration.sequelize.transaction(async () => {
-      await migration.dropColumn("filters", "ownerType");
+      await migration.removeIndex(
+        "filters",
+        ["ownerId", "ownerType", "position"],
+        {
+          fields: ["ownerId", "ownerType", "position"],
+          unique: true,
+        }
+      );
+      await migration.removeColumn("filters", "ownerType");
       await migration.renameColumn("filters", "ownerId", "propertyId");
       await migration.renameTable("filters", "propertyFilters");
     });
