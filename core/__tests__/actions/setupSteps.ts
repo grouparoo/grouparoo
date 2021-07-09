@@ -35,10 +35,6 @@ describe("actions/setupSteps", () => {
         { complete: false },
         { where: { complete: true } }
       );
-      const setting = await Setting.findOne({
-        where: { key: "display-startup-steps" },
-      });
-      await setting.update({ value: true });
     });
 
     test("a reader can list setupSteps", async () => {
