@@ -222,6 +222,8 @@ export class Schedule extends LoggedModel<Schedule> {
     if (!sourceId || !name) return;
 
     const options = await this.getOptions(false);
+    const filters = await this.getFilters();
+
     return {
       class: "Schedule",
       id: this.getConfigId(),
@@ -230,6 +232,7 @@ export class Schedule extends LoggedModel<Schedule> {
       recurring,
       recurringFrequency,
       options,
+      filters,
     };
   }
 
