@@ -12,11 +12,6 @@ import { ApiKeyTemplate } from "../templates/apiKey";
 import { TeamTemplate } from "../templates/team";
 import { TeamMemberTemplate } from "../templates/teamMember";
 import { SettingTemplate } from "../templates/setting";
-import {
-  ManualAppTemplate,
-  ManualSourceTemplate,
-  ManualPropertyTemplate,
-} from "../templates/manual";
 import { CLS } from "../modules/cls";
 
 declare module "actionhero" {
@@ -67,41 +62,6 @@ export class Plugins extends Initializer {
         ApiKeyTemplate,
         TeamTemplate,
         TeamMemberTemplate,
-      ],
-    });
-
-    plugin.registerPlugin({
-      name: "@grouparoo/core/manual",
-      icon: "/public/@grouparoo/manual/manual.png",
-      templates: [
-        ManualAppTemplate,
-        ManualSourceTemplate,
-        ManualPropertyTemplate,
-      ],
-      apps: [
-        {
-          name: "manual",
-          options: [],
-          methods: {
-            test: async () => {
-              return { success: true };
-            },
-          },
-        },
-      ],
-      connections: [
-        {
-          name: "manual",
-          direction: "import",
-          app: "manual",
-          description: "manually update the properties of a profile",
-          options: [],
-          methods: {
-            sourceOptions: async () => {
-              return {};
-            },
-          },
-        },
       ],
     });
 
@@ -218,7 +178,6 @@ export class Plugins extends Initializer {
         }
         if (
           connection.direction === "import" &&
-          connection.app !== "manual" &&
           !connection.methods.profiles &&
           !connection.methods.profileProperty &&
           !connection.methods.profileProperties

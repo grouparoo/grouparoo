@@ -12,7 +12,7 @@ module.exports = async function getConfig() {
       id: "data_warehouse", // id -> `data_warehouse`
       name: "Data Warehouse",
       class: "App",
-      type: "manual",
+      type: "app-no-options",
       options: {},
     },
 

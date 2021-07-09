@@ -1456,6 +1456,35 @@ describe("modules/codeConfig", () => {
     });
 
     test("changing an app's type (valid) causes an error", async () => {
+      plugin.registerPlugin({
+        name: "test-plugin-no-options",
+        apps: [
+          {
+            name: "app-no-options",
+            options: [],
+            methods: {
+              test: async () => {
+                return { success: true };
+              },
+            },
+          },
+        ],
+        connections: [
+          {
+            name: "source-no-options",
+            description: "a test source",
+            app: "app-no-options",
+            direction: "import",
+            options: [],
+            methods: {
+              profileProperty: async () => {
+                return [];
+              },
+            },
+          },
+        ],
+      });
+
       // initial load
       await loadConfigDirectory(
         path.join(__dirname, "..", "..", "fixtures", "codeConfig", "initial")
@@ -1474,7 +1503,9 @@ describe("modules/codeConfig", () => {
       );
 
       expect(errors.length).toBe(1);
-      expect(errors[0]).toMatch(/fileId is not an option for a manual app/);
+      expect(errors[0]).toMatch(
+        /fileId is not an option for a app-no-options app/
+      );
     });
   });
 });

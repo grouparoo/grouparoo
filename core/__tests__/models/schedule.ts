@@ -96,7 +96,7 @@ describe("models/schedule", () => {
 
     test("a schedule cannot be created if the source does not have all the required options set", async () => {
       const app = await helper.factories.app();
-      await app.update({ type: "manual" });
+      await app.update({ state: "ready" });
       const source = await helper.factories.source(app);
       const sourceOptions = await source.getOptions();
       await expect(source.validateOptions(sourceOptions)).rejects.toThrow(
@@ -112,22 +112,64 @@ describe("models/schedule", () => {
       ).rejects.toThrow(/table is required/);
     });
 
-    test("a schedule cannot be created if the source does not support schedules", async () => {
-      const app = await App.create({ type: "manual", name: "manual app" });
-      await app.update({ state: "ready" });
-      const source = await Source.create({ type: "manual", appId: app.id });
-      await source.update({ state: "ready" });
+    describe("with plugin that does not support schedules", () => {
+      beforeAll(() => {
+        plugin.registerPlugin({
+          name: "test-plugin-no-schedule",
+          apps: [
+            {
+              name: "test-plugin-app-no-schedule",
+              options: [],
+              methods: {
+                test: async () => {
+                  return { success: true };
+                },
+              },
+            },
+          ],
+          connections: [
+            {
+              name: "test-plugin-source-no-schedule",
+              description: "a test connection",
+              app: "test-plugin-app-no-schedule",
+              direction: "import",
+              options: [],
+              methods: {
+                propertyOptions: async () => {
+                  return null;
+                },
+                profileProperty: async () => {
+                  return [];
+                },
+              },
+            },
+          ],
+        });
+      });
 
-      await expect(
-        Schedule.create({
-          name: "test schedule",
-          type: "test-plugin-import",
-          sourceId: source.id,
-        })
-      ).rejects.toThrow(/cannot have a schedule/);
+      test("a schedule cannot be created if the source does not support schedules", async () => {
+        const app = await App.create({
+          type: "test-plugin-app-no-schedule",
+          name: "test app",
+        });
+        await app.update({ state: "ready" });
+        const source = await Source.create({
+          type: "test-plugin-source-no-schedule",
+          appId: app.id,
+        });
+        await source.update({ state: "ready" });
 
-      await source.destroy();
-      await app.destroy();
+        await expect(
+          Schedule.create({
+            name: "test schedule",
+            type: "test-plugin-import",
+            sourceId: source.id,
+          })
+        ).rejects.toThrow(/cannot have a schedule/);
+
+        await source.destroy();
+        await app.destroy();
+      });
     });
 
     describe("validations", () => {

@@ -58,9 +58,8 @@ describe("actions/apps", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(types.length).toBeGreaterThanOrEqual(2);
+      expect(types.length).toBeGreaterThanOrEqual(1);
       const names = types.map((t) => t.name);
-      expect(names).toContain("manual");
       expect(names).toContain("test-plugin-app");
 
       const pluginTestAppType = types.find((t) => t.name === "test-plugin-app");
