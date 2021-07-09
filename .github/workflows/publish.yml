@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@master
         with:
           ref: ${{ github.head_ref }}
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
+          token: ${{ secrets.BOT_GITHUB_PAT }}
           fetch-depth: 0
       - name: Update ENV
         if: github.event.inputs.release_type != ''
@@ -35,8 +35,8 @@ jobs:
       - name: publish
         run: ./bin/publish $RELEASE_TYPE
         env:
-          GITHUB_AUTH: ${{ secrets.GH_ACCESS_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_AUTH: ${{ secrets.BOT_GITHUB_PAT }}
+          NPM_TOKEN: ${{ secrets.BOT_NPM_TOKEN }}
 
   update-lockfile:
     runs-on: ubuntu-latest
@@ -46,7 +46,7 @@ jobs:
       - uses: actions/checkout@master
         with:
           ref: main
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
+          token: ${{ secrets.BOT_GITHUB_PAT }}
       - name: Update PNPM lockfile
         run: |
           cd tools/merger && ./lockfile
@@ -57,3 +57,11 @@ jobs:
           commit_user_email: hello@grouparoo.com
           commit_author: Grouparoo Bot <hello@grouparoo.com>
           branch: main
+
+  notify-omnibus:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'grouparoo/grouparoo' }}
+    needs: publish
+    steps:
+      - name: Notify
+        run: curl -X POST -u "grouparoo-bot:${{secrets.BOT_GITHUB_PAT}}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/grouparoo/omnibus/actions/workflows/update.yaml/dispatches --data '{"ref": "main"}'
