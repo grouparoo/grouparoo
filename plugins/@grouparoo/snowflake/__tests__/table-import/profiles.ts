@@ -32,7 +32,7 @@ let run;
 let schedule;
 let sourceMapping;
 
-async function runIt({ highWaterMark, sourceOffset, limit }) {
+async function runIt({ highWaterMark, sourceOffset, limit, scheduleFilters }) {
   const imports = [];
   plugin.createImports = jest.fn(async function (
     mapping: { [remoteKey: string]: string },
@@ -58,6 +58,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     sourceOffset,
     schedule,
     scheduleOptions: await schedule.getOptions(),
+    scheduleFilters,
     runId: null,
     scheduleId: null,
     sourceId: null,
@@ -104,10 +105,12 @@ describe("snowflake/table/profiles", () => {
     let limit = 100;
     let highWaterMark = {};
     let sourceOffset = 0;
+    let scheduleFilters = [];
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
       sourceOffset,
+      scheduleFilters,
     });
     expect(importsCount).toBe(10);
     const importedIds = imports.map((r) => r.ID);
@@ -118,10 +121,12 @@ describe("snowflake/table/profiles", () => {
     let limit = 100;
     let highWaterMark = { STAMP: "2020-02-07T12:13:14.000Z" };
     let sourceOffset = 0;
+    let scheduleFilters = [];
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
       sourceOffset,
+      scheduleFilters,
     });
     expect(importsCount).toBe(4);
     const importedIds = imports.map((r) => r.ID);
@@ -132,10 +137,12 @@ describe("snowflake/table/profiles", () => {
     let limit = 100;
     let sourceOffset = 0;
     let highWaterMark = { STAMP: "2020-02-11T12:13:14.000Z" }; // past the last one
+    let scheduleFilters = [];
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
       sourceOffset,
+      scheduleFilters,
     });
     expect(importsCount).toBe(0);
     const importedIds = imports.map((r) => r.ID);
@@ -147,12 +154,14 @@ describe("snowflake/table/profiles", () => {
     async () => {
       let limit = 4;
       let highWaterMark = {};
+      let scheduleFilters = [];
       let importedIds;
 
       const page1 = await runIt({
         limit,
         sourceOffset: 0,
         highWaterMark,
+        scheduleFilters,
       });
       expect(page1.importsCount).toBe(4);
       expect(page1.sourceOffset).toBe(0);
@@ -165,6 +174,7 @@ describe("snowflake/table/profiles", () => {
         limit,
         highWaterMark: page1.highWaterMark,
         sourceOffset: page1.sourceOffset,
+        scheduleFilters,
       });
       expect(page2.importsCount).toBe(4);
       expect(page2.sourceOffset).toBe(0);
@@ -177,6 +187,7 @@ describe("snowflake/table/profiles", () => {
         limit,
         highWaterMark: page2.highWaterMark,
         sourceOffset: page2.sourceOffset,
+        scheduleFilters,
       });
       expect(page3.importsCount).toBe(4);
       expect(page3.sourceOffset).toBe(0);
@@ -186,4 +197,23 @@ describe("snowflake/table/profiles", () => {
     },
     helper.setupTime
   );
+
+  test("can be filtered", async () => {
+    let limit = 100;
+    let highWaterMark = {};
+    let sourceOffset = 0;
+    let scheduleFilters = [
+      { key: "ID", op: "greater than", match: 4 },
+      { key: "ID", op: "less than", match: 7 },
+    ];
+    const { imports, importsCount } = await runIt({
+      limit,
+      highWaterMark,
+      sourceOffset,
+      scheduleFilters,
+    });
+    expect(importsCount).toBe(2);
+    const importedIds = imports.map((r) => r.ID);
+    expect(importedIds).toEqual([5, 6]);
+  });
 });

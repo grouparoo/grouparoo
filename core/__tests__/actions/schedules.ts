@@ -104,6 +104,50 @@ describe("actions/schedules", () => {
         expect(pluginOptions[0].key).toBe("maxColumn");
       });
 
+      test("an administrator can view the filter options for a schedule", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+        };
+        const { error, options } = await specHelper.runAction(
+          "schedule:filterOptions",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(options).toEqual([
+          {
+            key: "id",
+            ops: ["greater than", "less than"],
+            canHaveRelativeMatch: false,
+          },
+        ]);
+      });
+
+      test("an administrator can set the filters for a schedule", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+          filters: [{ key: "id", op: "greater than", match: 6 }],
+        };
+        const { error, schedule } = await specHelper.runAction(
+          "schedule:edit",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(schedule.filters).toEqual([
+          {
+            key: "id",
+            match: "6",
+            op: "greater than",
+            relativeMatchDirection: null,
+            relativeMatchNumber: null,
+            relativeMatchUnit: null,
+          },
+        ]);
+      });
+
       test("an schedule can be made ready", async () => {
         connection.params = {
           csrfToken,

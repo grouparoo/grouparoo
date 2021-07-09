@@ -1,4 +1,5 @@
 import { Model } from "sequelize-typescript";
+import { modelName } from "./modelName";
 
 export namespace StateMachine {
   export interface StateTransition {
@@ -40,11 +41,5 @@ export namespace StateMachine {
     transitions: Array<StateTransition>
   ) {
     return transitions.find((t) => t.from === from && t.to === to);
-  }
-
-  function modelName(instance: Model): string {
-    let name = instance.constructor.name;
-    name = name[0].toLowerCase() + name.substr(1);
-    return name;
   }
 }

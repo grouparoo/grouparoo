@@ -67,6 +67,7 @@ describe("snowflake/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: "PROFILES",
+      matchConditions: [],
       highWaterMarkCondition: {
         columnName: "STAMP",
         value: new Date(0),
@@ -75,6 +76,34 @@ describe("snowflake/table/scheduleOptions", () => {
     });
 
     expect(rowCount).toBe(10);
+  });
+
+  test("it can be filtered", async () => {
+    const rowCount = await getChangedRowCount({
+      connection,
+      appOptions,
+      appId: app.id,
+      tableName: "PROFILES",
+      matchConditions: [
+        {
+          columnName: "ID",
+          filterOperation: FilterOperation.GreaterThan,
+          value: 4,
+        },
+        {
+          columnName: "ID",
+          filterOperation: FilterOperation.LessThan,
+          value: 7,
+        },
+      ],
+      highWaterMarkCondition: {
+        columnName: "STAMP",
+        value: new Date(0),
+        filterOperation: FilterOperation.GreaterThan,
+      },
+    });
+
+    expect(rowCount).toBe(2);
   });
 
   test("gets the percentage complete of a run", async () => {

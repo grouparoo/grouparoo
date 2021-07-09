@@ -6,17 +6,18 @@ import {
   ForeignKey,
   CreatedAt,
   UpdatedAt,
-  BeforeCreate,
   BelongsTo,
+  BeforeCreate,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Property } from "./Property";
+import { Schedule } from "./Schedule";
 import { APIData } from "../modules/apiData";
 
-@Table({ tableName: "propertyFilters", paranoid: false })
-export class PropertyFilter extends Model {
+@Table({ tableName: "filters", paranoid: false })
+export class Filter extends Model {
   idPrefix() {
-    return "prf";
+    return "flt";
   }
 
   @Column({ primaryKey: true })
@@ -30,8 +31,13 @@ export class PropertyFilter extends Model {
 
   @AllowNull(false)
   @ForeignKey(() => Property)
+  @ForeignKey(() => Schedule)
   @Column
-  propertyId: string;
+  ownerId: string;
+
+  @AllowNull(false)
+  @Column
+  ownerType: string;
 
   @AllowNull(false)
   @Column
@@ -60,10 +66,14 @@ export class PropertyFilter extends Model {
   @BelongsTo(() => Property)
   property: Property;
 
+  @BelongsTo(() => Schedule)
+  schedule: Schedule;
+
   async apiData() {
     return {
       id: this.id,
-      propertyId: this.propertyId,
+      ownerId: this.ownerId,
+      ownerType: this.ownerType,
       key: this.key,
       position: this.position,
       match: this.match,

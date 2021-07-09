@@ -619,6 +619,8 @@ describe("modules/configWriter", () => {
 
     test("schedules can provide their config objects", async () => {
       const schedule: Schedule = await helper.factories.schedule(source);
+      const filterObj = { key: "id", match: "0", op: "greater than" };
+      await schedule.setFilters([filterObj]);
       const config = await schedule.getConfigObject();
 
       expect(config.id).toBeTruthy();
@@ -635,6 +637,14 @@ describe("modules/configWriter", () => {
         recurring,
         recurringFrequency,
         options: Object.fromEntries(options.map((o) => [o.key, o.value])),
+        filters: [
+          {
+            ...filterObj,
+            relativeMatchDirection: null,
+            relativeMatchNumber: null,
+            relativeMatchUnit: null,
+          },
+        ],
       });
     });
 

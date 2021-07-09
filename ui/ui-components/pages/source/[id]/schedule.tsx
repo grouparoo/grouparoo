@@ -3,17 +3,20 @@ import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
 import { useState } from "react";
 import Moment from "react-moment";
-import { Alert, Row, Col, Form, Badge } from "react-bootstrap";
+import { Alert, Row, Col, Form, Badge, Button, Table } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import PageHeader from "../../../components/pageHeader";
 import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
+import DatePicker from "../../../components/datePicker";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import { filtersAreEqual } from "../../../utils/filtersAreEqual";
+import { makeLocal } from "../../../utils/makeLocal";
 
 export default function Page(props) {
   const {
@@ -22,17 +25,22 @@ export default function Page(props) {
     source,
     run,
     pluginOptions,
+    filterOptions,
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     source: Models.SourceType;
     run: Models.RunType;
     pluginOptions: Actions.ScheduleView["pluginOptions"];
+    filterOptions: Actions.ScheduleFilterOptions["options"];
   } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [schedule, setSchedule] = useState<Models.ScheduleType>(props.schedule);
+  const [localFilters, setLocalFilters] = useState<
+    Actions.ScheduleView["schedule"]["filters"]
+  >(makeLocal(props.schedule.filters));
   const [recurringFrequencyMinutes, setRecurringFrequencyMinutes] = useState(
     schedule.recurringFrequency / (60 * 1000)
   );
@@ -52,7 +60,7 @@ export default function Page(props) {
     const response: Actions.ScheduleEdit = await execApi(
       "put",
       `/schedule/${schedule.id}`,
-      Object.assign({}, _schedule)
+      Object.assign({}, _schedule, { filters: localFilters, state: "ready" })
     );
     if (response?.schedule) {
       setRecurringFrequencyMinutes(
@@ -96,6 +104,32 @@ export default function Page(props) {
     _schedule.options[key] = value;
     setSchedule(_schedule);
   }
+
+  function addRule() {
+    const ruleLimit = 10;
+
+    const _localFilters = [...localFilters];
+    if (_localFilters.length >= ruleLimit) {
+      alert(`only ${ruleLimit} rules allowed`);
+      return;
+    }
+
+    _localFilters.push({
+      key: filterOptions[0].key,
+      op: filterOptions[0].ops[0],
+      match: "",
+    });
+
+    setLocalFilters(_localFilters);
+  }
+
+  function deleteRule(idx: number) {
+    const _localFilters = [...localFilters];
+    _localFilters.splice(idx, 1);
+    setLocalFilters(_localFilters);
+  }
+
+  let rowChanges = false;
 
   return (
     <>
@@ -328,6 +362,186 @@ export default function Page(props) {
                     ) : null}
                   </div>
                 ))}
+
+                {filterOptions.length > 0 ? (
+                  <>
+                    <hr />
+                    <strong>Filters</strong>
+                    <p>
+                      Are there any criteria where you’d want to filter out rows
+                      from being included in this Schedule?
+                    </p>
+
+                    <Table bordered size="sm">
+                      <thead>
+                        <tr>
+                          <td />
+                          <td>
+                            <strong>Key</strong>
+                          </td>
+                          <td>
+                            <strong>Operation</strong>
+                          </td>
+                          <td>
+                            <strong>Value</strong>
+                          </td>
+                          <td>&nbsp;</td>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {localFilters.map((localFilter, idx) => {
+                          let rowChanged = false;
+                          if (
+                            !filtersAreEqual(
+                              schedule.filters[idx],
+                              localFilters[idx]
+                            )
+                          ) {
+                            rowChanged = true;
+                            rowChanges = true;
+                          }
+
+                          return (
+                            <tr key={`rule-${localFilter.key}-${idx}`}>
+                              <td>
+                                <h5>
+                                  <Badge
+                                    variant={rowChanged ? "warning" : "light"}
+                                  >
+                                    {idx}
+                                  </Badge>
+                                </h5>
+                              </td>
+                              <td>
+                                <Form.Group
+                                  controlId={`${localFilter.key}-key-${idx}`}
+                                >
+                                  <Form.Control
+                                    as="select"
+                                    value={localFilter.key}
+                                    disabled={loading}
+                                    onChange={(e: any) => {
+                                      const _localFilters = [...localFilters];
+                                      localFilter.key = e.target.value;
+                                      _localFilters[idx] = localFilter;
+                                      setLocalFilters(_localFilters);
+                                    }}
+                                  >
+                                    {filterOptions.map((filter) => (
+                                      <option
+                                        key={`ruleKeyOpt-${filter.key}-${idx}`}
+                                      >
+                                        {filter.key}
+                                      </option>
+                                    ))}
+                                  </Form.Control>
+                                </Form.Group>
+                              </td>
+
+                              <td>
+                                <Form.Group
+                                  controlId={`${localFilter.key}-op-${idx}`}
+                                >
+                                  <Form.Control
+                                    as="select"
+                                    disabled={loading}
+                                    value={localFilter.op}
+                                    onChange={(e: any) => {
+                                      const _localFilters = [...localFilters];
+                                      localFilter.op = e.target.value;
+                                      _localFilters[idx] = localFilter;
+                                      setLocalFilters(_localFilters);
+                                    }}
+                                  >
+                                    {filterOptions.filter(
+                                      (fo) => fo.key === localFilter.key
+                                    ).length === 1
+                                      ? filterOptions
+                                          .filter(
+                                            (fo) => fo.key === localFilter.key
+                                          )[0]
+                                          .ops.map((op) => (
+                                            <option
+                                              key={`op-opt-${localFilter.key}-${op}`}
+                                            >
+                                              {op}
+                                            </option>
+                                          ))
+                                      : null}
+                                  </Form.Control>
+                                </Form.Group>
+                              </td>
+
+                              <td>
+                                {localFilter.key === "occurredAt" ? (
+                                  <DatePicker
+                                    selected={
+                                      localFilter.match &&
+                                      localFilter.match !== "null"
+                                        ? new Date(
+                                            parseInt(
+                                              localFilter.match.toString()
+                                            )
+                                          )
+                                        : new Date()
+                                    }
+                                    onChange={(d: Date) => {
+                                      const _localFilter = [...localFilters];
+                                      localFilter.match = d
+                                        .getTime()
+                                        .toString();
+                                      _localFilter[idx] = localFilter;
+                                      setLocalFilters(_localFilter);
+                                    }}
+                                  />
+                                ) : (
+                                  <Form.Group
+                                    controlId={`${localFilter.key}-match-${idx}`}
+                                  >
+                                    <Form.Control
+                                      required
+                                      type="text"
+                                      disabled={loading}
+                                      value={localFilter.match.toString()}
+                                      onChange={(e: any) => {
+                                        const _localFilter = [...localFilters];
+                                        localFilter.match = e.target.value;
+                                        _localFilter[idx] = localFilter;
+                                        setLocalFilters(_localFilter);
+                                      }}
+                                    />
+                                  </Form.Group>
+                                )}
+                              </td>
+
+                              <td>
+                                <Button
+                                  variant="danger"
+                                  size="sm"
+                                  onClick={() => {
+                                    deleteRule(idx);
+                                  }}
+                                >
+                                  x
+                                </Button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </Table>
+                    {localFilters.length < schedule.filters.length ||
+                    rowChanges ? (
+                      <p>
+                        <Badge variant="warning">Unsaved Rule Changes</Badge>
+                      </p>
+                    ) : null}
+                    <Button size="sm" variant="info" onClick={addRule}>
+                      Add Filter
+                    </Button>
+                  </>
+                ) : null}
               </>
               <hr />
               <LoadingButton variant="primary" type="submit" disabled={loading}>
@@ -359,10 +573,20 @@ Page.getInitialProps = async (ctx) => {
     "get",
     `/schedule/${source.schedule.id}`
   );
+  const { options: filterOptions } = await execApi(
+    "get",
+    `/schedule/${source.schedule.id}/filterOptions`
+  );
   const { runs } = await execApi("get", `/runs`, {
     id: source.schedule.id,
     limit: 1,
   });
 
-  return { source, schedule, pluginOptions, run: runs ? runs[0] : null };
+  return {
+    source,
+    schedule,
+    pluginOptions,
+    filterOptions,
+    run: runs ? runs[0] : null,
+  };
 };

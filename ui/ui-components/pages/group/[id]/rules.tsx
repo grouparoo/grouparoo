@@ -11,6 +11,7 @@ import LoadingButton from "../../../components/loadingButton";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
+import { makeLocal } from "../../../utils/makeLocal";
 
 export default function Page(props) {
   const {
@@ -31,10 +32,7 @@ export default function Page(props) {
   const [group, setGroup] = useState<Models.GroupType>(props.group);
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [localRules, setLocalRules] = useState(
-    // TODO: Why is this require to break the object chain to rules?
-    JSON.parse(JSON.stringify(props.group.rules))
-  );
+  const [localRules, setLocalRules] = useState(makeLocal(props.group.rules));
   const [countPotentialMembers, setCountPotentialMembers] = useState(0);
   const [componentCounts, setComponentCounts] = useState({});
   const [autocompleteResults, setAutoCompleteResults] = useState({});

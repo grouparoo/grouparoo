@@ -51,6 +51,7 @@ describe("postgres/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: usersTableName,
+      matchConditions: [],
       highWaterMarkCondition: {
         columnName: "stamp",
         value: new Date(0),
@@ -59,6 +60,34 @@ describe("postgres/table/scheduleOptions", () => {
     });
 
     expect(rowCount).toBe(10);
+  });
+
+  test("it can be filtered", async () => {
+    const rowCount = await getChangedRowCount({
+      connection: client,
+      appOptions,
+      appId: app.id,
+      tableName: usersTableName,
+      matchConditions: [
+        {
+          columnName: "id",
+          filterOperation: FilterOperation.GreaterThan,
+          value: 4,
+        },
+        {
+          columnName: "id",
+          filterOperation: FilterOperation.LessThan,
+          value: 7,
+        },
+      ],
+      highWaterMarkCondition: {
+        columnName: "stamp",
+        value: new Date(0),
+        filterOperation: FilterOperation.GreaterThan,
+      },
+    });
+
+    expect(rowCount).toBe(2);
   });
 
   test("gets the percentage complete of a run", async () => {

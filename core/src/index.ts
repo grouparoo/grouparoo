@@ -34,13 +34,14 @@ export {
   PluginConnectionPropertyOption,
   SimplePropertyOptions,
 } from "./models/Property";
-export { PropertyFilter } from "./models/PropertyFilter";
+export { Filter } from "./models/Filter";
 export { ProfileMultipleAssociationShim } from "./models/ProfileMultipleAssociationShim";
 export { Run, HighWaterMark } from "./models/Run";
 export {
   Schedule,
   SimpleScheduleOptions,
   PluginConnectionScheduleOption,
+  ScheduleFiltersWithKey,
 } from "./models/Schedule";
 export { Session } from "./models/Session";
 export { Setting } from "./models/Setting";

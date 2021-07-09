@@ -15,12 +15,7 @@ import validator from "validator";
 import * as uuid from "uuid";
 import { Log } from "../models/Log";
 import { config, chatRoom } from "actionhero";
-
-function modelName(instance): string {
-  let name = instance.constructor.name;
-  name = name[0].toLowerCase() + name.substr(1);
-  return name;
-}
+import { modelName } from "../modules/modelName";
 
 function filteredParams() {
   let filteredParams: string[] = [];

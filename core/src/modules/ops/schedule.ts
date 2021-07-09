@@ -9,6 +9,7 @@ import { log } from "actionhero";
 export namespace ScheduleOps {
   export async function run(schedule: Schedule, run: Run) {
     const options = await schedule.getOptions();
+    const scheduleFilters = await schedule.getFilters();
     const source = await schedule.$get("source", {
       scope: null,
       include: [Option, Mapping],
@@ -52,6 +53,7 @@ export namespace ScheduleOps {
         schedule,
         scheduleId: schedule.id,
         scheduleOptions: options,
+        scheduleFilters,
         connection,
         app,
         appId: app.id,
@@ -175,6 +177,7 @@ export namespace ScheduleOps {
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
     const scheduleOptions = await schedule.getOptions();
+    const scheduleFilters = await schedule.getFilters();
 
     // In this case, we want to us the highWaterMark from the previous run, not this run's, as it will be moving over the live of the run
     let highWaterMark = {};
@@ -195,6 +198,7 @@ export namespace ScheduleOps {
       schedule,
       scheduleId: schedule.id,
       scheduleOptions,
+      scheduleFilters,
       highWaterMark,
       run,
       runId: run.id,

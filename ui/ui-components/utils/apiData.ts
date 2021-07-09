@@ -218,6 +218,7 @@ import {
   ScheduleEdit,
   ScheduleRun,
   ScheduleView,
+  ScheduleFilterOptions,
   SchedulesList,
 } from "@grouparoo/core/src/actions/schedules";
 import {
@@ -625,6 +626,9 @@ export namespace Actions {
   >;
   export type ScheduleView = AsyncReturnType<
     typeof ScheduleView.prototype.runWithinTransaction
+  >;
+  export type ScheduleFilterOptions = AsyncReturnType<
+    typeof ScheduleFilterOptions.prototype.runWithinTransaction
   >;
   export type SchedulesList = AsyncReturnType<
     typeof SchedulesList.prototype.runWithinTransaction

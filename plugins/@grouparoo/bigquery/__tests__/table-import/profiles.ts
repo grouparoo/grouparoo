@@ -28,7 +28,7 @@ let run;
 let schedule;
 let sourceMapping;
 
-async function runIt({ highWaterMark, sourceOffset, limit }) {
+async function runIt({ highWaterMark, sourceOffset, limit, scheduleFilters }) {
   const imports = [];
   plugin.createImports = jest.fn(async function (
     mapping: { [remoteKey: string]: string },
@@ -54,6 +54,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     sourceOffset,
     schedule,
     scheduleOptions: await schedule.getOptions(),
+    scheduleFilters,
     runId: null,
     sourceId: null,
     scheduleId: null,
@@ -101,11 +102,13 @@ describe("bigquery/table/profiles", () => {
   test("imports all profiles when no highWaterMark", async () => {
     let limit = 100;
     let highWaterMark = {};
+    let scheduleFilters = [];
     let sourceOffset = 0;
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
       sourceOffset,
+      scheduleFilters,
     });
     expect(importsCount).toBe(10);
     const importedIds = imports.map((r) => r.id);
@@ -115,11 +118,13 @@ describe("bigquery/table/profiles", () => {
   test("imports all profiles when there is a highWaterMark", async () => {
     let limit = 100;
     let highWaterMark = { stamp: "2020-02-07T12:13:14.000Z" };
+    let scheduleFilters = [];
     let sourceOffset = 0;
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
       sourceOffset,
+      scheduleFilters,
     });
     expect(importsCount).toBe(4);
     const importedIds = imports.map((r) => r.id);
@@ -130,10 +135,12 @@ describe("bigquery/table/profiles", () => {
     let limit = 100;
     let sourceOffset = 0;
     let highWaterMark = { stamp: "2020-02-11T12:13:14.000Z" }; // past the last one
+    let scheduleFilters = [];
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
       sourceOffset,
+      scheduleFilters,
     });
     expect(importsCount).toBe(0);
     const importedIds = imports.map((r) => r.id);
@@ -145,12 +152,14 @@ describe("bigquery/table/profiles", () => {
     async () => {
       let limit = 4;
       let highWaterMark = {};
+      let scheduleFilters = [];
       let importedIds;
 
       const page1 = await runIt({
         limit,
         sourceOffset: 0,
         highWaterMark,
+        scheduleFilters,
       });
       expect(page1.importsCount).toBe(4);
       expect(page1.sourceOffset).toBe(0);
@@ -163,6 +172,7 @@ describe("bigquery/table/profiles", () => {
         limit,
         highWaterMark: page1.highWaterMark,
         sourceOffset: page1.sourceOffset,
+        scheduleFilters,
       });
       expect(page2.importsCount).toBe(4);
       expect(page2.sourceOffset).toBe(0);
@@ -175,6 +185,7 @@ describe("bigquery/table/profiles", () => {
         limit,
         highWaterMark: page2.highWaterMark,
         sourceOffset: page2.sourceOffset,
+        scheduleFilters,
       });
       expect(page3.importsCount).toBe(4);
       expect(page3.sourceOffset).toBe(0);
@@ -184,4 +195,23 @@ describe("bigquery/table/profiles", () => {
     },
     helper.longTime
   );
+
+  test("can be filtered", async () => {
+    let limit = 100;
+    let highWaterMark = {};
+    let sourceOffset = 0;
+    let scheduleFilters = [
+      { key: "id", op: "greater than", match: 4 },
+      { key: "id", op: "less than", match: 7 },
+    ];
+    const { imports, importsCount } = await runIt({
+      limit,
+      highWaterMark,
+      sourceOffset,
+      scheduleFilters,
+    });
+    expect(importsCount).toBe(2);
+    const importedIds = imports.map((r) => r.id);
+    expect(importedIds).toEqual([5, 6]);
+  });
 });

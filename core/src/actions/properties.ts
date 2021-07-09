@@ -7,6 +7,7 @@ import { Group } from "../models/Group";
 import { GroupRule } from "../models/GroupRule";
 import { AsyncReturnType } from "type-fest";
 import { ConfigWriter } from "../modules/configWriter";
+import { FilterHelper } from "../modules/filterHelper";
 
 export class PropertiesList extends AuthenticatedAction {
   constructor() {
@@ -241,7 +242,7 @@ export class PropertyFilterOptions extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const property = await Property.findById(params.id);
-    return { options: await property.pluginFilterOptions() };
+    return { options: await FilterHelper.pluginFilterOptions(property) };
   }
 }
 

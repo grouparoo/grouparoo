@@ -1,6 +1,7 @@
 import { Schedule } from "../models/Schedule";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ConfigWriter } from "../modules/configWriter";
+import { FilterHelper } from "../modules/filterHelper";
 
 export class SchedulesList extends AuthenticatedAction {
   constructor() {
@@ -78,6 +79,7 @@ export class ScheduleCreate extends AuthenticatedAction {
       state: { required: false },
       options: { required: false },
       recurringFrequency: { required: true, default: 0 },
+      filters: { required: false },
     };
   }
 
@@ -90,6 +92,7 @@ export class ScheduleCreate extends AuthenticatedAction {
     });
 
     if (params.options) await schedule.setOptions(params.options);
+    if (params.filters) await schedule.setFilters(params.filters);
     if (params.state) await schedule.update({ state: params.state });
 
     await ConfigWriter.run();
@@ -116,6 +119,7 @@ export class ScheduleEdit extends AuthenticatedAction {
       state: { required: false },
       options: { required: false },
       recurringFrequency: { required: false },
+      filters: { required: false },
     };
   }
 
@@ -130,6 +134,7 @@ export class ScheduleEdit extends AuthenticatedAction {
     }
 
     if (params.options) await schedule.setOptions(params.options);
+    if (params.filters) await schedule.setFilters(params.filters);
 
     await schedule.update({ state: params.state, name: params.name });
 
@@ -139,6 +144,24 @@ export class ScheduleEdit extends AuthenticatedAction {
       schedule: await schedule.apiData(),
       pluginOptions: await schedule.pluginOptions(),
     };
+  }
+}
+
+export class ScheduleFilterOptions extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "schedule:filterOptions";
+    this.description = "view a the filter options for a schedule";
+    this.outputExample = {};
+    this.permission = { topic: "source", mode: "read" };
+    this.inputs = {
+      id: { required: true },
+    };
+  }
+
+  async runWithinTransaction({ params }) {
+    const schedule = await Schedule.findById(params.id);
+    return { options: await FilterHelper.pluginFilterOptions(schedule) };
   }
 }
 

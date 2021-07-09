@@ -14,6 +14,7 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   sourceOffset,
   highWaterMarkAndSortColumnASC,
   secondarySortColumnASC,
+  matchConditions,
   highWaterMarkKey,
 }: {
   highWaterMarkCondition: MatchCondition;
@@ -25,6 +26,14 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   // Add WHERE clause, if there is a condition for the HWM.
   if (highWaterMarkCondition) {
     query += ` WHERE ${makeWhereClause(highWaterMarkCondition)}`;
+  }
+
+  // Add additional WHERE clauses for Filters on the schedule
+  for (const [idx, condition] of matchConditions.entries()) {
+    const filterClause = makeWhereClause(condition);
+    query += ` ${
+      highWaterMarkCondition || idx > 0 ? "AND" : "WHERE"
+    } ${filterClause}`;
   }
 
   // Add ORDER, LIMIT, and OFFSET clauses.

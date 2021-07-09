@@ -141,6 +141,7 @@ export interface GetChangedRowsMethod {
     sourceOffset: number | string;
     highWaterMarkAndSortColumnASC: string;
     secondarySortColumnASC: string;
+    matchConditions: MatchCondition[];
     highWaterMarkKey: string; // for the result in the returned row
   }): Promise<DataResponseRow[]>;
 }
@@ -153,5 +154,6 @@ export interface GetChangedRowCountMethod {
     appId: string;
     tableName: string;
     highWaterMarkCondition: MatchCondition;
+    matchConditions: MatchCondition[];
   }): Promise<number>;
 }

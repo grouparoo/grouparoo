@@ -42,6 +42,10 @@ export async function loadSchedule(
 
   await schedule.setOptions(extractNonNullParts(configObject, "options"));
 
+  if (configObject.filters) {
+    await schedule.setFilters(configObject.filters, externallyValidate);
+  }
+
   await schedule.update({ state: "ready" });
 
   logModel(schedule, validate ? "validated" : isNew ? "created" : "updated");

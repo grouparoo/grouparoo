@@ -4,12 +4,7 @@ import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
 import { LockableHelper } from "./lockableHelper";
 import { LoggedModel } from "../classes/loggedModel";
-
-function modelName(instance): string {
-  let name = instance.constructor.name;
-  name = name[0].toLowerCase() + name.substr(1);
-  return name;
-}
+import { modelName } from "./modelName";
 
 export namespace MappingHelper {
   export interface Mappings {

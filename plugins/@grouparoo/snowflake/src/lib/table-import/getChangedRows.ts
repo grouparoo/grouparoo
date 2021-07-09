@@ -14,11 +14,21 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   sourceOffset,
   highWaterMarkAndSortColumnASC,
   secondarySortColumnASC,
+  matchConditions,
   highWaterMarkKey,
 }) => {
   const params = [];
   let query = `SELECT *, CAST("${highWaterMarkAndSortColumnASC}" as STRING) as "${highWaterMarkKey}" FROM "${tableName}"`;
+
   query += await makeHighwaterWhereClause(highWaterMarkCondition, params);
+
+  for (const [idx, condition] of matchConditions.entries()) {
+    const filterClause = makeWhereClause(condition, params);
+    query += ` ${
+      highWaterMarkCondition || idx > 0 ? "AND" : "WHERE"
+    } ${filterClause}`;
+  }
+
   query += ` ORDER BY "${highWaterMarkAndSortColumnASC}" ASC, "${secondarySortColumnASC}" ASC`;
   query += ` LIMIT ${limit} OFFSET ${sourceOffset}`;
   validateQuery(query);
