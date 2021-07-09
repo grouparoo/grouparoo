@@ -1,0 +1,10 @@
+# General
+node_modules
+.DS_Store
+.vscode
+npm-debug.log
+yarn-error.log
+.env
+dump.rdb
+*.retry
+coverage

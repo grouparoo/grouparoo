@@ -731,6 +731,11 @@ export namespace DestinationOps {
       );
     }
 
+    const syncMode = await destination.getSyncMode();
+    const syncOperations: DestinationSyncOperations = syncMode
+      ? DestinationSyncModeData[syncMode].operations
+      : DestinationSyncModeData.sync.operations; // if destination does not support sync modes, allow all
+
     const options = await destination.getOptions();
     const app = await destination.$get("app", {
       scope: null,
@@ -774,6 +779,7 @@ export namespace DestinationOps {
         destinationOptions: options,
         exports: exportedProfiles,
         remoteKey: exportProcessor.remoteKey,
+        syncOperations,
       });
     } catch (error) {
       combinedError = error;
