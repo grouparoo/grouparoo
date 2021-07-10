@@ -16,11 +16,11 @@ jobs:
           node-version: 14.x
       - run: npm install -g pnpm
       - run: pnpm install --frozen-lockfile=false --unsafe-perm
-      # - run: cd core && ./bin/publish-docs
-      # - name: Push changes
-      #   uses: ad-m/github-push-action@master
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     branch: gh-pages
-      #     directory: core/gh-pages
-      #     force: true
+      - run: cd core && ./bin/publish-docs
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          directory: core/gh-pages
+          force: true
