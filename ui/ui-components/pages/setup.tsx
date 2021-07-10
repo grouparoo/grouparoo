@@ -56,10 +56,6 @@ export default function Page(props) {
             Community
           </a>
           <br />
-          <br />
-          {process.env.GROUPAROO_UI_EDITION === "config" ? null : (
-            <HideSetupButton />
-          )}
         </Alert>
       )}
 
@@ -89,14 +85,6 @@ export default function Page(props) {
       </Row>
 
       <br />
-
-      {process.env.GROUPAROO_UI_EDITION === "config" ? null : (
-        <Row>
-          <Col style={{ textAlign: "center" }}>
-            <HideSetupButton /> <br /> <br />
-          </Col>
-        </Row>
-      )}
     </>
   );
 }
@@ -106,13 +94,3 @@ Page.getInitialProps = async (ctx) => {
   const { setupSteps } = await execApi("get", `/setupSteps`);
   return { setupSteps };
 };
-
-function HideSetupButton() {
-  return (
-    <Link href="/settings/interface">
-      <a>
-        Hide this Setup Guide for everyone in your organization via settings
-      </a>
-    </Link>
-  );
-}
