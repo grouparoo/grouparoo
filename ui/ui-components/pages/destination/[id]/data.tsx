@@ -142,10 +142,10 @@ export default function Page(props) {
     let destinationMappingKeys = Object.keys(_destination.mapping);
     let insertIndex = destinationMappingKeys.length - 1;
 
-    if (oldKey && value) {
+    if (oldKey !== null && oldKey !== undefined && value) {
       insertIndex = destinationMappingKeys.indexOf(oldKey);
       destinationMappingKeys.splice(insertIndex, 1, key);
-    } else if (oldKey) {
+    } else if (oldKey !== null && oldKey !== undefined) {
       insertIndex = destinationMappingKeys.indexOf(oldKey);
       destinationMappingKeys.splice(insertIndex, 1);
     } else {
@@ -194,7 +194,7 @@ export default function Page(props) {
         _destination.destinationGroupMemberships[i] = {
           groupId,
           groupName,
-          remoteKey: remoteKey ? remoteKey : groupName,
+          remoteKey,
         };
         found = true;
       }
@@ -204,7 +204,7 @@ export default function Page(props) {
       _destination.destinationGroupMemberships.push({
         groupId,
         groupName,
-        remoteKey: remoteKey ? remoteKey : groupName,
+        remoteKey,
       });
     }
 
