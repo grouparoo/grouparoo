@@ -179,14 +179,6 @@ export class Plugins extends CLSInitializer {
 
     const interfaceSettings: SettingsListItem[] = [
       {
-        key: "display-startup-steps",
-        title: "Display Startup Steps",
-        defaultValue: "true",
-        description:
-          "Should Grouparoo display the Setup Steps to all Team Members?  You can always visit /setup to see your setup steps.",
-        type: "boolean",
-      },
-      {
         key: "status-calculation-frequency-seconds",
         title: "Status Calculation Frequency Seconds",
         defaultValue: "10",

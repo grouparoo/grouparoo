@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Models } from "../../utils/apiData";
-import { ProgressBar } from "react-bootstrap";
+import { ProgressBar, Row, Col, Button } from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Actions } from "../../utils/apiData";
 
 export default function SetupStepsNavProgressBar({
@@ -10,7 +11,10 @@ export default function SetupStepsNavProgressBar({
   setupStepHandler,
 }) {
   const [steps, setSteps] = useState<Models.SetupStepType[]>([]);
-  const [shouldDisplay, setShouldDisplay] = useState(false);
+  const [initialOnBoardingState, setInitialOnBoardingState] =
+    useState<boolean>(null);
+  //because shouldDisplay is set on every Setup Step call, track if a user manually hides setup steps separately
+  const [hideCard, setHideCard] = useState<boolean>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -33,13 +37,12 @@ export default function SetupStepsNavProgressBar({
     if (newUrl && newUrl.match(/^\/session\//)) return;
     if (newUrl && newUrl === "/") return;
 
-    const { setupSteps, toDisplay }: Actions.SetupStepsList = await execApi(
+    const { setupSteps }: Actions.SetupStepsList = await execApi(
       "get",
       `/setupSteps`
     );
 
     if (setupSteps) {
-      setShouldDisplay(toDisplay);
       setSteps(setupSteps);
     }
   }
@@ -56,38 +59,72 @@ export default function SetupStepsNavProgressBar({
     (100 * completeStepsCount) / totalStepsCount
   );
 
-  if (!shouldDisplay) return null;
+  let onBoardingState = percentComplete === 100 ? true : false;
+
+  //make sure we've waited until percentComplete calculates to set initialOnBoardingState
+  if (initialOnBoardingState === null && !isNaN(percentComplete)) {
+    setInitialOnBoardingState(onBoardingState);
+  }
+
+  //if we haven't figured out initial state yet, or the initial state is complete, or someone chooses to... hide the card
+  if (
+    initialOnBoardingState === null ||
+    initialOnBoardingState === true ||
+    hideCard === true
+  )
+    return null;
 
   return (
     <div
+      className="m-2 px-1 pb-3 pt-1 rounded"
       style={{
         backgroundColor: "var(--grouparoo-background-blue)",
-        width: "100%",
-        padding: 20,
-        marginTop: 10,
       }}
     >
-      <div
+      {initialOnBoardingState === false && onBoardingState === true ? (
+        <Row>
+          <Col className="d-flex justify-content-end mr-1 text-light">
+            {" "}
+            <Button
+              variant="link"
+              className="p-0 m-0 text-light"
+              onClick={() => {
+                setHideCard(true);
+              }}
+            >
+              <FontAwesomeIcon icon="times" size="xs" />
+            </Button>
+          </Col>
+        </Row>
+      ) : null}
+
+      <Row
+        className="px-3"
         style={{
           fontSize: 18,
-          paddingLeft: 0,
           color: "var(--secondary)",
         }}
       >
-        <Link href="/setup">
-          <a>{isOnBoardingComplete ? "Setup Complete 🎉" : "Get Started:"}</a>
-        </Link>
-      </div>
-      <div
-        style={{
-          paddingLeft: 0,
-          paddingBottom: 10,
-          color: "var(--secondary)",
-        }}
-      >
-        {activeStep?.title}
-      </div>
-      <ProgressBar now={percentComplete} />
+        <Col>
+          <Link href="/setup">
+            <a>{isOnBoardingComplete ? "Setup Complete 🎉" : "Get Started:"}</a>
+          </Link>
+        </Col>
+      </Row>
+      <Row className="px-3">
+        <Col>
+          <div
+            style={{
+              paddingLeft: 0,
+              paddingBottom: 10,
+              color: "var(--secondary)",
+            }}
+          >
+            {activeStep?.title}
+          </div>
+          <ProgressBar now={percentComplete} />
+        </Col>
+      </Row>
     </div>
   );
 }
