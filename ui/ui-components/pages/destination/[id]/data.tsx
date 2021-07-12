@@ -138,6 +138,8 @@ export default function Page(props) {
   );
 
   function updateMapping(key, value, oldKey = null) {
+    if (key === "") return;
+
     const _destination = Object.assign({}, destination);
     let destinationMappingKeys = Object.keys(_destination.mapping);
     let insertIndex = destinationMappingKeys.length - 1;
@@ -180,6 +182,8 @@ export default function Page(props) {
     remoteKey,
     oldGroupId = null
   ) {
+    if (remoteKey === "") return;
+
     const _destination = Object.assign({}, destination);
     _destination.destinationGroupMemberships =
       _destination.destinationGroupMemberships.filter(
@@ -194,7 +198,7 @@ export default function Page(props) {
         _destination.destinationGroupMemberships[i] = {
           groupId,
           groupName,
-          remoteKey: remoteKey ? remoteKey : groupName,
+          remoteKey,
         };
         found = true;
       }
@@ -204,7 +208,7 @@ export default function Page(props) {
       _destination.destinationGroupMemberships.push({
         groupId,
         groupName,
-        remoteKey: remoteKey ? remoteKey : groupName,
+        remoteKey,
       });
     }
 
