@@ -57,21 +57,6 @@ export default function Page(props) {
     };
   }, [JSON.stringify(property.options)]);
 
-  if (sources.length === 0) {
-    return (
-      <>
-        <Alert variant="primary">
-          There are no Sources yet.
-          <br />
-          <br />
-          <Button size="sm" href="/sources">
-            Add Source
-          </Button>
-        </Alert>
-      </>
-    );
-  }
-
   async function onSubmit(event) {
     event.preventDefault();
     setLoading(true);
