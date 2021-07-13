@@ -1,21 +1,12 @@
 {
-  "packages": [
-    "cli",
-    "apps/*",
-    "core",
-    "ui/*",
-    "plugins/@grouparoo/*"
-  ],
-  "version": "0.4.4",
+  "packages": ["cli", "apps/*", "core", "ui/*", "plugins/@grouparoo/*"],
+  "version": "0.5.0-alpha.0",
   "command": {
     "bootstrap": {
       "ignore": "@grouparoo/app-local*"
     },
     "version": {
-      "allowBranch": [
-        "main",
-        "stable"
-      ],
+      "allowBranch": ["main"],
       "message": "chore(release): publish %s [ci skip]"
     }
   }
