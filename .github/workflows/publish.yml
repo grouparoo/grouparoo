@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: "`alpha` or `stable` release?"
+        description: "`alpha`, `stable`, or `stable-minor` release?"
         required: true
         default: "alpha"
 
