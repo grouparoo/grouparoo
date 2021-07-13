@@ -1,12 +1,7 @@
 import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
-import { getDestinationMappingOptions } from "../../src/lib/shared/destinationMappingOptions";
-import {
-  loadAppOptions,
-  loadDestinationOptions,
-  updater,
-} from "../utils/nockHelper";
+import { loadAppOptions, updater } from "../utils/nockHelper";
 import { connect } from "../../src/lib/connect";
 
 const nockFile = path.join(
@@ -24,27 +19,34 @@ const newNock = true;
 helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-const destinationOptions = loadDestinationOptions(newNock);
-const appId = "app_ch1mp-dfsjklfdsklj90-01-3k";
-
-async function runDestinationMappingOptions(options) {
-  const destinationMappingOptions = getDestinationMappingOptions(
-    options.mappingKey
-  );
-
-  return destinationMappingOptions({
-    appOptions,
-    app: null,
-    appId: appId,
-    connection: null,
-    destination: null,
-    destinationId: null,
-    destinationOptions: destinationOptions,
-  });
-}
+const appId = "app_mix-panel-09012378476890123-123903547";
 
 describe("mixpanel/destinationMappingOptions", () => {
   test("can load all destinationMappingOptions using ID", async () => {
     const client = await connect(appOptions);
+
+    client.track("caio.silveira@mailinator.com", function (err) {
+      console.log(">>>>>>>>>>>>>>>>>>>>>>>", err);
+      if (err) {
+        throw err;
+      }
+    });
+
+    client.people.set(
+      "caio.silveira@mailinator.com",
+      {
+        first_name: "Caio",
+        last_name: "Silveira",
+        city: "Campina Grande",
+        email: "caio.silveira@mailinator.com",
+        points: 0,
+      },
+      function (err) {
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>", err);
+        if (err) {
+          throw err;
+        }
+      }
+    );
   });
 });

@@ -4,12 +4,11 @@ import {
   SimpleAppOptions,
   DestinationSyncOperations,
 } from "@grouparoo/core";
-import Mixpanel from "mixpanel";
 import { connect } from "../connect";
 import { addToList, removeFromList } from "./listMethods";
 
 const deleteContactOrClearGroups = async (
-  client: Mixpanel,
+  client: any,
   appId: string,
   appOptions: SimpleAppOptions,
   syncOperations: DestinationSyncOperations,
@@ -17,7 +16,7 @@ const deleteContactOrClearGroups = async (
   groups: string[]
 ) => {
   if (syncOperations.delete) {
-    await client.deleteContact(contact.vid);
+    // await client.deleteContact(contact.vid);
   } else {
     if (syncOperations.update) {
       // clear groups
@@ -57,9 +56,9 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   try {
     let contact;
     let oldContact;
-    contact = await client.getContactByEmail(email);
+    // contact = await client.getContactByEmail(email);
     if (oldEmail && oldEmail !== email) {
-      oldContact = await client.getContactByEmail(oldEmail);
+      // oldContact = await client.getContactByEmail(oldEmail);
     }
     if (toDelete) {
       if (!syncOperations.delete) {
@@ -69,7 +68,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       }
       const contactToDelete = contact || oldContact;
       if (contactToDelete) {
-        await client.deleteContact(contactToDelete.vid);
+        // await client.deleteContact(contactToDelete.vid);
       }
       return { success: true };
     } else {
@@ -122,7 +121,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         );
       }
 
-      await client.createOrUpdateContact(sortedDataFields);
+      // await client.createOrUpdateContact(sortedDataFields);
 
       // add to lists
       for (const i in newGroups) {

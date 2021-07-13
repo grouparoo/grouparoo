@@ -1,5 +1,4 @@
 import { objectCache } from "@grouparoo/core";
-import Axios from "axios";
 
 async function getLists(client, appId, appOptions, update = false) {
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
@@ -8,7 +7,7 @@ async function getLists(client, appId, appOptions, update = false) {
   return objectCache(
     { objectId: appId, cacheKey, cacheDurationMs, read },
     async () => {
-      return client.getLists();
+      // return client.getLists();
     }
   );
 }
@@ -68,23 +67,13 @@ async function ensureList(
     return listId;
   }
 
-  // need to create it
-  const url = `https://api.hubapi.com/contacts/v1/lists?hapikey=${appOptions.hapikey}`;
-  const response = await Axios({
-    method: "POST",
-    url,
-    headers: { "Content-Type": "application/json" },
-    data: {
-      name: groupName,
-    },
-  });
-
-  return response.data.listId;
+  // fix this
+  return "";
 }
 
 export async function addToList(client, appId, appOptions, email, groupName) {
   const listId = await getListId(client, appId, appOptions, groupName);
-  await client.addContactToList(listId, email);
+  // await client.addContactToList(listId, email);
 }
 
 export async function removeFromList(
@@ -95,5 +84,5 @@ export async function removeFromList(
   groupName
 ) {
   const listId = await getListId(client, appId, appOptions, groupName);
-  await client.removeContactFromList(listId, email);
+  // await client.removeContactFromList(listId, email);
 }

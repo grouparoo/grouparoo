@@ -1,0 +1,76 @@
+const nock = require('nock');
+
+nock('https://api.mixpanel.com:443', {"encodedQueryParams":true})
+  .get('/track')
+  .query({"ip":"0","verbose":"1","data":"eyJldmVudCI6ImNhaW8uc2lsdmVpcmFAbWFpbGluYXRvci5jb20iLCJwcm9wZXJ0aWVzIjp7InRva2VuIjoiNzg0YWM0YmFmMmFlNmU2NGM3ZDBhMWUzZTEwYmJmNDEiLCJtcF9saWIiOiJub2RlIn19","test":"1"})
+  .once().reply(200, {"error":null,"status":1}, [
+  'access-control-allow-credentials',
+  'true',
+  'access-control-allow-headers',
+  'X-Requested-With',
+  'access-control-allow-methods',
+  'GET, POST, OPTIONS',
+  'access-control-allow-origin',
+  '*',
+  'access-control-expose-headers',
+  'X-MP-CE-Backoff',
+  'access-control-max-age',
+  '1728000',
+  'cache-control',
+  'no-cache, no-store',
+  'content-type',
+  'application/json',
+  'strict-transport-security',
+  'max-age=604800; includeSubDomains',
+  'date',
+  'Tue, 13 Jul 2021 03:29:18 GMT',
+  'content-length',
+  '25',
+  'x-envoy-upstream-service-time',
+  '17',
+  'server',
+  'envoy',
+  'Via',
+  '1.1 google',
+  'Alt-Svc',
+  'clear',
+  'Connection',
+  'close'
+]);
+nock('https://api.mixpanel.com:443', {"encodedQueryParams":true})
+  .get('/engage')
+  .query({"ip":"0","verbose":"1","data":"eyIkdG9rZW4iOiI3ODRhYzRiYWYyYWU2ZTY0YzdkMGExZTNlMTBiYmY0MSIsIiRkaXN0aW5jdF9pZCI6ImNhaW8uc2lsdmVpcmFAbWFpbGluYXRvci5jb20iLCIkc2V0Ijp7ImZpcnN0X25hbWUiOiJDYWlvIiwibGFzdF9uYW1lIjoiU2lsdmVpcmEiLCJjaXR5IjoiQ2FtcGluYSBHcmFuZGUiLCJlbWFpbCI6ImNhaW8uc2lsdmVpcmFAbWFpbGluYXRvci5jb20iLCJwb2ludHMiOjB9fQ%3D%3D","test":"1"})
+  .once().reply(200, {"error":null,"status":1}, [
+  'access-control-allow-credentials',
+  'true',
+  'access-control-allow-headers',
+  'X-Requested-With',
+  'access-control-allow-methods',
+  'GET, POST, OPTIONS',
+  'access-control-allow-origin',
+  '*',
+  'access-control-expose-headers',
+  'X-MP-CE-Backoff',
+  'access-control-max-age',
+  '1728000',
+  'cache-control',
+  'no-cache, no-store',
+  'content-type',
+  'application/json',
+  'strict-transport-security',
+  'max-age=604800; includeSubDomains',
+  'date',
+  'Tue, 13 Jul 2021 03:29:18 GMT',
+  'content-length',
+  '25',
+  'x-envoy-upstream-service-time',
+  '12',
+  'server',
+  'envoy',
+  'Via',
+  '1.1 google',
+  'Alt-Svc',
+  'clear',
+  'Connection',
+  'close'
+]);

@@ -78,20 +78,20 @@ export const getUserFields = async (
     important?: boolean;
   }>
 > => {
-  const fields = await client.getAllContactsProperties();
+  // const fields = await client.getAllContactsProperties();
   const out = [];
-  for (const field of fields) {
-    if (field["name"] !== "email" && !field["readOnlyValue"]) {
-      const type: DestinationMappingOptionsResponseTypes =
-        mapTypesFromHubspotToGrouparoo(field["name"], field["type"]);
-      if (type) {
-        out.push({
-          key: field["name"],
-          type,
-          important: isImportant(field["name"]),
-        });
-      }
-    }
-  }
+  // for (const field of fields) {
+  //   if (field["name"] !== "email" && !field["readOnlyValue"]) {
+  //     const type: DestinationMappingOptionsResponseTypes =
+  //       mapTypesFromHubspotToGrouparoo(field["name"], field["type"]);
+  //     if (type) {
+  //       out.push({
+  //         key: field["name"],
+  //         type,
+  //         important: isImportant(field["name"]),
+  //       });
+  //     }
+  //   }
+  // }
   return out;
 };
