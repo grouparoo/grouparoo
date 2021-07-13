@@ -124,7 +124,7 @@ export class Client {
       url: `${this.webUrl}/api/${this.apiVersion}${path}`, // path comes with a leading "/"
       withCredentials: true,
       //@ts-ignore
-      agent: `grouparoo-web-${PackageJSON.version}`,
+      agent: `${PackageJSON.name}-v${PackageJSON.version}`,
       method: verb.toLowerCase() as Method,
       headers,
       onUploadProgress: (progressEvent) => {
