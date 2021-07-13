@@ -20,9 +20,7 @@ export function useApi(
     setterKey?: string,
     useCache = process.env.NODE_ENV === "test" ? false : true
   ) {
-    if (data === null || data === undefined) {
-      data = {};
-    }
+    if (data === null || data === undefined) data = {};
 
     let apiResponse;
     try {

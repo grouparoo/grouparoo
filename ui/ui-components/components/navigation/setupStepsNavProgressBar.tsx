@@ -37,14 +37,12 @@ export default function SetupStepsNavProgressBar({
     if (newUrl && newUrl.match(/^\/session\//)) return;
     if (newUrl && newUrl === "/") return;
 
-    const { setupSteps }: Actions.SetupStepsList = await execApi(
+    const response: Actions.SetupStepsList = await execApi(
       "get",
       `/setupSteps`
     );
 
-    if (setupSteps) {
-      setSteps(setupSteps);
-    }
+    if (response?.setupSteps) setSteps(response.setupSteps);
   }
 
   const activeStep = steps.find((step) => !step.complete && !step.skipped);
@@ -76,6 +74,7 @@ export default function SetupStepsNavProgressBar({
 
   return (
     <div
+      data-testid="setupStepsProgressBar"
       className="m-2 px-1 pb-3 pt-1 rounded"
       style={{
         backgroundColor: "var(--grouparoo-background-blue)",
