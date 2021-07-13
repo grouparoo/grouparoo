@@ -76,6 +76,7 @@ export default function SetupStepsNavProgressBar({
 
   return (
     <div
+      data-testid="setupStepsProgressBar"
       className="m-2 px-1 pb-3 pt-1 rounded"
       style={{
         backgroundColor: "var(--grouparoo-background-blue)",
