@@ -327,7 +327,6 @@ export namespace ProfileOps {
 
       if (bulkCreates.length > 0) {
         await ProfileProperty.bulkCreate(bulkCreates, {
-          logging: true,
           updateOnDuplicate: [
             "state",
             "unique",
