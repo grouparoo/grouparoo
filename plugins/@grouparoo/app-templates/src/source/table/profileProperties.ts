@@ -1,11 +1,11 @@
 import {
+  AggregationMethod,
   ProfilePropertiesPluginMethod,
   ProfilePropertiesPluginMethodResponse,
 } from "@grouparoo/core";
 import {
   MatchCondition,
   GetPropertyValuesMethod,
-  AggregationMethod,
   columnNameKey,
   tableNameKey,
   aggregationMethodKey,

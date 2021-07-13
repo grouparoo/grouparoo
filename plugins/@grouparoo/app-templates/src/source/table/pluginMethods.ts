@@ -3,6 +3,8 @@ import {
   PropertyTypes,
   SimpleAppOptions,
   SimpleSourceOptions,
+  FilterOperation,
+  AggregationMethod,
 } from "@grouparoo/core";
 export { SimpleAppOptions };
 
@@ -13,28 +15,6 @@ export const aggregationMethodKey = "aggregationMethod";
 export const sortColumnKey = "sortColumn";
 export const columnNameKey = "column";
 export const tableNameKey = "table";
-
-export enum AggregationMethod {
-  Exact = "exact",
-  Average = "average",
-  Count = "count",
-  Sum = "sum",
-  Min = "min",
-  Max = "max",
-  MostRecentValue = "most recent value",
-  LeastRecentValue = "least recent value",
-}
-export enum FilterOperation {
-  Equal = "equals",
-  NotEqual = "does not equal",
-  GreaterThan = "greater than",
-  GreaterThanOrEqual = "greater than or equal to",
-  LessThan = "less than",
-  LessThanOrEqual = "less than or equal to",
-  Contain = "contains",
-  NotContain = "does not contain",
-  In = "in",
-}
 
 export interface MatchCondition {
   columnName: string;

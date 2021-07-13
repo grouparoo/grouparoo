@@ -1,5 +1,8 @@
-import { UniquePropertyBootstrapOptions } from "@grouparoo/core";
-import { aggregationMethodKey, AggregationMethod } from "./pluginMethods";
+import {
+  UniquePropertyBootstrapOptions,
+  AggregationMethod,
+} from "@grouparoo/core";
+import { aggregationMethodKey } from "./pluginMethods";
 
 export interface GetUniquePropertyBootstrapOptionsMethod {
   (): UniquePropertyBootstrapOptions;

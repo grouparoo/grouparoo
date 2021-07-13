@@ -85,6 +85,29 @@ export interface PluginConnection {
   };
 }
 
+export enum AggregationMethod {
+  Exact = "exact",
+  Average = "average",
+  Count = "count",
+  Sum = "sum",
+  Min = "min",
+  Max = "max",
+  MostRecentValue = "most recent value",
+  LeastRecentValue = "least recent value",
+}
+
+export enum FilterOperation {
+  Equal = "equals",
+  NotEqual = "does not equal",
+  GreaterThan = "greater than",
+  GreaterThanOrEqual = "greater than or equal to",
+  LessThan = "less than",
+  LessThanOrEqual = "less than or equal to",
+  Contain = "contains",
+  NotContain = "does not contain",
+  In = "in",
+}
+
 /**
  * Method to get one or many profiles to be saved/updated.
  * Only returns the nextHighWaterMark and a count of how many profiles were imported.

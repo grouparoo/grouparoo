@@ -8,7 +8,7 @@ import { Property } from "../../models/Property";
 import { CLS } from "../../modules/cls";
 import { Op } from "sequelize";
 import { Source } from "../../models/Source";
-import { PluginConnection } from "../../classes/plugin";
+import { AggregationMethod, PluginConnection } from "../../classes/plugin";
 import { Filter } from "../../models/Filter";
 
 export namespace ProfilePropertyOps {
@@ -104,7 +104,7 @@ export namespace ProfilePropertyOps {
     for (const property of properties) {
       const options = await property.getOptions();
       if (
-        options["aggregationMethod"] === "exact" &&
+        options["aggregationMethod"] === AggregationMethod.Exact &&
         property.isArray === false &&
         property.filters.length === 0 // TODO: Check if they match
       ) {
