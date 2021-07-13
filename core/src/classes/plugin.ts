@@ -64,6 +64,7 @@ export interface PluginConnection {
   options: ConnectionOption[];
   syncModes?: DestinationSyncMode[];
   defaultSyncMode?: DestinationSyncMode;
+  multiplePropertiesImport?: boolean;
   methods?: {
     sourceOptions?: SourceOptionsMethod;
     sourcePreview?: SourcePreviewMethod;
@@ -159,17 +160,17 @@ export interface ProfilePropertiesPluginMethod {
     sourceId: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
-    property: Property;
-    propertyId: string;
-    propertyOptions: SimplePropertyOptions;
-    propertyFilters: PropertyFiltersWithKey[];
+    properties: Property[];
+    propertyIds: string[];
+    propertyOptions: { [key: string]: SimplePropertyOptions };
+    propertyFilters: { [key: string]: PropertyFiltersWithKey[] };
     profiles: Profile[];
     profileIds: string[];
   }): Promise<ProfilePropertiesPluginMethodResponse>;
 }
 
 export type ProfilePropertiesPluginMethodResponse = {
-  [profileId: string]: ProfilePropertyPluginMethodResponse;
+  [profileId: string]: { [key: string]: ProfilePropertyPluginMethodResponse };
 };
 
 /**

@@ -64,6 +64,7 @@ export const buildConnection: BuildConnectionMethod = ({
     app,
     options,
     skipSourceMapping: true,
+    multiplePropertiesImport: false,
     methods: {
       sourceOptions,
       profileProperty,

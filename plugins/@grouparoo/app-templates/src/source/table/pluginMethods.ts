@@ -101,7 +101,7 @@ export interface GetPropertyValuesMethod {
     sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
-    columnName: string;
+    columnNames: string[];
     tablePrimaryKeyCol: string;
     tableMappingCol: string;
     sortColumn: string;
@@ -109,7 +109,7 @@ export interface GetPropertyValuesMethod {
     aggregationMethod: AggregationMethod;
     isArray: boolean;
     primaryKeys: Array<number | string>;
-  }): Promise<{ [primaryKey: string]: DataResponse[] }>;
+  }): Promise<{ [primaryKey: string]: { [column: string]: DataResponse[] } }>;
 }
 export interface SourceOptionsExtra {
   options: ConnectionOption[];

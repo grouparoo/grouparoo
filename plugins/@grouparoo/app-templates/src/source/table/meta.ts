@@ -118,6 +118,7 @@ export const buildConnection: BuildConnectionMethod = ({
     description,
     app,
     options,
+    multiplePropertiesImport: true,
     methods: {
       sourceOptions,
       sourcePreview,

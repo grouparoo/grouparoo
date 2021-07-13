@@ -1,6 +1,6 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { CLS } from "../../modules/cls";
-import { Property } from "../../models/Property";
+import { Source } from "../../models/Source";
 import { plugin } from "../../modules/plugin";
 import { ProfilePropertyOps } from "../../modules/ops/profileProperty";
 import { api } from "actionhero";
@@ -27,17 +27,17 @@ export class ProfilePropertiesEnqueue extends CLSTask {
       ).value
     );
 
-    const properties = await Property.findAllWithCache();
+    const sources = await Source.findAll();
 
-    for (const property of properties) {
+    for (const source of sources) {
       try {
-        const pendingProfileProperties =
+        const pendingProfilePropertyIds =
           await ProfilePropertyOps.processPendingProfileProperties(
-            property,
+            source,
             limit
           );
 
-        count = count + pendingProfileProperties.length;
+        count = count + pendingProfilePropertyIds.length;
       } catch (error) {
         // this is a periodic task, and will be retried
         api.exceptionHandlers.task(error, this.queue, worker.job, worker.id);

@@ -3,9 +3,13 @@ import { plugin } from "../../modules/plugin";
 import isEmail from "../validators/isEmail";
 import isURL from "validator/lib/isURL";
 import { ProfileProperty } from "../../models/ProfileProperty";
+import { Option } from "../../models/Option";
 import { Property } from "../../models/Property";
 import { CLS } from "../../modules/cls";
 import { Op } from "sequelize";
+import { Source } from "../../models/Source";
+import { PluginConnection } from "../../classes/plugin";
+import { Filter } from "../../models/Filter";
 
 export namespace ProfilePropertyOps {
   const defaultProfilePropertyProcessingDelay = 1000 * 60 * 5;
@@ -81,60 +85,115 @@ export namespace ProfilePropertyOps {
   }
 
   export async function processPendingProfileProperties(
-    property: Property,
+    source: Source,
     limit = 100,
     delayMs = defaultProfilePropertyProcessingDelay
   ) {
     if (!delayMs || delayMs < defaultProfilePropertyProcessingDelay) {
       delayMs = defaultProfilePropertyProcessingDelay;
     }
-
-    const source = await property.$get("source", { scope: null });
     if (source.state !== "ready") return [];
-
     const { pluginConnection } = await source.getPlugin();
+    const properties = await source.$get("properties", {
+      where: { state: "ready" },
+      include: [Option, Filter],
+    });
 
+    const pendingProfilePropertyIds: string[] = [];
+    const groupedProperties: Property[] = [];
+    for (const property of properties) {
+      const options = await property.getOptions();
+      if (
+        options["aggregationMethod"] === "exact" &&
+        property.isArray === false &&
+        property.filters.length === 0 // TODO: Check if they match
+      ) {
+        groupedProperties.push(property);
+      }
+    }
+
+    const unGroupedProperties = properties.filter(
+      (p) => !groupedProperties.map((gp) => gp.id).includes(p.id)
+    );
+
+    // groupedProperties
     const pendingProfileProperties = await ProfileProperty.findAll({
       where: {
-        propertyId: property.id,
+        propertyId: { [Op.in]: groupedProperties.map((p) => p.id) },
         state: "pending",
         startedAt: {
           [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
         },
       },
-      limit,
+      limit: limit * groupedProperties.length,
     });
 
-    if (pendingProfileProperties.length > 0) {
-      await ProfileProperty.update(
-        { startedAt: new Date() },
-        {
-          where: { id: { [Op.in]: pendingProfileProperties.map((i) => i.id) } },
-        }
-      );
+    await preparePropertyImports(
+      pluginConnection,
+      pendingProfileProperties,
+      groupedProperties
+    );
+    pendingProfilePropertyIds.push(...groupedProperties.map((p) => p.id));
 
-      const method = pluginConnection.methods.profileProperties
-        ? "ProfileProperties"
-        : "ProfileProperty";
-
-      if (method === "ProfileProperties") {
-        await CLS.enqueueTask(`profileProperty:import${method}`, {
+    // unGroupedProperties
+    for (const property of unGroupedProperties) {
+      const pendingProfileProperties = await ProfileProperty.findAll({
+        where: {
           propertyId: property.id,
-          profileIds: pendingProfileProperties.map((ppp) => ppp.profileId),
-        });
-      } else {
-        await Promise.all(
-          pendingProfileProperties.map((ppp) =>
-            CLS.enqueueTask(`profileProperty:import${method}`, {
-              propertyId: property.id,
-              profileId: ppp.profileId,
-            })
-          )
-        );
-      }
+          state: "pending",
+          startedAt: {
+            [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
+          },
+        },
+        limit,
+      });
+
+      await preparePropertyImports(pluginConnection, pendingProfileProperties, [
+        property,
+      ]);
+      pendingProfilePropertyIds.push(property.id);
     }
 
-    return pendingProfileProperties;
+    return pendingProfilePropertyIds;
+  }
+}
+
+// utilities (private)
+
+async function preparePropertyImports(
+  pluginConnection: PluginConnection,
+  pendingProfileProperties: ProfileProperty[],
+  properties: Property[]
+) {
+  if (pendingProfileProperties.length > 0) {
+    await ProfileProperty.update(
+      { startedAt: new Date() },
+      {
+        where: {
+          id: { [Op.in]: pendingProfileProperties.map((i) => i.id) },
+        },
+      }
+    );
+
+    const method = pluginConnection.methods.profileProperties
+      ? "ProfileProperties"
+      : "ProfileProperty";
+
+    if (method === "ProfileProperties") {
+      await CLS.enqueueTask(`profileProperty:import${method}`, {
+        propertyIds: properties.map((p) => p.id),
+        profileIds: pendingProfileProperties.map((ppp) => ppp.profileId),
+      });
+    } else {
+      await Promise.all(
+        pendingProfileProperties.map((ppp) =>
+          CLS.enqueueTask(`profileProperty:import${method}`, {
+            propertyId: properties[0].id,
+            profileId: ppp.profileId,
+          })
+        )
+      );
+    }
   }
 }
 

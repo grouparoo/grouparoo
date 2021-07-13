@@ -21,7 +21,7 @@ export class ImportProfileProperties extends RetryableTask {
     this.queue = "profileProperties";
     this.inputs = {
       profileIds: { required: true },
-      propertyId: { required: true },
+      propertyIds: { required: true },
     };
   }
 
@@ -32,37 +32,53 @@ export class ImportProfileProperties extends RetryableTask {
     });
     if (profiles.length === 0) return;
 
-    const property = await Property.findOneWithCache(params.propertyId);
-    if (!property) return;
-    const source = await property.$get("source", {
+    const properties = (await Property.findAllWithCache()).filter((p) =>
+      params.propertyIds.includes(p.id)
+    );
+    if (properties.length === 0) return;
+    const sourceIds = properties
+      .map((p) => p.sourceId)
+      .filter((v, i, a) => a.indexOf(v) === i);
+    if (sourceIds.length > 1) {
+      throw new Error(
+        `More than one source for properties ${params.propertyIds.join(", ")}`
+      );
+    }
+
+    const source = await properties[0].$get("source", {
       include: [Option, Mapping],
       scope: null,
     });
 
     const profilesToImport: Profile[] = [];
     const profilesNotReady: Profile[] = [];
-    const dependencies = await PropertyOps.dependencies(property);
+    const dependencies: { [key: string]: Property[] } = {};
+    for (const property of properties) {
+      dependencies[property.id] = await PropertyOps.dependencies(property);
+    }
 
     for (const profile of profiles) {
       let ok = true;
-      // already (wrongly) ready?
+
+      // all already (wrongly) ready?
       if (
-        profile.profileProperties.find((p) => p.propertyId === property.id)
-          ?.state === "ready"
+        profile.profileProperties.filter((p) => p.state === "ready").length ===
+        profile.profileProperties.length
       ) {
         ok = false;
       }
 
-      // dependencies are not ready
-      dependencies.forEach((dep) => {
-        if (
-          profile.profileProperties.find((p) => p.propertyId === dep.id)
-            ?.state !== "ready"
-        ) {
-          ok = false;
-        }
-      });
-
+      for (const property of properties) {
+        // dependencies are not ready
+        dependencies[property.id].forEach((dep) => {
+          if (
+            profile.profileProperties.find((p) => p.propertyId === dep.id)
+              ?.state !== "ready"
+          ) {
+            ok = false;
+          }
+        });
+      }
       ok ? profilesToImport.push(profile) : profilesNotReady.push(profile);
     }
 
@@ -71,7 +87,7 @@ export class ImportProfileProperties extends RetryableTask {
         { startedAt: ImportOps.retryStartedAt() },
         {
           where: {
-            propertyId: property.id,
+            propertyId: { [Op.in]: properties.map((p) => p.id) },
             profileId: {
               [Op.in]: profilesNotReady.map((p) => p.id),
             },
@@ -87,29 +103,31 @@ export class ImportProfileProperties extends RetryableTask {
     try {
       propertyValuesBatch = await source.importProfileProperties(
         profilesToImport,
-        property
+        properties
       );
     } catch (error) {
       // if something goes wrong with the batch import, fall-back to per-profile/property imports
       await Promise.all(
         profilesToImport.map((profile) => {
-          CLS.enqueueTask("profileProperty:importProfileProperty", {
-            profileId: profile.id,
-            propertyId: property.id,
+          properties.map((property) => {
+            CLS.enqueueTask("profileProperty:importProfileProperty", {
+              profileId: profile.id,
+              propertyId: property.id,
+            });
           });
         })
       );
-      return log(error, "error");
+      return log(error.stack, "error");
     }
 
     const orderedProfiles: Profile[] = [];
     const orderedHashes: any[] = [];
     for (const profileId in propertyValuesBatch) {
       const profile = profilesToImport.find((p) => p.id === profileId);
-      const hash = { [property.id]: propertyValuesBatch[profileId] };
       orderedProfiles.push(profile);
-      orderedHashes.push(hash);
+      orderedHashes.push(propertyValuesBatch[profileId]);
     }
+
     if (orderedProfiles.length > 0) {
       await ProfileOps.addOrUpdateProperties(
         orderedProfiles,
@@ -123,7 +141,7 @@ export class ImportProfileProperties extends RetryableTask {
       { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
       {
         where: {
-          propertyId: property.id,
+          propertyId: { [Op.in]: properties.map((p) => p.id) },
           profileId: {
             [Op.in]: profilesToImport.map((p) => p.id),
           },
