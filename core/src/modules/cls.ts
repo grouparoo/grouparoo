@@ -1,4 +1,4 @@
-import { api, task, config } from "actionhero";
+import { api, task, config, utils } from "actionhero";
 import cls from "cls-hooked";
 import { Transaction } from "sequelize";
 
@@ -78,7 +78,7 @@ export namespace CLS {
         transOptions.retry = retry;
       } else {
         // give a gap for the UI thread to get access
-        await sleep(100);
+        await utils.sleep(100);
       }
     }
     await api.sequelize.transaction(transOptions, async (t: Transaction) => {
@@ -134,10 +134,4 @@ export namespace CLS {
   ) {
     await afterCommit(async () => task.enqueueIn(delay, taskName, args, queue));
   }
-}
-
-async function sleep(sleepTime: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, sleepTime);
-  });
 }

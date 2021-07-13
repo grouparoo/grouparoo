@@ -1,15 +1,9 @@
-import { api } from "actionhero";
+import { api, utils } from "actionhero";
 import * as uuid from "uuid";
 
 const RETRY_SLEEP = 100;
 const MAX_ATTEMPTS = 300;
 const LOCK_DURATION_MS = RETRY_SLEEP * MAX_ATTEMPTS + 1;
-
-async function sleep(sleepTime: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, sleepTime);
-  });
-}
 
 export async function waitForLock(
   key: string,
@@ -35,7 +29,7 @@ export async function waitForLock(
   const checkValue = await client.get(lockKey);
 
   if (!set || checkValue !== requestId) {
-    await sleep(sleepTime);
+    await utils.sleep(sleepTime);
     return waitForLock(key, requestId, ttl, attempts, sleepTime);
   }
 
