@@ -24,6 +24,16 @@ then
   PRERELEASE='false'
   LERNA_VERSION_ARGS="patch --exact --force-publish --yes"
   DIST_TAG="latest"
+elif [[ "$RELEASE_MODE" == "stable-minor" ]]
+then
+  PRERELEASE='false'
+  LERNA_VERSION_ARGS="minor --exact --force-publish --yes"
+  DIST_TAG="latest"
+elif [[ "$RELEASE_MODE" == "stable-major" ]]
+then
+  PRERELEASE='false'
+  LERNA_VERSION_ARGS="major --exact --force-publish --yes"
+  DIST_TAG="latest"
 else
   echo 'Release Mode required.  "publish alpha" or "publish stable"'
   exit 1
