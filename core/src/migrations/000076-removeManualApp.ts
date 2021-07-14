@@ -18,10 +18,10 @@ export default {
               `DELETE FROM "runs" WHERE "creatorId" = '${property.id}'`
             );
             await migration.sequelize.query(
-              `DELETE FROM "options" WHERE "ownerId" = '${property.id}'`
+              `DELETE FROM "options" WHERE "ownerId" = '${property.id}' AND "ownerType" = 'property';`
             );
             await migration.sequelize.query(
-              `DELETE FROM "filters" WHERE "propertyId" = '${property.id}'`
+              `DELETE FROM "filters" WHERE "ownerId" = '${property.id}' AND "ownerType" = 'property'`
             );
             await migration.sequelize.query(
               `DELETE FROM "profileProperties" WHERE "propertyId" = '${property.id}'`
@@ -38,7 +38,7 @@ export default {
           }
 
           await migration.sequelize.query(
-            `DELETE FROM "options" WHERE "ownerId" = '${source.id}'`
+            `DELETE FROM "options" WHERE "ownerId" = '${source.id}' AND "ownerType" = 'source';`
           );
           await migration.sequelize.query(
             `DELETE FROM "mappings" WHERE "ownerId" = '${source.id}'`
@@ -49,7 +49,7 @@ export default {
         }
 
         await migration.sequelize.query(
-          `DELETE FROM "options" WHERE "ownerId" = '${app.id}'`
+          `DELETE FROM "options" WHERE "ownerId" = '${app.id}' AND "ownerType" = 'app'`
         );
         await migration.sequelize.query(
           `DELETE FROM "apps" WHERE "id" = '${app.id}'`
