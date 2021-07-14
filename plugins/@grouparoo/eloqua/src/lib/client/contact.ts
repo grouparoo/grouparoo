@@ -1,5 +1,6 @@
 import Field from "./field";
 import EloquaClient from "./client";
+import { Errors } from "@grouparoo/core";
 
 export default class Contact {
   client: EloquaClient;
@@ -43,7 +44,13 @@ export default class Contact {
           }
           emailsBatch = [];
         }
-      } catch (error) {}
+      } catch (error) {
+        throw new Errors.InfoError(
+          `Something went wrong fetching the following contacts: ${emailsBatch.join(
+            ", "
+          )}`
+        );
+      }
     }
     if (emailsBatch.length > 0) {
       const contacts = await this.getBatchByEmail(emailsBatch, options);

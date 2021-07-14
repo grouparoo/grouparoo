@@ -18,19 +18,37 @@ let exportedProfileFields = new Set<String>();
 const findAndSetDestinationIds = async ({ exports: _exports }) => {
   const batchEmails = _exports.map((p) => p.foreignKeyValue);
   const allResults = await client.contacts.getContactsByEmail(batchEmails);
+  console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+  console.log("Existing contacts size: ", allResults.length);
+  console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
   for (const profile of _exports) {
-    const profileToGetIdFrom = allResults.find(
-      (c) =>
-        c.emailAddress.toString().toLowerCase().trim() ===
-        profile.foreignKeyValue.toString().toLowerCase().trim()
+    const filteredContacts = allResults.filter(
+      (c) => c.emailAddress === profile.foreignKeyValue
     );
-    if (
-      profile.foreignKeyValue &&
-      profile.foreignKeyValue.toString().toLowerCase().trim() !== "" &&
-      profileToGetIdFrom
-    ) {
-      profile.destinationId = profileToGetIdFrom.id;
+    // const profileToGetIdFrom = allResults.find(
+    //   (c) =>
+    //     c.emailAddress.toString().toLowerCase().trim() ===
+    //     profile.foreignKeyValue.toString().toLowerCase().trim()
+    // );
+    if (filteredContacts.length > 0) {
+      profile.destinationId = filteredContacts[0].id;
+      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+      console.log(
+        filteredContacts[0].emailAddress,
+        profile.foreignKeyValue,
+        profile.destinationId
+      );
+      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
     }
+
+    // if (
+    //   profile.foreignKeyValue &&
+    //   profile.foreignKeyValue.toString().toLowerCase().trim() !== "" &&
+    //   profileToGetIdFrom
+    // ) {
+    //   profile.destinationId = profileToGetIdFrom.id;
+    // }
   }
   return _exports;
 };
@@ -210,6 +228,9 @@ export async function exportBatch({
   if (currentClient) {
     client = currentClient;
   }
+  console.log("^^^^^^^^^^^^^^^^^^^^");
+  console.log("batch size: ", _exports.length);
+  console.log("^^^^^^^^^^^^^^^^^^^^");
   _exports = await buildBatchExports({ appId, exports: _exports });
   _exports = await findAndSetDestinationIds({ exports: _exports });
   _exports = await deleteContacts({ appId, syncOperations, exports: _exports });
