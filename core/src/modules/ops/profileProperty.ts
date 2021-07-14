@@ -100,40 +100,52 @@ export namespace ProfilePropertyOps {
     });
 
     const pendingProfilePropertyIds: string[] = [];
-    const groupedProperties: Property[] = [];
+    const unGroupedProperties: Property[] = [];
+    const propertyGroups: {
+      [aggregationMethod: string]: Property[];
+    } = {};
+
     for (const property of properties) {
       const options = await property.getOptions();
+      const aggregationMethod = options.aggregationMethod as AggregationMethod;
       if (
-        options["aggregationMethod"] === AggregationMethod.Exact &&
+        pluginConnection.groupAggregations.includes(aggregationMethod) &&
         property.isArray === false &&
         property.filters.length === 0 // TODO: Check if they match
       ) {
-        groupedProperties.push(property);
+        if (!propertyGroups[aggregationMethod]) {
+          propertyGroups[aggregationMethod] = [];
+        }
+        propertyGroups[aggregationMethod].push(property);
+      } else {
+        unGroupedProperties.push(property);
       }
     }
 
-    const unGroupedProperties = properties.filter(
-      (p) => !groupedProperties.map((gp) => gp.id).includes(p.id)
-    );
-
     // groupedProperties
-    const pendingProfileProperties = await ProfileProperty.findAll({
-      where: {
-        propertyId: { [Op.in]: groupedProperties.map((p) => p.id) },
-        state: "pending",
-        startedAt: {
-          [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
+    for (const aggregationMethod in Object.keys(propertyGroups)) {
+      const pendingProfileProperties = await ProfileProperty.findAll({
+        where: {
+          propertyId: {
+            [Op.in]: propertyGroups[aggregationMethod].map((p) => p.id),
+          },
+          state: "pending",
+          startedAt: {
+            [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
+          },
         },
-      },
-      limit: limit * groupedProperties.length,
-    });
+        limit: limit * propertyGroups[aggregationMethod].length,
+      });
 
-    await preparePropertyImports(
-      pluginConnection,
-      pendingProfileProperties,
-      groupedProperties
-    );
-    pendingProfilePropertyIds.push(...groupedProperties.map((p) => p.id));
+      await preparePropertyImports(
+        pluginConnection,
+        pendingProfileProperties,
+        propertyGroups[aggregationMethod]
+      );
+      pendingProfilePropertyIds.push(
+        ...propertyGroups[aggregationMethod].map((p) => p.id)
+      );
+    }
 
     // unGroupedProperties
     for (const property of unGroupedProperties) {

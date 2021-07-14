@@ -64,7 +64,7 @@ export interface PluginConnection {
   options: ConnectionOption[];
   syncModes?: DestinationSyncMode[];
   defaultSyncMode?: DestinationSyncMode;
-  multiplePropertiesImport?: boolean;
+  groupAggregations?: AggregationMethod[];
   methods?: {
     sourceOptions?: SourceOptionsMethod;
     sourcePreview?: SourcePreviewMethod;
