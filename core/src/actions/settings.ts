@@ -30,6 +30,25 @@ export class SettingsList extends AuthenticatedAction {
   }
 }
 
+// only this setting can be shown without being authenticated
+export class SettingCoreClusterName extends OptionallyAuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "setting:view:core:cluster-name";
+    this.description = "get the value for the cluster name setting";
+    this.outputExample = {};
+    this.permission = { topic: "system", mode: "read" };
+  }
+
+  async runWithinTransaction() {
+    const clusterNameSetting = await Setting.findOne({
+      where: { pluginName: "core", key: "cluster-name" },
+    });
+
+    return { setting: await clusterNameSetting.apiData() };
+  }
+}
+
 export class SettingEdit extends AuthenticatedAction {
   constructor() {
     super();

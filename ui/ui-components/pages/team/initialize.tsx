@@ -14,6 +14,7 @@ export default function TeamInitializePage(props) {
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
+  const setting: Actions.SettingCoreClusterName["setting"] = props.setting;
 
   async function onSubmit(data) {
     setLoading(true);
@@ -65,8 +66,8 @@ export default function TeamInitializePage(props) {
                 required
                 type="text"
                 name="companyName"
-                placeholder=""
-                disabled={loading}
+                placeholder={setting.locked ? setting.value : ""}
+                disabled={loading || setting.locked ? true : false}
                 ref={register}
               />
               <Form.Control.Feedback type="invalid">
@@ -171,3 +172,9 @@ export default function TeamInitializePage(props) {
     </>
   );
 }
+
+TeamInitializePage.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(ctx);
+  const { setting } = await execApi("get", `/setting/core/cluster-name`);
+  return { setting };
+};
