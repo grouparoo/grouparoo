@@ -1,4 +1,4 @@
-import { Initializer, api, log } from "actionhero";
+import { Initializer, api, log, utils } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
 import { App } from "../models/App";
@@ -89,6 +89,7 @@ export class Plugins extends Initializer {
         const app = await App.findById(id);
         await app.disconnect();
       }
+      await utils.sleep(100);
     });
   }
 

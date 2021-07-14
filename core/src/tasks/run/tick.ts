@@ -15,7 +15,7 @@ export class RunsTick extends CLSTask {
   }
 
   async runWithinTransaction() {
-    const lastCheck = new Date().getTime() - this.frequency;
+    const lastCheck = new Date().getTime() - Math.max(this.frequency, 1000);
     const runs = await Run.findAll({
       where: { state: "running", updatedAt: { [Op.lt]: lastCheck } },
     });

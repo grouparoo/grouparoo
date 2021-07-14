@@ -21,12 +21,6 @@ export async function prettier(fileOrDirPath) {
   await execSync(`'${pCmd}' --config '${pConfig}' --write '${fileOrDirPath}'`);
 }
 
-export async function sleep(time = 1000) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, time);
-  });
-}
-
 const START_TIME = new Date();
 export const numberOfUsers = 1000;
 export function userCreatedAt(id: any) {
