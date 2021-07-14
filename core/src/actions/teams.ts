@@ -1,4 +1,4 @@
-import { api, env } from "actionhero";
+import { api } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { CLSAction } from "../classes/actions/clsAction";
 import { Team } from "../models/Team";
@@ -53,11 +53,9 @@ export class TeamInitialize extends CLSAction {
       const clusterNameSetting = await Setting.findOne({
         where: { pluginName: "core", key: "cluster-name" },
       });
-      const nodeEnv = env || "development";
-      const clusterName = `${params.companyName} - ${
-        nodeEnv.charAt(0).toUpperCase() + nodeEnv.slice(1)
-      }`; // the cluster name would be `Grouparoo - Development`
-      await clusterNameSetting.update({ value: clusterName });
+      if (!clusterNameSetting.locked) {
+        await clusterNameSetting.update({ value: params.companyName });
+      }
     }
 
     return {

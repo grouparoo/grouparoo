@@ -10,6 +10,50 @@ describe("actions/teams", () => {
   let id: string;
 
   describe("team:initialize", () => {
+    describe("with setting", () => {
+      let clusterNameSetting: Setting;
+
+      beforeAll(async () => {
+        clusterNameSetting = await Setting.findOne({
+          where: { pluginName: "core", key: "cluster-name" },
+        });
+      });
+
+      afterAll(async () => {
+        await Team.truncate();
+        await TeamMember.truncate();
+        await clusterNameSetting.update(
+          {
+            value: clusterNameSetting.defaultValue,
+            locked: null,
+          },
+          { hooks: false }
+        );
+      });
+
+      test("if the cluster-name setting already exists, supplying a companyName will not update the setting", async () => {
+        await clusterNameSetting.update(
+          {
+            value: "Company inc.",
+            locked: true,
+          },
+          { hooks: false }
+        );
+
+        const response = await specHelper.runAction("team:initialize", {
+          firstName: "Mario",
+          lastName: "Mario",
+          password: "P@ssw0rd!",
+          companyName: "Mario Bros. Plumbing",
+          email: "mario@example.com",
+        });
+
+        expect(response.team.name).toBe("Administrators");
+        await clusterNameSetting.reload();
+        expect(clusterNameSetting.value).toBe("Company inc.");
+      });
+    });
+
     test("a new team can be initialized with the first team member and the team member should be subscribed", async () => {
       const response = await specHelper.runAction("team:initialize", {
         firstName: "Mario",
@@ -39,7 +83,7 @@ describe("actions/teams", () => {
       const clusterNameSetting = await Setting.findOne({
         where: { pluginName: "core", key: "cluster-name" },
       });
-      expect(clusterNameSetting.value).toEqual("Mario Bros. Plumbing - Test");
+      expect(clusterNameSetting.value).toEqual("Mario Bros. Plumbing");
     });
 
     test("you cannot initialize more than one team on the server", async () => {

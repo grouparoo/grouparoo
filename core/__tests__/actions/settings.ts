@@ -7,22 +7,31 @@ describe("actions/settings", () => {
 
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
 
-  beforeAll(async () => {
-    await specHelper.runAction("team:initialize", {
-      firstName: "Mario",
-      lastName: "Mario",
-      password: "P@ssw0rd!",
-      email: "mario@example.com",
+  describe("settings", () => {
+    test("unauthenticated users can view the cluster name setting", async () => {
+      const { setting } = await specHelper.runAction(
+        "setting:view:core:cluster-name"
+      );
+
+      expect(setting.locked).toBe(null);
+      expect(setting.value).toBe("My Grouparoo Cluster");
     });
-
-    connection = await specHelper.buildConnection();
-
-    await Setting.truncate();
   });
 
   describe("reader signed in", () => {
     let csrfToken;
     let id;
+
+    beforeAll(async () => {
+      await specHelper.runAction("team:initialize", {
+        firstName: "Mario",
+        lastName: "Mario",
+        password: "P@ssw0rd!",
+        email: "mario@example.com",
+      });
+
+      connection = await specHelper.buildConnection();
+    });
 
     beforeAll(async () => {
       await Setting.truncate();

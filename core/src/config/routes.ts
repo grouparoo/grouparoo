@@ -51,6 +51,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/profile/:profileId/logs", action: "logs:list" },
         { path: "/v:apiVersion/account", action: "account:view" },
         { path: "/v:apiVersion/settings", action: "settings:list" },
+        { path: "/v:apiVersion/setting/core/cluster-name", action: "setting:view:core:cluster-name" },
         { path: "/v:apiVersion/apps", action: "apps:list" },
         { path: "/v:apiVersion/sources", action: "sources:list" },
         { path: "/v:apiVersion/source/:id/connectionOptions", action: "source:connectionOptions" },

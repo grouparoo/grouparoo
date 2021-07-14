@@ -229,6 +229,7 @@ import {
 import {
   SettingEdit,
   SettingsList,
+  SettingCoreClusterName,
 } from "@grouparoo/core/src/actions/settings";
 import {
   SetupStepEdit,
@@ -649,6 +650,9 @@ export namespace Actions {
   >;
   export type SettingsList = AsyncReturnType<
     typeof SettingsList.prototype.runWithinTransaction
+  >;
+  export type SettingCoreClusterName = AsyncReturnType<
+    typeof SettingCoreClusterName.prototype.runWithinTransaction
   >;
 
   export type SetupStepEdit = AsyncReturnType<
