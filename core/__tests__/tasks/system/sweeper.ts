@@ -24,7 +24,7 @@ describe("tasks/sweeper", () => {
         "core",
         "sweeper-delete-old-logs-days"
       );
-      expect(setting.value).toBe("31");
+      expect(setting.value).toBe("7");
     });
 
     test("it can be enqueued", async () => {
