@@ -32,7 +32,7 @@ export default function Page(props) {
     return (
       <>
         <Alert variant="primary">
-          There are no Apps in the ready state yet yet.
+          There are no Apps in the ready state yet.
           <br />
           <br />
           <Button size="sm" href="/apps">
