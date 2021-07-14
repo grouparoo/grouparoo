@@ -67,18 +67,20 @@ export namespace CLS {
         transOptions.type = "IMMEDIATE";
       }
 
+      const retryLength = 60 * 1000; // give the UI 60 seconds total before error
+      const betweenTries = 1; // 1 millisecond
       if (priority) {
         // this will retry based on the default in the config, but for a priority case,
         // we can say to sleep less each time and retry much more often
         const retry = Object.assign({}, config.sequelize.retry);
-        retry.backoffBase = 100; // retry after 100ms
-        retry.backoffExponent = 1; // and don't backoff
-        retry.max = 100; // it seems to take half a second or so
-        retry.timeout = 30 * 1000; // give the UI 30 seconds total before error
+        retry.backoffBase = betweenTries;
+        retry.backoffExponent = 1; // don't backoff
+        retry.max = Math.round(retryLength / betweenTries);
+        retry.timeout = retryLength;
         transOptions.retry = retry;
       } else {
         // give a gap for the UI thread to get access
-        await utils.sleep(100);
+        await utils.sleep(betweenTries + 5);
       }
     }
     await api.sequelize.transaction(transOptions, async (t: Transaction) => {
