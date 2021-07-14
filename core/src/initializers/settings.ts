@@ -170,7 +170,7 @@ export class Plugins extends CLSInitializer {
       {
         key: "sweeper-delete-old-logs-days",
         title: "Sweeper: Delete Old Logs Days",
-        defaultValue: 31,
+        defaultValue: 7,
         description:
           "How many days should we keep Log records for on the server?",
         type: "number",
@@ -181,7 +181,7 @@ export class Plugins extends CLSInitializer {
       {
         key: "status-calculation-frequency-seconds",
         title: "Status Calculation Frequency Seconds",
-        defaultValue: "10",
+        defaultValue: 10,
         description:
           "How often should Grouparoo calculate updated status and totals for the UI?  This includes information on the Dashboard, pending Runs, and Resque information.  For larger clusters, calculating this often may have adverse effects.",
         type: "number",
