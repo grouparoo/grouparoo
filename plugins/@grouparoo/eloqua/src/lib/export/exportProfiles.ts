@@ -19,11 +19,17 @@ const findAndSetDestinationIds = async ({ exports: _exports }) => {
   const batchEmails = _exports.map((p) => p.foreignKeyValue);
   const allResults = await client.contacts.getContactsByEmail(batchEmails);
   for (const profile of _exports) {
-    const filteredContacts = allResults.filter(
-      (c) => c.emailAddress === profile.foreignKeyValue
+    const profileToGetIdFrom = allResults.find(
+      (c) =>
+        c.emailAddress.toString().toLowerCase().trim() ===
+        profile.foreignKeyValue.toString().toLowerCase().trim()
     );
-    if (filteredContacts.length > 0) {
-      profile.destinationId = filteredContacts[0].id;
+    if (
+      profile.foreignKeyValue &&
+      profile.foreignKeyValue.toString().toLowerCase().trim() !== "" &&
+      profileToGetIdFrom
+    ) {
+      profile.destinationId = profileToGetIdFrom.id;
     }
   }
   return _exports;
