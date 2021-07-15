@@ -103,19 +103,18 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     const {
       rows,
     }: {
-      rows: Array<{
-        [column: string]: DataResponse[];
-      }>;
+      rows: Array<{ [column: string]: DataResponse }>;
     } = await connection.query(format(query, ...params));
-    rows.forEach((row) => {
+    for (const row of rows) {
       const pk = row.__pk.toString();
-      responses[pk] = row;
-
-      // if (!responses[row.__pk]) responses[row.__pk] = [];
-      // if (isArray || (responses[row.__pk].length === 0 && !isArray)) {
-      //   responses[row.__pk].push(row.__result);
-      // }
-    });
+      responses[pk] = {};
+      for (const col in row) {
+        responses[pk][col] = [];
+        if (isArray || (responses[pk][col].length === 0 && !isArray)) {
+          responses[pk][col].push(row[col]);
+        }
+      }
+    }
   } catch (error) {
     throw new Error(
       `Error with Postgres SQL Statement: Query - \`${query}\`, Error - ${error}`
