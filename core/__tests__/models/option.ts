@@ -171,8 +171,18 @@ describe("models/option", () => {
 
       test("options can be set from an environment variable but not stored in the database", async () => {
         await OptionHelper.setOptions(app, { fileId: "TEST_OPTION" });
-        const options = await app.getOptions();
-        expect(options.fileId).toBe("abc123");
+        expect(await app.getOptions(true)).toEqual({ fileId: "abc123" });
+        expect(await app.getOptions(false)).toEqual({ fileId: "TEST_OPTION" });
+      });
+
+      test("options remain set with ENV re-set withObfuscatedPasswordString ", async () => {
+        await OptionHelper.setOptions(app, { fileId: "TEST_OPTION" });
+        expect(await app.getOptions(false)).toEqual({ fileId: "TEST_OPTION" });
+        // shouldn't change value in DB from ENV
+        await OptionHelper.setOptions(app, {
+          fileId: ObfuscatedPasswordString,
+        });
+        expect(await app.getOptions(false)).toEqual({ fileId: "TEST_OPTION" });
       });
     });
 

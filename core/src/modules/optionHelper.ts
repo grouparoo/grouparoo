@@ -65,11 +65,11 @@ export namespace OptionHelper {
     options: SimpleOptions
   ) {
     delete instance.__options;
-    let sanitizedOptions = Object.assign({}, options);
 
-    sanitizedOptions = await replaceObfuscatedPasswords(
+    const sanitizedOptions = await replaceObfuscatedPasswords(
       instance,
-      sanitizedOptions
+      options,
+      false
     );
 
     await validateOptions(instance, sanitizedOptions, null);
@@ -429,21 +429,25 @@ export namespace OptionHelper {
 
   export async function replaceObfuscatedPasswords(
     instance: Source | Destination | Schedule | Property | App,
-    options?: SimpleOptions
+    options?: SimpleOptions,
+    sourceFromEnvironment = true
   ) {
     let sanitizedOptions: SimpleOptions = Object.assign({}, options);
-    const optionsFromDatabase = await getOptions(instance, true, false);
 
+    const optionsFromDatabase = await getOptions(
+      instance,
+      sourceFromEnvironment,
+      false
+    );
     if (Object.keys(sanitizedOptions).length === 0) {
       sanitizedOptions = optionsFromDatabase;
     }
 
-    let optionsKeys = Object.keys(sanitizedOptions);
-    optionsKeys.forEach((option) => {
-      if (sanitizedOptions[option] === ObfuscatedPasswordString) {
-        sanitizedOptions[option] = optionsFromDatabase[option];
+    for (const key of Object.keys(sanitizedOptions)) {
+      if (sanitizedOptions[key] === ObfuscatedPasswordString) {
+        sanitizedOptions[key] = optionsFromDatabase[key];
       }
-    });
+    }
 
     return sanitizedOptions;
   }
