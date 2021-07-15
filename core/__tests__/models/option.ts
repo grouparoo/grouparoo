@@ -185,6 +185,14 @@ describe("models/option", () => {
         expect(await app.getOptions(true)).toEqual({ fileId: "abc123" });
         expect(await app.getOptions(false)).toEqual({ fileId: "TEST_OPTION" });
       });
+
+      test("if the real value was set when previously an ENV string was used, use the ENV sting", async () => {
+        await OptionHelper.setOptions(app, { fileId: "TEST_OPTION" });
+        expect(await app.getOptions(false)).toEqual({ fileId: "TEST_OPTION" });
+        await OptionHelper.setOptions(app, { fileId: "abc123" });
+        expect(await app.getOptions(true)).toEqual({ fileId: "abc123" });
+        expect(await app.getOptions(false)).toEqual({ fileId: "TEST_OPTION" });
+      });
     });
 
     describe("default option values", () => {
