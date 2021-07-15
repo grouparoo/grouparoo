@@ -31,7 +31,6 @@ describe("tasks/group:destroy", () => {
 
     beforeAll(async () => {
       await helper.factories.properties();
-      helper.disableTestPluginImport();
 
       await Profile.truncate();
 
