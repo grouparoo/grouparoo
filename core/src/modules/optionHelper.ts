@@ -65,24 +65,38 @@ export namespace OptionHelper {
     options: SimpleOptions
   ) {
     delete instance.__options;
-    let sanitizedOptions = Object.assign({}, options);
 
-    sanitizedOptions = await replaceObfuscatedPasswords(
+    const sanitizedOptions = await replaceObfuscatedPasswords(
       instance,
-      sanitizedOptions
+      options,
+      false
     );
 
     await validateOptions(instance, sanitizedOptions, null);
-    const oldOptions = await getOptions(instance, false);
+    const oldOptionsWithoutEnv = await getOptions(instance, false);
+    const oldOptionsWithEnv = await getOptions(instance, true);
+
+    // If we had previously used an ENV string, and the value was returned, assume we meant to use the ENV
+    // This is helpful for some UI options types (list) which really render the value
+    for (const key in sanitizedOptions) {
+      if (
+        oldOptionsWithoutEnv[key] !== undefined &&
+        oldOptionsWithoutEnv[key] !== oldOptionsWithEnv[key] &&
+        sanitizedOptions[key] === oldOptionsWithEnv[key]
+      ) {
+        sanitizedOptions[key] = oldOptionsWithoutEnv[key];
+      }
+    }
+
     let hasChanges = false;
 
-    for (const i in oldOptions) {
-      if (oldOptions[i] !== sanitizedOptions[i]) {
+    for (const key in oldOptionsWithoutEnv) {
+      if (oldOptionsWithoutEnv[key] !== sanitizedOptions[key]) {
         hasChanges = true;
       }
     }
-    for (const i in sanitizedOptions) {
-      if (oldOptions[i] !== sanitizedOptions[i]) {
+    for (const key in sanitizedOptions) {
+      if (oldOptionsWithoutEnv[key] !== sanitizedOptions[key]) {
         hasChanges = true;
       }
     }
@@ -429,21 +443,25 @@ export namespace OptionHelper {
 
   export async function replaceObfuscatedPasswords(
     instance: Source | Destination | Schedule | Property | App,
-    options?: SimpleOptions
+    options?: SimpleOptions,
+    sourceFromEnvironment = true
   ) {
     let sanitizedOptions: SimpleOptions = Object.assign({}, options);
-    const optionsFromDatabase = await getOptions(instance, true, false);
 
+    const optionsFromDatabase = await getOptions(
+      instance,
+      sourceFromEnvironment,
+      false
+    );
     if (Object.keys(sanitizedOptions).length === 0) {
       sanitizedOptions = optionsFromDatabase;
     }
 
-    let optionsKeys = Object.keys(sanitizedOptions);
-    optionsKeys.forEach((option) => {
-      if (sanitizedOptions[option] === ObfuscatedPasswordString) {
-        sanitizedOptions[option] = optionsFromDatabase[option];
+    for (const key of Object.keys(sanitizedOptions)) {
+      if (sanitizedOptions[key] === ObfuscatedPasswordString) {
+        sanitizedOptions[key] = optionsFromDatabase[key];
       }
-    });
+    }
 
     return sanitizedOptions;
   }
