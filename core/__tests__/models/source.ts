@@ -726,7 +726,8 @@ describe("models/source", () => {
         return null;
       };
 
-      const { properties } = await source.import(profile);
+      const { canImport, properties } = await source.import(profile);
+      expect(canImport).toBe(true);
       expect(properties).toEqual({});
     });
 
@@ -737,7 +738,16 @@ describe("models/source", () => {
         return undefined;
       };
 
-      const { properties } = await source.import(profile);
+      const { canImport, properties } = await source.import(profile);
+      expect(canImport).toBe(true);
+      expect(properties).toEqual({});
+    });
+
+    test("if plugin doesn't support directly importing properties, it will return canImport: false and property hash will be empty", async () => {
+      helper.disableTestPluginImport();
+
+      const { canImport, properties } = await source.import(profile);
+      expect(canImport).toBe(false);
       expect(properties).toEqual({});
     });
   });
