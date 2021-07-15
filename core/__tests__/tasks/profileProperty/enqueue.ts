@@ -2,6 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import {
   PluginConnection,
+  ProfilePropertyPluginMethod,
   plugin,
   Property,
   GrouparooPlugin,
@@ -275,6 +276,80 @@ describe("tasks/profileProperties:enqueue", () => {
           importProfilePropertiesTasks.forEach((t) =>
             expect(t.args[0].profileIds.length).toBe(1)
           );
+        });
+      });
+
+      describe("without a profileProperty or profileProperties method", () => {
+        let testPluginConnection: PluginConnection;
+        let prevProfilePropertyMethod: ProfilePropertyPluginMethod;
+
+        beforeAll(async () => {
+          const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
+            (a) => a.name === "@grouparoo/test-plugin"
+          );
+
+          testPluginConnection = testPlugin.connections.find(
+            (c) => c.name === "test-plugin-import"
+          );
+
+          prevProfilePropertyMethod =
+            testPluginConnection.methods.profileProperty;
+          delete testPluginConnection.methods.profileProperty;
+        });
+
+        afterAll(() => {
+          testPluginConnection.methods.profileProperty =
+            prevProfilePropertyMethod;
+        });
+
+        test("if there is no import method, it will just mark properties as ready", async () => {
+          const run = await helper.factories.run();
+          const daisyImport = await helper.factories.import(run, {
+            email: "daisy@example.com",
+            firstName: "Daisy",
+          });
+          const peachImport = await helper.factories.import(run, {
+            email: "peach@example.com",
+          });
+
+          await specHelper.runTask("import:associateProfile", {
+            importId: daisyImport.id,
+          });
+          await specHelper.runTask("import:associateProfile", {
+            importId: peachImport.id,
+          });
+
+          await daisyImport.reload();
+          await peachImport.reload();
+
+          let pendingProperties = await ProfileProperty.findAll({
+            where: {
+              state: "pending",
+              profileId: [daisyImport.profileId, peachImport.profileId],
+            },
+          });
+          expect(pendingProperties.length).toBe(propertiesCount * 2);
+
+          await specHelper.runTask("profileProperties:enqueue", {});
+
+          const importProfilePropertiesTasks =
+            await specHelper.findEnqueuedTasks(
+              "profileProperty:importProfileProperties"
+            );
+          const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
+            "profileProperty:importProfileProperty"
+          );
+
+          expect(importProfilePropertyTasks.length).toBe(0);
+          expect(importProfilePropertiesTasks.length).toBe(0);
+
+          pendingProperties = await ProfileProperty.findAll({
+            where: {
+              state: "pending",
+              profileId: [daisyImport.profileId, peachImport.profileId],
+            },
+          });
+          expect(pendingProperties.length).toBe(0);
         });
       });
     });
