@@ -115,14 +115,16 @@ export namespace ProfilePropertyOps {
 
       const method = pluginConnection.methods.profileProperties
         ? "ProfileProperties"
-        : "ProfileProperty";
+        : pluginConnection.methods.profileProperty
+        ? "ProfileProperty"
+        : null;
 
       if (method === "ProfileProperties") {
         await CLS.enqueueTask(`profileProperty:import${method}`, {
           propertyId: property.id,
           profileIds: pendingProfileProperties.map((ppp) => ppp.profileId),
         });
-      } else {
+      } else if (method === "ProfileProperty") {
         await Promise.all(
           pendingProfileProperties.map((ppp) =>
             CLS.enqueueTask(`profileProperty:import${method}`, {
@@ -130,6 +132,20 @@ export namespace ProfilePropertyOps {
               profileId: ppp.profileId,
             })
           )
+        );
+      } else {
+        // Schedule sources don't import properties on-demand
+        await ProfileProperty.update(
+          {
+            state: "ready",
+            stateChangedAt: new Date(),
+            confirmedAt: new Date(),
+          },
+          {
+            where: {
+              id: pendingProfileProperties.map((p) => p.id),
+            },
+          }
         );
       }
     }
