@@ -85,7 +85,6 @@ export class ImportProfileProperties extends RetryableTask {
 
     let propertyValuesBatch: ProfilePropertiesPluginMethodResponse = {};
     try {
-      console.log("will import properties for", property.key);
       propertyValuesBatch = await source.importProfileProperties(
         profilesToImport,
         property
@@ -112,12 +111,6 @@ export class ImportProfileProperties extends RetryableTask {
       orderedHashes.push(hash);
     }
     if (orderedProfiles.length > 0) {
-      console.log(
-        "addOrUpdate vals",
-        property.key,
-        orderedProfiles,
-        orderedHashes
-      );
       await ProfileOps.addOrUpdateProperties(
         orderedProfiles,
         orderedHashes,

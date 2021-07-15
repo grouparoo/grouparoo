@@ -274,9 +274,7 @@ export namespace ProfileOps {
 
           // add new Profile Properties to batch
           let position = 0;
-          console.log("check key", key);
           buildQueries: for (const value of h[key]) {
-            console.log("buildQueries", key, value);
             if (position > 0 && !property.isArray) {
               throw new Error(
                 "cannot set multiple profile properties for a non-array property"
@@ -326,7 +324,6 @@ export namespace ProfileOps {
           });
         }
 
-        console.log(keys);
         // const missingExistingProps = existingProfileProperties.filter(
         //   (p) =>
         //     p.profileId === profile.id &&
@@ -350,9 +347,6 @@ export namespace ProfileOps {
 
         profileOffset++;
       }
-
-      console.log("bulkCreate", bulkCreates);
-      console.log("bulkDeletes", bulkDeletes.where[Op.or]);
 
       if (bulkCreates.length > 0) {
         await ProfileProperty.bulkCreate(bulkCreates, {
@@ -426,8 +420,6 @@ export namespace ProfileOps {
       }
     }
 
-    console.log("build nulls", bulkArgs);
-
     if (bulkArgs.length > 0) await ProfileProperty.bulkCreate(bulkArgs);
 
     return bulkArgs.length;
@@ -476,8 +468,6 @@ export namespace ProfileOps {
             .then((data) => (hash = Object.assign(hash, data)))
         )
       );
-
-      console.log("import", hash);
 
       if (toSave) {
         await addOrUpdateProperties([profile], [hash], false, true);
@@ -673,12 +663,6 @@ export namespace ProfileOps {
   ) {
     const nonDirectlyMappedRules = (await Property.findAllWithCache()).filter(
       (p) => p.directlyMapped === false
-    );
-
-    console.log(
-      "properties to mark pedning",
-      nonDirectlyMappedRules.map((r) => r.key),
-      includeProperties
     );
 
     if (includeProperties && nonDirectlyMappedRules.length > 0) {
