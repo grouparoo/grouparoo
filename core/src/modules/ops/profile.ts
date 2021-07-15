@@ -672,7 +672,7 @@ export namespace ProfileOps {
     includeProperties = true
   ) {
     const nonDirectlyMappedRules = (await Property.findAllWithCache()).filter(
-      (p) => true // get errrbody in herep.directlyMapped === false
+      (p) => p.directlyMapped === false
     );
 
     console.log(
