@@ -134,7 +134,7 @@ export namespace ProfilePropertyOps {
           )
         );
       } else {
-        // Schedule sources don't import properties on-demand
+        // Schedule sources don't import properties on-demand, keep old value
         await ProfileProperty.update(
           {
             state: "ready",
