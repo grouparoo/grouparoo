@@ -75,8 +75,14 @@ export class ImportProfileProperty extends RetryableTask {
         : [propertyValues];
       await profile.addOrUpdateProperties(hash);
     } else {
+      // got no data back, clear value
       await ProfileProperty.update(
-        { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
+        {
+          state: "ready",
+          value: null,
+          stateChangedAt: new Date(),
+          confirmedAt: new Date(),
+        },
         {
           where: {
             propertyId: property.id,
