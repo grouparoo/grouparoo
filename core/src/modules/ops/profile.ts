@@ -222,8 +222,7 @@ export namespace ProfileOps {
     profileProperties: {
       [key: string]: Array<string | number | boolean | Date> | any;
     }[],
-    toLock = true,
-    deleteMissing = false
+    toLock = true
   ) {
     if (profiles.length === 0) return;
     if (profiles.length !== profileProperties.length) {
@@ -324,27 +323,6 @@ export namespace ProfileOps {
           });
         }
 
-        // const missingExistingProps = existingProfileProperties.filter(
-        //   (p) =>
-        //     p.profileId === profile.id &&
-        //     !keys.includes(properties.find((pr) => pr.id === p.propertyId).key)
-        // );
-        // console.log(
-        //   "missing",
-        //   missingExistingProps.map((p) => p.propertyId)
-        // );
-        // if (deleteMissing) {
-        //   for (let existingProp of existingProfileProperties) {
-        //     if (existingProp.profileId !== profile.id) continue;
-        //     if (keys.includes(existingProp.propertyId)) continue;
-
-        //     bulkDeletes.where[Op.or].push({
-        //       profileId: profile.id,
-        //       propertyId: existingProp.propertyId,
-        //     });
-        //   }
-        // }
-
         profileOffset++;
       }
 
@@ -367,6 +345,27 @@ export namespace ProfileOps {
     } finally {
       for (const releaseLock of releaseLocks) await releaseLock();
     }
+  }
+
+  async function removePendingProperties(
+    profile: Profile,
+    excludeSourceIds: Array<string> = []
+  ) {
+    const pendingProperties = await ProfileProperty.findAll({
+      where: { profileId: profile.id, state: "pending" },
+    });
+
+    const destroyProfilePropertyIds = [];
+    for (let profileProperty of pendingProperties) {
+      const property = await Property.findOneWithCache(
+        profileProperty.propertyId
+      );
+      if (!excludeSourceIds.includes(property.sourceId)) {
+        destroyProfilePropertyIds.push(profileProperty.id);
+      }
+    }
+
+    await ProfileProperty.destroy({ where: { id: destroyProfilePropertyIds } });
   }
 
   /**
@@ -461,16 +460,19 @@ export namespace ProfileOps {
     try {
       let hash = {};
       const sources = await Source.findAll({ where: { state: "ready" } });
+      const excludeSourceIds = [];
       await Promise.all(
         sources.map((source) =>
-          source
-            .import(profile)
-            .then((data) => (hash = Object.assign(hash, data)))
+          source.import(profile).then(({ canImport, properties }) => {
+            hash = Object.assign(hash, properties);
+            if (!canImport) excludeSourceIds.push(source.id);
+          })
         )
       );
 
       if (toSave) {
-        await addOrUpdateProperties([profile], [hash], false, true);
+        await addOrUpdateProperties([profile], [hash], false);
+        await removePendingProperties(profile, excludeSourceIds);
         await buildNullProperties([profile]);
 
         await profile.save();

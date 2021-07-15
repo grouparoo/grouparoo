@@ -819,6 +819,8 @@ describe("models/profile", () => {
     let app: App;
     let source: Source;
 
+    let importResult: Record<string, any> = {};
+
     beforeAll(async () => {
       await Profile.truncate();
 
@@ -844,9 +846,7 @@ describe("models/profile", () => {
             options: [],
             methods: {
               profileProperty: async ({ property }) => {
-                if (property.key === "color") {
-                  return ["pink"];
-                }
+                return importResult[property.key];
               },
             },
           },
@@ -904,6 +904,11 @@ describe("models/profile", () => {
         color: [null],
       });
 
+      importResult = {
+        userId: [1001],
+        email: ["peach@example.com"],
+        color: ["pink"],
+      };
       await profile.import();
 
       properties = await profile.properties();
@@ -924,6 +929,10 @@ describe("models/profile", () => {
         "userId",
       ]);
 
+      importResult = {
+        userId: [1002],
+        color: ["pink"],
+      };
       await profile.import();
 
       properties = await profile.properties();
