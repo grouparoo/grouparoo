@@ -15,6 +15,7 @@ describe("integration/happyPath", () => {
   helper.grouparooTestServer({
     truncate: true,
     enableTestPlugin: true,
+    disableTestPluginImport: true,
   });
 
   let appId: string;
@@ -344,7 +345,7 @@ describe("integration/happyPath", () => {
       expect(listError).toBeUndefined();
       expect(profiles.length).toBe(1);
       expect(simpleProfileValues(profiles[0].properties).email).toEqual([
-        `${profileId}@example.com`,
+        `luigi@example.com`,
       ]);
     });
   });
