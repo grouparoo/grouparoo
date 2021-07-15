@@ -333,17 +333,17 @@ export namespace ProfileOps {
         //   "missing",
         //   missingExistingProps.map((p) => p.propertyId)
         // );
-        if (deleteMissing) {
-          for (let existingProp of existingProfileProperties) {
-            if (existingProp.profileId !== profile.id) continue;
-            if (keys.includes(existingProp.propertyId)) continue;
+        // if (deleteMissing) {
+        //   for (let existingProp of existingProfileProperties) {
+        //     if (existingProp.profileId !== profile.id) continue;
+        //     if (keys.includes(existingProp.propertyId)) continue;
 
-            bulkDeletes.where[Op.or].push({
-              profileId: profile.id,
-              propertyId: existingProp.propertyId,
-            });
-          }
-        }
+        //     bulkDeletes.where[Op.or].push({
+        //       profileId: profile.id,
+        //       propertyId: existingProp.propertyId,
+        //     });
+        //   }
+        // }
 
         profileOffset++;
       }
