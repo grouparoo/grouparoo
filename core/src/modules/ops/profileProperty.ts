@@ -123,7 +123,7 @@ export namespace ProfilePropertyOps {
     }
 
     // groupedProperties
-    for (const aggregationMethod in Object.keys(propertyGroups)) {
+    for (const aggregationMethod in propertyGroups) {
       const pendingProfileProperties = await ProfileProperty.findAll({
         where: {
           propertyId: {
