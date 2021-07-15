@@ -254,7 +254,7 @@ export namespace ProfileOps {
 
         const keys = Object.keys(profileProperties[profileOffset]);
         checkKeys: for (const key of keys) {
-          if (key === "id") continue checkKeys; // TODO check this out, do we need this?
+          if (key === "id") continue checkKeys;
           if (key === "_meta") continue checkKeys;
 
           const h: { [key: string]: Array<string | number | boolean | Date> } =
