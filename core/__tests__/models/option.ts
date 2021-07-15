@@ -182,6 +182,7 @@ describe("models/option", () => {
         await OptionHelper.setOptions(app, {
           fileId: ObfuscatedPasswordString,
         });
+        expect(await app.getOptions(true)).toEqual({ fileId: "abc123" });
         expect(await app.getOptions(false)).toEqual({ fileId: "TEST_OPTION" });
       });
     });
