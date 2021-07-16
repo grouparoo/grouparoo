@@ -663,21 +663,10 @@ export namespace ProfileOps {
     profileIds: string[],
     includeProperties = true
   ) {
-    const nonDirectlyMappedRules = (await Property.findAllWithCache()).filter(
-      (p) => p.directlyMapped === false
-    );
-
-    if (includeProperties && nonDirectlyMappedRules.length > 0) {
+    if (includeProperties) {
       await ProfileProperty.update(
         { state: "pending", startedAt: null },
-        {
-          where: {
-            profileId: { [Op.in]: profileIds },
-            propertyId: {
-              [Op.in]: nonDirectlyMappedRules.map((r) => r.id),
-            },
-          },
-        }
+        { where: { profileId: { [Op.in]: profileIds } } }
       );
     }
 
