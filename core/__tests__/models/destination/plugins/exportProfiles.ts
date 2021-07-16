@@ -158,6 +158,7 @@ describe("models/destination", () => {
 
         const profile = await helper.factories.profile();
         await profile.addOrUpdateProperties({
+          userId: [1001],
           email: ["newemail@example.com"],
         });
         await groupA.addProfile(profile);
@@ -201,7 +202,7 @@ describe("models/destination", () => {
         });
         expect(exportArgs.exports[0].newProfileProperties).toEqual({
           customer_email: "newemail@example.com",
-          uid: null,
+          uid: 1001,
         });
         expect(exportArgs.exports[0].oldGroups).toEqual([]);
         expect(exportArgs.exports[0].newGroups).toEqual(
@@ -225,7 +226,7 @@ describe("models/destination", () => {
         });
         expect(_exports[1].newProfileProperties).toEqual({
           customer_email: "newemail@example.com",
-          uid: null,
+          uid: 1001,
         });
         expect(_exports[1].oldGroups).toEqual([]);
         expect(_exports[1].newGroups).toEqual(
@@ -247,6 +248,7 @@ describe("models/destination", () => {
 
         const profile = await helper.factories.profile();
         await profile.addOrUpdateProperties({
+          userId: [1001],
           email: ["newemail@example.com"],
         });
 
@@ -287,7 +289,7 @@ describe("models/destination", () => {
         });
         expect(exportArgs.exports[0].newProfileProperties).toEqual({
           customer_email: "newemail@example.com",
-          uid: null,
+          uid: 1001,
         });
 
         await profile.destroy();
