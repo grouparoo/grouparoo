@@ -325,7 +325,7 @@ describe("models/destination", () => {
 
         const profile = await helper.factories.profile();
         await profile.addOrUpdateProperties({
-          uid: [1002],
+          userId: [1002],
           email: ["newemail@example.com"],
         });
         await groupA.addProfile(profile);
