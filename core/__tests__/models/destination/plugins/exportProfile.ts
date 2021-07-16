@@ -311,6 +311,68 @@ describe("models/destination", () => {
         await profile.destroy();
       });
 
+      test("if the directlyMapped property has been removed, newProfileProperties will use oldProfileProperties values in the export", async () => {
+        await destination.setMapping({
+          is_vip: "isVIP",
+          customer_email: "email",
+          lifetime: "ltv",
+        });
+
+        const groupA = await helper.factories.group();
+        await destination.trackGroup(groupA);
+
+        const profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({
+          userId: [null],
+          email: [null],
+          isVIP: [null],
+          ltv: [null],
+        });
+
+        // create a previous export
+        await Export.create({
+          profileId: profile.id,
+          destinationId: destination.id,
+          newProfileProperties: {
+            customer_email: { type: "email", rawValue: "oldmail@example.com" },
+            is_vip: { type: "boolean", rawValue: "false" },
+            first_name: { type: "string", rawValue: "Joe" },
+          },
+          oldProfileProperties: {},
+          oldGroups: [],
+          newGroups: ["someGroup"],
+          state: "complete",
+        });
+
+        await destination.exportProfile(profile);
+
+        await specHelper.runTask("export:enqueue", {});
+        const foundTasks = await specHelper.findEnqueuedTasks("export:send");
+        expect(foundTasks.length).toBe(1);
+        for (const i in foundTasks) {
+          await specHelper.runTask("export:send", foundTasks[i].args[0]);
+        }
+
+        expect(exportArgs.toDelete).toBe(true);
+
+        // Old properties that are still mapped stay the same
+        expect(exportArgs.oldProfileProperties).toEqual({
+          customer_email: "oldmail@example.com",
+          is_vip: false,
+          first_name: "Joe", // will not be set since it's no longer a mapping
+        });
+        expect(exportArgs.newProfileProperties).toEqual({
+          customer_email: "oldmail@example.com",
+          is_vip: false,
+        });
+
+        // Groups are cleared
+        expect(exportArgs.oldGroups).toEqual(["someGroup"]);
+        expect(exportArgs.newGroups).toEqual([]);
+
+        await profile.destroy();
+      });
+
       test("properties in deleted state can be exported", async () => {
         await destination.setMapping({
           uid: "userId",

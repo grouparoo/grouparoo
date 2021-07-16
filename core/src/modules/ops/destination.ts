@@ -347,7 +347,7 @@ export namespace DestinationOps {
         mappedNewProfileProperties[k] =
           mappedOldProfileProperties[k] !== undefined
             ? mappedOldProfileProperties[k]
-            : null;
+            : { type, rawValue: null };
       } else {
         mappedNewProfileProperties[k] = {
           type,
