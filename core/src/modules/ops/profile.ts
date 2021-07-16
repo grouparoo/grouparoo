@@ -322,6 +322,7 @@ export namespace ProfileOps {
             position: { [Op.gte]: position },
           });
         }
+
         profileOffset++;
       }
 
@@ -344,6 +345,27 @@ export namespace ProfileOps {
     } finally {
       for (const releaseLock of releaseLocks) await releaseLock();
     }
+  }
+
+  async function removePendingProperties(
+    profile: Profile,
+    excludeSourceIds: Array<string> = []
+  ) {
+    const pendingProperties = await ProfileProperty.findAll({
+      where: { profileId: profile.id, state: "pending" },
+    });
+
+    const destroyProfilePropertyIds = [];
+    for (let profileProperty of pendingProperties) {
+      const property = await Property.findOneWithCache(
+        profileProperty.propertyId
+      );
+      if (!excludeSourceIds.includes(property.sourceId)) {
+        destroyProfilePropertyIds.push(profileProperty.id);
+      }
+    }
+
+    await ProfileProperty.destroy({ where: { id: destroyProfilePropertyIds } });
   }
 
   /**
@@ -438,16 +460,19 @@ export namespace ProfileOps {
     try {
       let hash = {};
       const sources = await Source.findAll({ where: { state: "ready" } });
+      const excludeSourceIds = [];
       await Promise.all(
         sources.map((source) =>
-          source
-            .import(profile)
-            .then((data) => (hash = Object.assign(hash, data)))
+          source.import(profile).then(({ canImport, properties }) => {
+            hash = Object.assign(hash, properties);
+            if (!canImport) excludeSourceIds.push(source.id);
+          })
         )
       );
 
       if (toSave) {
         await addOrUpdateProperties([profile], [hash], false);
+        await removePendingProperties(profile, excludeSourceIds);
         await buildNullProperties([profile]);
 
         await profile.save();

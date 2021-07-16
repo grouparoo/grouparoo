@@ -462,11 +462,11 @@ export namespace helper {
 
   export function disableTestPluginImport() {
     const { api } = require("actionhero");
-    api.plugins.plugins.filter(
+    const connection = api.plugins.plugins.filter(
       (p) => p.name === "@grouparoo/test-plugin"
-    )[0].connections[0].methods.profileProperty = async () => {
-      return null;
-    };
+    )[0].connections[0];
+
+    delete connection.methods.profileProperty;
   }
 
   /**

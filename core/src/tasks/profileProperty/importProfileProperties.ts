@@ -120,7 +120,12 @@ export class ImportProfileProperties extends RetryableTask {
 
     // update the properties that got no data back
     await ProfileProperty.update(
-      { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
+      {
+        state: "ready",
+        rawValue: null,
+        stateChangedAt: new Date(),
+        confirmedAt: new Date(),
+      },
       {
         where: {
           propertyId: property.id,
