@@ -64,6 +64,7 @@ export interface PluginConnection {
   options: ConnectionOption[];
   syncModes?: DestinationSyncMode[];
   defaultSyncMode?: DestinationSyncMode;
+  groupAggregations?: AggregationMethod[];
   methods?: {
     sourceOptions?: SourceOptionsMethod;
     sourcePreview?: SourcePreviewMethod;
@@ -82,6 +83,29 @@ export interface PluginConnection {
     processExportedProfiles?: ProcessExportedProfilesPluginMethod;
     exportArrayProperties?: ExportArrayPropertiesMethod;
   };
+}
+
+export enum AggregationMethod {
+  Exact = "exact",
+  Average = "average",
+  Count = "count",
+  Sum = "sum",
+  Min = "min",
+  Max = "max",
+  MostRecentValue = "most recent value",
+  LeastRecentValue = "least recent value",
+}
+
+export enum FilterOperation {
+  Equal = "equals",
+  NotEqual = "does not equal",
+  GreaterThan = "greater than",
+  GreaterThanOrEqual = "greater than or equal to",
+  LessThan = "less than",
+  LessThanOrEqual = "less than or equal to",
+  Contain = "contains",
+  NotContain = "does not contain",
+  In = "in",
 }
 
 /**
@@ -159,17 +183,17 @@ export interface ProfilePropertiesPluginMethod {
     sourceId: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
-    property: Property;
-    propertyId: string;
-    propertyOptions: SimplePropertyOptions;
-    propertyFilters: PropertyFiltersWithKey[];
+    properties: Property[];
+    propertyIds: string[];
+    propertyOptions: { [key: string]: SimplePropertyOptions };
+    propertyFilters: { [key: string]: PropertyFiltersWithKey[] };
     profiles: Profile[];
     profileIds: string[];
   }): Promise<ProfilePropertiesPluginMethodResponse>;
 }
 
 export type ProfilePropertiesPluginMethodResponse = {
-  [profileId: string]: ProfilePropertyPluginMethodResponse;
+  [profileId: string]: { [key: string]: ProfilePropertyPluginMethodResponse };
 };
 
 /**

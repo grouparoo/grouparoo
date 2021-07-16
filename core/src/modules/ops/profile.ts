@@ -244,7 +244,7 @@ export namespace ProfileOps {
 
     try {
       let profileOffset = 0;
-      checkProfiles: for (const profile of profiles) {
+      for (const profile of profiles) {
         if (toLock) {
           const response = await waitForLock(`profile:${profile.id}`);
           releaseLocks.push(response.releaseLock);

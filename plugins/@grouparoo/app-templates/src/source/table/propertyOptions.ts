@@ -1,8 +1,10 @@
-import { PluginConnectionPropertyOption } from "@grouparoo/core";
+import {
+  AggregationMethod,
+  PluginConnectionPropertyOption,
+} from "@grouparoo/core";
 import {
   GetSampleRowsMethod,
   GetColumnDefinitionsMethod,
-  AggregationMethod,
   aggregationMethodKey,
   sortColumnKey,
   columnNameKey,

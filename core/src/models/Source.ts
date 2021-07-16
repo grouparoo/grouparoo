@@ -20,7 +20,11 @@ import {
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Schedule } from "./Schedule";
-import { Property, PropertyFiltersWithKey } from "./Property";
+import {
+  Property,
+  PropertyFiltersWithKey,
+  SimplePropertyOptions,
+} from "./Property";
 import { Option } from "./Option";
 import { App } from "./App";
 import { Run } from "./Run";
@@ -245,9 +249,9 @@ export class Source extends LoggedModel<Source> {
 
   async importProfileProperties(
     profiles: Profile[],
-    property: Property,
-    propertyOptionsOverride?: OptionHelper.SimpleOptions,
-    propertyFiltersOverride?: PropertyFiltersWithKey[],
+    properties: Property[],
+    propertyOptionsOverride?: { [key: string]: SimplePropertyOptions },
+    propertyFiltersOverride?: { [key: string]: PropertyFiltersWithKey[] },
     preloadedArgs: {
       app?: App;
       connection?: any;
@@ -260,7 +264,7 @@ export class Source extends LoggedModel<Source> {
     return SourceOps.importProfileProperties(
       this,
       profiles,
-      property,
+      properties,
       propertyOptionsOverride,
       propertyFiltersOverride,
       preloadedArgs

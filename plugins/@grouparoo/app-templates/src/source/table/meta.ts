@@ -29,6 +29,7 @@ import {
   getSourceRunPercentComplete,
   GetChangedRowCountMethod,
   SourceOptionsExtra,
+  AggregationMethod,
 } from "./options";
 
 export interface BuildConnectionMethod {
@@ -112,12 +113,13 @@ export const buildConnection: BuildConnectionMethod = ({
     description: tableOptionDescription || "The table to scan",
   });
 
-  return {
+  const plugin: PluginConnection = {
     name,
     direction: "import",
     description,
     app,
     options,
+    groupAggregations: [AggregationMethod.Exact],
     methods: {
       sourceOptions,
       sourcePreview,
@@ -129,7 +131,11 @@ export const buildConnection: BuildConnectionMethod = ({
       profileProperty,
       profileProperties,
       sourceRunPercentComplete,
+
+      // @ts-ignore
       getColumns, // powers syncTable with the column types
     },
   };
+
+  return plugin;
 };

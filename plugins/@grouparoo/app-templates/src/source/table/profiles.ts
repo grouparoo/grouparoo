@@ -1,14 +1,13 @@
 import {
   columnNameKey,
   tableNameKey,
-  FilterOperation,
   MatchCondition,
   GetChangedRowsMethod,
 } from "./pluginMethods";
 import { getFilterOperation } from "./getFilterOperation";
-
 import {
   ProfilesPluginMethod,
+  FilterOperation,
   plugin,
   Run,
   Source,

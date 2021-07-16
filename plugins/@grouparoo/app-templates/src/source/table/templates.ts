@@ -1,8 +1,12 @@
 import path from "path";
-import { ConfigTemplate, PropertyTypes, App } from "@grouparoo/core";
 import {
+  ConfigTemplate,
+  PropertyTypes,
+  App,
   AggregationMethod,
   FilterOperation,
+} from "@grouparoo/core";
+import {
   GetTablesMethod,
   GetColumnDefinitionsMethod,
   TableDefinitionMap,

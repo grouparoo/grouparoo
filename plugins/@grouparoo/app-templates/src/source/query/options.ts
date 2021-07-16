@@ -12,4 +12,6 @@ export {
   PropertyOptionsMethod,
   ScheduleOptionsMethod,
   ProfilePropertyPluginMethod,
+  AggregationMethod,
+  FilterOperation,
 } from "@grouparoo/core";

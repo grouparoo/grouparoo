@@ -271,6 +271,7 @@ export namespace helper {
             { key: "table", required: true },
             { key: "where", required: false },
           ],
+          groupAggregations: [],
           methods: {
             sourceOptions: async ({ sourceOptions }) => {
               const response: SourceOptionsMethodResponse = {

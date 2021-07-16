@@ -24,4 +24,6 @@ export {
   SourceRunPercentCompleteMethod,
   UniquePropertyBootstrapOptions,
   PluginConnection,
+  AggregationMethod,
+  FilterOperation,
 } from "@grouparoo/core";
