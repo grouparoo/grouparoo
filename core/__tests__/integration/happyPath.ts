@@ -309,8 +309,6 @@ describe("integration/happyPath", () => {
     });
 
     test("the run can be processed, along with the associated import chain", async () => {
-      let tasks = [];
-
       // group
       const runningRuns = await Run.findAll({
         where: { state: "running", creatorType: "group" },

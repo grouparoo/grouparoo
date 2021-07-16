@@ -107,13 +107,15 @@ export namespace ProfilePropertyOps {
 
     for (const property of properties) {
       const options = await property.getOptions();
+      const filters = await property.getFilters();
       const aggregationMethod = options.aggregationMethod as AggregationMethod;
+
       if (
         pluginConnection.groupAggregations.includes(aggregationMethod) &&
         property.isArray === false &&
-        property.filters.length === 0 // TODO: Check if they match
+        filters.length === 0 // TODO: Check if they match
       ) {
-        if (!propertyGroups[aggregationMethod]) {
+        if (aggregationMethod && !propertyGroups[aggregationMethod]) {
           propertyGroups[aggregationMethod] = [];
         }
         propertyGroups[aggregationMethod].push(property);
