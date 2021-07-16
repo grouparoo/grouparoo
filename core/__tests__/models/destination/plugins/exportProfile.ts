@@ -325,6 +325,7 @@ describe("models/destination", () => {
 
         const profile = await helper.factories.profile();
         await profile.addOrUpdateProperties({
+          uid: [1002],
           email: ["newemail@example.com"],
         });
         await groupA.addProfile(profile);
@@ -340,7 +341,7 @@ describe("models/destination", () => {
 
         expect(exportArgs.newProfileProperties).toEqual({
           customer_email: "newemail@example.com",
-          uid: null,
+          uid: 1002,
         });
 
         await profile.destroy();
