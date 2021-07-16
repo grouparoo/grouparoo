@@ -27,7 +27,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         (c) => c.name === "test-plugin-import"
       );
       testPluginConnection.methods.profileProperties = async ({
-        property,
+        properties,
         profiles,
       }) => {
         const response = {};
@@ -44,7 +44,9 @@ describe("tasks/profileProperty:importProfileProperties", () => {
             lastLoginAt: new Date(),
           };
 
-          response[profile.id] = data[property.key];
+          response[profile.id] = {
+            [properties[0].id]: data[properties[0].key],
+          };
         }
 
         return response;
@@ -58,7 +60,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
     test("can be enqueued", async () => {
       await task.enqueue("profileProperty:importProfileProperties", {
         profileIds: ["abc"],
-        propertyId: "abc",
+        propertyIds: ["abc"],
       });
       const found = await specHelper.findEnqueuedTasks(
         "profileProperty:importProfileProperties"
@@ -72,17 +74,17 @@ describe("tasks/profileProperty:importProfileProperties", () => {
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
         profileIds: ["missing"],
-        propertyId: "missing",
+        propertyIds: ["missing"],
       });
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
         profileIds: [profile.id],
-        propertyId: "missing",
+        propertyIds: ["missing"],
       });
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
         profileIds: ["missing"],
-        propertyId: property.id,
+        propertyIds: [property.id],
       });
 
       await profile.destroy();
@@ -101,7 +103,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
         profileIds: [profile.id],
-        propertyId: profileProperty.propertyId,
+        propertyIds: [profileProperty.propertyId],
       });
 
       // new value and state
@@ -136,7 +138,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
         profileIds: [profile.id],
-        propertyId: profileProperty.propertyId,
+        propertyIds: [profileProperty.propertyId],
       });
 
       // no change
@@ -174,7 +176,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       for (const property of properties) {
         await specHelper.runTask("profileProperty:importProfileProperties", {
           profileIds: [profileA.id, profileB.id, profileC.id],
-          propertyId: property.id,
+          propertyIds: [property.id],
         });
       }
 
@@ -182,7 +184,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       for (const property of properties) {
         await specHelper.runTask("profileProperty:importProfileProperties", {
           profileIds: [profileA.id, profileB.id, profileC.id],
-          propertyId: property.id,
+          propertyIds: [property.id],
         });
       }
 
