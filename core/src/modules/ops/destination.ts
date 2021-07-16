@@ -330,18 +330,25 @@ export namespace DestinationOps {
       oldGroupNames = mostRecentExport.newGroups;
     }
 
+    // We want to be able to delete profiles that have been removed from their source
+    // (new properties would be set to null, so we need the old values to reference them)
     const directlyMapped = Object.values(newProfileProperties).find(
       (p) => p.directlyMapped
     );
-    if (toDelete && directlyMapped && directlyMapped.values[0] === null) {
-      // We want to be able to delete profiles that have been removed from their source
-      // (new properties would be set to null, so we need the old values to reference them)
-      mappedNewProfileProperties = mappedOldProfileProperties;
-    } else {
-      for (const k in mapping) {
-        const property = properties.find((r) => r.key === mapping[k]);
-        if (!property) throw new Error(`cannot find rule for ${mapping[k]}`);
-        const { type } = property;
+    const forceOldPropertyValues =
+      toDelete && directlyMapped && directlyMapped.values[0] === null;
+
+    for (const k in mapping) {
+      const property = properties.find((r) => r.key === mapping[k]);
+      if (!property) throw new Error(`cannot find rule for ${mapping[k]}`);
+      const { type } = property;
+
+      if (forceOldPropertyValues) {
+        mappedNewProfileProperties[k] =
+          mappedOldProfileProperties[k] !== undefined
+            ? mappedOldProfileProperties[k]
+            : null;
+      } else {
         mappedNewProfileProperties[k] = {
           type,
           rawValue: newProfileProperties[mapping[k]]
