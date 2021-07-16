@@ -357,7 +357,7 @@ describe("tasks/profileProperties:enqueue", () => {
           const newPendingProperties = await ProfileProperty.findAll({
             where: {
               state: "pending",
-              profileId: [daisyImport.profileId, peachImport.profileId],
+              profileId: [daisy.id, peach.id],
             },
           });
           expect(newPendingProperties.length).toBe(0);
