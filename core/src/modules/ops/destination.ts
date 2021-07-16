@@ -330,20 +330,27 @@ export namespace DestinationOps {
       oldGroupNames = mostRecentExport.newGroups;
     }
 
-    for (const k in mapping) {
-      const property = properties.find((r) => r.key === mapping[k]);
-      if (!property) throw new Error(`cannot find rule for ${mapping[k]}`);
-      const { type } = property;
-      mappedNewProfileProperties[k] = {
-        type,
-        rawValue: newProfileProperties[mapping[k]]
-          ? await Promise.all(
-              newProfileProperties[mapping[k]].values.map((v) =>
-                ProfilePropertyOps.buildRawValue(v, type)
+    const directlyMapped = Object.values(newProfileProperties).find(
+      (p) => p.directlyMapped
+    );
+    if (directlyMapped && directlyMapped.values[0] === null) {
+      mappedNewProfileProperties = mappedOldProfileProperties;
+    } else {
+      for (const k in mapping) {
+        const property = properties.find((r) => r.key === mapping[k]);
+        if (!property) throw new Error(`cannot find rule for ${mapping[k]}`);
+        const { type } = property;
+        mappedNewProfileProperties[k] = {
+          type,
+          rawValue: newProfileProperties[mapping[k]]
+            ? await Promise.all(
+                newProfileProperties[mapping[k]].values.map((v) =>
+                  ProfilePropertyOps.buildRawValue(v, type)
+                )
               )
-            )
-          : null,
-      };
+            : null,
+        };
+      }
     }
 
     // Send only the properties from the array that should be sent to the Destination, otherwise send the first entry in the array of profile properties
