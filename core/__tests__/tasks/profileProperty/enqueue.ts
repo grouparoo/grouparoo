@@ -303,10 +303,24 @@ describe("tasks/profileProperties:enqueue", () => {
         });
 
         test("if there is no import method, it will just mark properties as ready", async () => {
+          const daisy: Profile = await helper.factories.profile();
+          const peach: Profile = await helper.factories.profile();
+
+          await daisy.addOrUpdateProperties({
+            email: ["daisy@example.com"],
+            firstName: ["Daisy"],
+            isVIP: [true],
+          });
+
+          await peach.addOrUpdateProperties({
+            email: ["peach@example.com"],
+            firstName: ["Peach"],
+            isVIP: [false],
+          });
+
           const run = await helper.factories.run();
           const daisyImport = await helper.factories.import(run, {
             email: "daisy@example.com",
-            firstName: "Daisy",
           });
           const peachImport = await helper.factories.import(run, {
             email: "peach@example.com",
@@ -319,13 +333,10 @@ describe("tasks/profileProperties:enqueue", () => {
             importId: peachImport.id,
           });
 
-          await daisyImport.reload();
-          await peachImport.reload();
-
-          let pendingProperties = await ProfileProperty.findAll({
+          const pendingProperties = await ProfileProperty.findAll({
             where: {
               state: "pending",
-              profileId: [daisyImport.profileId, peachImport.profileId],
+              profileId: [daisy.id, peach.id],
             },
           });
           expect(pendingProperties.length).toBe(propertiesCount * 2);
@@ -343,13 +354,24 @@ describe("tasks/profileProperties:enqueue", () => {
           expect(importProfilePropertyTasks.length).toBe(0);
           expect(importProfilePropertiesTasks.length).toBe(0);
 
-          pendingProperties = await ProfileProperty.findAll({
+          const newPendingProperties = await ProfileProperty.findAll({
             where: {
               state: "pending",
               profileId: [daisyImport.profileId, peachImport.profileId],
             },
           });
-          expect(pendingProperties.length).toBe(0);
+          expect(newPendingProperties.length).toBe(0);
+
+          const oldValues = pendingProperties.map((p) => p.rawValue);
+          const newValues = (
+            await ProfileProperty.findAll({
+              where: {
+                id: pendingProperties.map((p) => p.id),
+                state: "ready",
+              },
+            })
+          ).map((p) => p.rawValue);
+          expect(oldValues.sort()).toEqual(newValues.sort());
         });
       });
     });
