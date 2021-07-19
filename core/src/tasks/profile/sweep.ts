@@ -7,7 +7,7 @@ import { plugin } from "../../modules/plugin";
 export class ProfileSweep extends CLSTask {
   constructor() {
     super();
-    this.name = "profile:sweep";
+    this.name = "profiles:sweep";
     this.description =
       "Remove profiles that no longer have any directly mapped properties";
     this.frequency = 1000 * 60 * 30; // every half hour
