@@ -295,12 +295,8 @@ describe("models/profile", () => {
         expect(newProfile.state).toBe("pending");
         const properties = await newProfile.getProperties();
         for (const k in properties) {
-          if (k === "userId") {
-            expect(properties[k].state).toEqual("ready");
-          } else {
-            expect(properties[k].state).toEqual("pending");
-            expect(properties[k].startedAt).toBeNull();
-          }
+          expect(properties[k].state).toEqual("pending");
+          expect(properties[k].startedAt).toBeNull();
         }
       });
 
@@ -1071,9 +1067,7 @@ describe("models/profile", () => {
       expect(profileA.state).toBe("pending");
       const properties = await profileA.getProperties();
       for (const k in properties) {
-        k === "userId"
-          ? expect(properties[k].state).toBe("ready")
-          : expect(properties[k].state).toBe("pending");
+        expect(properties[k].state).toBe("pending");
       }
     });
 

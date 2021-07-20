@@ -37,7 +37,7 @@ export class ImportAssociateProfile extends Task {
             if (_import.profileId) return;
 
             const { profile } = await _import.associateProfile();
-
+            await profile.addOrUpdateProperties(_import.data, undefined, true);
             await profile.markPending();
           },
           { write: true }
