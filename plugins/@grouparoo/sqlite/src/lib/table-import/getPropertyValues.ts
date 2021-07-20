@@ -10,7 +10,7 @@ import {
 export const getPropertyValues: GetPropertyValuesMethod = async ({
   connection,
   tableName,
-  columnName,
+  columnNames,
   sortColumn,
   tablePrimaryKeyCol,
   tableMappingCol,
@@ -19,8 +19,8 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   aggregationMethod,
   primaryKeys,
 }) => {
-  let responses: { [key: string]: DataResponse[] } = {};
-  let aggSelect = `"${columnName}"`;
+  let responses: { [key: string]: { [column: string]: DataResponse[] } } = {};
+  let aggSelect = columnNames.map((col) => `"${col}"`).join(", ");
   let orderBy = "";
   let groupByColumns = [tablePrimaryKeyCol];
 
@@ -28,44 +28,44 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
 
   switch (aggregationMethod) {
     case AggregationMethod.Exact:
-      groupByColumns.push(columnName);
+      if (columnNames.length === 1) groupByColumns.push(...columnNames);
       if (sortColumn) {
         orderBy = `"${sortColumn}" ASC`;
         groupByColumns.push(sortColumn);
       }
       break;
     case AggregationMethod.Average:
-      aggSelect = `COALESCE(AVG(${aggSelect}), 0)`;
+      aggSelect = `COALESCE(AVG(${aggSelect}), 0) as ${aggSelect}`;
       break;
     case AggregationMethod.Count:
-      aggSelect = `COUNT(CAST(${aggSelect} as INT))`;
+      aggSelect = `COUNT(CAST(${aggSelect} as INT)) as ${aggSelect}`;
       break;
     case AggregationMethod.Sum:
-      aggSelect = `COALESCE(SUM(${aggSelect}), 0)`;
+      aggSelect = `COALESCE(SUM(${aggSelect}), 0) as ${aggSelect}`;
       break;
     case AggregationMethod.Min:
-      aggSelect = `MIN(${aggSelect})`;
+      aggSelect = `MIN(${aggSelect}) as ${aggSelect}`;
       break;
     case AggregationMethod.Max:
-      aggSelect = `MAX(${aggSelect})`;
+      aggSelect = `MAX(${aggSelect}) as ${aggSelect}`;
       break;
     case AggregationMethod.MostRecentValue:
       if (!sortColumn) throw new Error("Sort Column is needed");
       orderBy = `"${sortColumn}" DESC`;
-      groupByColumns.push(columnName);
+      groupByColumns.push(columnNames[0]);
       groupByColumns.push(sortColumn);
       break;
     case AggregationMethod.LeastRecentValue:
       if (!sortColumn) throw new Error("Sort Column is needed");
       orderBy = `"${sortColumn}" ASC`;
-      groupByColumns.push(columnName);
+      groupByColumns.push(columnNames[0]);
       groupByColumns.push(sortColumn);
       break;
     default:
       throw new Error(`${aggregationMethod} is not a known aggregation method`);
   }
 
-  let query = `SELECT ${aggSelect} as __result, "${tablePrimaryKeyCol}" as __pk FROM "${tableName}" WHERE`;
+  let query = `SELECT ${aggSelect}, "${tablePrimaryKeyCol}" as __pk FROM "${tableName}" WHERE`;
   let addAnd = false;
 
   for (const condition of matchConditions) {
@@ -94,17 +94,19 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   validateQuery(query);
 
   try {
-    const rows: Array<{
-      __pk: string;
-      __result: any;
-    }> = await connection.asyncQuery(query);
+    const rows: Array<{ [column: string]: DataResponse }> =
+      await connection.asyncQuery(query);
 
-    rows.forEach((row) => {
-      if (!responses[row.__pk]) responses[row.__pk] = [];
-      if (isArray || (responses[row.__pk].length === 0 && !isArray)) {
-        responses[row.__pk].push(row.__result);
+    for (const row of rows) {
+      const pk = row.__pk.toString();
+      responses[pk] = {};
+      for (const col in row) {
+        responses[pk][col] = [];
+        if (isArray || (responses[pk][col].length === 0 && !isArray)) {
+          responses[pk][col].push(row[col]);
+        }
       }
-    });
+    }
   } catch (error) {
     throw new Error(
       `Error with SQLite SQL Statement: Query - \`${query}\`, Error - ${error}`
