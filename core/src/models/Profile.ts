@@ -96,9 +96,15 @@ export class Profile extends LoggedModel<Profile> {
     properties: {
       [key: string]: Array<string | number | boolean | Date>;
     },
-    toLock = true
+    toLock = true,
+    ignoreMissingProperties = false
   ) {
-    return ProfileOps.addOrUpdateProperties([this], [properties], toLock);
+    return ProfileOps.addOrUpdateProperties(
+      [this],
+      [properties],
+      toLock,
+      ignoreMissingProperties
+    );
   }
 
   async removeProperty(key: string) {

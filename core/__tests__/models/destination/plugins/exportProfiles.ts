@@ -158,6 +158,7 @@ describe("models/destination", () => {
 
         const profile = await helper.factories.profile();
         await profile.addOrUpdateProperties({
+          userId: [1001],
           email: ["newemail@example.com"],
         });
         await groupA.addProfile(profile);
@@ -201,7 +202,7 @@ describe("models/destination", () => {
         });
         expect(exportArgs.exports[0].newProfileProperties).toEqual({
           customer_email: "newemail@example.com",
-          uid: null,
+          uid: 1001,
         });
         expect(exportArgs.exports[0].oldGroups).toEqual([]);
         expect(exportArgs.exports[0].newGroups).toEqual(
@@ -225,7 +226,7 @@ describe("models/destination", () => {
         });
         expect(_exports[1].newProfileProperties).toEqual({
           customer_email: "newemail@example.com",
-          uid: null,
+          uid: 1001,
         });
         expect(_exports[1].oldGroups).toEqual([]);
         expect(_exports[1].newGroups).toEqual(
@@ -247,6 +248,7 @@ describe("models/destination", () => {
 
         const profile = await helper.factories.profile();
         await profile.addOrUpdateProperties({
+          userId: [1001],
           email: ["newemail@example.com"],
         });
 
@@ -287,8 +289,78 @@ describe("models/destination", () => {
         });
         expect(exportArgs.exports[0].newProfileProperties).toEqual({
           customer_email: "newemail@example.com",
-          uid: null,
+          uid: 1001,
         });
+
+        await profile.destroy();
+      });
+
+      test("if the directlyMapped property has been removed, newProfileProperties will use oldProfileProperties values in the export", async () => {
+        await destination.setMapping({
+          is_vip: "isVIP",
+          customer_email: "email",
+          lifetime: "ltv",
+        });
+
+        const groupA = await helper.factories.group();
+        await destination.trackGroup(groupA);
+
+        const profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({
+          userId: [null],
+          email: [null],
+          isVIP: [null],
+          ltv: [null],
+        });
+
+        // create a previous export
+        await Export.create({
+          profileId: profile.id,
+          destinationId: destination.id,
+          newProfileProperties: {
+            customer_email: { type: "email", rawValue: "oldmail@example.com" },
+            is_vip: { type: "boolean", rawValue: "false" },
+            first_name: { type: "string", rawValue: "Joe" },
+          },
+          oldProfileProperties: {},
+          oldGroups: [],
+          newGroups: ["someGroup"],
+          state: "complete",
+        });
+
+        await destination.exportProfile(profile);
+
+        // there should be no export:send tasks
+        let foundTasks = await specHelper.findEnqueuedTasks("export:send");
+        expect(foundTasks.length).toBe(0);
+
+        // there should be no export:sendBatch tasks until the run has completed
+        foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+        expect(foundTasks.length).toBe(0);
+
+        await specHelper.runTask("export:enqueue", {});
+
+        foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+        expect(foundTasks.length).toBe(1);
+        await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
+
+        expect(exportArgs.exports.length).toBe(1);
+        expect(exportArgs.exports[0].toDelete).toBe(true);
+
+        // Old properties that are still mapped stay the same
+        expect(exportArgs.exports[0].oldProfileProperties).toEqual({
+          customer_email: "oldmail@example.com",
+          is_vip: false,
+          first_name: "Joe", // will not be set since it's no longer a mapping
+        });
+        expect(exportArgs.exports[0].newProfileProperties).toEqual({
+          customer_email: "oldmail@example.com",
+          is_vip: false,
+        });
+
+        // Groups are cleared
+        expect(exportArgs.exports[0].oldGroups).toEqual(["someGroup"]);
+        expect(exportArgs.exports[0].newGroups).toEqual([]);
 
         await profile.destroy();
       });

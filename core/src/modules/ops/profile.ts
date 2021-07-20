@@ -223,7 +223,8 @@ export namespace ProfileOps {
     profileProperties: {
       [key: string]: Array<string | number | boolean | Date> | any;
     }[],
-    toLock = true
+    toLock = true,
+    ignoreMissingProperties = false
   ) {
     if (profiles.length === 0) return;
     if (profiles.length !== profileProperties.length) {
@@ -269,6 +270,7 @@ export namespace ProfileOps {
             properties.find((p) => p.key === key);
 
           if (!property) {
+            if (ignoreMissingProperties) continue;
             throw new Error(`cannot find a property for id or key \`${key}\``);
           }
 
@@ -646,21 +648,10 @@ export namespace ProfileOps {
     profileIds: string[],
     includeProperties = true
   ) {
-    const nonDirectlyMappedRules = (await Property.findAllWithCache()).filter(
-      (p) => p.directlyMapped === false
-    );
-
-    if (includeProperties && nonDirectlyMappedRules.length > 0) {
+    if (includeProperties) {
       await ProfileProperty.update(
         { state: "pending", startedAt: null },
-        {
-          where: {
-            profileId: { [Op.in]: profileIds },
-            propertyId: {
-              [Op.in]: nonDirectlyMappedRules.map((r) => r.id),
-            },
-          },
-        }
+        { where: { profileId: { [Op.in]: profileIds } } }
       );
     }
 
@@ -777,7 +768,6 @@ export namespace ProfileOps {
     profileIds: string[],
     toExport: boolean
   ) {
-    const properties = await Property.findAllWithCache();
     const profiles = await Profile.findAll({
       where: {
         id: { [Op.in]: profileIds },
@@ -788,28 +778,6 @@ export namespace ProfileOps {
       ],
     });
     if (profiles.length === 0) return;
-
-    for (const profile of profiles) {
-      const mergedValues = {};
-      const imports = profile.imports;
-
-      for (const _import of imports.sort(
-        (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
-      )) {
-        const data = _import.data;
-        for (const key in data) {
-          // only if we still have property
-          if (properties.find((r) => r.key === key)) {
-            mergedValues[key] = data[key];
-          }
-        }
-      }
-
-      if (Object.keys(mergedValues).length > 0) {
-        await profile.addOrUpdateProperties(mergedValues);
-        delete profile.profileProperties; // will be reloaded
-      }
-    }
 
     const memberships = await ProfileOps.updateGroupMemberships(profiles);
     const now = new Date();

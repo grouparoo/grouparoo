@@ -340,9 +340,15 @@ describe("modules/plugin", () => {
         );
         expect(peachImport).toBeTruthy();
         expect(marioImport).toBeTruthy();
+        expect(peachImport.data).toEqual({
+          firstName: ["Peach"],
+        });
         expect(peachImport.rawData).toEqual({
           first__name: "Peach",
           last__name: "Toadstool",
+        });
+        expect(marioImport.data).toEqual({
+          firstName: ["Mario"],
         });
         expect(marioImport.rawData).toEqual({
           first__name: "Mario",

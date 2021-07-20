@@ -115,9 +115,7 @@ describe("tasks/profileProperties:enqueue", () => {
           const pendingProfileProperties = await ProfileProperty.findAll({
             where: { state: "pending" },
           });
-          expect(pendingProfileProperties.length).toBe(
-            (propertiesCount - 1) * 2
-          );
+          expect(pendingProfileProperties.length).toBe(propertiesCount * 2);
           for (const p of pendingProfileProperties) {
             expect(p.startedAt).toBe(null);
             await p.update({ startedAt: null });
@@ -134,9 +132,7 @@ describe("tasks/profileProperties:enqueue", () => {
           );
 
           expect(importProfilePropertiesTasks.length).toBe(0);
-          expect(importProfilePropertyTasks.length).toBe(
-            (propertiesCount - 1) * 2
-          );
+          expect(importProfilePropertyTasks.length).toBe(propertiesCount * 2);
 
           for (const p of pendingProfileProperties) {
             await p.reload();
@@ -154,9 +150,7 @@ describe("tasks/profileProperties:enqueue", () => {
           const pendingProfileProperties = await ProfileProperty.findAll({
             where: { state: "pending" },
           });
-          expect(pendingProfileProperties.length).toBe(
-            (propertiesCount - 1) * 2
-          );
+          expect(pendingProfileProperties.length).toBe(propertiesCount * 2);
           for (const p of pendingProfileProperties) {
             expect(p.startedAt).toBe(null);
             await p.update({ startedAt: new Date(0) });
@@ -173,9 +167,7 @@ describe("tasks/profileProperties:enqueue", () => {
           );
 
           expect(importProfilePropertiesTasks.length).toBe(0);
-          expect(importProfilePropertyTasks.length).toBe(
-            (propertiesCount - 1) * 2
-          );
+          expect(importProfilePropertyTasks.length).toBe(propertiesCount * 2);
 
           for (const p of pendingProfileProperties) {
             await p.reload();
@@ -192,9 +184,7 @@ describe("tasks/profileProperties:enqueue", () => {
           const pendingProfileProperties = await ProfileProperty.findAll({
             where: { state: "pending" },
           });
-          expect(pendingProfileProperties.length).toBe(
-            (propertiesCount - 1) * 2
-          );
+          expect(pendingProfileProperties.length).toBe(propertiesCount * 2);
           for (const p of pendingProfileProperties) {
             expect(p.startedAt).toBe(null);
             await p.update({ startedAt: new Date() });
@@ -289,7 +279,7 @@ describe("tasks/profileProperties:enqueue", () => {
           );
 
           expect(importProfilePropertyTasks.length).toBe(0);
-          expect(importProfilePropertiesTasks.length).toBe(propertiesCount - 1);
+          expect(importProfilePropertiesTasks.length).toBe(propertiesCount);
           importProfilePropertiesTasks.forEach((t) =>
             expect(t.args[0].profileIds.length).toBe(1)
           );

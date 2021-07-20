@@ -17,7 +17,11 @@ const {
 } = getConfig();
 
 describe("integration/runs/mysql", () => {
-  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    disableTestPluginImport: true,
+  });
   beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
   let client;
