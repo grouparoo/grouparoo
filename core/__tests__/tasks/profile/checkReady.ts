@@ -3,7 +3,11 @@ import { api, config, task, specHelper } from "actionhero";
 import { Group, plugin, Profile, ProfileProperty } from "../../../src";
 
 describe("tasks/profile:checkReady", () => {
-  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    disableTestPluginImport: true,
+  });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
 

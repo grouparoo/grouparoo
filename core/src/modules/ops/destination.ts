@@ -330,20 +330,36 @@ export namespace DestinationOps {
       oldGroupNames = mostRecentExport.newGroups;
     }
 
+    // We want to be able to delete profiles that have been removed from their source
+    // (new properties would be set to null, so we need the old values to reference them)
+    const directlyMapped = Object.values(newProfileProperties).find(
+      (p) => p.directlyMapped
+    );
+    const forceOldPropertyValues =
+      toDelete && directlyMapped && directlyMapped.values[0] === null;
+
     for (const k in mapping) {
       const property = properties.find((r) => r.key === mapping[k]);
       if (!property) throw new Error(`cannot find rule for ${mapping[k]}`);
       const { type } = property;
-      mappedNewProfileProperties[k] = {
-        type,
-        rawValue: newProfileProperties[mapping[k]]
-          ? await Promise.all(
-              newProfileProperties[mapping[k]].values.map((v) =>
-                ProfilePropertyOps.buildRawValue(v, type)
+
+      if (forceOldPropertyValues) {
+        mappedNewProfileProperties[k] =
+          mappedOldProfileProperties[k] !== undefined
+            ? mappedOldProfileProperties[k]
+            : { type, rawValue: null };
+      } else {
+        mappedNewProfileProperties[k] = {
+          type,
+          rawValue: newProfileProperties[mapping[k]]
+            ? await Promise.all(
+                newProfileProperties[mapping[k]].values.map((v) =>
+                  ProfilePropertyOps.buildRawValue(v, type)
+                )
               )
-            )
-          : null,
-      };
+            : null,
+        };
+      }
     }
 
     // Send only the properties from the array that should be sent to the Destination, otherwise send the first entry in the array of profile properties

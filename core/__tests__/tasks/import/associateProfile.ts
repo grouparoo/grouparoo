@@ -122,5 +122,39 @@ describe("tasks/import:associateProfile", () => {
       const profile = await Profile.findById(property.profileId);
       expect(profile.state).toEqual("pending");
     });
+
+    test("it will set properties included in the import data", async () => {
+      await Profile.truncate();
+
+      const run = await helper.factories.run();
+
+      const _import = await helper.factories.import(run, {
+        email: "bowserjr@example.com",
+        firstName: "Bowser",
+        lastName: "Jr",
+        someNonexistentProp: "Hi there",
+      });
+      expect(_import.profileId).toBeFalsy();
+      expect(_import.profileAssociatedAt).toBeFalsy();
+
+      let profilesCount = await Profile.count();
+      expect(profilesCount).toBe(0);
+
+      await specHelper.runTask("import:associateProfile", {
+        importId: _import.id,
+      });
+
+      await _import.reload();
+      const profile = await Profile.findOne();
+      expect(profile).toBeTruthy();
+      expect(_import.profileId).toBe(profile.id);
+      expect(_import.profileAssociatedAt).toBeTruthy();
+
+      const properties = await profile.simplifiedProperties();
+      expect(properties.email).toEqual(["bowserjr@example.com"]);
+      expect(properties.firstName).toEqual(["Bowser"]);
+      expect(properties.lastName).toEqual(["Jr"]);
+      expect(properties.someNonexistentProp).toBeUndefined();
+    });
   });
 });
