@@ -24,7 +24,7 @@ export class ProfileSweep extends CLSTask {
     );
 
     // Get profiles that don't have directlyMapped properties and whose exports have settled
-    const profiles: { id: string }[] = await api.sequelize.query(
+    const profiles: Profile[] = await api.sequelize.query(
       `
       SELECT "id" FROM "profiles" WHERE "state"='ready' 
         AND 0 = (
@@ -38,16 +38,13 @@ export class ProfileSweep extends CLSTask {
         ) LIMIT ${limit};
       `,
       {
-        type: QueryTypes.SELECT,
+        model: Profile,
       }
     );
 
-    if (profiles.length > 0) {
-      const profileIds = profiles.map((p) => p.id);
-      await Profile.destroy({ where: { id: profileIds } });
-      await Import.destroy({ where: { profileId: profileIds } });
-      await Export.destroy({ where: { profileId: profileIds } });
-      await ProfileProperty.destroy({ where: { profileId: profileIds } });
+    // use "destroy" to clean up related models
+    for (const profile of profiles) {
+      await profile.destroy();
     }
 
     return profiles.length;
