@@ -67,7 +67,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   }
 
   const params: Array<any> = [tableName];
-  let query = `SELECT ${aggSelect}, "${tablePrimaryKeyCol}" as __pk FROM %I WHERE`; // as __result
+  let query = `SELECT ${aggSelect}, "${tablePrimaryKeyCol}" as __pk FROM %I WHERE`;
   let addAnd = false;
 
   for (const condition of matchConditions) {
