@@ -1,10 +1,6 @@
 import { api } from "actionhero";
-import { QueryTypes } from "sequelize";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { Export } from "../../models/Export";
-import { Import } from "../../models/Import";
 import { Profile } from "../../models/Profile";
-import { ProfileProperty } from "../../models/ProfileProperty";
 import { plugin } from "../../modules/plugin";
 
 export class ProfileSweep extends CLSTask {
