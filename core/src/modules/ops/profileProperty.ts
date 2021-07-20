@@ -111,7 +111,7 @@ export namespace ProfilePropertyOps {
       const aggregationMethod = options.aggregationMethod as AggregationMethod;
 
       if (
-        pluginConnection.groupAggregations.includes(aggregationMethod) &&
+        pluginConnection.groupAggregations?.includes(aggregationMethod) &&
         property.isArray === false &&
         filters.length === 0 // TODO: Check if they match
       ) {
