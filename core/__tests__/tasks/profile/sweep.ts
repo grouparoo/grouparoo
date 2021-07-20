@@ -7,6 +7,7 @@ import {
   Destination,
   Group,
   Export,
+  Import,
 } from "../../../src";
 
 describe("tasks/profiles:sweep", () => {
@@ -141,5 +142,40 @@ describe("tasks/profiles:sweep", () => {
     count = await specHelper.runTask("profiles:sweep", {});
     expect(count).toBe(1);
     await expect(profile.reload()).rejects.toThrow(/does not exist anymore/);
+  });
+
+  test("all related models are cleaned up", async () => {
+    const profile: Profile = await helper.factories.profile();
+    const _import: Import = await helper.factories.import(
+      undefined,
+      undefined,
+      profile.id
+    );
+    const _export: Export = await helper.factories.export(profile);
+    await _export.update({ state: "complete" });
+
+    await profile.addOrUpdateProperties({
+      userId: [null],
+      isVIP: [true],
+      ltv: [213],
+    });
+
+    await ProfileProperty.update(
+      { state: "ready" },
+      { where: { profileId: profile.id } }
+    );
+    await profile.update({ state: "ready" });
+
+    const count = await specHelper.runTask("profiles:sweep", {});
+    expect(count).toBe(1);
+
+    const properties = await ProfileProperty.findAll({
+      where: { profileId: profile.id },
+    });
+    expect(properties.length).toBe(0);
+
+    await expect(profile.reload()).rejects.toThrow(/does not exist anymore/);
+    await expect(_import.reload()).rejects.toThrow(/does not exist anymore/);
+    await expect(_export.reload()).rejects.toThrow(/does not exist anymore/);
   });
 });

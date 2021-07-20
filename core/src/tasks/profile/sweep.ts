@@ -1,7 +1,10 @@
 import { api } from "actionhero";
 import { QueryTypes } from "sequelize";
 import { CLSTask } from "../../classes/tasks/clsTask";
+import { Export } from "../../models/Export";
+import { Import } from "../../models/Import";
 import { Profile } from "../../models/Profile";
+import { ProfileProperty } from "../../models/ProfileProperty";
 import { plugin } from "../../modules/plugin";
 
 export class ProfileSweep extends CLSTask {
@@ -39,13 +42,12 @@ export class ProfileSweep extends CLSTask {
       }
     );
 
-    // use "destroy" to clean up related models
     if (profiles.length > 0) {
-      await Profile.destroy({
-        where: {
-          id: profiles.map((p) => p.id),
-        },
-      });
+      const profileIds = profiles.map((p) => p.id);
+      await Profile.destroy({ where: { id: profileIds } });
+      await Import.destroy({ where: { profileId: profileIds } });
+      await Export.destroy({ where: { profileId: profileIds } });
+      await ProfileProperty.destroy({ where: { profileId: profileIds } });
     }
 
     return profiles.length;
