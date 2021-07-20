@@ -1,5 +1,5 @@
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { AggregationMethod, plugin } from "@grouparoo/core";
 
 import { test } from "../lib/test";
 
@@ -59,6 +59,7 @@ export class Plugins extends Initializer {
           direction: "import",
           description: "Import or update Profiles from an uploaded CSV.",
           app: "csv",
+          groupAggregations: [AggregationMethod.Exact],
           options: [
             {
               key: "fileId",
@@ -85,6 +86,7 @@ export class Plugins extends Initializer {
           direction: "import",
           description: "Import or update Profiles from a remote CSV.",
           app: "csv",
+          groupAggregations: [AggregationMethod.Exact],
           options: [
             {
               key: "url",

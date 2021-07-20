@@ -3,24 +3,31 @@ import csvParser from "csv-parser";
 
 export async function parseProfileProperties({
   localPath,
-  columnName,
+  columnNameHash,
   mappedCSVColumn,
   primaryKeysHash,
 }: {
   localPath: string;
-  columnName: string;
+  columnNameHash: { [columnName: string]: string };
   mappedCSVColumn: string;
   primaryKeysHash: { [pk: string]: string };
 }) {
-  const data: { [key: string]: any } = {};
-  const primaryKeys = Object.keys(primaryKeysHash);
+  const data: { [profileId: string]: { [key: string]: any } } = {};
+  const columnNames = Object.keys(columnNameHash);
   const stream = fs.createReadStream(localPath);
   const parser = stream.pipe(csvParser());
 
   await new Promise((resolve, reject) => {
-    parser.on("data", (row) => {
-      if (primaryKeys.includes(row[mappedCSVColumn])) {
-        data[primaryKeysHash[row[mappedCSVColumn]]] = [row[columnName]];
+    // All columns in the row are returned as strings
+    parser.on("data", (row: { [key: string]: string }) => {
+      const profileId = primaryKeysHash[row[mappedCSVColumn]];
+      if (!profileId) return;
+
+      data[profileId] = {};
+      for (const columnName in row) {
+        if (columnNames.includes(columnName)) {
+          data[profileId][columnNameHash[columnName]] = [row[columnName]];
+        }
       }
     });
 
