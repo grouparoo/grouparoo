@@ -12,14 +12,13 @@ import { ProfileOps } from "../../modules/ops/profile";
 import { GroupMember } from "../../models/GroupMember";
 import { Import } from "../../models/Import";
 
-export class ProfilePropertiesEnqueue extends CLSTask {
+export class ProfilesConfirm extends CLSTask {
   constructor() {
     super();
-    this.name = "profileProperties:confirm";
-    this.description =
-      "Confirm that directlyMapped profile properties still exist";
+    this.name = "profiles:confirm";
+    this.description = "Confirm that profiles still exist in the source";
     this.frequency = 1000 * 30;
-    this.queue = "profileProperties";
+    this.queue = "profiles";
     this.inputs = {};
   }
 
