@@ -191,21 +191,39 @@ async function preparePropertyImports(
 
     const method = pluginConnection.methods.profileProperties
       ? "ProfileProperties"
-      : "ProfileProperty";
+      : pluginConnection.methods.profileProperty
+      ? "ProfileProperty"
+      : null;
 
     if (method === "ProfileProperties") {
-      await CLS.enqueueTask(`profileProperty:import${method}`, {
+      await CLS.enqueueTask(`profileProperty:importProfileProperties`, {
         propertyIds: properties.map((p) => p.id),
         profileIds: pendingProfileProperties.map((ppp) => ppp.profileId),
       });
-    } else {
+    } else if (method === "ProfileProperty") {
+      if (properties.length !== 1) throw new Error("1 Property required");
+
       await Promise.all(
         pendingProfileProperties.map((ppp) =>
-          CLS.enqueueTask(`profileProperty:import${method}`, {
+          CLS.enqueueTask(`profileProperty:importProfileProperty`, {
             propertyId: properties[0].id,
             profileId: ppp.profileId,
           })
         )
+      );
+    } else {
+      // Schedule sources don't import properties on-demand, keep old value
+      await ProfileProperty.update(
+        {
+          state: "ready",
+          stateChangedAt: new Date(),
+          confirmedAt: new Date(),
+        },
+        {
+          where: {
+            id: pendingProfileProperties.map((p) => p.id),
+          },
+        }
       );
     }
   }

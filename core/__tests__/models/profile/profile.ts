@@ -1,4 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
+import { api } from "actionhero";
 import {
   plugin,
   Profile,
@@ -819,6 +820,8 @@ describe("models/profile", () => {
     let app: App;
     let source: Source;
 
+    let importResult: Record<string, any> = {};
+
     beforeAll(async () => {
       await Profile.truncate();
 
@@ -844,9 +847,7 @@ describe("models/profile", () => {
             options: [],
             methods: {
               profileProperty: async ({ property }) => {
-                if (property.key === "color") {
-                  return ["pink"];
-                }
+                return importResult[property.key];
               },
             },
           },
@@ -904,6 +905,11 @@ describe("models/profile", () => {
         color: [null],
       });
 
+      importResult = {
+        userId: [1001],
+        email: ["peach@example.com"],
+        color: ["pink"],
+      };
       await profile.import();
 
       properties = await profile.properties();
@@ -912,6 +918,38 @@ describe("models/profile", () => {
         email: ["peach@example.com"],
         color: ["pink"],
       });
+    });
+
+    test("importing properties for source that doesn't support direct property imports will keep the old value", async () => {
+      const profile = await Profile.create();
+      await profile.addOrUpdateProperties({
+        userId: [1003],
+        email: ["bowser@example.com"],
+        color: ["green"],
+      });
+      let properties = await profile.properties();
+      expect(Object.keys(properties).sort()).toEqual([
+        "color",
+        "email",
+        "userId",
+      ]);
+
+      const connection = api.plugins.plugins.filter(
+        (p) => p.name === "test-plugin"
+      )[0].connections[0];
+      const oldMethod = connection.methods.profileProperty;
+      delete connection.methods.profileProperty;
+
+      await profile.import();
+
+      properties = await profile.properties();
+      expect(simpleProfileValues(properties)).toEqual({
+        userId: [1003],
+        email: ["bowser@example.com"],
+        color: ["green"],
+      });
+
+      connection.methods.profileProperty = oldMethod;
     });
 
     test("after importing, all missing properties will have created a null profile property", async () => {
@@ -924,6 +962,10 @@ describe("models/profile", () => {
         "userId",
       ]);
 
+      importResult = {
+        userId: [1002],
+        color: ["pink"],
+      };
       await profile.import();
 
       properties = await profile.properties();

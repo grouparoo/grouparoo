@@ -284,6 +284,21 @@ export namespace SourceOps {
       profileProperties,
     };
 
+    const { pluginConnection } = await source.getPlugin();
+    if (!pluginConnection) {
+      throw new Error(
+        `cannot find connection for source ${source.type} (${source.id})`
+      );
+    }
+
+    const canImport = pluginConnection.methods.profileProperty;
+    if (!canImport) {
+      return {
+        canImport: false,
+        properties: {},
+      };
+    }
+
     await Promise.all(
       rules.map((rule) =>
         source
@@ -301,7 +316,10 @@ export namespace SourceOps {
       }
     }
 
-    return hash;
+    return {
+      canImport: true,
+      properties: hash,
+    };
   }
 
   /**

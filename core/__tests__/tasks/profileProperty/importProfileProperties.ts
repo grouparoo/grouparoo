@@ -113,6 +113,35 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       await profile.destroy();
     });
 
+    test("will set value to null for profile properties that no longer exist", async () => {
+      const spy = jest
+        .spyOn(testPluginConnection.methods, "profileProperties")
+        .mockImplementation(() => undefined);
+
+      const profile: Profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({
+        userId: [99],
+        email: ["someoldemail@example.com"],
+      });
+      const profileProperty = await ProfileProperty.findOne({
+        where: { rawValue: "99" },
+      });
+      await profileProperty.update({ state: "pending" });
+
+      await specHelper.runTask("profileProperty:importProfileProperties", {
+        profileIds: [profile.id],
+        propertyIds: [profileProperty.propertyId],
+      });
+
+      // new value and state
+      await profileProperty.reload();
+      expect(profileProperty.state).toBe("ready");
+      expect(profileProperty.rawValue).toBe(null);
+      await profile.destroy();
+
+      spy.mockRestore();
+    });
+
     test("will not import profile properties that have pending dependencies", async () => {
       const userIdProperty = await Property.findOne({
         where: { key: "userId" },

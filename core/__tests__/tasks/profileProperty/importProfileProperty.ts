@@ -1,6 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { ProfileProperty, Property } from "../../../src";
+import {
+  GrouparooPlugin,
+  Profile,
+  ProfileProperty,
+  Property,
+} from "../../../src";
 
 describe("tasks/profileProperty:importProfileProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -61,6 +66,42 @@ describe("tasks/profileProperty:importProfileProperty", () => {
       await profileProperty.reload();
       expect(profileProperty.state).toBe("ready");
       expect(profileProperty.rawValue).toBe(`${profile.id}@example.com`);
+    });
+
+    test("will set value to null if the profile property no longer exists", async () => {
+      const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
+        (a) => a.name === "@grouparoo/test-plugin"
+      );
+
+      let testPluginConnection = testPlugin.connections.find(
+        (c) => c.name === "test-plugin-import"
+      );
+
+      const spy = jest
+        .spyOn(testPluginConnection.methods, "profileProperty")
+        .mockImplementation(() => undefined);
+
+      const profile: Profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({
+        userId: [99],
+        email: ["someoldemail@example.com"],
+      });
+      const profileProperty = await ProfileProperty.findOne({
+        where: { rawValue: "someoldemail@example.com", profileId: profile.id },
+      });
+      await profileProperty.update({ state: "pending" });
+
+      await specHelper.runTask("profileProperty:importProfileProperty", {
+        profileId: profile.id,
+        propertyId: profileProperty.propertyId,
+      });
+
+      // new value and state
+      await profileProperty.reload();
+      expect(profileProperty.state).toBe("ready");
+      expect(profileProperty.rawValue).toBe(null);
+
+      spy.mockRestore();
     });
 
     test("will not import profile properties that have pending dependencies", async () => {
