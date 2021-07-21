@@ -1,7 +1,5 @@
-import { api } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { Profile } from "../../models/Profile";
-import { plugin } from "../../modules/plugin";
+import { ProfileOps } from "../../modules/ops/profile";
 
 export class ProfileSweep extends CLSTask {
   constructor() {
@@ -15,28 +13,7 @@ export class ProfileSweep extends CLSTask {
   }
 
   async runWithinTransaction() {
-    const limit = parseInt(
-      (await plugin.readSetting("core", "runs-profile-batch-size")).value
-    );
-
-    // Get profiles that don't have directlyMapped properties and whose exports have settled
-    const profiles: Profile[] = await api.sequelize.query(
-      `
-      SELECT "id" FROM "profiles" WHERE "state"='ready' 
-        AND 0 = (
-          SELECT count("exports"."id") FROM "exports" 
-            WHERE "exports"."profileId"="profiles"."id" 
-            AND "exports"."state" IN ('pending', 'processing')
-        ) AND "id" NOT IN (
-          SELECT DISTINCT("profileId") FROM "profileProperties" 
-          JOIN properties ON "properties"."id"="profileProperties"."propertyId" 
-          WHERE "properties"."directlyMapped"=true AND "rawValue" IS NOT NULL
-        ) LIMIT ${limit};
-      `,
-      {
-        model: Profile,
-      }
-    );
+    const profiles = await ProfileOps.getProfilesToSweep();
 
     // use "destroy" to clean up related models
     for (const profile of profiles) {

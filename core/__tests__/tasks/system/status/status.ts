@@ -98,7 +98,7 @@ describe("tasks/status", () => {
       await run.destroy();
     });
 
-    test("will sweep profiles at the end of the run", async () => {
+    test("will not complete with profiles to delete", async () => {
       const profile: Profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({ userId: [null] });
       await ProfileProperty.update(
@@ -109,11 +109,14 @@ describe("tasks/status", () => {
       await Run.truncate();
       await Import.truncate();
 
+      await Status.setAll();
+
       process.env.GROUPAROO_RUN_MODE = "cli:run";
       const instance = new StatusTask();
-      await instance.runWithinTransaction({ toStop: false }, {});
+      const samples = await instance.getSamples();
+      expect(await instance.checkForComplete(samples)).toBe(false);
 
-      await expect(profile.reload()).rejects.toThrow(/does not exist anymore/);
+      await profile.destroy();
     });
 
     // test("running the task will create a status sample", async () => {

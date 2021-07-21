@@ -38,9 +38,6 @@ export class StatusTask extends CLSTask {
       const complete = await this.checkForComplete(samples);
 
       if (runMode === "cli:run" && complete) {
-        const sweepProfiles: Task = api.tasks.tasks["profiles:sweep"];
-        await sweepProfiles.run({}, {});
-
         await this.logFinalSummary();
         await this.stopServer(toStop);
       }
