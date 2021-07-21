@@ -708,6 +708,65 @@ export namespace ProfileOps {
   }
 
   /**
+   * Import profiles whose directlyMapped property has not been confirmed after a certain date.
+   */
+  export async function confirmExistence(
+    limit: number,
+    fromDate: Date,
+    sourceId?: string
+  ) {
+    const properties = await Property.findAllWithCache();
+    const directlyMapped = properties.filter(
+      (p) => p.directlyMapped && (!sourceId || sourceId === p.sourceId)
+    );
+
+    const profiles = await Profile.findAll({
+      limit,
+      where: { state: "ready" },
+      include: [
+        GroupMember,
+        {
+          model: ProfileProperty,
+          required: true,
+          where: {
+            state: "ready",
+            confirmedAt: {
+              [Op.lt]: fromDate,
+            },
+            rawValue: {
+              [Op.ne]: null,
+            },
+            propertyId: directlyMapped.map((p) => p.id),
+          },
+        },
+      ],
+    });
+
+    const now = new Date();
+
+    const bulkImports = [];
+    for (const profile of profiles) {
+      delete profile.profileProperties; // get all profile properties
+      const oldProfileProperties = await profile.simplifiedProperties();
+      const oldGroupIds = profile.groupMembers.map((gm) => gm.groupId);
+
+      bulkImports.push({
+        profileId: profile.id,
+        profileAssociatedAt: now,
+        oldProfileProperties,
+        oldGroupIds,
+        creatorType: "task",
+        creatorId: this.name,
+      });
+    }
+
+    await Import.bulkCreate(bulkImports);
+    await markPendingByIds(profiles.map((p) => p.id));
+
+    return profiles.length;
+  }
+
+  /**
    * Merge 2 Profiles, favoring the first Profile
    */
   export async function merge(profile: Profile, otherProfile: Profile) {
