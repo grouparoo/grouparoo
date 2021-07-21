@@ -756,7 +756,7 @@ export namespace ProfileOps {
         oldProfileProperties,
         oldGroupIds,
         creatorType: "task",
-        creatorId: this.name,
+        creatorId: "profiles:confirm",
       });
     }
 
