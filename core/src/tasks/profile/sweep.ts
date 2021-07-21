@@ -7,7 +7,10 @@ export class ProfileSweep extends CLSTask {
     this.name = "profiles:sweep";
     this.description =
       "Remove profiles that no longer have any directly mapped properties";
-    this.frequency = 1000 * 60 * 30; // every half hour
+    this.frequency =
+      process.env.GROUPAROO_RUN_MODE === "cli:run"
+        ? 1000 * 30 // Run every 30 seconds in `grouparoo run`
+        : 1000 * 60 * 30; // Run every half hour
     this.queue = "profiles";
     this.inputs = {};
   }
