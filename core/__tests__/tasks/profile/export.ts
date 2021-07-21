@@ -171,12 +171,18 @@ describe("tasks/profile:export", () => {
           "import:associateProfile"
         );
         expect(foundAssociateTasks.length).toEqual(2);
+        expect(
+          foundAssociateTasks.map((t) => t.args[0].importId).sort()
+        ).toEqual([importA.id, importB.id].sort());
 
-        await Promise.all(
-          foundAssociateTasks.map(async (t) =>
-            specHelper.runTask("import:associateProfile", t.args[0])
-          )
-        );
+        await specHelper.runTask("import:associateProfile", {
+          importId: importA.id,
+          attempts: 0,
+        });
+        await specHelper.runTask("import:associateProfile", {
+          importId: importB.id,
+          attempts: 0,
+        });
 
         profiles = await Profile.findAll();
         expect(profiles.length).toBe(1);

@@ -200,6 +200,17 @@ describe("modules/status", () => {
               timestamp: expect.any(Number),
             },
           ],
+          deleted: [
+            {
+              metric: {
+                aggregation: "count",
+                collection: "deleted",
+                count: 0,
+                topic: "Profile",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
           totals: [
             {
               metric: {
