@@ -21,6 +21,7 @@ import { TeamMember } from "../models/TeamMember";
 import { Notification } from "../models/Notification";
 import { GroupOps } from "../modules/ops/group";
 import { SourceOps } from "../modules/ops/source";
+import { ProfileOps } from "./ops/profile";
 
 export interface StatusMetric {
   // the possible attributes for a metric are:
@@ -361,6 +362,17 @@ export namespace StatusReporters {
         topic: "Source",
         aggregation: "count",
         count: await Source.count({ where: { state: "deleted" } }),
+      };
+    }
+
+    export async function deletedProfiles(): Promise<StatusMetric> {
+      const profilesToSweep = await ProfileOps.getProfilesToSweep();
+
+      return {
+        collection: "deleted",
+        topic: "Profile",
+        aggregation: "count",
+        count: profilesToSweep.length,
       };
     }
   }

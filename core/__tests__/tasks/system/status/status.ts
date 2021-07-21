@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { ProfileProperty, Run } from "../../../../src";
+import { Import, Profile, ProfileProperty, Run } from "../../../../src";
 import { api, task, specHelper } from "actionhero";
 import { StatusTask } from "../../../../src/tasks/system/status/status";
 import { Status } from "../../../../src/modules/status";
@@ -96,6 +96,27 @@ describe("tasks/status", () => {
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(false);
       await run.destroy();
+    });
+
+    test("will not complete with profiles to delete", async () => {
+      const profile: Profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({ userId: [null] });
+      await ProfileProperty.update(
+        { state: "ready" },
+        { where: { profileId: profile.id } }
+      );
+      await profile.update({ state: "ready" });
+      await Run.truncate();
+      await Import.truncate();
+
+      await Status.setAll();
+
+      process.env.GROUPAROO_RUN_MODE = "cli:run";
+      const instance = new StatusTask();
+      const samples = await instance.getSamples();
+      expect(await instance.checkForComplete(samples)).toBe(false);
+
+      await profile.destroy();
     });
 
     // test("running the task will create a status sample", async () => {
