@@ -112,6 +112,11 @@ export class Schedule extends LoggedModel<Schedule> {
   @Column
   recurringFrequency: number;
 
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  confirmProfiles: boolean;
+
   @HasMany(() => Option, {
     foreignKey: "ownerId",
     scope: { ownerType: "schedule" },
@@ -123,6 +128,12 @@ export class Schedule extends LoggedModel<Schedule> {
     scope: { ownerType: "schedule" },
   })
   filters: Filter[];
+
+  @HasMany(() => Run, {
+    foreignKey: "creatorId",
+    scope: { creatorType: "schedule" },
+  })
+  runs: Run[];
 
   @BelongsTo(() => Source)
   source: Source;
@@ -183,6 +194,7 @@ export class Schedule extends LoggedModel<Schedule> {
       sourceId: this.sourceId,
       recurring: this.recurring,
       locked: this.locked,
+      confirmProfiles: this.confirmProfiles,
       options,
       filters,
       recurringFrequency: this.recurringFrequency,
