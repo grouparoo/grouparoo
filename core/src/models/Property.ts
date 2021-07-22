@@ -182,6 +182,11 @@ export class Property extends LoggedModel<Property> {
   @Column
   isArray: boolean;
 
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  keepValueIfNotFound: boolean;
+
   @BelongsTo(() => Source)
   source: Source;
 
@@ -305,6 +310,7 @@ export class Property extends LoggedModel<Property> {
       unique: this.unique,
       identifying: this.identifying,
       directlyMapped: this.directlyMapped,
+      keepValueIfNotFound: this.keepValueIfNotFound,
       locked: this.locked,
       options,
       filters,
