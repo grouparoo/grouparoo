@@ -144,6 +144,14 @@ export class Plugins extends CLSInitializer {
         type: "string",
       },
       {
+        key: "confirm-profiles-days",
+        title: "Confirm Profile Existence Days",
+        defaultValue: 7,
+        description:
+          "How many days should we wait before creating an import for a profile that hasn't been seen in a while to confirm they still exist in the source?",
+        type: "number",
+      },
+      {
         key: "sweeper-delete-old-runs-days",
         title: "Sweeper: Delete Old Runs Days",
         defaultValue: 31,

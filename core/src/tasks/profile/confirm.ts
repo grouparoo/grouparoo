@@ -18,12 +18,10 @@ export class ProfilesConfirm extends CLSTask {
 
   async runWithinTransaction() {
     const limit = parseInt(
-      (
-        await plugin.readSetting(
-          "core",
-          "imports-profile-properties-batch-size"
-        )
-      ).value
+      (await plugin.readSetting("core", "runs-profile-batch-size")).value
+    );
+    const confirmDays = parseInt(
+      (await plugin.readSetting("core", "confirm-profiles-days")).value
     );
 
     let count = 0;
@@ -50,8 +48,7 @@ export class ProfilesConfirm extends CLSTask {
       );
     }
 
-    const days = 1; // TODO make a setting
-    const nextConfirmAt = Moment().subtract(days, "days").toDate();
+    const nextConfirmAt = Moment().subtract(confirmDays, "days").toDate();
     count += await ProfileOps.confirmExistence(limit - count, nextConfirmAt);
 
     // re-enqueue if there is more to do
