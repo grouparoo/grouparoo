@@ -25,13 +25,11 @@ services:
     # user: node
 
   redis:
-    image: redis:latest
+    image: redis
     restart: unless-stopped
-    volumes:
-      - redis-data:/data/db
 
   db:
-    image: postgres:latest
+    image: postgres
     restart: unless-stopped
     volumes:
       - db-data:/data/db
@@ -41,5 +39,4 @@ services:
       POSTGRES_DB: "grouparoo_development"
 
 volumes:
-  redis-data:
   db-data:
