@@ -185,7 +185,7 @@ describe("models/profile", () => {
       expect(responseB.isNew).toBe(false);
 
       const profile = responseB.profile;
-      const properties = await profile.properties();
+      const properties = await profile.getProperties();
       expect(properties.email.values).toEqual(["koopa@example.com"]);
       expect(properties.userId.values).toEqual([99]);
       expect(properties.house.values).toEqual([null]);
@@ -193,7 +193,7 @@ describe("models/profile", () => {
     });
 
     test("properties will include the value, type, unique, and timestamps", async () => {
-      const properties = await toad.properties();
+      const properties = await toad.getProperties();
       expect(properties.email.type).toBe("email");
       expect(properties.email.unique).toBe(true);
       expect(properties.email.values[0]).toBe("toad@example.com");
@@ -273,7 +273,7 @@ describe("models/profile", () => {
 
       test("creating a profile creates null profile properties", async () => {
         const newProfile = await Profile.create();
-        const properties = await newProfile.properties();
+        const properties = await newProfile.getProperties();
         expect(Object.keys(properties).length).toBe(5);
         for (const k in properties) {
           expect(properties[k].values).toEqual([null]);
@@ -293,7 +293,7 @@ describe("models/profile", () => {
         await newProfile.reload();
 
         expect(newProfile.state).toBe("pending");
-        const properties = await newProfile.properties();
+        const properties = await newProfile.getProperties();
         for (const k in properties) {
           if (k === "userId") {
             expect(properties[k].state).toEqual("ready");
@@ -306,7 +306,7 @@ describe("models/profile", () => {
 
       test("it can add a new profile property when the schema is prepared", async () => {
         await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
-        const properties = await profile.properties();
+        const properties = await profile.getProperties();
         expect(simpleProfileValues(properties)).toEqual({
           email: ["luigi@example.com"],
           firstName: [null],
@@ -323,7 +323,7 @@ describe("models/profile", () => {
         );
 
         await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
-        const properties = await profile.properties();
+        const properties = await profile.getProperties();
         expect(properties.email.state).toBe("ready");
         expect(properties.firstName.state).toBe("pending");
       });
@@ -356,7 +356,7 @@ describe("models/profile", () => {
           await profile.addOrUpdateProperties({
             email: ["new-email@example.com"],
           });
-          const properties = await profile.properties();
+          const properties = await profile.getProperties();
           expect(properties.email.valueChangedAt.getTime()).toBeGreaterThan(
             start
           );
@@ -370,7 +370,7 @@ describe("models/profile", () => {
           await profile.addOrUpdateProperties({
             email: ["new-email@example.com"],
           });
-          const properties = await profile.properties();
+          const properties = await profile.getProperties();
           expect(properties.email.valueChangedAt.getTime()).toBeLessThan(start);
           expect(properties.email.confirmedAt.getTime()).toBeGreaterThan(start);
         });
@@ -386,7 +386,7 @@ describe("models/profile", () => {
           await profile.addOrUpdateProperties({
             email: ["new-email@example.com"],
           });
-          const properties = await profile.properties();
+          const properties = await profile.getProperties();
           expect(properties.email.stateChangedAt.getTime()).toBeGreaterThan(
             start
           );
@@ -418,7 +418,7 @@ describe("models/profile", () => {
           await profile.addOrUpdateProperties({
             purchases: ["hat"],
           });
-          let properties = await profile.properties();
+          let properties = await profile.getProperties();
           expect(properties.purchases.valueChangedAt.getTime()).toBeGreaterThan(
             start
           );
@@ -430,7 +430,7 @@ describe("models/profile", () => {
           await profile.addOrUpdateProperties({
             purchases: ["hat", "mushroom"],
           });
-          properties = await profile.properties();
+          properties = await profile.getProperties();
           expect(properties.purchases.valueChangedAt.getTime()).toBeGreaterThan(
             firstChangeAt
           );
@@ -443,7 +443,7 @@ describe("models/profile", () => {
           await profile.addOrUpdateProperties({
             purchases: ["hat", "mushroom"],
           });
-          const properties = await profile.properties();
+          const properties = await profile.getProperties();
           expect(properties.purchases.valueChangedAt.getTime()).toBeLessThan(
             start
           );
@@ -463,7 +463,7 @@ describe("models/profile", () => {
           await profile.addOrUpdateProperties({
             purchases: ["hat", "mushroom"],
           });
-          const properties = await profile.properties();
+          const properties = await profile.getProperties();
           expect(properties.purchases.stateChangedAt.getTime()).toBeGreaterThan(
             start
           );
@@ -480,7 +480,7 @@ describe("models/profile", () => {
             userId: [123],
           });
 
-          const properties = await profile.properties();
+          const properties = await profile.getProperties();
           expect(simpleProfileValues(properties)).toEqual({
             email: ["luigi@example.com"],
             firstName: ["Luigi"],
@@ -501,7 +501,7 @@ describe("models/profile", () => {
           await profile.addOrUpdateProperties({
             email: ["luigi-again@example.com"],
           });
-          const properties = await profile.properties();
+          const properties = await profile.getProperties();
           expect(simpleProfileValues(properties)).toEqual({
             email: ["luigi-again@example.com"],
             firstName: ["Luigi"],
@@ -513,14 +513,14 @@ describe("models/profile", () => {
 
         test("it will ignore the property _meta, as it is reserved", async () => {
           await profile.addOrUpdateProperties({ _meta: ["bla"] });
-          const properties = await profile.properties();
+          const properties = await profile.getProperties();
           expect(simpleProfileValues(properties)._meta).toBeFalsy();
           expect(simpleProfileValues(properties).firstName).toEqual(["Luigi"]);
         });
 
         test("it can remove an existing property", async () => {
           await profile.removeProperty("email");
-          const properties = await profile.properties();
+          const properties = await profile.getProperties();
           expect(properties["email"]).toBeUndefined();
           expect(simpleProfileValues(properties)).toEqual({
             firstName: ["Luigi"],
@@ -531,16 +531,16 @@ describe("models/profile", () => {
         });
 
         test("no problems arise when re-adding a deleted property", async () => {
-          let properties = await profile.properties();
+          let properties = await profile.getProperties();
           expect(properties.email).toBeUndefined();
           await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
-          properties = await profile.properties();
+          properties = await profile.getProperties();
           expect(properties.email.values).toEqual(["luigi@example.com"]);
         });
 
         test("it will not raise when trying to remove a non-existent property", async () => {
           await profile.removeProperty("funky");
-          const properties = await profile.properties();
+          const properties = await profile.getProperties();
           expect(simpleProfileValues(properties)).toEqual({
             email: ["luigi@example.com"],
             firstName: ["Luigi"],
@@ -552,7 +552,7 @@ describe("models/profile", () => {
 
         test("profile properties can be addded by key", async () => {
           await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
-          const properties = await profile.properties();
+          const properties = await profile.getProperties();
           expect(simpleProfileValues(properties).email).toEqual([
             "luigi@example.com",
           ]);
@@ -566,7 +566,7 @@ describe("models/profile", () => {
             [emailProperty.id]: ["luigi@example.com"],
           });
 
-          const properties = await profile.properties();
+          const properties = await profile.getProperties();
           expect(simpleProfileValues(properties).email).toEqual([
             "luigi@example.com",
           ]);
@@ -587,7 +587,7 @@ describe("models/profile", () => {
             { hooks: false } // we need to skip validations
           );
 
-          const properties = await profile.properties(); // does not throw
+          const properties = await profile.getProperties(); // does not throw
           expect(Object.keys(properties).length).toBe(5);
 
           await expect(profileProperty.reload()).rejects.toThrow(
@@ -635,7 +635,7 @@ describe("models/profile", () => {
             userId: [123],
             purchases: ["star", "mushroom", "mushroom", "go kart"],
           });
-          const properties = await profile.properties();
+          const properties = await profile.getProperties();
           expect(simpleProfileValues(properties)).toEqual({
             email: ["luigi@example.com"],
             firstName: ["Luigi"],
@@ -651,14 +651,14 @@ describe("models/profile", () => {
             email: ["luigi@example.com"],
             purchases: ["star", "mushroom", "mushroom", "go kart"],
           });
-          const firstProperties = await profile.properties();
+          const firstProperties = await profile.getProperties();
           const firstUpdate = firstProperties.purchases.updatedAt;
 
           await profile.addOrUpdateProperties({
             email: ["luigi@example.com"],
             purchases: ["star", "mushroom", "mushroom", "go kart"],
           });
-          const secondProperties = await profile.properties();
+          const secondProperties = await profile.getProperties();
           expect(
             secondProperties.purchases.updatedAt.getTime()
           ).toBeGreaterThanOrEqual(firstUpdate.getTime());
@@ -669,7 +669,7 @@ describe("models/profile", () => {
             email: ["luigi@example.com"],
             purchases: ["star", "mushroom", "mushroom", "go kart"],
           });
-          const firstProperties = await profile.properties();
+          const firstProperties = await profile.getProperties();
           const firstUpdate = firstProperties.purchases.updatedAt;
 
           await helper.sleep(1000);
@@ -678,7 +678,7 @@ describe("models/profile", () => {
             email: ["luigi@example.com"],
             purchases: ["go kart"],
           });
-          const secondProperties = await profile.properties();
+          const secondProperties = await profile.getProperties();
           expect(
             secondProperties.purchases.updatedAt.getTime()
           ).toBeGreaterThan(firstUpdate.getTime());
@@ -898,7 +898,7 @@ describe("models/profile", () => {
       const profile = await Profile.create();
       await profile.addOrUpdateProperties({ userId: [1001] });
       await profile.addOrUpdateProperties({ email: ["peach@example.com"] });
-      let properties = await profile.properties();
+      let properties = await profile.getProperties();
       expect(simpleProfileValues(properties)).toEqual({
         userId: [1001],
         email: ["peach@example.com"],
@@ -912,7 +912,7 @@ describe("models/profile", () => {
       };
       await profile.import();
 
-      properties = await profile.properties();
+      properties = await profile.getProperties();
       expect(simpleProfileValues(properties)).toEqual({
         userId: [1001],
         email: ["peach@example.com"],
@@ -927,7 +927,7 @@ describe("models/profile", () => {
         email: ["bowser@example.com"],
         color: ["green"],
       });
-      let properties = await profile.properties();
+      let properties = await profile.getProperties();
       expect(Object.keys(properties).sort()).toEqual([
         "color",
         "email",
@@ -942,7 +942,7 @@ describe("models/profile", () => {
 
       await profile.import();
 
-      properties = await profile.properties();
+      properties = await profile.getProperties();
       expect(simpleProfileValues(properties)).toEqual({
         userId: [1003],
         email: ["bowser@example.com"],
@@ -955,7 +955,7 @@ describe("models/profile", () => {
     test("after importing, all missing properties will have created a null profile property", async () => {
       const profile = await Profile.create();
       await profile.addOrUpdateProperties({ userId: [1002] });
-      let properties = await profile.properties();
+      let properties = await profile.getProperties();
       expect(Object.keys(properties).sort()).toEqual([
         "color",
         "email",
@@ -968,7 +968,7 @@ describe("models/profile", () => {
       };
       await profile.import();
 
-      properties = await profile.properties();
+      properties = await profile.getProperties();
       expect(simpleProfileValues(properties)).toEqual({
         userId: [1002],
         email: [null],
@@ -1003,8 +1003,8 @@ describe("models/profile", () => {
     });
 
     test("the profiles both have properties", async () => {
-      const propertiesA = await profileA.properties();
-      const propertiesB = await profileB.properties();
+      const propertiesA = await profileA.getProperties();
+      const propertiesB = await profileB.getProperties();
       expect(Object.keys(propertiesA).length).toBe(9);
       expect(Object.keys(propertiesB).length).toBe(9);
     });
@@ -1020,8 +1020,8 @@ describe("models/profile", () => {
         email: ["new-email@example.com"],
       });
 
-      const propertiesA = await profileA.properties();
-      const propertiesB = await profileB.properties();
+      const propertiesA = await profileA.getProperties();
+      const propertiesB = await profileB.getProperties();
 
       expect(propertiesA.email.values).toEqual(["new-email@example.com"]);
       expect(propertiesA.userId.values).toBeTruthy();
@@ -1046,14 +1046,14 @@ describe("models/profile", () => {
     test("merging profiles moved the properties", async () => {
       await ProfileOps.merge(profileA, profileB);
 
-      const propertiesA = await profileA.properties();
-      const propertiesB = await profileB.properties();
+      const propertiesA = await profileA.getProperties();
+      const propertiesB = await profileB.getProperties();
       expect(Object.keys(propertiesA).length).toBe(9);
       expect(Object.keys(propertiesB).length).toBe(0);
     });
 
     test("the merged profile kept the newer non-null properties", async () => {
-      const properties = await profileA.properties();
+      const properties = await profileA.getProperties();
       expect(properties.email.values).toEqual(["new-email@example.com"]);
       expect(properties.userId.values).toEqual([100]);
       expect(properties.firstName.values).toEqual(["fname"]);
@@ -1062,14 +1062,14 @@ describe("models/profile", () => {
 
     test("the merged profiles should have only kept the array properties of the newest profile property", async () => {
       // we can't be sure of the array-order for the combined profiles.  A re-import should be deterministic too
-      const propertiesA = await profileA.properties();
+      const propertiesA = await profileA.getProperties();
       expect(propertiesA.purchases.values).toEqual(["shoe"]);
     });
 
     test("the merged profile is pending", async () => {
       await profileA.reload();
       expect(profileA.state).toBe("pending");
-      const properties = await profileA.properties();
+      const properties = await profileA.getProperties();
       for (const k in properties) {
         k === "userId"
           ? expect(properties[k].state).toBe("ready")

@@ -92,7 +92,7 @@ describe("modules/groupExport", () => {
       let lastLoginAt: Date;
 
       // mario
-      let properties = await mario.properties();
+      let properties = await mario.getProperties();
       expect(rows[0].id).toBe(mario.id);
       expect(parseInt(rows[0].createdAt)).toBeGreaterThan(0);
       expect(rows[0]["email"]).toBe(properties.email.values[0]);
@@ -103,7 +103,7 @@ describe("modules/groupExport", () => {
       );
 
       // luigi
-      properties = await luigi.properties();
+      properties = await luigi.getProperties();
       expect(rows[1].id).toBe(luigi.id);
       expect(parseInt(rows[1].createdAt)).toBeGreaterThan(0);
       expect(rows[1]["email"]).toBe(properties.email.values[0]);
@@ -114,7 +114,7 @@ describe("modules/groupExport", () => {
       );
 
       // peach
-      properties = await peach.properties();
+      properties = await peach.getProperties();
       expect(rows[2].id).toBe(peach.id);
       expect(parseInt(rows[2].createdAt)).toBeGreaterThan(0);
       expect(rows[2]["email"]).toBe(properties.email.values[0]);
@@ -125,7 +125,7 @@ describe("modules/groupExport", () => {
       );
 
       // toad
-      properties = await toad.properties();
+      properties = await toad.getProperties();
       expect(rows[3].id).toBe(toad.id);
       expect(parseInt(rows[3].createdAt)).toBeGreaterThan(0);
       expect(rows[3]["email"]).toBe(properties.email.values[0]);
@@ -139,7 +139,7 @@ describe("modules/groupExport", () => {
     describe("array properties", () => {
       test("array properties are flattened into a comma-delimited list in a single CSV column", async () => {
         await mario.addOrUpdateProperties({ purchases: ["hat", "shell"] });
-        const properties = await mario.properties();
+        const properties = await mario.getProperties();
         expect(properties.purchases.values).toEqual(["hat", "shell"]);
 
         const { filename } = await groupExportToCSV(group, 1);

@@ -49,14 +49,14 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
       aggregationMethod === AggregationMethod.Exact
     ) {
       const tableMappingCol: string = Object.values(sourceMapping)[0];
-      const profileProperties = await profile.properties();
+      const profileProperties = await profile.getProperties();
       // if no property or no values, bail
       if (!profileProperties[tableMappingCol]?.values.length) {
         return undefined;
       }
     }
 
-    const profileData = await profile.properties();
+    const profileData = await profile.getProperties();
     const isArray = !!property.isArray;
 
     if (!profileData.hasOwnProperty(profilePropertyMatch)) {

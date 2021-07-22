@@ -35,12 +35,12 @@ describe("tasks/profileProperties:sweep", () => {
     );
 
     // other profiles' properties are OK
-    const marioProperties = await mario.properties();
+    const marioProperties = await mario.getProperties();
     expect(marioProperties["email"].values).toEqual(["mario@example.com"]);
   });
 
   test("a profile property with a missing property", async () => {
-    const luigi = await helper.factories.profile();
+    const luigi: Profile = await helper.factories.profile();
     await luigi.addOrUpdateProperties({
       firstName: ["Luigi"],
       lastName: ["Mario"],
@@ -66,7 +66,7 @@ describe("tasks/profileProperties:sweep", () => {
     );
 
     // Luigi's other properties are OK
-    const luigiProperties = await luigi.properties();
+    const luigiProperties = await luigi.getProperties();
     expect(luigiProperties["email"].values).toEqual(["luigi@example.com"]);
   });
 });

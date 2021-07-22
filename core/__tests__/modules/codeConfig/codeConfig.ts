@@ -1071,7 +1071,7 @@ describe("modules/codeConfig", () => {
         expect(john.id).toBe("profile_john");
         expect(john.state).toBe("pending");
 
-        const johnProps = await john.properties();
+        const johnProps = await john.getProperties();
         expect(johnProps.userId.state).toBe("ready");
         expect(johnProps.userId.values).toEqual([20]);
         expect(johnProps.email.state).toBe("pending");
@@ -1081,7 +1081,7 @@ describe("modules/codeConfig", () => {
         expect(matthew.id).toBe("profile_matthew");
         expect(matthew.state).toBe("pending");
 
-        const matthewProps = await matthew.properties();
+        const matthewProps = await matthew.getProperties();
         expect(matthewProps.userId.state).toBe("ready");
         expect(matthewProps.userId.values).toEqual([100]);
         expect(matthewProps.email.state).toBe("pending");

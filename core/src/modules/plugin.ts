@@ -330,7 +330,7 @@ export namespace plugin {
       updatedAt: expandDates(profile.updatedAt),
     };
 
-    const properties = await profile.properties();
+    const properties = await profile.getProperties();
 
     for (const key in properties) {
       data[key] =

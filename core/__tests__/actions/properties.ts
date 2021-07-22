@@ -349,7 +349,7 @@ describe("actions/properties", () => {
       const _profile = await helper.factories.profile();
       await _profile.addOrUpdateProperties({ userId: [1001] });
 
-      const originalProperties = _profile.properties();
+      const originalProperties = _profile.getProperties();
       expect(originalProperties["email"]).toBeFalsy();
 
       connection.params = {

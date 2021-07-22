@@ -45,7 +45,7 @@ describe("profile sync", () => {
   });
 
   test("syncing a profile will import properties", async () => {
-    let properties = await profile.properties();
+    let properties = await profile.getProperties();
     expect(simpleProfileValues(properties)).toEqual(
       expect.objectContaining({
         firstName: [null],
@@ -57,7 +57,7 @@ describe("profile sync", () => {
 
     await profile.sync();
 
-    properties = await profile.properties();
+    properties = await profile.getProperties();
     expect(simpleProfileValues(properties)).toEqual(
       expect.objectContaining({
         firstName: ["Mario"],

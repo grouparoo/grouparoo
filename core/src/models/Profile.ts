@@ -67,7 +67,7 @@ export class Profile extends LoggedModel<Profile> {
   exports: Export[];
 
   async apiData() {
-    const properties = await this.properties();
+    const properties = await this.getProperties();
 
     return {
       id: this.id,
@@ -78,12 +78,12 @@ export class Profile extends LoggedModel<Profile> {
     };
   }
 
-  async properties() {
-    return ProfileOps.properties(this);
+  async getProperties() {
+    return ProfileOps.getProperties(this);
   }
 
   async simplifiedProperties() {
-    const properties = await this.properties();
+    const properties = await this.getProperties();
     const simpleProperties: {
       [key: string]: Array<string | boolean | number | Date>;
     } = {};
@@ -124,7 +124,7 @@ export class Profile extends LoggedModel<Profile> {
 
   async snapshot(saveExports = false) {
     const exports = await this.sync(undefined, saveExports);
-    const properties = await this.properties();
+    const properties = await this.getProperties();
     const groups = await this.$get("groups", { include: [GroupRule] });
     const groupApiData = (
       await Promise.all(groups.map((g) => g.apiData()))
@@ -168,7 +168,7 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async validateProfilePropertiesAreReady() {
-    const properties = await this.properties();
+    const properties = await this.getProperties();
     for (const k in properties) {
       if (properties[k].state !== "ready") {
         throw new Error(
@@ -179,7 +179,7 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async getConfigObject() {
-    const properties = await this.properties();
+    const properties = await this.getProperties();
     const directlyMappedProps: {
       [key: string]: Array<string | boolean | number | Date>;
     } = {};
