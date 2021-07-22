@@ -3,7 +3,9 @@ ARG VARIANT=14
 FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 
 RUN apt-get update \
-    && apt-get install -y redis-tools postgresql postgresql-contrib \
+    && apt-get install -y htop \
+    && apt-get install -y redis-tools \
+    # && apt-get install -y postgresql postgresql-contrib \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
