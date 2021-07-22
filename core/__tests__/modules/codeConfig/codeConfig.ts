@@ -157,6 +157,12 @@ describe("modules/codeConfig", () => {
           "config:code",
           "config:code",
         ]);
+        expect(rules.map((r) => r.keepValueIfNotFound).sort()).toEqual([
+          false,
+          false,
+          false,
+          true,
+        ]);
 
         const options = await Promise.all(rules.map((r) => r.getOptions()));
         expect(options.map((o) => o.column).sort()).toEqual([

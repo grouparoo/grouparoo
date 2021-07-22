@@ -34,6 +34,7 @@ export interface ConfigurationObject {
   identifying?: boolean;
   unique?: boolean;
   isArray?: boolean;
+  keepValueIfNotFound?: boolean;
   rules?: GroupRuleWithKey[];
   recurring?: boolean;
   recurringFrequency?: number;
