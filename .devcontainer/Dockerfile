@@ -2,9 +2,10 @@
 ARG VARIANT=14
 FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 
-RUN apt-get update && \
+RUN apt-get update \
     && apt-get install -y redis-tools postgresql postgresql-contrib \
-    && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
 
 # Update args in docker-compose.yaml to set the UID/GID of the "node" user.
 ARG USER_UID=1000
