@@ -37,6 +37,7 @@ services:
       - db-data:/data/db
     environment:
       POSTGRES_PASSWORD: ""
+      POSTGRES_HOST_AUTH_METHOD: "trust"
       POSTGRES_DB: "grouparoo_development"
 
 volumes:
