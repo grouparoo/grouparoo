@@ -325,7 +325,8 @@ export class Property extends LoggedModel<Property> {
   }
 
   async getConfigObject() {
-    const { key, type, unique, identifying, isArray } = this;
+    const { key, type, unique, identifying, isArray, keepValueIfNotFound } =
+      this;
 
     this.source = await this.$get("source");
     const sourceId = this.source?.getConfigId();
@@ -343,6 +344,7 @@ export class Property extends LoggedModel<Property> {
       unique,
       identifying,
       isArray,
+      keepValueIfNotFound,
       options,
       filters,
     };
