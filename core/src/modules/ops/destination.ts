@@ -97,7 +97,7 @@ export namespace DestinationOps {
       [groupId: string]: string;
     }
   ) {
-    const profileProperties = await profile.properties();
+    const profileProperties = await profile.getProperties();
     const mappingKeys = Object.keys(mapping);
     const mappedProfileProperties = {};
     const destinationMappingOptions =
@@ -309,7 +309,7 @@ export namespace DestinationOps {
       toDelete = true;
     }
 
-    let newProfileProperties = await profile.properties();
+    let newProfileProperties = await profile.getProperties();
 
     // New and old properties and groups are in the context of this destination and what it has currently been sent
     // If there is not a mostRecentExport, both old groups and old profile properties are an empty collection

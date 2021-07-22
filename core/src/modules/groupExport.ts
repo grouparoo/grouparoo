@@ -33,7 +33,7 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
   }
 
   async function buildCsvRowFromProperty(profile: Profile) {
-    const properties = await profile.properties();
+    const properties = await profile.getProperties();
     const simpleProperties = {};
     for (const key in properties) {
       simpleProperties[key] =

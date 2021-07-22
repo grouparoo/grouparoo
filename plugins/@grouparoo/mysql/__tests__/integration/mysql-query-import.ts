@@ -134,7 +134,7 @@ describe("integration/runs/mysql", () => {
         await profile.reload();
 
         expect(profile.id).toBeTruthy();
-        const properties = await profile.properties();
+        const properties = await profile.getProperties();
         expect(properties.email.values[0]).toMatch(/.*@example.com/);
         i++;
       }
