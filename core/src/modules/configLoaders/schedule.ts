@@ -38,6 +38,7 @@ export async function loadSchedule(
     name: configObject.name,
     recurring: configObject.recurring,
     recurringFrequency: configObject.recurringFrequency,
+    confirmProfiles: configObject.confirmProfiles,
   });
 
   await schedule.setOptions(extractNonNullParts(configObject, "options"));

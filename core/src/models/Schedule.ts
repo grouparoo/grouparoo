@@ -226,7 +226,7 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async getConfigObject() {
-    const { name, recurring, recurringFrequency } = this;
+    const { name, recurring, recurringFrequency, confirmProfiles } = this;
 
     this.source = await this.$get("source");
     const sourceId = this.source?.getConfigId();
@@ -243,6 +243,7 @@ export class Schedule extends LoggedModel<Schedule> {
       sourceId,
       recurring,
       recurringFrequency,
+      confirmProfiles,
       options,
       filters,
     };
