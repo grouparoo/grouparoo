@@ -48,8 +48,10 @@ export class ProfilesConfirm extends CLSTask {
       );
     }
 
-    const nextConfirmAt = Moment().subtract(confirmDays, "days").toDate();
-    count += await ProfileOps.confirmExistence(limit - count, nextConfirmAt);
+    if (confirmDays > 0) {
+      const nextConfirmAt = Moment().subtract(confirmDays, "days").toDate();
+      count += await ProfileOps.confirmExistence(limit - count, nextConfirmAt);
+    }
 
     // re-enqueue if there is more to do
     if (count > 0) await CLS.enqueueTask(this.name, {});
