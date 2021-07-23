@@ -160,6 +160,9 @@ export namespace FilterHelper {
     newFilters: FiltersWithKey[]
   ) {
     if (oldFilters.length !== newFilters.length) return false;
+    if (oldFilters.length === newFilters.length && newFilters.length === 0) {
+      return true;
+    }
 
     function nullish(value: string | number | boolean) {
       if (value === null) return null;

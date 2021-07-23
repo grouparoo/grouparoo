@@ -10,6 +10,7 @@ import { Op } from "sequelize";
 import { Source } from "../../models/Source";
 import { AggregationMethod, PluginConnection } from "../../classes/plugin";
 import { Filter } from "../../models/Filter";
+import { FilterHelper } from "../filterHelper";
 
 export namespace ProfilePropertyOps {
   const defaultProfilePropertyProcessingDelay = 1000 * 60 * 5;
@@ -105,15 +106,26 @@ export namespace ProfilePropertyOps {
       [aggregationMethod: string]: Property[];
     } = {};
 
+    let equalFilters = true;
+    properties.map((property, idx) => {
+      if (properties[idx + 1]) {
+        const filters = property.filters;
+        const nextFilters = properties[idx + 1].filters;
+        if (!FilterHelper.filtersAreEqual(filters, nextFilters)) {
+          equalFilters = false;
+        }
+      }
+    });
+
     for (const property of properties) {
       const options = await property.getOptions();
-      const filters = await property.getFilters();
+
       const aggregationMethod = options.aggregationMethod as AggregationMethod;
 
       if (
         pluginConnection.groupAggregations?.includes(aggregationMethod) &&
         property.isArray === false &&
-        filters.length === 0 // TODO: Check if they match
+        equalFilters
       ) {
         if (aggregationMethod && !propertyGroups[aggregationMethod]) {
           propertyGroups[aggregationMethod] = [];
