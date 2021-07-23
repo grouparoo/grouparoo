@@ -34,8 +34,9 @@ export default function SetupStepsNavProgressBar({
 
   async function getSetupSteps(newUrl?: string) {
     if (router.pathname.match(/^\/session\//)) return;
-    if (newUrl && newUrl.match(/^\/session\//)) return;
-    if (newUrl && newUrl === "/") return;
+    if (newUrl && typeof newUrl === "string" && newUrl.match(/^\/session\//))
+      return;
+    if (newUrl && typeof newUrl === "string" && newUrl === "/") return;
 
     const response: Actions.SetupStepsList = await execApi(
       "get",
