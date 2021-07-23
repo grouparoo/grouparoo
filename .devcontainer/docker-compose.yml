@@ -26,11 +26,13 @@ services:
     # user: node
 
   redis:
-    image: redis
+    image: bitnami/redis
     container_name: redis
     restart: unless-stopped
     # ports:
     #   - "6379:6379"
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
 
   db:
     image: postgres
