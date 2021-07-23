@@ -303,6 +303,29 @@ export namespace SourceOps {
   }
 
   /**
+   * Sorts an array of Sources by their dependencies.
+   * Be sure to eager-load Mappings and Properties
+   */
+  export function sortByDependencies(sources: Source[]) {
+    sources.sort((a, b) => {
+      const AProvides = a.properties.map((p) => p.id);
+      const ADependsOn = a.mappings.map((m) => m.propertyId);
+      const BProvides = b.properties.map((p) => p.id);
+      const BDependsOn = b.mappings.map((m) => m.propertyId);
+
+      if (ADependsOn.find((v) => BProvides.includes(v))) {
+        return 1;
+      } else if (BDependsOn.find((v) => AProvides.includes(v))) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    return sources;
+  }
+
+  /**
    * This method is used to bootstrap a new source which requires a Property for a mapping, when the rule doesn't yet exist.
    */
   export async function bootstrapUniqueProperty(

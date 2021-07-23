@@ -491,7 +491,7 @@ describe("models/destination", () => {
           email: ["mario@example.com"],
           userId: [1],
           firstName: ["mario"],
-          lastName: ["luigi"],
+          lastName: ["mario"],
         });
 
         group = await helper.factories.group();
