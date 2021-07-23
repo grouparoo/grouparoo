@@ -13,7 +13,6 @@ import { api } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
 import { TeamMember } from "./TeamMember";
 import { Permission, PermissionTopics } from "./Permission";
-import { AsyncReturnType } from "type-fest";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 
@@ -51,8 +50,9 @@ export class Team extends LoggedModel<Team> {
     const permissions = await this.$get("permissions", {
       order: [["topic", "asc"]],
     });
-    const permissionsApiData: AsyncReturnType<Permission["apiData"]>[] =
-      await Promise.all(permissions.map((prm) => prm.apiData()));
+    const permissionsApiData = await Promise.all(
+      permissions.map((prm) => prm.apiData())
+    );
 
     return {
       id: this.id,

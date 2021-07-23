@@ -184,9 +184,8 @@ describe("tasks/group:destroy", () => {
       await group.setRules([
         { key: "lastName", match: "Mario", operation: { op: "eq" } },
       ]);
-      await Promise.all(
-        [mario, luigi].map(async (p) => p.updateGroupMembership())
-      );
+      await mario.updateGroupMembership();
+      await luigi.updateGroupMembership();
 
       groupMemberCount = await group.$count("groupMembers");
       expect(groupMemberCount).toBe(2);

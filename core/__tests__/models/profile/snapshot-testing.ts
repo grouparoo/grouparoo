@@ -82,7 +82,8 @@ describe("test grouparoo profiles", () => {
 
     test("groups match the snapshot", async () => {
       const groups = await profile.$get("groups");
-      const groupApiData = await Promise.all(groups.map((g) => g.apiData()));
+      let groupApiData = [];
+      for (const g of groups) groupApiData.push(await g.apiData());
 
       expect(groupApiData.length).toEqual(1);
 
@@ -96,9 +97,8 @@ describe("test grouparoo profiles", () => {
 
     test("potential exports match the snapshot", async () => {
       const _exports = await profile.export(true, [], false);
-      const exportApiData = await Promise.all(
-        _exports.map((e) => e.apiData(false))
-      );
+      const exportApiData = [];
+      for (const e of _exports) exportApiData.push(await e.apiData(false));
       expect(exportApiData.length).toEqual(1);
 
       expect(exportApiData[0]).toMatchSnapshot({
@@ -106,6 +106,7 @@ describe("test grouparoo profiles", () => {
         startedAt: expect.any(Number),
         sendAt: expect.any(Number),
         state: "pending",
+        destinationName: "test destination",
         newProfileProperties: expect.objectContaining({
           email: expect.stringMatching(/@example.com/),
           "primary-id": expect.any(Number),

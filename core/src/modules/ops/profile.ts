@@ -11,9 +11,10 @@ import { api } from "actionhero";
 import { Op, OrderItem, WhereAttributeHash, QueryTypes } from "sequelize";
 import { waitForLock } from "../locks";
 import { ProfilePropertyOps } from "./profileProperty";
-import { CLS } from "../../modules/cls";
 import { GroupRule } from "../../models/GroupRule";
 import { Import } from "../../models/Import";
+import { Mapping } from "../../models/Mapping";
+import { SourceOps } from "./source";
 
 export interface ProfilePropertyType {
   [key: string]: {
@@ -458,20 +459,21 @@ export namespace ProfileOps {
     }
 
     try {
-      let hash = {};
-      const sources = await Source.findAll({ where: { state: "ready" } });
       const excludeSourceIds = [];
-      await Promise.all(
-        sources.map((source) =>
-          source.import(profile).then(({ canImport, properties }) => {
-            hash = Object.assign(hash, properties);
-            if (!canImport) excludeSourceIds.push(source.id);
-          })
-        )
-      );
+      const sources = await Source.findAll({
+        where: { state: "ready" },
+        include: [Mapping, Property],
+      });
+      const sortedSources = SourceOps.sortByDependencies(sources);
+
+      for (const source of sortedSources) {
+        const { canImport, properties } = await source.import(profile);
+        if (!canImport) excludeSourceIds.push(source.id);
+        // We need to save each property as it is loaded so it can be used as a mapping for the next source
+        if (toSave) await addOrUpdateProperties([profile], [properties], false);
+      }
 
       if (toSave) {
-        await addOrUpdateProperties([profile], [hash], false);
         await removePendingProperties(profile, excludeSourceIds);
         await buildNullProperties([profile]);
 

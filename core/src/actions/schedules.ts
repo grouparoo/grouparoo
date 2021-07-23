@@ -39,9 +39,7 @@ export class SchedulesList extends AuthenticatedAction {
 
     return {
       total,
-      schedules: await Promise.all(
-        schedules.map(async (conn) => conn.apiData())
-      ),
+      schedules: await Promise.all(schedules.map((conn) => conn.apiData())),
     };
   }
 }

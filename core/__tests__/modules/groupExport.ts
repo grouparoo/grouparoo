@@ -72,7 +72,7 @@ describe("modules/groupExport", () => {
       "a group's profiles can be exported and create a run",
       async () => {
         const profiles = [mario, luigi, toad, peach];
-        await Promise.all(profiles.map((profile) => group.addProfile(profile)));
+        for (const p of profiles) await group.addProfile(p);
 
         const response = await groupExportToCSV(group, 1);
         filename = response.filename;

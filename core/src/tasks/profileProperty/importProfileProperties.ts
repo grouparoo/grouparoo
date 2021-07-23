@@ -91,14 +91,13 @@ export class ImportProfileProperties extends RetryableTask {
       );
     } catch (error) {
       // if something goes wrong with the batch import, fall-back to per-profile/property imports
-      await Promise.all(
-        profilesToImport.map((profile) => {
-          CLS.enqueueTask("profileProperty:importProfileProperty", {
-            profileId: profile.id,
-            propertyId: property.id,
-          });
-        })
-      );
+      for (const profile of profilesToImport) {
+        await CLS.enqueueTask("profileProperty:importProfileProperty", {
+          profileId: profile.id,
+          propertyId: property.id,
+        });
+      }
+
       return log(error, "error");
     }
 

@@ -93,7 +93,10 @@ export class ProfileExport extends RetryableTask {
       }
     } catch (error) {
       if (env !== "test") log(`[EXPORT ERROR] ${error}`, "alert");
-      await Promise.all(imports.map((e) => e.setError(error, this.name)));
+
+      for (const i of imports) {
+        await i.setError(error, this.name);
+      }
     }
   }
 }

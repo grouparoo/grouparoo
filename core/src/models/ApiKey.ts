@@ -13,7 +13,6 @@ import {
 import * as UUID from "uuid";
 import { LoggedModel } from "../classes/loggedModel";
 import { Permission, PermissionTopics } from "./Permission";
-import { AsyncReturnType } from "type-fest";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 
@@ -61,8 +60,9 @@ export class ApiKey extends LoggedModel<ApiKey> {
     const permissions = await this.$get("permissions", {
       order: [["topic", "asc"]],
     });
-    const permissionsApiData: AsyncReturnType<Permission["apiData"]>[] =
-      await Promise.all(permissions.map((prm) => prm.apiData()));
+    const permissionsApiData = await Promise.all(
+      permissions.map((prm) => prm.apiData())
+    );
 
     return {
       id: this.id,

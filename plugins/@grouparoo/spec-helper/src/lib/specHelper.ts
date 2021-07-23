@@ -145,12 +145,9 @@ export namespace helper {
   }
 
   export async function truncate() {
-    await Promise.all(
-      models.map(async (model) => {
-        // @ts-ignore
-        return model.truncate();
-      })
-    );
+    for (const model of models) {
+      await model.truncate();
+    }
 
     const { cache, api } = await import("actionhero");
     await cache.destroy("properties:all");

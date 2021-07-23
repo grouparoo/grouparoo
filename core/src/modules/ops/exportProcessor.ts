@@ -52,17 +52,13 @@ export namespace ExportProcessorOps {
 
       const app = await destination.$get("app", { scope: null });
 
-      await Promise.all(
-        exportProcessors.map((processor) =>
-          CLS.enqueueTask(
-            "export:process",
-            {
-              exportProcessorId: processor.id,
-            },
-            `exports:${app.type}`
-          )
-        )
-      );
+      for (const processor of exportProcessors) {
+        await CLS.enqueueTask(
+          "export:process",
+          { exportProcessorId: processor.id },
+          `exports:${app.type}`
+        );
+      }
     }
 
     return exportProcessors.length;
