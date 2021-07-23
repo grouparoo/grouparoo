@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/newrelic",
   "description": "Performance and error tracking with NewRelic",
-  "version": "0.5.1",
+  "version": "0.5.2-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -31,8 +31,8 @@
     "newrelic": "7.5.1"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.5.1",
-    "@grouparoo/spec-helper": "0.5.1",
+    "@grouparoo/core": "0.5.2-alpha.0",
+    "@grouparoo/spec-helper": "0.5.2-alpha.0",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "26.1.1",
