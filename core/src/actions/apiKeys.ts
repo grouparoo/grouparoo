@@ -24,9 +24,7 @@ export class ApiKeysList extends AuthenticatedAction {
 
     return {
       total,
-      apiKeys: await Promise.all(
-        apiKeys.map(async (apiKey) => apiKey.apiData())
-      ),
+      apiKeys: await Promise.all(apiKeys.map((apiKey) => apiKey.apiData())),
     };
   }
 }

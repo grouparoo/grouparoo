@@ -27,9 +27,7 @@ export class TeamMembersList extends AuthenticatedAction {
     });
 
     return {
-      teamMembers: await Promise.all(
-        teamMembers.map(async (tem) => tem.apiData())
-      ),
+      teamMembers: await Promise.all(teamMembers.map((tem) => tem.apiData())),
     };
   }
 }

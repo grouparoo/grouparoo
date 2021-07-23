@@ -51,6 +51,9 @@ export class LogsList extends AuthenticatedAction {
     const total = await Log.count(search);
     const logs = await Log.findAll(search);
 
-    return { total, logs: await Promise.all(logs.map((log) => log.apiData())) };
+    return {
+      total,
+      logs: await Promise.all(logs.map((log) => log.apiData())),
+    };
   }
 }

@@ -51,30 +51,29 @@ export namespace Plugins {
       },
     ].concat(pluginManifest.plugins);
 
-    const pluginResponse: PluginWithVersions[] = await Promise.all(
-      plugins.map(async (plugin) => {
-        let latestVersion = "unknown";
+    const pluginResponse: PluginWithVersions[] = [];
+    for (const plugin of plugins) {
+      let latestVersion = "unknown";
 
-        try {
-          const manifest = await getLatestNPMVersion(plugin);
-          latestVersion = manifest.version;
-        } catch (error) {
-          log(error.toString(), "info");
-        }
+      try {
+        const manifest = await getLatestNPMVersion(plugin);
+        latestVersion = manifest.version;
+      } catch (error) {
+        log(error.toString(), "info");
+      }
 
-        return {
-          name: plugin.name,
-          currentVersion: plugin.version,
-          license: plugin.license,
-          url: plugin.url,
-          latestVersion,
-          upToDate:
-            latestVersion === "unknown"
-              ? true
-              : compareVersions(plugin.version, latestVersion) >= 0,
-        };
-      })
-    );
+      pluginResponse.push({
+        name: plugin.name,
+        currentVersion: plugin.version,
+        license: plugin.license,
+        url: plugin.url,
+        latestVersion,
+        upToDate:
+          latestVersion === "unknown"
+            ? true
+            : compareVersions(plugin.version, latestVersion) >= 0,
+      });
+    }
 
     return pluginResponse;
   }

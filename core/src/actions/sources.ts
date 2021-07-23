@@ -43,9 +43,7 @@ export class SourcesList extends AuthenticatedAction {
 
     return {
       total,
-      sources: await Promise.all(
-        sources.map(async (source) => source.apiData())
-      ),
+      sources: await Promise.all(sources.map((source) => source.apiData())),
     };
   }
 }

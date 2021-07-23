@@ -13,6 +13,7 @@ import { MappingHelper } from "../mappingHelper";
 import { log, utils, api } from "actionhero";
 import { LoggedModel } from "../../classes/loggedModel";
 import { FilterHelper } from "../filterHelper";
+import { topologicalSort } from "../topologicalSort";
 
 export namespace SourceOps {
   /**
@@ -264,7 +265,7 @@ export namespace SourceOps {
    */
   export async function _import(source: Source, profile: Profile) {
     const hash = {};
-    const rules = await source.$get("properties", {
+    const properties = await source.$get("properties", {
       where: { state: "ready" },
     });
 
@@ -299,13 +300,15 @@ export namespace SourceOps {
       };
     }
 
-    await Promise.all(
-      rules.map((rule) =>
-        source
-          .importProfileProperty(profile, rule, null, null, preloadedArgs)
-          .then((response) => (hash[rule.id] = response))
-      )
-    );
+    for (const property of properties) {
+      hash[property.id] = await source.importProfileProperty(
+        profile,
+        property,
+        null,
+        null,
+        preloadedArgs
+      );
+    }
 
     // remove null and undefined as we cannot set that value
     const hashKeys = Object.keys(hash);
@@ -320,6 +323,35 @@ export namespace SourceOps {
       canImport: true,
       properties: hash,
     };
+  }
+
+  /**
+   * Sorts an array of Sources by their dependencies.
+   * Be sure to eager-load Mappings and Properties
+   */
+  export function sortByDependencies(sources: Source[]) {
+    const sortedSources: Source[] = [];
+
+    const graph: { [id: string]: string[] } = {};
+    for (const source of sources) {
+      const provides = source.properties.map((p) => p.id);
+      const dependsOn = source.mappings.map((p) => p.propertyId);
+      for (const p of provides) {
+        graph[p] = dependsOn.filter((id) => id !== p);
+      }
+    }
+
+    const sortedPropertyIds = topologicalSort(graph);
+    for (const propertyId of sortedPropertyIds) {
+      const source = sources.find((s) =>
+        s.properties.map((p) => p.id).includes(propertyId)
+      );
+      if (!sortedSources.map((s) => s.id).includes(source.id)) {
+        sortedSources.push(source);
+      }
+    }
+
+    return sortedSources;
   }
 
   /**

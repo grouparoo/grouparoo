@@ -25,7 +25,7 @@ export class SettingsList extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const setting = await Setting.findAll({ order: params.order });
     return {
-      settings: await Promise.all(setting.map(async (s) => await s.apiData())),
+      settings: await Promise.all(setting.map((s) => s.apiData())),
     };
   }
 }

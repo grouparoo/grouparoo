@@ -132,9 +132,10 @@ describe("tasks/group:run", () => {
 
       // complete pending imports
       await ImportWorkflow();
-      await Promise.all(
-        [mario, luigi, peach, toad].map(async (p) => p.updateGroupMembership())
-      );
+      await mario.updateGroupMembership();
+      await luigi.updateGroupMembership();
+      await peach.updateGroupMembership();
+      await toad.updateGroupMembership();
 
       await specHelper.runTask("group:run", { runId: run.id }); // run is complete, mark group as ready
 
@@ -197,9 +198,10 @@ describe("tasks/group:run", () => {
         [peach, toad].map((p) => p.id).sort()
       );
 
-      await Promise.all(
-        [mario, luigi, peach, toad].map(async (p) => p.updateGroupMembership())
-      );
+      await mario.updateGroupMembership();
+      await luigi.updateGroupMembership();
+      await peach.updateGroupMembership();
+      await toad.updateGroupMembership();
 
       await specHelper.runTask("group:run", { runId: run.id }); // run is complete, mark group as ready
 

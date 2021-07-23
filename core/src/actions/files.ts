@@ -39,7 +39,7 @@ export class FilesList extends AuthenticatedAction {
 
     return {
       total,
-      files: await Promise.all(files.map(async (f) => f.apiData())),
+      files: await Promise.all(files.map((f) => f.apiData())),
     };
   }
 }

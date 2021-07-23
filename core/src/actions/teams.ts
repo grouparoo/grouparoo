@@ -78,7 +78,7 @@ export class TeamsList extends AuthenticatedAction {
   async runWithinTransaction() {
     const teams = await Team.findAll();
     return {
-      teams: await Promise.all(teams.map(async (team) => team.apiData())),
+      teams: await Promise.all(teams.map((team) => team.apiData())),
     };
   }
 }
@@ -170,9 +170,7 @@ export class TeamView extends AuthenticatedAction {
     return {
       team: await team.apiData(),
       teamMembers: await Promise.all(
-        team.teamMembers.map(async (mem) => {
-          return await mem.apiData();
-        })
+        team.teamMembers.map((mem) => mem.apiData())
       ),
     };
   }

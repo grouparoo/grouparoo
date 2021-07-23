@@ -106,7 +106,7 @@ export namespace SharedGroupTests {
       groupId: group.id,
     });
     const members = await group.$get("groupMembers");
-    await Promise.all(members.map((m) => m.destroy()));
+    for (const m of members) await m.destroy();
     await group.destroy();
     await run.destroy();
     await Import.truncate();
