@@ -54,7 +54,7 @@ export class RunsList extends AuthenticatedAction {
     const runs = await Run.scope(null).findAll(search);
 
     return {
-      runs: await Promise.all(runs.map(async (run) => run.apiData())),
+      runs: await Promise.all(runs.map((run) => run.apiData())),
       total: await Run.scope(null).count({ where }),
     };
   }

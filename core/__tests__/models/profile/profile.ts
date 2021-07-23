@@ -786,7 +786,7 @@ describe("models/profile", () => {
 
     afterAll(async () => {
       const members = await group.$get("groupMembers");
-      await Promise.all(members.map((m) => m.destroy()));
+      for (const m of members) await m.destroy();
       await group.destroy();
       await source.setMapping({});
       await Property.truncate();

@@ -120,19 +120,17 @@ export namespace ProfilePropertyOps {
         : null;
 
       if (method === "ProfileProperties") {
-        await CLS.enqueueTask(`profileProperty:import${method}`, {
+        await CLS.enqueueTask(`profileProperty:importProfileProperties`, {
           propertyId: property.id,
           profileIds: pendingProfileProperties.map((ppp) => ppp.profileId),
         });
       } else if (method === "ProfileProperty") {
-        await Promise.all(
-          pendingProfileProperties.map((ppp) =>
-            CLS.enqueueTask(`profileProperty:import${method}`, {
-              propertyId: property.id,
-              profileId: ppp.profileId,
-            })
-          )
-        );
+        for (const ppp of pendingProfileProperties) {
+          await CLS.enqueueTask(`profileProperty:importProfileProperty`, {
+            propertyId: property.id,
+            profileId: ppp.profileId,
+          });
+        }
       } else {
         // Schedule sources don't import properties on-demand, keep old value
         await ProfileProperty.update(

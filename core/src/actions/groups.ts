@@ -44,7 +44,7 @@ export class GroupsList extends AuthenticatedAction {
 
     return {
       total,
-      groups: await Promise.all(groups.map(async (g) => g.apiData())),
+      groups: await Promise.all(groups.map((g) => g.apiData())),
     };
   }
 }

@@ -44,6 +44,8 @@ export class GroupsUpdateCalculatedGroups extends CLSTask {
       }
     }
 
-    await Promise.all(groupsToRun.map((group) => group.run()));
+    for (const group of groupsToRun) {
+      await group.run();
+    }
   }
 }

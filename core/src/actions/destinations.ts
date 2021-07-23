@@ -50,9 +50,7 @@ export class DestinationsList extends AuthenticatedAction {
 
     return {
       total,
-      destinations: await Promise.all(
-        destinations.map(async (conn) => conn.apiData())
-      ),
+      destinations: await Promise.all(destinations.map((d) => d.apiData())),
     };
   }
 }

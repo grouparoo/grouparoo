@@ -122,18 +122,16 @@ export namespace ExportOps {
         );
       } else {
         // the plugin has a per-profile exportProfile method
-        await Promise.all(
-          _exports.map((_export) =>
-            CLS.enqueueTask(
-              "export:send",
-              {
-                destinationId: destination.id,
-                exportId: _export.id,
-              },
-              `exports:${app.type}`
-            )
-          )
-        );
+        for (const _export of _exports) {
+          await CLS.enqueueTask(
+            "export:send",
+            {
+              destinationId: destination.id,
+              exportId: _export.id,
+            },
+            `exports:${app.type}`
+          );
+        }
       }
     }
 

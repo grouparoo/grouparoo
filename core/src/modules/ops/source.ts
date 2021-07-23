@@ -242,7 +242,7 @@ export namespace SourceOps {
    */
   export async function _import(source: Source, profile: Profile) {
     const hash = {};
-    const rules = await source.$get("properties", {
+    const properties = await source.$get("properties", {
       where: { state: "ready" },
     });
 
@@ -277,13 +277,15 @@ export namespace SourceOps {
       };
     }
 
-    await Promise.all(
-      rules.map((rule) =>
-        source
-          .importProfileProperty(profile, rule, null, null, preloadedArgs)
-          .then((response) => (hash[rule.id] = response))
-      )
-    );
+    for (const property of properties) {
+      hash[property.id] = await source.importProfileProperty(
+        profile,
+        property,
+        null,
+        null,
+        preloadedArgs
+      );
+    }
 
     // remove null and undefined as we cannot set that value
     const hashKeys = Object.keys(hash);

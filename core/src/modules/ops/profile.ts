@@ -461,6 +461,13 @@ export namespace ProfileOps {
       let hash = {};
       const sources = await Source.findAll({ where: { state: "ready" } });
       const excludeSourceIds = [];
+
+      // for (const source of sources) {
+      //   const { canImport, properties } = await source.import(profile);
+      //   if (!canImport) excludeSourceIds.push(source.id);
+      //   await addOrUpdateProperties([profile], [properties], false);
+      // }
+
       await Promise.all(
         sources.map((source) =>
           source.import(profile).then(({ canImport, properties }) => {
