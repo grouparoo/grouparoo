@@ -121,7 +121,7 @@ export namespace SourceOps {
     if (Object.values(sourceMapping).length > 0) {
       const propertyMappingKey = Object.values(sourceMapping)[0];
       const profileProperties =
-        preloadedArgs.profileProperties || (await profile.properties());
+        preloadedArgs.profileProperties || (await profile.getProperties());
       if (!profileProperties[propertyMappingKey]) {
         return;
       }
@@ -268,7 +268,7 @@ export namespace SourceOps {
       where: { state: "ready" },
     });
 
-    const profileProperties = await profile.properties();
+    const profileProperties = await profile.getProperties();
     const app = await source.$get("app", { scope: null, include: [Option] });
     const appOptions = await app.getOptions();
     const connection = await app.getConnection();

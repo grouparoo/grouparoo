@@ -217,7 +217,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         });
       }
 
-      const profileProperties = await profileA.properties();
+      const profileProperties = await profileA.getProperties();
       expect(profileProperties.firstName.values).toEqual(["Mario"]);
       expect(profileProperties.lastName.values).toEqual(["Mario"]);
 

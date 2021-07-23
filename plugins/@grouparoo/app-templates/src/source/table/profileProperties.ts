@@ -54,7 +54,7 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
 
     for (const i in profiles) {
       for (const property of properties) {
-        const properties = await profiles[i].properties();
+        const properties = await profiles[i].getProperties();
         if (
           properties[tableMappingCol]?.values.length > 0 &&
           properties[tableMappingCol].values[0] // not null or undefined

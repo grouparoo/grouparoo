@@ -457,7 +457,7 @@ describe("integration/runs/mysql", () => {
       })
     ).profileId;
     const profile = await Profile.findOne({ where: { id: profileId } });
-    const properties = await profile.properties();
+    const properties = await profile.getProperties();
     expect(properties.userId.values).toEqual([1]);
     expect(properties.email.values).toEqual(["ejervois0@example.com"]);
   });

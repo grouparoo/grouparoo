@@ -39,7 +39,7 @@ export namespace ProfileOps {
   /**
    * Get the Properties of this Profile
    */
-  export async function properties(profile: Profile) {
+  export async function getProperties(profile: Profile) {
     const profileProperties =
       profile.profileProperties ||
       (await ProfileProperty.scope(null).findAll({
@@ -402,7 +402,7 @@ export namespace ProfileOps {
     const now = new Date();
 
     for (const profile of profiles) {
-      const profileProperties = await profile.properties();
+      const profileProperties = await profile.getProperties();
 
       for (const key in properties) {
         const property = properties[key];
@@ -700,8 +700,8 @@ export namespace ProfileOps {
 
     try {
       // transfer properties, keeping the newest values
-      const properties = await profile.properties();
-      const otherProperties = await otherProfile.properties();
+      const properties = await profile.getProperties();
+      const otherProperties = await otherProfile.getProperties();
       const newProperties = {};
       for (const key in otherProperties) {
         if (

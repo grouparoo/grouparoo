@@ -131,7 +131,7 @@ describe("integration/runs/internalRun", () => {
       });
 
       // both new properties are marked as pending
-      const properties = await profile.properties();
+      const properties = await profile.getProperties();
       expect(properties.userId.state).toBe("ready");
       expect(properties.email.state).toBe("ready");
       expect(properties.firstName.state).toBe("pending");
