@@ -10,9 +10,9 @@ import {
   Option,
   ProfileProperty,
   Destination,
-} from "../../src";
+} from "../../../src";
 import { Op } from "sequelize";
-import { SourceOps } from "../../src/modules/ops/source";
+import { SourceOps } from "../../../src/modules/ops/source";
 
 describe("models/source", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

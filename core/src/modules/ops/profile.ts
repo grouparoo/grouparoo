@@ -469,6 +469,7 @@ export namespace ProfileOps {
       for (const source of sortedSources) {
         const { canImport, properties } = await source.import(profile);
         if (!canImport) excludeSourceIds.push(source.id);
+        // We need to save each property as it is loaded so it can be used as a mapping for the next source
         if (toSave) await addOrUpdateProperties([profile], [properties], false);
       }
 
