@@ -8,6 +8,7 @@ import { OptionHelper } from "../optionHelper";
 import { MappingHelper } from "../mappingHelper";
 import { log, utils, api } from "actionhero";
 import { LoggedModel } from "../../classes/loggedModel";
+import { topologicalSort } from "../topologicalSort";
 
 export namespace SourceOps {
   /**
@@ -307,22 +308,28 @@ export namespace SourceOps {
    * Be sure to eager-load Mappings and Properties
    */
   export function sortByDependencies(sources: Source[]) {
-    sources.sort((a, b) => {
-      const AProvides = a.properties.map((p) => p.id);
-      const ADependsOn = a.mappings.map((m) => m.propertyId);
-      const BProvides = b.properties.map((p) => p.id);
-      const BDependsOn = b.mappings.map((m) => m.propertyId);
+    const sortedSources: Source[] = [];
 
-      if (ADependsOn.find((v) => BProvides.includes(v))) {
-        return 1;
-      } else if (BDependsOn.find((v) => AProvides.includes(v))) {
-        return -1;
-      } else {
-        return 0;
+    const graph: { [id: string]: string[] } = {};
+    for (const source of sources) {
+      const provides = source.properties.map((p) => p.id);
+      const dependsOn = source.mappings.map((p) => p.propertyId);
+      for (const p of provides) {
+        graph[p] = dependsOn.filter((id) => id !== p);
       }
-    });
+    }
 
-    return sources;
+    const sortedPropertyIds = topologicalSort(graph);
+    for (const propertyId of sortedPropertyIds) {
+      const source = sources.find((s) =>
+        s.properties.map((p) => p.id).includes(propertyId)
+      );
+      if (!sortedSources.map((s) => s.id).includes(source.id)) {
+        sortedSources.push(source);
+      }
+    }
+
+    return sortedSources;
   }
 
   /**
