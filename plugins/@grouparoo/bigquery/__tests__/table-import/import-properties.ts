@@ -6,7 +6,12 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { SimpleAppOptions, Profile, Property } from "@grouparoo/core";
+import {
+  SimpleAppOptions,
+  Profile,
+  Property,
+  SourceMapping,
+} from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
 const profileProperties = getConnection().methods.profileProperties;
@@ -30,26 +35,62 @@ const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 let profile: Profile;
 let otherProfile: Profile;
 let thirdProfile: Profile;
+let emailProperty: Property;
+let firstNameProperty: Property;
+let lastNameProperty: Property;
 
 let sourceOptions;
 async function getPropertyValues(
-  { column, sourceMapping, aggregationMethod },
+  {
+    columns,
+    sourceMapping,
+    aggregationMethod,
+  }: {
+    columns: string[];
+    sourceMapping: SourceMapping;
+    aggregationMethod: string;
+  },
   usePropertyFilters?
 ) {
-  const connection = await connect({ appOptions, app: null, appId: null });
-  const property = await Property.findOne({
-    where: { key: "email" },
-  });
+  const arrays = await getPropertyArrays(
+    { columns, sourceMapping, aggregationMethod },
+    usePropertyFilters
+  );
+  return arrays;
+}
+async function getPropertyArrays(
+  {
+    columns,
+    sourceMapping,
+    aggregationMethod,
+  }: {
+    columns: string[];
+    sourceMapping: SourceMapping;
+    aggregationMethod: string;
+  },
+  usePropertyFilters?
+) {
+  const properties = [
+    emailProperty,
+    firstNameProperty,
+    lastNameProperty,
+  ].filter((p, idx) => columns.length > idx);
 
-  const propertyOptions = {
-    [property.id]: {
-      column,
+  let counter = 0;
+  const propertyOptions = {};
+  for (const property of properties) {
+    propertyOptions[property.id] = {
+      column: columns[counter],
       aggregationMethod: aggregationMethod,
-    },
-  };
+    };
+    counter++;
+  }
+
   const propertyFilters = usePropertyFilters
-    ? { [property.id]: usePropertyFilters }
-    : { [property.id]: [] };
+    ? { [properties[0].id]: usePropertyFilters }
+    : { [properties[0].id]: [] };
+
+  const connection = await connect({ appOptions, app: null, appId: null });
 
   const values = await profileProperties({
     connection,
@@ -59,25 +100,30 @@ async function getPropertyValues(
     propertyOptions,
     sourceMapping,
     propertyFilters,
-    properties: [property],
+    properties,
     profileIds: [profile.id, otherProfile.id, thirdProfile.id],
     source: null,
     sourceId: null,
     app: null,
     appId: null,
-    propertyIds: [property.id],
+    propertyIds: properties.map((p) => p.id),
   });
 
-  return [values, property];
+  return [values, properties];
 }
 
 describe("bigquery/table/profileProperties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
+  beforeAll(async () => {
+    emailProperty = await Property.findOne({ where: { key: "email" } });
+    firstNameProperty = await Property.findOne({ where: { key: "firstName" } });
+    lastNameProperty = await Property.findOne({ where: { key: "lastName" } });
+  });
 
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);
     // all of these are in in the test plugin
-    await helper.factories.properties();
 
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
@@ -105,124 +151,153 @@ describe("bigquery/table/profileProperties", () => {
 
   describe("exact primary tables", () => {
     let aggregationMethod = "exact";
+
     beforeAll(() => {
       sourceOptions = { table: "profiles" };
     });
-    describe("integer mapping", () => {
-      const sourceMapping = { id: "userId" };
-      test("to get a string", async () => {
-        const column = "first_name";
-        const [values, property] = await getPropertyValues({
-          column,
-          sourceMapping,
-          aggregationMethod,
-        });
-        expect(values[profile.id][property.id]).toEqual(["Erie"]);
-        expect(values[otherProfile.id][property.id]).toEqual(["Cacilie"]);
-      });
-      test("to get a float", async () => {
-        const column = "ltv";
-        const [values, property] = await getPropertyValues({
-          column,
-          sourceMapping,
-          aggregationMethod,
-        });
-        expect(values[profile.id][property.id]).toEqual([259.12]);
-        expect(values[otherProfile.id][property.id]).toEqual([94.36]);
-      });
-      test("to get a boolean", async () => {
-        const column = "ios_app";
-        const [values, property] = await getPropertyValues({
-          column,
-          sourceMapping,
-          aggregationMethod,
-        });
-        expect(values[profile.id][property.id]).toEqual([true]);
-        expect(values[otherProfile.id][property.id]).toEqual([false]);
-      });
-      test("to get a date", async () => {
-        const column = "date";
-        const [values, property] = await getPropertyValues({
-          column,
-          sourceMapping,
-          aggregationMethod,
-        });
-        expect(values[profile.id][property.id]).toEqual(["2020-02-01"]);
-        expect(values[otherProfile.id][property.id]).toEqual(["2020-02-02"]);
-      });
-      test("to get a timestamp", async () => {
-        const column = "stamp";
-        const [values, property] = await getPropertyValues({
-          column,
-          sourceMapping,
-          aggregationMethod,
-        });
-        expect(values[profile.id][property.id][0]).toEqual(
-          "2020-02-01T12:13:14.000Z"
-        );
-        expect(values[otherProfile.id][property.id][0]).toEqual(
-          "2020-02-02T12:13:14.000Z"
-        );
-      });
-    });
 
-    describe("string mapping", () => {
-      const sourceMapping = { email: "email" };
-      test("to get a string", async () => {
-        const column = "first_name";
-        const [values, property] = await getPropertyValues({
-          column,
-          sourceMapping,
-          aggregationMethod,
+    for (const { type, sourceMapping } of [
+      { type: "integer", sourceMapping: { id: "userId" } },
+      { type: "string", sourceMapping: { email: "email" } },
+    ]) {
+      describe(`${type} mapping`, () => {
+        test("to get a string", async () => {
+          const columns = ["first_name"];
+          const [values, properties] = await getPropertyValues({
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          });
+          expect(values[profile.id][properties[0].id]).toEqual(["Erie"]);
+          expect(values[otherProfile.id][properties[0].id]).toEqual([
+            "Cacilie",
+          ]);
         });
-        expect(values[profile.id][property.id]).toEqual(["Erie"]);
-        expect(values[otherProfile.id][property.id]).toEqual(["Cacilie"]);
-      });
-      test("to get a float", async () => {
-        const column = "ltv";
-        const [values, property] = await getPropertyValues({
-          column,
-          sourceMapping,
-          aggregationMethod,
+
+        test("to get multiple values with a string", async () => {
+          const columns = ["first_name", "last_name"];
+          const [values, properties] = await getPropertyValues({
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          });
+          expect(values[profile.id][properties[0].id]).toEqual(["Erie"]);
+          expect(values[otherProfile.id][properties[0].id]).toEqual([
+            "Cacilie",
+          ]);
+          expect(values[profile.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[otherProfile.id][properties[1].id]).toEqual(["Eate"]);
         });
-        expect(values[profile.id][property.id]).toEqual([259.12]);
-        expect(values[otherProfile.id][property.id]).toEqual([94.36]);
-      });
-      test("to get a boolean", async () => {
-        const column = "ios_app";
-        const [values, property] = await getPropertyValues({
-          column,
-          sourceMapping,
-          aggregationMethod,
+
+        test("to get a float", async () => {
+          const columns = ["ltv"];
+          const [values, properties] = await getPropertyValues({
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          });
+          expect(values[profile.id][properties[0].id]).toEqual([259.12]);
+          expect(values[otherProfile.id][properties[0].id]).toEqual([94.36]);
         });
-        expect(values[profile.id][property.id]).toEqual([true]);
-        expect(values[otherProfile.id][property.id]).toEqual([false]);
-      });
-      test("to get a date", async () => {
-        const column = "date";
-        const [values, property] = await getPropertyValues({
-          column,
-          sourceMapping,
-          aggregationMethod,
+
+        test("to get multiple values with a float", async () => {
+          const columns = ["ltv", "last_name"];
+          const [values, properties] = await getPropertyValues({
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          });
+          expect(values[profile.id][properties[0].id]).toEqual([259.12]);
+          expect(values[otherProfile.id][properties[0].id]).toEqual([94.36]);
+          expect(values[profile.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[otherProfile.id][properties[1].id]).toEqual(["Eate"]);
         });
-        expect(values[profile.id][property.id]).toEqual(["2020-02-01"]);
-        expect(values[otherProfile.id][property.id]).toEqual(["2020-02-02"]);
-      });
-      test("to get a timestamp", async () => {
-        const column = "stamp";
-        const [values, property] = await getPropertyValues({
-          column,
-          sourceMapping,
-          aggregationMethod,
+
+        test("to get a boolean", async () => {
+          const columns = ["ios_app"];
+          const [values, properties] = await getPropertyValues({
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          });
+          expect(values[profile.id][properties[0].id]).toEqual([true]);
+          expect(values[otherProfile.id][properties[0].id]).toEqual([false]);
         });
-        expect(values[profile.id][property.id][0]).toEqual(
-          "2020-02-01T12:13:14.000Z"
-        );
-        expect(values[otherProfile.id][property.id][0]).toEqual(
-          "2020-02-02T12:13:14.000Z"
-        );
+
+        test("to get a multiple values with a boolean", async () => {
+          const columns = ["ios_app", "last_name"];
+          const [values, properties] = await getPropertyValues({
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          });
+          expect(values[profile.id][properties[0].id]).toEqual([true]);
+          expect(values[otherProfile.id][properties[0].id]).toEqual([false]);
+          expect(values[profile.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[otherProfile.id][properties[1].id]).toEqual(["Eate"]);
+        });
+
+        test("to get a date", async () => {
+          const columns = ["date"];
+          const [values, properties] = await getPropertyValues({
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          });
+          expect(values[profile.id][properties[0].id]).toEqual(["2020-02-01"]);
+          expect(values[otherProfile.id][properties[0].id]).toEqual([
+            "2020-02-02",
+          ]);
+        });
+
+        test("to get a date multiple values with a date", async () => {
+          const columns = ["date", "last_name"];
+          const [values, properties] = await getPropertyValues({
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          });
+          expect(values[profile.id][properties[0].id]).toEqual(["2020-02-01"]);
+          expect(values[otherProfile.id][properties[0].id]).toEqual([
+            "2020-02-02",
+          ]);
+          expect(values[profile.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[otherProfile.id][properties[1].id]).toEqual(["Eate"]);
+        });
+
+        test("to get a timestamp", async () => {
+          const columns = ["stamp"];
+          const [values, properties] = await getPropertyValues({
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          });
+          expect(values[profile.id][properties[0].id][0]).toEqual(
+            "2020-02-01T12:13:14.000Z"
+          );
+          expect(values[otherProfile.id][properties[0].id][0]).toEqual(
+            "2020-02-02T12:13:14.000Z"
+          );
+        });
+
+        test("to get multiple values with a timestamp", async () => {
+          const columns = ["stamp", "last_name"];
+          const [values, properties] = await getPropertyValues({
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          });
+          expect(values[profile.id][properties[0].id][0]).toEqual(
+            "2020-02-01T12:13:14.000Z"
+          );
+          expect(values[otherProfile.id][properties[0].id][0]).toEqual(
+            "2020-02-02T12:13:14.000Z"
+          );
+          expect(values[profile.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[otherProfile.id][properties[1].id]).toEqual(["Eate"]);
+        });
       });
-    });
+    }
   });
 
   describe("secondary tables", () => {
@@ -232,97 +307,101 @@ describe("bigquery/table/profileProperties", () => {
     });
 
     describe("numbers", () => {
-      const column = "amount";
+      const columns = ["amount"];
       test("average", async () => {
-        const [values, property] = await getPropertyValues({
-          column,
+        const [values, properties] = await getPropertyValues({
+          columns,
           sourceMapping,
           aggregationMethod: "average",
         });
-        expect(fixedLengthFloat(values[profile.id][property.id][0])).toEqual(
-          1.73
-        );
         expect(
-          fixedLengthFloat(values[otherProfile.id][property.id][0])
+          fixedLengthFloat(values[profile.id][properties[0].id][0])
+        ).toEqual(1.73);
+        expect(
+          fixedLengthFloat(values[otherProfile.id][properties[0].id][0])
         ).toEqual(1.88);
         expect(values[thirdProfile.id]).toBeUndefined();
       });
       test("count", async () => {
-        const [values, property] = await getPropertyValues({
-          column,
+        const [values, properties] = await getPropertyValues({
+          columns,
           sourceMapping,
           aggregationMethod: "count",
         });
-        expect(values[profile.id][property.id]).toEqual([6]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([6]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("sum", async () => {
-        const [values, property] = await getPropertyValues({
-          column,
+        const [values, properties] = await getPropertyValues({
+          columns,
           sourceMapping,
           aggregationMethod: "sum",
         });
-        expect(fixedLengthFloat(values[profile.id][property.id][0])).toEqual(
-          10.38
-        );
         expect(
-          fixedLengthFloat(values[otherProfile.id][property.id][0])
+          fixedLengthFloat(values[profile.id][properties[0].id][0])
+        ).toEqual(10.38);
+        expect(
+          fixedLengthFloat(values[otherProfile.id][properties[0].id][0])
         ).toEqual(9.38);
         expect(
-          fixedLengthFloat(values[thirdProfile.id][property.id][0])
+          fixedLengthFloat(values[thirdProfile.id][properties[0].id][0])
         ).toEqual(0);
       });
       test("min", async () => {
-        const [values, property] = await getPropertyValues({
-          column,
+        const [values, properties] = await getPropertyValues({
+          columns,
           sourceMapping,
           aggregationMethod: "min",
         });
-        expect(values[profile.id][property.id]).toEqual([1.42]);
-        expect(values[otherProfile.id][property.id]).toEqual([0.78]);
+        expect(values[profile.id][properties[0].id]).toEqual([1.42]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([0.78]);
         expect(values[thirdProfile.id]).toBeUndefined();
       });
       test("max", async () => {
-        const [values, property] = await getPropertyValues({
-          column,
+        const [values, properties] = await getPropertyValues({
+          columns,
           sourceMapping,
           aggregationMethod: "max",
         });
-        expect(values[profile.id][property.id]).toEqual([2.23]);
-        expect(values[otherProfile.id][property.id]).toEqual([3.14]);
+        expect(values[profile.id][properties[0].id]).toEqual([2.23]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([3.14]);
         expect(values[thirdProfile.id]).toBeUndefined();
       });
       describe("dates", () => {
-        const column = "date";
+        const columns = ["date"];
         test("count", async () => {
-          const [values, property] = await getPropertyValues({
-            column,
+          const [values, properties] = await getPropertyValues({
+            columns,
             sourceMapping,
             aggregationMethod: "count",
           });
-          expect(values[profile.id][property.id]).toEqual([6]);
-          expect(values[otherProfile.id][property.id]).toEqual([5]);
-          expect(values[thirdProfile.id][property.id]).toEqual([0]);
+          expect(values[profile.id][properties[0].id]).toEqual([6]);
+          expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
+          expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
         });
         test("min", async () => {
-          const [values, property] = await getPropertyValues({
-            column,
+          const [values, properties] = await getPropertyValues({
+            columns,
             sourceMapping,
             aggregationMethod: "min",
           });
-          expect(values[profile.id][property.id]).toEqual(["2020-02-01"]);
-          expect(values[otherProfile.id][property.id]).toEqual(["2020-02-02"]);
+          expect(values[profile.id][properties[0].id]).toEqual(["2020-02-01"]);
+          expect(values[otherProfile.id][properties[0].id]).toEqual([
+            "2020-02-02",
+          ]);
           expect(values[thirdProfile.id]).toBeUndefined();
         });
         test("max", async () => {
-          const [values, property] = await getPropertyValues({
-            column,
+          const [values, properties] = await getPropertyValues({
+            columns,
             sourceMapping,
             aggregationMethod: "max",
           });
-          expect(values[profile.id][property.id]).toEqual(["2020-02-20"]);
-          expect(values[otherProfile.id][property.id]).toEqual(["2020-02-19"]);
+          expect(values[profile.id][properties[0].id]).toEqual(["2020-02-20"]);
+          expect(values[otherProfile.id][properties[0].id]).toEqual([
+            "2020-02-19",
+          ]);
           expect(values[thirdProfile.id]).toBeUndefined();
         });
       });
@@ -331,7 +410,7 @@ describe("bigquery/table/profileProperties", () => {
 
   describe("filters", () => {
     const sourceMapping = { profile_id: "userId" };
-    const column = "amount";
+    const columns = ["amount"];
     const aggregationMethod = "count";
     beforeAll(() => {
       sourceOptions = { table: "purchases" };
@@ -347,164 +426,164 @@ describe("bigquery/table/profileProperties", () => {
     describe("equals", () => {
       const op = "equals";
       test("integer", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([1]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([2]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([0]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([0]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("date", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "date", match: "2020-02-15" }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([1]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([1]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([1]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([2]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([1]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
     });
 
     describe("does not equal", () => {
       const op = "does not equal";
       test("integer", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(values[profile.id][property.id]).toEqual([5]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([5]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([4]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([4]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([6]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([6]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("date", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "date", match: "2020-02-15" }]
         );
-        expect(values[profile.id][property.id]).toEqual([5]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([5]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
         );
-        expect(values[profile.id][property.id]).toEqual([5]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([5]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(values[profile.id][property.id]).toEqual([4]);
-        expect(values[otherProfile.id][property.id]).toEqual([4]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([4]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([4]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
     });
 
@@ -514,7 +593,7 @@ describe("bigquery/table/profileProperties", () => {
         await expect(
           getPropertyValues(
             {
-              column,
+              columns,
               sourceMapping,
               aggregationMethod,
             },
@@ -523,36 +602,36 @@ describe("bigquery/table/profileProperties", () => {
         ).rejects.toThrow();
       });
       test("string", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "purchase", match: "App" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([2]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "purchase", match: "app" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([2]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("date", async () => {
         await expect(
           getPropertyValues(
             {
-              column,
+              columns,
               sourceMapping,
               aggregationMethod,
             },
@@ -564,7 +643,7 @@ describe("bigquery/table/profileProperties", () => {
         await expect(
           getPropertyValues(
             {
-              column,
+              columns,
               sourceMapping,
               aggregationMethod,
             },
@@ -576,7 +655,7 @@ describe("bigquery/table/profileProperties", () => {
         await expect(
           getPropertyValues(
             {
-              column,
+              columns,
               sourceMapping,
               aggregationMethod,
             },
@@ -592,7 +671,7 @@ describe("bigquery/table/profileProperties", () => {
         await expect(
           getPropertyValues(
             {
-              column,
+              columns,
               sourceMapping,
               aggregationMethod,
             },
@@ -601,36 +680,36 @@ describe("bigquery/table/profileProperties", () => {
         ).rejects.toThrow();
       });
       test("string", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "purchase", match: "Oran" }]
         );
-        expect(values[profile.id][property.id]).toEqual([4]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([4]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "purchase", match: "oran" }]
         );
-        expect(values[profile.id][property.id]).toEqual([4]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([4]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("date", async () => {
         await expect(
           getPropertyValues(
             {
-              column,
+              columns,
               sourceMapping,
               aggregationMethod,
             },
@@ -642,7 +721,7 @@ describe("bigquery/table/profileProperties", () => {
         await expect(
           getPropertyValues(
             {
-              column,
+              columns,
               sourceMapping,
               aggregationMethod,
             },
@@ -654,7 +733,7 @@ describe("bigquery/table/profileProperties", () => {
         await expect(
           getPropertyValues(
             {
-              column,
+              columns,
               sourceMapping,
               aggregationMethod,
             },
@@ -667,117 +746,117 @@ describe("bigquery/table/profileProperties", () => {
     describe("equals", () => {
       const op = "equals";
       test("integer", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([1]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([2]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([0]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([0]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("date", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "date", match: "2020-02-15" }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([1]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([1]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([1]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([2]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([1]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
     });
 
     describe("greater than", () => {
       const op = "greater than";
       test("integer", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([2]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([4]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([4]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
@@ -785,83 +864,83 @@ describe("bigquery/table/profileProperties", () => {
         );
         expect(
           values[profile.id]
-            ? values[profile.id][property.id].length
+            ? values[profile.id][properties[0].id].length
             : [].length
         ).toBeGreaterThanOrEqual(0); // unpredictable ascii math
       });
       test("date", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "date", match: "2020-02-15" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([2]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([2]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([2]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
     });
 
     describe("less than", () => {
       const op = "less than";
       test("integer", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(values[profile.id][property.id]).toEqual([3]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([3]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([0]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([0]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
@@ -869,48 +948,48 @@ describe("bigquery/table/profileProperties", () => {
         );
         expect(
           values[profile.id]
-            ? values[profile.id][[property.id]].length
+            ? values[profile.id][[properties[0].id]].length
             : [].length
         ).toBeGreaterThanOrEqual(0); // unpredictable ascii math
       });
       test("date", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "date", match: "2020-02-15" }]
         );
-        expect(values[profile.id][property.id]).toEqual([3]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([3]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
         );
-        expect(values[profile.id][property.id]).toEqual([3]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([3]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
-        const [values, property] = await getPropertyValues(
+        const [values, properties] = await getPropertyValues(
           {
-            column,
+            columns,
             sourceMapping,
             aggregationMethod,
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[profile.id][properties[0].id]).toEqual([2]);
+        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
       });
     });
   });
@@ -938,8 +1017,8 @@ describe("bigquery/table/profileProperties", () => {
     });
 
     test("it will not import if the dependency is not ready", async () => {
-      const [values, property] = await getPropertyValues({
-        column: "name",
+      const [values, properties] = await getPropertyValues({
+        columns: ["name"],
         sourceMapping: { id: "accountId" },
         aggregationMethod: "exact",
       });
@@ -950,13 +1029,15 @@ describe("bigquery/table/profileProperties", () => {
       await profile.addOrUpdateProperties({ accountId: [1] });
       await otherProfile.addOrUpdateProperties({ accountId: [1] });
 
-      const [values, property] = await getPropertyValues({
-        column: "name",
+      const [values, properties] = await getPropertyValues({
+        columns: ["name"],
         sourceMapping: { id: "accountId" },
         aggregationMethod: "exact",
       });
-      expect(values[profile.id][property.id]).toEqual(["super_mega_corp"]);
-      expect(values[otherProfile.id][property.id]).toEqual(["super_mega_corp"]);
+      expect(values[profile.id][properties[0].id]).toEqual(["super_mega_corp"]);
+      expect(values[otherProfile.id][properties[0].id]).toEqual([
+        "super_mega_corp",
+      ]);
     });
   });
 
@@ -965,8 +1046,8 @@ describe("bigquery/table/profileProperties", () => {
       sourceOptions = { table: "profiles" };
     });
     test("unknown profile property", async () => {
-      const [values, property] = await getPropertyValues({
-        column: "first_name",
+      const [values, properties] = await getPropertyValues({
+        columns: ["first_name"],
         sourceMapping: { id: "badName" },
         aggregationMethod: "exact",
       });
@@ -975,8 +1056,8 @@ describe("bigquery/table/profileProperties", () => {
       expect(values[thirdProfile.id]).toBeUndefined();
     });
     test("null profile property", async () => {
-      const [values, property] = await getPropertyValues({
-        column: "first_name",
+      const [values, properties] = await getPropertyValues({
+        columns: ["first_name"],
         sourceMapping: { id: "lastName" }, // set to NULL
         aggregationMethod: "exact",
       });

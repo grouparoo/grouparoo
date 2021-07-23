@@ -29,7 +29,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
 
   switch (aggregationMethod) {
     case AggregationMethod.Exact:
-      if (columnNames.length === 1) groupByColumns.push(...columnNames);
+      groupByColumns.push(...columnNames);
       if (sortColumn) {
         orderBy = `"${sortColumn}" ASC`;
         groupByColumns.push(sortColumn);
