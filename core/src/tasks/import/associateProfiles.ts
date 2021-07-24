@@ -26,5 +26,7 @@ export class ImportAssociateProfiles extends CLSTask {
       limit,
       delayMs
     );
+
+    return imports.length;
   }
 }

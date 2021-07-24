@@ -186,6 +186,7 @@ describe("tasks/profileProperties:enqueue", () => {
 
       describe("with profileProperties method", () => {
         let testPluginConnection: PluginConnection;
+        let originalMethod;
 
         beforeAll(async () => {
           const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
@@ -195,13 +196,14 @@ describe("tasks/profileProperties:enqueue", () => {
           testPluginConnection = testPlugin.connections.find(
             (c) => c.name === "test-plugin-import"
           );
+          originalMethod = testPluginConnection.methods.profileProperties;
           testPluginConnection.methods.profileProperties = async () => {
             return {};
           };
         });
 
         afterAll(() => {
-          delete testPluginConnection.methods.profileProperties;
+          testPluginConnection.methods.profileProperties = originalMethod;
         });
 
         test("if there is an importProfileProperties it will be preferred", async () => {

@@ -47,6 +47,7 @@ import ApiKeyFactory from "./factories/apiKey";
 import {
   SourceOptionsMethodResponse,
   DestinationOptionsMethodResponse,
+  AggregationMethod,
 } from "@grouparoo/core";
 
 const {
@@ -219,6 +220,20 @@ export namespace helper {
     console.log(process.env.GROUPAROO_INJECTED_PLUGINS);
   }
 
+  export function profileResponseData(profile, key) {
+    const data = {
+      userId: new Date().getTime(),
+      isVIP: true,
+      email: `${profile.id}@example.com`,
+      firstName: "Mario",
+      lastName: "Mario",
+      ltv: 100.0,
+      lastLoginAt: new Date(),
+    };
+
+    return data[key] || "...mario";
+  }
+
   export function enableTestPlugin() {
     // create a test plugin to use only in when NODE_ENV=test
     plugin.registerPlugin({
@@ -268,7 +283,7 @@ export namespace helper {
             { key: "table", required: true },
             { key: "where", required: false },
           ],
-          groupAggregations: [],
+          groupAggregations: [AggregationMethod.Exact],
           methods: {
             sourceOptions: async ({ sourceOptions }) => {
               const response: SourceOptionsMethodResponse = {
@@ -298,6 +313,20 @@ export namespace helper {
                     { key: "id", examples: [1, 2, 3] },
                     { key: "fname", examples: ["mario", "luigi", "peach"] },
                     { key: "lname", examples: ["mario", "mario", "toadstool"] },
+                  ];
+                },
+              },
+              {
+                key: "aggregationMethod",
+                required: false,
+                description: "how things are combined",
+                type: "list",
+                options: async () => {
+                  return [
+                    { key: AggregationMethod.Exact },
+                    { key: AggregationMethod.Count },
+                    { key: AggregationMethod.Min },
+                    { key: AggregationMethod.Max },
                   ];
                 },
               },
@@ -338,16 +367,20 @@ export namespace helper {
               };
             },
             profileProperty: async ({ property, profile }) => {
-              const data = {
-                userId: new Date().getTime(),
-                isVIP: true,
-                email: `${profile.id}@example.com`,
-                firstName: "Mario",
-                lastName: "Mario",
-                ltv: 100.0,
-                lastLoginAt: new Date(),
-              };
-              return data[property.key] || "...mario";
+              return profileResponseData(profile, property.key);
+            },
+            profileProperties: async ({ properties, profiles }) => {
+              const response = {};
+              for (const profile of profiles) {
+                response[profile.id] = {};
+                for (const property of properties) {
+                  response[profile.id][property.id] = [
+                    profileResponseData(profile, property.key),
+                  ];
+                }
+              }
+
+              return response;
             },
           },
         },

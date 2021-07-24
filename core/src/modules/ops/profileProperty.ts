@@ -10,7 +10,6 @@ import { Op } from "sequelize";
 import { Source } from "../../models/Source";
 import { AggregationMethod, PluginConnection } from "../../classes/plugin";
 import { Filter } from "../../models/Filter";
-import { FilterHelper } from "../filterHelper";
 
 export namespace ProfilePropertyOps {
   const defaultProfilePropertyProcessingDelay = 1000 * 60 * 5;
@@ -106,26 +105,15 @@ export namespace ProfilePropertyOps {
       [aggregationMethod: string]: Property[];
     } = {};
 
-    let equalFilters = true;
-    properties.map((property, idx) => {
-      if (properties[idx + 1]) {
-        const filters = property.filters;
-        const nextFilters = properties[idx + 1].filters;
-        if (!FilterHelper.filtersAreEqual(filters, nextFilters)) {
-          equalFilters = false;
-        }
-      }
-    });
-
     for (const property of properties) {
       const options = await property.getOptions();
-
+      const filters = await property.getFilters();
       const aggregationMethod = options.aggregationMethod as AggregationMethod;
 
       if (
         pluginConnection.groupAggregations?.includes(aggregationMethod) &&
-        property.isArray === false &&
-        equalFilters
+        filters.length === 0 &&
+        property.isArray === false
       ) {
         if (aggregationMethod && !propertyGroups[aggregationMethod]) {
           propertyGroups[aggregationMethod] = [];
@@ -191,53 +179,54 @@ async function preparePropertyImports(
   pendingProfileProperties: ProfileProperty[],
   properties: Property[]
 ) {
-  if (pendingProfileProperties.length > 0) {
+  if (pendingProfileProperties.length === 0) return;
+  if (properties.length === 0) return;
+
+  const method = pluginConnection.methods.profileProperties
+    ? "ProfileProperties"
+    : pluginConnection.methods.profileProperty
+    ? "ProfileProperty"
+    : null;
+
+  console.log({ method, pendingProfileProperties, properties });
+
+  await ProfileProperty.update(
+    { startedAt: new Date() },
+    {
+      where: {
+        id: { [Op.in]: pendingProfileProperties.map((i) => i.id) },
+      },
+    }
+  );
+
+  if (method === "ProfileProperties") {
+    await CLS.enqueueTask(`profileProperty:importProfileProperties`, {
+      propertyIds: properties.map((p) => p.id),
+      profileIds: pendingProfileProperties.map((ppp) => ppp.profileId),
+    });
+  } else if (method === "ProfileProperty") {
+    for (const property of properties) {
+      for (const ppp of pendingProfileProperties) {
+        await CLS.enqueueTask(`profileProperty:importProfileProperty`, {
+          propertyId: property.id,
+          profileId: ppp.profileId,
+        });
+      }
+    }
+  } else {
+    // Schedule sources don't import properties on-demand, keep old value
     await ProfileProperty.update(
-      { startedAt: new Date() },
+      {
+        state: "ready",
+        stateChangedAt: new Date(),
+        confirmedAt: new Date(),
+      },
       {
         where: {
-          id: { [Op.in]: pendingProfileProperties.map((i) => i.id) },
+          id: pendingProfileProperties.map((p) => p.id),
         },
       }
     );
-
-    const method = pluginConnection.methods.profileProperties
-      ? "ProfileProperties"
-      : pluginConnection.methods.profileProperty
-      ? "ProfileProperty"
-      : null;
-
-    if (method === "ProfileProperties") {
-      await CLS.enqueueTask(`profileProperty:importProfileProperties`, {
-        propertyIds: properties.map((p) => p.id),
-        profileIds: pendingProfileProperties.map((ppp) => ppp.profileId),
-      });
-    } else if (method === "ProfileProperty") {
-      if (properties.length !== 1) throw new Error("1 Property required");
-
-      await Promise.all(
-        pendingProfileProperties.map((ppp) =>
-          CLS.enqueueTask(`profileProperty:importProfileProperty`, {
-            propertyId: properties[0].id,
-            profileId: ppp.profileId,
-          })
-        )
-      );
-    } else {
-      // Schedule sources don't import properties on-demand, keep old value
-      await ProfileProperty.update(
-        {
-          state: "ready",
-          stateChangedAt: new Date(),
-          confirmedAt: new Date(),
-        },
-        {
-          where: {
-            id: pendingProfileProperties.map((p) => p.id),
-          },
-        }
-      );
-    }
   }
 }
 
