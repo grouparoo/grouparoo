@@ -36,7 +36,7 @@
     "@grouparoo/spec-helper": "0.5.2-alpha.0",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "26.1.1",
+    "actionhero": "26.1.2",
     "axios": "0.21.1",
     "dotenv": "10.0.0",
     "fs-extra": "10.0.0",
