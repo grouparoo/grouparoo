@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/ui-config",
   "description": "The Grouparoo Config Web UI",
-  "version": "0.5.2-alpha.0",
+  "version": "0.5.2-alpha.1",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -58,13 +58,13 @@
     "victory": "35.9.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.5.2-alpha.0",
-    "@grouparoo/spec-helper": "0.5.2-alpha.0",
-    "@grouparoo/ui-components": "0.5.2-alpha.0",
+    "@grouparoo/core": "0.5.2-alpha.1",
+    "@grouparoo/spec-helper": "0.5.2-alpha.1",
+    "@grouparoo/ui-components": "0.5.2-alpha.1",
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
-    "actionhero": "26.1.1",
+    "actionhero": "26.1.2",
     "enzyme": "3.11.0",
     "jest": "27.0.6",
     "jest-environment-webdriver": "grouparoo/jest-webdriver#jest-v27-webdriver",
