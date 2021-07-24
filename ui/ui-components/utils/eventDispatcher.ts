@@ -7,11 +7,11 @@ export class EventDispatcher<T> {
     this.subscriptions = {};
   }
 
-  set(data) {
+  set(data: T) {
     this.publish(data);
   }
 
-  async publish<T>(data) {
+  async publish(data: T) {
     if (typeof this.beforePublish === "function") {
       await this.beforePublish(data);
     }
@@ -27,8 +27,8 @@ export class EventDispatcher<T> {
     }
   }
 
-  async beforePublish(data) {}
-  async afterPublish(data) {}
+  async beforePublish(data: T) {}
+  async afterPublish(data: T) {}
 
   async subscribe(name: string, handler: (arg0: T) => any, matcher?: any) {
     if (typeof this.beforeSubscribe === "function") {
