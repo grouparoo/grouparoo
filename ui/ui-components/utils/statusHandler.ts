@@ -1,7 +1,9 @@
 import { EventDispatcher } from "./eventDispatcher";
 import { Actions, Misc } from "../utils/apiData";
 
-export class StatusHandler extends EventDispatcher {
+export class StatusHandler extends EventDispatcher<
+  Actions.PrivateStatus["metrics"]
+> {
   maxSamples: number;
   matchers: { [name: string]: { topic: string; collection: string } } = {};
   metrics: {

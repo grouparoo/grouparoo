@@ -5,10 +5,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Actions } from "../../utils/apiData";
+import { SetupStepHandler } from "../../utils/setupStepsHandler";
 
 export default function SetupStepsNavProgressBar({
   execApi,
   setupStepHandler,
+}: {
+  execApi: any;
+  setupStepHandler: SetupStepHandler;
 }) {
   const [steps, setSteps] = useState<Models.SetupStepType[]>([]);
   const [initialOnBoardingState, setInitialOnBoardingState] =
@@ -21,14 +25,13 @@ export default function SetupStepsNavProgressBar({
     getSetupSteps();
     router?.events?.on("routeChangeStart", getSetupSteps);
 
-    setupStepHandler?.subscribe("setup-steps-nav-progress-bar", getSetupSteps);
+    setupStepHandler?.subscribe("setup-steps-nav-progress-bar", () =>
+      getSetupSteps()
+    );
 
     return () => {
       router?.events?.off("routeChangeStart", getSetupSteps);
-      setupStepHandler?.unsubscribe(
-        "setup-steps-nav-progress-bar",
-        getSetupSteps
-      );
+      setupStepHandler?.unsubscribe("setup-steps-nav-progress-bar");
     };
   }, []);
 

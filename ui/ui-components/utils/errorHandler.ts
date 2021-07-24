@@ -1,7 +1,7 @@
 import { EventDispatcher } from "./eventDispatcher";
 
-export class ErrorHandler extends EventDispatcher {
-  error: Error | string;
+export class ErrorHandler extends EventDispatcher<{ error: string | Error }> {
+  error: { error: string | Error };
 
   constructor() {
     super();
