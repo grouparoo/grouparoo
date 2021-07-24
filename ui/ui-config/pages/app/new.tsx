@@ -10,11 +10,11 @@ import { EventDispatcher } from "@grouparoo/ui-components/utils/eventDispatcher"
 
 import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
 
-class CustomErrorHandler extends EventDispatcher {
+class CustomErrorHandler extends EventDispatcher<{ error: string }> {
   error: Error | string | any;
-  parentErrorHandler: EventDispatcher;
+  parentErrorHandler: ErrorHandler;
 
-  constructor(parentErrorHandler: EventDispatcher) {
+  constructor(parentErrorHandler: ErrorHandler) {
     super();
 
     this.error = null;
