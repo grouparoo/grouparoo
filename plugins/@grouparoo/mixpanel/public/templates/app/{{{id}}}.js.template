@@ -6,7 +6,10 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "{{{__pluginName}}}",
       options: {
-        apiKey: "...", // Mailchimp API key
+        apiKey: "...", // Mixpanel API token
+        username: "...", // Mixpanel API username
+        secret: "...", // Mixpanel API secret
+        projectId: "...", // Mixpanel project id
       }
     },
   ];

@@ -19,7 +19,10 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   }
   const parsed = readEnv(envFile);
   return {
-    apiKey: parsed.MIXPANEL_API_KEY,
+    token: parsed.MIXPANEL_API_KEY,
+    username: parsed.MIXPANEL_USERNAME,
+    secret: parsed.MIXPANEL_SECRET,
+    projectId: parsed.MIXPANEL_PROJECT_ID,
   };
 }
 
@@ -31,6 +34,18 @@ export const updater = {
     nockCall = nockCall.replace(
       new RegExp(realEnv.MIXPANEL_API_KEY, "gi"),
       nockEnv.MIXPANEL_API_KEY
+    );
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.MIXPANEL_USERNAME, "gi"),
+      nockEnv.MIXPANEL_USERNAME
+    );
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.MIXPANEL_SECRET, "gi"),
+      nockEnv.MIXPANEL_SECRET
+    );
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.MIXPANEL_PROJECT_ID, "gi"),
+      nockEnv.MIXPANEL_PROJECT_ID
     );
     return nockCall;
   },

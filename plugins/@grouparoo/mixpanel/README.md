@@ -1,13 +1,13 @@
-# grouparoo/mailchimp
+# @grouparoo/mixpanel
 
-A [Grouparoo](https://www.grouparoo.com) plugin for connecting to [Mailchimp](https://mailchimp.com/).
+A [Grouparoo](https://www.grouparoo.com) plugin for connecting to [Mixpanel](https://mixpanel.com/).
 
 Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/plugins](https://www.grouparoo.com/docs/plugins).
 
 ## Installation
 
-In your Grouparoo project, run `grouparoo install @grouparoo/mailchimp`.
+In your Grouparoo project, run `grouparoo install @grouparoo/mixpanel`.
 
 ## Attribution
 
-The Mailchimp icon used in this plugin is from https://www.iconfinder.com/icons/4691307/mailchimp_icon
+The Mixpanel icon used in this plugin is from https://livesession.io/integrations/mixpanel/

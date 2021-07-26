@@ -1,29 +1,24 @@
 import {
   ExportProfilePluginMethod,
   Errors,
-  SimpleAppOptions,
   DestinationSyncOperations,
 } from "@grouparoo/core";
+import Mixpanel from "../client/mixpanel";
 import { connect } from "../connect";
-import { addToList, removeFromList } from "./listMethods";
 
-const deleteContactOrClearGroups = async (
-  client: any,
-  appId: string,
-  appOptions: SimpleAppOptions,
+const deleteProfileOrClearGroups = async (
+  client: Mixpanel,
   syncOperations: DestinationSyncOperations,
-  contact: any,
-  groups: string[]
+  profile: any
 ) => {
   if (syncOperations.delete) {
-    // await client.deleteContact(contact.vid);
+    await client.ingestion.profile.delete(profile["$distinct_id"]);
   } else {
     if (syncOperations.update) {
       // clear groups
-      const email = contact.properties.email.value;
-      for (const group of groups) {
-        await removeFromList(client, appId, appOptions, email, group);
-      }
+      await client.ingestion.profile.update(profile["$distinct_id"], {
+        groups: [],
+      });
     }
   }
 };
@@ -47,114 +42,90 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   const client = await connect(appOptions);
 
-  const email = newProfileProperties["email"]; // this is how we will identify profiles
-  const oldEmail = oldProfileProperties["email"];
-  if (!email) {
-    throw new Error(`newProfileProperties[email] is a required mapping`);
+  const distinctId = newProfileProperties["$distinct_id"]; // this is how we will identify profiles
+  const oldDistinctId = oldProfileProperties["$distinct_id"];
+  if (!distinctId) {
+    throw new Error(`newProfileProperties[$distinct_id] is a required mapping`);
   }
 
-  try {
-    let contact;
-    let oldContact;
-    // contact = await client.getContactByEmail(email);
-    if (oldEmail && oldEmail !== email) {
-      // oldContact = await client.getContactByEmail(oldEmail);
+  let profile;
+  let oldProfile;
+  profile = await client.query.profile.getByDistinctId(distinctId);
+  if (oldDistinctId && oldDistinctId !== distinctId) {
+    oldProfile = await client.query.profile.getByDistinctId(oldDistinctId);
+  }
+  if (toDelete) {
+    if (!syncOperations.delete) {
+      throw new Error("Destination sync mode does not allow removing profiles");
     }
-    if (toDelete) {
-      if (!syncOperations.delete) {
-        throw new Error(
-          "Destination sync mode does not allow removing profiles"
-        );
-      }
-      const contactToDelete = contact || oldContact;
-      if (contactToDelete) {
-        // await client.deleteContact(contactToDelete.vid);
-      }
-      return { success: true };
-    } else {
-      // create the contact and set properties
-      const deletePropertiesPayload = {};
-
-      const newPropertyKeys = Object.keys(newProfileProperties);
-      Object.keys(oldProfileProperties)
-        .filter((k) => !newPropertyKeys.includes(k))
-        .forEach((k) => (deletePropertiesPayload[k] = null));
-
-      const payload = Object.assign(
-        { email },
-        newProfileProperties,
-        deletePropertiesPayload
-      );
-      const formattedDataFields = {};
-      for (const key of Object.keys(payload)) {
-        formattedDataFields[key] = formatVar(payload[key]);
-      }
-
-      const sortedDataFields = {};
-      Object.keys(formattedDataFields)
-        .sort()
-        .forEach(function (v, i) {
-          sortedDataFields[v] = formattedDataFields[v];
-        });
-
-      if (contact && !syncOperations.update) {
-        throw new Errors.InfoError(
-          "Destination sync mode does not allow updating existing profiles."
-        );
-      }
-
-      if (!contact && !syncOperations.create) {
-        throw new Errors.InfoError(
-          "Destination sync mode does not allow creating new profiles."
-        );
-      }
-
-      // change email
-      if (oldContact) {
-        await deleteContactOrClearGroups(
-          client,
-          appId,
-          appOptions,
-          syncOperations,
-          oldContact,
-          oldGroups
-        );
-      }
-
-      // await client.createOrUpdateContact(sortedDataFields);
-
-      // add to lists
-      for (const i in newGroups) {
-        const group = newGroups[i];
-        await addToList(client, appId, appOptions, email, group);
-      }
-
-      // remove from lists
-      for (const i in oldGroups) {
-        const group = oldGroups[i];
-        if (!newGroups.includes(group))
-          await removeFromList(client, appId, appOptions, email, group);
-      }
+    const profileToDelete = oldProfile || profile;
+    if (profileToDelete) {
+      await deleteProfileOrClearGroups(client, syncOperations, profileToDelete);
     }
-
     return { success: true };
-  } catch (error) {
-    if (error?.response?.status === 429) {
-      return { error, success: false, retryDelay: 1000 * 11 }; // the most common rate-limit error from hubspot is in 10-second intervals
-    } else {
-      throw error;
+  } else {
+    // create the profile and set properties
+    const deletePropertiesPayload = {};
+    const newPropertyKeys = Object.keys(newProfileProperties);
+    Object.keys(oldProfileProperties)
+      .filter((k) => !newPropertyKeys.includes(k))
+      .forEach((k) => (deletePropertiesPayload[k] = null));
+
+    let payload = Object.assign(newProfileProperties, deletePropertiesPayload);
+    const formattedDataFields = {};
+    for (const key of Object.keys(payload)) {
+      if (key === "$distinct_id") {
+        continue;
+      }
+      formattedDataFields[key] = formatVar(payload[key]);
+    }
+    formattedDataFields["groups"] = getGroupsListToExport(
+      profile,
+      oldGroups,
+      newGroups
+    );
+    if (profile && !syncOperations.update) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not allow updating existing profiles."
+      );
+    }
+
+    if (!profile && !syncOperations.create) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not allow creating new profiles."
+      );
+    }
+    // on distinctId change: delete the old one or clear its groups.
+    if (oldProfile) {
+      await deleteProfileOrClearGroups(client, syncOperations, oldProfile);
+    }
+
+    await client.ingestion.profile.update(distinctId, formattedDataFields);
+  }
+  return { success: true };
+};
+
+function getGroupsListToExport(profile, oldGroups, newGroups) {
+  const groups = newGroups;
+  if (profile) {
+    const removedGroups = [];
+    for (const group of oldGroups) {
+      if (!groups.includes(group)) {
+        removedGroups.push(group);
+      }
+    }
+    for (const group of profile["$properties"]["groups"]) {
+      if (!groups.includes(group) && !removedGroups.includes(group)) {
+        groups.push(group);
+      }
     }
   }
-};
+  return groups;
+}
 
 function formatVar(value) {
   if (value === undefined || value === null) {
     return null;
   }
-  if (value instanceof Date) {
-    value.setUTCHours(0, 0, 0, 0); //Must be midnight.
-    return value.getTime();
-  } else {
-    return value;
-  }
+  return value;
 }

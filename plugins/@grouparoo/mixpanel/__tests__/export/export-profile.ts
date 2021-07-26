@@ -1,55 +1,48 @@
 import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
+
 import { exportProfile } from "../../src/lib/export/exportProfile";
 import { connect } from "../../src/lib/connect";
-import {
-  loadAppOptions,
-  updater,
-  loadDestinationOptions,
-} from "../utils/nockHelper";
-import { generateMailchimpId } from "../../src/lib/shared/generateMailchimpId";
-import fs from "fs";
+import { loadAppOptions, updater } from "../utils/nockHelper";
+import Mixpanel from "../../src/lib/client/mixpanel";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
+import { indexProfiles } from "../utils/shared";
 
-const appId = "app_ch1mp-dfsjklfdsklj90-01-3k";
+const appId = "fgQIQXZKhkKQMmj7TeZjCDWB9+ijp4aAUA3039==";
 
-let apiClient: any;
+let client: Mixpanel;
 let user: any;
-let emails: any;
-const phone_number = "+5583999999999";
+const phoneNumber = "+5583999999999";
 const newPhoneNumber = "+5583999999998";
-const first_name = "Caio";
-const last_name = "Silveira";
-const intermediateName = "Samba";
+const otherPhoneNumber = "+5583999999997";
+const email = "caio.silveira@mailinator.com";
+const alternativeEmail = "lucas.nogueira@mailinator.com";
+const otherEmail = "sandro.arturo@mailinator.com";
+const firstName = "Caio";
+const lastName = "Silveira";
 const alternativeName = "Evan";
+const alternativeLastName = "Podolsky";
+const otherName = "Lucas";
+const newEmail = "carlos.solimoes@mailinator.com";
 const newName = "Carlos";
 const listOne = "List One";
 const listTwo = "List Two";
 const listThree = "List Three";
 const listFour = "List Four";
-const numberField = 15.5;
+
+const ltv = 3039;
+const hugeTime = helper.longTime * 6;
+
+const brandNewEmail = "jake.jill@mailinator.com";
 const brandNewName = "Jake";
-const otherBrandNewName = "Carl";
-const invalidPhone = "000";
-const invalidNumber = "AAAAA";
-const invalidEmail = "AAAAA";
-const otherInvalidEmail = "foo@example.com";
-
-// comment this to generate new emails.
-// const newEmails = true;
-// or this to use the existing ones;
-const newEmails = false;
-
-const emailsFile = path.join(__dirname, "../", "data", "emails.json");
-
-if (fs.existsSync(emailsFile) && !newEmails) {
-  emails = JSON.parse(fs.readFileSync(emailsFile, "utf-8"));
-} else {
-  generateEmails();
-}
+const nonexistentEmail = "pilo.paz@mailinator.com";
+const message =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\n" +
+  "in, accumsan non quam.";
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
+
 // these comments to use nock
 const newNock = false;
 require("./../fixtures/export-profile");
@@ -58,91 +51,28 @@ require("./../fixtures/export-profile");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-const destinationOptions = loadDestinationOptions(newNock);
-
-function generateRandomEmail() {
-  const hash =
-    Math.random().toString(36).substring(2, 15) +
-    Math.random().toString(36).substring(2, 15);
-  return `${hash}@grouparoo.com`;
-}
-
-function generateEmails() {
-  emails = {
-    email: generateRandomEmail(),
-    alternativeEmail: generateRandomEmail(),
-    otherEmail: generateRandomEmail(),
-    newEmail: generateRandomEmail(),
-    brandNewEmail: generateRandomEmail(),
-    nonexistentEmail: generateRandomEmail(),
-  };
-  fs.writeFileSync(emailsFile, JSON.stringify(emails));
-}
 
 async function deleteUsers(suppressErrors) {
-  const { listId } = destinationOptions;
-  for (const key in emails) {
-    try {
-      const mailchimpId = generateMailchimpId(emails[key]);
-      await apiClient.post(`/lists/${listId}/members/${mailchimpId}/tags`, {
-        tags: [
-          { name: listOne.toLowerCase(), status: "inactive" },
-          { name: listTwo.toLowerCase(), status: "inactive" },
-          { name: listThree.toLowerCase(), status: "inactive" },
-          { name: listFour.toLowerCase(), status: "inactive" },
-        ],
-      });
-      await apiClient.delete(`/lists/${listId}/members/${mailchimpId}`);
-    } catch (err) {
-      if (!suppressErrors) {
-        throw err;
-      }
+  try {
+    for (const emailToDelete of [
+      email,
+      alternativeEmail,
+      otherEmail,
+      newEmail,
+      brandNewEmail,
+    ]) {
+      await client.ingestion.profile.delete(emailToDelete);
     }
-  }
-}
-
-async function unsubscribeUser(email) {
-  const { listId } = destinationOptions;
-  const mailchimpId = generateMailchimpId(email);
-  try {
-    await apiClient.put(`/lists/${listId}/members/${mailchimpId}`, {
-      status: "unsubscribed",
-    });
   } catch (err) {
-    return null;
-  }
-}
-
-async function subscribeUser(email) {
-  const { listId } = destinationOptions;
-  const mailchimpId = generateMailchimpId(email);
-  try {
-    await apiClient.put(`/lists/${listId}/members/${mailchimpId}`, {
-      status: "subscribed",
-    });
-  } catch (err) {
-    return null;
-  }
-}
-
-async function getUser(email) {
-  const { listId } = destinationOptions;
-  const mailchimpId = generateMailchimpId(email);
-  try {
-    const response = await apiClient.get(
-      `/lists/${listId}/members/${mailchimpId}`
-    );
-    if (!response["unique_email_id"] || response.status === "archived") {
-      return null;
+    if (!suppressErrors) {
+      throw err;
     }
-    return response;
-  } catch (err) {
-    return null;
   }
 }
 
 async function cleanUp(suppressErrors) {
   await deleteUsers(suppressErrors);
+  await indexProfiles(newNock);
 }
 
 async function runExport({
@@ -160,7 +90,7 @@ async function runExport({
     app: null,
     destination: null,
     destinationId: null,
-    destinationOptions,
+    destinationOptions: null,
     syncOperations,
     export: {
       profile: null,
@@ -174,615 +104,776 @@ async function runExport({
   });
 }
 
-describe("mailchimp/exportProfile", () => {
+describe("mixpanel/exportProfile", () => {
   beforeAll(async () => {
-    apiClient = await connect(appOptions);
-    await cleanUp(true);
-  }, helper.setupTime);
+    client = await connect(appOptions);
+    await cleanUp(false);
+  }, hugeTime);
 
   afterAll(async () => {
     await cleanUp(true);
-    await apiClient.end();
-  }, helper.setupTime);
+  }, hugeTime);
 
-  test("cannot create profile on Mailchimp if sync mode does not allow it", async () => {
-    user = await getUser(emails["email"]);
-    expect(user).toBe(null);
+  test(
+    "cannot create a profile if sync mode does not allow it",
+    async () => {
+      user = await client.query.profile.getByDistinctId(email);
+      expect(user).toBe(null);
 
-    await expect(
-      runExport({
-        syncOperations: { create: false, update: true, delete: true },
-        oldProfileProperties: {},
-        newProfileProperties: {
-          email_address: emails["email"],
-          FNAME: first_name,
-        },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-      })
-    ).rejects.toThrow(/sync mode does not allow creating/);
-  });
+      await expect(
+        runExport({
+          syncOperations: { create: false, update: true, delete: true },
+          oldProfileProperties: {},
+          newProfileProperties: { $distinct_id: email, $first_name: firstName },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+        })
+      ).rejects.toThrow(/sync mode does not allow creating/);
+    },
+    hugeTime
+  );
 
-  test("can create profile on Mailchimp", async () => {
-    user = await getUser(emails["email"]);
-    expect(user).toBe(null);
+  test(
+    "can create profile",
+    async () => {
+      user = await client.query.profile.getByDistinctId(email);
+      expect(user).toBe(null);
 
-    await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
-        email_address: emails["email"],
-        FNAME: first_name,
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
-
-    user = await getUser(emails["email"]);
-    expect(user).not.toBe(null);
-    expect(user["email_address"]).toBe(emails["email"]);
-    expect(user["merge_fields"]["FNAME"]).toBe(first_name);
-  });
-
-  test("can add user variables", async () => {
-    await runExport({
-      oldProfileProperties: {
-        email_address: emails["email"],
-        FNAME: first_name,
-      },
-      newProfileProperties: {
-        email_address: emails["email"],
-        FNAME: first_name,
-        LNAME: last_name,
-        PHONE: phone_number,
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
-
-    user = await getUser(emails["email"]);
-    expect(user).not.toBe(null);
-    expect(user["email_address"]).toBe(emails["email"]);
-    expect(user["merge_fields"]["FNAME"]).toBe(first_name);
-    expect(user["merge_fields"]["LNAME"]).toBe(last_name);
-    expect(user["merge_fields"]["PHONE"]).toBe(phone_number);
-  });
-
-  test("can unsubscribe a user and after change user variables the status is still unsubscribed", async () => {
-    // Phone must be valid.
-    await unsubscribeUser(emails["email"]);
-    user = await getUser(emails["email"]);
-    expect(user).not.toBe(null);
-    expect(user["email_address"]).toBe(emails["email"]);
-    expect(user["status"]).toBe("unsubscribed");
-
-    await runExport({
-      oldProfileProperties: {
-        email_address: emails["email"],
-        FNAME: first_name,
-      },
-      newProfileProperties: {
-        email_address: emails["email"],
-        FNAME: intermediateName,
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
-    user = await getUser(emails["email"]);
-    expect(user).not.toBe(null);
-    expect(user["email_address"]).toBe(emails["email"]);
-    expect(user["merge_fields"]["FNAME"]).toBe(intermediateName);
-    expect(user["status"]).toBe("unsubscribed");
-
-    //subscribe the user back to avoid interference on other tests.
-    await subscribeUser(emails["email"]);
-    user = await getUser(emails["email"]);
-    expect(user["status"]).toBe("subscribed");
-  });
-
-  test("can change user variables", async () => {
-    // Phone must be valid.
-    await runExport({
-      oldProfileProperties: {
-        email_address: emails["email"],
-        FNAME: first_name,
-        LNAME: last_name,
-        PHONE: phone_number,
-      },
-      newProfileProperties: {
-        email_address: emails["email"],
-        FNAME: alternativeName,
-        LNAME: last_name,
-        PHONE: newPhoneNumber,
-        LTV: numberField,
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
-    user = await getUser(emails["email"]);
-    expect(user).not.toBe(null);
-    expect(user["email_address"]).toBe(emails["email"]);
-    expect(user["merge_fields"]["FNAME"]).toBe(alternativeName);
-    expect(user["merge_fields"]["LNAME"]).toBe(last_name);
-    expect(user["merge_fields"]["PHONE"]).toBe(newPhoneNumber);
-    expect(user["merge_fields"]["LTV"]).toBe(numberField);
-  });
-
-  test("can try to change user variables using invalid data", async () => {
-    // LTV and PHONE must be valid.
-    await expect(
-      runExport({
-        oldProfileProperties: {
-          email_address: emails["email"],
-          FNAME: alternativeName,
-          LNAME: last_name,
-          PHONE: newPhoneNumber,
-          LTV: numberField,
-        },
-        newProfileProperties: {
-          email_address: emails["email"],
-          FNAME: alternativeName,
-          LNAME: last_name,
-          PHONE: invalidPhone,
-          LTV: invalidNumber,
-        },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-      })
-    ).rejects.toThrow(/your merge fields were invalid/i);
-  });
-
-  test("can clear user variables", async () => {
-    await runExport({
-      oldProfileProperties: {
-        email_address: emails["email"],
-        FNAME: alternativeName,
-        LNAME: last_name,
-        PHONE: newPhoneNumber,
-        LTV: numberField,
-      },
-      newProfileProperties: {
-        email_address: emails["email"],
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
-
-    user = await getUser(emails["email"]);
-    expect(user).not.toBe(null);
-    expect(user["email_address"]).toBe(emails["email"]);
-    expect(user["merge_fields"]["FNAME"]).toBe("");
-    expect(user["merge_fields"]["LNAME"]).toBe("");
-    expect(user["merge_fields"]["PHONE"]).toBe("");
-    expect(user["merge_fields"]["LTV"]).toBe("");
-  });
-
-  test("can add user to a list that doesn't exist yet", async () => {
-    await runExport({
-      oldProfileProperties: {
-        email_address: emails["email"],
-      },
-      newProfileProperties: {
-        email_address: emails["email"],
-      },
-      oldGroups: [],
-      newGroups: [listOne, listTwo],
-      toDelete: false,
-    });
-
-    user = await getUser(emails["email"]);
-    expect(user["tags"].length).toEqual(2);
-    expect(user["tags"]).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ name: listOne.toLowerCase() }),
-        expect.objectContaining({ name: listTwo.toLowerCase() }),
-      ])
-    );
-  });
-
-  test("can remove a user from a list", async () => {
-    await runExport({
-      oldProfileProperties: {
-        email_address: emails["email"],
-      },
-      newProfileProperties: {
-        email_address: emails["email"],
-      },
-      oldGroups: [listOne, listTwo],
-      newGroups: [listOne],
-      toDelete: false,
-    });
-
-    user = await getUser(emails["email"]);
-    expect(user["tags"].length).toEqual(1);
-    expect(user["tags"]).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ name: listOne.toLowerCase() }),
-        expect.not.objectContaining({ name: listTwo.toLowerCase() }),
-      ])
-    );
-  });
-
-  test("it does not change already subscribed lists", async () => {
-    await runExport({
-      oldProfileProperties: {
-        email_address: emails["email"],
-      },
-      newProfileProperties: {
-        email_address: emails["email"],
-      },
-      oldGroups: [],
-      newGroups: [listTwo, listThree],
-      toDelete: false,
-    });
-
-    user = await getUser(emails["email"]);
-    expect(user["tags"].length).toEqual(3);
-    expect(user["tags"]).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ name: listOne.toLowerCase() }),
-        expect.objectContaining({ name: listTwo.toLowerCase() }),
-        expect.objectContaining({ name: listThree.toLowerCase() }),
-      ])
-    );
-  });
-
-  test("it tries to unsubscribe non subscribed list", async () => {
-    await runExport({
-      oldProfileProperties: {
-        email_address: emails["email"],
-      },
-      newProfileProperties: {
-        email_address: emails["email"],
-      },
-      oldGroups: [listFour],
-      newGroups: [],
-      toDelete: false,
-    });
-    user = await getUser(emails["email"]);
-    expect(user["tags"].length).toEqual(3);
-    expect(user["tags"]).toEqual(
-      expect.arrayContaining([
-        expect.not.objectContaining({ name: listFour.toLowerCase() }),
-      ])
-    );
-  });
-
-  test("it can change the email address", async () => {
-    await runExport({
-      oldProfileProperties: {
-        email_address: emails["email"],
-      },
-      newProfileProperties: {
-        email_address: emails["alternativeEmail"],
-      },
-      oldGroups: [listOne, listTwo, listThree],
-      newGroups: [listOne],
-      toDelete: false,
-    });
-
-    user = await getUser(emails["alternativeEmail"]);
-    expect(user).not.toBe(null);
-    expect(user["tags"].length).toEqual(1);
-    expect(user["email_address"]).toBe(emails["alternativeEmail"]);
-    expect(user["tags"]).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ name: listOne.toLowerCase() }),
-      ])
-    );
-  });
-
-  test("cannot change email address if sync mode does not allow it", async () => {
-    await expect(
-      runExport({
-        syncOperations: { create: true, update: false, delete: true },
-        oldProfileProperties: {
-          email_address: emails["alternativeEmail"],
-        },
-        newProfileProperties: {
-          email_address: emails["email"],
-        },
-        oldGroups: [listOne],
-        newGroups: [listOne],
-        toDelete: false,
-      })
-    ).rejects.toThrow(/sync mode does not allow updating/);
-  });
-
-  test("it can change the email address along other properties", async () => {
-    await runExport({
-      oldProfileProperties: {
-        email_address: emails["alternativeEmail"],
-      },
-      newProfileProperties: {
-        email_address: emails["otherEmail"],
-        FNAME: alternativeName,
-        PHONE: newPhoneNumber,
-      },
-      oldGroups: [listOne],
-      newGroups: [listOne, listTwo, listThree, listFour],
-      toDelete: false,
-    });
-
-    user = await getUser(emails["otherEmail"]);
-    expect(user).not.toBe(null);
-    expect(user["email_address"]).toBe(emails["otherEmail"]);
-    expect(user["merge_fields"]["FNAME"]).toBe(alternativeName);
-    expect(user["merge_fields"]["PHONE"]).toBe(newPhoneNumber);
-    expect(user["tags"].length).toEqual(4);
-    expect(user["tags"]).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ name: listOne.toLowerCase() }),
-        expect.objectContaining({ name: listTwo.toLowerCase() }),
-        expect.objectContaining({ name: listThree.toLowerCase() }),
-        expect.objectContaining({ name: listFour.toLowerCase() }),
-      ])
-    );
-  });
-
-  test("cannot delete a user if sync mode does not allow it", async () => {
-    await expect(
-      runExport({
-        syncOperations: { create: true, update: true, delete: false },
-        oldProfileProperties: {
-          email_address: emails["otherEmail"],
-        },
-        newProfileProperties: {
-          email_address: emails["otherEmail"],
-        },
-        oldGroups: [listOne, listTwo, listThree], // missing listFour to make sure that we're only removing the tags we know about;
-        newGroups: [],
-        toDelete: true,
-      })
-    ).rejects.toThrow(/sync mode does not allow removing/);
-    user = await getUser(emails["otherEmail"]);
-    expect(user).not.toBe(null);
-    expect(user["email_address"]).toBe(emails["otherEmail"]);
-    expect(user["tags"].length).toEqual(4);
-    expect(user["tags"]).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ name: listOne.toLowerCase() }),
-        expect.objectContaining({ name: listTwo.toLowerCase() }),
-        expect.objectContaining({ name: listThree.toLowerCase() }),
-        expect.objectContaining({ name: listFour.toLowerCase() }),
-      ])
-    );
-  });
-
-  test("can delete and restore a user", async () => {
-    await runExport({
-      oldProfileProperties: {
-        email_address: emails["otherEmail"],
-      },
-      newProfileProperties: {
-        email_address: emails["otherEmail"],
-      },
-      oldGroups: [listFour],
-      newGroups: [],
-      toDelete: true,
-    });
-
-    user = await getUser(emails["otherEmail"]);
-    expect(user).toBe(null);
-
-    await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
-        email_address: emails["otherEmail"],
-        FNAME: first_name,
-      },
-      oldGroups: [],
-      newGroups: [listThree],
-      toDelete: false,
-    });
-
-    user = await getUser(emails["otherEmail"]);
-    expect(user["tags"].length).toEqual(4);
-    expect(user["tags"]).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ name: listOne.toLowerCase() }),
-        expect.objectContaining({ name: listTwo.toLowerCase() }),
-        expect.objectContaining({ name: listThree.toLowerCase() }),
-        expect.objectContaining({ name: listFour.toLowerCase() }),
-      ])
-    );
-    expect(user).not.toBe(null);
-  });
-
-  test("can delete a user", async () => {
-    await runExport({
-      oldProfileProperties: {
-        email_address: emails["otherEmail"],
-      },
-      newProfileProperties: {
-        email_address: emails["otherEmail"],
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: true,
-    });
-
-    user = await getUser(emails["otherEmail"]);
-    expect(user).toBe(null);
-  });
-
-  test("can try to delete a user that does not exist.", async () => {
-    user = await getUser(emails["otherEmail"]);
-    expect(user).toBe(null);
-    await runExport({
-      oldProfileProperties: {
-        email_address: emails["otherEmail"],
-      },
-      newProfileProperties: {
-        email_address: emails["otherEmail"],
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: true,
-    });
-    user = await getUser(emails["otherEmail"]);
-    expect(user).toBe(null);
-  });
-
-  test("can add a user and add this user to a list at the same time.", async () => {
-    user = await getUser(emails["newEmail"]);
-    expect(user).toBe(null);
-
-    await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
-        email_address: emails["newEmail"],
-        FNAME: newName,
-      },
-      oldGroups: [],
-      newGroups: [listFour],
-      toDelete: false,
-    });
-
-    user = await getUser(emails["newEmail"]);
-    expect(user).not.toBe(null);
-    expect(user["email_address"]).toBe(emails["newEmail"]);
-    expect(user["merge_fields"]["FNAME"]).toBe(newName);
-
-    expect(user["tags"].length).toEqual(1);
-    expect(user["tags"]).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ name: listFour.toLowerCase() }),
-      ])
-    );
-  });
-
-  test("try to delete a user passing nonexistent email on the newProfileProperties and oldProfileProperties", async () => {
-    let brandNewUser = await getUser(emails["brandNewEmail"]);
-    expect(brandNewUser).toBe(null);
-    let nonexistentUser = await getUser(emails["nonexistentEmail"]);
-    expect(nonexistentUser).toBe(null);
-
-    await runExport({
-      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
-      newProfileProperties: {
-        email_address: emails["brandNewEmail"],
-        FNAME: brandNewName,
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: true,
-    });
-
-    user = await getUser(emails["brandNewEmail"]);
-    expect(user).toBe(null);
-    nonexistentUser = await getUser(emails["nonexistentEmail"]);
-    expect(nonexistentUser).toBe(null);
-  });
-
-  test("can add a user passing a nonexistent email on the oldProfileProperties", async () => {
-    let brandNewUser = await getUser(emails["brandNewEmail"]);
-    expect(brandNewUser).toBe(null);
-    let nonexistentUser = await getUser(emails["nonexistentEmail"]);
-    expect(nonexistentUser).toBe(null);
-
-    await runExport({
-      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
-      newProfileProperties: {
-        email_address: emails["brandNewEmail"],
-        FNAME: brandNewName,
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
-
-    user = await getUser(emails["brandNewEmail"]);
-    expect(user).not.toBe(null);
-    expect(user["email_address"]).toBe(emails["brandNewEmail"]);
-    expect(user["merge_fields"]["FNAME"]).toBe(brandNewName);
-    nonexistentUser = await getUser(emails["nonexistentEmail"]);
-    expect(nonexistentUser).toBe(null);
-  });
-
-  test("can change a user email and other variables passing a existing email on the newProfileProperties and nonexistent email on the oldProfileProperties", async () => {
-    let brandNewUser = await getUser(emails["brandNewEmail"]);
-    expect(brandNewUser).not.toBe(null);
-    let nonexistentUser = await getUser(emails["nonexistentEmail"]);
-    expect(nonexistentUser).toBe(null);
-
-    await runExport({
-      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
-      newProfileProperties: {
-        email_address: emails["brandNewEmail"],
-        FNAME: otherBrandNewName,
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
-
-    user = await getUser(emails["brandNewEmail"]);
-    expect(user).not.toBe(null);
-    expect(user["email_address"]).toBe(emails["brandNewEmail"]);
-    expect(user["merge_fields"]["FNAME"]).toBe(otherBrandNewName);
-    nonexistentUser = await getUser(emails["nonexistentEmail"]);
-    expect(nonexistentUser).toBe(null);
-  });
-
-  test("can change a user email and delete it passing a existing email on the newProfileProperties and nonexistent email on the oldProfileProperties", async () => {
-    let brandNewUser = await getUser(emails["brandNewEmail"]);
-    expect(brandNewUser).not.toBe(null);
-    let nonexistentUser = await getUser(emails["nonexistentEmail"]);
-    expect(nonexistentUser).toBe(null);
-
-    await runExport({
-      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
-      newProfileProperties: {
-        email_address: emails["brandNewEmail"],
-        FNAME: brandNewName,
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: true,
-    });
-
-    user = await getUser(emails["brandNewEmail"]);
-    expect(user).toBe(null);
-    nonexistentUser = await getUser(emails["nonexistentEmail"]);
-    expect(nonexistentUser).toBe(null);
-  });
-
-  test("can't add a user passing a invalid email", async () => {
-    await expect(
-      runExport({
-        oldProfileProperties: {},
-        newProfileProperties: {
-          email_address: invalidEmail,
-        },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-      })
-    ).rejects.toThrow();
-  });
-
-  test("can't use an email that looks like a fake email (should return an info level error)", async () => {
-    try {
       await runExport({
         oldProfileProperties: {},
+        newProfileProperties: { $distinct_id: email, $first_name: firstName },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+
+      user = await client.query.profile.getByDistinctId(email);
+      expect(user).not.toBe(null);
+      expect(user["$distinct_id"]).toBe(email);
+      expect(user["$properties"]["$first_name"]).toBe(firstName);
+    },
+    hugeTime
+  );
+
+  test(
+    "can add profile properties",
+    async () => {
+      await runExport({
+        oldProfileProperties: { $distinct_id: email, $first_name: firstName },
         newProfileProperties: {
-          email_address: otherInvalidEmail,
+          $distinct_id: email,
+          $first_name: firstName,
+          $last_name: lastName,
+          $phone: phoneNumber,
         },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
       });
-    } catch (error) {
-      expect(error).toBeInstanceOf(Error);
-      expect(error.message).toMatch(/looks fake or invalid/i);
-      expect(error.errorLevel).toBe("info");
-    }
-  });
+      await indexProfiles(newNock);
+      const user = await client.query.profile.getByDistinctId(email);
+      expect(user["$distinct_id"]).toBe(email);
+      expect(user["$properties"]["$first_name"]).toBe(firstName);
+      expect(user["$properties"]["$last_name"]).toBe(lastName);
+      expect(user["$properties"]["$phone"]).toBe(phoneNumber);
+    },
+    hugeTime
+  );
+
+  test(
+    "cannot update existing profile if sync mode does not allow it",
+    async () => {
+      await expect(
+        runExport({
+          syncOperations: { create: true, update: false, delete: true },
+          oldProfileProperties: {
+            $distinct_id: email,
+            $first_name: firstName,
+            $last_name: lastName,
+            $phone: phoneNumber,
+          },
+          newProfileProperties: {
+            $distinct_id: email,
+            $first_name: alternativeName,
+            $last_name: alternativeLastName,
+            $phone: newPhoneNumber,
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+        })
+      ).rejects.toThrow(/sync mode does not allow updating/);
+
+      // no change
+      const user = await client.query.profile.getByDistinctId(email);
+      expect(user["$distinct_id"]).toBe(email);
+      expect(user["$properties"]["$first_name"]).toBe(firstName);
+      expect(user["$properties"]["$last_name"]).toBe(lastName);
+      expect(user["$properties"]["$phone"]).toBe(phoneNumber);
+    },
+    hugeTime
+  );
+
+  test(
+    "can change profile properties",
+    async () => {
+      // Phone must be valid.
+      await runExport({
+        oldProfileProperties: {
+          $distinct_id: email,
+          $first_name: firstName,
+          $last_name: lastName,
+          $phone: phoneNumber,
+        },
+        newProfileProperties: {
+          $distinct_id: email,
+          $first_name: alternativeName,
+          $last_name: alternativeLastName,
+          $phone: newPhoneNumber,
+          message, //custom string
+          ltv, //custom number
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+
+      const user = await client.query.profile.getByDistinctId(email);
+      expect(user["$distinct_id"]).toBe(email);
+      expect(user["$properties"]["$first_name"]).toBe(alternativeName);
+      expect(user["$properties"]["$last_name"]).toBe(alternativeLastName);
+      expect(user["$properties"]["$phone"]).toBe(newPhoneNumber);
+      expect(user["$properties"]["message"]).toBe(message);
+      expect(user["$properties"]["ltv"]).toBe(ltv);
+    },
+    hugeTime
+  );
+
+  test(
+    "can clear profile properties",
+    async () => {
+      await runExport({
+        oldProfileProperties: {
+          $distinct_id: email,
+          $first_name: alternativeName,
+          $last_name: alternativeLastName,
+          $phone: newPhoneNumber,
+          message,
+          ltv,
+        },
+        newProfileProperties: {
+          $distinct_id: email,
+          $phone: newPhoneNumber,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+
+      const user = await client.query.profile.getByDistinctId(email);
+      expect(user["$distinct_id"]).toBe(email);
+      expect(user["$properties"]["$first_name"]).toBeNull();
+      expect(user["$properties"]["$last_name"]).toBeNull();
+      expect(user["$properties"]["$phone"]).toBe(newPhoneNumber); //not deleted
+      expect(user["$properties"]["message"]).toBeNull();
+      expect(user["$properties"]["ltv"]).toBeNull();
+    },
+    hugeTime
+  );
+
+  test(
+    "can add profile to a group that doesn't exist yet",
+    async () => {
+      await runExport({
+        oldProfileProperties: {
+          $distinct_id: email,
+        },
+        newProfileProperties: {
+          $distinct_id: email,
+        },
+        oldGroups: [],
+        newGroups: [listOne, listTwo],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+
+      const user = await client.query.profile.getByDistinctId(email);
+      expect(user["$distinct_id"]).toBe(email);
+      expect(user["$properties"]["groups"].length).toBe(2);
+      expect(user["$properties"]["groups"]).toEqual(
+        expect.arrayContaining([listOne, listTwo])
+      );
+    },
+    hugeTime
+  );
+
+  test(
+    "can remove a profile from a group",
+    async () => {
+      await runExport({
+        oldProfileProperties: {
+          $distinct_id: email,
+        },
+        newProfileProperties: {
+          $distinct_id: email,
+        },
+        oldGroups: [listOne, listTwo],
+        newGroups: [listOne],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+
+      const user = await client.query.profile.getByDistinctId(email);
+      expect(user["$distinct_id"]).toBe(email);
+      expect(user["$properties"]["groups"].length).toBe(1);
+      expect(user["$properties"]["groups"]).toEqual(
+        expect.arrayContaining([listOne])
+      );
+    },
+    hugeTime
+  );
+
+  test(
+    "it does not change already subscribed groups",
+    async () => {
+      await runExport({
+        oldProfileProperties: {
+          $distinct_id: email,
+        },
+        newProfileProperties: {
+          $distinct_id: email,
+        },
+        oldGroups: [],
+        newGroups: [listTwo, listThree],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+      const user = await client.query.profile.getByDistinctId(email);
+      expect(user["$distinct_id"]).toBe(email);
+      expect(user["$properties"]["groups"].length).toBe(3);
+      expect(user["$properties"]["groups"]).toEqual(
+        expect.arrayContaining([listOne, listTwo, listThree])
+      );
+    },
+    hugeTime
+  );
+
+  test(
+    "it tries to add non added group",
+    async () => {
+      await runExport({
+        oldProfileProperties: {
+          $distinct_id: email,
+        },
+        newProfileProperties: {
+          $distinct_id: email,
+        },
+        oldGroups: [listFour],
+        newGroups: [],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+      const user = await client.query.profile.getByDistinctId(email);
+      expect(user["$distinct_id"]).toBe(email);
+      expect(user["$properties"]["groups"].length).toBe(3);
+      expect(user["$properties"]["groups"]).toEqual(
+        expect.arrayContaining([listOne, listTwo, listThree]) //there is no listFour
+      );
+    },
+    hugeTime
+  );
+
+  test(
+    "Change email when only old exists (ENRICH mode)",
+    async () => {
+      await expect(
+        runExport({
+          syncOperations: DestinationSyncModeData.enrich.operations,
+          oldProfileProperties: {
+            $distinct_id: email,
+          },
+          newProfileProperties: {
+            $distinct_id: alternativeEmail,
+          },
+          oldGroups: [listOne, listTwo, listThree],
+          newGroups: [listOne, listTwo, listThree],
+          toDelete: false,
+        })
+      ).rejects.toThrow(/sync mode does not allow creating/);
+
+      const user = await client.query.profile.getByDistinctId(email);
+      expect(user["$distinct_id"]).toBe(email);
+      expect(user["$properties"]["groups"].length).toBe(3);
+      expect(user["$properties"]["groups"]).toEqual(
+        expect.arrayContaining([listOne, listTwo, listThree]) //there is no listFour
+      );
+
+      const newUser = await client.query.profile.getByDistinctId(
+        alternativeEmail
+      );
+      expect(newUser).toBe(null);
+    },
+    hugeTime
+  );
+
+  test(
+    "Change email when only old exists (ADDITIVE mode)",
+    async () => {
+      await runExport({
+        syncOperations: DestinationSyncModeData.additive.operations,
+        oldProfileProperties: {
+          $distinct_id: email,
+        },
+        newProfileProperties: {
+          $distinct_id: alternativeEmail,
+        },
+        oldGroups: [listOne, listTwo, listThree],
+        newGroups: [listOne, listTwo, listThree],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+      const oldUser = await client.query.profile.getByDistinctId(email);
+      expect(oldUser).not.toBe(null);
+      expect(oldUser["$distinct_id"]).toBe(email);
+      expect(oldUser["$properties"]["groups"].length).toBe(0);
+
+      const newUser = await client.query.profile.getByDistinctId(
+        alternativeEmail
+      );
+      expect(newUser).not.toBe(null);
+      expect(newUser["$distinct_id"]).toBe(alternativeEmail);
+      expect(newUser["$properties"]["groups"].length).toBe(3);
+      expect(newUser["$properties"]["groups"]).toEqual(
+        expect.arrayContaining([listOne, listTwo, listThree]) //there is no listFour
+      );
+    },
+    hugeTime
+  );
+
+  test(
+    "Change email when both exist (ADDITIVE mode)",
+    async () => {
+      await runExport({
+        syncOperations: DestinationSyncModeData.additive.operations,
+        oldProfileProperties: {
+          $distinct_id: alternativeEmail,
+        },
+        newProfileProperties: {
+          $distinct_id: email,
+        },
+        oldGroups: [listOne, listTwo, listThree],
+        newGroups: [listOne, listTwo, listThree],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+
+      // old user still there
+      const oldUser = await client.query.profile.getByDistinctId(
+        alternativeEmail
+      );
+      expect(oldUser).not.toBe(null);
+      expect(oldUser["$distinct_id"]).toBe(alternativeEmail);
+      expect(oldUser["$properties"]["groups"].length).toBe(0);
+      expect(oldUser["$properties"]["groups"]).toEqual([]); // but has been removed from lists
+
+      // update new user
+      const newUser = await client.query.profile.getByDistinctId(email);
+      expect(newUser).not.toBeNull();
+      expect(newUser["$distinct_id"]).toBe(email);
+      expect(newUser["$properties"]["groups"].length).toBe(3);
+    },
+    hugeTime
+  );
+
+  test(
+    "Change email when both exist (SYNC mode)",
+    async () => {
+      await runExport({
+        syncOperations: DestinationSyncModeData.sync.operations,
+        oldProfileProperties: {
+          $distinct_id: alternativeEmail,
+        },
+        newProfileProperties: {
+          $distinct_id: email,
+        },
+        oldGroups: [listOne, listTwo, listThree],
+        newGroups: [listOne, listTwo, listThree],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+
+      // old user is deleted
+      const oldUser = await client.query.profile.getByDistinctId(
+        alternativeEmail
+      );
+      expect(oldUser).toBeNull();
+
+      // new user created
+      const newUser = await client.query.profile.getByDistinctId(email);
+      expect(newUser).not.toBe(null);
+      expect(newUser["$distinct_id"]).toBe(email);
+      expect(newUser["$properties"]["groups"].length).toBe(3);
+    },
+    hugeTime
+  );
+
+  test(
+    "Change email when only new exists",
+    async () => {
+      let oldUser = await client.query.profile.getByDistinctId(
+        alternativeEmail
+      );
+      expect(oldUser).toBeNull();
+
+      let newUser = await client.query.profile.getByDistinctId(email);
+      expect(newUser).not.toBeNull();
+
+      await runExport({
+        oldProfileProperties: {
+          $distinct_id: alternativeEmail,
+        },
+        newProfileProperties: {
+          $distinct_id: email,
+        },
+        oldGroups: [listOne, listTwo, listThree],
+        newGroups: [listOne],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+      oldUser = await client.query.profile.getByDistinctId(alternativeEmail); //nothing changed
+      expect(oldUser).toBe(null);
+
+      newUser = await client.query.profile.getByDistinctId(email);
+      expect(newUser).not.toBe(null);
+      expect(newUser["$distinct_id"]).toBe(email);
+      expect(newUser["$properties"]["groups"].length).toBe(1);
+      expect(newUser["$properties"]["groups"]).toEqual(
+        expect.arrayContaining([listOne])
+      );
+    },
+    hugeTime
+  );
+
+  test(
+    "it can change the distinct id along other properties",
+    async () => {
+      await runExport({
+        oldProfileProperties: {
+          $distinct_id: email,
+        },
+        newProfileProperties: {
+          $distinct_id: otherEmail,
+          $first_name: otherName,
+          $phone: otherPhoneNumber,
+        },
+        oldGroups: [],
+        newGroups: [listOne],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+
+      const user = await client.query.profile.getByDistinctId(otherEmail);
+      expect(user["$distinct_id"]).toBe(otherEmail);
+      expect(user["$properties"]["$first_name"]).toBe(otherName);
+      expect(user["$properties"]["$phone"]).toBe(otherPhoneNumber);
+      expect(user["$properties"]["groups"].length).toBe(1);
+      expect(user["$properties"]["groups"]).toEqual(
+        expect.arrayContaining([listOne])
+      );
+
+      const oldUser = await client.query.profile.getByDistinctId(email);
+      expect(oldUser).toBe(null);
+    },
+    hugeTime
+  );
+
+  test(
+    "cannot delete a profile if sync mode does not allow it",
+    async () => {
+      await expect(
+        runExport({
+          syncOperations: { create: true, update: true, delete: false },
+          oldProfileProperties: {
+            $distinct_id: otherEmail,
+          },
+          newProfileProperties: {
+            $distinct_id: otherEmail,
+          },
+          oldGroups: [listOne],
+          newGroups: [listOne],
+          toDelete: true,
+        })
+      ).rejects.toThrow(/sync mode does not allow removing/);
+
+      // no changes to the profile
+      const user = await client.query.profile.getByDistinctId(otherEmail);
+      expect(user["$distinct_id"]).toBe(otherEmail);
+      expect(user["$properties"]["$first_name"]).toBe(otherName);
+      expect(user["$properties"]["$phone"]).toBe(otherPhoneNumber);
+      expect(user["$properties"]["groups"].length).toBe(1);
+      expect(user["$properties"]["groups"]).toEqual(
+        expect.arrayContaining([listOne])
+      );
+    },
+    hugeTime
+  );
+
+  test(
+    "can delete a profile",
+    async () => {
+      await runExport({
+        oldProfileProperties: {
+          $distinct_id: otherEmail,
+        },
+        newProfileProperties: {
+          $distinct_id: otherEmail,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: true,
+      });
+      await indexProfiles(newNock);
+      const user = await client.query.profile.getByDistinctId(otherEmail);
+      expect(user).toBe(null);
+    },
+    hugeTime
+  );
+
+  test(
+    "can try to delete a profile that does not exist.",
+    async () => {
+      let user = await client.query.profile.getByDistinctId(otherEmail);
+      expect(user).toBe(null);
+
+      await runExport({
+        oldProfileProperties: {
+          $distinct_id: otherEmail,
+        },
+        newProfileProperties: {
+          $distinct_id: otherEmail,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: true,
+      });
+      await indexProfiles(newNock);
+      user = await client.query.profile.getByDistinctId(otherEmail);
+      expect(user).toBe(null);
+    },
+    hugeTime
+  );
+
+  test(
+    "can add two profiles back",
+    async () => {
+      let user1 = await client.query.profile.getByDistinctId(email);
+      expect(user1).toBe(null);
+
+      let user2 = await client.query.profile.getByDistinctId(otherEmail);
+      expect(user2).toBe(null);
+
+      await runExport({
+        oldProfileProperties: {},
+        newProfileProperties: { $distinct_id: email },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      });
+
+      await runExport({
+        oldProfileProperties: {},
+        newProfileProperties: { $distinct_id: otherEmail },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+
+      user1 = await client.query.profile.getByDistinctId(email);
+      expect(user1).not.toBeNull();
+      expect(user1["$distinct_id"]).toBe(email);
+
+      user2 = await client.query.profile.getByDistinctId(otherEmail);
+      expect(user2).not.toBeNull();
+      expect(user2["$distinct_id"]).toBe(otherEmail);
+    },
+    hugeTime
+  );
+
+  test(
+    "Change email and { toDelete: true } when both exist",
+    async () => {
+      let oldUser = await client.query.profile.getByDistinctId(otherEmail);
+      expect(oldUser).not.toBeNull();
+      expect(oldUser["$distinct_id"]).toBe(otherEmail);
+
+      let newUser = await client.query.profile.getByDistinctId(email);
+      expect(newUser).not.toBeNull();
+      expect(newUser["$distinct_id"]).toBe(email);
+
+      await runExport({
+        oldProfileProperties: {
+          $distinct_id: otherEmail,
+        },
+        newProfileProperties: {
+          $distinct_id: email,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: true,
+      });
+      await indexProfiles(newNock);
+      oldUser = await client.query.profile.getByDistinctId(otherEmail);
+      expect(oldUser).toBe(null);
+
+      newUser = await client.query.profile.getByDistinctId(email);
+      expect(newUser).not.toBe(null);
+      expect(newUser["$distinct_id"]).toBe(email);
+    },
+    hugeTime
+  );
+
+  test(
+    "Change email and { toDelete: true } when only old exists",
+    async () => {
+      let oldUser = await client.query.profile.getByDistinctId(email);
+      expect(oldUser["$distinct_id"]).toBe(email);
+
+      let newUser = await client.query.profile.getByDistinctId(otherEmail);
+      expect(newUser).toBe(null);
+
+      await runExport({
+        oldProfileProperties: {
+          $distinct_id: email,
+        },
+        newProfileProperties: {
+          $distinct_id: otherEmail,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: true,
+      });
+      await indexProfiles(newNock);
+      oldUser = await client.query.profile.getByDistinctId(email);
+      expect(oldUser).toBeNull();
+
+      newUser = await client.query.profile.getByDistinctId(otherEmail);
+      expect(newUser).toBeNull();
+    },
+    hugeTime
+  );
+
+  test(
+    "can add a profile back",
+    async () => {
+      user = await client.query.profile.getByDistinctId(email);
+      expect(user).toBe(null);
+
+      await runExport({
+        oldProfileProperties: {},
+        newProfileProperties: { $distinct_id: email },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+
+      user = await client.query.profile.getByDistinctId(email);
+      expect(user).not.toBe(null);
+      expect(user["$distinct_id"]).toBe(email);
+    },
+    hugeTime
+  );
+
+  test(
+    "Change email and { toDelete: true } when only new exists",
+    async () => {
+      let oldUser = await client.query.profile.getByDistinctId(otherEmail);
+      expect(oldUser).toBeNull();
+
+      let newUser = await client.query.profile.getByDistinctId(email);
+      expect(newUser["$distinct_id"]).toBe(email);
+
+      await runExport({
+        oldProfileProperties: {
+          $distinct_id: otherEmail,
+        },
+        newProfileProperties: {
+          $distinct_id: email,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: true,
+      });
+      await indexProfiles(newNock);
+      oldUser = await client.query.profile.getByDistinctId(otherEmail);
+      expect(oldUser).toBeNull();
+
+      newUser = await client.query.profile.getByDistinctId(email);
+      expect(newUser).toBeNull();
+    },
+    hugeTime
+  );
+
+  test(
+    "can add a user and add this user to a group at the same time.",
+    async () => {
+      let user = await client.query.profile.getByDistinctId(newEmail);
+      expect(user).toBe(null);
+      await runExport({
+        oldProfileProperties: {},
+        newProfileProperties: {
+          $distinct_id: newEmail,
+          $first_name: newName,
+        },
+        oldGroups: [],
+        newGroups: [listFour],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+      user = await client.query.profile.getByDistinctId(newEmail);
+      expect(user["$distinct_id"]).toBe(newEmail);
+      expect(user["$properties"]["$first_name"]).toBe(newName);
+      expect(user["$properties"]["groups"].length).toBe(1);
+      expect(user["$properties"]["groups"]).toEqual(
+        expect.arrayContaining([listFour])
+      );
+    },
+    hugeTime
+  );
+
+  test(
+    "can add a user passing a nonexistent distinct id on the oldProfileProperties",
+    async () => {
+      let brandNewUser = await client.query.profile.getByDistinctId(
+        brandNewEmail
+      );
+      expect(brandNewUser).toBe(null);
+      const nonexistentUser = await client.query.profile.getByDistinctId(
+        nonexistentEmail
+      );
+      expect(nonexistentUser).toBe(null);
+
+      await runExport({
+        oldProfileProperties: { $distinct_id: nonexistentEmail },
+        newProfileProperties: {
+          $distinct_id: brandNewEmail,
+          $first_name: brandNewName,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      });
+      await indexProfiles(newNock);
+      brandNewUser = await client.query.profile.getByDistinctId(brandNewEmail);
+      expect(brandNewUser).not.toBe(null);
+      expect(brandNewUser["$distinct_id"]).toBe(brandNewEmail);
+      expect(brandNewUser["$properties"]["$first_name"]).toBe(brandNewName);
+    },
+    hugeTime
+  );
 });

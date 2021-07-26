@@ -4,22 +4,19 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       class: "destination",
-      type: "mailchimp-export-id",
-      appId: {{{appId}}}, // The ID of the App this Source uses - e.g. `appId: "mailchimp_app"`
+      type: "{{{__pluginName}}}-export",
+      appId: {{{appId}}}, // The ID of the App this Destination uses - e.g. `appId: "iterable_app"`
       groupId: "...", // The ID of the group whose members you want to export - e.g. `groupId: "high_value_customers"`
-      syncMode: {{{syncMode}}}, // How should Grouparoo sync with this destination? Options: only "enrich" is accepted.
+      syncMode: {{{syncMode}}}, // How should Grouparoo sync with this destination? Options: "sync", "additive", "enrich"
 
-
-      options: {
-        listId: "..." // The Mailchimp List ID (https://mailchimp.com/help/find-audience-id/)
-      },
+      options: {},
 
       // Mappings are how you choose which properties to export to this destination.
       // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
       mapping: {
-        email: "email",
-        FNAME: "firstName",
-        LNAME: "lastName",
+        $email: "email",
+        $first_name: "firstName",
+        $last_name: "lastName",
       },
 
       // You can export group memberships.

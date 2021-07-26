@@ -1,13 +1,13 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { DestinationSyncMode, plugin } from "@grouparoo/core";
+import { plugin, DestinationSyncMode } from "@grouparoo/core";
 
-import { test } from "./../lib/test";
+import { test } from "../lib/test";
 
-import { exportProfile } from "../lib/export/exportProfile";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
+import { exportProfile } from "../lib/export/exportProfile";
 
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
@@ -27,13 +27,13 @@ export class Plugins extends Initializer {
 
     plugin.registerPlugin({
       name: packageJSON.name,
-      icon: "/public/@grouparoo/hubspot/hubspot.svg",
+      icon: "/public/@grouparoo/mixpanel/mixpanel.svg",
       templates: [
-        new AppTemplate("hubspot", [
+        new AppTemplate("mixpanel", [
           path.join(templateRoot, "app", "*.template"),
         ]),
         new DestinationTemplate(
-          "hubspot",
+          "mixpanel",
           [path.join(templateRoot, "destination", "*.template")],
           syncModes,
           defaultSyncMode
@@ -41,14 +41,32 @@ export class Plugins extends Initializer {
       ],
       apps: [
         {
-          name: "hubspot",
+          name: "mixpanel",
           options: [
             {
-              key: "hapikey",
-              type: "password",
-              displayName: "Hubspot API Key",
+              key: "token",
+              displayName: "Token",
               required: true,
-              description: "Hubspot hapikey (api) key.",
+              description: "Mixpanel API Token",
+            },
+            {
+              key: "username",
+              displayName: "User Name",
+              required: true,
+              description: "Mixpanel API Service Account Username",
+            },
+            {
+              key: "secret",
+              displayName: "Secret",
+              type: "password",
+              required: true,
+              description: "Mixpanel API Service Account Secret",
+            },
+            {
+              key: "projectId",
+              displayName: "Project Id",
+              required: true,
+              description: "Mixpanel project id",
             },
           ],
           methods: { test },
@@ -56,11 +74,10 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "hubspot-export",
+          name: "mixpanel-export",
           direction: "export",
-          description:
-            "Export Profiles to Hubspot and add them to Contact Lists.",
-          app: "hubspot",
+          description: "Export profiles to Mixpanel as User Profiles",
+          app: "mixpanel",
           syncModes,
           defaultSyncMode,
           options: [],

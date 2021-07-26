@@ -1,11 +1,11 @@
 import { SimpleAppOptions } from "@grouparoo/core";
-import Mixpanel from "mixpanel";
+import Mixpanel from "./client/mixpanel";
 
 export async function connect(appOptions: SimpleAppOptions) {
-  return Mixpanel.init(appOptions.apiKey as string, {
-    protocol: "https",
-    test: true,
-    debug: true,
-    verbose: true,
+  return new Mixpanel({
+    token: appOptions.token,
+    projectId: appOptions.projectId,
+    username: appOptions.username,
+    secret: appOptions.secret,
   });
 }
