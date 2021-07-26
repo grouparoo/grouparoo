@@ -6,9 +6,10 @@ import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
 import { Actions } from "../../utils/apiData";
+import { ErrorHandler } from "../../utils/errorHandler";
 
 export default function NewTeamPage(props) {
-  const { errorHandler } = props;
+  const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();

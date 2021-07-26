@@ -4,9 +4,10 @@ import { Table } from "react-bootstrap";
 import Head from "next/head";
 import Link from "next/link";
 import ResqueTabs from "../../../components/tabs/resque";
+import { ErrorHandler } from "../../../utils/errorHandler";
 
 export default function ResqueQueue(props) {
-  const { errorHandler } = props;
+  const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [queues, setQueues] = useState({});
 

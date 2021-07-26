@@ -5,10 +5,23 @@ import { useForm } from "react-hook-form";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
 import { useRouter } from "next/router";
-import { Actions } from "../../utils/apiData";
+import { Actions, Models } from "../../utils/apiData";
+import { ErrorHandler } from "../../utils/errorHandler";
+import { TeamMemberHandler } from "../../utils/teamMembersHandler";
+import { SuccessHandler } from "../../utils/successHandler";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, teamMemberHandler, teams } = props;
+  const {
+    errorHandler,
+    successHandler,
+    teamMemberHandler,
+    teams,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    teamMemberHandler: TeamMemberHandler;
+    teams: Models.TeamType[];
+  } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
@@ -27,7 +40,7 @@ export default function Page(props) {
     );
 
     if (response?.teamMember) {
-      teamMemberHandler.set(response.teamMember);
+      teamMemberHandler.set([response.teamMember]);
       successHandler.set({ message: "Team Member Created" });
       process.env.GROUPAROO_UI_EDITION === "enterprise"
         ? router.push(`/team/${response.teamMember.teamId}/members`)

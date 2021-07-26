@@ -7,9 +7,21 @@ import ErrorAlert from "../alerts/error";
 import Navigation from "../navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HydrationError from "../alerts/hydrationError";
+import { SuccessHandler } from "../../utils/successHandler";
+import { ErrorHandler } from "../../utils/errorHandler";
 
 export default function Main(props) {
-  const { children, successHandler, errorHandler, hydrationError } = props;
+  const {
+    children,
+    successHandler,
+    errorHandler,
+    hydrationError,
+  }: {
+    children: any;
+    successHandler: SuccessHandler;
+    errorHandler: ErrorHandler;
+    hydrationError: string;
+  } = props;
   const [navExpanded, setNavExpanded] = useState(true);
   const [alertWidth, setAlertWidth] = useState(500);
   const contentAreaLeftPadding = 250;

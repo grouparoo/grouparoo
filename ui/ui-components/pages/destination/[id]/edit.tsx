@@ -26,7 +26,7 @@ export default function Page(props) {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     destinationHandler: DestinationHandler;
-    environmentVariableOptions: string[];
+    environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
   } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);

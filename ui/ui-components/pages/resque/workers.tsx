@@ -4,9 +4,14 @@ import { Table, Row, Col } from "react-bootstrap";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/resque";
 import LoadingButton from "../../components/loadingButton";
+import { ErrorHandler } from "../../utils/errorHandler";
+import { SuccessHandler } from "../../utils/successHandler";
 
 export default function ResqueWorkersList(props) {
-  const { errorHandler, successHandler } = props;
+  const {
+    errorHandler,
+    successHandler,
+  }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [workers, setWorkers] = useState({});
   const [workerQueues, setWorkerQueues] = useState([]);

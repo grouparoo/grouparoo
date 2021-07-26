@@ -12,9 +12,14 @@ import StateBadge from "../components/badges/stateBadge";
 import { Models, Actions } from "../utils/apiData";
 import { Button } from "react-bootstrap";
 import { formatTimestamp } from "../utils/formatTimestamp";
+import { SuccessHandler } from "../utils/successHandler";
+import { ErrorHandler } from "../utils/errorHandler";
 
 export default function Page(props) {
-  const { successHandler, errorHandler } = props;
+  const {
+    successHandler,
+    errorHandler,
+  }: { successHandler: SuccessHandler; errorHandler: ErrorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

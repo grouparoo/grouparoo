@@ -6,10 +6,17 @@ import LoadingButton from "../../../components/loadingButton";
 import AppIcon from "../../../components/appIcon";
 import { useRouter } from "next/router";
 import { humanizePluginName } from "../../../utils/languageHelper";
-import { Actions } from "../../../utils/apiData";
+import { Actions, Models } from "../../../utils/apiData";
+import { ErrorHandler } from "../../../utils/errorHandler";
 
 export default function Page(props) {
-  const { errorHandler, connectionApps } = props;
+  const {
+    errorHandler,
+    connectionApps,
+  }: {
+    errorHandler: ErrorHandler;
+    connectionApps: Actions.SourceConnectionApps["connectionApps"];
+  } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

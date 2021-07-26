@@ -5,9 +5,20 @@ import { Form, Row, Col } from "react-bootstrap";
 import ProfileImageFromEmail from "../components/visualizations/profileImageFromEmail";
 import LoadingButton from "../components/loadingButton";
 import { Models, Actions } from "../utils/apiData";
+import { ErrorHandler } from "../utils/errorHandler";
+import { SuccessHandler } from "../utils/successHandler";
+import { SessionHandler } from "../utils/sessionHandler";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, sessionHandler } = props;
+  const {
+    errorHandler,
+    successHandler,
+    sessionHandler,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    sessionHandler: SessionHandler;
+  } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [teamMember, setTeamMember] = useState<Models.TeamMemberType>(

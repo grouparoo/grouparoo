@@ -10,9 +10,20 @@ import LoadingButton from "../../../components/loadingButton";
 
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
+import { GroupHandler } from "../../../utils/groupHandler";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, groupHandler } = props;
+  const {
+    errorHandler,
+    successHandler,
+    groupHandler,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    groupHandler: GroupHandler;
+  } = props;
   const router = useRouter();
   const [group, setGroup] = useState<Models.GroupType>(props.group);
   const { execApi } = useApi(props, errorHandler);

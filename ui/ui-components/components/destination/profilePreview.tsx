@@ -3,10 +3,21 @@ import { useApi } from "../../hooks/useApi";
 import { Card, ListGroup } from "react-bootstrap";
 import Loader from "../loader";
 import { useRouter } from "next/router";
-import { Actions } from "../../utils/apiData";
+import { ErrorHandler } from "../../utils/errorHandler";
+import { Models, Actions } from "../../utils/apiData";
 
 export default function ProfilePreview(props) {
-  const { errorHandler, destination, trackedGroupId, mappingOptions } = props;
+  const {
+    errorHandler,
+    destination,
+    trackedGroupId,
+    mappingOptions,
+  }: {
+    errorHandler: ErrorHandler;
+    destination: Models.DestinationType;
+    trackedGroupId: string;
+    mappingOptions: Actions.DestinationMappingOptions["options"];
+  } = props;
   const router = useRouter();
   const [profileId, setProfileId] = useState(
     router.query.profileId?.toString()

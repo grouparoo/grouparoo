@@ -4,6 +4,7 @@ import Head from "next/head";
 import { Row, Col, Image, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import Loader from "../../ui-components/components/loader";
+import { Models } from "../../ui-components/utils/apiData";
 
 export default function Page(props) {
   const router = useRouter();
@@ -18,12 +19,12 @@ export default function Page(props) {
 
   useEffect(() => {
     if (navigationMode === "config:authenticated") {
-      getSetupSteps(props);
+      checkSetupSteps(props);
     } else {
       setShouldRender(true);
     }
 
-    async function getSetupSteps(props) {
+    async function checkSetupSteps(props) {
       const { execApi } = useApi(props);
       const { setupSteps } = await execApi("get", `/setupSteps`);
       const foundStep = await setupSteps.find(

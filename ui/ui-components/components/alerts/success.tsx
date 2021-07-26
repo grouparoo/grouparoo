@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { Alert } from "react-bootstrap";
+import { SuccessHandler } from "../../utils/successHandler";
 
-export default function SuccessAlert({ successHandler }) {
+export default function SuccessAlert({
+  successHandler,
+}: {
+  successHandler: SuccessHandler;
+}) {
   const [message, setMessage] = useState("");
   const [secondsToShow] = useState(1000 * 4);
   const [show, setShow] = useState(false);
@@ -12,7 +17,7 @@ export default function SuccessAlert({ successHandler }) {
 
     return () => {
       clearTimeout(timer);
-      successHandler.unsubscribe("success-alert", subscription.bind(this));
+      successHandler.unsubscribe("success-alert");
     };
   }, []);
 

@@ -1,6 +1,7 @@
 import Axios, { AxiosRequestConfig, Method } from "axios";
 import { isBrowser } from "../utils/isBrowser";
 import PackageJSON from "../package.json";
+import { UploadHandler } from "../utils/uploadHandler";
 
 interface ClientCacheObject {
   locked: boolean;
@@ -103,7 +104,7 @@ export class Client {
     path,
     data: AxiosRequestConfig["data"] = {},
     useCache = true,
-    uploadHandler?,
+    uploadHandler?: UploadHandler,
     req?,
     res?
   ) {

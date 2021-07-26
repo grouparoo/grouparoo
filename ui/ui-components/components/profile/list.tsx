@@ -13,9 +13,13 @@ import { Models, Actions } from "../../utils/apiData";
 import ArrayProfilePropertyList from "./arrayProfilePropertyList";
 import StateBadge from "../badges/stateBadge";
 import { formatTimestamp } from "../../utils/formatTimestamp";
+import { ErrorHandler } from "../../utils/errorHandler";
 
 export default function ProfilesList(props) {
-  const { errorHandler, properties } = props;
+  const {
+    errorHandler,
+    properties,
+  }: { errorHandler: ErrorHandler; properties: Models.PropertyType[] } = props;
   const { execApi } = useApi(props, errorHandler);
   const router = useRouter();
   const [loading, setLoading] = useState(false);

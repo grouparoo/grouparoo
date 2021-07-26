@@ -5,9 +5,14 @@ import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import { Table, Alert, Button } from "react-bootstrap";
 import { CLIStream } from "../components/cliStream";
+import { SuccessHandler } from "../../ui-components/utils/successHandler";
+import { ErrorHandler } from "../../ui-components/utils/errorHandler";
 
 export default function PluginsPage(props) {
-  const { successHandler, errorHandler } = props;
+  const {
+    successHandler,
+    errorHandler,
+  }: { successHandler: SuccessHandler; errorHandler: ErrorHandler } = props;
   const [installedPlugins, setInstalledPlugins] = useState<
     Actions.PluginsInstalledList["plugins"]
   >(props.installedPlugins);
