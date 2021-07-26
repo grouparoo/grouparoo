@@ -1,3 +1,3 @@
 import { EventDispatcher } from "./eventDispatcher";
 
-export class SetupStepHandler extends EventDispatcher {}
+export class SetupStepHandler extends EventDispatcher<string[]> {}

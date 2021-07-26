@@ -11,9 +11,10 @@ import LoadingTable from "../components/loadingTable";
 import StateBadge from "../components/badges/stateBadge";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
+import { ErrorHandler } from "../utils/errorHandler";
 
 export default function Page(props) {
-  const { errorHandler } = props;
+  const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);

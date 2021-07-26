@@ -13,6 +13,9 @@ import { Models, Actions } from "../../../utils/apiData";
 import LoadingTable from "../../../components/loadingTable";
 import LoadingButton from "../../../components/loadingButton";
 import Loader from "../../../components/loader";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
+import { SourceHandler } from "../../../utils/sourceHandler";
 
 export default function Page(props) {
   const {
@@ -20,6 +23,11 @@ export default function Page(props) {
     successHandler,
     sourceHandler,
     environmentVariableOptions,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    sourceHandler: SourceHandler;
+    environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
   } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);

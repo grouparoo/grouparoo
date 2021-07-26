@@ -3,9 +3,10 @@ import Component from "../../components/navigation/setupStepsNavProgressBar";
 import mockAxios from "jest-mock-axios";
 import { Actions } from "../../utils/apiData";
 import { useApi } from "../../hooks/useApi";
+import { EventDispatcher } from "../../utils/eventDispatcher";
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
-const mockSetupStepHandler = { subscribe: () => {}, unsubscribe: () => {} };
+const mockSetupStepHandler = new EventDispatcher<any>();
 
 describe("setupStepsNavProgressBar", () => {
   describe("hidden", () => {

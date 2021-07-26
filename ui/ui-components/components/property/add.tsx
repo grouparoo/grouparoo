@@ -2,10 +2,14 @@ import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import LoadingButton from "../loadingButton";
 import { useRouter } from "next/router";
-import { Actions } from "../../utils/apiData";
+import { Actions, Models } from "../../utils/apiData";
+import { ErrorHandler } from "../../utils/errorHandler";
 
 export default function AddPropertyForm(props) {
-  const { errorHandler, source } = props;
+  const {
+    errorHandler,
+    source,
+  }: { errorHandler: ErrorHandler; source: Models.SourceType } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

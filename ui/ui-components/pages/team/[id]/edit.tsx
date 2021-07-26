@@ -7,9 +7,20 @@ import { useRouter } from "next/router";
 import { Models, Actions } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/team";
 import LockedBadge from "../../../components/badges/lockedBadge";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { TeamHandler } from "../../../utils/teamHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, teamHandler } = props;
+  const {
+    errorHandler,
+    successHandler,
+    teamHandler,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    teamHandler: TeamHandler;
+  } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

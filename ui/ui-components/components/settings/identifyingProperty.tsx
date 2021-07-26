@@ -3,9 +3,14 @@ import { Card, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { Models } from "../../utils/apiData";
 import LoadingButton from "../loadingButton";
+import { ErrorHandler } from "../../utils/errorHandler";
+import { SuccessHandler } from "../../utils/successHandler";
 
 export default function IdentifyingProperty(props) {
-  const { errorHandler, successHandler } = props;
+  const {
+    errorHandler,
+    successHandler,
+  }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [properties, setProperties] = useState<Models.PropertyType[]>([]);

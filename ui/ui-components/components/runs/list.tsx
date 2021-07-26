@@ -12,9 +12,11 @@ import LoadingTable from "../loadingTable";
 import RunDurationChart from "../visualizations/runDurations";
 import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
+import { ErrorHandler } from "../../utils/errorHandler";
 
 export default function RunsList(props) {
-  const { errorHandler, topic } = props;
+  const { errorHandler, topic }: { errorHandler: ErrorHandler; topic: string } =
+    props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

@@ -7,11 +7,15 @@ import { useRouter } from "next/router";
 import ApiKeyTabs from "@grouparoo/ui-components/components/tabs/apiKey";
 import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
-
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
+import { ErrorHandler } from "../../../../ui-components/utils/errorHandler";
+import { SuccessHandler } from "../../../../ui-components/utils/successHandler";
 
 export default function Page(props) {
-  const { errorHandler, successHandler } = props;
+  const {
+    errorHandler,
+    successHandler,
+  }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

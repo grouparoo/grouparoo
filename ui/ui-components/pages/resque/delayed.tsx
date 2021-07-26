@@ -7,9 +7,14 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/resque";
 import LoadingButton from "../../components/loadingButton";
+import { ErrorHandler } from "../../utils/errorHandler";
+import { SuccessHandler } from "../../utils/successHandler";
 
 export default function ResqueDelayedList(props) {
-  const { errorHandler, successHandler } = props;
+  const {
+    errorHandler,
+    successHandler,
+  }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [timestamps, setTimestamps] = useState([]);

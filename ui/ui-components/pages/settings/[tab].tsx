@@ -11,9 +11,19 @@ import IdentifyingProperty from "../../components/settings/identifyingProperty";
 import ResetCluster from "../../components/settings/resetCluster";
 import ResetData from "../../components/settings/resetData";
 import ResetCache from "../../components/settings/resetCache";
+import { ErrorHandler } from "../../utils/errorHandler";
+import { SuccessHandler } from "../../utils/successHandler";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, tab } = props;
+  const {
+    errorHandler,
+    successHandler,
+    tab,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    tab: string;
+  } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

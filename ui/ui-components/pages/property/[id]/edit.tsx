@@ -16,6 +16,9 @@ import PropertyTabs from "../../../components/tabs/property";
 import { Models, Actions } from "../../../utils/apiData";
 import { filtersAreEqual } from "../../../utils/filtersAreEqual";
 import { makeLocal } from "../../../utils/makeLocal";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
+import { PropertiesHandler } from "../../../utils/propertiesHandler";
 
 export default function Page(props) {
   const {
@@ -27,6 +30,15 @@ export default function Page(props) {
     filterOptions,
     properties,
     hydrationError,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    sources: Models.SourceType[];
+    propertiesHandler: PropertiesHandler;
+    types: Actions.AppOptions["types"];
+    filterOptions: Actions.ScheduleFilterOptions["options"];
+    properties: Models.PropertyType[];
+    hydrationError: Error;
   } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
@@ -71,7 +83,7 @@ export default function Page(props) {
     );
     if (response?.property) {
       setProperty(response.property);
-      propertiesHandler.set(response.property);
+      propertiesHandler.set([response.property]);
       if (response.property.state === "ready" && property.state === "draft") {
         successHandler.set({ message: "Property Created" });
         router.push(nextPage || "/properties");

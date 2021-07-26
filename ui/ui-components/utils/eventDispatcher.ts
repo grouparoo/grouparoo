@@ -1,4 +1,4 @@
-export class EventDispatcher {
+export class EventDispatcher<T> {
   subscriptions: {
     [key: string]: Function;
   };
@@ -7,11 +7,11 @@ export class EventDispatcher {
     this.subscriptions = {};
   }
 
-  set(data) {
+  set(data: T) {
     this.publish(data);
   }
 
-  async publish(data) {
+  async publish(data: T) {
     if (typeof this.beforePublish === "function") {
       await this.beforePublish(data);
     }
@@ -27,10 +27,10 @@ export class EventDispatcher {
     }
   }
 
-  async beforePublish(data) {}
-  async afterPublish(data) {}
+  async beforePublish(data: T) {}
+  async afterPublish(data: T) {}
 
-  async subscribe(name: string, handler: Function, matcher?: any) {
+  async subscribe(name: string, handler: (arg0: T) => any, matcher?: any) {
     if (typeof this.beforeSubscribe === "function") {
       await this.beforeSubscribe(name, handler, matcher);
     }

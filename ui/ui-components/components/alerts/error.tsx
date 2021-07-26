@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { Alert } from "react-bootstrap";
+import { ErrorHandler } from "../../utils/errorHandler";
 
-export default function ErrorAlert({ errorHandler }) {
+export default function ErrorAlert({
+  errorHandler,
+}: {
+  errorHandler: ErrorHandler;
+}) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [secondsToShow] = useState(1000 * 4);
   const [show, setShow] = useState(false);
@@ -12,7 +17,7 @@ export default function ErrorAlert({ errorHandler }) {
 
     return () => {
       clearTimeout(timer);
-      errorHandler.unsubscribe("error-alert", subscription.bind(this));
+      errorHandler.unsubscribe("error-alert");
     };
   }, []);
 
