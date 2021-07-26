@@ -342,9 +342,9 @@ describe("integration/happyPath", () => {
       );
       expect(listError).toBeUndefined();
       expect(profiles.length).toBe(1);
-      expect(simpleProfileValues(profiles[0].properties).email).toEqual([
-        "luigi@example.com",
-      ]);
+      expect(simpleProfileValues(profiles[0].properties).email[0]).toMatch(
+        /@example.com/
+      );
     });
   });
 

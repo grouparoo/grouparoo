@@ -188,8 +188,6 @@ async function preparePropertyImports(
     ? "ProfileProperty"
     : null;
 
-  console.log({ method, pendingProfileProperties, properties });
-
   await ProfileProperty.update(
     { startedAt: new Date() },
     {
