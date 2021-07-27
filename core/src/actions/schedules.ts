@@ -76,6 +76,7 @@ export class ScheduleCreate extends AuthenticatedAction {
       name: { required: false },
       sourceId: { required: true },
       recurring: { required: true },
+      confirmProfiles: { required: false },
       state: { required: false },
       options: { required: false },
       recurringFrequency: { required: true, default: 0 },
@@ -89,6 +90,7 @@ export class ScheduleCreate extends AuthenticatedAction {
       sourceId: params.sourceId,
       recurring: params.recurring,
       recurringFrequency: params.recurringFrequency,
+      confirmProfiles: params.confirmProfiles,
     });
 
     if (params.options) await schedule.setOptions(params.options);
