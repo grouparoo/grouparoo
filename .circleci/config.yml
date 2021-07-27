@@ -78,6 +78,7 @@ jobs:
             - plugins/@grouparoo/logger/node_modules
             - plugins/@grouparoo/mailchimp/node_modules
             - plugins/@grouparoo/marketo/node_modules
+            - plugins/@grouparoo/mixpanel/node_modules
             - plugins/@grouparoo/mongo/node_modules
             - plugins/@grouparoo/mysql/node_modules
       - save_cache:
@@ -121,6 +122,7 @@ jobs:
             - plugins/@grouparoo/logger/dist
             - plugins/@grouparoo/mailchimp/dist
             - plugins/@grouparoo/marketo/dist
+            - plugins/@grouparoo/mixpanel/dist
             - plugins/@grouparoo/mongo/dist
             - plugins/@grouparoo/mysql/dist
             - plugins/@grouparoo/newrelic/dist
@@ -1912,6 +1914,53 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/marketo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-mixpanel:
+    docker:
+      - image: circleci/node:14
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache-options
+      - restore_cache:
+          <<: *plugin-1-cache-options
+      - restore_cache:
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/mixpanel && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-mongo:
     docker:
       - image: circleci/node:14
@@ -2922,6 +2971,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-mixpanel:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-mongo:
           filters:
             <<: *ignored-branches
@@ -3050,6 +3104,7 @@ workflows:
             - test-plugin-logger
             - test-plugin-mailchimp
             - test-plugin-marketo
+            - test-plugin-mixpanel
             - test-plugin-mongo
             - test-plugin-mysql
             - test-plugin-newrelic
