@@ -14,6 +14,7 @@ exports.default = async function buildConfig() {
       // Mappings are how you choose which properties to export to this destination.
       // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
       mapping: {
+        $distinct_id: "$distinctId",
         $email: "email",
         $first_name: "firstName",
         $last_name: "lastName",

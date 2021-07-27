@@ -10,4 +10,4 @@ In your Grouparoo project, run `grouparoo install @grouparoo/mixpanel`.
 
 ## Attribution
 
-The Mixpanel icon used in this plugin is from https://livesession.io/integrations/mixpanel/
+The Mixpanel icon used in this plugin is from https://iconscout.com/icon/mixpanel

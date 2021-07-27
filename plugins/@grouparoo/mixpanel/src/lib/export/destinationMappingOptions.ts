@@ -9,7 +9,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
           plural: "Mixpanel Properties",
         },
         group: {
-          singular: "Mixpanel Groups",
+          singular: "Mixpanel Group",
           plural: "Mixpanel Groups",
         },
       },
