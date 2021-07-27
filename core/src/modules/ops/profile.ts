@@ -14,6 +14,7 @@ import { ProfilePropertyOps } from "./profileProperty";
 import { GroupRule } from "../../models/GroupRule";
 import { Import } from "../../models/Import";
 import { plugin } from "../plugin";
+import { Run } from "../../models/Run";
 
 export interface ProfilePropertyType {
   [key: string]: {
@@ -713,7 +714,8 @@ export namespace ProfileOps {
   export async function confirmExistence(
     limit: number,
     fromDate: Date,
-    sourceId?: string
+    sourceId?: string,
+    run?: Run
   ) {
     const properties = await Property.findAllWithCache();
     const directlyMapped = properties.filter(
@@ -743,8 +745,12 @@ export namespace ProfileOps {
     });
 
     const now = new Date();
-
     const bulkImports = [];
+
+    const creatorInfo = run
+      ? { creatorType: "run", creatorId: run.id }
+      : { creatorType: "task", creatorId: "profiles:confirm" };
+
     for (const profile of profiles) {
       delete profile.profileProperties; // get all profile properties
       const oldProfileProperties = await profile.simplifiedProperties();
@@ -755,8 +761,7 @@ export namespace ProfileOps {
         profileAssociatedAt: now,
         oldProfileProperties,
         oldGroupIds,
-        creatorType: "task",
-        creatorId: "profiles:confirm",
+        ...creatorInfo,
       });
     }
 

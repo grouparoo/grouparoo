@@ -6,6 +6,7 @@ import {
   plugin,
   Profile,
   ProfileProperty,
+  Run,
   Schedule,
   Source,
 } from "../../../src";
@@ -182,7 +183,7 @@ describe("tasks/profiles:confirm", () => {
     const schedule: Schedule = await helper.factories.schedule(source, {
       confirmProfiles: true,
     });
-    await helper.factories.run(schedule, {
+    const run: Run = await helper.factories.run(schedule, {
       state: "complete",
       completedAt: new Date(),
     });
@@ -210,8 +211,8 @@ describe("tasks/profiles:confirm", () => {
     const imports = await Import.findAll({
       where: {
         profileId: profile.id,
-        creatorType: "task",
-        creatorId: "profiles:confirm",
+        creatorType: "run",
+        creatorId: run.id,
       },
     });
     expect(imports.length).toBe(1);
@@ -227,7 +228,7 @@ describe("tasks/profiles:confirm", () => {
     const schedule: Schedule = await helper.factories.schedule(source, {
       confirmProfiles: false,
     });
-    await helper.factories.run(schedule, {
+    const run: Run = await helper.factories.run(schedule, {
       state: "complete",
       completedAt: new Date(),
     });
@@ -255,8 +256,8 @@ describe("tasks/profiles:confirm", () => {
     const imports = await Import.findAll({
       where: {
         profileId: profile.id,
-        creatorType: "task",
-        creatorId: "profiles:confirm",
+        creatorType: "run",
+        creatorId: run.id,
       },
     });
     expect(imports.length).toBe(0);

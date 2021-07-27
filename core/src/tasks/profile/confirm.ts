@@ -40,11 +40,12 @@ export class ProfilesConfirm extends CLSTask {
     });
 
     for (const schedule of schedules) {
-      const latestRunAt = schedule.runs[0].completedAt;
+      const latestRun = schedule.runs[0];
       count += await ProfileOps.confirmExistence(
         limit - count,
-        latestRunAt,
-        schedule.sourceId
+        latestRun.completedAt,
+        schedule.sourceId,
+        latestRun
       );
     }
 
