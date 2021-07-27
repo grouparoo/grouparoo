@@ -266,6 +266,59 @@ describe("tasks/profiles:confirm", () => {
     await schedule.destroy();
   });
 
+  test("will wait for schedule run's imports to be associated before trying to confirm profiles", async () => {
+    await plugin.updateSetting("core", "confirm-profiles-days", 0);
+
+    const source = await Source.findOne();
+    const schedule: Schedule = await helper.factories.schedule(source, {
+      confirmProfiles: true,
+    });
+    const run: Run = await helper.factories.run(schedule, {
+      state: "complete",
+      completedAt: new Date(),
+    });
+
+    const profile: Profile = await helper.factories.profile();
+    await ProfileProperty.update(
+      {
+        state: "ready",
+        confirmedAt: Moment().subtract(1, "days").toDate(),
+      },
+      {
+        where: {
+          profileId: profile.id,
+        },
+      }
+    );
+    await profile.update({ state: "ready" });
+
+    // create an unassociated import
+    const _import: Import = await helper.factories.import(run);
+
+    // try to confirm
+    let count = await specHelper.runTask("profiles:confirm", {});
+    expect(count).toBe(0); // nothing
+
+    await profile.reload();
+    expect(profile.state).toBe("ready");
+
+    // associate the import
+    await _import.update({
+      profileId: "someId",
+      profileAssociatedAt: new Date(),
+    });
+
+    // try to confirm again
+    count = await specHelper.runTask("profiles:confirm", {});
+    expect(count).toBe(1); // now we can confirm it
+
+    await profile.reload();
+    expect(profile.state).toBe("pending");
+
+    await profile.destroy();
+    await schedule.destroy();
+  });
+
   test("only processes profiles up to the batch size", async () => {
     await plugin.updateSetting("core", "runs-profile-batch-size", 2);
 
