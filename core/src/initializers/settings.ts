@@ -148,7 +148,7 @@ export class Plugins extends CLSInitializer {
         title: "Confirm Profile Existence Days",
         defaultValue: 7,
         description:
-          "How many days should we wait before creating an import for a profile that hasn't been seen in a while to confirm they still exist in the source?",
+          "How often should Grouparoo check that a Profile still exists in your Source, deleting the Profile if it has been removed? Setting to `0` will disable this check.",
         type: "number",
       },
       {
