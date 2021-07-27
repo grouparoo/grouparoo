@@ -6,15 +6,11 @@ import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
 import LoadingButton from "../../../components/loadingButton";
 import Link from "next/link";
-import Moment from "react-moment";
-import ScheduleAddButton from "../../../components/schedule/add";
-import PropertyAddButton from "../../../components/property/add";
 import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
-import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { makeLocal } from "../../../utils/makeLocal";
 
 export default function Page(props) {
@@ -111,7 +107,10 @@ export default function Page(props) {
         <td>
           <strong>
             {existingProperty ? (
-              <Link href={`/property/${existingProperty.id}/edit`}>
+              <Link
+                href={`/property/[id]/edit`}
+                as={`/property/${existingProperty.id}/edit`}
+              >
                 <a>{column}</a>
               </Link>
             ) : (
@@ -223,6 +222,19 @@ export default function Page(props) {
           <StateBadge state={source.state} />,
         ]}
       />
+
+      <p>
+        Here are the Properties that this source provides. You can quickly add
+        simple Properties from here. If you need more control over your
+        Properties, you can create a single Property from the{" "}
+        <Link
+          href={`/source/[id]/overview`}
+          as={`/source/${source.id}/overview`}
+        >
+          <a>Soruce Overview page</a>
+        </Link>
+        .
+      </p>
 
       <Row>
         <Col>
