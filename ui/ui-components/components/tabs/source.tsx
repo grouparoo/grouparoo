@@ -2,7 +2,7 @@ import Tabs from "../tabs";
 import { Models } from "../../utils/apiData";
 
 export default function SourceTabs({ source }: { source: Models.SourceType }) {
-  const tabs = ["overview", "edit"];
+  const tabs = ["overview", "edit", "properties"];
 
   if (source.previewAvailable) {
     tabs.push("mapping");

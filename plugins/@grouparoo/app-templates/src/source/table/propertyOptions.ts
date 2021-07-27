@@ -71,9 +71,12 @@ export const getPropertyOptions: GetPropertyOptionsMethod = async (
     description: "how we combine the data",
     type: "list",
     options: async () => {
-      const out = [];
+      const out: PluginConnectionPropertyOption[] = [];
       for (const key in aggregationOptions) {
-        out.push(Object.assign({ key }, aggregationOptions[key]));
+        const isDefault = key === AggregationMethod.Exact ? true : false;
+        out.push(
+          Object.assign({ key, default: isDefault }, aggregationOptions[key])
+        );
       }
       return out;
     },

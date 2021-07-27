@@ -263,6 +263,24 @@ export class SourcePreview extends AuthenticatedAction {
   }
 }
 
+export class SourceDefaultPropertyOptions extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "source:defaultPropertyOptions";
+    this.description = "view the default plugin options for a source";
+    this.outputExample = {};
+    this.permission = { topic: "source", mode: "read" };
+    this.inputs = {
+      id: { required: true },
+    };
+  }
+
+  async runWithinTransaction({ params }) {
+    const source = await Source.findById(params.id);
+    return { defaultPropertyOptions: await source.defaultPropertyOptions() };
+  }
+}
+
 export class SourceDestroy extends AuthenticatedAction {
   constructor() {
     super();

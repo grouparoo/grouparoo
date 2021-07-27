@@ -112,6 +112,7 @@ export interface PluginConnectionPropertyOption {
     Array<{
       key: string;
       description?: string;
+      default?: boolean;
       examples?: Array<any>;
     }>
   >;

@@ -244,6 +244,7 @@ import {
   SourceView,
   SourcesList,
   sourceConnectionOptions,
+  SourceDefaultPropertyOptions,
   SourcePreview,
 } from "@grouparoo/core/src/actions/sources";
 import {
@@ -685,6 +686,9 @@ export namespace Actions {
   >;
   export type sourceConnectionOptions = AsyncReturnType<
     typeof sourceConnectionOptions.prototype.runWithinTransaction
+  >;
+  export type SourceDefaultPropertyOptions = AsyncReturnType<
+    typeof SourceDefaultPropertyOptions.prototype.runWithinTransaction
   >;
   export type SourcePreview = AsyncReturnType<
     typeof SourcePreview.prototype.runWithinTransaction

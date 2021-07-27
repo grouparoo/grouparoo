@@ -27,7 +27,11 @@ export const propertyOptions: PropertyOptionsMethod = async () => [
     type: "list",
     options: async () => {
       return [
-        { key: AggregationMethod.Exact, description: "use the value directly" },
+        {
+          key: AggregationMethod.Exact,
+          description: "use the value directly",
+          default: true,
+        },
       ];
     },
   },

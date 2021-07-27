@@ -355,6 +355,75 @@ export namespace SourceOps {
   }
 
   /**
+   * Get the default values of the options of a Property from this source
+   */
+  export async function defaultPropertyOptions(source: Source) {
+    const { pluginConnection } = await source.getPlugin();
+
+    if (!pluginConnection) {
+      throw new Error(`cannot find a pluginConnection for type ${source.type}`);
+    }
+
+    if (!pluginConnection.methods.propertyOptions) {
+      throw new Error(`cannot find propertyOptions for type ${source.type}`);
+    }
+
+    const response: Array<{
+      key: string;
+      displayName?: string;
+      default?: boolean;
+      description: string;
+      required: boolean;
+      type: string;
+      options: Array<{
+        key: string;
+        description?: string;
+        default?: boolean;
+        examples?: Array<any>;
+      }>;
+    }> = [];
+    const app = await source.$get("app", { include: [Option], scope: null });
+    const appOptions = await app.getOptions(true);
+    const connection = await app.getConnection();
+    const sourceOptions = await source.getOptions(true);
+    const sourceMapping = await source.getMapping();
+
+    const propertyOptionOptions =
+      await pluginConnection.methods.propertyOptions({
+        property: null,
+        propertyId: null,
+        propertyOptions: {},
+      });
+
+    for (const i in propertyOptionOptions) {
+      const opt = propertyOptionOptions[i];
+      const options = await opt.options({
+        connection,
+        app,
+        appId: app.id,
+        appOptions,
+        source,
+        sourceId: source.id,
+        sourceOptions,
+        sourceMapping,
+        property: null,
+        propertyId: null,
+      });
+
+      response.push({
+        key: opt.key,
+        displayName: opt.displayName,
+        description: opt.description,
+        required: opt.required,
+        type: opt.type,
+        options,
+      });
+    }
+
+    return response;
+  }
+
+  /**
    * This method is used to bootstrap a new source which requires a Property for a mapping, when the rule doesn't yet exist.
    */
   export async function bootstrapUniqueProperty(
