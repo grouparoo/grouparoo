@@ -74,6 +74,7 @@ export class ScheduleCreate extends AuthenticatedAction {
       name: { required: false },
       sourceId: { required: true },
       recurring: { required: true },
+      confirmProfiles: { required: false },
       state: { required: false },
       options: { required: false },
       recurringFrequency: { required: true, default: 0 },
@@ -87,6 +88,7 @@ export class ScheduleCreate extends AuthenticatedAction {
       sourceId: params.sourceId,
       recurring: params.recurring,
       recurringFrequency: params.recurringFrequency,
+      confirmProfiles: params.confirmProfiles,
     });
 
     if (params.options) await schedule.setOptions(params.options);
@@ -114,6 +116,7 @@ export class ScheduleEdit extends AuthenticatedAction {
       name: { required: false },
       sourceId: { required: false },
       recurring: { required: false },
+      confirmProfiles: { required: false },
       state: { required: false },
       options: { required: false },
       recurringFrequency: { required: false },
@@ -134,7 +137,11 @@ export class ScheduleEdit extends AuthenticatedAction {
     if (params.options) await schedule.setOptions(params.options);
     if (params.filters) await schedule.setFilters(params.filters);
 
-    await schedule.update({ state: params.state, name: params.name });
+    await schedule.update({
+      state: params.state,
+      name: params.name,
+      confirmProfiles: params.confirmProfiles,
+    });
 
     await ConfigWriter.run();
 

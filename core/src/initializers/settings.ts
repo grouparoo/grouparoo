@@ -144,6 +144,14 @@ export class Plugins extends CLSInitializer {
         type: "string",
       },
       {
+        key: "confirm-profiles-days",
+        title: "Confirm Profile Existence Days",
+        defaultValue: 7,
+        description:
+          "How often should Grouparoo check that a Profile still exists in your Source, deleting the Profile if it has been removed? Setting to `0` will disable this check.",
+        type: "number",
+      },
+      {
         key: "sweeper-delete-old-runs-days",
         title: "Sweeper: Delete Old Runs Days",
         defaultValue: 31,

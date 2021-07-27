@@ -35,6 +35,7 @@ export interface ConfigurationObject {
   unique?: boolean;
   isArray?: boolean;
   rules?: GroupRuleWithKey[];
+  confirmProfiles?: boolean;
   recurring?: boolean;
   recurringFrequency?: number;
   groupId?: string;

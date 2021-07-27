@@ -625,7 +625,7 @@ describe("modules/configWriter", () => {
 
       expect(config.id).toBeTruthy();
 
-      const { name, recurring, recurringFrequency } = schedule;
+      const { name, recurring, recurringFrequency, confirmProfiles } = schedule;
       const options = await schedule.$get("__options");
       expect(options.length).toEqual(1);
 
@@ -636,6 +636,7 @@ describe("modules/configWriter", () => {
         sourceId: source.getConfigId(),
         recurring,
         recurringFrequency,
+        confirmProfiles,
         options: Object.fromEntries(options.map((o) => [o.key, o.value])),
         filters: [
           {
