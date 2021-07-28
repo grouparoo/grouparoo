@@ -586,31 +586,12 @@ export namespace ProfileOps {
       }
     });
 
-    // and the case when we are sending a profile id directly
-    if (hash["id"]) uniquePropertiesHash["id"] = hash["id"];
-
     if (Object.keys(uniquePropertiesHash).length === 0) {
       throw new Error(
         `there are no unique profile properties provided in ${JSON.stringify(
           hash
         )}`
       );
-    }
-
-    // special handling when a id is provided directly
-    // for use with internal runs
-    if (uniquePropertiesHash["id"]) {
-      profile = await Profile.findOne({
-        where: { id: uniquePropertiesHash["id"] },
-      });
-
-      if (profile) {
-        return { profile, isNew };
-      } else {
-        throw new Error(
-          `cannot find profile with id ${uniquePropertiesHash["id"]}`
-        );
-      }
     }
 
     const keys = Object.keys(uniquePropertiesHash);
