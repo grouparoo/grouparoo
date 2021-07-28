@@ -87,7 +87,7 @@ export default function Page(props) {
       setLoading(true);
       const response: Actions.PropertyCreate = await execApi(
         "post",
-        `/property/`,
+        `/property`,
         {
           sourceId: source.id,
           id,
@@ -95,13 +95,13 @@ export default function Page(props) {
           type,
           unique,
           isArray,
-          state: "ready",
           options,
+          state: "ready",
         }
       );
       if (response.property) {
-        await loadProperties();
         successHandler.set({ message: "Property Created!" });
+        await loadProperties();
       }
       setLoading(false);
     }
@@ -167,36 +167,38 @@ export default function Page(props) {
         <td>
           <code>
             <Fragment key={`opts-${column}`}>
-              {Object.keys(options).map((opt) => (
-                <Form.Group as={Col} key={`opt-${column}-${opt}`}>
-                  <Form.Label>{opt}</Form.Label>
-                  <Form.Control
-                    style={{ fontSize: 10 }}
-                    type="text"
-                    value={options[opt].toString()}
-                    disabled={disabled}
-                    onChange={(e) => {
-                      const _options = makeLocal(options);
-                      _options[opt] = e.target.value;
-                      setOptions(_options);
-                    }}
-                  />
-                </Form.Group>
-              ))}
+              {Object.keys(options)
+                .sort()
+                .map((opt) => (
+                  <Form.Group as={Col} key={`opt-${column}-${opt}`}>
+                    <Form.Label>{opt}</Form.Label>
+                    <Form.Control
+                      style={{ fontSize: 10 }}
+                      type="text"
+                      value={options[opt].toString()}
+                      disabled={disabled}
+                      onChange={(e) => {
+                        const _options = makeLocal(options);
+                        _options[opt] = e.target.value;
+                        setOptions(_options);
+                      }}
+                    />
+                  </Form.Group>
+                ))}
             </Fragment>
           </code>
         </td>
         <td>
           {existingProperty ? (
-            <Badge variant="info">exists</Badge>
+            <Link
+              href={`/property/[id]/edit`}
+              as={`/property/${existingProperty.id}/edit`}
+            >
+              <a>
+                <Badge variant="info">exists</Badge>
+              </a>
+            </Link>
           ) : (
-            // <Button
-            //   size="sm"
-            //   onClick={() => createProperty()}
-            //   disabled={loading}
-            // >
-            //   Create
-            // </Button>
             <LoadingButton
               size="sm"
               disabled={loading}
@@ -227,15 +229,17 @@ export default function Page(props) {
         ]}
       />
 
+      <h2>Quickly Add Properties </h2>
+
       <p>
-        Here are the Properties that this source provides. You can quickly add
-        simple Properties from here. If you need more control over your
-        Properties, you can create a single Property from the{" "}
+        From this page, you can quickly add simple Properties, using default
+        options. If you need more control over your Properties, you can create a
+        single Property from the{" "}
         <Link
           href={`/source/[id]/overview`}
           as={`/source/${source.id}/overview`}
         >
-          <a>Soruce Overview page</a>
+          <a>Source Overview page</a>
         </Link>
         .
       </p>
