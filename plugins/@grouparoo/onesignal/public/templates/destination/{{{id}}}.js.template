@@ -9,8 +9,6 @@ exports.default = async function buildConfig() {
       groupId: "...", // The ID of the group whose members you want to export - e.g. `groupId: "high_value_customers"`
       syncMode: {{{syncMode}}}, // How should Grouparoo sync with this destination? Options: "enrich"
 
-      options: {},
-
       // Mappings are how you choose which properties to export to this destination.
       // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
       // Note that tags will be normalized to conform to OneSignal best practices (only lowercase letters, numbers and underscores)
