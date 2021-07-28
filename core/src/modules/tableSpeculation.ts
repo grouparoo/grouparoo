@@ -1,4 +1,4 @@
-import { PropertyTypes } from "@grouparoo/core";
+import { PropertyTypes } from "../models/Property";
 
 export namespace TableSpeculation {
   export function isUniqueColumn(columnName: string) {

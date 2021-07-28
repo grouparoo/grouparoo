@@ -14,6 +14,7 @@ import { log, utils, api } from "actionhero";
 import { LoggedModel } from "../../classes/loggedModel";
 import { FilterHelper } from "../filterHelper";
 import { topologicalSort } from "../topologicalSort";
+import { ConfigWriter } from "../configWriter";
 
 export namespace SourceOps {
   /**
@@ -442,7 +443,7 @@ export namespace SourceOps {
     const identifying = existingIdentifying ? false : true;
 
     const property = Property.build({
-      id,
+      id: id ?? ConfigWriter.generateId(key),
       key,
       type,
       state: "ready",

@@ -5,7 +5,9 @@ import { Source } from "../models/Source";
 import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
 import { ConfigWriter } from "../modules/configWriter";
+import { PropertyTypes } from "../models/Property";
 import { AsyncReturnType } from "type-fest";
+import { TableSpeculation } from "../modules/tableSpeculation";
 
 export class SourcesList extends AuthenticatedAction {
   constructor() {
@@ -259,7 +261,24 @@ export class SourcePreview extends AuthenticatedAction {
         ? JSON.parse(params.options)
         : params.options;
 
-    return { preview: await source.sourcePreview(options) };
+    const preview = await source.sourcePreview(options);
+    const columnSpeculation: {
+      [column: string]: {
+        type: typeof PropertyTypes[number];
+        isUnique: boolean;
+      };
+    } = {};
+    if (preview.length > 0) {
+      const keys = Object.keys(preview[0]);
+      for (const key of keys) {
+        columnSpeculation[key] = {
+          isUnique: TableSpeculation.isUniqueColumn(key),
+          type: TableSpeculation.columnType(key, "string"),
+        };
+      }
+    }
+
+    return { preview, columnSpeculation };
   }
 }
 

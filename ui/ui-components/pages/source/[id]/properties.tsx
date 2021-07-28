@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Table, Button, Form, Badge, Alert } from "react-bootstrap";
+import { Row, Col, Table, Form, Badge } from "react-bootstrap";
 import PageHeader from "../../../components/pageHeader";
 import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
@@ -19,6 +19,7 @@ export default function Page(props) {
     successHandler,
     source,
     preview,
+    columnSpeculation,
     types,
     defaultPropertyOptions,
   }: {
@@ -26,6 +27,7 @@ export default function Page(props) {
     successHandler: SuccessHandler;
     source: Models.SourceType;
     preview: Actions.SourcePreview["preview"];
+    columnSpeculation: Actions.SourcePreview["columnSpeculation"];
     types: Actions.PropertiesOptions["types"];
     defaultPropertyOptions: Actions.SourceDefaultPropertyOptions["defaultPropertyOptions"];
   } = props;
@@ -58,10 +60,12 @@ export default function Page(props) {
       existingProperty ? existingProperty.key : column
     );
     const [type, setType] = useState<string>(
-      existingProperty ? existingProperty.type : "string"
+      existingProperty ? existingProperty.type : columnSpeculation[column].type
     );
     const [unique, setUnique] = useState(
-      existingProperty ? existingProperty.unique : false
+      existingProperty
+        ? existingProperty.unique
+        : columnSpeculation[column].isUnique
     );
     const [isArray, setIsArray] = useState(
       existingProperty ? existingProperty.isArray : false
@@ -104,7 +108,7 @@ export default function Page(props) {
 
     return (
       <tr>
-        <td>
+        {/* <td>
           <strong>
             {existingProperty ? (
               <Link
@@ -117,7 +121,7 @@ export default function Page(props) {
               column
             )}
           </strong>
-        </td>
+        </td> */}
         <td>
           <Form.Control
             type="text"
@@ -241,7 +245,6 @@ export default function Page(props) {
           <Table>
             <thead>
               <tr>
-                <th>column</th>
                 <th>id</th>
                 <th>key</th>
                 <th>type</th>
@@ -269,7 +272,10 @@ Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
   const { execApi } = useApi(ctx);
   const { source } = await execApi("get", `/source/${id}`);
-  const { preview } = await execApi("get", `/source/${id}/preview`);
+  const { preview, columnSpeculation } = await execApi(
+    "get",
+    `/source/${id}/preview`
+  );
   const { defaultPropertyOptions } = await execApi(
     "get",
     `/source/${id}/defaultPropertyOptions`
@@ -277,5 +283,12 @@ Page.getInitialProps = async (ctx) => {
   const { properties } = await execApi("get", `/properties`);
   const { types } = await execApi("get", `/propertyOptions`);
 
-  return { source, properties, preview, types, defaultPropertyOptions };
+  return {
+    source,
+    properties,
+    columnSpeculation,
+    preview,
+    types,
+    defaultPropertyOptions,
+  };
 };

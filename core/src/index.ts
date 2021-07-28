@@ -55,3 +55,4 @@ export { StatusMetric } from "./modules/statusReporters";
 export { waitForLock } from "./modules/locks";
 export { Errors } from "./modules/errors";
 export * from "./modules/cache";
+export * from "./modules/tableSpeculation";
