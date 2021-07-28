@@ -136,10 +136,32 @@ export class ImportProfileProperties extends RetryableTask {
     }
 
     // update the properties that got no data back
+
+    const propertiesToKeep = properties.filter((p) => p.keepValueIfNotFound);
+    if (propertiesToKeep.length > 0) {
+      await ProfileProperty.update(
+        {
+          state: "ready",
+          stateChangedAt: new Date(),
+          confirmedAt: new Date(),
+        },
+        {
+          where: {
+            propertyId: { [Op.in]: propertiesToKeep.map((p) => p.id) },
+            profileId: {
+              [Op.in]: profilesToImport.map((p) => p.id),
+            },
+            state: "pending",
+          },
+        }
+      );
+    }
+
+    // clear the rest
     await ProfileProperty.update(
       {
         state: "ready",
-        rawValue: property.keepValueIfNotFound ? undefined : null,
+        rawValue: null,
         stateChangedAt: new Date(),
         confirmedAt: new Date(),
       },
