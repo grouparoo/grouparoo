@@ -103,7 +103,6 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
 
     for (const pk in responsesByPrimaryKey) {
       primaryKeysHash[pk].forEach((profileId) => {
-        // responsesById[profileId] = responsesByPrimaryKey[pk];
         responsesById[profileId] = {};
         for (const column of Object.keys(responsesByPrimaryKey[pk])) {
           const property = properties.find(
