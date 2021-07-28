@@ -1,5 +1,5 @@
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Table, Badge, Alert } from "react-bootstrap";
+import { Row, Col, Table, Badge, Alert, Button } from "react-bootstrap";
 import PageHeader from "../../../components/pageHeader";
 import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
@@ -116,6 +116,18 @@ export default function Page({
             successHandler={successHandler}
             source={source}
           />
+          {process.env.GROUPAROO_UI_EDITION !== "community" && (
+            <>
+              &nbsp;
+              <Button
+                href={`/source/${source.id}/properties`}
+                size="sm"
+                variant="outline-primary"
+              >
+                Add Multiple Properties
+              </Button>
+            </>
+          )}
           <hr />
           <h2>Schedule</h2>
           <br />
