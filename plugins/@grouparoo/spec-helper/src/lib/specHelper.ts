@@ -498,6 +498,7 @@ export namespace helper {
     )[0].connections[0];
 
     delete connection.methods.profileProperty;
+    delete connection.methods.profileProperties;
   }
 
   /**
