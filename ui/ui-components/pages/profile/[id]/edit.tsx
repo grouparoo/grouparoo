@@ -221,16 +221,18 @@ export default function Page(props) {
               <br />
               <br />
 
-              <LoadingButton
-                disabled={loading}
-                variant="danger"
-                size="sm"
-                onClick={() => {
-                  handleDelete();
-                }}
-              >
-                Delete
-              </LoadingButton>
+              {process.env.GROUPAROO_UI_EDITION === "config" ? (
+                <LoadingButton
+                  disabled={loading}
+                  variant="danger"
+                  size="sm"
+                  onClick={() => {
+                    handleDelete();
+                  }}
+                >
+                  Delete
+                </LoadingButton>
+              ) : null}
             </Col>
           </Row>
         </Col>
