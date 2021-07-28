@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Table, Form, Badge } from "react-bootstrap";
+import { Row, Col, Table, Form, Button } from "react-bootstrap";
 import PageHeader from "../../../components/pageHeader";
 import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
@@ -53,9 +53,6 @@ export default function Page(props) {
       properties.find((p) => p.options?.column === column);
     const disabled = existingProperty ? true : false;
 
-    const [id, setId] = useState(
-      existingProperty ? existingProperty.id : column
-    );
     const [key, setKey] = useState(
       existingProperty ? existingProperty.key : column
     );
@@ -67,9 +64,6 @@ export default function Page(props) {
         ? existingProperty.unique
         : columnSpeculation[column].isUnique
     );
-    const [isArray, setIsArray] = useState(
-      existingProperty ? existingProperty.isArray : false
-    );
 
     const defaultOptions: { [key: string]: string } = {};
     defaultPropertyOptions.map((propertyOption) => {
@@ -78,7 +72,7 @@ export default function Page(props) {
         propertyOption.options[0] ?? { key: "?" };
       defaultOptions[propertyOption.key] = defaultOption.key;
     });
-
+    const hiddenOptions = ["aggregationMethod"];
     const [options, setOptions] = useState(
       existingProperty ? existingProperty.options : defaultOptions
     );
@@ -90,12 +84,12 @@ export default function Page(props) {
         `/property`,
         {
           sourceId: source.id,
-          id,
+          id: key, // reuse the key as ID
           key,
           type,
           unique,
-          isArray,
           options,
+          isArray: false,
           state: "ready",
         }
       );
@@ -108,30 +102,41 @@ export default function Page(props) {
 
     return (
       <tr>
-        {/* <td>
-          <strong>
-            {existingProperty ? (
-              <Link
-                href={`/property/[id]/edit`}
-                as={`/property/${existingProperty.id}/edit`}
-              >
-                <a>{column}</a>
-              </Link>
-            ) : (
-              column
-            )}
-          </strong>
-        </td> */}
         <td>
-          <Form.Control
-            type="text"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-            disabled={disabled}
-          />
+          <Fragment>
+            {Object.keys(options)
+              .filter((opt) => !hiddenOptions.includes(opt))
+              .sort()
+              .map((opt) => (
+                <Form.Group as={Col} key={`opt-${column}-${opt}`}>
+                  <Form.Row>
+                    <Col md={3}>
+                      <code>
+                        <Form.Label>{opt}</Form.Label>
+                      </code>
+                    </Col>
+                    <Col>
+                      <Form.Control
+                        size="sm"
+                        type="text"
+                        value={options[opt].toString()}
+                        disabled={disabled}
+                        onChange={(e) => {
+                          const _options = makeLocal(options);
+                          _options[opt] = e.target.value;
+                          setOptions(_options);
+                        }}
+                      />
+                    </Col>
+                  </Form.Row>
+                </Form.Group>
+              ))}
+          </Fragment>
         </td>
+        <td>➡</td>
         <td>
           <Form.Control
+            size="sm"
             type="text"
             value={key}
             onChange={(e) => setKey(e.target.value)}
@@ -140,6 +145,7 @@ export default function Page(props) {
         </td>
         <td>
           <Form.Control
+            size="sm"
             as="select"
             value={type}
             onChange={(e) => setType(e.target.value)}
@@ -157,37 +163,7 @@ export default function Page(props) {
             disabled={disabled}
           />
         </td>
-        <td>
-          <Form.Check
-            checked={isArray}
-            onChange={(e) => setIsArray(e.target.checked)}
-            disabled={disabled}
-          />
-        </td>
-        <td>
-          <code>
-            <Fragment key={`opts-${column}`}>
-              {Object.keys(options)
-                .sort()
-                .map((opt) => (
-                  <Form.Group as={Col} key={`opt-${column}-${opt}`}>
-                    <Form.Label>{opt}</Form.Label>
-                    <Form.Control
-                      style={{ fontSize: 10 }}
-                      type="text"
-                      value={options[opt].toString()}
-                      disabled={disabled}
-                      onChange={(e) => {
-                        const _options = makeLocal(options);
-                        _options[opt] = e.target.value;
-                        setOptions(_options);
-                      }}
-                    />
-                  </Form.Group>
-                ))}
-            </Fragment>
-          </code>
-        </td>
+
         <td>
           {existingProperty ? (
             <Link
@@ -195,7 +171,9 @@ export default function Page(props) {
               as={`/property/${existingProperty.id}/edit`}
             >
               <a>
-                <Badge variant="info">exists</Badge>
+                <Button variant="outline-info" size="sm">
+                  View
+                </Button>
               </a>
             </Link>
           ) : (
@@ -249,12 +227,11 @@ export default function Page(props) {
           <Table>
             <thead>
               <tr>
-                <th>id</th>
-                <th>key</th>
-                <th>type</th>
-                <th>unique</th>
-                <th>isArray</th>
-                <th>options</th>
+                <th>Source Options</th>
+                <th>{""}</th>
+                <th>Key</th>
+                <th>Type</th>
+                <th>Unique</th>
                 <th />
               </tr>
             </thead>
