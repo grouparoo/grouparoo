@@ -1,4 +1,4 @@
-import { FilterOperation } from "./pluginMethods";
+import { FilterOperation } from "@grouparoo/core";
 
 export function getFilterOperation(op): FilterOperation {
   // op is one of the values

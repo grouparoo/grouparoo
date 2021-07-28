@@ -10,14 +10,14 @@ let profile: Profile;
 let file: File;
 let sourceOptions: SimpleSourceOptions;
 
-async function getPropertyValue(column: string) {
-  const propertyOptions = { column };
+async function getPropertyValues(column: string) {
   const property = await Property.findOne();
+  const propertyOptions = { [property.id]: { column } };
 
-  return profileProperties({
+  const values = await profileProperties({
     profiles: [profile],
     propertyOptions,
-    property,
+    properties: [property],
     sourceOptions,
     sourceMapping: { id: "userId" },
     appOptions: null,
@@ -27,9 +27,11 @@ async function getPropertyValue(column: string) {
     sourceId: null,
     app: null,
     appId: null,
-    propertyId: null,
     propertyFilters: null,
+    propertyIds: [property.id],
   });
+
+  return [values, property];
 }
 
 describe("csv/file/profileProperty", () => {
@@ -62,22 +64,22 @@ describe("csv/file/profileProperty", () => {
   });
 
   test("can get a string", async () => {
-    const value = await getPropertyValue("first_name");
-    expect(value).toEqual({ [profile.id]: ["Erie"] });
+    const [values, property] = await getPropertyValues("first_name");
+    expect(values[profile.id][property.id]).toEqual(["Erie"]);
   });
 
   test("can get a number", async () => {
-    const value = await getPropertyValue("ltv");
-    expect(value).toEqual({ [profile.id]: ["259.12"] });
+    const [values, property] = await getPropertyValues("ltv");
+    expect(values[profile.id][property.id]).toEqual(["259.12"]);
   });
 
   test("can get a boolean", async () => {
-    const value = await getPropertyValue("ios_app");
-    expect(value).toEqual({ [profile.id]: ["true"] });
+    const [values, property] = await getPropertyValues("ios_app");
+    expect(values[profile.id][property.id]).toEqual(["true"]);
   });
 
   test("can get undefined", async () => {
-    const value = await getPropertyValue("missing");
-    expect(value).toEqual({ [profile.id]: [undefined] });
+    const [values, property] = await getPropertyValues("missing");
+    expect(values[profile.id][property.id]).toBeUndefined();
   });
 });

@@ -1,4 +1,4 @@
-import { PropertyOptionsMethod } from "@grouparoo/core";
+import { AggregationMethod, PropertyOptionsMethod } from "@grouparoo/core";
 import { remoteImportPreview } from "./sourcePreview";
 
 export const propertyOptions: PropertyOptionsMethod = async () => [
@@ -26,7 +26,9 @@ export const propertyOptions: PropertyOptionsMethod = async () => [
     description: "how we combine the data",
     type: "list",
     options: async () => {
-      return [{ key: "exact", description: "use the value directly" }];
+      return [
+        { key: AggregationMethod.Exact, description: "use the value directly" },
+      ];
     },
   },
 ];

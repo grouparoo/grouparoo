@@ -7,8 +7,12 @@ export const profileProperties: ProfilePropertiesPluginMethod = async ({
   sourceMapping,
   sourceOptions,
 }) => {
-  const columnName = propertyOptions["column"]?.toString();
-  if (!columnName) return;
+  const columnNameHash: { [columnName: string]: string } = {};
+  for (const propertyId in propertyOptions) {
+    const column = propertyOptions[propertyId].column;
+    if (column) columnNameHash[column.toString()] = propertyId;
+  }
+  if (Object.keys(columnNameHash).length === 0) return;
 
   const fileId = sourceOptions.fileId?.toString();
   const localPath = await plugin.getLocalFilePath(fileId);
@@ -29,7 +33,7 @@ export const profileProperties: ProfilePropertiesPluginMethod = async ({
 
   return parseProfileProperties({
     localPath,
-    columnName,
+    columnNameHash,
     mappedCSVColumn,
     primaryKeysHash,
   });

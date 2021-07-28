@@ -57,13 +57,14 @@ export const buildConnection: BuildConnectionMethod = ({
   // const scheduleOptions = getChangedRows ? getScheduleOptions() : null;
   const profiles = getChangedRows ? getProfilesMethod(getChangedRows) : null;
 
-  return {
+  const plugin: PluginConnection = {
     name,
     direction: "import",
     description,
     app,
     options,
     skipSourceMapping: true,
+    groupAggregations: [],
     methods: {
       sourceOptions,
       profileProperty,
@@ -72,4 +73,6 @@ export const buildConnection: BuildConnectionMethod = ({
       scheduleOptions,
     },
   };
+
+  return plugin;
 };

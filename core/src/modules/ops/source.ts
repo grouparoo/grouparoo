@@ -1,6 +1,10 @@
 import { Source, SimpleSourceOptions } from "../../models/Source";
 import { ProfileProperty } from "../../models/ProfileProperty";
-import { Property, PropertyFiltersWithKey } from "../../models/Property";
+import {
+  Property,
+  PropertyFiltersWithKey,
+  SimplePropertyOptions,
+} from "../../models/Property";
 import { Profile } from "../../models/Profile";
 import { App } from "../../models/App";
 import { Option } from "../../models/Option";
@@ -8,6 +12,7 @@ import { OptionHelper } from "../optionHelper";
 import { MappingHelper } from "../mappingHelper";
 import { log, utils, api } from "actionhero";
 import { LoggedModel } from "../../classes/loggedModel";
+import { FilterHelper } from "../filterHelper";
 import { topologicalSort } from "../topologicalSort";
 
 export namespace SourceOps {
@@ -164,9 +169,9 @@ export namespace SourceOps {
   export async function importProfileProperties(
     source: Source,
     profiles: Profile[],
-    property: Property,
-    propertyOptionsOverride?: OptionHelper.SimpleOptions,
-    propertyFiltersOverride?: PropertyFiltersWithKey[],
+    properties: Property[],
+    propertyOptionsOverride?: { [key: string]: SimplePropertyOptions },
+    propertyFiltersOverride?: { [key: string]: PropertyFiltersWithKey[] },
     preloadedArgs: {
       app?: App;
       connection?: any;
@@ -176,12 +181,16 @@ export namespace SourceOps {
       profileProperties?: {};
     } = {}
   ) {
-    if (property.state !== "ready" && !propertyOptionsOverride) {
+    if (
+      properties.find((p) => p.state !== "ready") &&
+      !propertyOptionsOverride
+    ) {
       return;
     }
 
-    if (propertyOptionsOverride) {
-      await property.validateOptions(propertyOptionsOverride, false);
+    for (const key in propertyOptionsOverride) {
+      const property = properties.find((p) => (p.id = key));
+      await property.validateOptions(propertyOptionsOverride[key], false);
     }
 
     const { pluginConnection } = await source.getPlugin();
@@ -208,6 +217,23 @@ export namespace SourceOps {
       utils.sleep(100);
     }
 
+    const propertyOptions: { [key: string]: SimplePropertyOptions } = {};
+    const propertyFilters: { [key: string]: FilterHelper.FiltersWithKey[] } =
+      {};
+    for (const property of properties) {
+      if (propertyOptionsOverride && propertyOptionsOverride[property.id]) {
+        propertyOptions[property.id] = propertyOptionsOverride[property.id];
+      } else {
+        propertyOptions[property.id] = await property.getOptions();
+      }
+
+      if (propertyFiltersOverride && propertyFiltersOverride[property.id]) {
+        propertyFilters[property.id] = propertyFiltersOverride[property.id];
+      } else {
+        propertyFilters[property.id] = await property.getFilters();
+      }
+    }
+
     try {
       const response = await method({
         connection,
@@ -218,14 +244,10 @@ export namespace SourceOps {
         sourceId: source.id,
         sourceOptions,
         sourceMapping,
-        property,
-        propertyId: property.id,
-        propertyOptions: propertyOptionsOverride
-          ? propertyOptionsOverride
-          : await property.getOptions(),
-        propertyFilters: propertyFiltersOverride
-          ? propertyFiltersOverride
-          : await property.getFilters(),
+        properties,
+        propertyIds: properties.map((p) => p.id),
+        propertyOptions,
+        propertyFilters,
         profiles,
         profileIds: profiles.map((p) => p.id),
       });

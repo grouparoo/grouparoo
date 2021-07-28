@@ -13,7 +13,7 @@ import {
 export const getPropertyValues: GetPropertyValuesMethod = async ({
   connection,
   tableName,
-  columnName,
+  columnNames,
   sortColumn,
   tablePrimaryKeyCol,
   tableMappingCol,
@@ -27,7 +27,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   let aggPipeline = [];
   let isUsingResultField = true;
   let customAggValue;
-  let responses: { [key: string]: DataResponse[] } = {};
+  let responses: { [key: string]: { [column: string]: DataResponse[] } } = {};
 
   if (primaryKeys.length === 0) return responses;
 
@@ -65,8 +65,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   switch (aggregationMethod) {
     case AggregationMethod.Exact:
       isUsingResultField = false;
-
-      groupByColumns.push(columnName);
+      if (columnNames.length === 1) groupByColumns.push(...columnNames);
       if (sortColumn) {
         aggPipeline.push({ $sort: { [sortColumn]: 1 } });
         groupByColumns.push(sortColumn);
@@ -87,7 +86,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
               _id: `$${group}`,
               __result: {
                 $sum: {
-                  $toDouble: `$${columnName}`,
+                  $toDouble: `$${columnNames[0]}`,
                 },
               },
               __pk: { $first: `$${tablePrimaryKeyCol}` },
@@ -108,7 +107,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
         throw new Error("Sort Column is needed");
       }
       aggPipeline.push({ $sort: { [sortColumn]: -1 } });
-      groupByColumns.push(columnName);
+      groupByColumns.push(columnNames[0]);
       groupByColumns.push(sortColumn);
       break;
     case AggregationMethod.LeastRecentValue:
@@ -117,7 +116,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
         throw new Error("Sort Column is needed");
       }
       aggPipeline.push({ $sort: { [sortColumn]: 1 } });
-      groupByColumns.push(columnName);
+      groupByColumns.push(columnNames[0]);
       groupByColumns.push(sortColumn);
       break;
     default:
@@ -130,7 +129,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
         aggPipeline.push({
           $group: {
             _id: `$${group}`,
-            __result: { [aggSelect]: customAggValue || `$${columnName}` },
+            __result: { [aggSelect]: customAggValue || `$${columnNames[0]}` },
             __pk: { $first: `$${tablePrimaryKeyCol}` },
           },
         });
@@ -145,22 +144,26 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   }
 
   try {
-    const rows = await connection.db
+    const rows: Array<{ [column: string]: DataResponse }> = await connection.db
       .collection(tableName)
       .aggregate(aggPipeline)
       .toArray();
 
     if (rows && rows.length > 0) {
-      rows.forEach((row) => {
-        if (!responses[row.__pk]) responses[row.__pk] = [];
-        if (isArray || (responses[row.__pk].length === 0 && !isArray)) {
-          if (isUsingResultField) {
-            responses[row.__pk].push(row.__result);
-          } else {
-            responses[row.__pk].push(row[columnName]);
+      for (const row of rows) {
+        const pk = row.__pk.toString();
+        responses[pk] = {};
+        if (isUsingResultField) {
+          responses[pk][columnNames[0]] = [row["__result"]];
+        } else {
+          for (const col in row) {
+            responses[pk][col] = [];
+            if (isArray || (responses[pk][col].length === 0 && !isArray)) {
+              responses[pk][col].push(row[col]);
+            }
           }
         }
-      });
+      }
     }
   } catch (error) {
     throw new Error(`Error with MongoDB query Statement. Error - ${error}`);

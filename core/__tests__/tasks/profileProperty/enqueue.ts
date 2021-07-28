@@ -3,6 +3,7 @@ import { api, task, specHelper } from "actionhero";
 import {
   PluginConnection,
   ProfilePropertyPluginMethod,
+  ProfilePropertiesPluginMethod,
   plugin,
   Property,
   GrouparooPlugin,
@@ -17,6 +18,33 @@ describe("tasks/profileProperties:enqueue", () => {
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
 
   let propertiesCount: number;
+  let testPluginConnection: PluginConnection;
+  let prevProfilePropertyMethod: ProfilePropertyPluginMethod;
+  let prevProfilePropertiesMethod: ProfilePropertiesPluginMethod;
+
+  beforeAll(async () => {
+    const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
+      (a) => a.name === "@grouparoo/test-plugin"
+    );
+
+    testPluginConnection = testPlugin.connections.find(
+      (c) => c.name === "test-plugin-import"
+    );
+
+    prevProfilePropertyMethod = testPluginConnection.methods.profileProperty;
+    prevProfilePropertiesMethod =
+      testPluginConnection.methods.profileProperties;
+  });
+
+  function resetPlugin() {
+    testPluginConnection.methods.profileProperty = prevProfilePropertyMethod;
+    testPluginConnection.methods.profileProperties =
+      prevProfilePropertiesMethod;
+  }
+
+  afterAll(() => {
+    resetPlugin();
+  });
 
   afterEach(async () => {
     await plugin.updateSetting(
@@ -66,6 +94,9 @@ describe("tasks/profileProperties:enqueue", () => {
         let luigi: Profile;
 
         beforeAll(async () => {
+          resetPlugin();
+          delete testPluginConnection.methods.profileProperties;
+
           mario = await helper.factories.profile();
           luigi = await helper.factories.profile();
 
@@ -185,23 +216,9 @@ describe("tasks/profileProperties:enqueue", () => {
       });
 
       describe("with profileProperties method", () => {
-        let testPluginConnection: PluginConnection;
-
         beforeAll(async () => {
-          const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
-            (a) => a.name === "@grouparoo/test-plugin"
-          );
-
-          testPluginConnection = testPlugin.connections.find(
-            (c) => c.name === "test-plugin-import"
-          );
-          testPluginConnection.methods.profileProperties = async () => {
-            return {};
-          };
-        });
-
-        afterAll(() => {
-          delete testPluginConnection.methods.profileProperties;
+          resetPlugin();
+          delete testPluginConnection.methods.profileProperty;
         });
 
         test("if there is an importProfileProperties it will be preferred", async () => {
@@ -280,26 +297,10 @@ describe("tasks/profileProperties:enqueue", () => {
       });
 
       describe("without a profileProperty or profileProperties method", () => {
-        let testPluginConnection: PluginConnection;
-        let prevProfilePropertyMethod: ProfilePropertyPluginMethod;
-
         beforeAll(async () => {
-          const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
-            (a) => a.name === "@grouparoo/test-plugin"
-          );
-
-          testPluginConnection = testPlugin.connections.find(
-            (c) => c.name === "test-plugin-import"
-          );
-
-          prevProfilePropertyMethod =
-            testPluginConnection.methods.profileProperty;
+          resetPlugin();
           delete testPluginConnection.methods.profileProperty;
-        });
-
-        afterAll(() => {
-          testPluginConnection.methods.profileProperty =
-            prevProfilePropertyMethod;
+          delete testPluginConnection.methods.profileProperties;
         });
 
         test("if there is no import method, it will just mark properties as ready", async () => {

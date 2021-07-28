@@ -45,6 +45,8 @@ describe("tasks/destination:destroy", () => {
         group = await helper.factories.group();
         mario = await helper.factories.profile();
         luigi = await helper.factories.profile();
+        await mario.addOrUpdateProperties({ userId: [1] });
+        await luigi.addOrUpdateProperties({ userId: [2] });
         await group.addProfile(mario);
         await group.addProfile(luigi);
         await destination.trackGroup(group);
@@ -53,6 +55,11 @@ describe("tasks/destination:destroy", () => {
 
         await api.resque.queue.connection.redis.flushdb();
         await Run.truncate();
+      });
+
+      afterAll(async () => {
+        await mario.destroy();
+        await luigi.destroy();
       });
 
       test("a destination tracking a group cannot be deleted", async () => {

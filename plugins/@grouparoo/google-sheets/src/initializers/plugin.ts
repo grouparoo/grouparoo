@@ -70,6 +70,7 @@ export class Plugins extends Initializer {
               description: "The url of the Google Sheet.",
             },
           ],
+          groupAggregations: [],
           methods: {
             sourcePreview,
             propertyOptions,

@@ -4,10 +4,9 @@ import {
   DataResponseRow,
   DataResponse,
   ColumnDefinitionMap,
-  FilterOperation,
   SimpleAppOptions,
 } from "./pluginMethods";
-import { SimpleSourceOptions } from "@grouparoo/core";
+import { FilterOperation, SimpleSourceOptions } from "@grouparoo/core";
 
 export interface GetExampleRowsMethod {
   (argument: {
