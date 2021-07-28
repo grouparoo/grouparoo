@@ -68,6 +68,7 @@ module.exports = async function getConfig() {
       type: "email",
       unique: true,
       isArray: false,
+      keepValueIfNotFound: true,
       sourceId: "users_table", // sourceId -> `users_table`
       options: {
         column: "email",

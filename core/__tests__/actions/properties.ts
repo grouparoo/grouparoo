@@ -336,6 +336,7 @@ describe("actions/properties", () => {
         csrfToken,
         id,
         unique: true,
+        keepValueIfNotFound: true,
       };
       const { error, property } = await specHelper.runAction(
         "property:edit",
@@ -343,6 +344,7 @@ describe("actions/properties", () => {
       );
       expect(error).toBeUndefined();
       expect(property.unique).toBe(true);
+      expect(property.keepValueIfNotFound).toBe(true);
     });
 
     test("an administrator can see a profile preview of a property", async () => {
