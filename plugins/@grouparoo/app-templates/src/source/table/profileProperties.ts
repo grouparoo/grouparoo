@@ -52,23 +52,28 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
     const tablePrimaryKeyCol: string = Object.keys(sourceMapping)[0];
     const primaryKeysHash: { [pk: string]: string[] } = {};
 
-    for (const i in profiles) {
+    for (const profile of profiles) {
+      responsesById[profile.id] = {};
+      const profileProperties = await profile.getProperties();
       for (const property of properties) {
-        const properties = await profiles[i].getProperties();
+        // prepare primaryKeysHash to assign results to properties
         if (
-          properties[tableMappingCol]?.values.length > 0 &&
-          properties[tableMappingCol].values[0] // not null or undefined
+          profileProperties[tableMappingCol]?.values.length > 0 &&
+          profileProperties[tableMappingCol].values[0] // not null or undefined
         ) {
-          const k = properties[tableMappingCol].values[0].toString();
+          const k = profileProperties[tableMappingCol].values[0].toString();
           if (!primaryKeysHash[k]) primaryKeysHash[k] = [];
-          primaryKeysHash[k].push(profiles[i].id);
+          primaryKeysHash[k].push(profile.id);
         }
+
+        // set default values to help with aggregation issues
         if (
           aggregationMethod === AggregationMethod.Sum ||
           aggregationMethod === AggregationMethod.Count
         ) {
-          //default all entries to 0 to start... will be replaced later if there is a response
-          responsesById[profiles[i].id] = { [property.id]: [0] };
+          responsesById[profile.id][property.id] = [0];
+        } else {
+          // leave undefined
         }
       }
     }
@@ -103,7 +108,6 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
 
     for (const pk in responsesByPrimaryKey) {
       primaryKeysHash[pk].forEach((profileId) => {
-        responsesById[profileId] = {};
         for (const column of Object.keys(responsesByPrimaryKey[pk])) {
           const property = properties.find(
             (p) => propertyOptions[p.id][columnNameKey] === column
@@ -114,6 +118,13 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
             responsesByPrimaryKey[pk][column];
         }
       });
+    }
+
+    // remove profiles with no data from the response
+    for (const profileId in responsesById) {
+      if (Object.keys(responsesById[profileId]).length === 0) {
+        delete responsesById[profileId];
+      }
     }
 
     return responsesById;
