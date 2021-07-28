@@ -12,6 +12,9 @@ import DestinationTabs from "../../../components/tabs/destination";
 import LoadingButton from "../../../components/loadingButton";
 import Loader from "../../../components/loader";
 import { Models, Actions } from "../../../utils/apiData";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
+import { DestinationHandler } from "../../../utils/destinationHandler";
 
 export default function Page(props) {
   const {
@@ -19,6 +22,11 @@ export default function Page(props) {
     successHandler,
     destinationHandler,
     environmentVariableOptions,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    destinationHandler: DestinationHandler;
+    environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
   } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);

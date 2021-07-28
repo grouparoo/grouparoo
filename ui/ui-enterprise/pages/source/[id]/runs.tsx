@@ -7,9 +7,23 @@ import PageHeader from "@grouparoo/ui-components/components/pageHeader";
 import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
 import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
 import { Button, Row, Col } from "react-bootstrap";
+import { ErrorHandler } from "../../../../ui-components/utils/errorHandler";
+import { SuccessHandler } from "../../../../ui-components/utils/successHandler";
+import { RunsHandler } from "../../../../ui-components/utils/runsHandler";
+import { Models } from "../../../../ui-components/utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, runsHandler, source } = props;
+  const {
+    errorHandler,
+    successHandler,
+    runsHandler,
+    source,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    runsHandler: RunsHandler;
+    source: Models.SourceType;
+  } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
@@ -18,7 +32,7 @@ export default function Page(props) {
     try {
       await execApi("post", `/schedule/${source.schedule.id}/run`);
       successHandler.set({ message: "run enqueued" });
-      runsHandler.set({});
+      runsHandler.set(null);
     } finally {
       setLoading(false);
     }

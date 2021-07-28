@@ -10,10 +10,23 @@ import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
 import { useRouter } from "next/router";
 import { Actions } from "../../../utils/apiData";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, types, scheduleCount, hydrationError } =
-    props;
+  const {
+    errorHandler,
+    successHandler,
+    types,
+    scheduleCount,
+    hydrationError,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    types: Actions.AppOptions["types"];
+    scheduleCount: number;
+    hydrationError: Error;
+  } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

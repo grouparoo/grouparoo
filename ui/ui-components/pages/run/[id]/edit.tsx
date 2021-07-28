@@ -9,9 +9,19 @@ import Head from "next/head";
 import LoadingButton from "../../../components/loadingButton";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import { SuccessHandler } from "../../../utils/successHandler";
+import { ErrorHandler } from "../../../utils/errorHandler";
 
 export default function Page(props) {
-  const { quantizedTimeline, successHandler, errorHandler } = props;
+  const {
+    quantizedTimeline,
+    successHandler,
+    errorHandler,
+  }: {
+    quantizedTimeline: any;
+    successHandler: SuccessHandler;
+    errorHandler: ErrorHandler;
+  } = props;
   const { execApi } = useApi(props, errorHandler);
   const [run, setRun] = useState<Models.RunType>(props.run);
   const { chartData, chartKeys } = buildChartData(quantizedTimeline);

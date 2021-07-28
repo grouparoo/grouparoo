@@ -9,9 +9,10 @@ import { ButtonGroup, Button, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { Models, Actions } from "../../utils/apiData";
+import { ErrorHandler } from "../../utils/errorHandler";
 
 export default function LogsList(props) {
-  const { errorHandler } = props;
+  const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

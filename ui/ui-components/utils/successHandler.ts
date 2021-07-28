@@ -1,7 +1,7 @@
 import { EventDispatcher } from "./eventDispatcher";
 
-export class SuccessHandler extends EventDispatcher {
-  message: string;
+export class SuccessHandler extends EventDispatcher<{ message: string }> {
+  message: { message: string };
 
   constructor() {
     super();

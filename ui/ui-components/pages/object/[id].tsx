@@ -6,10 +6,11 @@ import { useApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
 import { Card } from "react-bootstrap";
 import { singular } from "pluralize";
+import { ErrorHandler } from "../../utils/errorHandler";
 
 export default function FindObject(props) {
   const router = useRouter();
-  const { errorHandler } = props;
+  const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [error, setError] = useState<string>(null);
   const [records, setRecords] = useState<string[]>([]);

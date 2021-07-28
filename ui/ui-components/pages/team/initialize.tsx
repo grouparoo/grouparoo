@@ -7,9 +7,20 @@ import { Form, Card } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
 import { Actions } from "../../utils/apiData";
 import { createSession } from "../../components/session/signIn";
+import { ErrorHandler } from "../../utils/errorHandler";
+import { SuccessHandler } from "../../utils/successHandler";
+import { SessionHandler } from "../../utils/sessionHandler";
 
 export default function TeamInitializePage(props) {
-  const { errorHandler, successHandler, sessionHandler } = props;
+  const {
+    errorHandler,
+    successHandler,
+    sessionHandler,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    sessionHandler: SessionHandler;
+  } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();

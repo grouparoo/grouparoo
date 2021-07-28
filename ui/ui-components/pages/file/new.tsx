@@ -6,9 +6,19 @@ import { Form, ProgressBar } from "react-bootstrap";
 import { useRouter } from "next/router";
 import LoadingButton from "../../components/loadingButton";
 import { Actions } from "../../utils/apiData";
+import { ErrorHandler } from "../../utils/errorHandler";
+import { UploadHandler } from "../../utils/uploadHandler";
 
 export default function Page(props) {
-  const { errorHandler, uploadHandler, types } = props;
+  const {
+    errorHandler,
+    uploadHandler,
+    types,
+  }: {
+    errorHandler: ErrorHandler;
+    uploadHandler: UploadHandler;
+    types: Actions.AppOptions["types"];
+  } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler, uploadHandler);
   const { handleSubmit, register } = useForm();

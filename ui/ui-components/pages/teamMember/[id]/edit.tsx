@@ -8,9 +8,19 @@ import ProfileImageFromEmail from "../../../components/visualizations/profileIma
 import { Models, Actions } from "../../../utils/apiData";
 import TeamMemberTabs from "../../../components/tabs/teamMember";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, teams } = props;
+  const {
+    errorHandler,
+    successHandler,
+    teams,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    teams: Models.TeamType[];
+  } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

@@ -5,8 +5,13 @@ import { Form } from "react-bootstrap";
 import LoadingButton from "../loadingButton";
 import { useForm } from "react-hook-form";
 import { Actions } from "../../utils/apiData";
+import { SessionHandler } from "../../utils/sessionHandler";
 
-export const createSession = async (data, sessionHandler, execApi) => {
+export const createSession = async (
+  data,
+  sessionHandler: SessionHandler,
+  execApi
+) => {
   const response: Actions.SessionCreate = await execApi(
     "post",
     `/session`,

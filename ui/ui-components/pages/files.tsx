@@ -12,11 +12,16 @@ import LoadingButton from "../components/loadingButton";
 import { Models, Actions } from "../utils/apiData";
 import { FilePreview, downloadFile } from "../components/filePreview";
 import { formatTimestamp } from "../utils/formatTimestamp";
+import { ErrorHandler } from "../utils/errorHandler";
+import { SuccessHandler } from "../utils/successHandler";
 
 const apiVersion = process.env.API_VERSION || "v1";
 
 export default function Page(props) {
-  const { errorHandler, successHandler } = props;
+  const {
+    errorHandler,
+    successHandler,
+  }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

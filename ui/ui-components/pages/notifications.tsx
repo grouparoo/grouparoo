@@ -10,9 +10,10 @@ import LoadingTable from "../components/loadingTable";
 import { Models, Actions } from "../utils/apiData";
 import { Badge } from "react-bootstrap";
 import { formatTimestamp } from "../utils/formatTimestamp";
+import { ErrorHandler } from "../utils/errorHandler";
 
 export default function Page(props) {
-  const { errorHandler } = props;
+  const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [notifications, setNotifications] = useState<Models.NotificationType[]>(
