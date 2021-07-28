@@ -112,11 +112,13 @@ export default function Page(props) {
                   <Form.Row>
                     <Col md={3}>
                       <code>
-                        <Form.Label>{opt}</Form.Label>
+                        <Form.Label>{opt}:</Form.Label>
                       </code>
                     </Col>
                     <Col>
-                      <Form.Control
+                      <strong>{options[opt].toString()}</strong>
+                      {/* We actually don't want to allow changes to the provided source options? */}
+                      {/* <Form.Control
                         size="sm"
                         type="text"
                         value={options[opt].toString()}
@@ -126,7 +128,7 @@ export default function Page(props) {
                           _options[opt] = e.target.value;
                           setOptions(_options);
                         }}
-                      />
+                      /> */}
                     </Col>
                   </Form.Row>
                 </Form.Group>
