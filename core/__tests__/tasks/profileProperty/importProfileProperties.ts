@@ -164,7 +164,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
         profileIds: [profile.id],
-        propertyId: profileProperty.propertyId,
+        propertyIds: [profileProperty.propertyId],
       });
 
       // new value and state
