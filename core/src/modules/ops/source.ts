@@ -376,6 +376,7 @@ export namespace SourceOps {
       description: string;
       required: boolean;
       type: string;
+      primary?: boolean;
       options: Array<{
         key: string;
         description?: string;
@@ -417,6 +418,7 @@ export namespace SourceOps {
         description: opt.description,
         required: opt.required,
         type: opt.type,
+        primary: opt.primary,
         options,
       });
     }

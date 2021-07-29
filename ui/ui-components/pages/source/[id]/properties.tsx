@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Table, Form, Button } from "react-bootstrap";
+import { Alert, Row, Col, Table, Form, Button } from "react-bootstrap";
 import PageHeader from "../../../components/pageHeader";
 import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
@@ -12,6 +12,7 @@ import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { generateId } from "../../../utils/generateId";
+import PropertyAddButton from "../../../components/property/add";
 
 export default function Page(props) {
   const {
@@ -36,6 +37,9 @@ export default function Page(props) {
   const [properties, setProperties] = useState<Models.PropertyType[]>(
     props.properties
   );
+  const primaryOptionKey = defaultPropertyOptions.find(
+    (dpo) => dpo.primary === true
+  )?.key; // e.g.: "column"
 
   async function loadProperties() {
     setLoading(true);
@@ -50,9 +54,10 @@ export default function Page(props) {
   function TableRow({ column }: { column: string }) {
     const existingProperty =
       properties.find(
-        (p) => p.options?.column === column && p.sourceId === source.id
+        (p) =>
+          p.options[primaryOptionKey] === column && p.sourceId === source.id
       ) ||
-      properties.find((p) => p.options?.column === column) ||
+      properties.find((p) => p.options[primaryOptionKey] === column) ||
       properties.find((p) => p.key.toLowerCase() === column.toLowerCase());
     const disabled = existingProperty
       ? existingProperty.sourceId === source.id
@@ -202,6 +207,37 @@ export default function Page(props) {
           )}
         </td>
       </tr>
+    );
+  }
+
+  if (!primaryOptionKey) {
+    return (
+      <>
+        <Head>
+          <title>Grouparoo: {source.name}</title>
+        </Head>
+
+        <SourceTabs source={source} />
+
+        <PageHeader
+          icon={source.app.icon}
+          title={`${source.name} - Properties`}
+          badges={[
+            <LockedBadge object={source} />,
+            <StateBadge state={source.state} />,
+          ]}
+        />
+
+        <Alert variant="warning">
+          <p>This source does not support quickly adding Properties.</p>
+
+          <PropertyAddButton
+            errorHandler={errorHandler}
+            successHandler={successHandler}
+            source={source}
+          />
+        </Alert>
+      </>
     );
   }
 

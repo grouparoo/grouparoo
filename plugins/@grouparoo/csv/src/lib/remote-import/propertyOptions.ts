@@ -6,6 +6,7 @@ export const propertyOptions: PropertyOptionsMethod = async () => [
     key: "column",
     displayName: "CSV Column",
     required: true,
+    primary: true,
     description: "where the data comes from",
     type: "typeahead",
     options: async ({ sourceOptions, sourceId }) => {

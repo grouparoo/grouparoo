@@ -49,6 +49,7 @@ export const getPropertyOptions: GetPropertyOptionsMethod = async (
     displayName: "Column Name",
     required: true,
     description: "where the data comes from",
+    primary: true,
     type: "typeahead",
     options: async ({ connection, appOptions, appId, sourceOptions }) => {
       const tableName = sourceOptions[tableNameKey]?.toString();
