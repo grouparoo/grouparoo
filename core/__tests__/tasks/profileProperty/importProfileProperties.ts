@@ -44,9 +44,10 @@ describe("tasks/profileProperty:importProfileProperties", () => {
             lastLoginAt: new Date(),
           };
 
-          response[profile.id] = {
-            [properties[0].id]: data[properties[0].key],
-          };
+          response[profile.id] = {};
+          for (const property of properties) {
+            response[profile.id][property.id] = data[property.key];
+          }
         }
 
         return response;
@@ -110,6 +111,91 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       await profileProperty.reload();
       expect(profileProperty.state).toBe("ready");
       expect(profileProperty.rawValue).toBe(`1`);
+      await profile.destroy();
+    });
+
+    test("will not import profile properties that have pending dependencies", async () => {
+      const userIdProperty = await Property.findOne({
+        where: { key: "userId" },
+      });
+
+      const profile: Profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({
+        userId: [null],
+        email: ["old@example.com"],
+      });
+      const profileProperty = await ProfileProperty.findOne({
+        where: { rawValue: "old@example.com" },
+      });
+      await profileProperty.update({ state: "pending" });
+
+      const userIdProfileProperty = await ProfileProperty.findOne({
+        where: {
+          profileId: profile.id,
+          propertyId: userIdProperty.id,
+        },
+      });
+      await userIdProfileProperty.update({ state: "pending" });
+
+      await specHelper.runTask("profileProperty:importProfileProperties", {
+        profileIds: [profile.id],
+        propertyIds: [profileProperty.propertyId],
+      });
+
+      // no change
+      await profileProperty.reload();
+      expect(profileProperty.state).toBe("pending");
+      expect(profileProperty.rawValue).toBe(`old@example.com`);
+
+      // sendAt is slightly in the future from (now - 5 minutes) to try again soon
+      expect(profileProperty.startedAt.getTime()).toBeGreaterThan(
+        new Date().getTime() - 1000 * 60 * 5
+      );
+      expect(profileProperty.startedAt.getTime()).toBeLessThan(
+        new Date().getTime()
+      );
+      await profile.destroy();
+    });
+
+    test("will import profile properties that have pending dependencies imported at the same time", async () => {
+      const userIdProperty = await Property.findOne({
+        where: { key: "userId" },
+      });
+
+      const profile: Profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({
+        userId: ["2"],
+        email: ["old@example.com"],
+      });
+      const emailProfileProperty = await ProfileProperty.findOne({
+        where: { rawValue: "old@example.com" },
+      });
+      await emailProfileProperty.update({ state: "pending" });
+
+      const userIdProfileProperty = await ProfileProperty.findOne({
+        where: {
+          profileId: profile.id,
+          propertyId: userIdProperty.id,
+        },
+      });
+      await userIdProfileProperty.update({ state: "pending" });
+
+      await specHelper.runTask("profileProperty:importProfileProperties", {
+        profileIds: [profile.id],
+        propertyIds: [
+          emailProfileProperty.propertyId,
+          userIdProfileProperty.propertyId,
+        ],
+      });
+
+      // new value and state
+      await emailProfileProperty.reload();
+      expect(emailProfileProperty.state).toBe("ready");
+      expect(emailProfileProperty.rawValue).toBe(`${profile.id}@example.com`);
+
+      await userIdProfileProperty.reload();
+      expect(userIdProfileProperty.state).toBe("ready");
+      expect(userIdProfileProperty.rawValue).toBe(`2`);
       await profile.destroy();
     });
 
@@ -180,49 +266,6 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       );
 
       spy.mockRestore();
-    });
-
-    test("will not import profile properties that have pending dependencies", async () => {
-      const userIdProperty = await Property.findOne({
-        where: { key: "userId" },
-      });
-
-      const profile: Profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({
-        userId: [null],
-        email: ["old@example.com"],
-      });
-      const profileProperty = await ProfileProperty.findOne({
-        where: { rawValue: "old@example.com" },
-      });
-      await profileProperty.update({ state: "pending" });
-
-      const userIdProfileProperty = await ProfileProperty.findOne({
-        where: {
-          profileId: profile.id,
-          propertyId: userIdProperty.id,
-        },
-      });
-      await userIdProfileProperty.update({ state: "pending" });
-
-      await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [profile.id],
-        propertyIds: [profileProperty.propertyId],
-      });
-
-      // no change
-      await profileProperty.reload();
-      expect(profileProperty.state).toBe("pending");
-      expect(profileProperty.rawValue).toBe(`old@example.com`);
-
-      // sendAt is slightly in the future from (now - 5 minutes) to try again soon
-      expect(profileProperty.startedAt.getTime()).toBeGreaterThan(
-        new Date().getTime() - 1000 * 60 * 5
-      );
-      expect(profileProperty.startedAt.getTime()).toBeLessThan(
-        new Date().getTime()
-      );
-      await profile.destroy();
     });
 
     test("can be run for the same profile more than once without deadlock", async () => {

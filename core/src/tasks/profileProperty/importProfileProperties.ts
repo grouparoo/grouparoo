@@ -70,14 +70,16 @@ export class ImportProfileProperties extends RetryableTask {
 
       for (const property of properties) {
         // dependencies are not ready
-        dependencies[property.id].forEach((dep) => {
-          if (
-            profile.profileProperties.find((p) => p.propertyId === dep.id)
-              ?.state !== "ready"
-          ) {
-            ok = false;
-          }
-        });
+        dependencies[property.id]
+          .filter((dep) => !params.propertyIds.includes(dep.id))
+          .forEach((dep) => {
+            if (
+              profile.profileProperties.find((p) => p.propertyId === dep.id)
+                ?.state !== "ready"
+            ) {
+              ok = false;
+            }
+          });
       }
       ok ? profilesToImport.push(profile) : profilesNotReady.push(profile);
     }
