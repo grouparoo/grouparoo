@@ -7,6 +7,7 @@ export const propertyOptions: PropertyOptionsMethod = async () => [
     required: true,
     description: "where the data comes from",
     type: "typeahead",
+    primary: true,
     options: async ({ appOptions, sourceOptions }) => {
       const rows = await sheetPreview({
         appOptions,

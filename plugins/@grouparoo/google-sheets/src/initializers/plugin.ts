@@ -67,7 +67,8 @@ export class Plugins extends Initializer {
               key: "sheet_url",
               displayName: "Google Sheet URL",
               required: true,
-              description: "The url of the Google Sheet.",
+              description:
+                "The url of the Google Sheet, with the gid (tab) included.",
             },
           ],
           groupAggregations: [],
