@@ -1,0 +1,30 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      id: {{{id}}},
+      name: {{{id}}},
+      class: "destination",
+      type: "{{{__pluginName}}}-export",
+      appId: {{{appId}}}, // The ID of the App this Destination uses - e.g. `appId: "iterable_app"`
+      groupId: "...", // The ID of the group whose members you want to export - e.g. `groupId: "high_value_customers"`
+      syncMode: {{{syncMode}}}, // How should Grouparoo sync with this destination? Options: "sync", "additive", "enrich"
+
+      options: {},
+
+      // Mappings are how you choose which properties to export to this destination.
+      // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
+      mapping: {
+        $distinct_id: "$distinctId",
+        $email: "email",
+        $first_name: "firstName",
+        $last_name: "lastName",
+      },
+
+      // You can export group memberships.
+      // Keys are the name to display in the destination, values are the IDs of the Groups in Grouparoo.
+      destinationGroupMemberships: {
+        "High Value Customers!": "highValueCustomers",
+      },
+    },
+  ];
+};
