@@ -11,7 +11,7 @@ import Head from "next/head";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
-import { makeLocal } from "../../../utils/makeLocal";
+import { generateId } from "../../../utils/generateId";
 
 export default function Page(props) {
   const {
@@ -49,15 +49,26 @@ export default function Page(props) {
 
   function TableRow({ column }: { column: string }) {
     const existingProperty =
-      properties.find((p) => p.key.toLowerCase() === column.toLowerCase()) ||
-      properties.find((p) => p.options?.column === column);
-    const disabled = existingProperty ? true : false;
+      properties.find(
+        (p) => p.options?.column === column && p.sourceId === source.id
+      ) ||
+      properties.find((p) => p.options?.column === column) ||
+      properties.find((p) => p.key.toLowerCase() === column.toLowerCase());
+    const disabled = existingProperty
+      ? existingProperty.sourceId === source.id
+      : false;
 
     const [key, setKey] = useState(
-      existingProperty ? existingProperty.key : column
+      existingProperty && existingProperty.sourceId === source.id
+        ? existingProperty.key
+        : existingProperty && existingProperty.sourceId !== source.id
+        ? generateId(`${source.name}-${column}`)
+        : generateId(column)
     );
     const [type, setType] = useState<string>(
-      existingProperty ? existingProperty.type : columnSpeculation[column].type
+      existingProperty && existingProperty.sourceId === source.id
+        ? existingProperty.type
+        : columnSpeculation[column].type
     );
     const [unique, setUnique] = useState(
       existingProperty
@@ -74,7 +85,9 @@ export default function Page(props) {
     });
     const hiddenOptions = ["aggregationMethod"];
     const [options, setOptions] = useState(
-      existingProperty ? existingProperty.options : defaultOptions
+      existingProperty && existingProperty.sourceId === source.id
+        ? existingProperty.options
+        : defaultOptions
     );
 
     async function createProperty() {
@@ -167,7 +180,7 @@ export default function Page(props) {
         </td>
 
         <td>
-          {existingProperty ? (
+          {existingProperty && existingProperty.sourceId === source.id ? (
             <Link
               href={`/property/[id]/edit`}
               as={`/property/${existingProperty.id}/edit`}

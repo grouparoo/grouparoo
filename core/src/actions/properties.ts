@@ -137,7 +137,7 @@ export class PropertyCreate extends AuthenticatedAction {
     this.permission = { topic: "property", mode: "write" };
     this.inputs = {
       id: { required: false },
-      key: { required: true },
+      key: { required: false },
       type: { required: true },
       unique: { required: false },
       isArray: { required: false },
