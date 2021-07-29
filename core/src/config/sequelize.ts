@@ -25,7 +25,7 @@ export const DEFAULT = {
     let database = process.env.DB_DATABASE;
     let username = process.env.DB_USER;
     let password = process.env.DB_PASS || undefined;
-    let schema = process.env.DB_SCHEMA || "public";
+    let schema = process.env.DB_SCHEMA || undefined;
     let ssl: boolean | { [key: string]: any } = false;
 
     // if your environment provides database information via a single JDBC-style URL
