@@ -49,6 +49,7 @@ export const getPropertyOptions: GetPropertyOptionsMethod = async (
     displayName: "Column Name",
     required: true,
     description: "where the data comes from",
+    primary: true,
     type: "typeahead",
     options: async ({ connection, appOptions, appId, sourceOptions }) => {
       const tableName = sourceOptions[tableNameKey]?.toString();
@@ -71,9 +72,12 @@ export const getPropertyOptions: GetPropertyOptionsMethod = async (
     description: "how we combine the data",
     type: "list",
     options: async () => {
-      const out = [];
+      const out: PluginConnectionPropertyOption[] = [];
       for (const key in aggregationOptions) {
-        out.push(Object.assign({ key }, aggregationOptions[key]));
+        const isDefault = key === AggregationMethod.Exact ? true : false;
+        out.push(
+          Object.assign({ key, default: isDefault }, aggregationOptions[key])
+        );
       }
       return out;
     },

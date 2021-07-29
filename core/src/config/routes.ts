@@ -63,6 +63,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/app/:id", action: "app:view" },
         { path: "/v:apiVersion/sources/connectionApps", action: "sources:connectionApps" },
         { path: "/v:apiVersion/source/:id", action: "source:view" },
+        { path: "/v:apiVersion/source/:id/defaultPropertyOptions", action: "source:defaultPropertyOptions" },
         { path: "/v:apiVersion/schedules", action: "schedules:list" },
         { path: "/v:apiVersion/schedule/:id", action: "schedule:view" },
         { path: "/v:apiVersion/schedule/:id/filterOptions", action: "schedule:filterOptions" },

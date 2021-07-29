@@ -178,6 +178,10 @@ export class Source extends LoggedModel<Source> {
     return SourceOps.sourcePreview(this, sourceOptions);
   }
 
+  async defaultPropertyOptions() {
+    return SourceOps.defaultPropertyOptions(this);
+  }
+
   async apiData() {
     const app = await this.$get("app", { scope: null, include: [Option] });
     const schedule = await this.$get("schedule", { scope: null });

@@ -13,5 +13,9 @@ export default function SourceTabs({ source }: { source: Models.SourceType }) {
     if (process.env.GROUPAROO_UI_EDITION === "enterprise") tabs.push("runs");
   }
 
+  if (process.env.GROUPAROO_UI_EDITION !== "community") {
+    tabs.push("properties");
+  }
+
   return <Tabs name={source.name} draftType={source.type} tabs={tabs} />;
 }

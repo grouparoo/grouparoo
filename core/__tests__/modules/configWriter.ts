@@ -714,7 +714,6 @@ describe("modules/configWriter", () => {
       expect(property.getConfigId()).toEqual(
         ConfigWriter.generateId(property.key)
       );
-      expect(property.getConfigId()).not.toEqual(property.id);
 
       property = await helper.factories.property(
         source,

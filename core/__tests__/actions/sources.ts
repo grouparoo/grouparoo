@@ -148,13 +148,13 @@ describe("actions/sources", () => {
       expect(preview).toEqual([]);
     });
 
-    test("a source can provide options to a preview", async () => {
+    test("a source can provide options to a preview and column speculation", async () => {
       connection.params = {
         csrfToken,
         id,
         options: { table: "users" },
       };
-      const { error, preview } = await specHelper.runAction(
+      const { error, preview, columnSpeculation } = await specHelper.runAction(
         "source:preview",
         connection
       );
@@ -162,6 +162,51 @@ describe("actions/sources", () => {
       expect(preview).toEqual([
         { id: 1, fname: "mario", lname: "mario" },
         { id: 2, fname: "luigi", lname: "mario" },
+      ]);
+      expect(columnSpeculation).toEqual({
+        id: { isUnique: true, type: "string" },
+        fname: { isUnique: false, type: "string" },
+        lname: { isUnique: false, type: "string" },
+      });
+    });
+
+    test("a source can provide default property options", async () => {
+      connection.params = {
+        csrfToken,
+        id,
+        options: { table: "users" },
+      };
+      const { error, defaultPropertyOptions } = await specHelper.runAction(
+        "source:defaultPropertyOptions",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(defaultPropertyOptions).toEqual([
+        {
+          description: "the column to choose",
+          displayName: undefined,
+          key: "column",
+          options: [
+            { examples: [1, 2, 3], key: "id" },
+            { examples: ["mario", "luigi", "peach"], key: "fname" },
+            { examples: ["mario", "mario", "toadstool"], key: "lname" },
+          ],
+          required: true,
+          type: "list",
+        },
+        {
+          description: "how things are combined",
+          displayName: undefined,
+          key: "aggregationMethod",
+          options: [
+            { key: "exact", default: true },
+            { key: "count" },
+            { key: "min" },
+            { key: "max" },
+          ],
+          required: false,
+          type: "list",
+        },
       ]);
     });
 

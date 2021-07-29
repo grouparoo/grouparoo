@@ -97,6 +97,7 @@ export interface PluginConnectionPropertyOption {
   required: boolean;
   description: string;
   type: string;
+  primary?: boolean;
   options: (argument: {
     connection: any;
     app: App;
@@ -112,6 +113,7 @@ export interface PluginConnectionPropertyOption {
     Array<{
       key: string;
       description?: string;
+      default?: boolean;
       examples?: Array<any>;
     }>
   >;
