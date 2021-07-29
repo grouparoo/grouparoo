@@ -25,6 +25,7 @@ export const DEFAULT = {
     let database = process.env.DB_DATABASE;
     let username = process.env.DB_USER;
     let password = process.env.DB_PASS || undefined;
+    let schema = process.env.DB_SCHEMA || "public";
     let ssl: boolean | { [key: string]: any } = false;
 
     // if your environment provides database information via a single JDBC-style URL
@@ -44,8 +45,14 @@ export const DEFAULT = {
       if (parsed.password) password = parsed.password;
       if (parsed.hostname) host = parsed.hostname;
       if (parsed.port) port = parsed.port;
-      if (parsed.pathname) database = parsed.pathname.substring(1);
-
+      if (parsed.pathname) {
+        database = parsed.pathname.substring(1);
+        if (database.includes("/")) {
+          const dbAndSchema = database.split("/");
+          if (dbAndSchema[0].trim() !== "") database = dbAndSchema[0];
+          if (dbAndSchema[1].trim() !== "") schema = dbAndSchema[1];
+        }
+      }
       const search_ssl = parsed.searchParams?.get("ssl");
       const search_sslmode = parsed.searchParams?.get("sslmode");
       if (search_ssl) ssl = search_ssl === "true";
@@ -110,6 +117,7 @@ export const DEFAULT = {
       host: host,
       username: username,
       password: password,
+      schema: schema,
       models: [join(__dirname, "..", "models")],
       migrations: [join(__dirname, "..", "migrations"), ...pluginMigrations],
       migrationLogLevel: storage === ":memory:" ? "debug" : "info",
