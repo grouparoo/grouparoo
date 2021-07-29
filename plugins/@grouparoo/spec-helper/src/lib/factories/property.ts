@@ -23,6 +23,7 @@ export default async (
   props.sourceId = source.id;
   const mergedProps = await data(props);
   const instance = new Property(mergedProps);
+  if (instance.key && !instance.id) instance.id = instance.key;
   await instance.save();
 
   await instance.setOptions(options);

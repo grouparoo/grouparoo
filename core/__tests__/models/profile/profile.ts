@@ -7,6 +7,7 @@ import {
   Property,
   Group,
   GroupMember,
+  Option,
   App,
   Source,
   Log,
@@ -789,7 +790,7 @@ describe("models/profile", () => {
       for (const m of members) await m.destroy();
       await group.destroy();
       await source.setMapping({});
-      await Property.truncate();
+      for (const property of await Property.findAll()) await property.destroy();
       await source.destroy();
       await app.destroy();
     });

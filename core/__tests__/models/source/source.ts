@@ -567,9 +567,26 @@ describe("models/source", () => {
     });
 
     test("bootstrapUniqueProperty will fail if the property cannot be created", async () => {
+      const blockingProperty = await Property.create({
+        sourceId: source.id,
+        id: "blocking_property",
+        key: "blockingProperty",
+        type: "string",
+        unique: true,
+        isArray: false,
+      });
+      await blockingProperty.setOptions({ column: "something" });
+      await blockingProperty.update({ state: "ready" });
+
       await expect(
-        source.bootstrapUniqueProperty("userId", "integer", "id")
+        source.bootstrapUniqueProperty(
+          "blockingProperty",
+          "integer",
+          "blocking_property"
+        )
       ).rejects.toThrow(/already in use/);
+
+      await blockingProperty.destroy();
     });
   });
 

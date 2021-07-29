@@ -468,7 +468,7 @@ export namespace SourceOps {
       // build the default options
       const { pluginConnection } = await source.getPlugin();
       if (!local) {
-        let ruleOptions = {};
+        let ruleOptions: SimplePropertyOptions = {};
 
         if (
           typeof pluginConnection.methods.uniquePropertyBootstrapOptions ===
