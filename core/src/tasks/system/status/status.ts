@@ -1,4 +1,4 @@
-import { api, log, task, Task } from "actionhero";
+import { api, log, task } from "actionhero";
 import { GrouparooCLI } from "../../../modules/cli";
 import { APM } from "../../../modules/apm";
 import { Status, FinalSummary } from "../../../modules/status";
