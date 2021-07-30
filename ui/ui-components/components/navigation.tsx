@@ -260,7 +260,8 @@ export default function Navigation(props) {
                               navigationMode={navigationMode}
                               statusHandler={statusHandler}
                             />
-                          ) : null}
+                          ) : null}{" "}
+                          »
                         </span>
                         <div style={{ padding: 6 }} />
                       </Accordion.Toggle>
