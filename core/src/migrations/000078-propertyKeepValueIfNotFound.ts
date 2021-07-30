@@ -6,6 +6,10 @@ export default {
         allowNull: false,
         defaultValue: false,
       });
+
+      await migration.sequelize.query(
+        `UPDATE "properties" SET "keepValueIfNotFound"=TRUE`
+      );
     });
   },
 
