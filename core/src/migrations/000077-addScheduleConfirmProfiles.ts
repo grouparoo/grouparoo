@@ -3,6 +3,8 @@ export default {
     await migration.sequelize.transaction(async () => {
       await migration.addColumn("schedules", "confirmProfiles", {
         type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       });
     });
   },
