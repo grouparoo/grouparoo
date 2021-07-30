@@ -19,7 +19,9 @@ export default async (props = {}, properties = {}) => {
   const directlyMappedProperty = allProperties.find((p) => p.directlyMapped);
 
   if (directlyMappedProperty) {
-    properties[directlyMappedProperty.key] = faker.datatype.number(99999);
+    properties[directlyMappedProperty.key] = faker.unique(
+      faker.datatype.number
+    );
   }
 
   await profile.addOrUpdateProperties({
