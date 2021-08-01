@@ -58,7 +58,7 @@
     "mustache": "4.2.0",
     "node-resque": "9.0.4",
     "nodemon": "2.0.12",
-    "pacote": "11.3.1",
+    "pacote": "11.3.5",
     "pg": "8.6.0",
     "pg-hstore": "2.3.4",
     "pluralize": "8.0.0",
