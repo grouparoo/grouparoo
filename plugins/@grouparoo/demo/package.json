@@ -33,7 +33,7 @@
     "fs-extra": "10.0.0",
     "isomorphic-fetch": "3.0.0",
     "mongodb": "3.6.9",
-    "pg": "8.6.0",
+    "pg": "8.7.1",
     "prettier": "2.3.2",
     "replace-in-files": "3.0.0",
     "sequelize": "6.6.2",
