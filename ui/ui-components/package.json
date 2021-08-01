@@ -38,7 +38,7 @@
     "@types/react-dom": "*",
     "axios": "0.21.1",
     "bootstrap": "4.6.0",
-    "date-fns": "2.22.1",
+    "date-fns": "2.23.0",
     "isomorphic-fetch": "3.0.0",
     "jest": "27.0.6",
     "jest-mock-axios": "4.4.0",
