@@ -222,7 +222,7 @@ importers:
       '@types/fs-extra': '*'
       '@types/jest': '*'
       '@types/node': '*'
-      '@types/pacote': 11.1.0
+      '@types/pacote': 11.1.1
       '@types/pluralize': 0.0.29
       '@types/validator': '*'
       actionhero: 26.1.3
@@ -314,7 +314,7 @@ importers:
     devDependencies:
       '@grouparoo/spec-helper': link:../plugins/@grouparoo/spec-helper
       '@types/jest': 26.0.24
-      '@types/pacote': 11.1.0
+      '@types/pacote': 11.1.1
       '@types/pluralize': 0.0.29
       csv-parse: 4.16.0
       jest: 27.0.6_ts-node@10.1.0
@@ -3827,8 +3827,8 @@ packages:
     resolution: {integrity: sha512-1TcL7YDYCtnHmLhTWbum+IIwLlvpaHoEKS2KNIngEwLzwgDeHaebaEHHbQp8IqzNQ9IYiboLKUjAf7MZqG63+w==}
     dev: true
 
-  /@types/pacote/11.1.0:
-    resolution: {integrity: sha512-ULeeKzbZ3e5GRlqbVDUDgi0L0RYg4OJXLSrtOoyTmGJTAN7JdR0IyZ0kXCCjGzkZwh4ABM7TKISwyDkJqnbAgw==}
+  /@types/pacote/11.1.1:
+    resolution: {integrity: sha512-ycBhPpDuNb5hwvWQJFaLyGspdWXkpqBOcGyWclC+hQfMvZt/13aXIt5vx5b+wx4lJd8n0ROZEPMCt6C9uGP0ag==}
     dependencies:
       '@types/node': 16.4.10
       '@types/npm-registry-fetch': 8.0.1
