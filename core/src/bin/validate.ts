@@ -1,6 +1,6 @@
 import { GrouparooCLI } from "../modules/cli";
 import { CLI, api } from "actionhero";
-import { ConfigurationObject } from "../classes/codeConfig";
+import { AnyConfigurationObject } from "../classes/codeConfig";
 import {
   loadConfigObjects,
   processConfigObjects,
@@ -35,7 +35,7 @@ export class Validate extends CLI {
     GrouparooCLI.logCLI(this.name);
 
     const configDir = getConfigDir();
-    let configObjects: ConfigurationObject[];
+    let configObjects: AnyConfigurationObject[];
 
     // Can we read the config directory?  Is the JSON/JS valid?
     try {

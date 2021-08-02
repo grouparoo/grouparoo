@@ -1,7 +1,7 @@
 import { Op } from "sequelize";
 
 import {
-  ConfigurationObject,
+  GroupConfigurationObject,
   getCodeConfigLockKey,
   logModel,
   validateConfigObjectKeys,
@@ -13,7 +13,7 @@ import { Property } from "../../models/Property";
 import { ConfigWriter } from "../configWriter";
 
 export async function loadGroup(
-  configObject: ConfigurationObject,
+  configObject: GroupConfigurationObject,
   externallyValidate: boolean,
   validate = false
 ): Promise<IdsByClass> {

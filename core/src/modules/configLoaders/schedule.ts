@@ -1,5 +1,5 @@
 import {
-  ConfigurationObject,
+  ScheduleConfigurationObject,
   logModel,
   getParentByName,
   getCodeConfigLockKey,
@@ -13,7 +13,7 @@ import { Op } from "sequelize";
 import { ConfigWriter } from "../configWriter";
 
 export async function loadSchedule(
-  configObject: ConfigurationObject,
+  configObject: ScheduleConfigurationObject,
   externallyValidate: boolean,
   validate = false
 ): Promise<IdsByClass> {
@@ -34,14 +34,14 @@ export async function loadSchedule(
   }
 
   await schedule.update({
-    type: configObject.type,
     name: configObject.name,
     recurring: configObject.recurring,
     recurringFrequency: configObject.recurringFrequency,
     confirmProfiles: configObject.confirmProfiles,
   });
 
-  await schedule.setOptions(extractNonNullParts(configObject, "options"));
+  const options = extractNonNullParts(configObject, "options");
+  await schedule.setOptions(options);
 
   if (configObject.filters) {
     await schedule.setFilters(configObject.filters, externallyValidate);

@@ -1,5 +1,5 @@
 import {
-  ConfigurationObject,
+  AppConfigurationObject,
   extractNonNullParts,
   getCodeConfigLockKey,
   logModel,
@@ -12,7 +12,7 @@ import { Op } from "sequelize";
 import { ConfigWriter } from "../configWriter";
 
 export async function loadApp(
-  configObject: ConfigurationObject,
+  configObject: AppConfigurationObject,
   externallyValidate: boolean,
   validate = false
 ): Promise<IdsByClass> {
@@ -42,7 +42,9 @@ export async function loadApp(
     name: configObject.name,
     locked: ConfigWriter.getLockKey(configObject),
   });
-  await app.setOptions(extractNonNullParts(configObject, "options"));
+
+  const options = extractNonNullParts(configObject, "options");
+  if (options) await app.setOptions(options);
 
   if (externallyValidate) {
     const response = await app.test(

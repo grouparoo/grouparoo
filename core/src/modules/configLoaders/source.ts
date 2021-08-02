@@ -1,5 +1,5 @@
 import {
-  ConfigurationObject,
+  SourceConfigurationObject,
   extractNonNullParts,
   logModel,
   getParentByName,
@@ -7,6 +7,7 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
   getAutoBootstrappedProperty,
+  AnyConfigurationObject,
 } from "../../classes/codeConfig";
 import { App, Source, Property } from "../..";
 import { Op } from "sequelize";
@@ -15,8 +16,8 @@ import { log } from "actionhero";
 import { ConfigWriter } from "../configWriter";
 
 export async function loadSource(
-  configObject: ConfigurationObject,
-  configObjects: ConfigurationObject[],
+  configObject: SourceConfigurationObject,
+  configObjects: AnyConfigurationObject[],
   externallyValidate: boolean,
   validate = false
 ): Promise<IdsByClass> {
@@ -96,7 +97,7 @@ export async function loadSource(
       if (!property || !property.options) throw error;
       const mappedColumn = Object.values(property.options)[0];
       bootstrappedProperty = await source.bootstrapUniqueProperty(
-        property.key || property.name,
+        property.key || property["name"],
         property.type,
         mappedColumn,
         property.id,

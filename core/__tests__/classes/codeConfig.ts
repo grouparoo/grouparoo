@@ -5,13 +5,13 @@ import {
   getParentIds,
   getConfigObjectsWithIds,
   sortConfigObjectsWithIds,
-  ConfigurationObject,
+  AnyConfigurationObject,
   getDirectParentId,
   getAutoBootstrappedProperty,
 } from "../../src/classes/codeConfig";
 
 describe("classes/codeConfig", () => {
-  let configObjects: ConfigurationObject[];
+  let configObjects: AnyConfigurationObject[];
   helper.grouparooTestServer({ truncate: true });
 
   beforeAll(async () => {
@@ -48,7 +48,7 @@ describe("classes/codeConfig", () => {
     });
 
     describe("with bootstrapped property included in source", () => {
-      let manualConfigObjects: ConfigurationObject[];
+      let manualConfigObjects: AnyConfigurationObject[];
 
       beforeAll(async () => {
         const dir = path.join(

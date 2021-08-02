@@ -1,5 +1,5 @@
 import {
-  ConfigurationObject,
+  ProfileConfigurationObject,
   validateConfigObjectKeys,
   extractNonNullParts,
   logModel,
@@ -8,7 +8,7 @@ import { Profile } from "../../models/Profile";
 import { Property } from "../../models/Property";
 
 export async function loadProfile(
-  configObject: ConfigurationObject,
+  configObject: ProfileConfigurationObject,
   externallyValidate: boolean,
   validate = false
 ) {

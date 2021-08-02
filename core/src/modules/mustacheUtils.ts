@@ -1,6 +1,6 @@
 import Mustache from "mustache";
 // import { Property } from "../models/Property"; // TODO: importing this causes a circular dependency loop; we'll use api.sequelize.models for now
-import { ConfigurationObject } from "../classes/codeConfig";
+import { AnyConfigurationObject } from "../classes/codeConfig";
 import { api } from "actionhero";
 
 export namespace MustacheUtils {
@@ -44,7 +44,7 @@ export namespace MustacheUtils {
 
   export async function getMustacheVariablesAsPropertyIds(
     string: string,
-    configObjects: ConfigurationObject[] = []
+    configObjects: AnyConfigurationObject[] = []
   ) {
     const keys = getMustacheVariables(string);
     const properties = await api.sequelize.models.Property.findAll();
@@ -55,15 +55,19 @@ export namespace MustacheUtils {
       configObjects
         .filter((c) => c.class.toLowerCase() === "property")
         .map((c) => {
-          return { id: c.id, key: c.key || c.name };
+          return { id: c.id, key: c["key"] || c["name"] };
         }),
       configObjects
         .filter((c) => c.class.toLowerCase() === "source")
-        .filter((c) => c.bootstrappedProperty?.id)
+        .filter(
+          (c) => c["bootstrappedProperty"] && c["bootstrappedProperty"]["id"]
+        )
         .map((c) => {
           return {
-            id: c.bootstrappedProperty.id,
-            key: c.bootstrappedProperty.key || c.bootstrappedProperty.name,
+            id: c["bootstrappedProperty"]["id"],
+            key:
+              c["bootstrappedProperty"]["key"] ||
+              c["bootstrappedProperty"]["name"],
           };
         })
     );

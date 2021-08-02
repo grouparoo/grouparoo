@@ -4,11 +4,21 @@ import fs from "fs";
 import glob from "glob";
 import JSON5 from "json5";
 import {
-  ConfigurationObject,
+  AnyConfigurationObject,
   sortConfigurationObjects,
   validateConfigObjects,
   IdsByClass,
   getDirectParentId,
+  SettingConfigurationObject,
+  AppConfigurationObject,
+  SourceConfigurationObject,
+  PropertyConfigurationObject,
+  GroupConfigurationObject,
+  ScheduleConfigurationObject,
+  DestinationConfigurationObject,
+  ApiKeyConfigurationObject,
+  TeamConfigurationObject,
+  TeamMemberConfigurationObject,
 } from "../../classes/codeConfig";
 import { GrouparooErrorSerializer } from "../../config/errors";
 import { loadApp, deleteApps } from "./app";
@@ -55,10 +65,10 @@ export async function loadConfigDirectory(
 
 export async function loadConfigObjects(
   configDir: string
-): Promise<ConfigurationObject[]> {
+): Promise<AnyConfigurationObject[]> {
   const globSearch = path.join(configDir, "**", "+(*.json|*.js)");
   const configFiles = glob.sync(globSearch);
-  let configObjects: ConfigurationObject[] = [];
+  let configObjects: AnyConfigurationObject[] = [];
   for (const i in configFiles) {
     configObjects = configObjects.concat(await loadConfigFile(configFiles[i]));
   }
@@ -66,7 +76,7 @@ export async function loadConfigObjects(
   return configObjects;
 }
 
-async function loadConfigFile(file: string): Promise<ConfigurationObject> {
+async function loadConfigFile(file: string): Promise<AnyConfigurationObject> {
   let payload;
   if (file.match(/\.json$/)) {
     payload = JSON5.parse(fs.readFileSync(file).toString());
@@ -89,7 +99,7 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
 
 export async function shouldExternallyValidate(
   canExternallyValidate: boolean,
-  configObject: ConfigurationObject,
+  configObject: AnyConfigurationObject,
   locallyValidateIds: Set<string>
 ) {
   if (!canExternallyValidate) return false;
@@ -110,11 +120,10 @@ export async function shouldExternallyValidate(
 }
 
 export async function processConfigObjects(
-  configObjects: Array<ConfigurationObject>,
+  configObjects: AnyConfigurationObject[],
   canExternallyValidate: boolean,
   locallyValidateIds?: Set<string>,
-  validate = false,
-  extraSortingConfigObjects?: Array<ConfigurationObject>
+  validate = false
 ): Promise<{ seenIds: IdsByClass; errors: string[] }> {
   const seenIds: IdsByClass = {
     app: [],
@@ -189,44 +198,72 @@ export async function processConfigObjects(
     try {
       switch (klass) {
         case "setting":
-          ids = await loadSetting(configObject, externallyValidate, validate);
+          ids = await loadSetting(
+            configObject as SettingConfigurationObject,
+            externallyValidate,
+            validate
+          );
           break;
         case "app":
-          ids = await loadApp(configObject, externallyValidate, validate);
+          ids = await loadApp(
+            configObject as AppConfigurationObject,
+            externallyValidate,
+            validate
+          );
           break;
         case "source":
           ids = await loadSource(
-            configObject,
+            configObject as SourceConfigurationObject,
             configObjects,
             externallyValidate,
             validate
           );
           break;
         case "property":
-          ids = await loadProperty(configObject, externallyValidate, validate);
+          ids = await loadProperty(
+            configObject as PropertyConfigurationObject,
+            externallyValidate,
+            validate
+          );
           break;
         case "group":
-          ids = await loadGroup(configObject, externallyValidate, validate);
+          ids = await loadGroup(
+            configObject as GroupConfigurationObject,
+            externallyValidate,
+            validate
+          );
           break;
         case "schedule":
-          ids = await loadSchedule(configObject, externallyValidate, validate);
+          ids = await loadSchedule(
+            configObject as ScheduleConfigurationObject,
+            externallyValidate,
+            validate
+          );
           break;
         case "destination":
           ids = await loadDestination(
-            configObject,
+            configObject as DestinationConfigurationObject,
             externallyValidate,
             validate
           );
           break;
         case "apikey":
-          ids = await loadApiKey(configObject, externallyValidate, validate);
+          ids = await loadApiKey(
+            configObject as ApiKeyConfigurationObject,
+            externallyValidate,
+            validate
+          );
           break;
         case "team":
-          ids = await loadTeam(configObject, externallyValidate, validate);
+          ids = await loadTeam(
+            configObject as TeamConfigurationObject,
+            externallyValidate,
+            validate
+          );
           break;
         case "teammember":
           ids = await loadTeamMember(
-            configObject,
+            configObject as TeamMemberConfigurationObject,
             externallyValidate,
             validate
           );
@@ -248,7 +285,7 @@ export async function processConfigObjects(
         throw new Error(
           `Sequelize Database Error with Config object for ${
             configObject?.class
-          } \`${configObject.key || configObject.name}\`(${
+          } \`${configObject["key"] || configObject["name"]}\`(${
             configObject.id
           }).  Cannot validate additional objects.`
         );
@@ -257,7 +294,7 @@ export async function processConfigObjects(
       const { message, fields } = GrouparooErrorSerializer(error);
 
       const errorMessage = `[ config ] error with ${configObject?.class} \`${
-        configObject.key || configObject.name
+        configObject["key"] || configObject["name"]
       }\` (${configObject.id}): ${message}`;
 
       errors.push(errorMessage);

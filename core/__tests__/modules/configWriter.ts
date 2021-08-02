@@ -17,7 +17,7 @@ import { Profile } from "../../src/models/Profile";
 import { ConfigWriter } from "../../src/modules/configWriter";
 import { MappingHelper } from "../../src/modules/mappingHelper";
 
-import { ConfigurationObject } from "../../src/classes/codeConfig";
+import { AnyConfigurationObject } from "../../src/classes/codeConfig";
 
 const workerId = process.env.JEST_WORKER_ID;
 const configDir = `${os.tmpdir()}/test/${workerId}/configWriter`;
@@ -306,7 +306,7 @@ describe("modules/configWriter", () => {
     });
 
     describe("getLockKey()", () => {
-      let configObject: ConfigurationObject;
+      let configObject: AnyConfigurationObject;
 
       beforeEach(async () => {
         configObject = await app.getConfigObject();

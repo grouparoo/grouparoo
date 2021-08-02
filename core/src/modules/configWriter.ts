@@ -10,7 +10,7 @@ import { Setting } from "../models/Setting";
 import { Source } from "../models/Source";
 
 import {
-  ConfigurationObject,
+  AnyConfigurationObject,
   getCodeConfigLockKey,
 } from "../classes/codeConfig";
 
@@ -19,12 +19,12 @@ import { Profile } from "../models/Profile";
 
 type WritableConfigObject = {
   filePath: string;
-  object: ConfigurationObject;
+  object: AnyConfigurationObject;
 };
 
 type CachedConfigFile = {
   absFilePath: string;
-  objects: ConfigurationObject[];
+  objects: AnyConfigurationObject[];
 };
 
 /**
@@ -69,7 +69,7 @@ export namespace ConfigWriter {
   }
 
   export function generateFilePath(
-    object: ConfigurationObject | [ConfigurationObject],
+    object: AnyConfigurationObject | [AnyConfigurationObject],
     prefix?: string
   ): string {
     const id = Array.isArray(object) ? object[0]?.id : object?.id;
@@ -153,7 +153,9 @@ export namespace ConfigWriter {
     CONFIG_FILE_CACHE = [];
   }
 
-  export function getLockKey(configObject: ConfigurationObject): string | null {
+  export function getLockKey(
+    configObject: AnyConfigurationObject
+  ): string | null {
     if (process.env.GROUPAROO_RUN_MODE !== "cli:config") {
       return getCodeConfigLockKey();
     }
@@ -171,7 +173,7 @@ export namespace ConfigWriter {
     return ext !== ".json";
   }
 
-  function isLockable(object: ConfigurationObject) {
+  function isLockable(object: AnyConfigurationObject) {
     const isMatch = (o) => o.id === object.id && o.class === object.class;
     const cachedFileObj: CachedConfigFile = CONFIG_FILE_CACHE.find(
       (cache) => cache.objects.filter(isMatch).length > 0
