@@ -386,6 +386,28 @@ importers:
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
+  plugins/@grouparoo/calculated-property:
+    specifiers:
+      '@grouparoo/core': 0.5.3-alpha.1
+      '@grouparoo/spec-helper': 0.5.3-alpha.1
+      '@types/jest': '*'
+      '@types/node': '*'
+      actionhero: 26.1.3
+      jest: 27.0.6
+      prettier: 2.3.2
+      ts-jest: 27.0.4
+      typescript: 4.3.5
+    devDependencies:
+      '@grouparoo/core': link:../../../core
+      '@grouparoo/spec-helper': link:../spec-helper
+      '@types/jest': 26.0.24
+      '@types/node': 16.4.10
+      actionhero: 26.1.3
+      jest: 27.0.6
+      prettier: 2.3.2
+      ts-jest: 27.0.4_52cc4273aa16028085013af47e479e10
+      typescript: 4.3.5
+
   plugins/@grouparoo/csv:
     specifiers:
       '@grouparoo/core': 0.5.3-alpha.5

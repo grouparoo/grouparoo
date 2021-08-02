@@ -1,0 +1,42 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/calculated-property",
+  "description": "The Grouparoo Calculated Property Plugin",
+  "version": "0.5.3-alpha.1",
+  "license": "MPL-2.0",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=12.0.0 <16.0.0"
+  },
+  "homepage": "https://www.grouparoo.com",
+  "bugs": {
+    "url": "https://github.com/grouparoo/grouparoo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grouparoo/grouparoo.git",
+    "directory": "plugins/@grouparoo/calculated-property"
+  },
+  "scripts": {
+    "prepare": "rm -rf dist && tsc --declaration",
+    "test": "jest",
+    "pretest": "npm run lint && npm run prepare",
+    "lint": "prettier --check src __tests__",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "@grouparoo/core": "0.5.3-alpha.1",
+    "@grouparoo/spec-helper": "0.5.3-alpha.1",
+    "@types/jest": "*",
+    "@types/node": "*",
+    "actionhero": "26.1.3",
+    "jest": "27.0.6",
+    "prettier": "2.3.2",
+    "ts-jest": "27.0.4",
+    "typescript": "4.3.5"
+  },
+  "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
+}
