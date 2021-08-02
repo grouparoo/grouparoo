@@ -124,7 +124,10 @@ export namespace ConfigWriter {
         }
         // Don't process objects that have missing id values.
         if (!Array.isArray(object) && !object?.id) continue;
-        const filePath = generateFilePath(object, type);
+        const filePath = generateFilePath(
+          object as AnyConfigurationObject,
+          type
+        );
         objects.push({ filePath, object });
       }
     }
