@@ -36,7 +36,7 @@
     "pg": "8.7.1",
     "prettier": "2.3.2",
     "replace-in-files": "3.0.0",
-    "sequelize": "6.6.2",
+    "sequelize": "6.6.5",
     "uuid": "8.3.2"
   },
   "devDependencies": {
