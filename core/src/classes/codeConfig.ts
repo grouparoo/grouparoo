@@ -49,18 +49,6 @@ export interface ConfigurationObject {
   bootstrappedProperty?: ConfigurationObject;
   destinationGroupMemberships?: { [key: string]: string };
   properties?: { [key: string]: any };
-
-  // For SyncTable
-  source?: ConfigurationObject;
-  identityProperty?: ConfigurationObject;
-  schedule?: ConfigurationObject;
-  destination?: ConfigurationObject;
-  group?: ConfigurationObject;
-  sync?: any;
-  table?: string;
-  userKeyColumn?: string;
-  userKeyMapsToPropertyId?: string;
-  highWaterColumn?: string;
 }
 
 interface ConfigObjectWithReferenceIDs {

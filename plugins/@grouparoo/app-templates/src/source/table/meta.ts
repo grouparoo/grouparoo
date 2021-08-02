@@ -131,9 +131,6 @@ export const buildConnection: BuildConnectionMethod = ({
       profileProperty,
       profileProperties,
       sourceRunPercentComplete,
-
-      // @ts-ignore
-      getColumns, // powers syncTable with the column types
     },
   };
 

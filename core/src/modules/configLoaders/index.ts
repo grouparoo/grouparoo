@@ -20,7 +20,6 @@ import { loadTeamMember, deleteTeamMembers } from "./teamMember";
 import { loadGroup, deleteGroups } from "./group";
 import { loadSchedule, deleteSchedules } from "./schedule";
 import { loadSetting } from "./setting";
-import { expandSyncTable } from "./syncTable";
 import { loadDestination, deleteDestinations } from "./destination";
 import { ConfigWriter } from "../configWriter";
 import { loadProfile } from "./profile";
@@ -140,21 +139,7 @@ export async function processConfigObjects(
   if (errors.length > 0) return { seenIds, errors };
 
   try {
-    // The objects we are validating are a subset of a larger collection (ie: synctable)
-    // We cannot sort the collection without the other objects in the superset
-    if (extraSortingConfigObjects) {
-      const extraSortingConfigObjectIds = extraSortingConfigObjects.map(
-        (o) => o.id
-      );
-      configObjects = (
-        await sortConfigurationObjects(
-          [].concat(extraSortingConfigObjects, configObjects)
-        )
-      ).filter((o) => !extraSortingConfigObjectIds.includes(o.id));
-    } else {
-      // A normal collection of config objects
-      configObjects = await sortConfigurationObjects(configObjects);
-    }
+    configObjects = await sortConfigurationObjects(configObjects);
   } catch (error) {
     // If something we wrong while sorting, log the messages and return. We
     // aren't going to process the config objects if we can't be confident we're
@@ -248,22 +233,6 @@ export async function processConfigObjects(
           break;
         case "profile":
           ids = await loadProfile(configObject, externallyValidate, validate);
-          break;
-        case "synctable":
-          const many = await expandSyncTable(
-            configObject,
-            externallyValidate,
-            validate
-          );
-          const expanded = await processConfigObjects(
-            many,
-            canExternallyValidate,
-            locallyValidateIds,
-            validate,
-            configObjects.filter((o) => o.id !== configObject.id)
-          );
-          ids = expanded.seenIds;
-          errors.push(...expanded.errors);
           break;
         default:
           throw new Error(`unknown config object class: ${configObject.class}`);
