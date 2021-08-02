@@ -27,6 +27,7 @@ interface ConfigurationObject {
 export interface ApiKeyConfigurationObject extends ConfigurationObject {
   name: string;
   type?: string;
+  apiKey?: string;
   permissions?: Array<{ id: string; read: boolean; write: boolean }>;
   options?: { permissionAllRead: boolean; permissionAllWrite: boolean };
 }
