@@ -46,7 +46,7 @@
     "@types/node": "*",
     "actionhero": "26.1.2",
     "jest": "27.0.6",
-    "ts-jest": "27.0.3",
+    "ts-jest": "27.0.4",
     "typescript": "4.3.5"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
