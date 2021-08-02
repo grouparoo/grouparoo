@@ -235,6 +235,7 @@ describe("modules/codeConfig", () => {
         expect(apiKeys.length).toBe(1);
         expect(apiKeys[0].id).toBe("website_key");
         expect(apiKeys[0].name).toBe("web-api-key");
+        expect(apiKeys[0].apiKey).toBe("abc123");
         expect(apiKeys[0].locked).toBe("config:code");
         expect(apiKeys[0].permissionAllRead).toBe(true);
         expect(apiKeys[0].permissionAllWrite).toBe(true);
@@ -425,6 +426,11 @@ describe("modules/codeConfig", () => {
       expect(teamMembers[0].firstName).toEqual("Example");
       expect(teamMembers[0].lastName).toEqual("Person");
       expect(await teamMembers[0].checkPassword("new-password")).toBe(true);
+    });
+
+    test("apiKeys can be updated", async () => {
+      const apiKeys = await ApiKey.findAll();
+      expect(apiKeys[0].apiKey).toBe("def456");
     });
   });
 
