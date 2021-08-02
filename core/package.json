@@ -85,7 +85,7 @@
     "nock": "13.1.0",
     "ts-jest": "27.0.3",
     "type-fest": "1.2.1",
-    "typedoc": "0.21.4",
+    "typedoc": "0.21.5",
     "typescript": "4.3.5"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
