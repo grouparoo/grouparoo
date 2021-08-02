@@ -233,7 +233,7 @@ importers:
       compare-versions: 3.6.0
       csv-parse: 4.16.0
       csv-stringify: 5.6.2
-      date-fns: 2.22.1
+      date-fns: 2.23.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       glob: 7.1.7
@@ -281,7 +281,7 @@ importers:
       colors: 1.4.0
       compare-versions: 3.6.0
       csv-stringify: 5.6.2
-      date-fns: 2.22.1
+      date-fns: 2.23.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       glob: 7.1.7
@@ -1431,7 +1431,7 @@ importers:
       '@zeit/next-source-maps': 0.0.3
       actionhero: 26.1.2
       axios: 0.21.1
-      date-fns: 2.22.1
+      date-fns: 2.23.0
       dotenv: 10.0.0
       enzyme: 3.11.0
       jest: 27.0.6
@@ -1464,7 +1464,7 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.22.1
+      date-fns: 2.23.0
       dotenv: 10.0.0
       md5: 2.3.0
       moment: 2.29.1
@@ -1513,7 +1513,7 @@ importers:
       '@types/react-dom': '*'
       axios: 0.21.1
       bootstrap: 4.6.0
-      date-fns: 2.22.1
+      date-fns: 2.23.0
       isomorphic-fetch: 3.0.0
       jest: 27.0.6
       jest-mock-axios: 4.4.0
@@ -1551,7 +1551,7 @@ importers:
       '@types/react-dom': 17.0.9
       axios: 0.21.1
       bootstrap: 4.6.0
-      date-fns: 2.22.1
+      date-fns: 2.23.0
       isomorphic-fetch: 3.0.0
       jest: 27.0.6
       jest-mock-axios: 4.4.0
@@ -1593,7 +1593,7 @@ importers:
       actionhero: 26.1.2
       ansi-to-html: 0.6.15
       axios: 0.21.1
-      date-fns: 2.22.1
+      date-fns: 2.23.0
       dotenv: 10.0.0
       enzyme: 3.11.0
       jest: 27.0.6
@@ -1628,7 +1628,7 @@ importers:
       '@zeit/next-source-maps': 0.0.3
       ansi-to-html: 0.6.15
       axios: 0.21.1
-      date-fns: 2.22.1
+      date-fns: 2.23.0
       dotenv: 10.0.0
       md5: 2.3.0
       moment: 2.29.1
@@ -1679,7 +1679,7 @@ importers:
       '@zeit/next-source-maps': 0.0.3
       actionhero: 26.1.2
       axios: 0.21.1
-      date-fns: 2.22.1
+      date-fns: 2.23.0
       dotenv: 10.0.0
       enzyme: 3.11.0
       jest: 27.0.6
@@ -1712,7 +1712,7 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.22.1
+      date-fns: 2.23.0
       dotenv: 10.0.0
       md5: 2.3.0
       moment: 2.29.1
@@ -5741,8 +5741,8 @@ packages:
       whatwg-url: 8.7.0
     dev: true
 
-  /date-fns/2.22.1:
-    resolution: {integrity: sha512-yUFPQjrxEmIsMqlHhAhmxkuH769baF21Kk+nZwZGyrMoyLA+LugaQtC0+Tqf9CBUUULWwUJt6Q5ySI3LJDDCGg==}
+  /date-fns/2.23.0:
+    resolution: {integrity: sha512-5ycpauovVyAk0kXNZz6ZoB9AYMZB4DObse7P3BPWmyEjXNORTI8EJ6X0uaSAq4sCHzM1uajzrkr6HnsLQpxGXA==}
     engines: {node: '>=0.11'}
 
   /dateformat/3.0.3:
