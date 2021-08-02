@@ -1456,7 +1456,7 @@ importers:
       swagger-ui-dist: 3.51.2
       ts-jest: 27.0.4
       typescript: 4.3.5
-      victory: 35.9.0
+      victory: 35.9.3
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
       '@fortawesome/free-brands-svg-icons': 5.15.3
@@ -1482,7 +1482,7 @@ importers:
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
       swagger-ui-dist: 3.51.2
-      victory: 35.9.0
+      victory: 35.9.3
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -1537,7 +1537,7 @@ importers:
       ts-jest: 27.0.4
       type-fest: 1.3.0
       typescript: 4.3.5
-      victory: 35.9.0
+      victory: 35.9.3
     devDependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
       '@fortawesome/free-brands-svg-icons': 5.15.3
@@ -1575,7 +1575,7 @@ importers:
       ts-jest: 27.0.4_52cc4273aa16028085013af47e479e10
       type-fest: 1.3.0
       typescript: 4.3.5
-      victory: 35.9.0
+      victory: 35.9.3
 
   ui/ui-config:
     specifiers:
@@ -1619,7 +1619,7 @@ importers:
       swagger-ui-dist: 3.51.2
       ts-jest: 27.0.4
       typescript: 4.3.5
-      victory: 35.9.0
+      victory: 35.9.3
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
       '@fortawesome/free-brands-svg-icons': 5.15.3
@@ -1647,7 +1647,7 @@ importers:
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
       swagger-ui-dist: 3.51.2
-      victory: 35.9.0
+      victory: 35.9.3
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -1704,7 +1704,7 @@ importers:
       swagger-ui-dist: 3.51.2
       ts-jest: 27.0.4
       typescript: 4.3.5
-      victory: 35.9.0
+      victory: 35.9.3
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
       '@fortawesome/free-brands-svg-icons': 5.15.3
@@ -1730,7 +1730,7 @@ importers:
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
       swagger-ui-dist: 3.51.2
-      victory: 35.9.0
+      victory: 35.9.3
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -14180,8 +14180,8 @@ packages:
       prop-types: 15.7.2
       victory-core: 35.9.3
 
-  /victory/35.9.0:
-    resolution: {integrity: sha512-FT6mZespzmFk0+t2N0q3/h3YcZVUzm2SVBDbrETb6/ZQdgCx0dthtvpWrss9AqLsVMo71Morz+GyvSr3hdT46Q==}
+  /victory/35.9.3:
+    resolution: {integrity: sha512-BKFe1FCkro7lNU1chwTrVKDSNStOv/PGZaPuRf9Ay3JWpGTvdDpp0LLzY/CiD346/VpbQmmoM6ej6QTqUlabPA==}
     dependencies:
       victory-area: 35.9.3
       victory-axis: 35.9.3
