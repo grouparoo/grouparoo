@@ -38,6 +38,7 @@ import { ConfigWriter } from "./../modules/configWriter";
 import { SourceOps } from "../modules/ops/source";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
+import { SourceConfigurationObject } from "../classes/codeConfig";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
@@ -302,7 +303,7 @@ export class Source extends LoggedModel<Source> {
     return this.idIsDefault() ? ConfigWriter.generateId(this.name) : this.id;
   }
 
-  async getConfigObject() {
+  async getConfigObject(): Promise<SourceConfigurationObject> {
     const { name, type } = this;
 
     this.app = await this.$get("app");

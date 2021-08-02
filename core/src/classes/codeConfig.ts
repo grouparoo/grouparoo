@@ -40,8 +40,8 @@ export interface DestinationConfigurationObject extends ConfigurationObject {
   name: string;
   type: string;
   appId: string;
+  syncMode: DestinationSyncMode;
   groupId?: string;
-  syncMode?: DestinationSyncMode;
   options?: { [key: string]: any };
   mapping?: { [key: string]: any };
   destinationGroupMemberships?: { [key: string]: string };
@@ -54,7 +54,7 @@ export interface GroupConfigurationObject extends ConfigurationObject {
 }
 
 export interface ProfileConfigurationObject extends ConfigurationObject {
-  properties?: { [key: string]: any };
+  properties?: { [key: string]: Array<string | boolean | number | Date> };
 }
 
 export interface PropertyConfigurationObject extends ConfigurationObject {
@@ -64,6 +64,7 @@ export interface PropertyConfigurationObject extends ConfigurationObject {
   identifying?: boolean;
   unique?: boolean;
   isArray?: boolean;
+  keepValueIfNotFound?: boolean;
   options?: { [key: string]: any };
   filters?: PropertyFiltersWithKey[];
 }
@@ -73,6 +74,7 @@ export interface ScheduleConfigurationObject extends ConfigurationObject {
   sourceId: string;
   recurring?: boolean;
   recurringFrequency?: number;
+  confirmProfiles?: boolean;
   options?: { [key: string]: any };
   filters?: PropertyFiltersWithKey[];
 }

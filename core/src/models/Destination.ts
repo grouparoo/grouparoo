@@ -38,6 +38,7 @@ import { destinationTypeConversions } from "../modules/destinationTypeConversion
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 import { GroupRule } from "./GroupRule";
+import { DestinationConfigurationObject } from "../classes/codeConfig";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -545,7 +546,7 @@ export class Destination extends LoggedModel<Destination> {
     return this.idIsDefault() ? ConfigWriter.generateId(this.name) : this.id;
   }
 
-  async getConfigObject() {
+  async getConfigObject(): Promise<DestinationConfigurationObject> {
     const { name, type, syncMode } = this;
 
     this.app = await this.$get("app");

@@ -11,6 +11,7 @@ import { LoggedModel } from "../classes/loggedModel";
 import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
+import { SettingConfigurationObject } from "../classes/codeConfig";
 
 export const settingTypes = ["string", "number", "boolean"] as const;
 
@@ -86,7 +87,7 @@ export class Setting extends LoggedModel<Setting> {
     return this.idIsDefault() ? ConfigWriter.generateId(this.key) : this.id;
   }
 
-  async getConfigObject() {
+  async getConfigObject(): Promise<SettingConfigurationObject> {
     const { pluginName, key, value } = this;
 
     return {
