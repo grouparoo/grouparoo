@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.5.3-alpha.0",
-    "pg": "8.6.0",
+    "pg": "8.7.1",
     "pg-format": "1.0.4",
     "pg-hstore": "2.3.4",
     "postgres-date": "2.0.1"
