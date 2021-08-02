@@ -758,7 +758,7 @@ describe("modules/configWriter", () => {
         class: "Property",
         id: property.getConfigId(),
         type,
-        name: key,
+        key,
         sourceId: source.getConfigId(),
         unique,
         identifying,
