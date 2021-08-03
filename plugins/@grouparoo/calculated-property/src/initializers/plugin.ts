@@ -2,6 +2,7 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 import {
   CalculatedPropertyAppTemplate,
+  CalculatedPropertyPropertyTemplate,
   CalculatedPropertySourceTemplate,
 } from "../lib/templates";
 
@@ -22,6 +23,7 @@ export class Plugins extends Initializer {
       templates: [
         CalculatedPropertyAppTemplate,
         CalculatedPropertySourceTemplate,
+        CalculatedPropertyPropertyTemplate,
       ],
       apps: [
         {

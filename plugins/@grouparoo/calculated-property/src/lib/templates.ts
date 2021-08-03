@@ -1,5 +1,5 @@
 import path from "path";
-import { ConfigTemplate } from "@grouparoo/core";
+import { ConfigTemplate, PropertyTypes } from "@grouparoo/core";
 
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 
@@ -48,6 +48,35 @@ export class CalculatedPropertySourceTemplate extends ConfigTemplate {
 
   async run({ params }) {
     params["__pluginName"] = this.name.split(":")[0];
+    return this.mustacheAllFiles(params);
+  }
+}
+
+export class CalculatedPropertyPropertyTemplate extends ConfigTemplate {
+  constructor() {
+    super();
+    this.name = `calculated-property:property`;
+    this.description = `Config for a Calculated Property Property`;
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The id of this new Property`,
+        formatter: (p) => this.formatId(p),
+      },
+      parent: {
+        required: true,
+        description: `The id of the Source to use for this Property, e.g: \`--parent calculated_property_source\``,
+      },
+    };
+    this.files = [path.join(templateRoot, "property", "*.template")];
+    this.destinationDir = "properties";
+    this.parentId = "sourceId";
+  }
+
+  async run({ params }) {
+    params["__pluginName"] = this.name.split(":")[0];
+    params["__typeOptions"] = PropertyTypes.map((v) => `"${v}"`).join(", ");
+
     return this.mustacheAllFiles(params);
   }
 }
