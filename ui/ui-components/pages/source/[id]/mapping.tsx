@@ -258,6 +258,7 @@ export default function Page(props) {
                       </thead>
                       <tbody>
                         {properties
+                          .filter((p) => !p.isArray)
                           .sort((a, b) => {
                             if (a.unique && !b.unique) return -1;
                             if (b.unique && !a.unique) return 1;

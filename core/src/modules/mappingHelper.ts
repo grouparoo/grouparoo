@@ -80,6 +80,9 @@ export namespace MappingHelper {
       });
 
       if (!property) throw new Error(`cannot find property ${key}`);
+      if (property.isArray) {
+        throw new Error(`cannot map to an array property - ${key}`);
+      }
 
       const mapping = await Mapping.create({
         ownerId: instance.id,
