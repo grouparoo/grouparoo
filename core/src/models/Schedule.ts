@@ -33,6 +33,7 @@ import { CLS } from "../modules/cls";
 import { APIData } from "../modules/apiData";
 import { FilterHelper } from "../modules/filterHelper";
 import { Filter } from "./Filter";
+import { ScheduleConfigurationObject } from "../classes/codeConfig";
 
 /**
  * Metadata and methods to return the options a Schedule for this connection/app.
@@ -225,7 +226,7 @@ export class Schedule extends LoggedModel<Schedule> {
     return this.idIsDefault() ? ConfigWriter.generateId(this.name) : this.id;
   }
 
-  async getConfigObject() {
+  async getConfigObject(): Promise<ScheduleConfigurationObject> {
     const { name, recurring, recurringFrequency, confirmProfiles } = this;
 
     this.source = await this.$get("source");

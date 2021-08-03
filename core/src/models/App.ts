@@ -25,6 +25,7 @@ import { LockableHelper } from "../modules/lockableHelper";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
 import { PluginOptionTypes } from "../classes/plugin";
+import { AppConfigurationObject } from "../classes/codeConfig";
 
 export interface AppOption {
   key: string;
@@ -243,7 +244,7 @@ export class App extends LoggedModel<App> {
     return this.idIsDefault() ? ConfigWriter.generateId(this.name) : this.id;
   }
 
-  async getConfigObject() {
+  async getConfigObject(): Promise<AppConfigurationObject> {
     const { type, name } = this;
 
     const options = await this.getOptions(false);

@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Property } from "../../src";
-import { ConfigurationObject } from "../../src/classes/codeConfig";
+import { AnyConfigurationObject } from "../../src/classes/codeConfig";
 import { MustacheUtils } from "../../src/modules/mustacheUtils";
 
 describe("modules/mustacheUtils", () => {
@@ -71,7 +71,7 @@ describe("modules/mustacheUtils", () => {
       const property = await Property.findOne({ where: { key: "userId" } });
       const string =
         "SELECT email from users where id = {{ userId }} and {{ subscribed }} = true";
-      const configObjects: ConfigurationObject[] = [
+      const configObjects: AnyConfigurationObject[] = [
         { class: "property", id: "subscribed_id", name: "subscribed" },
       ];
       const ids = await MustacheUtils.getMustacheVariablesAsPropertyIds(

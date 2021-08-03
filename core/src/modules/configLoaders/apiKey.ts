@@ -1,5 +1,5 @@
 import {
-  ConfigurationObject,
+  ApiKeyConfigurationObject,
   getCodeConfigLockKey,
   logModel,
   validateConfigObjectKeys,
@@ -9,7 +9,7 @@ import { ApiKey, Permission } from "../..";
 import { Op } from "sequelize";
 
 export async function loadApiKey(
-  configObject: ConfigurationObject,
+  configObject: ApiKeyConfigurationObject,
   externallyValidate: boolean,
   validate = false
 ): Promise<IdsByClass> {

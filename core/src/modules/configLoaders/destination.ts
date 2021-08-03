@@ -1,5 +1,5 @@
 import {
-  ConfigurationObject,
+  DestinationConfigurationObject,
   extractNonNullParts,
   logModel,
   getParentByName,
@@ -13,7 +13,7 @@ import { Op } from "sequelize";
 import { ConfigWriter } from "../configWriter";
 
 export async function loadDestination(
-  configObject: ConfigurationObject,
+  configObject: DestinationConfigurationObject,
   externallyValidate: boolean,
   validate = false
 ): Promise<IdsByClass> {
@@ -56,7 +56,8 @@ export async function loadDestination(
     locked: ConfigWriter.getLockKey(configObject),
   });
 
-  await destination.setOptions(extractNonNullParts(configObject, "options"));
+  const options = extractNonNullParts(configObject, "options");
+  if (options) await destination.setOptions(options);
 
   let mapping = {};
   const sanitizedMappings = extractNonNullParts(configObject, "mapping");

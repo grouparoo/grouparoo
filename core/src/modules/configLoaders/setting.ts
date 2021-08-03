@@ -1,5 +1,5 @@
 import {
-  ConfigurationObject,
+  SettingConfigurationObject,
   logModel,
   getCodeConfigLockKey,
   validateConfigObjectKeys,
@@ -9,7 +9,7 @@ import { plugin } from "../..";
 import { Setting } from "../../models/Setting";
 
 export async function loadSetting(
-  configObject: ConfigurationObject,
+  configObject: SettingConfigurationObject,
   externallyValidate: boolean,
   validate = false
 ): Promise<IdsByClass> {

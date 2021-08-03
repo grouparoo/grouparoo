@@ -17,7 +17,11 @@ import { Profile } from "../../src/models/Profile";
 import { ConfigWriter } from "../../src/modules/configWriter";
 import { MappingHelper } from "../../src/modules/mappingHelper";
 
-import { ConfigurationObject } from "../../src/classes/codeConfig";
+import {
+  AnyConfigurationObject,
+  ScheduleConfigurationObject,
+  SourceConfigurationObject,
+} from "../../src/classes/codeConfig";
 
 const workerId = process.env.JEST_WORKER_ID;
 const configDir = `${os.tmpdir()}/test/${workerId}/configWriter`;
@@ -306,7 +310,7 @@ describe("modules/configWriter", () => {
     });
 
     describe("getLockKey()", () => {
-      let configObject: ConfigurationObject;
+      let configObject: AnyConfigurationObject;
 
       beforeEach(async () => {
         configObject = await app.getConfigObject();
@@ -528,7 +532,8 @@ describe("modules/configWriter", () => {
     });
 
     test("sources can provide their config objects", async () => {
-      const config = await source.getConfigObject();
+      const config =
+        (await source.getConfigObject()) as SourceConfigurationObject;
 
       expect(config.id).toBeTruthy();
 
@@ -559,13 +564,17 @@ describe("modules/configWriter", () => {
 
     test("sources without a mapping will not add mappings to the config object", async () => {
       const source: Source = await helper.factories.source();
-      const config = await source.getConfigObject();
+      const config =
+        (await source.getConfigObject()) as SourceConfigurationObject;
       expect(config.mapping).toBeUndefined();
     });
 
     test("sources will also bring their own schedule", async () => {
       const schedule: Schedule = await helper.factories.schedule(source);
-      const config = await source.getConfigObject();
+      const config = (await source.getConfigObject()) as [
+        SourceConfigurationObject,
+        ScheduleConfigurationObject
+      ];
       const scheduleConfig = await schedule.getConfigObject();
 
       const { name, type } = source;
@@ -590,7 +599,8 @@ describe("modules/configWriter", () => {
       process.env.GROUPAROO_OPTION__SOURCE__CONFIG_WRITER_ENV_VAR =
         "my_table_123";
       await source.setOptions({ table: "CONFIG_WRITER_ENV_VAR" });
-      const config = await source.getConfigObject();
+      const config =
+        (await source.getConfigObject()) as SourceConfigurationObject;
       expect(config.options.table).toEqual("CONFIG_WRITER_ENV_VAR");
       const options = await source.getOptions();
       expect(options.table).toEqual("my_table_123");
@@ -748,7 +758,7 @@ describe("modules/configWriter", () => {
         class: "Property",
         id: property.getConfigId(),
         type,
-        name: key,
+        key,
         sourceId: source.getConfigId(),
         unique,
         identifying,

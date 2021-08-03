@@ -1,5 +1,5 @@
 import {
-  ConfigurationObject,
+  TeamConfigurationObject,
   logModel,
   getCodeConfigLockKey,
   validateConfigObjectKeys,
@@ -9,7 +9,7 @@ import { Team, Permission } from "../..";
 import { Op } from "sequelize";
 
 export async function loadTeam(
-  configObject: ConfigurationObject,
+  configObject: TeamConfigurationObject,
   externallyValidate: boolean,
   validate = false
 ): Promise<IdsByClass> {

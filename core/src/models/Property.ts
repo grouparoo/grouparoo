@@ -40,6 +40,7 @@ import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
 import { APIData } from "../modules/apiData";
 import { CLS } from "../modules/cls";
 import { FilterHelper } from "../modules/filterHelper";
+import { PropertyConfigurationObject } from "../classes/codeConfig";
 
 export function propertyJSToSQLType(jsType: string) {
   const map = {
@@ -326,7 +327,7 @@ export class Property extends LoggedModel<Property> {
     return this.idIsDefault() ? ConfigWriter.generateId(this.key) : this.id;
   }
 
-  async getConfigObject() {
+  async getConfigObject(): Promise<PropertyConfigurationObject> {
     const { key, type, unique, identifying, isArray, keepValueIfNotFound } =
       this;
 
@@ -341,7 +342,7 @@ export class Property extends LoggedModel<Property> {
       class: "Property",
       id: this.getConfigId(),
       type,
-      name: key,
+      key,
       sourceId,
       unique,
       identifying,

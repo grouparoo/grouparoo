@@ -34,6 +34,7 @@ import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
+import { GroupConfigurationObject } from "../classes/codeConfig";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -633,7 +634,7 @@ export class Group extends LoggedModel<Group> {
     return this.idIsDefault() ? ConfigWriter.generateId(this.name) : this.id;
   }
 
-  async getConfigObject() {
+  async getConfigObject(): Promise<GroupConfigurationObject> {
     const { name, type } = this;
 
     let rules = [];

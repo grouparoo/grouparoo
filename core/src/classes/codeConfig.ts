@@ -19,49 +19,112 @@ export interface IdsByClass {
   profile?: string[];
 }
 
-export interface ConfigurationObject {
+interface ConfigurationObject {
   id?: string;
   class?: string;
+}
+
+export interface ApiKeyConfigurationObject extends ConfigurationObject {
+  name: string;
   type?: string;
-  name?: string;
-  key?: string;
-  appId?: string;
-  sourceId?: string;
-  teamId?: string;
-  email?: string;
+  apiKey?: string;
+  permissions?: Array<{ id: string; read: boolean; write: boolean }>;
+  options?: { permissionAllRead: boolean; permissionAllWrite: boolean };
+}
+export interface AppConfigurationObject extends ConfigurationObject {
+  name: string;
+  type: string;
   options?: { [key: string]: any };
-  filters?: PropertyFiltersWithKey[];
+}
+
+export interface DestinationConfigurationObject extends ConfigurationObject {
+  name: string;
+  type: string;
+  appId: string;
+  syncMode: DestinationSyncMode;
+  groupId?: string;
+  options?: { [key: string]: any };
+  mapping?: { [key: string]: any };
+  destinationGroupMemberships?: { [key: string]: string };
+}
+
+export interface GroupConfigurationObject extends ConfigurationObject {
+  name: string;
+  type: string;
+  rules?: GroupRuleWithKey[];
+}
+
+export interface ProfileConfigurationObject extends ConfigurationObject {
+  properties?: { [key: string]: Array<string | boolean | number | Date> };
+}
+
+export interface PropertyConfigurationObject extends ConfigurationObject {
+  key: string;
+  type: string;
+  sourceId: string;
   identifying?: boolean;
   unique?: boolean;
   isArray?: boolean;
   keepValueIfNotFound?: boolean;
-  apiKey?: string;
-  rules?: GroupRuleWithKey[];
-  confirmProfiles?: boolean;
+  options?: { [key: string]: any };
+  filters?: PropertyFiltersWithKey[];
+}
+
+export interface ScheduleConfigurationObject extends ConfigurationObject {
+  name: string;
+  sourceId: string;
   recurring?: boolean;
   recurringFrequency?: number;
-  groupId?: string;
-  pluginName?: string;
-  permissions?: Array<{ id: string; read: boolean; write: boolean }>;
-  value?: string | boolean | number;
-  mapping?: { [key: string]: any };
-  syncMode?: DestinationSyncMode;
-  bootstrappedProperty?: ConfigurationObject;
-  destinationGroupMemberships?: { [key: string]: string };
-  properties?: { [key: string]: any };
-
-  // For SyncTable
-  source?: ConfigurationObject;
-  identityProperty?: ConfigurationObject;
-  schedule?: ConfigurationObject;
-  destination?: ConfigurationObject;
-  group?: ConfigurationObject;
-  sync?: any;
-  table?: string;
-  userKeyColumn?: string;
-  userKeyMapsToPropertyId?: string;
-  highWaterColumn?: string;
+  confirmProfiles?: boolean;
+  options?: { [key: string]: any };
+  filters?: PropertyFiltersWithKey[];
 }
+
+export interface SettingConfigurationObject extends ConfigurationObject {
+  pluginName: string;
+  key: string;
+  value: string | boolean | number;
+}
+
+export interface SourceConfigurationObject extends ConfigurationObject {
+  appId: string;
+  name: string;
+  type: string;
+  options?: { [key: string]: any };
+  mapping?: { [key: string]: any };
+  bootstrappedProperty?: PropertyConfigurationObject & {
+    options: { [key: string]: any };
+  };
+}
+
+export interface TeamConfigurationObject extends ConfigurationObject {
+  name: string;
+  permissions?: Array<{ id: string; read: boolean; write: boolean }>;
+  options?: { permissionAllRead: boolean; permissionAllWrite: boolean };
+}
+
+export interface TeamMemberConfigurationObject extends ConfigurationObject {
+  teamId: string;
+  email: string;
+  options?: {
+    firstName?: string;
+    lastName?: string;
+    password?: string;
+  };
+}
+
+export type AnyConfigurationObject =
+  | ApiKeyConfigurationObject
+  | AppConfigurationObject
+  | DestinationConfigurationObject
+  | GroupConfigurationObject
+  | ProfileConfigurationObject
+  | PropertyConfigurationObject
+  | ScheduleConfigurationObject
+  | SettingConfigurationObject
+  | SourceConfigurationObject
+  | TeamConfigurationObject
+  | TeamMemberConfigurationObject;
 
 interface ConfigObjectWithReferenceIDs {
   configObject: ConfigurationObject;
@@ -137,11 +200,11 @@ export function logModel(
   );
 }
 
-export function extractNonNullParts(
-  configObject: ConfigurationObject,
-  key: string
+export function extractNonNullParts<T, Key extends keyof T>(
+  configObject: T,
+  key: Key
 ) {
-  const cleanedOptions: ConfigurationObject["options"] = {};
+  const cleanedOptions: T[Key] = {} as any;
 
   if (configObject[key]) {
     for (const i in configObject[key]) {
@@ -154,29 +217,32 @@ export function extractNonNullParts(
 }
 
 export function getAutoBootstrappedProperty(
-  sourceConfigObject: ConfigurationObject,
-  otherConfigObjects: ConfigurationObject[]
+  sourceConfigObject: SourceConfigurationObject,
+  otherConfigObjects: AnyConfigurationObject[]
 ) {
   if (cleanClass(sourceConfigObject) !== "source") return null;
-  if (!sourceConfigObject.mapping) return null;
+  if (!sourceConfigObject["mapping"]) return null;
 
   const mappingValues = Object.values(sourceConfigObject["mapping"]);
   for (const value of mappingValues) {
     // If this source id == its mapped property's sourceId, we should bootstrap the property
-    const autoBootstrappedProperty = otherConfigObjects.find(
-      (o) =>
-        cleanClass(o) === "property" &&
-        o.id === value &&
-        o.sourceId === sourceConfigObject.id
-    );
+    const autoBootstrappedProperty: PropertyConfigurationObject =
+      otherConfigObjects
+        .filter((o): o is PropertyConfigurationObject => typeof o === "object") // TS Trick to mock a type guard
+        .find(
+          (o) =>
+            cleanClass(o) === "property" &&
+            o.id === value &&
+            o["sourceId"] === sourceConfigObject.id
+        );
     if (autoBootstrappedProperty) {
-      if (!autoBootstrappedProperty.unique) {
+      if (!autoBootstrappedProperty["unique"]) {
         throw new Error(
           `The property "${autoBootstrappedProperty.id}" needs to be set as "unique: true" to be used as the mapping for the source "${sourceConfigObject.id}"`
         );
       }
 
-      if (autoBootstrappedProperty.isArray) {
+      if (autoBootstrappedProperty["isArray"]) {
         throw new Error(
           `The property "${autoBootstrappedProperty.id}" cannot be an array to be used as the mapping for the source "${sourceConfigObject.id}"`
         );
@@ -203,8 +269,10 @@ export async function sortConfigurationObjects(
  *
  * @param configObjects ConfigurationObject[]
  */
-export function validateConfigObjects(configObjects: ConfigurationObject[]): {
-  configObjects: ConfigurationObject[];
+export function validateConfigObjects(
+  configObjects: AnyConfigurationObject[]
+): {
+  configObjects: AnyConfigurationObject[];
   errors: string[];
 } {
   let errors: string[] = [];
@@ -213,10 +281,10 @@ export function validateConfigObjects(configObjects: ConfigurationObject[]): {
   for (const configObject of configObjects) {
     if (!configObject.id || configObject.id === "") {
       errors.push(
-        (configObject.name
-          ? `"${configObject.name}"`
-          : configObject.key
-          ? `"${configObject.key}"`
+        (configObject["name"]
+          ? `"${configObject["name"]}"`
+          : configObject["key"]
+          ? `"${configObject["key"]}"`
           : "A config object") + " is missing an ID"
       );
     }
@@ -273,8 +341,8 @@ export async function getDirectParentId(configObject: ConfigurationObject) {
 }
 
 export async function getParentIds(
-  configObject: ConfigurationObject,
-  otherConfigObjects: Array<ConfigurationObject> = []
+  configObject: AnyConfigurationObject,
+  otherConfigObjects: Array<AnyConfigurationObject> = []
 ) {
   const keys = Object.keys(configObject);
   // IDs here are prepended with the class of the object to allow for ID duplication between classes, but not of the same type
@@ -287,16 +355,21 @@ export async function getParentIds(
   // - Bootstrapped property
   if (
     cleanClass(configObject) === "source" &&
-    configObject?.bootstrappedProperty?.id
+    configObject["bootstrappedProperty"] !== undefined &&
+    configObject["bootstrappedProperty"]["id"]
   ) {
-    providedIds.push(`property:${configObject.bootstrappedProperty.id}`);
+    providedIds.push(`property:${configObject["bootstrappedProperty"].id}`);
   }
 
   // - query property with mustache dependency
-  if (cleanClass(configObject) === "property" && configObject?.options?.query) {
+  if (
+    cleanClass(configObject) === "property" &&
+    configObject["options"] &&
+    configObject["options"]["query"]
+  ) {
     const mustachePrerequisiteIds =
       await MustacheUtils.getMustacheVariablesAsPropertyIds(
-        configObject?.options?.query,
+        configObject["options"]["query"],
         otherConfigObjects
       );
     prerequisiteIds.push(
@@ -350,8 +423,11 @@ export async function getParentIds(
 
   if (configObject["mapping"]) {
     const autoBootstrappedProperty =
-      !configObject.bootstrappedProperty &&
-      getAutoBootstrappedProperty(configObject, otherConfigObjects);
+      !configObject["bootstrappedProperty"] &&
+      getAutoBootstrappedProperty(
+        configObject as SourceConfigurationObject,
+        otherConfigObjects
+      );
     const mappingValues = Object.values(configObject["mapping"]);
     for (const value of mappingValues) {
       if (!autoBootstrappedProperty || value !== autoBootstrappedProperty.id)
@@ -399,7 +475,8 @@ export function sortConfigObjectsWithIds(
     const parent = configObjectsWithIds.find(
       (o) =>
         (cleanClass(o.configObject) === _class && o.configObject.id === id) ||
-        o.configObject?.bootstrappedProperty?.id === id
+        (o.configObject["bootstrappedProperty"] &&
+          o.configObject["bootstrappedProperty"]["id"] === id)
     );
 
     if (parent) {

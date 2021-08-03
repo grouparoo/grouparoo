@@ -21,6 +21,7 @@ import { StateMachine } from "./../modules/stateMachine";
 import { ProfileOps } from "../modules/ops/profile";
 import { APIData } from "../modules/apiData";
 import { GroupRule } from "./GroupRule";
+import { ProfileConfigurationObject } from "../classes/codeConfig";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -184,7 +185,7 @@ export class Profile extends LoggedModel<Profile> {
     }
   }
 
-  async getConfigObject() {
+  async getConfigObject(): Promise<ProfileConfigurationObject> {
     const properties = await this.getProperties();
     const directlyMappedProps: {
       [key: string]: Array<string | boolean | number | Date>;
