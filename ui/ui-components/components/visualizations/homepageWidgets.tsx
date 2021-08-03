@@ -420,10 +420,7 @@ export function PendingImports({
     }
 
     if (_sources) setSources(_sources);
-    if (_pendingImportKeys)
-      setPendingImportKeys(
-        _pendingImportKeys.sort((a, b) => a.localeCompare(b))
-      );
+    if (_pendingImportKeys) setPendingImportKeys(_pendingImportKeys);
     if (_chartData) setChartData(_chartData);
   }
 
@@ -523,9 +520,7 @@ export function PendingExports({
       }
 
       setDestinations(_destinations);
-      setPendingExportKeys(
-        _pendingExportKeys.sort((a, b) => a.localeCompare(b))
-      );
+      setPendingExportKeys(_pendingExportKeys);
       setChartData(_chartData);
     }
 
