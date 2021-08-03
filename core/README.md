@@ -46,7 +46,7 @@ Focus on building your core product, not integrating with 3rd-party tools. Learn
 Use the Grouparoo CLI to initialize a new Grouparoo Project:
 
 ```bash
-# Assuming you have node.js v12+ installed
+# Assuming you have node.js (https://nodejs.org) v12+ installed
 npm install -g grouparoo
 grouparoo init .
 grouparoo start
