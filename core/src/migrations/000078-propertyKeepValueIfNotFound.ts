@@ -4,12 +4,13 @@ export default {
       await migration.addColumn("properties", "keepValueIfNotFound", {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false,
+        defaultValue: true,
       });
 
-      await migration.sequelize.query(
-        `UPDATE "properties" SET "keepValueIfNotFound"=TRUE`
-      );
+      await migration.changeColumn("properties", "keepValueIfNotFound", {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      });
     });
   },
 

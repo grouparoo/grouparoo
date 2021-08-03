@@ -6,6 +6,11 @@ export default {
         allowNull: false,
         defaultValue: false,
       });
+
+      await migration.changeColumn("schedules", "confirmProfiles", {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      });
     });
   },
 
