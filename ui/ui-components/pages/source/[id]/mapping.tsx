@@ -9,7 +9,7 @@ import PageHeader from "../../../components/pageHeader";
 import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
 import { useRouter } from "next/router";
-import { Actions } from "../../../utils/apiData";
+import { Actions, Models } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 
@@ -40,8 +40,12 @@ export default function Page(props) {
       ? Object.values(props.source.mapping)[0]
       : ""
   );
-  const [properties, setProperties] = useState(props.properties);
-  const [preview, setPreview] = useState(props.preview || []);
+  const [properties, setProperties] = useState<Models.PropertyType[]>(
+    props.properties
+  );
+  const [preview, setPreview] = useState<Actions.SourcePreview["preview"]>(
+    props.preview || []
+  );
   const [propertyExamples, setPropertyExamples] = useState(
     props.propertyExamples
   );
@@ -120,11 +124,14 @@ export default function Page(props) {
   };
 
   // not every row returned is guaranteed to have the same columns
-  const previewColumns = preview
+  const previewColumns: string[] = [];
+
+  preview
     .map((row) => Object.keys(row))
-    .flat()
-    .filter((value, index, self) => {
-      return self.indexOf(value) === index;
+    .map((keys) => {
+      keys.map((key) => {
+        if (!previewColumns.includes(key)) previewColumns.push(key);
+      });
     });
 
   const Header = function () {
@@ -245,38 +252,55 @@ export default function Page(props) {
                         <tr>
                           <th></th>
                           <th>Property</th>
+                          <th>Unique</th>
                           <th>Examples</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {properties.map((rule) => (
-                          <tr key={`prr-${rule.id}`}>
-                            <td>
-                              <Form.Check
-                                inline
-                                required
-                                type="radio"
-                                id={rule.id}
-                                name="remoteProfileRuleId"
-                                disabled={loading}
-                                defaultChecked={
-                                  Object.values(source.mapping)[0] === rule.key
-                                }
-                                onClick={() => setNewMappingValue(rule.key)}
-                              />
-                            </td>
-                            <td>
-                              <strong>{rule.key}</strong>
-                            </td>
-                            <td>
-                              {propertyExamples[rule.id]
-                                ? propertyExamples[rule.id]
-                                    .slice(0, 3)
-                                    .join(", ")
-                                : null}
-                            </td>
-                          </tr>
-                        ))}
+                        {properties
+                          .sort((a, b) => {
+                            if (a.unique && !b.unique) return -1;
+                            if (b.unique && !a.unique) return 1;
+                            return 0;
+                          })
+                          .map((property) => (
+                            <tr key={`prr-${property.id}`}>
+                              <td>
+                                <Form.Check
+                                  inline
+                                  required
+                                  type="radio"
+                                  id={property.id}
+                                  name="remoteProfileRuleId"
+                                  disabled={loading}
+                                  defaultChecked={
+                                    Object.values(source.mapping)[0] ===
+                                    property.key
+                                  }
+                                  onClick={() =>
+                                    setNewMappingValue(property.key)
+                                  }
+                                />
+                              </td>
+                              <td>
+                                <strong>{property.key}</strong>
+                              </td>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  disabled={true}
+                                  checked={property.unique}
+                                />
+                              </td>
+                              <td>
+                                {propertyExamples[property.id]
+                                  ? propertyExamples[property.id]
+                                      .slice(0, 3)
+                                      .join(", ")
+                                  : null}
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </Table>
                   </fieldset>
@@ -365,7 +389,7 @@ Page.getInitialProps = async (ctx) => {
   const { properties, examples: propertyExamples } = await execApi(
     "get",
     `/properties`,
-    { includeExamples: true, state: "ready", unique: true }
+    { includeExamples: true, state: "ready" }
   );
   const { types } = await execApi("get", `/propertyOptions`);
   const { total: scheduleCount } = await execApi("get", `/schedules`);
