@@ -41,15 +41,13 @@ export class CalculatedPropertySourceTemplate extends ConfigTemplate {
         description: `The id of the App to use for this Source, e.g: \`--parent calculated_property_app\``,
       },
     };
-    this.files = [path.join(templateRoot, "source", "file", "*.template")];
+    this.files = [path.join(templateRoot, "source", "*.template")];
     this.destinationDir = "sources";
     this.parentId = "appId";
   }
 
   async run({ params }) {
     params["__pluginName"] = this.name.split(":")[0];
-    // commenting out but saving just in case...
-    // params["schedule_id"] = this.extendId("schedule");
     return this.mustacheAllFiles(params);
   }
 }

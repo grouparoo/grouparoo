@@ -55,7 +55,7 @@
     "grouparoo_monorepo_app": "staging-enterprise",
     "plugins": [
       "@grouparoo/bigquery",
-      "@grouparoo/calculate-property",
+      "@grouparoo/calculated-property",
       "@grouparoo/csv",
       "@grouparoo/customerio",
       "@grouparoo/demo",

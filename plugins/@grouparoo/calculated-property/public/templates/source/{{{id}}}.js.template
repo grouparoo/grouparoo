@@ -6,5 +6,6 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "calculated-property",
       appId: {{{appId}}}, // Set this value to the ID of the App this Source uses - e.g. `appId: "calculated_property_app"`
+    }
   ];
 };
