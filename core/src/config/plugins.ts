@@ -15,6 +15,9 @@ const parentPlugins = {};
 pluginManifest.plugins.map((p) => {
   parentPlugins[p.name] = { path: p.path };
 });
+pluginManifest.missingPlugins.map((p) => {
+  console.error(`*** Could not find plugin named ${p}  ***`);
+});
 
 export const DEFAULT = {
   plugins: () => {

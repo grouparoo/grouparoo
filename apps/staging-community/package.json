@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@grouparoo/bigquery": "0.5.3-alpha.5",
+    "@grouparoo/calculated-property": "0.5.3-alpha.5",
     "@grouparoo/core": "0.5.3-alpha.5",
     "@grouparoo/csv": "0.5.3-alpha.5",
     "@grouparoo/customerio": "0.5.3-alpha.5",
@@ -54,6 +55,7 @@
     "grouparoo_monorepo_app": "staging-community",
     "plugins": [
       "@grouparoo/bigquery",
+      "@grouparoo/calculated-property",
       "@grouparoo/csv",
       "@grouparoo/customerio",
       "@grouparoo/demo",

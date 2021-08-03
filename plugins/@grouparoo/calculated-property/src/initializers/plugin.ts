@@ -22,7 +22,6 @@ export class Plugins extends Initializer {
       templates: [
         CalculatedPropertyAppTemplate,
         CalculatedPropertySourceTemplate,
-        // CalculatedPropertyPropertyTemplate,
       ],
       apps: [
         {
