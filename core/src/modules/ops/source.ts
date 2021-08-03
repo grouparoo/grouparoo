@@ -1,8 +1,4 @@
-import {
-  Source,
-  SimpleSourceOptions,
-  SourceMapping,
-} from "../../models/Source";
+import { Source, SimpleSourceOptions } from "../../models/Source";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import {
   Property,
@@ -19,7 +15,6 @@ import { LoggedModel } from "../../classes/loggedModel";
 import { FilterHelper } from "../filterHelper";
 import { topologicalSort } from "../topologicalSort";
 import { ConfigWriter } from "../configWriter";
-import { ProfilePropertiesPluginMethodResponse } from "../../classes/plugin";
 
 export namespace SourceOps {
   /**
