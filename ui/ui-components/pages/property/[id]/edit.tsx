@@ -273,6 +273,15 @@ export default function Page(props) {
                   disabled={loading}
                 />
               </Form.Group>
+              <Form.Group controlId="keepValueIfNotFound">
+                <Form.Check
+                  type="checkbox"
+                  label="Keep value if not found?"
+                  checked={property.keepValueIfNotFound}
+                  onChange={(e) => update(e)}
+                  disabled={loading}
+                />
+              </Form.Group>
               <Form.Group controlId="sourceId">
                 <Form.Label>Property Source</Form.Label>
                 <Form.Control as="select" disabled value={source.id}>

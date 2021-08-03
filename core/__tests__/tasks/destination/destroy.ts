@@ -3,7 +3,11 @@ import { api, specHelper, utils } from "actionhero";
 import { Group, Destination, Export, Profile, Run } from "./../../../src";
 
 describe("tasks/destination:destroy", () => {
-  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    disableTestPluginImport: true,
+  });
   beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
   beforeAll(async () => await Export.truncate());
@@ -45,8 +49,6 @@ describe("tasks/destination:destroy", () => {
         group = await helper.factories.group();
         mario = await helper.factories.profile();
         luigi = await helper.factories.profile();
-        await mario.addOrUpdateProperties({ userId: [1] });
-        await luigi.addOrUpdateProperties({ userId: [2] });
         await group.addProfile(mario);
         await group.addProfile(luigi);
         await destination.trackGroup(group);

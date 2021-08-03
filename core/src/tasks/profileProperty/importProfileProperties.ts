@@ -70,14 +70,16 @@ export class ImportProfileProperties extends RetryableTask {
 
       for (const property of properties) {
         // dependencies are not ready
-        dependencies[property.id].forEach((dep) => {
-          if (
-            profile.profileProperties.find((p) => p.propertyId === dep.id)
-              ?.state !== "ready"
-          ) {
-            ok = false;
-          }
-        });
+        dependencies[property.id]
+          .filter((dep) => !params.propertyIds.includes(dep.id))
+          .forEach((dep) => {
+            if (
+              profile.profileProperties.find((p) => p.propertyId === dep.id)
+                ?.state !== "ready"
+            ) {
+              ok = false;
+            }
+          });
       }
       ok ? profilesToImport.push(profile) : profilesNotReady.push(profile);
     }
@@ -136,6 +138,28 @@ export class ImportProfileProperties extends RetryableTask {
     }
 
     // update the properties that got no data back
+
+    const propertiesToKeep = properties.filter((p) => p.keepValueIfNotFound);
+    if (propertiesToKeep.length > 0) {
+      await ProfileProperty.update(
+        {
+          state: "ready",
+          stateChangedAt: new Date(),
+          confirmedAt: new Date(),
+        },
+        {
+          where: {
+            propertyId: { [Op.in]: propertiesToKeep.map((p) => p.id) },
+            profileId: {
+              [Op.in]: profilesToImport.map((p) => p.id),
+            },
+            state: "pending",
+          },
+        }
+      );
+    }
+
+    // clear the rest
     await ProfileProperty.update(
       {
         state: "ready",

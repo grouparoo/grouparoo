@@ -126,6 +126,7 @@ describe("modules/codeConfig", () => {
         expect(schedules[0].name).toBe("Users Table Schedule");
         expect(schedules[0].state).toBe("ready");
         expect(schedules[0].recurring).toBe(true);
+        expect(schedules[0].confirmProfiles).toBe(true);
         expect(schedules[0].recurringFrequency).toBe(900000);
         expect(schedules[0].locked).toBe("config:code");
       });
@@ -156,6 +157,12 @@ describe("modules/codeConfig", () => {
           "config:code",
           "config:code",
           "config:code",
+        ]);
+        expect(rules.map((r) => r.keepValueIfNotFound).sort()).toEqual([
+          false,
+          false,
+          false,
+          true,
         ]);
 
         const options = await Promise.all(rules.map((r) => r.getOptions()));

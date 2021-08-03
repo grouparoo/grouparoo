@@ -44,9 +44,10 @@ describe("tasks/profileProperty:importProfileProperties", () => {
             lastLoginAt: new Date(),
           };
 
-          response[profile.id] = {
-            [properties[0].id]: data[properties[0].key],
-          };
+          response[profile.id] = {};
+          for (const property of properties) {
+            response[profile.id][property.id] = data[property.key];
+          }
         }
 
         return response;
@@ -113,35 +114,6 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       await profile.destroy();
     });
 
-    test("will set value to null for profile properties that no longer exist", async () => {
-      const spy = jest
-        .spyOn(testPluginConnection.methods, "profileProperties")
-        .mockImplementation(() => undefined);
-
-      const profile: Profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({
-        userId: [99],
-        email: ["someoldemail@example.com"],
-      });
-      const profileProperty = await ProfileProperty.findOne({
-        where: { rawValue: "99" },
-      });
-      await profileProperty.update({ state: "pending" });
-
-      await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [profile.id],
-        propertyIds: [profileProperty.propertyId],
-      });
-
-      // new value and state
-      await profileProperty.reload();
-      expect(profileProperty.state).toBe("ready");
-      expect(profileProperty.rawValue).toBe(null);
-      await profile.destroy();
-
-      spy.mockRestore();
-    });
-
     test("will not import profile properties that have pending dependencies", async () => {
       const userIdProperty = await Property.findOne({
         where: { key: "userId" },
@@ -183,6 +155,117 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         new Date().getTime()
       );
       await profile.destroy();
+    });
+
+    test("will import profile properties that have pending dependencies imported at the same time", async () => {
+      const userIdProperty = await Property.findOne({
+        where: { key: "userId" },
+      });
+
+      const profile: Profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({
+        userId: ["2"],
+        email: ["old@example.com"],
+      });
+      const emailProfileProperty = await ProfileProperty.findOne({
+        where: { rawValue: "old@example.com" },
+      });
+      await emailProfileProperty.update({ state: "pending" });
+
+      const userIdProfileProperty = await ProfileProperty.findOne({
+        where: {
+          profileId: profile.id,
+          propertyId: userIdProperty.id,
+        },
+      });
+      await userIdProfileProperty.update({ state: "pending" });
+
+      await specHelper.runTask("profileProperty:importProfileProperties", {
+        profileIds: [profile.id],
+        propertyIds: [
+          emailProfileProperty.propertyId,
+          userIdProfileProperty.propertyId,
+        ],
+      });
+
+      // new value and state
+      await emailProfileProperty.reload();
+      expect(emailProfileProperty.state).toBe("ready");
+      expect(emailProfileProperty.rawValue).toBe(`${profile.id}@example.com`);
+
+      await userIdProfileProperty.reload();
+      expect(userIdProfileProperty.state).toBe("ready");
+      expect(userIdProfileProperty.rawValue).toBe(`2`);
+      await profile.destroy();
+    });
+
+    test("will set value to null for profile properties that no longer exist", async () => {
+      const spy = jest
+        .spyOn(testPluginConnection.methods, "profileProperties")
+        .mockImplementation(() => undefined);
+
+      const profile: Profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({
+        userId: [99],
+        email: ["someoldemail@example.com"],
+      });
+      const profileProperty = await ProfileProperty.findOne({
+        where: { rawValue: "99" },
+      });
+      await profileProperty.update({ state: "pending" });
+
+      await specHelper.runTask("profileProperty:importProfileProperties", {
+        profileIds: [profile.id],
+        propertyIds: [profileProperty.propertyId],
+      });
+
+      // new value and state
+      await profileProperty.reload();
+      expect(profileProperty.state).toBe("ready");
+      expect(profileProperty.rawValue).toBe(null);
+      await profile.destroy();
+
+      spy.mockRestore();
+    });
+
+    test("will keep old value if the profile property no longer exists and is marked as keepValueIfNotFound=true", async () => {
+      const spy = jest
+        .spyOn(testPluginConnection.methods, "profileProperties")
+        .mockImplementation(() => undefined);
+
+      const profile: Profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({
+        userId: [99],
+        email: ["someoldemail@example.com"],
+      });
+      const profileProperty = await ProfileProperty.findOne({
+        where: { rawValue: "99" },
+      });
+      await profileProperty.update({ state: "pending" });
+
+      await Property.update(
+        { keepValueIfNotFound: true },
+        { where: { key: "email" } }
+      );
+
+      await specHelper.runTask("profileProperty:importProfileProperties", {
+        profileIds: [profile.id],
+        propertyIds: [profileProperty.propertyId],
+      });
+
+      // new value and state
+      await profileProperty.reload();
+      expect(profileProperty.state).toBe("ready");
+      expect(profileProperty.rawValue).toBe(null);
+      await profile.destroy();
+
+      // reset property
+      await Property.update(
+        { keepValueIfNotFound: false },
+        { where: { key: "email" } }
+      );
+
+      spy.mockRestore();
     });
 
     test("can be run for the same profile more than once without deadlock", async () => {

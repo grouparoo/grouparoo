@@ -15,6 +15,8 @@ import { GroupRule } from "../../models/GroupRule";
 import { Import } from "../../models/Import";
 import { Mapping } from "../../models/Mapping";
 import { SourceOps } from "./source";
+import { plugin } from "../plugin";
+import { Run } from "../../models/Run";
 
 export interface ProfilePropertyType {
   [key: string]: {
@@ -223,7 +225,8 @@ export namespace ProfileOps {
     profileProperties: {
       [key: string]: Array<string | number | boolean | Date> | any;
     }[],
-    toLock = true
+    toLock = true,
+    ignoreMissingProperties = false
   ) {
     if (profiles.length === 0) return;
     if (profiles.length !== profileProperties.length) {
@@ -269,6 +272,7 @@ export namespace ProfileOps {
             properties.find((p) => p.key === key);
 
           if (!property) {
+            if (ignoreMissingProperties) continue;
             throw new Error(`cannot find a property for id or key \`${key}\``);
           }
 
@@ -646,21 +650,10 @@ export namespace ProfileOps {
     profileIds: string[],
     includeProperties = true
   ) {
-    const nonDirectlyMappedRules = (await Property.findAllWithCache()).filter(
-      (p) => p.directlyMapped === false
-    );
-
-    if (includeProperties && nonDirectlyMappedRules.length > 0) {
+    if (includeProperties) {
       await ProfileProperty.update(
         { state: "pending", startedAt: null },
-        {
-          where: {
-            profileId: { [Op.in]: profileIds },
-            propertyId: {
-              [Op.in]: nonDirectlyMappedRules.map((r) => r.id),
-            },
-          },
-        }
+        { where: { profileId: { [Op.in]: profileIds } } }
       );
     }
 
@@ -668,6 +661,98 @@ export namespace ProfileOps {
       { state: "pending" },
       { where: { id: { [Op.in]: profileIds } } }
     );
+  }
+
+  /**
+   * Look for profiles that don't have a directlyMapped property and are done importing/exporting.
+   */
+  export async function getProfilesToSweep() {
+    const limit: number = parseInt(
+      (await plugin.readSetting("core", "runs-profile-batch-size")).value
+    );
+
+    const profiles: Profile[] = await api.sequelize.query(
+      `
+      SELECT "id" FROM "profiles" WHERE "state"='ready' 
+        AND 0 = (
+          SELECT count("exports"."id") FROM "exports" 
+            WHERE "exports"."profileId"="profiles"."id" 
+            AND "exports"."state" IN ('pending', 'processing')
+        ) AND "id" NOT IN (
+          SELECT DISTINCT("profileId") FROM "profileProperties" 
+          JOIN properties ON "properties"."id"="profileProperties"."propertyId" 
+          WHERE "properties"."directlyMapped"=true AND "rawValue" IS NOT NULL
+        ) LIMIT ${limit};
+      `,
+      {
+        model: Profile,
+      }
+    );
+
+    return profiles;
+  }
+
+  /**
+   * Import profiles whose directlyMapped property has not been confirmed after a certain date.
+   */
+  export async function confirmExistence(
+    limit: number,
+    fromDate: Date,
+    sourceId?: string,
+    run?: Run
+  ) {
+    const properties = await Property.findAllWithCache();
+    const directlyMapped = properties.filter(
+      (p) => p.directlyMapped && (!sourceId || sourceId === p.sourceId)
+    );
+
+    const profiles = await Profile.findAll({
+      limit,
+      where: { state: "ready" },
+      include: [
+        GroupMember,
+        {
+          model: ProfileProperty,
+          required: true,
+          where: {
+            state: "ready",
+            confirmedAt: {
+              [Op.lt]: fromDate,
+            },
+            rawValue: {
+              [Op.ne]: null,
+            },
+            propertyId: directlyMapped.map((p) => p.id),
+          },
+        },
+      ],
+    });
+
+    const now = new Date();
+    const bulkImports = [];
+
+    const creatorInfo = run
+      ? { creatorType: "run", creatorId: run.id }
+      : { creatorType: "task", creatorId: "profiles:confirm" };
+
+    for (const profile of profiles) {
+      delete profile.profileProperties; // get all profile properties
+      const oldProfileProperties = await profile.simplifiedProperties();
+      const oldGroupIds = profile.groupMembers.map((gm) => gm.groupId);
+
+      bulkImports.push({
+        profileId: profile.id,
+        profileAssociatedAt: now,
+        oldProfileProperties,
+        oldGroupIds,
+        ...creatorInfo,
+      });
+    }
+
+    await Import.bulkCreate(bulkImports);
+    await markPendingByIds(profiles.map((p) => p.id));
+
+    return profiles.length;
   }
 
   /**
@@ -777,7 +862,6 @@ export namespace ProfileOps {
     profileIds: string[],
     toExport: boolean
   ) {
-    const properties = await Property.findAllWithCache();
     const profiles = await Profile.findAll({
       where: {
         id: { [Op.in]: profileIds },
@@ -788,28 +872,6 @@ export namespace ProfileOps {
       ],
     });
     if (profiles.length === 0) return;
-
-    for (const profile of profiles) {
-      const mergedValues = {};
-      const imports = profile.imports;
-
-      for (const _import of imports.sort(
-        (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
-      )) {
-        const data = _import.data;
-        for (const key in data) {
-          // only if we still have property
-          if (properties.find((r) => r.key === key)) {
-            mergedValues[key] = data[key];
-          }
-        }
-      }
-
-      if (Object.keys(mergedValues).length > 0) {
-        await profile.addOrUpdateProperties(mergedValues);
-        delete profile.profileProperties; // will be reloaded
-      }
-    }
 
     const memberships = await ProfileOps.updateGroupMemberships(profiles);
     const now = new Date();

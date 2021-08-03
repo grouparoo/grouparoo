@@ -34,8 +34,10 @@ export interface ConfigurationObject {
   identifying?: boolean;
   unique?: boolean;
   isArray?: boolean;
+  keepValueIfNotFound?: boolean;
   apiKey?: string;
   rules?: GroupRuleWithKey[];
+  confirmProfiles?: boolean;
   recurring?: boolean;
   recurringFrequency?: number;
   groupId?: string;

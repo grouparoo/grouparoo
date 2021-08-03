@@ -47,6 +47,7 @@ module.exports = async function getConfig() {
       sourceId: "users_table", // sourceId -> `users_table`
       recurring: true,
       recurringFrequency: 1000 * 60 * 15, // 15 minutes in ms
+      confirmProfiles: true,
       options: {
         maxColumn: "updated_at",
       },
@@ -59,6 +60,7 @@ module.exports = async function getConfig() {
       type: "email",
       unique: true,
       isArray: false,
+      keepValueIfNotFound: true,
       sourceId: "users_table", // sourceId -> `users_table`
       options: {
         column: "email",

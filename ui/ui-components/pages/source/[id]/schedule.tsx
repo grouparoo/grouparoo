@@ -158,6 +158,15 @@ export default function Page(props) {
         <fieldset disabled={schedule.locked !== null}>
           <Row>
             <Col>
+              <Form.Group controlId="confirmProfiles">
+                <Form.Check
+                  type="checkbox"
+                  label="Confirm that profiles exist when running schedule?"
+                  disabled={loading}
+                  checked={schedule.confirmProfiles}
+                  onChange={(e) => update(e)}
+                />
+              </Form.Group>
               <Form.Group controlId="recurring">
                 <Form.Check
                   type="checkbox"

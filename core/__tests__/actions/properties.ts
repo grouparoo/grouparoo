@@ -86,6 +86,7 @@ describe("actions/properties", () => {
         key: "email",
         type: "string",
         unique: "true",
+        keepValueIfNotFound: "true",
       };
 
       const { error, property, pluginOptions } = await specHelper.runAction(
@@ -98,6 +99,7 @@ describe("actions/properties", () => {
       expect(property.key).toBe("email");
       expect(property.unique).toBe(true);
       expect(property.isArray).toBe(false);
+      expect(property.keepValueIfNotFound).toBe(true);
       expect(property.state).toBe("draft");
       expect(property.sourceId).toBe(source.id);
       expect(pluginOptions[0].key).toBe("column");
@@ -336,6 +338,7 @@ describe("actions/properties", () => {
         csrfToken,
         id,
         unique: true,
+        keepValueIfNotFound: false,
       };
       const { error, property } = await specHelper.runAction(
         "property:edit",
@@ -343,6 +346,7 @@ describe("actions/properties", () => {
       );
       expect(error).toBeUndefined();
       expect(property.unique).toBe(true);
+      expect(property.keepValueIfNotFound).toBe(false);
     });
 
     test("an administrator can see a profile preview of a property", async () => {

@@ -16,13 +16,6 @@ export default function Page(props) {
     _import,
   }: { groups: Models.GroupType[]; _import: Models.ImportType } = props;
 
-  function groupName(groupId) {
-    const group = groups.filter((g) => g.id === groupId)[0];
-    if (group) {
-      return group.name;
-    }
-  }
-
   const errorMetadata = _import.errorMetadata
     ? JSON.parse(_import.errorMetadata)
     : {};
@@ -42,14 +35,13 @@ export default function Page(props) {
           <h2>Details</h2>
           <p>
             Creator:{" "}
-            <Link href={`/object/${_import.creatorId}`} prefetch={false}>
-              <a>
-                {_import.creatorType === "group"
-                  ? `"${groupName(_import.creatorId)}"`
-                  : null}{" "}
-                {_import.creatorId}
-              </a>
-            </Link>
+            {_import.creatorType === "run" ? (
+              <Link href="/run/[id]/edit" as={`/run/${_import.creatorId}/edit`}>
+                <a>{_import.creatorId}</a>
+              </Link>
+            ) : (
+              _import.creatorId
+            )}
             <br />
             Profile:{" "}
             <Link

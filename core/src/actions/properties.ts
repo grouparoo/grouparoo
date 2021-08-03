@@ -145,6 +145,7 @@ export class PropertyCreate extends AuthenticatedAction {
       sourceId: { required: false },
       options: { required: false },
       filters: { required: false },
+      keepValueIfNotFound: { required: false },
     };
   }
 
@@ -156,6 +157,7 @@ export class PropertyCreate extends AuthenticatedAction {
       unique: params.unique,
       isArray: params.isArray,
       sourceId: params.sourceId,
+      keepValueIfNotFound: params.keepValueIfNotFound,
     });
     if (params.options) await property.setOptions(params.options);
     if (params.filters) await property.setFilters(params.filters);
@@ -187,6 +189,7 @@ export class PropertyEdit extends AuthenticatedAction {
       sourceId: { required: false },
       options: { required: false },
       filters: { required: false },
+      keepValueIfNotFound: { required: false },
     };
   }
 
