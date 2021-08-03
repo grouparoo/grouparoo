@@ -217,7 +217,7 @@ export function extractNonNullParts<T, Key extends keyof T>(
 }
 
 export function getAutoBootstrappedProperty(
-  sourceConfigObject: AnyConfigurationObject,
+  sourceConfigObject: SourceConfigurationObject,
   otherConfigObjects: AnyConfigurationObject[]
 ) {
   if (cleanClass(sourceConfigObject) !== "source") return null;
@@ -424,7 +424,10 @@ export async function getParentIds(
   if (configObject["mapping"]) {
     const autoBootstrappedProperty =
       !configObject["bootstrappedProperty"] &&
-      getAutoBootstrappedProperty(configObject, otherConfigObjects);
+      getAutoBootstrappedProperty(
+        configObject as SourceConfigurationObject,
+        otherConfigObjects
+      );
     const mappingValues = Object.values(configObject["mapping"]);
     for (const value of mappingValues) {
       if (!autoBootstrappedProperty || value !== autoBootstrappedProperty.id)
