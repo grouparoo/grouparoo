@@ -123,11 +123,11 @@ export namespace PropertyOps {
     const properties = await Property.findAllWithCache();
 
     // does our source depend on another property to be mapped?
-    const remoteMappingKeys = Object.values(sourceMapping);
+    const remoteMappingKeys: string[] = Object.values(sourceMapping);
     properties
-      .filter((rule) => remoteMappingKeys.includes(rule.key))
-      .filter((rule) => rule.id !== property.id)
-      .forEach((rule) => dependencies.push(rule));
+      .filter((p) => remoteMappingKeys.includes(p.key))
+      .filter((p) => p.id !== property.id)
+      .forEach((p) => dependencies.push(p));
 
     // does this rule have any mustache variables depended on?
     for (const key in ruleOptions) {
@@ -136,9 +136,9 @@ export namespace PropertyOps {
         .filter((chunk) => chunk[0] === "name")
         .map((chunk) => chunk[1]);
       properties
-        .filter((rule) => mustacheVariables.includes(rule.key))
-        .filter((rule) => rule.id !== property.id)
-        .forEach((rule) => dependencies.push(rule));
+        .filter((p) => mustacheVariables.includes(p.key))
+        .filter((p) => p.id !== property.id)
+        .forEach((p) => dependencies.push(p));
     }
 
     // de-duplicate
@@ -148,13 +148,13 @@ export namespace PropertyOps {
   }
 
   /** Make this rule identifying */
-  export async function makeIdentifying(rule: Property) {
-    if (rule.identifying === true) return;
+  export async function makeIdentifying(p: Property) {
+    if (p.identifying === true) return;
 
     await Property.update(
       { identifying: false },
-      { where: { id: { [Op.ne]: rule.id } } }
+      { where: { id: { [Op.ne]: p.id } } }
     );
-    await rule.update({ identifying: true });
+    await p.update({ identifying: true });
   }
 }
