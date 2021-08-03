@@ -8,6 +8,7 @@ import {
   AnyConfigurationObject,
   getDirectParentId,
   getAutoBootstrappedProperty,
+  SourceConfigurationObject,
 } from "../../src/classes/codeConfig";
 
 describe("classes/codeConfig", () => {
@@ -229,11 +230,14 @@ describe("classes/codeConfig", () => {
 
   describe("#getAutoBootstrappedProperty", () => {
     test("it can automatically determine which property to bootstrap", () => {
-      const source = configObjects.find((o) => o.id === "users_table");
+      const source = configObjects.find(
+        (o) => o.id === "users_table"
+      ) as SourceConfigurationObject;
       const bootstrappedProperty = getAutoBootstrappedProperty(
         source,
         configObjects
       );
+
       expect(bootstrappedProperty.id).toBe("user_id");
     });
 
@@ -246,11 +250,14 @@ describe("classes/codeConfig", () => {
         "multiple-sources"
       );
       const _configObjects = await loadConfigObjects(dir);
-      const source = _configObjects.find((o) => o.id === "purchases_table");
+      const source = _configObjects.find(
+        (o) => o.id === "purchases_table"
+      ) as SourceConfigurationObject;
       const bootstrappedProperty = getAutoBootstrappedProperty(
         source,
         _configObjects
       );
+
       expect(bootstrappedProperty).toBeNull();
     });
 
@@ -263,7 +270,9 @@ describe("classes/codeConfig", () => {
         "error-bootstrap-not-unique"
       );
       const _configObjects = await loadConfigObjects(dir);
-      const source = _configObjects.find((o) => o.id === "users_table");
+      const source = _configObjects.find(
+        (o) => o.id === "users_table"
+      ) as SourceConfigurationObject;
 
       expect(() => {
         getAutoBootstrappedProperty(source, _configObjects);
@@ -279,7 +288,9 @@ describe("classes/codeConfig", () => {
         "error-bootstrap-is-array"
       );
       const _configObjects = await loadConfigObjects(dir);
-      const source = _configObjects.find((o) => o.id === "users_table");
+      const source = _configObjects.find(
+        (o) => o.id === "users_table"
+      ) as SourceConfigurationObject;
 
       expect(() => {
         getAutoBootstrappedProperty(source, _configObjects);
