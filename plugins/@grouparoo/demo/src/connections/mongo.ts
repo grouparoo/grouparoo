@@ -252,10 +252,7 @@ export default class Mongo extends Connection {
       return this.conn;
     }
 
-    const client = await new MongoClient(this.config.uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }).connect();
+    const client = await new MongoClient(this.config.uri).connect();
     const db = client.db(this.config.database);
     this.conn = { client, db };
     return this.conn;
