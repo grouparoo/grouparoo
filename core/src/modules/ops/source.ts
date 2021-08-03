@@ -258,80 +258,12 @@ export namespace SourceOps {
         profileIds: profiles.map((p) => p.id),
       });
 
-      await applyNonUniqueMappedResultsToAllProfiles(response, {
-        source,
-        profiles,
-        properties,
-        sourceMapping,
-      });
-
       return response;
     } catch (error) {
       throw error;
     } finally {
       await app.checkAndUpdateParallelism("decr");
     }
-  }
-
-  // for non-unique mappings, we need to fan out the values we received back from the source
-  async function applyNonUniqueMappedResultsToAllProfiles(
-    response: ProfilePropertiesPluginMethodResponse,
-    {
-      source,
-      profiles,
-      properties,
-      sourceMapping,
-    }: {
-      source: Source;
-      profiles: Profile[];
-      properties: Property[];
-      sourceMapping: SourceMapping;
-    }
-  ) {
-    const mappedPropertyKey = Object.values(sourceMapping)[0];
-    const mappedProperty = await Property.findOne({
-      where: { key: mappedPropertyKey },
-    });
-
-    if (!mappedProperty) return;
-    if (mappedProperty.unique) return;
-
-    const valueMap: { [mappedPropertyId: string]: { [match: string]: any } } =
-      {};
-
-    // load up the values
-    for (const profileId of Object.keys(response)) {
-      const profile = profiles.find((p) => p.id === profileId);
-      const profileProperties = await profile.getProperties();
-      for (const property of properties) {
-        if (property.unique) continue;
-        if (property.isArray) continue;
-        if (!valueMap[property.id]) valueMap[property.id] = {};
-        if (profileProperties[mappedProperty.key].state !== "ready") {
-          throw new Error("ProfileProperty is not ready!");
-        }
-
-        valueMap[property.id][
-          profileProperties[mappedProperty.key].values[0].toString()
-        ] = response[profile.id][property.id];
-      }
-    }
-
-    console.log("valueMap", valueMap);
-
-    // apply the values
-    for (const profile of profiles) {
-      if (!response[profile.id]) response[profile.id] = {};
-      const profileProperties = await profile.getProperties();
-      for (const propertyKey of Object.keys(valueMap)) {
-        response[profile.id][propertyKey] =
-          valueMap[propertyKey][
-            profileProperties[mappedProperty.key].values[0].toString()
-          ];
-      }
-    }
-
-    console.log("response++", response);
   }
 
   /**

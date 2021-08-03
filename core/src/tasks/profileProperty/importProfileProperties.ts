@@ -32,7 +32,8 @@ export class ImportProfileProperties extends RetryableTask {
     });
     if (profiles.length === 0) return;
 
-    const properties = (await Property.findAllWithCache()).filter((p) =>
+    const allProperties = await Property.findAllWithCache();
+    const properties = allProperties.filter((p) =>
       params.propertyIds.includes(p.id)
     );
     if (properties.length === 0) return;
@@ -49,23 +50,29 @@ export class ImportProfileProperties extends RetryableTask {
       include: [Option, Mapping],
       scope: null,
     });
+    const sourceMapping = await source.getMapping();
+    const mappedPropertyKey = Object.values(sourceMapping)[0];
+    const mappedProperty = allProperties.find(
+      (p) => p.key === mappedPropertyKey
+    );
 
     const profilesToImport: Profile[] = [];
     const profilesNotReady: Profile[] = [];
+    const profilesToImportIndividually: Profile[] = [];
     const dependencies: { [key: string]: Property[] } = {};
     for (const property of properties) {
       dependencies[property.id] = await PropertyOps.dependencies(property);
     }
 
     for (const profile of profiles) {
-      let ok = true;
+      let mode: "ready" | "notReady" | "importIndividually" = "ready";
 
       // all already (wrongly) ready?
       if (
         profile.profileProperties.filter((p) => p.state === "ready").length ===
         profile.profileProperties.length
       ) {
-        ok = false;
+        mode = "notReady";
       }
 
       for (const property of properties) {
@@ -77,11 +84,27 @@ export class ImportProfileProperties extends RetryableTask {
               profile.profileProperties.find((p) => p.propertyId === dep.id)
                 ?.state !== "ready"
             ) {
-              ok = false;
+              mode = "notReady";
             }
           });
       }
-      ok ? profilesToImport.push(profile) : profilesNotReady.push(profile);
+
+      // we are mapped though a non-unique property and we need to do multiple imports
+      if (mode === "ready" && !mappedProperty.unique) {
+        mode = "importIndividually";
+      }
+
+      switch (mode) {
+        case "ready":
+          profilesToImport.push(profile);
+          break;
+        case "notReady":
+          profilesNotReady.push(profile);
+          break;
+        case "importIndividually":
+          profilesToImportIndividually.push(profile);
+          break;
+      }
     }
 
     if (profilesNotReady.length > 0) {
@@ -97,6 +120,15 @@ export class ImportProfileProperties extends RetryableTask {
           },
         }
       );
+    }
+
+    for (const profile of profilesToImportIndividually) {
+      for (const property of properties) {
+        await CLS.enqueueTask("profileProperty:importProfileProperty", {
+          profileId: profile.id,
+          propertyId: property.id,
+        });
+      }
     }
 
     if (profilesToImport.length === 0) return;
