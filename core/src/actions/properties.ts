@@ -136,6 +136,7 @@ export class PropertyCreate extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "property", mode: "write" };
     this.inputs = {
+      id: { required: false },
       key: { required: false },
       type: { required: true },
       unique: { required: false },
@@ -150,6 +151,7 @@ export class PropertyCreate extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const property = await Property.create({
+      id: params.id,
       key: params.key,
       type: params.type,
       unique: params.unique,

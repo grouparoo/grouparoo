@@ -482,10 +482,7 @@ describe("models/source", () => {
     });
 
     test("mappings must map to properties", async () => {
-      await source.setMapping({
-        local_user_id: "userId",
-      });
-
+      await source.setMapping({ local_user_id: "userId" });
       const mapping = await source.getMapping();
       expect(mapping).toEqual({
         local_user_id: "userId",
@@ -498,6 +495,56 @@ describe("models/source", () => {
           local_user_id: "TheUserID",
         })
       ).rejects.toThrow(/cannot find property TheUserID/);
+    });
+  });
+
+  describe("defaultPropertyOptions", () => {
+    let source: Source;
+
+    beforeAll(async () => {
+      source = await Source.create({
+        type: "test-plugin-import",
+        name: "test source",
+        appId: app.id,
+      });
+      await source.setOptions({ table: "some table" });
+      await source.setMapping({ local_user_id: "userId" });
+      await source.update({ state: "ready" });
+    });
+
+    afterAll(async () => {
+      await source.destroy();
+    });
+
+    test("ready source shows default property options", async () => {
+      const results = await SourceOps.defaultPropertyOptions(source);
+      expect(results).toEqual([
+        {
+          description: "the column to choose",
+          displayName: undefined,
+          key: "column",
+          options: [
+            { examples: [1, 2, 3], key: "id" },
+            { examples: ["mario", "luigi", "peach"], key: "fname" },
+            { examples: ["mario", "mario", "toadstool"], key: "lname" },
+          ],
+          required: true,
+          type: "list",
+        },
+        {
+          description: "how things are combined",
+          displayName: undefined,
+          key: "aggregationMethod",
+          options: [
+            { default: true, key: "exact" },
+            { key: "count" },
+            { key: "min" },
+            { key: "max" },
+          ],
+          required: false,
+          type: "list",
+        },
+      ]);
     });
   });
 
@@ -567,9 +614,26 @@ describe("models/source", () => {
     });
 
     test("bootstrapUniqueProperty will fail if the property cannot be created", async () => {
+      const blockingProperty = await Property.create({
+        sourceId: source.id,
+        id: "blocking_property",
+        key: "blockingProperty",
+        type: "string",
+        unique: true,
+        isArray: false,
+      });
+      await blockingProperty.setOptions({ column: "something" });
+      await blockingProperty.update({ state: "ready" });
+
       await expect(
-        source.bootstrapUniqueProperty("userId", "integer", "id")
+        source.bootstrapUniqueProperty(
+          "blockingProperty",
+          "integer",
+          "blocking_property"
+        )
       ).rejects.toThrow(/already in use/);
+
+      await blockingProperty.destroy();
     });
   });
 

@@ -35,7 +35,7 @@ export default function Page(props) {
     successHandler: SuccessHandler;
     sources: Models.SourceType[];
     propertiesHandler: PropertiesHandler;
-    types: Actions.AppOptions["types"];
+    types: Actions.PropertiesOptions["types"];
     filterOptions: Actions.ScheduleFilterOptions["options"];
     properties: Models.PropertyType[];
     hydrationError: Error;

@@ -6,6 +6,7 @@ export const propertyOptions: PropertyOptionsMethod = async () => [
     key: "column",
     displayName: "CSV Column",
     required: true,
+    primary: true,
     description: "where the data comes from",
     type: "typeahead",
     options: async ({ sourceOptions, sourceId }) => {
@@ -27,7 +28,11 @@ export const propertyOptions: PropertyOptionsMethod = async () => [
     type: "list",
     options: async () => {
       return [
-        { key: AggregationMethod.Exact, description: "use the value directly" },
+        {
+          key: AggregationMethod.Exact,
+          description: "use the value directly",
+          default: true,
+        },
       ];
     },
   },

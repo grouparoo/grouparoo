@@ -161,6 +161,7 @@ module.exports = async function getConfig() {
       id: "website_key", // id -> `website_key`
       name: "web-api-key",
       class: "apiKey",
+      apiKey: "abc123",
       options: {
         permissionAllRead: true,
         permissionAllWrite: true,

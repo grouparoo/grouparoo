@@ -323,7 +323,7 @@ export namespace helper {
                 type: "list",
                 options: async () => {
                   return [
-                    { key: AggregationMethod.Exact },
+                    { key: AggregationMethod.Exact, default: true },
                     { key: AggregationMethod.Count },
                     { key: AggregationMethod.Min },
                     { key: AggregationMethod.Max },

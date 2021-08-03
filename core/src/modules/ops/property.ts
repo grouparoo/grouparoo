@@ -62,6 +62,7 @@ export namespace PropertyOps {
       options: Array<{
         key: string;
         description?: string;
+        default?: boolean;
         examples?: Array<any>;
       }>;
     }> = [];

@@ -29,7 +29,7 @@ export async function loadApiKey(
     });
   }
 
-  await apiKey.update({ type: configObject.type, name: configObject.name }, {});
+  await apiKey.update({ apiKey: configObject.apiKey, name: configObject.name });
 
   if (
     configObject.options?.permissionAllRead !== undefined &&

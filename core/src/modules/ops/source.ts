@@ -14,6 +14,7 @@ import { log, utils, api } from "actionhero";
 import { LoggedModel } from "../../classes/loggedModel";
 import { FilterHelper } from "../filterHelper";
 import { topologicalSort } from "../topologicalSort";
+import { ConfigWriter } from "../configWriter";
 
 export namespace SourceOps {
   /**
@@ -355,6 +356,77 @@ export namespace SourceOps {
   }
 
   /**
+   * Get the default values of the options of a Property from this source
+   */
+  export async function defaultPropertyOptions(source: Source) {
+    const { pluginConnection } = await source.getPlugin();
+
+    if (!pluginConnection) {
+      throw new Error(`cannot find a pluginConnection for type ${source.type}`);
+    }
+
+    if (!pluginConnection.methods.propertyOptions) {
+      throw new Error(`cannot find propertyOptions for type ${source.type}`);
+    }
+
+    const response: Array<{
+      key: string;
+      displayName?: string;
+      default?: boolean;
+      description: string;
+      required: boolean;
+      type: string;
+      primary?: boolean;
+      options: Array<{
+        key: string;
+        description?: string;
+        default?: boolean;
+        examples?: Array<any>;
+      }>;
+    }> = [];
+    const app = await source.$get("app", { include: [Option], scope: null });
+    const appOptions = await app.getOptions(true);
+    const connection = await app.getConnection();
+    const sourceOptions = await source.getOptions(true);
+    const sourceMapping = await source.getMapping();
+
+    const propertyOptionOptions =
+      await pluginConnection.methods.propertyOptions({
+        property: null,
+        propertyId: null,
+        propertyOptions: {},
+      });
+
+    for (const i in propertyOptionOptions) {
+      const opt = propertyOptionOptions[i];
+      const options = await opt.options({
+        connection,
+        app,
+        appId: app.id,
+        appOptions,
+        source,
+        sourceId: source.id,
+        sourceOptions,
+        sourceMapping,
+        property: null,
+        propertyId: null,
+      });
+
+      response.push({
+        key: opt.key,
+        displayName: opt.displayName,
+        description: opt.description,
+        required: opt.required,
+        type: opt.type,
+        primary: opt.primary,
+        options,
+      });
+    }
+
+    return response;
+  }
+
+  /**
    * This method is used to bootstrap a new source which requires a Property for a mapping, when the rule doesn't yet exist.
    */
   export async function bootstrapUniqueProperty(
@@ -373,7 +445,7 @@ export namespace SourceOps {
     const identifying = existingIdentifying ? false : true;
 
     const property = Property.build({
-      id,
+      id: id ?? ConfigWriter.generateId(key),
       key,
       type,
       state: "ready",
@@ -398,7 +470,7 @@ export namespace SourceOps {
       // build the default options
       const { pluginConnection } = await source.getPlugin();
       if (!local) {
-        let ruleOptions = {};
+        let ruleOptions: SimplePropertyOptions = {};
 
         if (
           typeof pluginConnection.methods.uniquePropertyBootstrapOptions ===
