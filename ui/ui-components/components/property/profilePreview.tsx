@@ -13,7 +13,12 @@ export default function ProfilePreview(props) {
     router.query.profileId?.toString()
   );
   const [toHide, setToHide] = useState(true);
-  const [profile, setProfile] = useState({ id: "", properties: {} });
+  const [profile, setProfile] = useState<
+    Partial<Actions.ProfileView["profile"]>
+  >({
+    id: "",
+    properties: {},
+  });
   const [sleeping, setSleeping] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [debounceCounter, setDebounceCounter] = useState(0);
@@ -108,7 +113,7 @@ export default function ProfilePreview(props) {
   let email: string;
   for (const key in profile.properties) {
     if (profile.properties[key].type === "email") {
-      email = profile.properties[key]?.values[0];
+      email = profile.properties[key]?.values[0] as string;
     }
   }
 
@@ -118,7 +123,7 @@ export default function ProfilePreview(props) {
     if (profile.properties[i].id === property.id) {
       if (property.type === "date" && profile.properties[i].values) {
         thisPropertyValue = profile.properties[i].values[0]
-          ? new Date(profile.properties[i].values[0]).toLocaleString()
+          ? new Date(profile.properties[i].values[0] as number).toLocaleString()
           : null;
       } else {
         thisPropertyValue = profile.properties[i].values
