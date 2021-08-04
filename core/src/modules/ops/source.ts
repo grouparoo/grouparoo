@@ -273,7 +273,7 @@ export namespace SourceOps {
   }
 
   // for non-unique mappings, we need to fan out the values we received back from the source
-  async function applyNonUniqueMappedResultsToAllProfiles(
+  export async function applyNonUniqueMappedResultsToAllProfiles(
     response: ProfilePropertiesPluginMethodResponse,
     {
       profiles,
@@ -301,8 +301,6 @@ export namespace SourceOps {
       const profile = profiles.find((p) => p.id === profileId);
       const profileProperties = await profile.getProperties();
       for (const property of properties) {
-        if (property.unique) continue;
-        if (property.isArray) continue;
         if (!valueMap[property.id]) valueMap[property.id] = {};
         if (profileProperties[mappedProperty.key].state !== "ready") {
           throw new Error(
@@ -511,8 +509,7 @@ export namespace SourceOps {
     const existingIdentifying = await Property.findOne({
       where: { identifying: true },
     });
-    // if there isn't one already, make this one identifying
-    const identifying = existingIdentifying ? false : true;
+    const identifying = existingIdentifying ? false : true; // if there isn't one already, make this one identifying
 
     const property = Property.build({
       id: id ?? ConfigWriter.generateId(key),

@@ -7,6 +7,10 @@ import {
   Profile,
   ProfileProperty,
   Property,
+  Source,
+  plugin,
+  App,
+  AggregationMethod,
 } from "../../../src";
 
 describe("tasks/profileProperty:importProfileProperties", () => {
@@ -268,45 +272,142 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       spy.mockRestore();
     });
 
-    test("can be run for the same profile more than once without deadlock", async () => {
-      const profileA: Profile = await helper.factories.profile();
-      const profileB: Profile = await helper.factories.profile();
-      const profileC: Profile = await helper.factories.profile();
+    describe("with profiles", () => {
+      let profileA: Profile;
+      let profileB: Profile;
+      let profileC: Profile;
 
-      await ProfileProperty.update(
-        { state: "pending" },
-        {
-          where: {
-            profileId: { [Op.in]: [profileA.id, profileB.id, profileC.id] },
-          },
+      beforeAll(async () => {
+        profileA = await helper.factories.profile();
+        profileB = await helper.factories.profile();
+        profileC = await helper.factories.profile();
+      });
+
+      afterAll(async () => {
+        await profileA.destroy();
+        await profileB.destroy();
+        await profileC.destroy();
+      });
+
+      beforeEach(async () => {
+        await ProfileProperty.update(
+          { state: "pending" },
+          {
+            where: {
+              profileId: { [Op.in]: [profileA.id, profileB.id, profileC.id] },
+            },
+          }
+        );
+      });
+
+      test("will fan out non-unique profileProperties for multiple properties", async () => {
+        plugin.registerPlugin({
+          name: "test-plugin",
+          apps: [
+            {
+              name: "test-non-unique-app",
+              options: [],
+              methods: {
+                test: async () => {
+                  return { success: true };
+                },
+              },
+            },
+          ],
+          connections: [
+            {
+              name: "test-non-unique-connection",
+              description: "a test app",
+              app: "test-non-unique-app",
+              direction: "import",
+              options: [],
+              groupAggregations: [AggregationMethod.Exact],
+              methods: {
+                propertyOptions: async () => [],
+                sourceFilters: async () => [],
+                profileProperties: async ({ properties, profiles }) => {
+                  // only returns data for the first profile
+                  return { [profiles[0].id]: { [properties[0].id]: ["foo"] } };
+                },
+              },
+            },
+          ],
+        });
+
+        const app = await App.create({
+          type: "test-non-unique-app",
+          name: "test app",
+        });
+        await app.update({ state: "ready" });
+
+        const otherSource = await Source.create({
+          type: "test-non-unique-connection",
+          name: "translations source",
+          appId: app.id,
+        });
+        await otherSource.setMapping({ word: "lastName" });
+        await otherSource.update({ state: "ready" });
+
+        const newProperty: Property = await helper.factories.property(
+          otherSource,
+          { key: "wordInSpanish" }
+        );
+        await newProperty.update({ state: "ready" });
+        await profileA.buildNullProperties();
+        await profileB.buildNullProperties();
+        await profileC.buildNullProperties();
+
+        await ProfileProperty.update(
+          { state: "ready" },
+          { where: { propertyId: { [Op.ne]: newProperty.id } } }
+        );
+        await ProfileProperty.update(
+          { rawValue: "Mario" },
+          { where: { propertyId: "lastName" } }
+        );
+
+        // import
+        await specHelper.runTask("profileProperty:importProfileProperties", {
+          profileIds: [profileA.id, profileB.id, profileC.id],
+          propertyIds: [newProperty.id],
+        });
+
+        const profilePropertiesA = await profileA.getProperties();
+        const profilePropertiesB = await profileB.getProperties();
+        const profilePropertiesC = await profileC.getProperties();
+        expect(profilePropertiesA[newProperty.id].values).toEqual(["foo"]);
+        expect(profilePropertiesB[newProperty.id].values).toEqual(["foo"]);
+        expect(profilePropertiesC[newProperty.id].values).toEqual(["foo"]);
+
+        // cleanup
+        await newProperty.destroy();
+        await otherSource.destroy();
+        await app.destroy();
+      });
+
+      test("can be run for the same profile more than once without deadlock", async () => {
+        const properties = await Property.findAll();
+
+        // run once to set userId
+        for (const property of properties) {
+          await specHelper.runTask("profileProperty:importProfileProperties", {
+            profileIds: [profileA.id, profileB.id, profileC.id],
+            propertyIds: [property.id],
+          });
         }
-      );
 
-      const properties = await Property.findAll();
+        // run again for other properties
+        for (const property of properties) {
+          await specHelper.runTask("profileProperty:importProfileProperties", {
+            profileIds: [profileA.id, profileB.id, profileC.id],
+            propertyIds: [property.id],
+          });
+        }
 
-      // run once to set userId
-      for (const property of properties) {
-        await specHelper.runTask("profileProperty:importProfileProperties", {
-          profileIds: [profileA.id, profileB.id, profileC.id],
-          propertyIds: [property.id],
-        });
-      }
-
-      // run again for other properties
-      for (const property of properties) {
-        await specHelper.runTask("profileProperty:importProfileProperties", {
-          profileIds: [profileA.id, profileB.id, profileC.id],
-          propertyIds: [property.id],
-        });
-      }
-
-      const profileProperties = await profileA.getProperties();
-      expect(profileProperties.firstName.values).toEqual(["Mario"]);
-      expect(profileProperties.lastName.values).toEqual(["Mario"]);
-
-      await profileA.destroy();
-      await profileB.destroy();
-      await profileC.destroy();
+        const profileProperties = await profileA.getProperties();
+        expect(profileProperties.firstName.values).toEqual(["Mario"]);
+        expect(profileProperties.lastName.values).toEqual(["Mario"]);
+      });
     });
   });
 });
