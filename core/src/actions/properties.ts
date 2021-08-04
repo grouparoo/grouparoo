@@ -351,7 +351,7 @@ export class PropertyProfilePreview extends AuthenticatedAction {
     const apiData = await profile.apiData();
     const source = await property.$get("source", { scope: null });
 
-    let newPropertyValues: Array<string | number | boolean | Date>;
+    let newPropertyValues: Array<string | number | boolean | Date> = [];
     let errorMessage: string;
     try {
       newPropertyValues = await source.importProfileProperty(
