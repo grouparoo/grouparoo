@@ -4,7 +4,7 @@ exports.default = async function buildConfig() {
       class: "apiKey",
       id: {{{id}}},
       name: {{{id}}},
-      apiKey: "API KEY HERE", // you can hard-code the API key you want to use, or source it from `process.env.PRODUCTION_API_KEY`
+      //apiKey: "Custom API Key", // By default, Grouparoo will generate a random API key.  But, if you want, you can hard-code the API key you want to use or source it from `process.env.PRODUCTION_API_KEY`
       options: {
         permissionAllRead: false, // Does this API Key have read permission to all topics?
         permissionAllWrite: false, // Does this API Key have write permission to all topics?
