@@ -1,5 +1,4 @@
 import os from "os";
-import { env } from "actionhero";
 
 export const DEFAULT = {
   servers: {
