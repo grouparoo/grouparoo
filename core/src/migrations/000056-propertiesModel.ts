@@ -1,3 +1,5 @@
+// Note: This migration should have also updated `options.ownerType`.  Corrected in migration 000079.
+
 export default {
   up: async function (migration) {
     await migration.sequelize.transaction(async () => {
