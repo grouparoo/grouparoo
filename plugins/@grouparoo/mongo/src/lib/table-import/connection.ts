@@ -13,7 +13,7 @@ export function getConnection() {
     name: "mongo-table-import",
     description:
       "Import or update Profiles from a Mongo DB database collection.",
-    tableOptionDescription: "The table to scan",
+    tableOptionDescription: "The collection to scan",
     tableOptionDisplayName: "Collection",
     getSampleRows,
     getColumns,
