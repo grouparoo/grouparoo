@@ -1,4 +1,5 @@
 import os from "os";
+import { env } from "actionhero";
 
 export const DEFAULT = {
   servers: {
@@ -19,7 +20,7 @@ export const DEFAULT = {
         port: process.env.PORT || 8080,
         // Which IP to listen on (use '0.0.0.0' for all; '::' for all on ipv4 and ipv6)
         // Set to `null` when listening to socket
-        bindIP: "0.0.0.0",
+        bindIP: process.env.BIND_IP ?? "::",
         // Any additional headers you want actionhero to respond with
         httpHeaders: {
           "X-Powered-By": config.general.serverName,
