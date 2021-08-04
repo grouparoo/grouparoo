@@ -50,7 +50,21 @@ export async function loadApiKey(
   }
 
   if (configObject.permissions) {
-    await apiKey.setPermissions(configObject.permissions);
+    const permissions = await apiKey.$get("permissions");
+    const updatedPermissions: Permission[] = [];
+    for (const permission of permissions) {
+      const configPermission = configObject.permissions.find(
+        (p) => p.topic === permission.topic
+      );
+      if (configPermission) {
+        permission.read = configPermission.read;
+        permission.write = configPermission.write;
+      }
+      updatedPermissions.push(permission);
+    }
+    console.log(updatedPermissions);
+
+    await apiKey.setPermissions(permissions);
   }
 
   await Permission.update(

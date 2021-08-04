@@ -43,7 +43,10 @@ export class ApiKey extends LoggedModel<ApiKey> {
   @Column
   permissionAllWrite: boolean;
 
-  @HasMany(() => Permission)
+  @HasMany(() => Permission, {
+    foreignKey: "ownerId",
+    scope: { ownerType: "apiKey" },
+  })
   permissions: Permission[];
 
   @BeforeValidate
@@ -86,7 +89,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
   ) {
     for (const i in permissions) {
       const permission = await Permission.findOne({
-        where: { ownerId: this.id, id: permissions[i].id },
+        where: { ownerId: this.id, ownerType: "apiKey", id: permissions[i].id },
       });
       if (!permission) {
         throw new Error(

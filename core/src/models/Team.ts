@@ -42,7 +42,10 @@ export class Team extends LoggedModel<Team> {
   @HasMany(() => TeamMember)
   teamMembers: TeamMember[];
 
-  @HasMany(() => Permission)
+  @HasMany(() => Permission, {
+    foreignKey: "ownerId",
+    scope: { ownerType: "team" },
+  })
   permissions: Permission[];
 
   async apiData() {
@@ -76,7 +79,7 @@ export class Team extends LoggedModel<Team> {
   ) {
     for (const i in permissions) {
       const permission = await Permission.findOne({
-        where: { ownerId: this.id, id: permissions[i].id },
+        where: { ownerId: this.id, ownerType: "team", id: permissions[i].id },
       });
       if (!permission) {
         throw new Error(
