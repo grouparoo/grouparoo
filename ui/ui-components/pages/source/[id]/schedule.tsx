@@ -68,10 +68,7 @@ export default function Page(props) {
       );
       setSchedule(response.schedule);
       if (response.schedule.state === "ready" && schedule.state === "draft") {
-        router.push(
-          "/source/[id]/properties",
-          `/source/${source.id}/properties`
-        );
+        router.push("/source/[id]/overview", `/source/${source.id}/overview`);
       } else {
         setLoading(false);
         successHandler.set({ message: "Schedule Updated" });
