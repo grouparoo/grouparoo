@@ -33,32 +33,70 @@ export default function Page(props) {
     defaultPropertyOptions: Actions.SourceDefaultPropertyOptions["defaultPropertyOptions"];
   } = props;
   const { execApi } = useApi(props, errorHandler);
-  const [loading, setLoading] = useState(false);
   const [properties, setProperties] = useState<Models.PropertyType[]>(
     props.properties
   );
   const primaryOptionKey = defaultPropertyOptions.find(
     (dpo) => dpo.primary === true
   )?.key; // e.g.: "column"
+  const optionWithDefaults = defaultPropertyOptions
+    .filter((dpo) => dpo.key !== primaryOptionKey)
+    .filter((dpo) => dpo.options.find((o) => o.default));
+  const optionWithDefaultOptionDefaults = optionWithDefaults.map((dpo) => {
+    let defaultOpt = dpo.options.find((o) => o.default);
+    return { key: dpo.key, defaultValue: defaultOpt.key };
+  });
+
+  console.log(optionWithDefaultOptionDefaults);
 
   async function loadProperties() {
-    setLoading(true);
     const response: Actions.PropertiesList = await execApi(
       "get",
       `/properties`
     );
     if (response?.properties) setProperties(response.properties);
-    setLoading(false);
   }
 
   function TableRow({ column }: { column: string }) {
-    const existingProperty =
-      properties.find(
-        (p) =>
-          p.options[primaryOptionKey] === column && p.sourceId === source.id
-      ) ||
-      properties.find((p) => p.options[primaryOptionKey] === column) ||
-      properties.find((p) => p.key.toLowerCase() === column.toLowerCase());
+    const [loading, setLoading] = useState(false);
+
+    const defaultOptions: { [key: string]: string } = {};
+    defaultPropertyOptions.map((propertyOption) => {
+      const defaultOption = propertyOption.options.find((o) => o.default) ??
+        propertyOption.options.find((o) => o.key === column) ??
+        propertyOption.options[0] ?? { key: "?" };
+      defaultOptions[propertyOption.key] = defaultOption.key;
+    });
+
+    let existingProperty: Models.PropertyType;
+    for (const property of properties) {
+      if (property.sourceId !== source.id) continue;
+      if (property.options[primaryOptionKey] !== column) continue;
+      if (property.filters?.length > 0) continue;
+
+      let optMatch = true;
+      for (const key of Object.keys(property.options)) {
+        if (key === primaryOptionKey) continue;
+        if (!optionWithDefaults.map((dpo) => dpo.key).includes(key)) {
+          optMatch = false;
+        }
+        let defaultValue = optionWithDefaultOptionDefaults.find(
+          (o) => o.key === key
+        );
+        if (
+          defaultValue &&
+          defaultValue.defaultValue !== property.options[key]
+        ) {
+          optMatch = false;
+        }
+      }
+
+      if (optMatch) {
+        existingProperty = property;
+        break;
+      }
+    }
+
     const disabled = existingProperty
       ? existingProperty.sourceId === source.id
       : false;
@@ -81,14 +119,7 @@ export default function Page(props) {
         : columnSpeculation[column].isUnique
     );
 
-    const defaultOptions: { [key: string]: string } = {};
-    defaultPropertyOptions.map((propertyOption) => {
-      const defaultOption = propertyOption.options.find((o) => o.default) ??
-        propertyOption.options.find((o) => o.key === column) ??
-        propertyOption.options[0] ?? { key: "?" };
-      defaultOptions[propertyOption.key] = defaultOption.key;
-    });
-    const hiddenOptions = ["aggregationMethod"];
+    const hiddenOptions = optionWithDefaults.map((o) => o.key);
     const [options, setOptions] = useState(
       existingProperty && existingProperty.sourceId === source.id
         ? existingProperty.options
@@ -130,7 +161,7 @@ export default function Page(props) {
                   <Form.Row>
                     <Col md={3}>
                       <code>
-                        <Form.Label>{opt}:</Form.Label>
+                        <Form.Label>{opt}: </Form.Label>
                       </code>
                     </Col>
                     <Col>
@@ -260,7 +291,15 @@ export default function Page(props) {
         ]}
       />
 
-      <h2>Quickly Add Properties </h2>
+      <h2>
+        Quickly Add{" "}
+        <code>
+          {optionWithDefaultOptionDefaults
+            .map((e) => e.defaultValue)
+            .join(", ")}
+        </code>{" "}
+        Properties{" "}
+      </h2>
 
       <p>
         From this page, you can quickly add simple Properties, using default
