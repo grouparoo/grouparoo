@@ -140,26 +140,16 @@ describe("actions/apiKeys", () => {
     });
 
     test("permissions can be updated when not managing in bulk", async () => {
-      const permission = await Permission.findOne({
-        where: { ownerId: id, topic: "app" },
-      });
-
       connection.params = {
         csrfToken,
         id,
-        disabledPermissionAllRead: true,
-        disabledPermissionAllWrite: true,
-        permissions: [
-          {
-            id: permission.id,
-            read: true,
-            write: true,
-          },
-        ],
+        permissionAllRead: null,
+        permissionAllWrite: null,
+        permissions: [{ topic: "app", read: true, write: true }],
       };
       const { apiKey } = await specHelper.runAction("apiKey:edit", connection);
       apiKey.permissions.forEach((_permission) => {
-        if (permission.id === _permission.id) {
+        if (_permission.topic === "app") {
           expect(_permission.read).toBe(true);
           expect(_permission.write).toBe(true);
         } else {

@@ -1249,6 +1249,50 @@ describe("modules/codeConfig", () => {
     });
   });
 
+  describe("permissions", () => {
+    beforeAll(async () => {
+      await helper.truncate();
+    });
+
+    test("bulk and individual permissions can be loaded", async () => {
+      api.codeConfig.allowLockedModelChanges = true;
+      const { errors } = await loadConfigDirectory(
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "fixtures",
+          "codeConfig",
+          "permissions"
+        )
+      );
+
+      const team = await Team.findOne();
+      const apiKey = await ApiKey.findOne();
+
+      expect(team.permissionAllRead).toEqual(true);
+      expect(team.permissionAllWrite).toEqual(false);
+      const teamPermissions = await team.$get("permissions");
+      for (const p of teamPermissions) {
+        expect(p.read).toEqual(true);
+        expect(p.write).toEqual(false);
+      }
+
+      expect(apiKey.permissionAllRead).toEqual(null);
+      expect(apiKey.permissionAllWrite).toEqual(null);
+      const apiKeyPermissions = await apiKey.$get("permissions");
+      for (const p of apiKeyPermissions) {
+        if (p.topic === "app") {
+          expect(p.read).toEqual(true);
+          expect(p.write).toEqual(true);
+        } else {
+          expect(p.read).toEqual(false);
+          expect(p.write).toEqual(false);
+        }
+      }
+    });
+  });
+
   describe("errors", () => {
     describe("plugin not installed", () => {
       beforeAll(async () => {

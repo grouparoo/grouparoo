@@ -28,7 +28,7 @@ export interface ApiKeyConfigurationObject extends ConfigurationObject {
   name: string;
   type?: string;
   apiKey?: string;
-  permissions?: Array<{ id: string; read: boolean; write: boolean }>;
+  permissions?: Array<{ topic: string; read: boolean; write: boolean }>;
   options?: { permissionAllRead: boolean; permissionAllWrite: boolean };
 }
 export interface AppConfigurationObject extends ConfigurationObject {
@@ -99,7 +99,7 @@ export interface SourceConfigurationObject extends ConfigurationObject {
 
 export interface TeamConfigurationObject extends ConfigurationObject {
   name: string;
-  permissions?: Array<{ id: string; read: boolean; write: boolean }>;
+  permissions?: Array<{ topic: string; read: boolean; write: boolean }>;
   options?: { permissionAllRead: boolean; permissionAllWrite: boolean };
 }
 

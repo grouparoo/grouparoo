@@ -42,7 +42,10 @@ export class Team extends LoggedModel<Team> {
   @HasMany(() => TeamMember)
   teamMembers: TeamMember[];
 
-  @HasMany(() => Permission)
+  @HasMany(() => Permission, {
+    foreignKey: "ownerId",
+    scope: { ownerType: "team" },
+  })
   permissions: Permission[];
 
   async apiData() {
@@ -72,30 +75,30 @@ export class Team extends LoggedModel<Team> {
   }
 
   async setPermissions(
-    permissions: Array<{ id: string; read: boolean; write: boolean }>
+    userPermissions: Array<{ topic: string; read: boolean; write: boolean }>
   ) {
-    for (const i in permissions) {
-      const permission = await Permission.findOne({
-        where: { ownerId: this.id, id: permissions[i].id },
-      });
+    const permissions = await this.$get("permissions");
+    for (const userPermission of userPermissions) {
+      const permission: Permission = permissions.find(
+        (p) => p.topic === userPermission.topic
+      );
       if (!permission) {
         throw new Error(
-          `permission ${permissions[i].id} not found for this team`
+          `Cannot find permission for topic ${userPermission.topic}`
         );
       }
 
-      if (permission.locked === null) {
-        permission.read =
-          this.permissionAllRead !== null
-            ? this.permissionAllRead
-            : permissions[i].read;
-        permission.write =
-          this.permissionAllWrite !== null
-            ? this.permissionAllWrite
-            : permissions[i].write;
+      permission.read =
+        this.permissionAllRead !== null
+          ? this.permissionAllRead
+          : userPermission.read;
+      permission.write =
+        this.permissionAllWrite !== null
+          ? this.permissionAllWrite
+          : userPermission.write;
 
-        await permission.save();
-      }
+      await LockableHelper.beforeSave(permission);
+      await permission.save();
     }
   }
 

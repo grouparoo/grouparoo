@@ -31,20 +31,9 @@ export async function loadApiKey(
 
   await apiKey.update({ apiKey: configObject.apiKey, name: configObject.name });
 
-  if (
-    configObject.options?.permissionAllRead !== undefined &&
-    configObject.options?.permissionAllRead !== null
-  ) {
+  if (configObject.options) {
     await apiKey.update({
       permissionAllRead: configObject.options.permissionAllRead,
-    });
-  }
-
-  if (
-    configObject.options?.permissionAllWrite !== undefined &&
-    configObject.options?.permissionAllWrite !== null
-  ) {
-    await apiKey.update({
       permissionAllWrite: configObject.options.permissionAllWrite,
     });
   }
