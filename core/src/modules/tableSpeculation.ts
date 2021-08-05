@@ -44,6 +44,9 @@ export namespace TableSpeculation {
     }
 
     if (databaseType === "float") {
+      if (name === "id") return "integer";
+      if (name === "guid") return "integer";
+      if (name === "uuid") return "integer";
       if (name.match(/_id$/)) return "integer";
       if (name.match(/Id$/)) return "integer";
       if (name.match(/_guid$/)) return "integer";

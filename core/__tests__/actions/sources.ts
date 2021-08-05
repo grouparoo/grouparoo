@@ -164,7 +164,7 @@ describe("actions/sources", () => {
         { id: 2, fname: "luigi", lname: "mario" },
       ]);
       expect(columnSpeculation).toEqual({
-        id: { isUnique: true, type: "string" },
+        id: { isUnique: true, type: "integer" },
         fname: { isUnique: false, type: "string" },
         lname: { isUnique: false, type: "string" },
       });

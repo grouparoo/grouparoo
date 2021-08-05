@@ -61,6 +61,8 @@ describe("tableSpeculation", () => {
       expect(TableSpeculation.columnType("foo_id", [], "float")).toBe(
         "integer"
       );
+
+      expect(TableSpeculation.columnType("id", [], "float")).toBe("integer");
     });
 
     test("others do not change", () => {
