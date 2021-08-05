@@ -85,30 +85,30 @@ export class ApiKey extends LoggedModel<ApiKey> {
   }
 
   async setPermissions(
-    permissions: Array<{ id: string; read: boolean; write: boolean }>
+    userPermissions: Array<{ topic: string; read: boolean; write: boolean }>
   ) {
-    for (const i in permissions) {
-      const permission = await Permission.findOne({
-        where: { ownerId: this.id, ownerType: "apiKey", id: permissions[i].id },
-      });
+    const permissions = await this.$get("permissions");
+    for (const userPermission of userPermissions) {
+      const permission = permissions.find(
+        (p) => p.topic === userPermission.topic
+      );
       if (!permission) {
         throw new Error(
-          `permission ${permissions[i].id} not found for this apiKey`
+          `Cannot find permission for topic ${userPermission.topic}`
         );
       }
 
-      if (permission.locked === null) {
-        permission.read =
-          this.permissionAllRead !== null
-            ? this.permissionAllRead
-            : permissions[i].read;
-        permission.write =
-          this.permissionAllWrite !== null
-            ? this.permissionAllWrite
-            : permissions[i].write;
+      permission.read =
+        this.permissionAllRead !== null
+          ? this.permissionAllRead
+          : userPermission.read;
+      permission.write =
+        this.permissionAllWrite !== null
+          ? this.permissionAllWrite
+          : userPermission.write;
 
-        await permission.save({});
-      }
+      await LockableHelper.beforeSave(permission);
+      await permission.save();
     }
   }
 
@@ -152,7 +152,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
         await permission.update({ write: instance.permissionAllWrite });
       }
       if (instance.locked && !permission.locked) {
-        await permission.update({ locked: instance.locked }, {});
+        await permission.update({ locked: instance.locked });
       }
     }
   }

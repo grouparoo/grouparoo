@@ -50,21 +50,7 @@ export async function loadTeam(
   }
 
   if (configObject.permissions) {
-    const permissions = await team.$get("permissions");
-    const updatedPermissions: Permission[] = [];
-    for (const permission of permissions) {
-      const configPermission = configObject.permissions.find(
-        (p) => p.topic === permission.topic
-      );
-      if (configPermission) {
-        permission.read = configPermission.read;
-        permission.write = configPermission.write;
-      }
-      updatedPermissions.push(permission);
-    }
-    console.log(updatedPermissions);
-
-    await team.setPermissions(permissions);
+    await team.setPermissions(configObject.permissions);
   }
 
   await Permission.update(
