@@ -70,7 +70,7 @@ export default function Page(props) {
         ? generateId(`${source.name}-${column}`)
         : generateId(column)
     );
-    const [type, setType] = useState<string>(
+    const [type, setType] = useState<typeof existingProperty["type"]>(
       existingProperty && existingProperty.sourceId === source.id
         ? existingProperty.type
         : columnSpeculation[column].type
@@ -168,7 +168,9 @@ export default function Page(props) {
             size="sm"
             as="select"
             value={type}
-            onChange={(e) => setType(e.target.value)}
+            onChange={(e) =>
+              setType(e.target.value as typeof existingProperty["type"])
+            }
             disabled={disabled}
           >
             {types.map((v) => (
