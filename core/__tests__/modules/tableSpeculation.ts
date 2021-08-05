@@ -35,18 +35,40 @@ describe("tableSpeculation", () => {
   });
 
   describe("columnType", () => {
-    test("emails", () => {
-      expect(TableSpeculation.columnType("email", "string")).toBe("email");
+    test("emails from strings", () => {
+      expect(TableSpeculation.columnType("email", [], "string")).toBe("email");
     });
 
-    test("phone numbers", () => {
-      expect(TableSpeculation.columnType("mobile_number", "string")).toBe(
+    test("phone numbers from strings", () => {
+      expect(TableSpeculation.columnType("mobile_number", [], "string")).toBe(
         "phoneNumber"
       );
     });
 
-    test("non-strings do not change", () => {
-      expect(TableSpeculation.columnType("email", "integer")).toBe("integer");
+    test("floats with samples", () => {
+      expect(TableSpeculation.columnType("foo", [1, 2, 3])).toBe("float");
+    });
+
+    test("booleans with samples", () => {
+      expect(TableSpeculation.columnType("foo", [false])).toBe("boolean");
+    });
+
+    test("dates with samples", () => {
+      expect(TableSpeculation.columnType("foo", [new Date()])).toBe("date");
+    });
+
+    test("integers from floats", () => {
+      expect(TableSpeculation.columnType("foo_id", [], "float")).toBe(
+        "integer"
+      );
+
+      expect(TableSpeculation.columnType("id", [], "float")).toBe("integer");
+    });
+
+    test("others do not change", () => {
+      expect(TableSpeculation.columnType("email", [], "integer")).toBe(
+        "integer"
+      );
     });
   });
 });

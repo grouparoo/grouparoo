@@ -262,6 +262,7 @@ export class SourcePreview extends AuthenticatedAction {
         : params.options;
 
     const preview = await source.sourcePreview(options);
+
     const columnSpeculation: {
       [column: string]: {
         type: typeof PropertyTypes[number];
@@ -273,7 +274,10 @@ export class SourcePreview extends AuthenticatedAction {
       for (const key of keys) {
         columnSpeculation[key] = {
           isUnique: TableSpeculation.isUniqueColumn(key),
-          type: TableSpeculation.columnType(key, "string"),
+          type: TableSpeculation.columnType(
+            key,
+            preview.map((row) => row[key])
+          ),
         };
       }
     }

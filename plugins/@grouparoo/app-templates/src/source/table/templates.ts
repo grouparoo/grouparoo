@@ -238,7 +238,7 @@ async function loadTablesAndColumns(
         if (withColumns.includes(k) || withColumns[0] === "*") {
           map.push({
             column: k,
-            type: TableSpeculation.columnType(k, columns[k].type),
+            type: TableSpeculation.columnType(k, [], columns[k].type),
             unique: TableSpeculation.isUniqueColumn(k),
           });
         }
