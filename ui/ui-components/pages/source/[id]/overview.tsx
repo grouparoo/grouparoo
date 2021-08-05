@@ -102,7 +102,7 @@ export default function Page({
                   </td>
                   <td>{rule.type}</td>
                   <td>
-                    <input readOnly type="checkbox" checked={rule.unique} />
+                    <input disabled type="checkbox" checked={rule.unique} />
                   </td>
                   <td>
                     <StateBadge state={rule.state} />
@@ -120,7 +120,7 @@ export default function Page({
             <>
               &nbsp;
               <Button
-                href={`/source/${source.id}/properties`}
+                href={`/source/${source.id}/multipleProperties`}
                 size="sm"
                 variant="outline-primary"
               >
