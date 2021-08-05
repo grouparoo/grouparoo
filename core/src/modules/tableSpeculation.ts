@@ -24,22 +24,34 @@ export namespace TableSpeculation {
 
   export function columnType(
     columnName: string,
-    databaseType: typeof PropertyTypes[number]
+    samples: any[] = [],
+    defaultDatabaseType: typeof PropertyTypes[number] = "string"
   ): typeof PropertyTypes[number] {
-    columnName = columnName.toLowerCase();
+    let databaseType: typeof PropertyTypes[number] =
+      defaultDatabaseType ?? "string";
+    const name = columnName.toLowerCase();
+    const value = samples.find((v) => v !== null && v !== undefined);
+    const exists = value !== undefined && value !== null;
 
-    if (databaseType !== "string") {
-      return databaseType;
+    if (exists && typeof value === "number") databaseType = "float";
+    if (exists && (value === false || value === true)) databaseType = "boolean";
+    if (exists && value instanceof Date) databaseType = "date";
+
+    if (databaseType === "string") {
+      if (name.includes("email")) return "email";
+      if (name.includes("phone")) return "phoneNumber";
+      if (name.includes("mobile")) return "phoneNumber";
     }
 
-    if (columnName.includes("email")) {
-      return "email";
+    if (databaseType === "float") {
+      if (name.match(/_id$/)) return "integer";
+      if (name.match(/Id$/)) return "integer";
+      if (name.match(/_guid$/)) return "integer";
+      if (name.match(/Guid$/)) return "integer";
+      if (name.match(/_uuid$/)) return "integer";
+      if (name.match(/Uuid$/)) return "integer";
     }
 
-    if (columnName.includes("phone") || columnName.includes("mobile")) {
-      return "phoneNumber";
-    }
-
-    return "string";
+    return databaseType;
   }
 }
