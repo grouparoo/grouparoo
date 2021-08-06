@@ -8,6 +8,7 @@ import {
 import { profileProperty as calculatedProfileProperty } from "../lib/profileProperty";
 
 import { test } from "../lib/test";
+import { propertyOptions } from "../lib/propertyOptions";
 
 const packageJSON = require("./../../package.json");
 
@@ -44,6 +45,7 @@ export class Plugins extends Initializer {
           options: [],
           methods: {
             profileProperty: calculatedProfileProperty,
+            propertyOptions: propertyOptions,
           },
         },
       ],
