@@ -673,16 +673,19 @@ export namespace ProfileOps {
 
     const profiles: Profile[] = await api.sequelize.query(
       `
-      SELECT "id" FROM "profiles" WHERE "state"='ready' 
-        AND 0 = (
-          SELECT count("exports"."id") FROM "exports" 
-            WHERE "exports"."profileId"="profiles"."id" 
-            AND "exports"."state" IN ('pending', 'processing')
-        ) AND "id" NOT IN (
-          SELECT DISTINCT("profileId") FROM "profileProperties" 
-          JOIN properties ON "properties"."id"="profileProperties"."propertyId" 
-          WHERE "properties"."directlyMapped"=true AND "rawValue" IS NOT NULL
-        ) LIMIT ${limit};
+SELECT "id" FROM "profiles"
+WHERE "state"='ready'
+AND 0 = (
+  SELECT count("exports"."id") FROM "exports"
+    WHERE "exports"."profileId"="profiles"."id"
+    AND "exports"."state" IN ('pending', 'processing')
+)
+AND "id" NOT IN (
+  SELECT DISTINCT("profileId") FROM "profileProperties"
+  JOIN properties ON "properties"."id"="profileProperties"."propertyId"
+  WHERE "properties"."directlyMapped"=true AND "rawValue" IS NOT NULL
+)
+LIMIT ${limit};
       `,
       {
         model: Profile,
