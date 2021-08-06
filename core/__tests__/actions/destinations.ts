@@ -64,7 +64,7 @@ describe("actions/destinations", () => {
       id = destination.id;
     });
 
-    test("only one destination can be created for each app with the same options", async () => {
+    test("only one destination can be created for each app with the same options and group", async () => {
       connection.params = {
         csrfToken,
         name: "test destination again",
