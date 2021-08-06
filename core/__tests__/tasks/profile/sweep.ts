@@ -32,32 +32,6 @@ describe("tasks/profiles:sweep", () => {
     expect(found.length).toEqual(1);
   });
 
-  test("deletes profiles without a directlyMapped property", async () => {
-    const profile: Profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
-      userId: [1000],
-      isVIP: [true],
-      ltv: [213],
-    });
-
-    await ProfileProperty.update(
-      { state: "ready" },
-      { where: { profileId: profile.id } }
-    );
-    await profile.update({ state: "ready" });
-
-    await ProfileProperty.destroy({
-      where: {
-        profileId: profile.id,
-        propertyId: userIdProperty.id,
-      },
-    });
-
-    const count = await specHelper.runTask("profiles:sweep", {});
-    expect(count).toBe(1);
-    await expect(profile.reload()).rejects.toThrow(/does not exist anymore/);
-  });
-
   test("deletes profiles with a directlyMapped property set to null", async () => {
     const profile: Profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
@@ -177,5 +151,30 @@ describe("tasks/profiles:sweep", () => {
     await expect(profile.reload()).rejects.toThrow(/does not exist anymore/);
     await expect(_import.reload()).rejects.toThrow(/does not exist anymore/);
     await expect(_export.reload()).rejects.toThrow(/does not exist anymore/);
+  });
+
+  // this test should be last
+  test("deletes profiles when there is no directlyMapped property", async () => {
+    const profile: Profile = await helper.factories.profile();
+    await profile.addOrUpdateProperties({
+      userId: [1000],
+      isVIP: [true],
+      ltv: [213],
+    });
+
+    await ProfileProperty.update(
+      { state: "ready" },
+      { where: { profileId: profile.id } }
+    );
+    await profile.update({ state: "ready" });
+    let count = await specHelper.runTask("profiles:sweep", {});
+    expect(count).toBe(0);
+
+    // now remove the directly mapped property
+    // @ts-ignore
+    await userIdProperty.destroy({ hooks: false });
+    count = await specHelper.runTask("profiles:sweep", {});
+    expect(count).toBe(1);
+    await expect(profile.reload()).rejects.toThrow(/does not exist anymore/);
   });
 });
