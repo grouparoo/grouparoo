@@ -1,4 +1,4 @@
-import CIO from "customerio-node";
+import { TrackClient } from "customerio-node";
 import axios from "axios";
 
 class CustomerioClient {
@@ -6,7 +6,7 @@ class CustomerioClient {
   appApiKey: string;
 
   constructor(siteId, trackingApiKey, appApiKey) {
-    this.client = new CIO(siteId, trackingApiKey);
+    this.client = new TrackClient(siteId, trackingApiKey);
     this.appApiKey = appApiKey;
   }
 

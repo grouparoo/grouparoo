@@ -1,12 +1,21 @@
 import "@grouparoo/spec-helper";
 import { destinationMappingOptions } from "../../src/lib/export/destinationMappingOptions";
-import { loadAppOptions } from "../utils/nockHelper";
+import { loadAppOptions, updater } from "../utils/nockHelper";
+import path from "path";
+
+const nockFile = path.join(
+  __dirname,
+  "../",
+  "fixtures",
+  "destination-mapping-options.js"
+);
 
 // these comments to use nock
 const newNock = false;
-// require("./../fixtures/destination-mapping-options");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
+// import { helper } from "@grouparoo/spec-helper";
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);

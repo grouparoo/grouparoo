@@ -19,7 +19,7 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   }
   const parsed = readEnv(envFile);
   return {
-    apiKey: parsed.CUSTOMERIO_API_KEY,
+    trackingApiKey: parsed.CUSTOMERIO_API_KEY,
     siteId: parsed.CUSTOMERIO_SITE_ID,
     appApiKey: parsed.CUSTOMERIO_APP_API_KEY,
   };

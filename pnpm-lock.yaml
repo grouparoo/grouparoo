@@ -424,7 +424,7 @@ importers:
       '@types/node': '*'
       actionhero: 26.1.3
       axios: 0.21.1
-      customerio-node: 2.1.1
+      customerio-node: 3.0.2
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.0.6
@@ -434,7 +434,7 @@ importers:
       typescript: 4.3.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      customerio-node: 2.1.1
+      customerio-node: 3.0.2
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -3715,10 +3715,6 @@ packages:
       '@babel/types': 7.14.9
     dev: true
 
-  /@types/caseless/0.12.2:
-    resolution: {integrity: sha512-6ckxMjBBD8URvjB6J3NcnuAn5Pkl7t3TizAg+xdlzzQGSPSmBcXf8KoIH0ua/i+tio+ZRUHEXp0HEmvaR4kt0w==}
-    dev: false
-
   /@types/faker/5.5.7:
     resolution: {integrity: sha512-ejzb61Q5zQTtS0ZIafgQ7ahO5ACzmGhG5PfX2hxWyth3k0/aysb4ZOxKQB8DbzwSPppA5jmFBwqnBxjv5hqI5Q==}
     dev: true
@@ -3875,15 +3871,6 @@ packages:
       '@types/scheduler': 0.16.2
       csstype: 3.0.8
 
-  /@types/request/2.48.7:
-    resolution: {integrity: sha512-GWP9AZW7foLd4YQxyFZDBepl0lPsWLMEXDZUjQ/c1gqVPDPECrRZyEzuhJdnPWioFCq3Tv0qoGpMD6U+ygd4ZA==}
-    dependencies:
-      '@types/caseless': 0.12.2
-      '@types/node': 16.4.10
-      '@types/tough-cookie': 4.0.1
-      form-data: 2.5.1
-    dev: false
-
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
 
@@ -3908,10 +3895,6 @@ packages:
     dependencies:
       '@types/jest': 26.0.24
     dev: true
-
-  /@types/tough-cookie/4.0.1:
-    resolution: {integrity: sha512-Y0K95ThC3esLEYD6ZuqNek29lNX2EM1qxV8y2FTLUB0ff5wWrk7az+mLrnNFUnaXcgKye22+sFBRXOgpPILZNg==}
-    dev: false
 
   /@types/unist/2.0.6:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
@@ -5665,11 +5648,8 @@ packages:
     dependencies:
       array-find-index: 1.0.2
 
-  /customerio-node/2.1.1:
-    resolution: {integrity: sha512-dGwN9PRvEOjKIw4nikP8zE6fPfH5NxTpDYqth1FikO7VW4XY41a0zNWiHQvLEu2enFZ+OxavTGI1W9YZjW7o7A==}
-    dependencies:
-      '@types/request': 2.48.7
-      request: 2.88.2
+  /customerio-node/3.0.2:
+    resolution: {integrity: sha512-ZllzUwD4COp1BI8p1T82J8B0ZE44C1+PPAmEjSDphJ0am7Dp84wga+eusxtoRmfTdexZ6bR/P2znOd+2MXPlsQ==}
     dev: false
 
   /d3-array/1.2.4:
@@ -6676,15 +6656,6 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.32
-
-  /form-data/2.5.1:
-    resolution: {integrity: sha512-m21N3WOmEEURgk6B9GLOE4RuWOFf28Lhh9qGYeNlGq4VDXUlJy2th2slBNU8Gp8EzloYZOibZJ7t5ecIrFSjVA==}
-    engines: {node: '>= 0.12'}
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      mime-types: 2.1.32
-    dev: false
 
   /form-data/3.0.1:
     resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
