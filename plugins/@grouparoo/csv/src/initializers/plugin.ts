@@ -23,7 +23,6 @@ import { profileProperties as remoteProfileProperties } from "../lib/remote-impo
 
 import {
   CSVAppTemplate,
-  CSVFileSourceTemplate,
   CSVRemoteSourceTemplate,
   CSVPropertyTemplate,
 } from "../lib/templates";

@@ -5,6 +5,7 @@ import {
   CalculatedPropertyPropertyTemplate,
   CalculatedPropertySourceTemplate,
 } from "../lib/templates";
+import { profileProperty as calculatedProfileProperty } from "../lib/profileProperty";
 
 import { test } from "../lib/test";
 
@@ -32,7 +33,20 @@ export class Plugins extends Initializer {
           methods: { test },
         },
       ],
-      connections: [],
+      connections: [
+        {
+          name: "calculated-property",
+          direction: "import",
+          description:
+            "Import and calculate Calculated Properties from other sources",
+          app: "calculated-property",
+          groupAggregations: [],
+          options: [],
+          methods: {
+            profileProperty: calculatedProfileProperty,
+          },
+        },
+      ],
     });
   }
 
