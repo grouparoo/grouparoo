@@ -678,9 +678,14 @@ export namespace ProfileOps {
 
     if (directlyMappedProperties.length === 0) {
       // We have no directly mapped Property and every profile should be removed
-      profiles = await Profile.findAll({ attributes: ["id"], limit });
+      // It's safe to assume that if there are no Properties, we aren't exporting
+      profiles = await Profile.findAll({
+        attributes: ["id"],
+        where: { state: "ready" },
+        limit,
+      });
     } else {
-      // We have directly mapped Properties and we only want to remove those Profiles with a null "user_id" (directlyMapped) Property
+      // We have directly mapped Properties and we only want to remove those Profiles with a null "user_id" (directlyMapped) Property (and are ready with no exports)
       profiles = await api.sequelize.query(
         `
   SELECT "id" FROM "profiles"
