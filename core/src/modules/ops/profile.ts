@@ -671,23 +671,45 @@ export namespace ProfileOps {
       (await plugin.readSetting("core", "runs-profile-batch-size")).value
     );
 
-    const profiles: Profile[] = await api.sequelize.query(
-      `
-      SELECT "id" FROM "profiles" WHERE "state"='ready' 
-        AND 0 = (
-          SELECT count("exports"."id") FROM "exports" 
-            WHERE "exports"."profileId"="profiles"."id" 
-            AND "exports"."state" IN ('pending', 'processing')
-        ) AND "id" NOT IN (
-          SELECT DISTINCT("profileId") FROM "profileProperties" 
-          JOIN properties ON "properties"."id"="profileProperties"."propertyId" 
-          WHERE "properties"."directlyMapped"=true AND "rawValue" IS NOT NULL
-        ) LIMIT ${limit};
-      `,
-      {
-        model: Profile,
-      }
+    let profiles: Profile[] = [];
+    const directlyMappedProperties = (await Property.findAllWithCache()).filter(
+      (p) => p.directlyMapped
     );
+
+    if (directlyMappedProperties.length === 0) {
+      // We have no directly mapped Property and every profile should be removed
+      // It's safe to assume that if there are no Properties, we aren't exporting
+      profiles = await Profile.findAll({
+        attributes: ["id"],
+        where: { state: "ready" },
+        limit,
+      });
+    } else {
+      // We have directly mapped Properties and we only want to remove those Profiles with a null "user_id" (directlyMapped) Property (and are ready with no exports)
+      profiles = await api.sequelize.query(
+        `
+  SELECT "id" FROM "profiles"
+  WHERE "state"='ready'
+  AND 0 = (
+    SELECT count("exports"."id") FROM "exports"
+      WHERE
+        "exports"."profileId"="profiles"."id"
+        AND "exports"."state" IN ('pending', 'processing')
+  )
+  AND "id" IN (
+    SELECT DISTINCT("profileId") FROM "profileProperties"
+    JOIN properties ON "properties"."id"="profileProperties"."propertyId"
+    WHERE
+      "properties"."directlyMapped"=true
+      AND "rawValue" IS NULL
+  )
+  LIMIT ${limit};
+        `,
+        {
+          model: Profile,
+        }
+      );
+    }
 
     return profiles;
   }
