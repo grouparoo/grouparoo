@@ -532,7 +532,9 @@ export class Destination extends LoggedModel<Destination> {
 
     for (const otherDestination of otherDestinations) {
       const otherOptions = await otherDestination.getOptions(true);
-      let isSameGroup = otherDestination.groupId === this.groupId;
+      let isSameGroup =
+        this.groupId === otherDestination.groupId ||
+        (!this.groupId && !otherDestination.groupId);
       let isSameOptions =
         JSON.stringify(Object.entries(otherOptions)) ===
         JSON.stringify(Object.entries(options));
