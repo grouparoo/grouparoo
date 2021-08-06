@@ -467,11 +467,12 @@ describe("models/destination", () => {
         );
       });
 
-      test("an app can only have one destination per connection with the same options", async () => {
+      test("an app can only have one destination per connection with the same options and group", async () => {
         destination = await Destination.create({
           name: "first destination",
           appId: app.id,
           type: "test-plugin-export",
+          groupId: "abc123",
         });
 
         await expect(
@@ -479,16 +480,27 @@ describe("models/destination", () => {
             name: "second destination",
             appId: app.id,
             type: "test-plugin-export",
+            groupId: "abc123",
           })
         ).rejects.toThrow(
           /destination "first destination" .* is already using this app with the same options/
         );
+
+        // but it's ok to have the same app track a different group
+        const differentGroupDestination = await Destination.create({
+          name: "different group destination",
+          appId: app.id,
+          type: "test-plugin-export", // same
+          groupId: "def456", // different
+        });
+        expect(differentGroupDestination.state).toEqual("draft");
 
         // but it's ok to have one in another type of connection
         const ok = await Destination.create({
           name: "ok destination",
           appId: app.id,
           type: "test-plugin-export-batch", // different
+          groupId: "abc123", // same group
         });
         expect(ok.state).toEqual("draft");
 
@@ -497,8 +509,9 @@ describe("models/destination", () => {
         const otherDestination = await Destination.create({
           name: "second destination",
           appId: app.id,
-          type: "test-plugin-export",
-        }); // does not throw
+          type: "test-plugin-export", // same
+          groupId: "abc123", // same
+        }); // does not throw, as first destination now has new options
 
         await otherDestination.setOptions({ table: "purchases" }); // does not throw
 
@@ -508,6 +521,7 @@ describe("models/destination", () => {
           /destination "first destination" .* is already using this app with the same options/
         );
 
+        await differentGroupDestination.destroy();
         await otherDestination.destroy();
 
         // and it's ok to have the options here

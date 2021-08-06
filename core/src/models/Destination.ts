@@ -248,7 +248,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async setOptions(options: SimpleDestinationOptions) {
-    await this.validateUniqueAppAndOptions(options);
+    await this.validateUniqueAppAndOptionsForGroup(options);
     return OptionHelper.setOptions(this, options);
   }
 
@@ -517,8 +517,11 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.runExportProcessor(this, exportProcessor);
   }
 
-  async validateUniqueAppAndOptions(options?: SimpleDestinationOptions) {
+  async validateUniqueAppAndOptionsForGroup(
+    options?: SimpleDestinationOptions
+  ) {
     if (!options) options = await this.getOptions(true);
+
     const otherDestinations = await Destination.scope(null).findAll({
       where: {
         appId: this.appId,
@@ -527,16 +530,16 @@ export class Destination extends LoggedModel<Destination> {
       },
     });
 
-    for (const i in otherDestinations) {
-      const otherDestination = otherDestinations[i];
+    for (const otherDestination of otherDestinations) {
       const otherOptions = await otherDestination.getOptions(true);
+      let isSameGroup = otherDestination.groupId === this.groupId;
       let isSameOptions =
-        Object.entries(otherOptions).toString() ===
-        Object.entries(options).toString();
+        JSON.stringify(Object.entries(otherOptions)) ===
+        JSON.stringify(Object.entries(options));
 
-      if (isSameOptions) {
+      if (isSameOptions && isSameGroup) {
         throw new Error(
-          `destination "${otherDestination.name}" (${otherDestination.id}) is already using this app with the same options`
+          `destination "${otherDestination.name}" (${otherDestination.id}) is already using this app with the same options and group`
         );
       }
     }
@@ -630,10 +633,10 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeSave
-  static async ensureOnlyOneDestinationPerAppWithSameSettings(
+  static async ensureOnlyOneDestinationPerAppWithSameSettingsAndGroup(
     instance: Destination
   ) {
-    await instance.validateUniqueAppAndOptions(null);
+    await instance.validateUniqueAppAndOptionsForGroup(null);
   }
 
   @BeforeSave
