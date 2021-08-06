@@ -692,13 +692,16 @@ export namespace ProfileOps {
   WHERE "state"='ready'
   AND 0 = (
     SELECT count("exports"."id") FROM "exports"
-      WHERE "exports"."profileId"="profiles"."id"
-      AND "exports"."state" IN ('pending', 'processing')
+      WHERE
+        "exports"."profileId"="profiles"."id"
+        AND "exports"."state" IN ('pending', 'processing')
   )
-  AND "id" NOT IN (
+  AND "id" IN (
     SELECT DISTINCT("profileId") FROM "profileProperties"
     JOIN properties ON "properties"."id"="profileProperties"."propertyId"
-    WHERE "properties"."directlyMapped"=true AND "rawValue" IS NOT NULL
+    WHERE
+      "properties"."directlyMapped"=true
+      AND "rawValue" IS NULL
   )
   LIMIT ${limit};
         `,
