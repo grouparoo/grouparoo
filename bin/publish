@@ -118,7 +118,9 @@ echo ""
 echo "-----> PUSH TO NPM"
 echo ""
 
-./node_modules/.bin/lerna publish from-git --concurrency 1 --ignore-scripts --dist-tag $DIST_TAG --yes
+# The Happy path of publishing uses the Lerna script, but if something goes wrong we will try again with a package-by-package attempt with just NPM
+# The Lerna command has never failed to bump the versions, but it has failed to publish the packages to NPM
+./node_modules/.bin/lerna publish from-git --concurrency 1 --ignore-scripts --dist-tag $DIST_TAG --yes || ./node_modules/.bin/lerna exec --concurrency 1 -- "npm publish --tag $DIST_TAG --ignore-scripts || exit 0"
 
 ## COMPLETE
 
