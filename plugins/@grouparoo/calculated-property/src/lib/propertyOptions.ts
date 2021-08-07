@@ -6,15 +6,9 @@ export const propertyOptions: PropertyOptionsMethod = async () => [
     required: true,
     description:
       "Grouparoo Property IDs for all properties used in customFunction",
-    type: "list",
+    type: "array",
     options: async () => {
-      // const existingProperties: string[] = [];
-      const properties = await Property.findAll();
-      return properties.map((property) => {
-        return {
-          key: property.id,
-        };
-      });
+      return undefined;
     },
   },
   {
