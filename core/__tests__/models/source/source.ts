@@ -1034,6 +1034,26 @@ describe("models/source", () => {
           [luigi.id]: { wordInSpanish: ["hola"], wordInFrench: ["bonjour"] },
         });
       });
+
+      test("it returns null when the source does not have a record for the property", async () => {
+        await luigi.addOrUpdateProperties({ lastName: ["x"] }); // change the value of the property that is mapped
+
+        const profiles = [mario, luigi];
+        const properties = [propertyA, propertyB];
+        const response = {
+          [mario.id]: { [propertyA.id]: ["hola"], [propertyB.id]: ["bonjour"] },
+        };
+        await SourceOps.applyNonUniqueMappedResultsToAllProfiles(response, {
+          profiles,
+          properties,
+          sourceMapping,
+        });
+
+        expect(response).toEqual({
+          [mario.id]: { wordInSpanish: ["hola"], wordInFrench: ["bonjour"] },
+          [luigi.id]: { wordInSpanish: [null], wordInFrench: [null] },
+        });
+      });
     });
   });
 });

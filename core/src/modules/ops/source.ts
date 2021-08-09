@@ -320,10 +320,12 @@ export namespace SourceOps {
         response[profile.id] = {};
         const profileProperties = await profile.getProperties();
         for (const propertyKey of Object.keys(valueMap)) {
+          const lookupValue =
+            profileProperties[mappedProperty.key]?.values[0]?.toString();
           response[profile.id][propertyKey] =
-            valueMap[propertyKey][
-              profileProperties[mappedProperty.key].values[0].toString()
-            ];
+            lookupValue && valueMap[propertyKey][lookupValue] !== undefined
+              ? valueMap[propertyKey][lookupValue]
+              : [null];
         }
       }
     }
