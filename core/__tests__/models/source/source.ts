@@ -971,6 +971,10 @@ describe("models/source", () => {
       await source.destroy();
     });
 
+    test("sources mapped though non-unique properties cannot have a schedule", async () => {
+      expect(await source.scheduleAvailable()).toBe(false);
+    });
+
     test("it will throw if the profile properties in are not ready", async () => {
       await mario.markPending();
 

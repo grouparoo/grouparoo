@@ -252,7 +252,8 @@ export default function Page({
             )
           ) : (
             <Alert variant="warning">
-              Schedule not available for this connection type
+              Schedule not available for this connection type or mapping
+              configuration
             </Alert>
           )}
           <hr />
