@@ -19,7 +19,7 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   }
   const parsed = readEnv(envFile);
   return {
-    token: parsed.MIXPANEL_API_KEY,
+    token: parsed.MIXPANEL_TOKEN,
     username: parsed.MIXPANEL_USERNAME,
     secret: parsed.MIXPANEL_SECRET,
     projectId: parsed.MIXPANEL_PROJECT_ID,
@@ -32,8 +32,8 @@ export const updater = {
     const nockEnv = readEnv(nockPath);
 
     nockCall = nockCall.replace(
-      new RegExp(realEnv.MIXPANEL_API_KEY, "gi"),
-      nockEnv.MIXPANEL_API_KEY
+      new RegExp(realEnv.MIXPANEL_TOKEN, "gi"),
+      nockEnv.MIXPANEL_TOKEN
     );
     nockCall = nockCall.replace(
       new RegExp(realEnv.MIXPANEL_USERNAME, "gi"),
