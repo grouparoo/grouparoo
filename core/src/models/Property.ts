@@ -529,11 +529,7 @@ export class Property extends LoggedModel<Property> {
     const source = await Source.findById(instance.sourceId);
     if (source.state !== "ready") return; // we are bootstrapping
     const sourceMapping = await source.getMapping();
-    if (Object.keys(sourceMapping).length === 0) {
-      throw new Error(
-        `Cannot make Property ready as source (${source.id}) is not mapped`
-      );
-    }
+    if (Object.keys(sourceMapping).length === 0) return; // Query source
     const mappedPropertyKey = Object.values(sourceMapping)[0];
     const mappedProperty = await Property.findOne({
       where: { key: mappedPropertyKey },
