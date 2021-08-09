@@ -4,27 +4,52 @@ import {
   Property,
 } from "@grouparoo/core";
 
+const getRequiredProperties = async (
+  i,
+  args,
+  arrayedProperties,
+  requiredPropertyObjects
+) => {
+  const propertyOptionId = arrayedProperties[i];
+  console.log("STEP TWO");
+  console.log(
+    `property id = ${propertyOptionId} //// profile id = ${args.profile.id}`
+  );
+  const property = await ProfileProperty.findOne({
+    where: { propertyId: propertyOptionId, profileId: args.profile.id },
+  });
+
+  console.log(`propertyValue = ${property.rawValue}`);
+  requiredPropertyObjects[args.profile.id] = property;
+  console.log(`SAVED = ${requiredPropertyObjects[args.profile.id].rawValue}`);
+};
+
 export const profileProperty: ProfilePropertyPluginMethod = async (args) => {
   //to make Typescript happy that we're sure it's an array
-  const requiredPropertyValues: ProfileProperty[] = [];
+  const requiredPropertyObjects = {};
+  let arrayedProperties: string[] = [];
   console.log("STEP ONE");
   console.log(
-    `OPTIONS: ${JSON.stringify(args.propertyOptions.requiredProperties)}`
+    `OPTIONS: ${JSON.stringify(args.propertyOptions.requiredPropertyObjects)}`
   );
-  if (Array.isArray(args.propertyOptions)) {
-    console.log("STEP TWO");
-    //find the profile properties for each requiredProperty for the profile we're looking at
-    args.propertyOptions.forEach(async (propertyOptionId) => {
-      console.log("STEP THREE");
-      console.log(
-        `property id = ${propertyOptionId} //// profile id = ${args.profile.id}`
-      );
-      const property = await ProfileProperty.findOne({
-        where: { propertyId: propertyOptionId, profileId: args.profile.id },
-      });
-      requiredPropertyValues.push(property);
-    });
+  //make array
+  if (typeof args.propertyOptions.requiredProperties === "string") {
+    arrayedProperties = args.propertyOptions.requiredProperties.split(",");
   }
 
-  return [`CED-PROP: ${requiredPropertyValues[0].rawValue}`];
+  //find the profile properties for each requiredProperty for the profile we're looking at
+  for (const i in arrayedProperties) {
+    await getRequiredProperties(
+      i,
+      args,
+      arrayedProperties,
+      requiredPropertyObjects
+    );
+  }
+
+  return [
+    `CALCULATED-PROPERTY-HERE ${
+      requiredPropertyObjects[args.profile.id].rawValue
+    }`,
+  ];
 };

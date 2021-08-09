@@ -6,7 +6,7 @@ export const propertyOptions: PropertyOptionsMethod = async () => [
     required: true,
     description:
       "Grouparoo Property IDs for all properties used in customFunction",
-    type: "array",
+    type: "lix  st",
     options: async () => {
       return undefined;
     },
@@ -15,8 +15,8 @@ export const propertyOptions: PropertyOptionsMethod = async () => [
     key: "customFunction",
     required: true,
     description:
-      "Javascript function to transform existing Property(ies) to create a new ",
-    type: "list",
+      "Javascript function to transform existing Property(ies) to create a new one",
+    type: "string",
     options: async () => {
       return undefined;
     },
