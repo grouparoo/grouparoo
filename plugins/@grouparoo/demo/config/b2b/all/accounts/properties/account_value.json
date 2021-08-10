@@ -1,15 +1,22 @@
 {
-  "id": "account_value",
-  "name": "accountValue",
   "class": "Property",
+  "id": "account_value",
   "type": "float",
-  "unique": false,
-  "isArray": false,
+  "key": "accountValue",
   "sourceId": "demo_payments",
+  "unique": false,
+  "identifying": false,
+  "isArray": false,
+  "keepValueIfNotFound": false,
   "options": {
-    "column": "amount",
     "aggregationMethod": "sum",
-    "sortColumn": null
+    "column": "amount"
   },
-  "filters": [{ "key": "state", "op": "equals", "match": "successful" }]
+  "filters": [
+    {
+      "key": "state",
+      "op": "equals",
+      "match": "successful"
+    }
+  ]
 }

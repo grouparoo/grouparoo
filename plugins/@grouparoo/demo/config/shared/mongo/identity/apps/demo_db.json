@@ -1,10 +1,10 @@
 {
+  "class": "App",
   "id": "demo_db",
   "name": "Demo Database",
-  "class": "App",
   "type": "mongo",
   "options": {
-    "uri": "mongodb://localhost:27017",
-    "database": "demo"
+    "database": "demo",
+    "uri": "mongodb://localhost:27017"
   }
 }

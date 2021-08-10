@@ -2,14 +2,15 @@
   "class": "Property",
   "id": "last_purchase_category",
   "type": "string",
-  "name": "lastPurchaseCategory",
+  "key": "lastPurchaseCategory",
   "sourceId": "demo_purchases",
   "unique": false,
   "identifying": false,
   "isArray": false,
+  "keepValueIfNotFound": false,
   "options": {
-    "column": "category",
     "aggregationMethod": "most recent value",
+    "column": "category",
     "sortColumn": "created_at"
   },
   "filters": [

@@ -1,5 +1,5 @@
 {
-  "class": "app",
+  "class": "App",
   "id": "mailchimpapp",
   "name": "Mailchimp",
   "type": "mailchimp",

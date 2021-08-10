@@ -2,14 +2,15 @@
   "class": "Property",
   "id": "last_name",
   "type": "string",
-  "name": "lastName",
+  "key": "lastName",
   "sourceId": "demo_users",
   "unique": false,
   "identifying": false,
   "isArray": false,
+  "keepValueIfNotFound": false,
   "options": {
-    "column": "last_name",
-    "aggregationMethod": "exact"
+    "aggregationMethod": "exact",
+    "column": "last_name"
   },
   "filters": []
 }

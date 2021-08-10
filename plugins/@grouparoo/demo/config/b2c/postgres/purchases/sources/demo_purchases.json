@@ -4,10 +4,10 @@
   "name": "Product Purchases",
   "type": "postgres-table-import",
   "appId": "demo_db",
-  "mapping": {
-    "user_id": "user_id"
-  },
   "options": {
     "table": "purchases"
+  },
+  "mapping": {
+    "user_id": "user_id"
   }
 }

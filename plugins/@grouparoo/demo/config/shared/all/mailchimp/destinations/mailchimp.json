@@ -1,7 +1,7 @@
 {
+  "class": "Destination",
   "id": "mailchimp",
   "name": "Mailchimp",
-  "class": "destination",
   "type": "mailchimp-export",
   "appId": "mailchimpapp",
   "groupId": "nobody",
@@ -10,9 +10,9 @@
     "listId": "MAILCHIMP_DESTINATION_LIST_ID"
   },
   "mapping": {
-    "email_address": "email",
     "FNAME": "first_name",
-    "LNAME": "last_name"
+    "LNAME": "last_name",
+    "email_address": "email"
   },
   "destinationGroupMemberships": {
     "Spanish Speakers": "spanish_speakers",

@@ -5,11 +5,11 @@
     "name": "Product Users",
     "type": "postgres-table-import",
     "appId": "demo_db",
-    "mapping": {
-      "id": "user_id"
-    },
     "options": {
       "table": "users"
+    },
+    "mapping": {
+      "id": "user_id"
     }
   },
   {
@@ -19,8 +19,10 @@
     "sourceId": "demo_users",
     "recurring": true,
     "recurringFrequency": 900000,
+    "confirmProfiles": false,
     "options": {
       "column": "updated_at"
-    }
+    },
+    "filters": []
   }
 ]

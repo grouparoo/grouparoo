@@ -2,14 +2,15 @@
   "class": "Property",
   "id": "deactivated",
   "type": "boolean",
-  "name": "Deactivated",
+  "key": "Deactivated",
   "sourceId": "demo_users",
   "unique": false,
   "identifying": false,
   "isArray": false,
+  "keepValueIfNotFound": false,
   "options": {
-    "column": "deactivated",
-    "aggregationMethod": "exact"
+    "aggregationMethod": "exact",
+    "column": "deactivated"
   },
   "filters": []
 }
