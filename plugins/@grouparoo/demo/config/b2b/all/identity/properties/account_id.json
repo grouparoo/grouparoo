@@ -1,15 +1,16 @@
 {
-  "id": "account_id",
-  "name": "accountId",
   "class": "Property",
+  "id": "account_id",
   "type": "integer",
-  "unique": false,
-  "isArray": false,
+  "key": "accountId",
   "sourceId": "demo_users",
+  "unique": false,
+  "identifying": false,
+  "isArray": false,
+  "keepValueIfNotFound": false,
   "options": {
-    "column": "account_id",
     "aggregationMethod": "exact",
-    "sortColumn": null
+    "column": "account_id"
   },
   "filters": []
 }

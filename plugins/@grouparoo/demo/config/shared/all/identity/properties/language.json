@@ -2,14 +2,15 @@
   "class": "Property",
   "id": "language",
   "type": "string",
-  "name": "Language",
+  "key": "Language",
   "sourceId": "demo_users",
   "unique": false,
   "identifying": false,
   "isArray": false,
+  "keepValueIfNotFound": false,
   "options": {
-    "column": "language",
-    "aggregationMethod": "exact"
+    "aggregationMethod": "exact",
+    "column": "language"
   },
   "filters": []
 }

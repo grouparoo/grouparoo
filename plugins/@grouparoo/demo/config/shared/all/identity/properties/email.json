@@ -2,14 +2,15 @@
   "class": "Property",
   "id": "email",
   "type": "email",
-  "name": "email",
+  "key": "email",
   "sourceId": "demo_users",
   "unique": true,
   "identifying": false,
   "isArray": false,
+  "keepValueIfNotFound": false,
   "options": {
-    "column": "email",
-    "aggregationMethod": "exact"
+    "aggregationMethod": "exact",
+    "column": "email"
   },
   "filters": []
 }

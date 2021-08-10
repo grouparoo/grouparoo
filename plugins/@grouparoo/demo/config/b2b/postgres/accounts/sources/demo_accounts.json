@@ -1,8 +1,8 @@
 [
   {
+    "class": "Source",
     "id": "demo_accounts",
     "name": "Accounts",
-    "class": "Source",
     "type": "postgres-table-import",
     "appId": "demo_db",
     "options": {
@@ -11,16 +11,18 @@
     "mapping": {
       "id": "account_id"
     }
+  },
+  {
+    "class": "Schedule",
+    "id": "demo_accounts_schedule",
+    "name": "Accounts Schedule",
+    "sourceId": "demo_accounts",
+    "recurring": true,
+    "recurringFrequency": 900000,
+    "confirmProfiles": false,
+    "options": {
+      "column": "updated_at"
+    },
+    "filters": []
   }
-  // {
-  //   "id": "demo_accounts_schedule",
-  //   "name": "Accounts Schedule",
-  //   "class": "Schedule",
-  //   "sourceId": "demo_accounts",
-  //   "recurring": true,
-  //   "recurringFrequency": 900000,
-  //   "options": {
-  //     "column": "updated_at"
-  //   }
-  // }
 ]

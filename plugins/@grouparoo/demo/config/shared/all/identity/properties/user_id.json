@@ -2,11 +2,12 @@
   "class": "Property",
   "id": "user_id",
   "type": "integer",
-  "name": "userId",
+  "key": "userId",
   "sourceId": "demo_users",
   "unique": true,
   "identifying": true,
   "isArray": false,
+  "keepValueIfNotFound": false,
   "options": {
     "aggregationMethod": "exact",
     "column": "id"

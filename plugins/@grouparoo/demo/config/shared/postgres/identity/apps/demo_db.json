@@ -6,9 +6,9 @@
   "options": {
     "port": "5432",
     "schema": "demo",
-    "host": "localhost",
     "database": "grouparoo_development",
-    "user": "",
-    "password": ""
+    "host": "localhost",
+    "password": "",
+    "user": ""
   }
 }

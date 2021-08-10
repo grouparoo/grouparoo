@@ -2,14 +2,15 @@
   "class": "Property",
   "id": "ltv",
   "type": "float",
-  "name": "LTV",
+  "key": "LTV",
   "sourceId": "demo_purchases",
   "unique": false,
   "identifying": false,
   "isArray": false,
+  "keepValueIfNotFound": false,
   "options": {
-    "column": "price",
-    "aggregationMethod": "sum"
+    "aggregationMethod": "sum",
+    "column": "price"
   },
   "filters": [
     {

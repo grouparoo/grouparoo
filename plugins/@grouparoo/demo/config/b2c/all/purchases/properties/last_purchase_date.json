@@ -2,14 +2,15 @@
   "class": "Property",
   "id": "last_purchase_date",
   "type": "date",
-  "name": "lastPurchaseDate",
+  "key": "lastPurchaseDate",
   "sourceId": "demo_purchases",
   "unique": false,
   "identifying": false,
   "isArray": false,
+  "keepValueIfNotFound": false,
   "options": {
-    "column": "created_at",
     "aggregationMethod": "most recent value",
+    "column": "created_at",
     "sortColumn": "created_at"
   },
   "filters": [
