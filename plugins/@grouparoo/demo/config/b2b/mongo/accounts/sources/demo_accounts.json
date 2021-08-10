@@ -1,28 +1,13 @@
-[
-  {
-    "class": "Source",
-    "id": "demo_accounts",
-    "name": "Accounts",
-    "type": "mongo-table-import",
-    "appId": "demo_db",
-    "options": {
-      "table": "accounts"
-    },
-    "mapping": {
-      "id": "account_id"
-    }
+{
+  "class": "Source",
+  "id": "demo_accounts",
+  "name": "Accounts",
+  "type": "mongo-table-import",
+  "appId": "demo_db",
+  "options": {
+    "table": "accounts"
   },
-  {
-    "class": "Schedule",
-    "id": "demo_accounts_schedule",
-    "name": "Accounts Schedule",
-    "sourceId": "demo_accounts",
-    "recurring": true,
-    "recurringFrequency": 900000,
-    "confirmProfiles": false,
-    "options": {
-      "column": "updated_at"
-    },
-    "filters": []
+  "mapping": {
+    "id": "account_id"
   }
-]
+}
