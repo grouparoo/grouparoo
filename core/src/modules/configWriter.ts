@@ -1,6 +1,7 @@
 import { api } from "actionhero";
 import fs from "fs";
 import path from "path";
+import prettier from "prettier";
 
 import { App } from "../models/App";
 import { Destination } from "../models/Destination";
@@ -208,7 +209,10 @@ export namespace ConfigWriter {
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     const stringifyFilter = (k, v) => (v === null ? undefined : v);
     const content = JSON.stringify(object, stringifyFilter, 2);
-    await fs.writeFileSync(configFilePath, content);
+    await fs.writeFileSync(
+      configFilePath,
+      prettier.format(content, { parser: "json" })
+    );
     cacheConfigFile({ absFilePath: configFilePath, objects: [object] });
     return true;
   }
