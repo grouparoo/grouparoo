@@ -4,6 +4,10 @@ import {
   Property,
 } from "@grouparoo/core";
 
+export interface RequiredPropertiesObject {
+  [propertyId: string]: ProfileProperty;
+}
+
 const getRequiredProperties = async (
   i,
   args,
@@ -20,18 +24,19 @@ const getRequiredProperties = async (
   });
 
   console.log(`propertyValue = ${property.rawValue}`);
-  requiredPropertyObjects[args.profile.id] = property;
-  console.log(`SAVED = ${requiredPropertyObjects[args.profile.id].rawValue}`);
+  requiredPropertyObjects[property.propertyId] = property;
+
+  console.log(
+    `SAVED = ${requiredPropertyObjects[property.propertyId].rawValue}`
+  );
 };
 
 export const profileProperty: ProfilePropertyPluginMethod = async (args) => {
-  //to make Typescript happy that we're sure it's an array
-  const requiredPropertyObjects = {};
+  const requiredPropertyObjects: RequiredPropertiesObject = {};
   let arrayedProperties: string[] = [];
+
   console.log("STEP ONE");
-  console.log(
-    `OPTIONS: ${JSON.stringify(args.propertyOptions.requiredPropertyObjects)}`
-  );
+
   //make array
   if (typeof args.propertyOptions.requiredProperties === "string") {
     arrayedProperties = args.propertyOptions.requiredProperties.split(",");
@@ -47,9 +52,12 @@ export const profileProperty: ProfilePropertyPluginMethod = async (args) => {
     );
   }
 
+  console.log(JSON.stringify(requiredPropertyObjects, null, 2));
+
+  console.log(
+    `JUST TO BE SURE: ${requiredPropertyObjects["last_name"].rawValue}`
+  );
   return [
-    `CALCULATED-PROPERTY-HERE ${
-      requiredPropertyObjects[args.profile.id].rawValue
-    }`,
+    `CALCULATED-PROPERTY-HERE ${requiredPropertyObjects["last_name"].rawValue}`,
   ];
 };
