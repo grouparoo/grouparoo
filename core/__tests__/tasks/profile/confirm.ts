@@ -319,6 +319,18 @@ describe("tasks/profiles:confirm", () => {
     await schedule.destroy();
   });
 
+  test("silently exists if the schedule has no runs", async () => {
+    await plugin.updateSetting("core", "confirm-profiles-days", 0);
+
+    const source = await Source.findOne();
+    await helper.factories.schedule(source, {
+      confirmProfiles: true,
+    });
+
+    const count = await specHelper.runTask("profiles:confirm", {});
+    expect(count).toBe(0); // nothing
+  });
+
   test("only processes profiles up to the batch size", async () => {
     await plugin.updateSetting("core", "runs-profile-batch-size", 2);
 

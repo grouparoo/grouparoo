@@ -41,6 +41,8 @@ export class ProfilesConfirm extends CLSTask {
 
     for (const schedule of schedules) {
       const latestRun = schedule.runs[0];
+      if (!latestRun) continue;
+
       const pendingImports = await latestRun.$count("imports", {
         where: { profileAssociatedAt: null },
       });
