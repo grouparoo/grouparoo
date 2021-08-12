@@ -54,15 +54,15 @@ async function main() {
   });
 
   const sequelize = new Sequelize(CONFIG);
+  const queryInterface = getInjectedQueryInterface(sequelize, CONFIG);
 
   const uzmugs = [];
-
   // learn more about configuring umzug @ https://github.com/actionhero/ah-sequelize-plugin/blob/master/src/initializers/sequelize.ts
   CONFIG.migrations.forEach((dir) => {
     const umzug = new Umzug({
       storage: new SequelizeStorage({ sequelize: sequelize }),
       migrations: {
-        params: [sequelize.getQueryInterface(), sequelize.constructor],
+        params: [queryInterface, sequelize.constructor],
         path: dir,
         pattern: /(\.js|\w{3,}\.ts)$/,
         nameFormatter: (filename) => path.parse(filename).name,
@@ -83,6 +83,41 @@ async function main() {
   } else if (args[0] === "down") {
     await downOne(uzmugs);
   }
+}
+
+function injectSchema(original, schema) {
+  return function () {
+    if(typeof arguments[0] === "string") {
+      arguments[0] = { tableName: arguments[0], schema };
+    } else if (!arguments[0].schema) {
+      arguments[0].schema = schema;
+    }
+    return original.apply(this, arguments);
+  }
+}
+
+function getInjectedQueryInterface(sequelize, sequelizeConfig) {
+  const queryInterface = sequelize.getQueryInterface();
+  if (
+    sequelizeConfig.schema &&
+    sequelizeConfig.schema !== "public" &&
+    sequelizeConfig.dialect &&
+    sequelizeConfig.dialect === "postgres"
+  ) {
+    queryInterface.addColumn = injectSchema(
+      queryInterface.addColumn,
+      sequelizeConfig.schema
+    );
+    queryInterface.removeColumn = injectSchema(
+      queryInterface.removeColumn,
+      sequelizeConfig.schema
+    );
+    queryInterface.renameColumn = injectSchema(
+      queryInterface.renameColumn,
+      sequelizeConfig.schema
+    );
+  }
+  return queryInterface;
 }
 
 async function upOne(umzugs) {

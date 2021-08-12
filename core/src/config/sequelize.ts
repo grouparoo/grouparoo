@@ -118,11 +118,12 @@ export const DEFAULT = {
       username: username,
       password: password,
       schema: schema,
+      searchPath: schema,
       models: [join(__dirname, "..", "models")],
       migrations: [join(__dirname, "..", "migrations"), ...pluginMigrations],
       migrationLogLevel: storage === ":memory:" ? "debug" : "info",
       storage, // only used for sqlite
-      dialectOptions: { ssl },
+      dialectOptions: { ssl, prependSearchPath: schema !== undefined },
       transactionType: "DEFERRED",
       pool: {
         max:
