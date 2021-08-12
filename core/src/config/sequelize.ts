@@ -123,7 +123,7 @@ export const DEFAULT = {
       migrations: [join(__dirname, "..", "migrations"), ...pluginMigrations],
       migrationLogLevel: storage === ":memory:" ? "debug" : "info",
       storage, // only used for sqlite
-      dialectOptions: { ssl, prependSearchPath: true },
+      dialectOptions: { ssl, prependSearchPath: schema !== undefined },
       transactionType: "DEFERRED",
       pool: {
         max:
