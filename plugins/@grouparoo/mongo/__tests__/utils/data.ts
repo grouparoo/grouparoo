@@ -164,7 +164,7 @@ export async function getClient() {
 
 export async function endClient() {
   if (connection) {
-    await connection.client.close();
+    await connection.close();
     connection = null;
   }
 }
@@ -183,7 +183,10 @@ export function getConfig() {
 async function dropTables() {
   for (const collectionName of allCollections) {
     try {
-      await connection.db.collection(collectionName).drop();
+      await connection
+        .db(appOptions.database)
+        .collection(collectionName)
+        .drop();
     } catch (err) {
       // ignores in case the collection doesn't exist.
     }
@@ -193,10 +196,9 @@ async function dropTables() {
 async function createTables() {
   await dropTables();
   for (const tableName of allCollections) {
-    await connection.db.createCollection(
-      tableName,
-      collectionsOptions[tableName]
-    );
+    await connection
+      .db(appOptions.database)
+      .createCollection(tableName, collectionsOptions[tableName]);
   }
 }
 
@@ -206,7 +208,10 @@ async function fillTable(collectionName, fileName) {
   const docs = parseCsvToObject(rows, collectionName);
   for (const doc of docs) {
     try {
-      await connection.db.collection(collectionName).insertOne(doc);
+      await connection
+        .db(appOptions.database)
+        .collection(collectionName)
+        .insertOne(doc);
     } catch (err) {
       console.log(err);
     }
@@ -220,7 +225,10 @@ async function fillTableJson(collectionName, fileName) {
   for (const doc of locations) {
     try {
       doc.properties.updated = new Date(doc.properties.updated);
-      await connection.db.collection(collectionName).insertOne(doc);
+      await connection
+        .db(appOptions.database)
+        .collection(collectionName)
+        .insertOne(doc);
     } catch (err) {
       console.log(err);
     }

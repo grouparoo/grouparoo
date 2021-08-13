@@ -4,6 +4,7 @@ export const executeQuery: ExecuteQueryMethod = async ({
   connection,
   query,
   sourceOptions,
+  appOptions,
 }) => {
   if (!query) {
     throw new Error("query required");
@@ -15,7 +16,8 @@ export const executeQuery: ExecuteQueryMethod = async ({
   } else {
     pipeline.push({ $match: jsonQuery });
   }
-  const result = await connection.db
+  const result = await connection
+    .db(appOptions.database)
     .collection(sourceOptions.table)
     .aggregate(pipeline)
     .toArray();

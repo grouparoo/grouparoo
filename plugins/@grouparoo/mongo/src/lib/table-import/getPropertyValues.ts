@@ -12,6 +12,7 @@ import {
 
 export const getPropertyValues: GetPropertyValuesMethod = async ({
   connection,
+  appOptions,
   tableName,
   columnNames,
   sortColumn,
@@ -35,6 +36,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
 
   let fieldType: string = await getMostTrendingType(
     connection,
+    appOptions.database as string,
     tableName,
     tablePrimaryKeyCol
   );
@@ -144,7 +146,8 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   }
 
   try {
-    const rows: Array<{ [column: string]: DataResponse }> = await connection.db
+    const rows: Array<{ [column: string]: DataResponse }> = await connection
+      .db(appOptions.database)
       .collection(tableName)
       .aggregate(aggPipeline)
       .toArray();

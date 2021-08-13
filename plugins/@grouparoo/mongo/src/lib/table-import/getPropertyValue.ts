@@ -7,6 +7,7 @@ import {
 
 export const getPropertyValue: GetPropertyValueMethod = async ({
   connection,
+  appOptions,
   tableName,
   columnName,
   sortColumn,
@@ -98,7 +99,8 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
 
   let response: DataResponse[];
   try {
-    const rows = await connection.db
+    const rows = await connection
+      .db(appOptions.database)
       .collection(tableName)
       .aggregate(aggPipeline)
       .toArray();

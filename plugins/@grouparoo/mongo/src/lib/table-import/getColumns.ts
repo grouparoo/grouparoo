@@ -9,14 +9,20 @@ import { getMostTrendingType, getFields } from "./util";
 
 export const getColumns: GetColumnDefinitionsMethod = async ({
   connection,
+  appOptions,
   tableName,
 }) => {
   const map: ColumnDefinitionMap = {};
-  const fields = await getFields(connection, tableName);
+  const fields = await getFields(
+    connection,
+    appOptions.database as string,
+    tableName
+  );
   for (const field of fields) {
     const name = String(field);
     const { type, filterOperations } = await getTypeInfo(
       connection,
+      appOptions.database as string,
       tableName,
       name
     );
@@ -32,6 +38,7 @@ export const getColumns: GetColumnDefinitionsMethod = async ({
 
 const getTypeInfo = async function (
   connection: any,
+  database: string,
   tableName: string,
   fieldName: string
 ): Promise<{ type: ColumnType; filterOperations: FilterOperation[] }> {
@@ -42,6 +49,7 @@ const getTypeInfo = async function (
 
   let fieldType: string = await getMostTrendingType(
     connection,
+    database,
     tableName,
     fieldName
   );
