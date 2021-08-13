@@ -14,7 +14,6 @@ export const getTables: GetTablesMethod = async ({
       .db(appOptions.database)
       .listCollections()
       .toArray();
-    console.log(">>>>>>>>>>>>", connection.db(appOptions.database));
     for (const row of rows) {
       const name = row.name;
       map[name] = { name, data: row };
