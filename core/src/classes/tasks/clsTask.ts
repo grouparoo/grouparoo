@@ -1,5 +1,6 @@
 import { Task, log } from "actionhero";
 import { TaskInputs } from "actionhero/dist/classes/task";
+import { AsyncReturnType } from "type-fest";
 import { APM } from "../../modules/apm";
 import { CLS } from "../../modules/cls";
 
@@ -8,7 +9,10 @@ export abstract class CLSTask extends Task {
     super();
   }
 
-  async run(inputs: TaskInputs, worker: any) {
+  async run(
+    inputs: TaskInputs,
+    worker: any
+  ): Promise<AsyncReturnType<this["runWithinTransaction"]>> {
     return APM.wrap(this.name, "task", worker, async () => {
       try {
         return CLS.wrap(async () => this.runWithinTransaction(inputs, worker), {
