@@ -1,5 +1,9 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper, Connection } from "actionhero";
+import { SessionCreate } from "../../src/actions/session";
+import { TeamCreate } from "../../src/actions/teams";
+import { ObjectFind } from "../../src/actions/object";
+import { AppCreate } from "../../src/actions/apps";
 
 describe("actions/object", () => {
   helper.grouparooTestServer({
@@ -25,7 +29,7 @@ describe("actions/object", () => {
   beforeAll(async () => {
     connection = await specHelper.buildConnection();
     connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-    const sessionResponse = await specHelper.runAction(
+    const sessionResponse = await specHelper.runAction<SessionCreate>(
       "session:create",
       connection
     );
@@ -37,7 +41,10 @@ describe("actions/object", () => {
       csrfToken,
       name: "new team",
     };
-    const { team } = await specHelper.runAction("team:create", connection);
+    const { team } = await specHelper.runAction<TeamCreate>(
+      "team:create",
+      connection
+    );
     teamId = team.id;
   });
 
@@ -48,14 +55,17 @@ describe("actions/object", () => {
       type: "test-plugin-app",
       options: { fileId: "abc123" },
     };
-    const { app, error } = await specHelper.runAction("app:create", connection);
+    const { app, error } = await specHelper.runAction<AppCreate>(
+      "app:create",
+      connection
+    );
     appId = app.id;
   });
 
   describe("we can search for objects across many tables", () => {
     test("can find apps", async () => {
       connection.params = { csrfToken, id: appId };
-      const { records, error } = await specHelper.runAction(
+      const { records, error } = await specHelper.runAction<ObjectFind>(
         "object:find",
         connection
       );
@@ -66,7 +76,7 @@ describe("actions/object", () => {
 
     test("can find teams", async () => {
       connection.params = { csrfToken, id: teamId };
-      const { records, error } = await specHelper.runAction(
+      const { records, error } = await specHelper.runAction<ObjectFind>(
         "object:find",
         connection
       );
@@ -77,7 +87,7 @@ describe("actions/object", () => {
 
     test("will return empty array if object cannot be found", async () => {
       connection.params = { csrfToken, id: "foo" };
-      const { records, error } = await specHelper.runAction(
+      const { records, error } = await specHelper.runAction<ObjectFind>(
         "object:find",
         connection
       );

@@ -1,6 +1,12 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Export } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import {
+  ExportsList,
+  ExportsTotals,
+  ExportView,
+} from "../../src/actions/exports";
 
 describe("actions/exports", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -89,7 +95,7 @@ describe("actions/exports", () => {
 
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -98,7 +104,7 @@ describe("actions/exports", () => {
 
     test("a reader can view the exports", async () => {
       connection.params = { csrfToken };
-      const { error, exports, total } = await specHelper.runAction(
+      const { error, exports, total } = await specHelper.runAction<ExportsList>(
         "exports:list",
         connection
       );
@@ -110,7 +116,7 @@ describe("actions/exports", () => {
 
     test("a reader can view an export", async () => {
       connection.params = { csrfToken, id };
-      const { error, export: _export } = await specHelper.runAction(
+      const { error, export: _export } = await specHelper.runAction<ExportView>(
         "export:view",
         connection
       );
@@ -123,7 +129,7 @@ describe("actions/exports", () => {
 
     test("a reader can ask for exports about a profile", async () => {
       connection.params = { csrfToken, profileId: profile.id };
-      const { error, exports, total } = await specHelper.runAction(
+      const { error, exports, total } = await specHelper.runAction<ExportsList>(
         "exports:list",
         connection
       );
@@ -137,7 +143,7 @@ describe("actions/exports", () => {
 
     test("a reader can ask for exports about a destination", async () => {
       connection.params = { csrfToken, destinationId: destination.id };
-      const { error, exports, total } = await specHelper.runAction(
+      const { error, exports, total } = await specHelper.runAction<ExportsList>(
         "exports:list",
         connection
       );
@@ -152,7 +158,7 @@ describe("actions/exports", () => {
 
     test("a reader can ask for exports about an export processor", async () => {
       connection.params = { csrfToken, exportProcessorId: exportProcessor.id };
-      const { error, exports, total } = await specHelper.runAction(
+      const { error, exports, total } = await specHelper.runAction<ExportsList>(
         "exports:list",
         connection
       );
@@ -165,7 +171,7 @@ describe("actions/exports", () => {
 
     test("a reader can get export totals", async () => {
       connection.params = { csrfToken };
-      const { error, totals } = await specHelper.runAction(
+      const { error, totals } = await specHelper.runAction<ExportsTotals>(
         "exports:totals",
         connection
       );
@@ -182,7 +188,7 @@ describe("actions/exports", () => {
 
     test("a reader can get export totals for a profile", async () => {
       connection.params = { csrfToken, profileId: profile.id };
-      const { error, totals } = await specHelper.runAction(
+      const { error, totals } = await specHelper.runAction<ExportsTotals>(
         "exports:totals",
         connection
       );
@@ -199,7 +205,7 @@ describe("actions/exports", () => {
 
     test("a reader can get export totals for a destination", async () => {
       connection.params = { csrfToken, destinationId: destination.id };
-      const { error, totals } = await specHelper.runAction(
+      const { error, totals } = await specHelper.runAction<ExportsTotals>(
         "exports:totals",
         connection
       );

@@ -1,6 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { ExportProcessor } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import {
+  ExportProcessorsList,
+  ExportProcessorView,
+} from "../../src/actions/exportProcessors";
 
 describe("actions/exports", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -67,7 +72,7 @@ describe("actions/exports", () => {
 
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -76,10 +81,11 @@ describe("actions/exports", () => {
 
     test("a reader can view the export processors", async () => {
       connection.params = { csrfToken };
-      const { error, exportProcessors, total } = await specHelper.runAction(
-        "exportProcessors:list",
-        connection
-      );
+      const { error, exportProcessors, total } =
+        await specHelper.runAction<ExportProcessorsList>(
+          "exportProcessors:list",
+          connection
+        );
 
       expect(error).toBeUndefined();
       expect(exportProcessors.length).toBe(4);
@@ -88,10 +94,11 @@ describe("actions/exports", () => {
 
     test("a reader can view an export processor", async () => {
       connection.params = { csrfToken, id };
-      const { error, exportProcessor } = await specHelper.runAction(
-        "exportProcessor:view",
-        connection
-      );
+      const { error, exportProcessor } =
+        await specHelper.runAction<ExportProcessorView>(
+          "exportProcessor:view",
+          connection
+        );
 
       expect(error).toBeUndefined();
       expect(exportProcessor.id).toBe(id);
@@ -103,10 +110,11 @@ describe("actions/exports", () => {
 
     test("a reader can ask for export processors about a destination", async () => {
       connection.params = { csrfToken, destinationId: destination.id };
-      const { error, exportProcessors, total } = await specHelper.runAction(
-        "exportProcessors:list",
-        connection
-      );
+      const { error, exportProcessors, total } =
+        await specHelper.runAction<ExportProcessorsList>(
+          "exportProcessors:list",
+          connection
+        );
 
       expect(error).toBeUndefined();
       expect(exportProcessors.length).toBe(3);
@@ -117,10 +125,11 @@ describe("actions/exports", () => {
 
     test("a reader can ask for export processors with state complete", async () => {
       connection.params = { csrfToken, state: "complete" };
-      const { error, exportProcessors, total } = await specHelper.runAction(
-        "exportProcessors:list",
-        connection
-      );
+      const { error, exportProcessors, total } =
+        await specHelper.runAction<ExportProcessorsList>(
+          "exportProcessors:list",
+          connection
+        );
 
       expect(error).toBeUndefined();
       expect(exportProcessors.length).toBe(1);
@@ -130,10 +139,11 @@ describe("actions/exports", () => {
 
     test("a reader can ask for export processors with state pending", async () => {
       connection.params = { csrfToken, state: "pending" };
-      const { error, exportProcessors, total } = await specHelper.runAction(
-        "exportProcessors:list",
-        connection
-      );
+      const { error, exportProcessors, total } =
+        await specHelper.runAction<ExportProcessorsList>(
+          "exportProcessors:list",
+          connection
+        );
 
       expect(error).toBeUndefined();
       expect(exportProcessors.length).toBe(2);
@@ -144,10 +154,11 @@ describe("actions/exports", () => {
 
     test("a reader can ask for export processors with state failed", async () => {
       connection.params = { csrfToken, state: "failed" };
-      const { error, exportProcessors, total } = await specHelper.runAction(
-        "exportProcessors:list",
-        connection
-      );
+      const { error, exportProcessors, total } =
+        await specHelper.runAction<ExportProcessorsList>(
+          "exportProcessors:list",
+          connection
+        );
 
       expect(error).toBeUndefined();
       expect(exportProcessors.length).toBe(1);

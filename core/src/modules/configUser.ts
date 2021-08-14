@@ -7,6 +7,8 @@ import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";
 
 export namespace ConfigUser {
+  export type ConfigUserType = { email: boolean };
+
   export function localUserFilePath() {
     return path.join(getConfigDir(), "../.local/user.json");
   }
@@ -16,7 +18,7 @@ export namespace ConfigUser {
     if (!fs.existsSync(localFileDir)) {
       fs.mkdirSync(localFileDir, { recursive: true });
     }
-    const fileContent = { email: true };
+    const fileContent: ConfigUserType = { email: true };
     fs.writeFileSync(localUserFilePath(), JSON.stringify(fileContent, null, 2));
   }
 
@@ -55,6 +57,6 @@ export namespace ConfigUser {
   export async function get() {
     if (!fs.existsSync(localUserFilePath())) return null;
     const fileContent = fs.readFileSync(localUserFilePath()).toString();
-    return JSON.parse(fileContent);
+    return JSON.parse(fileContent) as ConfigUserType;
   }
 }

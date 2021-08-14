@@ -16,8 +16,8 @@ export class PublicStatus extends OptionallyAuthenticatedAction {
     this.outputExample = {};
   }
 
-  async runWithinTransaction({ response }) {
-    response.status = "ok";
+  async runWithinTransaction() {
+    return { status: "ok" };
   }
 }
 

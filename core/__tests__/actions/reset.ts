@@ -1,6 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
 import { cache, Connection, specHelper } from "actionhero";
 import { Profile, Import, Export, App, Property } from "../../src";
+import { SessionCreate, SessionView } from "../../src/actions/session";
+import { ResetCache, ResetCluster, ResetData } from "../../src/actions/reset";
 
 describe("actions/cluster", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -25,7 +27,7 @@ describe("actions/cluster", () => {
         email: "mario@example.com",
         password: "P@ssw0rd!",
       };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -39,7 +41,7 @@ describe("actions/cluster", () => {
         expect(responseA.value).toEqual({ k: "v" });
 
         connection.params = { csrfToken };
-        const { success, error } = await specHelper.runAction(
+        const { success, error } = await specHelper.runAction<ResetCache>(
           "reset:cache",
           connection
         );
@@ -57,7 +59,7 @@ describe("actions/cluster", () => {
         await helper.factories.export();
 
         connection.params = { csrfToken };
-        const { success, error } = await specHelper.runAction(
+        const { success, error } = await specHelper.runAction<ResetData>(
           "reset:data",
           connection
         );
@@ -80,10 +82,8 @@ describe("actions/cluster", () => {
         await helper.factories.profile();
 
         connection.params = { csrfToken };
-        const { success, counts, error } = await specHelper.runAction(
-          "reset:cluster",
-          connection
-        );
+        const { success, counts, error } =
+          await specHelper.runAction<ResetCluster>("reset:cluster", connection);
         expect(error).toBeFalsy();
         expect(success).toBe(true);
 
@@ -100,7 +100,7 @@ describe("actions/cluster", () => {
 
       test("the user is still signed in", async () => {
         connection.params = { csrfToken };
-        const { teamMember, error } = await specHelper.runAction(
+        const { teamMember, error } = await specHelper.runAction<SessionView>(
           "session:view",
           connection
         );

@@ -1,6 +1,15 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Team, TeamMember, Permission, Setting } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import {
+  TeamCreate,
+  TeamDestroy,
+  TeamEdit,
+  TeamInitialize,
+  TeamsList,
+  TeamView,
+} from "../../src/actions/teams";
 
 const GrouparooSubscriptionModule = require("../../src/modules/grouparooSubscription");
 GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
@@ -40,13 +49,16 @@ describe("actions/teams", () => {
           { hooks: false }
         );
 
-        const response = await specHelper.runAction("team:initialize", {
-          firstName: "Mario",
-          lastName: "Mario",
-          password: "P@ssw0rd!",
-          companyName: "Mario Bros. Plumbing",
-          email: "mario@example.com",
-        });
+        const response = await specHelper.runAction<TeamInitialize>(
+          "team:initialize",
+          {
+            firstName: "Mario",
+            lastName: "Mario",
+            password: "P@ssw0rd!",
+            companyName: "Mario Bros. Plumbing",
+            email: "mario@example.com",
+          }
+        );
 
         expect(response.team.name).toBe("Administrators");
         await clusterNameSetting.reload();
@@ -55,13 +67,16 @@ describe("actions/teams", () => {
     });
 
     test("a new team can be initialized with the first team member and the team member should be subscribed", async () => {
-      const response = await specHelper.runAction("team:initialize", {
-        firstName: "Mario",
-        lastName: "Mario",
-        password: "P@ssw0rd!",
-        companyName: "Mario Bros. Plumbing",
-        email: "mario@example.com",
-      });
+      const response = await specHelper.runAction<TeamInitialize>(
+        "team:initialize",
+        {
+          firstName: "Mario",
+          lastName: "Mario",
+          password: "P@ssw0rd!",
+          companyName: "Mario Bros. Plumbing",
+          email: "mario@example.com",
+        }
+      );
 
       expect(response.team.id.length).toBe(40);
       expect(response.team.name).toBe("Administrators");
@@ -107,7 +122,7 @@ describe("actions/teams", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -119,7 +134,7 @@ describe("actions/teams", () => {
         csrfToken,
         name: "new team",
       };
-      const { error, team } = await specHelper.runAction(
+      const { error, team } = await specHelper.runAction<TeamCreate>(
         "team:create",
         connection
       );
@@ -133,7 +148,7 @@ describe("actions/teams", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, teams } = await specHelper.runAction(
+      const { error, teams } = await specHelper.runAction<TeamsList>(
         "teams:list",
         connection
       );
@@ -147,7 +162,7 @@ describe("actions/teams", () => {
         id,
         name: "new team name",
       };
-      const { error, team } = await specHelper.runAction(
+      const { error, team } = await specHelper.runAction<TeamEdit>(
         "team:edit",
         connection
       );
@@ -169,7 +184,7 @@ describe("actions/teams", () => {
         csrfToken,
         id,
       };
-      const { error, team, teamMembers } = await specHelper.runAction(
+      const { error, team, teamMembers } = await specHelper.runAction<TeamView>(
         "team:view",
         connection
       );
@@ -185,7 +200,10 @@ describe("actions/teams", () => {
         csrfToken,
         id,
       };
-      const { team } = await specHelper.runAction("team:view", connection);
+      const { team } = await specHelper.runAction<TeamView>(
+        "team:view",
+        connection
+      );
       team.permissions.forEach((permission) => {
         expect(permission.read).toBe(true);
         expect(permission.write).toBe(false);
@@ -199,7 +217,10 @@ describe("actions/teams", () => {
         permissionAllRead: true,
         permissionAllWrite: true,
       };
-      const { team } = await specHelper.runAction("team:edit", connection);
+      const { team } = await specHelper.runAction<TeamEdit>(
+        "team:edit",
+        connection
+      );
       team.permissions.forEach((_permission) => {
         expect(_permission.read).toBe(true);
         expect(_permission.write).toBe(true);
@@ -211,7 +232,7 @@ describe("actions/teams", () => {
         permissionAllRead: true,
         permissionAllWrite: false,
       };
-      const { team: teamAgain } = await specHelper.runAction(
+      const { team: teamAgain } = await specHelper.runAction<TeamEdit>(
         "team:edit",
         connection
       );
@@ -229,7 +250,10 @@ describe("actions/teams", () => {
         permissionAllWrite: null,
         permissions: [{ topic: "app", read: true, write: true }],
       };
-      const { team } = await specHelper.runAction("team:edit", connection);
+      const { team } = await specHelper.runAction<TeamEdit>(
+        "team:edit",
+        connection
+      );
       team.permissions.forEach((_permission) => {
         if (_permission.topic === "app") {
           expect(_permission.read).toBe(true);
@@ -246,7 +270,7 @@ describe("actions/teams", () => {
         csrfToken,
         name: "doomed team",
       };
-      const { error, team } = await specHelper.runAction(
+      const { error, team } = await specHelper.runAction<TeamCreate>(
         "team:create",
         connection
       );
@@ -256,7 +280,7 @@ describe("actions/teams", () => {
         csrfToken,
         id: team.id,
       };
-      const destroyResponse = await specHelper.runAction(
+      const destroyResponse = await specHelper.runAction<TeamDestroy>(
         "team:destroy",
         connection
       );
@@ -269,7 +293,7 @@ describe("actions/teams", () => {
         csrfToken,
         name: "doomed team",
       };
-      const { error, team } = await specHelper.runAction(
+      const { error, team } = await specHelper.runAction<TeamCreate>(
         "team:create",
         connection
       );
@@ -287,7 +311,7 @@ describe("actions/teams", () => {
         csrfToken,
         id: team.id,
       };
-      const destroyResponse = await specHelper.runAction(
+      const destroyResponse = await specHelper.runAction<TeamDestroy>(
         "team:destroy",
         connection
       );
@@ -306,7 +330,7 @@ describe("actions/teams", () => {
         csrfToken,
         id: adminTeam.id,
       };
-      const destroyResponse = await specHelper.runAction(
+      const destroyResponse = await specHelper.runAction<TeamDestroy>(
         "team:destroy",
         connection
       );
@@ -336,7 +360,7 @@ describe("actions/teams", () => {
         email: "wario@example.com",
         password: "moneymoney",
       };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -348,7 +372,7 @@ describe("actions/teams", () => {
         csrfToken,
         id,
       };
-      const { error, team, teamMembers } = await specHelper.runAction(
+      const { error, team, teamMembers } = await specHelper.runAction<TeamView>(
         "team:view",
         connection
       );
@@ -366,7 +390,10 @@ describe("actions/teams", () => {
         csrfToken,
         name: "team wario",
       };
-      const { error } = await specHelper.runAction("team:create", connection);
+      const { error } = await specHelper.runAction<TeamCreate>(
+        "team:create",
+        connection
+      );
       expect(error.code).toEqual("AUTHORIZATION_ERROR");
     });
 
@@ -376,7 +403,10 @@ describe("actions/teams", () => {
         id,
         name: "team wario",
       };
-      const { error } = await specHelper.runAction("team:edit", connection);
+      const { error } = await specHelper.runAction<TeamEdit>(
+        "team:edit",
+        connection
+      );
       expect(error.code).toEqual("AUTHORIZATION_ERROR");
     });
 
@@ -385,7 +415,10 @@ describe("actions/teams", () => {
         csrfToken,
         id,
       };
-      const { error } = await specHelper.runAction("team:destroy", connection);
+      const { error } = await specHelper.runAction<TeamDestroy>(
+        "team:destroy",
+        connection
+      );
       expect(error.code).toEqual("AUTHORIZATION_ERROR");
     });
   });

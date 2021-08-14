@@ -1,6 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Connection, specHelper } from "actionhero";
 import { Group, Team, TeamMember } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import { TotalsAction } from "../../src/actions/totals";
 
 describe("actions/totals", () => {
   helper.grouparooTestServer({ truncate: true });
@@ -35,7 +37,7 @@ describe("actions/totals", () => {
   beforeAll(async () => {
     connection = await specHelper.buildConnection();
     connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-    const sessionResponse = await specHelper.runAction(
+    const sessionResponse = await specHelper.runAction<SessionCreate>(
       "session:create",
       connection
     );
@@ -44,7 +46,10 @@ describe("actions/totals", () => {
 
   test("total counts for all models can be returned", async () => {
     connection.params = { csrfToken, model: "Team" };
-    const { error, total } = await specHelper.runAction("totals", connection);
+    const { error, total } = await specHelper.runAction<TotalsAction>(
+      "totals",
+      connection
+    );
     expect(error).toBeUndefined();
     expect(total).toBe(2);
   });
@@ -60,7 +65,10 @@ describe("actions/totals", () => {
     );
 
     connection.params = { csrfToken, model: "Team" };
-    const { error, rolling } = await specHelper.runAction("totals", connection);
+    const { error, rolling } = await specHelper.runAction<TotalsAction>(
+      "totals",
+      connection
+    );
     expect(error).toBeUndefined();
 
     expect(rolling.length).toBe(31);

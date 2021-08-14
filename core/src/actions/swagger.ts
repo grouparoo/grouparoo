@@ -110,7 +110,12 @@ export class Swagger extends Action {
                 };
               }),
             responses,
-            security: [],
+            security: action["permission"]
+              ? [
+                  { GrouparooCSRFTokenAndSessionCookie: [] },
+                  { GrouparooAPIKey: [] },
+                ]
+              : [],
           };
 
           if (!tags.includes(tag)) {
@@ -147,7 +152,16 @@ export class Swagger extends Action {
       paths: swaggerPaths,
 
       securityDefinitions: {
-        // TODO (custom)?
+        GrouparooAPIKey: {
+          type: "apiKey",
+          name: "apiKey",
+          in: "query",
+        },
+        GrouparooCSRFTokenAndSessionCookie: {
+          type: "apiKey",
+          name: "csrfToken",
+          in: "query",
+        },
       },
       externalDocs: {
         description: "Learn more about Grouparoo",

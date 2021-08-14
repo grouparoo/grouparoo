@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
+import { ConfigUserCreate } from "../../src/actions/config";
 import os from "os";
 
 const workerId = process.env.JEST_WORKER_ID;
@@ -43,7 +44,7 @@ describe("actions/config", () => {
   });
 
   test("does not throw an error in config mode", async () => {
-    const { error, user } = await specHelper.runAction(
+    const { error, user } = await specHelper.runAction<ConfigUserCreate>(
       "config:user:create",
       connection
     );

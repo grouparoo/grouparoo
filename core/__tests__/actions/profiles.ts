@@ -1,6 +1,18 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
+import { AsyncReturnType } from "type-fest";
 import { Profile, Group, Team, TeamMember, Property, Run } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import {
+  ProfileAutocompleteProfileProperty,
+  ProfileCreate,
+  ProfileDestroy,
+  ProfileEdit,
+  ProfilesImportAndUpdate,
+  ProfilesList,
+  ProfileView,
+} from "../../src/actions/profiles";
+import { GroupAddProfile, GroupRemoveProfile } from "../../src/actions/groups";
 import { ConfigWriter } from "../../src/modules/configWriter";
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
@@ -39,7 +51,7 @@ describe("actions/profiles", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -56,7 +68,7 @@ describe("actions/profiles", () => {
           lastName: "Mario",
         },
       };
-      const { error, profile } = await specHelper.runAction(
+      const { error, profile } = await specHelper.runAction<ProfileCreate>(
         "profile:create",
         connection
       );
@@ -95,10 +107,8 @@ describe("actions/profiles", () => {
         },
       };
 
-      const { profile: profileData } = await specHelper.runAction(
-        "profile:create",
-        connection
-      );
+      const { profile: profileData } =
+        await specHelper.runAction<ProfileCreate>("profile:create", connection);
 
       expect(mockedConfigWriterRun).toHaveBeenCalledTimes(1);
 
@@ -112,7 +122,7 @@ describe("actions/profiles", () => {
         id,
         properties: { userId: 999 },
       };
-      const { error, profile } = await specHelper.runAction(
+      const { error, profile } = await specHelper.runAction<ProfileEdit>(
         "profile:edit",
         connection
       );
@@ -128,7 +138,7 @@ describe("actions/profiles", () => {
           ltv: 123.45,
         },
       };
-      const { error, profile } = await specHelper.runAction(
+      const { error, profile } = await specHelper.runAction<ProfileEdit>(
         "profile:edit",
         connection
       );
@@ -154,7 +164,7 @@ describe("actions/profiles", () => {
         id,
         removedProperties: ["ltv"],
       };
-      const { error, profile } = await specHelper.runAction(
+      const { error, profile } = await specHelper.runAction<ProfileEdit>(
         "profile:edit",
         connection
       );
@@ -178,10 +188,8 @@ describe("actions/profiles", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, profiles, total } = await specHelper.runAction(
-        "profiles:list",
-        connection
-      );
+      const { error, profiles, total } =
+        await specHelper.runAction<ProfilesList>("profiles:list", connection);
       expect(error).toBeUndefined();
       expect(profiles.length).toBe(1);
       expect(simpleProfileValues(profiles[0].properties).userId).toEqual([999]);
@@ -194,7 +202,7 @@ describe("actions/profiles", () => {
         state: "pending",
       };
       const { profiles: pendingProfiles, total: pendingTotal } =
-        await specHelper.runAction("profiles:list", connection);
+        await specHelper.runAction<ProfilesList>("profiles:list", connection);
       expect(pendingProfiles.length).toBe(0);
       expect(pendingTotal).toBe(0);
 
@@ -203,7 +211,7 @@ describe("actions/profiles", () => {
         state: "ready",
       };
       const { profiles: readyProfiles, total: readyTotal } =
-        await specHelper.runAction("profiles:list", connection);
+        await specHelper.runAction<ProfilesList>("profiles:list", connection);
       expect(readyProfiles.length).toBe(1);
       expect(readyTotal).toBe(1);
     });
@@ -218,10 +226,11 @@ describe("actions/profiles", () => {
         propertyId: emailProperty.id,
         match: "@example.com",
       };
-      const { error, profileProperties } = await specHelper.runAction(
-        "profiles:autocompleteProfileProperty",
-        connection
-      );
+      const { error, profileProperties } =
+        await specHelper.runAction<ProfileAutocompleteProfileProperty>(
+          "profiles:autocompleteProfileProperty",
+          connection
+        );
 
       expect(error).toBeUndefined();
       expect(profileProperties).toEqual(["luigi@example.com"]);
@@ -231,10 +240,11 @@ describe("actions/profiles", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, run } = await specHelper.runAction(
-        "profiles:importAndUpdate",
-        connection
-      );
+      const { error, run } =
+        await specHelper.runAction<ProfilesImportAndUpdate>(
+          "profiles:importAndUpdate",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(run.id).toBeTruthy();
 
@@ -249,7 +259,7 @@ describe("actions/profiles", () => {
         csrfToken,
         id,
       };
-      const { error, success } = await specHelper.runAction(
+      const { error, success } = await specHelper.runAction<ProfileDestroy>(
         "profile:destroy",
         connection
       );
@@ -266,7 +276,7 @@ describe("actions/profiles", () => {
         id: profile.id,
       };
 
-      const { success } = await specHelper.runAction(
+      const { success } = await specHelper.runAction<ProfileDestroy>(
         "profile:destroy",
         connection
       );
@@ -303,7 +313,7 @@ describe("actions/profiles", () => {
           id: group.id,
           profileId: profile.id,
         };
-        const { error, success } = await specHelper.runAction(
+        const { error, success } = await specHelper.runAction<GroupAddProfile>(
           "group:addProfile",
           connection
         );
@@ -323,7 +333,7 @@ describe("actions/profiles", () => {
           id: calculatedGroup.id,
           profileId: profile.id,
         };
-        const { error } = await specHelper.runAction(
+        const { error } = await specHelper.runAction<GroupAddProfile>(
           "group:addProfile",
           connection
         );
@@ -338,7 +348,7 @@ describe("actions/profiles", () => {
           csrfToken,
           id: profile.id,
         };
-        const { error, groups } = await specHelper.runAction(
+        const { error, groups } = await specHelper.runAction<ProfileView>(
           "profile:view",
           connection
         );
@@ -353,10 +363,8 @@ describe("actions/profiles", () => {
           csrfToken,
           groupId: group.id,
         };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
 
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(1);
@@ -369,10 +377,11 @@ describe("actions/profiles", () => {
           id: group.id,
           profileId: profile.id,
         };
-        const { error, success } = await specHelper.runAction(
-          "group:removeProfile",
-          connection
-        );
+        const { error, success } =
+          await specHelper.runAction<GroupRemoveProfile>(
+            "group:removeProfile",
+            connection
+          );
         expect(error).toBeUndefined();
         expect(success).toBeTruthy();
 
@@ -380,20 +389,18 @@ describe("actions/profiles", () => {
           csrfToken,
           id: profile.id,
         };
-        const { error: removeError, groups } = await specHelper.runAction(
-          "profile:view",
-          connection
-        );
+        const { error: removeError, groups } =
+          await specHelper.runAction<ProfileView>("profile:view", connection);
         expect(removeError).toBeUndefined();
         expect(groups.length).toBe(0);
       });
     });
 
     describe("search", () => {
-      let mario: Profile;
-      let luigi: Profile;
-      let peach: Profile;
-      let toad: Profile;
+      let mario: AsyncReturnType<ProfileCreate["run"]>["profile"];
+      let luigi: AsyncReturnType<ProfileCreate["run"]>["profile"];
+      let peach: AsyncReturnType<ProfileCreate["run"]>["profile"];
+      let toad: AsyncReturnType<ProfileCreate["run"]>["profile"];
       let group: Group;
 
       beforeAll(async () => {
@@ -411,28 +418,40 @@ describe("actions/profiles", () => {
           csrfToken,
           properties: { email: "mario@example.com", userId: 1 },
         };
-        let response = await specHelper.runAction("profile:create", connection);
+        let response = await specHelper.runAction<ProfileCreate>(
+          "profile:create",
+          connection
+        );
         mario = response.profile;
 
         connection.params = {
           csrfToken,
           properties: { email: "luigi@example.com", userId: 2 },
         };
-        response = await specHelper.runAction("profile:create", connection);
+        response = await specHelper.runAction<ProfileCreate>(
+          "profile:create",
+          connection
+        );
         luigi = response.profile;
 
         connection.params = {
           csrfToken,
           properties: { email: "toad@mushroom-kingdom.gov", userId: 3 },
         };
-        response = await specHelper.runAction("profile:create", connection);
+        response = await specHelper.runAction<ProfileCreate>(
+          "profile:create",
+          connection
+        );
         toad = response.profile;
 
         connection.params = {
           csrfToken,
           properties: { email: "peach@mushroom-kingdom.gov", userId: 4 },
         };
-        response = await specHelper.runAction("profile:create", connection);
+        response = await specHelper.runAction<ProfileCreate>(
+          "profile:create",
+          connection
+        );
         peach = response.profile;
 
         connection.params = {
@@ -469,10 +488,8 @@ describe("actions/profiles", () => {
         connection.params = {
           csrfToken,
         };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(4);
         expect(simpleProfileValues(profiles[0].properties).email).toEqual([
@@ -499,10 +516,8 @@ describe("actions/profiles", () => {
           csrfToken,
           groupId: group.id,
         };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(2);
         expect(simpleProfileValues(profiles[0].properties).email).toEqual([
@@ -522,10 +537,8 @@ describe("actions/profiles", () => {
           searchKey: "email",
           searchValue: "peach@mushroom-kingdom.gov",
         };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(1);
         expect(simpleProfileValues(profiles[0].properties).email).toEqual([
@@ -542,10 +555,8 @@ describe("actions/profiles", () => {
           searchValue: "PEACH@MushRoom-kingdom.gov",
           caseSensitive: false,
         };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(1);
         expect(simpleProfileValues(profiles[0].properties).email).toEqual([
@@ -560,10 +571,8 @@ describe("actions/profiles", () => {
           searchValue: "PEACH@MushRoom-kingdom.gov",
           caseSensitive: true,
         };
-        const { total: caseSensitiveTotal } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { total: caseSensitiveTotal } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(caseSensitiveTotal).toBe(0);
       });
 
@@ -574,10 +583,8 @@ describe("actions/profiles", () => {
           searchKey: "email",
           searchValue: "peach@mushroom-kingdom.gov",
         };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(1);
         expect(simpleProfileValues(profiles[0].properties).email).toEqual([
@@ -595,10 +602,8 @@ describe("actions/profiles", () => {
           searchValue: "PEACH@MUSHroom-kingdom.gov",
           caseSensitive: false,
         };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(1);
         expect(simpleProfileValues(profiles[0].properties).email).toEqual([
@@ -614,10 +619,8 @@ describe("actions/profiles", () => {
           searchValue: "PEACH@MushRoom-kingdom.gov",
           caseSensitive: true,
         };
-        const { total: caseSensitiveTotal } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { total: caseSensitiveTotal } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(caseSensitiveTotal).toBe(0);
       });
 
@@ -627,10 +630,8 @@ describe("actions/profiles", () => {
           searchKey: "email",
           searchValue: "%@mushroom-kingdom.gov",
         };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(2);
         expect(total).toBe(2);
@@ -643,10 +644,8 @@ describe("actions/profiles", () => {
           searchValue: "%@MuShRoom-kingdom.GOV",
           caseSensitive: false,
         };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(2);
         expect(total).toBe(2);
@@ -659,10 +658,8 @@ describe("actions/profiles", () => {
           searchKey: "email",
           searchValue: "%@mushroom-kingdom.gov",
         };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(1);
         expect(simpleProfileValues(profiles[0].properties).email).toEqual([
@@ -676,10 +673,8 @@ describe("actions/profiles", () => {
         const profile = await helper.factories.profile();
 
         connection.params = { csrfToken };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(5);
         expect(total).toBe(5);
@@ -693,10 +688,8 @@ describe("actions/profiles", () => {
           searchKey: "ltv",
           searchValue: "null",
         };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(4);
         expect(total).toBe(4);
@@ -708,10 +701,8 @@ describe("actions/profiles", () => {
           searchKey: "email",
           searchValue: "*",
         };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(0);
         expect(total).toBe(0);
@@ -723,10 +714,8 @@ describe("actions/profiles", () => {
           searchKey: "ltv",
           searchValue: "*",
         };
-        const { error, profiles, total } = await specHelper.runAction(
-          "profiles:list",
-          connection
-        );
+        const { error, profiles, total } =
+          await specHelper.runAction<ProfilesList>("profiles:list", connection);
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(0);
         expect(total).toBe(0);
@@ -765,7 +754,7 @@ describe("actions/profiles", () => {
 
       connection = await specHelper.buildConnection();
       connection.params = { email: "luigi@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -787,7 +776,7 @@ describe("actions/profiles", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, profiles } = await specHelper.runAction(
+      const { error, profiles } = await specHelper.runAction<ProfilesList>(
         "profiles:list",
         connection
       );
@@ -800,7 +789,10 @@ describe("actions/profiles", () => {
         csrfToken,
         id,
       };
-      const { error } = await specHelper.runAction("profile:edit", connection);
+      const { error } = await specHelper.runAction<ProfileEdit>(
+        "profile:edit",
+        connection
+      );
       expect(error.code).toBe("AUTHORIZATION_ERROR");
     });
 
@@ -809,7 +801,7 @@ describe("actions/profiles", () => {
         csrfToken,
         id,
       };
-      const { error, profile } = await specHelper.runAction(
+      const { error, profile } = await specHelper.runAction<ProfileView>(
         "profile:view",
         connection
       );

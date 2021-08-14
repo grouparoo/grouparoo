@@ -3,6 +3,14 @@ import { getParentPath } from "../../src/utils/pluginDetails";
 import { specHelper } from "actionhero";
 import fs from "fs-extra";
 import path from "path";
+import { SessionCreate } from "../../src/actions/session";
+import {
+  FileCreate,
+  FileDestroy,
+  FileDetails,
+  FileOptions,
+  FilesList,
+} from "../../src/actions/files";
 
 describe("actions/files", () => {
   helper.grouparooTestServer({ truncate: true });
@@ -24,7 +32,7 @@ describe("actions/files", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -53,7 +61,7 @@ describe("actions/files", () => {
 
     test("file type can be retrieved", async () => {
       connection.params = { csrfToken };
-      const { error, options } = await specHelper.runAction(
+      const { error, options } = await specHelper.runAction<FileOptions>(
         "files:options",
         connection
       );
@@ -76,7 +84,7 @@ describe("actions/files", () => {
         // Note: This object emulates formidible's parsing response after an upload to the web server
         _file: { name: "logo.svg", path: "/tmp/logo.svg" },
       };
-      const { error, file } = await specHelper.runAction(
+      const { error, file } = await specHelper.runAction<FileCreate>(
         "file:create",
         connection
       );
@@ -104,7 +112,7 @@ describe("actions/files", () => {
         csrfToken,
         type: "image",
       };
-      const { error, files, total } = await specHelper.runAction(
+      const { error, files, total } = await specHelper.runAction<FilesList>(
         "files:list",
         connection
       );
@@ -119,7 +127,7 @@ describe("actions/files", () => {
         csrfToken,
         id,
       };
-      const { error, file } = await specHelper.runAction(
+      const { error, file } = await specHelper.runAction<FileDetails>(
         "file:details",
         connection
       );
@@ -146,14 +154,20 @@ describe("actions/files", () => {
         csrfToken,
         id,
       };
-      const { error } = await specHelper.runAction("file:destroy", connection);
+      const { error } = await specHelper.runAction<FileDestroy>(
+        "file:destroy",
+        connection
+      );
       expect(error).toBeUndefined();
 
       connection.params = {
         csrfToken,
         type: "image",
       };
-      const { files } = await specHelper.runAction("files:list", connection);
+      const { files } = await specHelper.runAction<FilesList>(
+        "files:list",
+        connection
+      );
       expect(files.length).toBe(0);
     });
   });

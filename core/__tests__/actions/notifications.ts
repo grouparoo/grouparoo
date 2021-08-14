@@ -1,6 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Notification } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import {
+  NotificationsList,
+  NotificationView,
+} from "../../src/actions/notifications";
 
 describe("actions/notifications", () => {
   helper.grouparooTestServer({ truncate: true });
@@ -27,7 +32,7 @@ describe("actions/notifications", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -37,7 +42,10 @@ describe("actions/notifications", () => {
     test("a reader can view notifications", async () => {
       connection.params = { csrfToken };
       const { error, notifications, total, unreadCount } =
-        await specHelper.runAction("notifications:list", connection);
+        await specHelper.runAction<NotificationsList>(
+          "notifications:list",
+          connection
+        );
 
       expect(error).toBeUndefined();
       expect(notifications.length).toBe(3);
@@ -49,10 +57,11 @@ describe("actions/notifications", () => {
       const notificationObject = await Notification.findOne();
 
       connection.params = { csrfToken, id: notificationObject.id };
-      const { error, notification } = await specHelper.runAction(
-        "notification:view",
-        connection
-      );
+      const { error, notification } =
+        await specHelper.runAction<NotificationView>(
+          "notification:view",
+          connection
+        );
 
       expect(error).toBeUndefined();
       expect(notification.from).toBeTruthy();

@@ -1,6 +1,14 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { ApiKey, Permission } from "../../src";
+import { ApiKey } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import {
+  ApiKeyCreate,
+  ApiKeyDestroy,
+  ApiKeyEdit,
+  ApiKeysList,
+  ApiKeyView,
+} from "../../src/actions/apiKeys";
 
 describe("actions/apiKeys", () => {
   helper.grouparooTestServer({ truncate: true });
@@ -22,7 +30,7 @@ describe("actions/apiKeys", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -34,7 +42,7 @@ describe("actions/apiKeys", () => {
         csrfToken,
         name: "new key",
       };
-      const { error, apiKey } = await specHelper.runAction(
+      const { error, apiKey } = await specHelper.runAction<ApiKeyCreate>(
         "apiKey:create",
         connection
       );
@@ -48,7 +56,7 @@ describe("actions/apiKeys", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, apiKeys } = await specHelper.runAction(
+      const { error, apiKeys } = await specHelper.runAction<ApiKeysList>(
         "apiKeys:list",
         connection
       );
@@ -62,7 +70,7 @@ describe("actions/apiKeys", () => {
         id,
         name: "new key name",
       };
-      const { error, apiKey } = await specHelper.runAction(
+      const { error, apiKey } = await specHelper.runAction<ApiKeyEdit>(
         "apiKey:edit",
         connection
       );
@@ -76,7 +84,7 @@ describe("actions/apiKeys", () => {
         csrfToken,
         id,
       };
-      const { error, apiKey } = await specHelper.runAction(
+      const { error, apiKey } = await specHelper.runAction<ApiKeyView>(
         "apiKey:view",
         connection
       );
@@ -90,7 +98,10 @@ describe("actions/apiKeys", () => {
         csrfToken,
         id,
       };
-      const { apiKey } = await specHelper.runAction("apiKey:view", connection);
+      const { apiKey } = await specHelper.runAction<ApiKeyView>(
+        "apiKey:view",
+        connection
+      );
       apiKey.permissions.forEach((permission) => {
         expect(permission.read).toBe(false);
         expect(permission.write).toBe(false);
@@ -117,7 +128,10 @@ describe("actions/apiKeys", () => {
         permissionAllRead: true,
         permissionAllWrite: true,
       };
-      const { apiKey } = await specHelper.runAction("apiKey:edit", connection);
+      const { apiKey } = await specHelper.runAction<ApiKeyEdit>(
+        "apiKey:edit",
+        connection
+      );
       apiKey.permissions.forEach((_permission) => {
         expect(_permission.read).toBe(true);
         expect(_permission.write).toBe(true);
@@ -129,7 +143,7 @@ describe("actions/apiKeys", () => {
         permissionAllRead: true,
         permissionAllWrite: false,
       };
-      const { apiKey: apiKeyAgain } = await specHelper.runAction(
+      const { apiKey: apiKeyAgain } = await specHelper.runAction<ApiKeyEdit>(
         "apiKey:edit",
         connection
       );
@@ -147,7 +161,10 @@ describe("actions/apiKeys", () => {
         permissionAllWrite: null,
         permissions: [{ topic: "app", read: true, write: true }],
       };
-      const { apiKey } = await specHelper.runAction("apiKey:edit", connection);
+      const { apiKey } = await specHelper.runAction<ApiKeyEdit>(
+        "apiKey:edit",
+        connection
+      );
       apiKey.permissions.forEach((_permission) => {
         if (_permission.topic === "app") {
           expect(_permission.read).toBe(true);
@@ -164,7 +181,7 @@ describe("actions/apiKeys", () => {
         csrfToken,
         name: "doomed apiKey",
       };
-      const { error, apiKey } = await specHelper.runAction(
+      const { error, apiKey } = await specHelper.runAction<ApiKeyCreate>(
         "apiKey:create",
         connection
       );
@@ -174,7 +191,7 @@ describe("actions/apiKeys", () => {
         csrfToken,
         id: apiKey.id,
       };
-      const destroyResponse = await specHelper.runAction(
+      const destroyResponse = await specHelper.runAction<ApiKeyDestroy>(
         "apiKey:destroy",
         connection
       );

@@ -1,13 +1,14 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
+import { NavigationList } from "../../src/actions/navigation";
+import { SessionCreate } from "../../src/actions/session";
 
 describe("actions/navigation", () => {
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
 
   test("returns index and about pages", async () => {
-    const { navigation, navigationMode } = await specHelper.runAction(
-      "navigation:list"
-    );
+    const { navigation, navigationMode } =
+      await specHelper.runAction<NavigationList>("navigation:list");
 
     expect(navigationMode).toBe("unauthenticated");
 
@@ -23,7 +24,9 @@ describe("actions/navigation", () => {
   });
 
   test("the navigation action includes the clusterName", async () => {
-    const { clusterName } = await specHelper.runAction("navigation:list");
+    const { clusterName } = await specHelper.runAction<NavigationList>(
+      "navigation:list"
+    );
     expect(clusterName).toEqual(
       expect.objectContaining({ default: true, value: "My Grouparoo Cluster" })
     );
@@ -40,7 +43,9 @@ describe("actions/navigation", () => {
     });
 
     test("the navigation action does not include the teamMember if not logged in", async () => {
-      const { teamMember } = await specHelper.runAction("navigation:list");
+      const { teamMember } = await specHelper.runAction<NavigationList>(
+        "navigation:list"
+      );
       expect(teamMember).toBeUndefined();
     });
 
@@ -50,14 +55,14 @@ describe("actions/navigation", () => {
         email: "peach@example.com",
         password: "P@ssw0rd!",
       };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
       const csrfToken = sessionResponse.csrfToken;
       connection.params = { csrfToken };
 
-      const { teamMember } = await specHelper.runAction(
+      const { teamMember } = await specHelper.runAction<NavigationList>(
         "navigation:list",
         connection
       );
