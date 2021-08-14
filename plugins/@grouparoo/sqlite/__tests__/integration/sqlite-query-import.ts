@@ -6,6 +6,14 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import { Property } from "@grouparoo/core";
+import { SessionCreate } from "@grouparoo/core/src/actions/session";
+import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
+import { SourceCreate } from "@grouparoo/core/src/actions/sources";
+import {
+  PropertyCreate,
+  PropertyEdit,
+} from "@grouparoo/core/src/actions/properties";
+
 import { beforeData, afterData, getConfig } from "../utils/data";
 
 const { appOptions, usersTableName } = getConfig();
@@ -37,7 +45,7 @@ describe("integration/runs/sqlite", () => {
     // sign in
     session = await specHelper.buildConnection();
     session.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-    const sessionResponse = await specHelper.runAction(
+    const sessionResponse = await specHelper.runAction<SessionCreate>(
       "session:create",
       session
     );
@@ -52,7 +60,10 @@ describe("integration/runs/sqlite", () => {
       options: appOptions,
       state: "ready",
     };
-    const appResponse = await specHelper.runAction("app:create", session);
+    const appResponse = await specHelper.runAction<AppCreate>(
+      "app:create",
+      session
+    );
     expect(appResponse.error).toBeUndefined();
     app = appResponse.app;
 
@@ -64,7 +75,10 @@ describe("integration/runs/sqlite", () => {
       appId: app.id,
       state: "ready",
     };
-    const sourceResponse = await specHelper.runAction("source:create", session);
+    const sourceResponse = await specHelper.runAction<SourceCreate>(
+      "source:create",
+      session
+    );
     expect(sourceResponse.error).toBeUndefined();
     source = sourceResponse.source;
   });
@@ -74,7 +88,10 @@ describe("integration/runs/sqlite", () => {
       csrfToken,
       id: app.id,
     };
-    const { error, test } = await specHelper.runAction("app:test", session);
+    const { error, test } = await specHelper.runAction<AppTest>(
+      "app:test",
+      session
+    );
     expect(error).toBeUndefined();
     expect(test.success).toBe(true);
     expect(test.error).toBeUndefined();
@@ -94,10 +111,8 @@ describe("integration/runs/sqlite", () => {
       unique: true,
     };
 
-    const { error, property, pluginOptions } = await specHelper.runAction(
-      "property:create",
-      session
-    );
+    const { error, property, pluginOptions } =
+      await specHelper.runAction<PropertyCreate>("property:create", session);
     expect(error).toBeUndefined();
     expect(property.id).toBeTruthy();
 
@@ -114,7 +129,7 @@ describe("integration/runs/sqlite", () => {
       },
       state: "ready",
     };
-    const { error: editError } = await specHelper.runAction(
+    const { error: editError } = await specHelper.runAction<PropertyEdit>(
       "property:edit",
       session
     );

@@ -4,15 +4,23 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
+import { AsyncReturnType } from "type-fest";
 import { api, specHelper } from "actionhero";
 import {
   Profile,
-  App,
-  Destination,
   Group,
   SimpleDestinationOptions,
   SimpleAppOptions,
 } from "@grouparoo/core";
+import { SessionCreate } from "@grouparoo/core/src/actions/session";
+import { AppCreate, AppTest, AppView } from "@grouparoo/core/src/actions/apps";
+import {
+  DestinationConnectionOptions,
+  DestinationCreate,
+  DestinationEdit,
+  DestinationMappingOptions,
+  DestinationView,
+} from "@grouparoo/core/src/actions/destinations";
 import { generateMailchimpId } from "./../../src/lib/shared/generateMailchimpId";
 import { connect } from "./../../src/lib/connect";
 import {
@@ -74,9 +82,9 @@ async function cleanUp() {
 describe("integration/runs/mailchimp-export", () => {
   let session;
   let csrfToken: string;
-  let app: App;
+  let app: AsyncReturnType<AppView["run"]>["app"];
   let profile: Profile;
-  let destination: Destination;
+  let destination: AsyncReturnType<DestinationView["run"]>["destination"];
   let group: Group;
 
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -128,7 +136,7 @@ describe("integration/runs/mailchimp-export", () => {
     // sign in
     session = await specHelper.buildConnection();
     session.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-    const sessionResponse = await specHelper.runAction(
+    const sessionResponse = await specHelper.runAction<SessionCreate>(
       "session:create",
       session
     );
@@ -143,7 +151,10 @@ describe("integration/runs/mailchimp-export", () => {
       options: appOptions,
       state: "ready",
     };
-    const appResponse = await specHelper.runAction("app:create", session);
+    const appResponse = await specHelper.runAction<AppCreate>(
+      "app:create",
+      session
+    );
     expect(appResponse.error).toBeUndefined();
     app = appResponse.app;
 
@@ -162,10 +173,11 @@ describe("integration/runs/mailchimp-export", () => {
       },
       state: "ready",
     };
-    const buildDestinationResponse = await specHelper.runAction(
-      "destination:create",
-      session
-    );
+    const buildDestinationResponse =
+      await specHelper.runAction<DestinationCreate>(
+        "destination:create",
+        session
+      );
     expect(buildDestinationResponse.error).toBeUndefined();
     expect(buildDestinationResponse.destination.id).toBeTruthy();
     expect(buildDestinationResponse.destination.name).toBe("test destination");
@@ -177,7 +189,10 @@ describe("integration/runs/mailchimp-export", () => {
       csrfToken,
       id: app.id,
     };
-    const { error, test } = await specHelper.runAction("app:test", session);
+    const { error, test } = await specHelper.runAction<AppTest>(
+      "app:test",
+      session
+    );
     expect(error).toBeUndefined();
     expect(test.success).toBe(true);
     expect(test.error).toBeUndefined();
@@ -188,10 +203,11 @@ describe("integration/runs/mailchimp-export", () => {
       csrfToken,
       id: destination.id,
     };
-    const { error, options } = await specHelper.runAction(
-      "destination:connectionOptions",
-      session
-    );
+    const { error, options } =
+      await specHelper.runAction<DestinationConnectionOptions>(
+        "destination:connectionOptions",
+        session
+      );
     expect(error).toBeUndefined();
 
     const listId = options.listId;
@@ -205,10 +221,11 @@ describe("integration/runs/mailchimp-export", () => {
       csrfToken,
       id: destination.id,
     };
-    const { error, options } = await specHelper.runAction(
-      "destination:mappingOptions",
-      session
-    );
+    const { error, options } =
+      await specHelper.runAction<DestinationMappingOptions>(
+        "destination:mappingOptions",
+        session
+      );
     expect(error).toBeUndefined();
     const { labels, properties } = options;
     expect(labels).toEqual({
@@ -254,10 +271,8 @@ describe("integration/runs/mailchimp-export", () => {
       destinationGroupMemberships,
       trackedGroupId: group.id,
     };
-    const { error, destination: _destination } = await specHelper.runAction(
-      "destination:edit",
-      session
-    );
+    const { error, destination: _destination } =
+      await specHelper.runAction<DestinationEdit>("destination:edit", session);
     expect(error).toBeUndefined();
     expect(_destination.destinationGroup.id).toBe(group.id);
     expect(_destination.destinationGroupMemberships).toEqual([

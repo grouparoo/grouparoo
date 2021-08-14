@@ -7,6 +7,27 @@ import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { beforeData, afterData, getConfig } from "../utils/data";
 import { api, specHelper } from "actionhero";
 import { Profile, ProfileProperty, Run } from "@grouparoo/core";
+import { SessionCreate } from "@grouparoo/core/src/actions/session";
+import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
+import {
+  SourceBootstrapUniqueProperty,
+  SourceCreate,
+  SourceEdit,
+  SourcePreview,
+} from "@grouparoo/core/src/actions/sources";
+import {
+  PropertyCreate,
+  PropertyEdit,
+} from "@grouparoo/core/src/actions/properties";
+import {
+  ScheduleCreate,
+  ScheduleRun,
+} from "@grouparoo/core/src/actions/schedules";
+import {
+  DestinationCreate,
+  DestinationEdit,
+  DestinationMappingOptions,
+} from "@grouparoo/core/src/actions/destinations";
 
 const {
   appOptions,
@@ -44,7 +65,7 @@ describe("integration/runs/postgres", () => {
     // sign in
     session = await specHelper.buildConnection();
     session.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-    const sessionResponse = await specHelper.runAction(
+    const sessionResponse = await specHelper.runAction<SessionCreate>(
       "session:create",
       session
     );
@@ -59,7 +80,10 @@ describe("integration/runs/postgres", () => {
       options: appOptions,
       state: "ready",
     };
-    const appResponse = await specHelper.runAction("app:create", session);
+    const appResponse = await specHelper.runAction<AppCreate>(
+      "app:create",
+      session
+    );
     expect(appResponse.error).toBeUndefined();
     app = appResponse.app;
 
@@ -73,7 +97,10 @@ describe("integration/runs/postgres", () => {
       // mapping: { id: "userId" },
       // state: "ready",
     };
-    const sourceResponse = await specHelper.runAction("source:create", session);
+    const sourceResponse = await specHelper.runAction<SourceCreate>(
+      "source:create",
+      session
+    );
     expect(sourceResponse.error).toBeUndefined();
     source = sourceResponse.source;
 
@@ -85,10 +112,11 @@ describe("integration/runs/postgres", () => {
       type: "integer",
       mappedColumn: "id",
     };
-    const bootstrapResponse = await specHelper.runAction(
-      "source:bootstrapUniqueProperty",
-      session
-    );
+    const bootstrapResponse =
+      await specHelper.runAction<SourceBootstrapUniqueProperty>(
+        "source:bootstrapUniqueProperty",
+        session
+      );
     expect(bootstrapResponse.error).toBeUndefined();
     expect(bootstrapResponse.property).toBeTruthy();
 
@@ -99,7 +127,7 @@ describe("integration/runs/postgres", () => {
       mapping: { id: "userId" },
       state: "ready",
     };
-    const sourceEditResponse = await specHelper.runAction(
+    const sourceEditResponse = await specHelper.runAction<SourceEdit>(
       "source:edit",
       session
     );
@@ -118,7 +146,7 @@ describe("integration/runs/postgres", () => {
       },
       state: "ready",
     };
-    const buildScheduleResponse = await specHelper.runAction(
+    const buildScheduleResponse = await specHelper.runAction<ScheduleCreate>(
       "schedule:create",
       session
     );
@@ -141,10 +169,11 @@ describe("integration/runs/postgres", () => {
         groupColumnName: "group",
       },
     };
-    const buildDestinationResponse = await specHelper.runAction(
-      "destination:create",
-      session
-    );
+    const buildDestinationResponse =
+      await specHelper.runAction<DestinationCreate>(
+        "destination:create",
+        session
+      );
     expect(buildDestinationResponse.error).toBeUndefined();
     expect(buildDestinationResponse.destination.id).toBeTruthy();
     expect(buildDestinationResponse.destination.name).toBe("test destination");
@@ -156,7 +185,10 @@ describe("integration/runs/postgres", () => {
       csrfToken,
       id: app.id,
     };
-    const { error, test } = await specHelper.runAction("app:test", session);
+    const { error, test } = await specHelper.runAction<AppTest>(
+      "app:test",
+      session
+    );
     expect(error).toBeUndefined();
     expect(test.success).toBe(true);
     expect(test.error).toBeUndefined();
@@ -167,7 +199,7 @@ describe("integration/runs/postgres", () => {
       csrfToken,
       id: source.id,
     };
-    const { error, preview } = await specHelper.runAction(
+    const { error, preview } = await specHelper.runAction<SourcePreview>(
       "source:preview",
       session
     );
@@ -211,10 +243,11 @@ describe("integration/runs/postgres", () => {
           type: "string",
         };
 
-        const { error, property, pluginOptions } = await specHelper.runAction(
-          "property:create",
-          session
-        );
+        const { error, property, pluginOptions } =
+          await specHelper.runAction<PropertyCreate>(
+            "property:create",
+            session
+          );
         expect(error).toBeUndefined();
         expect(property.id).toBeTruthy();
 
@@ -264,10 +297,11 @@ describe("integration/runs/postgres", () => {
       csrfToken,
       id: destination.id,
     };
-    const { error, options } = await specHelper.runAction(
-      "destination:mappingOptions",
-      session
-    );
+    const { error, options } =
+      await specHelper.runAction<DestinationMappingOptions>(
+        "destination:mappingOptions",
+        session
+      );
     expect(error).toBeUndefined();
     expect(options).toEqual({
       labels: {
@@ -299,10 +333,8 @@ describe("integration/runs/postgres", () => {
       destinationGroupMemberships,
       trackedGroupId: group.id,
     };
-    const { error, destination: _destination } = await specHelper.runAction(
-      "destination:edit",
-      session
-    );
+    const { error, destination: _destination } =
+      await specHelper.runAction<DestinationEdit>("destination:edit", session);
     expect(error).toBeUndefined();
     expect(_destination.destinationGroup.id).toBe(group.id);
     expect(_destination.destinationGroupMemberships).toEqual([
@@ -327,7 +359,7 @@ describe("integration/runs/postgres", () => {
       state: "ready",
     };
     const { error, destination: destinationResponse } =
-      await specHelper.runAction("destination:edit", session);
+      await specHelper.runAction<DestinationEdit>("destination:edit", session);
     expect(error).toBeUndefined();
     expect(destinationResponse.state).toBe("ready");
   });
@@ -340,7 +372,7 @@ describe("integration/runs/postgres", () => {
         csrfToken,
         id: schedule.id,
       };
-      const { error, success } = await specHelper.runAction(
+      const { error, success } = await specHelper.runAction<ScheduleRun>(
         "schedule:run",
         session
       );
@@ -466,7 +498,7 @@ describe("integration/runs/postgres", () => {
         csrfToken,
         id: schedule.id,
       };
-      const { error, success } = await specHelper.runAction(
+      const { error, success } = await specHelper.runAction<ScheduleRun>(
         "schedule:run",
         session
       );
