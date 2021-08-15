@@ -6,6 +6,7 @@ import {
 
 export const getChangedRows: GetChangedRowsMethod = async ({
   connection,
+  appOptions,
   tableName,
   highWaterMarkCondition,
   limit,
@@ -48,7 +49,8 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   aggPipeline.push({ $limit: limit });
   aggPipeline.push({ $skip: sourceOffset });
 
-  const rows = await connection.db
+  const rows = await connection
+    .db(appOptions.database)
     .collection(tableName)
     .aggregate(aggPipeline)
     .toArray();

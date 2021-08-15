@@ -3,6 +3,7 @@ import { makeFindQuery } from "./util";
 
 export const getChangedRowCount: GetChangedRowCountMethod = async ({
   connection,
+  appOptions,
   tableName,
   matchConditions,
   highWaterMarkCondition,
@@ -29,7 +30,8 @@ export const getChangedRowCount: GetChangedRowCountMethod = async ({
     $count: "__COUNT",
   });
 
-  const rows = await connection.db
+  const rows = await connection
+    .db(appOptions.database)
     .collection(tableName)
     .aggregate(aggPipeline)
     .toArray();

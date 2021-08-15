@@ -6,6 +6,7 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   offset,
   connection,
   sourceOptions,
+  appOptions,
 }) => {
   if (!scheduleOptions?.query) {
     throw new Error("query required");
@@ -23,7 +24,8 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   if (limit) {
     pipeline.push({ $limit: limit });
   }
-  return connection.db
+  return connection
+    .db(appOptions.database)
     .collection(sourceOptions.table)
     .aggregate(pipeline)
     .toArray();

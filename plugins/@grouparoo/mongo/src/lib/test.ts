@@ -8,7 +8,10 @@ export const test: TestPluginMethod = async ({
 }) => {
   await getColumns({ appId, connection, appOptions, tableName: "user" });
 
-  const collectionCount = await connection.db.listCollections().toArray();
+  const collectionCount = await connection
+    .db(appOptions.database)
+    .listCollections()
+    .toArray();
   const success = collectionCount.length >= 0;
   if (!collectionCount) {
     throw new Error(`Mongo.db query problem.`);
