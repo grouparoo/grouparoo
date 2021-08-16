@@ -273,16 +273,25 @@ describe("models/schedule", () => {
         await schedule.destroy();
       });
 
-      test("a schedule can not change it's options", async () => {
-        const schedule = await helper.factories.schedule();
+      test("changing a schedule's options will reset previous highwatermarks and start a run", async () => {
+        const schedule: Schedule = await helper.factories.schedule();
         const opts = await schedule.getOptions();
         expect(opts).toEqual({ maxColumn: "updated_at" });
 
-        await expect(
-          schedule.setOptions({ maxColumn: "otherCol" })
-        ).rejects.toThrow(
-          /schedule already has option set for maxColumn, cannot update/
-        );
+        const run = await Run.create({
+          creatorId: schedule.id,
+          creatorType: "schedule",
+          state: "complete",
+          highWaterMark: { updated_at: 12345 },
+        });
+        expect((await schedule.$get("runs")).length).toBe(1);
+        expect(run.highWaterMark).toEqual({ updated_at: 12345 });
+
+        await schedule.setOptions({ maxColumn: "createdAt" });
+
+        await run.reload();
+        expect(run.highWaterMark).toEqual({}); // the getter formats to an empty array
+        expect((await schedule.$get("runs")).length).toBe(2);
 
         await schedule.destroy();
       });

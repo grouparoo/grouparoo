@@ -1,4 +1,4 @@
-import { log } from "actionhero";
+import { api } from "actionhero";
 import {
   Table,
   Column,
@@ -144,16 +144,15 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async setOptions(options: SimpleScheduleOptions) {
-    const existingOptions = await this.getOptions(true);
-    for (const key in options) {
-      if (existingOptions[key] && existingOptions[key] !== options[key]) {
-        throw new Error(
-          `schedule already has option set for ${key}, cannot update`
-        );
-      }
-    }
-
     return OptionHelper.setOptions(this, options);
+  }
+
+  async afterSetOptions(hasChanges: boolean) {
+    if (!hasChanges) return;
+    if (this.state !== "ready") return;
+
+    await this.resetHighWatermarks();
+    await this.enqueueRun();
   }
 
   async validateOptions(options?: SimpleScheduleOptions) {
@@ -216,6 +215,32 @@ export class Schedule extends LoggedModel<Schedule> {
       { scheduleId: this.id, runId: run.id },
       "schedules"
     );
+  }
+
+  async resetHighWatermarks() {
+    let runs: Run[] = await this.$get("runs", {
+      where: { highWaterMark: { [Op.ne]: null } },
+      scope: null,
+      limit: 1,
+    });
+
+    while (runs.length > 0) {
+      runs = await this.$get("runs", {
+        where: { highWaterMark: { [Op.ne]: null } },
+        scope: null,
+        limit: 100,
+      });
+
+      for (const run of runs) if (run.state === "running") await run.stop();
+      // sequelize doesn't seem to be able to set a value back to null
+      if (runs.length > 0) {
+        await api.sequelize.query(
+          `UPDATE "runs" SET "highWaterMark" = NULL WHERE "id" IN (${runs
+            .map((r) => `'${r.id}'`)
+            .join(", ")});`
+        );
+      }
+    }
   }
 
   async run(run: Run) {

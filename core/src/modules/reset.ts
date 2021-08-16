@@ -108,20 +108,7 @@ export namespace Reset {
 
   export async function resetHighWatermarks() {
     const schedules = await Schedule.findAll();
-    for (const i in schedules) {
-      const runs = await Run.findAll({
-        where: {
-          creatorId: schedules[i].id,
-          highWaterMark: { [Op.ne]: null },
-        },
-      });
-
-      for (const j in runs) {
-        const run = runs[j];
-        if (run.state === "running") await run.stop();
-        await run.update({ highWaterMark: {} });
-      }
-    }
+    for (const schedule of schedules) await schedule.resetHighWatermarks();
   }
 
   async function logMethod(callerId: string, topic: string, data = {}) {
