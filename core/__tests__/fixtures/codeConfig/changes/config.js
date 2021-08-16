@@ -52,6 +52,7 @@ module.exports = async function getConfig() {
       identifying: true,
       unique: true,
       isArray: false,
+      keepValueIfNotFound: true,
       sourceId: "users_table", // sourceId -> `users_table`
       options: {
         column: "id",
