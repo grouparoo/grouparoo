@@ -47,16 +47,13 @@ export default function Page(props) {
 
   async function edit(event) {
     event.preventDefault();
+    setLoading(true);
 
     const _schedule = Object.assign({}, schedule, { state: "ready" });
-    if (schedule.state === "ready") {
-      delete _schedule.options; // they are immutable and cannot be changed once set; server will return an error
-    }
     if (recurringFrequencyMinutes) {
       _schedule.recurringFrequency = recurringFrequencyMinutes * (60 * 1000);
     }
 
-    setLoading(true);
     const response: Actions.ScheduleEdit = await execApi(
       "put",
       `/schedule/${schedule.id}`,
@@ -303,7 +300,7 @@ export default function Page(props) {
                           defaultValue={
                             schedule.options[opt.key]?.toString() || ""
                           }
-                          disabled={schedule.state !== "draft"}
+                          disabled={loading}
                           onChange={(e) => {
                             updateOption(opt.key, e.target.value);
                           }}
@@ -333,7 +330,7 @@ export default function Page(props) {
                         <Form.Control
                           required
                           type="text"
-                          disabled={schedule.state !== "draft"}
+                          disabled={loading}
                           value={schedule.options[opt.key]?.toString()}
                           onChange={(e) =>
                             updateOption(opt.key, e.target.value)
@@ -353,7 +350,7 @@ export default function Page(props) {
                           as="textarea"
                           rows={5}
                           value={schedule.options[opt.key]?.toString()}
-                          disabled={schedule.state !== "draft"}
+                          disabled={loading}
                           onChange={(e) =>
                             updateOption(opt.key, e.target["value"])
                           }
@@ -553,6 +550,15 @@ export default function Page(props) {
                 ) : null}
               </>
               <hr />
+
+              {schedule.state === "ready" ? (
+                <Alert variant="info">
+                  Note that changing the options or filters for a Schedule will
+                  reset the high water mark and stop all running Runs. A new Run
+                  will be enqueued.
+                </Alert>
+              ) : null}
+
               <LoadingButton variant="primary" type="submit" disabled={loading}>
                 Update
               </LoadingButton>
