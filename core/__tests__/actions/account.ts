@@ -9,7 +9,7 @@ import { Team } from "../../dist";
 
 describe("actions/account", () => {
   helper.grouparooTestServer({ truncate: true });
-  let team: AsyncReturnType<Team['apiData']>;
+  let team: AsyncReturnType<Team["apiData"]>;
 
   beforeAll(async () => {
     const response = await specHelper.runAction<TeamInitialize>(
