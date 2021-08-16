@@ -13,24 +13,15 @@ import { SessionCreate } from "@grouparoo/core/src/actions/session";
 import { AppCreate, AppTest, AppView } from "@grouparoo/core/src/actions/apps";
 import {
   SourceCreate,
-  SourceEdit,
   SourcePreview,
   SourceView,
 } from "@grouparoo/core/src/actions/sources";
-import {
-  PropertyCreate,
-  PropertyEdit,
-} from "@grouparoo/core/src/actions/properties";
+import { PropertyCreate } from "@grouparoo/core/src/actions/properties";
 import {
   ScheduleCreate,
   ScheduleRun,
   ScheduleView,
 } from "@grouparoo/core/src/actions/schedules";
-import {
-  DestinationCreate,
-  DestinationEdit,
-  DestinationMappingOptions,
-} from "@grouparoo/core/src/actions/destinations";
 
 describe("integration/runs/csv/remote", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
