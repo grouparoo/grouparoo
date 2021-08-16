@@ -1,6 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Connection, specHelper } from "actionhero";
 import { Run, Source, Schedule } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import { RunEdit, RunsList, RunView } from "../../src/actions/runs";
 
 describe("actions/runs", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -22,7 +24,7 @@ describe("actions/runs", () => {
 
     connection = await specHelper.buildConnection();
     connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-    const sessionResponse = await specHelper.runAction(
+    const sessionResponse = await specHelper.runAction<SessionCreate>(
       "session:create",
       connection
     );
@@ -42,7 +44,7 @@ describe("actions/runs", () => {
       csrfToken,
     };
 
-    const { error, runs, total } = await specHelper.runAction(
+    const { error, runs, total } = await specHelper.runAction<RunsList>(
       "runs:list",
       connection
     );
@@ -61,7 +63,7 @@ describe("actions/runs", () => {
       id: scheduleA.id,
     };
 
-    const { error, runs, total } = await specHelper.runAction(
+    const { error, runs, total } = await specHelper.runAction<RunsList>(
       "runs:list",
       connection
     );
@@ -82,7 +84,7 @@ describe("actions/runs", () => {
       topic: "source",
     };
 
-    const { error, runs, total } = await specHelper.runAction(
+    const { error, runs, total } = await specHelper.runAction<RunsList>(
       "runs:list",
       connection
     );
@@ -98,10 +100,8 @@ describe("actions/runs", () => {
       id: runA.id,
     };
 
-    const { error, run, quantizedTimeline } = await specHelper.runAction(
-      "run:view",
-      connection
-    );
+    const { error, run, quantizedTimeline } =
+      await specHelper.runAction<RunView>("run:view", connection);
     expect(error).toBeUndefined();
     expect(run.id).toBe(runA.id);
     expect(quantizedTimeline.length).toBe(25 + 4); // 25 for times, 4
@@ -117,7 +117,10 @@ describe("actions/runs", () => {
       state: "stopped",
     };
 
-    const { error, run } = await specHelper.runAction("run:edit", connection);
+    const { error, run } = await specHelper.runAction<RunEdit>(
+      "run:edit",
+      connection
+    );
     expect(error).toBeUndefined();
     expect(run.id).toBe(_run.id);
     expect(run.state).toBe("stopped");

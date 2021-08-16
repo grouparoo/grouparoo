@@ -1,6 +1,20 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Group, Profile, Team, TeamMember } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import {
+  GroupCountComponentMembers,
+  GroupCountPotentialMembers,
+  GroupCreate,
+  GroupDestroy,
+  GroupEdit,
+  GroupExport,
+  GroupListDestinations,
+  GroupRun,
+  GroupsList,
+  GroupsRuleOptions,
+  GroupView,
+} from "../../src/actions/groups";
 
 describe("actions/groups", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -22,7 +36,7 @@ describe("actions/groups", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -35,7 +49,7 @@ describe("actions/groups", () => {
         name: "new group",
         type: "manual",
       };
-      const { error, group } = await specHelper.runAction(
+      const { error, group } = await specHelper.runAction<GroupCreate>(
         "group:create",
         connection
       );
@@ -60,7 +74,7 @@ describe("actions/groups", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, groups, total } = await specHelper.runAction(
+      const { error, groups, total } = await specHelper.runAction<GroupsList>(
         "groups:list",
         connection
       );
@@ -75,7 +89,7 @@ describe("actions/groups", () => {
         id,
         name: "new group name",
       };
-      const { error, group } = await specHelper.runAction(
+      const { error, group } = await specHelper.runAction<GroupEdit>(
         "group:edit",
         connection
       );
@@ -89,7 +103,7 @@ describe("actions/groups", () => {
         csrfToken,
         id,
       };
-      const { error, group } = await specHelper.runAction(
+      const { error, group } = await specHelper.runAction<GroupView>(
         "group:view",
         connection
       );
@@ -107,10 +121,11 @@ describe("actions/groups", () => {
         csrfToken,
         id,
       };
-      const { error, destinations } = await specHelper.runAction(
-        "group:listDestinations",
-        connection
-      );
+      const { error, destinations } =
+        await specHelper.runAction<GroupListDestinations>(
+          "group:listDestinations",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(destinations.length).toBe(1);
       expect(destinations[0].id).toEqual(destination.id);
@@ -125,7 +140,7 @@ describe("actions/groups", () => {
         id,
         type: "csv",
       };
-      const { error, success } = await specHelper.runAction(
+      const { error, success } = await specHelper.runAction<GroupExport>(
         "group:export",
         connection
       );
@@ -148,7 +163,7 @@ describe("actions/groups", () => {
         csrfToken,
         id,
       };
-      const destroyResponse = await specHelper.runAction(
+      const destroyResponse = await specHelper.runAction<GroupDestroy>(
         "group:destroy",
         connection
       );
@@ -165,7 +180,7 @@ describe("actions/groups", () => {
         csrfToken,
         id,
       };
-      const destroyResponse = await specHelper.runAction(
+      const destroyResponse = await specHelper.runAction<GroupDestroy>(
         "group:destroy",
         connection
       );
@@ -184,7 +199,7 @@ describe("actions/groups", () => {
         id: newGroup.id,
         force: true,
       };
-      const destroyResponse = await specHelper.runAction(
+      const destroyResponse = await specHelper.runAction<GroupDestroy>(
         "group:destroy",
         connection
       );
@@ -236,10 +251,11 @@ describe("actions/groups", () => {
 
       test("groups#ruleOptions", async () => {
         connection.params = { csrfToken };
-        const { error, ruleLimit, ops } = await specHelper.runAction(
-          "groups:ruleOptions",
-          connection
-        );
+        const { error, ruleLimit, ops } =
+          await specHelper.runAction<GroupsRuleOptions>(
+            "groups:ruleOptions",
+            connection
+          );
         expect(error).toBeUndefined();
         expect(ruleLimit).toBe(10);
         expect(Object.keys(ops).sort()).toEqual([
@@ -276,7 +292,7 @@ describe("actions/groups", () => {
 
         // test existing rules
         connection.params = { csrfToken, id: group.id };
-        let response = await specHelper.runAction(
+        let response = await specHelper.runAction<GroupCountComponentMembers>(
           "group:countComponentMembers",
           connection
         );
@@ -293,7 +309,7 @@ describe("actions/groups", () => {
           },
         ];
         connection.params = { csrfToken, id: group.id, rules: newRules };
-        response = await specHelper.runAction(
+        response = await specHelper.runAction<GroupCountComponentMembers>(
           "group:countComponentMembers",
           connection
         );
@@ -314,7 +330,7 @@ describe("actions/groups", () => {
 
         // test existing rules
         connection.params = { csrfToken, id: group.id };
-        let response = await specHelper.runAction(
+        let response = await specHelper.runAction<GroupCountPotentialMembers>(
           "group:countPotentialMembers",
           connection
         );
@@ -330,7 +346,7 @@ describe("actions/groups", () => {
           },
         ];
         connection.params = { csrfToken, id: group.id, rules: newRules };
-        response = await specHelper.runAction(
+        response = await specHelper.runAction<GroupCountPotentialMembers>(
           "group:countPotentialMembers",
           connection
         );
@@ -340,7 +356,10 @@ describe("actions/groups", () => {
 
       test("group#run", async () => {
         connection.params = { csrfToken, id: group.id };
-        let response = await specHelper.runAction("group:run", connection);
+        let response = await specHelper.runAction<GroupRun>(
+          "group:run",
+          connection
+        );
         expect(response.error).toBeUndefined();
         expect(response.success).toBe(true);
       });
@@ -378,7 +397,7 @@ describe("actions/groups", () => {
 
       connection = await specHelper.buildConnection();
       connection.params = { email: "luigi@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -399,7 +418,7 @@ describe("actions/groups", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, groups } = await specHelper.runAction(
+      const { error, groups } = await specHelper.runAction<GroupsList>(
         "groups:list",
         connection
       );
@@ -413,7 +432,10 @@ describe("actions/groups", () => {
         id,
         name: "new group name",
       };
-      const { error } = await specHelper.runAction("group:edit", connection);
+      const { error } = await specHelper.runAction<GroupEdit>(
+        "group:edit",
+        connection
+      );
       expect(error.code).toBe("AUTHORIZATION_ERROR");
     });
 
@@ -422,7 +444,7 @@ describe("actions/groups", () => {
         csrfToken,
         id,
       };
-      const { error, group } = await specHelper.runAction(
+      const { error, group } = await specHelper.runAction<GroupView>(
         "group:view",
         connection
       );

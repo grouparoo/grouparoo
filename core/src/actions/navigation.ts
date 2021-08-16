@@ -32,7 +32,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
   }: {
     session: { teamMember: TeamMember };
   }) {
-    let configUser: boolean;
+    let configUser: ConfigUser.ConfigUserType;
     if (process.env.GROUPAROO_RUN_MODE === "cli:config") {
       configUser = await ConfigUser.get();
     }
@@ -243,7 +243,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     return { navigationItems, platformItems, bottomMenuItems };
   }
 
-  async authenticatedConfigNav(configUser: boolean) {
+  async authenticatedConfigNav(configUser: ConfigUser.ConfigUserType) {
     const navigationItems: NavigationItem[] = [
       {
         type: "link",
@@ -288,7 +288,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     return { navigationItems, platformItems, bottomMenuItems };
   }
 
-  async unauthenticatedConfigNav(configUser: boolean) {
+  async unauthenticatedConfigNav(configUser: ConfigUser.ConfigUserType) {
     const navigationItems: NavigationItem[] = [
       { type: "link", title: "Home", href: "/" },
     ];

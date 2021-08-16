@@ -1,6 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { plugin, SetupStep, Setting } from "../../src";
+import { plugin, SetupStep } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import { SetupStepEdit, SetupStepsList } from "../../src/actions/setupSteps";
 
 describe("actions/setupSteps", () => {
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
@@ -23,7 +25,7 @@ describe("actions/setupSteps", () => {
       // log in
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -41,7 +43,7 @@ describe("actions/setupSteps", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, setupSteps } = await specHelper.runAction(
+      const { error, setupSteps } = await specHelper.runAction<SetupStepsList>(
         "setupSteps:list",
         connection
       );
@@ -75,7 +77,7 @@ describe("actions/setupSteps", () => {
       await setting.update({ value: "Test Cluster" });
 
       connection.params = { csrfToken };
-      const { setupSteps } = await specHelper.runAction(
+      const { setupSteps } = await specHelper.runAction<SetupStepsList>(
         "setupSteps:list",
         connection
       );
@@ -90,7 +92,7 @@ describe("actions/setupSteps", () => {
         id,
         skipped: true,
       };
-      const { error, setupStep } = await specHelper.runAction(
+      const { error, setupStep } = await specHelper.runAction<SetupStepEdit>(
         "setupStep:edit",
         connection
       );

@@ -210,8 +210,8 @@ export namespace GroupOps {
     group: Group,
     rules?: GroupRuleWithKey[]
   ) {
-    const componentCounts = [];
-    const funnelCounts = [];
+    const componentCounts: number[] = [];
+    const funnelCounts: number[] = [];
     let funnelStep = 0;
 
     if (!rules) rules = await group.getRules();

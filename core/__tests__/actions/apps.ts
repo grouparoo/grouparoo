@@ -1,6 +1,17 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { App } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import {
+  AppCreate,
+  AppDestroy,
+  AppEdit,
+  AppOptionOptions,
+  AppOptions,
+  AppsList,
+  AppTest,
+  AppView,
+} from "../../src/actions/apps";
 import { ObfuscatedPasswordString } from "../../src/modules/optionHelper";
 
 describe("actions/apps", () => {
@@ -23,7 +34,7 @@ describe("actions/apps", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -37,7 +48,7 @@ describe("actions/apps", () => {
         type: "test-plugin-app",
         options: { fileId: "abc123" },
       };
-      const { error, app } = await specHelper.runAction(
+      const { error, app } = await specHelper.runAction<AppCreate>(
         "app:create",
         connection
       );
@@ -53,7 +64,7 @@ describe("actions/apps", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, types } = await specHelper.runAction(
+      const { error, types } = await specHelper.runAction<AppOptions>(
         "app:options",
         connection
       );
@@ -83,10 +94,8 @@ describe("actions/apps", () => {
 
       test("options for a new app will include the names of options included in environment variables", async () => {
         connection.params = { csrfToken };
-        const { environmentVariableOptions } = await specHelper.runAction(
-          "app:options",
-          connection
-        );
+        const { environmentVariableOptions } =
+          await specHelper.runAction<AppOptions>("app:options", connection);
         expect(environmentVariableOptions).toEqual(["TEST_OPTION"]);
       });
 
@@ -100,7 +109,7 @@ describe("actions/apps", () => {
         csrfToken,
         id,
       };
-      const { error, options } = await specHelper.runAction(
+      const { error, options } = await specHelper.runAction<AppOptionOptions>(
         "app:optionOptions",
         connection
       );
@@ -116,7 +125,7 @@ describe("actions/apps", () => {
         csrfToken,
         id,
       };
-      const { error, test } = await specHelper.runAction(
+      const { error, test } = await specHelper.runAction<AppTest>(
         "app:test",
         connection
       );
@@ -132,7 +141,7 @@ describe("actions/apps", () => {
         id,
         options: { thing: "stuff" },
       };
-      const { error, test } = await specHelper.runAction(
+      const { error, test } = await specHelper.runAction<AppTest>(
         "app:test",
         connection
       );
@@ -146,7 +155,7 @@ describe("actions/apps", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, apps, total } = await specHelper.runAction(
+      const { error, apps, total } = await specHelper.runAction<AppsList>(
         "apps:list",
         connection
       );
@@ -163,7 +172,10 @@ describe("actions/apps", () => {
         name: "new app name",
         options: { fileId: "zzz", password: "SECRET" },
       };
-      const { error, app } = await specHelper.runAction("app:edit", connection);
+      const { error, app } = await specHelper.runAction<AppEdit>(
+        "app:edit",
+        connection
+      );
 
       expect(error).toBeUndefined();
       expect(app.id).toBeTruthy();
@@ -178,7 +190,10 @@ describe("actions/apps", () => {
         id,
         options: { fileId: "zzz", password: ObfuscatedPasswordString },
       };
-      const { error, app } = await specHelper.runAction("app:edit", connection);
+      const { error, app } = await specHelper.runAction<AppEdit>(
+        "app:edit",
+        connection
+      );
 
       expect(error).toBeUndefined();
       expect(app.id).toBeTruthy();
@@ -195,7 +210,10 @@ describe("actions/apps", () => {
         csrfToken,
         id,
       };
-      const { error, app } = await specHelper.runAction("app:view", connection);
+      const { error, app } = await specHelper.runAction<AppView>(
+        "app:view",
+        connection
+      );
       expect(error).toBeUndefined();
       expect(app.id).toBeTruthy();
       expect(app.name).toBe("new app name");
@@ -210,7 +228,7 @@ describe("actions/apps", () => {
         type: "test-plugin-app",
         options: { fileId: "abc123" },
       };
-      const { error, app } = await specHelper.runAction(
+      const { error, app } = await specHelper.runAction<AppCreate>(
         "app:create",
         connection
       );
@@ -220,7 +238,7 @@ describe("actions/apps", () => {
         csrfToken,
         id: app.id,
       };
-      const destroyResponse = await specHelper.runAction(
+      const destroyResponse = await specHelper.runAction<AppDestroy>(
         "app:destroy",
         connection
       );

@@ -1,6 +1,21 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { plugin, App, Property, Source } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import {
+  PropertiesList,
+  PropertiesOptions,
+  PropertyCreate,
+  PropertyDestroy,
+  PropertyEdit,
+  PropertyFilterOptions,
+  PropertyGroups,
+  PropertyMakeIdentifying,
+  PropertyPluginOptions,
+  PropertyProfilePreview,
+  PropertyTest,
+  PropertyView,
+} from "../../src/actions/properties";
 
 describe("actions/properties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -31,7 +46,7 @@ describe("actions/properties", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -42,7 +57,7 @@ describe("actions/properties", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, types } = await specHelper.runAction(
+      const { error, types } = await specHelper.runAction<PropertiesOptions>(
         "properties:options",
         connection
       );
@@ -89,10 +104,11 @@ describe("actions/properties", () => {
         keepValueIfNotFound: "true",
       };
 
-      const { error, property, pluginOptions } = await specHelper.runAction(
-        "property:create",
-        connection
-      );
+      const { error, property, pluginOptions } =
+        await specHelper.runAction<PropertyCreate>(
+          "property:create",
+          connection
+        );
 
       expect(error).toBeUndefined();
       expect(property.id).toBeTruthy();
@@ -112,7 +128,7 @@ describe("actions/properties", () => {
         csrfToken,
         id,
       };
-      const { error, property } = await specHelper.runAction(
+      const { error, property } = await specHelper.runAction<PropertyView>(
         "property:view",
         connection
       );
@@ -129,10 +145,11 @@ describe("actions/properties", () => {
         csrfToken,
         id,
       };
-      const { error, options } = await specHelper.runAction(
-        "property:filterOptions",
-        connection
-      );
+      const { error, options } =
+        await specHelper.runAction<PropertyFilterOptions>(
+          "property:filterOptions",
+          connection
+        );
 
       expect(error).toBeUndefined();
       expect(options).toEqual([
@@ -150,7 +167,7 @@ describe("actions/properties", () => {
         id,
         filters: [{ key: "id", op: "greater than", match: 6 }],
       };
-      const { error, property } = await specHelper.runAction(
+      const { error, property } = await specHelper.runAction<PropertyEdit>(
         "property:edit",
         connection
       );
@@ -175,7 +192,7 @@ describe("actions/properties", () => {
         options: { column: "email" },
         state: "ready",
       };
-      const { error, property } = await specHelper.runAction(
+      const { error, property } = await specHelper.runAction<PropertyEdit>(
         "property:edit",
         connection
       );
@@ -188,7 +205,7 @@ describe("actions/properties", () => {
         csrfToken,
         id,
       };
-      const { error, test } = await specHelper.runAction(
+      const { error, test } = await specHelper.runAction<PropertyTest>(
         "property:test",
         connection
       );
@@ -205,7 +222,7 @@ describe("actions/properties", () => {
           column: "userId",
         },
       };
-      const { error, property } = await specHelper.runAction(
+      const { error, property } = await specHelper.runAction<PropertyEdit>(
         "property:edit",
         connection
       );
@@ -234,10 +251,11 @@ describe("actions/properties", () => {
         csrfToken,
         id,
       };
-      const { error, property } = await specHelper.runAction(
-        "property:makeIdentifying",
-        connection
-      );
+      const { error, property } =
+        await specHelper.runAction<PropertyMakeIdentifying>(
+          "property:makeIdentifying",
+          connection
+        );
       expect(error).toBeFalsy();
       expect(property.identifying).toEqual(true);
     });
@@ -251,10 +269,11 @@ describe("actions/properties", () => {
         includeExamples: true,
       };
 
-      const { error, properties, examples, total } = await specHelper.runAction(
-        "properties:list",
-        connection
-      );
+      const { error, properties, examples, total } =
+        await specHelper.runAction<PropertiesList>(
+          "properties:list",
+          connection
+        );
 
       expect(error).toBeUndefined();
       expect(properties.length).toBe(2); // this + userId
@@ -272,7 +291,7 @@ describe("actions/properties", () => {
         includeExamples: false,
       };
 
-      const secondRequest = await specHelper.runAction(
+      const secondRequest = await specHelper.runAction<PropertiesList>(
         "properties:list",
         connection
       );
@@ -286,7 +305,7 @@ describe("actions/properties", () => {
         state: "ready",
         csrfToken,
       };
-      const { error, properties } = await specHelper.runAction(
+      const { error, properties } = await specHelper.runAction<PropertiesList>(
         "properties:list",
         connection
       );
@@ -299,7 +318,7 @@ describe("actions/properties", () => {
         unique: "true",
         csrfToken,
       };
-      const { error, properties } = await specHelper.runAction(
+      const { error, properties } = await specHelper.runAction<PropertiesList>(
         "properties:list",
         connection
       );
@@ -322,7 +341,7 @@ describe("actions/properties", () => {
         csrfToken,
         id,
       };
-      const { error, groups } = await specHelper.runAction(
+      const { error, groups } = await specHelper.runAction<PropertyGroups>(
         "property:groups",
         connection
       );
@@ -340,7 +359,7 @@ describe("actions/properties", () => {
         unique: true,
         keepValueIfNotFound: false,
       };
-      const { error, property } = await specHelper.runAction(
+      const { error, property } = await specHelper.runAction<PropertyEdit>(
         "property:edit",
         connection
       );
@@ -360,10 +379,11 @@ describe("actions/properties", () => {
         csrfToken,
         id,
       };
-      const { error, profile } = await specHelper.runAction(
-        "property:profilePreview",
-        connection
-      );
+      const { error, profile } =
+        await specHelper.runAction<PropertyProfilePreview>(
+          "property:profilePreview",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(profile.id).toBe(_profile.id);
       expect(profile.properties["email"].values).toBeTruthy();
@@ -376,7 +396,7 @@ describe("actions/properties", () => {
         csrfToken,
         id,
       };
-      const { error, success } = await specHelper.runAction(
+      const { error, success } = await specHelper.runAction<PropertyDestroy>(
         "property:destroy",
         connection
       );
@@ -476,10 +496,11 @@ describe("actions/properties", () => {
           csrfToken,
           id: property.id,
         };
-        const { error, pluginOptions } = await specHelper.runAction(
-          "property:pluginOptions",
-          connection
-        );
+        const { error, pluginOptions } =
+          await specHelper.runAction<PropertyPluginOptions>(
+            "property:pluginOptions",
+            connection
+          );
 
         expect(error).toBeUndefined();
         expect(pluginOptions.length).toBe(2);
@@ -493,10 +514,11 @@ describe("actions/properties", () => {
           id: property.id,
           options: { column: "countOfStuff", aggregationMethod: true },
         };
-        const { error, pluginOptions } = await specHelper.runAction(
-          "property:pluginOptions",
-          connection
-        );
+        const { error, pluginOptions } =
+          await specHelper.runAction<PropertyPluginOptions>(
+            "property:pluginOptions",
+            connection
+          );
 
         expect(error).toBeUndefined();
         expect(pluginOptions.length).toBe(3);

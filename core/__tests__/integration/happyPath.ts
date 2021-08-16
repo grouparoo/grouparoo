@@ -1,6 +1,30 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Run } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import { AppCreate } from "../../src/actions/apps";
+import { PropertyCreate } from "../../src/actions/properties";
+import { RunsList } from "../../src/actions/runs";
+import {
+  ScheduleCreate,
+  ScheduleEdit,
+  ScheduleRun,
+} from "../../src/actions/schedules";
+import {
+  ProfileCreate,
+  ProfilesList,
+  ProfileView,
+} from "../../src/actions/profiles";
+import {
+  GroupAddProfile,
+  GroupCreate,
+  GroupView,
+} from "../../src/actions/groups";
+import {
+  SourceBootstrapUniqueProperty,
+  SourceCreate,
+  SourceEdit,
+} from "../../src/actions/sources";
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -35,7 +59,7 @@ describe("integration/happyPath", () => {
 
     connection = await specHelper.buildConnection();
     connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-    const sessionResponse = await specHelper.runAction(
+    const sessionResponse = await specHelper.runAction<SessionCreate>(
       "session:create",
       connection
     );
@@ -52,7 +76,10 @@ describe("integration/happyPath", () => {
       options: { fileId: "abc123" },
       state: "ready",
     };
-    const { error, app } = await specHelper.runAction("app:create", connection);
+    const { error, app } = await specHelper.runAction<AppCreate>(
+      "app:create",
+      connection
+    );
 
     expect(error).toBeUndefined();
     expect(app.id).toBeTruthy();
@@ -69,7 +96,7 @@ describe("integration/happyPath", () => {
       appId,
       options: { table: "users" },
     };
-    const createResponse = await specHelper.runAction(
+    const createResponse = await specHelper.runAction<SourceCreate>(
       "source:create",
       connection
     );
@@ -88,10 +115,11 @@ describe("integration/happyPath", () => {
       type: "integer",
       mappedColumn: "id",
     };
-    const bootstrapResponse = await specHelper.runAction(
-      "source:bootstrapUniqueProperty",
-      connection
-    );
+    const bootstrapResponse =
+      await specHelper.runAction<SourceBootstrapUniqueProperty>(
+        "source:bootstrapUniqueProperty",
+        connection
+      );
     expect(bootstrapResponse.error).toBeUndefined();
     expect(bootstrapResponse.property.id).toBeTruthy();
 
@@ -101,7 +129,10 @@ describe("integration/happyPath", () => {
       mapping: { id: "userId" },
       state: "ready",
     };
-    const editResponse = await specHelper.runAction("source:edit", connection);
+    const editResponse = await specHelper.runAction<SourceEdit>(
+      "source:edit",
+      connection
+    );
     expect(editResponse.error).toBeUndefined();
     expect(editResponse.source.state).toBe("ready");
   });
@@ -118,7 +149,10 @@ describe("integration/happyPath", () => {
         column: "email",
       },
     };
-    let { error } = await specHelper.runAction("property:create", connection);
+    let { error } = await specHelper.runAction<PropertyCreate>(
+      "property:create",
+      connection
+    );
     expect(error).toBeUndefined();
 
     connection.params = {
@@ -132,7 +166,7 @@ describe("integration/happyPath", () => {
         column: "firstName",
       },
     };
-    await specHelper.runAction("property:create", connection);
+    await specHelper.runAction<PropertyCreate>("property:create", connection);
 
     connection.params = {
       csrfToken,
@@ -145,7 +179,7 @@ describe("integration/happyPath", () => {
         column: "lastName",
       },
     };
-    await specHelper.runAction("property:create", connection);
+    await specHelper.runAction<PropertyCreate>("property:create", connection);
 
     connection.params = {
       csrfToken,
@@ -158,7 +192,7 @@ describe("integration/happyPath", () => {
         column: "ltv",
       },
     };
-    await specHelper.runAction("property:create", connection);
+    await specHelper.runAction<PropertyCreate>("property:create", connection);
   });
 
   test("an admin can set the source mapping", async () => {
@@ -167,7 +201,7 @@ describe("integration/happyPath", () => {
       id: sourceId,
       mapping: { email: "email" },
     };
-    const { error, source } = await specHelper.runAction(
+    const { error, source } = await specHelper.runAction<SourceEdit>(
       "source:edit",
       connection
     );
@@ -189,7 +223,7 @@ describe("integration/happyPath", () => {
           ltv: 100.12,
         },
       };
-      const { error, profile } = await specHelper.runAction(
+      const { error, profile } = await specHelper.runAction<ProfileCreate>(
         "profile:create",
         connection
       );
@@ -213,7 +247,7 @@ describe("integration/happyPath", () => {
         state: "ready",
       };
 
-      const { error, group } = await specHelper.runAction(
+      const { error, group } = await specHelper.runAction<GroupCreate>(
         "group:create",
         connection
       );
@@ -231,7 +265,7 @@ describe("integration/happyPath", () => {
         id: groupId,
         profileId,
       };
-      const { error, success } = await specHelper.runAction(
+      const { error, success } = await specHelper.runAction<GroupAddProfile>(
         "group:addProfile",
         connection
       );
@@ -244,7 +278,7 @@ describe("integration/happyPath", () => {
         csrfToken,
         id: profileId,
       };
-      const { error, groups } = await specHelper.runAction(
+      const { error, groups } = await specHelper.runAction<ProfileView>(
         "profile:view",
         connection
       );
@@ -259,7 +293,7 @@ describe("integration/happyPath", () => {
         csrfToken,
         id: groupId,
       };
-      const { error, group } = await specHelper.runAction(
+      const { error, group } = await specHelper.runAction<GroupView>(
         "group:view",
         connection
       );
@@ -270,10 +304,8 @@ describe("integration/happyPath", () => {
         csrfToken,
         id: groupId,
       };
-      const { error: listError, profiles } = await specHelper.runAction(
-        "profiles:list",
-        connection
-      );
+      const { error: listError, profiles } =
+        await specHelper.runAction<ProfilesList>("profiles:list", connection);
       expect(listError).toBeUndefined();
       expect(profiles.length).toBe(1);
       expect(simpleProfileValues(profiles[0].properties).email).toEqual([
@@ -296,7 +328,7 @@ describe("integration/happyPath", () => {
         state: "ready",
       };
 
-      const { error, group } = await specHelper.runAction(
+      const { error, group } = await specHelper.runAction<GroupCreate>(
         "group:create",
         connection
       );
@@ -325,7 +357,7 @@ describe("integration/happyPath", () => {
         id: groupId,
       };
 
-      const { error, group } = await specHelper.runAction(
+      const { error, group } = await specHelper.runAction<GroupView>(
         "group:view",
         connection
       );
@@ -336,10 +368,8 @@ describe("integration/happyPath", () => {
         csrfToken,
         id: groupId,
       };
-      const { listError, profiles } = await specHelper.runAction(
-        "profiles:list",
-        connection
-      );
+      const { error: listError, profiles } =
+        await specHelper.runAction<ProfilesList>("profiles:list", connection);
       expect(listError).toBeUndefined();
       expect(profiles.length).toBe(1);
       expect(simpleProfileValues(profiles[0].properties).email[0]).toMatch(
@@ -356,7 +386,7 @@ describe("integration/happyPath", () => {
         name: "the schedule",
         recurring: false,
       };
-      const { error, schedule } = await specHelper.runAction(
+      const { error, schedule } = await specHelper.runAction<ScheduleCreate>(
         "schedule:create",
         connection
       );
@@ -373,7 +403,7 @@ describe("integration/happyPath", () => {
         state: "ready",
         options: { maxColumn: "updatedAt" },
       };
-      const { error, schedule } = await specHelper.runAction(
+      const { error, schedule } = await specHelper.runAction<ScheduleEdit>(
         "schedule:edit",
         connection
       );
@@ -386,7 +416,7 @@ describe("integration/happyPath", () => {
         csrfToken,
         id: scheduleId,
       };
-      const { error, success } = await specHelper.runAction(
+      const { error, success } = await specHelper.runAction<ScheduleRun>(
         "schedule:run",
         connection
       );
@@ -406,7 +436,7 @@ describe("integration/happyPath", () => {
         csrfToken,
         id: scheduleId,
       };
-      const { error, runs } = await specHelper.runAction(
+      const { error, runs } = await specHelper.runAction<RunsList>(
         "runs:list",
         connection
       );

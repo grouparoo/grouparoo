@@ -1,6 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Setting, plugin } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import {
+  SettingsList,
+  SettingCoreClusterName,
+} from "../../src/actions/settings";
 
 describe("actions/settings", () => {
   let connection;
@@ -9,7 +14,7 @@ describe("actions/settings", () => {
 
   describe("settings", () => {
     test("unauthenticated users can view the cluster name setting", async () => {
-      const { setting } = await specHelper.runAction(
+      const { setting } = await specHelper.runAction<SettingCoreClusterName>(
         "setting:view:core:cluster-name"
       );
 
@@ -65,7 +70,7 @@ describe("actions/settings", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -76,7 +81,7 @@ describe("actions/settings", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, settings } = await specHelper.runAction(
+      const { error, settings } = await specHelper.runAction<SettingsList>(
         "settings:list",
         connection
       );
@@ -123,7 +128,7 @@ describe("actions/settings", () => {
       connection.params = {
         csrfToken,
       };
-      const { settings } = await specHelper.runAction(
+      const { settings } = await specHelper.runAction<SettingsList>(
         "settings:list",
         connection
       );

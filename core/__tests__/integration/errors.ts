@@ -1,5 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Connection, specHelper } from "actionhero";
+import { SessionCreate } from "../../src/actions/session";
+import { TeamCreate } from "../../src/actions/teams";
 
 describe("errors", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -19,7 +21,7 @@ describe("errors", () => {
   beforeAll(async () => {
     connection = await specHelper.buildConnection();
     connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-    const sessionResponse = await specHelper.runAction(
+    const sessionResponse = await specHelper.runAction<SessionCreate>(
       "session:create",
       connection
     );
@@ -36,7 +38,7 @@ describe("errors", () => {
     await specHelper.runAction("team:create", connection);
 
     // second time produces error
-    const { error, team } = await specHelper.runAction(
+    const { error, team } = await specHelper.runAction<TeamCreate>(
       "team:create",
       connection
     );

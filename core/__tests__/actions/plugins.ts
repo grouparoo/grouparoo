@@ -2,6 +2,10 @@ import { helper } from "@grouparoo/spec-helper";
 import path from "path";
 // import fs from "fs";
 import { specHelper } from "actionhero";
+import {
+  PluginsAvailableList,
+  PluginsInstalledList,
+} from "../../src/actions/plugins";
 
 import PluginDetails from "./../../src/utils/pluginDetails";
 const coreVersion = PluginDetails.getCoreVersion();
@@ -32,7 +36,7 @@ describe("actions/plugins", () => {
 
   test("can list installed plugins", async () => {
     // cannot actually test this without injecting some plugins at the package.json level...
-    const { plugins, error } = await specHelper.runAction(
+    const { plugins, error } = await specHelper.runAction<PluginsInstalledList>(
       "plugins:installed:list"
     );
     expect(error).toBeFalsy();
@@ -48,7 +52,7 @@ describe("actions/plugins", () => {
   });
 
   test("can list available plugins", async () => {
-    const { plugins, error } = await specHelper.runAction(
+    const { plugins, error } = await specHelper.runAction<PluginsAvailableList>(
       "plugins:available:list"
     );
     expect(error).toBeFalsy();

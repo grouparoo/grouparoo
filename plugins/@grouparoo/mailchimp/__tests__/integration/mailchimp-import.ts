@@ -13,6 +13,17 @@ import {
   SimpleAppOptions,
   SimpleDestinationOptions,
 } from "@grouparoo/core";
+import { SessionCreate } from "@grouparoo/core/src/actions/session";
+import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
+import {
+  SourceCreate,
+  SourcePreview,
+} from "@grouparoo/core/src/actions/sources";
+import { PropertyCreate } from "@grouparoo/core/src/actions/properties";
+import {
+  ScheduleCreate,
+  ScheduleRun,
+} from "@grouparoo/core/src/actions/schedules";
 
 import {
   loadAppOptions,
@@ -70,7 +81,7 @@ describe("integration/runs/mailchimp-import", () => {
         // sign in
         session = await specHelper.buildConnection();
         session.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-        const sessionResponse = await specHelper.runAction(
+        const sessionResponse = await specHelper.runAction<SessionCreate>(
           "session:create",
           session
         );
@@ -85,7 +96,10 @@ describe("integration/runs/mailchimp-import", () => {
           options: appOptions,
           state: "ready",
         };
-        const appResponse = await specHelper.runAction("app:create", session);
+        const appResponse = await specHelper.runAction<AppCreate>(
+          "app:create",
+          session
+        );
         expect(appResponse.error).toBeUndefined();
         app = appResponse.app;
 
@@ -100,7 +114,7 @@ describe("integration/runs/mailchimp-import", () => {
           state: "ready",
         };
 
-        const sourceResponse = await specHelper.runAction(
+        const sourceResponse = await specHelper.runAction<SourceCreate>(
           "source:create",
           session
         );
@@ -122,7 +136,7 @@ describe("integration/runs/mailchimp-import", () => {
           },
           state: "ready",
         };
-        const scheduleResponse = await specHelper.runAction(
+        const scheduleResponse = await specHelper.runAction<ScheduleCreate>(
           "schedule:create",
           session
         );
@@ -140,7 +154,10 @@ describe("integration/runs/mailchimp-import", () => {
         id: app.id,
         options: appOptions,
       };
-      const { error, test } = await specHelper.runAction("app:test", session);
+      const { error, test } = await specHelper.runAction<AppTest>(
+        "app:test",
+        session
+      );
       expect(error).toBeUndefined();
       expect(test.error).toBeUndefined();
       expect(test.success).toBe(true);
@@ -152,7 +169,7 @@ describe("integration/runs/mailchimp-import", () => {
         id: source.id,
         options: sourceOptions,
       };
-      const { error, preview } = await specHelper.runAction(
+      const { error, preview } = await specHelper.runAction<SourcePreview>(
         "source:preview",
         session
       );
@@ -211,10 +228,8 @@ describe("integration/runs/mailchimp-import", () => {
         state: "ready",
       };
 
-      const { error, property, pluginOptions } = await specHelper.runAction(
-        "property:create",
-        session
-      );
+      const { error, property, pluginOptions } =
+        await specHelper.runAction<PropertyCreate>("property:create", session);
       expect(error).toBeUndefined();
       expect(property.id).toBeTruthy();
 
@@ -246,7 +261,7 @@ describe("integration/runs/mailchimp-import", () => {
           csrfToken,
           id: schedule.id,
         };
-        const { error, success } = await specHelper.runAction(
+        const { error, success } = await specHelper.runAction<ScheduleRun>(
           "schedule:run",
           session
         );
@@ -345,7 +360,7 @@ describe("integration/runs/mailchimp-import", () => {
           csrfToken,
           id: schedule.id,
         };
-        const { error, success } = await specHelper.runAction(
+        const { error, success } = await specHelper.runAction<ScheduleRun>(
           "schedule:run",
           session
         );

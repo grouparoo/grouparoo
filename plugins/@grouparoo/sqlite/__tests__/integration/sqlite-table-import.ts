@@ -6,7 +6,38 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { beforeData, afterData, getConfig } from "../utils/data";
 import { api, specHelper } from "actionhero";
-import { Profile, Property, ProfileProperty, Run } from "@grouparoo/core";
+import { AsyncReturnType } from "type-fest";
+import {
+  Profile,
+  Property,
+  ProfileProperty,
+  Run,
+  Group,
+  Destination,
+  Schedule,
+  Source,
+  App,
+} from "@grouparoo/core";
+import { SessionCreate } from "@grouparoo/core/src/actions/session";
+import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
+import {
+  SourceCreate,
+  SourceEdit,
+  SourcePreview,
+} from "@grouparoo/core/src/actions/sources";
+import {
+  PropertyCreate,
+  PropertyEdit,
+} from "@grouparoo/core/src/actions/properties";
+import {
+  ScheduleCreate,
+  ScheduleRun,
+} from "@grouparoo/core/src/actions/schedules";
+import {
+  DestinationCreate,
+  DestinationEdit,
+  DestinationMappingOptions,
+} from "@grouparoo/core/src/actions/destinations";
 
 const {
   appOptions,
@@ -22,12 +53,12 @@ describe("integration/runs/sqlite", () => {
   beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
   let session;
-  let csrfToken;
-  let app;
-  let source;
-  let schedule;
-  let destination;
-  let group;
+  let csrfToken: string;
+  let app: AsyncReturnType<App["apiData"]>;
+  let source: AsyncReturnType<Source["apiData"]>;
+  let schedule: AsyncReturnType<Schedule["apiData"]>;
+  let destination: AsyncReturnType<Destination["apiData"]>;
+  let group: Group;
   let client;
 
   beforeAll(async () => {
@@ -49,7 +80,7 @@ describe("integration/runs/sqlite", () => {
     // sign in
     session = await specHelper.buildConnection();
     session.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-    const sessionResponse = await specHelper.runAction(
+    const sessionResponse = await specHelper.runAction<SessionCreate>(
       "session:create",
       session
     );
@@ -65,7 +96,10 @@ describe("integration/runs/sqlite", () => {
       state: "ready",
     };
 
-    const appResponse = await specHelper.runAction("app:create", session);
+    const appResponse = await specHelper.runAction<AppCreate>(
+      "app:create",
+      session
+    );
     expect(appResponse.error).toBeUndefined();
     app = appResponse.app;
 
@@ -79,7 +113,10 @@ describe("integration/runs/sqlite", () => {
       mapping: { id: "userId" },
       state: "ready",
     };
-    const sourceResponse = await specHelper.runAction("source:create", session);
+    const sourceResponse = await specHelper.runAction<SourceCreate>(
+      "source:create",
+      session
+    );
     expect(sourceResponse.error).toBeUndefined();
     source = sourceResponse.source;
 
@@ -95,7 +132,7 @@ describe("integration/runs/sqlite", () => {
       },
       state: "ready",
     };
-    const buildScheduleResponse = await specHelper.runAction(
+    const buildScheduleResponse = await specHelper.runAction<ScheduleCreate>(
       "schedule:create",
       session
     );
@@ -118,10 +155,11 @@ describe("integration/runs/sqlite", () => {
         groupColumnName: "group",
       },
     };
-    const buildDestinationResponse = await specHelper.runAction(
-      "destination:create",
-      session
-    );
+    const buildDestinationResponse =
+      await specHelper.runAction<DestinationCreate>(
+        "destination:create",
+        session
+      );
     expect(buildDestinationResponse.error).toBeUndefined();
     expect(buildDestinationResponse.destination.id).toBeTruthy();
     expect(buildDestinationResponse.destination.name).toBe("test destination");
@@ -133,7 +171,10 @@ describe("integration/runs/sqlite", () => {
       csrfToken,
       id: app.id,
     };
-    const { error, test } = await specHelper.runAction("app:test", session);
+    const { error, test } = await specHelper.runAction<AppTest>(
+      "app:test",
+      session
+    );
     expect(error).toBeUndefined();
     expect(test.success).toBe(true);
     expect(test.error).toBeUndefined();
@@ -144,7 +185,7 @@ describe("integration/runs/sqlite", () => {
       csrfToken,
       id: source.id,
     };
-    const { error, preview } = await specHelper.runAction(
+    const { error, preview } = await specHelper.runAction<SourcePreview>(
       "source:preview",
       session
     );
@@ -172,7 +213,10 @@ describe("integration/runs/sqlite", () => {
       id: source.id,
       mapping: { id: "userId" },
     };
-    const { error } = await specHelper.runAction("source:edit", session);
+    const { error } = await specHelper.runAction<SourceEdit>(
+      "source:edit",
+      session
+    );
     expect(error).toBeUndefined();
   });
 
@@ -191,10 +235,8 @@ describe("integration/runs/sqlite", () => {
       type: "string",
     };
 
-    const { error, property, pluginOptions } = await specHelper.runAction(
-      "property:create",
-      session
-    );
+    const { error, property, pluginOptions } =
+      await specHelper.runAction<PropertyCreate>("property:create", session);
     expect(error).toBeUndefined();
     expect(property.id).toBeTruthy();
 
@@ -215,7 +257,7 @@ describe("integration/runs/sqlite", () => {
       options: { column: "email", aggregationMethod: "exact" },
       state: "ready",
     };
-    const { error: editError } = await specHelper.runAction(
+    const { error: editError } = await specHelper.runAction<PropertyEdit>(
       "property:edit",
       session
     );
@@ -242,10 +284,11 @@ describe("integration/runs/sqlite", () => {
       csrfToken,
       id: destination.id,
     };
-    const { error, options } = await specHelper.runAction(
-      "destination:mappingOptions",
-      session
-    );
+    const { error, options } =
+      await specHelper.runAction<DestinationMappingOptions>(
+        "destination:mappingOptions",
+        session
+      );
     expect(error).toBeUndefined();
     expect(options).toEqual({
       labels: {
@@ -277,10 +320,8 @@ describe("integration/runs/sqlite", () => {
       destinationGroupMemberships,
       trackedGroupId: group.id,
     };
-    const { error, destination: _destination } = await specHelper.runAction(
-      "destination:edit",
-      session
-    );
+    const { error, destination: _destination } =
+      await specHelper.runAction<DestinationEdit>("destination:edit", session);
     expect(error).toBeUndefined();
     expect(_destination.destinationGroup.id).toBe(group.id);
     expect(_destination.destinationGroupMemberships).toEqual([
@@ -305,7 +346,7 @@ describe("integration/runs/sqlite", () => {
       state: "ready",
     };
     const { error, destination: destinationResponse } =
-      await specHelper.runAction("destination:edit", session);
+      await specHelper.runAction<DestinationEdit>("destination:edit", session);
     expect(error).toBeUndefined();
     expect(destinationResponse.state).toBe("ready");
   });
@@ -318,7 +359,7 @@ describe("integration/runs/sqlite", () => {
         csrfToken,
         id: schedule.id,
       };
-      const { error, success } = await specHelper.runAction(
+      const { error, success } = await specHelper.runAction<ScheduleRun>(
         "schedule:run",
         session
       );
@@ -444,7 +485,7 @@ describe("integration/runs/sqlite", () => {
         csrfToken,
         id: schedule.id,
       };
-      const { error, success } = await specHelper.runAction(
+      const { error, success } = await specHelper.runAction<ScheduleRun>(
         "schedule:run",
         session
       );

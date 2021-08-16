@@ -1,6 +1,16 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Source } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import {
+  ScheduleCreate,
+  ScheduleDestroy,
+  ScheduleEdit,
+  ScheduleFilterOptions,
+  ScheduleRun,
+  SchedulesList,
+  ScheduleView,
+} from "../../src/actions/schedules";
 
 describe("actions/schedules", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -26,7 +36,7 @@ describe("actions/schedules", () => {
       // sign in
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -47,7 +57,7 @@ describe("actions/schedules", () => {
         recurring: false,
         confirmProfiles: true,
       };
-      const { error, schedule } = await specHelper.runAction(
+      const { error, schedule } = await specHelper.runAction<ScheduleCreate>(
         "schedule:create",
         connection
       );
@@ -64,10 +74,11 @@ describe("actions/schedules", () => {
         connection.params = {
           csrfToken,
         };
-        const { error, schedules, total } = await specHelper.runAction(
-          "schedules:list",
-          connection
-        );
+        const { error, schedules, total } =
+          await specHelper.runAction<SchedulesList>(
+            "schedules:list",
+            connection
+          );
         expect(error).toBeUndefined();
         expect(schedules.length).toBe(1);
         expect(schedules[0].name).toBe("test schedule");
@@ -81,7 +92,7 @@ describe("actions/schedules", () => {
           name: "new schedule name",
           confirmProfiles: false,
         };
-        const { error, schedule } = await specHelper.runAction(
+        const { error, schedule } = await specHelper.runAction<ScheduleEdit>(
           "schedule:edit",
           connection
         );
@@ -97,10 +108,8 @@ describe("actions/schedules", () => {
           csrfToken,
           id,
         };
-        const { error, schedule, pluginOptions } = await specHelper.runAction(
-          "schedule:view",
-          connection
-        );
+        const { error, schedule, pluginOptions } =
+          await specHelper.runAction<ScheduleView>("schedule:view", connection);
         expect(error).toBeUndefined();
         expect(schedule.id).toBeTruthy();
         expect(schedule.name).toBe("new schedule name");
@@ -113,10 +122,11 @@ describe("actions/schedules", () => {
           csrfToken,
           id,
         };
-        const { error, options } = await specHelper.runAction(
-          "schedule:filterOptions",
-          connection
-        );
+        const { error, options } =
+          await specHelper.runAction<ScheduleFilterOptions>(
+            "schedule:filterOptions",
+            connection
+          );
 
         expect(error).toBeUndefined();
         expect(options).toEqual([
@@ -134,7 +144,7 @@ describe("actions/schedules", () => {
           id,
           filters: [{ key: "id", op: "greater than", match: 6 }],
         };
-        const { error, schedule } = await specHelper.runAction(
+        const { error, schedule } = await specHelper.runAction<ScheduleEdit>(
           "schedule:edit",
           connection
         );
@@ -159,7 +169,7 @@ describe("actions/schedules", () => {
           options: { maxColumn: "createdAt" },
           state: "ready",
         };
-        const { error, schedule } = await specHelper.runAction(
+        const { error, schedule } = await specHelper.runAction<ScheduleEdit>(
           "schedule:edit",
           connection
         );
@@ -172,7 +182,7 @@ describe("actions/schedules", () => {
           csrfToken,
           id,
         };
-        const { error, success } = await specHelper.runAction(
+        const { error, success } = await specHelper.runAction<ScheduleRun>(
           "schedule:run",
           connection
         );
@@ -190,7 +200,7 @@ describe("actions/schedules", () => {
           id: id,
         };
 
-        const destroyResponse = await specHelper.runAction(
+        const destroyResponse = await specHelper.runAction<ScheduleDestroy>(
           "schedule:destroy",
           connection
         );

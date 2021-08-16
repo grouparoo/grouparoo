@@ -1,5 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
+import { SessionCreate } from "../../src/actions/session";
+import { LogsList } from "../../src/actions/logs";
 
 describe("actions/logs", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -21,7 +23,7 @@ describe("actions/logs", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -32,7 +34,7 @@ describe("actions/logs", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, logs, total } = await specHelper.runAction(
+      const { error, logs, total } = await specHelper.runAction<LogsList>(
         "logs:list",
         connection
       );
@@ -53,7 +55,7 @@ describe("actions/logs", () => {
         csrfToken,
         topic: "teamMember",
       };
-      const { error, logs } = await specHelper.runAction(
+      const { error, logs } = await specHelper.runAction<LogsList>(
         "logs:list",
         connection
       );
@@ -70,7 +72,7 @@ describe("actions/logs", () => {
         ownerId: profile.id,
       };
 
-      const { error, logs } = await specHelper.runAction(
+      const { error, logs } = await specHelper.runAction<LogsList>(
         "logs:list",
         connection
       );

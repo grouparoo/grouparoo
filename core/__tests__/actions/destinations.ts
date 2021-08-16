@@ -9,6 +9,20 @@ import {
   App,
   Property,
 } from "../../src";
+import {
+  DestinationConnectionApps,
+  DestinationConnectionOptions,
+  DestinationCreate,
+  DestinationDestroy,
+  DestinationEdit,
+  DestinationExport,
+  DestinationExportArrayProperties,
+  DestinationMappingOptions,
+  DestinationProfilePreview,
+  DestinationsList,
+  DestinationView,
+} from "../../src/actions/destinations";
+import { SessionCreate } from "../../src/actions/session";
 
 describe("actions/destinations", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -33,7 +47,7 @@ describe("actions/destinations", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -51,10 +65,11 @@ describe("actions/destinations", () => {
         appId: app.id,
         syncMode: "sync",
       };
-      const { error, destination } = await specHelper.runAction(
-        "destination:create",
-        connection
-      );
+      const { error, destination } =
+        await specHelper.runAction<DestinationCreate>(
+          "destination:create",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(destination.id).toBeTruthy();
       expect(destination.app.id).toBe(app.id);
@@ -86,10 +101,11 @@ describe("actions/destinations", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, connectionApps } = await specHelper.runAction(
-        "destinations:connectionApps",
-        connection
-      );
+      const { error, connectionApps } =
+        await specHelper.runAction<DestinationConnectionApps>(
+          "destinations:connectionApps",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(connectionApps.length).toBe(4); // (this one + the app created for the properties ) * export & export-batch
       expect(connectionApps[0].connection.name).toBe("test-plugin-export");
@@ -102,10 +118,11 @@ describe("actions/destinations", () => {
 
       test("options for a new destination will include the names of options included in environment variables", async () => {
         connection.params = { csrfToken };
-        const { environmentVariableOptions } = await specHelper.runAction(
-          "destinations:connectionApps",
-          connection
-        );
+        const { environmentVariableOptions } =
+          await specHelper.runAction<DestinationConnectionApps>(
+            "destinations:connectionApps",
+            connection
+          );
         expect(environmentVariableOptions).toEqual(["TEST_OPTION"]);
       });
 
@@ -118,10 +135,11 @@ describe("actions/destinations", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, destinations, total } = await specHelper.runAction(
-        "destinations:list",
-        connection
-      );
+      const { error, destinations, total } =
+        await specHelper.runAction<DestinationsList>(
+          "destinations:list",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(destinations.length).toBe(1);
       expect(destinations[0].name).toBe("test destination");
@@ -134,10 +152,11 @@ describe("actions/destinations", () => {
         csrfToken,
         id,
       };
-      const { error, destination } = await specHelper.runAction(
-        "destination:view",
-        connection
-      );
+      const { error, destination } =
+        await specHelper.runAction<DestinationView>(
+          "destination:view",
+          connection
+        );
 
       expect(error).toBeUndefined();
       expect(destination.id).toBeTruthy();
@@ -151,10 +170,11 @@ describe("actions/destinations", () => {
         csrfToken,
         id,
       };
-      const { options, error } = await specHelper.runAction(
-        "destination:connectionOptions",
-        connection
-      );
+      const { options, error } =
+        await specHelper.runAction<DestinationConnectionOptions>(
+          "destination:connectionOptions",
+          connection
+        );
       expect(error).toBeFalsy();
       expect(options).toEqual({
         table: { type: "list", options: ["users_out"] },
@@ -170,7 +190,10 @@ describe("actions/destinations", () => {
         options,
         destinationTypeConversions: _destinationTypeConversions,
         error,
-      } = await specHelper.runAction("destination:mappingOptions", connection);
+      } = await specHelper.runAction<DestinationMappingOptions>(
+        "destination:mappingOptions",
+        connection
+      );
       expect(error).toBeFalsy();
       expect(options).toEqual({
         labels: {
@@ -213,10 +236,11 @@ describe("actions/destinations", () => {
           "something-else": "email",
         },
       };
-      const { destination, error } = await specHelper.runAction(
-        "destination:edit",
-        connection
-      );
+      const { destination, error } =
+        await specHelper.runAction<DestinationEdit>(
+          "destination:edit",
+          connection
+        );
       expect(error).toBeFalsy();
       expect(destination.mapping).toEqual({
         "primary-id": "userId",
@@ -232,7 +256,7 @@ describe("actions/destinations", () => {
           "something-else": "email",
         },
       };
-      const { error } = await specHelper.runAction(
+      const { error } = await specHelper.runAction<DestinationEdit>(
         "destination:edit",
         connection
       );
@@ -246,10 +270,11 @@ describe("actions/destinations", () => {
         csrfToken,
         id,
       };
-      const { error, exportArrayProperties } = await specHelper.runAction(
-        "destination:exportArrayProperties",
-        connection
-      );
+      const { error, exportArrayProperties } =
+        await specHelper.runAction<DestinationExportArrayProperties>(
+          "destination:exportArrayProperties",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(exportArrayProperties).toEqual([]);
     });
@@ -260,7 +285,7 @@ describe("actions/destinations", () => {
         id,
         mapping: { "primary-id": "userId", purchases: "purchases" },
       };
-      const { error } = await specHelper.runAction(
+      const { error } = await specHelper.runAction<DestinationEdit>(
         "destination:edit",
         connection
       );
@@ -275,10 +300,11 @@ describe("actions/destinations", () => {
         id,
         syncMode: "enrich",
       };
-      const { destination, error } = await specHelper.runAction(
-        "destination:edit",
-        connection
-      );
+      const { destination, error } =
+        await specHelper.runAction<DestinationEdit>(
+          "destination:edit",
+          connection
+        );
       expect(error).toBeFalsy();
       expect(destination.syncMode).toBe("enrich");
     });
@@ -304,10 +330,11 @@ describe("actions/destinations", () => {
           trackedGroupId: group.id,
         };
 
-        const { destination, run, error } = await specHelper.runAction(
-          "destination:edit",
-          connection
-        );
+        const { destination, run, error } =
+          await specHelper.runAction<DestinationEdit>(
+            "destination:edit",
+            connection
+          );
         expect(error).toBeFalsy();
         expect(destination.destinationGroup.id).toBe(group.id);
         expect(run.creatorId).toBe(group.id);
@@ -324,10 +351,11 @@ describe("actions/destinations", () => {
           id,
           destinationGroupMemberships,
         };
-        const { destination, error } = await specHelper.runAction(
-          "destination:edit",
-          connection
-        );
+        const { destination, error } =
+          await specHelper.runAction<DestinationEdit>(
+            "destination:edit",
+            connection
+          );
         expect(error).toBeFalsy();
         expect(destination.destinationGroup.id).toBe(group.id);
         expect(destination.destinationGroupMemberships).toEqual([
@@ -345,10 +373,11 @@ describe("actions/destinations", () => {
           id,
           groupId: group.id,
         };
-        const { error, profile: _profile } = await specHelper.runAction(
-          "destination:profilePreview",
-          connection
-        );
+        const { error, profile: _profile } =
+          await specHelper.runAction<DestinationProfilePreview>(
+            "destination:profilePreview",
+            connection
+          );
         expect(error).toBeUndefined();
         expect(_profile.properties["primary-id"].values).toEqual([1]);
         expect(_profile.properties["something-else"].values).toEqual([
@@ -363,10 +392,11 @@ describe("actions/destinations", () => {
           id,
           profileId: profile.id,
         };
-        const { error, profile: _profile } = await specHelper.runAction(
-          "destination:profilePreview",
-          connection
-        );
+        const { error, profile: _profile } =
+          await specHelper.runAction<DestinationProfilePreview>(
+            "destination:profilePreview",
+            connection
+          );
         expect(error).toBeUndefined();
         expect(_profile.properties["primary-id"].values).toEqual([1]);
         expect(_profile.properties["something-else"].values).toEqual([
@@ -389,10 +419,11 @@ describe("actions/destinations", () => {
             email: "email",
           },
         };
-        const { error, profile: _profile } = await specHelper.runAction(
-          "destination:profilePreview",
-          connection
-        );
+        const { error, profile: _profile } =
+          await specHelper.runAction<DestinationProfilePreview>(
+            "destination:profilePreview",
+            connection
+          );
         expect(error).toBeUndefined();
         expect(_profile.properties["primary-id"].values).toEqual([1]);
         expect(_profile.properties["email"].values).toEqual([
@@ -413,10 +444,11 @@ describe("actions/destinations", () => {
             "something-new-string": "",
           },
         };
-        const { error, profile: _profile } = await specHelper.runAction(
-          "destination:profilePreview",
-          connection
-        );
+        const { error, profile: _profile } =
+          await specHelper.runAction<DestinationProfilePreview>(
+            "destination:profilePreview",
+            connection
+          );
         expect(error).toBeUndefined();
         expect(_profile.properties["primary-id"].values).toEqual([1]);
         expect(_profile.properties["something-new-null"]).toBeFalsy();
@@ -443,10 +475,11 @@ describe("actions/destinations", () => {
             color: "color",
           },
         };
-        const { error, profile: _profile } = await specHelper.runAction(
-          "destination:profilePreview",
-          connection
-        );
+        const { error, profile: _profile } =
+          await specHelper.runAction<DestinationProfilePreview>(
+            "destination:profilePreview",
+            connection
+          );
         expect(error).toBeUndefined();
         expect(_profile.properties["primary-id"].values).toEqual([1]);
         expect(_profile.properties["color"].values).toEqual([null]);
@@ -459,7 +492,7 @@ describe("actions/destinations", () => {
           csrfToken,
           id,
         };
-        const { destination } = await specHelper.runAction(
+        const { destination } = await specHelper.runAction<DestinationView>(
           "destination:view",
           connection
         );
@@ -474,7 +507,10 @@ describe("actions/destinations", () => {
           destination: updatedDestination,
           run,
           error,
-        } = await specHelper.runAction("destination:edit", connection);
+        } = await specHelper.runAction<DestinationEdit>(
+          "destination:edit",
+          connection
+        );
         expect(error).toBeFalsy();
         expect(run.creatorId).toBe(group.id);
         expect(run.force).toBe(false);
@@ -488,10 +524,11 @@ describe("actions/destinations", () => {
           id,
           trackedGroupId: group.id,
         };
-        const { destination: _destination } = await specHelper.runAction(
-          "destination:edit",
-          connection
-        );
+        const { destination: _destination } =
+          await specHelper.runAction<DestinationEdit>(
+            "destination:edit",
+            connection
+          );
         expect(_destination.destinationGroup.id).toBe(group.id);
 
         const runningRuns = await Run.findAll({
@@ -521,11 +558,12 @@ describe("actions/destinations", () => {
           name: "the test destination",
           triggerExport: true,
         };
-        const { errors, destination: destination } = await specHelper.runAction(
-          "destination:edit",
-          connection
-        );
-        expect(errors).toBeFalsy();
+        const { error, destination: destination } =
+          await specHelper.runAction<DestinationEdit>(
+            "destination:edit",
+            connection
+          );
+        expect(error).toBeFalsy();
         expect(destination.name).toBe("the test destination");
 
         runningRuns = await Run.findAll({
@@ -550,11 +588,12 @@ describe("actions/destinations", () => {
           id,
           name: "test destination",
         };
-        const { errors, destination: destination } = await specHelper.runAction(
-          "destination:edit",
-          connection
-        );
-        expect(errors).toBeFalsy();
+        const { error, destination: destination } =
+          await specHelper.runAction<DestinationEdit>(
+            "destination:edit",
+            connection
+          );
+        expect(error).toBeFalsy();
         expect(destination.name).toBe("test destination");
 
         const runningRuns = await Run.findAll({
@@ -569,15 +608,16 @@ describe("actions/destinations", () => {
           csrfToken,
           id,
         };
-        const { success, error } = await specHelper.runAction(
-          "destination:export",
-          connection
-        );
+        const { success, error } =
+          await specHelper.runAction<DestinationExport>(
+            "destination:export",
+            connection
+          );
 
         expect(error).toBeFalsy();
         expect(success).toBeTruthy();
 
-        const { destination } = await specHelper.runAction(
+        const { destination } = await specHelper.runAction<DestinationView>(
           "destination:view",
           connection
         );
@@ -603,7 +643,7 @@ describe("actions/destinations", () => {
         id,
         trackedGroupId: "_none",
       };
-      const { destination } = await specHelper.runAction(
+      const { destination } = await specHelper.runAction<DestinationEdit>(
         "destination:edit",
         connection
       );
@@ -616,7 +656,7 @@ describe("actions/destinations", () => {
         force: false,
         id,
       };
-      const destroyResponse = await specHelper.runAction(
+      const destroyResponse = await specHelper.runAction<DestinationDestroy>(
         "destination:destroy",
         connection
       );
@@ -635,7 +675,7 @@ describe("actions/destinations", () => {
         force: true,
         id,
       };
-      const destroyResponse = await specHelper.runAction(
+      const destroyResponse = await specHelper.runAction<DestinationDestroy>(
         "destination:destroy",
         connection
       );

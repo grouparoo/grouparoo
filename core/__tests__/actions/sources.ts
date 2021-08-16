@@ -1,6 +1,20 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Option, Source, App } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import {
+  SourceBootstrapUniqueProperty,
+  SourceConnectionApps,
+  sourceConnectionOptions,
+  SourceCreate,
+  SourceDefaultPropertyOptions,
+  SourceDestroy,
+  SourceEdit,
+  SourcePreview,
+  SourcesList,
+  SourceView,
+} from "../../src/actions/sources";
+import { PropertyDestroy } from "../../src/actions/properties";
 
 describe("actions/sources", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -27,7 +41,7 @@ describe("actions/sources", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -42,7 +56,7 @@ describe("actions/sources", () => {
         appId: app.id,
         options: { table: "users" },
       };
-      const { error, source } = await specHelper.runAction(
+      const { error, source } = await specHelper.runAction<SourceCreate>(
         "source:create",
         connection
       );
@@ -59,7 +73,7 @@ describe("actions/sources", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, sources, total } = await specHelper.runAction(
+      const { error, sources, total } = await specHelper.runAction<SourcesList>(
         "sources:list",
         connection
       );
@@ -77,10 +91,11 @@ describe("actions/sources", () => {
         type: "integer",
         mappedColumn: "id",
       };
-      const { property, error } = await specHelper.runAction(
-        "source:bootstrapUniqueProperty",
-        connection
-      );
+      const { property, error } =
+        await specHelper.runAction<SourceBootstrapUniqueProperty>(
+          "source:bootstrapUniqueProperty",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(property.id).toBeTruthy();
       propertyId = property.id;
@@ -91,10 +106,11 @@ describe("actions/sources", () => {
         csrfToken,
         id,
       };
-      const { error, connectionApps } = await specHelper.runAction(
-        "sources:connectionApps",
-        connection
-      );
+      const { error, connectionApps } =
+        await specHelper.runAction<SourceConnectionApps>(
+          "sources:connectionApps",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(connectionApps[0].app.id).toBe(app.id);
       expect(connectionApps[0].connection.app).toBe("test-plugin-app");
@@ -107,10 +123,11 @@ describe("actions/sources", () => {
 
       test("options for a new source will include the names of options included in environment variables", async () => {
         connection.params = { csrfToken };
-        const { environmentVariableOptions } = await specHelper.runAction(
-          "sources:connectionApps",
-          connection
-        );
+        const { environmentVariableOptions } =
+          await specHelper.runAction<SourceConnectionApps>(
+            "sources:connectionApps",
+            connection
+          );
         expect(environmentVariableOptions).toEqual(["TEST_OPTION"]);
       });
 
@@ -124,10 +141,11 @@ describe("actions/sources", () => {
         csrfToken,
         id,
       };
-      const { error, options } = await specHelper.runAction(
-        "source:connectionOptions",
-        connection
-      );
+      const { error, options } =
+        await specHelper.runAction<sourceConnectionOptions>(
+          "source:connectionOptions",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(options).toEqual({ table: { options: ["users"], type: "list" } });
     });
@@ -140,7 +158,7 @@ describe("actions/sources", () => {
         csrfToken,
         id,
       };
-      const { error, preview } = await specHelper.runAction(
+      const { error, preview } = await specHelper.runAction<SourcePreview>(
         "source:preview",
         connection
       );
@@ -154,10 +172,8 @@ describe("actions/sources", () => {
         id,
         options: { table: "users" },
       };
-      const { error, preview, columnSpeculation } = await specHelper.runAction(
-        "source:preview",
-        connection
-      );
+      const { error, preview, columnSpeculation } =
+        await specHelper.runAction<SourcePreview>("source:preview", connection);
       expect(error).toBeUndefined();
       expect(preview).toEqual([
         { id: 1, fname: "mario", lname: "mario" },
@@ -176,10 +192,11 @@ describe("actions/sources", () => {
         id,
         options: { table: "users" },
       };
-      const { error, defaultPropertyOptions } = await specHelper.runAction(
-        "source:defaultPropertyOptions",
-        connection
-      );
+      const { error, defaultPropertyOptions } =
+        await specHelper.runAction<SourceDefaultPropertyOptions>(
+          "source:defaultPropertyOptions",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(defaultPropertyOptions).toEqual([
         {
@@ -216,7 +233,7 @@ describe("actions/sources", () => {
         id,
         options: { table: "users" },
       };
-      const { error, source } = await specHelper.runAction(
+      const { error, source } = await specHelper.runAction<SourceEdit>(
         "source:edit",
         connection
       );
@@ -229,7 +246,7 @@ describe("actions/sources", () => {
         csrfToken,
         id,
       };
-      const { error, preview } = await specHelper.runAction(
+      const { error, preview } = await specHelper.runAction<SourcePreview>(
         "source:preview",
         connection
       );
@@ -246,7 +263,7 @@ describe("actions/sources", () => {
         id,
         mapping: { id: "userId" },
       };
-      const { error, source } = await specHelper.runAction(
+      const { error, source } = await specHelper.runAction<SourceEdit>(
         "source:edit",
         connection
       );
@@ -260,7 +277,7 @@ describe("actions/sources", () => {
         id,
         state: "ready",
       };
-      const { error, source } = await specHelper.runAction(
+      const { error, source } = await specHelper.runAction<SourceEdit>(
         "source:edit",
         connection
       );
@@ -273,7 +290,7 @@ describe("actions/sources", () => {
         csrfToken,
         id,
       };
-      const { error, source } = await specHelper.runAction(
+      const { error, source } = await specHelper.runAction<SourceView>(
         "source:view",
         connection
       );
@@ -289,7 +306,7 @@ describe("actions/sources", () => {
         id,
         mapping: {},
       };
-      const editResponse = await specHelper.runAction(
+      const editResponse = await specHelper.runAction<SourceEdit>(
         "source:edit",
         connection
       );
@@ -299,7 +316,7 @@ describe("actions/sources", () => {
         csrfToken,
         id: propertyId,
       };
-      const deleteRuleResponse = await specHelper.runAction(
+      const deleteRuleResponse = await specHelper.runAction<PropertyDestroy>(
         "property:destroy",
         connection
       );
@@ -309,7 +326,7 @@ describe("actions/sources", () => {
         csrfToken,
         id,
       };
-      const destroyResponse = await specHelper.runAction(
+      const destroyResponse = await specHelper.runAction<SourceDestroy>(
         "source:destroy",
         connection
       );

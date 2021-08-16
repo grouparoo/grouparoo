@@ -2,6 +2,11 @@ import { helper } from "@grouparoo/spec-helper";
 import { specHelper, api, config } from "actionhero";
 import { Team, TeamMember, Permission, ApiKey } from "../../src";
 import fetch from "isomorphic-fetch";
+import {
+  SessionCreate,
+  SessionDestroy,
+  SessionView,
+} from "../../src/actions/session";
 
 // enable the web server
 process.env.WEB_SERVER = "true";
@@ -20,13 +25,11 @@ describe("session", () => {
 
   describe("session:create", () => {
     test("can log in", async () => {
-      const { success, teamMember, error } = await specHelper.runAction(
-        "session:create",
-        {
+      const { success, teamMember, error } =
+        await specHelper.runAction<SessionCreate>("session:create", {
           email: "peach@example.com",
           password: "P@ssw0rd!",
-        }
-      );
+        });
 
       expect(error).toBeUndefined();
       expect(success).toEqual(true);
@@ -34,13 +37,11 @@ describe("session", () => {
     });
 
     test("can log in with email not in lowercase", async () => {
-      const { success, teamMember, error } = await specHelper.runAction(
-        "session:create",
-        {
+      const { success, teamMember, error } =
+        await specHelper.runAction<SessionCreate>("session:create", {
           email: "PEACH@example.COM",
           password: "P@ssw0rd!",
-        }
-      );
+        });
 
       expect(error).toBeUndefined();
       expect(success).toEqual(true);
@@ -48,13 +49,11 @@ describe("session", () => {
     });
 
     test("cannot log in with unknown user", async () => {
-      const { success, teamMember, error } = await specHelper.runAction(
-        "session:create",
-        {
+      const { success, teamMember, error } =
+        await specHelper.runAction<SessionCreate>("session:create", {
           email: "fff@example.com",
           password: "x",
-        }
-      );
+        });
 
       expect(error.message).toMatch(/team member not found/);
       expect(error.code).toMatch("AUTHENTICATION_ERROR");
@@ -63,13 +62,11 @@ describe("session", () => {
     });
 
     test("cannot log in with bad password", async () => {
-      const { success, teamMember, error } = await specHelper.runAction(
-        "session:create",
-        {
+      const { success, teamMember, error } =
+        await specHelper.runAction<SessionCreate>("session:create", {
           email: "peach@example.com",
           password: "x",
-        }
-      );
+        });
 
       expect(error.message).toMatch(/password does not match/);
       expect(error.code).toMatch("AUTHENTICATION_ERROR");
@@ -82,7 +79,7 @@ describe("session", () => {
     test("can view session details", async () => {
       const connection = await specHelper.buildConnection();
       connection.params = { email: "peach@example.com", password: "P@ssw0rd!" };
-      const signInResponse = await specHelper.runAction(
+      const signInResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -95,7 +92,7 @@ describe("session", () => {
         csrfToken: newCsrfToken,
         teamMember,
         error,
-      } = await specHelper.runAction("session:view", connection);
+      } = await specHelper.runAction<SessionView>("session:view", connection);
 
       expect(error).toBeUndefined();
       expect(newCsrfToken).toBe(csrfToken);
@@ -105,24 +102,24 @@ describe("session", () => {
 
   describe("session:destroy", () => {
     test("can log out", async () => {
-      const { success, error, csrfToken } = await specHelper.runAction(
-        "session:create",
-        {
+      const { success, error, csrfToken } =
+        await specHelper.runAction<SessionCreate>("session:create", {
           email: "peach@example.com",
           password: "P@ssw0rd!",
-        }
-      );
+        });
 
       expect(error).toBeUndefined();
       expect(success).toEqual(true);
 
-      const { successAgain = success, errorAgain = error } =
-        await specHelper.runAction("session:destroy", {
+      const destroyResponse = await specHelper.runAction<SessionDestroy>(
+        "session:destroy",
+        {
           csrfToken,
-        });
+        }
+      );
 
-      expect(errorAgain).toBeUndefined();
-      expect(successAgain).toEqual(true);
+      expect(destroyResponse.error).toBeUndefined();
+      expect(destroyResponse.success).toEqual(true);
     });
   });
 
@@ -218,7 +215,7 @@ describe("session", () => {
           email: "toad@example.com",
           password: "mushrooms",
         };
-        const sessionResponse = await specHelper.runAction(
+        const sessionResponse = await specHelper.runAction<SessionCreate>(
           "session:create",
           connection
         );
@@ -257,7 +254,7 @@ describe("session", () => {
         let response = await specHelper.runAction("appReadAction", connection);
         expect(response.error.message).toBe("CSRF error");
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
       });
 
       test("once a CSRF token error occurs, the session is destroyed", async () => {
@@ -270,7 +267,7 @@ describe("session", () => {
         );
         expect(firstResponse.error.code).toBe("AUTHENTICATION_ERROR");
         expect(firstResponse.error.message).toBe("CSRF error");
-        expect(firstResponse.success).toBeFalsy();
+        expect(firstResponse["success"]).toBeFalsy();
 
         let secondResponse = await specHelper.runAction(
           "appReadAction",
@@ -278,7 +275,7 @@ describe("session", () => {
         );
         expect(secondResponse.error.code).toBe("AUTHENTICATION_ERROR");
         expect(secondResponse.error.message).toBe("Please log in to continue");
-        expect(secondResponse.success).toBeFalsy();
+        expect(secondResponse["success"]).toBeFalsy();
       });
 
       test("a member of an authenticated team cannot view any action", async () => {
@@ -288,7 +285,7 @@ describe("session", () => {
           Object.assign({}, connection, { params: { csrfToken } })
         );
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
 
         await signIn();
         response = await specHelper.runAction(
@@ -296,7 +293,7 @@ describe("session", () => {
           Object.assign({}, connection, { params: { csrfToken } })
         );
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
 
         await signIn();
         response = await specHelper.runAction(
@@ -304,7 +301,7 @@ describe("session", () => {
           Object.assign({}, connection, { params: { csrfToken } })
         );
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
       });
 
       test("changing the permission topic to read authorizes only the actions of that topic - read", async () => {
@@ -320,7 +317,7 @@ describe("session", () => {
           Object.assign({}, connection, { params: { csrfToken } })
         );
         expect(response.error).toBeFalsy();
-        expect(response.success).toBe(true);
+        expect(response["success"]).toBe(true);
 
         await signIn();
         response = await specHelper.runAction(
@@ -328,7 +325,7 @@ describe("session", () => {
           Object.assign({}, connection, { params: { csrfToken } })
         );
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
 
         await signIn();
         response = await specHelper.runAction(
@@ -336,7 +333,7 @@ describe("session", () => {
           Object.assign({}, connection, { params: { csrfToken } })
         );
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
       });
 
       test("changing the permission topic to read authorizes only the actions of that topic - write", async () => {
@@ -353,7 +350,7 @@ describe("session", () => {
           Object.assign({}, connection, { params: { csrfToken } })
         );
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
 
         await signIn();
         response = await specHelper.runAction(
@@ -361,7 +358,7 @@ describe("session", () => {
           Object.assign({}, connection, { params: { csrfToken } })
         );
         expect(response.error).toBeFalsy();
-        expect(response.success).toBe(true);
+        expect(response["success"]).toBe(true);
 
         await signIn();
         response = await specHelper.runAction(
@@ -369,7 +366,7 @@ describe("session", () => {
           Object.assign({}, connection, { params: { csrfToken } })
         );
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
       });
 
       test("optionally authenticated actions can be read by logged out users", async () => {
@@ -378,7 +375,7 @@ describe("session", () => {
           // no connection
         );
         expect(response.error).toBeFalsy();
-        expect(response.success).toBe(true);
+        expect(response["success"]).toBe(true);
       });
 
       test("optionally authenticated actions can be read by logged out users, but require proper credentials", async () => {
@@ -387,14 +384,14 @@ describe("session", () => {
           Object.assign({}, connection, { params: { csrfToken } })
         );
         expect(response.error).toBeFalsy();
-        expect(response.success).toBe(true);
+        expect(response["success"]).toBe(true);
 
         response = await specHelper.runAction(
           "optionallyAuthenticatedAction",
           Object.assign({}, connection, { params: { csrfToken: "BAD TOKEN" } })
         );
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
       });
     });
 
@@ -513,7 +510,7 @@ describe("session", () => {
         let response = await specHelper.runAction("appReadAction", {});
         expect(response.error.message).toBe("Please log in to continue");
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
       });
 
       test("with an invalid apiKey, actions are not authorized", async () => {
@@ -522,7 +519,7 @@ describe("session", () => {
         });
         expect(response.error.message).toBe("apiKey not found");
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
       });
 
       test("an apiKey with no permissions can not run any actions", async () => {
@@ -530,19 +527,19 @@ describe("session", () => {
           apiKey: apiKey.apiKey,
         });
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
 
         response = await specHelper.runAction("appWriteAction", {
           apiKey: apiKey.apiKey,
         });
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
 
         response = await specHelper.runAction("systemReadAction", {
           apiKey: apiKey.apiKey,
         });
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
       });
 
       test("changing the permission topic to read authorizes only the actions of that topic - read", async () => {
@@ -555,19 +552,19 @@ describe("session", () => {
           apiKey: apiKey.apiKey,
         });
         expect(response.error).toBeFalsy();
-        expect(response.success).toBe(true);
+        expect(response["success"]).toBe(true);
 
         response = await specHelper.runAction("appWriteAction", {
           apiKey: apiKey.apiKey,
         });
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
 
         response = await specHelper.runAction("systemReadAction", {
           apiKey: apiKey.apiKey,
         });
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
       });
 
       test("changing the permission topic to read authorizes only the actions of that topic - write", async () => {
@@ -580,19 +577,19 @@ describe("session", () => {
           apiKey: apiKey.apiKey,
         });
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
 
         response = await specHelper.runAction("appWriteAction", {
           apiKey: apiKey.apiKey,
         });
         expect(response.error).toBeFalsy();
-        expect(response.success).toBe(true);
+        expect(response["success"]).toBe(true);
 
         response = await specHelper.runAction("systemReadAction", {
           apiKey: apiKey.apiKey,
         });
         expect(response.error.code).toBe("AUTHORIZATION_ERROR");
-        expect(response.success).toBeFalsy();
+        expect(response["success"]).toBeFalsy();
       });
     });
   });

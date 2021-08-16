@@ -68,7 +68,7 @@ export class DestinationConnectionApps extends AuthenticatedAction {
 
   async runWithinTransaction() {
     const connectionApps: Array<{
-      app: AsyncReturnType<typeof App.prototype.apiData>;
+      app: AsyncReturnType<App["apiData"]>;
       connection: PluginConnection;
     }> = [];
 

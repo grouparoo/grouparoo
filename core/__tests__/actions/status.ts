@@ -4,8 +4,8 @@ import os from "os";
 import fs from "fs";
 import { ConfigUser } from "../../src/modules/configUser";
 import { Status } from "../../src/modules/status";
-import { AsyncReturnType } from "type-fest";
-import { PrivateStatus } from "../../src/actions/status";
+import { PrivateStatus, PublicStatus } from "../../src/actions/status";
+import { SessionCreate } from "../../src/actions/session";
 
 const workerId = process.env.JEST_WORKER_ID;
 const configDir = `${os.tmpdir()}/test/${workerId}/configUser/config`;
@@ -18,14 +18,18 @@ describe("actions/status", () => {
   describe("signed out", () => {
     describe("status:public", () => {
       test("the public status action is OK", async () => {
-        const { status } = await specHelper.runAction("status:public");
+        const { status } = await specHelper.runAction<PublicStatus>(
+          "status:public"
+        );
         expect(status).toBe("ok");
       });
     });
 
     describe("status:private", () => {
       test("cannot use status:private without being signed in", async () => {
-        const { error, metrics } = await specHelper.runAction("status:private");
+        const { error, metrics } = await specHelper.runAction<PrivateStatus>(
+          "status:private"
+        );
         expect(error.code).toBe("AUTHENTICATION_ERROR");
         expect(metrics).toBeUndefined();
       });
@@ -48,14 +52,14 @@ describe("actions/status", () => {
 
         test("cannot use status:private with a local users file in run mode", async () => {
           process.env.GROUPAROO_RUN_MODE = "cli:run";
-          const { error, metrics } = await specHelper.runAction(
+          const { error, metrics } = await specHelper.runAction<PrivateStatus>(
             "status:private"
           );
           expect(error.code).toBe("AUTHENTICATION_ERROR");
           expect(metrics).toBeUndefined();
         });
         test("can use status:private with a local users file in run mode", async () => {
-          const { error, metrics } = await specHelper.runAction(
+          const { error, metrics } = await specHelper.runAction<PrivateStatus>(
             "status:private"
           );
           expect(error).toBeUndefined();
@@ -85,7 +89,7 @@ describe("actions/status", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -95,7 +99,7 @@ describe("actions/status", () => {
 
     describe("status:public", () => {
       test("the public status action is OK", async () => {
-        const { status } = await specHelper.runAction(
+        const { status } = await specHelper.runAction<PublicStatus>(
           "status:public",
           connection
         );
@@ -105,7 +109,7 @@ describe("actions/status", () => {
 
     describe("status:private", () => {
       test("can retrieve cluster name", async () => {
-        const { clusterName } = await specHelper.runAction(
+        const { clusterName } = await specHelper.runAction<PrivateStatus>(
           "status:private",
           connection
         );
@@ -113,7 +117,7 @@ describe("actions/status", () => {
       });
 
       test("can retrieve server uptime via the private status action", async () => {
-        const { uptime } = await specHelper.runAction(
+        const { uptime } = await specHelper.runAction<PrivateStatus>(
           "status:private",
           connection
         );
@@ -122,7 +126,10 @@ describe("actions/status", () => {
 
       test("can retrieve server metadata", async () => {
         const { id, packageName, clusterName, description, version } =
-          await specHelper.runAction("status:private", connection);
+          await specHelper.runAction<PrivateStatus>(
+            "status:private",
+            connection
+          );
 
         expect(id).toBeTruthy();
         expect(clusterName).toBe("My Grouparoo Cluster");
@@ -134,11 +141,10 @@ describe("actions/status", () => {
       test("includes status metrics", async () => {
         await Status.setAll();
 
-        const {
-          metrics,
-        }: AsyncReturnType<
-          typeof PrivateStatus.prototype.runWithinTransaction
-        > = await specHelper.runAction("status:private", connection);
+        const { metrics } = await specHelper.runAction<PrivateStatus>(
+          "status:private",
+          connection
+        );
 
         expect(Object.keys(metrics).length).toBeGreaterThanOrEqual(1);
         const nodeEnvMetric = metrics["node_env"]["cluster"][0].metric;

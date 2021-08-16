@@ -5,9 +5,28 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 
 // import statements are still relative to the file, regardless of cwd
-import fs from "fs-extra";
 import { api, specHelper } from "actionhero";
-import { Profile, ProfileProperty, Property, Run } from "@grouparoo/core";
+import { AsyncReturnType } from "type-fest";
+import {
+  App,
+  Profile,
+  ProfileProperty,
+  Property,
+  Run,
+  Schedule,
+  Source,
+} from "@grouparoo/core";
+import { SessionCreate } from "@grouparoo/core/src/actions/session";
+import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
+import {
+  SourceCreate,
+  SourcePreview,
+} from "@grouparoo/core/src/actions/sources";
+import { PropertyCreate } from "@grouparoo/core/src/actions/properties";
+import {
+  ScheduleCreate,
+  ScheduleRun,
+} from "@grouparoo/core/src/actions/schedules";
 
 describe("integration/runs/csv/remote", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -29,17 +48,16 @@ describe("integration/runs/csv/remote", () => {
 
   describe("import", () => {
     let session;
-    let csrfToken;
-    let file;
-    let source;
-    let app;
-    let schedule;
+    let csrfToken: string;
+    let app: AsyncReturnType<App["apiData"]>;
+    let source: AsyncReturnType<Source["apiData"]>;
+    let schedule: AsyncReturnType<Schedule["apiData"]>;
 
     test("an administrator can create the related import app and schedule", async () => {
       // sign in
       session = await specHelper.buildConnection();
       session.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         session
       );
@@ -53,7 +71,10 @@ describe("integration/runs/csv/remote", () => {
         type: "csv",
         state: "ready",
       };
-      const appResponse = await specHelper.runAction("app:create", session);
+      const appResponse = await specHelper.runAction<AppCreate>(
+        "app:create",
+        session
+      );
       expect(appResponse.error).toBeUndefined();
       app = appResponse.app;
 
@@ -70,7 +91,7 @@ describe("integration/runs/csv/remote", () => {
         mapping: { id: "userId" },
         state: "ready",
       };
-      const sourceResponse = await specHelper.runAction(
+      const sourceResponse = await specHelper.runAction<SourceCreate>(
         "source:create",
         session
       );
@@ -86,7 +107,7 @@ describe("integration/runs/csv/remote", () => {
         recurring: false,
         state: "ready",
       };
-      const scheduleResponse = await specHelper.runAction(
+      const scheduleResponse = await specHelper.runAction<ScheduleCreate>(
         "schedule:create",
         session
       );
@@ -101,7 +122,10 @@ describe("integration/runs/csv/remote", () => {
         csrfToken,
         id: app.id,
       };
-      const { error, test } = await specHelper.runAction("app:test", session);
+      const { error, test } = await specHelper.runAction<AppTest>(
+        "app:test",
+        session
+      );
       expect(error).toBeUndefined();
       expect(test.success).toBe(true);
       expect(test.error).toBeUndefined();
@@ -112,7 +136,7 @@ describe("integration/runs/csv/remote", () => {
         csrfToken,
         id: source.id,
       };
-      const { error, preview } = await specHelper.runAction(
+      const { error, preview } = await specHelper.runAction<SourcePreview>(
         "source:preview",
         session
       );
@@ -158,10 +182,8 @@ describe("integration/runs/csv/remote", () => {
         state: "ready",
       };
 
-      const { error, property, pluginOptions } = await specHelper.runAction(
-        "property:create",
-        session
-      );
+      const { error, property, pluginOptions } =
+        await specHelper.runAction<PropertyCreate>("property:create", session);
       expect(error).toBeUndefined();
       expect(property.id).toBeTruthy();
 
@@ -194,7 +216,7 @@ describe("integration/runs/csv/remote", () => {
           csrfToken,
           id: schedule.id,
         };
-        const { error, success } = await specHelper.runAction(
+        const { error, success } = await specHelper.runAction<ScheduleRun>(
           "schedule:run",
           session
         );
@@ -280,7 +302,7 @@ describe("integration/runs/csv/remote", () => {
           csrfToken,
           id: schedule.id,
         };
-        const { error, success } = await specHelper.runAction(
+        const { error, success } = await specHelper.runAction<ScheduleRun>(
           "schedule:run",
           session
         );

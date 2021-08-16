@@ -1,6 +1,15 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { TeamMember } from "../../src";
+import { SessionCreate } from "../../src/actions/session";
+import { TeamInitialize } from "../../src/actions/teams";
+import {
+  TeamMemberCreate,
+  TeamMemberDestroy,
+  TeamMemberEdit,
+  TeamMembersList,
+  TeamMemberView,
+} from "../../src/actions/teamMembers";
 
 const GrouparooSubscriptionModule = require("../../src/modules/grouparooSubscription");
 GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
@@ -11,12 +20,15 @@ describe("actions/teamMembers", () => {
   let teamMemberId: string;
 
   beforeAll(async () => {
-    const { team } = await specHelper.runAction("team:initialize", {
-      firstName: "Mario",
-      lastName: "Mario",
-      password: "P@ssw0rd!",
-      email: "mario@example.com",
-    });
+    const { team } = await specHelper.runAction<TeamInitialize>(
+      "team:initialize",
+      {
+        firstName: "Mario",
+        lastName: "Mario",
+        password: "P@ssw0rd!",
+        email: "mario@example.com",
+      }
+    );
     teamId = team.id;
   });
 
@@ -27,7 +39,7 @@ describe("actions/teamMembers", () => {
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -43,10 +55,11 @@ describe("actions/teamMembers", () => {
         email: "luigi@example.com",
         password: "mush00ms",
       };
-      const { error, teamMember } = await specHelper.runAction(
-        "teamMember:create",
-        connection
-      );
+      const { error, teamMember } =
+        await specHelper.runAction<TeamMemberCreate>(
+          "teamMember:create",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(teamMember.id).toBeTruthy();
       expect(teamMember.teamId).toBe(teamId);
@@ -109,10 +122,11 @@ describe("actions/teamMembers", () => {
         csrfToken,
         id: teamMemberId,
       };
-      const { error, teamMember, team } = await specHelper.runAction(
-        "teamMember:view",
-        connection
-      );
+      const { error, teamMember, team } =
+        await specHelper.runAction<TeamMemberView>(
+          "teamMember:view",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(teamMember.id).toBeTruthy();
       expect(teamMember.teamId).toBe(teamId);
@@ -125,10 +139,11 @@ describe("actions/teamMembers", () => {
         csrfToken,
         teamId,
       };
-      const { error, teamMembers } = await specHelper.runAction(
-        "teamMembers:list",
-        connection
-      );
+      const { error, teamMembers } =
+        await specHelper.runAction<TeamMembersList>(
+          "teamMembers:list",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(teamMembers.length).toBe(4);
     });
@@ -137,10 +152,11 @@ describe("actions/teamMembers", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, teamMembers } = await specHelper.runAction(
-        "teamMembers:list",
-        connection
-      );
+      const { error, teamMembers } =
+        await specHelper.runAction<TeamMembersList>(
+          "teamMembers:list",
+          connection
+        );
       expect(error).toBeUndefined();
       expect(teamMembers.length).toBe(4);
     });
@@ -151,7 +167,7 @@ describe("actions/teamMembers", () => {
         id: teamMemberId,
         firstName: "Super Luigi",
       };
-      const { error, teamMember } = await specHelper.runAction(
+      const { error, teamMember } = await specHelper.runAction<TeamMemberEdit>(
         "teamMember:edit",
         connection
       );
@@ -168,7 +184,7 @@ describe("actions/teamMembers", () => {
         id: teamMemberId,
         teamId: team.id,
       };
-      const { error, teamMember } = await specHelper.runAction(
+      const { error, teamMember } = await specHelper.runAction<TeamMemberEdit>(
         "teamMember:edit",
         connection
       );
@@ -182,7 +198,7 @@ describe("actions/teamMembers", () => {
         id: teamMemberId,
         password: "new-password",
       };
-      const { error } = await specHelper.runAction(
+      const { error } = await specHelper.runAction<TeamMemberEdit>(
         "teamMember:edit",
         connection
       );
@@ -200,7 +216,7 @@ describe("actions/teamMembers", () => {
         csrfToken,
         id: teamMemberId,
       };
-      const { error, success } = await specHelper.runAction(
+      const { error, success } = await specHelper.runAction<TeamMemberDestroy>(
         "teamMember:destroy",
         connection
       );
@@ -217,7 +233,7 @@ describe("actions/teamMembers", () => {
         csrfToken,
         id: mario.id,
       };
-      const { error } = await specHelper.runAction(
+      const { error } = await specHelper.runAction<TeamMemberDestroy>(
         "teamMember:destroy",
         connection
       );

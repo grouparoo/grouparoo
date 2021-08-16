@@ -1,6 +1,12 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Import } from "../../src";
+import {
+  ImportCreate,
+  ImportsList,
+  ImportView,
+} from "../../src/actions/imports";
+import { SessionCreate } from "../../src/actions/session";
 
 describe("actions/imports", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -18,7 +24,7 @@ describe("actions/imports", () => {
   });
 
   test("an import cannot be created without an apiKey", async () => {
-    const { error, import: _import } = await specHelper.runAction(
+    const { error, import: _import } = await specHelper.runAction<ImportCreate>(
       "import:create",
       {
         properties: {
@@ -32,7 +38,7 @@ describe("actions/imports", () => {
   });
 
   test("an import can be added that contains unique profile properties", async () => {
-    const { error, import: _import } = await specHelper.runAction(
+    const { error, import: _import } = await specHelper.runAction<ImportCreate>(
       "import:create",
       {
         apiKey,
@@ -49,7 +55,7 @@ describe("actions/imports", () => {
   });
 
   test("import properties are parsed from JSON as needed", async () => {
-    const { error, import: _import } = await specHelper.runAction(
+    const { error, import: _import } = await specHelper.runAction<ImportCreate>(
       "import:create",
       {
         apiKey,
@@ -66,7 +72,7 @@ describe("actions/imports", () => {
   });
 
   test("an import cannot be added if it has no unique profile properties", async () => {
-    const { error, import: _import } = await specHelper.runAction(
+    const { error, import: _import } = await specHelper.runAction<ImportCreate>(
       "import:create",
       {
         apiKey,
@@ -92,7 +98,7 @@ describe("actions/imports", () => {
 
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
         "session:create",
         connection
       );
@@ -102,7 +108,7 @@ describe("actions/imports", () => {
     test("an import can be viewed", async () => {
       const i = await Import.findOne();
       connection.params = { csrfToken, id: i.id };
-      const { error, import: _import } = await specHelper.runAction(
+      const { error, import: _import } = await specHelper.runAction<ImportView>(
         "import:view",
         connection
       );
@@ -114,7 +120,7 @@ describe("actions/imports", () => {
 
     test("imports can be listed", async () => {
       connection.params = { csrfToken };
-      const { error, imports } = await specHelper.runAction(
+      const { error, imports } = await specHelper.runAction<ImportsList>(
         "imports:list",
         connection
       );

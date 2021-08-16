@@ -1,6 +1,7 @@
 import { Action } from "actionhero";
 import { APM } from "../../modules/apm";
 import { CLS } from "../../modules/cls";
+import { AsyncReturnType } from "type-fest";
 
 export interface ActionData {
   [key: string]: any;
@@ -23,7 +24,9 @@ export abstract class CLSAction extends Action {
     return true;
   }
 
-  async run(params: ActionData) {
+  async run(
+    params: ActionData
+  ): Promise<AsyncReturnType<this["runWithinTransaction"]>> {
     return APM.wrap(this.name, "action", params, async () => {
       const options = { write: this.isWriteTransaction(), priority: true };
       return CLS.wrap(

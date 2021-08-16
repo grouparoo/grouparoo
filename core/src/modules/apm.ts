@@ -13,7 +13,7 @@ export namespace APM {
     type: "action" | "task",
     data: any,
     run: Function
-  ): Promise<void> {
+  ): Promise<any> {
     return api.apm.wrap(name, type, data, run);
   }
 }
