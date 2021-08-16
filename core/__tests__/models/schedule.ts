@@ -273,7 +273,7 @@ describe("models/schedule", () => {
         await schedule.destroy();
       });
 
-      test("changing a schedule's options will reset previous highwatermarks and start a run", async () => {
+      test("changing a schedule's options will reset previous highWaterMarks and start a run", async () => {
         const schedule: Schedule = await helper.factories.schedule();
         const opts = await schedule.getOptions();
         expect(opts).toEqual({ maxColumn: "updated_at" });
@@ -288,6 +288,31 @@ describe("models/schedule", () => {
         expect(run.highWaterMark).toEqual({ updated_at: 12345 });
 
         await schedule.setOptions({ maxColumn: "createdAt" });
+
+        await run.reload();
+        expect(run.highWaterMark).toEqual({}); // the getter formats to an empty array
+        expect((await schedule.$get("runs")).length).toBe(2);
+
+        await schedule.destroy();
+      });
+
+      test("changing a schedule's filters will reset previous highWaterMarks and start a run", async () => {
+        const schedule: Schedule = await helper.factories.schedule();
+        const filters = await schedule.getFilters();
+        expect(filters).toEqual([]);
+
+        const run = await Run.create({
+          creatorId: schedule.id,
+          creatorType: "schedule",
+          state: "complete",
+          highWaterMark: { updated_at: 12345 },
+        });
+        expect((await schedule.$get("runs")).length).toBe(1);
+        expect(run.highWaterMark).toEqual({ updated_at: 12345 });
+
+        await schedule.setFilters([
+          { key: "id", match: "0", op: "greater than" },
+        ]);
 
         await run.reload();
         expect(run.highWaterMark).toEqual({}); // the getter formats to an empty array

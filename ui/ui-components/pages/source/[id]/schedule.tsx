@@ -369,16 +369,6 @@ export default function Page(props) {
                   </div>
                 ))}
 
-                {schedule.state === "ready" ? (
-                  <>
-                    <br />
-                    <Alert variant="info">
-                      Note that changing the options for a Schedule will reset
-                      the high water mark and stop all running Runs.
-                    </Alert>
-                  </>
-                ) : null}
-
                 {filterOptions.length > 0 ? (
                   <>
                     <hr />
@@ -560,6 +550,16 @@ export default function Page(props) {
                 ) : null}
               </>
               <hr />
+
+              {schedule.state === "ready" ? (
+                <>
+                  <Alert variant="info">
+                    Note that changing the options or filters for a Schedule
+                    will reset the high water mark and stop all running Runs.
+                  </Alert>
+                </>
+              ) : null}
+
               <LoadingButton variant="primary" type="submit" disabled={loading}>
                 Update
               </LoadingButton>

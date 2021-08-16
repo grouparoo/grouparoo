@@ -179,6 +179,14 @@ export class Schedule extends LoggedModel<Schedule> {
     return FilterHelper.setFilters(this, filters, externallyValidate);
   }
 
+  async afterSetFilters(hasChanges: boolean) {
+    if (!hasChanges) return;
+    if (this.state !== "ready") return;
+
+    await this.resetHighWatermarks();
+    await this.enqueueRun();
+  }
+
   async runPercentComplete(run: Run) {
     return ScheduleOps.runPercentComplete(this, run);
   }
