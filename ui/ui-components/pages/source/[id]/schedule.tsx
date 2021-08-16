@@ -555,7 +555,8 @@ export default function Page(props) {
                 <>
                   <Alert variant="info">
                     Note that changing the options or filters for a Schedule
-                    will reset the high water mark and stop all running Runs.
+                    will reset the high water mark and stop all running Runs. A
+                    new Run will be enqueued.
                   </Alert>
                 </>
               ) : null}
