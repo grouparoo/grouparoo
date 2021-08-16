@@ -127,6 +127,10 @@ export async function loadSource(
   logModel(source, validate ? "validated" : isNew ? "created" : "updated");
 
   if (bootstrappedProperty) {
+    await bootstrappedProperty.update({
+      keepValueIfNotFound: bootstrappedPropertyConfig.keepValueIfNotFound,
+    });
+
     logModel(
       bootstrappedProperty,
       validate ? "validated" : isNew ? "created" : "updated"
