@@ -1,4 +1,8 @@
-import { Source, SimpleSourceOptions } from "../../models/Source";
+import {
+  Source,
+  SimpleSourceOptions,
+  SourceMapping,
+} from "../../models/Source";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import {
   Property,
@@ -15,6 +19,7 @@ import { LoggedModel } from "../../classes/loggedModel";
 import { FilterHelper } from "../filterHelper";
 import { topologicalSort } from "../topologicalSort";
 import { ConfigWriter } from "../configWriter";
+import { ProfilePropertiesPluginMethodResponse } from "../../classes/plugin";
 
 export namespace SourceOps {
   /**
@@ -253,11 +258,76 @@ export namespace SourceOps {
         profileIds: profiles.map((p) => p.id),
       });
 
+      await applyNonUniqueMappedResultsToAllProfiles(response, {
+        profiles,
+        properties,
+        sourceMapping,
+      });
+
       return response;
     } catch (error) {
       throw error;
     } finally {
       await app.checkAndUpdateParallelism("decr");
+    }
+  }
+
+  // for non-unique mappings, we need to fan out the values we received back from the source
+  export async function applyNonUniqueMappedResultsToAllProfiles(
+    response: ProfilePropertiesPluginMethodResponse,
+    {
+      profiles,
+      properties,
+      sourceMapping,
+    }: {
+      profiles: Profile[];
+      properties: Property[];
+      sourceMapping: SourceMapping;
+    }
+  ) {
+    const mappedPropertyKey = Object.values(sourceMapping)[0];
+    const mappedProperty = await Property.findOne({
+      where: { key: mappedPropertyKey },
+    });
+
+    if (!mappedProperty) return;
+    if (mappedProperty.unique) return;
+
+    const valueMap: { [mappedPropertyId: string]: { [match: string]: any } } =
+      {};
+
+    // load up the values
+    for (const profileId of Object.keys(response)) {
+      const profile = profiles.find((p) => p.id === profileId);
+      const profileProperties = await profile.getProperties();
+      for (const property of properties) {
+        if (!valueMap[property.id]) valueMap[property.id] = {};
+        if (profileProperties[mappedProperty.key].state !== "ready") {
+          throw new Error(
+            `ProfileProperty ${mappedProperty.key} for profile ${profile.id} is not ready`
+          );
+        }
+
+        valueMap[property.id][
+          profileProperties[mappedProperty.key].values[0].toString()
+        ] = response[profile.id][property.id];
+      }
+    }
+
+    // apply the values
+    for (const profile of profiles) {
+      if (!response[profile.id]) {
+        response[profile.id] = {};
+        const profileProperties = await profile.getProperties();
+        for (const propertyKey of Object.keys(valueMap)) {
+          const lookupValue =
+            profileProperties[mappedProperty.key]?.values[0]?.toString();
+          response[profile.id][propertyKey] =
+            lookupValue && valueMap[propertyKey][lookupValue] !== undefined
+              ? valueMap[propertyKey][lookupValue]
+              : [null];
+        }
+      }
     }
   }
 
@@ -441,8 +511,7 @@ export namespace SourceOps {
     const existingIdentifying = await Property.findOne({
       where: { identifying: true },
     });
-    // if there isn't one already, make this one identifying
-    const identifying = existingIdentifying ? false : true;
+    const identifying = existingIdentifying ? false : true; // if there isn't one already, make this one identifying
 
     const property = Property.build({
       id: id ?? ConfigWriter.generateId(key),

@@ -216,10 +216,21 @@ export class Source extends LoggedModel<Source> {
 
   async scheduleAvailable() {
     const { pluginConnection } = await this.getPlugin();
-    if (typeof pluginConnection?.methods?.profiles === "function") {
+    if (typeof pluginConnection?.methods?.profiles !== "function") {
+      return false;
+    }
+
+    const mapping = await this.getMapping();
+    if (Object.values(mapping).length === 0) {
+      return true;
+    } else {
+      const propertyMappingKey = Object.values(mapping)[0];
+      const property = (await Property.findAllWithCache()).find(
+        (p) => p.key === propertyMappingKey
+      );
+      if (!property.unique) return false;
       return true;
     }
-    return false;
   }
 
   async previewAvailable() {

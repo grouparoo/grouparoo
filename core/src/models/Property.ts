@@ -523,7 +523,33 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
-  static async noUpdateIfLocked(instance) {
+  static async noUniqueOrArrayThroughNonUniqueMapping(instance: Property) {
+    if (instance.state === "draft") return;
+
+    const source = await Source.findById(instance.sourceId);
+    if (source.state !== "ready") return; // we are bootstrapping
+    const sourceMapping = await source.getMapping();
+    if (Object.keys(sourceMapping).length === 0) return; // Query source
+    const mappedPropertyKey = Object.values(sourceMapping)[0];
+    const mappedProperty = await Property.findOne({
+      where: { key: mappedPropertyKey },
+    });
+
+    if (mappedProperty.unique) return;
+
+    if (instance.unique)
+      throw new Error(
+        `A unique Property cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
+      );
+
+    if (instance.isArray)
+      throw new Error(
+        `An array Property cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
+      );
+  }
+
+  @BeforeSave
+  static async noUpdateIfLocked(instance: Property) {
     await LockableHelper.beforeSave(instance, ["state", "directlyMapped"]);
   }
 

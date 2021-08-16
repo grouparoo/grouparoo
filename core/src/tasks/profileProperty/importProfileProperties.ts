@@ -32,7 +32,8 @@ export class ImportProfileProperties extends RetryableTask {
     });
     if (profiles.length === 0) return;
 
-    const properties = (await Property.findAllWithCache()).filter((p) =>
+    const allProperties = await Property.findAllWithCache();
+    const properties = allProperties.filter((p) =>
       params.propertyIds.includes(p.id)
     );
     if (properties.length === 0) return;
@@ -58,14 +59,14 @@ export class ImportProfileProperties extends RetryableTask {
     }
 
     for (const profile of profiles) {
-      let ok = true;
+      let mode: "ready" | "notReady" = "ready";
 
       // all already (wrongly) ready?
       if (
         profile.profileProperties.filter((p) => p.state === "ready").length ===
         profile.profileProperties.length
       ) {
-        ok = false;
+        mode = "notReady";
       }
 
       for (const property of properties) {
@@ -77,11 +78,19 @@ export class ImportProfileProperties extends RetryableTask {
               profile.profileProperties.find((p) => p.propertyId === dep.id)
                 ?.state !== "ready"
             ) {
-              ok = false;
+              mode = "notReady";
             }
           });
       }
-      ok ? profilesToImport.push(profile) : profilesNotReady.push(profile);
+
+      switch (mode) {
+        case "ready":
+          profilesToImport.push(profile);
+          break;
+        case "notReady":
+          profilesNotReady.push(profile);
+          break;
+      }
     }
 
     if (profilesNotReady.length > 0) {
@@ -138,7 +147,6 @@ export class ImportProfileProperties extends RetryableTask {
     }
 
     // update the properties that got no data back
-
     const propertiesToKeep = properties.filter((p) => p.keepValueIfNotFound);
     if (propertiesToKeep.length > 0) {
       await ProfileProperty.update(

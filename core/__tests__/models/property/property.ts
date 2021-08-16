@@ -280,6 +280,7 @@ describe("models/property", () => {
       appId: app.id,
       type: "source-no-options",
     });
+    await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
     const property = await Property.create({
       key: "property-no-options",
@@ -581,7 +582,7 @@ describe("models/property", () => {
     await source.destroy();
   });
 
-  describe("directlyMapping", () => {
+  describe("directlyMapped", () => {
     let userIdProperty: Property;
     let emailProperty: Property;
 
@@ -726,6 +727,53 @@ describe("models/property", () => {
 
     beforeEach(() => {
       queryCounter = 0;
+    });
+
+    describe("mapped though a non-unique property", () => {
+      let property: Property;
+
+      beforeAll(async () => {
+        property = await helper.factories.property(
+          source,
+          { key: "wordInSpanish" },
+          { column: "spanishWord" }
+        );
+      });
+
+      beforeEach(async () => {
+        await property.update({ unique: false, isArray: false });
+      });
+
+      afterAll(async () => {
+        await property.destroy();
+        await source.setMapping({ id: "userId" });
+      });
+
+      test("properties mapped through unique properties can be unique", async () => {
+        await source.setMapping({ id: "userId" });
+        await property.update({ unique: true });
+        expect((await property.reload()).unique).toEqual(true);
+      });
+
+      test("properties mapped through unique properties can be arrays", async () => {
+        await source.setMapping({ id: "userId" });
+        await property.update({ isArray: true });
+        expect((await property.reload()).isArray).toEqual(true);
+      });
+
+      test("properties mapped through non-unique properties cannot be unique", async () => {
+        await source.setMapping({ id: "lastName" });
+        await expect(property.update({ unique: true })).rejects.toThrow(
+          /A unique Property cannot be mapped through a non-unique Property/
+        );
+      });
+
+      test("properties mapped through non-unique properties cannot be arrays", async () => {
+        await source.setMapping({ id: "lastName" });
+        await expect(property.update({ isArray: true })).rejects.toThrow(
+          /An array Property cannot be mapped through a non-unique Property/
+        );
+      });
     });
 
     describe("filters", () => {

@@ -10,6 +10,7 @@ import {
   Option,
   ProfileProperty,
   Destination,
+  SourceMapping,
 } from "../../../src";
 import { Op } from "sequelize";
 import { SourceOps } from "../../../src/modules/ops/source";
@@ -496,6 +497,23 @@ describe("models/source", () => {
         })
       ).rejects.toThrow(/cannot find property TheUserID/);
     });
+
+    test("array properties cannot be used for mappings", async () => {
+      const firstSource = await Source.findOne({
+        where: { id: { [Op.ne]: source.id } },
+      });
+      const arrayProperty: Property = await helper.factories.property(
+        firstSource,
+        { key: "things", isArray: true },
+        { column: "things" }
+      );
+
+      await expect(
+        source.setMapping({ local_user_id: arrayProperty.key })
+      ).rejects.toThrow(/Sources cannot map to an array Property/);
+
+      await arrayProperty.destroy();
+    });
   });
 
   describe("defaultPropertyOptions", () => {
@@ -614,8 +632,12 @@ describe("models/source", () => {
     });
 
     test("bootstrapUniqueProperty will fail if the property cannot be created", async () => {
+      const otherSource: Source = await helper.factories.source();
+      await otherSource.setOptions({ table: "foo" });
+      await otherSource.update({ state: "ready" }, { hooks: false }); // normally you can't get into this situation
+
       const blockingProperty = await Property.create({
-        sourceId: source.id,
+        sourceId: otherSource.id,
         id: "blocking_property",
         key: "blockingProperty",
         type: "string",
@@ -623,7 +645,7 @@ describe("models/source", () => {
         isArray: false,
       });
       await blockingProperty.setOptions({ column: "something" });
-      await blockingProperty.update({ state: "ready" });
+      await blockingProperty.update({ state: "ready" }, { hooks: false }); // normally you can't get into this situation
 
       await expect(
         source.bootstrapUniqueProperty(
@@ -634,6 +656,7 @@ describe("models/source", () => {
       ).rejects.toThrow(/already in use/);
 
       await blockingProperty.destroy();
+      await otherSource.destroy();
     });
   });
 
@@ -902,6 +925,135 @@ describe("models/source", () => {
 
       expect(Object.keys(counts).length).toBe(1);
       expect(counts[emailProperty.sourceId]).toBe(1);
+    });
+  });
+
+  describe("#applyNonUniqueMappedResultsToAllProfiles", () => {
+    let source: Source;
+    let sourceMapping: SourceMapping;
+    let propertyA: Property;
+    let propertyB: Property;
+    let mario: Profile;
+    let luigi: Profile;
+
+    beforeAll(async () => {
+      source = await Source.create({
+        type: "test-plugin-import",
+        name: "translations source",
+        appId: app.id,
+      });
+
+      await source.setOptions({ table: "translations" });
+      await source.setMapping({ word: "lastName" });
+      await source.update({ state: "ready" });
+      sourceMapping = await source.getMapping();
+
+      propertyA = await helper.factories.property(
+        source,
+        { key: "wordInSpanish" },
+        { column: "spanishWord" }
+      );
+      propertyB = await helper.factories.property(
+        source,
+        { key: "wordInFrench" },
+        { column: "frenchWord" }
+      );
+
+      mario = await helper.factories.profile();
+      luigi = await helper.factories.profile();
+    });
+
+    afterAll(async () => {
+      await mario.destroy();
+      await luigi.destroy();
+      await propertyA.destroy();
+      await propertyB.destroy();
+      await source.destroy();
+    });
+
+    test("sources mapped through non-unique properties cannot have a schedule", async () => {
+      expect(await source.scheduleAvailable()).toBe(false);
+    });
+
+    test("it will throw if the profile properties in are not ready", async () => {
+      await mario.markPending();
+
+      const profiles = [mario];
+      const properties = [propertyA];
+      const response = { [mario.id]: { [propertyA.id]: ["hello"] } };
+      await expect(
+        SourceOps.applyNonUniqueMappedResultsToAllProfiles(response, {
+          profiles,
+          properties,
+          sourceMapping,
+        })
+      ).rejects.toThrow(/ is not ready/);
+    });
+
+    describe("with ready profile properties", () => {
+      beforeAll(async () => {
+        await mario.import();
+        await luigi.import();
+      });
+
+      beforeEach(async () => {
+        await propertyA.update({ isArray: false, unique: false });
+        await propertyB.update({ isArray: false, unique: false });
+      });
+
+      test("it will apply non-unique properties to all profiles in the batch (1 property)", async () => {
+        const profiles = [mario, luigi];
+        const properties = [propertyA];
+        const response = { [mario.id]: { [propertyA.id]: ["hola"] } };
+        await SourceOps.applyNonUniqueMappedResultsToAllProfiles(response, {
+          profiles,
+          properties,
+          sourceMapping,
+        });
+
+        expect(response).toEqual({
+          [mario.id]: { wordInSpanish: ["hola"] },
+          [luigi.id]: { wordInSpanish: ["hola"] },
+        });
+      });
+
+      test("it will apply non-unique properties to all profiles in the batch (2 properties)", async () => {
+        const profiles = [mario, luigi];
+        const properties = [propertyA, propertyB];
+        const response = {
+          [mario.id]: { [propertyA.id]: ["hola"], [propertyB.id]: ["bonjour"] },
+        };
+        await SourceOps.applyNonUniqueMappedResultsToAllProfiles(response, {
+          profiles,
+          properties,
+          sourceMapping,
+        });
+
+        expect(response).toEqual({
+          [mario.id]: { wordInSpanish: ["hola"], wordInFrench: ["bonjour"] },
+          [luigi.id]: { wordInSpanish: ["hola"], wordInFrench: ["bonjour"] },
+        });
+      });
+
+      test("it returns null when the source does not have a record for the property", async () => {
+        await luigi.addOrUpdateProperties({ lastName: ["x"] }); // change the value of the property that is mapped
+
+        const profiles = [mario, luigi];
+        const properties = [propertyA, propertyB];
+        const response = {
+          [mario.id]: { [propertyA.id]: ["hola"], [propertyB.id]: ["bonjour"] },
+        };
+        await SourceOps.applyNonUniqueMappedResultsToAllProfiles(response, {
+          profiles,
+          properties,
+          sourceMapping,
+        });
+
+        expect(response).toEqual({
+          [mario.id]: { wordInSpanish: ["hola"], wordInFrench: ["bonjour"] },
+          [luigi.id]: { wordInSpanish: [null], wordInFrench: [null] },
+        });
+      });
     });
   });
 });
