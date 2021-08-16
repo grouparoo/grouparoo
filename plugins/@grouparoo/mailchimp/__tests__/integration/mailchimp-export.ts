@@ -11,15 +11,16 @@ import {
   Group,
   SimpleDestinationOptions,
   SimpleAppOptions,
+  App,
+  Destination,
 } from "@grouparoo/core";
 import { SessionCreate } from "@grouparoo/core/src/actions/session";
-import { AppCreate, AppTest, AppView } from "@grouparoo/core/src/actions/apps";
+import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
 import {
   DestinationConnectionOptions,
   DestinationCreate,
   DestinationEdit,
   DestinationMappingOptions,
-  DestinationView,
 } from "@grouparoo/core/src/actions/destinations";
 import { generateMailchimpId } from "./../../src/lib/shared/generateMailchimpId";
 import { connect } from "./../../src/lib/connect";
@@ -82,9 +83,9 @@ async function cleanUp() {
 describe("integration/runs/mailchimp-export", () => {
   let session;
   let csrfToken: string;
-  let app: AsyncReturnType<AppView["run"]>["app"];
+  let app: AsyncReturnType<App["apiData"]>;
   let profile: Profile;
-  let destination: AsyncReturnType<DestinationView["run"]>["destination"];
+  let destination: AsyncReturnType<Destination["apiData"]>;
   let group: Group;
 
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

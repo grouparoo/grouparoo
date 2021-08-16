@@ -18,13 +18,11 @@ export class SetupStepsList extends AuthenticatedAction {
   }
 
   async runWithinTransaction() {
+    const responseSetupSteps: Array<AsyncReturnType<SetupStep["apiData"]>> = [];
+
     const setupSteps = await SetupStep.findAll({
       order: [["position", "asc"]],
     });
-
-    const responseSetupSteps: Array<
-      AsyncReturnType<typeof SetupStep.prototype.apiData>
-    > = [];
 
     for (const i in setupSteps) {
       await setupSteps[i].performCheck();

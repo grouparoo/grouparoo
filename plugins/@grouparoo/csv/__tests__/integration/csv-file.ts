@@ -8,19 +8,25 @@ import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import fs from "fs-extra";
 import { api, specHelper } from "actionhero";
 import { AsyncReturnType } from "type-fest";
-import { Profile, ProfileProperty, Property, Run } from "@grouparoo/core";
+import {
+  App,
+  Profile,
+  ProfileProperty,
+  Property,
+  Run,
+  Schedule,
+  Source,
+} from "@grouparoo/core";
 import { SessionCreate } from "@grouparoo/core/src/actions/session";
 import { AppCreate, AppTest, AppView } from "@grouparoo/core/src/actions/apps";
 import {
   SourceCreate,
   SourcePreview,
-  SourceView,
 } from "@grouparoo/core/src/actions/sources";
 import { PropertyCreate } from "@grouparoo/core/src/actions/properties";
 import {
   ScheduleCreate,
   ScheduleRun,
-  ScheduleView,
 } from "@grouparoo/core/src/actions/schedules";
 import { FileCreate } from "@grouparoo/core/src/actions/files";
 
@@ -46,9 +52,9 @@ describe("integration/runs/csv/file", () => {
     let session;
     let csrfToken;
     let file: any;
-    let app: AsyncReturnType<AppView["run"]>["app"];
-    let source: AsyncReturnType<SourceView["run"]>["source"];
-    let schedule: AsyncReturnType<ScheduleView["run"]>["schedule"];
+    let app: AsyncReturnType<App["apiData"]>;
+    let source: AsyncReturnType<Source["apiData"]>;
+    let schedule: AsyncReturnType<Schedule["apiData"]>;
 
     beforeAll(async () => {
       const file = "/tmp/profiles-10.csv";

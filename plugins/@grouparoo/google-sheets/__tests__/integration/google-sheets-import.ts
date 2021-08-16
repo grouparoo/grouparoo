@@ -7,24 +7,25 @@ import fs from "fs-extra";
 import { api, specHelper } from "actionhero";
 import { AsyncReturnType } from "type-fest";
 import {
+  App,
   plugin,
   Profile,
   ProfileProperty,
   Property,
   Run,
+  Schedule,
+  Source,
 } from "@grouparoo/core";
 import { SessionCreate } from "@grouparoo/core/src/actions/session";
-import { AppCreate, AppTest, AppView } from "@grouparoo/core/src/actions/apps";
+import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
 import {
   SourceCreate,
   SourcePreview,
-  SourceView,
 } from "@grouparoo/core/src/actions/sources";
 import { PropertyCreate } from "@grouparoo/core/src/actions/properties";
 import {
   ScheduleCreate,
   ScheduleRun,
-  ScheduleView,
 } from "@grouparoo/core/src/actions/schedules";
 
 let envFile = path.resolve(path.join(__dirname, "../", ".env"));
@@ -72,9 +73,9 @@ describe("integration/runs/google-sheets", () => {
   describe("import", () => {
     let session;
     let csrfToken: string;
-    let app: AsyncReturnType<AppView["run"]>["app"];
-    let source: AsyncReturnType<SourceView["run"]>["source"];
-    let schedule: AsyncReturnType<ScheduleView["run"]>["schedule"];
+    let app: AsyncReturnType<App["apiData"]>;
+    let source: AsyncReturnType<Source["apiData"]>;
+    let schedule: AsyncReturnType<Schedule["apiData"]>;
 
     test("an administrator can create the related import app and schedule", async () => {
       // sign in

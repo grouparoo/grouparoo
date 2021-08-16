@@ -397,10 +397,10 @@ describe("actions/profiles", () => {
     });
 
     describe("search", () => {
-      let mario: AsyncReturnType<ProfileCreate["run"]>["profile"];
-      let luigi: AsyncReturnType<ProfileCreate["run"]>["profile"];
-      let peach: AsyncReturnType<ProfileCreate["run"]>["profile"];
-      let toad: AsyncReturnType<ProfileCreate["run"]>["profile"];
+      let mario: AsyncReturnType<Profile["apiData"]>;
+      let luigi: AsyncReturnType<Profile["apiData"]>;
+      let peach: AsyncReturnType<Profile["apiData"]>;
+      let toad: AsyncReturnType<Profile["apiData"]>;
       let group: Group;
 
       beforeAll(async () => {

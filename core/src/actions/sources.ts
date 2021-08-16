@@ -66,7 +66,7 @@ export class SourceConnectionApps extends AuthenticatedAction {
     const existingAppTypes = apps.map((a) => a.type);
 
     const connectionApps: Array<{
-      app: AsyncReturnType<typeof App.prototype.apiData>;
+      app: AsyncReturnType<App["apiData"]>;
       connection: PluginConnection;
     }> = [];
 

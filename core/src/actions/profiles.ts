@@ -36,7 +36,7 @@ export class ProfilesList extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const { profiles, total } = await ProfileOps.search(params);
-    const profileData: AsyncReturnType<typeof Profile.prototype.apiData>[] = [];
+    const profileData: AsyncReturnType<Profile["apiData"]>[] = [];
     for (const profile of profiles) {
       profileData.push(await profile.apiData());
     }

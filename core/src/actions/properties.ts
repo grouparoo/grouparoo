@@ -50,9 +50,7 @@ export class PropertiesList extends AuthenticatedAction {
       where,
     });
 
-    const responseProperties: Array<
-      AsyncReturnType<typeof Property.prototype.apiData>
-    > = [];
+    const responseProperties: Array<AsyncReturnType<Property["apiData"]>> = [];
     const responseExamples: { [id: string]: string[] } = {};
 
     for (const property of properties) {

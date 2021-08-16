@@ -13,14 +13,17 @@ import {
   ProfileProperty,
   Run,
   Group,
+  Destination,
+  Schedule,
+  Source,
+  App,
 } from "@grouparoo/core";
 import { SessionCreate } from "@grouparoo/core/src/actions/session";
-import { AppCreate, AppTest, AppView } from "@grouparoo/core/src/actions/apps";
+import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
 import {
   SourceCreate,
   SourceEdit,
   SourcePreview,
-  SourceView,
 } from "@grouparoo/core/src/actions/sources";
 import {
   PropertyCreate,
@@ -29,13 +32,11 @@ import {
 import {
   ScheduleCreate,
   ScheduleRun,
-  ScheduleView,
 } from "@grouparoo/core/src/actions/schedules";
 import {
   DestinationCreate,
   DestinationEdit,
   DestinationMappingOptions,
-  DestinationView,
 } from "@grouparoo/core/src/actions/destinations";
 
 const {
@@ -53,10 +54,10 @@ describe("integration/runs/sqlite", () => {
 
   let session;
   let csrfToken: string;
-  let app: AsyncReturnType<AppView["run"]>["app"];
-  let source: AsyncReturnType<SourceView["run"]>["source"];
-  let schedule: AsyncReturnType<ScheduleView["run"]>["schedule"];
-  let destination: AsyncReturnType<DestinationView["run"]>["destination"];
+  let app: AsyncReturnType<App["apiData"]>;
+  let source: AsyncReturnType<Source["apiData"]>;
+  let schedule: AsyncReturnType<Schedule["apiData"]>;
+  let destination: AsyncReturnType<Destination["apiData"]>;
   let group: Group;
   let client;
 

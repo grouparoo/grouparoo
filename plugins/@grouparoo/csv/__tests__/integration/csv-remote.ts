@@ -5,22 +5,27 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 
 // import statements are still relative to the file, regardless of cwd
-import fs from "fs-extra";
 import { api, specHelper } from "actionhero";
 import { AsyncReturnType } from "type-fest";
-import { Profile, ProfileProperty, Property, Run } from "@grouparoo/core";
+import {
+  App,
+  Profile,
+  ProfileProperty,
+  Property,
+  Run,
+  Schedule,
+  Source,
+} from "@grouparoo/core";
 import { SessionCreate } from "@grouparoo/core/src/actions/session";
-import { AppCreate, AppTest, AppView } from "@grouparoo/core/src/actions/apps";
+import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
 import {
   SourceCreate,
   SourcePreview,
-  SourceView,
 } from "@grouparoo/core/src/actions/sources";
 import { PropertyCreate } from "@grouparoo/core/src/actions/properties";
 import {
   ScheduleCreate,
   ScheduleRun,
-  ScheduleView,
 } from "@grouparoo/core/src/actions/schedules";
 
 describe("integration/runs/csv/remote", () => {
@@ -44,9 +49,9 @@ describe("integration/runs/csv/remote", () => {
   describe("import", () => {
     let session;
     let csrfToken: string;
-    let app: AsyncReturnType<AppView["run"]>["app"];
-    let source: AsyncReturnType<SourceView["run"]>["source"];
-    let schedule: AsyncReturnType<ScheduleView["run"]>["schedule"];
+    let app: AsyncReturnType<App["apiData"]>;
+    let source: AsyncReturnType<Source["apiData"]>;
+    let schedule: AsyncReturnType<Schedule["apiData"]>;
 
     test("an administrator can create the related import app and schedule", async () => {
       // sign in
