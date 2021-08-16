@@ -971,7 +971,7 @@ describe("models/source", () => {
       await source.destroy();
     });
 
-    test("sources mapped though non-unique properties cannot have a schedule", async () => {
+    test("sources mapped through non-unique properties cannot have a schedule", async () => {
       expect(await source.scheduleAvailable()).toBe(false);
     });
 

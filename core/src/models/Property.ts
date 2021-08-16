@@ -523,7 +523,7 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
-  static async noUniqueOrArrayThoughNonUniqueMapping(instance: Property) {
+  static async noUniqueOrArrayThroughNonUniqueMapping(instance: Property) {
     if (instance.state === "draft") return;
 
     const source = await Source.findById(instance.sourceId);
@@ -539,12 +539,12 @@ export class Property extends LoggedModel<Property> {
 
     if (instance.unique)
       throw new Error(
-        `A unique Property cannot be mapped though a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
+        `A unique Property cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
       );
 
     if (instance.isArray)
       throw new Error(
-        `An array Property cannot be mapped though a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
+        `An array Property cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
       );
   }
 

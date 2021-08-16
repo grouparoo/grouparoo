@@ -749,29 +749,29 @@ describe("models/property", () => {
         await source.setMapping({ id: "userId" });
       });
 
-      test("properties mapped though unique properties can be unique", async () => {
+      test("properties mapped through unique properties can be unique", async () => {
         await source.setMapping({ id: "userId" });
         await property.update({ unique: true });
         expect((await property.reload()).unique).toEqual(true);
       });
 
-      test("properties mapped though unique properties can be arrays", async () => {
+      test("properties mapped through unique properties can be arrays", async () => {
         await source.setMapping({ id: "userId" });
         await property.update({ isArray: true });
         expect((await property.reload()).isArray).toEqual(true);
       });
 
-      test("properties mapped though non-unique properties cannot be unique", async () => {
+      test("properties mapped through non-unique properties cannot be unique", async () => {
         await source.setMapping({ id: "lastName" });
         await expect(property.update({ unique: true })).rejects.toThrow(
-          /A unique Property cannot be mapped though a non-unique Property/
+          /A unique Property cannot be mapped through a non-unique Property/
         );
       });
 
-      test("properties mapped though non-unique properties cannot be arrays", async () => {
+      test("properties mapped through non-unique properties cannot be arrays", async () => {
         await source.setMapping({ id: "lastName" });
         await expect(property.update({ isArray: true })).rejects.toThrow(
-          /An array Property cannot be mapped though a non-unique Property/
+          /An array Property cannot be mapped through a non-unique Property/
         );
       });
     });
