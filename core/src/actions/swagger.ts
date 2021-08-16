@@ -1,6 +1,7 @@
 import { Action, config, api } from "actionhero";
 import * as fs from "fs";
 import * as path from "path";
+import { PackageJson } from "type-fest";
 
 type Route = {
   action: string;
@@ -8,8 +9,8 @@ type Route = {
 };
 
 const SWAGGER_VERSION = "2.0";
-const API_VERSION = ""; // if you need a prefix to your API routes, like `v1`
-const parentPackageJSON = JSON.parse(
+const API_VERSION = "v1";
+const parentPackageJSON: PackageJson = JSON.parse(
   fs.readFileSync(path.join(__dirname, "..", "..", "package.json")).toString()
 );
 
@@ -29,7 +30,7 @@ const responses = {
   500: {
     description: "Server error",
   },
-};
+} as const;
 
 export class Swagger extends Action {
   constructor() {
@@ -71,7 +72,7 @@ export class Swagger extends Action {
 
           const tag = action.name.split(":")[0];
           const formattedPath = route.path
-            .replace("/v:apiVersion", "/v1")
+            .replace("/v:apiVersion", "") // this is handled by "basePath"
             .replace(/\/:(\w*)/, "/{$1}");
 
           // in simpleRouting is enabled, only show the "post" verb for this action, not all 5
