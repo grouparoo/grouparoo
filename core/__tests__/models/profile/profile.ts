@@ -971,6 +971,41 @@ describe("models/profile", () => {
         color: ["pink"],
       });
     });
+
+    test("properties marked as keepValueIfNotFound=true will not be cleared if it no longer exists", async () => {
+      await Property.update(
+        { keepValueIfNotFound: true },
+        { where: { key: "email" } }
+      );
+
+      const profile = await Profile.create();
+      await profile.addOrUpdateProperties({
+        userId: [1006],
+        email: ["myemail@demo.com"],
+      });
+      let properties = await profile.getProperties();
+      expect(Object.keys(properties).sort()).toEqual([
+        "color",
+        "email",
+        "userId",
+      ]);
+
+      importResult = {};
+      await profile.markPending();
+      await profile.import();
+
+      properties = await profile.getProperties();
+      expect(simpleProfileValues(properties)).toEqual({
+        userId: [null],
+        color: [null],
+        email: ["myemail@demo.com"],
+      });
+
+      await Property.update(
+        { keepValueIfNotFound: false },
+        { where: { key: "email" } }
+      );
+    });
   });
 
   describe("merging", () => {

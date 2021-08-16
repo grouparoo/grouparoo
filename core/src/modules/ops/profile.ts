@@ -352,7 +352,7 @@ export namespace ProfileOps {
     }
   }
 
-  async function removePendingProperties(
+  async function resolvePendingProperties(
     profile: Profile,
     excludeSourceIds: Array<string> = []
   ) {
@@ -361,15 +361,24 @@ export namespace ProfileOps {
     });
 
     const destroyProfilePropertyIds = [];
+    const keepProfilePropertyIds = [];
     for (let profileProperty of pendingProperties) {
       const property = await Property.findOneWithCache(
         profileProperty.propertyId
       );
       if (!excludeSourceIds.includes(property.sourceId)) {
-        destroyProfilePropertyIds.push(profileProperty.id);
+        if (property.keepValueIfNotFound) {
+          keepProfilePropertyIds.push(profileProperty.id);
+        } else {
+          destroyProfilePropertyIds.push(profileProperty.id);
+        }
       }
     }
 
+    await ProfileProperty.update(
+      { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
+      { where: { id: keepProfilePropertyIds } }
+    );
     await ProfileProperty.destroy({ where: { id: destroyProfilePropertyIds } });
   }
 
@@ -478,7 +487,7 @@ export namespace ProfileOps {
       }
 
       if (toSave) {
-        await removePendingProperties(profile, excludeSourceIds);
+        await resolvePendingProperties(profile, excludeSourceIds);
         await buildNullProperties([profile]);
 
         await profile.save();
