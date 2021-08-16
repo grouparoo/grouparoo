@@ -38,5 +38,8 @@
     "ts-jest": "27.0.4",
     "typescript": "4.3.5"
   },
+  "dependencies": {
+    "vm2": "3.9.3"
+  },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }

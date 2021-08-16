@@ -1,41 +1,44 @@
-import {
-  ProfileProperty,
-  ProfilePropertyPluginMethod,
-  Property,
-} from "@grouparoo/core";
+import { ProfileProperty, ProfilePropertyPluginMethod } from "@grouparoo/core";
+const { NodeVM } = require("vm2");
 
 export interface RequiredPropertiesObject {
   [propertyId: string]: ProfileProperty;
 }
 
-const getRequiredProperties = async (
+async function getRequiredProperties(
   i,
   args,
   arrayedProperties,
   requiredPropertyObjects
-) => {
+) {
   const propertyOptionId = arrayedProperties[i];
-  console.log("STEP TWO");
-  console.log(
-    `property id = ${propertyOptionId} //// profile id = ${args.profile.id}`
-  );
+
   const property = await ProfileProperty.findOne({
     where: { propertyId: propertyOptionId, profileId: args.profile.id },
   });
 
-  console.log(`propertyValue = ${property.rawValue}`);
   requiredPropertyObjects[property.propertyId] = property;
+}
 
-  console.log(
-    `SAVED = ${requiredPropertyObjects[property.propertyId].rawValue}`
-  );
-};
+async function calculateProfilePropertyValue(
+  requiredProperties: RequiredPropertiesObject,
+  customFunction
+): Promise<string> {
+  console.log(JSON.stringify(requiredProperties));
+
+  const vm = new NodeVM({
+    require: {
+      console: "inherit",
+    },
+  });
+
+  let calculation = vm.run(`module.exports = ${customFunction}`);
+  return calculation(requiredProperties);
+}
 
 export const profileProperty: ProfilePropertyPluginMethod = async (args) => {
   const requiredPropertyObjects: RequiredPropertiesObject = {};
   let arrayedProperties: string[] = [];
-
-  console.log("STEP ONE");
 
   //make array
   if (typeof args.propertyOptions.requiredProperties === "string") {
@@ -52,12 +55,10 @@ export const profileProperty: ProfilePropertyPluginMethod = async (args) => {
     );
   }
 
-  console.log(JSON.stringify(requiredPropertyObjects, null, 2));
-
-  console.log(
-    `JUST TO BE SURE: ${requiredPropertyObjects["last_name"].rawValue}`
+  const profilePropertyValue = await calculateProfilePropertyValue(
+    requiredPropertyObjects,
+    args.propertyOptions.customFunction
   );
-  return [
-    `CALCULATED-PROPERTY-HERE ${requiredPropertyObjects["last_name"].rawValue}`,
-  ];
+
+  return [profilePropertyValue];
 };
