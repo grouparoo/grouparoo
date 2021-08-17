@@ -182,9 +182,9 @@ async function preparePropertyImports(
   if (pendingProfileProperties.length === 0) return;
   if (properties.length === 0) return;
 
-  const uniqueProfileIds = [
-    ...new Set(pendingProfileProperties.map((ppp) => ppp.profileId)),
-  ];
+  const uniqueProfileIds = pendingProfileProperties
+    .map((ppp) => ppp.profileId)
+    .filter((val, idx, arr) => arr.indexOf(val) === idx);
 
   const method = pluginConnection.methods.profileProperties
     ? "ProfileProperties"
