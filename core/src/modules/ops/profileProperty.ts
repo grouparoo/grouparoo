@@ -182,6 +182,10 @@ async function preparePropertyImports(
   if (pendingProfileProperties.length === 0) return;
   if (properties.length === 0) return;
 
+  const uniqueProfileIds = pendingProfileProperties
+    .map((ppp) => ppp.profileId)
+    .filter((val, idx, arr) => arr.indexOf(val) === idx);
+
   const method = pluginConnection.methods.profileProperties
     ? "ProfileProperties"
     : pluginConnection.methods.profileProperty
@@ -200,14 +204,14 @@ async function preparePropertyImports(
   if (method === "ProfileProperties") {
     await CLS.enqueueTask(`profileProperty:importProfileProperties`, {
       propertyIds: properties.map((p) => p.id),
-      profileIds: pendingProfileProperties.map((ppp) => ppp.profileId),
+      profileIds: uniqueProfileIds,
     });
   } else if (method === "ProfileProperty") {
     for (const property of properties) {
-      for (const ppp of pendingProfileProperties) {
+      for (const profileId of uniqueProfileIds) {
         await CLS.enqueueTask(`profileProperty:importProfileProperty`, {
           propertyId: property.id,
-          profileId: ppp.profileId,
+          profileId,
         });
       }
     }

@@ -327,7 +327,12 @@ describe("tasks/profileProperty:importProfileProperties", () => {
                 sourceFilters: async () => [],
                 profileProperties: async ({ properties, profiles }) => {
                   // only returns data for the first profile
-                  return { [profiles[0].id]: { [properties[0].id]: ["foo"] } };
+                  return {
+                    [profiles[0].id]: {
+                      [properties[0].id]: ["foo"],
+                      [properties[1].id]: ["bar"],
+                    },
+                  };
                 },
               },
             },
@@ -348,18 +353,30 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         await otherSource.setMapping({ word: "lastName" });
         await otherSource.update({ state: "ready" });
 
-        const newProperty: Property = await helper.factories.property(
+        const newPropertyA: Property = await helper.factories.property(
           otherSource,
           { key: "wordInSpanish" }
         );
-        await newProperty.update({ state: "ready" });
+        const newPropertyB: Property = await helper.factories.property(
+          otherSource,
+          { key: "wordInFrench" }
+        );
+        await newPropertyA.update({ state: "ready" });
+        await newPropertyB.update({ state: "ready" });
         await profileA.buildNullProperties();
         await profileB.buildNullProperties();
         await profileC.buildNullProperties();
 
         await ProfileProperty.update(
           { state: "ready" },
-          { where: { propertyId: { [Op.ne]: newProperty.id } } }
+          {
+            where: {
+              [Op.and]: [
+                { propertyId: { [Op.ne]: newPropertyA.id } },
+                { propertyId: { [Op.ne]: newPropertyB.id } },
+              ],
+            },
+          }
         );
         await ProfileProperty.update(
           { rawValue: "Mario" },
@@ -369,18 +386,22 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         // import
         await specHelper.runTask("profileProperty:importProfileProperties", {
           profileIds: [profileA.id, profileB.id, profileC.id],
-          propertyIds: [newProperty.id],
+          propertyIds: [newPropertyA.id, newPropertyB.id],
         });
 
         const profilePropertiesA = await profileA.getProperties();
         const profilePropertiesB = await profileB.getProperties();
         const profilePropertiesC = await profileC.getProperties();
-        expect(profilePropertiesA[newProperty.id].values).toEqual(["foo"]);
-        expect(profilePropertiesB[newProperty.id].values).toEqual(["foo"]);
-        expect(profilePropertiesC[newProperty.id].values).toEqual(["foo"]);
+        expect(profilePropertiesA[newPropertyA.id].values).toEqual(["foo"]);
+        expect(profilePropertiesB[newPropertyA.id].values).toEqual(["foo"]);
+        expect(profilePropertiesC[newPropertyA.id].values).toEqual(["foo"]);
+        expect(profilePropertiesA[newPropertyB.id].values).toEqual(["bar"]);
+        expect(profilePropertiesB[newPropertyB.id].values).toEqual(["bar"]);
+        expect(profilePropertiesC[newPropertyB.id].values).toEqual(["bar"]);
 
         // cleanup
-        await newProperty.destroy();
+        await newPropertyA.destroy();
+        await newPropertyB.destroy();
         await otherSource.destroy();
         await app.destroy();
       });
