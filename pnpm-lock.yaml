@@ -238,13 +238,13 @@ importers:
       fs-extra: 10.0.0
       glob: 7.1.7
       grouparoo: 0.5.3-alpha.4
-      ioredis: 4.27.6
+      ioredis: 4.27.7
       ioredis-mock: 5.6.0
       isomorphic-fetch: 3.0.0
       jest: 27.0.6
       jest-fetch-mock: 3.0.3
       json5: 2.2.0
-      libphonenumber-js: 1.9.22
+      libphonenumber-js: 1.9.23
       mime: 2.5.2
       moment: 2.29.1
       mustache: 4.2.0
@@ -286,11 +286,11 @@ importers:
       fs-extra: 10.0.0
       glob: 7.1.7
       grouparoo: link:../cli
-      ioredis: 4.27.6
-      ioredis-mock: 5.6.0_ioredis@4.27.6
+      ioredis: 4.27.7
+      ioredis-mock: 5.6.0_ioredis@4.27.7
       isomorphic-fetch: 3.0.0
       json5: 2.2.0
-      libphonenumber-js: 1.9.22
+      libphonenumber-js: 1.9.23
       mime: 2.5.2
       moment: 2.29.1
       mustache: 4.2.0
@@ -7700,6 +7700,20 @@ packages:
       lodash: 4.17.21
       standard-as-callback: 2.1.0
 
+  /ioredis-mock/5.6.0_ioredis@4.27.7:
+    resolution: {integrity: sha512-Ow+tyKdijg/gA2gSEv7lq8dLp6bO7FnwDXbJ9as37NF23XNRGMLzBc7ITaqMydfrbTodWnLcE2lKEaBs7SBpyA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      ioredis: 4.x
+      redis-commands: 1.x
+    dependencies:
+      fengari: 0.1.4
+      fengari-interop: 0.1.2_fengari@0.1.4
+      ioredis: 4.27.7
+      lodash: 4.17.21
+      standard-as-callback: 2.1.0
+    dev: false
+
   /ioredis/4.27.6:
     resolution: {integrity: sha512-6W3ZHMbpCa8ByMyC1LJGOi7P2WiOKP9B3resoZOVLDhi+6dDBOW+KNsRq3yI36Hmnb2sifCxHX+YSarTeXh48A==}
     engines: {node: '>=6'}
@@ -7716,6 +7730,25 @@ packages:
       standard-as-callback: 2.1.0
     transitivePeerDependencies:
       - supports-color
+
+  /ioredis/4.27.7:
+    resolution: {integrity: sha512-lqvFFmUyGIHlrNyDvBoakzy1+ioJzNyoP6CP97GWtdTjWq9IOAnv6l0HUTsqhvd/z9etGgtrDHZ4kWCMAwNkug==}
+    engines: {node: '>=6'}
+    dependencies:
+      cluster-key-slot: 1.1.0
+      debug: 4.3.2
+      denque: 1.5.0
+      lodash.defaults: 4.2.0
+      lodash.flatten: 4.4.0
+      lodash.isarguments: 3.1.0
+      p-map: 2.1.0
+      redis-commands: 1.7.0
+      redis-errors: 1.2.0
+      redis-parser: 3.0.0
+      standard-as-callback: 2.1.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /ip/1.1.5:
     resolution: {integrity: sha1-vd7XARQpCCjAoDnnLvJfWq7ENUo=}
@@ -9051,8 +9084,8 @@ packages:
       - supports-color
     dev: true
 
-  /libphonenumber-js/1.9.22:
-    resolution: {integrity: sha512-nE0aF0wrNq09ewF36s9FVqRW73hmpw6cobVDlbexmsu1432LEfuN24BCudNuRx4t2rElSeK/N0JbedzRW/TC4A==}
+  /libphonenumber-js/1.9.23:
+    resolution: {integrity: sha512-+qWSwPyJWSV9ukb7Iu21WpWEP7irFWR1ojoYykL2itAfXKj9FjsTjS6PPZoPUOZk+1kxliHjwsilqA1TNeOhuQ==}
     dev: false
 
   /lie/3.3.0:
@@ -9175,6 +9208,10 @@ packages:
 
   /lodash.includes/4.3.0:
     resolution: {integrity: sha1-YLuYqHy5I8aMoeUTJUgzFISfVT8=}
+    dev: false
+
+  /lodash.isarguments/3.1.0:
+    resolution: {integrity: sha1-L1c9hcaiQon/AGY7SRwdM4/zRYo=}
     dev: false
 
   /lodash.isboolean/3.0.3:
