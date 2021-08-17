@@ -11,7 +11,7 @@ exports.default = async function buildConfig() {
       isArray: false, // Is this an Array Property?
       options: {
         requiredProperties: [], // This property will receive an array of ALL properties.  What properties do we need to use for the calculation below?  -- e.g. `requiredProperties: [firstName, lastName]`
-        customFunction: `async ({requiredProperties}) => {}` // The custom function you would like to execute, within a string literal.  Returned value must match property type! -- e.g. `return /`${firstName} ${lastName}`.trim()`
+        customFunction: `async (requiredProperties) => {}` // The custom function you would like to execute, within a string literal.  Returned value must match property type! -- e.g. `return /`${firstName} ${lastName}`.trim()`
       },
       filters: null,
     },

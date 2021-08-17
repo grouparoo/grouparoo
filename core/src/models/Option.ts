@@ -6,7 +6,6 @@ import {
   ForeignKey,
   BelongsTo,
   BeforeSave,
-  BeforeValidate,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
