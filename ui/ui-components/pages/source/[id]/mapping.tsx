@@ -175,9 +175,9 @@ export default function Page(props) {
       <SourceTabs source={source} />
       <Header />
       <p>
-        Sources in Grouparoo will be linked to each other though a Mapping. A
-        Mapping is like a foreign key between your sources and Grouparoo
-        Properties. Whenever possible, choose to map though a unique Property.
+        Sources in Grouparoo are referenced via a Mapping. A Mapping is like a
+        foreign key between your sources and Grouparoo Properties. Whenever
+        possible, choose to map though a unique Property.
       </p>
       <Form>
         <fieldset disabled={source.locked !== null}>
