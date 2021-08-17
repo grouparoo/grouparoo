@@ -355,7 +355,7 @@ importers:
 
   plugins/@grouparoo/bigquery:
     specifiers:
-      '@google-cloud/bigquery': 5.7.0
+      '@google-cloud/bigquery': 5.7.1
       '@grouparoo/app-templates': 0.5.3-alpha.4
       '@grouparoo/core': 0.5.3-alpha.4
       '@grouparoo/spec-helper': 0.5.3-alpha.4
@@ -370,7 +370,7 @@ importers:
       ts-jest: 27.0.4
       typescript: 4.3.5
     dependencies:
-      '@google-cloud/bigquery': 5.7.0
+      '@google-cloud/bigquery': 5.7.1
       '@grouparoo/app-templates': link:../app-templates
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -1231,7 +1231,7 @@ importers:
       '@grouparoo/app-templates': 0.5.3-alpha.4
       '@grouparoo/core': 0.5.3-alpha.4
       '@grouparoo/spec-helper': 0.5.3-alpha.4
-      '@sendgrid/client': 7.4.3
+      '@sendgrid/client': 7.4.6
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.0.0
@@ -1244,7 +1244,7 @@ importers:
       typescript: 4.3.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      '@sendgrid/client': 7.4.3
+      '@sendgrid/client': 7.4.6
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -2172,8 +2172,8 @@ packages:
       prop-types: 15.7.2
       react: 17.0.2
 
-  /@google-cloud/bigquery/5.7.0:
-    resolution: {integrity: sha512-bIl9wzLw9iupEKyLlTqdxaj6F5WA8yUBspwJ9jl1TtKs2+xrpscwlxmNaVpZ7RMoJaFHGkwHao3bR2GSytKfEw==}
+  /@google-cloud/bigquery/5.7.1:
+    resolution: {integrity: sha512-YLs1sLKa2N1RzppI04ZCqUJ0WX9hMHggU/b9bYHqYlrtqXVBMmbqUJNOzKMC7GkiltMNsFav1Zyk5cJ7mfQGwQ==}
     engines: {node: '>=10'}
     dependencies:
       '@google-cloud/common': 3.7.0
@@ -3540,18 +3540,18 @@ packages:
       dequal: 2.0.2
       react: 17.0.2
 
-  /@sendgrid/client/7.4.3:
-    resolution: {integrity: sha512-tTaHx893w5iqG0sVtUnMyRchuwYF95k4UOkmov1MouMIeMUbNvbalITo7cG7YSXUTY9rT2t4eBY6HcEBCVeqfg==}
+  /@sendgrid/client/7.4.6:
+    resolution: {integrity: sha512-g3vjDyN1hDTKwPe9THGNuf4HKkx+cC3dSOM7SM88Pg6Q9SRI+GDGzsdnGRfFFpsdHBVVrHCSk0n2f4YZVCv4zA==}
     engines: {node: 6.* || 8.* || >=10.*}
     dependencies:
-      '@sendgrid/helpers': 7.4.3
+      '@sendgrid/helpers': 7.4.6
       axios: 0.21.1
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@sendgrid/helpers/7.4.3:
-    resolution: {integrity: sha512-Wt+68g1sVEM5UspJh34O/cxtv6BBbtAIk7U9B3PB2ySOtPs9e6hI1QkgYVwpNmkt7k2p86muUNyma/Aig25agg==}
+  /@sendgrid/helpers/7.4.6:
+    resolution: {integrity: sha512-Vvt4d60fkU/DPSwMyxXtlnbw4/B+5Y9eeYnygTxhmw8TNzUhdPphr7SaRSperWJ8P1VeQZzobvQNyMj5E7A3UA==}
     engines: {node: '>= 6.0.0'}
     dependencies:
       deepmerge: 4.2.2
