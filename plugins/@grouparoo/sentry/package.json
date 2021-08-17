@@ -28,7 +28,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@sentry/node": "6.10.0",
+    "@sentry/node": "6.11.0",
     "@sentry/tracing": "6.11.0"
   },
   "devDependencies": {
