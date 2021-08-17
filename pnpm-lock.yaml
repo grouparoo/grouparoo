@@ -6,14 +6,14 @@ importers:
     specifiers:
       glob: 7.1.7
       lerna: 4.0.0
-      lerna-changelog: 1.0.1
+      lerna-changelog: 2.1.0
       license-checker: github:grouparoo/license-checker
       npm-check-updates: 11.8.3
       prettier: 2.3.2
     devDependencies:
       glob: 7.1.7
       lerna: 4.0.0
-      lerna-changelog: 1.0.1
+      lerna-changelog: 2.1.0
       license-checker: github.com/grouparoo/license-checker/1054593024d6f7e50ad47feb3b61d52c9506c274
       npm-check-updates: 11.8.3
       prettier: 2.3.2
@@ -7297,6 +7297,13 @@ packages:
   /hosted-git-info/2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
 
+  /hosted-git-info/3.0.8:
+    resolution: {integrity: sha512-aXpmwoOhRBrw6X3j0h5RloK4x1OzsxMPyxqIHyNfSe2pypkVTZFpEiRoSipPEPlMrh0HW/XsjkJ5WgnCirpNUw==}
+    engines: {node: '>=10'}
+    dependencies:
+      lru-cache: 6.0.0
+    dev: true
+
   /hosted-git-info/4.0.2:
     resolution: {integrity: sha512-c9OGXbZ3guC/xOlCg1Ci/VgWlwsqDv1yMQL1CWqXDL0hDjXuNcq0zuR4xqPSuasI3kqFDhqSyTjREz5gzq0fXg==}
     engines: {node: '>=10'}
@@ -8914,19 +8921,19 @@ packages:
     dependencies:
       package-json: 6.5.0
 
-  /lerna-changelog/1.0.1:
-    resolution: {integrity: sha512-E7ewsfQknBmQcUspCqd5b8Hbbp5SX768y6vEiIdXXui9pPhZS1WlrKtiAUPs0CeGd8Pv4gtIC/h3wSWIZuvqaA==}
-    engines: {node: 10.* || >= 12}
+  /lerna-changelog/2.1.0:
+    resolution: {integrity: sha512-7BULP5fV8z4wWVjo7abuwlv+nPGFEgMwpYF2V8JRF2Jm9NSo1YZ8CKKeFAxxXPoCyfj4oZA5xmY9TytiCPQH+g==}
+    engines: {node: 12.* || 14.* || >= 16}
     hasBin: true
     dependencies:
       chalk: 2.4.2
       cli-highlight: 2.1.11
       execa: 1.0.0
+      hosted-git-info: 3.0.8
       make-fetch-happen: 7.1.1
-      normalize-git-url: 3.0.2
       p-map: 3.0.0
       progress: 2.0.3
-      yargs: 13.3.2
+      yargs: 17.1.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -10195,10 +10202,6 @@ packages:
     hasBin: true
     dependencies:
       abbrev: 1.1.1
-
-  /normalize-git-url/3.0.2:
-    resolution: {integrity: sha1-jl8Uvgva7bc+ByADEKpBbCc1D8Q=}
-    dev: true
 
   /normalize-package-data/2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
