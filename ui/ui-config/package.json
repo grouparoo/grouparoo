@@ -53,7 +53,7 @@
     "react-markdown": "6.0.2",
     "react-moment": "1.1.1",
     "stacktrace-js": "2.0.2",
-    "styled-jsx": "3.4.4",
+    "styled-jsx": "4.0.0",
     "swagger-ui-dist": "3.52.0",
     "victory": "35.10.1"
   },
