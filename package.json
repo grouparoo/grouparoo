@@ -15,7 +15,7 @@
   "devDependencies": {
     "glob": "7.1.7",
     "lerna": "4.0.0",
-    "lerna-changelog": "1.0.1",
+    "lerna-changelog": "2.1.0",
     "license-checker": "github:grouparoo/license-checker",
     "npm-check-updates": "11.8.3",
     "prettier": "2.3.2"
