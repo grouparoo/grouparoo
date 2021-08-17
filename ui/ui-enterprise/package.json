@@ -29,10 +29,10 @@
     "lint": "prettier --check pages __tests__"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "1.2.35",
-    "@fortawesome/free-brands-svg-icons": "5.15.3",
+    "@fortawesome/fontawesome-svg-core": "1.2.36",
+    "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "5.15.4",
-    "@fortawesome/react-fontawesome": "0.1.14",
+    "@fortawesome/react-fontawesome": "0.1.15",
     "@zeit/next-source-maps": "0.0.3",
     "axios": "0.21.1",
     "date-fns": "2.23.0",
