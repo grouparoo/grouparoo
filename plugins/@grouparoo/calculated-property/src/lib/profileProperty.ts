@@ -12,7 +12,6 @@ async function getRequiredProperties(
   requiredPropertyObjects
 ) {
   const propertyOptionId = arrayedProperties[i];
-
   const property = await ProfileProperty.findOne({
     where: { propertyId: propertyOptionId, profileId: args.profile.id },
   });
@@ -25,14 +24,25 @@ async function calculateProfilePropertyValue(
   customFunction
 ): Promise<string> {
   console.log(JSON.stringify(requiredProperties));
+  let calculation;
 
+  //this works with vm and node vm... using node vm to allow for node modules in v2 of this feature
   const vm = new NodeVM({
     require: {
       console: "inherit",
     },
   });
+  try {
+    calculation = vm.run(`module.exports = ${customFunction}`);
+    // Should these really be throws?  Is this the right place for the validation?
+    if (calculation === undefined) {
+      throw Error("Calculated property returned undefined");
+    }
+    // Should we also check that return type is string here?
+  } catch (error) {
+    throw Error("Could not calculate property");
+  }
 
-  let calculation = vm.run(`module.exports = ${customFunction}`);
   return calculation(requiredProperties);
 }
 
