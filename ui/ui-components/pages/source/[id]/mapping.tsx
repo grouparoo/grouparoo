@@ -172,10 +172,13 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: {source.name}</title>
       </Head>
-
       <SourceTabs source={source} />
       <Header />
-
+      <p>
+        Sources in Grouparoo will be linked to each other though a Mapping. A
+        Mapping is like a foreign key between your sources and Grouparoo
+        Properties. Whenever possible, choose to map though a unique Property.
+      </p>
       <Form>
         <fieldset disabled={source.locked !== null}>
           <Row>
@@ -245,7 +248,7 @@ export default function Page(props) {
             <Col>
               {properties.length > 0 ? (
                 <>
-                  <p>Choose the Unique Grouparoo Profile Property:</p>
+                  <p>Choose the Grouparoo Profile Property:</p>
                   <fieldset>
                     <Table bordered striped size="sm">
                       <thead>
@@ -262,6 +265,8 @@ export default function Page(props) {
                           .sort((a, b) => {
                             if (a.unique && !b.unique) return -1;
                             if (b.unique && !a.unique) return 1;
+                            if (a.key < b.key) return -1;
+                            if (a.key > b.key) return 1;
                             return 0;
                           })
                           .map((property) => (
