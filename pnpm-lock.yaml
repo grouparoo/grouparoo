@@ -1428,10 +1428,10 @@ importers:
 
   ui/ui-community:
     specifiers:
-      '@fortawesome/fontawesome-svg-core': 1.2.35
-      '@fortawesome/free-brands-svg-icons': 5.15.3
+      '@fortawesome/fontawesome-svg-core': 1.2.36
+      '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
-      '@fortawesome/react-fontawesome': 0.1.14
+      '@fortawesome/react-fontawesome': 0.1.15
       '@grouparoo/core': 0.5.3-alpha.4
       '@grouparoo/spec-helper': 0.5.3-alpha.4
       '@grouparoo/ui-components': 0.5.3-alpha.4
@@ -1468,10 +1468,10 @@ importers:
       typescript: 4.3.5
       victory: 35.10.1
     dependencies:
-      '@fortawesome/fontawesome-svg-core': 1.2.35
-      '@fortawesome/free-brands-svg-icons': 5.15.3
+      '@fortawesome/fontawesome-svg-core': 1.2.36
+      '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
-      '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
+      '@fortawesome/react-fontawesome': 0.1.15_f515edce028694561ceb456e3dba224c
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
       date-fns: 2.23.0
@@ -1511,10 +1511,10 @@ importers:
 
   ui/ui-components:
     specifiers:
-      '@fortawesome/fontawesome-svg-core': 1.2.35
-      '@fortawesome/free-brands-svg-icons': 5.15.3
+      '@fortawesome/fontawesome-svg-core': 1.2.36
+      '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
-      '@fortawesome/react-fontawesome': 0.1.14
+      '@fortawesome/react-fontawesome': 0.1.15
       '@grouparoo/core': 0.5.3-alpha.4
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.0.0
@@ -1549,10 +1549,10 @@ importers:
       typescript: 4.3.5
       victory: 35.10.1
     devDependencies:
-      '@fortawesome/fontawesome-svg-core': 1.2.35
-      '@fortawesome/free-brands-svg-icons': 5.15.3
+      '@fortawesome/fontawesome-svg-core': 1.2.36
+      '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
-      '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
+      '@fortawesome/react-fontawesome': 0.1.15_f515edce028694561ceb456e3dba224c
       '@grouparoo/core': link:../../core
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.0.0_react-dom@17.0.2+react@17.0.2
@@ -1589,10 +1589,10 @@ importers:
 
   ui/ui-config:
     specifiers:
-      '@fortawesome/fontawesome-svg-core': 1.2.35
-      '@fortawesome/free-brands-svg-icons': 5.15.3
+      '@fortawesome/fontawesome-svg-core': 1.2.36
+      '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
-      '@fortawesome/react-fontawesome': 0.1.14
+      '@fortawesome/react-fontawesome': 0.1.15
       '@grouparoo/core': 0.5.3-alpha.4
       '@grouparoo/spec-helper': 0.5.3-alpha.4
       '@grouparoo/ui-components': 0.5.3-alpha.4
@@ -1631,10 +1631,10 @@ importers:
       typescript: 4.3.5
       victory: 35.10.1
     dependencies:
-      '@fortawesome/fontawesome-svg-core': 1.2.35
-      '@fortawesome/free-brands-svg-icons': 5.15.3
+      '@fortawesome/fontawesome-svg-core': 1.2.36
+      '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
-      '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
+      '@fortawesome/react-fontawesome': 0.1.15_f515edce028694561ceb456e3dba224c
       '@zeit/next-source-maps': 0.0.3
       ansi-to-html: 0.7.1
       axios: 0.21.1
@@ -1676,10 +1676,10 @@ importers:
 
   ui/ui-enterprise:
     specifiers:
-      '@fortawesome/fontawesome-svg-core': 1.2.35
-      '@fortawesome/free-brands-svg-icons': 5.15.3
+      '@fortawesome/fontawesome-svg-core': 1.2.36
+      '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
-      '@fortawesome/react-fontawesome': 0.1.14
+      '@fortawesome/react-fontawesome': 0.1.15
       '@grouparoo/core': 0.5.3-alpha.4
       '@grouparoo/spec-helper': 0.5.3-alpha.4
       '@grouparoo/ui-components': 0.5.3-alpha.4
@@ -1716,10 +1716,10 @@ importers:
       typescript: 4.3.5
       victory: 35.10.1
     dependencies:
-      '@fortawesome/fontawesome-svg-core': 1.2.35
-      '@fortawesome/free-brands-svg-icons': 5.15.3
+      '@fortawesome/fontawesome-svg-core': 1.2.36
+      '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
-      '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
+      '@fortawesome/react-fontawesome': 0.1.15_f515edce028694561ceb456e3dba224c
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
       date-fns: 2.23.0
@@ -2131,29 +2131,24 @@ packages:
       enabled: 2.0.0
       kuler: 2.0.0
 
-  /@fortawesome/fontawesome-common-types/0.2.35:
-    resolution: {integrity: sha512-IHUfxSEDS9dDGqYwIW7wTN6tn/O8E0n5PcAHz9cAaBoZw6UpG20IG/YM3NNLaGPwPqgjBAFjIURzqoQs3rrtuw==}
-    engines: {node: '>=6'}
-    requiresBuild: true
-
   /@fortawesome/fontawesome-common-types/0.2.36:
     resolution: {integrity: sha512-a/7BiSgobHAgBWeN7N0w+lAhInrGxksn13uK7231n2m8EDPE3BMCl9NZLTGrj9ZXfCmC6LM0QLqXidIizVQ6yg==}
     engines: {node: '>=6'}
     requiresBuild: true
 
-  /@fortawesome/fontawesome-svg-core/1.2.35:
-    resolution: {integrity: sha512-uLEXifXIL7hnh2sNZQrIJWNol7cTVIzwI+4qcBIq9QWaZqUblm0IDrtSqbNg+3SQf8SMGHkiSigD++rHmCHjBg==}
+  /@fortawesome/fontawesome-svg-core/1.2.36:
+    resolution: {integrity: sha512-YUcsLQKYb6DmaJjIHdDWpBIGCcyE/W+p/LMGvjQem55Mm2XWVAP5kWTMKWLv9lwpCVjpLxPyOMOyUocP1GxrtA==}
     engines: {node: '>=6'}
     requiresBuild: true
     dependencies:
-      '@fortawesome/fontawesome-common-types': 0.2.35
+      '@fortawesome/fontawesome-common-types': 0.2.36
 
-  /@fortawesome/free-brands-svg-icons/5.15.3:
-    resolution: {integrity: sha512-1hirPcbjj72ZJtFvdnXGPbAbpn3Ox6mH3g5STbANFp3vGSiE5u5ingAKV06mK6ZVqNYxUPlh4DlTnaIvLtF2kw==}
+  /@fortawesome/free-brands-svg-icons/5.15.4:
+    resolution: {integrity: sha512-f1witbwycL9cTENJegcmcZRYyawAFbm8+c6IirLmwbbpqz46wyjbQYLuxOc7weXFXfB7QR8/Vd2u5R3q6JYD9g==}
     engines: {node: '>=6'}
     requiresBuild: true
     dependencies:
-      '@fortawesome/fontawesome-common-types': 0.2.35
+      '@fortawesome/fontawesome-common-types': 0.2.36
 
   /@fortawesome/free-solid-svg-icons/5.15.4:
     resolution: {integrity: sha512-JLmQfz6tdtwxoihXLg6lT78BorrFyCf59SAwBM6qV/0zXyVeDygJVb3fk+j5Qat+Yvcxp1buLTY5iDh1ZSAQ8w==}
@@ -2162,13 +2157,13 @@ packages:
     dependencies:
       '@fortawesome/fontawesome-common-types': 0.2.36
 
-  /@fortawesome/react-fontawesome/0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0:
-    resolution: {integrity: sha512-4wqNb0gRLVaBm/h+lGe8UfPPivcbuJ6ecI4hIgW0LjI7kzpYB9FkN0L9apbVzg+lsBdcTf0AlBtODjcSX5mmKA==}
+  /@fortawesome/react-fontawesome/0.1.15_f515edce028694561ceb456e3dba224c:
+    resolution: {integrity: sha512-/HFHdcoLESxxMkqZAcZ6RXDJ69pVApwdwRos/B2kiMWxDSAX2dFK8Er2/+rG+RsrzWB/dsAyjefLmemgmfE18g==}
     peerDependencies:
       '@fortawesome/fontawesome-svg-core': ^1.2.32
       react: '>=16.x'
     dependencies:
-      '@fortawesome/fontawesome-svg-core': 1.2.35
+      '@fortawesome/fontawesome-svg-core': 1.2.36
       prop-types: 15.7.2
       react: 17.0.2
 
