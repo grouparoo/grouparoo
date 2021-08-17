@@ -6,14 +6,14 @@ importers:
     specifiers:
       glob: 7.1.7
       lerna: 4.0.0
-      lerna-changelog: 1.0.1
+      lerna-changelog: 2.1.0
       license-checker: github:grouparoo/license-checker
       npm-check-updates: 11.8.3
       prettier: 2.3.2
     devDependencies:
       glob: 7.1.7
       lerna: 4.0.0
-      lerna-changelog: 1.0.1
+      lerna-changelog: 2.1.0
       license-checker: github.com/grouparoo/license-checker/1054593024d6f7e50ad47feb3b61d52c9506c274
       npm-check-updates: 11.8.3
       prettier: 2.3.2
@@ -198,7 +198,7 @@ importers:
       ora: 5.4.1
       prettier: 2.3.2
       semver: 7.3.5
-      ts-node: 10.1.0
+      ts-node: 10.2.0
       typescript: 4.3.5
     dependencies:
       chalk: 4.1.2
@@ -213,7 +213,7 @@ importers:
       '@types/fs-extra': 9.0.12
       '@types/node': 16.4.10
       prettier: 2.3.2
-      ts-node: 10.1.0_e287c1681c60c4bb6db69c8dc5a794e9
+      ts-node: 10.2.0_e287c1681c60c4bb6db69c8dc5a794e9
       typescript: 4.3.5
 
   core:
@@ -261,8 +261,8 @@ importers:
       sequelize-typescript: 2.1.0
       sqlite3: 5.0.2
       ts-jest: 27.0.4
-      ts-node: 10.1.0
-      type-fest: 1.3.0
+      ts-node: 10.2.0
+      type-fest: 2.0.0
       typedoc: 0.21.5
       typescript: 4.3.5
       umzug: v3.0.0-beta.5
@@ -305,7 +305,7 @@ importers:
       sequelize: 6.6.2_98f032adade92d92d5295670c0365597
       sequelize-typescript: 2.1.0_fa5fc47a72c420318cb6e04446e8057e
       sqlite3: 5.0.2
-      ts-node: 10.1.0_e287c1681c60c4bb6db69c8dc5a794e9
+      ts-node: 10.2.0_e287c1681c60c4bb6db69c8dc5a794e9
       umzug: 3.0.0-beta.5
       uuid: 8.3.2
       validator: 13.6.0
@@ -317,11 +317,11 @@ importers:
       '@types/pacote': 11.1.1
       '@types/pluralize': 0.0.29
       csv-parse: 4.16.0
-      jest: 27.0.6_ts-node@10.1.0
+      jest: 27.0.6_ts-node@10.2.0
       jest-fetch-mock: 3.0.3
       nock: 13.1.1
       ts-jest: 27.0.4_52cc4273aa16028085013af47e479e10
-      type-fest: 1.3.0
+      type-fest: 2.0.0
       typedoc: 0.21.5_typescript@4.3.5
       typescript: 4.3.5
 
@@ -399,7 +399,7 @@ importers:
       jest: 27.0.6
       prettier: 2.3.2
       ts-jest: 27.0.4
-      type-fest: 1.3.0
+      type-fest: 2.0.0
       typescript: 4.3.5
     dependencies:
       axios: 0.21.1
@@ -414,7 +414,7 @@ importers:
       jest: 27.0.6
       prettier: 2.3.2
       ts-jest: 27.0.4_52cc4273aa16028085013af47e479e10
-      type-fest: 1.3.0
+      type-fest: 2.0.0
       typescript: 4.3.5
 
   plugins/@grouparoo/customerio:
@@ -621,14 +621,14 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.0.0
-      aws-sdk: 2.958.0
+      aws-sdk: 2.969.0
       fs-extra: 10.0.0
       jest: 27.0.6
       prettier: 2.3.2
       ts-jest: 27.0.4
       typescript: 4.3.5
     dependencies:
-      aws-sdk: 2.958.0
+      aws-sdk: 2.969.0
       fs-extra: 10.0.0
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -654,7 +654,7 @@ importers:
       nock: 13.1.1
       prettier: 2.3.2
       ts-jest: 27.0.4
-      type-fest: 1.3.0
+      type-fest: 2.0.0
       typescript: 4.3.5
     dependencies:
       google-spreadsheet: 3.1.15
@@ -670,7 +670,7 @@ importers:
       nock: 13.1.1
       prettier: 2.3.2
       ts-jest: 27.0.4_52cc4273aa16028085013af47e479e10
-      type-fest: 1.3.0
+      type-fest: 2.0.0
       typescript: 4.3.5
 
   plugins/@grouparoo/hubspot:
@@ -689,7 +689,7 @@ importers:
       nock: 13.1.1
       prettier: 2.3.2
       ts-jest: 27.0.4
-      type-fest: 1.3.0
+      type-fest: 2.0.0
       typescript: 4.3.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -707,7 +707,7 @@ importers:
       nock: 13.1.1
       prettier: 2.3.2
       ts-jest: 27.0.4_52cc4273aa16028085013af47e479e10
-      type-fest: 1.3.0
+      type-fest: 2.0.0
       typescript: 4.3.5
 
   plugins/@grouparoo/intercom:
@@ -816,7 +816,7 @@ importers:
       nock: 13.1.1
       prettier: 2.3.2
       ts-jest: 27.0.4
-      type-fest: 1.3.0
+      type-fest: 2.0.0
       typescript: 4.3.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -833,7 +833,7 @@ importers:
       nock: 13.1.1
       prettier: 2.3.2
       ts-jest: 27.0.4_52cc4273aa16028085013af47e479e10
-      type-fest: 1.3.0
+      type-fest: 2.0.0
       typescript: 4.3.5
 
   plugins/@grouparoo/marketo:
@@ -972,12 +972,12 @@ importers:
       '@types/node': '*'
       actionhero: 27.0.0
       jest: 27.0.6
-      newrelic: 8.0.0
+      newrelic: 8.1.0
       prettier: 2.3.2
       ts-jest: 27.0.4
       typescript: 4.3.5
     dependencies:
-      newrelic: 8.0.0
+      newrelic: 8.1.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1372,7 +1372,7 @@ importers:
       prettier: 2.3.2
       sqlite3: 5.0.2
       ts-jest: 27.0.4
-      type-fest: 1.3.0
+      type-fest: 2.0.0
       typescript: 4.3.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -1390,7 +1390,7 @@ importers:
       jest: 27.0.6
       prettier: 2.3.2
       ts-jest: 27.0.4_52cc4273aa16028085013af47e479e10
-      type-fest: 1.3.0
+      type-fest: 2.0.0
       typescript: 4.3.5
 
   plugins/@grouparoo/zendesk:
@@ -1463,7 +1463,7 @@ importers:
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4
-      swagger-ui-dist: 3.51.2
+      swagger-ui-dist: 3.52.0
       ts-jest: 27.0.4
       typescript: 4.3.5
       victory: 35.9.3
@@ -1491,7 +1491,7 @@ importers:
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
-      swagger-ui-dist: 3.51.2
+      swagger-ui-dist: 3.52.0
       victory: 35.9.3
     devDependencies:
       '@grouparoo/core': link:../../core
@@ -1543,9 +1543,9 @@ importers:
       react-markdown: 6.0.2
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
-      swagger-ui-dist: 3.51.2
+      swagger-ui-dist: 3.52.0
       ts-jest: 27.0.4
-      type-fest: 1.3.0
+      type-fest: 2.0.0
       typescript: 4.3.5
       victory: 35.9.3
     devDependencies:
@@ -1581,9 +1581,9 @@ importers:
       react-markdown: 6.0.2_5801e6465414ef85acbf5710ce4c0dcf
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
-      swagger-ui-dist: 3.51.2
+      swagger-ui-dist: 3.52.0
       ts-jest: 27.0.4_52cc4273aa16028085013af47e479e10
-      type-fest: 1.3.0
+      type-fest: 2.0.0
       typescript: 4.3.5
       victory: 35.9.3
 
@@ -1626,7 +1626,7 @@ importers:
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4
-      swagger-ui-dist: 3.51.2
+      swagger-ui-dist: 3.52.0
       ts-jest: 27.0.4
       typescript: 4.3.5
       victory: 35.9.3
@@ -1656,7 +1656,7 @@ importers:
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
-      swagger-ui-dist: 3.51.2
+      swagger-ui-dist: 3.52.0
       victory: 35.9.3
     devDependencies:
       '@grouparoo/core': link:../../core
@@ -1711,7 +1711,7 @@ importers:
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4
-      swagger-ui-dist: 3.51.2
+      swagger-ui-dist: 3.52.0
       ts-jest: 27.0.4
       typescript: 4.3.5
       victory: 35.9.3
@@ -1739,7 +1739,7 @@ importers:
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
-      swagger-ui-dist: 3.51.2
+      swagger-ui-dist: 3.52.0
       victory: 35.9.3
     devDependencies:
       '@grouparoo/core': link:../../core
@@ -2114,6 +2114,16 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
+  /@cspotcode/source-map-consumer/0.8.0:
+    resolution: {integrity: sha512-41qniHzTU8yAGbCp04ohlmSrZf8bkf/iJsl3V0dRGsQN/5GFfx+LbCSsCpp2gqrqjTVg/K6O8ycoV35JIwAzAg==}
+    engines: {node: '>= 12'}
+
+  /@cspotcode/source-map-support/0.6.1:
+    resolution: {integrity: sha512-DX3Z+T5dt1ockmPdobJS/FAsQPW4V4SrWEhD2iYQT2Cb2tQsiMnYxrcUH9By/Z3B+v0S5LMBkQtV/XOBbpLEOg==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@cspotcode/source-map-consumer': 0.8.0
+
   /@dabh/diagnostics/2.0.2:
     resolution: {integrity: sha512-+A1YivoVDNNVCdfozHSR8v/jyuuLTMXwjWuxPFlFlUapXoGc+Gj9mDlTDDfrwl7rXCl2tNZ0kE8sIBO6YOn96Q==}
     dependencies:
@@ -2343,7 +2353,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@jest/core/27.0.6_ts-node@10.1.0:
+  /@jest/core/27.0.6_ts-node@10.2.0:
     resolution: {integrity: sha512-SsYBm3yhqOn5ZLJCtccaBcvD/ccTLCeuDv8U41WJH/V1MW5eKUkeMHT9U+Pw/v1m1AIWlnIW/eM2XzQr0rEmow==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     peerDependencies:
@@ -2364,7 +2374,7 @@ packages:
       exit: 0.1.2
       graceful-fs: 4.2.6
       jest-changed-files: 27.0.6
-      jest-config: 27.0.6_ts-node@10.1.0
+      jest-config: 27.0.6_ts-node@10.2.0
       jest-haste-map: 27.0.6
       jest-message-util: 27.0.6
       jest-regex-util: 27.0.6
@@ -3214,22 +3224,22 @@ packages:
       write-file-atomic: 3.0.3
     dev: true
 
-  /@newrelic/aws-sdk/4.0.1_newrelic@8.0.0:
+  /@newrelic/aws-sdk/4.0.1_newrelic@8.1.0:
     resolution: {integrity: sha512-6pjPHKODTMItaO6zHDSR3HH7ohvUP9zzQf2pKMKdU4lB/1HV2+Xf6r92X96zPmGQsAnCP9xhgbseUklHD00a1Q==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       newrelic: '>=6.11.0'
     dependencies:
-      newrelic: 8.0.0
+      newrelic: 8.1.0
     dev: false
 
-  /@newrelic/koa/6.0.1_newrelic@8.0.0:
+  /@newrelic/koa/6.0.1_newrelic@8.1.0:
     resolution: {integrity: sha512-LrM0wLBcdngkL6gfAyqlBciqncZJ/Z2DhHCvKQbYSqwG0UxUZ5EZyYqkmU28UIFAdC6ag/6QDEFwYg3PXwJbzQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       newrelic: '>=6.11.0'
     dependencies:
-      newrelic: 8.0.0
+      newrelic: 8.1.0
     dev: false
 
   /@newrelic/native-metrics/7.0.1:
@@ -3242,13 +3252,13 @@ packages:
     dev: false
     optional: true
 
-  /@newrelic/superagent/5.0.1_newrelic@8.0.0:
+  /@newrelic/superagent/5.0.1_newrelic@8.1.0:
     resolution: {integrity: sha512-Efn/G0OohcjDkNEgH/eqiie8boWYMFVT++zxHquIj7I8FdTd2ZoKzcxS2lbkbEAKKXO54o8+cShJTwpptkAdGg==}
     engines: {node: '>=12.0'}
     peerDependencies:
       newrelic: '>=6.11.0'
     dependencies:
-      newrelic: 8.0.0
+      newrelic: 8.1.0
     dev: false
 
   /@next/env/11.0.1:
@@ -3996,6 +4006,10 @@ packages:
     engines: {node: '>=0.4.0'}
     dev: true
 
+  /acorn-walk/8.1.1:
+    resolution: {integrity: sha512-FbJdceMlPHEAWJOILDk1fXD8lnTlEIWFkqtfk+MvmL5q/qlHfN7GEHcsFZWt/Tea9jRNPWUZG4G976nqAAmU9w==}
+    engines: {node: '>=0.4.0'}
+
   /acorn/7.4.1:
     resolution: {integrity: sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==}
     engines: {node: '>=0.4.0'}
@@ -4006,7 +4020,6 @@ packages:
     resolution: {integrity: sha512-asabaBSkEKosYKMITunzX177CXxQ4Q8BSSzMTKD+FefUhipQC70gfW5SiUDhYQ3vk8G+81HqQk7Fv9OXwwn9KA==}
     engines: {node: '>=0.4.0'}
     hasBin: true
-    dev: true
 
   /actionhero/27.0.0:
     resolution: {integrity: sha512-Gw2tIOMtrj/+AiB5BsYWID0HSKSI8OhSZiDRc0qJVugNQS2OG8L74nMNtzcHdETiTfrmPT1LkWXMano0hfu/Tg==}
@@ -4402,8 +4415,8 @@ packages:
     resolution: {integrity: sha512-SA5mXJWrId1TaQjfxUYghbqQ/hYioKmLJvPJyDuYRtXXenFNMjj4hSSt1Cf1xsuXSXrtxrVC5Ot4eU6cOtBDdA==}
     engines: {node: '>= 0.4'}
 
-  /aws-sdk/2.958.0:
-    resolution: {integrity: sha512-D5/2mW+hl5+CYvAniB209VUN3lFo7ZypCdO0RxyKG49DjoB+h3wvNxJo/BKL3A0sSiMOlrT61vDWsmkeE34S/g==}
+  /aws-sdk/2.969.0:
+    resolution: {integrity: sha512-bDQenWDH9CdPIsgh7E6zgq2bO576teSnlQv1Oz0IwxVq+AbGsArSJXjNrvniV1l9TrqPOZk9dqBa/q4mOzwyLw==}
     engines: {node: '>= 0.8.0'}
     requiresBuild: true
     dependencies:
@@ -4790,7 +4803,7 @@ packages:
     resolution: {integrity: sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==}
     dependencies:
       base64-js: 1.5.1
-      ieee754: 1.1.13
+      ieee754: 1.2.1
       isarray: 1.0.0
 
   /buffer/5.6.0:
@@ -7284,6 +7297,13 @@ packages:
   /hosted-git-info/2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
 
+  /hosted-git-info/3.0.8:
+    resolution: {integrity: sha512-aXpmwoOhRBrw6X3j0h5RloK4x1OzsxMPyxqIHyNfSe2pypkVTZFpEiRoSipPEPlMrh0HW/XsjkJ5WgnCirpNUw==}
+    engines: {node: '>=10'}
+    dependencies:
+      lru-cache: 6.0.0
+    dev: true
+
   /hosted-git-info/4.0.2:
     resolution: {integrity: sha512-c9OGXbZ3guC/xOlCg1Ci/VgWlwsqDv1yMQL1CWqXDL0hDjXuNcq0zuR4xqPSuasI3kqFDhqSyTjREz5gzq0fXg==}
     engines: {node: '>=10'}
@@ -7455,6 +7475,7 @@ packages:
 
   /ieee754/1.1.13:
     resolution: {integrity: sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==}
+    dev: false
 
   /ieee754/1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -8115,7 +8136,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /jest-cli/27.0.6_ts-node@10.1.0:
+  /jest-cli/27.0.6_ts-node@10.2.0:
     resolution: {integrity: sha512-qUUVlGb9fdKir3RDE+B10ULI+LQrz+MCflEH2UJyoUjoHHCbxDrMxSzjQAPUMsic4SncI62ofYCcAvW6+6rhhg==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
@@ -8125,14 +8146,14 @@ packages:
       node-notifier:
         optional: true
     dependencies:
-      '@jest/core': 27.0.6_ts-node@10.1.0
+      '@jest/core': 27.0.6_ts-node@10.2.0
       '@jest/test-result': 27.0.6
       '@jest/types': 27.0.6
       chalk: 4.1.2
       exit: 0.1.2
       graceful-fs: 4.2.6
       import-local: 3.0.2
-      jest-config: 27.0.6_ts-node@10.1.0
+      jest-config: 27.0.6_ts-node@10.2.0
       jest-util: 27.0.6
       jest-validate: 27.0.6
       prompts: 2.4.1
@@ -8182,7 +8203,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /jest-config/27.0.6_ts-node@10.1.0:
+  /jest-config/27.0.6_ts-node@10.2.0:
     resolution: {integrity: sha512-JZRR3I1Plr2YxPBhgqRspDE2S5zprbga3swYNrvY3HfQGu7p/GjyLOqwrYad97tX3U3mzT53TPHVmozacfP/3w==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     peerDependencies:
@@ -8212,7 +8233,7 @@ packages:
       jest-validate: 27.0.6
       micromatch: 4.0.4
       pretty-format: 27.0.6
-      ts-node: 10.1.0_e287c1681c60c4bb6db69c8dc5a794e9
+      ts-node: 10.2.0_e287c1681c60c4bb6db69c8dc5a794e9
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -8623,7 +8644,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /jest/27.0.6_ts-node@10.1.0:
+  /jest/27.0.6_ts-node@10.2.0:
     resolution: {integrity: sha512-EjV8aETrsD0wHl7CKMibKwQNQc3gIRBXlTikBmmHUeVMKaPFxdcUIBfoDqTSXDoGJIivAYGqCWVlzCSaVjPQsA==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
@@ -8633,9 +8654,9 @@ packages:
       node-notifier:
         optional: true
     dependencies:
-      '@jest/core': 27.0.6_ts-node@10.1.0
+      '@jest/core': 27.0.6_ts-node@10.2.0
       import-local: 3.0.2
-      jest-cli: 27.0.6_ts-node@10.1.0
+      jest-cli: 27.0.6_ts-node@10.2.0
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -8900,19 +8921,19 @@ packages:
     dependencies:
       package-json: 6.5.0
 
-  /lerna-changelog/1.0.1:
-    resolution: {integrity: sha512-E7ewsfQknBmQcUspCqd5b8Hbbp5SX768y6vEiIdXXui9pPhZS1WlrKtiAUPs0CeGd8Pv4gtIC/h3wSWIZuvqaA==}
-    engines: {node: 10.* || >= 12}
+  /lerna-changelog/2.1.0:
+    resolution: {integrity: sha512-7BULP5fV8z4wWVjo7abuwlv+nPGFEgMwpYF2V8JRF2Jm9NSo1YZ8CKKeFAxxXPoCyfj4oZA5xmY9TytiCPQH+g==}
+    engines: {node: 12.* || 14.* || >= 16}
     hasBin: true
     dependencies:
       chalk: 2.4.2
       cli-highlight: 2.1.11
       execa: 1.0.0
+      hosted-git-info: 3.0.8
       make-fetch-happen: 7.1.1
-      normalize-git-url: 3.0.2
       p-map: 3.0.0
       progress: 2.0.3
-      yargs: 13.3.2
+      yargs: 17.1.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -9839,16 +9860,16 @@ packages:
     engines: {node: '>= 0.4.0'}
     dev: false
 
-  /newrelic/8.0.0:
-    resolution: {integrity: sha512-qPGDAPWasGUsfhizIQ5jQqcVsSDs5n5IytTaJsZjn0+Kq3+ozS0g7057rtP8I6aykx3jQrirsSfropzhLm9BOA==}
+  /newrelic/8.1.0:
+    resolution: {integrity: sha512-unBuU4zt7UtMJVwxmZQs++ZPERc7TE5Qg17T7Np7CNpj9bL0szTFTjtiJKmt7eTd3vMKf9dRS1Pqfh3tCUCp2w==}
     engines: {node: '>=12.0.0', npm: '>=6.0.0'}
     hasBin: true
     dependencies:
       '@grpc/grpc-js': 1.3.6
       '@grpc/proto-loader': 0.5.6
-      '@newrelic/aws-sdk': 4.0.1_newrelic@8.0.0
-      '@newrelic/koa': 6.0.1_newrelic@8.0.0
-      '@newrelic/superagent': 5.0.1_newrelic@8.0.0
+      '@newrelic/aws-sdk': 4.0.1_newrelic@8.1.0
+      '@newrelic/koa': 6.0.1_newrelic@8.1.0
+      '@newrelic/superagent': 5.0.1_newrelic@8.1.0
       '@tyriar/fibonacci-heap': 2.0.9
       async: 3.2.0
       concat-stream: 2.0.0
@@ -10181,10 +10202,6 @@ packages:
     hasBin: true
     dependencies:
       abbrev: 1.1.1
-
-  /normalize-git-url/3.0.2:
-    resolution: {integrity: sha1-jl8Uvgva7bc+ByADEKpBbCc1D8Q=}
-    dev: true
 
   /normalize-package-data/2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
@@ -12623,6 +12640,7 @@ packages:
     dependencies:
       buffer-from: 1.1.2
       source-map: 0.6.1
+    dev: true
 
   /source-map/0.4.4:
     resolution: {integrity: sha1-66T12pwNyZneaAMti092FzZSA2s=}
@@ -13111,8 +13129,8 @@ packages:
       supports-color: 7.2.0
     dev: true
 
-  /swagger-ui-dist/3.51.2:
-    resolution: {integrity: sha512-7aDfpvGrya61WQN4Eb6x5TELvYb5+7SRJQNYySkKUDGiRIwj1A8B2PNsXs4xMD0/5t8uNi4zW58KSofutcBdhw==}
+  /swagger-ui-dist/3.52.0:
+    resolution: {integrity: sha512-SGfhW8FCih00QG59PphdeAUtTNw7HS5k3iPqDZowerPw9mcbhKchUb12kbROk99c1X6RTWW1gB1kqgfnYGuCSg==}
 
   /symbol-tree/3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
@@ -13394,7 +13412,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.2
       fast-json-stable-stringify: 2.1.0
-      jest: 27.0.6_ts-node@10.1.0
+      jest: 27.0.6_ts-node@10.2.0
       jest-util: 27.0.6
       json5: 2.2.0
       lodash: 4.17.21
@@ -13405,8 +13423,8 @@ packages:
       yargs-parser: 20.2.9
     dev: true
 
-  /ts-node/10.1.0_e287c1681c60c4bb6db69c8dc5a794e9:
-    resolution: {integrity: sha512-6szn3+J9WyG2hE+5W8e0ruZrzyk1uFLYye6IGMBadnOzDh8aP7t8CbFpsfCiEx2+wMixAhjFt7lOZC4+l+WbEA==}
+  /ts-node/10.2.0_e287c1681c60c4bb6db69c8dc5a794e9:
+    resolution: {integrity: sha512-FstYHtQz6isj8rBtYMN4bZdnXN1vq4HCbqn9vdNQcInRqtB86PePJQIxE6es0PhxKWhj2PHuwbG40H+bxkZPmg==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     peerDependencies:
@@ -13420,16 +13438,18 @@ packages:
       '@swc/wasm':
         optional: true
     dependencies:
+      '@cspotcode/source-map-support': 0.6.1
       '@tsconfig/node10': 1.0.8
       '@tsconfig/node12': 1.0.9
       '@tsconfig/node14': 1.0.1
       '@tsconfig/node16': 1.0.2
       '@types/node': 16.4.10
+      acorn: 8.4.1
+      acorn-walk: 8.1.1
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      source-map-support: 0.5.19
       typescript: 4.3.5
       yn: 3.1.1
 
@@ -13512,9 +13532,9 @@ packages:
     resolution: {integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==}
     engines: {node: '>=8'}
 
-  /type-fest/1.3.0:
-    resolution: {integrity: sha512-mYUYkAy6fPatVWtUeCV/qGeGL3IVucmdJOzeAEfwgCJDx8gP0JaW8jn6KQ5xDfPec31e0KXWn5EUOZMhquR1zA==}
-    engines: {node: '>=10'}
+  /type-fest/2.0.0:
+    resolution: {integrity: sha512-BoEUnckjP9oiudy3KxlGdudtBAdJQ74Wp7dYwVPkUzBn+cVHOsBXh2zD2jLyqgbuJ1KMNriczZCI7lTBA94dFg==}
+    engines: {node: '>=12.20'}
     dev: true
 
   /typed-styles/0.0.7:

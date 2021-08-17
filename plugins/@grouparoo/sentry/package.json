@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@sentry/node": "6.11.0",
-    "@sentry/tracing": "6.10.0"
+    "@sentry/tracing": "6.11.0"
   },
   "devDependencies": {
     "@grouparoo/core": "0.5.3-alpha.4",
