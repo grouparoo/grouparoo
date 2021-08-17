@@ -116,7 +116,7 @@ describe("models/source/processPendingProfileProperties", () => {
         [userId.id, email.id, firstName.id, lastName.id].sort()
       );
       expect(comboPropertiesTasks[0].args[0].profileIds.sort()).toEqual(
-        [...Array(4).fill(profileA.id), ...Array(4).fill(profileB.id)].sort()
+        [profileA.id, profileB.id].sort()
       );
     });
 
@@ -167,7 +167,7 @@ describe("models/source/processPendingProfileProperties", () => {
         ].sort()
       );
       expect(comboPropertiesTasks[0].args[0].profileIds.sort()).toEqual(
-        [...Array(7).fill(profileA.id), ...Array(7).fill(profileB.id)].sort()
+        [profileA.id, profileB.id].sort()
       );
     });
 
