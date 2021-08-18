@@ -4,6 +4,7 @@ import { Option } from "../../models/Option";
 import { Mapping } from "../../models/Mapping";
 import { GroupRule } from "../../models/GroupRule";
 import { internalRun } from "../internalRun";
+import { PluginOptionType } from "../../classes/plugin";
 import { Op } from "sequelize";
 import Mustache from "mustache";
 
@@ -58,7 +59,7 @@ export namespace PropertyOps {
       displayName?: string;
       description: string;
       required: boolean;
-      type: string;
+      type: PluginOptionType;
       options: Array<{
         key: string;
         description?: string;

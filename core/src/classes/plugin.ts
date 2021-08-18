@@ -1,4 +1,4 @@
-import { App, AppOption, SimpleAppOptions } from "../models/App";
+import { App, SimpleAppOptions } from "../models/App";
 import { Source, SimpleSourceOptions, SourceMapping } from "../models/Source";
 import { Errors } from "../modules/errors";
 import {
@@ -9,7 +9,6 @@ import {
 } from "../models/Destination";
 import { Run } from "../models/Run";
 import {
-  PluginConnectionPropertyOption,
   SimplePropertyOptions,
   PropertyFiltersWithKey,
 } from "../models/Property";
@@ -50,6 +49,16 @@ export interface PluginApp {
     appOptions?: AppOptionsMethod;
     parallelism?: AppParallelismMethod;
   };
+}
+
+export interface AppOption {
+  key: string;
+  type?: PluginOptionType;
+  displayName?: string;
+  required: boolean;
+  description?: string;
+  placeholder?: string;
+  defaultValue?: string | number | boolean;
 }
 
 /**
@@ -107,6 +116,14 @@ export enum FilterOperation {
   NotContain = "does not contain",
   In = "in",
 }
+
+export type PluginOptionType =
+  | "list"
+  | "typeahead"
+  | "text"
+  | "textarea"
+  | "password"
+  | "pending";
 
 /**
  * Method to get one or many profiles to be saved/updated.
@@ -298,7 +315,7 @@ export interface ConnectionOption extends AppOption {}
 export interface AppOptionsMethod {
   (): Promise<{
     [optionName: string]: {
-      type: PluginOptionTypes;
+      type: PluginOptionType;
       options?: string[];
       descriptions?: string[];
     };
@@ -366,7 +383,7 @@ export interface SourceOptionsMethod {
 
 export interface SourceOptionsMethodResponse {
   [optionName: string]: {
-    type: PluginOptionTypes;
+    type: PluginOptionType;
     options?: string[];
     descriptions?: string[];
   };
@@ -468,6 +485,38 @@ export interface PropertyOptionsMethod {
 }
 
 /**
+ * Metadata and methods to return the options a Property for this connection/app.
+ * Options is a method which will poll the source for available options to select (ie: names of tables or columns)
+ */
+export interface PluginConnectionPropertyOption {
+  key: string;
+  displayName?: string;
+  required: boolean;
+  description: string;
+  type: PluginOptionType;
+  primary?: boolean;
+  options: (argument: {
+    connection: any;
+    app: App;
+    appId: string;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceId: string;
+    sourceOptions: SimpleSourceOptions;
+    sourceMapping: SourceMapping;
+    property: Property;
+    propertyId: string;
+  }) => Promise<
+    Array<{
+      key: string;
+      description?: string;
+      default?: boolean;
+      examples?: Array<any>;
+    }>
+  >;
+}
+
+/**
  * If a Property is created within the source creation workflow, what default options should that new rule get?
  */
 export interface UniquePropertyBootstrapOptions {
@@ -499,7 +548,7 @@ export interface DestinationOptionsMethod {
 
 export interface DestinationOptionsMethodResponse {
   [optionName: string]: {
-    type: PluginOptionTypes;
+    type: PluginOptionType;
     options?: string[];
     descriptions?: string[];
   };
@@ -572,13 +621,6 @@ export interface ExportArrayPropertiesMethod {
 }
 
 export type ExportArrayPropertiesMethodResponse = Array<string>;
-
-export type PluginOptionTypes =
-  | "string"
-  | "list"
-  | "typeahead"
-  | "pending"
-  | "password";
 
 /** Template Utils */
 

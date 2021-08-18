@@ -88,38 +88,6 @@ const STATE_TRANSITIONS = [
   },
 ];
 
-/**
- * Metadata and methods to return the options a Property for this connection/app.
- * Options is a method which will poll the source for available options to select (ie: names of tables or columns)
- */
-export interface PluginConnectionPropertyOption {
-  key: string;
-  displayName?: string;
-  required: boolean;
-  description: string;
-  type: string;
-  primary?: boolean;
-  options: (argument: {
-    connection: any;
-    app: App;
-    appId: string;
-    appOptions: SimpleAppOptions;
-    source: Source;
-    sourceId: string;
-    sourceOptions: SimpleSourceOptions;
-    sourceMapping: SourceMapping;
-    property: Property;
-    propertyId: string;
-  }) => Promise<
-    Array<{
-      key: string;
-      description?: string;
-      default?: boolean;
-      examples?: Array<any>;
-    }>
-  >;
-}
-
 export interface PropertyFiltersWithKey extends FilterHelper.FiltersWithKey {}
 
 export const CachedProperties: { expires: number; properties: Property[] } = {

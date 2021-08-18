@@ -309,6 +309,19 @@ export default function Page(props) {
                                 </Form.Text>
                               </>
                             );
+                          } else if (
+                            optionOptions[opt.key]?.type === "pending"
+                          ) {
+                            return (
+                              <>
+                                <Form.Control
+                                  size="sm"
+                                  disabled
+                                  type="text"
+                                  value="pending another selection"
+                                ></Form.Control>
+                              </>
+                            );
                           } else {
                             return (
                               <>
@@ -317,7 +330,7 @@ export default function Page(props) {
                                   type={
                                     optionOptions[opt.key]?.type === "password"
                                       ? "password"
-                                      : "text"
+                                      : "text" // textarea not supported here
                                   }
                                   disabled={loading}
                                   defaultValue={app.options[
