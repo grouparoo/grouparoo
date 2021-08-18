@@ -309,9 +309,15 @@ export namespace SourceOps {
           );
         }
 
-        valueMap[property.id][
-          profileProperties[mappedProperty.key].values[0].toString()
-        ] = response[profile.id][property.id];
+        if (
+          profileProperties[mappedProperty.key].values.length > 0 &&
+          profileProperties[mappedProperty.key].values[0] !== null &&
+          profileProperties[mappedProperty.key].values[0] !== undefined
+        ) {
+          valueMap[property.id][
+            profileProperties[mappedProperty.key].values[0].toString()
+          ] = response[profile.id][property.id];
+        }
       }
     }
 
