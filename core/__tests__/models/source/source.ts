@@ -457,7 +457,7 @@ describe("models/source", () => {
       });
       expect(connectionOptions).toEqual({
         table: { options: ["users"], type: "list" },
-        receivedOptions: { type: "string", options: ["true"] },
+        receivedOptions: { type: "text", options: ["true"] },
       });
     });
 
