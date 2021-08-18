@@ -38,7 +38,7 @@ async function calculateProfilePropertyValue(
   try {
     calculation = vm.run(`module.exports = ${populatedFunction}`);
     if (calculation === undefined) {
-      throw Error("Calculated property returned undefined");
+      throw Error("Calculated property's /`customFunction/` undefined");
     }
   } catch (error) {
     throw Error(`Could not calculate property: ${error}`);

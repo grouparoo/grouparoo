@@ -7,15 +7,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { api } from "actionhero";
 import { Generate } from "@grouparoo/core/src/bin/generate";
-import { Apply } from "@grouparoo/core/src/bin/apply";
-// import {
-//   beforeData,
-//   afterData,
-//   appOptions,
-//   usersTableName,
-// } from "../utils/data";
 
 process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
   process.env.JEST_WORKER_ID
