@@ -245,7 +245,7 @@ export class SourcePreview extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "read" };
     this.inputs = {
       id: { required: true },
-      options: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
     };
   }
 
