@@ -754,7 +754,10 @@ export namespace ProfileOps {
       { where: { id: profileProperties.map((pp) => pp.id) } }
     );
 
-    return profileProperties.length;
+    const uniqueProfileIds = profileIds.filter(
+      (val, idx, arr) => arr.indexOf(val) === idx
+    );
+    return uniqueProfileIds.length;
   }
 
   /**
