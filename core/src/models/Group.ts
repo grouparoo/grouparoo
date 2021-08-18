@@ -15,7 +15,7 @@ import {
   Scopes,
 } from "sequelize-typescript";
 import { api, config } from "actionhero";
-import { Op, WhereAttributeHash } from "sequelize";
+import Sequelize, { Op, WhereAttributeHash } from "sequelize";
 import Moment from "moment";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
@@ -512,9 +512,9 @@ export class Group extends LoggedModel<Group> {
       if (!topLevel) {
         // when we are considering a profile property
         localWhereGroup[Op.and] = [
-          api.sequelize.where(
-            api.sequelize.cast(
-              api.sequelize.col(`${alias}.rawValue`),
+          Sequelize.where(
+            Sequelize.cast(
+              Sequelize.col(`${alias}.rawValue`),
               propertyJSToSQLType(property.type)
             ),
             rawValueMatch
@@ -545,9 +545,9 @@ export class Group extends LoggedModel<Group> {
         const todayBoundMatch = {};
         todayBoundMatch[Op[operation.op === "gt" ? "lte" : "gte"]] =
           new Date().getTime();
-        todayBoundWhereGroup[Op.and] = api.sequelize.where(
-          api.sequelize.cast(
-            api.sequelize.col(`${alias}.rawValue`),
+        todayBoundWhereGroup[Op.and] = Sequelize.where(
+          Sequelize.cast(
+            Sequelize.col(`${alias}.rawValue`),
             propertyJSToSQLType(property.type)
           ),
           todayBoundMatch
@@ -564,11 +564,13 @@ export class Group extends LoggedModel<Group> {
         property.isArray &&
         ["ne", "notLike", "notILike"].includes(operation.op)
       ) {
-        let reverseMatchWhere = {
+        let reverseMatchWhere: {
+          [Op.and]: (Sequelize.Utils.Where | WhereAttributeHash)[];
+        } = {
           [Op.and]: [{ propertyId: property.id }],
         };
-        const castedValue = api.sequelize.cast(
-          api.sequelize.col(`rawValue`),
+        const castedValue = Sequelize.cast(
+          Sequelize.col(`rawValue`),
           propertyJSToSQLType(property.type)
         );
         const nullCheckedMatch =
@@ -576,30 +578,31 @@ export class Group extends LoggedModel<Group> {
         switch (operation.op) {
           case "ne":
             reverseMatchWhere[Op.and].push(
-              api.sequelize.where(castedValue, nullCheckedMatch)
+              Sequelize.where(castedValue, nullCheckedMatch?.toString())
             );
             break;
           case "notLike":
             reverseMatchWhere[Op.and].push(
-              api.sequelize.where(castedValue, {
-                [Op.like]: nullCheckedMatch,
+              Sequelize.where(castedValue, {
+                [Op.like]: nullCheckedMatch as string,
               })
             );
             break;
           case "notILike":
             reverseMatchWhere[Op.and].push(
-              api.sequelize.where(castedValue, {
-                [Op.iLike]: nullCheckedMatch,
+              Sequelize.where(castedValue, {
+                [Op.iLike]: nullCheckedMatch as string,
               })
             );
             break;
         }
         const whereClause: string =
+          //@ts-ignore
           api.sequelize.queryInterface.queryGenerator.getWhereConditions(
             reverseMatchWhere
           );
 
-        const affirmativeArrayMatch = api.sequelize.literal(
+        const affirmativeArrayMatch = Sequelize.literal(
           `"ProfileMultipleAssociationShim"."id" NOT IN (SELECT "profileId" FROM "profileProperties" WHERE ${whereClause})`
         );
         localWhereGroup[Op.and].push(affirmativeArrayMatch);

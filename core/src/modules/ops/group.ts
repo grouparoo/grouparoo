@@ -5,7 +5,7 @@ import { Profile } from "../../models/Profile";
 import { ProfileMultipleAssociationShim } from "../../models/ProfileMultipleAssociationShim";
 import { Import } from "../../models/Import";
 import { Op } from "sequelize";
-import { api, log } from "actionhero";
+import Sequelize from "sequelize";
 import { ProfileOps } from "./profile";
 
 export namespace GroupOps {
@@ -475,13 +475,10 @@ export namespace GroupOps {
     const newGroupMembers = await GroupMember.findAll({
       attributes: [
         "groupId",
-        [
-          api.sequelize.fn("max", api.sequelize.col("createdAt")),
-          "newestMemberAdded",
-        ],
+        [Sequelize.fn("max", Sequelize.col("createdAt")), "newestMemberAdded"],
       ],
       group: ["groupId"],
-      order: [[api.sequelize.col("newestMemberAdded"), "desc"]],
+      order: [[Sequelize.col("newestMemberAdded"), "desc"]],
       limit: limit,
     });
 

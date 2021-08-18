@@ -344,7 +344,7 @@ export class Export extends Model {
         "SELECT changes() as count;",
         { type: QueryTypes.SELECT }
       );
-      responseCountWithCompleteExport = changesRows[0].count;
+      responseCountWithCompleteExport = changesRows[0]["count"];
     }
 
     // 2. If there are no complete Exports for the Profile, any old Exports can be deleted
@@ -374,7 +374,7 @@ export class Export extends Model {
         "SELECT changes() as count;",
         { type: QueryTypes.SELECT }
       );
-      responseCountWithNoCompleteExports = changesRows[0].count;
+      responseCountWithNoCompleteExports = changesRows[0]["count"];
     }
 
     return {

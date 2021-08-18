@@ -8,7 +8,12 @@ import { Export } from "../../models/Export";
 import { GroupMember } from "../../models/GroupMember";
 import { Log } from "../../models/Log";
 import { api } from "actionhero";
-import { Op, OrderItem, WhereAttributeHash, QueryTypes } from "sequelize";
+import Sequelize, {
+  Op,
+  OrderItem,
+  WhereAttributeHash,
+  QueryTypes,
+} from "sequelize";
 import { waitForLock } from "../locks";
 import { ProfilePropertyOps } from "./profileProperty";
 import { GroupRule } from "../../models/GroupRule";
@@ -132,7 +137,7 @@ export namespace ProfileOps {
     if (caseSensitive === undefined || caseSensitive === null)
       caseSensitive = true;
 
-    const ands: WhereAttributeHash[] = [];
+    const ands: (Sequelize.Utils.Where | WhereAttributeHash)[] = [];
     const include: Array<any> = [];
     let countRequiresIncludes = false;
 
@@ -149,30 +154,28 @@ export namespace ProfileOps {
       if (!property) throw new Error(`cannot find a property for ${searchKey}`);
 
       ands.push(
-        api.sequelize.where(
-          api.sequelize.col("profileProperties.propertyId"),
+        Sequelize.where(
+          Sequelize.col("profileProperties.propertyId"),
           property.id
         )
       );
       if (searchValue.toLowerCase() === "null" || searchValue === "") {
         ands.push(
-          api.sequelize.where(api.sequelize.col("profileProperties.rawValue"), {
-            [Op.eq]: null,
-          })
+          Sequelize.where(Sequelize.col("profileProperties.rawValue"), null)
         );
       } else {
         const op = searchValue.includes("%") ? Op.like : Op.eq;
         ands.push(
-          api.sequelize.where(
+          Sequelize.where(
             !caseSensitive
-              ? api.sequelize.fn(
+              ? Sequelize.fn(
                   "LOWER",
-                  api.sequelize.col("profileProperties.rawValue")
+                  Sequelize.col("profileProperties.rawValue")
                 )
-              : api.sequelize.col("profileProperties.rawValue"),
+              : Sequelize.col("profileProperties.rawValue"),
             {
               [op]: !caseSensitive
-                ? api.sequelize.fn("LOWER", searchValue)
+                ? Sequelize.fn("LOWER", searchValue)
                 : searchValue,
             }
           )
@@ -185,7 +188,7 @@ export namespace ProfileOps {
       countRequiresIncludes = true;
       include.push(GroupMember);
       ands.push(
-        api.sequelize.where(api.sequelize.col("groupMembers.groupId"), groupId)
+        Sequelize.where(Sequelize.col("groupMembers.groupId"), groupId)
       );
     }
 
