@@ -97,7 +97,7 @@ export interface PluginConnectionPropertyOption {
   displayName?: string;
   required: boolean;
   description: string;
-  type: "list" | "text"; // TODO: WHAT ARE THE OTHER ONES;
+  type: "list" | "text" | "typeahead" | "textarea" | "password" | "pending"; // TODO: WHAT ARE THE OTHER ONES;
   primary?: boolean;
   options: (argument: {
     connection: any;
