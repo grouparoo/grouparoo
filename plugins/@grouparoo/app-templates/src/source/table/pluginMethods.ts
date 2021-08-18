@@ -1,5 +1,5 @@
 import {
-  ConnectionOption,
+  ConnectionOptionsOption,
   PropertyTypes,
   SimpleAppOptions,
   SimpleSourceOptions,
@@ -92,7 +92,7 @@ export interface GetPropertyValuesMethod {
   }): Promise<{ [primaryKey: string]: { [column: string]: DataResponse[] } }>;
 }
 export interface SourceOptionsExtra {
-  options: ConnectionOption[];
+  options: ConnectionOptionsOption[];
   // TODO later: can pass method here.
 }
 export interface TableDefinition {

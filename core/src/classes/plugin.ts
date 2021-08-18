@@ -39,7 +39,7 @@ export interface GrouparooPlugin {
  */
 export interface PluginApp {
   name: string;
-  options: AppOption[];
+  options: AppOptionsOption[];
   minInstances?: number;
   maxInstances?: number;
   methods: {
@@ -51,7 +51,7 @@ export interface PluginApp {
   };
 }
 
-export interface AppOption {
+export interface AppOptionsOption {
   key: string;
   type?: PluginOptionType;
   displayName?: string;
@@ -60,6 +60,8 @@ export interface AppOption {
   placeholder?: string;
   defaultValue?: string | number | boolean;
 }
+
+export interface ConnectionOptionsOption extends AppOptionsOption {}
 
 /**
  * A plugin's Connection
@@ -70,7 +72,7 @@ export interface PluginConnection {
   direction: "import" | "export";
   skipSourceMapping?: boolean;
   app: string;
-  options: ConnectionOption[];
+  options: ConnectionOptionsOption[];
   syncModes?: DestinationSyncMode[];
   defaultSyncMode?: DestinationSyncMode;
   groupAggregations?: AggregationMethod[];
@@ -305,8 +307,6 @@ export interface ErrorWithProfileId extends Error {
   profileId: string;
   errorLevel: Errors.ErrorLevel;
 }
-
-export interface ConnectionOption extends AppOption {}
 
 /**
  * Method to return the options available to this app.

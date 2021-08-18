@@ -3,7 +3,7 @@ import {
   GrouparooPlugin,
   PluginConnection,
   PluginApp,
-  AppOption,
+  AppOptionsOption,
 } from "../classes/plugin";
 import { Option } from "./../models/Option";
 import { Source } from "./../models/Source";
@@ -392,7 +392,7 @@ export namespace OptionHelper {
   ) {
     const plugin = await getPlugin(instance);
 
-    let options: AppOption[] = [];
+    let options: AppOptionsOption[] = [];
     if (instance instanceof App && plugin.pluginApp) {
       options = plugin.pluginApp.options;
     } else if (
