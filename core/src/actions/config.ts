@@ -3,6 +3,7 @@ import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuth
 import { spawnPromise } from "../modules/spawnPromise";
 import { ConfigUser } from "../modules/configUser";
 import { ConfigWriter } from "../modules/configWriter";
+import { APIData } from "../modules/apiData";
 
 export class ConfigValidate extends AuthenticatedAction {
   constructor() {
@@ -14,15 +15,16 @@ export class ConfigValidate extends AuthenticatedAction {
       local: {
         required: true,
         default: "false",
+        formatter: APIData.ensureBoolean,
       },
     };
     this.outputExample = {};
   }
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: { local: boolean } }) {
     return spawnPromise("./node_modules/.bin/grouparoo", [
       "validate",
-      params.local === "true" ? `--validate` : null,
+      params.local === true ? `--validate` : null,
     ]);
   }
 }
@@ -37,16 +39,16 @@ export class ConfigApply extends AuthenticatedAction {
       local: {
         required: true,
         default: false,
-        formatter: (p) => p.trim() === "true",
+        formatter: APIData.ensureBoolean,
       },
     };
     this.outputExample = {};
   }
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: { local: boolean } }) {
     return spawnPromise("./node_modules/.bin/grouparoo", [
       "apply",
-      params.local === "true" ? `--validate` : null,
+      params.local === true ? `--validate` : null,
     ]);
   }
 }

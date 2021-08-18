@@ -6,6 +6,7 @@ import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
 import { Profile } from "../models/Profile";
 import { GroupMember } from "../models/GroupMember";
 import { ConfigWriter } from "../modules/configWriter";
+import { APIData } from "../modules/apiData";
 
 export class GroupsList extends AuthenticatedAction {
   constructor() {
@@ -15,11 +16,12 @@ export class GroupsList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "group", mode: "read" };
     this.inputs = {
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       state: { required: false },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [
           ["name", "desc"],
           ["createdAt", "desc"],
@@ -79,17 +81,14 @@ export class GroupCreate extends AuthenticatedAction {
       name: { required: true },
       type: { required: true },
       matchType: { required: true, default: "all" },
-      rules: { required: false },
+      rules: { required: false, formatter: APIData.ensureObject },
       state: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
     const group = await Group.create(params);
-
-    if (params.rules) {
-      await group.setRules(params.rules);
-    }
+    if (params.rules) await group.setRules(params.rules);
 
     const responseGroup = await group.apiData();
     responseGroup.rules = group.toConvenientRules(await group.getRules());
@@ -110,14 +109,13 @@ export class GroupEdit extends AuthenticatedAction {
       name: { required: false },
       type: { required: false },
       matchType: { required: false },
-      rules: { required: false },
+      rules: { required: false, formatter: APIData.ensureObject },
     };
   }
 
   async runWithinTransaction({ params }) {
     const group = await Group.findById(params.id);
     await group.update(params);
-
     if (params.rules) await group.setRules(params.rules);
 
     const responseGroup = await group.apiData();
@@ -349,8 +347,7 @@ export class GroupDestroy extends AuthenticatedAction {
       force: {
         required: true,
         default: false,
-        formatter: (p: string | boolean) =>
-          p.toString().toLowerCase() === "true",
+        formatter: APIData.ensureBoolean,
       },
     };
   }

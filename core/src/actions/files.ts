@@ -2,6 +2,7 @@ import { api } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { File } from "../models/File";
 import fs from "fs-extra";
+import { APIData } from "../modules/apiData";
 
 export class FilesList extends AuthenticatedAction {
   constructor() {
@@ -11,10 +12,11 @@ export class FilesList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "file", mode: "read" };
     this.inputs = {
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [
           ["type", "desc"],
           ["path", "desc"],

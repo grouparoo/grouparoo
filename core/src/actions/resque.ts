@@ -5,6 +5,7 @@ import { api, task, chatRoom } from "actionhero";
 import { CLS } from "../modules/cls";
 import { StatusReporters } from "../modules/statusReporters";
 import { Status } from "../modules/status";
+import { APIData } from "../modules/apiData";
 
 // Helper Classes for Permissions
 
@@ -52,7 +53,6 @@ export class ResqueRedisInfo extends ResqueActionRead {
     super();
     this.name = "resque:redisInfo";
     this.description = "I return the results of redis info";
-    this.inputs = {};
   }
 
   async runWithinTransaction() {
@@ -68,7 +68,6 @@ export class ResqueResqueDetails extends ResqueActionRead {
     super();
     this.name = "resque:resqueDetails";
     this.description = "I return the results of api.tasks.details";
-    this.inputs = {};
   }
 
   async runWithinTransaction() {
@@ -84,7 +83,6 @@ export class ResqueLoadWorkerQueues extends ResqueActionRead {
     super();
     this.name = "resque:loadWorkerQueues";
     this.description = "I return the results of api.tasks.workers";
-    this.inputs = {};
   }
 
   async runWithinTransaction() {
@@ -115,7 +113,6 @@ export class ResqueFailedCount extends ResqueActionRead {
     super();
     this.name = "resque:resqueFailedCount";
     this.description = "I return a count of failed jobs";
-    this.inputs = {};
   }
 
   async runWithinTransaction() {
@@ -134,12 +131,12 @@ export class ResqueQueued extends ResqueActionRead {
       },
       offset: {
         required: true,
-        formatter: parseInt,
+        formatter: APIData.ensureNumber,
         default: 0,
       },
       limit: {
         required: true,
-        formatter: parseInt,
+        formatter: APIData.ensureNumber,
         default: 100,
       },
     };
@@ -180,12 +177,12 @@ export class ResqueResqueFailed extends ResqueActionRead {
     this.inputs = {
       offset: {
         required: true,
-        formatter: parseInt,
+        formatter: APIData.ensureNumber,
         default: 0,
       },
       limit: {
         required: true,
-        formatter: parseInt,
+        formatter: APIData.ensureNumber,
         default: 100,
       },
     };
@@ -211,7 +208,7 @@ export class ResqueRemoveFailed extends ResqueActionWrite {
     this.inputs = {
       id: {
         required: true,
-        formatter: parseInt,
+        formatter: APIData.ensureNumber,
       },
     };
   }
@@ -229,7 +226,6 @@ export class ResqueRemoveAllFailed extends ResqueActionWrite {
     super();
     this.name = "resque:removeAllFailed";
     this.description = "I remove all failed jobs";
-    this.inputs = {};
   }
 
   async runWithinTransaction() {
@@ -251,7 +247,7 @@ export class ResqueRetryAndRemoveFailed extends ResqueActionWrite {
     this.inputs = {
       id: {
         required: true,
-        formatter: parseInt,
+        formatter: APIData.ensureNumber,
       },
     };
   }
@@ -269,7 +265,6 @@ export class ResqueRetryAndRemoveAllFailed extends ResqueActionWrite {
     super();
     this.name = "resque:retryAndRemoveAllFailed";
     this.description = "I retry all failed jobs";
-    this.inputs = {};
   }
 
   async runWithinTransaction() {
@@ -288,7 +283,6 @@ export class ResqueLocks extends ResqueActionRead {
     super();
     this.name = "resque:locks";
     this.description = "I return all locks";
-    this.inputs = {};
   }
 
   async runWithinTransaction() {
@@ -319,12 +313,12 @@ export class ResqueDelayedJobs extends ResqueActionRead {
     this.inputs = {
       offset: {
         required: true,
-        formatter: parseInt,
+        formatter: APIData.ensureNumber,
         default: 0,
       },
       limit: {
         required: true,
-        formatter: parseInt,
+        formatter: APIData.ensureNumber,
         default: 100,
       },
     };
@@ -362,11 +356,11 @@ export class ResqueDelDelayed extends ResqueActionWrite {
     this.inputs = {
       timestamp: {
         required: true,
-        formatter: parseInt,
+        formatter: APIData.ensureNumber,
       },
       count: {
         required: true,
-        formatter: parseInt,
+        formatter: APIData.ensureNumber,
       },
     };
   }
@@ -392,11 +386,11 @@ export class ResqueRunDelayed extends ResqueActionWrite {
     this.inputs = {
       timestamp: {
         required: true,
-        formatter: parseInt,
+        formatter: APIData.ensureNumber,
       },
       count: {
         required: true,
-        formatter: parseInt,
+        formatter: APIData.ensureNumber,
       },
     };
   }

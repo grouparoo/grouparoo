@@ -2,6 +2,7 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { Log } from "../models/Log";
 import { Op } from "sequelize";
+import { APIData } from "../modules/apiData";
 
 export class LogsList extends AuthenticatedAction {
   constructor() {
@@ -14,10 +15,11 @@ export class LogsList extends AuthenticatedAction {
       topic: { required: false },
       verb: { required: false },
       ownerId: { required: false },
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [
           ["createdAt", "desc"],
           ["topic", "desc"],

@@ -1,5 +1,6 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ApiKey } from "../models/ApiKey";
+import { APIData } from "../modules/apiData";
 
 export class ApiKeysList extends AuthenticatedAction {
   constructor() {
@@ -9,8 +10,8 @@ export class ApiKeysList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "apiKey", mode: "read" };
     this.inputs = {
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
     };
   }
 
@@ -40,12 +41,15 @@ export class ApiKeyCreate extends AuthenticatedAction {
       name: { required: true },
       permissionAllRead: { required: false },
       permissionAllWrite: { required: false },
+      permissions: { required: false, formatter: APIData.ensureObject },
     };
   }
 
   async runWithinTransaction({ params }) {
     const apiKey = new ApiKey(params);
     await apiKey.save();
+    if (params.permissions) await apiKey.setPermissions(params.permissions);
+
     return { apiKey: await apiKey.apiData() };
   }
 }
@@ -64,7 +68,7 @@ export class ApiKeyEdit extends AuthenticatedAction {
       permissionAllWrite: { required: false },
       disabledPermissionAllRead: { required: false },
       disabledPermissionAllWrite: { required: false },
-      permissions: { required: false },
+      permissions: { required: false, formatter: APIData.ensureObject },
     };
   }
 
@@ -79,15 +83,7 @@ export class ApiKeyEdit extends AuthenticatedAction {
     }
 
     await apiKey.update(updateParams);
-
-    let permissions = params.permissions;
-    if (permissions) {
-      try {
-        permissions = JSON.parse(permissions);
-      } catch (error) {}
-
-      await apiKey.setPermissions(permissions);
-    }
+    if (params.permissions) await apiKey.setPermissions(params.permissions);
 
     return { apiKey: await apiKey.apiData() };
   }

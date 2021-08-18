@@ -2,6 +2,7 @@ import { Schedule } from "../models/Schedule";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
+import { APIData } from "../modules/apiData";
 
 export class SchedulesList extends AuthenticatedAction {
   constructor() {
@@ -11,11 +12,12 @@ export class SchedulesList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "read" };
     this.inputs = {
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       state: { required: false },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [
           ["name", "desc"],
           ["createdAt", "desc"],
@@ -73,12 +75,16 @@ export class ScheduleCreate extends AuthenticatedAction {
     this.inputs = {
       name: { required: false },
       sourceId: { required: true },
-      recurring: { required: true },
-      confirmProfiles: { required: false },
+      recurring: { required: true, formatter: APIData.ensureBoolean },
+      confirmProfiles: { required: false, formatter: APIData.ensureBoolean },
       state: { required: false },
-      options: { required: false },
-      recurringFrequency: { required: true, default: 0 },
-      filters: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
+      recurringFrequency: {
+        required: true,
+        default: 0,
+        formatter: APIData.ensureNumber,
+      },
+      filters: { required: false, formatter: APIData.ensureObject },
     };
   }
 
@@ -115,12 +121,12 @@ export class ScheduleEdit extends AuthenticatedAction {
       id: { required: true },
       name: { required: false },
       sourceId: { required: false },
-      recurring: { required: false },
-      confirmProfiles: { required: false },
+      recurring: { required: false, formatter: APIData.ensureBoolean },
+      confirmProfiles: { required: false, formatter: APIData.ensureBoolean },
       state: { required: false },
-      options: { required: false },
-      recurringFrequency: { required: false },
-      filters: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
+      recurringFrequency: { required: false, formatter: APIData.ensureNumber },
+      filters: { required: false, formatter: APIData.ensureObject },
     };
   }
 

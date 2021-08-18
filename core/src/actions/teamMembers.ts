@@ -1,6 +1,7 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
+import { APIData } from "../modules/apiData";
 import { GrouparooSubscription } from "../modules/grouparooSubscription";
 
 export class TeamMembersList extends AuthenticatedAction {
@@ -45,7 +46,11 @@ export class TeamMemberCreate extends AuthenticatedAction {
       lastName: { required: true },
       password: { required: true },
       email: { required: true },
-      subscribed: { required: false, default: true },
+      subscribed: {
+        required: false,
+        default: true,
+        formatter: APIData.ensureBoolean,
+      },
     };
   }
 
