@@ -2,7 +2,6 @@ import fs from "fs";
 import { URL } from "url";
 import { join, isAbsolute } from "path";
 import { getParentPath, getPluginManifest } from "../utils/pluginDetails";
-import "ah-sequelize-plugin/dist/initializers/sequelize"; // load the type override for api.sequelize
 import { log } from "actionhero";
 
 import cls from "cls-hooked";
