@@ -512,7 +512,8 @@ export namespace ProfileOps {
     profile: Profile,
     force = false,
     oldGroups: Group[] = [],
-    saveExports = true
+    saveExports = true,
+    sync = true
   ) {
     const groups = await profile.$get("groups");
 
@@ -555,7 +556,7 @@ export namespace ProfileOps {
       destinations.map((destination) =>
         destination.exportProfile(
           profile,
-          true, // sync = true -> do the export in-line
+          sync, // sync = true -> do the export in-line
           force, // force = true -> do the export even if it looks like the data hasn't changed
           saveExports // saveExports = true -> should we really save these exports, or do we just want examples for the next export?
         )
@@ -675,7 +676,7 @@ export namespace ProfileOps {
   /**
    * Look for profiles that don't have a directlyMapped property and are done importing/exporting.
    */
-  export async function getProfilesToSweep() {
+  export async function getProfilesToDestroy() {
     const limit: number = parseInt(
       (await plugin.readSetting("core", "runs-profile-batch-size")).value
     );
@@ -699,12 +700,6 @@ export namespace ProfileOps {
         `
   SELECT "id" FROM "profiles"
   WHERE "state"='ready'
-  AND 0 = (
-    SELECT count("exports"."id") FROM "exports"
-      WHERE
-        "exports"."profileId"="profiles"."id"
-        AND "exports"."state" IN ('pending', 'processing')
-  )
   AND "id" IN (
     SELECT DISTINCT("profileId") FROM "profileProperties"
     JOIN properties ON "properties"."id"="profileProperties"."propertyId"
@@ -729,61 +724,37 @@ export namespace ProfileOps {
   export async function confirmExistence(
     limit: number,
     fromDate: Date,
-    sourceId?: string,
-    run?: Run
+    sourceId?: string
   ) {
     const properties = await Property.findAllWithCache();
     const directlyMapped = properties.filter(
       (p) => p.directlyMapped && (!sourceId || sourceId === p.sourceId)
     );
 
-    const profiles = await Profile.findAll({
-      limit,
-      where: { state: "ready" },
-      include: [
-        GroupMember,
-        {
-          model: ProfileProperty,
-          required: true,
-          where: {
-            state: "ready",
-            confirmedAt: {
-              [Op.lt]: fromDate,
-            },
-            rawValue: {
-              [Op.ne]: null,
-            },
-            propertyId: directlyMapped.map((p) => p.id),
-          },
+    const profileProperties = await ProfileProperty.findAll({
+      where: {
+        state: "ready",
+        confirmedAt: {
+          [Op.lt]: fromDate,
         },
-      ],
+        rawValue: {
+          [Op.ne]: null,
+        },
+        propertyId: directlyMapped.map((p) => p.id),
+      },
+      limit,
     });
 
-    const now = new Date();
-    const bulkImports = [];
+    const profileIds = profileProperties.map((pp) => pp.profileId);
 
-    const creatorInfo = run
-      ? { creatorType: "run", creatorId: run.id }
-      : { creatorType: "task", creatorId: "profiles:confirm" };
+    // Only mark profile and directlyMapped property pending
+    await markPendingByIds(profileIds, false);
+    await ProfileProperty.update(
+      { state: "pending", startedAt: null },
+      { where: { id: profileProperties.map((pp) => pp.id) } }
+    );
 
-    for (const profile of profiles) {
-      delete profile.profileProperties; // get all profile properties
-      const oldProfileProperties = await profile.simplifiedProperties();
-      const oldGroupIds = profile.groupMembers.map((gm) => gm.groupId);
-
-      bulkImports.push({
-        profileId: profile.id,
-        profileAssociatedAt: now,
-        oldProfileProperties,
-        oldGroupIds,
-        ...creatorInfo,
-      });
-    }
-
-    await Import.bulkCreate(bulkImports);
-    await markPendingByIds(profiles.map((p) => p.id));
-
-    return profiles.length;
+    return profileProperties.length;
   }
 
   /**
