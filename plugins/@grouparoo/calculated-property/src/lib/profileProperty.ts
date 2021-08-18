@@ -18,7 +18,8 @@ async function calculateProfilePropertyValue(
   try {
     populatedFunction = await plugin.replaceTemplateProfileVariables(
       customFunction,
-      profile
+      profile,
+      false
     );
   } catch (error) {
     //if we don't have the right properties to build the function, bail
