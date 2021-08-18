@@ -15,6 +15,7 @@ import {
 import { init, finalize } from "../../../util/shared";
 import { getConfig } from "../../../util/config";
 import { log } from "actionhero";
+import { GrouparooCLI } from "@grouparoo/core";
 
 export class Demo extends CLI {
   constructor() {
@@ -28,6 +29,10 @@ export class Demo extends CLI {
       force: { required: false, letter: "f", flag: true },
     };
   }
+
+  preInitialize = () => {
+    GrouparooCLI.setGrouparooRunMode(this);
+  };
 
   async run({ params }) {
     try {

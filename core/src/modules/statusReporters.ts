@@ -1,5 +1,6 @@
 import os from "os";
 import { api, env, task } from "actionhero";
+import Sequelize from "sequelize";
 import PluginDetails from "../utils/pluginDetails";
 import { Op } from "sequelize";
 import { App } from "../models/App";
@@ -564,10 +565,7 @@ export namespace FinalSummaryReporters {
       const exports = await Export.findAll({
         attributes: [
           "destinationId",
-          [
-            api.sequelize.fn("count", api.sequelize.col("id")),
-            "exportsCreated",
-          ],
+          [Sequelize.fn("count", Sequelize.col("id")), "exportsCreated"],
         ],
         where: { createdAt: { [Op.gte]: lastRunStart } },
         group: ["destinationId"],

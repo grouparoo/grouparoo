@@ -201,7 +201,7 @@ export class ExportProcessor extends LoggedModel<ExportProcessor> {
         "SELECT changes() as count;",
         { type: QueryTypes.SELECT }
       );
-      responseCountWithNoExports = changesRows[0].count;
+      responseCountWithNoExports = changesRows[0]["count"];
     }
 
     return config.sequelize.dialect === "sqlite"

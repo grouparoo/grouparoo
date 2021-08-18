@@ -51,6 +51,7 @@ export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
 
 export { StatusMetric } from "./modules/statusReporters";
+export { GrouparooCLI } from "./modules/cli";
 
 export { waitForLock } from "./modules/locks";
 export { Errors } from "./modules/errors";

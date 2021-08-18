@@ -43,7 +43,10 @@ export namespace GrouparooCLI {
   }
 
   export function setGrouparooRunMode(cli: CLI) {
-    process.env.GROUPAROO_RUN_MODE = `cli:${cli.name}`;
+    const onlyName = cli.name.split(" ")[0];
+    const prefixedName = `cli:${onlyName}`;
+    process.env.GROUPAROO_RUN_MODE = prefixedName;
+    return prefixedName;
   }
 
   export function setNextDevelopmentMode(nextDevelopmentMode = false) {

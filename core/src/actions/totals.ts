@@ -1,4 +1,5 @@
-import { api, config } from "actionhero";
+import { config } from "actionhero";
+import Sequelize from "sequelize";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Op } from "sequelize";
 import { Group } from "../models/Group";
@@ -69,8 +70,10 @@ export class TotalsAction extends AuthenticatedAction {
 
     const groupStatement =
       config.sequelize.dialect === "postgres"
-        ? api.sequelize.fn("date_trunc", "day", api.sequelize.col("createdAt"))
-        : api.sequelize.literal(`strftime('%Y %m %d', \`createdAt\`)`);
+        ? Sequelize.fn("date_trunc", "day", Sequelize.col("createdAt"))
+        : (Sequelize.literal(
+            `strftime('%Y %m %d', \`createdAt\`)`
+          ) as unknown as string);
     const rolling: Array<{ date: string; count: number }> = (
       await model.count({
         where: { createdAt: { [Op.gte]: new Date(dates[0]) } },

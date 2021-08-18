@@ -1,3 +1,4 @@
+import Sequelize from "sequelize";
 import {
   Source,
   SimpleSourceOptions,
@@ -585,9 +586,9 @@ export namespace SourceOps {
       attributes: [
         "sourceId",
         [
-          api.sequelize.fn(
+          Sequelize.fn(
             "COUNT",
-            api.sequelize.fn("DISTINCT", api.sequelize.col("profileId"))
+            Sequelize.fn("DISTINCT", Sequelize.col("profileId"))
           ),
           "count",
         ],

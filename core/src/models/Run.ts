@@ -1,5 +1,4 @@
-import { Op } from "sequelize";
-import { api } from "actionhero";
+import Sequelize, { Op } from "sequelize";
 import { Profile } from "./Profile";
 import {
   Model,
@@ -179,10 +178,7 @@ export class Run extends Model {
 
   async buildErrorMessage() {
     const importErrorCounts = await Import.findAll({
-      attributes: [
-        "errorMessage",
-        [api.sequelize.fn("COUNT", "id"), "errorCount"],
-      ],
+      attributes: ["errorMessage", [Sequelize.fn("COUNT", "id"), "errorCount"]],
       where: {
         creatorId: this.id,
         errorMessage: { [Op.not]: null },

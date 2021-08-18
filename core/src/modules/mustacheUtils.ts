@@ -50,7 +50,7 @@ export namespace MustacheUtils {
     const properties = await api.sequelize.models.Property.findAll();
     const searchItems: Array<{ id: string; key: string }> = [].concat(
       properties.map((p) => {
-        return { id: p.id, key: p.key };
+        return { id: p["id"], key: p["key"] };
       }),
       configObjects
         .filter((c) => c.class.toLowerCase() === "property")

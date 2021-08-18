@@ -17,8 +17,8 @@ import {
   BeforeCreate,
   AfterSave,
 } from "sequelize-typescript";
-import { Op, WhereOptions } from "sequelize";
-import { env, api, redis, config } from "actionhero";
+import Sequelize, { Op, WhereOptions } from "sequelize";
+import { env, redis, config } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { LoggedModel } from "../classes/loggedModel";
 import { Profile } from "./Profile";
@@ -452,12 +452,12 @@ export class Property extends LoggedModel<Property> {
       const valueCounts = await ProfileProperty.findAll({
         attributes: [
           "rawValue",
-          [api.sequelize.fn("COUNT", api.sequelize.col("rawValue")), "count"],
+          [Sequelize.fn("COUNT", Sequelize.col("rawValue")), "count"],
         ],
         group: ["rawValue"],
         where: { propertyId: instance.id },
-        having: api.sequelize.where(
-          api.sequelize.fn("COUNT", api.sequelize.col("rawValue")),
+        having: Sequelize.where(
+          Sequelize.fn("COUNT", Sequelize.col("rawValue")),
           { [Op.gt]: 1 }
         ),
         limit: 1,

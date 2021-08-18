@@ -7,6 +7,7 @@ import { Op } from "sequelize";
 import { ConfigWriter } from "../modules/configWriter";
 import { ProfileOps } from "../modules/ops/profile";
 import { AsyncReturnType } from "type-fest";
+import Sequelize from "sequelize";
 
 export class ProfilesList extends AuthenticatedAction {
   constructor() {
@@ -68,10 +69,7 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
 
     const profileProperties = await ProfileProperty.findAll({
       attributes: [
-        [
-          api.sequelize.fn("DISTINCT", api.sequelize.col("rawValue")),
-          "rawValue",
-        ],
+        [Sequelize.fn("DISTINCT", Sequelize.col("rawValue")), "rawValue"],
         "propertyId",
       ],
       where: {
