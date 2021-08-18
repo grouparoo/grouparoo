@@ -217,7 +217,6 @@ export namespace helper {
     process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
       [name]: { path },
     });
-    console.log(process.env.GROUPAROO_INJECTED_PLUGINS);
   }
 
   export function profileResponseData(profile, key) {

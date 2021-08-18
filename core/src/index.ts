@@ -49,6 +49,7 @@ export { Source, SimpleSourceOptions, SourceMapping } from "./models/Source";
 export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
 
+export { Status } from "./modules/status";
 export { StatusMetric } from "./modules/statusReporters";
 export { GrouparooCLI } from "./modules/cli";
 

@@ -137,6 +137,10 @@ export namespace Status {
   function getRedis() {
     return api.redis.clients.client;
   }
+
+  export async function getCurrent() {
+    return Status.get(1); // 1 => current sample
+  }
 }
 
 export namespace FinalSummary {
