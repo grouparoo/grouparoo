@@ -578,20 +578,20 @@ export class Group extends LoggedModel<Group> {
         switch (operation.op) {
           case "ne":
             reverseMatchWhere[Op.and].push(
-              Sequelize.where(castedValue, nullCheckedMatch.toString())
+              Sequelize.where(castedValue, nullCheckedMatch?.toString())
             );
             break;
           case "notLike":
             reverseMatchWhere[Op.and].push(
               Sequelize.where(castedValue, {
-                [Op.like.toString()]: nullCheckedMatch,
+                [Op.like]: nullCheckedMatch as string,
               })
             );
             break;
           case "notILike":
             reverseMatchWhere[Op.and].push(
               Sequelize.where(castedValue, {
-                [Op.iLike.toString()]: nullCheckedMatch,
+                [Op.iLike]: nullCheckedMatch as string,
               })
             );
             break;
