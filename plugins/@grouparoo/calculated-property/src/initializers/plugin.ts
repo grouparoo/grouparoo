@@ -5,7 +5,7 @@ import {
   CalculatedPropertyPropertyTemplate,
   CalculatedPropertySourceTemplate,
 } from "../lib/templates";
-import { profileProperty as calculatedProfileProperty } from "../lib/profileProperty";
+import { profileProperty } from "../lib/profileProperty";
 
 import { test } from "../lib/test";
 import { propertyOptions } from "../lib/propertyOptions";
@@ -16,6 +16,7 @@ export class Plugins extends Initializer {
   constructor() {
     super();
     this.name = packageJSON.name;
+    this.startPriority = 1;
   }
 
   async initialize() {
@@ -44,7 +45,7 @@ export class Plugins extends Initializer {
           groupAggregations: [],
           options: [],
           methods: {
-            profileProperty: calculatedProfileProperty,
+            profileProperty: profileProperty,
             propertyOptions: propertyOptions,
           },
         },

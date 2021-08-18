@@ -355,6 +355,7 @@ export namespace plugin {
     if (string.indexOf("{{") < 0) return string;
 
     const data = await getProfileData(profile);
+    console.log(JSON.stringify(profile));
     return MustacheUtils.strictlyRender(string, data);
   }
 
