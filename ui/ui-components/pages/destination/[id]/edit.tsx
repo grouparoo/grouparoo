@@ -35,7 +35,9 @@ export default function Page(props) {
   );
   const [loading, setLoading] = useState(false);
   const [loadingOptions, setLoadingOptions] = useState(false);
-  const [connectionOptions, setConnectionOptions] = useState({});
+  const [connectionOptions, setConnectionOptions] = useState<
+    Actions.DestinationConnectionOptions["options"]
+  >({});
   const { id } = router.query;
 
   useEffect(() => {
@@ -345,7 +347,7 @@ export default function Page(props) {
                               type={
                                 connectionOptions[opt.key]?.type === "password"
                                   ? "password"
-                                  : "text"
+                                  : "text" // textarea not supported here
                               }
                               disabled={loading || loadingOptions}
                               defaultValue={destination.options[

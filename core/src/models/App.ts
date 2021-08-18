@@ -24,18 +24,7 @@ import { AppOps } from "../modules/ops/app";
 import { LockableHelper } from "../modules/lockableHelper";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
-import { PluginOptionTypes } from "../classes/plugin";
 import { AppConfigurationObject } from "../classes/codeConfig";
-
-export interface AppOption {
-  key: string;
-  type?: PluginOptionTypes;
-  displayName?: string;
-  required: boolean;
-  description?: string;
-  placeholder?: string;
-  defaultValue?: string | number | boolean;
-}
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
 

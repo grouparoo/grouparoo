@@ -15,7 +15,7 @@ import {
   GetChangedRowsMethod,
 } from "./options";
 import { GetTablesMethod } from "../table";
-import { ConnectionOption } from "@grouparoo/core";
+import { ConnectionOptionsOption } from "@grouparoo/core";
 
 export interface BuildConnectionMethod {
   (argument: {
@@ -24,7 +24,7 @@ export interface BuildConnectionMethod {
     app: string;
     tableOptionDescription?: string;
     tableOptionDisplayName?: string;
-    options?: ConnectionOption[];
+    options?: ConnectionOptionsOption[];
     executeQuery: ExecuteQueryMethod;
     validateQuery?: ValidateQueryMethod;
     getChangedRows?: GetChangedRowsMethod;

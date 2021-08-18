@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, App, Option, Log, PluginOptionTypes } from "../../../src";
+import { plugin, App, Option, Log, PluginOptionType } from "../../../src";
 import { api, redis, utils } from "actionhero";
 import { ObfuscatedPasswordString } from "../../../src/modules/optionHelper";
 
@@ -341,7 +341,7 @@ describe("models/app", () => {
     let testCounter = 0;
     let profilePropertyCount = 0;
     let parallelism = Infinity;
-    let appOptionsReturnType: PluginOptionTypes = "list";
+    let appOptionsReturnType: PluginOptionType = "list";
 
     beforeAll(async () => {
       plugin.registerPlugin({

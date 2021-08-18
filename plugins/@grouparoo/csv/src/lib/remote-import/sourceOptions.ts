@@ -5,7 +5,7 @@ import {
 
 export const sourceOptions: SourceOptionsMethod = async () => {
   const response: SourceOptionsMethodResponse = {
-    url: { type: "string", options: [], descriptions: [] },
+    url: { type: "text", options: [], descriptions: [] },
     fileAgeHours: {
       type: "list",
       options: ["1", "6", "12", "24"],

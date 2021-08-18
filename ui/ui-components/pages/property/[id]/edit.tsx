@@ -403,14 +403,14 @@ export default function Page(props) {
                     </>
                   ) : null}
 
-                  {/* textarea options */}
-                  {opt.type === "text" ? (
+                  {/* text options */}
+                  {opt.type === "text" || opt.type === "password" ? (
                     <>
                       <Form.Group controlId="key">
                         <Form.Control
                           required
                           disabled={loading}
-                          type="text"
+                          type={opt.type}
                           value={property.options[opt.key]?.toString()}
                           onChange={(e) =>
                             updateOption(opt.key, e.target.value)
@@ -426,7 +426,7 @@ export default function Page(props) {
                     </>
                   ) : null}
 
-                  {/* text options */}
+                  {/* textarea options */}
                   {opt.type === "textarea" ? (
                     <>
                       <Form.Group controlId="key">
@@ -483,8 +483,21 @@ export default function Page(props) {
                       </p>
                     </>
                   ) : null}
+
+                  {/* pending options */}
+                  {opt.type === "pending" ? (
+                    <>
+                      <Form.Control
+                        size="sm"
+                        disabled
+                        type="text"
+                        value="pending another selection"
+                      ></Form.Control>
+                    </>
+                  ) : null}
                 </div>
               ))}
+
               {filterOptions.length > 0 ? (
                 <>
                   <hr />

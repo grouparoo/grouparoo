@@ -234,7 +234,7 @@ describe("models/destination", () => {
       });
       expect(connectionOptions).toEqual({
         table: { type: "list", options: ["users_out"] },
-        receivedOptions: { type: "string", options: ["true"] },
+        receivedOptions: { type: "text", options: ["true"] },
       });
     });
 

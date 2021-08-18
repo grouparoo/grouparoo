@@ -31,7 +31,6 @@ export {
   Property,
   PropertyTypes,
   PropertyFiltersWithKey,
-  PluginConnectionPropertyOption,
   SimplePropertyOptions,
 } from "./models/Property";
 export { Filter } from "./models/Filter";

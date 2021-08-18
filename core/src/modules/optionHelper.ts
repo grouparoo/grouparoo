@@ -3,13 +3,14 @@ import {
   GrouparooPlugin,
   PluginConnection,
   PluginApp,
+  AppOptionsOption,
 } from "../classes/plugin";
 import { Option } from "./../models/Option";
 import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
 import { Schedule, SimpleScheduleOptions } from "./../models/Schedule";
 import { Property, SimplePropertyOptions } from "../models/Property";
-import { App, AppOption } from "./../models/App";
+import { App } from "./../models/App";
 import { LoggedModel } from "../classes/loggedModel";
 import { LockableHelper } from "./lockableHelper";
 import { plural } from "pluralize";
@@ -391,7 +392,7 @@ export namespace OptionHelper {
   ) {
     const plugin = await getPlugin(instance);
 
-    let options: AppOption[] = [];
+    let options: AppOptionsOption[] = [];
     if (instance instanceof App && plugin.pluginApp) {
       options = plugin.pluginApp.options;
     } else if (

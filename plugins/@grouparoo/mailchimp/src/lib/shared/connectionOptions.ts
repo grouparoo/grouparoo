@@ -4,7 +4,7 @@ import {
   SimpleAppOptions,
   SimpleSourceOptions,
   SimpleDestinationOptions,
-  PluginOptionTypes,
+  PluginOptionType,
   App,
 } from "@grouparoo/core";
 import { connect } from "../connect";
@@ -22,7 +22,7 @@ export interface ConnectionOptionsMethod {
 }
 export interface ConnectionMethodResponse {
   [optionName: string]: {
-    type: PluginOptionTypes;
+    type: PluginOptionType;
     options?: string[];
     descriptions?: string[];
   };

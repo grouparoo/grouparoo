@@ -42,7 +42,7 @@ export const getSourceOptions: GetSourceOptionsMethod = ({
       response[option.key] = {
         // for now all strings, not lists.
         // we'd need a method to do that or pass in the options.
-        type: "string",
+        type: "text",
       };
     }
 

@@ -291,7 +291,7 @@ export namespace helper {
               };
               if (sourceOptions.options)
                 response["receivedOptions"] = {
-                  type: "string",
+                  type: "text",
                   options: [sourceOptions.options],
                 };
               return response;
@@ -405,7 +405,7 @@ export namespace helper {
               };
               if (destinationOptions.options)
                 response["receivedOptions"] = {
-                  type: "string",
+                  type: "text",
                   options: [destinationOptions.options],
                 };
               return response;
@@ -460,7 +460,7 @@ export namespace helper {
               };
               if (destinationOptions.options)
                 response["receivedOptions"] = {
-                  type: "string",
+                  type: "text",
                   options: [destinationOptions.options],
                 };
               return response;

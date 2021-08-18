@@ -152,7 +152,7 @@ export default function Page(props) {
   // not every row returned is guaranteed to have the same columns
   const previewColumns = preview
     .map((row) => Object.keys(row))
-    .flat()
+    .reduce((acc, val) => acc.concat(val), [])
     .filter((value, index, self) => {
       return self.indexOf(value) === index;
     });
@@ -337,7 +337,7 @@ export default function Page(props) {
                               type={
                                 connectionOptions[opt.key]?.type === "password"
                                   ? "password"
-                                  : "text"
+                                  : "text" // textarea not supported here
                               }
                               disabled={loading || loadingOptions}
                               defaultValue={source.options[opt.key]?.toString()}
