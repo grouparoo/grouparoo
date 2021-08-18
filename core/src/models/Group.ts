@@ -564,7 +564,9 @@ export class Group extends LoggedModel<Group> {
         property.isArray &&
         ["ne", "notLike", "notILike"].includes(operation.op)
       ) {
-        let reverseMatchWhere: { [op: string]: Sequelize.Utils.Where[] } = {
+        let reverseMatchWhere: {
+          [Op.and]: (Sequelize.Utils.Where | WhereAttributeHash)[];
+        } = {
           [Op.and]: [{ propertyId: property.id }],
         };
         const castedValue = Sequelize.cast(
@@ -575,19 +577,19 @@ export class Group extends LoggedModel<Group> {
           match.toString().toLocaleLowerCase() === "null" ? null : match;
         switch (operation.op) {
           case "ne":
-            reverseMatchWhere[Op.and.toString()].push(
+            reverseMatchWhere[Op.and].push(
               Sequelize.where(castedValue, nullCheckedMatch.toString())
             );
             break;
           case "notLike":
-            reverseMatchWhere[Op.and.toString()].push(
+            reverseMatchWhere[Op.and].push(
               Sequelize.where(castedValue, {
                 [Op.like.toString()]: nullCheckedMatch,
               })
             );
             break;
           case "notILike":
-            reverseMatchWhere[Op.and.toString()].push(
+            reverseMatchWhere[Op.and].push(
               Sequelize.where(castedValue, {
                 [Op.iLike.toString()]: nullCheckedMatch,
               })
