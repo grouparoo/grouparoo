@@ -482,10 +482,13 @@ export namespace ProfileOps {
         const { canImport, properties } = await source.import(profile);
 
         // We need to save each property as it is loaded so it can be used as a mapping for the next source
-        if (canImport && toSave) {
+        if (toSave) {
           await addOrUpdateProperties([profile], [properties], false);
-          await resolvePendingProperties(profile, source.id);
           await buildNullProperties([profile]);
+
+          if (canImport) {
+            await resolvePendingProperties(profile, source.id);
+          }
         }
       }
 
