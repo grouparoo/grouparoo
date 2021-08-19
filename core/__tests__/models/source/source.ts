@@ -1035,7 +1035,7 @@ describe("models/source", () => {
         });
       });
 
-      test("it returns null when the source does not have a record for the property", async () => {
+      test("it returns undefined when the source does not have a record for the property", async () => {
         await luigi.addOrUpdateProperties({ lastName: ["x"] }); // change the value of the property that is mapped
 
         const profiles = [mario, luigi];
@@ -1051,7 +1051,7 @@ describe("models/source", () => {
 
         expect(response).toEqual({
           [mario.id]: { wordInSpanish: ["hola"], wordInFrench: ["bonjour"] },
-          [luigi.id]: { wordInSpanish: [null], wordInFrench: [null] },
+          [luigi.id]: { wordInSpanish: undefined, wordInFrench: undefined },
         });
       });
     });
