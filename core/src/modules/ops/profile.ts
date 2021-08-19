@@ -355,10 +355,7 @@ export namespace ProfileOps {
     }
   }
 
-  async function resolvePendingProperties(
-    profile: Profile,
-    excludeSourceIds: Array<string> = []
-  ) {
+  async function resolvePendingProperties(profile: Profile, sourceId?: string) {
     const pendingProperties = await ProfileProperty.findAll({
       where: { profileId: profile.id, state: "pending" },
     });
@@ -369,7 +366,7 @@ export namespace ProfileOps {
       const property = await Property.findOneWithCache(
         profileProperty.propertyId
       );
-      if (!excludeSourceIds.includes(property.sourceId)) {
+      if (!sourceId || property.sourceId === sourceId) {
         if (property.keepValueIfNotFound) {
           keepProfilePropertyIds.push(profileProperty.id);
         } else {
@@ -475,7 +472,6 @@ export namespace ProfileOps {
     }
 
     try {
-      const excludeSourceIds = [];
       const sources = await Source.findAll({
         where: { state: "ready" },
         include: [Mapping, Property],
@@ -484,15 +480,16 @@ export namespace ProfileOps {
 
       for (const source of sortedSources) {
         const { canImport, properties } = await source.import(profile);
-        if (!canImport) excludeSourceIds.push(source.id);
+
         // We need to save each property as it is loaded so it can be used as a mapping for the next source
-        if (toSave) await addOrUpdateProperties([profile], [properties], false);
+        if (canImport && toSave) {
+          await addOrUpdateProperties([profile], [properties], false);
+          await resolvePendingProperties(profile, source.id);
+          await buildNullProperties([profile]);
+        }
       }
 
       if (toSave) {
-        await resolvePendingProperties(profile, excludeSourceIds);
-        await buildNullProperties([profile]);
-
         await profile.save();
         await ProfileProperty.update(
           { state: "ready" },
