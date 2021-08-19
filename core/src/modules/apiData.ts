@@ -40,7 +40,9 @@ export namespace APIData {
   export function ensureNumber(param: string | number) {
     if (typeof param === "number") return param;
     try {
-      return parseFloat(param);
+      const parsed = parseFloat(param);
+      if (isNaN(parsed)) throw new Error("NaN");
+      return parsed;
     } catch (error) {
       throw new Error(`${param} cannot be converted to number (${error})`);
     }
