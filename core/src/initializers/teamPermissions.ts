@@ -7,6 +7,7 @@ export class TeamPermissions extends CLSInitializer {
   constructor() {
     super();
     this.name = "teamPermissions";
+    this.startPriority = 10;
   }
 
   async updateTeamPermissions(team: Team) {
@@ -30,13 +31,14 @@ export class TeamPermissions extends CLSInitializer {
     }
   }
 
-  async initializeWithinTransaction() {
+  async initializeWithinTransaction() {}
+
+  async startWithinTransaction() {
     const teams = await Team.findAll();
     for (const i in teams) {
       await this.updateTeamPermissions(teams[i]);
     }
   }
 
-  async startWithinTransaction() {}
   async stopWithinTransaction() {}
 }
