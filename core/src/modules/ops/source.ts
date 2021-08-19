@@ -329,10 +329,10 @@ export namespace SourceOps {
         for (const propertyKey of Object.keys(valueMap)) {
           const lookupValue =
             profileProperties[mappedProperty.key]?.values[0]?.toString();
-          response[profile.id][propertyKey] =
-            lookupValue && valueMap[propertyKey][lookupValue] !== undefined
-              ? valueMap[propertyKey][lookupValue]
-              : [null];
+          if (lookupValue) {
+            response[profile.id][propertyKey] =
+              valueMap[propertyKey][lookupValue];
+          }
         }
       }
     }
