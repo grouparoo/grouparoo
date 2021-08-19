@@ -21,14 +21,21 @@ export namespace Migrations {
         logger,
         logLevel
       );
-      for (const umzug of umzugs) await umzug.up();
+      await upAll(umzugs);
     } else {
       logger("skipping sequelize migrations", "debug");
     }
   }
 
   export async function upAll(umzugs: Umzug[]) {
-    for (const umzug of umzugs) await umzug.up();
+    for (const umzug of umzugs) {
+      try {
+        await umzug.up();
+      } catch (error) {
+        // TODO: THERE IS NO SEQUELIZE META TABLE?
+        console.log(error);
+      }
+    }
   }
 
   export async function downAll(umzugs: Umzug[]) {
