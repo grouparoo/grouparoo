@@ -816,7 +816,7 @@ describe("models/profile", () => {
     let app: App;
     let source: Source;
 
-    let importResult: Record<string, any> = {};
+    let importResult: { [table: string]: { [mappingValue: string]: any } } = {};
 
     beforeAll(async () => {
       await Profile.truncate();
@@ -840,10 +840,26 @@ describe("models/profile", () => {
             description: "a test app connection",
             app: "test-template-app",
             direction: "import" as "import",
-            options: [],
+            options: [{ key: "table", required: true }],
             methods: {
-              profileProperty: async ({ property }) => {
-                return importResult[property.key];
+              profileProperty: async ({
+                property,
+                sourceOptions,
+                sourceMapping,
+                profile,
+              }) => {
+                const table = sourceOptions.table.toString();
+                const profileProperties = await profile.simplifiedProperties();
+                const mappingKey = Object.values(sourceMapping)[0];
+                const mappingVal =
+                  profileProperties[mappingKey].length > 0 &&
+                  profileProperties[mappingKey][0]?.toString();
+
+                return mappingVal &&
+                  importResult[table] &&
+                  importResult[table][mappingVal]
+                  ? importResult[table][mappingVal][property.key]
+                  : undefined;
               },
             },
           },
@@ -864,6 +880,7 @@ describe("models/profile", () => {
       });
       await source.bootstrapUniqueProperty("userId", "integer", "id");
       await source.setMapping({ id: "userId" });
+      await source.setOptions({ table: "users" });
       await source.update({ state: "ready" });
 
       emailProperty = await Property.create({
@@ -902,9 +919,13 @@ describe("models/profile", () => {
       });
 
       importResult = {
-        userId: [1001],
-        email: ["peach@example.com"],
-        color: ["pink"],
+        users: {
+          "1001": {
+            userId: [1001],
+            email: ["peach@example.com"],
+            color: ["pink"],
+          },
+        },
       };
       await profile.import();
 
@@ -939,6 +960,10 @@ describe("models/profile", () => {
       await profile.import();
 
       properties = await profile.getProperties();
+      const pendingProperties = Object.values(properties).filter(
+        (v) => v.state === "pending"
+      );
+      expect(pendingProperties.length).toBe(0);
       expect(simpleProfileValues(properties)).toEqual({
         userId: [1003],
         email: ["bowser@example.com"],
@@ -959,12 +984,21 @@ describe("models/profile", () => {
       ]);
 
       importResult = {
-        userId: [1002],
-        color: ["pink"],
+        users: {
+          "1002": {
+            userId: [1002],
+            color: ["pink"],
+          },
+        },
       };
       await profile.import();
 
       properties = await profile.getProperties();
+      const pendingProperties = Object.values(properties).filter(
+        (v) => v.state === "pending"
+      );
+      expect(pendingProperties.length).toBe(0);
+
       expect(simpleProfileValues(properties)).toEqual({
         userId: [1002],
         email: [null],
@@ -1005,6 +1039,102 @@ describe("models/profile", () => {
         { keepValueIfNotFound: false },
         { where: { key: "email" } }
       );
+    });
+
+    describe("with a dependent source", () => {
+      let purchasesTable: Source;
+      let daisyProfile: Profile;
+
+      beforeAll(async () => {
+        purchasesTable = await Source.create({
+          appId: app.id,
+          name: "test import purchases source",
+          type: "import-from-test-template-app",
+        });
+        await purchasesTable.setOptions({ table: "purchases" });
+        await purchasesTable.setMapping({ user_id: "userId" });
+        await purchasesTable.update({ state: "ready" });
+
+        const purchasesCountProperty = await Property.create({
+          key: "myPurchasesCount",
+          type: "integer",
+          unique: false,
+          sourceId: purchasesTable.id,
+        });
+        await purchasesCountProperty.update({ state: "ready" });
+      });
+
+      test("properties from a dependent source can be imported at the same time", async () => {
+        const profile = await Profile.create();
+        await profile.addOrUpdateProperties({ userId: [1010] });
+        let properties = await profile.getProperties();
+        expect(simpleProfileValues(properties)).toEqual({
+          userId: [1010],
+          email: [null],
+          color: [null],
+          myPurchasesCount: [null],
+        });
+
+        importResult = {
+          users: {
+            "1010": {
+              userId: [1010],
+              email: ["daisy@example.com"],
+              color: ["pink"],
+            },
+          },
+          purchases: {
+            "1010": {
+              myPurchasesCount: [2020],
+            },
+          },
+        };
+        await profile.markPending();
+        await profile.import();
+
+        properties = await profile.getProperties();
+        expect(simpleProfileValues(properties)).toEqual({
+          userId: [1010],
+          email: ["daisy@example.com"],
+          color: ["pink"],
+          myPurchasesCount: [2020],
+        });
+
+        daisyProfile = profile;
+      });
+
+      test("properties from a dependent source can be cleared at the same time if the mapping is gone", async () => {
+        const profile = daisyProfile;
+        let properties = await profile.getProperties();
+        expect(simpleProfileValues(properties)).toEqual({
+          userId: [1010],
+          email: ["daisy@example.com"],
+          color: ["pink"],
+          myPurchasesCount: [2020],
+        });
+
+        importResult = {
+          users: {
+            // daisy is gone
+          },
+          purchases: {
+            "1010": {
+              // related row still here
+              myPurchasesCount: [2020],
+            },
+          },
+        };
+        await profile.markPending();
+        await profile.import();
+
+        properties = await profile.getProperties();
+        expect(simpleProfileValues(properties)).toEqual({
+          userId: [null],
+          email: [null],
+          color: [null],
+          myPurchasesCount: [null],
+        });
+      });
     });
   });
 
