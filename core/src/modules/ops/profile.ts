@@ -387,6 +387,7 @@ export namespace ProfileOps {
         state: "ready",
         rawValue: null,
         stateChangedAt: new Date(),
+        valueChangedAt: new Date(),
         confirmedAt: new Date(),
       },
       { where: { id: clearProfilePropertyIds } }
