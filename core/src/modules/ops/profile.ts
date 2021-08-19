@@ -360,7 +360,7 @@ export namespace ProfileOps {
       where: { profileId: profile.id, state: "pending" },
     });
 
-    const destroyProfilePropertyIds = [];
+    const clearProfilePropertyIds = [];
     const keepProfilePropertyIds = [];
     for (let profileProperty of pendingProperties) {
       const property = await Property.findOneWithCache(
@@ -370,16 +370,27 @@ export namespace ProfileOps {
         if (property.keepValueIfNotFound) {
           keepProfilePropertyIds.push(profileProperty.id);
         } else {
-          destroyProfilePropertyIds.push(profileProperty.id);
+          clearProfilePropertyIds.push(profileProperty.id);
         }
       }
     }
 
+    // Keep value for `keepValueIfNotFound=true`
     await ProfileProperty.update(
       { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
       { where: { id: keepProfilePropertyIds } }
     );
-    await ProfileProperty.destroy({ where: { id: destroyProfilePropertyIds } });
+
+    // Clear value for `keepValueIfNotFound=false`
+    await ProfileProperty.update(
+      {
+        state: "ready",
+        rawValue: null,
+        stateChangedAt: new Date(),
+        confirmedAt: new Date(),
+      },
+      { where: { id: clearProfilePropertyIds } }
+    );
   }
 
   /**
@@ -482,17 +493,15 @@ export namespace ProfileOps {
         const { canImport, properties } = await source.import(profile);
 
         // We need to save each property as it is loaded so it can be used as a mapping for the next source
-        if (toSave) {
+        if (canImport && toSave) {
           await addOrUpdateProperties([profile], [properties], false);
-          await buildNullProperties([profile]);
-
-          if (canImport) {
-            await resolvePendingProperties(profile, source.id);
-          }
+          await resolvePendingProperties(profile, source.id);
         }
       }
 
       if (toSave) {
+        await buildNullProperties([profile]);
+
         await profile.save();
         await ProfileProperty.update(
           { state: "ready" },
