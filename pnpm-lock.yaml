@@ -238,7 +238,7 @@ importers:
       fs-extra: 10.0.0
       glob: 7.1.7
       grouparoo: 0.5.3-alpha.4
-      ioredis: 4.27.7
+      ioredis: 4.27.8
       ioredis-mock: 5.6.0
       isomorphic-fetch: 3.0.0
       jest: 27.0.6
@@ -269,7 +269,7 @@ importers:
       uuid: 8.3.2
       validator: 13.6.0
       winston: 3.3.3
-      ws: 8.1.0
+      ws: 8.2.0
     dependencies:
       '@types/fs-extra': 9.0.12
       '@types/node': 16.4.10
@@ -286,8 +286,8 @@ importers:
       fs-extra: 10.0.0
       glob: 7.1.7
       grouparoo: link:../cli
-      ioredis: 4.27.7
-      ioredis-mock: 5.6.0_ioredis@4.27.7
+      ioredis: 4.27.8
+      ioredis-mock: 5.6.0_ioredis@4.27.8
       isomorphic-fetch: 3.0.0
       json5: 2.2.0
       libphonenumber-js: 1.9.23
@@ -310,7 +310,7 @@ importers:
       uuid: 8.3.2
       validator: 13.6.0
       winston: 3.3.3
-      ws: 8.1.0
+      ws: 8.2.0
     devDependencies:
       '@grouparoo/spec-helper': link:../plugins/@grouparoo/spec-helper
       '@types/jest': 26.0.24
@@ -7667,7 +7667,7 @@ packages:
       lodash: 4.17.21
       standard-as-callback: 2.1.0
 
-  /ioredis-mock/5.6.0_ioredis@4.27.7:
+  /ioredis-mock/5.6.0_ioredis@4.27.8:
     resolution: {integrity: sha512-Ow+tyKdijg/gA2gSEv7lq8dLp6bO7FnwDXbJ9as37NF23XNRGMLzBc7ITaqMydfrbTodWnLcE2lKEaBs7SBpyA==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -7676,7 +7676,7 @@ packages:
     dependencies:
       fengari: 0.1.4
       fengari-interop: 0.1.2_fengari@0.1.4
-      ioredis: 4.27.7
+      ioredis: 4.27.8
       lodash: 4.17.21
       standard-as-callback: 2.1.0
     dev: false
@@ -7698,8 +7698,8 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /ioredis/4.27.7:
-    resolution: {integrity: sha512-lqvFFmUyGIHlrNyDvBoakzy1+ioJzNyoP6CP97GWtdTjWq9IOAnv6l0HUTsqhvd/z9etGgtrDHZ4kWCMAwNkug==}
+  /ioredis/4.27.8:
+    resolution: {integrity: sha512-AcMEevap2wKxNcYEybZ/Qp+MR2HbNNUwGjG4sVCC3cAJ/zR9HXKAkolXOuR6YcOGPf7DHx9mWb/JKtAGujyPow==}
     engines: {node: '>=6'}
     dependencies:
       cluster-key-slot: 1.1.0
@@ -12285,7 +12285,7 @@ packages:
       jszip: 3.7.0
       rimraf: 3.0.2
       tmp: 0.2.1
-      ws: 8.1.0
+      ws: 8.2.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -14531,8 +14531,8 @@ packages:
       utf-8-validate:
         optional: true
 
-  /ws/8.1.0:
-    resolution: {integrity: sha512-0UWlCD2s3RSclw8FN+D0zDTUyMO+1kHwJQQJzkgUh16S8d3NYON0AKCEQPffE0ez4JyRFu76QDA9KR5bOG/7jw==}
+  /ws/8.2.0:
+    resolution: {integrity: sha512-uYhVJ/m9oXwEI04iIVmgLmugh2qrZihkywG9y5FfZV2ATeLIzHf93qs+tUNqlttbQK957/VX3mtwAS+UfIwA4g==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
