@@ -600,7 +600,7 @@ export namespace ProfileOps {
     hash: {
       [key: string]: Array<string | number | boolean | Date>;
     },
-    source: Source
+    source?: Source
   ) {
     let profile: Profile;
     let isNew = false;
@@ -658,13 +658,14 @@ export namespace ProfileOps {
           where: { id: profileProperty.profileId },
         });
       } else {
-        const hasNoUniquePropertyKey =
-          (await Property.findAllWithCache())
-            .filter((p) => p.unique === true && p.sourceId === source.id)
-            .map((p) => p.key)
-            .filter((key) => !!hash[key]).length === 0;
+        const canCreateNewProfile = source
+          ? (await Property.findAllWithCache())
+              .filter((p) => p.unique === true && p.sourceId === source.id)
+              .map((p) => p.key)
+              .filter((key) => !!hash[key]).length > 0
+          : true;
 
-        if (hasNoUniquePropertyKey) {
+        if (!canCreateNewProfile) {
           throw new Error(
             `could not create a new profile because no profile property in ${JSON.stringify(
               hash

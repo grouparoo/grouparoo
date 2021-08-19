@@ -68,28 +68,22 @@ export namespace ImportOps {
   }
 
   export async function associateProfile(_import: Import) {
+    let run: Run;
+    let schedule: Schedule;
     let source: Source;
 
-    const run = await Run.findOne({ where: { id: _import.creatorId } });
-    if (run) {
-      const schedule = await Schedule.findOne({ where: { id: run.creatorId } });
-      if (run) {
-        source = await Source.findOne({
-          where: { id: schedule.sourceId },
-        });
-      }
-    }
+    run = await Run.findOne({ where: { id: _import.creatorId } });
+    if (run)
+      schedule = await Schedule.findOne({ where: { id: run.creatorId } });
+    if (schedule)
+      source = await Source.findOne({ where: { id: schedule.sourceId } });
 
-    // The import can know if it's from the primary source or not
-
-    const {
-      profile,
-      isNew,
-      // will throw if there are no unique profile properties
-    } = await ProfileOps.findOrCreateByUniqueProfileProperties(
-      _import.data,
-      source
-    );
+    // will throw if there are no unique profile properties
+    const { profile, isNew } =
+      await ProfileOps.findOrCreateByUniqueProfileProperties(
+        _import.data,
+        source
+      );
 
     const oldProfileProperties = await profile.simplifiedProperties();
     const oldGroups = await profile.$get("groups");
