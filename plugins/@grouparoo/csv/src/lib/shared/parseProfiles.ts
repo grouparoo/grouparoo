@@ -42,7 +42,7 @@ export async function parseProfiles({
   // TODO: Is there a way to scan by row numbers and start/stop the stream as needed?
   //       Scanning the whole file each time seems silly.
   let rowId = -1;
-  const validRows = [];
+  const validRows: Record<string, any>[] = [];
   const offset = highWaterMark?.row
     ? parseInt(highWaterMark?.row.toString())
     : 0;

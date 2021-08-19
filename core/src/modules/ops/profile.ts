@@ -593,10 +593,15 @@ export namespace ProfileOps {
   /**
    * The method you'll be using to create profiles with arbitrary data.
    * Hash looks like {email: "person@example.com", id: 123}
+   *
+   * This method today always returns a profile by finding it or making a a new one... is that right?.
    */
-  export async function findOrCreateByUniqueProfileProperties(hash: {
-    [key: string]: Array<string | number | boolean | Date>;
-  }) {
+  export async function findOrCreateByUniqueProfileProperties(
+    hash: {
+      [key: string]: Array<string | number | boolean | Date>;
+    },
+    source: Source
+  ) {
     let profile: Profile;
     let isNew = false;
     let profileProperty: ProfileProperty;
@@ -605,11 +610,14 @@ export namespace ProfileOps {
     );
     const uniquePropertiesHash = {};
 
-    uniqueProperties.forEach((rule) => {
-      if (hash[rule.key] !== null && hash[rule.key] !== undefined) {
-        uniquePropertiesHash[rule.id] = hash[rule.key];
-      } else if (hash[rule.id] !== null && hash[rule.id] !== undefined) {
-        uniquePropertiesHash[rule.id] = hash[rule.id];
+    uniqueProperties.forEach((property) => {
+      if (hash[property.key] !== null && hash[property.key] !== undefined) {
+        uniquePropertiesHash[property.id] = hash[property.key];
+      } else if (
+        hash[property.id] !== null &&
+        hash[property.id] !== undefined
+      ) {
+        uniquePropertiesHash[property.id] = hash[property.id];
       }
     });
 
@@ -621,12 +629,12 @@ export namespace ProfileOps {
       );
     }
 
-    const keys = Object.keys(uniquePropertiesHash);
+    const uniquePropertyIds = Object.keys(uniquePropertiesHash);
     const lockReleases = [];
 
     try {
-      for (const i in keys) {
-        const id = keys[i];
+      for (const i in uniquePropertyIds) {
+        const id = uniquePropertyIds[i];
         const value = uniquePropertiesHash[id];
         const property = uniqueProperties.find((r) => r.id === id);
 
@@ -650,6 +658,20 @@ export namespace ProfileOps {
           where: { id: profileProperty.profileId },
         });
       } else {
+        const hasNoUniquePropertyKey =
+          (await Property.findAllWithCache())
+            .filter((p) => p.unique === true && p.sourceId === source.id)
+            .map((p) => p.key)
+            .filter((key) => !!hash[key]).length === 0;
+
+        if (hasNoUniquePropertyKey) {
+          throw new Error(
+            `could not create a new profile because no profile property in ${JSON.stringify(
+              hash
+            )} is unique and owned by the source`
+          );
+        }
+
         profile = await Profile.create();
         profile = await profile.reload();
         const { releaseLock } = await waitForLock(`profile:${profile.id}`);
