@@ -110,7 +110,8 @@ export const DEFAULT = {
     return {
       _toExpand: false,
       logging,
-      autoMigrate: true,
+      autoMigrate:
+        process.env.GROUPAROO_RUN_MODE === "cli:apply" ? false : true,
       dialect: dialect,
       port: parseInt(port),
       database: database,

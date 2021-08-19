@@ -18,16 +18,7 @@ pluginManifest.plugins.map((p) => {
 
 export const DEFAULT = {
   plugins: () => {
-    const plugins = Object.assign(
-      {
-        "ah-sequelize-plugin": {
-          path: getPluginPath("ah-sequelize-plugin"),
-        },
-      },
-      parentPlugins,
-      InjectedPlugins
-    );
-
+    const plugins = Object.assign(parentPlugins, InjectedPlugins);
     return plugins;
   },
   pluginManifestUrl:

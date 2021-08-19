@@ -3,7 +3,7 @@ import { config } from "actionhero";
 export default {
   up: async function (migration, DataTypes) {
     await migration.sequelize.transaction(async () => {
-      if (config.sequelize.dialect === "sqlite") {
+      if (config.sequelize?.dialect === "sqlite") {
         await migration.removeIndex(
           "groupMembers",
           ["profileGuid", "groupGuid"],

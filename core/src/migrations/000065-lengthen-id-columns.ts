@@ -34,7 +34,7 @@ const tables = {
 
 const runMigration = async ({ maxIdLength, migration, DataTypes }) => {
   const changeColumn = async (tableName, columnName) => {
-    if (config.sequelize.dialect === "postgres") {
+    if (config.sequelize?.dialect !== "sqlite") {
       const query = `ALTER TABLE "${tableName}" ALTER COLUMN "${columnName}" SET DATA TYPE varchar(${maxIdLength}); `;
       await migration.sequelize.query(query);
     } else {
