@@ -263,7 +263,7 @@ importers:
       ts-jest: 27.0.5
       ts-node: 10.2.1
       type-fest: 2.0.0
-      typedoc: 0.21.5
+      typedoc: 0.21.6
       typescript: 4.3.5
       umzug: v3.0.0-beta.5
       uuid: 8.3.2
@@ -322,7 +322,7 @@ importers:
       nock: 13.1.1
       ts-jest: 27.0.5_52cc4273aa16028085013af47e479e10
       type-fest: 2.0.0
-      typedoc: 0.21.5_typescript@4.3.5
+      typedoc: 0.21.6_typescript@4.3.5
       typescript: 4.3.5
 
   plugins/@grouparoo/app-templates:
@@ -621,14 +621,14 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.0.1
-      aws-sdk: 2.970.0
+      aws-sdk: 2.972.0
       fs-extra: 10.0.0
       jest: 27.0.6
       prettier: 2.3.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
-      aws-sdk: 2.970.0
+      aws-sdk: 2.972.0
       fs-extra: 10.0.0
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -4424,8 +4424,8 @@ packages:
     resolution: {integrity: sha512-SA5mXJWrId1TaQjfxUYghbqQ/hYioKmLJvPJyDuYRtXXenFNMjj4hSSt1Cf1xsuXSXrtxrVC5Ot4eU6cOtBDdA==}
     engines: {node: '>= 0.4'}
 
-  /aws-sdk/2.970.0:
-    resolution: {integrity: sha512-9+ktvE5xgpHr3RsFOcq1SrhXLvU+jUji44jbecFZb5C2lzoEEB29aeN39OLJMW0ZuOrR+3TNum8c3f8YVx6A7w==}
+  /aws-sdk/2.972.0:
+    resolution: {integrity: sha512-oRRjz68Yej/wz5JLc41zeG1m7QCvSj+Y2IOFqDflgwpDy4/M7Lp5HmCK2IK0d62FsKvG63b/9JL6+60ybGcsow==}
     engines: {node: '>= 0.8.0'}
     requiresBuild: true
     dependencies:
@@ -13567,8 +13567,8 @@ packages:
     engines: {node: '>= 8'}
     dev: true
 
-  /typedoc/0.21.5_typescript@4.3.5:
-    resolution: {integrity: sha512-uRDRmYheE5Iju9Zz0X50pTASTpBorIHFt02F5Y8Dt4eBt55h3mwk1CBSY2+EfwBxY16N4Xm7f8KXhnfFZ0AmBw==}
+  /typedoc/0.21.6_typescript@4.3.5:
+    resolution: {integrity: sha512-+4u3PEBjQdaL5/yfus5WJbjIdQHv7E/FpZq3cNki9BBdGmZhqnTF6JLIXDQ2EfVggojOJG9/soB5QVFgXRYnIw==}
     engines: {node: '>= 12.10.0'}
     hasBin: true
     peerDependencies:
@@ -14526,7 +14526,7 @@ packages:
   /xml2js/0.4.19:
     resolution: {integrity: sha512-esZnJZJOiJR9wWKMyuvSE1y6Dq5LCuJanqhxslH2bxM6duahNZ+HMpCLhBQGZkbX6xRf8x1Y2eJlgt2q3qo49Q==}
     dependencies:
-      sax: 1.2.1
+      sax: 1.2.4
       xmlbuilder: 9.0.7
     dev: false
 
