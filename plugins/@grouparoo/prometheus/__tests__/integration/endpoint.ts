@@ -16,7 +16,10 @@ describe("integration/endpoint/prometheus", () => {
 
   describe("with a valid API key", () => {
     beforeAll(async () => {
-      apiKey = await ApiKey.create({name: "metrics", permissionAllRead: true});
+      apiKey = await ApiKey.create({
+        name: "metrics",
+        permissionAllRead: true,
+      });
       url = `http://localhost:${config.servers.web.port}/api/v1/prometheus/metrics?apiKey=${apiKey.apiKey}`;
     });
 

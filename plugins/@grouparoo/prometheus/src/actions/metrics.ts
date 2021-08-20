@@ -1,16 +1,18 @@
 import { Action } from "actionhero";
 import { collectDefaultMetrics, Gauge, Registry } from "prom-client";
-// import { Status } from "@grouparoo/core";
+import { Status } from "@grouparoo/core";
 
+//TODO: target specific metrics *OR* generalize to any metric
 const register = new Registry();
-const testMetric = new Gauge({
-  name: "test_metric",
-  help: "This is just a test metric between 1 and 10",
-  collect() {
-    this.set(Math.floor(Math.random() * 10) + 1);
+const workersCount = new Gauge({
+  name: "workers_count",
+  help: "Number of workers in the cluster",
+  async collect() {
+    let status = await Status.getCurrent();
+    this.set(status.workers.cluster[0].metric.count);
   },
 });
-register.registerMetric(testMetric);
+register.registerMetric(workersCount);
 
 export default class PrometheusAction extends Action {
   constructor() {
@@ -23,11 +25,6 @@ export default class PrometheusAction extends Action {
   }
 
   async run(data) {
-    // collectDefaultMetrics({
-    //   prefix,
-    //   labels: { NODE_APP_INSTANCE: process.env.NODE_APP_INSTANCE },
-    // });
-    // let status = await Status.getCurrent();
     data.connection.rawConnection.responseHeaders.push([
       "Content-Type",
       "text/plain",

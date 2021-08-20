@@ -9,7 +9,7 @@
   },
   "scripts": {
     "lint": "prettier --check src __tests__",
-    "prepare": "rm -rf dist && npx tsc --declaration",
+    "prepare": "rm -rf dist && tsc --declaration",
     "pretest": "npm run lint && npm run prepare",
     "test": "jest",
     "watch": "tsc --watch"
