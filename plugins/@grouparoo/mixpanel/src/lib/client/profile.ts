@@ -32,7 +32,7 @@ export default class Profile {
       data: { distinct_ids: distinctIds },
     });
     if (response?.results?.length > 0) {
-      return response.results.map((result) => result["$properties"]);
+      return response.results;
     }
     return [];
   }

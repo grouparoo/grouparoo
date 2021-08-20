@@ -145,6 +145,16 @@ export namespace helper {
     });
   }
 
+  export async function waitUntil(newNock, guard) {
+    let attempts = 0;
+    while (!(await guard()) && attempts < 10) {
+      attempts++;
+      if (newNock) {
+        await this.sleep(shortTime * 3);
+      }
+    }
+  }
+
   export async function truncate() {
     for (const model of models) {
       await model.truncate();
