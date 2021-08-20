@@ -8,6 +8,7 @@ import { GroupRule } from "../models/GroupRule";
 import { AsyncReturnType } from "type-fest";
 import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
+import { APIData } from "../modules/apiData";
 
 export class PropertiesList extends AuthenticatedAction {
   constructor() {
@@ -17,14 +18,15 @@ export class PropertiesList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "property", mode: "read" };
     this.inputs = {
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       unique: { required: false },
       state: { required: false },
       sourceId: { required: false },
       includeExamples: { required: true, default: "false" },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [
           ["key", "asc"],
           ["createdAt", "desc"],
@@ -137,12 +139,12 @@ export class PropertyCreate extends AuthenticatedAction {
       id: { required: false },
       key: { required: false },
       type: { required: true },
-      unique: { required: false },
+      unique: { required: false, formatter: APIData.ensureBoolean },
       isArray: { required: false },
       state: { required: false },
       sourceId: { required: false },
-      options: { required: false },
-      filters: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
+      filters: { required: false, formatter: APIData.ensureObject },
       keepValueIfNotFound: { required: false },
     };
   }
@@ -181,12 +183,12 @@ export class PropertyEdit extends AuthenticatedAction {
       id: { required: true },
       key: { required: false },
       type: { required: false },
-      unique: { required: false },
+      unique: { required: false, formatter: APIData.ensureBoolean },
       isArray: { required: false },
       state: { required: false },
       sourceId: { required: false },
-      options: { required: false },
-      filters: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
+      filters: { required: false, formatter: APIData.ensureObject },
       keepValueIfNotFound: { required: false },
     };
   }
@@ -281,23 +283,13 @@ export class PropertyPluginOptions extends AuthenticatedAction {
     this.permission = { topic: "property", mode: "read" };
     this.inputs = {
       id: { required: true },
-      options: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
     };
   }
 
   async runWithinTransaction({ params }) {
     const property = await Property.findById(params.id);
-
-    let propertyOptions: SimplePropertyOptions;
-    if (params.options) {
-      try {
-        propertyOptions = JSON.parse(params.options);
-      } catch (e) {
-        propertyOptions = params.options;
-      }
-    }
-
-    return { pluginOptions: await property.pluginOptions(propertyOptions) };
+    return { pluginOptions: await property.pluginOptions(params.options) };
   }
 }
 
@@ -311,8 +303,8 @@ export class PropertyProfilePreview extends AuthenticatedAction {
     this.inputs = {
       id: { required: true },
       profileId: { required: false },
-      options: { required: false },
-      filters: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
+      filters: { required: false, formatter: APIData.ensureObject },
     };
   }
 
@@ -330,22 +322,6 @@ export class PropertyProfilePreview extends AuthenticatedAction {
       }
     }
 
-    let parsedOptions = params.options;
-    if (parsedOptions) {
-      try {
-        // as this is a GET, the options will be stringified
-        parsedOptions = JSON.parse(parsedOptions);
-      } catch {}
-    }
-
-    let parsedFilters = params.filters;
-    if (parsedFilters) {
-      try {
-        // as this is a GET, the options will be stringified
-        parsedFilters = parsedFilters.map((f) => JSON.parse(f));
-      } catch {}
-    }
-
     const apiData = await profile.apiData();
     const source = await property.$get("source", { scope: null });
 
@@ -355,8 +331,8 @@ export class PropertyProfilePreview extends AuthenticatedAction {
       newPropertyValues = await source.importProfileProperty(
         profile,
         property,
-        parsedOptions,
-        parsedFilters
+        params.options,
+        params.filters
       );
     } catch (error) {
       errorMessage = error.toString();

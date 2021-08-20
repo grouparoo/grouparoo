@@ -1,6 +1,7 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Notification } from "../models/Notification";
 import { Op } from "sequelize";
+import { APIData } from "../modules/apiData";
 
 export class NotificationsList extends AuthenticatedAction {
   constructor() {
@@ -10,10 +11,11 @@ export class NotificationsList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "notification", mode: "read" };
     this.inputs = {
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [["createdAt", "desc"]],
       },
     };

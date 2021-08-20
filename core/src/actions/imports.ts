@@ -1,6 +1,7 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Import } from "../models/Import";
 import { Property } from "../models/Property";
+import { APIData } from "../modules/apiData";
 
 export class ImportsList extends AuthenticatedAction {
   constructor() {
@@ -12,10 +13,11 @@ export class ImportsList extends AuthenticatedAction {
     this.inputs = {
       creatorId: { required: false },
       profileId: { required: false },
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [["createdAt", "desc"]],
       },
     };

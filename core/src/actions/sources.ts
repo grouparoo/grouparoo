@@ -8,6 +8,7 @@ import { ConfigWriter } from "../modules/configWriter";
 import { PropertyTypes } from "../models/Property";
 import { AsyncReturnType } from "type-fest";
 import { TableSpeculation } from "../modules/tableSpeculation";
+import { APIData } from "../modules/apiData";
 
 export class SourcesList extends AuthenticatedAction {
   constructor() {
@@ -17,11 +18,12 @@ export class SourcesList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "read" };
     this.inputs = {
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       state: { required: false },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [
           ["appId", "desc"],
           ["createdAt", "asc"],
@@ -110,8 +112,8 @@ export class SourceCreate extends AuthenticatedAction {
       name: { required: false },
       type: { required: true },
       state: { required: false },
-      options: { required: false },
-      mapping: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
+      mapping: { required: false, formatter: APIData.ensureObject },
     };
   }
 
@@ -163,8 +165,8 @@ export class SourceEdit extends AuthenticatedAction {
       name: { required: false },
       type: { required: false },
       state: { required: false },
-      options: { required: false },
-      mapping: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
+      mapping: { required: false, formatter: APIData.ensureObject },
     };
   }
 
@@ -224,19 +226,13 @@ export class sourceConnectionOptions extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "read" };
     this.inputs = {
       id: { required: true },
-      options: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
     };
   }
 
   async runWithinTransaction({ params }) {
     const source = await Source.findById(params.id);
-
-    const options =
-      typeof params.options === "string"
-        ? JSON.parse(params.options)
-        : params.options;
-
-    return { options: await source.sourceConnectionOptions(options) };
+    return { options: await source.sourceConnectionOptions(params.options) };
   }
 }
 
@@ -249,19 +245,13 @@ export class SourcePreview extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "read" };
     this.inputs = {
       id: { required: true },
-      options: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
     };
   }
 
   async runWithinTransaction({ params }) {
     const source = await Source.findById(params.id);
-
-    const options =
-      typeof params.options === "string"
-        ? JSON.parse(params.options)
-        : params.options;
-
-    const preview = await source.sourcePreview(options);
+    const preview = await source.sourcePreview(params.options);
 
     const columnSpeculation: {
       [column: string]: {

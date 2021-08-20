@@ -1,5 +1,6 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ExportProcessor } from "../models/ExportProcessor";
+import { APIData } from "../modules/apiData";
 
 export class ExportProcessorsList extends AuthenticatedAction {
   constructor() {
@@ -10,12 +11,13 @@ export class ExportProcessorsList extends AuthenticatedAction {
     this.permission = { topic: "export", mode: "read" };
     this.inputs = {
       destinationId: { required: false },
-      limit: { required: true, default: 100 },
-      offset: { required: true, default: 0 },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       state: { required: false },
       order: {
         required: false,
         default: [["createdAt", "desc"]],
+        formatter: APIData.ensureObject,
       },
     };
   }

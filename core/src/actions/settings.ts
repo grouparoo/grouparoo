@@ -2,6 +2,7 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";
+import { APIData } from "../modules/apiData";
 
 export class SettingsList extends AuthenticatedAction {
   constructor() {
@@ -13,6 +14,7 @@ export class SettingsList extends AuthenticatedAction {
     this.inputs = {
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [
           ["pluginName", "desc"],
           ["title", "desc"],

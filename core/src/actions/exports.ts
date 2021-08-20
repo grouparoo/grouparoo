@@ -3,6 +3,7 @@ import { Export } from "../models/Export";
 import { ExportOps } from "../modules/ops/export";
 import { Destination } from "../models/Destination";
 import { Op } from "sequelize";
+import { APIData } from "../modules/apiData";
 
 export class ExportsList extends AuthenticatedAction {
   constructor() {
@@ -15,11 +16,12 @@ export class ExportsList extends AuthenticatedAction {
       profileId: { required: false },
       destinationId: { required: false },
       exportProcessorId: { required: false },
-      limit: { required: true, default: 100 },
-      offset: { required: true, default: 0 },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       state: { required: false },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [["createdAt", "desc"]],
       },
     };

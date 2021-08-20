@@ -9,7 +9,6 @@ export class ResetCluster extends AuthenticatedAction {
       "Reset all data in the Grouparoo Cluster except for Teams and Team Members";
     this.outputExample = {};
     this.permission = { topic: "app", mode: "write" };
-    this.inputs = {};
   }
 
   async runWithinTransaction({ session: { teamMember } }) {
@@ -25,7 +24,6 @@ export class ResetData extends AuthenticatedAction {
     this.description = "Reset the imported and exported data in this cluster";
     this.outputExample = {};
     this.permission = { topic: "app", mode: "write" };
-    this.inputs = {};
   }
 
   async runWithinTransaction({ session: { teamMember } }) {
@@ -41,7 +39,6 @@ export class ResetCache extends AuthenticatedAction {
     this.description = "Reset the cache";
     this.outputExample = {};
     this.permission = { topic: "app", mode: "write" };
-    this.inputs = {};
   }
 
   async runWithinTransaction({ session: { teamMember } }) {
