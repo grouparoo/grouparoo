@@ -9,22 +9,17 @@ export namespace Migrations {
   export async function migrate(
     sequelizeConfig: SequelizeConfig,
     sequelizeInstance: Sequelize,
-    toMigrate: boolean,
     logger: MigrationLogger,
     logLevel: string
   ) {
-    if (toMigrate) {
-      logger("running sequelize migrations", "debug");
-      const umzugs = importMigrationsFromDirectory(
-        sequelizeConfig,
-        sequelizeInstance,
-        logger,
-        logLevel
-      );
-      await upAll(umzugs);
-    } else {
-      logger("skipping sequelize migrations", "debug");
-    }
+    logger("running sequelize migrations", "debug");
+    const umzugs = importMigrationsFromDirectory(
+      sequelizeConfig,
+      sequelizeInstance,
+      logger,
+      logLevel
+    );
+    await upAll(umzugs);
   }
 
   export async function upAll(umzugs: Umzug[]) {

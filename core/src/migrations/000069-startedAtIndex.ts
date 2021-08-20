@@ -1,17 +1,15 @@
 export default {
   up: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addIndex("imports", ["startedAt"], {
-        fields: ["startedAt"],
-      });
+    await migration.addIndex("imports", ["startedAt"], {
+      fields: ["startedAt"],
+    });
 
-      await migration.addIndex("exports", ["startedAt"], {
-        fields: ["startedAt"],
-      });
+    await migration.addIndex("exports", ["startedAt"], {
+      fields: ["startedAt"],
+    });
 
-      await migration.addIndex("exportProcessors", ["startedAt"], {
-        fields: ["startedAt"],
-      });
+    await migration.addIndex("exportProcessors", ["startedAt"], {
+      fields: ["startedAt"],
     });
   },
 

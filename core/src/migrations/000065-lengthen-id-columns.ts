@@ -44,14 +44,12 @@ const runMigration = async ({ maxIdLength, migration, DataTypes }) => {
     }
   };
 
-  await migration.sequelize.transaction(async () => {
-    for (const [tableName, columnNames] of Object.entries(tables)) {
-      await changeColumn(tableName, "id");
-      for (const columnName of columnNames) {
-        await changeColumn(tableName, columnName);
-      }
+  for (const [tableName, columnNames] of Object.entries(tables)) {
+    await changeColumn(tableName, "id");
+    for (const columnName of columnNames) {
+      await changeColumn(tableName, columnName);
     }
-  });
+  }
 };
 
 export default {

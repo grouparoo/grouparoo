@@ -1,19 +1,17 @@
 export default {
   up: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      // Set all existing instances to "enrich" to maintain same behavior
-      await migration.bulkUpdate(
-        "destinations",
-        {
-          syncMode: "enrich",
-        },
-        {
-          state: "ready",
-          type: "onesignal-export",
-          locked: null,
-        }
-      );
-    });
+    // Set all existing instances to "enrich" to maintain same behavior
+    await migration.bulkUpdate(
+      "destinations",
+      {
+        syncMode: "enrich",
+      },
+      {
+        state: "ready",
+        type: "onesignal-export",
+        locked: null,
+      }
+    );
   },
 
   down: async function (migration) {
