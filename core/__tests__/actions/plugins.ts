@@ -64,7 +64,7 @@ describe("actions/plugins", () => {
       expect.objectContaining({
         name: "Postgres",
         imageUrl:
-          "https://www.grouparoo.com/images/home/integrations/postgres/postgres.svg",
+          "https://www.grouparoo.com/images/home/integrations/postgres/postgres.png",
         packageName: "@grouparoo/postgres",
         source: true,
         destination: true,
