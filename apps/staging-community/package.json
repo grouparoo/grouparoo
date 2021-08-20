@@ -31,7 +31,7 @@
     "@grouparoo/pardot": "0.5.3-alpha.4",
     "@grouparoo/pipedrive": "0.5.3-alpha.4",
     "@grouparoo/postgres": "0.5.3-alpha.4",
-    "@grouparoo/postgres": "0.5.3-alpha.4",
+    "@grouparoo/prometheus": "0.5.3-alpha.4",
     "@grouparoo/redshift": "0.5.3-alpha.4",
     "@grouparoo/sailthru": "0.5.3-alpha.4",
     "@grouparoo/salesforce": "0.5.3-alpha.4",
