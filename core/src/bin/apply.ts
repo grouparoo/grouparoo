@@ -41,11 +41,9 @@ export class Apply extends CLI {
 
     await CLS.wrap(
       async () => {
-        // we've blocked migrations until this point, now we need to run them
         await Migrations.migrate(
           config.sequelize,
           api.sequelize,
-          true,
           log,
           config.sequelize.migrationLogLevel
         );

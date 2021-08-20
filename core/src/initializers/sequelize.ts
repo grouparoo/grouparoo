@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
 import { api, config, Initializer, log } from "actionhero";
 import { Migrations } from "../modules/migrations";
+import { CLS } from "../modules/cls";
 
 declare module "actionhero" {
   export interface Api {
@@ -19,13 +20,17 @@ export class SequelizeInitializer extends Initializer {
   async initialize() {
     api.sequelize = new Sequelize(config.sequelize);
     await this.test();
-    await Migrations.migrate(
-      config.sequelize,
-      api.sequelize,
-      config.sequelize.autoMigrate,
-      log,
-      config.sequelize.migrationLogLevel
-    );
+
+    if (config.sequelize.autoMigrate) {
+      await CLS.wrap(async () => {
+        await Migrations.migrate(
+          config.sequelize,
+          api.sequelize,
+          log,
+          config.sequelize.migrationLogLevel
+        );
+      });
+    }
   }
 
   async stop() {

@@ -11,10 +11,8 @@ const { Migrations } = require("../dist/modules/migrations");
 const { Sequelize } = require("sequelize");
 
 const args = process.argv.slice(2);
-const direction = args[0];
-const migrationName = args[1];
 
-function validateInputs() {
+function validatePath() {
   if (!process.env.INIT_CWD) process.env.INIT_CWD = process.env.PWD;
   const relativeCorePath = path.join(
     process.env.INIT_CWD,
@@ -28,20 +26,27 @@ function validateInputs() {
   } else {
     console.info(`running migrator in core\r\n`);
   }
-
-  if (!direction)
-    return completeProcess(`direction is required (up, upAll, or down + name)`);
-  if (!["up", "down", "upAll", "downAll"].includes(direction))
-    return completeProcess(`invalid direction ${direction}`);
-  if (direction === "down" && !migrationName)
-    return completeProcess(`migrationName is required`);
 }
 
 async function main() {
   let failureReason;
+  if (args.length === 0 || args[0] === "help") {
+    console.log(`@grouparoo/core migrator.
+
+usage:
+  \`./node_modules/@grouparoo/core/bin/migrator <mode> [migrationName]\`
+  Use me from within your Grouparoo application directory
+
+modes:
+  * up
+  * upAll
+  * down
+  * downAll`);
+    process.exit(1);
+  }
 
   try {
-    validateInputs();
+    validatePath();
 
     const env = process.env.NODE_ENV || "development";
     const configFile = path.resolve(
@@ -65,24 +70,30 @@ async function main() {
       "info"
     );
 
-    switch (args[0]) {
-      case "up": {
-        await Migrations.upOne(umzugs);
-        break;
+    await sequelizeInstance.transaction(async () => {
+      switch (args[0]) {
+        case "up": {
+          await Migrations.upOne(umzugs);
+          break;
+        }
+        case "upAll": {
+          await Migrations.upAll(umzugs);
+          break;
+        }
+        case "down": {
+          if (!args[1]) throw new Error(`migration name is required`);
+          await Migrations.downOne(umzugs, args[1]);
+          break;
+        }
+        case "downAll": {
+          await Migrations.downAll(umzugs);
+          break;
+        }
+        default: {
+          throw new Error(`I cannot preform a ${args[0]} migration`);
+        }
       }
-      case "upAll": {
-        await Migrations.upAll(umzugs);
-        break;
-      }
-      case "down": {
-        await Migrations.downOne(umzugs, args[1]);
-        break;
-      }
-      case "downAll": {
-        await Migrations.downAll(umzugs);
-        break;
-      }
-    }
+    });
   } catch (error) {
     failureReason = error.stack;
   }

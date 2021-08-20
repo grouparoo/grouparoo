@@ -23,27 +23,11 @@ export namespace Migrations {
   }
 
   export async function upAll(umzugs: Umzug[]) {
-    for (const umzug of umzugs) {
-      try {
-        await umzug.up();
-      } catch (error) {
-        // TODO: THERE IS NO SEQUELIZE META TABLE?
-        console.log(error);
-      }
-    }
+    for (const umzug of umzugs) await umzug.up();
   }
 
   export async function downAll(umzugs: Umzug[]) {
-    for (const umzug of umzugs) {
-      let ok = true;
-      while (ok) {
-        try {
-          await umzug.down();
-        } catch (error) {
-          ok = false;
-        }
-      }
-    }
+    for (const umzug of umzugs) await umzug.down({ to: 0 });
   }
 
   export async function upOne(umzugs: Umzug[]) {
@@ -102,16 +86,6 @@ export namespace Migrations {
             return path.parse(filename).name;
           },
         },
-        // logging: function () {
-        //   if (arguments[0].match(/\.d\.ts does not match pattern/)) return;
-        //   log.apply(
-        //     null,
-        //     [].concat(
-        //       arguments[0],
-        //       config.sequelize.migrationLogLevel || "info"
-        //     )
-        //   );
-        // },
       });
 
       function logUmzugEvent(eventName) {
