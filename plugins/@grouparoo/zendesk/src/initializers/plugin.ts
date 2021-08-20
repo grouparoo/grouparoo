@@ -26,7 +26,7 @@ export class Plugins extends Initializer {
     const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
     plugin.registerPlugin({
       name: packageJSON.name,
-      icon: "/public/@grouparoo/zendesk/zendesk.svg",
+      icon: "/public/@grouparoo/zendesk/zendesk.png",
       templates: [
         new AppTemplate("zendesk", [
           path.join(templateRoot, "app", "*.template"),
