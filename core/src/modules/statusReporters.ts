@@ -367,13 +367,13 @@ export namespace StatusReporters {
     }
 
     export async function deletedProfiles(): Promise<StatusMetric> {
-      const profilesToSweep = await ProfileOps.getProfilesToSweep();
+      const profilesToDestroy = await ProfileOps.getProfilesToDestroy();
 
       return {
         collection: "deleted",
         topic: "Profile",
         aggregation: "count",
-        count: profilesToSweep.length,
+        count: profilesToDestroy.length,
       };
     }
   }
