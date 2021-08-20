@@ -173,10 +173,6 @@ describe("tasks/import:associateProfile", () => {
 
     // Prevent data in Secondary Sources from Creating Profiles that do not exist in the Primary Sources
     test("prevents import when unable to create profile from secondary source", async () => {
-      // // ensure that user 99 doesn't already exist
-      // await Profile.truncate();
-      // await ProfileProperty.truncate();
-
       // make a new source and property
       const source: Source = await helper.factories.source();
       await source.setOptions({ table: "otherTable" });
@@ -186,7 +182,7 @@ describe("tasks/import:associateProfile", () => {
       const run: Run = await helper.factories.run(schedule);
       const _import: Import = await helper.factories.import(run, {
         thing: "stuff",
-        userId: 99,
+        userId: 99999999, // doesn't exist in source
       });
 
       await specHelper.runTask("import:associateProfile", {
