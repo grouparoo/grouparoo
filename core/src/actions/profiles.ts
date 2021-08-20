@@ -57,8 +57,8 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
     this.inputs = {
       propertyId: { required: true },
       match: { required: true },
-      limit: { required: false, default: 25 },
-      offset: { required: false, default: 0 },
+      limit: { required: false, default: 25, formatter: APIData.ensureNumber },
+      offset: { required: false, default: 0, formatter: APIData.ensureNumber },
       order: {
         required: false,
         formatter: APIData.ensureObject,

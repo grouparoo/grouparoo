@@ -25,8 +25,6 @@ import { StateMachine } from "../modules/stateMachine";
 import { api, config } from "actionhero";
 import { ExportProcessor } from "./ExportProcessor";
 import { Errors } from "../modules/errors";
-import { Mapping } from "./Mapping";
-import { Option } from "./Option";
 
 /**
  * The Profile Properties in their normal data types (string, boolean, date, etc)
