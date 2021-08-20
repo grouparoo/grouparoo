@@ -34,6 +34,14 @@ export interface HighWaterMark {
   [key: string]: string | number | Date;
 }
 
+const RUN_CREATORS = [
+  "schedule",
+  "property",
+  "group",
+  "task",
+  "teamMember",
+] as const;
+
 const STATES = ["draft", "running", "complete", "stopped"] as const;
 // we have no checks, as those are managed by the lifecycle methods below (and tasks)
 const STATE_TRANSITIONS = [
@@ -64,8 +72,8 @@ export class Run extends Model {
   @Column
   creatorId: string;
 
-  @Column
-  creatorType: string;
+  @Column(DataType.ENUM(...RUN_CREATORS))
+  creatorType: typeof RUN_CREATORS[number];
 
   @AllowNull(false)
   @Column(DataType.ENUM(...STATES))
