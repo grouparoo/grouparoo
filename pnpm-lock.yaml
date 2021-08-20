@@ -42,6 +42,7 @@ importers:
       '@grouparoo/pardot': 0.5.3-alpha.4
       '@grouparoo/pipedrive': 0.5.3-alpha.4
       '@grouparoo/postgres': 0.5.3-alpha.4
+      '@grouparoo/prometheus': 0.5.3-alpha.4
       '@grouparoo/redshift': 0.5.3-alpha.4
       '@grouparoo/sailthru': 0.5.3-alpha.4
       '@grouparoo/salesforce': 0.5.3-alpha.4
@@ -77,6 +78,7 @@ importers:
       '@grouparoo/pardot': link:../../plugins/@grouparoo/pardot
       '@grouparoo/pipedrive': link:../../plugins/@grouparoo/pipedrive
       '@grouparoo/postgres': link:../../plugins/@grouparoo/postgres
+      '@grouparoo/prometheus': link:../../plugins/@grouparoo/prometheus
       '@grouparoo/redshift': link:../../plugins/@grouparoo/redshift
       '@grouparoo/sailthru': link:../../plugins/@grouparoo/sailthru
       '@grouparoo/salesforce': link:../../plugins/@grouparoo/salesforce
@@ -13538,7 +13540,7 @@ packages:
       '@types/jest': 27.0.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.0.6_ts-node@10.2.0
+      jest: 27.0.6
       jest-util: 27.0.6
       json5: 2.2.0
       lodash: 4.17.21

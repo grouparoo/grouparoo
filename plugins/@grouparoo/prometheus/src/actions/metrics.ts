@@ -17,9 +17,9 @@ export default class PrometheusAction extends Action {
     super();
     this.name = "prometheus:getMetrics";
     this.description = "Metrics endpoint supporting prometheus format";
-    // this.inputs = {};
-    // this.middleware = ["authenticated-action"];
-    // this.permission = { topic: "profile", mode: "read" }; //TODO
+    this.middleware = ["authenticated-action"];
+    //@ts-ignore
+    this.permission = { topic: "system", mode: "read" };
   }
 
   async run(data) {
