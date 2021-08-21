@@ -1,45 +1,50 @@
 import { Op } from "sequelize";
 import { config } from "actionhero";
 
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.addColumn("profileProperties", "unique", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.addColumn("profileProperties", "unique", {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
       allowNull: true,
     });
 
-    const [properties] = await migration.sequelize.query(
+    const [properties] = await queryInterface.sequelize.query(
       "SELECT * FROM \"properties\" WHERE state = 'ready'"
     );
     const uniqueProperties = properties.filter(
-      (p) => p.unique === 1 || p.unique === "1" || p.unique === true
+      (p) => p["unique"] === 1 || p["unique"] === "1" || p["unique"] === true
     );
 
     if (uniqueProperties.length > 0) {
-      await migration.sequelize.query(
+      await queryInterface.sequelize.query(
         `UPDATE "profileProperties" SET "unique"=true WHERE "propertyId" IN (${uniqueProperties
-          .map((p) => `'${p.id}'`)
+          .map((p) => `'${p["id"]}'`)
           .join(", ")})`
       );
 
-      await migration.sequelize.query(
+      await queryInterface.sequelize.query(
         `UPDATE "profileProperties" SET "unique"=false WHERE "propertyId" NOT IN (${uniqueProperties
-          .map((p) => `'${p.id}'`)
+          .map((p) => `'${p["id"]}'`)
           .join(", ")})`
       );
     } else {
-      await migration.sequelize.query(
+      await queryInterface.sequelize.query(
         `UPDATE "profileProperties" SET "unique"=false`
       );
     }
 
-    await migration.changeColumn("profileProperties", "unique", {
+    await queryInterface.changeColumn("profileProperties", "unique", {
       type: DataTypes.BOOLEAN,
       allowNull: false,
     });
 
-    await migration.addIndex(
+    await queryInterface.addIndex(
       "profileProperties",
       ["propertyId", "rawValue", "position", "unique"],
       {
@@ -52,14 +57,14 @@ export default {
     // All previous SQLite indexes had been removed (migration 000053), but we need to manually apply the per-profile position/value lock
     // We cannot use Sequelize to apply the second index as it clobbers the first (https://github.com/sequelize/sequelize/issues/12823)
     if (config.sequelize?.dialect === "sqlite") {
-      await migration.sequelize.query(
+      await queryInterface.sequelize.query(
         "CREATE UNIQUE INDEX `profile_properties_profile_guid_profile_property_rule_guid_posi` ON `profileProperties` (`profileId`, `propertyId`, `position`)"
       );
     }
   },
 
-  down: async function (migration) {
-    await migration.removeIndex(
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeIndex(
       "profileProperties",
       ["propertyId", "rawValue", "position", "unique"],
       {
@@ -69,6 +74,6 @@ export default {
       }
     );
 
-    await migration.removeColumn("profileProperties", "unique");
+    await queryInterface.removeColumn("profileProperties", "unique");
   },
 };

@@ -1,12 +1,17 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.addColumn("imports", "startedAt", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.addColumn("imports", "startedAt", {
       type: DataTypes.DATE,
       allowNull: true,
     });
   },
 
-  down: async function (migration) {
-    await migration.removeColumn("imports", "startedAt");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeColumn("imports", "startedAt");
   },
 };

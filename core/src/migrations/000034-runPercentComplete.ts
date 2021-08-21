@@ -1,13 +1,18 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.addColumn("runs", "percentComplete", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.addColumn("runs", "percentComplete", {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 100,
     });
   },
 
-  down: async function (migration) {
-    await migration.removeColumn("runs", "percentComplete");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeColumn("runs", "percentComplete");
   },
 };

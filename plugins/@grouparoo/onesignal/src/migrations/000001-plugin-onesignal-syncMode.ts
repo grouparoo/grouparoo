@@ -1,7 +1,9 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration) {
+  up: async (queryInterface: Sequelzie.QueryInterface) => {
     // Set all existing instances to "enrich" to maintain same behavior
-    await migration.bulkUpdate(
+    await queryInterface.bulkUpdate(
       "destinations",
       {
         syncMode: "enrich",
@@ -14,8 +16,8 @@ export default {
     );
   },
 
-  down: async function (migration) {
-    await migration.bulkUpdate(
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.bulkUpdate(
       "destinations",
       {
         syncMode: null,

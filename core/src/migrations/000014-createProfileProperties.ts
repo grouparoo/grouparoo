@@ -1,6 +1,11 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.createTable("profileProperties", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.createTable("profileProperties", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -32,7 +37,7 @@ export default {
       },
     });
 
-    await migration.addIndex(
+    await queryInterface.addIndex(
       "profileProperties",
       ["profileGuid", "profilePropertyRuleGuid"],
       {
@@ -41,12 +46,12 @@ export default {
       }
     );
 
-    await migration.addIndex("profileProperties", ["profileGuid"], {
+    await queryInterface.addIndex("profileProperties", ["profileGuid"], {
       fields: ["profileGuid"],
     });
   },
 
-  down: async function (migration) {
-    await migration.dropTable("profileProperties");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.dropTable("profileProperties");
   },
 };

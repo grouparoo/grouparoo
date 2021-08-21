@@ -1,5 +1,10 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
     const TABLES = [
       "apps",
       "sources",
@@ -12,14 +17,14 @@ export default {
     for (const i in TABLES) {
       const table = TABLES[i];
       const columns = table === "profilePropertyRules" ? ["key"] : ["name"];
-      await migration.removeIndex(table, columns, {
+      await queryInterface.removeIndex(table, columns, {
         unique: true,
         fields: columns,
       });
     }
   },
 
-  down: async function (migration) {
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
     const TABLES = [
       "apps",
       "sources",
@@ -32,7 +37,7 @@ export default {
     for (const i in TABLES) {
       const table = TABLES[i];
       const columns = table === "profilePropertyRules" ? ["key"] : ["name"];
-      await migration.addIndex(table, columns, {
+      await queryInterface.addIndex(table, columns, {
         unique: true,
         fields: columns,
       });

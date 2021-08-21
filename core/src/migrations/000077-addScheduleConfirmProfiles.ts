@@ -1,18 +1,23 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.addColumn("schedules", "confirmProfiles", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.addColumn("schedules", "confirmProfiles", {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
     });
 
-    await migration.changeColumn("schedules", "confirmProfiles", {
+    await queryInterface.changeColumn("schedules", "confirmProfiles", {
       type: DataTypes.BOOLEAN,
       allowNull: false,
     });
   },
 
-  down: async function (migration) {
-    await migration.removeColumn("schedules", "confirmProfiles");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeColumn("schedules", "confirmProfiles");
   },
 };

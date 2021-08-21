@@ -1,28 +1,26 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.renameTable("propertyFilters", "filters");
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.renameTable("propertyFilters", "filters");
 
-    await migration.renameColumn("filters", "propertyId", "ownerId");
+    await queryInterface.renameColumn("filters", "propertyId", "ownerId");
 
-    await migration.addColumn("filters", "ownerType", {
+    await queryInterface.addColumn("filters", "ownerType", {
       type: DataTypes.STRING(191),
       allowNull: false,
       defaultValue: "property",
     });
 
-    await migration.changeColumn("filters", "ownerType", {
+    await queryInterface.changeColumn("filters", "ownerType", {
       type: DataTypes.STRING(191),
       allowNull: false,
     });
 
-    await migration.addIndex("filters", ["ownerId", "ownerType", "position"], {
-      fields: ["ownerId", "ownerType", "position"],
-      unique: true,
-    });
-  },
-
-  down: async function (migration) {
-    await migration.removeIndex(
+    await queryInterface.addIndex(
       "filters",
       ["ownerId", "ownerType", "position"],
       {
@@ -30,8 +28,19 @@ export default {
         unique: true,
       }
     );
-    await migration.removeColumn("filters", "ownerType");
-    await migration.renameColumn("filters", "ownerId", "propertyId");
-    await migration.renameTable("filters", "propertyFilters");
+  },
+
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeIndex(
+      "filters",
+      ["ownerId", "ownerType", "position"],
+      {
+        fields: ["ownerId", "ownerType", "position"],
+        unique: true,
+      }
+    );
+    await queryInterface.removeColumn("filters", "ownerType");
+    await queryInterface.renameColumn("filters", "ownerId", "propertyId");
+    await queryInterface.renameTable("filters", "propertyFilters");
   },
 };

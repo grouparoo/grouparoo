@@ -1,6 +1,11 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.createTable("exportProcessors", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.createTable("exportProcessors", {
       id: {
         type: DataTypes.STRING(191),
         primaryKey: true,
@@ -62,30 +67,30 @@ export default {
       },
     });
 
-    await migration.addColumn("exports", "exportProcessorId", {
+    await queryInterface.addColumn("exports", "exportProcessorId", {
       type: DataTypes.STRING(191),
       allowNull: true,
     });
 
-    await migration.addIndex("exportProcessors", ["destinationId"], {
+    await queryInterface.addIndex("exportProcessors", ["destinationId"], {
       fields: ["destinationId"],
     });
 
-    await migration.addIndex("exportProcessors", ["state"], {
+    await queryInterface.addIndex("exportProcessors", ["state"], {
       fields: ["state"],
     });
 
-    await migration.addIndex("exportProcessors", ["processAt"], {
+    await queryInterface.addIndex("exportProcessors", ["processAt"], {
       fields: ["processAt"],
     });
 
-    await migration.addIndex("exportProcessors", ["createdAt"], {
+    await queryInterface.addIndex("exportProcessors", ["createdAt"], {
       fields: ["createdAt"],
     });
   },
 
-  down: async function (migration) {
-    await migration.removeColumn("exports", "exportProcessorId");
-    await migration.dropTable("exportProcessors", {});
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeColumn("exports", "exportProcessorId");
+    await queryInterface.dropTable("exportProcessors", {});
   },
 };

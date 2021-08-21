@@ -1,36 +1,38 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration) {
-    await migration.addIndex("profiles", ["createdAt"], {
+  up: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.addIndex("profiles", ["createdAt"], {
       fields: ["createdAt"],
     });
 
-    await migration.addIndex("runs", ["updatedAt"], {
+    await queryInterface.addIndex("runs", ["updatedAt"], {
       fields: ["updatedAt"],
     });
 
-    await migration.addIndex("imports", ["createdAt"], {
+    await queryInterface.addIndex("imports", ["createdAt"], {
       fields: ["createdAt"],
     });
 
-    await migration.addIndex("exports", ["createdAt"], {
+    await queryInterface.addIndex("exports", ["createdAt"], {
       fields: ["createdAt"],
     });
   },
 
-  down: async function (migration) {
-    await migration.removeIndex("profiles", ["createdAt"], {
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeIndex("profiles", ["createdAt"], {
       fields: ["createdAt"],
     });
 
-    await migration.removeIndex("runs", ["updatedAt"], {
+    await queryInterface.removeIndex("runs", ["updatedAt"], {
       fields: ["updatedAt"],
     });
 
-    await migration.removeIndex("imports", ["createdAt"], {
+    await queryInterface.removeIndex("imports", ["createdAt"], {
       fields: ["createdAt"],
     });
 
-    await migration.removeIndex("exports", ["createdAt"], {
+    await queryInterface.removeIndex("exports", ["createdAt"], {
       fields: ["createdAt"],
     });
   },

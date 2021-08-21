@@ -1,12 +1,17 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.addColumn("profileProperties", "startedAt", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.addColumn("profileProperties", "startedAt", {
       type: DataTypes.DATE,
       allowNull: true,
     });
   },
 
-  down: async function (migration) {
-    await migration.removeColumn("profileProperties", "startedAt");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeColumn("profileProperties", "startedAt");
   },
 };

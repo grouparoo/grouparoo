@@ -1,13 +1,15 @@
-export default {
-  up: async function (migration) {
-    await migration.dropTable("exportRuns");
-    await migration.dropTable("exportImports");
+import Sequelzie from "sequelize";
 
-    await migration.removeColumn("runs", "exportsCreated");
-    await migration.removeColumn("runs", "profilesExported");
+export default {
+  up: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.dropTable("exportRuns");
+    await queryInterface.dropTable("exportImports");
+
+    await queryInterface.removeColumn("runs", "exportsCreated");
+    await queryInterface.removeColumn("runs", "profilesExported");
   },
 
-  down: async function (migration, DataTypes) {
+  down: async () => {
     throw new Error("cannot recover data for this migration");
   },
 };

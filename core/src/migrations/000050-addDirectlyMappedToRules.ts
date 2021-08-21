@@ -1,13 +1,18 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.addColumn("profilePropertyRules", "directlyMapped", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.addColumn("profilePropertyRules", "directlyMapped", {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
     });
   },
 
-  down: async function (migration) {
-    await migration.removeColumn("profilePropertyRules", "directlyMapped");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeColumn("profilePropertyRules", "directlyMapped");
   },
 };

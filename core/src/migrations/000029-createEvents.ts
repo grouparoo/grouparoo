@@ -1,6 +1,11 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.createTable("events", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.createTable("events", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -57,27 +62,27 @@ export default {
       },
     });
 
-    await migration.addIndex("events", ["type"], {
+    await queryInterface.addIndex("events", ["type"], {
       unique: false,
       fields: ["type"],
     });
 
-    await migration.addIndex("events", ["profileGuid"], {
+    await queryInterface.addIndex("events", ["profileGuid"], {
       unique: false,
       fields: ["profileGuid"],
     });
 
-    await migration.addIndex("events", ["anonymousId"], {
+    await queryInterface.addIndex("events", ["anonymousId"], {
       unique: false,
       fields: ["anonymousId"],
     });
 
-    await migration.addIndex("events", ["occurredAt"], {
+    await queryInterface.addIndex("events", ["occurredAt"], {
       unique: false,
       fields: ["occurredAt"],
     });
 
-    await migration.createTable("eventData", {
+    await queryInterface.createTable("eventData", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -109,14 +114,14 @@ export default {
       },
     });
 
-    await migration.addIndex("eventData", ["eventGuid"], {
+    await queryInterface.addIndex("eventData", ["eventGuid"], {
       unique: false,
       fields: ["eventGuid"],
     });
   },
 
-  down: async function (migration) {
-    await migration.dropTable("events");
-    await migration.dropTable("eventData");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.dropTable("events");
+    await queryInterface.dropTable("eventData");
   },
 };

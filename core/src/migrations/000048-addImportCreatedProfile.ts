@@ -1,13 +1,18 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.addColumn("imports", "createdProfile", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.addColumn("imports", "createdProfile", {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
       allowNull: false,
     });
   },
 
-  down: async function (migration) {
-    await migration.removeColumn("imports", "createdProfile");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeColumn("imports", "createdProfile");
   },
 };

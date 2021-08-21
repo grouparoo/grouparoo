@@ -1,6 +1,11 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.createTable("sessions", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.createTable("sessions", {
       id: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -32,13 +37,13 @@ export default {
       },
     });
 
-    await migration.addIndex("sessions", ["fingerprint"], {
+    await queryInterface.addIndex("sessions", ["fingerprint"], {
       unique: true,
       fields: ["fingerprint"],
     });
   },
 
-  down: async function (migration) {
-    await migration.dropTable("sessions");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.dropTable("sessions");
   },
 };

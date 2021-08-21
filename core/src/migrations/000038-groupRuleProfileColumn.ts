@@ -1,22 +1,30 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.changeColumn("groupRules", "profilePropertyRuleGuid", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.changeColumn("groupRules", "profilePropertyRuleGuid", {
       type: DataTypes.STRING(40),
       allowNull: true,
     });
 
-    await migration.addColumn("groupRules", "profileColumn", {
+    await queryInterface.addColumn("groupRules", "profileColumn", {
       type: DataTypes.STRING(191),
       allowNull: true,
     });
   },
 
-  down: async function (migration, DataTypes) {
-    await migration.changeColumn("groupRules", "profilePropertyRuleGuid", {
+  down: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.changeColumn("groupRules", "profilePropertyRuleGuid", {
       type: DataTypes.STRING(40),
       allowNull: false,
     });
 
-    await migration.removeColumn("groupRules", "profileColumn");
+    await queryInterface.removeColumn("groupRules", "profileColumn");
   },
 };

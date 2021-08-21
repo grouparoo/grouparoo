@@ -1,7 +1,9 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration) {
+  up: async (queryInterface: Sequelzie.QueryInterface) => {
     // Kick profiles back to "pending" if they're ready but their imports are not
-    await migration.sequelize.query(
+    await queryInterface.sequelize.query(
       `UPDATE "profiles" SET "state"='pending' WHERE "state"='ready' AND "id" IN
           (SELECT DISTINCT("profileId") FROM "imports" WHERE "exportedAt" IS NULL AND "profileUpdatedAt" IS NULL AND "groupsUpdatedAt" IS NULL)`
     );

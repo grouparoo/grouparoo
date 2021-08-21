@@ -1,6 +1,11 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.createTable("teams", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.createTable("teams", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -42,13 +47,13 @@ export default {
       },
     });
 
-    await migration.addIndex("teams", ["name"], {
+    await queryInterface.addIndex("teams", ["name"], {
       unique: true,
       fields: ["name"],
     });
   },
 
-  down: async function (migration) {
-    await migration.dropTable("teams");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.dropTable("teams");
   },
 };

@@ -32,13 +32,21 @@ const tables = {
   teams: [],
 };
 
-const runMigration = async ({ maxIdLength, migration, DataTypes }) => {
+const runMigration = async ({
+  maxIdLength,
+  queryInterface,
+  DataTypes,
+}: {
+  maxIdLength: number;
+  queryInterface: Sequelzie.QueryInterface;
+  DataTypes: typeof Sequelzie;
+}) => {
   const changeColumn = async (tableName, columnName) => {
     if (config.sequelize?.dialect !== "sqlite") {
       const query = `ALTER TABLE "${tableName}" ALTER COLUMN "${columnName}" SET DATA TYPE varchar(${maxIdLength}); `;
-      await migration.sequelize.query(query);
+      await queryInterface.sequelize.query(query);
     } else {
-      await migration.changeColumn(tableName, columnName, {
+      await queryInterface.changeColumn(tableName, columnName, {
         type: DataTypes.STRING(191),
       });
     }
@@ -52,12 +60,20 @@ const runMigration = async ({ maxIdLength, migration, DataTypes }) => {
   }
 };
 
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await runMigration({ maxIdLength: 191, migration, DataTypes });
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await runMigration({ maxIdLength: 191, queryInterface, DataTypes });
   },
 
-  down: async function (migration, DataTypes) {
-    await runMigration({ maxIdLength: 40, migration, DataTypes });
+  down: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await runMigration({ maxIdLength: 40, queryInterface, DataTypes });
   },
 };

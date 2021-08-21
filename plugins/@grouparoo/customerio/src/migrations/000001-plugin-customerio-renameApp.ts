@@ -1,6 +1,8 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration) {
-    await migration.bulkUpdate(
+  up: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.bulkUpdate(
       "apps",
       {
         type: "customerio",
@@ -11,8 +13,8 @@ export default {
     );
   },
 
-  down: async function (migration) {
-    await migration.bulkUpdate(
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.bulkUpdate(
       "apps",
       {
         type: "customer.io",

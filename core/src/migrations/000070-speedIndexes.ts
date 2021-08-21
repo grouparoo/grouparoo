@@ -1,28 +1,30 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration) {
-    await migration.addIndex("imports", ["createdProfile"], {
+  up: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.addIndex("imports", ["createdProfile"], {
       fields: ["createdProfile"],
     });
 
-    await migration.addIndex("imports", ["exportedAt"], {
+    await queryInterface.addIndex("imports", ["exportedAt"], {
       fields: ["exportedAt"],
     });
 
-    await migration.addIndex("profileProperties", ["rawValue"], {
+    await queryInterface.addIndex("profileProperties", ["rawValue"], {
       fields: ["rawValue"],
     });
   },
 
-  down: async function (migration) {
-    await migration.removeIndex("imports", ["createdProfile"], {
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeIndex("imports", ["createdProfile"], {
       fields: ["createdProfile"],
     });
 
-    await migration.removeIndex("imports", ["exportedAt"], {
+    await queryInterface.removeIndex("imports", ["exportedAt"], {
       fields: ["exportedAt"],
     });
 
-    await migration.removeIndex("profileProperties", ["rawValue"], {
+    await queryInterface.removeIndex("profileProperties", ["rawValue"], {
       fields: ["rawValue"],
     });
   },

@@ -1,6 +1,11 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.createTable("notifications", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.createTable("notifications", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -48,7 +53,7 @@ export default {
     });
   },
 
-  down: async function (migration) {
-    await migration.dropTable("notifications");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.dropTable("notifications");
   },
 };

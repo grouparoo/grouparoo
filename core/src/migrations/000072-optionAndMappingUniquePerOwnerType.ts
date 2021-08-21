@@ -1,31 +1,33 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration) {
+  up: async (queryInterface: Sequelzie.QueryInterface) => {
     // -- Options ---
 
-    await migration.removeIndex("options", ["ownerId", "key"], {
+    await queryInterface.removeIndex("options", ["ownerId", "key"], {
       unique: true,
       fields: ["ownerId", "key"],
     });
     // we need the old name of the key to find the index name
-    await migration.removeIndex("options", ["ownerGuid", "key"], {
+    await queryInterface.removeIndex("options", ["ownerGuid", "key"], {
       unique: true,
       fields: ["ownerGuid", "key"],
     });
 
-    await migration.addIndex("options", ["ownerId", "ownerType", "key"], {
+    await queryInterface.addIndex("options", ["ownerId", "ownerType", "key"], {
       unique: true,
       fields: ["ownerId", "ownerType", "key"],
     });
 
     // -- Mappings ---
 
-    await migration.removeIndex("mappings", ["ownerId", "propertyId"], {
+    await queryInterface.removeIndex("mappings", ["ownerId", "propertyId"], {
       unique: true,
       fields: ["ownerId", "propertyId"],
     });
 
     // we need the old name of the key to find the index name
-    await migration.removeIndex(
+    await queryInterface.removeIndex(
       "mappings",
       ["ownerGuid", "profilePropertyRuleGuid"],
       {
@@ -34,18 +36,18 @@ export default {
       }
     );
 
-    await migration.removeIndex("mappings", ["ownerId", "remoteKey"], {
+    await queryInterface.removeIndex("mappings", ["ownerId", "remoteKey"], {
       unique: true,
       fields: ["ownerId", "remoteKey"],
     });
 
     // we need the old name of the key to find the index name
-    await migration.removeIndex("mappings", ["ownerGuid", "remoteKey"], {
+    await queryInterface.removeIndex("mappings", ["ownerGuid", "remoteKey"], {
       unique: true,
       fields: ["ownerGuid", "remoteKey"],
     });
 
-    await migration.addIndex(
+    await queryInterface.addIndex(
       "mappings",
       ["ownerId", "ownerType", "propertyId"],
       {
@@ -54,7 +56,7 @@ export default {
       }
     );
 
-    await migration.addIndex(
+    await queryInterface.addIndex(
       "mappings",
       ["ownerId", "ownerType", "remoteKey"],
       {
@@ -64,23 +66,27 @@ export default {
     );
   },
 
-  down: async function (migration) {
-    await migration.removeIndex("options", ["ownerId", "ownerType", "key"], {
-      unique: true,
-      fields: ["ownerId", "ownerType", "key"],
-    });
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeIndex(
+      "options",
+      ["ownerId", "ownerType", "key"],
+      {
+        unique: true,
+        fields: ["ownerId", "ownerType", "key"],
+      }
+    );
 
-    await migration.addIndex("options", ["ownerId", "key"], {
+    await queryInterface.addIndex("options", ["ownerId", "key"], {
       unique: true,
       fields: ["ownerId", "key"],
     });
 
-    await migration.addIndex("mappings", ["ownerId", "propertyId"], {
+    await queryInterface.addIndex("mappings", ["ownerId", "propertyId"], {
       unique: true,
       fields: ["ownerId", "propertyId"],
     });
 
-    await migration.addIndex("mappings", ["ownerId", "remoteKey"], {
+    await queryInterface.addIndex("mappings", ["ownerId", "remoteKey"], {
       unique: true,
       fields: ["ownerId", "remoteKey"],
     });

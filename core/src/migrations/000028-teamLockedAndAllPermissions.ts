@@ -1,31 +1,36 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.renameColumn("teams", "deletable", "locked");
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.renameColumn("teams", "deletable", "locked");
 
-    await migration.addColumn("teams", "permissionAllRead", {
+    await queryInterface.addColumn("teams", "permissionAllRead", {
       type: DataTypes.BOOLEAN,
       allowNull: true,
     });
-    await migration.addColumn("teams", "permissionAllWrite", {
+    await queryInterface.addColumn("teams", "permissionAllWrite", {
       type: DataTypes.BOOLEAN,
       allowNull: true,
     });
 
-    await migration.addColumn("apiKeys", "permissionAllRead", {
+    await queryInterface.addColumn("apiKeys", "permissionAllRead", {
       type: DataTypes.BOOLEAN,
       allowNull: true,
     });
-    await migration.addColumn("apiKeys", "permissionAllWrite", {
+    await queryInterface.addColumn("apiKeys", "permissionAllWrite", {
       type: DataTypes.BOOLEAN,
       allowNull: true,
     });
   },
 
-  down: async function (migration) {
-    await migration.renameColumn("teams", "locked", "deletable");
-    await migration.removeColumn("teams", "permissionAllRead");
-    await migration.removeColumn("teams", "permissionAllWrite");
-    await migration.removeColumn("apiKeys", "permissionAllRead");
-    await migration.removeColumn("apiKeys", "permissionAllWrite");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.renameColumn("teams", "locked", "deletable");
+    await queryInterface.removeColumn("teams", "permissionAllRead");
+    await queryInterface.removeColumn("teams", "permissionAllWrite");
+    await queryInterface.removeColumn("apiKeys", "permissionAllRead");
+    await queryInterface.removeColumn("apiKeys", "permissionAllWrite");
   },
 };

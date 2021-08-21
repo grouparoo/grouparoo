@@ -1,12 +1,17 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.addColumn("destinations", "syncMode", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.addColumn("destinations", "syncMode", {
       type: DataTypes.STRING(191),
       allowNull: true,
     });
   },
 
-  down: async function (migration) {
-    await migration.removeColumn("destinations", "syncMode");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeColumn("destinations", "syncMode");
   },
 };

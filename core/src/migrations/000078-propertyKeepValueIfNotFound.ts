@@ -1,18 +1,23 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.addColumn("properties", "keepValueIfNotFound", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.addColumn("properties", "keepValueIfNotFound", {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
     });
 
-    await migration.changeColumn("properties", "keepValueIfNotFound", {
+    await queryInterface.changeColumn("properties", "keepValueIfNotFound", {
       type: DataTypes.BOOLEAN,
       allowNull: false,
     });
   },
 
-  down: async function (migration) {
-    await migration.removeColumn("properties", "keepValueIfNotFound");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeColumn("properties", "keepValueIfNotFound");
   },
 };

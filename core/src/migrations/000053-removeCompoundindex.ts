@@ -1,9 +1,14 @@
 import { config } from "actionhero";
 
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
     if (config.sequelize?.dialect === "sqlite") {
-      await migration.removeIndex(
+      await queryInterface.removeIndex(
         "groupMembers",
         ["profileGuid", "groupGuid"],
         {
@@ -12,7 +17,7 @@ export default {
         }
       );
 
-      await migration.removeIndex(
+      await queryInterface.removeIndex(
         "mappings",
         ["ownerGuid", "profilePropertyRuleGuid"],
         {
@@ -21,17 +26,17 @@ export default {
         }
       );
 
-      await migration.removeIndex("mappings", ["ownerGuid", "remoteKey"], {
+      await queryInterface.removeIndex("mappings", ["ownerGuid", "remoteKey"], {
         unique: true,
         fields: ["ownerGuid", "remoteKey"],
       });
 
-      await migration.removeIndex("options", ["ownerGuid", "key"], {
+      await queryInterface.removeIndex("options", ["ownerGuid", "key"], {
         unique: true,
         fields: ["ownerGuid", "key"],
       });
 
-      await migration.removeIndex(
+      await queryInterface.removeIndex(
         "profileProperties",
         ["profileGuid", "profilePropertyRuleGuid", "position"],
         {
@@ -40,12 +45,12 @@ export default {
         }
       );
 
-      await migration.removeIndex("settings", ["pluginName", "key"], {
+      await queryInterface.removeIndex("settings", ["pluginName", "key"], {
         unique: true,
         fields: ["pluginName", "key"],
       });
 
-      await migration.removeIndex(
+      await queryInterface.removeIndex(
         "destinationGroupMemberships",
         ["destinationGuid", "groupGuid"],
         {
@@ -54,7 +59,7 @@ export default {
         }
       );
 
-      await migration.removeIndex(
+      await queryInterface.removeIndex(
         "destinationGroupMemberships",
         ["destinationGuid", "remoteKey"],
         {
@@ -63,7 +68,7 @@ export default {
         }
       );
 
-      await migration.removeIndex("permissions", ["ownerGuid", "topic"], {
+      await queryInterface.removeIndex("permissions", ["ownerGuid", "topic"], {
         unique: true,
         fields: ["ownerGuid", "topic"],
       });

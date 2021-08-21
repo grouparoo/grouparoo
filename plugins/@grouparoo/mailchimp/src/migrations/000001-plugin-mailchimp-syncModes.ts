@@ -1,16 +1,18 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration) {
+  up: async (queryInterface: Sequelzie.QueryInterface) => {
     // Set all existing instances to "sync" to maintain same behavior
-    await migration.sequelize.query(
+    await queryInterface.sequelize.query(
       `UPDATE "destinations" SET "syncMode"='sync' WHERE "state"='ready' AND "type"='mailchimp-export' AND "locked" IS NULL`
     );
-    await migration.sequelize.query(
+    await queryInterface.sequelize.query(
       `UPDATE "destinations" SET "syncMode"='enrich' WHERE "state"='ready' AND "type"='mailchimp-export-id' AND "locked" IS NULL`
     );
   },
 
-  down: async function (migration) {
-    await migration.bulkUpdate(
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.bulkUpdate(
       "destinations",
       {
         syncMode: null,

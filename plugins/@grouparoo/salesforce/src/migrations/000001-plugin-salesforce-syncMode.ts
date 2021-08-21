@@ -1,16 +1,18 @@
 import crypto from "crypto";
 
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration) {
+  up: async (queryInterface: Sequelzie.QueryInterface) => {
     // Get current sync modes for salesforce destinations
-    const [destinations] = await migration.sequelize.query(
+    const [destinations] = await queryInterface.sequelize.query(
       `SELECT "ownerId" AS "id", "value" AS "mode" FROM "options" o JOIN "destinations" d ON o."ownerId"=d.id WHERE "key"='syncMode' AND d.type='salesforce-objects-export' AND "locked" IS NULL`
     );
 
     // set sync mode on destination
     for (const dest of destinations) {
       let syncMode: string;
-      switch (dest.mode) {
+      switch (dest["mode"]) {
         case "Enrich":
           syncMode = "enrich";
           break;
@@ -24,18 +26,18 @@ export default {
           break;
       }
 
-      await migration.sequelize.query(
+      await queryInterface.sequelize.query(
         `UPDATE "destinations" SET "syncMode"=? WHERE "id"=?`,
         {
-          replacements: [syncMode, dest.id],
+          replacements: [syncMode, dest["id"]],
         }
       );
     }
 
     // remove salesforce syncMode option
-    const destinationIds = destinations.map((d) => d.id);
+    const destinationIds = destinations.map((d) => d["id"]);
     if (destinationIds.length > 0) {
-      await migration.sequelize.query(
+      await queryInterface.sequelize.query(
         `DELETE FROM "options" WHERE "key"='syncMode' AND "ownerId" IN(?)`,
         {
           replacements: [destinationIds],
@@ -44,9 +46,9 @@ export default {
     }
   },
 
-  down: async function (migration) {
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
     // Get sync modes
-    const [destinations] = await migration.sequelize.query(
+    const [destinations] = await queryInterface.sequelize.query(
       `SELECT "id", "syncMode" FROM "destinations" WHERE "type"='salesforce-objects-export' AND "syncMode" IS NOT NULL AND "locked" IS NULL`
     );
 
@@ -54,7 +56,7 @@ export default {
     const newOptions = [];
     for (const dest of destinations) {
       let syncMode: string;
-      switch (dest.syncMode) {
+      switch (dest["syncMode"]) {
         case "sync":
           syncMode = "Sync";
           break;
@@ -72,7 +74,7 @@ export default {
         id: `opt_${crypto.randomBytes(16).toString("hex")}`,
         createdAt: new Date(),
         updatedAt: new Date(),
-        ownerId: dest.id,
+        ownerId: dest["id"],
         ownerType: "destination",
         key: "syncMode",
         value: syncMode,
@@ -80,16 +82,16 @@ export default {
       });
     }
 
-    await migration.bulkInsert("options", newOptions);
+    await queryInterface.bulkInsert("options", newOptions);
 
     // Remove syncMode from salesforce destinations
-    await migration.bulkUpdate(
+    await queryInterface.bulkUpdate(
       "destinations",
       {
         syncMode: null,
       },
       {
-        id: destinations.map((d) => d.id),
+        id: destinations.map((d) => d["id"]),
       }
     );
   },

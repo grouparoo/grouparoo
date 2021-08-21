@@ -1,58 +1,60 @@
 // Note: This migration should have also updated `options.ownerType`.  Corrected in migration 000079.
 
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration) {
-    await migration.renameColumn(
+  up: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.renameColumn(
       "groupRules",
       "profilePropertyRuleGuid",
       "propertyGuid"
     );
-    await migration.renameColumn(
+    await queryInterface.renameColumn(
       "mappings",
       "profilePropertyRuleGuid",
       "propertyGuid"
     );
-    await migration.renameColumn(
+    await queryInterface.renameColumn(
       "profileProperties",
       "profilePropertyRuleGuid",
       "propertyGuid"
     );
-    await migration.renameColumn(
+    await queryInterface.renameColumn(
       "profilePropertyRuleFilters",
       "profilePropertyRuleGuid",
       "propertyGuid"
     );
 
-    await migration.renameTable("profilePropertyRules", "properties");
-    await migration.renameTable(
+    await queryInterface.renameTable("profilePropertyRules", "properties");
+    await queryInterface.renameTable(
       "profilePropertyRuleFilters",
       "propertyFilters"
     );
   },
 
-  down: async function (migration) {
-    await migration.renameTable("properties", "profilePropertyRules");
-    await migration.renameTable(
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.renameTable("properties", "profilePropertyRules");
+    await queryInterface.renameTable(
       "propertyFilters",
       "profilePropertyRuleFilters"
     );
 
-    await migration.renameColumn(
+    await queryInterface.renameColumn(
       "groupRules",
       "propertyGuid",
       "profilePropertyRuleGuid"
     );
-    await migration.renameColumn(
+    await queryInterface.renameColumn(
       "mappings",
       "propertyGuid",
       "profilePropertyRuleGuid"
     );
-    await migration.renameColumn(
+    await queryInterface.renameColumn(
       "profileProperties",
       "propertyGuid",
       "profilePropertyRuleGuid"
     );
-    await migration.renameColumn(
+    await queryInterface.renameColumn(
       "profilePropertyRuleFilters",
       "propertyGuid",
       "profilePropertyRuleGuid"

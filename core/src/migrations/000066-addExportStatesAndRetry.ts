@@ -1,76 +1,81 @@
 import { Op } from "sequelize";
 
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.addColumn("exports", "state", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.addColumn("exports", "state", {
       type: DataTypes.STRING(191),
       allowNull: true,
     });
 
-    await migration.bulkUpdate(
+    await queryInterface.bulkUpdate(
       "exports",
       { state: "failed" },
       { state: null, errorMessage: { [Op.ne]: null } }
     );
 
-    await migration.bulkUpdate(
+    await queryInterface.bulkUpdate(
       "exports",
       { state: "complete" },
       { state: null, completedAt: { [Op.ne]: null } }
     );
 
-    await migration.bulkUpdate(
+    await queryInterface.bulkUpdate(
       "exports",
       { state: "pending" },
       { state: null }
     );
 
-    await migration.changeColumn("exports", "state", {
+    await queryInterface.changeColumn("exports", "state", {
       type: DataTypes.STRING(191),
       allowNull: false,
     });
 
-    await migration.addColumn("exports", "sendAt", {
+    await queryInterface.addColumn("exports", "sendAt", {
       type: DataTypes.DATE,
       allowNull: true,
     });
 
-    await migration.bulkUpdate(
+    await queryInterface.bulkUpdate(
       "exports",
       { sendAt: new Date() },
       { state: "pending" }
     );
 
-    await migration.addColumn("exports", "retryCount", {
+    await queryInterface.addColumn("exports", "retryCount", {
       type: DataTypes.INTEGER,
       allowNull: true,
     });
 
-    await migration.bulkUpdate("exports", { retryCount: 0 });
+    await queryInterface.bulkUpdate("exports", { retryCount: 0 }, {});
 
-    await migration.changeColumn("exports", "retryCount", {
+    await queryInterface.changeColumn("exports", "retryCount", {
       type: DataTypes.INTEGER,
       allowNull: false,
     });
 
-    await migration.addIndex("exports", ["state"], {
+    await queryInterface.addIndex("exports", ["state"], {
       fields: ["state"],
     });
 
-    await migration.addIndex("exports", ["sendAt"], {
+    await queryInterface.addIndex("exports", ["sendAt"], {
       fields: ["sendAt"],
     });
 
-    await migration.addIndex("exports", ["completedAt"], {
+    await queryInterface.addIndex("exports", ["completedAt"], {
       fields: ["completedAt"],
     });
 
-    await migration.removeColumn("exports", "mostRecent");
+    await queryInterface.removeColumn("exports", "mostRecent");
   },
 
-  down: async function (migration) {
-    await migration.removeColumn("exports", "state");
-    await migration.removeColumn("exports", "sendAt");
-    await migration.removeColumn("exports", "retryCount");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeColumn("exports", "state");
+    await queryInterface.removeColumn("exports", "sendAt");
+    await queryInterface.removeColumn("exports", "retryCount");
   },
 };

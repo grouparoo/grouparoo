@@ -1,18 +1,23 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.addColumn("profileProperties", "position", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.addColumn("profileProperties", "position", {
       type: DataTypes.BIGINT,
       allowNull: false,
       defaultValue: 0,
     });
 
-    await migration.addColumn("profilePropertyRules", "isArray", {
+    await queryInterface.addColumn("profilePropertyRules", "isArray", {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
     });
 
-    await migration.removeIndex(
+    await queryInterface.removeIndex(
       "profileProperties",
       ["profileGuid", "profilePropertyRuleGuid"],
       {
@@ -21,7 +26,7 @@ export default {
       }
     );
 
-    await migration.addIndex(
+    await queryInterface.addIndex(
       "profileProperties",
       ["profileGuid", "profilePropertyRuleGuid", "position"],
       {
@@ -31,11 +36,11 @@ export default {
     );
   },
 
-  down: async function (migration) {
-    await migration.removeColumn("profileProperties", "position");
-    await migration.removeColumn("profilePropertyRules", "isArray");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeColumn("profileProperties", "position");
+    await queryInterface.removeColumn("profilePropertyRules", "isArray");
 
-    await migration.removeIndex(
+    await queryInterface.removeIndex(
       "profileProperties",
       ["profileGuid", "profilePropertyRuleGuid", "position"],
       {
@@ -44,7 +49,7 @@ export default {
       }
     );
 
-    await migration.addIndex(
+    await queryInterface.addIndex(
       "profileProperties",
       ["profileGuid", "profilePropertyRuleGuid"],
       {

@@ -1,17 +1,22 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.addColumn("exports", "errorLevel", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.addColumn("exports", "errorLevel", {
       type: DataTypes.STRING(191),
       allowNull: true,
       defaultValue: null,
     });
 
-    await migration.sequelize.query(
+    await queryInterface.sequelize.query(
       `UPDATE "exports" SET "errorLevel"='error' WHERE "errorMessage" IS NOT NULL`
     );
   },
 
-  down: async function (migration) {
-    await migration.removeColumn("exports", "errorLevel");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.removeColumn("exports", "errorLevel");
   },
 };

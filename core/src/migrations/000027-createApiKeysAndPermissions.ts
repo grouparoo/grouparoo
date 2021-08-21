@@ -1,6 +1,11 @@
+import Sequelzie from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.createTable("apiKeys", {
+  up: async (
+    queryInterface: Sequelzie.QueryInterface,
+    DataTypes: typeof Sequelzie
+  ) => {
+    await queryInterface.createTable("apiKeys", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -27,17 +32,17 @@ export default {
       },
     });
 
-    await migration.addIndex("apiKeys", ["name"], {
+    await queryInterface.addIndex("apiKeys", ["name"], {
       unique: true,
       fields: ["name"],
     });
 
-    await migration.addIndex("apiKeys", ["apiKey"], {
+    await queryInterface.addIndex("apiKeys", ["apiKey"], {
       unique: true,
       fields: ["apiKey"],
     });
 
-    await migration.createTable("permissions", {
+    await queryInterface.createTable("permissions", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -84,18 +89,18 @@ export default {
       },
     });
 
-    await migration.addIndex("permissions", ["ownerGuid", "topic"], {
+    await queryInterface.addIndex("permissions", ["ownerGuid", "topic"], {
       unique: true,
       fields: ["ownerGuid", "topic"],
     });
 
-    await migration.removeColumn("teams", "read");
-    await migration.removeColumn("teams", "write");
-    await migration.removeColumn("teams", "administer");
+    await queryInterface.removeColumn("teams", "read");
+    await queryInterface.removeColumn("teams", "write");
+    await queryInterface.removeColumn("teams", "administer");
   },
 
-  down: async function (migration) {
-    await migration.dropTable("apiKeys");
-    await migration.dropTable("permissions");
+  down: async (queryInterface: Sequelzie.QueryInterface) => {
+    await queryInterface.dropTable("apiKeys");
+    await queryInterface.dropTable("permissions");
   },
 };
