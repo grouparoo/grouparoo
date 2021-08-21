@@ -7,7 +7,7 @@
 
 const path = require("path");
 const fs = require("fs");
-const { Migrations } = require("../dist/modules/migrations");
+const { Migrations } = require("ah-sequelize-plugin/dist/modules/migrations");
 const { Sequelize } = require("sequelize");
 
 const args = process.argv.slice(2);

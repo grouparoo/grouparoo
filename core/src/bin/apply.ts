@@ -8,7 +8,7 @@ import {
 } from "../modules/configLoaders";
 import { getConfigDir } from "../utils/pluginDetails";
 import pluralize from "pluralize";
-import { Migrations } from "../modules/migrations";
+import { Migrations } from "ah-sequelize-plugin/dist/modules/migrations";
 
 export class Apply extends CLI {
   constructor() {
