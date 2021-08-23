@@ -38,8 +38,8 @@ const runMigration = async ({
   DataTypes,
 }: {
   maxIdLength: number;
-  queryInterface: Sequelzie.QueryInterface;
-  DataTypes: typeof Sequelzie;
+  queryInterface: Sequelize.QueryInterface;
+  DataTypes: typeof Sequelize;
 }) => {
   const changeColumn = async (tableName, columnName) => {
     if (config.sequelize?.dialect !== "sqlite") {
@@ -60,19 +60,19 @@ const runMigration = async ({
   }
 };
 
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
   up: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     await runMigration({ maxIdLength: 191, queryInterface, DataTypes });
   },
 
   down: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     await runMigration({ maxIdLength: 40, queryInterface, DataTypes });
   },

@@ -1,9 +1,9 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
   up: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     await queryInterface.createTable("profiles", {
       guid: {
@@ -23,7 +23,7 @@ export default {
     });
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.dropTable("profiles");
   },
 };

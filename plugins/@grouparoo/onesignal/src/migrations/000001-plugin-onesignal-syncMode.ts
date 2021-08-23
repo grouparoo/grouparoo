@@ -1,7 +1,7 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
-  up: async (queryInterface: Sequelzie.QueryInterface) => {
+  up: async (queryInterface: Sequelize.QueryInterface) => {
     // Set all existing instances to "enrich" to maintain same behavior
     await queryInterface.bulkUpdate(
       "destinations",
@@ -16,7 +16,7 @@ export default {
     );
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.bulkUpdate(
       "destinations",
       {

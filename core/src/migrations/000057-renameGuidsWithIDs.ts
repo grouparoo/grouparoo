@@ -29,10 +29,10 @@ const tables = {
   teams: [],
 };
 
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
-  up: async (queryInterface: Sequelzie.QueryInterface) => {
+  up: async (queryInterface: Sequelize.QueryInterface) => {
     for (const table in tables) {
       await queryInterface.renameColumn(table, "guid", "id");
       const cols = tables[table];
@@ -44,7 +44,7 @@ export default {
     }
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     for (const table in tables) {
       await queryInterface.renameColumn(table, "id", "guid");
       const cols = tables[table];

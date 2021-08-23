@@ -1,9 +1,9 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
   up: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     await queryInterface.createTable("apiKeys", {
       guid: {
@@ -99,7 +99,7 @@ export default {
     await queryInterface.removeColumn("teams", "administer");
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.dropTable("apiKeys");
     await queryInterface.dropTable("permissions");
   },

@@ -1,9 +1,9 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
   up: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     await queryInterface.addColumn("destinations", "groupGuid", {
       type: DataTypes.STRING(40),
@@ -38,8 +38,8 @@ export default {
   },
 
   down: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     await queryInterface.removeColumn("destinations", "groupGuid");
 

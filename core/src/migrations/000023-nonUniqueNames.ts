@@ -1,9 +1,9 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
   up: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     const TABLES = [
       "apps",
@@ -24,7 +24,7 @@ export default {
     }
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     const TABLES = [
       "apps",
       "sources",

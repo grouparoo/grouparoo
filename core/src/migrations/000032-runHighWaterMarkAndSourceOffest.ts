@@ -1,9 +1,9 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
   up: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     await queryInterface.removeColumn("runs", "filter");
     await queryInterface.removeColumn("runs", "highWaterMark");
@@ -23,7 +23,7 @@ export default {
     await queryInterface.renameColumn("runs", "method", "groupMethod");
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.removeColumn("runs", "highWaterMark");
     await queryInterface.removeColumn("runs", "sourceOffset");
 

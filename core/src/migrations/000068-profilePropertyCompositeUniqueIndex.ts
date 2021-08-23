@@ -1,12 +1,12 @@
 import { Op } from "sequelize";
 import { config } from "actionhero";
 
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
   up: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     await queryInterface.addColumn("profileProperties", "unique", {
       type: DataTypes.BOOLEAN,
@@ -63,7 +63,7 @@ export default {
     }
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.removeIndex(
       "profileProperties",
       ["propertyId", "rawValue", "position", "unique"],

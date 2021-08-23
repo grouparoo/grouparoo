@@ -1,9 +1,9 @@
 // Note: This migration should have also updated `options.ownerType`.  Corrected in migration 000079.
 
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
-  up: async (queryInterface: Sequelzie.QueryInterface) => {
+  up: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.renameColumn(
       "groupRules",
       "profilePropertyRuleGuid",
@@ -32,7 +32,7 @@ export default {
     );
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.renameTable("properties", "profilePropertyRules");
     await queryInterface.renameTable(
       "propertyFilters",

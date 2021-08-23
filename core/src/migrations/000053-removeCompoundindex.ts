@@ -1,11 +1,11 @@
 import { config } from "actionhero";
 
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
   up: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     if (config.sequelize?.dialect === "sqlite") {
       await queryInterface.removeIndex(

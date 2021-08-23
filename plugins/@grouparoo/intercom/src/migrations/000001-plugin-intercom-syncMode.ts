@@ -1,6 +1,6 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
-const getDestinations = async (queryInterface: Sequelzie.QueryInterface) => {
+const getDestinations = async (queryInterface: Sequelize.QueryInterface) => {
   const [destinationOptions]: [Record<string, any>[], any] =
     await queryInterface.sequelize.query(
       `SELECT "ownerId" AS "id", "key", "value", "syncMode" FROM "options" o JOIN "destinations" d ON o."ownerId"=d.id WHERE "state"='ready' AND d.type='intercom-export-contacts' AND "locked" IS NULL`
@@ -26,7 +26,7 @@ const getDestinations = async (queryInterface: Sequelzie.QueryInterface) => {
 };
 
 export default {
-  up: async (queryInterface: Sequelzie.QueryInterface) => {
+  up: async (queryInterface: Sequelize.QueryInterface) => {
     // Get current options for intercom destinations
     const intercomDestinations = await getDestinations(queryInterface);
 
@@ -66,7 +66,7 @@ export default {
     }
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     // Get sync modes
     const destinations = await getDestinations(queryInterface);
 

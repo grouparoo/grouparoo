@@ -1,9 +1,9 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
   up: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     await queryInterface.changeColumn("groupRules", "profilePropertyRuleGuid", {
       type: DataTypes.STRING(40),
@@ -17,8 +17,8 @@ export default {
   },
 
   down: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     await queryInterface.changeColumn("groupRules", "profilePropertyRuleGuid", {
       type: DataTypes.STRING(40),

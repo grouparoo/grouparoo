@@ -1,7 +1,7 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
-  up: async (queryInterface: Sequelzie.QueryInterface) => {
+  up: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.dropTable("exportRuns");
     await queryInterface.dropTable("exportImports");
 

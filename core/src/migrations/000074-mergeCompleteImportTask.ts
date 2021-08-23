@@ -1,7 +1,7 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
-  up: async (queryInterface: Sequelzie.QueryInterface) => {
+  up: async (queryInterface: Sequelize.QueryInterface) => {
     // Kick profiles back to "pending" if they're ready but their imports are not
     await queryInterface.sequelize.query(
       `UPDATE "profiles" SET "state"='pending' WHERE "state"='ready' AND "id" IN

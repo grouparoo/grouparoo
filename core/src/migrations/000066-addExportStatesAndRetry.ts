@@ -1,11 +1,11 @@
 import { Op } from "sequelize";
 
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
   up: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     await queryInterface.addColumn("exports", "state", {
       type: DataTypes.STRING(191),
@@ -73,7 +73,7 @@ export default {
     await queryInterface.removeColumn("exports", "mostRecent");
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.removeColumn("exports", "state");
     await queryInterface.removeColumn("exports", "sendAt");
     await queryInterface.removeColumn("exports", "retryCount");

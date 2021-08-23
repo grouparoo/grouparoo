@@ -1,7 +1,7 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
-  up: async (queryInterface: Sequelzie.QueryInterface) => {
+  up: async (queryInterface: Sequelize.QueryInterface) => {
     // -- Options ---
 
     await queryInterface.removeIndex("options", ["ownerId", "key"], {
@@ -66,7 +66,7 @@ export default {
     );
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.removeIndex(
       "options",
       ["ownerId", "ownerType", "key"],

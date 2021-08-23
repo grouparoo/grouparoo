@@ -1,9 +1,9 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
   up: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     await queryInterface.sequelize.query(
       `UPDATE "groupRules" set "profileColumn" = 'grouparooId' WHERE "profileColumn" = 'id' AND "propertyId" IS NULL;`
@@ -13,7 +13,7 @@ export default {
     );
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.sequelize.query(
       `UPDATE "groupRules" set "profileColumn" = 'id' WHERE "profileColumn" = 'grouparooId' AND "propertyId" IS NULL;`
     );

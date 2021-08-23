@@ -1,7 +1,7 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
-  up: async (queryInterface: Sequelzie.QueryInterface) => {
+  up: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.addIndex("profiles", ["state"], {
       fields: ["state"],
     });
@@ -11,7 +11,7 @@ export default {
     });
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.removeIndex("profiles", ["state"], {
       fields: ["state"],
     });

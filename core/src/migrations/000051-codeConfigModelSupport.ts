@@ -1,9 +1,9 @@
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
   up: async (
-    queryInterface: Sequelzie.QueryInterface,
-    DataTypes: typeof Sequelzie
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
   ) => {
     await queryInterface.addColumn("apiKeys", "locked", {
       type: DataTypes.BOOLEAN,
@@ -60,7 +60,7 @@ export default {
     });
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     await queryInterface.removeColumn("apiKeys", "locked");
     await queryInterface.removeColumn("apps", "locked");
     await queryInterface.removeColumn("destinations", "locked");

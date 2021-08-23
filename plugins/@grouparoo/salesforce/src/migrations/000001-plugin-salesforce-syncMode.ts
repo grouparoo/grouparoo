@@ -1,9 +1,9 @@
 import crypto from "crypto";
 
-import Sequelzie from "sequelize";
+import Sequelize from "sequelize";
 
 export default {
-  up: async (queryInterface: Sequelzie.QueryInterface) => {
+  up: async (queryInterface: Sequelize.QueryInterface) => {
     // Get current sync modes for salesforce destinations
     const [destinations] = await queryInterface.sequelize.query(
       `SELECT "ownerId" AS "id", "value" AS "mode" FROM "options" o JOIN "destinations" d ON o."ownerId"=d.id WHERE "key"='syncMode' AND d.type='salesforce-objects-export' AND "locked" IS NULL`
@@ -46,7 +46,7 @@ export default {
     }
   },
 
-  down: async (queryInterface: Sequelzie.QueryInterface) => {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     // Get sync modes
     const [destinations] = await queryInterface.sequelize.query(
       `SELECT "id", "syncMode" FROM "destinations" WHERE "type"='salesforce-objects-export' AND "syncMode" IS NOT NULL AND "locked" IS NULL`
