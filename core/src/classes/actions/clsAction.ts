@@ -2,7 +2,7 @@ import { Action } from "actionhero";
 import { APM } from "../../modules/apm";
 import { CLS } from "../../modules/cls";
 import { AsyncReturnType } from "type-fest";
-import { PermissionTopics } from "../../models/Permission";
+import { ActionPermission } from "../../models/Permission";
 
 export interface ActionData {
   [key: string]: any;
@@ -10,7 +10,7 @@ export interface ActionData {
 
 export abstract class CLSAction extends Action {
   permission: {
-    topic: typeof PermissionTopics[number] | "*";
+    topic: ActionPermission;
     mode: "read" | "write"; // "read" make it a deferred transaction
   };
 
