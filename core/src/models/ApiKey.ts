@@ -12,7 +12,12 @@ import {
 } from "sequelize-typescript";
 import * as UUID from "uuid";
 import { LoggedModel } from "../classes/loggedModel";
-import { ActionPermission, Permission, PermissionTopics } from "./Permission";
+import {
+  ActionPermissionTopic,
+  ActionPermissionMode,
+  Permission,
+  PermissionTopics,
+} from "./Permission";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 
@@ -80,7 +85,10 @@ export class ApiKey extends LoggedModel<ApiKey> {
     };
   }
 
-  async authorizeAction(topic: ActionPermission, mode: "read" | "write") {
+  async authorizeAction(
+    topic: ActionPermissionTopic,
+    mode: ActionPermissionMode
+  ) {
     return Permission.authorizeAction(topic, mode, this);
   }
 

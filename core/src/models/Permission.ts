@@ -35,7 +35,8 @@ export const PermissionTopics = [
   "team",
 ] as const;
 
-export type ActionPermission = typeof PermissionTopics[number] | "*";
+export type ActionPermissionTopic = typeof PermissionTopics[number] | "*";
+export type ActionPermissionMode = "read" | "write";
 
 @Table({ tableName: "permissions", paranoid: false })
 export class Permission extends LoggedModel<Permission> {
@@ -117,8 +118,8 @@ export class Permission extends LoggedModel<Permission> {
   }
 
   static async authorizeAction(
-    topic: ActionPermission,
-    mode: "read" | "write",
+    topic: ActionPermissionTopic,
+    mode: ActionPermissionMode,
     instance: Team | ApiKey
   ) {
     Permission.validateTopic(topic);
