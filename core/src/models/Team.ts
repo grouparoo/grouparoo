@@ -12,7 +12,7 @@ import {
 import { api } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
 import { TeamMember } from "./TeamMember";
-import { Permission, PermissionTopics } from "./Permission";
+import { ActionPermission, Permission, PermissionTopics } from "./Permission";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 
@@ -70,7 +70,7 @@ export class Team extends LoggedModel<Team> {
     };
   }
 
-  async authorizeAction(topic: string, mode: "read" | "write") {
+  async authorizeAction(topic: ActionPermission, mode: "read" | "write") {
     return Permission.authorizeAction(topic, mode, this);
   }
 

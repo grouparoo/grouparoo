@@ -6,6 +6,7 @@ import {
   BelongsTo,
   BeforeSave,
   ForeignKey,
+  DataType,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -34,6 +35,8 @@ export const PermissionTopics = [
   "team",
 ] as const;
 
+export type ActionPermission = typeof PermissionTopics[number] | "*";
+
 @Table({ tableName: "permissions", paranoid: false })
 export class Permission extends LoggedModel<Permission> {
   idPrefix() {
@@ -51,8 +54,8 @@ export class Permission extends LoggedModel<Permission> {
   ownerType: string;
 
   @AllowNull(false)
-  @Column
-  topic: string;
+  @Column(DataType.ENUM(...PermissionTopics))
+  topic: typeof PermissionTopics[number];
 
   @AllowNull(false)
   @Default(false)
@@ -114,7 +117,7 @@ export class Permission extends LoggedModel<Permission> {
   }
 
   static async authorizeAction(
-    topic: string,
+    topic: ActionPermission,
     mode: "read" | "write",
     instance: Team | ApiKey
   ) {
