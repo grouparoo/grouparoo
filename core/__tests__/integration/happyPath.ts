@@ -416,12 +416,12 @@ describe("integration/happyPath", () => {
         csrfToken,
         id: scheduleId,
       };
-      const { error, success } = await specHelper.runAction<ScheduleRun>(
+      const { error, run } = await specHelper.runAction<ScheduleRun>(
         "schedule:run",
         connection
       );
       expect(error).toBeUndefined();
-      expect(success).toBe(true);
+      expect(run.id).toBeTruthy();
 
       const foundTasks = await specHelper.findEnqueuedTasks("schedule:run");
       expect(foundTasks.length).toBe(1);
