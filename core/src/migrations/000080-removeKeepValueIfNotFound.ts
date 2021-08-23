@@ -1,18 +1,11 @@
+import Sequelize from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.removeColumn("properties", "keepValueIfNotFound");
+  up: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("properties", "keepValueIfNotFound");
   },
 
-  down: async function (migration, DataTypes) {
-    await migration.addColumn("properties", "keepValueIfNotFound", {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: true,
-    });
-
-    await migration.changeColumn("properties", "keepValueIfNotFound", {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    });
+  down: async () => {
+    throw new Error("irreversible migration");
   },
 };
