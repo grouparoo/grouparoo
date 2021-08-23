@@ -5,13 +5,12 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { Property } from "@grouparoo/core";
 import { SessionCreate } from "@grouparoo/core/src/actions/session";
 import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
 import { SourceCreate } from "@grouparoo/core/src/actions/sources";
 import { PropertyCreate } from "@grouparoo/core/src/actions/properties";
 
-describe("integration/runs/postgres", () => {
+describe("integration/runs/calculated-property", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => helper.disableTestPluginImport());
   beforeAll(async () => await helper.factories.properties());

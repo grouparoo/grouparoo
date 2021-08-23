@@ -20,7 +20,4 @@ exports.default = async function buildConfig() {
 function customFunction () {
   // write your custom function here
   // use mustache variables to reference the keys of any properties you would like to reference
-  // for example, to return a full name, you could put:
-  // return { "{{firstName}} {{lastName}}"}
-  // assuming your name properties match those keys!
 }

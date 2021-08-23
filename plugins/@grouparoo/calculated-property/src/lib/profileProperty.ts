@@ -4,8 +4,7 @@ import {
   ProfileProperty,
   ProfilePropertyPluginMethod,
 } from "@grouparoo/core";
-const { NodeVM } = require("vm2");
-
+import { NodeVM } from "vm2";
 export interface RequiredPropertiesObject {
   [propertyId: string]: ProfileProperty;
 }
@@ -21,6 +20,7 @@ async function calculateProfilePropertyValue(
       profile,
       false
     );
+    //returns a string of the entire function
   } catch (error) {
     //if we don't have the right properties to build the function, bail
     console.log(error);
@@ -30,13 +30,14 @@ async function calculateProfilePropertyValue(
 
   //this works with vm and node vm... using node vm to allow for node modules in v2 of this feature
   const vm = new NodeVM({
-    require: {
-      console: "inherit",
-    },
+    console: "inherit",
+    sandbox: {},
   });
 
   try {
-    calculatedPropertyValue = vm.run(`module.exports = ${populatedFunction}()`);
+    calculatedPropertyValue = vm.run(
+      `const toRun = ${populatedFunction}; module.exports = toRun();`
+    );
     if (calculatedPropertyValue === undefined) {
       throw Error("Calculated property's /`customFunction/` undefined");
     }
