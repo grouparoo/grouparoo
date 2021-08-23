@@ -360,22 +360,25 @@ export async function getParentIds(
     providedIds.push(`property:${configObject["bootstrappedProperty"].id}`);
   }
 
-  // - query property with mustache dependency
-  const optionsThatCanHaveMustacheVars = ["query", "customFunction"];
-  for (const optionName of optionsThatCanHaveMustacheVars) {
-    if (
-      cleanClass(configObject) === "property" &&
-      configObject["options"] &&
-      configObject["options"][optionName]
-    ) {
-      const mustachePrerequisiteIds =
-        await MustacheUtils.getMustacheVariablesAsPropertyIds(
-          configObject["options"][optionName],
-          otherConfigObjects
+  // - property with mustache dependency
+
+  if (configObject["options"]) {
+    for (const [k, v] of Object.entries(configObject["options"])) {
+      if (
+        cleanClass(configObject) === "property" &&
+        typeof v === "string" &&
+        v.includes("{{") &&
+        v.length > 4
+      ) {
+        const mustachePrerequisiteIds =
+          await MustacheUtils.getMustacheVariablesAsPropertyIds(
+            v,
+            otherConfigObjects
+          );
+        prerequisiteIds.push(
+          ...mustachePrerequisiteIds.map((p) => `property:${p}`)
         );
-      prerequisiteIds.push(
-        ...mustachePrerequisiteIds.map((p) => `property:${p}`)
-      );
+      }
     }
   }
 
