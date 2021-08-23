@@ -7,7 +7,6 @@
   "unique": true,
   "identifying": true,
   "isArray": false,
-  "keepValueIfNotFound": false,
   "options": {
     "aggregationMethod": "exact",
     "column": "id"

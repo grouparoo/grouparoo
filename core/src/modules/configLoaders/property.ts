@@ -48,7 +48,6 @@ export async function loadProperty(
     key: configObject.key || configObject["name"],
     unique: configObject.unique,
     isArray: configObject.isArray,
-    keepValueIfNotFound: configObject.keepValueIfNotFound,
     locked: ConfigWriter.getLockKey(configObject),
   });
 

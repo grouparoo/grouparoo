@@ -232,46 +232,6 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       spy.mockRestore();
     });
 
-    test("will keep old value if the profile property no longer exists and is marked as keepValueIfNotFound=true", async () => {
-      const spy = jest
-        .spyOn(testPluginConnection.methods, "profileProperties")
-        .mockImplementation(() => undefined);
-
-      const profile: Profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({
-        userId: [99],
-        email: ["someoldemail@example.com"],
-      });
-      const profileProperty = await ProfileProperty.findOne({
-        where: { rawValue: "99" },
-      });
-      await profileProperty.update({ state: "pending" });
-
-      await Property.update(
-        { keepValueIfNotFound: true },
-        { where: { key: "email" } }
-      );
-
-      await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [profile.id],
-        propertyIds: [profileProperty.propertyId],
-      });
-
-      // new value and state
-      await profileProperty.reload();
-      expect(profileProperty.state).toBe("ready");
-      expect(profileProperty.rawValue).toBe(null);
-      await profile.destroy();
-
-      // reset property
-      await Property.update(
-        { keepValueIfNotFound: false },
-        { where: { key: "email" } }
-      );
-
-      spy.mockRestore();
-    });
-
     describe("with profiles", () => {
       let profileA: Profile;
       let profileB: Profile;
