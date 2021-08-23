@@ -262,7 +262,7 @@ importers:
       sqlite3: 5.0.2
       ts-jest: 27.0.5
       ts-node: 10.2.1
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typedoc: 0.21.6
       typescript: 4.3.5
       umzug: v3.0.0-beta.5
@@ -321,7 +321,7 @@ importers:
       jest-fetch-mock: 3.0.3
       nock: 13.1.2
       ts-jest: 27.0.5_52cc4273aa16028085013af47e479e10
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typedoc: 0.21.6_typescript@4.3.5
       typescript: 4.3.5
 
@@ -399,7 +399,7 @@ importers:
       jest: 27.0.6
       prettier: 2.3.2
       ts-jest: 27.0.5
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typescript: 4.3.5
     dependencies:
       axios: 0.21.1
@@ -414,7 +414,7 @@ importers:
       jest: 27.0.6
       prettier: 2.3.2
       ts-jest: 27.0.5_52cc4273aa16028085013af47e479e10
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typescript: 4.3.5
 
   plugins/@grouparoo/customerio:
@@ -654,7 +654,7 @@ importers:
       nock: 13.1.2
       prettier: 2.3.2
       ts-jest: 27.0.5
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typescript: 4.3.5
     dependencies:
       google-spreadsheet: 3.1.15
@@ -670,7 +670,7 @@ importers:
       nock: 13.1.2
       prettier: 2.3.2
       ts-jest: 27.0.5_52cc4273aa16028085013af47e479e10
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typescript: 4.3.5
 
   plugins/@grouparoo/hubspot:
@@ -689,7 +689,7 @@ importers:
       nock: 13.1.2
       prettier: 2.3.2
       ts-jest: 27.0.5
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typescript: 4.3.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -707,7 +707,7 @@ importers:
       nock: 13.1.2
       prettier: 2.3.2
       ts-jest: 27.0.5_52cc4273aa16028085013af47e479e10
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typescript: 4.3.5
 
   plugins/@grouparoo/intercom:
@@ -816,7 +816,7 @@ importers:
       nock: 13.1.2
       prettier: 2.3.2
       ts-jest: 27.0.5
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typescript: 4.3.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -833,7 +833,7 @@ importers:
       nock: 13.1.2
       prettier: 2.3.2
       ts-jest: 27.0.5_52cc4273aa16028085013af47e479e10
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typescript: 4.3.5
 
   plugins/@grouparoo/marketo:
@@ -1372,7 +1372,7 @@ importers:
       prettier: 2.3.2
       sqlite3: 5.0.2
       ts-jest: 27.0.5
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typescript: 4.3.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -1390,7 +1390,7 @@ importers:
       jest: 27.0.6
       prettier: 2.3.2
       ts-jest: 27.0.5_52cc4273aa16028085013af47e479e10
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typescript: 4.3.5
 
   plugins/@grouparoo/zendesk:
@@ -1545,7 +1545,7 @@ importers:
       stacktrace-js: 2.0.2
       swagger-ui-dist: 3.52.0
       ts-jest: 27.0.5
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typescript: 4.3.5
       victory: 35.10.1
     devDependencies:
@@ -1583,7 +1583,7 @@ importers:
       stacktrace-js: 2.0.2
       swagger-ui-dist: 3.52.0
       ts-jest: 27.0.5_52cc4273aa16028085013af47e479e10
-      type-fest: 2.0.0
+      type-fest: 2.1.0
       typescript: 4.3.5
       victory: 35.10.1_react@17.0.2
 
@@ -13546,8 +13546,8 @@ packages:
     resolution: {integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==}
     engines: {node: '>=8'}
 
-  /type-fest/2.0.0:
-    resolution: {integrity: sha512-BoEUnckjP9oiudy3KxlGdudtBAdJQ74Wp7dYwVPkUzBn+cVHOsBXh2zD2jLyqgbuJ1KMNriczZCI7lTBA94dFg==}
+  /type-fest/2.1.0:
+    resolution: {integrity: sha512-2wHUmKDy5wNLmebekbHx/zE9ElYAKOmz34psTLG7OwyEJHaIUr6jnaCd55EvgrawAvliwbwgbyH1LkxIfWFyNg==}
     engines: {node: '>=12.20'}
     dev: true
 
