@@ -5,7 +5,7 @@ import { Team } from "../../models/Team";
 import { TeamMember } from "../../models/TeamMember";
 import { Errors } from "../errors";
 import { ConfigUser } from "../configUser";
-import { ActionPermission, Permission } from "../../models/Permission";
+import { ActionPermissionTopic, Permission } from "../../models/Permission";
 
 export const AuthenticatedActionMiddleware: action.ActionMiddleware = {
   name: "authenticated-action",
@@ -175,7 +175,7 @@ async function authenticateTeamMemberInRoom(
   const mode = "read";
   const topic = (
     roomNameParts[0] === "model" ? roomNameParts[1] : roomNameParts[0]
-  ) as ActionPermission;
+  ) as ActionPermissionTopic;
 
   if (
     process.env.GROUPAROO_RUN_MODE === "cli:config" &&
