@@ -16,6 +16,10 @@ export class SessionCreate extends CLSAction {
     this.outputExample = {};
   }
 
+  isWriteTransaction() {
+    return true;
+  }
+
   async runWithinTransaction({
     connection,
     params,
