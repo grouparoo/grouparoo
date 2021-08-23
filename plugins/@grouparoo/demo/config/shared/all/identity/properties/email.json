@@ -7,7 +7,6 @@
   "unique": true,
   "identifying": false,
   "isArray": false,
-  "keepValueIfNotFound": false,
   "options": {
     "aggregationMethod": "exact",
     "column": "email"

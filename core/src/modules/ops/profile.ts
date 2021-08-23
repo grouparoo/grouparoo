@@ -361,27 +361,15 @@ export namespace ProfileOps {
     });
 
     const clearProfilePropertyIds = [];
-    const keepProfilePropertyIds = [];
     for (let profileProperty of pendingProperties) {
       const property = await Property.findOneWithCache(
         profileProperty.propertyId
       );
       if (!sourceId || property.sourceId === sourceId) {
-        if (property.keepValueIfNotFound) {
-          keepProfilePropertyIds.push(profileProperty.id);
-        } else {
-          clearProfilePropertyIds.push(profileProperty.id);
-        }
+        clearProfilePropertyIds.push(profileProperty.id);
       }
     }
 
-    // Keep value for `keepValueIfNotFound=true`
-    await ProfileProperty.update(
-      { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
-      { where: { id: keepProfilePropertyIds } }
-    );
-
-    // Clear value for `keepValueIfNotFound=false`
     await ProfileProperty.update(
       {
         state: "ready",

@@ -153,11 +153,6 @@ export class Property extends LoggedModel<Property> {
   @Column
   isArray: boolean;
 
-  @AllowNull(false)
-  @Default(false)
-  @Column
-  keepValueIfNotFound: boolean;
-
   @BelongsTo(() => Source)
   source: Source;
 
@@ -281,7 +276,6 @@ export class Property extends LoggedModel<Property> {
       unique: this.unique,
       identifying: this.identifying,
       directlyMapped: this.directlyMapped,
-      keepValueIfNotFound: this.keepValueIfNotFound,
       locked: this.locked,
       options,
       filters,
@@ -296,8 +290,7 @@ export class Property extends LoggedModel<Property> {
   }
 
   async getConfigObject(): Promise<PropertyConfigurationObject> {
-    const { key, type, unique, identifying, isArray, keepValueIfNotFound } =
-      this;
+    const { key, type, unique, identifying, isArray } = this;
 
     this.source = await this.$get("source");
     const sourceId = this.source?.getConfigId();
@@ -315,7 +308,6 @@ export class Property extends LoggedModel<Property> {
       unique,
       identifying,
       isArray,
-      keepValueIfNotFound,
       options,
       filters,
     };

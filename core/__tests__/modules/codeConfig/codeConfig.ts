@@ -114,7 +114,6 @@ describe("modules/codeConfig", () => {
         expect(property.type).toBe("integer");
         expect(property.unique).toBe(true);
         expect(property.identifying).toBe(true);
-        expect(property.keepValueIfNotFound).toBe(false);
         expect(property.state).toBe("ready");
         expect(property.locked).toBe("config:code");
       });
@@ -158,12 +157,6 @@ describe("modules/codeConfig", () => {
           "config:code",
           "config:code",
           "config:code",
-        ]);
-        expect(rules.map((r) => r.keepValueIfNotFound).sort()).toEqual([
-          false,
-          false,
-          false,
-          true,
         ]);
 
         const options = await Promise.all(rules.map((r) => r.getOptions()));
@@ -322,16 +315,6 @@ describe("modules/codeConfig", () => {
       expect(apps[0].locked).toBe("config:code");
       const options = await apps[0].getOptions();
       expect(options).toEqual({ fileId: "new-file-path.db" });
-    });
-
-    test("bootstrapped property can be updated to keepValueIfNotFound", async () => {
-      const property = await Property.findOne({
-        where: { directlyMapped: true },
-      });
-      expect(property.id).toBe("user_id");
-      expect(property.keepValueIfNotFound).toBe(true);
-      expect(property.state).toBe("ready");
-      expect(property.locked).toBe("config:code");
     });
 
     test("property keys changes will be updated", async () => {
