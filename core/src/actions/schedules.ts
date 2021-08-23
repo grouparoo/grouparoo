@@ -1,4 +1,5 @@
 import { Schedule } from "../models/Schedule";
+import { Run } from "../models/Run";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
@@ -60,8 +61,42 @@ export class ScheduleRun extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const schedule = await Schedule.findById(params.id);
-    await schedule.enqueueRun();
-    return { success: true };
+    const run = await schedule.enqueueRun();
+    return { run: await run.apiData() };
+  }
+}
+
+export class SchedulesRun extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "schedules:run";
+    this.description = "run all schedules";
+    this.outputExample = {};
+    this.permission = { topic: "source", mode: "write" };
+  }
+
+  async runWithinTransaction() {
+    const runs: Run[] = [];
+    const schedules = await Schedule.findAll();
+
+    for (const schedule of schedules) {
+      const runningRun = await Run.scope(null).findOne({
+        where: {
+          state: "running",
+          creatorId: schedule.id,
+          creatorType: "schedule",
+        },
+      });
+
+      if (runningRun) {
+        runs.push(runningRun);
+      } else {
+        const newRun = await schedule.enqueueRun();
+        runs.push(newRun);
+      }
+    }
+
+    return { runs: await Promise.all(runs.map((run) => run.apiData())) };
   }
 }
 

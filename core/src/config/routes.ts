@@ -103,6 +103,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/source", action: "source:create" },
         { path: "/v:apiVersion/source/:id/bootstrapUniqueProperty", action: "source:bootstrapUniqueProperty" },
         { path: "/v:apiVersion/schedule", action: "schedule:create" },
+        { path: "/v:apiVersion/schedules/run", action: "schedules:run" },
         { path: "/v:apiVersion/schedule/:id/run", action: "schedule:run" },
         { path: "/v:apiVersion/destination", action: "destination:create" },
         { path: "/v:apiVersion/destination/:id/export", action: "destination:export" },

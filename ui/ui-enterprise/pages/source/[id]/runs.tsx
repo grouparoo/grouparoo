@@ -10,7 +10,7 @@ import { Button, Row, Col } from "react-bootstrap";
 import { ErrorHandler } from "../../../../ui-components/utils/errorHandler";
 import { SuccessHandler } from "../../../../ui-components/utils/successHandler";
 import { RunsHandler } from "../../../../ui-components/utils/runsHandler";
-import { Models } from "../../../../ui-components/utils/apiData";
+import { Models, Actions } from "../../../../ui-components/utils/apiData";
 
 export default function Page(props) {
   const {
@@ -30,8 +30,11 @@ export default function Page(props) {
   async function enqueueScheduleRun() {
     setLoading(true);
     try {
-      await execApi("post", `/schedule/${source.schedule.id}/run`);
-      successHandler.set({ message: "run enqueued" });
+      const response: Actions.ScheduleRun = await execApi(
+        "post",
+        `/schedule/${source.schedule.id}/run`
+      );
+      successHandler.set({ message: `run ${response.run.id} enqueued` });
       runsHandler.set(null);
     } finally {
       setLoading(false);
