@@ -1,24 +1,25 @@
-export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addColumn("settings", "title", {
-        type: DataTypes.STRING(191),
-        allowNull: false,
-        defaultValue: "",
-      });
+import Sequelize from "sequelize";
 
-      await migration.addColumn("settings", "variant", {
-        type: DataTypes.STRING(191),
-        allowNull: false,
-        defaultValue: "",
-      });
+export default {
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.addColumn("settings", "title", {
+      type: DataTypes.STRING(191),
+      allowNull: false,
+      defaultValue: "",
+    });
+
+    await queryInterface.addColumn("settings", "variant", {
+      type: DataTypes.STRING(191),
+      allowNull: false,
+      defaultValue: "",
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.removeColumn("settings", "title");
-      await migration.removeColumn("settings", "variant");
-    });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("settings", "title");
+    await queryInterface.removeColumn("settings", "variant");
   },
 };

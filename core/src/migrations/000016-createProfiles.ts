@@ -1,28 +1,29 @@
+import Sequelize from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.createTable("profiles", {
-        guid: {
-          type: DataTypes.STRING(40),
-          primaryKey: true,
-        },
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.createTable("profiles", {
+      guid: {
+        type: DataTypes.STRING(40),
+        primaryKey: true,
+      },
 
-        createdAt: {
-          type: DataTypes.DATE,
-          allowNull: false,
-        },
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
 
-        updatedAt: {
-          type: DataTypes.DATE,
-          allowNull: false,
-        },
-      });
+      updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.dropTable("profiles");
-    });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.dropTable("profiles");
   },
 };

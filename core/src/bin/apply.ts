@@ -1,5 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI } from "actionhero";
+import { CLI, config, log, api } from "actionhero";
 import { CLS } from "../modules/cls";
 import {
   loadConfigObjects,
@@ -8,6 +8,7 @@ import {
 } from "../modules/configLoaders";
 import { getConfigDir } from "../utils/pluginDetails";
 import pluralize from "pluralize";
+import { Migrations } from "ah-sequelize-plugin/dist/modules/migrations";
 
 export class Apply extends CLI {
   constructor() {
@@ -38,15 +39,23 @@ export class Apply extends CLI {
     const configDir = getConfigDir();
     const configObjects = await loadConfigObjects(configDir);
 
-    GrouparooCLI.logger.log(
-      `Applying ${configObjects.length} ${pluralize(
-        "object",
-        configObjects.length
-      )}...`
-    );
-
     await CLS.wrap(
       async () => {
+        await Migrations.migrate(
+          config.sequelize,
+          api.sequelize,
+          log,
+          config.sequelize.migrationLogLevel
+        );
+
+        GrouparooCLI.logger.log(
+          `Applying ${configObjects.length} ${pluralize(
+            "object",
+            configObjects.length
+          )}...`
+        );
+
+        // start the config apply process
         const canExternallyValidate = params.local !== true;
         const locallyValidateIds =
           Array.isArray(params.local) && (new Set(params.local) as Set<string>);

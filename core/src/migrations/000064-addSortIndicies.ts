@@ -1,38 +1,38 @@
+import Sequelize from "sequelize";
+
 export default {
-  up: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addIndex("profiles", ["createdAt"], {
-        fields: ["createdAt"],
-      });
-
-      await migration.addIndex("runs", ["updatedAt"], {
-        fields: ["updatedAt"],
-      });
-
-      await migration.addIndex("imports", ["createdAt"], {
-        fields: ["createdAt"],
-      });
-
-      await migration.addIndex("exports", ["createdAt"], {
-        fields: ["createdAt"],
-      });
-    });
-  },
-
-  down: async function (migration) {
-    await migration.removeIndex("profiles", ["createdAt"], {
+  up: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.addIndex("profiles", ["createdAt"], {
       fields: ["createdAt"],
     });
 
-    await migration.removeIndex("runs", ["updatedAt"], {
+    await queryInterface.addIndex("runs", ["updatedAt"], {
       fields: ["updatedAt"],
     });
 
-    await migration.removeIndex("imports", ["createdAt"], {
+    await queryInterface.addIndex("imports", ["createdAt"], {
       fields: ["createdAt"],
     });
 
-    await migration.removeIndex("exports", ["createdAt"], {
+    await queryInterface.addIndex("exports", ["createdAt"], {
+      fields: ["createdAt"],
+    });
+  },
+
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeIndex("profiles", ["createdAt"], {
+      fields: ["createdAt"],
+    });
+
+    await queryInterface.removeIndex("runs", ["updatedAt"], {
+      fields: ["updatedAt"],
+    });
+
+    await queryInterface.removeIndex("imports", ["createdAt"], {
+      fields: ["createdAt"],
+    });
+
+    await queryInterface.removeIndex("exports", ["createdAt"], {
       fields: ["createdAt"],
     });
   },

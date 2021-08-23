@@ -1,26 +1,30 @@
-export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.changeColumn("groupRules", "profilePropertyRuleGuid", {
-        type: DataTypes.STRING(40),
-        allowNull: true,
-      });
+import Sequelize from "sequelize";
 
-      await migration.addColumn("groupRules", "profileColumn", {
-        type: DataTypes.STRING(191),
-        allowNull: true,
-      });
+export default {
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.changeColumn("groupRules", "profilePropertyRuleGuid", {
+      type: DataTypes.STRING(40),
+      allowNull: true,
+    });
+
+    await queryInterface.addColumn("groupRules", "profileColumn", {
+      type: DataTypes.STRING(191),
+      allowNull: true,
     });
   },
 
-  down: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.changeColumn("groupRules", "profilePropertyRuleGuid", {
-        type: DataTypes.STRING(40),
-        allowNull: false,
-      });
-
-      await migration.removeColumn("groupRules", "profileColumn");
+  down: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.changeColumn("groupRules", "profilePropertyRuleGuid", {
+      type: DataTypes.STRING(40),
+      allowNull: false,
     });
+
+    await queryInterface.removeColumn("groupRules", "profileColumn");
   },
 };

@@ -1,17 +1,18 @@
+import Sequelize from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addColumn("exports", "force", {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-        allowNull: false,
-      });
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.addColumn("exports", "force", {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false,
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.removeColumn("exports", "force");
-    });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("exports", "force");
   },
 };

@@ -20,9 +20,7 @@ export const DEFAULT = {
   plugins: () => {
     const plugins = Object.assign(
       {
-        "ah-sequelize-plugin": {
-          path: getPluginPath("ah-sequelize-plugin"),
-        },
+        "ah-sequelize-plugin": { path: getPluginPath("ah-sequelize-plugin") },
       },
       parentPlugins,
       InjectedPlugins

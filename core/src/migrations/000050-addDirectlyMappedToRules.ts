@@ -1,17 +1,18 @@
+import Sequelize from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addColumn("profilePropertyRules", "directlyMapped", {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      });
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.addColumn("profilePropertyRules", "directlyMapped", {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.removeColumn("profilePropertyRules", "directlyMapped");
-    });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("profilePropertyRules", "directlyMapped");
   },
 };

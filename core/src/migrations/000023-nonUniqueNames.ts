@@ -1,45 +1,46 @@
-export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      const TABLES = [
-        "apps",
-        "sources",
-        "groups",
-        "destinations",
-        "profilePropertyRules",
-        "schedules",
-      ];
+import Sequelize from "sequelize";
 
-      for (const i in TABLES) {
-        const table = TABLES[i];
-        const columns = table === "profilePropertyRules" ? ["key"] : ["name"];
-        await migration.removeIndex(table, columns, {
-          unique: true,
-          fields: columns,
-        });
-      }
-    });
+export default {
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    const TABLES = [
+      "apps",
+      "sources",
+      "groups",
+      "destinations",
+      "profilePropertyRules",
+      "schedules",
+    ];
+
+    for (const i in TABLES) {
+      const table = TABLES[i];
+      const columns = table === "profilePropertyRules" ? ["key"] : ["name"];
+      await queryInterface.removeIndex(table, columns, {
+        unique: true,
+        fields: columns,
+      });
+    }
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      const TABLES = [
-        "apps",
-        "sources",
-        "groups",
-        "destinations",
-        "profilePropertyRules",
-        "schedules",
-      ];
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    const TABLES = [
+      "apps",
+      "sources",
+      "groups",
+      "destinations",
+      "profilePropertyRules",
+      "schedules",
+    ];
 
-      for (const i in TABLES) {
-        const table = TABLES[i];
-        const columns = table === "profilePropertyRules" ? ["key"] : ["name"];
-        await migration.addIndex(table, columns, {
-          unique: true,
-          fields: columns,
-        });
-      }
-    });
+    for (const i in TABLES) {
+      const table = TABLES[i];
+      const columns = table === "profilePropertyRules" ? ["key"] : ["name"];
+      await queryInterface.addIndex(table, columns, {
+        unique: true,
+        fields: columns,
+      });
+    }
   },
 };

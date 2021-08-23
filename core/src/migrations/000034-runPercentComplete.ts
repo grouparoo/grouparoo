@@ -1,17 +1,18 @@
+import Sequelize from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addColumn("runs", "percentComplete", {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 100,
-      });
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.addColumn("runs", "percentComplete", {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 100,
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.removeColumn("runs", "percentComplete");
-    });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("runs", "percentComplete");
   },
 };

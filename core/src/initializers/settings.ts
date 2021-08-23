@@ -15,6 +15,7 @@ export class Plugins extends CLSInitializer {
   constructor() {
     super();
     this.name = "settings";
+    this.startPriority = 1;
   }
 
   async registerSettingsArray(
@@ -36,7 +37,9 @@ export class Plugins extends CLSInitializer {
     }
   }
 
-  async initializeWithinTransaction() {
+  async initializeWithinTransaction() {}
+
+  async startWithinTransaction() {
     const coreSettings: SettingsListItem[] = [
       {
         key: "cluster-name",
@@ -226,6 +229,5 @@ export class Plugins extends CLSInitializer {
     await this.registerSettingsArray(telemetrySettings, "telemetry");
   }
 
-  async startWithinTransaction() {}
   async stopWithinTransaction() {}
 }

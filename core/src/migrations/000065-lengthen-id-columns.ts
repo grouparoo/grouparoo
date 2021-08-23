@@ -32,34 +32,48 @@ const tables = {
   teams: [],
 };
 
-const runMigration = async ({ maxIdLength, migration, DataTypes }) => {
+const runMigration = async ({
+  maxIdLength,
+  queryInterface,
+  DataTypes,
+}: {
+  maxIdLength: number;
+  queryInterface: Sequelize.QueryInterface;
+  DataTypes: typeof Sequelize;
+}) => {
   const changeColumn = async (tableName, columnName) => {
-    if (config.sequelize.dialect === "postgres") {
+    if (config.sequelize?.dialect !== "sqlite") {
       const query = `ALTER TABLE "${tableName}" ALTER COLUMN "${columnName}" SET DATA TYPE varchar(${maxIdLength}); `;
-      await migration.sequelize.query(query);
+      await queryInterface.sequelize.query(query);
     } else {
-      await migration.changeColumn(tableName, columnName, {
+      await queryInterface.changeColumn(tableName, columnName, {
         type: DataTypes.STRING(191),
       });
     }
   };
 
-  await migration.sequelize.transaction(async () => {
-    for (const [tableName, columnNames] of Object.entries(tables)) {
-      await changeColumn(tableName, "id");
-      for (const columnName of columnNames) {
-        await changeColumn(tableName, columnName);
-      }
+  for (const [tableName, columnNames] of Object.entries(tables)) {
+    await changeColumn(tableName, "id");
+    for (const columnName of columnNames) {
+      await changeColumn(tableName, columnName);
     }
-  });
+  }
 };
 
+import Sequelize from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await runMigration({ maxIdLength: 191, migration, DataTypes });
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await runMigration({ maxIdLength: 191, queryInterface, DataTypes });
   },
 
-  down: async function (migration, DataTypes) {
-    await runMigration({ maxIdLength: 40, migration, DataTypes });
+  down: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await runMigration({ maxIdLength: 40, queryInterface, DataTypes });
   },
 };

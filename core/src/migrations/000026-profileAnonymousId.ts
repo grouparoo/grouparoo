@@ -1,21 +1,22 @@
-export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addColumn("profiles", "anonymousId", {
-        type: DataTypes.STRING(191),
-        allowNull: true,
-      });
+import Sequelize from "sequelize";
 
-      await migration.addIndex("profiles", ["anonymousId"], {
-        fields: ["anonymousId"],
-        unique: true,
-      });
+export default {
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.addColumn("profiles", "anonymousId", {
+      type: DataTypes.STRING(191),
+      allowNull: true,
+    });
+
+    await queryInterface.addIndex("profiles", ["anonymousId"], {
+      fields: ["anonymousId"],
+      unique: true,
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.removeColumn("profiles", "anonymousId");
-    });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("profiles", "anonymousId");
   },
 };
