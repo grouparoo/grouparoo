@@ -37,7 +37,7 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "calculated-property",
+          name: "calculated-property-import",
           direction: "import",
           description:
             "Import and calculate Calculated Properties from other sources",

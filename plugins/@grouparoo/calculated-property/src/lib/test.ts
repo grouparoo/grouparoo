@@ -8,6 +8,9 @@ export const test: TestPluginMethod = async () => {
     },
   });
 
-  let successValue = vm.run(`()=>{return true;}`);
+  let successValue = vm.run(`
+const returnFn = () => true;
+module.exports = returnFn() 
+  `);
   return { success: successValue };
 };

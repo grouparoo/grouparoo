@@ -26,7 +26,7 @@ async function calculateProfilePropertyValue(
     console.log(error);
     return undefined;
   }
-  let calculation;
+  let calculatedPropertyValue;
 
   //this works with vm and node vm... using node vm to allow for node modules in v2 of this feature
   const vm = new NodeVM({
@@ -36,15 +36,15 @@ async function calculateProfilePropertyValue(
   });
 
   try {
-    calculation = vm.run(`module.exports = ${populatedFunction}`);
-    if (calculation === undefined) {
+    calculatedPropertyValue = vm.run(`module.exports = ${populatedFunction}()`);
+    if (calculatedPropertyValue === undefined) {
       throw Error("Calculated property's /`customFunction/` undefined");
     }
   } catch (error) {
     throw Error(`Could not calculate property: ${error}`);
   }
 
-  return calculation(populatedFunction);
+  return calculatedPropertyValue;
 }
 
 export const profileProperty: ProfilePropertyPluginMethod = async (args) => {
