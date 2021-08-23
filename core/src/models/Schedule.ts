@@ -223,6 +223,8 @@ export class Schedule extends LoggedModel<Schedule> {
       { scheduleId: this.id, runId: run.id },
       "schedules"
     );
+
+    return run;
   }
 
   async resetHighWatermarks() {

@@ -65,8 +65,25 @@ export default function Page(props) {
   async function enqueueScheduleRun(source: Models.SourceType) {
     setLoading(true);
     try {
-      await execApi("post", `/schedule/${source.schedule.id}/run`);
-      successHandler.set({ message: "run enqueued" });
+      const response: Actions.ScheduleRun = await execApi(
+        "post",
+        `/schedule/${source.schedule.id}/run`
+      );
+      successHandler.set({ message: `run ${response.run.id} enqueued` });
+    } finally {
+      setLoading(false);
+      load();
+    }
+  }
+
+  async function enqueueAllSchedulesRun() {
+    setLoading(true);
+    try {
+      const response: Actions.SchedulesRun = await execApi(
+        "post",
+        `/schedules/run`
+      );
+      successHandler.set({ message: `${response.runs.length} runs enqueued` });
     } finally {
       setLoading(false);
       load();
@@ -78,18 +95,14 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: Sources</title>
       </Head>
-
       <h1>Sources</h1>
-
       <p>{total} sources</p>
-
       <Pagination
         total={total}
         limit={limit}
         offset={offset}
         onPress={setOffset}
       />
-
       <LoadingTable loading={loading}>
         <thead>
           <tr>
@@ -182,16 +195,13 @@ export default function Page(props) {
           })}
         </tbody>
       </LoadingTable>
-
       <Pagination
         total={total}
         limit={limit}
         offset={offset}
         onPress={setOffset}
       />
-
       <br />
-
       {process.env.GROUPAROO_UI_EDITION !== "community" ? (
         <Button
           variant="primary"
@@ -200,6 +210,15 @@ export default function Page(props) {
           }}
         >
           Add new Source
+        </Button>
+      ) : null}
+      &nbsp;
+      {process.env.GROUPAROO_UI_EDITION !== "config" ? (
+        <Button
+          variant="outline-primary"
+          onClick={() => enqueueAllSchedulesRun()}
+        >
+          Run all Schedules
         </Button>
       ) : null}
     </>

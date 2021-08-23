@@ -217,6 +217,7 @@ import {
   ScheduleDestroy,
   ScheduleEdit,
   ScheduleRun,
+  SchedulesRun,
   ScheduleView,
   ScheduleFilterOptions,
   SchedulesList,
@@ -625,6 +626,9 @@ export namespace Actions {
   >;
   export type ScheduleRun = AsyncReturnType<
     typeof ScheduleRun.prototype.runWithinTransaction
+  >;
+  export type SchedulesRun = AsyncReturnType<
+    typeof SchedulesRun.prototype.runWithinTransaction
   >;
   export type ScheduleView = AsyncReturnType<
     typeof ScheduleView.prototype.runWithinTransaction
