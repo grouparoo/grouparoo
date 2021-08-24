@@ -33,7 +33,7 @@ export interface ImportProfileProperties {
   [key: string]: any;
 }
 
-const IMPORT_CREATORS = ["schedule", "run", "api"] as const;
+const IMPORT_CREATORS = ["run"] as const;
 
 @Table({ tableName: "imports", paranoid: false })
 export class Import extends Model {
