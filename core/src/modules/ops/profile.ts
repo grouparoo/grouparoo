@@ -600,7 +600,7 @@ export namespace ProfileOps {
     hash: {
       [key: string]: Array<string | number | boolean | Date>;
     },
-    source?: Source
+    source?: boolean | Source
   ) {
     let profile: Profile;
     let isNew = false;
@@ -658,12 +658,15 @@ export namespace ProfileOps {
           where: { id: profileProperty.profileId },
         });
       } else {
-        const canCreateNewProfile = source
-          ? (await Property.findAllWithCache())
-              .filter((p) => p.unique === true && p.sourceId === source.id)
-              .map((p) => p.key)
-              .filter((key) => !!hash[key]).length > 0
-          : true;
+        const canCreateNewProfile =
+          typeof source === "boolean"
+            ? source
+            : source instanceof Source
+            ? (await Property.findAllWithCache())
+                .filter((p) => p.unique === true && p.sourceId === source.id)
+                .map((p) => p.key)
+                .filter((key) => !!hash[key]).length > 0
+            : false;
 
         if (!canCreateNewProfile) {
           throw new Error(

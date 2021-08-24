@@ -134,10 +134,13 @@ describe("models/profile", () => {
 
     test("it cannot find the profile by color and will create a new one", async () => {
       const { profile, isNew } =
-        await ProfileOps.findOrCreateByUniqueProfileProperties({
-          email: ["luigi@example.com"],
-          color: ["green"],
-        });
+        await ProfileOps.findOrCreateByUniqueProfileProperties(
+          {
+            email: ["luigi@example.com"],
+            color: ["green"],
+          },
+          source
+        );
 
       expect(isNew).toBe(true);
       expect(profile.id).not.toBe(toad.id);
@@ -145,24 +148,33 @@ describe("models/profile", () => {
 
     test("it will throw an error if no unique profile properties are included", async () => {
       await expect(
-        ProfileOps.findOrCreateByUniqueProfileProperties({
-          color: ["orange"],
-        })
+        ProfileOps.findOrCreateByUniqueProfileProperties(
+          {
+            color: ["orange"],
+          },
+          source
+        )
       ).rejects.toThrow(
         'there are no unique profile properties provided in {"color":["orange"]}'
       );
     });
 
     test("it will lock when creating new profiles so duplicate profiles are not created", async () => {
-      const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        email: ["bowser@example.com"],
-        color: ["green"],
-      });
+      const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties(
+        {
+          email: ["bowser@example.com"],
+          color: ["green"],
+        },
+        source
+      );
 
-      const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        email: ["bowser@example.com"],
-        house: ["castle"],
-      });
+      const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties(
+        {
+          email: ["bowser@example.com"],
+          house: ["castle"],
+        },
+        source
+      );
 
       expect(responseA.profile.id).toEqual(responseB.profile.id);
       expect(responseA.isNew).toBe(true);
@@ -170,15 +182,21 @@ describe("models/profile", () => {
     });
 
     test("it will merge overlapping unique properties and not store non-unique properties", async () => {
-      const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        email: ["koopa@example.com"],
-        userId: [99],
-      });
+      const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties(
+        {
+          email: ["koopa@example.com"],
+          userId: [99],
+        },
+        source
+      );
 
-      const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        userId: [99],
-        house: ["castle"],
-      });
+      const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties(
+        {
+          userId: [99],
+          house: ["castle"],
+        },
+        source
+      );
 
       expect(responseA.profile.id).toEqual(responseB.profile.id);
       expect(responseA.isNew).toBe(true);

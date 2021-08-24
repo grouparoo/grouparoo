@@ -534,7 +534,8 @@ export namespace helper {
     }
 
     const { profile } = await Profile.findOrCreateByUniqueProfileProperties(
-      arrayedArgs
+      arrayedArgs,
+      true // always allow this method to create new profiles
     );
     const snapshot = await profile.snapshot(opts.saveExports);
     await profile.reload();
