@@ -1,9 +1,9 @@
-import { Action } from "actionhero";
+import { AuthenticatedAction, Status } from "@grouparoo/core";
 import { collectDefaultMetrics, Gauge, Registry } from "prom-client";
-import { Status } from "@grouparoo/core";
 
 //TODO: target specific metrics *OR* generalize to any metric
 const register = new Registry();
+
 const workersCount = new Gauge({
   name: "workers_count",
   help: "Number of workers in the cluster",
@@ -14,17 +14,15 @@ const workersCount = new Gauge({
 });
 register.registerMetric(workersCount);
 
-export default class PrometheusAction extends Action {
+export default class PrometheusAction extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "prometheus:getMetrics";
     this.description = "Metrics endpoint supporting prometheus format";
-    this.middleware = ["authenticated-action"];
-    //@ts-ignore
     this.permission = { topic: "system", mode: "read" };
   }
 
-  async run(data) {
+  async runWithinTransaction(data) {
     data.connection.rawConnection.responseHeaders.push([
       "Content-Type",
       "text/plain",

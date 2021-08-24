@@ -3,6 +3,7 @@ export { plugin } from "./modules/plugin";
 export * from "./classes/plugin";
 export * from "./classes/fileTransport";
 export * from "./classes/configTemplate";
+export { AuthenticatedAction } from "./classes/actions/authenticatedAction";
 
 export { App, SimpleAppOptions } from "./models/App";
 export { ApiKey } from "./models/ApiKey";
