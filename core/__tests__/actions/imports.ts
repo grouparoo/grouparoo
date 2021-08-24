@@ -40,6 +40,13 @@ describe("actions/imports", () => {
       csrfToken = sessionResponse.csrfToken;
     });
 
+    beforeAll(async () => {
+      await helper.factories.import(undefined, {
+        email: "toad@mushroom-kingdom.gov",
+        something: "else",
+      });
+    });
+
     test("an import can be viewed", async () => {
       const i = await Import.findOne();
       connection.params = { csrfToken, id: i.id };
@@ -61,7 +68,7 @@ describe("actions/imports", () => {
       );
 
       expect(error).toBeFalsy();
-      expect(imports.length).toBe(2);
+      expect(imports.length).toBe(1);
       expect(imports[0].id).toBeTruthy();
       expect(imports[0].data.email).toBe("toad@mushroom-kingdom.gov");
     });
