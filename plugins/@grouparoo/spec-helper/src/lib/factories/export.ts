@@ -1,11 +1,11 @@
 import { loadPath } from "../loadPath";
 import DestinationFactory from "./destination";
-import ProfileFactory from "./profile";
+import RecordFactory from "./record";
 
 const data = async (props = {}) => {
   const defaultProps = {
-    oldProfileProperties: {},
-    newProfileProperties: {},
+    oldRecordProperties: {},
+    newRecordProperties: {},
     oldGroups: [],
     newGroups: [],
     state: "pending",
@@ -18,15 +18,15 @@ const data = async (props = {}) => {
 };
 
 export default async (
-  profile?,
+  record?,
   destination?,
   props: { [key: string]: any } = {}
 ) => {
   const { Export } = await import(`@grouparoo/core/${loadPath}`);
-  if (!profile) profile = await ProfileFactory();
+  if (!record) record = await RecordFactory();
   if (!destination) destination = await DestinationFactory();
 
-  props.profileId = profile.id;
+  props.Id = record.id;
   props.destinationId = destination.id;
 
   const mergedProps = await data(props);

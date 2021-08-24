@@ -31,7 +31,7 @@ import ImportFactory from "./factories/import";
 import TeamFactory from "./factories/team";
 import TeamMemberFactory from "./factories/teamMember";
 import NotificationFactory from "./factories/notification";
-import ProfileFactory from "./factories/profile";
+import RecordFactory from "./factories/record";
 import PropertyFactory from "./factories/property";
 import PropertiesFactory from "./factories/properties";
 import AppFactory from "./factories/app";
@@ -72,8 +72,8 @@ const {
   Log,
   Notification,
   Permission,
-  Profile,
-  ProfileProperty,
+  GrouparooRecord,
+  RecordProperty,
   Property,
   Run,
   Setting,
@@ -101,8 +101,8 @@ const models = [
   Log,
   Notification,
   Permission,
-  Profile,
-  ProfileProperty,
+  GrouparooRecord,
+  RecordProperty,
   Property,
   Run,
   Session,
@@ -129,7 +129,7 @@ export namespace helper {
     import: ImportFactory,
     log: LogFactory,
     notification: NotificationFactory,
-    profile: ProfileFactory,
+    record: RecordFactory,
     property: PropertyFactory,
     properties: PropertiesFactory,
     run: RunFactory,
@@ -174,7 +174,7 @@ export namespace helper {
   }
 
   /**
-   * I am used by clients who want to start and stop their server for profile snapshot testing.
+   * I am used by clients who want to start and stop their server for record snapshot testing.
    * As an Arrow function, 'll be in the Jest namespace when used
    */
   export const grouparooTestServer = (
@@ -230,11 +230,11 @@ export namespace helper {
     console.log(process.env.GROUPAROO_INJECTED_PLUGINS);
   }
 
-  export function profileResponseData(profile, key) {
+  export function recordResponseData(record, key) {
     const data = {
       userId: new Date().getTime(),
       isVIP: true,
-      email: `${profile.id}@example.com`,
+      email: `${record.id}@example.com`,
       firstName: "Mario",
       lastName: "Mario",
       ltv: 100.0,
@@ -287,7 +287,7 @@ export namespace helper {
         {
           name: "test-plugin-import",
           direction: "import",
-          description: "import or update profiles from a table",
+          description: "import or update records from a table",
           app: "test-plugin-app",
           options: [
             { key: "table", required: true },
@@ -369,23 +369,23 @@ export namespace helper {
                 },
               ];
             },
-            profiles: async () => {
+            records: async () => {
               return {
                 importsCount: 0,
                 highWaterMark: { col: 0 },
                 sourceOffset: 0,
               };
             },
-            profileProperty: async ({ property, profile }) => {
-              return profileResponseData(profile, property.key);
+            recordProperty: async ({ property, record }) => {
+              return recordResponseData(record, property.key);
             },
-            profileProperties: async ({ properties, profiles }) => {
+            recordProperties: async ({ properties, records }) => {
               const response = {};
-              for (const profile of profiles) {
-                response[profile.id] = {};
+              for (const record of records) {
+                response[record.id] = {};
                 for (const property of properties) {
-                  response[profile.id][property.id] = [
-                    profileResponseData(profile, property.key),
+                  response[record.id][property.id] = [
+                    recordResponseData(record, property.key),
                   ];
                 }
               }
@@ -397,7 +397,7 @@ export namespace helper {
         {
           name: "test-plugin-export",
           direction: "export",
-          description: "export profiles to nowhere",
+          description: "export records to nowhere",
           app: "test-plugin-app",
           syncModes: ["sync", "enrich", "additive"],
           options: [
@@ -406,7 +406,7 @@ export namespace helper {
             { key: "_failRemoteValidation", required: false },
           ],
           methods: {
-            exportProfile: async () => {
+            exportRecord: async () => {
               return { success: true };
             },
             destinationOptions: async ({ destinationOptions }) => {
@@ -452,7 +452,7 @@ export namespace helper {
         {
           name: "test-plugin-export-batch",
           direction: "export",
-          description: "export profiles to nowhere",
+          description: "export records to nowhere",
           app: "test-plugin-app",
           syncModes: ["sync", "enrich", "additive"],
           defaultSyncMode: "additive",
@@ -461,7 +461,7 @@ export namespace helper {
             { key: "where", required: false },
           ],
           methods: {
-            exportProfiles: async () => {
+            exportRecords: async () => {
               return { success: true };
             },
             destinationOptions: async ({ destinationOptions }) => {
@@ -507,16 +507,16 @@ export namespace helper {
       (p) => p.name === "@grouparoo/test-plugin"
     )[0].connections[0];
 
-    delete connection.methods.profileProperty;
-    delete connection.methods.profileProperties;
+    delete connection.methods.recordProperty;
+    delete connection.methods.recordProperties;
   }
 
   /**
-   * Find or Create a profile given the key of a unique property key and value ({email: 'person@example.com'}) and optional options.
-   * Returns bot the profile itself and a snapshot.
-   * Calls Profile.findOrCreateByUniqueProfileProperties() under the hood, as well as Profile.sync()
+   * Find or Create a record given the key of a unique property key and value ({email: 'person@example.com'}) and optional options.
+   * Returns bot the record itself and a snapshot.
+   * Calls GrouparooRecord.findOrCreateByUniqueRecordProperties() under the hood, as well as GrouparooRecord.sync()
    */
-  export async function getProfile(
+  export async function getRecord(
     args: { [key: string]: string | number },
     opts: { saveExports?: boolean } = { saveExports: false }
   ) {
@@ -543,14 +543,15 @@ export namespace helper {
       );
     }
 
-    const { profile } = await Profile.findOrCreateByUniqueProfileProperties(
-      arrayedArgs,
-      true // always allow this method to create new profiles
-    );
-    const snapshot = await profile.snapshot(opts.saveExports);
-    await profile.reload();
+    const { record } =
+      await GrouparooRecord.findOrCreateByUniqueRecordProperties(
+        arrayedArgs,
+        true // always allow this method to create new records
+      );
+    const snapshot = await record.snapshot(opts.saveExports);
+    await record.reload();
 
-    return { profile, snapshot };
+    return { record, snapshot };
   }
 
   export function recordNock(nockFile, updater: any = {}) {

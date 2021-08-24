@@ -1,7 +1,7 @@
 import { loadPath } from "../loadPath";
 import RunFactory from "./run";
 
-export default async (run?, props: { [key: string]: any } = {}, profileId?) => {
+export default async (run?, props: { [key: string]: any } = {}, recordId?) => {
   const { Import } = await import(`@grouparoo/core/${loadPath}`);
   if (!run) run = await RunFactory();
 
@@ -10,7 +10,7 @@ export default async (run?, props: { [key: string]: any } = {}, profileId?) => {
     rawData: props,
     creatorType: "run",
     creatorId: run.id,
-    profileId,
+    recordId,
   });
 
   await instance.save();

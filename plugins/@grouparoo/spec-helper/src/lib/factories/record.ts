@@ -11,8 +11,8 @@ const data = async (props = {}) => {
 };
 
 export default async (props = {}, properties = {}) => {
-  const { Profile } = await import(`@grouparoo/core/${loadPath}`);
-  const profile = await Profile.create(await data(props));
+  const { GrouparooRecord } = await import(`@grouparoo/core/${loadPath}`);
+  const record = await GrouparooRecord.create(await data(props));
 
   const { Property } = await import(`@grouparoo/core/${loadPath}`);
   const allProperties = await Property.findAllWithCache();
@@ -25,9 +25,9 @@ export default async (props = {}, properties = {}) => {
     );
   }
 
-  await profile.addOrUpdateProperties({
+  await record.addOrUpdateProperties({
     ...properties,
   });
 
-  return profile;
+  return;
 };

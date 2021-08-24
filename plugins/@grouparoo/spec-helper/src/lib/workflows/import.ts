@@ -2,46 +2,48 @@ import { loadPath } from "./../loadPath";
 import { specHelper } from "actionhero";
 
 export async function ImportWorkflow() {
-  const { Profile } = await import(`@grouparoo/core/${loadPath}`);
+  const { GrouparooRecord } = await import(`@grouparoo/core/${loadPath}`);
 
   const maxAttempts = 5;
   let attempts = 0;
   let importTasks = [];
-  let pendingProfiles = 1;
+  let pendingRecords = 1;
 
   async function _import() {
-    await specHelper.runTask("profileProperties:enqueue", {});
+    await specHelper.runTask("recordProperties:enqueue", {});
 
     // batch
     importTasks = await specHelper.findEnqueuedTasks(
-      "profileProperty:importProfileProperties"
+      "recordProperty:importRecordProperties"
     );
     for (const t of importTasks) {
       await specHelper.runTask(
-        "profileProperty:importProfileProperties",
+        "recordProperty:importRecordProperties",
         t.args[0]
       );
     }
 
     // single
     importTasks = await specHelper.findEnqueuedTasks(
-      "profileProperty:importProfileProperty"
+      "recordProperty:importRecordProperty"
     );
     for (const t of importTasks) {
       await specHelper.runTask(
-        "profileProperty:importProfileProperty",
+        "recordProperty:importRecordProperty",
         t.args[0]
       );
     }
 
-    await specHelper.runTask("profiles:checkReady", {});
-    await specHelper.runTask("profiles:enqueueExports", {});
+    await specHelper.runTask("records:checkReady", {});
+    await specHelper.runTask("records:enqueueExports", {});
 
-    pendingProfiles = await Profile.count({ where: { state: "pending" } });
+    pendingRecords = await GrouparooRecord.count({
+      where: { state: "pending" },
+    });
   }
 
-  // we'll need to loop more than once to get dependent profiles first before secondary ones
-  while (pendingProfiles > 0 && attempts < maxAttempts) {
+  // we'll need to loop more than once to get dependent s first before secondary ones
+  while (pendingRecords > 0 && attempts < maxAttempts) {
     await _import();
     attempts++;
   }
