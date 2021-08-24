@@ -30,3 +30,27 @@ export default class PrometheusAction extends AuthenticatedAction {
     data.response = await register.metrics();
   }
 }
+
+//SEE: https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md
+//SEE: https://github.com/grouparoo/grouparoo/blob/c850e80cae15615ce8276bc7d5e66d72f600ce95/core/__tests__/modules/status.ts#L106
+
+//Destination.deleted[0].metric.count         Number
+//Export.pending[0].metric.count              Number
+//Group.deleted[0].metric.country             Number
+//Group.totals[0].metric.count                Number
+//Import.pending[0].metric.count              Number
+//Import.pendingBySource.metric.count         Number
+//Profile.pending[0].metric.count             Number
+//Profile.deleted[0].metric.count             Number
+//Profile.totals[0].metric.count              Number
+//Property.deleted[0].metric.count            Number
+//Run.pending[0].metric.count                 Number
+//Run.percentComplete[0].metric.count         ???
+//Source.deleted[0].metric.count              Number
+//Source.nextRun[0].metric.count              Number
+//node_env.cluster[0].metric.value            String e.g. "test"
+//os.cluster[0].metric.value                  String e.g. "linux"
+//resqueDetails.cluster[0].metric.value       ??? e.g. "structure"
+//resqueErrors.cluster[0].metric.count        Number
+//unreadNotifications.cluster[0].metric.count Number
+//workers.cluster[0].metric.count             Number
