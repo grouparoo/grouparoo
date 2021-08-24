@@ -594,7 +594,7 @@ export namespace ProfileOps {
    * The method you'll be using to create profiles with arbitrary data.
    * Hash looks like {email: "person@example.com", id: 123}
    *
-   * This method today always returns a profile by finding it or making a a new one... is that right?.
+   * This method today always returns a profile by finding it or making a a new one... unless it throws because the source isn't allowed to make new profiles.
    */
   export async function findOrCreateByUniqueProfileProperties(
     hash: {
