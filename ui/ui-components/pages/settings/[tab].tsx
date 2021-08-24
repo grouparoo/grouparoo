@@ -6,7 +6,7 @@ import { capitalize } from "../../utils/languageHelper";
 import { useRouter } from "next/router";
 import { Models, Actions } from "../../utils/apiData";
 import SettingCard from "../../components/settings/settingCard";
-import ImportAndUpdateAllProfiles from "../../components/settings/importAndUpdate";
+import ImportAndUpdateAllRecords from "../../components/settings/importAndUpdate";
 import IdentifyingProperty from "../../components/settings/identifyingProperty";
 import ResetCluster from "../../components/settings/resetCluster";
 import ResetData from "../../components/settings/resetData";
@@ -137,7 +137,7 @@ function ActionsTab({ errorHandler, successHandler }) {
       <br />
       <h2>Cluster Actions</h2>
 
-      <ImportAndUpdateAllProfiles
+      <ImportAndUpdateAllRecords
         errorHandler={errorHandler}
         successHandler={successHandler}
       />

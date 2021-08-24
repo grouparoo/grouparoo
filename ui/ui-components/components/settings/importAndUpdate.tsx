@@ -6,7 +6,7 @@ import { Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { SuccessHandler } from "../../utils/successHandler";
 
-export default function ImportAndUpdateProfile(props) {
+export default function ImportAndUpdateRecord(props) {
   const {
     errorHandler,
     successHandler,
@@ -17,9 +17,9 @@ export default function ImportAndUpdateProfile(props) {
   async function importAndUpdate() {
     if (window.confirm("Are you sure?")) {
       setLoading(true);
-      const response: Actions.ProfilesImportAndUpdate = await execApi(
+      const response: Actions.RecordsImportAndUpdate = await execApi(
         "put",
-        `/profiles/importAndUpdate`
+        `/records/importAndUpdate`
       );
       if (response?.run) {
         successHandler.set({ message: `Run ${response.run.id} enqueued` });
@@ -31,9 +31,9 @@ export default function ImportAndUpdateProfile(props) {
   return (
     <Card border="warning">
       <Card.Body>
-        <Card.Title>Import and Export all Profiles</Card.Title>
+        <Card.Title>Import and Export all Records</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">
-          (Re)import all profiles for all properties that can be determined from
+          (Re)import all records for all properties that can be determined from
           a source.
         </Card.Subtitle>
 
@@ -46,7 +46,7 @@ export default function ImportAndUpdateProfile(props) {
             size="sm"
             variant="outline-warning"
           >
-            Import and Update all Profiles
+            Import and Update all Records
           </LoadingButton>
         </Card.Text>
       </Card.Body>

@@ -4,7 +4,7 @@ import LoadingButton from "../../../components/loadingButton";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import LoadingTable from "../../../components/loadingTable";
-import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
+import RecordImageFromEmail from "../../../components/visualizations/recordImageFromEmail";
 import { Models, Actions } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/team";
 import { ErrorHandler } from "../../../utils/errorHandler";
@@ -70,7 +70,7 @@ export default function Page(props) {
             return (
               <tr key={`teamMember-${teamMember.id}`}>
                 <td style={{ maxWidth: 50 }}>
-                  <ProfileImageFromEmail
+                  <RecordImageFromEmail
                     loading={loading}
                     email={teamMember.email}
                   />

@@ -4,7 +4,7 @@ import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import { useRouter } from "next/router";
-import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
+import RecordImageFromEmail from "../../../components/visualizations/recordImageFromEmail";
 import { Models, Actions } from "../../../utils/apiData";
 import TeamMemberTabs from "../../../components/tabs/teamMember";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
@@ -82,7 +82,7 @@ export default function Page(props) {
             </small>
           </p>
 
-          <ProfileImageFromEmail loading={loading} email={teamMember.email} />
+          <RecordImageFromEmail loading={loading} email={teamMember.email} />
           <small>
             Image from{" "}
             <a href="https://gravatar.com" target="_blank">

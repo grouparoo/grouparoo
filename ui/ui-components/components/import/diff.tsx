@@ -6,21 +6,21 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-export function ImportProfilePropertiesDiff({
+export function ImportRecordPropertiesDiff({
   _import,
 }: {
   _import: Models.ImportType;
 }) {
-  const complete = _import.profileUpdatedAt && _import.groupsUpdatedAt;
+  const complete = _import.recordUpdatedAt && _import.groupsUpdatedAt;
 
   if (!complete) {
     return (
       <>
         <ul>
-          {Object.keys(_import.oldProfileProperties).map((k) => {
+          {Object.keys(_import.oldRecordProperties).map((k) => {
             return (
               <li key={`${_import.id}-prp-${k}`}>
-                {k}: {_import.oldProfileProperties[k]?.toString()}
+                {k}: {_import.oldRecordProperties[k]?.toString()}
               </li>
             );
           })}
@@ -30,8 +30,8 @@ export function ImportProfilePropertiesDiff({
   }
 
   const keys = [
-    ...Object.keys(_import.oldProfileProperties),
-    ...Object.keys(_import.newProfileProperties),
+    ...Object.keys(_import.oldRecordProperties),
+    ...Object.keys(_import.newRecordProperties),
   ]
     .filter(onlyUnique)
     .sort();
@@ -40,20 +40,20 @@ export function ImportProfilePropertiesDiff({
     <ul>
       {keys.map((k) => {
         const hasChanges =
-          JSON.stringify(_import.oldProfileProperties[k]) !==
-          JSON.stringify(_import.newProfileProperties[k])
+          JSON.stringify(_import.oldRecordProperties[k]) !==
+          JSON.stringify(_import.newRecordProperties[k])
             ? true
             : false;
         const nullOld =
-          _import.oldProfileProperties[k] === null ||
-          _import.oldProfileProperties[k] === undefined ||
-          (_import.oldProfileProperties[k].length === 1 &&
-            _import.oldProfileProperties[k][0] === null);
+          _import.oldRecordProperties[k] === null ||
+          _import.oldRecordProperties[k] === undefined ||
+          (_import.oldRecordProperties[k].length === 1 &&
+            _import.oldRecordProperties[k][0] === null);
         const nullNew =
-          _import.newProfileProperties[k] === null ||
-          _import.newProfileProperties[k] === undefined ||
-          (_import.newProfileProperties[k].length === 1 &&
-            _import.newProfileProperties[k][0] === null);
+          _import.newRecordProperties[k] === null ||
+          _import.newRecordProperties[k] === undefined ||
+          (_import.newRecordProperties[k].length === 1 &&
+            _import.newRecordProperties[k][0] === null);
 
         const badge = hasChanges ? (
           nullOld && !nullNew ? (
@@ -73,13 +73,13 @@ export function ImportProfilePropertiesDiff({
             {nullOld ? (
               <code>null</code>
             ) : (
-              _import.oldProfileProperties[k].toString()
+              _import.oldRecordProperties[k].toString()
             )}{" "}
             /{" "}
             {nullNew ? (
               <code>null</code>
             ) : (
-              _import.newProfileProperties[k].toString()
+              _import.newRecordProperties[k].toString()
             )}
           </li>
         );
@@ -95,7 +95,7 @@ export function ImportGroupsDiff({
   _import: Models.ImportType;
   groups: Models.GroupType[];
 }) {
-  const complete = _import.profileUpdatedAt && _import.groupsUpdatedAt;
+  const complete = _import.recordUpdatedAt && _import.groupsUpdatedAt;
 
   if (!complete) {
     return (

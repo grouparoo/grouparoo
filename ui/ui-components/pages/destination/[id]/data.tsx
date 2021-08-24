@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
-import ProfilePreview from "../../../components/destination/profilePreview";
+import RecordPreview from "../../../components/destination/recordPreview";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import DestinationTabs from "../../../components/tabs/destination";
@@ -81,7 +81,7 @@ export default function Page(props) {
       message:
         process.env.GROUPAROO_UI_EDITION === "config"
           ? "Destination Updated"
-          : "Destination Updated and Profiles Exporting...",
+          : "Destination Updated and Records Exporting...",
     });
   };
 
@@ -306,7 +306,7 @@ export default function Page(props) {
                         <option key={`grp-${group.id}`} value={group.id}>
                           {group.name}
                           {process.env.GROUPAROO_UI_EDITION !== "config" &&
-                            ` (${group.profilesCount} members)`}
+                            ` (${group.recordsCount} members)`}
                         </option>
                       ))}
                   </Form.Control>
@@ -483,7 +483,7 @@ export default function Page(props) {
                       <Alert variant="light">
                         <Form.Group as={Row}>
                           <Form.Label column sm={3}>
-                            <strong>Send Profile Property:</strong>
+                            <strong>Send Record Property:</strong>
                           </Form.Label>
                           <Col>
                             <Typeahead
@@ -785,7 +785,7 @@ export default function Page(props) {
           </Form>
         </Col>
         <Col md={3}>
-          <ProfilePreview
+          <RecordPreview
             {...props}
             mappingOptions={mappingOptions}
             destination={destination}

@@ -34,7 +34,7 @@ export default function ResetData(props) {
           <br />
           <br />
           <small>
-            Imported Data includes Profiles, GroupMembers, Imports, and Exports.
+            Imported Data includes Records, GroupMembers, Imports, and Exports.
             This will not remove configuration data, like Apps, Groups, Sources,
             and Properties. This action will not remove data from your
             Destinations. This will also clear the redis cache and rest all

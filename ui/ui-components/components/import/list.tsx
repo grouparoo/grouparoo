@@ -10,7 +10,7 @@ import { Alert } from "react-bootstrap";
 import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
-import { ImportProfilePropertiesDiff, ImportGroupsDiff } from "./diff";
+import { ImportRecordPropertiesDiff, ImportGroupsDiff } from "./diff";
 
 export default function ImportList(props) {
   const {
@@ -27,11 +27,11 @@ export default function ImportList(props) {
   const limit = 100;
   const { offset, setOffset } = useOffset();
 
-  let profileId: string;
+  let recordId: string;
   let creatorId: string;
   if (router.query.id) {
-    if (router.pathname.match("/profile/")) {
-      profileId = router.query.id.toString();
+    if (router.pathname.match("/record/")) {
+      recordId = router.query.id.toString();
     } else {
       creatorId = router.query.id.toString();
     }
@@ -49,7 +49,7 @@ export default function ImportList(props) {
       limit,
       offset,
       creatorId,
-      profileId,
+      recordId,
     });
     setLoading(false);
     if (response?.imports) {
@@ -64,7 +64,7 @@ export default function ImportList(props) {
 
       <p>
         {total} imports {creatorId ? `for ${creatorId}` : null}{" "}
-        {profileId ? `for profile ${profileId}` : null}
+        {recordId ? `for record ${recordId}` : null}
       </p>
 
       <Pagination
@@ -79,7 +79,7 @@ export default function ImportList(props) {
           <tr>
             <th>Ids</th>
             <th>Times</th>
-            <th>Profile Properties</th>
+            <th>Record Properties</th>
             <th>Groups</th>
             <th>Data</th>
           </tr>
@@ -97,13 +97,13 @@ export default function ImportList(props) {
                     >
                       <a> {_import.id}</a>
                     </Link>
-                    <br /> Profile:{" "}
-                    {_import.profileId ? (
+                    <br /> Record:{" "}
+                    {_import.recordId ? (
                       <Link
-                        href="/profile/[id]/edit"
-                        as={`/profile/${_import.profileId}/edit`}
+                        href="/record/[id]/edit"
+                        as={`/record/${_import.recordId}/edit`}
                       >
-                        <a>{_import.profileId}</a>
+                        <a>{_import.recordId}</a>
                       </Link>
                     ) : (
                       "none"
@@ -123,15 +123,15 @@ export default function ImportList(props) {
                   </td>
                   <td>
                     Created: {formatTimestamp(_import.createdAt)}
-                    <br /> Profile Associated:{" "}
-                    {_import.profileAssociatedAt ? (
-                      formatTimestamp(_import.profileAssociatedAt)
+                    <br /> Record Associated:{" "}
+                    {_import.recordAssociatedAt ? (
+                      formatTimestamp(_import.recordAssociatedAt)
                     ) : (
                       <span>x</span>
                     )}
-                    <br /> Profile Updated:{" "}
-                    {_import.profileUpdatedAt ? (
-                      formatTimestamp(_import.profileUpdatedAt)
+                    <br /> Record Updated:{" "}
+                    {_import.recordUpdatedAt ? (
+                      formatTimestamp(_import.recordUpdatedAt)
                     ) : (
                       <span>x</span>
                     )}
@@ -143,7 +143,7 @@ export default function ImportList(props) {
                     )}
                   </td>
                   <td>
-                    <ImportProfilePropertiesDiff _import={_import} />
+                    <ImportRecordPropertiesDiff _import={_import} />
                   </td>
                   <td>
                     <ImportGroupsDiff _import={_import} groups={groups} />
@@ -189,11 +189,11 @@ ImportList.hydrate = async (ctx) => {
   const { execApi } = useApi(ctx);
   const { id, limit, offset } = ctx.query;
 
-  let profileId: string;
+  let recordId: string;
   let creatorId: string;
   if (id) {
-    if (ctx.pathname.match("/profile/")) {
-      profileId = id;
+    if (ctx.pathname.match("/record/")) {
+      recordId = id;
     } else {
       creatorId = id;
     }
@@ -202,7 +202,7 @@ ImportList.hydrate = async (ctx) => {
     limit,
     offset,
     creatorId,
-    profileId,
+    recordId,
   });
 
   const { groups } = await execApi("get", `/groups`);

@@ -59,7 +59,7 @@ export default function Page(props) {
 
   const bootstrapUniqueProperty = async () => {
     if (newMappingKey === "") {
-      return errorHandler.set({ error: "select profile identification" });
+      return errorHandler.set({ error: "select record identification" });
     }
 
     setLoading(true);
@@ -138,7 +138,7 @@ export default function Page(props) {
     return (
       <PageHeader
         icon={source.app.icon}
-        title={`${source.name} - Profile Identification`}
+        title={`${source.name} - Record Identification`}
         badges={[
           <LockedBadge object={source} />,
           <StateBadge state={source.state} />,
@@ -202,7 +202,7 @@ export default function Page(props) {
                             required
                             type="radio"
                             id={col}
-                            name="remoteProfileIdColumn"
+                            name="remoteRecordIdColumn"
                             disabled={loading}
                             defaultChecked={
                               Object.keys(source.mapping)[0] === col
@@ -248,7 +248,7 @@ export default function Page(props) {
             <Col>
               {properties.length > 0 ? (
                 <>
-                  <p>Choose the Grouparoo Profile Property:</p>
+                  <p>Choose the Grouparoo Record Property:</p>
                   <fieldset>
                     <Table bordered striped size="sm">
                       <thead>
@@ -277,7 +277,7 @@ export default function Page(props) {
                                   required
                                   type="radio"
                                   id={property.id}
-                                  name="remoteProfileRuleId"
+                                  name="remoteRecordRuleId"
                                   disabled={loading}
                                   defaultChecked={
                                     Object.values(source.mapping)[0] ===
@@ -320,8 +320,8 @@ export default function Page(props) {
                     <strong>Create a new Unique Property</strong>
                   </p>
                   <p>
-                    This profile property should be unique, meaning only one
-                    profile in your entire customer base will have this value.
+                    This record property should be unique, meaning only one
+                    record in your entire customer base will have this value.
                     Normally this is an email or a user id.
                   </p>
                   <Form.Group controlId="key">

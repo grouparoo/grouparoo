@@ -186,7 +186,7 @@ export default function Page(props) {
                     ))}
                   </Form.Control>
                   <Form.Text className="text-muted">
-                    How should this destination sync profiles?
+                    How should this destination sync records?
                   </Form.Text>
                 </Form.Group>
               ) : null}

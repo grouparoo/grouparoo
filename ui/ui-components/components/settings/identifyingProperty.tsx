@@ -14,7 +14,7 @@ export default function IdentifyingProperty(props) {
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [properties, setProperties] = useState<Models.PropertyType[]>([]);
-  const [identifyingProfilePropertyId, setIdentifyingProfilePropertyId] =
+  const [identifyingRecordPropertyId, setIdentifyingRecordPropertyId] =
     useState("");
 
   useEffect(() => {
@@ -30,11 +30,11 @@ export default function IdentifyingProperty(props) {
 
     if (response.properties) {
       setProperties(response.properties);
-      const _identifyingProfilePropertyId = response.properties.filter(
+      const _identifyingRecordPropertyId = response.properties.filter(
         (rule) => rule.identifying
       )[0]?.id;
-      if (_identifyingProfilePropertyId)
-        setIdentifyingProfilePropertyId(_identifyingProfilePropertyId);
+      if (_identifyingRecordPropertyId)
+        setIdentifyingRecordPropertyId(_identifyingRecordPropertyId);
     }
   }
 
@@ -43,10 +43,10 @@ export default function IdentifyingProperty(props) {
 
     setLoading(true);
 
-    if (identifyingProfilePropertyId !== "") {
+    if (identifyingRecordPropertyId !== "") {
       await execApi(
         "put",
-        `/property/${identifyingProfilePropertyId}/makeIdentifying`
+        `/property/${identifyingRecordPropertyId}/makeIdentifying`
       );
     }
 
@@ -59,20 +59,20 @@ export default function IdentifyingProperty(props) {
   return (
     <Card border={"info"}>
       <Card.Body>
-        <Card.Title>Identifying Profile Property</Card.Title>
+        <Card.Title>Identifying Record Property</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">
-          Which profile should we display in the Grouparoo User Interface to
-          identify your Profiles?
+          Which record should we display in the Grouparoo User Interface to
+          identify your Records?
         </Card.Subtitle>
 
         <Form onSubmit={onSubmit}>
           <Form.Group>
-            <Form.Label>Profile Property</Form.Label>
+            <Form.Label>Record Property</Form.Label>
             <Form.Control
               as="select"
               disabled={loading}
-              value={identifyingProfilePropertyId}
-              onChange={(e) => setIdentifyingProfilePropertyId(e.target.value)}
+              value={identifyingRecordPropertyId}
+              onChange={(e) => setIdentifyingRecordPropertyId(e.target.value)}
             >
               {loading ? (
                 <option disabled>...</option>

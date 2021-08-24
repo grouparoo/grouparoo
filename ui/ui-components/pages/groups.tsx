@@ -65,7 +65,7 @@ export default function Page(props) {
           <tr>
             <th>Name</th>
             <th>Type</th>
-            {process.env.GROUPAROO_UI_EDITION !== "config" && <th>Profiles</th>}
+            {process.env.GROUPAROO_UI_EDITION !== "config" && <th>Records</th>}
             <th>State</th>
             {process.env.GROUPAROO_UI_EDITION !== "config" && (
               <th>Calculated At</th>
@@ -97,7 +97,7 @@ export default function Page(props) {
                 </td>
                 <td>{group.type}</td>
                 {process.env.GROUPAROO_UI_EDITION !== "config" && (
-                  <td>{group.profilesCount}</td>
+                  <td>{group.recordsCount}</td>
                 )}
                 <td>
                   <StateBadge state={group.state} />

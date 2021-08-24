@@ -6,7 +6,7 @@ import Link from "next/link";
 import EnterpriseLink from "../components/enterpriseLink";
 import { Form } from "react-bootstrap";
 import LoadingTable from "../components/loadingTable";
-import ProfileImageFromEmail from "../components/visualizations/profileImageFromEmail";
+import RecordImageFromEmail from "../components/visualizations/recordImageFromEmail";
 import { Models } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 
@@ -106,7 +106,7 @@ export default function Page({
             return (
               <tr key={`teamMember-${teamMember.id}`}>
                 <td style={{ maxWidth: 36 }}>
-                  <ProfileImageFromEmail
+                  <RecordImageFromEmail
                     loading={false}
                     email={teamMember.email}
                   />

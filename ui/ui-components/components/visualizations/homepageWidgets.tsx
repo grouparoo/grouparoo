@@ -65,7 +65,7 @@ export function GroupsByNewestMember({
   type GroupType = {
     id: string;
     name: string;
-    profilesCount: number;
+    recordsCount: number;
     newestMembersAdded: string;
   };
 
@@ -91,7 +91,7 @@ export function GroupsByNewestMember({
         return {
           id: metric.key,
           name: metric.value,
-          profilesCount: metric.count,
+          recordsCount: metric.count,
           newestMembersAdded: metric.metadata,
         };
       })
@@ -113,7 +113,7 @@ export function GroupsByNewestMember({
           <thead>
             <tr>
               <th>Name</th>
-              <th>Profiles</th>
+              <th>Records</th>
               <th>Newest Member Added</th>
             </tr>
           </thead>
@@ -129,7 +129,7 @@ export function GroupsByNewestMember({
                       <a>{group.name}</a>
                     </EnterpriseLink>
                   </td>
-                  <td>{group.profilesCount}</td>
+                  <td>{group.recordsCount}</td>
                   <td>
                     {!isNaN(parseInt(group.newestMembersAdded)) ? (
                       <Moment fromNow>
@@ -359,7 +359,7 @@ export function PendingImports({
   };
 
   const [sources, setSources] = useState<ImportsBySource[]>([]);
-  const [pendingProfilesCount, setPendingProfilesCount] = useState(-1);
+  const [pendingRecordsCount, setPendingRecordsCount] = useState(-1);
   const [chartData, setChartData] = useState<ChartLinData>([]);
   const [pendingImportKeys, setPendingImportKeys] = useState<string[]>([]);
 
@@ -375,15 +375,15 @@ export function PendingImports({
   }, []);
 
   function load() {
-    const pendingProfileCollection = statusHandler.metrics["Profile"];
-    if (!pendingProfileCollection) return;
-    if (!pendingProfileCollection["pending"]) return;
+    const pendingRecordCollection = statusHandler.metrics["Record"];
+    if (!pendingRecordCollection) return;
+    if (!pendingRecordCollection["pending"]) return;
 
-    const pendingProfileMetric =
-      pendingProfileCollection["pending"][
-        pendingProfileCollection["pending"].length - 1
+    const pendingRecordMetric =
+      pendingRecordCollection["pending"][
+        pendingRecordCollection["pending"].length - 1
       ].metric;
-    setPendingProfilesCount(pendingProfileMetric.count);
+    setPendingRecordsCount(pendingRecordMetric.count);
 
     const _chartData: ChartLinData = [];
     const _pendingImportKeys: string[] = [];
@@ -435,7 +435,7 @@ export function PendingImports({
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Pending Profiles ({pendingProfilesCount})</Card.Title>
+        <Card.Title>Pending Records ({pendingRecordsCount})</Card.Title>
         <div style={{ height: 300 }}>
           <GrouparooChart
             data={chartData}

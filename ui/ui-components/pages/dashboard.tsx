@@ -24,9 +24,9 @@ export default function Page(props) {
         <Col>
           <BigTotalNumber
             statusHandler={statusHandler}
-            href="/profiles"
-            model="Profile"
-            title="Profiles"
+            href="/records"
+            model="Record"
+            title="Records"
           />
         </Col>
 

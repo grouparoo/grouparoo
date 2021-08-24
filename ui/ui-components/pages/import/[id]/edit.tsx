@@ -6,7 +6,7 @@ import Link from "next/link";
 import Moment from "react-moment";
 import { Models } from "../../../utils/apiData";
 import {
-  ImportProfilePropertiesDiff,
+  ImportRecordPropertiesDiff,
   ImportGroupsDiff,
 } from "../../../components/import/diff";
 
@@ -43,12 +43,12 @@ export default function Page(props) {
               _import.creatorId
             )}
             <br />
-            Profile:{" "}
+            Record:{" "}
             <Link
-              href="/profile/[id]/edit"
-              as={`/profile/${_import.profileId}/edit`}
+              href="/record/[id]/edit"
+              as={`/record/${_import.recordId}/edit`}
             >
-              <a>{_import.profileId}</a>
+              <a>{_import.recordId}</a>
             </Link>
           </p>
           {_import.errorMessage ? (
@@ -74,8 +74,8 @@ export default function Page(props) {
 
           <Row>
             <Col md={6}>
-              <strong>Profile Properties</strong>
-              <ImportProfilePropertiesDiff _import={_import} />
+              <strong>Record Properties</strong>
+              <ImportRecordPropertiesDiff _import={_import} />
             </Col>
             <Col md={6}>
               <strong>Groups</strong>
@@ -130,25 +130,23 @@ export default function Page(props) {
               </tr>
               <tr>
                 <td>Associated</td>
-                <td>
-                  {new Date(_import.profileAssociatedAt).toLocaleString()}
-                </td>
+                <td>{new Date(_import.recordAssociatedAt).toLocaleString()}</td>
                 <td>
                   ⇣
                   <Moment
-                    duration={_import.profileAssociatedAt || 0}
+                    duration={_import.recordAssociatedAt || 0}
                     date={_import.createdAt}
                   />
                 </td>
               </tr>
               <tr>
-                <td>Profile Updated</td>
-                <td>{new Date(_import.profileUpdatedAt).toLocaleString()}</td>
+                <td>Record Updated</td>
+                <td>{new Date(_import.recordUpdatedAt).toLocaleString()}</td>
                 <td>
                   ⇣
                   <Moment
-                    duration={_import.profileAssociatedAt || 0}
-                    date={_import.profileUpdatedAt}
+                    duration={_import.recordAssociatedAt || 0}
+                    date={_import.recordUpdatedAt}
                   />
                 </td>
               </tr>
@@ -159,7 +157,7 @@ export default function Page(props) {
                   ⇣
                   <Moment
                     duration={_import.groupsUpdatedAt}
-                    date={_import.profileUpdatedAt}
+                    date={_import.recordUpdatedAt}
                   />
                 </td>
               </tr>

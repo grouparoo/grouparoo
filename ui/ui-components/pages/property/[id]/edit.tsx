@@ -7,7 +7,7 @@ import Loader from "../../../components/loader";
 import PageHeader from "../../../components/pageHeader";
 import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
-import ProfilePreview from "../../../components/property/profilePreview";
+import RecordPreview from "../../../components/property/recordPreview";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DatePicker from "../../../components/datePicker";
 import LoadingButton from "../../../components/loadingButton";
@@ -46,7 +46,7 @@ export default function Page(props) {
     Actions.PropertyPluginOptions["pluginOptions"]
   >(props.pluginOptions);
   const [loading, setLoading] = useState(false);
-  const [nextPage] = useState(router.query.nextPage?.toString()); // we want to store this when the page was initially loaded because we'll be updating the route for the profilePreview
+  const [nextPage] = useState(router.query.nextPage?.toString()); // we want to store this when the page was initially loaded because we'll be updating the route for the recordPreview
   const [property, setProperty] = useState<Models.PropertyType>(props.property);
   const [localFilters, setLocalFilters] = useState<
     Actions.PropertyView["property"]["filters"]
@@ -99,7 +99,7 @@ export default function Page(props) {
   async function handleDelete() {
     if (
       window.confirm(
-        "Are you sure?  This will also delete all profile properties with this key"
+        "Are you sure?  This will also delete all record properties with this key"
       )
     ) {
       setLoading(true);
@@ -239,7 +239,7 @@ export default function Page(props) {
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group controlId="type">
-                <Form.Label>Profile Property Type</Form.Label>
+                <Form.Label>Record Property Type</Form.Label>
                 <Form.Control
                   required
                   as="select"
@@ -445,7 +445,7 @@ export default function Page(props) {
                         {opt.description}
                       </Form.Text>
                       <p>
-                        Profile Property Variables:{" "}
+                        Record Property Variables:{" "}
                         <Badge variant="light">{`{{ now }}`}</Badge>
                         &nbsp;
                         <Badge variant="light">{`{{ createdAt }}`}</Badge>&nbsp;
@@ -681,7 +681,7 @@ export default function Page(props) {
               </LoadingButton>
             </Col>
             <Col md={3}>
-              <ProfilePreview
+              <RecordPreview
                 {...props}
                 localFilters={localFilters}
                 property={property}

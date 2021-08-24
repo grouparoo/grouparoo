@@ -35,7 +35,7 @@ export default function SignInPage(props) {
         const { setupSteps } = await getSetupSteps();
         const isSetupComplete = setupSteps.every((step) => step.complete);
         if (isSetupComplete) {
-          router.push("/profiles");
+          router.push("/records");
         } else {
           router.push("/setup");
         }

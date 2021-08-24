@@ -8,7 +8,7 @@ import ExportTabs from "../../../components/tabs/export";
 import { Models } from "../../../utils/apiData";
 import {
   ExportGroupsDiff,
-  ExportProfilePropertiesDiff,
+  ExportRecordPropertiesDiff,
 } from "../../../components/export/diff";
 import StateBadge from "../../../components/badges/stateBadge";
 
@@ -55,12 +55,12 @@ export default function Page({
                 <br />
               </>
             ) : null}
-            Profile:{" "}
+            Record:{" "}
             <Link
-              href="/profile/[id]/edit"
-              as={`/profile/${_export.profileId}/edit`}
+              href="/record/[id]/edit"
+              as={`/record/${_export.recordId}/edit`}
             >
-              <a>{_export.profileId}</a>
+              <a>{_export.recordId}</a>
             </Link>
             <br />
             To Delete?{" "}
@@ -96,8 +96,8 @@ export default function Page({
 
           <Row>
             <Col>
-              <strong>Profile Properties</strong>
-              <ExportProfilePropertiesDiff _export={_export} />
+              <strong>Record Properties</strong>
+              <ExportRecordPropertiesDiff _export={_export} />
             </Col>
             <Col>
               <strong>Groups</strong>

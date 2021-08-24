@@ -6,14 +6,14 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-export function ExportProfilePropertiesDiff({
+export function ExportRecordPropertiesDiff({
   _export,
 }: {
   _export: Models.ExportType;
 }) {
   const keys = [
-    ...Object.keys(_export.oldProfileProperties),
-    ...Object.keys(_export.newProfileProperties),
+    ...Object.keys(_export.oldRecordProperties),
+    ...Object.keys(_export.newRecordProperties),
   ]
     .filter(onlyUnique)
     .sort();
@@ -22,16 +22,16 @@ export function ExportProfilePropertiesDiff({
     <ul>
       {keys.map((k) => {
         const hasChanges =
-          JSON.stringify(_export.oldProfileProperties[k]) !==
-          JSON.stringify(_export.newProfileProperties[k])
+          JSON.stringify(_export.oldRecordProperties[k]) !==
+          JSON.stringify(_export.newRecordProperties[k])
             ? true
             : false;
         const nullOld =
-          _export.oldProfileProperties[k] === null ||
-          _export.oldProfileProperties[k] === undefined;
+          _export.oldRecordProperties[k] === null ||
+          _export.oldRecordProperties[k] === undefined;
         const nullNew =
-          _export.newProfileProperties[k] === null ||
-          _export.newProfileProperties[k] === undefined;
+          _export.newRecordProperties[k] === null ||
+          _export.newRecordProperties[k] === undefined;
 
         const badge = hasChanges ? (
           nullOld && !nullNew ? (
@@ -51,13 +51,13 @@ export function ExportProfilePropertiesDiff({
             {nullOld ? (
               <code>null</code>
             ) : (
-              _export.oldProfileProperties[k].toString()
+              _export.oldRecordProperties[k].toString()
             )}{" "}
             /{" "}
             {nullNew ? (
               <code>null</code>
             ) : (
-              _export.newProfileProperties[k].toString()
+              _export.newRecordProperties[k].toString()
             )}
           </li>
         );
