@@ -1,17 +1,15 @@
 import {
+  GrouparooCLI,
   plugin,
   Profile,
-  ProfileProperty,
   ProfilePropertyPluginMethod,
 } from "@grouparoo/core";
 import { NodeVM } from "vm2";
-export interface RequiredPropertiesObject {
-  [propertyId: string]: ProfileProperty;
-}
 
 async function calculateProfilePropertyValue(
   customFunction,
-  profile: Profile
+  profile: Profile,
+  propertyName: string
 ): Promise<string> {
   let populatedFunction;
   try {
@@ -20,6 +18,15 @@ async function calculateProfilePropertyValue(
       profile,
       false
     );
+    //fail at every level if someone tries to require a library... this should never be allowed to hit vm.run
+    if (populatedFunction.includes(`require(`)) {
+      const errorString =
+        "Error validating Calculated Property `" +
+        propertyName +
+        '`. customFunction cannot use "require".';
+
+      GrouparooCLI.logger.fatal(errorString);
+    }
     //returns a string of the entire function
   } catch (error) {
     //if we don't have the right properties to build the function, bail
@@ -53,7 +60,8 @@ async function calculateProfilePropertyValue(
 export const profileProperty: ProfilePropertyPluginMethod = async (args) => {
   const profilePropertyValue = await calculateProfilePropertyValue(
     args.propertyOptions.customFunction,
-    args.profile
+    args.profile,
+    args.property.id
   );
 
   return [profilePropertyValue];

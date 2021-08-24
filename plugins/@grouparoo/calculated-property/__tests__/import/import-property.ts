@@ -6,7 +6,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { profileProperty } from "../../src/lib/profileProperty";
 import { api, specHelper } from "actionhero";
 
-import { plugin, Profile, Property } from "@grouparoo/core";
+import { GrouparooCLI, plugin, Profile, Property } from "@grouparoo/core";
 
 // these used and set by test
 let profile: Profile;
@@ -84,7 +84,7 @@ describe("calculated-property/profileProperty", () => {
     expect(value[0]).toBeTruthy;
   });
 
-  test.only("it evaluates date strings as expected", async () => {
+  test("it evaluates date strings as expected", async () => {
     const fn = `() => {
           const date = new Date("{{lastLoginAt.iso}}");
           return date.toISOString();
