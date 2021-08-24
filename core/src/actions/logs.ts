@@ -1,5 +1,5 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
-import { ProfileProperty } from "../models/ProfileProperty";
+import { RecordProperty } from "../models/RecordProperty";
 import { Log } from "../models/Log";
 import { Op } from "sequelize";
 import { APIData } from "../modules/apiData";
@@ -41,11 +41,11 @@ export class LogsList extends AuthenticatedAction {
     if (params.ownerId) {
       const ownerIds = [params.ownerId];
 
-      // in the case we are dealing with a profile
-      const profileProperties = await ProfileProperty.findAll({
-        where: { profileId: params.ownerId },
+      // in the case we are dealing with a record
+      const recordProperties = await RecordProperty.findAll({
+        where: { recordId: params.ownerId },
       });
-      profileProperties.forEach((prop) => ownerIds.push(prop.id));
+      recordProperties.forEach((prop) => ownerIds.push(prop.id));
 
       search.where["ownerId"] = { [Op.in]: ownerIds };
     }

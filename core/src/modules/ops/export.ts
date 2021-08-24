@@ -1,8 +1,8 @@
 import {
-  ExportProfileProperties,
-  ExportProfilePropertiesWithType,
+  ExportRecordProperties,
+  ExportRecordPropertiesWithType,
 } from "../../models/Export";
-import { ProfilePropertyOps } from "../../modules/ops/profileProperty";
+import { RecordPropertyOps } from "../../modules/ops/recordProperty";
 import { Export, ExportStates } from "../../models/Export";
 import { Destination } from "../../models/Destination";
 import { CLS } from "../../modules/cls";
@@ -12,9 +12,9 @@ import { Option } from "../../models/Option";
 export namespace ExportOps {
   const defaultExportProcessingDelay = 1000 * 60 * 5;
 
-  /** Count up the exports in each state, optionally filtered for a profile or destination */
+  /** Count up the exports in each state, optionally filtered for a record or destination */
   export async function totals(
-    where: { profileId?: string; destinationId?: string } = {}
+    where: { recordId?: string; destinationId?: string } = {}
   ) {
     const totals: { [k in typeof ExportStates[number]]: number } = {
       draft: 0,
@@ -35,14 +35,14 @@ export namespace ExportOps {
   }
 
   /**
-   * Given an export with stringified old/new profile properties, this method will re-'inflate' them, ie turning date strings back to date objects.
+   * Given an export with stringified old/new record properties, this method will re-'inflate' them, ie turning date strings back to date objects.
    * To be used in the getter, this method cannot be async.
    */
-  export function deserializeExportProfileProperties(
+  export function deserializeExportRecordProperties(
     serializedStringifiedProperties: string
-  ): ExportProfileProperties {
+  ): ExportRecordProperties {
     const response = {};
-    const serializedProperties: ExportProfilePropertiesWithType =
+    const serializedProperties: ExportRecordPropertiesWithType =
       serializedStringifiedProperties
         ? JSON.parse(serializedStringifiedProperties)
         : {};
@@ -58,10 +58,10 @@ export namespace ExportOps {
         // current formatting
         if (Array.isArray(rawValue)) {
           response[key] = rawValue.map((rv) =>
-            ProfilePropertyOps.getValue(rv, type)
+            RecordPropertyOps.getValue(rv, type)
           );
         } else {
-          response[key] = ProfilePropertyOps.getValue(rawValue, type);
+          response[key] = RecordPropertyOps.getValue(rawValue, type);
         }
       }
     }
@@ -110,8 +110,8 @@ export namespace ExportOps {
       // in SQLite this isn't possible, but contention is far less likely
       if (updateResponse[1]) _exports = updateResponse[1];
 
-      if (pluginConnection.methods.exportProfiles) {
-        // the plugin has a batch exportProfiles method
+      if (pluginConnection.methods.exportRecords) {
+        // the plugin has a batch exportRecords method
         await CLS.enqueueTask(
           "export:sendBatch",
           {
@@ -121,7 +121,7 @@ export namespace ExportOps {
           `exports:${app.type}`
         );
       } else {
-        // the plugin has a per-profile exportProfile method
+        // the plugin has a per-record exportRecord method
         for (const _export of _exports) {
           await CLS.enqueueTask(
             "export:send",

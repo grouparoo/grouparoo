@@ -12,7 +12,7 @@ import {
   SimplePropertyOptions,
   PropertyFiltersWithKey,
 } from "../models/Property";
-import { Profile } from "../models/Profile";
+import { GrouparooRecord } from "../models/Record";
 import { HighWaterMark } from "../models/Run";
 import { Property } from "../models/Property";
 import {
@@ -84,14 +84,14 @@ export interface PluginConnection {
     uniquePropertyBootstrapOptions?: UniquePropertyBootstrapOptions;
     scheduleOptions?: ScheduleOptionsMethod;
     propertyOptions?: PropertyOptionsMethod;
-    profiles?: ProfilesPluginMethod;
-    profileProperty?: ProfilePropertyPluginMethod;
-    profileProperties?: ProfilePropertiesPluginMethod;
+    records?: GrouparooRecordsPluginMethod;
+    recordProperty?: RecordPropertyPluginMethod;
+    recordProperties?: RecordPropertiesPluginMethod;
     destinationOptions?: DestinationOptionsMethod;
     destinationMappingOptions?: DestinationMappingOptionsMethod;
-    exportProfile?: ExportProfilePluginMethod;
-    exportProfiles?: ExportProfilesPluginMethod;
-    processExportedProfiles?: ProcessExportedProfilesPluginMethod;
+    exportRecord?: ExportRecordPluginMethod;
+    exportRecords?: ExportRecordsPluginMethod;
+    processExportedRecords?: ProcessExportedRecordsPluginMethod;
     exportArrayProperties?: ExportArrayPropertiesMethod;
   };
 }
@@ -128,11 +128,11 @@ export type PluginOptionType =
   | "pending";
 
 /**
- * Method to get one or many profiles to be saved/updated.
- * Only returns the nextHighWaterMark and a count of how many profiles were imported.
+ * Method to get one or many records to be saved/updated.
+ * Only returns the nextHighWaterMark and a count of how many records were imported.
  * Within this method you should call plugin.createImport()
  */
-export interface ProfilesPluginMethod {
+export interface GrouparooRecordsPluginMethod {
   (argument: {
     connection: any;
     schedule: Schedule;
@@ -152,20 +152,20 @@ export interface ProfilesPluginMethod {
     limit: number;
     highWaterMark: HighWaterMark;
     sourceOffset: number | string;
-  }): Promise<ProfilesPluginMethodResponse>;
+  }): Promise<GrouparooRecordsPluginMethodResponse>;
 }
 
-export interface ProfilesPluginMethodResponse {
+export interface GrouparooRecordsPluginMethodResponse {
   importsCount: number;
   highWaterMark: HighWaterMark;
   sourceOffset: number | string;
 }
 
 /**
- * Method to load a single profile property for a single profile.
- * It returns a key/value hash for the new Profile Property values
+ * Method to load a single record property for a single record.
+ * It returns a key/value hash for the new GrouparooRecord Property values
  */
-export interface ProfilePropertyPluginMethod {
+export interface RecordPropertyPluginMethod {
   (argument: {
     connection: any;
     app: App;
@@ -179,20 +179,20 @@ export interface ProfilePropertyPluginMethod {
     propertyId: string;
     propertyOptions: SimplePropertyOptions;
     propertyFilters: PropertyFiltersWithKey[];
-    profile: Profile;
-    profileId: string;
-  }): Promise<ProfilePropertyPluginMethodResponse>;
+    record: GrouparooRecord;
+    recordId: string;
+  }): Promise<RecordPropertyPluginMethodResponse>;
 }
 
-export type ProfilePropertyPluginMethodResponse = Array<
+export type RecordPropertyPluginMethodResponse = Array<
   string | number | boolean | Date
 >;
 
 /**
- * Method to load many profile properties for a many profiles.
- * It returns an array of key/value hashes for the new Profile Property values, ordered by the profile inputs
+ * Method to load many record properties for a many records.
+ * It returns an array of key/value hashes for the new GrouparooRecord Property values, ordered by the record inputs
  */
-export interface ProfilePropertiesPluginMethod {
+export interface RecordPropertiesPluginMethod {
   (argument: {
     connection: any;
     app: App;
@@ -206,34 +206,36 @@ export interface ProfilePropertiesPluginMethod {
     propertyIds: string[];
     propertyOptions: { [key: string]: SimplePropertyOptions };
     propertyFilters: { [key: string]: PropertyFiltersWithKey[] };
-    profiles: Profile[];
-    profileIds: string[];
-  }): Promise<ProfilePropertiesPluginMethodResponse>;
+    records: GrouparooRecord[];
+    recordIds: string[];
+  }): Promise<RecordPropertiesPluginMethodResponse>;
 }
 
-export type ProfilePropertiesPluginMethodResponse = {
-  [profileId: string]: { [key: string]: ProfilePropertyPluginMethodResponse };
+export type RecordPropertiesPluginMethodResponse = {
+  [recordId: string]: {
+    [key: string]: RecordPropertyPluginMethodResponse;
+  };
 };
 
 /**
- * The profile data that a Destination will receive.
- * Comprised of data from the Profile and Export models.
+ * The record data that a Destination will receive.
+ * Comprised of data from the GrouparooRecord and Export models.
  */
-export interface ExportedProfile {
-  profile: Profile;
-  profileId: string;
-  oldProfileProperties: { [key: string]: any };
-  newProfileProperties: { [key: string]: any };
+export interface ExportedRecord {
+  record: GrouparooRecord;
+  recordId: string;
+  oldRecordProperties: { [key: string]: any };
+  newRecordProperties: { [key: string]: any };
   oldGroups: Array<string>;
   newGroups: Array<string>;
   toDelete: boolean;
 }
 
 /**
- * Method to export a single profile to a destination
+ * Method to export a single record to a destination
  * Should only return a boolean indicating success, or throw an error if something went wrong.
  */
-export interface ExportProfilePluginMethod {
+export interface ExportRecordPluginMethod {
   (argument: {
     connection: any;
     app: App;
@@ -243,31 +245,31 @@ export interface ExportProfilePluginMethod {
     destination: Destination;
     destinationId: string;
     destinationOptions: SimpleDestinationOptions;
-    export: ExportedProfile;
+    export: ExportedRecord;
   }): Promise<{ success: boolean; retryDelay?: number; error?: Error }>;
 }
 
-export interface ProcessExportsForProfileIds {
+export interface ProcessExportsForRecordIds {
   remoteKey: string;
-  profileIds: string[];
+  recordIds: string[];
   processDelay: number;
 }
 
-export interface ExportProfilesPluginMethodResponse {
+export interface ExportRecordsPluginMethodResponse {
   success: boolean;
   retryDelay?: number;
-  errors?: ErrorWithProfileId[];
-  processExports?: ProcessExportsForProfileIds;
+  errors?: ErrorWithRecordId[];
+  processExports?: ProcessExportsForRecordIds;
 }
 
 /**
- * Method to export many profiles to a destination
+ * Method to export many records to a destination
  * Should only return a boolean indicating success, or throw an error if something went wrong.
  * Can optionally return a `processExports` object to indicate exports will be processed asynchronously.
- * Errors is an Array of Error objects with an additional `profileId` property so we can link the error to the specific export that caused the error.
+ * Errors is an Array of Error objects with an additional `recordId` property so we can link the error to the specific export that caused the error.
  * If there's a general error with the batch, just throw a single error.
  */
-export interface ExportProfilesPluginMethod {
+export interface ExportRecordsPluginMethod {
   (argument: {
     connection: any;
     app: App;
@@ -277,18 +279,18 @@ export interface ExportProfilesPluginMethod {
     destination: Destination;
     destinationId: string;
     destinationOptions: SimpleDestinationOptions;
-    exports: ExportedProfile[];
-  }): Promise<ExportProfilesPluginMethodResponse>;
+    exports: ExportedRecord[];
+  }): Promise<ExportRecordsPluginMethodResponse>;
 }
 
 /**
  * Method to check on the status of asynchronously processed exports
  * If exports aren't ready yet, return the `processExports` object again to check back later
  * Should return a boolean indicating success, or throw an error if something went wrong
- * Errors is an Array of Error objects with an additional `profileId` property so we can link the error to the specific export that caused the error.
+ * Errors is an Array of Error objects with an additional `recordId` property so we can link the error to the specific export that caused the error.
  * If there's a general error with the export processor, just throw a single error
  */
-export interface ProcessExportedProfilesPluginMethod {
+export interface ProcessExportedRecordsPluginMethod {
   (argument: {
     connection: any;
     app: App;
@@ -297,14 +299,14 @@ export interface ProcessExportedProfilesPluginMethod {
     destination: Destination;
     destinationId: string;
     destinationOptions: SimpleDestinationOptions;
-    exports: ExportedProfile[];
+    exports: ExportedRecord[];
     remoteKey: string;
     syncOperations?: DestinationSyncOperations;
-  }): Promise<ExportProfilesPluginMethodResponse>;
+  }): Promise<ExportRecordsPluginMethodResponse>;
 }
 
-export interface ErrorWithProfileId extends Error {
-  profileId: string;
+export interface ErrorWithRecordId extends Error {
+  recordId: string;
   errorLevel: Errors.ErrorLevel;
 }
 
@@ -391,7 +393,7 @@ export interface SourceOptionsMethodResponse {
 
 /**
  * Render a preview of the data present in the source.
- * The response should be an array of objects where each object is a profile record with the keys matching that of the source, ie:
+ * The response should be an array of objects where each object is a record record with the keys matching that of the source, ie:
  * [{id: 1, firstName: "Mario"}, {id: 2, firstName: "Luigi"}]
  */
 export interface SourcePreviewMethod {
@@ -605,7 +607,7 @@ export interface DestinationMappingOptionsMethodResponse {
 }
 
 /**
- * Method to return the list of destination profile properties which can accept array values.
+ * Method to return the list of destination record properties which can accept array values.
  * '*' can be used as a wildcard to accept all properties as arrays
  */
 export interface ExportArrayPropertiesMethod {

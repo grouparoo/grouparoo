@@ -16,7 +16,7 @@ import {
 } from "../classes/codeConfig";
 
 import { getConfigDir } from "../modules/pluginDetails";
-import { Profile } from "../models/Profile";
+import { GrouparooRecord } from "../models/Record";
 
 type WritableConfigObject = {
   filePath: string;
@@ -133,14 +133,14 @@ export namespace ConfigWriter {
       }
     }
 
-    const profiles = await Profile.findAll();
-    const profileObjects = await Promise.all(
-      profiles.map((p) => p.getConfigObject())
+    const records = await GrouparooRecord.findAll();
+    const recordObjects = await Promise.all(
+      records.map((p) => p.getConfigObject())
     );
-    if (profileObjects.length > 0) {
+    if (recordObjects.length > 0) {
       objects.push({
-        filePath: "development/profiles.json",
-        object: profileObjects,
+        filePath: "development/records.json",
+        object: recordObjects,
       });
     }
 

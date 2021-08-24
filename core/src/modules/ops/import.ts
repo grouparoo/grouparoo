@@ -1,6 +1,6 @@
 import { Import } from "../../models/Import";
 import { Run } from "../../models/Run";
-import { ProfileOps } from "./profile";
+import { RecordOps } from "./record";
 import { CLS } from "../../modules/cls";
 import { Op } from "sequelize";
 import { config } from "actionhero";
@@ -24,7 +24,7 @@ export namespace ImportOps {
 
     const imports = await Import.findAll({
       where: {
-        profileId: null,
+        recordId: null,
         errorMessage: null,
         startedAt: {
           [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
@@ -45,7 +45,7 @@ export namespace ImportOps {
     const runIds: string[] = [];
     for (const i in imports) {
       const _import = imports[i];
-      await CLS.enqueueTask("import:associateProfile", {
+      await CLS.enqueueTask("import:associateRecord", {
         importId: _import.id,
       });
 
@@ -67,7 +67,7 @@ export namespace ImportOps {
     return imports;
   }
 
-  export async function associateProfile(_import: Import) {
+  export async function associateRecord(_import: Import) {
     let run: Run;
     let schedule: Schedule;
     let source: Source;
@@ -80,29 +80,29 @@ export namespace ImportOps {
     if (schedule)
       source = await Source.findOne({ where: { id: schedule.sourceId } });
 
-    // will throw if there are no unique profile properties
-    const { profile, isNew } =
-      await ProfileOps.findOrCreateByUniqueProfileProperties(
+    // will throw if there are no unique record properties
+    const { record, isNew } =
+      await RecordOps.findOrCreateByUniqueRecordProperties(
         _import.data,
         source
       );
 
-    const oldProfileProperties = await profile.simplifiedProperties();
-    const oldGroups = await profile.$get("groups");
+    const oldRecordProperties = await record.simplifiedProperties();
+    const oldGroups = await record.$get("groups");
 
-    _import.createdProfile = isNew;
-    _import.profileId = profile.id;
-    _import.profileAssociatedAt = new Date();
+    _import.createdRecord = isNew;
+    _import.recordId = record.id;
+    _import.recordAssociatedAt = new Date();
 
-    _import.oldProfileProperties =
-      Object.keys(_import.oldProfileProperties).length === 0
-        ? oldProfileProperties
+    _import.oldRecordProperties =
+      Object.keys(_import.oldRecordProperties).length === 0
+        ? oldRecordProperties
         : {};
 
     _import.oldGroupIds = oldGroups.map((group) => group.id);
 
     await _import.save();
 
-    return { profile, isNew };
+    return { record, isNew };
   }
 }

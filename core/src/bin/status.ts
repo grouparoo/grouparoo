@@ -50,7 +50,9 @@ export class StatusCLI extends CLI {
 
       const overview = {
         ClusterName: [clusterName, env ? `${env}` : undefined],
-        TotalProfiles: [getLatestMetric(samples, "Profile", "totals").count],
+        TotalRecords: [
+          getLatestMetric(samples, "GrouparooRecord", "totals").count,
+        ],
         TotalGroups: [getLatestMetric(samples, "Group", "totals").count],
       };
 

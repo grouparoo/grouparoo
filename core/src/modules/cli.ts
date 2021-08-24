@@ -149,7 +149,7 @@ export namespace GrouparooCLI {
 
     export function generateSummaryItems(
       categorySummary:
-        | FinalSummaryReporters.Profiles.ProfileData[]
+        | FinalSummaryReporters.GrouparooRecords.RecordData[]
         | FinalSummaryReporters.Sources.SourceData[]
         | FinalSummaryReporters.Destinations.DestinationData[]
         | FinalSummaryReporters.Warnings.WarningData[],
@@ -161,7 +161,7 @@ export namespace GrouparooCLI {
       categorySummary.forEach(
         (
           category:
-            | FinalSummaryReporters.Profiles.ProfileData
+            | FinalSummaryReporters.GrouparooRecords.RecordData
             | FinalSummaryReporters.Sources.SourceData
             | FinalSummaryReporters.Destinations.DestinationData
             | FinalSummaryReporters.Warnings.WarningData,

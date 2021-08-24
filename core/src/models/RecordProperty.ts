@@ -10,10 +10,10 @@ import {
   DataType,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
-import { Profile } from "./Profile";
+import { GrouparooRecord } from "./Record";
 import { Property } from "./Property";
-import { ProfilePropertyOps } from "../modules/ops/profileProperty";
-import { StateMachine } from "./../modules/stateMachine";
+import { RecordPropertyOps } from "../modules/ops/recordProperty";
+import { StateMachine } from "../modules/stateMachine";
 import { APIData } from "../modules/apiData";
 
 const STATES = ["draft", "pending", "ready"] as const;
@@ -25,16 +25,16 @@ const STATE_TRANSITIONS = [
   { from: "ready", to: "pending", checks: [] },
 ];
 
-@Table({ tableName: "profileProperties", paranoid: false })
-export class ProfileProperty extends LoggedModel<ProfileProperty> {
+@Table({ tableName: "recordProperties", paranoid: false })
+export class RecordProperty extends LoggedModel<RecordProperty> {
   idPrefix() {
     return "prp";
   }
 
   @AllowNull(false)
-  @ForeignKey(() => Profile)
+  @ForeignKey(() => GrouparooRecord)
   @Column
-  profileId: string;
+  recordId: string;
 
   @AllowNull(false)
   @ForeignKey(() => Property)
@@ -76,8 +76,8 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   @Column
   startedAt: Date;
 
-  @BelongsTo(() => Profile)
-  profile: Profile;
+  @BelongsTo(() => GrouparooRecord)
+  record: GrouparooRecord;
 
   @BelongsTo(() => Property)
   property: Property;
@@ -86,7 +86,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
     const property = await Property.findOneWithCache(this.propertyId);
 
     return {
-      profileId: this.profileId,
+      recordId: this.recordId,
       property: this.property,
       state: this.state,
       valueChangedAt: APIData.formatDate(this.valueChangedAt),
@@ -102,15 +102,12 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
 
   async getValue() {
     const property = await this.ensureProperty();
-    return ProfilePropertyOps.getValue(this.rawValue, property.type);
+    return RecordPropertyOps.getValue(this.rawValue, property.type);
   }
 
   async setValue(value: any) {
     const property = await this.ensureProperty();
-    this.rawValue = await ProfilePropertyOps.buildRawValue(
-      value,
-      property.type
-    );
+    this.rawValue = await RecordPropertyOps.buildRawValue(value, property.type);
   }
 
   async ensureProperty() {
@@ -127,7 +124,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
 
     switch (verb) {
       case "create":
-        message = `profileProperty "${property.key}" created`;
+        message = `recordProperty "${property.key}" created`;
         break;
       case "update":
         const changedValueStrings = [];
@@ -136,12 +133,12 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
           changedValueStrings.push(`${k} -> ${this[k]}`);
         });
 
-        message = `profileProperty "${
+        message = `recordProperty "${
           property.key
         }" updated: ${changedValueStrings.join(", ")}`;
         break;
       case "destroy":
-        message = `profileProperty "${property.key}" destroyed`;
+        message = `recordProperty "${property.key}" destroyed`;
         break;
     }
 
@@ -157,7 +154,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   }
 
   @BeforeSave
-  static async updateState(instance: ProfileProperty) {
+  static async updateState(instance: RecordProperty) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 }

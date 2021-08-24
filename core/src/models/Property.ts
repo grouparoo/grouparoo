@@ -36,8 +36,8 @@ import { Group } from "./Group";
 import { GroupRule } from "./GroupRule";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
-import { Profile } from "./Profile";
-import { ProfileProperty } from "./ProfileProperty";
+import { GrouparooRecord } from "./Record";
+import { RecordProperty } from "./RecordProperty";
 import { Run } from "./Run";
 import { Source } from "./Source";
 
@@ -167,20 +167,20 @@ export class Property extends LoggedModel<Property> {
   })
   filters: Filter[];
 
-  @HasMany(() => ProfileProperty)
-  ProfileProperties: ProfileProperty[];
+  @HasMany(() => RecordProperty)
+  RecordProperties: RecordProperty[];
 
-  async parameterizedQueryFromProfile(q: string, profile: Profile) {
-    return plugin.replaceTemplateProfileVariables(q, profile);
+  async parameterizedQueryFromRecord(q: string, record: GrouparooRecord) {
+    return plugin.replaceTemplateRecordVariables(q, record);
   }
 
   async test(options?: SimplePropertyOptions) {
-    const profile = await Profile.findOne({
+    const record = await GrouparooRecord.findOne({
       order: [["id", "asc"]],
     });
-    if (profile) {
+    if (record) {
       const source = await Source.findById(this.sourceId);
-      return source.importProfileProperty(profile, this, options);
+      return source.importRecordProperty(record, this, options);
     }
   }
 
@@ -188,7 +188,7 @@ export class Property extends LoggedModel<Property> {
     const options = await OptionHelper.getOptions(this, sourceFromEnvironment);
     for (const i in options) {
       options[i] =
-        await plugin.replaceTemplateProfilePropertyIdsWithProfilePropertyKeys(
+        await plugin.replaceTemplateRecordPropertyIdsWithRecordPropertyKeys(
           options[i].toString()
         );
     }
@@ -201,7 +201,7 @@ export class Property extends LoggedModel<Property> {
 
     for (const i in options) {
       options[i] =
-        await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyId(
+        await plugin.replaceTemplateRecordPropertyKeysWithRecordPropertyId(
           options[i].toString()
         );
     }
@@ -401,14 +401,14 @@ export class Property extends LoggedModel<Property> {
   @BeforeSave
   static async ensureNonArrayAndUnique(instance: Property) {
     if (instance.isArray && instance.unique) {
-      throw new Error("unique profile properties cannot be arrays");
+      throw new Error("unique record properties cannot be arrays");
     }
   }
 
   @BeforeSave
   static async ensureUniqueProperties(instance: Property) {
     if (instance.changed("unique") && instance.unique) {
-      const valueCounts = await ProfileProperty.findAll({
+      const valueCounts = await RecordProperty.findAll({
         attributes: [
           "rawValue",
           [Sequelize.fn("COUNT", Sequelize.col("rawValue")), "count"],
@@ -528,9 +528,9 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
-  static async updateProfilePropertyUniqueness(instance: Property) {
+  static async updateRecordPropertyUniqueness(instance: Property) {
     if (!instance.isNewRecord && instance.changed("unique")) {
-      CLS.enqueueTask("property:updateProfileProperties", {
+      CLS.enqueueTask("property:updateRecordProperties", {
         propertyId: instance.id,
       });
     }
@@ -597,8 +597,8 @@ export class Property extends LoggedModel<Property> {
   }
 
   @AfterDestroy
-  static async destroyProfileProperties(instance: Property) {
-    await ProfileProperty.destroy({
+  static async destroyRecordProperties(instance: Property) {
+    await RecordProperty.destroy({
       where: { propertyId: instance.id },
     });
   }

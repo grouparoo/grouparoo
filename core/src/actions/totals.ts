@@ -7,8 +7,8 @@ import { GroupMember } from "../models/GroupMember";
 import { Log } from "../models/Log";
 import { Import } from "../models/Import";
 import { Export } from "../models/Export";
-import { Profile } from "../models/Profile";
-import { ProfileProperty } from "../models/ProfileProperty";
+import { GrouparooRecord } from "../models/Record";
+import { RecordProperty } from "../models/RecordProperty";
 import { Run } from "../models/Run";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
@@ -19,8 +19,8 @@ const modelClasses = {
   Import,
   Export,
   Log,
-  Profile,
-  ProfileProperty,
+  GrouparooRecord,
+  RecordProperty,
   Run,
   Team,
   TeamMember,

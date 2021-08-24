@@ -1,17 +1,17 @@
 import { config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { Profile } from "../../models/Profile";
-import { ProfileProperty } from "../../models/ProfileProperty";
+import { GrouparooRecord } from "../../models/Record";
+import { RecordProperty } from "../../models/RecordProperty";
 import { Property } from "../../models/Property";
 
-export class ProfilePropertySweep extends CLSTask {
+export class RecordPropertySweep extends CLSTask {
   constructor() {
     super();
-    this.name = "profileProperties:sweep";
+    this.name = "recordProperties:sweep";
     this.description =
-      "Double check that all profile properties are removed that don't belong to a profile or property";
+      "Double check that all record properties are removed that don't belong to a record or property";
     this.frequency = 1000 * 60 * 60;
-    this.queue = "profileProperties";
+    this.queue = "recordProperties";
     this.inputs = {};
   }
 
@@ -19,29 +19,29 @@ export class ProfilePropertySweep extends CLSTask {
     let count = 0;
     const limit: number = config.batchSize.profileProperties;
 
-    // delete those profile properties who have no profile
-    const profilePropertiesMissingProfile = await ProfileProperty.findAll({
-      include: [{ model: Profile, required: false }],
-      where: { "$profile.id$": null },
+    // delete those record properties who have no record
+    const recordPropertiesMissingRecord = await RecordProperty.findAll({
+      include: [{ model: GrouparooRecord, required: false }],
+      where: { "$record.id$": null },
       limit,
     });
 
-    // delete those profile properties who have no property
-    const profilePropertiesMissingRule = await ProfileProperty.findAll({
+    // delete those record properties who have no property
+    const recordPropertiesMissingRule = await RecordProperty.findAll({
       include: [{ model: Property, required: false }],
       where: { "$property.id$": null },
       limit,
     });
 
-    count += profilePropertiesMissingProfile.length;
-    count += profilePropertiesMissingRule.length;
+    count += recordPropertiesMissingRecord.length;
+    count += recordPropertiesMissingRule.length;
 
     if (count > 0) {
-      await ProfileProperty.destroy({
+      await RecordProperty.destroy({
         where: {
           id: [].concat(
-            profilePropertiesMissingProfile.map((p) => p.id),
-            profilePropertiesMissingRule.map((p) => p.id)
+            recordPropertiesMissingRecord.map((p) => p.id),
+            recordPropertiesMissingRule.map((p) => p.id)
           ),
         },
       });

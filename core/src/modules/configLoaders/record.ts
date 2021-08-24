@@ -1,29 +1,29 @@
 import {
-  ProfileConfigurationObject,
+  RecordConfigurationObject,
   validateConfigObjectKeys,
   extractNonNullParts,
   logModel,
 } from "../../classes/codeConfig";
-import { Profile } from "../../models/Profile";
+import { GrouparooRecord } from "../../models/Record";
 import { Property } from "../../models/Property";
 
-export async function loadProfile(
-  configObject: ProfileConfigurationObject,
+export async function loadRecord(
+  configObject: RecordConfigurationObject,
   externallyValidate: boolean,
   validate = false
 ) {
   if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
 
-  validateConfigObjectKeys(Profile, configObject);
+  validateConfigObjectKeys(GrouparooRecord, configObject);
 
-  let profile = await Profile.scope(null).findOne({
+  let record = await GrouparooRecord.scope(null).findOne({
     where: { id: configObject.id },
   });
 
   let isNew = false;
-  if (!profile) {
+  if (!record) {
     isNew = true;
-    profile = await Profile.create({
+    record = await GrouparooRecord.create({
       id: configObject.id,
     });
   }
@@ -46,19 +46,19 @@ export async function loadProfile(
 
   if (!hasDirectlyMapped) {
     throw new Error(
-      `there are no directly mapped profile properties provided in ${serializedProps}`
+      `there are no directly mapped record properties provided in ${serializedProps}`
     );
   }
 
-  await profile.addOrUpdateProperties(nonNullProperties);
+  await record.addOrUpdateProperties(nonNullProperties);
 
   logModel(
-    profile,
+    record,
     validate ? "validated" : isNew ? "created" : "updated",
     serializedProps
   );
 
   return {
-    profile: [profile.id],
+    record: [record.id],
   };
 }

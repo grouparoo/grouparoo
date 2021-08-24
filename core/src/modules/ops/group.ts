@@ -1,12 +1,12 @@
 import { Group, GroupRuleWithKey } from "../../models/Group";
 import { GroupMember } from "../../models/GroupMember";
 import { Run } from "../../models/Run";
-import { Profile } from "../../models/Profile";
-import { ProfileMultipleAssociationShim } from "../../models/ProfileMultipleAssociationShim";
+import { GrouparooRecord } from "../../models/Record";
+import { RecordMultipleAssociationShim } from "../../models/RecordMultipleAssociationShim";
 import { Import } from "../../models/Import";
 import { Op } from "sequelize";
 import Sequelize from "sequelize";
-import { ProfileOps } from "./profile";
+import { RecordOps } from "./record";
 
 export namespace GroupOps {
   /**
@@ -54,49 +54,49 @@ export namespace GroupOps {
   }
 
   /**
-   * Given a Profile, create an import to recalculate its Group Membership.  Optionally re-import all Profile Properties with `force`
+   * Given a GrouparooRecord, create an import to recalculate its Group Membership.  Optionally re-import all GrouparooRecord Properties with `force`
    */
-  export async function updateProfiles(
-    profileIds: string[],
+  export async function updateRecords(
+    recordIds: string[],
     creatorType: string,
     creatorId: string,
     force: boolean,
     destinationId?: string
   ) {
     const bulkData = [];
-    for (const profileId of profileIds) {
+    for (const recordId of recordIds) {
       bulkData.push({
         rawData: destinationId ? { _meta: { destinationId } } : {},
         data: destinationId ? { _meta: { destinationId } } : {},
         creatorType,
         creatorId,
-        profileId,
-        profileAssociatedAt: new Date(),
-        oldProfileProperties: {},
+        recordId,
+        recordAssociatedAt: new Date(),
+        oldRecordProperties: {},
         oldGroupIds: [],
       });
     }
 
     const _imports = await Import.bulkCreate(bulkData);
 
-    await ProfileOps.markPendingByIds(profileIds, force);
+    await RecordOps.markPendingByIds(recordIds, force);
 
     return _imports;
   }
 
   /**
-   * Check if the profile should be in this Group
+   * Check if the record should be in this Group
    */
-  export async function updateProfilesMembership(
+  export async function updateRecordsMembership(
     group: Group,
-    profiles: Profile[]
+    records: GrouparooRecord[]
   ) {
-    const response: { [profileId: string]: boolean } = {};
-    profiles.forEach((p) => (response[p.id] = false));
+    const response: { [recordId: string]: boolean } = {};
+    records.forEach((p) => (response[p.id] = false));
     const existingMemberships = await GroupMember.findAll({
       where: {
         groupId: group.id,
-        profileId: { [Op.in]: profiles.map((p) => p.id) },
+        recordId: { [Op.in]: records.map((p) => p.id) },
       },
     });
 
@@ -106,9 +106,9 @@ export namespace GroupOps {
           where: { id: { [Op.in]: existingMemberships.map((gm) => gm.id) } },
         });
       } else {
-        for (const profile of profiles) {
-          response[profile.id] = existingMemberships.find(
-            (gm) => gm.profileId === profile.id
+        for (const record of records) {
+          response[record.id] = existingMemberships.find(
+            (gm) => gm.recordId === record.id
           )
             ? true
             : false;
@@ -129,47 +129,47 @@ export namespace GroupOps {
           group.matchType
         );
 
-        // and includes this profile
+        // and includes this record
         if (!where[Op.and]) where[Op.and] = [];
-        where[Op.and].push({ id: { [Op.in]: profiles.map((p) => p.id) } });
+        where[Op.and].push({ id: { [Op.in]: records.map((p) => p.id) } });
 
-        const matchedProfiles = await ProfileMultipleAssociationShim.findAll({
+        const matchedRecords = await RecordMultipleAssociationShim.findAll({
           attributes: ["id"],
           where,
           include,
         });
 
-        const bulkCreateProfileIds: string[] = [];
-        const bulkDestroyProfileIds: string[] = [];
-        for (const profile of profiles) {
-          const belongs = matchedProfiles.find((p) => p.id === profile.id)
+        const bulkCreateRecordIds: string[] = [];
+        const bulkDestroyRecordIds: string[] = [];
+        for (const record of records) {
+          const belongs = matchedRecords.find((p) => p.id === record.id)
             ? true
             : false;
-          response[profile.id] = belongs;
+          response[record.id] = belongs;
           const existingMembership = existingMemberships.find(
-            (gm) => gm.profileId === profile.id
+            (gm) => gm.recordId === record.id
           );
 
           if (belongs && !existingMembership) {
-            bulkCreateProfileIds.push(profile.id);
+            bulkCreateRecordIds.push(record.id);
           }
           if (!belongs && existingMembership) {
-            bulkDestroyProfileIds.push(profile.id);
+            bulkDestroyRecordIds.push(record.id);
           }
         }
 
-        if (bulkCreateProfileIds.length > 0) {
+        if (bulkCreateRecordIds.length > 0) {
           await GroupMember.bulkCreate(
-            bulkCreateProfileIds.map((profileId) => {
-              return { profileId, groupId: group.id };
+            bulkCreateRecordIds.map((recordId) => {
+              return { recordId, groupId: group.id };
             })
           );
         }
 
-        if (bulkDestroyProfileIds.length > 0) {
+        if (bulkDestroyRecordIds.length > 0) {
           await GroupMember.destroyWithLogs({
             where: {
-              profileId: { [Op.in]: bulkDestroyProfileIds },
+              recordId: { [Op.in]: bulkDestroyRecordIds },
               groupId: group.id,
             },
           });
@@ -195,8 +195,8 @@ export namespace GroupOps {
       matchType
     );
 
-    // we use ProfileMultipleAssociationShim as a shim model which has extra associations
-    return ProfileMultipleAssociationShim.count({
+    // we use RecordMultipleAssociationShim as a shim model which has extra associations
+    return RecordMultipleAssociationShim.count({
       distinct: true,
       where,
       include,
@@ -246,11 +246,11 @@ export namespace GroupOps {
     force = false,
     destinationId?: string
   ) {
-    let profiles: ProfileMultipleAssociationShim[];
+    let records: RecordMultipleAssociationShim[];
     const rules = await group.getRules();
 
     if (group.type === "manual") {
-      profiles = await group.$get("profiles", {
+      records = await group.$get("records", {
         attributes: ["id", "createdAt"],
         limit,
         offset,
@@ -276,7 +276,7 @@ export namespace GroupOps {
         where["createdAt"][Op.and].push({ [Op.gte]: highWaterMark });
       }
 
-      profiles = await ProfileMultipleAssociationShim.findAll({
+      records = await RecordMultipleAssociationShim.findAll({
         attributes: ["id", "createdAt"],
         where,
         include,
@@ -288,49 +288,49 @@ export namespace GroupOps {
     }
 
     let nextHighWaterMark = 0;
-    if (profiles.length > 0) {
-      nextHighWaterMark = profiles.reverse()[0].createdAt.getTime() + 1;
+    if (records.length > 0) {
+      nextHighWaterMark = records.reverse()[0].createdAt.getTime() + 1;
     }
 
     let nextOffset = 0;
     if (
-      profiles.length > 1 &&
-      profiles[0].createdAt.getTime() ===
-        profiles.reverse()[0].createdAt.getTime()
+      records.length > 1 &&
+      records[0].createdAt.getTime() ===
+        records.reverse()[0].createdAt.getTime()
     ) {
-      nextOffset = offset + profiles.length;
+      nextOffset = offset + records.length;
       nextHighWaterMark--;
     }
 
     const groupMembers = await GroupMember.findAll({
       where: {
-        profileId: { [Op.in]: profiles.map((p) => p.id) },
+        recordId: { [Op.in]: records.map((p) => p.id) },
         groupId: group.id,
       },
     });
 
-    const existingGroupMemberProfileIds = groupMembers.map(
-      (member) => member.profileId
+    const existingGroupMemberRecordIds = groupMembers.map(
+      (member) => member.recordId
     );
-    const profilesNeedingGroupMembership =
+    const recordsNeedingGroupMembership =
       force || destinationId
-        ? profiles
-        : profiles.filter((p) => !existingGroupMemberProfileIds.includes(p.id));
+        ? records
+        : records.filter((p) => !existingGroupMemberRecordIds.includes(p.id));
 
-    await updateProfiles(
-      profilesNeedingGroupMembership.map((p) => p.id),
+    await updateRecords(
+      recordsNeedingGroupMembership.map((p) => p.id),
       "run",
       run.id,
       force,
       destinationId
     );
 
-    if (profiles.length > 0) {
+    if (records.length > 0) {
       await GroupMember.update(
         { updatedAt: new Date(), removedAt: null },
         {
           where: {
-            profileId: { [Op.in]: profiles.map((p) => p.id) },
+            recordId: { [Op.in]: records.map((p) => p.id) },
             groupId: group.id,
           },
         }
@@ -340,7 +340,7 @@ export namespace GroupOps {
     await group.update({ calculatedAt: new Date() });
 
     return {
-      groupMembersCount: profiles.length,
+      groupMembersCount: records.length,
       nextHighWaterMark,
       nextOffset,
     };
@@ -367,8 +367,8 @@ export namespace GroupOps {
     });
 
     // The offset and order can be ignored as we will keep running this query until the set of results becomes 0.
-    await updateProfiles(
-      groupMembersToRemove.map((member) => member.profileId),
+    await updateRecords(
+      groupMembersToRemove.map((member) => member.recordId),
       "run",
       run.id,
       false,
@@ -408,8 +408,8 @@ export namespace GroupOps {
       limit,
     });
 
-    await updateProfiles(
-      groupMembersToRemove.map((member) => member.profileId),
+    await updateRecords(
+      groupMembersToRemove.map((member) => member.recordId),
       "run",
       run.id,
       false

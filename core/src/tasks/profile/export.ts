@@ -1,37 +1,37 @@
 import { Op } from "sequelize";
-import { Profile } from "../../models/Profile";
+import { GrouparooRecord } from "../../models/Record";
 import { Import } from "../../models/Import";
 import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
 import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { env, log } from "actionhero";
 
-export class ProfileExport extends RetryableTask {
+export class RecordExport extends RetryableTask {
   constructor() {
     super();
-    this.name = "profile:export";
+    this.name = "record:export";
     this.description =
-      "export this profile to the destinations who want to know";
+      "export this record to the destinations who want to know";
     this.frequency = 0;
     this.queue = "exports";
     this.inputs = {
-      profileId: { required: true },
+      recordId: { required: true },
       force: { required: false },
     };
   }
 
   async runWithinTransaction(params) {
-    const profile = await Profile.findOne({
-      where: { id: params.profileId },
+    const record = await GrouparooRecord.findOne({
+      where: { id: params.recordId },
     });
 
-    if (!profile) return; // the profile may have been deleted or merged by the time this task ran
-    if (profile.state !== "ready") return;
+    if (!record) return; // the record may have been deleted or merged by the time this task ran
+    if (record.state !== "ready") return;
 
     const imports = await Import.findAll({
       where: {
-        profileId: profile.id,
-        profileUpdatedAt: { [Op.not]: null },
+        recordId: record.id,
+        recordUpdatedAt: { [Op.not]: null },
         groupsUpdatedAt: { [Op.not]: null },
         exportedAt: null,
       },
@@ -78,8 +78,8 @@ export class ProfileExport extends RetryableTask {
       }
 
       for (const i in destinations) {
-        await destinations[i].exportProfile(
-          profile,
+        await destinations[i].exportRecord(
+          record,
           false,
           params.force ? params.force : undefined
         );

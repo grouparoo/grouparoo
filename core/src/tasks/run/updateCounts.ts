@@ -8,7 +8,7 @@ export class UpdateRunCounts extends CLSTask {
   constructor() {
     super();
     this.name = "runs:updateCounts";
-    this.description = "Update the counts of imports and profiles for runs";
+    this.description = "Update the counts of imports and records for runs";
     this.frequency = 1000 * 15;
     this.queue = "runs";
     this.inputs = {};

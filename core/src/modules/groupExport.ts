@@ -2,14 +2,14 @@ import os from "os";
 import fs from "fs";
 import CsvStringify from "csv-stringify";
 import { log } from "actionhero";
-import { Profile } from "../models/Profile";
+import { GrouparooRecord } from "../models/Record";
 import { Group } from "../models/Group";
 import { Run } from "../models/Run";
 import { Property } from "../models/Property";
-import { ProfileProperty } from "../models/ProfileProperty";
+import { RecordProperty } from "../models/RecordProperty";
 
 /**
- * Build a CSV file on this host which contains all profiles, properties, and groups
+ * Build a CSV file on this host which contains all records, properties, and groups
  */
 export async function groupExportToCSV(group: Group, limit = 1000) {
   // get the headers
@@ -18,13 +18,13 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
     .sort();
   const columns = ["id", "createdAt", "updatedAt"].concat(numberedPropertyKeys);
 
-  // add the profiles
+  // add the records
   let offset = 0;
-  async function getProfiles() {
-    return group.$get("profiles", {
+  async function getRecords() {
+    return group.$get("records", {
       limit,
       offset,
-      include: [ProfileProperty],
+      include: [RecordProperty],
       order: [
         ["createdAt", "asc"],
         ["id", "asc"],
@@ -32,8 +32,8 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
     });
   }
 
-  async function buildCsvRowFromProperty(profile: Profile) {
-    const properties = await profile.getProperties();
+  async function buildCsvRowFromProperty(record: GrouparooRecord) {
+    const properties = await record.getProperties();
     const simpleProperties = {};
     for (const key in properties) {
       simpleProperties[key] =
@@ -44,9 +44,9 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
 
     const row = Object.assign(
       {
-        id: profile.id,
-        createdAt: profile.createdAt,
-        updatedAt: profile.updatedAt,
+        id: record.id,
+        createdAt: record.createdAt,
+        updatedAt: record.updatedAt,
       },
       simpleProperties
     );
@@ -54,8 +54,8 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
     return row;
   }
 
-  let profiles = await getProfiles();
-  if (profiles.length === 0) {
+  let records = await getRecords();
+  if (records.length === 0) {
     return;
   }
 
@@ -90,19 +90,19 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
 
   csvStream.pipe(fileStream);
 
-  while (profiles.length > 0) {
+  while (records.length > 0) {
     log(
-      `adding ${profiles.length} profiles to csv export file ${filename} for group ${group.name} (${group.id})`
+      `adding ${records.length} records to csv export file ${filename} for group ${group.name} (${group.id})`
     );
 
-    for (let i in profiles) {
-      const profile = profiles[i];
-      const row = await buildCsvRowFromProperty(profile);
+    for (let i in records) {
+      const record = records[i];
+      const row = await buildCsvRowFromProperty(record);
       csvStream.write(row);
     }
 
     offset = limit + offset;
-    profiles = await getProfiles();
+    records = await getRecords();
   }
 
   // wait for the file handle to close

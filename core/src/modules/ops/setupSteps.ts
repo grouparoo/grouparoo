@@ -3,7 +3,7 @@ import { plugin } from "../plugin";
 import { App } from "../../models/App";
 import { Source } from "../../models/Source";
 import { Property } from "../../models/Property";
-import { Profile } from "../../models/Profile";
+import { GrouparooRecord } from "../../models/Record";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 import { Group } from "../../models/Group";
@@ -79,13 +79,13 @@ export namespace SetupStepOps {
         return count > 0;
       },
     },
-    create_a_unique_profile_property: {
-      key: "create_a_unique_profile_property",
-      title: "Create a Unique Profile Property",
+    create_a_unique_record_property: {
+      key: "create_a_unique_record_property",
+      title: "Create a Unique GrouparooRecord Property",
       description:
-        "Create your first unique Property.  Grouparoo needs at least one unique Property to identify your Profiles (email, userId, etc).  You can have more than one!",
+        "Create your first unique Property.  Grouparoo needs at least one unique Property to identify your GrouparooRecords (email, userId, etc).  You can have more than one!",
       href: "/properties",
-      cta: "Add a Profile Property",
+      cta: "Add a GrouparooRecord Property",
       helpLink: `${configURL}/properties`,
       check: async () => {
         const count = await Property.count({
@@ -94,8 +94,8 @@ export namespace SetupStepOps {
         return count > 0;
       },
       outcome: async () => {
-        const count = await Profile.count();
-        return `${count} Profiles created`;
+        const count = await GrouparooRecord.count();
+        return `${count} GrouparooRecords created`;
       },
     },
     create_a_schedule: {
@@ -115,16 +115,16 @@ export namespace SetupStepOps {
         return `${count} Runs created`;
       },
     },
-    create_a_sample_profile: {
-      key: "create_a_sample_profile",
-      title: "Create a Sample Profile",
+    create_a_sample_record: {
+      key: "create_a_sample_record",
+      title: "Create a Sample GrouparooRecord",
       description:
-        "Create a Sample Profile so you can validate your configuration is importing the correct data. These Profiles will allow you to test Group building and your Destination settings and mappings.",
-      href: "/profile/new",
-      cta: "Add a Sample Profile",
-      helpLink: `${configURL}/profiles`,
+        "Create a Sample GrouparooRecord so you can validate your configuration is importing the correct data. These GrouparooRecords will allow you to test Group building and your Destination settings and mappings.",
+      href: "/record/new",
+      cta: "Add a Sample GrouparooRecord",
+      helpLink: `${configURL}/records`,
       check: async () => {
-        const count = await Profile.count();
+        const count = await GrouparooRecord.count();
         return count > 0;
       },
     },
@@ -132,7 +132,7 @@ export namespace SetupStepOps {
       key: "create_a_group",
       title: "Create a Group",
       description:
-        "Create a Group based on the Properties of your Profiles.  Groups will be kept up-to-date with changes to your Profile's Properties.",
+        "Create a Group based on the Properties of your GrouparooRecords.  Groups will be kept up-to-date with changes to your GrouparooRecord's Properties.",
       href: "/groups",
       cta: "Add a Group",
       helpLink: `${configURL}/groups`,
@@ -149,7 +149,7 @@ export namespace SetupStepOps {
       key: "create_a_destination",
       title: "Create a Destination",
       description:
-        "Create a Destination to sync your Profiles and Group Memberships.  Grouparoo will automatically send all new information to the Destinations relevant to each Profile.",
+        "Create a Destination to sync your GrouparooRecords and Group Memberships.  Grouparoo will automatically send all new information to the Destinations relevant to each GrouparooRecord.",
       href: "/destinations",
       cta: "Add a Destination",
       helpLink: `${configURL}/destinations`,
@@ -159,7 +159,7 @@ export namespace SetupStepOps {
       },
       outcome: async () => {
         const count = await Export.count();
-        return `${count} Profiles exported to a Destination`;
+        return `${count} GrouparooRecords exported to a Destination`;
       },
     },
   };
@@ -181,7 +181,7 @@ export namespace SetupStepOps {
               position: 3,
             },
             {
-              ...allSetupStepDescriptions.create_a_unique_profile_property,
+              ...allSetupStepDescriptions.create_a_unique_record_property,
               position: 4,
             },
             {
@@ -189,7 +189,7 @@ export namespace SetupStepOps {
               position: 5,
             },
             {
-              ...allSetupStepDescriptions.create_a_sample_profile,
+              ...allSetupStepDescriptions.create_a_sample_record,
               position: 6,
             },
 
@@ -216,7 +216,7 @@ export namespace SetupStepOps {
               position: 3,
             },
             {
-              ...allSetupStepDescriptions.create_a_unique_profile_property,
+              ...allSetupStepDescriptions.create_a_unique_record_property,
               position: 4,
             },
             {

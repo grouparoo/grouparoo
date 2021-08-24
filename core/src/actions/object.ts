@@ -24,7 +24,7 @@ export class ObjectFind extends AuthenticatedAction {
       "groups",
       "imports",
       "notifications",
-      "profiles",
+      "records",
       "properties",
       "runs",
       "schedules",

@@ -1,6 +1,6 @@
 import { api, config, chatRoom } from "actionhero";
 import { Group } from "../models/Group";
-import { Profile } from "../models/Profile";
+import { GrouparooRecord } from "../models/Record";
 import {
   StatusReporters,
   StatusMetric,
@@ -34,14 +34,14 @@ export namespace Status {
     async () => StatusReporters.Cluster.NOTIFICATIONS.unread(),
 
     // usage counts (we only care about some of the models)
-    async () => StatusReporters.Totals.Models([Profile, Group]),
+    async () => StatusReporters.Totals.Models([GrouparooRecord, Group]),
 
     // thing in progress
     async () => StatusReporters.Pending.pendingImports(),
     async () => StatusReporters.Pending.pendingImportsBySource(),
     async () => StatusReporters.Pending.pendingExports(),
     async () => StatusReporters.Pending.pendingExportsByDestination(),
-    async () => StatusReporters.Pending.pendingProfiles(),
+    async () => StatusReporters.Pending.pendingRecords(),
     async () => StatusReporters.Pending.pendingRuns(),
 
     //things waiting to be deleted
@@ -49,7 +49,7 @@ export namespace Status {
     async () => StatusReporters.Deleted.deletedGroups(),
     async () => StatusReporters.Deleted.deletedProperties(),
     async () => StatusReporters.Deleted.deletedSources(),
-    async () => StatusReporters.Deleted.deletedProfiles(),
+    async () => StatusReporters.Deleted.deletedRecords(),
 
     // additional things
     async () => StatusReporters.Groups.byNewestMember(),
@@ -145,7 +145,7 @@ export namespace Status {
 export namespace FinalSummary {
   export type FinalSummaryLogArray = Array<
     | FinalSummaryReporters.Sources.SourceData[]
-    | FinalSummaryReporters.Profiles.ProfileData[]
+    | FinalSummaryReporters.GrouparooRecords.RecordData[]
     | FinalSummaryReporters.Destinations.DestinationData[]
     | FinalSummaryReporters.Warnings.WarningData[]
   >;
@@ -153,7 +153,9 @@ export namespace FinalSummary {
   export async function getFinalSummary() {
     const finalSummaryLogs: FinalSummaryLogArray = [];
 
-    finalSummaryLogs.push(await FinalSummaryReporters.Profiles.getData());
+    finalSummaryLogs.push(
+      await FinalSummaryReporters.GrouparooRecords.getData()
+    );
     finalSummaryLogs.push(await FinalSummaryReporters.Sources.getData());
     finalSummaryLogs.push(await FinalSummaryReporters.Destinations.getData());
     finalSummaryLogs.push(await FinalSummaryReporters.Warnings.getWarnings());

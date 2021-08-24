@@ -3,7 +3,7 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Group, GROUP_RULE_LIMIT } from "../models/Group";
 import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
-import { Profile } from "../models/Profile";
+import { GrouparooRecord } from "../models/Record";
 import { GroupMember } from "../models/GroupMember";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
@@ -144,16 +144,16 @@ export class GroupRun extends AuthenticatedAction {
   }
 }
 
-export class GroupAddProfile extends AuthenticatedAction {
+export class GroupAddRecord extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "group:addProfile";
-    this.description = "add a profile to a manual group";
+    this.name = "group:addRecord";
+    this.description = "add a record to a manual group";
     this.outputExample = {};
     this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       id: { required: true },
-      profileId: { required: true },
+      recordId: { required: true },
     };
   }
 
@@ -164,22 +164,22 @@ export class GroupAddProfile extends AuthenticatedAction {
         "only manual groups can have membership manipulated by this action"
       );
     }
-    const profile = await Profile.findById(params.profileId);
-    await group.addProfile(profile);
+    const record = await GrouparooRecord.findById(params.recordId);
+    await group.addRecord(record);
     return { success: true };
   }
 }
 
-export class GroupRemoveProfile extends AuthenticatedAction {
+export class GroupRemoveRecord extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "group:removeProfile";
-    this.description = "remove a profile to a manual group";
+    this.name = "group:removeRecord";
+    this.description = "remove a record to a manual group";
     this.outputExample = {};
     this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       id: { required: true },
-      profileId: { required: true },
+      recordId: { required: true },
     };
   }
 
@@ -191,8 +191,8 @@ export class GroupRemoveProfile extends AuthenticatedAction {
       );
     }
 
-    const profile = await Profile.findById(params.profileId);
-    await group.removeProfile(profile);
+    const record = await GrouparooRecord.findById(params.recordId);
+    await group.removeRecord(record);
     return { success: true };
   }
 }
@@ -222,7 +222,7 @@ export class GroupCountComponentMembers extends AuthenticatedAction {
     super();
     this.name = "group:countComponentMembers";
     this.description =
-      "return the counts of profiles which exist due to a certain rule";
+      "return the counts of records which exist due to a certain rule";
     this.outputExample = {};
     this.permission = { topic: "group", mode: "read" };
     this.inputs = {
@@ -257,7 +257,7 @@ export class GroupCountPotentialMembers extends AuthenticatedAction {
     super();
     this.name = "group:countPotentialMembers";
     this.description =
-      "return the count of profiles that would match these rules";
+      "return the count of records that would match these rules";
     this.outputExample = {};
     this.permission = { topic: "group", mode: "read" };
     this.inputs = {
@@ -313,7 +313,7 @@ export class GroupExport extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "group:export";
-    this.description = "export the profiles in this group";
+    this.description = "export the records in this group";
     this.outputExample = {};
     this.permission = { topic: "group", mode: "write" };
     this.inputs = {

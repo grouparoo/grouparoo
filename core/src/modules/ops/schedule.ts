@@ -16,7 +16,7 @@ export namespace ScheduleOps {
     const app = await source.$get("app", { include: [Option], scope: null });
     const properties = await Property.findAllWithCache();
     const { pluginConnection } = await source.getPlugin();
-    const method = pluginConnection.methods.profiles;
+    const method = pluginConnection.methods.records;
 
     if (!method) {
       throw new Error(`cannot find an import method for app type ${app.type}`);

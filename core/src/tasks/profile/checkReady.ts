@@ -1,15 +1,15 @@
-import { CLSTask } from "../../classes/tasks/clsTask";
-import { ProfileOps } from "../../modules/ops/profile";
 import { config } from "actionhero";
+import { CLSTask } from "../../classes/tasks/clsTask";
+import { RecordOps } from "../../modules/ops/record";
 
-export class ProfilesCheckReady extends CLSTask {
+export class GrouparooRecordsCheckReady extends CLSTask {
   constructor() {
     super();
-    this.name = "profiles:checkReady";
+    this.name = "records:checkReady";
     this.description =
-      "If all of a Profile's Properties are ready, mark the profile ready and complete the import";
+      "If all of a GrouparooRecord's Properties are ready, mark the record ready and complete the import";
     this.frequency = 1000 * 10;
-    this.queue = "profiles";
+    this.queue = "records";
     this.inputs = {};
   }
 
@@ -19,6 +19,6 @@ export class ProfilesCheckReady extends CLSTask {
       ? process.env.GROUPAROO_DISABLE_EXPORTS !== "true"
       : true;
 
-    await ProfileOps.makeReadyAndCompleteImports(limit, toExport);
+    await RecordOps.makeReadyAndCompleteImports(limit, toExport);
   }
 }

@@ -42,7 +42,7 @@ export class GroupRule extends Model {
 
   @AllowNull(true)
   @Column
-  profileColumn: string;
+  recordColumn: string;
 
   @AllowNull(false)
   @Column
@@ -75,7 +75,7 @@ export class GroupRule extends Model {
       id: this.id,
       groupId: this.groupId,
       propertyId: this.propertyId,
-      profileColumn: this.profileColumn,
+      recordColumn: this.recordColumn,
       position: this.position,
       match: this.match,
       op: this.op,
@@ -103,13 +103,13 @@ export class GroupRule extends Model {
   }
 
   @BeforeSave
-  static async ensureEitherPropertyOrProfileColumn(instance: GroupRule) {
+  static async ensureEitherPropertyOrRecordColumn(instance: GroupRule) {
     if (
-      (!instance.propertyId && !instance.profileColumn) ||
-      (instance.propertyId && instance.profileColumn)
+      (!instance.propertyId && !instance.recordColumn) ||
+      (instance.propertyId && instance.recordColumn)
     ) {
       throw new Error(
-        "either propertyId or profileColumn is required for a GroupRule"
+        "either propertyId or recordColumn is required for a GroupRule"
       );
     }
   }

@@ -1,8 +1,8 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Op } from "sequelize";
-import { Profile } from "../models/Profile";
+import { GrouparooRecord } from "../models/Record";
 import { Property, SimplePropertyOptions } from "../models/Property";
-import { ProfileProperty } from "../models/ProfileProperty";
+import { RecordProperty } from "../models/RecordProperty";
 import { Group } from "../models/Group";
 import { GroupRule } from "../models/GroupRule";
 import { AsyncReturnType } from "type-fest";
@@ -60,7 +60,7 @@ export class PropertiesList extends AuthenticatedAction {
       responseProperties.push(apiData);
 
       if (includeExamples) {
-        const examples = await ProfileProperty.findAll({
+        const examples = await RecordProperty.findAll({
           where: {
             propertyId: property.id,
             rawValue: { [Op.not]: null },
@@ -290,43 +290,43 @@ export class PropertyPluginOptions extends AuthenticatedAction {
   }
 }
 
-export class PropertyProfilePreview extends AuthenticatedAction {
+export class PropertyRecordPreview extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "property:profilePreview";
-    this.description = "view a property's new options against a profile";
+    this.name = "property:recordPreview";
+    this.description = "view a property's new options against a record";
     this.outputExample = {};
     this.permission = { topic: "property", mode: "read" };
     this.inputs = {
       id: { required: true },
-      profileId: { required: false },
+      recordId: { required: false },
       options: { required: false, formatter: APIData.ensureObject },
       filters: { required: false, formatter: APIData.ensureObject },
     };
   }
 
   async runWithinTransaction({ params }) {
-    let profile: Profile;
+    let record: GrouparooRecord;
 
     const property = await Property.findById(params.id);
 
-    if (params.profileId) {
-      profile = await Profile.findById(params.profileId);
+    if (params.recordId) {
+      record = await GrouparooRecord.findById(params.recordId);
     } else {
-      profile = await Profile.findOne({ order: [["id", "asc"]] });
-      if (!profile) {
-        return { errorMessage: "No profiles found" };
+      record = await GrouparooRecord.findOne({ order: [["id", "asc"]] });
+      if (!record) {
+        return { errorMessage: "No records found" };
       }
     }
 
-    const apiData = await profile.apiData();
+    const apiData = await record.apiData();
     const source = await property.$get("source", { scope: null });
 
     let newPropertyValues: Array<string | number | boolean | Date> = [];
     let errorMessage: string;
     try {
-      newPropertyValues = await source.importProfileProperty(
-        profile,
+      newPropertyValues = await source.importRecordProperty(
+        record,
         property,
         params.options,
         params.filters
@@ -353,7 +353,7 @@ export class PropertyProfilePreview extends AuthenticatedAction {
       updatedAt: null,
     };
 
-    return { errorMessage, profile: apiData };
+    return { errorMessage, record: apiData };
   }
 }
 

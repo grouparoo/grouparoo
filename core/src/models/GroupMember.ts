@@ -17,7 +17,7 @@ import {
 import * as uuid from "uuid";
 import { Op, WhereAttributeHash } from "sequelize";
 import { Group } from "./Group";
-import { Profile } from "./Profile";
+import { GrouparooRecord } from "./Record";
 import { Log } from "./Log";
 import { APIData } from "../modules/apiData";
 
@@ -37,9 +37,9 @@ export class GroupMember extends Model {
   updatedAt: Date;
 
   @AllowNull(false)
-  @ForeignKey(() => Profile)
+  @ForeignKey(() => GrouparooRecord)
   @Column
-  profileId: string;
+  recordId: string;
 
   @AllowNull(false)
   @ForeignKey(() => Group)
@@ -52,12 +52,12 @@ export class GroupMember extends Model {
   @BelongsTo(() => Group)
   group: Group;
 
-  @BelongsTo(() => Profile)
-  profile: Profile;
+  @BelongsTo(() => GrouparooRecord)
+  record: GrouparooRecord;
 
   async apiData() {
     return {
-      profileId: this.profileId,
+      recordId: this.recordId,
       groupId: this.groupId,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
@@ -86,17 +86,17 @@ export class GroupMember extends Model {
   }
 
   @BeforeSave
-  static async ensureOneProfilePerGroup(instance: GroupMember) {
+  static async ensureOneRecordPerGroup(instance: GroupMember) {
     const existing = await GroupMember.scope(null).findOne({
       where: {
         id: { [Op.ne]: instance.id },
-        profileId: instance.profileId,
+        recordId: instance.recordId,
         groupId: instance.groupId,
       },
     });
     if (existing) {
       throw new Error(
-        `There is already a GroupMember for ${instance.profileId} and ${instance.groupId}`
+        `There is already a GroupMember for ${instance.recordId} and ${instance.groupId}`
       );
     }
   }
@@ -109,7 +109,7 @@ export class GroupMember extends Model {
       topic: "groupMember",
       verb: "create",
       data: await instance.apiData(),
-      ownerId: instance.profileId,
+      ownerId: instance.recordId,
       message: `added to group ${group ? group.name : ""} (${
         instance.groupId
       })`,
@@ -132,7 +132,7 @@ export class GroupMember extends Model {
               topic: "groupMember",
               verb: "create",
               data: await instance.apiData(),
-              ownerId: instance.profileId,
+              ownerId: instance.recordId,
               message: `added to group ${group ? group.name : ""} (${
                 instance.groupId
               })`,
@@ -151,7 +151,7 @@ export class GroupMember extends Model {
       topic: "groupMember",
       verb: "destroy",
       data: await instance.apiData(),
-      ownerId: instance.profileId,
+      ownerId: instance.recordId,
       message: `removed from group ${group ? group.name : ""} (${
         instance.groupId
       })`,
@@ -174,7 +174,7 @@ export class GroupMember extends Model {
               topic: "groupMember",
               verb: "destroy",
               data: await instance.apiData(),
-              ownerId: instance.profileId,
+              ownerId: instance.recordId,
               message: `removed from group ${group ? group.name : ""} (${
                 instance.groupId
               })`,

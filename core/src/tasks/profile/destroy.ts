@@ -1,42 +1,42 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Export } from "../../models/Export";
-import { Profile } from "../../models/Profile";
+import { GrouparooRecord } from "../../models/Record";
 
-export class ProfileDestroy extends CLSTask {
+export class RecordDestroy extends CLSTask {
   constructor() {
     super();
-    this.name = "profile:destroy";
+    this.name = "record:destroy";
     this.description =
-      "Export and destroy profiles that no longer have any directly mapped properties";
+      "Export and destroy records that no longer have any directly mapped properties";
     this.frequency = 0;
-    this.queue = "profiles";
+    this.queue = "records";
     this.inputs = {
-      profileId: { required: true },
+      recordId: { required: true },
     };
   }
 
-  async runWithinTransaction({ profileId }: { profileId: string }) {
-    const profile = await Profile.findById(profileId);
-    if (!profile) return;
-    if (profile.state !== "ready") return;
+  async runWithinTransaction({ recordId }: { recordId: string }) {
+    const record = await GrouparooRecord.findById(recordId);
+    if (!record) return;
+    if (record.state !== "ready") return;
 
     const pendingExports = await Export.count({
       where: {
-        profileId: profileId,
+        recordId: recordId,
         state: ["pending", "processing"],
       },
     });
     if (pendingExports > 0) return;
 
-    const oldGroups = await profile.$get("groups");
+    const oldGroups = await record.$get("groups");
     if (oldGroups.length > 0) {
       // clear groups and export
       // when the export is done, this task will be enqueued again to destroy it
-      await Profile.destroyGroupMembers(profile);
-      await profile.export(false, oldGroups, true, false);
+      await GrouparooRecord.destroyGroupMembers(record);
+      await record.export(false, oldGroups, true, false);
     } else {
       // use "destroy" to clean up related models
-      await profile.destroy();
+      await record.destroy();
     }
   }
 }

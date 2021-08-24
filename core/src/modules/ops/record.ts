@@ -1,5 +1,5 @@
-import { Profile } from "../../models/Profile";
-import { ProfileProperty } from "../../models/ProfileProperty";
+import { GrouparooRecord } from "../../models/Record";
+import { RecordProperty } from "../../models/RecordProperty";
 import { Property } from "../../models/Property";
 import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
@@ -15,16 +15,16 @@ import Sequelize, {
   QueryTypes,
 } from "sequelize";
 import { waitForLock } from "../locks";
-import { ProfilePropertyOps } from "./profileProperty";
+import { RecordPropertyOps } from "./recordProperty";
 import { GroupRule } from "../../models/GroupRule";
 import { Import } from "../../models/Import";
 import { Mapping } from "../../models/Mapping";
 import { SourceOps } from "./source";
 
-export interface ProfilePropertyType {
+export interface RecordPropertyType {
   [key: string]: {
-    id: ProfileProperty["id"];
-    state: ProfileProperty["state"];
+    id: RecordProperty["id"];
+    state: RecordProperty["state"];
     values: Array<string | number | boolean | Date>;
     configId: ReturnType<Property["getConfigId"]>;
     type: Property["type"];
@@ -32,45 +32,45 @@ export interface ProfilePropertyType {
     directlyMapped: Property["directlyMapped"];
     isArray: Property["isArray"];
     identifying: Property["identifying"];
-    valueChangedAt: ProfileProperty["valueChangedAt"];
-    confirmedAt: ProfileProperty["confirmedAt"];
-    stateChangedAt: ProfileProperty["stateChangedAt"];
-    startedAt: ProfileProperty["startedAt"];
-    createdAt: ProfileProperty["createdAt"];
-    updatedAt: ProfileProperty["updatedAt"];
+    valueChangedAt: RecordProperty["valueChangedAt"];
+    confirmedAt: RecordProperty["confirmedAt"];
+    stateChangedAt: RecordProperty["stateChangedAt"];
+    startedAt: RecordProperty["startedAt"];
+    createdAt: RecordProperty["createdAt"];
+    updatedAt: RecordProperty["updatedAt"];
   };
 }
 
-export namespace ProfileOps {
+export namespace RecordOps {
   /**
-   * Get the Properties of this Profile
+   * Get the Properties of this GrouparooRecord
    */
-  export async function getProperties(profile: Profile) {
-    const profileProperties =
-      profile.profileProperties ||
-      (await ProfileProperty.scope(null).findAll({
-        where: { profileId: profile.id },
+  export async function getProperties(record: GrouparooRecord) {
+    const recordProperties =
+      record.recordProperties ||
+      (await RecordProperty.scope(null).findAll({
+        where: { recordId: record.id },
         order: [["position", "ASC"]],
       }));
 
     const properties = await Property.findAllWithCache();
 
-    const hash: ProfilePropertyType = {};
+    const hash: RecordPropertyType = {};
 
-    for (const i in profileProperties) {
+    for (const i in recordProperties) {
       const property = properties.find(
-        (r) => r.id === profileProperties[i].propertyId
+        (r) => r.id === recordProperties[i].propertyId
       );
       if (!property) {
-        await profileProperties[i].destroy();
+        await recordProperties[i].destroy();
         continue;
       }
 
       const key = property.key;
       if (!hash[key]) {
         hash[key] = {
-          id: profileProperties[i].propertyId,
-          state: profileProperties[i].state,
+          id: recordProperties[i].propertyId,
+          state: recordProperties[i].state,
           values: [],
           configId: property.getConfigId(),
           type: property.type,
@@ -78,16 +78,16 @@ export namespace ProfileOps {
           directlyMapped: property.directlyMapped,
           isArray: property.isArray,
           identifying: property.identifying,
-          valueChangedAt: profileProperties[i].valueChangedAt,
-          confirmedAt: profileProperties[i].confirmedAt,
-          stateChangedAt: profileProperties[i].stateChangedAt,
-          startedAt: profileProperties[i].startedAt,
-          createdAt: profileProperties[i].createdAt,
-          updatedAt: profileProperties[i].updatedAt,
+          valueChangedAt: recordProperties[i].valueChangedAt,
+          confirmedAt: recordProperties[i].confirmedAt,
+          stateChangedAt: recordProperties[i].stateChangedAt,
+          startedAt: recordProperties[i].startedAt,
+          createdAt: recordProperties[i].createdAt,
+          updatedAt: recordProperties[i].updatedAt,
         };
       }
 
-      hash[key].values.push(await profileProperties[i].getValue());
+      hash[key].values.push(await recordProperties[i].getValue());
 
       const timeFields = [
         "valueChangedAt",
@@ -98,8 +98,8 @@ export namespace ProfileOps {
       ];
 
       timeFields.forEach((field) => {
-        if (hash[key][field] < profileProperties[i][field]) {
-          hash[key][field] = profileProperties[i][field];
+        if (hash[key][field] < recordProperties[i][field]) {
+          hash[key][field] = recordProperties[i][field];
         }
       });
     }
@@ -108,7 +108,7 @@ export namespace ProfileOps {
   }
 
   /**
-   * Search & List Profiles
+   * Search & List GrouparooRecords
    */
   export async function search({
     limit,
@@ -139,13 +139,13 @@ export namespace ProfileOps {
     const include: Array<any> = [];
     let countRequiresIncludes = false;
 
-    // Are we searching for Profiles in a specific state?
+    // Are we searching for GrouparooRecords in a specific state?
     if (state) ands.push({ state });
 
-    // Are we searching for a specific ProfileProperty?
+    // Are we searching for a specific RecordProperty?
     if (searchKey && searchValue) {
       countRequiresIncludes = true;
-      include.push(ProfileProperty);
+      include.push(RecordProperty);
       countRequiresIncludes = true;
 
       const property = await Property.findOneWithCache(`${searchKey}`, "key");
@@ -153,13 +153,13 @@ export namespace ProfileOps {
 
       ands.push(
         Sequelize.where(
-          Sequelize.col("profileProperties.propertyId"),
+          Sequelize.col("recordProperties.propertyId"),
           property.id
         )
       );
       if (searchValue.toLowerCase() === "null" || searchValue === "") {
         ands.push(
-          Sequelize.where(Sequelize.col("profileProperties.rawValue"), null)
+          Sequelize.where(Sequelize.col("recordProperties.rawValue"), null)
         );
       } else {
         const op = searchValue.includes("%") ? Op.like : Op.eq;
@@ -168,9 +168,9 @@ export namespace ProfileOps {
             !caseSensitive
               ? Sequelize.fn(
                   "LOWER",
-                  Sequelize.col("profileProperties.rawValue")
+                  Sequelize.col("recordProperties.rawValue")
                 )
-              : Sequelize.col("profileProperties.rawValue"),
+              : Sequelize.col("recordProperties.rawValue"),
             {
               [op]: !caseSensitive
                 ? Sequelize.fn("LOWER", searchValue)
@@ -190,9 +190,9 @@ export namespace ProfileOps {
       );
     }
 
-    // Load the profiles in full now that we know the relevant profiles
-    const profileIds = (
-      await Profile.findAll({
+    // Load the records in full now that we know the relevant records
+    const recordIds = (
+      await GrouparooRecord.findAll({
         attributes: ["id"],
         include,
         where: { [Op.and]: ands },
@@ -203,36 +203,36 @@ export namespace ProfileOps {
       })
     ).map((p) => p.id);
 
-    const profiles = await Profile.findAll({
-      where: { id: profileIds },
+    const records = await GrouparooRecord.findAll({
+      where: { id: recordIds },
       order,
-      include: [ProfileProperty],
+      include: [RecordProperty],
     });
 
-    const total = await Profile.count({
+    const total = await GrouparooRecord.count({
       include: countRequiresIncludes ? include : undefined,
       where: { [Op.and]: ands },
       distinct: true,
     });
 
-    return { profiles, total };
+    return { records, total };
   }
 
   /**
-   * Add or Update a Property on Profiles
+   * Add or Update a Property on GrouparooRecords
    */
   export async function addOrUpdateProperties(
-    profiles: Profile[],
-    profileProperties: {
+    records: GrouparooRecord[],
+    recordProperties: {
       [key: string]: Array<string | number | boolean | Date> | any;
     }[],
     toLock = true,
     ignoreMissingProperties = false
   ) {
-    if (profiles.length === 0) return;
-    if (profiles.length !== profileProperties.length) {
+    if (records.length === 0) return;
+    if (records.length !== recordProperties.length) {
       throw new Error(
-        "Profiles and ProfileProperty arrays are not the same length"
+        "GrouparooRecords and RecordProperty arrays are not the same length"
       );
     }
 
@@ -242,31 +242,31 @@ export namespace ProfileOps {
     const properties = await Property.findAllWithCache();
     const now = new Date();
 
-    // load existing profile properties
-    const existingProfileProperties = await ProfileProperty.findAll({
-      where: { profileId: { [Op.in]: profiles.map((p) => p.id) } },
+    // load existing record properties
+    const existingRecordProperties = await RecordProperty.findAll({
+      where: { recordId: { [Op.in]: records.map((p) => p.id) } },
     });
 
     try {
-      let profileOffset = 0;
-      for (const profile of profiles) {
+      let recordOffset = 0;
+      for (const record of records) {
         if (toLock) {
-          const response = await waitForLock(`profile:${profile.id}`);
+          const response = await waitForLock(`record:${record.id}`);
           releaseLocks.push(response.releaseLock);
         }
 
-        if (profile.isNewRecord) await profile.save();
+        if (record.isNewRecord) await record.save();
 
-        const keys = Object.keys(profileProperties[profileOffset]);
+        const keys = Object.keys(recordProperties[recordOffset]);
         checkKeys: for (const key of keys) {
           if (key === "id") continue checkKeys;
           if (key === "_meta") continue checkKeys;
 
           const h: { [key: string]: Array<string | number | boolean | Date> } =
             {};
-          h[key] = Array.isArray(profileProperties[profileOffset][key])
-            ? profileProperties[profileOffset][key]
-            : [profileProperties[profileOffset][key]];
+          h[key] = Array.isArray(recordProperties[recordOffset][key])
+            ? recordProperties[recordOffset][key]
+            : [recordProperties[recordOffset][key]];
 
           const property =
             properties.find((p) => p.id === key) ??
@@ -277,31 +277,31 @@ export namespace ProfileOps {
             throw new Error(`cannot find a property for id or key \`${key}\``);
           }
 
-          // add new Profile Properties to batch
+          // add new GrouparooRecord Properties to batch
           let position = 0;
           buildQueries: for (const value of h[key]) {
             if (position > 0 && !property.isArray) {
               throw new Error(
-                "cannot set multiple profile properties for a non-array property"
+                "cannot set multiple record properties for a non-array property"
               );
             }
 
-            const existingProfileProperty = existingProfileProperties.find(
+            const existingRecordProperty = existingRecordProperties.find(
               (p) =>
-                p.profileId === profile.id &&
+                p.recordId === record.id &&
                 p.propertyId === property.id &&
                 p.position === position
             );
-            const rawValue = await ProfilePropertyOps.buildRawValue(
+            const rawValue = await RecordPropertyOps.buildRawValue(
               value,
               property.type
             );
 
             bulkCreates.push({
-              id: existingProfileProperty
-                ? existingProfileProperty.id
+              id: existingRecordProperty
+                ? existingRecordProperty.id
                 : undefined,
-              profileId: profile.id,
+              recordId: record.id,
               propertyId: property.id,
               position,
               rawValue,
@@ -309,12 +309,12 @@ export namespace ProfileOps {
               stateChangedAt: now,
               confirmedAt: now,
               valueChangedAt:
-                !existingProfileProperty ||
-                !existingProfileProperty.valueChangedAt ||
-                !existingProfileProperty.rawValue ||
-                rawValue !== existingProfileProperty.rawValue
+                !existingRecordProperty ||
+                !existingRecordProperty.valueChangedAt ||
+                !existingRecordProperty.rawValue ||
+                rawValue !== existingRecordProperty.rawValue
                   ? now
-                  : existingProfileProperty.valueChangedAt,
+                  : existingRecordProperty.valueChangedAt,
               unique: property.unique,
             });
 
@@ -323,17 +323,17 @@ export namespace ProfileOps {
 
           // delete old properties we didn't update
           bulkDeletes.where[Op.or].push({
-            profileId: profile.id,
+            recordId: record.id,
             propertyId: property.id,
             position: { [Op.gte]: position },
           });
         }
 
-        profileOffset++;
+        recordOffset++;
       }
 
       if (bulkCreates.length > 0) {
-        await ProfileProperty.bulkCreate(bulkCreates, {
+        await RecordProperty.bulkCreate(bulkCreates, {
           updateOnDuplicate: [
             "state",
             "unique",
@@ -346,29 +346,32 @@ export namespace ProfileOps {
         });
       }
       if (bulkDeletes.where[Op.or].length > 0) {
-        await ProfileProperty.destroy(bulkDeletes);
+        await RecordProperty.destroy(bulkDeletes);
       }
     } finally {
       for (const releaseLock of releaseLocks) await releaseLock();
     }
   }
 
-  async function resolvePendingProperties(profile: Profile, sourceId?: string) {
-    const pendingProperties = await ProfileProperty.findAll({
-      where: { profileId: profile.id, state: "pending" },
+  async function resolvePendingProperties(
+    record: GrouparooRecord,
+    sourceId?: string
+  ) {
+    const pendingProperties = await RecordProperty.findAll({
+      where: { recordId: record.id, state: "pending" },
     });
 
-    const clearProfilePropertyIds = [];
-    for (let profileProperty of pendingProperties) {
+    const clearRecordPropertyIds = [];
+    for (let recordProperty of pendingProperties) {
       const property = await Property.findOneWithCache(
-        profileProperty.propertyId
+        recordProperty.propertyId
       );
       if (!sourceId || property.sourceId === sourceId) {
-        clearProfilePropertyIds.push(profileProperty.id);
+        clearRecordPropertyIds.push(recordProperty.id);
       }
     }
 
-    await ProfileProperty.update(
+    await RecordProperty.update(
       {
         state: "ready",
         rawValue: null,
@@ -376,36 +379,36 @@ export namespace ProfileOps {
         valueChangedAt: new Date(),
         confirmedAt: new Date(),
       },
-      { where: { id: clearProfilePropertyIds } }
+      { where: { id: clearRecordPropertyIds } }
     );
   }
 
   /**
-   * Remove a Property on this Profile
+   * Remove a Property on this GrouparooRecord
    */
-  export async function removeProperty(profile: Profile, key: string) {
+  export async function removeProperty(record: GrouparooRecord, key: string) {
     const property = await Property.findOne({ where: { key } });
     if (!property) return;
 
-    return ProfileProperty.destroy({
-      where: { profileId: profile.id, propertyId: property.id },
+    return RecordProperty.destroy({
+      where: { recordId: record.id, propertyId: property.id },
     });
   }
 
   /**
-   * Remove all Properties from this Profile
+   * Remove all Properties from this GrouparooRecord
    */
   export async function removeProperties(
-    profile: Profile,
+    record: GrouparooRecord,
     properties: Array<string>
   ) {
     for (const i in properties) {
-      await profile.removeProperty(properties[i]);
+      await record.removeProperty(properties[i]);
     }
   }
 
   export async function buildNullProperties(
-    profiles: Profile[],
+    records: GrouparooRecord[],
     state = "pending"
   ) {
     const properties = await Property.findAllWithCache();
@@ -413,14 +416,14 @@ export namespace ProfileOps {
     const bulkArgs = [];
     const now = new Date();
 
-    for (const profile of profiles) {
-      const profileProperties = await profile.getProperties();
+    for (const record of records) {
+      const recordProperties = await record.getProperties();
 
       for (const key in properties) {
         const property = properties[key];
-        if (!profileProperties[property.key]) {
+        if (!recordProperties[property.key]) {
           bulkArgs.push({
-            profileId: profile.id,
+            recordId: record.id,
             propertyId: property.id,
             state,
             stateChangedAt: now,
@@ -431,23 +434,23 @@ export namespace ProfileOps {
       }
     }
 
-    if (bulkArgs.length > 0) await ProfileProperty.bulkCreate(bulkArgs);
+    if (bulkArgs.length > 0) await RecordProperty.bulkCreate(bulkArgs);
 
     return bulkArgs.length;
   }
 
-  export async function updateGroupMemberships(profiles: Profile[]) {
-    const results: { [profileId: string]: { [groupId: string]: boolean } } = {};
+  export async function updateGroupMemberships(records: GrouparooRecord[]) {
+    const results: { [recordId: string]: { [groupId: string]: boolean } } = {};
     const groups = await Group.scope("notDraft").findAll({
       include: [GroupRule],
     });
 
-    for (const profile of profiles) results[profile.id] = {};
+    for (const record of records) results[record.id] = {};
 
     for (const group of groups) {
-      const belongs = await group.updateProfilesMembership(profiles);
-      for (const profileId of Object.keys(belongs)) {
-        results[profileId][group.id] = belongs[profileId];
+      const belongs = await group.updateRecordsMembership(records);
+      for (const recordId of Object.keys(belongs)) {
+        results[recordId][group.id] = belongs[recordId];
       }
     }
 
@@ -455,17 +458,17 @@ export namespace ProfileOps {
   }
 
   /**
-   * Import the properties of this Profile
+   * Import the properties of this GrouparooRecord
    */
   export async function _import(
-    profile: Profile,
+    record: GrouparooRecord,
     toSave = true,
     toLock = true
   ) {
     let releaseLock: Function;
 
     if (toLock) {
-      const lockObject = await waitForLock(`profile:${profile.id}`);
+      const lockObject = await waitForLock(`record:${record.id}`);
       releaseLock = lockObject.releaseLock;
     }
 
@@ -477,26 +480,26 @@ export namespace ProfileOps {
       const sortedSources = SourceOps.sortByDependencies(sources);
 
       for (const source of sortedSources) {
-        const { canImport, properties } = await source.import(profile);
+        const { canImport, properties } = await source.import(record);
 
         // We need to save each property as it is loaded so it can be used as a mapping for the next source
         if (canImport && toSave) {
-          await addOrUpdateProperties([profile], [properties], false);
-          await resolvePendingProperties(profile, source.id);
+          await addOrUpdateProperties([record], [properties], false);
+          await resolvePendingProperties(record, source.id);
         }
       }
 
       if (toSave) {
-        await buildNullProperties([profile]);
+        await buildNullProperties([record]);
 
-        await profile.save();
-        await ProfileProperty.update(
+        await record.save();
+        await RecordProperty.update(
           { state: "ready" },
-          { where: { profileId: profile.id } }
+          { where: { recordId: record.id } }
         );
       }
 
-      return profile;
+      return record;
     } catch (error) {
       throw error;
     } finally {
@@ -505,24 +508,24 @@ export namespace ProfileOps {
   }
 
   /**
-   * Export this Profile to all relevant Sources
+   * Export this GrouparooRecord to all relevant Sources
    */
   export async function _export(
-    profile: Profile,
+    record: GrouparooRecord,
     force = false,
     oldGroups: Group[] = [],
     saveExports = true,
     sync = true
   ) {
-    const groups = await profile.$get("groups");
+    const groups = await record.$get("groups");
 
     const destinations = await Destination.destinationsForGroups([
       ...oldGroups,
       ...groups,
     ]);
 
-    // We want to find destinations which aren't in the above set and already have an Export for this Profile.
-    // That's a sign that the Profile is about to get a toDelete export
+    // We want to find destinations which aren't in the above set and already have an Export for this GrouparooRecord.
+    // That's a sign that the GrouparooRecord is about to get a toDelete export
     const existingExportNotDeleted: { destinationId: string }[] =
       await api.sequelize.query(
         `
@@ -530,11 +533,11 @@ export namespace ProfileOps {
     JOIN (
       SELECT "destinationId", MAX("createdAt") as "createdAt"
       FROM "exports"
-      WHERE "profileId" = '${profile.id}'
+      WHERE "recordId" = '${record.id}'
       GROUP BY "destinationId"
     ) AS "latest"
     ON "latest"."destinationId" = "exports"."destinationId" AND "latest"."createdAt" = "exports"."createdAt"
-    WHERE "profileId" = '${profile.id}'
+    WHERE "recordId" = '${record.id}'
     AND "toDelete" = false
     ;
     `,
@@ -553,8 +556,8 @@ export namespace ProfileOps {
 
     return Promise.all(
       destinations.map((destination) =>
-        destination.exportProfile(
-          profile,
+        destination.exportRecord(
+          record,
           sync, // sync = true -> do the export in-line
           force, // force = true -> do the export even if it looks like the data hasn't changed
           saveExports // saveExports = true -> should we really save these exports, or do we just want examples for the next export?
@@ -564,33 +567,37 @@ export namespace ProfileOps {
   }
 
   /**
-   * Fully Import and Export a profile
+   * Fully Import and Export a record
    */
-  export async function sync(profile: Profile, force = true, toExport = true) {
-    const oldGroups = await profile.$get("groups");
+  export async function sync(
+    record: GrouparooRecord,
+    force = true,
+    toExport = true
+  ) {
+    const oldGroups = await record.$get("groups");
 
-    await profile.markPending();
-    await profile.import();
-    await profile.updateGroupMembership();
-    await profile.update({ state: "ready" });
-    return ProfileOps._export(profile, force, oldGroups, toExport);
+    await record.markPending();
+    await record.import();
+    await record.updateGroupMembership();
+    await record.update({ state: "ready" });
+    return RecordOps._export(record, force, oldGroups, toExport);
   }
 
   /**
-   * The method you'll be using to create profiles with arbitrary data.
+   * The method you'll be using to create records with arbitrary data.
    * Hash looks like {email: "person@example.com", id: 123}
    *
-   * This method today always returns a profile by finding it or making a a new one... unless it throws because the source isn't allowed to make new profiles.
+   * This method today always returns a record by finding it or making a a new one... unless it throws because the source isn't allowed to make new records.
    */
-  export async function findOrCreateByUniqueProfileProperties(
+  export async function findOrCreateByUniqueRecordProperties(
     hash: {
       [key: string]: Array<string | number | boolean | Date>;
     },
     source?: boolean | Source
   ) {
-    let profile: Profile;
+    let record: GrouparooRecord;
     let isNew = false;
-    let profileProperty: ProfileProperty;
+    let recordProperty: RecordProperty;
     const uniqueProperties = (await Property.findAllWithCache()).filter(
       (p) => p.unique === true
     );
@@ -609,7 +616,7 @@ export namespace ProfileOps {
 
     if (Object.keys(uniquePropertiesHash).length === 0) {
       throw new Error(
-        `there are no unique profile properties provided in ${JSON.stringify(
+        `there are no unique record properties provided in ${JSON.stringify(
           hash
         )}`
       );
@@ -625,26 +632,26 @@ export namespace ProfileOps {
         const property = uniqueProperties.find((r) => r.id === id);
 
         const { releaseLock } = await waitForLock(
-          `profileProperty:${id}:${value}`
+          `recordProperty:${id}:${value}`
         );
         lockReleases.push(releaseLock);
 
-        profileProperty = await ProfileProperty.findOne({
+        recordProperty = await RecordProperty.findOne({
           where: {
             propertyId: property.id,
             rawValue: String(value),
           },
         });
 
-        if (profileProperty) break;
+        if (recordProperty) break;
       }
 
-      if (profileProperty) {
-        profile = await Profile.findOne({
-          where: { id: profileProperty.profileId },
+      if (recordProperty) {
+        record = await GrouparooRecord.findOne({
+          where: { id: recordProperty.recordId },
         });
       } else {
-        const canCreateNewProfile =
+        const canCreateNewRecord =
           typeof source === "boolean"
             ? source
             : source instanceof Source
@@ -654,77 +661,79 @@ export namespace ProfileOps {
                 .filter((key) => !!hash[key]).length > 0
             : false;
 
-        if (!canCreateNewProfile) {
+        if (!canCreateNewRecord) {
           throw new Error(
-            `could not create a new profile because no profile property in ${JSON.stringify(
+            `could not create a new record because no record property in ${JSON.stringify(
               hash
             )} is unique and owned by the source`
           );
         }
 
-        profile = await Profile.create();
-        profile = await profile.reload();
-        const { releaseLock } = await waitForLock(`profile:${profile.id}`);
+        record = await GrouparooRecord.create();
+        record = await record.reload();
+        const { releaseLock } = await waitForLock(`record:${record.id}`);
         lockReleases.push(releaseLock);
-        await addOrUpdateProperties([profile], [uniquePropertiesHash], false);
-        await buildNullProperties([profile]);
+        await addOrUpdateProperties([record], [uniquePropertiesHash], false);
+        await buildNullProperties([record]);
 
         isNew = true;
       }
 
-      return { profile, isNew };
+      return { record, isNew };
     } finally {
       await Promise.all(lockReleases.map((releaseLock) => releaseLock()));
     }
   }
 
   /**
-   * Mark many Profiles and all of their properties as pending
+   * Mark many GrouparooRecords and all of their properties as pending
    */
   export async function markPendingByIds(
-    profileIds: string[],
+    recordIds: string[],
     includeProperties = true
   ) {
     if (includeProperties) {
-      await ProfileProperty.update(
+      await RecordProperty.update(
         { state: "pending", startedAt: null },
-        { where: { profileId: { [Op.in]: profileIds } } }
+        { where: { recordId: { [Op.in]: recordIds } } }
       );
     }
 
-    await Profile.update(
+    await GrouparooRecord.update(
       { state: "pending" },
-      { where: { id: { [Op.in]: profileIds } } }
+      { where: { id: { [Op.in]: recordIds } } }
     );
   }
 
   /**
-   * Look for profiles that don't have a directlyMapped property and are done importing/exporting.
+   * Look for records that don't have a directlyMapped property and are done importing/exporting.
    */
-  export async function getProfilesToDestroy() {
+
+  export async function getRecordsToDestroy() {
     const limit: number = config.batchSize.imports;
-    let profiles: Profile[] = [];
+    let records: GrouparooRecord[] = [];
+
     const directlyMappedProperties = (await Property.findAllWithCache()).filter(
       (p) => p.directlyMapped
     );
 
     if (directlyMappedProperties.length === 0) {
-      // We have no directly mapped Property and every profile should be removed
+      // We have no directly mapped Property and every record should be removed
       // It's safe to assume that if there are no Properties, we aren't exporting
-      profiles = await Profile.findAll({
+      records = await GrouparooRecord.findAll({
         attributes: ["id"],
         where: { state: "ready" },
         limit,
       });
     } else {
-      // We have directly mapped Properties and we only want to remove those Profiles with a null "user_id" (directlyMapped) Property (and are ready with no exports)
-      profiles = await api.sequelize.query(
+      // We have directly mapped Properties and we only want to remove those GrouparooRecords with a null "user_id" (directlyMapped) Property (and are ready with no exports)
+      records = await api.sequelize.query(
         `
-  SELECT "id" FROM "profiles"
+  SELECT "id" FROM "records"
   WHERE "state"='ready'
   AND "id" IN (
-    SELECT DISTINCT("profileId") FROM "profileProperties"
-    JOIN properties ON "properties"."id"="profileProperties"."propertyId"
+    SELECT DISTINCT("recordId") FROM "recordProperties"
+    JOIN properties ON "properties"."id"="recordProperties"."propertyId"
     WHERE
       "properties"."directlyMapped"=true
       AND "rawValue" IS NULL
@@ -732,16 +741,16 @@ export namespace ProfileOps {
   LIMIT ${limit};
         `,
         {
-          model: Profile,
+          model: GrouparooRecord,
         }
       );
     }
 
-    return profiles;
+    return records;
   }
 
   /**
-   * Import profiles whose directlyMapped property has not been confirmed after a certain date.
+   * Import records whose directlyMapped property has not been confirmed after a certain date.
    */
   export async function confirmExistence(
     limit: number,
@@ -753,7 +762,7 @@ export namespace ProfileOps {
       (p) => p.directlyMapped && (!sourceId || sourceId === p.sourceId)
     );
 
-    const profileProperties = await ProfileProperty.findAll({
+    const recordProperties = await RecordProperty.findAll({
       where: {
         state: "ready",
         confirmedAt: {
@@ -767,36 +776,39 @@ export namespace ProfileOps {
       limit,
     });
 
-    const profileIds = profileProperties.map((pp) => pp.profileId);
+    const recordIds = recordProperties.map((pp) => pp.recordId);
 
-    // Only mark profile and directlyMapped property pending
-    await markPendingByIds(profileIds, false);
-    await ProfileProperty.update(
+    // Only mark record and directlyMapped property pending
+    await markPendingByIds(recordIds, false);
+    await RecordProperty.update(
       { state: "pending", startedAt: null },
-      { where: { id: profileProperties.map((pp) => pp.id) } }
+      { where: { id: recordProperties.map((pp) => pp.id) } }
     );
 
-    const uniqueProfileIds = profileIds.filter(
+    const uniqueRecordIds = recordIds.filter(
       (val, idx, arr) => arr.indexOf(val) === idx
     );
-    return uniqueProfileIds.length;
+    return uniqueRecordIds.length;
   }
 
   /**
-   * Merge 2 Profiles, favoring the first Profile
+   * Merge 2 GrouparooRecords, favoring the first GrouparooRecord
    */
-  export async function merge(profile: Profile, otherProfile: Profile) {
-    const { releaseLock: releaseLockForProfile } = await waitForLock(
-      `profile:${profile.id}`
+  export async function merge(
+    record: GrouparooRecord,
+    otherRecord: GrouparooRecord
+  ) {
+    const { releaseLock: releaseLockForRecord } = await waitForLock(
+      `record:${record.id}`
     );
-    const { releaseLock: releaseLockForOtherProfile } = await waitForLock(
-      `profile:${otherProfile.id}`
+    const { releaseLock: releaseLockForOtherRecord } = await waitForLock(
+      `record:${otherRecord.id}`
     );
 
     try {
       // transfer properties, keeping the newest values
-      const properties = await profile.getProperties();
-      const otherProperties = await otherProfile.getProperties();
+      const properties = await record.getProperties();
+      const otherProperties = await otherRecord.getProperties();
       const newProperties = {};
       for (const key in otherProperties) {
         if (
@@ -814,58 +826,58 @@ export namespace ProfileOps {
         }
       }
 
-      // delete other profile so unique profile properties will be available
-      await otherProfile.destroy();
-      await addOrUpdateProperties([profile], [newProperties], false);
+      // delete other record so unique record properties will be available
+      await otherRecord.destroy();
+      await addOrUpdateProperties([record], [newProperties], false);
 
       // log the merge
       await Log.create({
-        topic: "profile",
+        topic: "record",
         verb: "merge",
-        message: `merged with profile ${otherProfile.id}`,
-        ownerId: profile.id,
+        message: `merged with record ${otherRecord.id}`,
+        ownerId: record.id,
         data: { previousProperties: properties, otherProperties },
       });
 
       // re-import and update groups
-      delete profile.profileProperties;
-      await profile.buildNullProperties();
-      await profile.markPending();
+      delete record.recordProperties;
+      await record.buildNullProperties();
+      await record.markPending();
 
-      return profile;
+      return record;
     } finally {
-      await releaseLockForProfile();
-      await releaseLockForOtherProfile();
+      await releaseLockForRecord();
+      await releaseLockForOtherRecord();
     }
   }
 
   /**
-   * Find profiles that are not ready but whose properties are and make them ready.
+   * Find records that are not ready but whose properties are and make them ready.
    * Then, process the related imports.
    */
   export async function makeReadyAndCompleteImports(
     limit = 100,
     toExport = true
   ) {
-    let profiles: Profile[] = await api.sequelize.query(
+    let records: GrouparooRecord[] = await api.sequelize.query(
       `
-    SELECT "id" from "profiles" where "state" = 'pending'
+    SELECT "id" from "records" where "state" = 'pending'
     EXCEPT
-    SELECT DISTINCT("profileId") FROM "profileProperties" WHERE "state" = 'pending'
+    SELECT DISTINCT("recordId") FROM "recordProperties" WHERE "state" = 'pending'
     LIMIT ${limit}
     ;
     `,
       {
         type: QueryTypes.SELECT,
-        model: Profile,
+        model: GrouparooRecord,
       }
     );
 
-    const updateResponse = await Profile.update(
+    const updateResponse = await GrouparooRecord.update(
       { state: "ready" },
       {
         where: {
-          id: { [Op.in]: profiles.map((p) => p.id) },
+          id: { [Op.in]: records.map((p) => p.id) },
           state: "pending",
         },
       }
@@ -873,48 +885,45 @@ export namespace ProfileOps {
 
     // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer state=pending
     // in SQLite this isn't possible, but contention is far less likely
-    if (updateResponse[1]) profiles = updateResponse[1];
+    if (updateResponse[1]) records = updateResponse[1];
 
-    if (profiles.length === 0) return [];
+    if (records.length === 0) return [];
 
-    await completeProfileImports(
-      profiles.map((p) => p.id),
+    await completeRecordImports(
+      records.map((p) => p.id),
       toExport
     );
 
-    return profiles;
+    return records;
   }
 
-  async function completeProfileImports(
-    profileIds: string[],
-    toExport: boolean
-  ) {
-    const profiles = await Profile.findAll({
+  async function completeRecordImports(recordIds: string[], toExport: boolean) {
+    const records = await GrouparooRecord.findAll({
       where: {
-        id: { [Op.in]: profileIds },
+        id: { [Op.in]: recordIds },
       },
       include: [
-        { model: ProfileProperty, required: true },
-        { model: Import, required: false, where: { profileUpdatedAt: null } },
+        { model: RecordProperty, required: true },
+        { model: Import, required: false, where: { recordUpdatedAt: null } },
       ],
     });
-    if (profiles.length === 0) return;
+    if (records.length === 0) return;
 
-    const memberships = await ProfileOps.updateGroupMemberships(profiles);
+    const memberships = await RecordOps.updateGroupMemberships(records);
     const now = new Date();
 
-    for (const profile of profiles) {
-      const imports = profile.imports;
+    for (const record of records) {
+      const imports = record.imports;
       if (imports.length > 0) {
-        const newProfileProperties = await profile.simplifiedProperties();
-        const newGroupIds = Object.keys(memberships[profile.id]).filter(
-          (groupId) => memberships[profile.id][groupId] === true
+        const newRecordProperties = await record.simplifiedProperties();
+        const newGroupIds = Object.keys(memberships[record.id]).filter(
+          (groupId) => memberships[record.id][groupId] === true
         );
 
         await Import.update(
           {
-            newProfileProperties: newProfileProperties,
-            profileUpdatedAt: now,
+            newRecordProperties: newRecordProperties,
+            recordUpdatedAt: now,
             newGroupIds: newGroupIds,
             groupsUpdatedAt: now,
             exportedAt: toExport ? undefined : now, // we want to indicate that the import's lifecycle is complete

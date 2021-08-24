@@ -1,22 +1,22 @@
 import { api, config } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
-import { Profile } from "../models/Profile";
-import { ProfileProperty } from "../models/ProfileProperty";
+import { GrouparooRecord } from "../models/Record";
+import { RecordProperty } from "../models/RecordProperty";
 import { internalRun } from "../modules/internalRun";
 import { Op } from "sequelize";
 import { ConfigWriter } from "../modules/configWriter";
-import { ProfileOps } from "../modules/ops/profile";
+import { RecordOps } from "../modules/ops/record";
 import { AsyncReturnType } from "type-fest";
 import Sequelize from "sequelize";
 import { APIData } from "../modules/apiData";
 
-export class ProfilesList extends AuthenticatedAction {
+export class GrouparooRecordsList extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "profiles:list";
-    this.description = "list all the profiles in a group";
+    this.name = "records:list";
+    this.description = "list all the records in a group";
     this.outputExample = {};
-    this.permission = { topic: "profile", mode: "read" };
+    this.permission = { topic: "record", mode: "read" };
     this.inputs = {
       groupId: { required: false },
       searchKey: { required: false },
@@ -37,23 +37,23 @@ export class ProfilesList extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const { profiles, total } = await ProfileOps.search(params);
-    const profileData: AsyncReturnType<Profile["apiData"]>[] = [];
-    for (const profile of profiles) {
-      profileData.push(await profile.apiData());
+    const { records, total } = await RecordOps.search(params);
+    const recordData: AsyncReturnType<GrouparooRecord["apiData"]>[] = [];
+    for (const record of records) {
+      recordData.push(await record.apiData());
     }
 
-    return { total, profiles: profileData };
+    return { total, records: recordData };
   }
 }
 
-export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
+export class RecordAutocompleteRecordProperty extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "profiles:autocompleteProfileProperty";
-    this.description = "return matching profile property values";
+    this.name = "records:autocompleteRecordProperty";
+    this.description = "return matching record property values";
     this.outputExample = {};
-    this.permission = { topic: "profile", mode: "read" };
+    this.permission = { topic: "record", mode: "read" };
     this.inputs = {
       propertyId: { required: true },
       match: { required: true },
@@ -72,7 +72,7 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
     const rawValueWhereClause = {};
     rawValueWhereClause[op] = `%${params.match}%`;
 
-    const profileProperties = await ProfileProperty.findAll({
+    const recordProperties = await RecordProperty.findAll({
       attributes: [
         [Sequelize.fn("DISTINCT", Sequelize.col("rawValue")), "rawValue"],
         "propertyId",
@@ -88,20 +88,20 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
     });
 
     return {
-      profileProperties: await Promise.all(
-        profileProperties.map((prop) => prop.getValue())
+      recordProperties: await Promise.all(
+        recordProperties.map((prop) => prop.getValue())
       ),
     };
   }
 }
 
-export class ProfilesImportAndUpdate extends AuthenticatedAction {
+export class GrouparooRecordsImportAndUpdate extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "profiles:importAndUpdate";
-    this.description = "create a run to import and update every profile";
+    this.name = "records:importAndUpdate";
+    this.description = "create a run to import and update every record";
     this.outputExample = {};
-    this.permission = { topic: "profile", mode: "write" };
+    this.permission = { topic: "record", mode: "write" };
     this.inputs = {};
   }
 
@@ -111,13 +111,13 @@ export class ProfilesImportAndUpdate extends AuthenticatedAction {
   }
 }
 
-export class ProfileCreate extends AuthenticatedAction {
+export class RecordCreate extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "profile:create";
-    this.description = "create a profile";
+    this.name = "record:create";
+    this.description = "create a record";
     this.outputExample = {};
-    this.permission = { topic: "profile", mode: "write" };
+    this.permission = { topic: "record", mode: "write" };
     this.inputs = {
       properties: {
         required: false,
@@ -128,54 +128,54 @@ export class ProfileCreate extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const profile = new Profile(params);
-    await profile.save();
+    const record = new GrouparooRecord(params);
+    await record.save();
     if (params.properties) {
-      await profile.addOrUpdateProperties(params.properties);
+      await record.addOrUpdateProperties(params.properties);
     }
-    const groups = await profile.$get("groups");
+    const groups = await record.$get("groups");
 
     await ConfigWriter.run();
 
     return {
-      profile: await profile.apiData(),
+      record: await record.apiData(),
       groups: await Promise.all(groups.map((group) => group.apiData())),
     };
   }
 }
 
-export class ProfileImportAndExport extends AuthenticatedAction {
+export class RecordImportAndExport extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "profile:importAndExport";
-    this.description = "fully import a profile from all apps and update groups";
+    this.name = "record:importAndExport";
+    this.description = "fully import a record from all apps and update groups";
     this.outputExample = {};
-    this.permission = { topic: "profile", mode: "write" };
+    this.permission = { topic: "record", mode: "write" };
     this.inputs = {
       id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const profile = await Profile.findById(params.id);
-    await profile.sync();
-    const groups = await profile.$get("groups");
+    const record = await GrouparooRecord.findById(params.id);
+    await record.sync();
+    const groups = await record.$get("groups");
 
     return {
       success: true,
-      profile: await profile.apiData(),
+      record: await record.apiData(),
       groups: await Promise.all(groups.map((group) => group.apiData())),
     };
   }
 }
 
-export class ProfileEdit extends AuthenticatedAction {
+export class RecordEdit extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "profile:edit";
-    this.description = "edit a profile";
+    this.name = "record:edit";
+    this.description = "edit a record";
     this.outputExample = {};
-    this.permission = { topic: "profile", mode: "write" };
+    this.permission = { topic: "record", mode: "write" };
     this.inputs = {
       id: { required: true },
       properties: {
@@ -192,64 +192,64 @@ export class ProfileEdit extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const profile = await Profile.findById(params.id);
+    const record = await GrouparooRecord.findById(params.id);
 
-    await profile.update(params);
+    await record.update(params);
     if (params.properties) {
-      await profile.addOrUpdateProperties(params.properties);
+      await record.addOrUpdateProperties(params.properties);
     }
     if (params.removedProperties) {
-      await profile.removeProperties(params.removedProperties);
+      await record.removeProperties(params.removedProperties);
     }
 
-    await profile.sync(false);
+    await record.sync(false);
 
-    const groups = await profile.$get("groups");
+    const groups = await record.$get("groups");
 
     return {
-      profile: await profile.apiData(),
+      record: await record.apiData(),
       groups: await Promise.all(groups.map((group) => group.apiData())),
     };
   }
 }
 
-export class ProfileView extends AuthenticatedAction {
+export class RecordView extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "profile:view";
-    this.description = "view a profile and members";
+    this.name = "record:view";
+    this.description = "view a record and members";
     this.outputExample = {};
-    this.permission = { topic: "profile", mode: "read" };
+    this.permission = { topic: "record", mode: "read" };
     this.inputs = {
       id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const profile = await Profile.findById(params.id);
-    const groups = await profile.$get("groups");
+    const record = await GrouparooRecord.findById(params.id);
+    const groups = await record.$get("groups");
     return {
-      profile: await profile.apiData(),
+      record: await record.apiData(),
       groups: await Promise.all(groups.map((group) => group.apiData())),
     };
   }
 }
 
-export class ProfileDestroy extends AuthenticatedAction {
+export class RecordDestroy extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "profile:destroy";
-    this.description = "destroy a profile";
+    this.name = "record:destroy";
+    this.description = "destroy a record";
     this.outputExample = {};
-    this.permission = { topic: "profile", mode: "write" };
+    this.permission = { topic: "record", mode: "write" };
     this.inputs = {
       id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const profile = await Profile.findById(params.id);
-    await profile.destroy();
+    const record = await GrouparooRecord.findById(params.id);
+    await record.destroy();
 
     await ConfigWriter.run();
 

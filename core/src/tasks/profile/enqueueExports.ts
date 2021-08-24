@@ -1,26 +1,26 @@
 import { Op } from "sequelize";
 import { config } from "actionhero";
 import { Import } from "../../models/Import";
-import { Profile } from "../../models/Profile";
+import { GrouparooRecord } from "../../models/Record";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { ProfileProperty } from "../../models/ProfileProperty";
+import { RecordProperty } from "../../models/RecordProperty";
 import { CLS } from "../../modules/cls";
 
-export class ProfilesEnqueueExports extends CLSTask {
+export class GrouparooRecordsEnqueueExports extends CLSTask {
   constructor() {
     super();
-    this.name = "profiles:enqueueExports";
+    this.name = "records:enqueueExports";
     this.description =
-      "If a profile is ready and has an import that has not exported, enqueue profile:export for them";
+      "If a record is ready and has an import that has not exported, enqueue record:export for them";
     this.frequency = 1000 * 10;
-    this.queue = "profiles";
+    this.queue = "records";
     this.inputs = {};
   }
 
   async runWithinTransaction() {
     const limit: number = config.batchSize.imports;
 
-    const profiles = await Profile.findAll({
+    const records = await GrouparooRecord.findAll({
       limit,
       where: {
         state: "ready",
@@ -30,23 +30,27 @@ export class ProfilesEnqueueExports extends CLSTask {
           model: Import,
           attributes: [],
           where: {
-            profileUpdatedAt: { [Op.not]: null },
+            recordUpdatedAt: { [Op.not]: null },
             groupsUpdatedAt: { [Op.not]: null },
             exportedAt: null,
           },
         },
-        { model: ProfileProperty, attributes: ["state"], required: true },
+        {
+          model: RecordProperty,
+          attributes: ["state"],
+          required: true,
+        },
       ],
     });
 
-    const readyProfiles = profiles.filter(
-      (profile) => !profile.profileProperties.find((p) => p.state !== "ready")
+    const readyRecords = records.filter(
+      (record) => !record.recordProperties.find((p) => p.state !== "ready")
     );
 
-    for (const profile of readyProfiles) {
-      await CLS.enqueueTask("profile:export", {
+    for (const record of readyRecords) {
+      await CLS.enqueueTask("record:export", {
         force: false,
-        profileId: profile.id,
+        recordId: record.id,
       });
     }
   }

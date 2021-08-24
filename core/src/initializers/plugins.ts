@@ -179,21 +179,21 @@ export class Plugins extends Initializer {
         }
         if (
           connection.direction === "import" &&
-          !connection.methods.profiles &&
-          !connection.methods.profileProperty &&
-          !connection.methods.profileProperties
+          !connection.methods.records &&
+          !connection.methods.recordProperty &&
+          !connection.methods.recordProperties
         ) {
           errors.push(
-            `import connections must provide a way to import profiles`
+            `import connections must provide a way to import records`
           );
         }
         if (
           connection.direction === "export" &&
-          !connection.methods.exportProfile &&
-          !connection.methods.exportProfiles
+          !connection.methods.exportRecord &&
+          !connection.methods.exportRecords
         ) {
           errors.push(
-            `export connections must provide either connection.methods.exportProfile or connection.methods.exportProfiles`
+            `export connections must provide either connection.methods.exportRecord or connection.methods.exportRecords`
           );
         }
       });

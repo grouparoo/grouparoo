@@ -1,13 +1,13 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Property } from "../../models/Property";
-import { ProfileProperty } from "../../models/ProfileProperty";
+import { RecordProperty } from "../../models/RecordProperty";
 
 export class PropertyDestroy extends CLSTask {
   constructor() {
     super();
-    this.name = "property:updateProfileProperties";
+    this.name = "property:updateRecordProperties";
     this.description =
-      "update related information on profile properties when a property changes";
+      "update related information on record properties when a property changes";
     this.frequency = 0;
     this.queue = "properties";
     this.inputs = {
@@ -21,7 +21,7 @@ export class PropertyDestroy extends CLSTask {
     });
     if (!property) return;
 
-    await ProfileProperty.update(
+    await RecordProperty.update(
       { unique: property.unique },
       { where: { propertyId: property.id } }
     );

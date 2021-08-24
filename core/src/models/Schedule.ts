@@ -116,7 +116,7 @@ export class Schedule extends LoggedModel<Schedule> {
   @AllowNull(false)
   @Default(false)
   @Column
-  confirmProfiles: boolean;
+  confirmRecords: boolean;
 
   @HasMany(() => Option, {
     foreignKey: "ownerId",
@@ -202,7 +202,7 @@ export class Schedule extends LoggedModel<Schedule> {
       sourceId: this.sourceId,
       recurring: this.recurring,
       locked: this.locked,
-      confirmProfiles: this.confirmProfiles,
+      confirmRecords: this.confirmRecords,
       options,
       filters,
       recurringFrequency: this.recurringFrequency,
@@ -262,7 +262,7 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async getConfigObject(): Promise<ScheduleConfigurationObject> {
-    const { name, recurring, recurringFrequency, confirmProfiles } = this;
+    const { name, recurring, recurringFrequency, confirmRecords } = this;
 
     this.source = await this.$get("source");
     const sourceId = this.source?.getConfigId();
@@ -279,7 +279,7 @@ export class Schedule extends LoggedModel<Schedule> {
       sourceId,
       recurring,
       recurringFrequency,
-      confirmProfiles,
+      confirmRecords,
       options,
       filters,
     };

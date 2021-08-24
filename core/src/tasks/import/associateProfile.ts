@@ -5,14 +5,14 @@ import { CLS } from "../../modules/cls";
 
 const maxAttempts = 3;
 
-export class ImportAssociateProfile extends Task {
-  // This Task extends Task rather than CLSTask as we want to be able to view newly created profiles happening in parallel to this task/transaction
+export class ImportAssociateRecord extends Task {
+  // This Task extends Task rather than CLSTask as we want to be able to view newly created records happening in parallel to this task/transaction
   // We still want things to be in a transaction, so we wrap the run method custom
   // This Task has no side effects
   constructor() {
     super();
-    this.name = "import:associateProfile";
-    this.description = "find or create the profile this import is about";
+    this.name = "import:associateRecord";
+    this.description = "find or create the record this import is about";
     this.frequency = 0;
     this.queue = "imports";
     this.plugins = ["QueueLock", "JobLock"];
@@ -34,11 +34,11 @@ export class ImportAssociateProfile extends Task {
           async () => {
             _import = await Import.findOne({ where: { id: importId } });
             if (!_import) return;
-            if (_import.profileId) return;
+            if (_import.recordId) return;
 
-            const { profile } = await _import.associateProfile();
-            await profile.addOrUpdateProperties(_import.data, undefined, true);
-            await profile.markPending();
+            const { record } = await _import.associateRecord();
+            await record.addOrUpdateProperties(_import.data, undefined, true);
+            await record.markPending();
           },
           { write: true }
         );

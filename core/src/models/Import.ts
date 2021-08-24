@@ -17,7 +17,7 @@ import {
 import * as uuid from "uuid";
 import { config } from "actionhero";
 import { CLS } from "../modules/cls";
-import { Profile } from "./Profile";
+import { GrouparooRecord } from "./Record";
 import { Run } from "./Run";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
@@ -29,7 +29,7 @@ export interface ImportData {
   [key: string]: any;
 }
 
-export interface ImportProfileProperties {
+export interface ImportRecordProperties {
   [key: string]: any;
 }
 
@@ -81,38 +81,38 @@ export class Import extends Model {
     this.setDataValue("rawData", JSON.stringify(value));
   }
 
-  @ForeignKey(() => Profile)
+  @ForeignKey(() => GrouparooRecord)
   @Column
-  profileId: string;
+  recordId: string;
 
-  @BelongsTo(() => Profile)
-  profile: Profile;
+  @BelongsTo(() => GrouparooRecord)
+  record: GrouparooRecord;
 
   @AllowNull(false)
   @Default(false)
   @Column
-  createdProfile: boolean;
+  createdRecord: boolean;
 
   @Column(DataType.TEXT)
-  // oldProfileProperties: string;
-  get oldProfileProperties(): ImportProfileProperties {
+  // oldRecordProperties: string;
+  get oldRecordProperties(): ImportRecordProperties {
     //@ts-ignore
-    return JSON.parse(this.getDataValue("oldProfileProperties") || "{}");
+    return JSON.parse(this.getDataValue("oldRecordProperties") || "{}");
   }
-  set oldProfileProperties(value: ImportProfileProperties) {
+  set oldRecordProperties(value: ImportRecordProperties) {
     //@ts-ignore
-    this.setDataValue("oldProfileProperties", JSON.stringify(value));
+    this.setDataValue("oldRecordProperties", JSON.stringify(value));
   }
 
   @Column(DataType.TEXT)
-  // newProfileProperties: string;
-  get newProfileProperties(): ImportProfileProperties {
+  // newRecordProperties: string;
+  get newRecordProperties(): ImportRecordProperties {
     //@ts-ignore
-    return JSON.parse(this.getDataValue("newProfileProperties") || "{}");
+    return JSON.parse(this.getDataValue("newRecordProperties") || "{}");
   }
-  set newProfileProperties(value: ImportProfileProperties) {
+  set newRecordProperties(value: ImportRecordProperties) {
     //@ts-ignore
-    this.setDataValue("newProfileProperties", JSON.stringify(value));
+    this.setDataValue("newRecordProperties", JSON.stringify(value));
   }
 
   @Column(DataType.TEXT)
@@ -141,10 +141,10 @@ export class Import extends Model {
   startedAt: Date;
 
   @Column
-  profileAssociatedAt: Date;
+  recordAssociatedAt: Date;
 
   @Column
-  profileUpdatedAt: Date;
+  recordUpdatedAt: Date;
 
   @Column
   groupsUpdatedAt: Date;
@@ -173,7 +173,7 @@ export class Import extends Model {
       id: this.id,
       creatorType: this.creatorType,
       creatorId: this.creatorId,
-      profileId: this.profileId,
+      recordId: this.recordId,
 
       //data
       data,
@@ -182,15 +182,15 @@ export class Import extends Model {
       // lifecycle timestamps
       createdAt: APIData.formatDate(this.createdAt),
       startedAt: APIData.formatDate(this.startedAt),
-      profileAssociatedAt: APIData.formatDate(this.profileAssociatedAt),
-      profileUpdatedAt: APIData.formatDate(this.profileUpdatedAt),
+      recordAssociatedAt: APIData.formatDate(this.recordAssociatedAt),
+      recordUpdatedAt: APIData.formatDate(this.recordUpdatedAt),
       groupsUpdatedAt: APIData.formatDate(this.groupsUpdatedAt),
       exportedAt: APIData.formatDate(this.exportedAt),
 
       // data before and after
-      createdProfile: this.createdProfile,
-      oldProfileProperties: this.oldProfileProperties,
-      newProfileProperties: this.newProfileProperties,
+      createdRecord: this.createdRecord,
+      oldRecordProperties: this.oldRecordProperties,
+      newRecordProperties: this.newRecordProperties,
       oldGroupIds: this.oldGroupIds,
       newGroupIds: this.newGroupIds,
 
@@ -216,8 +216,8 @@ export class Import extends Model {
     }
   }
 
-  async associateProfile() {
-    return ImportOps.associateProfile(this);
+  async associateRecord() {
+    return ImportOps.associateRecord(this);
   }
 
   // --- Class Methods --- //
@@ -242,10 +242,10 @@ export class Import extends Model {
 
   @AfterCreate
   static async enqueueTask(instance: Import) {
-    if (!instance.profileId) {
+    if (!instance.recordId) {
       await CLS.enqueueTaskIn(
         config.tasks.timeout + 1,
-        "import:associateProfile",
+        "import:associateRecord",
         { importId: instance.id }
       );
     }

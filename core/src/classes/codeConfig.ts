@@ -16,7 +16,7 @@ export interface IdsByClass {
   apikey?: string[];
   team?: string[];
   teammember?: string[];
-  profile?: string[];
+  record?: string[];
 }
 
 interface ConfigurationObject {
@@ -54,7 +54,7 @@ export interface GroupConfigurationObject extends ConfigurationObject {
   rules?: GroupRuleWithKey[];
 }
 
-export interface ProfileConfigurationObject extends ConfigurationObject {
+export interface RecordConfigurationObject extends ConfigurationObject {
   properties?: { [key: string]: Array<string | boolean | number | Date> };
 }
 
@@ -74,7 +74,7 @@ export interface ScheduleConfigurationObject extends ConfigurationObject {
   sourceId: string;
   recurring?: boolean;
   recurringFrequency?: number;
-  confirmProfiles?: boolean;
+  confirmRecords?: boolean;
   options?: { [key: string]: any };
   filters?: PropertyFiltersWithKey[];
 }
@@ -117,7 +117,7 @@ export type AnyConfigurationObject =
   | AppConfigurationObject
   | DestinationConfigurationObject
   | GroupConfigurationObject
-  | ProfileConfigurationObject
+  | RecordConfigurationObject
   | PropertyConfigurationObject
   | ScheduleConfigurationObject
   | SettingConfigurationObject

@@ -110,7 +110,12 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         href: "/dashboard",
         icon: "home",
       },
-      { type: "link", title: "Profiles", href: "/profiles", icon: "user" },
+      {
+        type: "link",
+        title: "GrouparooRecords",
+        href: "/records",
+        icon: "user",
+      },
       {
         type: "link",
         title: "Properties",
@@ -265,8 +270,8 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       },
       {
         type: "link",
-        title: "Profiles",
-        href: "/profiles",
+        title: "GrouparooRecords",
+        href: "/records",
         icon: "user",
       },
       {

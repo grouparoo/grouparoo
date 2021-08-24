@@ -30,8 +30,8 @@ import { Destination } from "./Destination";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { GroupMember } from "./GroupMember";
 import { GroupRule } from "./GroupRule";
-import { Profile } from "./Profile";
-import { ProfileProperty } from "./ProfileProperty";
+import { GrouparooRecord } from "./Record";
+import { RecordProperty } from "./RecordProperty";
 import { Property, propertyJSToSQLType } from "./Property";
 import { Run } from "./Run";
 import { Setting } from "./Setting";
@@ -142,10 +142,10 @@ export class Group extends LoggedModel<Group> {
   @HasMany(() => Destination)
   destinations: Destination[];
 
-  @BelongsToMany(() => Profile, () => GroupMember)
-  profiles: Profile[];
+  @BelongsToMany(() => GrouparooRecord, () => GroupMember)
+  records: GrouparooRecord[];
 
-  async profilesCount(options = {}) {
+  async recordsCount(options = {}) {
     let queryOptions = { where: { groupId: this.id } };
     if (options) {
       queryOptions = Object.assign(queryOptions, options);
@@ -173,10 +173,10 @@ export class Group extends LoggedModel<Group> {
       const property = await Property.findOneWithCache(rule.propertyId);
       const type = property
         ? property.type
-        : TopLevelGroupRules.find((tlgr) => tlgr.key === rule.profileColumn)
+        : TopLevelGroupRules.find((tlgr) => tlgr.key === rule.recordColumn)
             .type;
       rulesWithKey.push({
-        key: property ? property.key : rule.profileColumn,
+        key: property ? property.key : rule.recordColumn,
         topLevel: property ? false : true,
         type: type,
         operation: {
@@ -245,7 +245,7 @@ export class Group extends LoggedModel<Group> {
         position: parseInt(i) + 1,
         groupId: this.id,
         propertyId: property ? property.id : null,
-        profileColumn: property ? null : key,
+        recordColumn: property ? null : key,
         op: rule.operation.op,
         match: rule.match,
         relativeMatchNumber: rule.relativeMatchNumber,
@@ -270,7 +270,7 @@ export class Group extends LoggedModel<Group> {
   }
 
   async apiData() {
-    const profilesCount = await this.profilesCount(null);
+    const recordsCount = await this.recordsCount(null);
     const rules = await this.getRules();
     const nextCalculatedAt = await this.nextCalculatedAt();
 
@@ -282,7 +282,7 @@ export class Group extends LoggedModel<Group> {
       matchType: this.matchType,
       state: this.state,
       locked: this.locked,
-      profilesCount,
+      recordsCount,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
       nextCalculatedAt: APIData.formatDate(nextCalculatedAt),
@@ -365,23 +365,23 @@ export class Group extends LoggedModel<Group> {
     return GroupOps.stopPreviousRuns(this);
   }
 
-  async addProfile(profile: Profile, force = true) {
-    await GroupOps.updateProfiles([profile.id], "group", this.id, force);
+  async addRecord(record: GrouparooRecord, force = true) {
+    await GroupOps.updateRecords([record.id], "group", this.id, force);
 
     await GroupMember.create({
       groupId: this.id,
-      profileId: profile.id,
+      recordId: record.id,
     });
   }
 
-  async removeProfile(profile: Profile, force = false) {
+  async removeRecord(record: GrouparooRecord, force = false) {
     const membership = await GroupMember.findOne({
-      where: { groupId: this.id, profileId: profile.id },
+      where: { groupId: this.id, recordId: record.id },
     });
 
-    if (!membership) throw new Error("profile is not a member of this group");
+    if (!membership) throw new Error("record is not a member of this group");
 
-    await GroupOps.updateProfiles([profile.id], "group", this.id, force);
+    await GroupOps.updateRecords([record.id], "group", this.id, force);
 
     await membership.destroy();
   }
@@ -413,8 +413,8 @@ export class Group extends LoggedModel<Group> {
     return GroupOps.removePreviousRunGroupMembers(this, run, limit);
   }
 
-  async updateProfilesMembership(profiles: Profile[]) {
-    return GroupOps.updateProfilesMembership(this, profiles);
+  async updateRecordsMembership(records: GrouparooRecord[]) {
+    return GroupOps.updateRecordsMembership(this, records);
   }
 
   async countPotentialMembers(
@@ -437,7 +437,7 @@ export class Group extends LoggedModel<Group> {
   async _buildGroupMemberQueryParts(
     rules?: GroupRuleWithKey[],
     matchType: typeof matchTypes[number] = this.matchType,
-    profileState?: string
+    recordState?: string
   ) {
     if (this.type !== "calculated") {
       throw new Error("only calculated groups can be calculated");
@@ -449,12 +449,12 @@ export class Group extends LoggedModel<Group> {
     const wheres: WhereAttributeHash[] = [];
     const localNumbers = [].concat(numbers);
 
-    if (profileState) wheres.push({ state: profileState });
+    if (recordState) wheres.push({ state: recordState });
 
     for (const i in rules) {
       const rule = rules[i];
       const number = localNumbers.pop();
-      const alias = `ProfileProperties_${number}`;
+      const alias = `RecordProperties_${number}`;
       const {
         key,
         operation,
@@ -488,7 +488,7 @@ export class Group extends LoggedModel<Group> {
         rawValueMatch[Op[operation.op]] =
           match.toString().toLocaleLowerCase() === "null" ? null : match;
 
-        // in the case of Array property negation, we also want to consider those profiles with the property never set
+        // in the case of Array property negation, we also want to consider those records with the property never set
         if (
           !topLevel &&
           property.isArray &&
@@ -510,7 +510,7 @@ export class Group extends LoggedModel<Group> {
       }
 
       if (!topLevel) {
-        // when we are considering a profile property
+        // when we are considering a record property
         localWhereGroup[Op.and] = [
           Sequelize.where(
             Sequelize.cast(
@@ -521,7 +521,7 @@ export class Group extends LoggedModel<Group> {
           ),
         ];
       } else {
-        // when we are considering a column on the profiles table
+        // when we are considering a column on the records table
         const topLevelGroupRule = TopLevelGroupRules.find(
           (tlgr) => tlgr.key === key
         );
@@ -556,7 +556,7 @@ export class Group extends LoggedModel<Group> {
         localWhereGroup[Op.and].push(todayBoundWhereGroup);
       }
 
-      // in the case of Array property negation, we also need to do a sub-query to subtract the profiles which would match the affirmative match for this match
+      // in the case of Array property negation, we also need to do a sub-query to subtract the records which would match the affirmative match for this match
       if (
         !topLevel &&
         match !== null &&
@@ -603,7 +603,7 @@ export class Group extends LoggedModel<Group> {
           );
 
         const affirmativeArrayMatch = Sequelize.literal(
-          `"ProfileMultipleAssociationShim"."id" NOT IN (SELECT "profileId" FROM "profileProperties" WHERE ${whereClause})`
+          `"RecordMultipleAssociationShim"."id" NOT IN (SELECT "recordId" FROM "recordProperties" WHERE ${whereClause})`
         );
         localWhereGroup[Op.and].push(affirmativeArrayMatch);
       }
@@ -618,7 +618,7 @@ export class Group extends LoggedModel<Group> {
             [`$${alias}.propertyId$`]: property.id,
           },
           attributes: [],
-          model: ProfileProperty,
+          model: RecordProperty,
           as: alias,
         });
       }

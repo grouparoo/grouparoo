@@ -71,7 +71,7 @@ export class StatusTask extends CLSTask {
       }
     }
 
-    if (pendingCollections < 4) return false; // not every required model has been checked yet (PENDING: profile, runs, import, export)
+    if (pendingCollections < 4) return false; // not every required model has been checked yet (PENDING: record, runs, import, export)
     return pendingItems > 0 ? false : true;
   }
 

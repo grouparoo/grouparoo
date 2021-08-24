@@ -30,6 +30,7 @@ import { DestinationOps } from "./../modules/ops/destination";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { App } from "./App";
+import { GrouparooRecord } from "./../models/Record";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { Export } from "./Export";
 import { ExportProcessor } from "./ExportProcessor";
@@ -37,7 +38,6 @@ import { Group } from "./Group";
 import { GroupRule } from "./GroupRule";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
-import { Profile } from "./Profile";
 import { Property } from "./Property";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
@@ -69,7 +69,7 @@ export const DestinationSyncModeData: Record<
   sync: {
     key: "sync",
     displayName: "Sync",
-    description: "Sync all profiles (create, update, delete)",
+    description: "Sync all records (create, update, delete)",
     operations: {
       create: true,
       update: true,
@@ -79,7 +79,7 @@ export const DestinationSyncModeData: Record<
   additive: {
     key: "additive",
     displayName: "Additive",
-    description: "Sync all profiles, but do not delete (create, update)",
+    description: "Sync all records, but do not delete (create, update)",
     operations: {
       create: true,
       update: true,
@@ -89,7 +89,7 @@ export const DestinationSyncModeData: Record<
   enrich: {
     key: "enrich",
     displayName: "Enrich",
-    description: "Only update existing profiles (update)",
+    description: "Only update existing records (update)",
     operations: {
       create: false,
       update: true,
@@ -392,7 +392,7 @@ export class Destination extends LoggedModel<Destination> {
         !exportArrayProperties.includes("*")
       ) {
         throw new Error(
-          `${k} is an array profile property that ${this.name} cannot support`
+          `${k} is an array record property that ${this.name} cannot support`
         );
       }
     });
@@ -462,47 +462,41 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.destinationMappingOptions(this, cached, saveCache);
   }
 
-  async profilePreview(
-    profile: Profile,
+  async recordPreview(
+    record: GrouparooRecord,
     mapping: MappingHelper.Mappings,
     destinationGroupMemberships: {
       [groupId: string]: string;
     }
   ) {
-    return DestinationOps.profilePreview(
+    return DestinationOps.recordPreview(
       this,
-      profile,
+      record,
       mapping,
       destinationGroupMemberships
     );
   }
 
-  async checkProfileWillBeExported(profile: Profile) {
-    const profileGroupIds = (
-      await profile.$get("groups", { attributes: ["id"] })
+  async checkRecordWillBeExported(record: GrouparooRecord) {
+    const recordGroupIds = (
+      await record.$get("groups", { attributes: ["id"] })
     ).map((group) => group.id);
-    if (!profileGroupIds.includes(this.groupId)) {
+    if (!recordGroupIds.includes(this.groupId)) {
       throw new Error(
-        `profile ${profile.id} will not be exported by this destination`
+        `record ${record.id} will not be exported by this destination`
       );
     }
 
     return true;
   }
 
-  async exportProfile(
-    profile: Profile,
+  async exportRecord(
+    record: GrouparooRecord,
     sync = false,
     force = false,
     saveExports = true
   ) {
-    return DestinationOps.exportProfile(
-      this,
-      profile,
-      sync,
-      force,
-      saveExports
-    );
+    return DestinationOps.exportRecord(this, record, sync, force, saveExports);
   }
 
   async sendExport(_export: Export, sync = false) {
@@ -600,18 +594,18 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeCreate
-  static async ensureExportProfilesMethod(instance: Destination) {
+  static async ensureExportRecordsMethod(instance: Destination) {
     const { pluginConnection } = await instance.getPlugin();
     if (!pluginConnection) {
       throw new Error(`a destination of type ${instance.type} cannot be found`);
     }
 
     if (
-      !pluginConnection?.methods.exportProfile &&
-      !pluginConnection?.methods.exportProfiles
+      !pluginConnection?.methods.exportRecord &&
+      !pluginConnection?.methods.exportRecords
     ) {
       throw new Error(
-        `a destination of type ${instance.type} cannot be created as there are no profile export methods`
+        `a destination of type ${instance.type} cannot be created as there are no record export methods`
       );
     }
   }
@@ -710,7 +704,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   /**
-   * Determine which destinations are interested in this profile due to the groups they are tracking
+   * Determine which destinations are interested in this record due to the groups they are tracking
    */
   static async destinationsForGroups(
     oldGroups: Group[] = [],

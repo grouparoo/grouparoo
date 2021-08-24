@@ -14,14 +14,14 @@ import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
 import { Group } from "./Group";
 import { Log } from "./Log";
-import { ProfileProperty } from "./ProfileProperty";
+import { RecordProperty } from "./RecordProperty";
 import { Import } from "./Import";
 import { Export } from "./Export";
-import { StateMachine } from "./../modules/stateMachine";
-import { ProfileOps } from "../modules/ops/profile";
+import { StateMachine } from "../modules/stateMachine";
+import { RecordOps } from "../modules/ops/record";
 import { APIData } from "../modules/apiData";
 import { GroupRule } from "./GroupRule";
-import { ProfileConfigurationObject } from "../classes/codeConfig";
+import { RecordConfigurationObject } from "../classes/codeConfig";
 import { Source } from "./Source";
 
 const STATES = ["draft", "pending", "ready"] as const;
@@ -33,14 +33,15 @@ const STATE_TRANSITIONS = [
     from: "pending",
     to: "ready",
     checks: [
-      (instance: Profile) => instance.validateProfilePropertiesAreReady(),
+      (instance: GrouparooRecord) =>
+        instance.validateRecordPropertiesAreReady(),
     ],
   },
   { from: "ready", to: "pending", checks: [] },
 ];
 
-@Table({ tableName: "profiles", paranoid: false })
-export class Profile extends LoggedModel<Profile> {
+@Table({ tableName: "records", paranoid: false })
+export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   idPrefix() {
     return "pro";
   }
@@ -50,8 +51,8 @@ export class Profile extends LoggedModel<Profile> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @HasMany(() => ProfileProperty)
-  profileProperties: ProfileProperty[];
+  @HasMany(() => RecordProperty)
+  recordProperties: RecordProperty[];
 
   @HasMany(() => GroupMember)
   groupMembers: GroupMember[];
@@ -81,7 +82,7 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async getProperties() {
-    return ProfileOps.getProperties(this);
+    return RecordOps.getProperties(this);
   }
 
   async simplifiedProperties() {
@@ -101,7 +102,7 @@ export class Profile extends LoggedModel<Profile> {
     toLock = true,
     ignoreMissingProperties = false
   ) {
-    return ProfileOps.addOrUpdateProperties(
+    return RecordOps.addOrUpdateProperties(
       [this],
       [properties],
       toLock,
@@ -110,24 +111,24 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async removeProperty(key: string) {
-    return ProfileOps.removeProperty(this, key);
+    return RecordOps.removeProperty(this, key);
   }
 
   async removeProperties(properties: Array<string>) {
-    return ProfileOps.removeProperties(this, properties);
+    return RecordOps.removeProperties(this, properties);
   }
 
   async buildNullProperties(state = "pending") {
-    return ProfileOps.buildNullProperties([this], state);
+    return RecordOps.buildNullProperties([this], state);
   }
 
   async markPending() {
-    await ProfileOps.markPendingByIds([this.id]);
+    await RecordOps.markPendingByIds([this.id]);
     await this.reload();
   }
 
   async sync(force = true, toExport = true) {
-    return ProfileOps.sync(this, force, toExport);
+    return RecordOps.sync(this, force, toExport);
   }
 
   async snapshot(saveExports = false) {
@@ -145,12 +146,12 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async updateGroupMembership() {
-    const data = await ProfileOps.updateGroupMemberships([this]);
+    const data = await RecordOps.updateGroupMemberships([this]);
     return data[this.id];
   }
 
   async import(toSave = true, toLock = true) {
-    return ProfileOps._import(this, toSave, toLock);
+    return RecordOps._import(this, toSave, toLock);
   }
 
   async export(
@@ -159,13 +160,7 @@ export class Profile extends LoggedModel<Profile> {
     saveExports = true,
     sync = true
   ) {
-    return ProfileOps._export(
-      this,
-      force,
-      oldGroupsOverride,
-      saveExports,
-      sync
-    );
+    return RecordOps._export(this, force, oldGroupsOverride, saveExports, sync);
   }
 
   async logMessage(verb: "create" | "update" | "destroy") {
@@ -173,31 +168,31 @@ export class Profile extends LoggedModel<Profile> {
 
     switch (verb) {
       case "create":
-        message = `profile created`;
+        message = `record created`;
         break;
       case "update":
-        message = `profile updated`;
+        message = `record updated`;
         break;
       case "destroy":
-        message = `profile destroyed`;
+        message = `record destroyed`;
         break;
     }
 
     return message;
   }
 
-  async validateProfilePropertiesAreReady() {
+  async validateRecordPropertiesAreReady() {
     const properties = await this.getProperties();
     for (const k in properties) {
       if (properties[k].state !== "ready") {
         throw new Error(
-          `cannot transition profile ${this.id} to ready state as not all properties are ready (${k})`
+          `cannot transition record ${this.id} to ready state as not all properties are ready (${k})`
         );
       }
     }
   }
 
-  async getConfigObject(): Promise<ProfileConfigurationObject> {
+  async getConfigObject(): Promise<RecordConfigurationObject> {
     const properties = await this.getProperties();
     const directlyMappedProps: {
       [key: string]: Array<string | boolean | number | Date>;
@@ -212,7 +207,7 @@ export class Profile extends LoggedModel<Profile> {
 
     return {
       id: this.id,
-      class: "Profile",
+      class: "GrouparooRecord",
       properties: directlyMappedProps,
     };
   }
@@ -225,55 +220,55 @@ export class Profile extends LoggedModel<Profile> {
     return instance;
   }
 
-  static async findOrCreateByUniqueProfileProperties(
+  static async findOrCreateByUniqueRecordProperties(
     hash: {
       [key: string]: Array<string | number | boolean | Date>;
     },
     source?: boolean | Source
   ) {
-    return ProfileOps.findOrCreateByUniqueProfileProperties(hash, source);
+    return RecordOps.findOrCreateByUniqueRecordProperties(hash, source);
   }
 
   @BeforeSave
-  static async updateState(instance: Profile) {
+  static async updateState(instance: GrouparooRecord) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @AfterCreate
-  static async buildNullPropertiesForNewProfile(instance: Profile) {
+  static async buildNullPropertiesForNewRecord(instance: GrouparooRecord) {
     await instance.buildNullProperties();
   }
 
   @AfterDestroy
-  static async removeFromDestinations(instance: Profile) {
+  static async removeFromDestinations(instance: GrouparooRecord) {
     await instance.export();
   }
 
   @AfterDestroy
-  static async destroyProfileProperties(instance: Profile) {
-    await ProfileProperty.destroy({
-      where: { profileId: instance.id },
+  static async destroyRecordProperties(instance: GrouparooRecord) {
+    await RecordProperty.destroy({
+      where: { recordId: instance.id },
     });
   }
 
   @AfterDestroy
-  static async destroyGroupMembers(instance: Profile) {
+  static async destroyGroupMembers(instance: GrouparooRecord) {
     await GroupMember.destroy({
-      where: { profileId: instance.id },
+      where: { recordId: instance.id },
     });
   }
 
   @AfterDestroy
-  static async destroyImports(instance: Profile) {
+  static async destroyImports(instance: GrouparooRecord) {
     await Import.destroy({
-      where: { profileId: instance.id },
+      where: { recordId: instance.id },
     });
   }
 
   @AfterDestroy
-  static async destroyExports(instance: Profile) {
+  static async destroyExports(instance: GrouparooRecord) {
     await Export.destroy({
-      where: { profileId: instance.id },
+      where: { recordId: instance.id },
     });
   }
 }

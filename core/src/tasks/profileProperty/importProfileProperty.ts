@@ -1,35 +1,35 @@
 import { RetryableTask } from "../../classes/tasks/retryableTask";
-import { Profile } from "../../models/Profile";
+import { GrouparooRecord } from "../../models/Record";
 import { Property } from "../../models/Property";
-import { ProfileProperty } from "../../models/ProfileProperty";
+import { RecordProperty } from "../../models/RecordProperty";
 import { Mapping } from "../../models/Mapping";
 import { Option } from "../../models/Option";
 import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
 
-export class ImportProfileProperty extends RetryableTask {
+export class ImportRecordProperty extends RetryableTask {
   constructor() {
     super();
-    this.name = "profileProperty:importProfileProperty";
-    this.description = "Import the Profile Property for a Property";
+    this.name = "recordProperty:importRecordProperty";
+    this.description = "Import the GrouparooRecord Property for a Property";
     this.frequency = 0;
-    this.queue = "profileProperties";
+    this.queue = "recordProperties";
     this.inputs = {
-      profileId: { required: true },
+      recordId: { required: true },
       propertyId: { required: true },
     };
   }
 
   async runWithinTransaction(params) {
-    const profile = await Profile.findOne({
-      where: { id: params.profileId },
+    const record = await GrouparooRecord.findOne({
+      where: { id: params.recordId },
     });
 
-    // has this profile been removed since we enqueued the import task?
-    if (!profile) {
-      return ProfileProperty.destroy({
+    // has this record been removed since we enqueued the import task?
+    if (!record) {
+      return RecordProperty.destroy({
         where: {
-          profileId: params.profileId,
+          recordId: params.recordId,
           propertyId: params.propertyId,
         },
       });
@@ -37,7 +37,7 @@ export class ImportProfileProperty extends RetryableTask {
 
     const property = await Property.findOneWithCache(params.propertyId);
     if (!property) return;
-    const profileProperties = await profile.getProperties();
+    const recordProperties = await record.getProperties();
     const source = await property.$get("source", {
       scope: null,
       include: [Option, Mapping],
@@ -46,37 +46,34 @@ export class ImportProfileProperty extends RetryableTask {
 
     let ok = true;
     dependencies.forEach((dep) => {
-      if (profileProperties[dep.key].state !== "ready") ok = false;
+      if (recordProperties[dep.key].state !== "ready") ok = false;
     });
 
     if (!ok) {
       // there's a dependency we don't have yet, sleep a little and will be retried later
-      return ProfileProperty.update(
+      return RecordProperty.update(
         { startedAt: ImportOps.retryStartedAt() },
         {
           where: {
             propertyId: property.id,
-            profileId: profile.id,
+            recordId: record.id,
             state: "pending",
           },
         }
       );
     }
 
-    const propertyValues = await source.importProfileProperty(
-      profile,
-      property
-    );
+    const propertyValues = await source.importRecordProperty(record, property);
 
     if (propertyValues) {
       const hash = {};
       hash[property.id] = Array.isArray(propertyValues)
         ? propertyValues
         : [propertyValues];
-      await profile.addOrUpdateProperties(hash);
+      await record.addOrUpdateProperties(hash);
     } else {
       // got no data back, clear value
-      await ProfileProperty.update(
+      await RecordProperty.update(
         {
           state: "ready",
           rawValue: null,
@@ -86,7 +83,7 @@ export class ImportProfileProperty extends RetryableTask {
         {
           where: {
             propertyId: property.id,
-            profileId: profile.id,
+            recordId: record.id,
             state: "pending",
           },
         }

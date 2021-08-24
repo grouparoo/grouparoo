@@ -15,7 +15,7 @@ export namespace PropertyOps {
   export async function enqueueRuns(property: Property) {
     if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
 
-    await internalRun("property", property.id); // update *all* profiles
+    await internalRun("property", property.id); // update *all* records
 
     const groups = await Group.findAll({
       include: [
@@ -110,7 +110,7 @@ export namespace PropertyOps {
   }
 
   /**
-   * Returns any Profile Properties that this Rule depends on.
+   * Returns any GrouparooRecord Properties that this Rule depends on.
    * For example, if email depends on userId, this method would return [userIdRule]
    */
   export async function dependencies(property: Property) {

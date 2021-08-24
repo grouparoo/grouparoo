@@ -27,8 +27,8 @@ export { Notification } from "./models/Notification";
 export { Mapping } from "./models/Mapping";
 export { Option } from "./models/Option";
 export { Permission } from "./models/Permission";
-export { Profile } from "./models/Profile";
-export { ProfileProperty } from "./models/ProfileProperty";
+export { GrouparooRecord } from "./models/Record";
+export { RecordProperty } from "./models/RecordProperty";
 export {
   Property,
   PropertyTypes,
@@ -36,7 +36,7 @@ export {
   SimplePropertyOptions,
 } from "./models/Property";
 export { Filter } from "./models/Filter";
-export { ProfileMultipleAssociationShim } from "./models/ProfileMultipleAssociationShim";
+export { RecordMultipleAssociationShim } from "./models/RecordMultipleAssociationShim";
 export { Run, HighWaterMark } from "./models/Run";
 export {
   Schedule,

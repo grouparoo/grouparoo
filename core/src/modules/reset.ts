@@ -12,8 +12,8 @@ import { Import } from "../models/Import";
 import { Log } from "../models/Log";
 import { Mapping } from "../models/Mapping";
 import { Option } from "../models/Option";
-import { Profile } from "../models/Profile";
-import { ProfileProperty } from "../models/ProfileProperty";
+import { GrouparooRecord } from "../models/Record";
+import { RecordProperty } from "../models/RecordProperty";
 import { Property } from "../models/Property";
 import { Filter } from "../models/Filter";
 import { Run } from "../models/Run";
@@ -45,8 +45,8 @@ export namespace Reset {
       Import,
       Mapping,
       Option,
-      Profile,
-      ProfileProperty,
+      GrouparooRecord,
+      RecordProperty,
       Property,
       Filter,
       Run,
@@ -75,13 +75,13 @@ export namespace Reset {
 
   /**
    * reset:data
-   * * truncates "data" tables (profiles, groups, etc) but leaves apps, sources, properties
+   * * truncates "data" tables (records, groups, etc) but leaves apps, sources, properties
    * * clears the redis cache
    * * clears resque
    */
   export async function data(callerId: string) {
-    await Profile.truncate();
-    await ProfileProperty.truncate();
+    await GrouparooRecord.truncate();
+    await RecordProperty.truncate();
     await GroupMember.truncate();
     await Import.truncate();
     await Export.truncate();

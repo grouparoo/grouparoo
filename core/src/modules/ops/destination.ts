@@ -5,23 +5,23 @@ import {
   DestinationSyncOperations,
   SimpleDestinationOptions,
 } from "../../models/Destination";
-import { Profile } from "../../models/Profile";
-import { Export, ExportProfilePropertiesWithType } from "../../models/Export";
+import { GrouparooRecord } from "../../models/Record";
+import { Export, ExportRecordPropertiesWithType } from "../../models/Export";
 import { Group } from "../../models/Group";
 import { Property } from "../../models/Property";
 import { MappingHelper } from "../mappingHelper";
 import {
-  ExportedProfile,
-  ExportProfilesPluginMethod,
-  ErrorWithProfileId,
+  ExportedRecord,
+  ExportRecordsPluginMethod,
+  ErrorWithRecordId,
   DestinationMappingOptionsResponseTypes,
   DestinationMappingOptionsMethodResponse,
-  ProcessExportsForProfileIds,
-  ExportProfilesPluginMethodResponse,
+  ProcessExportsForRecordIds,
+  ExportRecordsPluginMethodResponse,
 } from "../../classes/plugin";
 import { config, cache } from "actionhero";
 import { deepStrictEqual } from "assert";
-import { ProfilePropertyOps } from "./profileProperty";
+import { RecordPropertyOps } from "./recordProperty";
 import { destinationTypeConversions } from "../destinationTypeConversions";
 import { GroupMember } from "../../models/GroupMember";
 import { ExportProcessor } from "../../models/ExportProcessor";
@@ -86,27 +86,27 @@ export namespace DestinationOps {
   }
 
   /**
-   * Get a preview of a Profile for this Destination
-   * It is assumed that the profile provided is already in a Group tracked by this Destination
+   * Get a preview of a GrouparooRecord for this Destination
+   * It is assumed that the record provided is already in a Group tracked by this Destination
    */
-  export async function profilePreview(
+  export async function recordPreview(
     destination: Destination,
-    profile: Profile,
+    record: GrouparooRecord,
     mapping: MappingHelper.Mappings,
     destinationGroupMemberships: {
       [groupId: string]: string;
     }
   ) {
-    const profileProperties = await profile.getProperties();
+    const recordProperties = await record.getProperties();
     const mappingKeys = Object.keys(mapping);
-    const mappedProfileProperties = {};
+    const mappedRecordProperties = {};
     const destinationMappingOptions =
       await destination.destinationMappingOptions();
     for (const k of mappingKeys) {
-      const collection = profileProperties[mapping[k]];
+      const collection = recordProperties[mapping[k]];
       if (!collection) continue; // we may have an optional property that hasn't yet been set
 
-      mappedProfileProperties[k] = collection;
+      mappedRecordProperties[k] = collection;
 
       let destinationType: DestinationMappingOptionsResponseTypes = "any";
       for (const j in destinationMappingOptions.properties.required) {
@@ -124,13 +124,13 @@ export namespace DestinationOps {
         }
       }
 
-      mappedProfileProperties[k].values = collection.values.map((value) =>
-        formatOutgoingProfileProperties(value, collection.type, destinationType)
+      mappedRecordProperties[k].values = collection.values.map((value) =>
+        formatOutgoingRecordProperties(value, collection.type, destinationType)
       );
-      mappedProfileProperties[k].type = destinationType;
+      mappedRecordProperties[k].type = destinationType;
     }
 
-    const groups = await profile.$get("groups");
+    const groups = await record.$get("groups");
     const mappedGroupNames = groups
       .filter((group) =>
         Object.keys(destinationGroupMemberships).includes(group.id)
@@ -138,10 +138,10 @@ export namespace DestinationOps {
       .map((group) => destinationGroupMemberships[group.id])
       .sort();
 
-    const apiData = await profile.apiData();
+    const apiData = await record.apiData();
 
     return Object.assign(apiData, {
-      properties: mappedProfileProperties,
+      properties: mappedRecordProperties,
       groupNames: mappedGroupNames,
     });
   }
@@ -275,11 +275,11 @@ export namespace DestinationOps {
   }
 
   /**
-   * Given a Destination and a Profile (and lots of related data), create all the exports that should be sent
+   * Given a Destination and a GrouparooRecord (and lots of related data), create all the exports that should be sent
    */
-  export async function exportProfile(
+  export async function exportRecord(
     destination: Destination,
-    profile: Profile,
+    record: GrouparooRecord,
     synchronous = false,
     force = false,
     saveExports = true
@@ -295,44 +295,44 @@ export namespace DestinationOps {
       await destination.getDestinationGroupMemberships();
     const mapping = await destination.getMapping();
 
-    let mappedOldProfileProperties: ExportProfilePropertiesWithType = {};
-    let mappedNewProfileProperties: ExportProfilePropertiesWithType = {};
+    let mappedOldRecordProperties: ExportRecordPropertiesWithType = {};
+    let mappedNewRecordProperties: ExportRecordPropertiesWithType = {};
     let oldGroupNames: string[] = [];
     let newGroupNames: string[] = [];
     let toDelete = false;
 
     let newGroups = await Group.findAll({
-      include: [{ model: GroupMember, where: { profileId: profile.id } }],
+      include: [{ model: GroupMember, where: { recordId: record.id } }],
     });
 
     if (!newGroups.map((g) => g.id).includes(destination.groupId)) {
       toDelete = true;
     }
 
-    let newProfileProperties = await profile.getProperties();
+    let newRecordProperties = await record.getProperties();
 
     // New and old properties and groups are in the context of this destination and what it has currently been sent
-    // If there is not a mostRecentExport, both old groups and old profile properties are an empty collection
+    // If there is not a mostRecentExport, both old groups and old record properties are an empty collection
     const mostRecentExport = await Export.findOne({
       where: {
         destinationId: destination.id,
-        profileId: profile.id,
+        recordId: record.id,
         state: "complete",
       },
       order: [["completedAt", "desc"]],
     });
 
     if (mostRecentExport && mostRecentExport.toDelete !== true) {
-      mappedOldProfileProperties = JSON.parse(
+      mappedOldRecordProperties = JSON.parse(
         // @ts-ignore
-        mostRecentExport.getDataValue("newProfileProperties")
+        mostRecentExport.getDataValue("newRecordProperties")
       );
       oldGroupNames = mostRecentExport.newGroups;
     }
 
-    // We want to be able to delete profiles that have been removed from their source
+    // We want to be able to delete records that have been removed from their source
     // (new properties would be set to null, so we need the old values to reference them)
-    const directlyMapped = Object.values(newProfileProperties).find(
+    const directlyMapped = Object.values(newRecordProperties).find(
       (p) => p.directlyMapped
     );
     const forceOldPropertyValues =
@@ -344,17 +344,17 @@ export namespace DestinationOps {
       const { type } = property;
 
       if (forceOldPropertyValues) {
-        mappedNewProfileProperties[k] =
-          mappedOldProfileProperties[k] !== undefined
-            ? mappedOldProfileProperties[k]
+        mappedNewRecordProperties[k] =
+          mappedOldRecordProperties[k] !== undefined
+            ? mappedOldRecordProperties[k]
             : { type, rawValue: null };
       } else {
-        mappedNewProfileProperties[k] = {
+        mappedNewRecordProperties[k] = {
           type,
-          rawValue: newProfileProperties[mapping[k]]
+          rawValue: newRecordProperties[mapping[k]]
             ? await Promise.all(
-                newProfileProperties[mapping[k]].values.map((v) =>
-                  ProfilePropertyOps.buildRawValue(v, type)
+                newRecordProperties[mapping[k]].values.map((v) =>
+                  RecordPropertyOps.buildRawValue(v, type)
                 )
               )
             : null,
@@ -362,22 +362,22 @@ export namespace DestinationOps {
       }
     }
 
-    // Send only the properties from the array that should be sent to the Destination, otherwise send the first entry in the array of profile properties
+    // Send only the properties from the array that should be sent to the Destination, otherwise send the first entry in the array of record properties
     const exportArrayProperties = await getExportArrayProperties(destination);
 
-    for (const k in mappedNewProfileProperties) {
+    for (const k in mappedNewRecordProperties) {
       if (
-        mappedNewProfileProperties[k] &&
+        mappedNewRecordProperties[k] &&
         !exportArrayProperties.includes(k) &&
         !exportArrayProperties.includes("*")
       ) {
-        mappedNewProfileProperties[k].rawValue
-          ? (mappedNewProfileProperties[k].rawValue = Array.isArray(
-              mappedNewProfileProperties[k].rawValue
+        mappedNewRecordProperties[k].rawValue
+          ? (mappedNewRecordProperties[k].rawValue = Array.isArray(
+              mappedNewRecordProperties[k].rawValue
             )
-              ? mappedNewProfileProperties[k].rawValue[0]
-              : mappedNewProfileProperties[k].rawValue)
-          : delete mappedNewProfileProperties[k];
+              ? mappedNewRecordProperties[k].rawValue[0]
+              : mappedNewRecordProperties[k].rawValue)
+          : delete mappedNewRecordProperties[k];
       }
     }
 
@@ -408,8 +408,8 @@ export namespace DestinationOps {
       !force &&
       mostRecentExport &&
       deepStrictEqualBoolean(
-        mappedOldProfileProperties,
-        mappedNewProfileProperties
+        mappedOldRecordProperties,
+        mappedNewRecordProperties
       ) &&
       deepStrictEqualBoolean(oldGroupNames.sort(), newGroupNames.sort()) &&
       !toDelete &&
@@ -421,10 +421,10 @@ export namespace DestinationOps {
     let _export: Export;
     const exportArgs = {
       destinationId: destination.id,
-      profileId: profile.id,
+      recordId: record.id,
       startedAt: synchronous ? new Date() : undefined,
-      oldProfileProperties: mappedOldProfileProperties,
-      newProfileProperties: mappedNewProfileProperties,
+      oldRecordProperties: mappedOldRecordProperties,
+      newRecordProperties: mappedNewRecordProperties,
       oldGroups: oldGroupNames.sort(),
       newGroups: newGroupNames.sort(),
       state: "pending",
@@ -447,36 +447,36 @@ export namespace DestinationOps {
     return _export;
   }
 
-  function transformError(error: Error, profileId: string): ErrorWithProfileId {
+  function transformError(error: Error, recordId: string): ErrorWithRecordId {
     if (typeof error === "string") {
       error = new Error(error);
     }
     if (!error) {
-      error = new Error(`unknown export error with profile ${profileId}`);
+      error = new Error(`unknown export error with record ${recordId}`);
     }
-    const myError: ErrorWithProfileId = <ErrorWithProfileId>error;
-    myError.profileId = profileId;
+    const myError: ErrorWithRecordId = <ErrorWithRecordId>error;
+    myError.recordId = recordId;
     // also can have error.errorLevel on it already
     return myError;
   }
 
   async function getBatchFunction(
     destination: Destination
-  ): Promise<ExportProfilesPluginMethod> {
+  ): Promise<ExportRecordsPluginMethod> {
     const { pluginConnection } = await destination.getPlugin();
-    if (pluginConnection.methods.exportProfiles) {
-      return pluginConnection.methods.exportProfiles;
+    if (pluginConnection.methods.exportRecords) {
+      return pluginConnection.methods.exportRecords;
     }
 
-    const method = pluginConnection.methods.exportProfile;
+    const method = pluginConnection.methods.exportRecord;
     if (!method) {
       throw new Error(
-        `destination ${destination.name} (${destination.id}) has no exportProfile or exportProfiles method`
+        `destination ${destination.name} (${destination.id}) has no exportRecord or exportRecords method`
       );
     }
 
     // loop through each one
-    const singleAsBatch: ExportProfilesPluginMethod = async function ({
+    const singleAsBatch: ExportRecordsPluginMethod = async function ({
       connection,
       app,
       appId,
@@ -487,12 +487,12 @@ export namespace DestinationOps {
       syncOperations,
       exports: _exports,
     }) {
-      const outErrors: ErrorWithProfileId[] = [];
+      const outErrors: ErrorWithRecordId[] = [];
       let outRetryDelay: number = undefined;
       let outSuccess = true;
 
       for (const _export of _exports) {
-        const { profileId } = _export;
+        const { recordId } = _export;
         try {
           let { success, retryDelay, error } = await method({
             connection,
@@ -508,7 +508,7 @@ export namespace DestinationOps {
 
           if (!success || error) {
             outSuccess = false;
-            outErrors.push(transformError(error, profileId));
+            outErrors.push(transformError(error, recordId));
           }
           if (retryDelay) {
             if (!outRetryDelay || outRetryDelay < retryDelay) {
@@ -517,7 +517,7 @@ export namespace DestinationOps {
           }
         } catch (err) {
           outSuccess = false;
-          outErrors.push(transformError(err, profileId));
+          outErrors.push(transformError(err, recordId));
         }
       }
 
@@ -530,47 +530,45 @@ export namespace DestinationOps {
     return singleAsBatch;
   }
 
-  async function buildExportedProfiles(
+  async function buildExportedRecords(
     destination: Destination,
     _exports: Export[]
-  ): Promise<ExportedProfile[]> {
-    const exportedProfiles: ExportedProfile[] = [];
+  ): Promise<ExportedRecord[]> {
+    const exportedRecords: ExportedRecord[] = [];
     for (const _export of _exports) {
-      const profile = await _export.$get("profile"); // PERFORMANCE: get all profiles at once
-      exportedProfiles.push({
-        profile,
-        profileId: profile?.id,
-        oldProfileProperties: await formatProfilePropertiesForDestination(
+      const record = await _export.$get("record"); // PERFORMANCE: get all records at once
+      exportedRecords.push({
+        record,
+        recordId: record?.id,
+        oldRecordProperties: await formatRecordPropertiesForDestination(
           _export,
           destination,
-          "oldProfileProperties"
+          "oldRecordProperties"
         ),
-        newProfileProperties: await formatProfilePropertiesForDestination(
+        newRecordProperties: await formatRecordPropertiesForDestination(
           _export,
           destination,
-          "newProfileProperties"
+          "newRecordProperties"
         ),
         oldGroups: _export.oldGroups,
         newGroups: _export.newGroups,
         toDelete: _export.toDelete,
       });
     }
-    return exportedProfiles;
+    return exportedRecords;
   }
 
   export interface CombinedError extends Error {
-    errors?: ErrorWithProfileId[];
+    errors?: ErrorWithRecordId[];
   }
 
   async function handleProcessExports(
     destination: Destination,
     givenExports: Export[],
-    { processDelay, profileIds, remoteKey }: ProcessExportsForProfileIds,
+    { processDelay, recordIds, remoteKey }: ProcessExportsForRecordIds,
     exportProcessor?: ExportProcessor
   ) {
-    const _exports = givenExports.filter((e) =>
-      profileIds.includes(e.profileId)
-    );
+    const _exports = givenExports.filter((e) => recordIds.includes(e.recordId));
 
     if (_exports.length === 0) {
       if (exportProcessor) await exportProcessor.complete();
@@ -597,7 +595,7 @@ export namespace DestinationOps {
   async function updateExports(
     destination: Destination,
     _exports: Export[],
-    exportResult?: ExportProfilesPluginMethodResponse,
+    exportResult?: ExportRecordsPluginMethodResponse,
     combinedError?: CombinedError,
     synchronous = false,
     exportProcessor?: ExportProcessor
@@ -607,7 +605,7 @@ export namespace DestinationOps {
       combinedError = new Error(
         `error exporting ${
           errors ? errors.length : "?"
-        } profiles to destination ${destination.name} (${destination.id}): ${
+        } records to destination ${destination.name} (${destination.id}): ${
           errors ? errors.map((e) => e.message).join(", ") : ""
         }`
       );
@@ -619,7 +617,7 @@ export namespace DestinationOps {
       !exportResult?.success &&
       (!combinedError.errors || combinedError.errors.length === 0)
     ) {
-      // unspecified error, so don't know specific profile with issue.
+      // unspecified error, so don't know specific record with issue.
       const retryexportIds: string[] = [];
       for (const _export of _exports) {
         await _export.setError(combinedError, exportResult?.retryDelay);
@@ -644,7 +642,7 @@ export namespace DestinationOps {
       for (const _export of _exports) {
         if (
           !processExports ||
-          !processExports.profileIds.includes(_export.profileId)
+          !processExports.recordIds.includes(_export.recordId)
         ) {
           // only mark complete if we don't have to process the export later
           await _export.complete();
@@ -668,27 +666,27 @@ export namespace DestinationOps {
       };
     }
 
-    // known specific profiles where there were errors
-    const profilesWithErrors: { [id: string]: ErrorWithProfileId } = {};
+    // known specific records where there were errors
+    const recordsWithErrors: { [id: string]: ErrorWithRecordId } = {};
     for (const errorWithId of combinedError.errors) {
-      const profileId = errorWithId.profileId;
-      if (!profileId) {
+      const recordId = errorWithId.recordId;
+      if (!recordId) {
         throw new Error(
-          `Errors returned without profileId - throw if unknown (${destination.id})`
+          `Errors returned without recordId - throw if unknown (${destination.id})`
         );
       }
-      profilesWithErrors[profileId] = errorWithId;
+      recordsWithErrors[recordId] = errorWithId;
     }
 
-    const remainingProfilesWithErrors = Object.assign({}, profilesWithErrors);
+    const remainingRecordsWithErrors = Object.assign({}, recordsWithErrors);
 
     const retryexportIds: string[] = [];
     for (const _export of _exports) {
-      const { profileId } = _export;
-      const errorWithId = profilesWithErrors[profileId];
+      const { recordId } = _export;
+      const errorWithId = recordsWithErrors[recordId];
       if (errorWithId) {
         await _export.setError(errorWithId, exportResult?.retryDelay);
-        delete remainingProfilesWithErrors[profileId]; // used
+        delete remainingRecordsWithErrors[recordId]; // used
 
         // "info" means that it's actually ok. for example, skipped.
         // we don't need to retry it.
@@ -701,12 +699,12 @@ export namespace DestinationOps {
       }
     }
 
-    const profilesNotUsed = Object.keys(remainingProfilesWithErrors);
-    if (profilesNotUsed.length > 0) {
+    const recordsNotUsed = Object.keys(remainingRecordsWithErrors);
+    if (recordsNotUsed.length > 0) {
       throw new Error(
-        `Invalid ErrorWithProfileId given but not used (${
+        `Invalid ErrorWithRecordId given but not used (${
           destination.id
-        }): ${profilesNotUsed.join(",")}`
+        }): ${recordsNotUsed.join(",")}`
       );
     }
 
@@ -739,11 +737,11 @@ export namespace DestinationOps {
     const _exports = await exportProcessor.getExportsToProcess();
 
     const { pluginConnection } = await destination.getPlugin();
-    const processExportedProfiles =
-      pluginConnection.methods.processExportedProfiles;
-    if (!processExportedProfiles) {
+    const processExportedRecords =
+      pluginConnection.methods.processExportedRecords;
+    if (!processExportedRecords) {
       throw new Error(
-        `destination ${destination.name} (${destination.id}) has no \`processExportedProfiles\` method`
+        `destination ${destination.name} (${destination.id}) has no \`processExportedRecords\` method`
       );
     }
 
@@ -777,15 +775,12 @@ export namespace DestinationOps {
     }
 
     let combinedError: CombinedError = null;
-    let exportResult: ExportProfilesPluginMethodResponse;
+    let exportResult: ExportRecordsPluginMethodResponse;
 
     try {
-      const exportedProfiles = await buildExportedProfiles(
-        destination,
-        _exports
-      );
+      const exportedRecords = await buildExportedRecords(destination, _exports);
 
-      exportResult = await processExportedProfiles({
+      exportResult = await processExportedRecords({
         connection,
         app,
         appId: app.id,
@@ -793,7 +788,7 @@ export namespace DestinationOps {
         destination,
         destinationId: destination.id,
         destinationOptions: options,
-        exports: exportedProfiles,
+        exports: exportedRecords,
         remoteKey: exportProcessor.remoteKey,
         syncOperations,
       });
@@ -804,7 +799,7 @@ export namespace DestinationOps {
     }
 
     if (combinedError) {
-      // error wasn't with a specific profile, set it on the ExportProcessor
+      // error wasn't with a specific record, set it on the ExportProcessor
       await exportProcessor.setError(combinedError);
 
       return {
@@ -849,7 +844,7 @@ export namespace DestinationOps {
       }
     }
 
-    const exportProfiles: ExportProfilesPluginMethod = await getBatchFunction(
+    const exportRecords: ExportRecordsPluginMethod = await getBatchFunction(
       destination
     );
 
@@ -886,15 +881,12 @@ export namespace DestinationOps {
     }
 
     let combinedError: CombinedError = null;
-    let exportResult: ExportProfilesPluginMethodResponse;
+    let exportResult: ExportRecordsPluginMethodResponse;
 
     try {
-      const exportedProfiles = await buildExportedProfiles(
-        destination,
-        _exports
-      );
+      const exportedRecords = await buildExportedRecords(destination, _exports);
 
-      exportResult = await exportProfiles({
+      exportResult = await exportRecords({
         connection,
         app,
         appId: app.id,
@@ -903,7 +895,7 @@ export namespace DestinationOps {
         destinationId: destination.id,
         destinationOptions: options,
         syncOperations,
-        exports: exportedProfiles,
+        exports: exportedRecords,
       });
     } catch (error) {
       combinedError = error;
@@ -928,10 +920,10 @@ export namespace DestinationOps {
     return sendExports(destination, [_export], synchronous);
   }
 
-  async function formatProfilePropertiesForDestination(
+  async function formatRecordPropertiesForDestination(
     _export: Export,
     destination: Destination,
-    key: "oldProfileProperties" | "newProfileProperties"
+    key: "oldRecordProperties" | "newRecordProperties"
   ) {
     const response: { [key: string]: any } = {};
     const rawProperties = JSON.parse(_export["dataValues"][key]);
@@ -959,10 +951,10 @@ export namespace DestinationOps {
 
       if (Array.isArray(value)) {
         response[k] = value.map((v) =>
-          formatOutgoingProfileProperties(v, type, destinationType)
+          formatOutgoingRecordProperties(v, type, destinationType)
         );
       } else {
-        response[k] = formatOutgoingProfileProperties(
+        response[k] = formatOutgoingRecordProperties(
           value,
           type,
           destinationType
@@ -974,9 +966,9 @@ export namespace DestinationOps {
   }
 
   /**
-   * Format Grouparoo's profile properties to the type the destination wants.
+   * Format Grouparoo's record properties to the type the destination wants.
    */
-  export function formatOutgoingProfileProperties(
+  export function formatOutgoingRecordProperties(
     value: any,
     grouparooType: string,
     destinationType: DestinationMappingOptionsResponseTypes

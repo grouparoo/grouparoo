@@ -1,5 +1,5 @@
 import { Run } from "../../models/Run";
-import { Profile } from "../../models/Profile";
+import { GrouparooRecord } from "../../models/Record";
 import { Group } from "../../models/Group";
 import { Schedule } from "../../models/Schedule";
 import { GroupMember } from "../../models/GroupMember";
@@ -25,7 +25,7 @@ export namespace RunOps {
 
     const lastImportedImport = await Import.findOne({
       where: { creatorId: run.id },
-      order: [["profileUpdatedAt", "desc"]],
+      order: [["recordUpdatedAt", "desc"]],
       limit: 1,
     });
 
@@ -50,15 +50,15 @@ export namespace RunOps {
         steps: {
           associate: await run.$count("imports", {
             where: {
-              profileAssociatedAt: {
+              recordAssociatedAt: {
                 [Op.gte]: lastBoundary,
                 [Op.lt]: nextBoundary,
               },
             },
           }),
-          profilesUpdated: await run.$count("imports", {
+          recordsUpdated: await run.$count("imports", {
             where: {
-              profileUpdatedAt: {
+              recordUpdatedAt: {
                 [Op.gte]: lastBoundary,
                 [Op.lt]: nextBoundary,
               },
@@ -98,27 +98,27 @@ export namespace RunOps {
   }
 
   /**
-   * Count up the totals from imports for `importsCreated`, `profilesCreated` and `profilesImported`
+   * Count up the totals from imports for `importsCreated`, `recordsCreated` and `recordsImported`
    */
   export async function updateTotals(run: Run) {
     const importsCreated = await Import.count({
       where: { creatorId: run.id },
     });
-    const profilesCreated = await Import.count({
-      where: { creatorId: run.id, createdProfile: true },
+    const recordsCreated = await Import.count({
+      where: { creatorId: run.id, createdRecord: true },
     });
-    const profilesImported = await Import.count({
-      where: { creatorId: run.id, profileUpdatedAt: { [Op.ne]: null } },
+    const recordsImported = await Import.count({
+      where: { creatorId: run.id, recordUpdatedAt: { [Op.ne]: null } },
       distinct: true,
-      col: "profileId",
+      col: "recordId",
     });
 
     const percentComplete = await run.determinePercentComplete(false, false);
 
     await run.update({
       importsCreated,
-      profilesCreated,
-      profilesImported,
+      recordsCreated,
+      recordsImported,
       percentComplete,
     });
   }
@@ -159,12 +159,11 @@ export namespace RunOps {
           order: [["createdAt", "desc"]],
         });
 
-        let latestProfilesCount = latestLogEntry?.data?.profilesCount ?? 0;
-        if (latestProfilesCount === 0) latestProfilesCount = 1;
+        let latestRecordsCount = latestLogEntry?.data?.recordsCount ?? 0;
+        if (latestRecordsCount === 0) latestRecordsCount = 1;
 
         return Math.floor(
-          100 *
-            ((latestProfilesCount - totalGroupMembers) / latestProfilesCount)
+          100 * ((latestRecordsCount - totalGroupMembers) / latestRecordsCount)
         );
       } else {
         // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
@@ -194,10 +193,10 @@ export namespace RunOps {
         return 0;
       }
     } else {
-      // for properties and for other types of internal run, we can assume we have to check every profile in the system
-      const totalProfiles = await Profile.count();
+      // for properties and for other types of internal run, we can assume we have to check every record in the system
+      const totalRecords = await GrouparooRecord.count();
       return Math.floor(
-        100 * (run.importsCreated / (totalProfiles > 0 ? totalProfiles : 1))
+        100 * (run.importsCreated / (totalRecords > 0 ? totalRecords : 1))
       );
     }
   }

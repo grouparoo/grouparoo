@@ -1,17 +1,17 @@
+import { api, env, config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { CLS } from "../../modules/cls";
 import { Source } from "../../models/Source";
-import { ProfilePropertyOps } from "../../modules/ops/profileProperty";
-import { api, env, config } from "actionhero";
+import { RecordPropertyOps } from "../../modules/ops/recordProperty";
 
-export class ProfilePropertiesEnqueue extends CLSTask {
+export class RecordPropertiesEnqueue extends CLSTask {
   constructor() {
     super();
-    this.name = "profileProperties:enqueue";
+    this.name = "recordProperties:enqueue";
     this.description =
-      "Enqueue a batch of Profiles who need a Profile Property";
+      "Enqueue a batch of GrouparooRecords who need a GrouparooRecord Property";
     this.frequency = 1000 * 10;
-    this.queue = "profileProperties";
+    this.queue = "recordProperties";
     this.inputs = {};
   }
 
@@ -23,13 +23,10 @@ export class ProfilePropertiesEnqueue extends CLSTask {
 
     for (const source of sources) {
       try {
-        const pendingProfilePropertyIds =
-          await ProfilePropertyOps.processPendingProfileProperties(
-            source,
-            limit
-          );
+        const pendingRecordPropertyIds =
+          await RecordPropertyOps.processPendingRecordProperties(source, limit);
 
-        count = count + pendingProfilePropertyIds.length;
+        count = count + pendingRecordPropertyIds.length;
       } catch (error) {
         if (env === "test") console.error(error);
 

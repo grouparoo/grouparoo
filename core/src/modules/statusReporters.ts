@@ -13,8 +13,8 @@ import { File } from "../models/File";
 import { Group } from "../models/Group";
 import { GroupRule } from "../models/GroupRule";
 import { Export } from "../models/Export";
-import { Profile } from "../models/Profile";
-import { ProfileProperty } from "../models/ProfileProperty";
+import { GrouparooRecord } from "../models/Record";
+import { RecordProperty } from "../models/RecordProperty";
 import { Property } from "../models/Property";
 import { Run } from "../models/Run";
 import { Team } from "../models/Team";
@@ -22,7 +22,7 @@ import { TeamMember } from "../models/TeamMember";
 import { Notification } from "../models/Notification";
 import { GroupOps } from "../modules/ops/group";
 import { SourceOps } from "../modules/ops/source";
-import { ProfileOps } from "./ops/profile";
+import { RecordOps } from "./ops/record";
 
 export interface StatusMetric {
   // the possible attributes for a metric are:
@@ -151,8 +151,8 @@ export namespace StatusReporters {
         Group,
         GroupRule,
         Export,
-        Profile,
-        ProfileProperty,
+        GrouparooRecord,
+        RecordProperty,
         Property,
         Run,
         Team,
@@ -257,12 +257,14 @@ export namespace StatusReporters {
       return metrics;
     }
 
-    export async function pendingProfiles(): Promise<StatusMetric> {
+    export async function pendingRecords(): Promise<StatusMetric> {
       return {
         collection: "pending",
-        topic: "Profile",
+        topic: "GrouparooRecord",
         aggregation: "count",
-        count: await Profile.count({ where: { state: { [Op.ne]: "ready" } } }),
+        count: await GrouparooRecord.count({
+          where: { state: { [Op.ne]: "ready" } },
+        }),
       };
     }
 
@@ -366,14 +368,14 @@ export namespace StatusReporters {
       };
     }
 
-    export async function deletedProfiles(): Promise<StatusMetric> {
-      const profilesToDestroy = await ProfileOps.getProfilesToDestroy();
+    export async function deletedRecords(): Promise<StatusMetric> {
+      const recordsToDestroy = await RecordOps.getRecordsToDestroy();
 
       return {
         collection: "deleted",
-        topic: "Profile",
+        topic: "GrouparooRecord",
         aggregation: "count",
-        count: profilesToDestroy.length,
+        count: recordsToDestroy.length,
       };
     }
   }
@@ -403,7 +405,7 @@ export namespace StatusReporters {
           aggregation: "exact",
           key: apiData.id,
           value: apiData.name,
-          count: apiData.profilesCount,
+          count: apiData.recordsCount,
           metadata: newestMembersAdded[apiData.id]
             ? newestMembersAdded[apiData.id].toString()
             : "No Group Members",
@@ -481,8 +483,8 @@ export namespace FinalSummaryReporters {
   export namespace Sources {
     export interface SourceData {
       name: string;
-      profilesCreated: number;
-      profilesImported: number;
+      recordsCreated: number;
+      recordsImported: number;
       importsCreated: number;
       error: string;
     }
@@ -504,13 +506,13 @@ export namespace FinalSummaryReporters {
 
         const currentSource = sources[source.id] || {
           name: source.name,
-          profilesCreated: 0,
-          profilesImported: 0,
+          recordsCreated: 0,
+          recordsImported: 0,
           importsCreated: 0,
           error: null,
         };
-        currentSource.profilesCreated += run.profilesCreated;
-        currentSource.profilesImported += run.profilesImported;
+        currentSource.recordsCreated += run.recordsCreated;
+        currentSource.recordsImported += run.recordsImported;
         currentSource.importsCreated += run.importsCreated;
         currentSource.error = currentSource.error || run.error;
         sources[source.id] = currentSource;
@@ -520,33 +522,33 @@ export namespace FinalSummaryReporters {
     }
   }
 
-  export namespace Profiles {
-    export interface ProfileData {
+  export namespace GrouparooRecords {
+    export interface RecordData {
       name: null;
-      profilesUpdated: number;
-      profilesCreated: number;
-      allProfiles: number;
+      recordsUpdated: number;
+      recordsCreated: number;
+      allRecords: number;
     }
 
     export async function getData() {
-      const out: ProfileData[] = [];
-      const profilesUpdated = await Profile.count({
+      const out: RecordData[] = [];
+      const recordsUpdated = await GrouparooRecord.count({
         where: { updatedAt: { [Op.gte]: lastRunStart } },
       });
 
-      const profilesCreated = await Profile.count({
+      const recordsCreated = await GrouparooRecord.count({
         where: { createdAt: { [Op.gte]: lastRunStart } },
       });
       const name = null;
-      const allProfiles = await Profile.count();
+      const allRecords = await GrouparooRecord.count();
 
-      const profileData = {
+      const recordData = {
         name,
-        profilesUpdated,
-        profilesCreated,
-        allProfiles,
+        recordsUpdated,
+        recordsCreated,
+        allRecords,
       };
-      out.push(profileData);
+      out.push(recordData);
       return out;
     }
   }
@@ -616,7 +618,7 @@ export namespace FinalSummaryReporters {
       if (schedules.length === 0) {
         out.push({
           name: "Schedules",
-          message: `No schedules found.  The run command uses schedules to know what profiles to import.`,
+          message: `No schedules found.  The run command uses schedules to know what records to import.`,
           link: `See this link for more info: https://www.grouparoo.com/docs/getting-started/product-concepts#schedule`,
         });
       }

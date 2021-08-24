@@ -1,36 +1,36 @@
 import { RetryableTask } from "../../classes/tasks/retryableTask";
-import { Profile } from "../../models/Profile";
-import { ProfileProperty } from "../../models/ProfileProperty";
+import { GrouparooRecord } from "../../models/Record";
+import { RecordProperty } from "../../models/RecordProperty";
 import { Property } from "../../models/Property";
 import { Mapping } from "../../models/Mapping";
 import { Option } from "../../models/Option";
 import { Op } from "sequelize";
 import { log } from "actionhero";
 import { CLS } from "../../modules/cls";
-import { ProfilePropertiesPluginMethodResponse } from "../../classes/plugin";
+import { RecordPropertiesPluginMethodResponse } from "../../classes/plugin";
 import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
-import { ProfileOps } from "../../modules/ops/profile";
+import { RecordOps } from "../../modules/ops/record";
 
-export class ImportProfileProperties extends RetryableTask {
+export class ImportRecordProperties extends RetryableTask {
   constructor() {
     super();
-    this.name = "profileProperty:importProfileProperties";
-    this.description = "Import the Profile Properties for a Property";
+    this.name = "recordProperty:importRecordProperties";
+    this.description = "Import the GrouparooRecord Properties for a Property";
     this.frequency = 0;
-    this.queue = "profileProperties";
+    this.queue = "recordProperties";
     this.inputs = {
-      profileIds: { required: true },
+      recordIds: { required: true },
       propertyIds: { required: true },
     };
   }
 
   async runWithinTransaction(params) {
-    const profiles = await Profile.findAll({
-      where: { id: { [Op.in]: params.profileIds } },
-      include: [ProfileProperty],
+    const records = await GrouparooRecord.findAll({
+      where: { id: { [Op.in]: params.recordIds } },
+      include: [RecordProperty],
     });
-    if (profiles.length === 0) return;
+    if (records.length === 0) return;
 
     const allProperties = await Property.findAllWithCache();
     const properties = allProperties.filter((p) =>
@@ -51,20 +51,20 @@ export class ImportProfileProperties extends RetryableTask {
       scope: null,
     });
 
-    const profilesToImport: Profile[] = [];
-    const profilesNotReady: Profile[] = [];
+    const recordsToImport: GrouparooRecord[] = [];
+    const recordsNotReady: GrouparooRecord[] = [];
     const dependencies: { [key: string]: Property[] } = {};
     for (const property of properties) {
       dependencies[property.id] = await PropertyOps.dependencies(property);
     }
 
-    for (const profile of profiles) {
+    for (const record of records) {
       let mode: "ready" | "notReady" = "ready";
 
       // all already (wrongly) ready?
       if (
-        profile.profileProperties.filter((p) => p.state === "ready").length ===
-        profile.profileProperties.length
+        record.recordProperties.filter((p) => p.state === "ready").length ===
+        record.recordProperties.length
       ) {
         mode = "notReady";
       }
@@ -75,7 +75,7 @@ export class ImportProfileProperties extends RetryableTask {
           .filter((dep) => !params.propertyIds.includes(dep.id))
           .forEach((dep) => {
             if (
-              profile.profileProperties.find((p) => p.propertyId === dep.id)
+              record.recordProperties.find((p) => p.propertyId === dep.id)
                 ?.state !== "ready"
             ) {
               mode = "notReady";
@@ -85,22 +85,22 @@ export class ImportProfileProperties extends RetryableTask {
 
       switch (mode) {
         case "ready":
-          profilesToImport.push(profile);
+          recordsToImport.push(record);
           break;
         case "notReady":
-          profilesNotReady.push(profile);
+          recordsNotReady.push(record);
           break;
       }
     }
 
-    if (profilesNotReady.length > 0) {
-      await ProfileProperty.update(
+    if (recordsNotReady.length > 0) {
+      await RecordProperty.update(
         { startedAt: ImportOps.retryStartedAt() },
         {
           where: {
             propertyId: { [Op.in]: properties.map((p) => p.id) },
-            profileId: {
-              [Op.in]: profilesNotReady.map((p) => p.id),
+            recordId: {
+              [Op.in]: recordsNotReady.map((p) => p.id),
             },
             state: "pending",
           },
@@ -108,20 +108,20 @@ export class ImportProfileProperties extends RetryableTask {
       );
     }
 
-    if (profilesToImport.length === 0) return;
+    if (recordsToImport.length === 0) return;
 
-    let propertyValuesBatch: ProfilePropertiesPluginMethodResponse = {};
+    let propertyValuesBatch: RecordPropertiesPluginMethodResponse = {};
     try {
-      propertyValuesBatch = await source.importProfileProperties(
-        profilesToImport,
+      propertyValuesBatch = await source.importRecordProperties(
+        recordsToImport,
         properties
       );
     } catch (error) {
-      // if something goes wrong with the batch import, fall-back to per-profile/property imports
-      for (const profile of profilesToImport) {
+      // if something goes wrong with the batch import, fall-back to per-record/property imports
+      for (const record of recordsToImport) {
         for (const property of properties) {
-          await CLS.enqueueTask("profileProperty:importProfileProperty", {
-            profileId: profile.id,
+          await CLS.enqueueTask("recordProperty:importRecordProperty", {
+            recordId: record.id,
             propertyId: property.id,
           });
         }
@@ -130,24 +130,24 @@ export class ImportProfileProperties extends RetryableTask {
       return log(error.stack, "error");
     }
 
-    const orderedProfiles: Profile[] = [];
+    const orderedRecords: GrouparooRecord[] = [];
     const orderedHashes: any[] = [];
-    for (const profileId in propertyValuesBatch) {
-      const profile = profilesToImport.find((p) => p.id === profileId);
-      orderedProfiles.push(profile);
-      orderedHashes.push(propertyValuesBatch[profileId]);
+    for (const recordId in propertyValuesBatch) {
+      const record = recordsToImport.find((p) => p.id === recordId);
+      orderedRecords.push(record);
+      orderedHashes.push(propertyValuesBatch[recordId]);
     }
 
-    if (orderedProfiles.length > 0) {
-      await ProfileOps.addOrUpdateProperties(
-        orderedProfiles,
+    if (orderedRecords.length > 0) {
+      await RecordOps.addOrUpdateProperties(
+        orderedRecords,
         orderedHashes,
-        false // we are disabling the profile lock here because the transaction will be saved out-of-band from the lock check
+        false // we are disabling the record lock here because the transaction will be saved out-of-band from the lock check
       );
     }
 
     // update the properties that got no data back
-    await ProfileProperty.update(
+    await RecordProperty.update(
       {
         state: "ready",
         rawValue: null,
@@ -157,8 +157,8 @@ export class ImportProfileProperties extends RetryableTask {
       {
         where: {
           propertyId: { [Op.in]: properties.map((p) => p.id) },
-          profileId: {
-            [Op.in]: profilesToImport.map((p) => p.id),
+          recordId: {
+            [Op.in]: recordsToImport.map((p) => p.id),
           },
           state: "pending",
         },

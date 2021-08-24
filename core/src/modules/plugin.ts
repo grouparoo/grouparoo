@@ -17,11 +17,11 @@ import { Log } from "../models/Log";
 import { Mapping } from "../models/Mapping";
 import { Option } from "../models/Option";
 import { Permission } from "../models/Permission";
-import { Profile } from "../models/Profile";
-import { ProfileProperty } from "../models/ProfileProperty";
+import { GrouparooRecord } from "../models/Record";
+import { RecordProperty } from "../models/RecordProperty";
 import { Property } from "../models/Property";
 import { Filter } from "../models/Filter";
-import { ProfileMultipleAssociationShim } from "../models/ProfileMultipleAssociationShim";
+import { RecordMultipleAssociationShim } from "../models/RecordMultipleAssociationShim";
 import { Run } from "../models/Run";
 import { Schedule } from "../models/Schedule";
 import { Session } from "../models/Session";
@@ -53,10 +53,10 @@ const models = [
   GroupRule,
   Log,
   Permission,
-  Profile,
-  ProfileProperty,
+  GrouparooRecord,
+  RecordProperty,
   Property,
-  ProfileMultipleAssociationShim,
+  RecordMultipleAssociationShim,
   Mapping,
   Notification,
   Setting,
@@ -166,7 +166,7 @@ export namespace plugin {
   }
 
   /**
-   * When your plugin has a record for a profile, send it to this method.  We will use the provided mapping against your raw data row to store the original data and mapped data to the profile.
+   * When your plugin has a record for a record, send it to this method.  We will use the provided mapping against your raw data row to store the original data and mapped data to the record.
    * mapping: an object whose keys are remote columns and whose values are the property keys, ie: {remoteColumnId: 'userId'}
    * row: {email: 'abc@company.com', vip: true}
    */
@@ -176,16 +176,16 @@ export namespace plugin {
     row: { [remoteKey: string]: any }
   ) {
     const mappingKeys = Object.keys(mapping);
-    const mappedProfileProperties = {};
+    const mappedRecordProperties = {};
     mappingKeys.forEach((k) => {
-      mappedProfileProperties[mapping[k]] = Array.isArray(row[k])
+      mappedRecordProperties[mapping[k]] = Array.isArray(row[k])
         ? row[k]
         : [row[k]];
     });
 
     const _import = await Import.create({
       rawData: row,
-      data: mappedProfileProperties,
+      data: mappedRecordProperties,
       creatorType: "run",
       creatorId: run.id,
     });
@@ -207,16 +207,16 @@ export namespace plugin {
     const mappingKeys = Object.keys(mapping);
 
     for (const row of rows) {
-      const mappedProfileProperties = {};
+      const mappedRecordProperties = {};
       mappingKeys.forEach((k) => {
-        mappedProfileProperties[mapping[k]] = Array.isArray(row[k])
+        mappedRecordProperties[mapping[k]] = Array.isArray(row[k])
           ? row[k]
           : [row[k]];
       });
 
       bulkParams.push({
         rawData: row,
-        data: mappedProfileProperties,
+        data: mappedRecordProperties,
         creatorType: "run",
         creatorId: run.id,
       });
@@ -309,19 +309,19 @@ export namespace plugin {
   }
 
   /**
-   * Takes a profile and returns data with the values from the properties and current time.
+   * Takes a record and returns data with the values from the properties and current time.
    */
-  export async function getProfileData(
-    profile: Profile
+  export async function getRecordData(
+    record: GrouparooRecord
   ): Promise<{ [remoteKey: string]: any }> {
     // TODO: we could do these types better to be string | number | etc | Array<string | etc>
     const data = {
       now: expandDates(new Date()),
-      createdAt: expandDates(profile.createdAt),
-      updatedAt: expandDates(profile.updatedAt),
+      createdAt: expandDates(record.createdAt),
+      updatedAt: expandDates(record.updatedAt),
     };
 
-    const properties = await profile.getProperties();
+    const properties = await record.getProperties();
 
     for (const key in properties) {
       data[key] =
@@ -337,25 +337,25 @@ export namespace plugin {
   }
 
   /**
-   * Takes a string with mustache variables and replaces them with the proper values for a profile
+   * Takes a string with mustache variables and replaces them with the proper values for a record
    */
-  export async function replaceTemplateProfileVariables(
+  export async function replaceTemplateRecordVariables(
     string: string,
-    profile: Profile,
+    record: GrouparooRecord,
     strict = true
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
 
-    const data = await getProfileData(profile);
+    const data = await getRecordData(record);
     if (strict === true) return MustacheUtils.strictlyRender(string, data);
     return MustacheUtils.render(string, data);
   }
 
   /**
-   * Takes a string with mustache variable (keys) and replaces them with the profile property ids
+   * Takes a string with mustache variable (keys) and replaces them with the record property ids
    * ie: `select * where id = {{ userId }}` => `select * where id = {{ ppr_abc123 }}`
    */
-  export async function replaceTemplateProfilePropertyKeysWithProfilePropertyId(
+  export async function replaceTemplateRecordPropertyKeysWithRecordPropertyId(
     string: string
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
@@ -373,10 +373,10 @@ export namespace plugin {
   }
 
   /**
-   * Takes a string with mustache variable (ids) and replaces them with the profile property keys
+   * Takes a string with mustache variable (ids) and replaces them with the record property keys
    * ie: `select * where id = {{ ppr_abc123 }}` => `select * where id = {{ userId }}`
    */
-  export async function replaceTemplateProfilePropertyIdsWithProfilePropertyKeys(
+  export async function replaceTemplateRecordPropertyIdsWithRecordPropertyKeys(
     string: string
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;

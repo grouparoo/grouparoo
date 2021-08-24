@@ -3,7 +3,7 @@ import { CLS } from "../modules/cls";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Destination } from "../models/Destination";
 import { App } from "../models/App";
-import { Profile } from "../models/Profile";
+import { GrouparooRecord } from "../models/Record";
 import { Group } from "../models/Group";
 import { Run } from "../models/Run";
 import { GroupMember } from "../models/GroupMember";
@@ -265,7 +265,7 @@ export class DestinationExportArrayProperties extends AuthenticatedAction {
     super();
     this.name = "destination:exportArrayProperties";
     this.description =
-      "get the list of profile properties this destination can handle as arrays";
+      "get the list of record properties this destination can handle as arrays";
     this.outputExample = {};
     this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
@@ -322,18 +322,18 @@ export class DestinationExport extends AuthenticatedAction {
   }
 }
 
-export class DestinationProfilePreview extends AuthenticatedAction {
+export class DestinationRecordPreview extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "destination:profilePreview";
+    this.name = "destination:recordPreview";
     this.description =
-      "view a preview of a profile being exported to this destination";
+      "view a preview of a record being exported to this destination";
     this.outputExample = {};
     this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       id: { required: true },
       groupId: { required: false },
-      profileId: { required: false },
+      recordId: { required: false },
       mapping: { required: false, formatter: APIData.ensureObject },
       destinationGroupMemberships: {
         required: false,
@@ -345,22 +345,22 @@ export class DestinationProfilePreview extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const destination = await Destination.findById(params.id);
 
-    let profile: Profile;
-    if (params.profileId) {
-      profile = await Profile.findById(params.profileId);
+    let record: GrouparooRecord;
+    if (params.recordId) {
+      record = await GrouparooRecord.findById(params.recordId);
     } else {
       const group = await Group.findById(params.groupId);
       const groupMember = await GroupMember.findOne({
         where: { groupId: group.id },
       });
       if (groupMember) {
-        profile = await Profile.findById(groupMember.profileId);
+        record = await GrouparooRecord.findById(groupMember.recordId);
       }
     }
 
-    if (!profile) return;
+    if (!record) return;
 
-    await profile.buildNullProperties(); // the preview may include a brand new property
+    await record.buildNullProperties(); // the preview may include a brand new property
 
     let mapping = params.mapping;
     if (!mapping) {
@@ -382,12 +382,12 @@ export class DestinationProfilePreview extends AuthenticatedAction {
       !params.groupId &&
       !params.destinationGroupMemberships
     ) {
-      await destination.checkProfileWillBeExported(profile);
+      await destination.checkRecordWillBeExported(record);
     }
 
     return {
-      profile: await destination.profilePreview(
-        profile,
+      record: await destination.recordPreview(
+        record,
         mapping,
         destinationGroupMemberships
       ),

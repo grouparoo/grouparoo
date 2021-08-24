@@ -15,7 +15,7 @@ import {
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Destination } from "./Destination";
-import { Profile } from "./Profile";
+import { GrouparooRecord } from "./Record";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { QueryTypes } from "sequelize";
@@ -27,16 +27,16 @@ import { ExportProcessor } from "./ExportProcessor";
 import { Errors } from "../modules/errors";
 
 /**
- * The Profile Properties in their normal data types (string, boolean, date, etc)
+ * The GrouparooRecord Properties in their normal data types (string, boolean, date, etc)
  */
-export interface ExportProfileProperties {
+export interface ExportRecordProperties {
   [key: string]: any | any[];
 }
 
 /**
- * The Profile Properties as stringified rawValues + types
+ * The GrouparooRecord Properties as stringified rawValues + types
  */
-export interface ExportProfilePropertiesWithType {
+export interface ExportRecordPropertiesWithType {
   [key: string]: { type: string; rawValue: string | string[] };
 }
 
@@ -83,9 +83,9 @@ export class Export extends Model {
   destinationId: string;
 
   @AllowNull(false)
-  @ForeignKey(() => Profile)
+  @ForeignKey(() => GrouparooRecord)
   @Column
-  profileId: string;
+  recordId: string;
 
   @AllowNull(true)
   @ForeignKey(() => ExportProcessor)
@@ -129,27 +129,27 @@ export class Export extends Model {
   errorLevel: Errors.ErrorLevel;
 
   @Column(DataType.TEXT)
-  get oldProfileProperties(): ExportProfileProperties {
-    return ExportOps.deserializeExportProfileProperties(
+  get oldRecordProperties(): ExportRecordProperties {
+    return ExportOps.deserializeExportRecordProperties(
       //@ts-ignore
-      this.getDataValue("oldProfileProperties")
+      this.getDataValue("oldRecordProperties")
     );
   }
-  set oldProfileProperties(value: ExportProfileProperties) {
+  set oldRecordProperties(value: ExportRecordProperties) {
     //@ts-ignore
-    this.setDataValue("oldProfileProperties", JSON.stringify(value));
+    this.setDataValue("oldRecordProperties", JSON.stringify(value));
   }
 
   @Column(DataType.TEXT)
-  get newProfileProperties(): ExportProfileProperties {
-    return ExportOps.deserializeExportProfileProperties(
+  get newRecordProperties(): ExportRecordProperties {
+    return ExportOps.deserializeExportRecordProperties(
       //@ts-ignore
-      this.getDataValue("newProfileProperties")
+      this.getDataValue("newRecordProperties")
     );
   }
-  set newProfileProperties(value: ExportProfileProperties) {
+  set newRecordProperties(value: ExportRecordProperties) {
     //@ts-ignore
-    this.setDataValue("newProfileProperties", JSON.stringify(value));
+    this.setDataValue("newRecordProperties", JSON.stringify(value));
   }
 
   @Column(DataType.TEXT)
@@ -185,8 +185,8 @@ export class Export extends Model {
   @BelongsTo(() => Destination)
   destination: Destination;
 
-  @BelongsTo(() => Profile)
-  profile: Profile;
+  @BelongsTo(() => GrouparooRecord)
+  record: GrouparooRecord;
 
   async setError(error: Error, retryDelay: number = config.tasks.timeout) {
     const maxExportAttempts = parseInt(
@@ -253,7 +253,7 @@ export class Export extends Model {
           }
         : undefined,
       destinationName: destination ? destination.name : null,
-      profileId: this.profileId,
+      recordId: this.recordId,
       exportProcessorId: this.exportProcessorId,
       state: this.state,
       force: this.force,
@@ -262,8 +262,8 @@ export class Export extends Model {
       startedAt: APIData.formatDate(this.startedAt),
       completedAt: APIData.formatDate(this.completedAt),
       retryCount: this.retryCount,
-      oldProfileProperties: this.oldProfileProperties,
-      newProfileProperties: this.newProfileProperties,
+      oldRecordProperties: this.oldRecordProperties,
+      newRecordProperties: this.newRecordProperties,
       oldGroups: this.oldGroups,
       newGroups: this.newGroups,
       toDelete: this.toDelete,
@@ -316,7 +316,7 @@ export class Export extends Model {
     let responseCountWithCompleteExport: number;
     let responseCountWithNoCompleteExports: number;
 
-    // 1. Delete Exports for the Profile older than the oldest complete Export
+    // 1. Delete Exports for the GrouparooRecord older than the oldest complete Export
     const rowsWithCompleteExport: { id: string }[] = await api.sequelize.query(
       `
       DELETE FROM exports
@@ -327,7 +327,7 @@ export class Export extends Model {
           SELECT MAX("createdAt")
           FROM exports e2
           WHERE
-            e2."profileId" = exports."profileId"
+            e2."recordId" = exports."recordId"
             AND state = 'complete'
         )
         LIMIT ${limit}
@@ -345,7 +345,7 @@ export class Export extends Model {
       responseCountWithCompleteExport = changesRows[0]["count"];
     }
 
-    // 2. If there are no complete Exports for the Profile, any old Exports can be deleted
+    // 2. If there are no complete Exports for the GrouparooRecord, any old Exports can be deleted
     const rowsWithNoCompleteExport: { id: string }[] =
       await api.sequelize.query(
         `
@@ -357,7 +357,7 @@ export class Export extends Model {
           SELECT COUNT(id)
           FROM exports e2
           WHERE
-            e2."profileId" = exports."profileId"
+            e2."recordId" = exports."recordId"
             AND state = 'complete'
         )
         LIMIT ${limit}

@@ -57,17 +57,17 @@ export async function loadSource(
   }
 
   let bootstrappedProperty: Property;
-  let mappedProfileProperty: Property;
+  let mappedRecordProperty: Property;
   let mapping = {};
 
   async function setMapping() {
     if (configObject.mapping) {
-      mappedProfileProperty = await getParentByName(
+      mappedRecordProperty = await getParentByName(
         Property,
         Object.values(extractNonNullParts(configObject, "mapping"))[0]
       );
       mapping[Object.keys(extractNonNullParts(configObject, "mapping"))[0]] =
-        mappedProfileProperty.key;
+        mappedRecordProperty.key;
       await source.setMapping(mapping);
     }
   }

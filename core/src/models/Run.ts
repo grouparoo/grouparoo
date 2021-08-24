@@ -1,5 +1,5 @@
 import Sequelize, { Op } from "sequelize";
-import { Profile } from "./Profile";
+import { GrouparooRecord } from "./Record";
 import {
   Model,
   Table,
@@ -90,12 +90,12 @@ export class Run extends Model {
   @AllowNull(false)
   @Default(0)
   @Column
-  profilesCreated: number;
+  recordsCreated: number;
 
   @AllowNull(false)
   @Default(0)
   @Column
-  profilesImported: number;
+  recordsImported: number;
 
   @Column
   error: string;
@@ -211,7 +211,7 @@ export class Run extends Model {
 
   /**
    * Used to find the previous run for this connection.  Useful in Connection#run to get the timestamp of the last time the connection was run.
-   * Will ensure that the run returned did not error and read at least one profile
+   * Will ensure that the run returned did not error and read at least one record
    */
   async previousRun() {
     const setting = await plugin.readSetting(
@@ -240,16 +240,16 @@ export class Run extends Model {
   }
 
   /**
-   * This method tries to import a random profile to check if the Properties are valid
+   * This method tries to import a random record to check if the Properties are valid
    */
   async test() {
-    const profile = await Profile.findOne({
+    const record = await GrouparooRecord.findOne({
       order: [["id", "asc"]],
     });
 
-    if (profile) {
+    if (record) {
       try {
-        await profile.import(false, null);
+        await record.import(false, null);
       } catch (error) {
         this.error = error.toString();
         this.state = "stopped";
@@ -274,8 +274,8 @@ export class Run extends Model {
       state: this.state,
       percentComplete: this.percentComplete,
       importsCreated: this.importsCreated,
-      profilesCreated: this.profilesCreated,
-      profilesImported: this.profilesImported,
+      recordsCreated: this.recordsCreated,
+      recordsImported: this.recordsImported,
       error: this.error,
       highWaterMark: this.highWaterMark,
       sourceOffset: this.sourceOffset,

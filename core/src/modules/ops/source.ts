@@ -4,13 +4,13 @@ import {
   SimpleSourceOptions,
   SourceMapping,
 } from "../../models/Source";
-import { ProfileProperty } from "../../models/ProfileProperty";
+import { RecordProperty } from "../../models/RecordProperty";
 import {
   Property,
   PropertyFiltersWithKey,
   SimplePropertyOptions,
 } from "../../models/Property";
-import { Profile } from "../../models/Profile";
+import { GrouparooRecord } from "../../models/Record";
 import { App } from "../../models/App";
 import { Option } from "../../models/Option";
 import { OptionHelper } from "../optionHelper";
@@ -20,7 +20,7 @@ import { LoggedModel } from "../../classes/loggedModel";
 import { FilterHelper } from "../filterHelper";
 import { topologicalSort } from "../topologicalSort";
 import { ConfigWriter } from "../configWriter";
-import { ProfilePropertiesPluginMethodResponse } from "../../classes/plugin";
+import { RecordPropertiesPluginMethodResponse } from "../../classes/plugin";
 
 export namespace SourceOps {
   /**
@@ -82,11 +82,11 @@ export namespace SourceOps {
   }
 
   /**
-   * Import a profile property for a Profile from this source
+   * Import a record property for a GrouparooRecord from this source
    */
-  export async function importProfileProperty(
+  export async function importRecordProperty(
     source: Source,
-    profile: Profile,
+    record: GrouparooRecord,
     property: Property,
     propertyOptionsOverride?: OptionHelper.SimpleOptions,
     propertyFiltersOverride?: PropertyFiltersWithKey[],
@@ -96,7 +96,7 @@ export namespace SourceOps {
       appOptions?: OptionHelper.SimpleOptions;
       sourceOptions?: OptionHelper.SimpleOptions;
       sourceMapping?: MappingHelper.Mappings;
-      profileProperties?: {};
+      recordProperties?: {};
     } = {}
   ) {
     if (property.state !== "ready" && !propertyOptionsOverride) return;
@@ -112,7 +112,7 @@ export namespace SourceOps {
       );
     }
 
-    const method = pluginConnection.methods.profileProperty;
+    const method = pluginConnection.methods.recordProperty;
     if (!method) return;
 
     const app =
@@ -125,12 +125,12 @@ export namespace SourceOps {
     const sourceMapping =
       preloadedArgs.sourceMapping || (await source.getMapping());
 
-    // we may not have the profile property needed to make the mapping (ie: userId is not set on this anonymous profile)
+    // we may not have the record property needed to make the mapping (ie: userId is not set on this anonymous record)
     if (Object.values(sourceMapping).length > 0) {
       const propertyMappingKey = Object.values(sourceMapping)[0];
-      const profileProperties =
-        preloadedArgs.profileProperties || (await profile.getProperties());
-      if (!profileProperties[propertyMappingKey]) {
+      const recordProperties =
+        preloadedArgs.recordProperties || (await record.getProperties());
+      if (!recordProperties[propertyMappingKey]) {
         return;
       }
     }
@@ -158,8 +158,8 @@ export namespace SourceOps {
         propertyFilters: propertyFiltersOverride
           ? propertyFiltersOverride
           : await property.getFilters(),
-        profile,
-        profileId: profile.id,
+        record,
+        recordId: record.id,
       });
 
       return response;
@@ -171,11 +171,11 @@ export namespace SourceOps {
   }
 
   /**
-   * Import a profile property for a Profile from this source
+   * Import a record property for a GrouparooRecord from this source
    */
-  export async function importProfileProperties(
+  export async function importRecordProperties(
     source: Source,
-    profiles: Profile[],
+    records: GrouparooRecord[],
     properties: Property[],
     propertyOptionsOverride?: { [key: string]: SimplePropertyOptions },
     propertyFiltersOverride?: { [key: string]: PropertyFiltersWithKey[] },
@@ -185,7 +185,7 @@ export namespace SourceOps {
       appOptions?: OptionHelper.SimpleOptions;
       sourceOptions?: OptionHelper.SimpleOptions;
       sourceMapping?: MappingHelper.Mappings;
-      profileProperties?: {};
+      recordProperties?: {};
     } = {}
   ) {
     if (
@@ -207,7 +207,7 @@ export namespace SourceOps {
       );
     }
 
-    const method = pluginConnection.methods.profileProperties;
+    const method = pluginConnection.methods.recordProperties;
     if (!method) return;
 
     const app =
@@ -255,12 +255,12 @@ export namespace SourceOps {
         propertyIds: properties.map((p) => p.id),
         propertyOptions,
         propertyFilters,
-        profiles,
-        profileIds: profiles.map((p) => p.id),
+        records,
+        recordIds: records.map((p) => p.id),
       });
 
-      await applyNonUniqueMappedResultsToAllProfiles(response, {
-        profiles,
+      await applyNonUniqueMappedResultsToAllRecords(response, {
+        records,
         properties,
         sourceMapping,
       });
@@ -274,14 +274,14 @@ export namespace SourceOps {
   }
 
   // for non-unique mappings, we need to fan out the values we received back from the source
-  export async function applyNonUniqueMappedResultsToAllProfiles(
-    response: ProfilePropertiesPluginMethodResponse,
+  export async function applyNonUniqueMappedResultsToAllRecords(
+    response: RecordPropertiesPluginMethodResponse,
     {
-      profiles,
+      records,
       properties,
       sourceMapping,
     }: {
-      profiles: Profile[];
+      records: GrouparooRecord[];
       properties: Property[];
       sourceMapping: SourceMapping;
     }
@@ -298,39 +298,39 @@ export namespace SourceOps {
       {};
 
     // load up the values
-    for (const profileId of Object.keys(response)) {
-      const profile = profiles.find((p) => p.id === profileId);
-      const profileProperties = await profile.getProperties();
+    for (const recordId of Object.keys(response)) {
+      const record = records.find((p) => p.id === recordId);
+      const recordProperties = await record.getProperties();
       for (const property of properties) {
         if (!valueMap[property.id]) valueMap[property.id] = {};
-        if (profileProperties[mappedProperty.key].state !== "ready") {
+        if (recordProperties[mappedProperty.key].state !== "ready") {
           throw new Error(
-            `ProfileProperty ${mappedProperty.key} for profile ${profile.id} is not ready`
+            `RecordProperty ${mappedProperty.key} for record ${record.id} is not ready`
           );
         }
 
         if (
-          profileProperties[mappedProperty.key].values.length > 0 &&
-          profileProperties[mappedProperty.key].values[0] !== null &&
-          profileProperties[mappedProperty.key].values[0] !== undefined
+          recordProperties[mappedProperty.key].values.length > 0 &&
+          recordProperties[mappedProperty.key].values[0] !== null &&
+          recordProperties[mappedProperty.key].values[0] !== undefined
         ) {
           valueMap[property.id][
-            profileProperties[mappedProperty.key].values[0].toString()
-          ] = response[profile.id][property.id];
+            recordProperties[mappedProperty.key].values[0].toString()
+          ] = response[record.id][property.id];
         }
       }
     }
 
     // apply the values
-    for (const profile of profiles) {
-      if (!response[profile.id]) {
-        response[profile.id] = {};
-        const profileProperties = await profile.getProperties();
+    for (const record of records) {
+      if (!response[record.id]) {
+        response[record.id] = {};
+        const recordProperties = await record.getProperties();
         for (const propertyKey of Object.keys(valueMap)) {
           const lookupValue =
-            profileProperties[mappedProperty.key]?.values[0]?.toString();
+            recordProperties[mappedProperty.key]?.values[0]?.toString();
           if (lookupValue) {
-            response[profile.id][propertyKey] =
+            response[record.id][propertyKey] =
               valueMap[propertyKey][lookupValue];
           }
         }
@@ -339,15 +339,15 @@ export namespace SourceOps {
   }
 
   /**
-   * Import all profile properties from a Source for a Profile
+   * Import all record properties from a Source for a GrouparooRecord
    */
-  export async function _import(source: Source, profile: Profile) {
+  export async function _import(source: Source, record: GrouparooRecord) {
     const hash = {};
     const properties = await source.$get("properties", {
       where: { state: "ready" },
     });
 
-    const profileProperties = await profile.getProperties();
+    const recordProperties = await record.getProperties();
     const app = await source.$get("app", { scope: null, include: [Option] });
     const appOptions = await app.getOptions();
     const connection = await app.getConnection();
@@ -360,7 +360,7 @@ export namespace SourceOps {
       appOptions,
       sourceOptions,
       sourceMapping,
-      profileProperties,
+      recordProperties,
     };
 
     const { pluginConnection } = await source.getPlugin();
@@ -370,7 +370,7 @@ export namespace SourceOps {
       );
     }
 
-    const canImport = pluginConnection.methods.profileProperty;
+    const canImport = pluginConnection.methods.recordProperty;
     if (!canImport) {
       return {
         canImport: false,
@@ -379,8 +379,8 @@ export namespace SourceOps {
     }
 
     for (const property of properties) {
-      hash[property.id] = await source.importProfileProperty(
-        profile,
+      hash[property.id] = await source.importRecordProperty(
+        record,
         property,
         null,
         null,
@@ -594,14 +594,18 @@ export namespace SourceOps {
         [
           Sequelize.fn(
             "COUNT",
-            Sequelize.fn("DISTINCT", Sequelize.col("profileId"))
+            Sequelize.fn("DISTINCT", Sequelize.col("recordId"))
           ),
           "count",
         ],
       ],
       group: ["sourceId"],
       include: [
-        { model: ProfileProperty, attributes: [], where: { state: "pending" } },
+        {
+          model: RecordProperty,
+          attributes: [],
+          where: { state: "pending" },
+        },
       ],
       raw: true,
     });

@@ -3,11 +3,11 @@ import { CLSTask } from "../../classes/tasks/clsTask";
 import { ImportOps } from "../../modules/ops/import";
 import { config } from "actionhero";
 
-export class ImportAssociateProfiles extends CLSTask {
+export class ImportAssociateRecords extends CLSTask {
   constructor() {
     super();
-    this.name = "import:associateProfiles";
-    this.description = "ensure that imports are associated to profiles";
+    this.name = "import:associateRecords";
+    this.description = "ensure that imports are associated to records";
     this.frequency = 1000 * 10;
     this.queue = "imports";
     this.inputs = {};

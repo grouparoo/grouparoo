@@ -37,7 +37,7 @@ export async function loadSchedule(
     name: configObject.name,
     recurring: configObject.recurring,
     recurringFrequency: configObject.recurringFrequency,
-    confirmProfiles: configObject.confirmProfiles,
+    confirmRecords: configObject.confirmRecords,
   });
 
   const options = extractNonNullParts(configObject, "options");

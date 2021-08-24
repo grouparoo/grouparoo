@@ -1,18 +1,18 @@
 import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js/max";
-import { plugin } from "../../modules/plugin";
+import { plugin } from "../plugin";
 import isEmail from "../validators/isEmail";
 import isURL from "validator/lib/isURL";
-import { ProfileProperty } from "../../models/ProfileProperty";
+import { RecordProperty } from "../../models/RecordProperty";
 import { Option } from "../../models/Option";
 import { Property } from "../../models/Property";
-import { CLS } from "../../modules/cls";
+import { CLS } from "../cls";
 import { Op } from "sequelize";
 import { Source } from "../../models/Source";
 import { AggregationMethod, PluginConnection } from "../../classes/plugin";
 import { Filter } from "../../models/Filter";
 
-export namespace ProfilePropertyOps {
-  const defaultProfilePropertyProcessingDelay = 1000 * 60 * 5;
+export namespace RecordPropertyOps {
+  const defaultRecordPropertyProcessingDelay = 1000 * 60 * 5;
 
   export async function buildRawValue(
     value: any,
@@ -51,7 +51,7 @@ export namespace ProfilePropertyOps {
         }
         throw new Error(`${value} is not a valid boolean value`);
       default:
-        throw new Error(`cannot coerce profileProperty type ${type}`);
+        throw new Error(`cannot coerce recordProperty type ${type}`);
     }
   }
 
@@ -80,17 +80,17 @@ export namespace ProfilePropertyOps {
           return false;
         }
       default:
-        throw new Error(`cannot coerce profileProperty type ${type}`);
+        throw new Error(`cannot coerce recordProperty type ${type}`);
     }
   }
 
-  export async function processPendingProfileProperties(
+  export async function processPendingRecordProperties(
     source: Source,
     limit = 100,
-    delayMs = defaultProfilePropertyProcessingDelay
+    delayMs = defaultRecordPropertyProcessingDelay
   ) {
-    if (!delayMs || delayMs < defaultProfilePropertyProcessingDelay) {
-      delayMs = defaultProfilePropertyProcessingDelay;
+    if (!delayMs || delayMs < defaultRecordPropertyProcessingDelay) {
+      delayMs = defaultRecordPropertyProcessingDelay;
     }
     if (source.state !== "ready") return [];
     const { pluginConnection } = await source.getPlugin();
@@ -99,7 +99,7 @@ export namespace ProfilePropertyOps {
       include: [Option, Filter],
     });
 
-    const pendingProfilePropertyIds: string[] = [];
+    const pendingRecordPropertyIds: string[] = [];
     const unGroupedProperties: Property[] = [];
     const propertyGroups: {
       [aggregationMethod: string]: Property[];
@@ -126,7 +126,7 @@ export namespace ProfilePropertyOps {
 
     // groupedProperties
     for (const aggregationMethod in propertyGroups) {
-      const pendingProfileProperties = await ProfileProperty.findAll({
+      const pendingRecordProperties = await RecordProperty.findAll({
         where: {
           propertyId: {
             [Op.in]: propertyGroups[aggregationMethod].map((p) => p.id),
@@ -141,17 +141,17 @@ export namespace ProfilePropertyOps {
 
       await preparePropertyImports(
         pluginConnection,
-        pendingProfileProperties,
+        pendingRecordProperties,
         propertyGroups[aggregationMethod]
       );
-      pendingProfilePropertyIds.push(
+      pendingRecordPropertyIds.push(
         ...propertyGroups[aggregationMethod].map((p) => p.id)
       );
     }
 
     // unGroupedProperties
     for (const property of unGroupedProperties) {
-      const pendingProfileProperties = await ProfileProperty.findAll({
+      const pendingRecordProperties = await RecordProperty.findAll({
         where: {
           propertyId: property.id,
           state: "pending",
@@ -162,13 +162,13 @@ export namespace ProfilePropertyOps {
         limit,
       });
 
-      await preparePropertyImports(pluginConnection, pendingProfileProperties, [
+      await preparePropertyImports(pluginConnection, pendingRecordProperties, [
         property,
       ]);
-      pendingProfilePropertyIds.push(property.id);
+      pendingRecordPropertyIds.push(property.id);
     }
 
-    return pendingProfilePropertyIds;
+    return pendingRecordPropertyIds;
   }
 }
 
@@ -176,48 +176,48 @@ export namespace ProfilePropertyOps {
 
 async function preparePropertyImports(
   pluginConnection: PluginConnection,
-  pendingProfileProperties: ProfileProperty[],
+  pendingRecordProperties: RecordProperty[],
   properties: Property[]
 ) {
-  if (pendingProfileProperties.length === 0) return;
+  if (pendingRecordProperties.length === 0) return;
   if (properties.length === 0) return;
 
-  const uniqueProfileIds = pendingProfileProperties
-    .map((ppp) => ppp.profileId)
+  const uniqueRecordIds = pendingRecordProperties
+    .map((ppp) => ppp.recordId)
     .filter((val, idx, arr) => arr.indexOf(val) === idx);
 
-  const method = pluginConnection.methods.profileProperties
-    ? "ProfileProperties"
-    : pluginConnection.methods.profileProperty
-    ? "ProfileProperty"
+  const method = pluginConnection.methods.recordProperties
+    ? "RecordProperties"
+    : pluginConnection.methods.recordProperty
+    ? "RecordProperty"
     : null;
 
-  await ProfileProperty.update(
+  await RecordProperty.update(
     { startedAt: new Date() },
     {
       where: {
-        id: { [Op.in]: pendingProfileProperties.map((i) => i.id) },
+        id: { [Op.in]: pendingRecordProperties.map((i) => i.id) },
       },
     }
   );
 
-  if (method === "ProfileProperties") {
-    await CLS.enqueueTask(`profileProperty:importProfileProperties`, {
+  if (method === "RecordProperties") {
+    await CLS.enqueueTask(`recordProperty:importRecordProperties`, {
       propertyIds: properties.map((p) => p.id),
-      profileIds: uniqueProfileIds,
+      recordIds: uniqueRecordIds,
     });
-  } else if (method === "ProfileProperty") {
+  } else if (method === "RecordProperty") {
     for (const property of properties) {
-      for (const profileId of uniqueProfileIds) {
-        await CLS.enqueueTask(`profileProperty:importProfileProperty`, {
+      for (const recordId of uniqueRecordIds) {
+        await CLS.enqueueTask(`recordProperty:importRecordProperty`, {
           propertyId: property.id,
-          profileId,
+          recordId,
         });
       }
     }
   } else {
     // Schedule sources don't import properties on-demand, keep old value
-    await ProfileProperty.update(
+    await RecordProperty.update(
       {
         state: "ready",
         stateChangedAt: new Date(),
@@ -225,7 +225,7 @@ async function preparePropertyImports(
       },
       {
         where: {
-          id: pendingProfileProperties.map((p) => p.id),
+          id: pendingRecordProperties.map((p) => p.id),
         },
       }
     );
@@ -252,7 +252,7 @@ function formatEmail(email: string) {
 
 async function formatPhoneNumber(number: string) {
   const defaultCountryCode = (
-    await plugin.readSetting("core", "profiles-default-country-code")
+    await plugin.readSetting("core", "records-default-country-code")
   ).value as CountryCode;
 
   const formattedPhoneNumber = parsePhoneNumberFromString(
