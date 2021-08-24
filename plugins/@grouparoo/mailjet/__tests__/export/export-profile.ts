@@ -8,7 +8,7 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 import { MailjetClient } from "../../src/lib/client";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
-const appId = "app_ds789a789gdf789jh.m678rt90-90-3k";
+const appId = "anw890-5vn34c9-a802n8905v-3cw4";
 
 let apiClient: MailjetClient;
 let user: any;
@@ -31,20 +31,14 @@ const listThree = "List Three";
 const listFour = "List Four";
 const dateField = new Date("2021-02-11T23:03:03Z");
 
-const ltv = 3039;
-
 const brandNewEmail = "jake.jill@mailinator.com";
 const brandNewName = "Jake";
 const nonexistentEmail = "pilo.paz@mailinator.com";
-const message =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\n" +
-  "in, accumsan non quam.";
 
 const invalidEmail = "000";
 const invalidDate = "asd000";
-
-const textField = "text_field";
-const numberField = 30.39;
+const numberField = 3039;
+const floatField = 30.39;
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
@@ -58,10 +52,9 @@ require("./../fixtures/export-profile");
 const appOptions = loadAppOptions(newNock);
 
 async function getListId(listName): Promise<any> {
-  const allLists = await apiClient.getLists();
-  const matchingList = allLists.filter((list) => list.name === listName)[0];
-  if (matchingList) {
-    return matchingList["listId"];
+  const list = await apiClient.getListByName(listName);
+  if (list) {
+    return list.ID;
   }
   return null;
 }
@@ -77,7 +70,7 @@ async function deleteUsers(suppressErrors) {
     ]) {
       const user = await apiClient.getContactByEmail(emailToDelete);
       if (user) {
-        await apiClient.deleteContact(user.vid);
+        await apiClient.deleteContact(user.ID);
       }
     }
   } catch (err) {
@@ -100,6 +93,11 @@ async function deleteLists(suppressErrors) {
       throw err;
     }
   }
+}
+
+function getUserProp(userProps: Array<any>, prop: string) {
+  const props = userProps.filter((p) => p.Name === prop);
+  return props.length > 0 ? props[0]["Value"] : null;
 }
 
 async function cleanUp(suppressErrors) {
@@ -154,7 +152,7 @@ describe("mailjet/exportProfile", () => {
       runExport({
         syncOperations: { create: false, update: true, delete: true },
         oldProfileProperties: {},
-        newProfileProperties: { email, firstname: firstName },
+        newProfileProperties: { Email: email, firstname: firstName },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -168,35 +166,37 @@ describe("mailjet/exportProfile", () => {
 
     await runExport({
       oldProfileProperties: {},
-      newProfileProperties: { email, firstname: firstName },
+      newProfileProperties: { Email: email, firstname: firstName },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
     });
     user = await apiClient.getContactByEmail(email);
+    const userProps = await apiClient.getContactProperties(user.ID);
     expect(user).not.toBe(null);
-    expect(user["properties"]["email"]["value"]).toBe(email);
-    expect(user["properties"]["firstname"]["value"]).toBe(firstName);
+    expect(user["Email"]).toBe(email);
+    expect(getUserProp(userProps, "firstname")).toBe(firstName);
   });
 
   test("can add user variables", async () => {
     await runExport({
-      oldProfileProperties: { email, firstname: firstName },
+      oldProfileProperties: { Email: email, firstname: firstName },
       newProfileProperties: {
-        email,
+        Email: email,
         firstname: firstName,
         lastname: lastName,
-        mobilephone: phoneNumber,
+        phone: phoneNumber,
       },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
     });
     const user = await apiClient.getContactByEmail(email);
-    expect(user["properties"]["email"]["value"]).toBe(email);
-    expect(user["properties"]["firstname"]["value"]).toBe(firstName);
-    expect(user["properties"]["lastname"]["value"]).toBe(lastName);
-    expect(user["properties"]["mobilephone"]["value"]).toBe(phoneNumber);
+    expect(user["Email"]).toBe(email);
+    const userProps = await apiClient.getContactProperties(user.ID);
+    expect(getUserProp(userProps, "firstname")).toBe(firstName);
+    expect(getUserProp(userProps, "lastname")).toBe(lastName);
+    expect(getUserProp(userProps, "phone")).toBe(phoneNumber);
   });
 
   test("cannot update existing profile if sync mode does not allow it", async () => {
@@ -204,16 +204,16 @@ describe("mailjet/exportProfile", () => {
       runExport({
         syncOperations: { create: true, update: false, delete: true },
         oldProfileProperties: {
-          email,
+          Email: email,
           firstname: firstName,
           lastname: lastName,
-          mobilephone: phoneNumber,
+          phone: phoneNumber,
         },
         newProfileProperties: {
-          email,
+          Email: email,
           firstname: alternativeName,
           lastname: alternativeLastName,
-          mobilephone: newPhoneNumber,
+          phone: newPhoneNumber,
         },
         oldGroups: [],
         newGroups: [],
@@ -223,127 +223,117 @@ describe("mailjet/exportProfile", () => {
 
     // no change
     const user = await apiClient.getContactByEmail(email);
-    expect(user["properties"]["email"]["value"]).toBe(email);
-    expect(user["properties"]["firstname"]["value"]).toBe(firstName);
-    expect(user["properties"]["lastname"]["value"]).toBe(lastName);
-    expect(user["properties"]["mobilephone"]["value"]).toBe(phoneNumber);
+    expect(user["Email"]).toBe(email);
+    const userProps = await apiClient.getContactProperties(user.ID);
+    expect(getUserProp(userProps, "firstname")).toBe(firstName);
+    expect(getUserProp(userProps, "lastname")).toBe(lastName);
+    expect(getUserProp(userProps, "phone")).toBe(phoneNumber);
   });
 
   test("can change user variables", async () => {
-    // Phone must be valid.
     await runExport({
       oldProfileProperties: {
-        email,
+        Email: email,
         firstname: firstName,
         lastname: lastName,
-        mobilephone: phoneNumber,
+        phone: phoneNumber,
       },
       newProfileProperties: {
-        email,
+        Email: email,
         firstname: alternativeName,
         lastname: alternativeLastName,
-        mobilephone: newPhoneNumber,
-        message,
-        lifetime_value__custom_: ltv,
-        closedate: dateField,
-        text_field: textField,
+        phone: newPhoneNumber,
         date_field: dateField, //must be midnight: 00:00
         number_field: numberField,
+        float_field: floatField,
       },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
     });
     const user = await apiClient.getContactByEmail(email);
-    expect(user["properties"]["email"]["value"]).toBe(email);
-    expect(user["properties"]["firstname"]["value"]).toBe(alternativeName);
-    expect(user["properties"]["lastname"]["value"]).toBe(alternativeLastName);
-    expect(user["properties"]["mobilephone"]["value"]).toBe(newPhoneNumber);
-    expect(user["properties"]["message"]["value"]).toBe(message);
-    expect(user["properties"]["closedate"]["value"]).toBe(
-      dateField.getTime().toString()
-    );
-    expect(user["properties"]["lifetime_value__custom_"]["value"]).toBe(
-      ltv.toString()
-    );
-    expect(user["properties"]["text_field"]["value"]).toBe(textField);
-    expect(user["properties"]["date_field"]["value"]).toBe(
-      dateField.getTime().toString()
-    );
-    expect(user["properties"]["number_field"]["value"]).toBe(
-      numberField.toString()
-    );
+    expect(user["Email"]).toBe(email);
+    const userProps = await apiClient.getContactProperties(user.ID);
+    expect(getUserProp(userProps, "firstname")).toBe(alternativeName);
+    expect(getUserProp(userProps, "lastname")).toBe(alternativeLastName);
+    expect(getUserProp(userProps, "date_field")).toBe("2021-02-11T23:03:03Z");
+    expect(getUserProp(userProps, "number_field")).toBe(numberField.toString());
+    expect(getUserProp(userProps, "float_field")).toBe(floatField.toString());
   });
 
   test("can try change user variables with invalid date type", async () => {
     await expect(
       runExport({
         oldProfileProperties: {
-          email,
-          closedate: dateField,
+          Email: email,
+          date_field: dateField,
         },
         newProfileProperties: {
-          email,
-          closedate: invalidDate,
+          Email: email,
+          date_field: invalidDate,
         },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
       })
-    ).rejects.toThrow(/Request failed/);
+    ).rejects.toThrow(/is not a valid datetime value/);
   });
 
   test("can clear user variables", async () => {
     await runExport({
       oldProfileProperties: {
-        email,
+        Email: email,
         firstname: alternativeName,
         lastname: alternativeLastName,
-        mobilephone: phoneNumber,
-        text_field: textField,
+        phone: phoneNumber,
         date_field: dateField,
         number_field: numberField,
+        float_field: floatField,
       },
       newProfileProperties: {
-        email,
+        Email: email,
       },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
     });
     const user = await apiClient.getContactByEmail(email);
-    expect(user["properties"]["email"]["value"]).toBe(email);
-    expect(user["properties"]["firstname"]["value"]).toBe("");
-    expect(user["properties"]["lastname"]["value"]).toBe("");
-    expect(user["properties"]["text_field"]["value"]).toBe("");
-    expect(user["properties"]["date_field"]["value"]).toBe("");
-    expect(user["properties"]["number_field"]["value"]).toBe("");
+    expect(user["Email"]).toBe(email);
+    const userProps = await apiClient.getContactProperties(user.ID);
+    expect(getUserProp(userProps, "firstname")).toBe(null);
+    expect(getUserProp(userProps, "lastname")).toBe(null);
+    expect(getUserProp(userProps, "phone")).toBe(null);
+    expect(getUserProp(userProps, "date_field")).toBe(null);
+    expect(getUserProp(userProps, "number_field")).toBe(null);
+    expect(getUserProp(userProps, "float_field")).toBe(null);
   });
 
   test("can add user to a list that doesn't exist yet", async () => {
     await runExport({
       oldProfileProperties: {
-        email,
+        Email: email,
       },
       newProfileProperties: {
-        email,
+        Email: email,
       },
       oldGroups: [],
       newGroups: [listOne, listTwo],
       toDelete: false,
     });
     const user = await apiClient.getContactByEmail(email);
+    expect(user["Email"]).toBe(email);
 
     const listOneId = await getListId(listOne);
     const listTwoId = await getListId(listTwo);
-
     expect(listOneId).not.toBe(null);
     expect(listTwoId).not.toBe(null);
-    expect(user["list-memberships"].length).toBe(2);
-    expect(user["list-memberships"]).toEqual(
+
+    const listMemberships = await apiClient.getContactListsByEmail(email);
+    expect(listMemberships.length).toBe(2);
+    expect(listMemberships).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ "internal-list-id": listOneId }),
-        expect.objectContaining({ "internal-list-id": listTwoId }),
+        expect.objectContaining({ ListID: listOneId }),
+        expect.objectContaining({ ListID: listTwoId }),
       ])
     );
   });
@@ -351,38 +341,42 @@ describe("mailjet/exportProfile", () => {
   test("can remove a user from a list", async () => {
     await runExport({
       oldProfileProperties: {
-        email,
+        Email: email,
       },
       newProfileProperties: {
-        email,
+        Email: email,
       },
       oldGroups: [listOne, listTwo],
       newGroups: [listOne],
       toDelete: false,
     });
     const user = await apiClient.getContactByEmail(email);
+    expect(user["Email"]).toBe(email);
+
     const listOneId = await getListId(listOne);
-    expect(user["list-memberships"].length).toBe(1);
-    expect(user["list-memberships"]).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ "internal-list-id": listOneId }),
-      ])
+    expect(listOneId).not.toBe(null);
+
+    const listMemberships = await apiClient.getContactListsByEmail(email);
+    expect(listMemberships.length).toBe(1);
+    expect(listMemberships).toEqual(
+      expect.arrayContaining([expect.objectContaining({ ListID: listOneId })])
     );
   });
 
   test("it does not change already subscribed lists", async () => {
     await runExport({
       oldProfileProperties: {
-        email,
+        Email: email,
       },
       newProfileProperties: {
-        email,
+        Email: email,
       },
       oldGroups: [],
       newGroups: [listTwo, listThree],
       toDelete: false,
     });
     const user = await apiClient.getContactByEmail(email);
+    expect(user["Email"]).toBe(email);
 
     const listOneId = await getListId(listOne);
     const listTwoId = await getListId(listTwo);
@@ -392,12 +386,13 @@ describe("mailjet/exportProfile", () => {
     expect(listTwoId).not.toBe(null);
     expect(listThreeId).not.toBe(null);
 
-    expect(user["list-memberships"].length).toBe(3);
-    expect(user["list-memberships"]).toEqual(
+    const listMemberships = await apiClient.getContactListsByEmail(email);
+    expect(listMemberships.length).toBe(3);
+    expect(listMemberships).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ "internal-list-id": listOneId }),
-        expect.objectContaining({ "internal-list-id": listTwoId }),
-        expect.objectContaining({ "internal-list-id": listThreeId }),
+        expect.objectContaining({ ListID: listOneId }),
+        expect.objectContaining({ ListID: listTwoId }),
+        expect.objectContaining({ ListID: listThreeId }),
       ])
     );
   });
@@ -405,35 +400,39 @@ describe("mailjet/exportProfile", () => {
   test("it tries to unsubscribe non subscribed list", async () => {
     await runExport({
       oldProfileProperties: {
-        email,
+        Email: email,
       },
       newProfileProperties: {
-        email,
+        Email: email,
       },
       oldGroups: [listFour],
       newGroups: [],
       toDelete: false,
     });
     const user = await apiClient.getContactByEmail(email);
+    expect(user["Email"]).toBe(email);
     const listFourId = await getListId(listFour);
     expect(listFourId).not.toBe(null);
-    expect(user["list-memberships"]).toEqual(
+
+    const listMemberships = await apiClient.getContactListsByEmail(email);
+    expect(listMemberships.length).toBe(3);
+    expect(listMemberships).toEqual(
       expect.arrayContaining([
-        expect.not.objectContaining({ "internal-list-id": listFourId }),
+        expect.not.objectContaining({ ListID: listFourId }),
       ])
     );
   });
 
-  test("it cannot change the email address if sync mode is only updating", async () => {
+  test("change email when only old exists (ENRICH mode)", async () => {
     // mailjet requires creating new user on FK change
     await expect(
       runExport({
-        syncOperations: { create: false, update: true, delete: false },
+        syncOperations: DestinationSyncModeData.enrich.operations,
         oldProfileProperties: {
-          email,
+          Email: email,
         },
         newProfileProperties: {
-          email: alternativeEmail,
+          Email: alternativeEmail,
         },
         oldGroups: [listOne, listTwo, listThree],
         newGroups: [listOne, listTwo, listThree],
@@ -441,34 +440,41 @@ describe("mailjet/exportProfile", () => {
       })
     ).rejects.toThrow(/sync mode does not allow creating/);
 
+    // no changes
     const oldUser = await apiClient.getContactByEmail(email);
     expect(oldUser).not.toBe(null);
-    expect(oldUser["properties"]["email"]["value"]).toBe(email);
-    expect(oldUser["list-memberships"]).toHaveLength(3);
+    expect(oldUser["Email"]).toBe(email);
 
+    const listMemberships = await apiClient.getContactListsByEmail(email);
+    expect(listMemberships.length).toBe(3);
+
+    // not created
     const newUser = await apiClient.getContactByEmail(alternativeEmail);
     expect(newUser).toBe(null);
   });
 
-  test("it can change the email address", async () => {
+  test("change email when only old exists (ADDITIVE mode)", async () => {
     await runExport({
+      syncOperations: DestinationSyncModeData.additive.operations,
       oldProfileProperties: {
-        email,
+        Email: email,
       },
       newProfileProperties: {
-        email: alternativeEmail,
+        Email: alternativeEmail,
       },
       oldGroups: [listOne, listTwo, listThree],
       newGroups: [listOne, listTwo, listThree],
       toDelete: false,
     });
 
-    const user = await apiClient.getContactByEmail(email);
-    expect(user).toBe(null);
+    const oldUser = await apiClient.getContactByEmail(email);
+    expect(oldUser).not.toBe(null);
+    const oldListMemberships = await apiClient.getContactListsByEmail(email);
+    expect(oldListMemberships.length).toBe(0);
 
     const newUser = await apiClient.getContactByEmail(alternativeEmail);
     expect(newUser).not.toBe(null);
-    expect(newUser["properties"]["email"]["value"]).toBe(alternativeEmail);
+    expect(newUser["Email"]).toBe(alternativeEmail);
 
     const listOneId = await getListId(listOne);
     const listTwoId = await getListId(listTwo);
@@ -478,25 +484,28 @@ describe("mailjet/exportProfile", () => {
     expect(listTwoId).not.toBe(null);
     expect(listThreeId).not.toBe(null);
 
-    expect(newUser["list-memberships"].length).toBe(3);
-    expect(newUser["list-memberships"]).toEqual(
+    const listMemberships = await apiClient.getContactListsByEmail(
+      alternativeEmail
+    );
+    expect(listMemberships.length).toBe(3);
+    expect(listMemberships).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ "internal-list-id": listOneId }),
-        expect.objectContaining({ "internal-list-id": listTwoId }),
-        expect.objectContaining({ "internal-list-id": listThreeId }),
+        expect.objectContaining({ ListID: listOneId }),
+        expect.objectContaining({ ListID: listTwoId }),
+        expect.objectContaining({ ListID: listThreeId }),
       ])
     );
   });
 
-  test("it can change the email address and orphan the old user if sync mode is not deleting", async () => {
+  test("change email when both exist (ADDITIVE mode)", async () => {
     // mailjet requires deleting the old user on FK change
     await runExport({
-      syncOperations: { create: true, update: true, delete: false },
+      syncOperations: DestinationSyncModeData.additive.operations,
       oldProfileProperties: {
-        email: alternativeEmail,
+        Email: alternativeEmail,
       },
       newProfileProperties: {
-        email,
+        Email: email,
       },
       oldGroups: [listOne, listTwo, listThree],
       newGroups: [listOne, listTwo, listThree],
@@ -506,45 +515,110 @@ describe("mailjet/exportProfile", () => {
     // old user still there
     const oldUser = await apiClient.getContactByEmail(alternativeEmail);
     expect(oldUser).not.toBe(null);
-    expect(oldUser["properties"]["email"]["value"]).toBe(alternativeEmail);
-    expect(oldUser["list-memberships"]).toHaveLength(0); // but has been removed from lists
+    expect(oldUser["Email"]).toBe(alternativeEmail);
+    const oldListMemberships = await apiClient.getContactListsByEmail(
+      alternativeEmail
+    );
+    expect(oldListMemberships).toHaveLength(0); // but has been removed from lists
 
     // new user created
     const newUser = await apiClient.getContactByEmail(email);
     expect(newUser).not.toBe(null);
-    expect(newUser["properties"]["email"]["value"]).toBe(email);
-    expect(newUser["list-memberships"]).toHaveLength(3);
+    expect(newUser["Email"]).toBe(email);
+    const listMemberships = await apiClient.getContactListsByEmail(email);
+    expect(listMemberships).toHaveLength(3);
+  });
+
+  test("change email when both exist (SYNC mode)", async () => {
+    // mailjet requires deleting the old user on FK change
+    await runExport({
+      syncOperations: DestinationSyncModeData.sync.operations,
+      oldProfileProperties: {
+        Email: alternativeEmail,
+      },
+      newProfileProperties: {
+        Email: email,
+        phone: otherPhoneNumber,
+      },
+      oldGroups: [listOne, listTwo, listThree],
+      newGroups: [listOne, listTwo, listThree],
+      toDelete: false,
+    });
+
+    // old user is deleted
+    const oldUser = await apiClient.getContactByEmail(alternativeEmail);
+    expect(oldUser).toBe(null);
+
+    // new user is updated
+    const newUser = await apiClient.getContactByEmail(email);
+    expect(newUser).not.toBe(null);
+    expect(newUser["Email"]).toBe(email);
+    const userProps = await apiClient.getContactProperties(newUser.ID);
+    expect(getUserProp(userProps, "phone")).toBe(otherPhoneNumber);
+    const listMemberships = await apiClient.getContactListsByEmail(email);
+    expect(listMemberships).toHaveLength(3);
+  });
+
+  test("change email when only new exists", async () => {
+    await runExport({
+      oldProfileProperties: {
+        Email: nonexistentEmail,
+      },
+      newProfileProperties: {
+        Email: email,
+        firstname: firstName,
+      },
+      oldGroups: [listOne, listTwo, listThree],
+      newGroups: [listOne, listTwo, listThree],
+      toDelete: false,
+    });
+
+    // old is null
+    const oldUser = await apiClient.getContactByEmail(nonexistentEmail);
+    expect(oldUser).toBe(null);
+
+    // new user is updated
+    const newUser = await apiClient.getContactByEmail(email);
+    expect(newUser).not.toBe(null);
+    expect(newUser["Email"]).toBe(email);
+    const userProps = await apiClient.getContactProperties(newUser.ID);
+    expect(getUserProp(userProps, "firstname")).toBe(firstName);
+    const listMemberships = await apiClient.getContactListsByEmail(email);
+    expect(listMemberships).toHaveLength(3);
   });
 
   test("it can change the email address along other properties", async () => {
     await runExport({
       oldProfileProperties: {
-        email,
+        Email: email,
         firstname: alternativeName,
-        mobilephone: newPhoneNumber,
+        phone: newPhoneNumber,
       },
       newProfileProperties: {
-        email: otherEmail,
+        Email: otherEmail,
         firstname: otherName,
-        mobilephone: otherPhoneNumber,
+        phone: otherPhoneNumber,
       },
       oldGroups: [],
       newGroups: [listOne],
       toDelete: false,
     });
-    const user = await apiClient.getContactByEmail(otherEmail);
-    expect(user["properties"]["email"]["value"]).toBe(otherEmail);
-    expect(user["properties"]["firstname"]["value"]).toBe(otherName);
-    expect(user["properties"]["mobilephone"]["value"]).toBe(otherPhoneNumber);
+
+    const newUser = await apiClient.getContactByEmail(otherEmail);
+    expect(newUser).not.toBe(null);
+    expect(newUser["Email"]).toBe(otherEmail);
+
+    const userProps = await apiClient.getContactProperties(newUser.ID);
+    expect(getUserProp(userProps, "firstname")).toBe(otherName);
+    expect(getUserProp(userProps, "phone")).toBe(otherPhoneNumber);
 
     const listOneId = await getListId(listOne);
-
     expect(listOneId).not.toBe(null);
-    expect(user["list-memberships"].length).toBe(1);
-    expect(user["list-memberships"]).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ "internal-list-id": listOneId }),
-      ])
+
+    const listMemberships = await apiClient.getContactListsByEmail(otherEmail);
+    expect(listMemberships.length).toBe(1);
+    expect(listMemberships).toEqual(
+      expect.arrayContaining([expect.objectContaining({ ListID: listOneId })])
     );
 
     const oldUser = await apiClient.getContactByEmail(email);
@@ -556,10 +630,10 @@ describe("mailjet/exportProfile", () => {
       runExport({
         syncOperations: { create: true, update: true, delete: false },
         oldProfileProperties: {
-          email: otherEmail,
+          Email: otherEmail,
         },
         newProfileProperties: {
-          email: otherEmail,
+          Email: otherEmail,
         },
         oldGroups: [listOne],
         newGroups: [listOne],
@@ -569,25 +643,32 @@ describe("mailjet/exportProfile", () => {
 
     // no changes to the profile
     const user = await apiClient.getContactByEmail(otherEmail);
-    expect(user["properties"]["email"]["value"]).toBe(otherEmail);
-    expect(user["properties"]["firstname"]["value"]).toBe(otherName);
-    expect(user["properties"]["mobilephone"]["value"]).toBe(otherPhoneNumber);
-    expect(user["list-memberships"]).toHaveLength(1);
+    expect(user).not.toBe(null);
+    expect(user["Email"]).toBe(otherEmail);
+
+    const userProps = await apiClient.getContactProperties(user.ID);
+    expect(getUserProp(userProps, "firstname")).toBe(otherName);
+    expect(getUserProp(userProps, "phone")).toBe(otherPhoneNumber);
+
+    const listMemberships = await apiClient.getContactListsByEmail(otherEmail);
+    expect(listMemberships.length).toBe(1);
   });
 
   test("can delete a user", async () => {
+    let user = await apiClient.getContactByEmail(otherEmail);
+    expect(user).not.toBe(null);
     await runExport({
       oldProfileProperties: {
-        email: otherEmail,
+        Email: otherEmail,
       },
       newProfileProperties: {
-        email: otherEmail,
+        Email: otherEmail,
       },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
     });
-    const user = await apiClient.getContactByEmail(otherEmail);
+    user = await apiClient.getContactByEmail(otherEmail);
     expect(user).toBe(null);
   });
 
@@ -597,10 +678,10 @@ describe("mailjet/exportProfile", () => {
 
     await runExport({
       oldProfileProperties: {
-        email: otherEmail,
+        Email: otherEmail,
       },
       newProfileProperties: {
-        email: otherEmail,
+        Email: otherEmail,
       },
       oldGroups: [],
       newGroups: [],
@@ -618,7 +699,7 @@ describe("mailjet/exportProfile", () => {
     await runExport({
       oldProfileProperties: {},
       newProfileProperties: {
-        email: newEmail,
+        Email: newEmail,
         firstname: newName,
       },
       oldGroups: [],
@@ -626,15 +707,19 @@ describe("mailjet/exportProfile", () => {
       toDelete: false,
     });
     user = await apiClient.getContactByEmail(newEmail);
-    expect(user["properties"]["email"]["value"]).toBe(newEmail);
-    expect(user["properties"]["firstname"]["value"]).toBe(newName);
+    expect(user).not.toBe(null);
+    expect(user["Email"]).toBe(newEmail);
+
+    const userProps = await apiClient.getContactProperties(user.ID);
+    expect(getUserProp(userProps, "firstname")).toBe(newName);
 
     const listFourId = await getListId(listFour);
     expect(listFourId).not.toBe(null);
-    expect(user["list-memberships"]).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ "internal-list-id": listFourId }),
-      ])
+
+    const listMemberships = await apiClient.getContactListsByEmail(newEmail);
+    expect(listMemberships.length).toBe(1);
+    expect(listMemberships).toEqual(
+      expect.arrayContaining([expect.objectContaining({ ListID: listFourId })])
     );
   });
 
@@ -645,9 +730,9 @@ describe("mailjet/exportProfile", () => {
     expect(nonexistentUser).toBe(null);
 
     await runExport({
-      oldProfileProperties: { email: nonexistentEmail },
+      oldProfileProperties: { Email: nonexistentEmail },
       newProfileProperties: {
-        email: brandNewEmail,
+        Email: brandNewEmail,
         firstname: brandNewName,
       },
       oldGroups: [],
@@ -656,8 +741,10 @@ describe("mailjet/exportProfile", () => {
     });
     brandNewUser = await apiClient.getContactByEmail(brandNewEmail);
     expect(brandNewUser).not.toBe(null);
-    expect(brandNewUser["properties"]["email"]["value"]).toBe(brandNewEmail);
-    expect(brandNewUser["properties"]["firstname"]["value"]).toBe(brandNewName);
+    expect(brandNewUser["Email"]).toBe(brandNewEmail);
+
+    const userProps = await apiClient.getContactProperties(brandNewUser.ID);
+    expect(getUserProp(userProps, "firstname")).toBe(brandNewName);
   });
 
   test("can add a user passing a invalid email", async () => {
@@ -665,12 +752,12 @@ describe("mailjet/exportProfile", () => {
       runExport({
         oldProfileProperties: {},
         newProfileProperties: {
-          email: invalidEmail,
+          Email: invalidEmail,
         },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
       })
-    ).rejects.toThrow(/Request failed/);
+    ).rejects.toThrow(/Invalid email address/);
   });
 });

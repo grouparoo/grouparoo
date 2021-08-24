@@ -6,7 +6,7 @@ nock("https://api.mailjet.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      Count: 4,
+      Count: 8,
       Data: [
         { Datatype: "str", ID: 90568, Name: "firstname", NameSpace: "static" },
         { Datatype: "str", ID: 90569, Name: "name", NameSpace: "static" },
@@ -17,16 +17,30 @@ nock("https://api.mailjet.com:443", { encodedQueryParams: true })
           Name: "newsletter_sub",
           NameSpace: "static",
         },
+        { Datatype: "str", ID: 91488, Name: "lastname", NameSpace: "static" },
+        {
+          Datatype: "int",
+          ID: 91489,
+          Name: "number_field",
+          NameSpace: "static",
+        },
+        {
+          Datatype: "datetime",
+          ID: 91490,
+          Name: "date_field",
+          NameSpace: "static",
+        },
+        { Datatype: "str", ID: 91491, Name: "phone", NameSpace: "static" },
       ],
-      Total: 4,
+      Total: 8,
     },
     [
       "date",
-      "Fri, 20 Aug 2021 02:53:30 GMT",
+      "Tue, 24 Aug 2021 18:25:35 GMT",
       "content-type",
       "application/json",
       "content-length",
-      "373",
+      "713",
       "connection",
       "close",
     ]
@@ -37,7 +51,7 @@ nock("https://api.mailjet.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      Count: 4,
+      Count: 8,
       Data: [
         { Datatype: "str", ID: 90568, Name: "firstname", NameSpace: "static" },
         { Datatype: "str", ID: 90569, Name: "name", NameSpace: "static" },
@@ -48,16 +62,30 @@ nock("https://api.mailjet.com:443", { encodedQueryParams: true })
           Name: "newsletter_sub",
           NameSpace: "static",
         },
+        { Datatype: "str", ID: 91488, Name: "lastname", NameSpace: "static" },
+        {
+          Datatype: "int",
+          ID: 91489,
+          Name: "number_field",
+          NameSpace: "static",
+        },
+        {
+          Datatype: "datetime",
+          ID: 91490,
+          Name: "date_field",
+          NameSpace: "static",
+        },
+        { Datatype: "str", ID: 91491, Name: "phone", NameSpace: "static" },
       ],
-      Total: 4,
+      Total: 8,
     },
     [
       "date",
-      "Fri, 20 Aug 2021 02:53:31 GMT",
+      "Tue, 24 Aug 2021 18:25:36 GMT",
       "content-type",
       "application/json",
       "content-length",
-      "373",
+      "713",
       "connection",
       "close",
     ]

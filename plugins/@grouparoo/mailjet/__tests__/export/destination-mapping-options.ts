@@ -23,7 +23,7 @@ require("../fixtures/destination-mapping-options");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-const appId = "789562378987934";
+const appId = "anw890-5vn34c9-a802n8905v-3cw4";
 
 async function runDestinationMappingOptions({}) {
   return destinationMappingOptions({
@@ -44,7 +44,7 @@ describe("mailjet/destinationMappingOptions", () => {
     const name = fields.find((f) => f.key === "name");
     const firstName = fields.find((f) => f.key === "firstname");
     const country = fields.find((f) => f.key === "country");
-    const newsletterSub = fields.find((f) => f.key === "newsletter_sub");
+    const phone = fields.find((f) => f.key === "phone");
 
     expect(name.type).toBe("string");
     expect(name.important).toBe(true);
@@ -55,8 +55,8 @@ describe("mailjet/destinationMappingOptions", () => {
     expect(country.type).toBe("string");
     expect(country.important).toBe(false);
 
-    expect(newsletterSub.type).toBe("string");
-    expect(newsletterSub.important).toBe(false);
+    expect(phone.type).toBe("phoneNumber");
+    expect(phone.important).toBe(false);
   });
 
   test("can load all destinationMappingOptions", async () => {
@@ -66,13 +66,13 @@ describe("mailjet/destinationMappingOptions", () => {
 
     expect(required.length).toBe(1);
 
-    const requiredFieldEmail = required.find((f) => f.key === "email");
-    expect(requiredFieldEmail.key).toBe("email");
+    const requiredFieldEmail = required.find((f) => f.key === "Email");
+    expect(requiredFieldEmail.key).toBe("Email");
     expect(requiredFieldEmail.type).toBe("email");
 
-    const knownFieldName = known.find((f) => f.key === "name");
-    expect(knownFieldName.type).toBe("string");
-    expect(knownFieldName.important).toBe(true);
+    const knownFieldFirstName = known.find((f) => f.key === "firstname");
+    expect(knownFieldFirstName.type).toBe("string");
+    expect(knownFieldFirstName.important).toBe(true);
 
     const knownFieldCountry = known.find((f) => f.key === "country");
     expect(knownFieldCountry.type).toBe("string");

@@ -1,4 +1,4 @@
-# @grouparoo/hubspot
+# @grouparoo/mailjet
 
 A [Grouparoo](https://www.grouparoo.com) plugin for connecting to [Mailjet](https://www.mailjet.com/).
 

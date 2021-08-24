@@ -10,20 +10,17 @@ import { addToList, removeFromList } from "./listMethods";
 
 const deleteContactOrClearGroups = async (
   client: MailjetClient,
-  appId: string,
-  appOptions: SimpleAppOptions,
   syncOperations: DestinationSyncOperations,
   contact: any,
   groups: string[]
 ) => {
   if (syncOperations.delete) {
-    await client.deleteContact(contact.id);
+    await client.deleteContact(contact.ID);
   } else {
     if (syncOperations.update) {
       // clear groups
-      const email = contact.properties.email.value;
       for (const group of groups) {
-        await removeFromList(client, appId, appOptions, email, group);
+        await removeFromList(client, contact.Email, group);
       }
     }
   }
@@ -46,10 +43,10 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     return { success: true };
   }
   const client = await connect(appOptions);
-  const email = newProfileProperties["email"]; // this is how we will identify profiles
-  const oldEmail = oldProfileProperties["email"];
+  const email = newProfileProperties["Email"]; // this is how we will identify profiles
+  const oldEmail = oldProfileProperties["Email"];
   if (!email) {
-    throw new Error(`newProfileProperties[email] is a required mapping`);
+    throw new Error(`newProfileProperties[Email] is a required mapping`);
   }
 
   try {
@@ -67,7 +64,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       }
       const contactToDelete = contact || oldContact;
       if (contactToDelete) {
-        await client.deleteContact(contactToDelete.id);
+        await client.deleteContact(contactToDelete.ID);
       }
       return { success: true };
     } else {
@@ -80,7 +77,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         .forEach((k) => (deletePropertiesPayload[k] = null));
 
       const payload = Object.assign(
-        { email },
+        { Email: email },
         newProfileProperties,
         deletePropertiesPayload
       );
@@ -96,43 +93,47 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           sortedDataFields[v] = formattedDataFields[v];
         });
 
-      if (contact && !syncOperations.update) {
-        throw new Errors.InfoError(
-          "Destination sync mode does not allow updating existing profiles."
-        );
+      if (contact) {
+        if (!syncOperations.update) {
+          throw new Errors.InfoError(
+            "Destination sync mode does not allow updating existing profiles."
+          );
+        }
+        if (Object.keys(sortedDataFields).length > 1) {
+          await client.updateContact(sortedDataFields);
+        }
       }
 
-      if (!contact && !syncOperations.create) {
-        throw new Errors.InfoError(
-          "Destination sync mode does not allow creating new profiles."
-        );
+      if (!contact) {
+        if (!syncOperations.create) {
+          throw new Errors.InfoError(
+            "Destination sync mode does not allow creating new profiles."
+          );
+        }
+        await client.createContact(sortedDataFields);
       }
 
       // change email
       if (oldContact) {
         await deleteContactOrClearGroups(
           client,
-          appId,
-          appOptions,
           syncOperations,
           oldContact,
           oldGroups
         );
       }
 
-      // await client.createOrUpdateContact(sortedDataFields);
-
       // add to lists
       for (const i in newGroups) {
         const group = newGroups[i];
-        await addToList(client, appId, appOptions, email, group);
+        await addToList(client, email, group);
       }
 
       // remove from lists
       for (const i in oldGroups) {
         const group = oldGroups[i];
         if (!newGroups.includes(group))
-          await removeFromList(client, appId, appOptions, email, group);
+          await removeFromList(client, email, group);
       }
     }
 
@@ -148,12 +149,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
 function formatVar(value) {
   if (value === undefined || value === null) {
-    return null;
+    return undefined;
   }
-  if (value instanceof Date) {
-    value.setUTCHours(0, 0, 0, 0); //Must be midnight.
-    return value.getTime();
-  } else {
-    return value;
-  }
+  return value;
 }

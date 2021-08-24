@@ -55,7 +55,7 @@ export const getRequiredFields = (): Array<{
   key: string;
   type: DestinationMappingOptionsResponseTypes;
 }> => {
-  return [{ key: "email", type: "email" }];
+  return [{ key: "Email", type: "email" }];
 };
 
 const isImportant = (key): Boolean => {

@@ -21,7 +21,6 @@ importers:
   apps/staging-community:
     specifiers:
       '@grouparoo/bigquery': 0.5.3-alpha.5
-      '@grouparoo/calculated-property': 0.5.3-alpha.5
       '@grouparoo/core': 0.5.3-alpha.5
       '@grouparoo/csv': 0.5.3-alpha.5
       '@grouparoo/customerio': 0.5.3-alpha.5
@@ -4010,6 +4009,7 @@ packages:
 
   /@zeit/next-source-maps/0.0.3:
     resolution: {integrity: sha512-gFDf7yQI8r/fdzTKJG9cp0rhKscRJWs/uebhScj8nZINT16kPTVm23JAi5EivO5pAJmHGzT1A8dwxAhTX0liNw==}
+    deprecated: 'Next.js now has built-in support for Source Maps: https://nextjs.org/docs/advanced-features/source-maps'
     dev: false
 
   /JSONStream/1.3.5:
@@ -4067,39 +4067,6 @@ packages:
     resolution: {integrity: sha512-asabaBSkEKosYKMITunzX177CXxQ4Q8BSSzMTKD+FefUhipQC70gfW5SiUDhYQ3vk8G+81HqQk7Fv9OXwwn9KA==}
     engines: {node: '>=0.4.0'}
     hasBin: true
-
-  /actionhero/26.1.3:
-    resolution: {integrity: sha512-nFTYJwxTMuO26Tm4Y6hdwtX2epGrHrtzG4N6ogfM8JlOqGbH2dPRbUpxnVdMicPpMfXdM31MnT5Q/5ya08G7Ww==}
-    engines: {node: '>=12.0.0'}
-    hasBin: true
-    requiresBuild: true
-    dependencies:
-      '@types/ioredis': 4.26.7
-      browser_fingerprint: 2.0.3
-      commander: 7.2.0
-      dot-prop: 6.0.1
-      etag: 1.8.1
-      formidable: 1.2.2
-      glob: 7.1.7
-      i18n: 0.13.3
-      ioredis: 4.27.8
-      ioredis-mock: 5.6.0_ioredis@4.27.8
-      is-running: 2.1.0
-      mime: 2.5.2
-      node-resque: 9.1.1
-      optimist: 0.6.1
-      primus: 8.0.5
-      qs: 6.10.1
-      uglify-js: 3.14.1
-      uuid: 8.3.2
-      winston: 3.3.3
-      ws: 8.2.0
-    transitivePeerDependencies:
-      - bufferutil
-      - redis-commands
-      - supports-color
-      - utf-8-validate
-    dev: true
 
   /actionhero/27.0.1:
     resolution: {integrity: sha512-xk8MMQL75vPAc5plbB2jW9mUR3IHbgwenBZKEa0uFHrqprDZEXnl2zJ1PgReif3ybVJ9CIPtOt44xZR+vAhSFg==}
@@ -6840,6 +6807,7 @@ packages:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
+    requiresBuild: true
     optional: true
 
   /fstream/1.0.12:
@@ -7528,20 +7496,6 @@ packages:
     resolution: {integrity: sha1-xG4xWaKT9riW2ikxbYtv6Lt5u+0=}
     dependencies:
       ms: 2.1.3
-
-  /i18n/0.13.3:
-    resolution: {integrity: sha512-QDmY2joBdKxj3wvk2LKyvZkjwGHta882kYHwEvx1WbwiPAet49kEU7cxzGfnrtWrfh4+7I07kBc0ZSjSlhnKyQ==}
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      debug: 4.3.2
-      make-plural: 6.2.2
-      math-interval-parser: 2.0.1
-      messageformat: 2.3.0
-      mustache: 4.2.0
-      sprintf-js: 1.1.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
 
   /iconv-lite/0.2.11:
     resolution: {integrity: sha1-HOYKOleGSiktEyH/RgnKS7llrcg=}
@@ -9461,17 +9415,6 @@ packages:
       kind-of: 6.0.3
     dev: false
 
-  /make-plural/4.3.0:
-    resolution: {integrity: sha512-xTYd4JVHpSCW+aqDof6w/MebaMVNTVYBZhbB/vi513xXdiPT92JMVCo0Jq8W2UZnzYRFeVbQiQ+I25l13JuKvA==}
-    hasBin: true
-    optionalDependencies:
-      minimist: 1.2.5
-    dev: true
-
-  /make-plural/6.2.2:
-    resolution: {integrity: sha512-8iTuFioatnTTmb/YJjywkVIHLjcwkFD9Ms0JpxjEm9Mo8eQYkh1z+55dwv4yc1jQ8ftVBxWQbihvZL1DfzGGWA==}
-    dev: true
-
   /makeerror/1.0.11:
     resolution: {integrity: sha1-4BpckQnyr3lmDk6LlYd5AYT1qWw=}
     dependencies:
@@ -9496,11 +9439,6 @@ packages:
     resolution: {integrity: sha512-/Q+7MGzaETqifOMWYEA7HVMaZb4XbcRfaOzcSsHZEith83KGlvaSG33u0SKu89Mj5h+T8V2hM+8O45Qc5XTgwA==}
     engines: {node: '>= 10'}
     hasBin: true
-    dev: true
-
-  /math-interval-parser/2.0.1:
-    resolution: {integrity: sha512-VmlAmb0UJwlvMyx8iPhXUDnVW1F9IrGEd9CIOmv+XL8AErCUUuozoDMrgImvnYt2A+53qVX/tPW6YJurMKYsvA==}
-    engines: {node: '>=0.10.0'}
     dev: true
 
   /md5.js/1.3.5:
@@ -9612,23 +9550,6 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
-  /messageformat-formatters/2.0.1:
-    resolution: {integrity: sha512-E/lQRXhtHwGuiQjI7qxkLp8AHbMD5r2217XNe/SREbBlSawe0lOqsFb7rflZJmlQFSULNLIqlcjjsCPlB3m3Mg==}
-    dev: true
-
-  /messageformat-parser/4.1.3:
-    resolution: {integrity: sha512-2fU3XDCanRqeOCkn7R5zW5VQHWf+T3hH65SzuqRvjatBK7r4uyFa5mEX+k6F9Bd04LVM5G4/BHBTUJsOdW7uyg==}
-    dev: true
-
-  /messageformat/2.3.0:
-    resolution: {integrity: sha512-uTzvsv0lTeQxYI2y1NPa1lItL5VRI8Gb93Y2K2ue5gBPyrbJxfDi/EYWxh2PKv5yO42AJeeqblS9MJSh/IEk4w==}
-    deprecated: Package renamed as '@messageformat/core', see messageformat.github.io for more details. 'messageformat' will eventually provide a polyfill for Intl.MessageFormat, once it's been defined by Unicode & ECMA.
-    dependencies:
-      make-plural: 4.3.0
-      messageformat-formatters: 2.0.1
-      messageformat-parser: 4.1.3
-    dev: true
-
   /micromark/2.11.4:
     resolution: {integrity: sha512-+WoovN/ppKolQOFIAajxi7Lu9kInbPxFuTBVEavFcL8eAfVstoc5MocPmqBeAdBOJV00uaVjegzH4+MA0DN/uA==}
     dependencies:
@@ -9700,10 +9621,6 @@ packages:
       arrify: 1.0.1
       is-plain-obj: 1.1.0
       kind-of: 6.0.3
-    dev: true
-
-  /minimist/0.0.10:
-    resolution: {integrity: sha1-3j+YVD2/lggr5IrRoMfNqDYwHc8=}
     dev: true
 
   /minimist/1.2.5:
@@ -9889,6 +9806,7 @@ packages:
   /mustache/4.2.0:
     resolution: {integrity: sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==}
     hasBin: true
+    dev: false
 
   /mute-stream/0.0.8:
     resolution: {integrity: sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==}
@@ -9897,6 +9815,7 @@ packages:
   /mv/2.1.1:
     resolution: {integrity: sha1-rmzg1vbV4KT32JN5jQPB6pVZtqI=}
     engines: {node: '>=0.8.0'}
+    requiresBuild: true
     dependencies:
       mkdirp: 0.5.5
       ncp: 2.0.0
@@ -10119,6 +10038,7 @@ packages:
     resolution: {integrity: sha512-3g8lYefrRRzvGeSowdJKAKyks8oUpLEd/DyPV4eMhVlhJ0aNaZqIrNUIPuEWWTAoPqyFkfGrM67MC69baqn6vA==}
     engines: {node: '>= 0.8.0'}
     hasBin: true
+    requiresBuild: true
     dependencies:
       fstream: 1.0.12
       glob: 7.1.7
@@ -10682,13 +10602,6 @@ packages:
     dependencies:
       is-wsl: 1.1.0
     dev: false
-
-  /optimist/0.6.1:
-    resolution: {integrity: sha1-2j6nRob6IaGaERwybpDrFaAZZoY=}
-    dependencies:
-      minimist: 0.0.10
-      wordwrap: 0.0.3
-    dev: true
 
   /optionator/0.8.3:
     resolution: {integrity: sha512-+IW9pACdk3XWmmTXG8m3upGUJst5XRGzxMRjXzAuJ1XnIFNvfhjjIuYkDvysnPQ7qzqVzLt78BCruntqRhWQbA==}
@@ -12316,6 +12229,7 @@ packages:
   /saslprep/1.0.3:
     resolution: {integrity: sha512-/MY/PEMbk2SuY5sScONwhUDsV2p77Znkb/q3nSVstq/yQzYJOH/Azh29p9oJLsl3LnQwSvZDKagDGBsBwSooag==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dependencies:
       sparse-bitfield: 3.0.3
     dev: false
@@ -13603,39 +13517,6 @@ packages:
     dependencies:
       glob: 7.1.7
 
-  /ts-jest/27.0.4_92306e36c1a4cf876b1cd4839a977b9c:
-    resolution: {integrity: sha512-c4E1ECy9Xz2WGfTMyHbSaArlIva7Wi2p43QOMmCqjSSjHP06KXv+aT+eSY+yZMuqsMi3k7pyGsGj2q5oSl5WfQ==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    hasBin: true
-    peerDependencies:
-      '@babel/core': '>=7.0.0-beta.0 <8'
-      '@types/jest': ^26.0.0
-      babel-jest: '>=27.0.0 <28'
-      jest: ^27.0.0
-      typescript: '>=3.8 <5.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/jest':
-        optional: true
-      babel-jest:
-        optional: true
-    dependencies:
-      '@types/jest': 27.0.1
-      bs-logger: 0.2.6
-      buffer-from: 1.1.2
-      fast-json-stable-stringify: 2.1.0
-      jest: 27.0.6
-      jest-util: 27.0.6
-      json5: 2.2.0
-      lodash: 4.17.21
-      make-error: 1.3.6
-      mkdirp: 1.0.4
-      semver: 7.3.5
-      typescript: 4.3.5
-      yargs-parser: 20.2.9
-    dev: true
-
   /ts-jest/27.0.5_92306e36c1a4cf876b1cd4839a977b9c:
     resolution: {integrity: sha512-lIJApzfTaSSbtlksfFNHkWOzLJuuSm4faFAfo5kvzOiRAuoN4/eKxVJ2zEAho8aecE04qX6K1pAzfH5QHL1/8w==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
@@ -13825,7 +13706,9 @@ packages:
     resolution: {integrity: sha512-JhS3hmcVaXlp/xSo3PKY5R0JqKs5M3IV+exdLHW99qKvKivPO4Z8qbej6mte17SOPqAOVMjt/XGgWacnFSzM3g==}
     engines: {node: '>=0.8.0'}
     hasBin: true
+    requiresBuild: true
     dev: true
+    optional: true
 
   /uid-number/0.0.6:
     resolution: {integrity: sha1-DqEOgDXo61uOREnwbaHHMGY7qoE=}
@@ -14468,12 +14351,6 @@ packages:
 
   /vm-browserify/1.1.2:
     resolution: {integrity: sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==}
-
-  /vm2/3.9.3:
-    resolution: {integrity: sha512-smLS+18RjXYMl9joyJxMNI9l4w7biW8ilSDaVRvFBDwOH8P0BK1ognFQTpg0wyQ6wIKLTblHJvROW692L/E53Q==}
-    engines: {node: '>=6.0'}
-    hasBin: true
-    dev: false
 
   /vscode-textmate/5.2.0:
     resolution: {integrity: sha512-Uw5ooOQxRASHgu6C7GVvUxisKXfSgW4oFlO+aa+PAkgmH89O3CXxEEzNRNtHSqtXFTl0nAC1uYj0GMSH27uwtQ==}
