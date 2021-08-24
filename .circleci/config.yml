@@ -1389,19 +1389,25 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *module-other-cache-options
+          <<: *module-other-cache
       - restore_cache:
-          <<: *plugin-1-cache-options
+          <<: *plugin-1-cache
       - restore_cache:
-          <<: *plugin-2-cache-options
+          <<: *plugin-2-cache
       - restore_cache:
-          <<: *plugin-3-cache-options
+          <<: *plugin-3-cache
       - restore_cache:
-          <<: *plugin-4-cache-options
+          <<: *plugin-4-cache
       - restore_cache:
-          <<: *dist-cache-options
+          <<: *dist-1-cache
       - restore_cache:
-          <<: *core-cache-options
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
       - run:
           name: update apt
           command: sudo apt update
