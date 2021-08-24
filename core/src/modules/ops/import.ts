@@ -72,7 +72,9 @@ export namespace ImportOps {
     let schedule: Schedule;
     let source: Source;
 
-    run = await Run.findOne({ where: { id: _import.creatorId } });
+    run = await Run.findOne({
+      where: { id: _import.creatorId, creatorType: "schedule" },
+    });
     if (run && run.creatorType === "schedule")
       schedule = await Schedule.findOne({ where: { id: run.creatorId } });
     if (schedule)
