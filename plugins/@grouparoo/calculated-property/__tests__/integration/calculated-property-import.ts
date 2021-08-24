@@ -41,7 +41,7 @@ describe("integration/runs/calculated-property", () => {
     expect(sessionResponse.error).toBeUndefined();
     csrfToken = sessionResponse.csrfToken;
 
-    // create a postgres app
+    // create a calculated-property app
     session.params = {
       csrfToken,
       name: "test app",
@@ -87,11 +87,6 @@ describe("integration/runs/calculated-property", () => {
   });
 
   test("make a new property for this source", async () => {
-    // const oldProperty = await Property.findOne({
-    //   where: { key: "email" },
-    // });
-    // await oldProperty.destroy();
-
     session.params = {
       csrfToken,
       sourceId: source.id,

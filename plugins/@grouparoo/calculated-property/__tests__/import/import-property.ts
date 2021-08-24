@@ -84,7 +84,6 @@ describe("calculated-property/profileProperty", () => {
     expect(value[0]).toBeTruthy;
   });
 
-  // TODO: dates... how to get timestamp to play nicely with date...
   test.only("it evaluates date strings as expected", async () => {
     const fn = `() => {
           const date = new Date("{{lastLoginAt.iso}}");
