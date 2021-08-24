@@ -313,7 +313,6 @@ class Generator {
     const pluginDistDirs = pluginPaths.map((p) => `${p}/dist`);
     const cliDistDir = ["cli/dist"];
     const combinedDistDirs = [].concat(pluginDistDirs, cliDistDir).sort();
-    // console.log(combinedDistDirs);
 
     for (const dir of combinedDistDirs) {
       let bucket = "module-other";
@@ -336,8 +335,6 @@ class Generator {
       if (!cachePaths[cacheKey]) cachePaths[cacheKey] = [];
       cachePaths[cacheKey].push(dir);
     }
-
-    // cachePaths[cacheKey] = combinedDistDirs.sort();
   }
 
   addCoreCache(cachePaths) {
