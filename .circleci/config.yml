@@ -89,6 +89,7 @@ jobs:
             - plugins/@grouparoo/pardot/node_modules
             - plugins/@grouparoo/pipedrive/node_modules
             - plugins/@grouparoo/postgres/node_modules
+            - plugins/@grouparoo/prometheus/node_modules
             - plugins/@grouparoo/redshift/node_modules
       - save_cache:
           <<: *plugin-4-cache-options
@@ -130,6 +131,7 @@ jobs:
             - plugins/@grouparoo/pardot/dist
             - plugins/@grouparoo/pipedrive/dist
             - plugins/@grouparoo/postgres/dist
+            - plugins/@grouparoo/prometheus/dist
             - plugins/@grouparoo/redshift/dist
             - plugins/@grouparoo/sailthru/dist
             - plugins/@grouparoo/salesforce/dist
@@ -2306,6 +2308,53 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/postgres && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-prometheus:
+    docker:
+      - image: circleci/node:14
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache-options
+      - restore_cache:
+          <<: *plugin-1-cache-options
+      - restore_cache:
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/prometheus && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-redshift:
     docker:
       - image: circleci/node:14
@@ -3011,6 +3060,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-prometheus:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-redshift:
           filters:
             <<: *ignored-branches
@@ -3112,6 +3166,7 @@ workflows:
             - test-plugin-pardot
             - test-plugin-pipedrive
             - test-plugin-postgres
+            - test-plugin-prometheus
             - test-plugin-redshift
             - test-plugin-sailthru
             - test-plugin-salesforce
