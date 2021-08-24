@@ -5,9 +5,9 @@ export * from "./sourcePreview";
 export * from "./sourceOptions";
 export * from "./uniquePropertyBootstrapOptions";
 export * from "./sourceFilters";
-export * from "./profileProperty";
-export * from "./profileProperties";
-export * from "./profiles";
+export * from "./recordProperty";
+export * from "./recordProperties";
+export * from "./records";
 export * from "./sourceRunPercentComplete";
 
 export {
@@ -18,9 +18,9 @@ export {
   SourceFilterMethod,
   PropertyOptionsMethod,
   ScheduleOptionsMethod,
-  ProfilePropertyPluginMethod,
-  ProfilePropertiesPluginMethod,
-  ProfilesPluginMethod,
+  RecordPropertyPluginMethod,
+  RecordPropertiesPluginMethod,
+  RecordsPluginMethod,
   SourceRunPercentCompleteMethod,
   UniquePropertyBootstrapOptions,
   PluginConnection,

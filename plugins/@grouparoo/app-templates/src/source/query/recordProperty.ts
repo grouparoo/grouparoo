@@ -1,7 +1,7 @@
 import {
-  ProfilePropertyPluginMethod,
+  RecordPropertyPluginMethod,
   plugin,
-  ProfilePropertyPluginMethodResponse,
+  RecordPropertyPluginMethodResponse,
 } from "@grouparoo/core";
 import {
   ExecuteQueryMethod,
@@ -9,23 +9,23 @@ import {
   queryKey,
 } from "./pluginMethods";
 
-export interface GetProfilePropertyMethod {
+export interface GetRecordPropertyMethod {
   (argument: {
     executeQuery: ExecuteQueryMethod;
     validateQuery?: ValidateQueryMethod;
-  }): ProfilePropertyPluginMethod;
+  }): RecordPropertyPluginMethod;
 }
 
-export const getProfileProperty: GetProfilePropertyMethod = ({
+export const getRecordProperty: GetRecordPropertyMethod = ({
   executeQuery,
   validateQuery = validateGenericQuery,
 }) => {
-  const profileProperty: ProfilePropertyPluginMethod = async ({
+  const recordProperty: RecordPropertyPluginMethod = async ({
     connection,
     appOptions,
     sourceOptions,
     appId,
-    profile,
+    record,
     property,
     propertyOptions,
   }) => {
@@ -33,9 +33,9 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     let query;
 
     try {
-      query = await plugin.replaceTemplateProfileVariables(
+      query = await plugin.replaceTemplateRecordVariables(
         ruleQuery?.toString(),
-        profile
+        record
       );
     } catch (error) {
       // if we don't have the right properties to build the query, bail
@@ -46,7 +46,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
       validateQuery({ query });
     }
 
-    let response: ProfilePropertyPluginMethodResponse;
+    let response: RecordPropertyPluginMethodResponse;
     try {
       // Run the query
       const rows = await executeQuery({
@@ -74,7 +74,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     return response;
   };
 
-  return profileProperty;
+  return recordProperty;
 };
 
 export const validateGenericQuery: ValidateQueryMethod = ({ query }) => {

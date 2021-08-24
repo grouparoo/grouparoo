@@ -1,13 +1,13 @@
 import {
-  ExportedProfile,
+  ExportedRecord,
   App,
   SimpleAppOptions,
   Destination,
   SimpleDestinationOptions,
-  ErrorWithProfileId,
+  ErrorWithRecordId,
   DestinationSyncOperations,
 } from "@grouparoo/core";
-export { ExportedProfile } from "@grouparoo/core";
+export { ExportedRecord } from "@grouparoo/core";
 
 export enum GroupSizeMode {
   WithinGroup = "WithinGroup", // update group by group
@@ -76,21 +76,21 @@ export interface GroupMethods {
   normalizeGroupName?: GroupMethodNormalizeGroupName;
 }
 
-export interface ProfileGroupProfilesPluginMethod {
+export interface RecordGroupRecordsPluginMethod {
   (
-    exports: ExportedProfile[],
+    exports: ExportedRecord[],
     config: GroupConfig,
     methods: GroupMethods
   ): Promise<{
     success: boolean;
     retryDelay?: number;
-    errors?: ErrorWithProfileId[];
+    errors?: ErrorWithRecordId[];
   }>;
 }
 
 export type GroupExportType = "new" | "old";
 
-export interface GroupExport extends ExportedProfile {
+export interface GroupExport extends ExportedRecord {
   foreignKeyValue?: string; // could be old or new one
   addedGroups?: string[];
   removedGroups?: string[];

@@ -1,7 +1,7 @@
 import {
   AggregationMethod,
   FilterOperation,
-  ProfilePropertyPluginMethod,
+  RecordPropertyPluginMethod,
 } from "@grouparoo/core";
 import {
   MatchCondition,
@@ -12,20 +12,20 @@ import {
   sortColumnKey,
 } from "./pluginMethods";
 
-export interface GetProfilePropertyMethod {
+export interface GetRecordPropertyMethod {
   (argument: {
     getPropertyValue: GetPropertyValueMethod;
-  }): ProfilePropertyPluginMethod;
+  }): RecordPropertyPluginMethod;
 }
 
-export const getProfileProperty: GetProfilePropertyMethod = ({
+export const getRecordProperty: GetRecordPropertyMethod = ({
   getPropertyValue,
 }) => {
-  const profileProperty: ProfilePropertyPluginMethod = async ({
+  const recordProperty: RecordPropertyPluginMethod = async ({
     connection,
     appOptions,
     appId,
-    profile,
+    record,
     sourceOptions,
     sourceMapping,
     property,
@@ -34,7 +34,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
   }) => {
     const tableName = sourceOptions[tableNameKey]?.toString();
     const matchName = Object.keys(sourceMapping)[0]; // tableCol
-    const profilePropertyMatch = Object.values(sourceMapping)[0];
+    const recordPropertyMatch = Object.values(sourceMapping)[0];
     const columnName = propertyOptions[columnNameKey]?.toString();
     const aggregationMethod = <AggregationMethod>(
       propertyOptions[aggregationMethodKey]
@@ -51,20 +51,20 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
       aggregationMethod === AggregationMethod.Exact
     ) {
       const tableMappingCol: string = Object.values(sourceMapping)[0];
-      const profileProperties = await profile.getProperties();
+      const recordProperties = await record.getProperties();
       // if no property or no values, bail
-      if (!profileProperties[tableMappingCol]?.values.length) {
+      if (!recordProperties[tableMappingCol]?.values.length) {
         return undefined;
       }
     }
 
-    const profileData = await profile.getProperties();
+    const profileData = await record.getProperties();
     const isArray = !!property.isArray;
 
-    if (!profileData.hasOwnProperty(profilePropertyMatch)) {
+    if (!profileData.hasOwnProperty(recordPropertyMatch)) {
       return undefined;
     }
-    const matchValue = profileData[profilePropertyMatch].values[0];
+    const matchValue = profileData[recordPropertyMatch].values[0];
     if (!matchValue) {
       return undefined;
     }
@@ -99,7 +99,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     });
   };
 
-  return profileProperty;
+  return recordProperty;
 };
 
 function getFilterOperation(op): FilterOperation {

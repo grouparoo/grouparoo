@@ -5,8 +5,8 @@ import {
   BatchGroupMode,
   BatchExport,
   BuildBatchExportMethod,
-  ProfileBatchProfilesPluginMethod,
-  ExportBatchProfilesPluginMethod,
+  RecordBatchRecordsPluginMethod,
+  ExportBatchRecordsPluginMethod,
   BatchMethods,
   BatchConfig,
   GroupNameListMap,
@@ -17,14 +17,14 @@ import {
 
 export const buildBatchExports: BuildBatchExportMethod = (exports) => {
   const batchExports: BatchExport[] = [];
-  for (const exportedProfile of exports) {
-    const info: BatchExport = Object.assign({}, exportedProfile);
+  for (const exportedRecord of exports) {
+    const info: BatchExport = Object.assign({}, exportedRecord);
     batchExports.push(info);
   }
   return batchExports;
 };
 
-export const exportProfilesInBatch: ProfileBatchProfilesPluginMethod = async (
+export const exportRecordsInBatch: RecordBatchRecordsPluginMethod = async (
   exports,
   config,
   methods
@@ -32,7 +32,7 @@ export const exportProfilesInBatch: ProfileBatchProfilesPluginMethod = async (
   return exportOneBatch(exports, config, methods);
 };
 
-const exportOneBatch: ExportBatchProfilesPluginMethod = async (
+const exportOneBatch: ExportBatchRecordsPluginMethod = async (
   exports,
   config,
   methods
@@ -43,13 +43,13 @@ const exportOneBatch: ExportBatchProfilesPluginMethod = async (
 
   const client = config.connection || (await methods.getClient({ config }));
 
-  for (const exportedProfile of exports) {
+  for (const exportedRecord of exports) {
     try {
-      setGroupNames(exportedProfile, methods, config);
-      assignForeignKeys(exportedProfile, methods, config);
+      setGroupNames(exportedRecord, methods, config);
+      assignForeignKeys(exportedRecord, methods, config);
     } catch (error) {
       // if just one of them is missing foreign key or something, move on
-      exportedProfile.error = error;
+      exportedRecord.error = error;
     }
   }
 
@@ -75,16 +75,16 @@ const exportOneBatch: ExportBatchProfilesPluginMethod = async (
 };
 
 function verifyAllProcessed(exports: BatchExport[]) {
-  for (const exportedProfile of exports) {
+  for (const exportedRecord of exports) {
     try {
-      verifyProcessed(exportedProfile);
+      verifyProcessed(exportedRecord);
     } catch (error) {
-      exportedProfile.error = error;
+      exportedRecord.error = error;
     }
   }
 }
 
-function verifyProcessed(exportedProfile: BatchExport) {
+function verifyProcessed(exportedRecord: BatchExport) {
   const {
     destinationId,
     processed,
@@ -92,7 +92,7 @@ function verifyProcessed(exportedProfile: BatchExport) {
     shouldCreate,
     shouldUpdate,
     shouldDelete,
-  } = exportedProfile;
+  } = exportedRecord;
 
   let needProcessed = false;
   let needDestinationId = false;
@@ -111,13 +111,13 @@ function verifyProcessed(exportedProfile: BatchExport) {
 
   if (needProcessed && !processed) {
     throw new Error(
-      `profile has not processed: ${exportedProfile.foreignKeyValue}`
+      `profile has not processed: ${exportedRecord.foreignKeyValue}`
     );
   }
 
   if (needDestinationId && !destinationId) {
     throw new Error(
-      `profile does not have a destination id: ${exportedProfile.foreignKeyValue}`
+      `profile does not have a destination id: ${exportedRecord.foreignKeyValue}`
     );
   }
 }
@@ -131,25 +131,25 @@ async function updateGroups(
   const removal: GroupNameListMap = {};
   const addition: GroupNameListMap = {};
 
-  for (const exportedProfile of exports) {
-    if (exportedProfile.error) {
+  for (const exportedRecord of exports) {
+    if (exportedRecord.error) {
       continue;
     }
-    if (!exportedProfile.shouldGroups) {
+    if (!exportedRecord.shouldGroups) {
       continue;
     }
-    if (!exportedProfile.destinationId) {
+    if (!exportedRecord.destinationId) {
       continue;
     }
 
     // build up groups situation of group names to addition and removal
-    for (const list of exportedProfile.removedGroups) {
+    for (const list of exportedRecord.removedGroups) {
       removal[list] = removal[list] || [];
-      removal[list].push(exportedProfile);
+      removal[list].push(exportedRecord);
     }
-    for (const list of exportedProfile.addedGroups) {
+    for (const list of exportedRecord.addedGroups) {
       addition[list] = addition[list] || [];
-      addition[list].push(exportedProfile);
+      addition[list].push(exportedRecord);
     }
   }
 
@@ -249,14 +249,14 @@ async function createByForeignKey(
   let currentFkMap: ForeignKeyMap = {};
   let currentCount = 0;
 
-  for (const exportedProfile of exports) {
-    if (exportedProfile.processed || exportedProfile.error) {
+  for (const exportedRecord of exports) {
+    if (exportedRecord.processed || exportedRecord.error) {
       continue;
     }
-    if (!exportedProfile.shouldCreate) {
+    if (!exportedRecord.shouldCreate) {
       continue;
     }
-    if (!exportedProfile.foreignKeyValue) {
+    if (!exportedRecord.foreignKeyValue) {
       throw new Error(`cannot create without foreignKeyValue`);
     }
 
@@ -266,11 +266,7 @@ async function createByForeignKey(
       currentCount = 0;
     }
 
-    setForeignKey(
-      currentFkMap,
-      exportedProfile.foreignKeyValue,
-      exportedProfile
-    );
+    setForeignKey(currentFkMap, exportedRecord.foreignKeyValue, exportedRecord);
     currentCount++;
   }
 
@@ -310,16 +306,16 @@ async function updateByIds(
     destIdMap: DestinationIdMap;
   }> = [];
 
-  for (const exportedProfile of exports) {
-    if (exportedProfile.processed || exportedProfile.error) {
+  for (const exportedRecord of exports) {
+    if (exportedRecord.processed || exportedRecord.error) {
       continue;
     }
-    if (!exportedProfile.shouldUpdate) {
+    if (!exportedRecord.shouldUpdate) {
       continue;
     }
-    if (!exportedProfile.destinationId) {
+    if (!exportedRecord.destinationId) {
       throw new Error(
-        `cannot update without destinationId: ${exportedProfile.foreignKeyValue}`
+        `cannot update without destinationId: ${exportedRecord.foreignKeyValue}`
       );
     }
 
@@ -330,12 +326,8 @@ async function updateByIds(
       currentDeskIdMap = {};
     }
 
-    setForeignKey(
-      currentFkMap,
-      exportedProfile.foreignKeyValue,
-      exportedProfile
-    );
-    currentDeskIdMap[exportedProfile.destinationId] = exportedProfile;
+    setForeignKey(currentFkMap, exportedRecord.foreignKeyValue, exportedRecord);
+    currentDeskIdMap[exportedRecord.destinationId] = exportedRecord;
     currentCount++;
   }
 
@@ -376,21 +368,21 @@ async function deleteExports(
     destIdMap: DestinationIdMap;
   }> = [];
 
-  for (const exportedProfile of exports) {
-    if (exportedProfile.processed || exportedProfile.error) {
+  for (const exportedRecord of exports) {
+    if (exportedRecord.processed || exportedRecord.error) {
       continue;
     }
-    if (!exportedProfile.shouldDelete) {
+    if (!exportedRecord.shouldDelete) {
       continue;
     }
-    if (!exportedProfile.destinationId) {
+    if (!exportedRecord.destinationId) {
       // if trying to delete someone that doesn't exist, just inform the user
       try {
         throw new Errors.InfoError(
-          `destinationId not found to delete: ${exportedProfile.foreignKeyValue}`
+          `destinationId not found to delete: ${exportedRecord.foreignKeyValue}`
         );
       } catch (error) {
-        exportedProfile.error = error;
+        exportedRecord.error = error;
       }
       continue;
     }
@@ -402,12 +394,8 @@ async function deleteExports(
       currentCount = 0;
     }
 
-    setForeignKey(
-      currentFkMap,
-      exportedProfile.foreignKeyValue,
-      exportedProfile
-    );
-    currentDeskIdMap[exportedProfile.destinationId] = exportedProfile;
+    setForeignKey(currentFkMap, exportedRecord.foreignKeyValue, exportedRecord);
+    currentDeskIdMap[exportedRecord.destinationId] = exportedRecord;
     currentCount++;
   }
 
@@ -451,18 +439,18 @@ async function lookupDestinationIds(
     foreignKeys: string[];
   }> = [];
 
-  for (const exportedProfile of exports) {
-    if (exportedProfile.error) {
+  for (const exportedRecord of exports) {
+    if (exportedRecord.error) {
       continue;
     }
 
     let foreignKeyValue: string;
     switch (fkType) {
       case "new":
-        foreignKeyValue = exportedProfile.foreignKeyValue;
+        foreignKeyValue = exportedRecord.foreignKeyValue;
         break;
       case "old":
-        foreignKeyValue = exportedProfile.oldForeignKeyValue;
+        foreignKeyValue = exportedRecord.oldForeignKeyValue;
         break;
       default:
         throw new Error(`Unknown foreign key type: ${fkType}`);
@@ -482,8 +470,8 @@ async function lookupDestinationIds(
       currentCount = 0;
     }
 
-    currentUsers.push(exportedProfile);
-    setForeignKey(currentFkMap, foreignKeyValue, exportedProfile);
+    currentUsers.push(exportedRecord);
+    setForeignKey(currentFkMap, foreignKeyValue, exportedRecord);
     currentForeignKeys.push(foreignKeyValue);
     currentCount++;
   }
@@ -535,19 +523,17 @@ function functionToGetForeignKey(
 }
 
 function assignForeignKeys(
-  exportedProfile: BatchExport,
+  exportedRecord: BatchExport,
   methods: BatchMethods,
   config: BatchConfig
 ) {
-  const { oldProfileProperties, newProfileProperties } = exportedProfile;
+  const { oldRecordProperties, newRecordProperties } = exportedRecord;
 
   const { foreignKey } = config;
-  let newValue = newProfileProperties[foreignKey];
-  let oldValue = oldProfileProperties[foreignKey];
+  let newValue = newRecordProperties[foreignKey];
+  let oldValue = oldRecordProperties[foreignKey];
   if (!newValue) {
-    throw new Error(
-      `newProfileProperties[${foreignKey}] is a required mapping`
-    );
+    throw new Error(`newRecordProperties[${foreignKey}] is a required mapping`);
   }
   if (methods.normalizeForeignKeyValue) {
     newValue = methods.normalizeForeignKeyValue({
@@ -566,27 +552,27 @@ function assignForeignKeys(
   }
 
   newValue = newValue.toString();
-  exportedProfile.foreignKeyValue = newValue;
+  exportedRecord.foreignKeyValue = newValue;
 
   // record other one if applicable
   if (oldValue) {
     oldValue = oldValue.toString();
     if (newValue !== oldValue && oldValue.length > 0) {
-      exportedProfile.oldForeignKeyValue = oldValue;
+      exportedRecord.oldForeignKeyValue = oldValue;
     }
   }
 
-  return exportedProfile;
+  return exportedRecord;
 }
 
 function assignActions(exports: BatchExport[], config: BatchConfig) {
-  for (const exportedProfile of exports) {
-    assignAction(exportedProfile, config);
+  for (const exportedRecord of exports) {
+    assignAction(exportedRecord, config);
   }
 }
 
-function assignAction(exportedProfile: BatchExport, config: BatchConfig) {
-  const { toDelete, destinationId } = exportedProfile;
+function assignAction(exportedRecord: BatchExport, config: BatchConfig) {
+  const { toDelete, destinationId } = exportedRecord;
   const { syncMode, syncOperations } = config;
 
   const mode = syncOperations || BatchSyncModeData[syncMode];
@@ -601,10 +587,10 @@ function assignAction(exportedProfile: BatchExport, config: BatchConfig) {
   if (toDelete) {
     // semantic: delete
     if (mode.delete) {
-      exportedProfile.shouldDelete = true;
+      exportedRecord.shouldDelete = true;
     } else {
       // just remove the groups
-      exportedProfile.shouldGroups = true;
+      exportedRecord.shouldGroups = true;
       if (destinationId) {
         skippedMessage =
           "Destination not deleting. Removing profile from groups.";
@@ -616,20 +602,20 @@ function assignAction(exportedProfile: BatchExport, config: BatchConfig) {
   } else if (destinationId) {
     // semantic: update
     if (mode.update) {
-      exportedProfile.shouldUpdate = true;
-      exportedProfile.shouldGroups = true;
+      exportedRecord.shouldUpdate = true;
+      exportedRecord.shouldGroups = true;
     } else {
       skippedMessage = "Destination not updating. No changes made.";
     }
   } else {
     // semantic: create
     if (mode.create) {
-      exportedProfile.shouldCreate = true;
-      exportedProfile.shouldGroups = true;
+      exportedRecord.shouldCreate = true;
+      exportedRecord.shouldGroups = true;
     } else {
       skippedMessage = "Destination not creating. No changes made.";
     }
   }
 
-  exportedProfile.skippedMessage = skippedMessage;
+  exportedRecord.skippedMessage = skippedMessage;
 }

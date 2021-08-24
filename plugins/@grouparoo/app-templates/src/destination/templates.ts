@@ -27,7 +27,7 @@ export class DestinationTemplate extends ConfigTemplate {
         required: false,
         default:
           defaultSyncMode || syncModes.length === 1 ? syncModes[0] : "...",
-        description: `How should profiles sync to the destination? e.g. \`--sync-mode additive\`. ${
+        description: `How should records sync to the destination? e.g. \`--sync-mode additive\`. ${
           "Options: " + syncModes.join(", ")
         }`,
       };

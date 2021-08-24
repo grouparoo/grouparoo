@@ -6,7 +6,7 @@ import {
 } from "./pluginMethods";
 import { getFilterOperation } from "./getFilterOperation";
 import {
-  ProfilesPluginMethod,
+  RecordsPluginMethod,
   FilterOperation,
   plugin,
   Run,
@@ -14,12 +14,12 @@ import {
   HighWaterMark,
 } from "@grouparoo/core";
 
-export interface GetProfilesMethod {
-  (argument: { getChangedRows: GetChangedRowsMethod }): ProfilesPluginMethod;
+export interface GetRecordsMethod {
+  (argument: { getChangedRows: GetChangedRowsMethod }): RecordsPluginMethod;
 }
 
-export const getProfiles: GetProfilesMethod = ({ getChangedRows }) => {
-  const profiles: ProfilesPluginMethod = async ({
+export const getRecords: GetRecordsMethod = ({ getChangedRows }) => {
+  const records: RecordsPluginMethod = async ({
     connection,
     appOptions,
     appId,
@@ -98,7 +98,7 @@ export const getProfiles: GetProfilesMethod = ({ getChangedRows }) => {
     };
   };
 
-  return profiles;
+  return records;
 };
 
 export interface ChangeVariablesMin {
@@ -106,7 +106,7 @@ export interface ChangeVariablesMin {
   highWaterMarkCondition: MatchCondition;
 }
 export interface Get {
-  (argument: { getChangedRows: GetChangedRowsMethod }): ProfilesPluginMethod;
+  (argument: { getChangedRows: GetChangedRowsMethod }): RecordsPluginMethod;
 }
 export interface GetChangeVariablesMethod {
   (argument: {

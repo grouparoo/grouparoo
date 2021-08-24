@@ -1,11 +1,11 @@
 import {
-  ExportedProfile,
+  ExportedRecord,
   App,
   SimpleAppOptions,
   Destination,
   DestinationSyncOperations,
   SimpleDestinationOptions,
-  ErrorWithProfileId,
+  ErrorWithRecordId,
 } from "@grouparoo/core";
 
 export enum BatchGroupMode {
@@ -25,7 +25,7 @@ export const BatchSyncModeData = {
     create: true,
     update: true,
     delete: true,
-    description: "Sync all profiles (create, update, delete)",
+    description: "Sync all records (create, update, delete)",
   },
   [BatchSyncMode.Enrich]: {
     create: false,
@@ -37,11 +37,11 @@ export const BatchSyncModeData = {
     create: true,
     update: true,
     delete: false,
-    description: "Sync all profiles, but do not delete (create, update)",
+    description: "Sync all records, but do not delete (create, update)",
   },
 };
 
-export interface BatchExport extends ExportedProfile {
+export interface BatchExport extends ExportedRecord {
   foreignKeyValue?: string;
   oldForeignKeyValue?: string;
   destinationId?: string;
@@ -78,10 +78,10 @@ export interface BatchConfig {
 }
 
 export interface BuildBatchExportMethod {
-  (exports: ExportedProfile[]): BatchExport[];
+  (exports: ExportedRecord[]): BatchExport[];
 }
 
-export interface ProfileBatchProfilesPluginMethod {
+export interface RecordBatchRecordsPluginMethod {
   (
     exports: BatchExport[],
     config: BatchConfig,
@@ -89,11 +89,11 @@ export interface ProfileBatchProfilesPluginMethod {
   ): Promise<{
     success: boolean;
     retryDelay?: number;
-    errors?: ErrorWithProfileId[];
+    errors?: ErrorWithRecordId[];
   }>;
 }
 
-export interface ExportBatchProfilesPluginMethod {
+export interface ExportBatchRecordsPluginMethod {
   (
     exports: BatchExport[],
     config: BatchConfig,
@@ -101,7 +101,7 @@ export interface ExportBatchProfilesPluginMethod {
   ): Promise<{
     success: boolean;
     retryDelay?: number;
-    errors?: ErrorWithProfileId[];
+    errors?: ErrorWithRecordId[];
   }>;
 }
 

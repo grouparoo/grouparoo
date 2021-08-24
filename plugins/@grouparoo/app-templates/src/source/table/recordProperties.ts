@@ -1,7 +1,7 @@
 import {
   AggregationMethod,
-  ProfilePropertiesPluginMethod,
-  ProfilePropertiesPluginMethodResponse,
+  RecordPropertiesPluginMethod,
+  RecordPropertiesPluginMethodResponse,
 } from "@grouparoo/core";
 import {
   MatchCondition,
@@ -13,27 +13,27 @@ import {
 } from "./pluginMethods";
 import { getFilterOperation } from "./getFilterOperation";
 
-export interface GetProfilePropertiesMethod {
+export interface GetRecordPropertiesMethod {
   (argument: {
     getPropertyValues: GetPropertyValuesMethod;
-  }): ProfilePropertiesPluginMethod;
+  }): RecordPropertiesPluginMethod;
 }
 
-export const getProfileProperties: GetProfilePropertiesMethod = ({
+export const getRecordProperties: GetRecordPropertiesMethod = ({
   getPropertyValues,
 }) => {
-  const profileProperties: ProfilePropertiesPluginMethod = async ({
+  const recordProperties: RecordPropertiesPluginMethod = async ({
     connection,
     appOptions,
     appId,
-    profiles,
+    records,
     sourceOptions,
     sourceMapping,
     properties,
     propertyOptions,
     propertyFilters,
   }) => {
-    const responsesById: ProfilePropertiesPluginMethodResponse = {};
+    const responsesById: RecordPropertiesPluginMethodResponse = {};
     const tableName = sourceOptions[tableNameKey]?.toString();
     const columnNames = properties.map((p) =>
       propertyOptions[p.id][columnNameKey]?.toString()
@@ -52,16 +52,16 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
     const tablePrimaryKeyCol: string = Object.keys(sourceMapping)[0];
     const primaryKeysHash: { [pk: string]: string[] } = {};
 
-    for (const profile of profiles) {
+    for (const profile of records) {
       responsesById[profile.id] = {};
-      const profileProperties = await profile.getProperties();
+      const recordProperties = await profile.getProperties();
       for (const property of properties) {
         // prepare primaryKeysHash to assign results to properties
         if (
-          profileProperties[tableMappingCol]?.values.length > 0 &&
-          profileProperties[tableMappingCol].values[0] // not null or undefined
+          recordProperties[tableMappingCol]?.values.length > 0 &&
+          recordProperties[tableMappingCol].values[0] // not null or undefined
         ) {
-          const k = profileProperties[tableMappingCol].values[0].toString();
+          const k = recordProperties[tableMappingCol].values[0].toString();
           if (!primaryKeysHash[k]) primaryKeysHash[k] = [];
           primaryKeysHash[k].push(profile.id);
         }
@@ -107,28 +107,28 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
     });
 
     for (const pk in responsesByPrimaryKey) {
-      primaryKeysHash[pk].forEach((profileId) => {
+      primaryKeysHash[pk].forEach((recordId) => {
         for (const column of Object.keys(responsesByPrimaryKey[pk])) {
           const property = properties.find(
             (p) => propertyOptions[p.id][columnNameKey] === column
           );
           if (!property) continue;
 
-          responsesById[profileId][property.id] =
+          responsesById[recordId][property.id] =
             responsesByPrimaryKey[pk][column];
         }
       });
     }
 
-    // remove profiles with no data from the response
-    for (const profileId in responsesById) {
-      if (Object.keys(responsesById[profileId]).length === 0) {
-        delete responsesById[profileId];
+    // remove records with no data from the response
+    for (const recordId in responsesById) {
+      if (Object.keys(responsesById[recordId]).length === 0) {
+        delete responsesById[recordId];
       }
     }
 
     return responsesById;
   };
 
-  return profileProperties;
+  return recordProperties;
 };

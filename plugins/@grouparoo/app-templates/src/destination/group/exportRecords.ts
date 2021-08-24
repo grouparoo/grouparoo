@@ -1,16 +1,16 @@
 import { ForeignKeyMap } from "../batch";
 import { setGroupNamesAll, checkErrors } from "../shared/batch";
 import {
-  ProfileGroupProfilesPluginMethod,
+  RecordGroupRecordsPluginMethod,
   GroupExport,
-  ExportedProfile,
+  ExportedRecord,
   GroupConfig,
   GroupMethods,
   GroupNameListMap,
   GroupSizeMode,
 } from "./types";
 
-export const exportProfilesInGroups: ProfileGroupProfilesPluginMethod = async (
+export const exportRecordsInGroups: RecordGroupRecordsPluginMethod = async (
   exports,
   config,
   methods
@@ -29,8 +29,8 @@ export const exportProfilesInGroups: ProfileGroupProfilesPluginMethod = async (
   return checkErrors(users);
 };
 
-function convertExportedProfile(exportedProfile: ExportedProfile): GroupExport {
-  const user: GroupExport = Object.assign({}, exportedProfile);
+function convertExportedRecord(exportedRecord: ExportedRecord): GroupExport {
+  const user: GroupExport = Object.assign({}, exportedRecord);
   return user;
 }
 
@@ -94,16 +94,16 @@ function addToMap(
 }
 
 function createGroupExports(
-  exportedProfiles: ExportedProfile[],
+  exportedRecords: ExportedRecord[],
   methods: GroupMethods,
   config: GroupConfig
 ): GroupExport[] {
   const userMap: { [fkValue: string]: GroupExport } = {};
   const errors: GroupExport[] = [];
-  for (const exportedProfile of exportedProfiles) {
+  for (const exportedRecord of exportedRecords) {
     try {
       const { newUser, oldUser } = separateForeignKeys(
-        exportedProfile,
+        exportedRecord,
         methods,
         config
       );
@@ -111,7 +111,7 @@ function createGroupExports(
       addToMap(oldUser, userMap);
     } catch (error) {
       // if just one of them is missing foreign key or something, move on
-      const user = convertExportedProfile(exportedProfile);
+      const user = convertExportedRecord(exportedRecord);
       user.error = error;
       errors.push(user);
     }
@@ -120,19 +120,17 @@ function createGroupExports(
 }
 
 function separateForeignKeys(
-  exportedProfile: ExportedProfile,
+  exportedRecord: ExportedRecord,
   methods: GroupMethods,
   config: GroupConfig
 ): { newUser: GroupExport; oldUser: GroupExport } {
-  const { oldProfileProperties, newProfileProperties } = exportedProfile;
+  const { oldRecordProperties, newRecordProperties } = exportedRecord;
 
   const { foreignKey } = config;
-  let newValue = newProfileProperties[foreignKey];
-  let oldValue = oldProfileProperties[foreignKey];
+  let newValue = newRecordProperties[foreignKey];
+  let oldValue = oldRecordProperties[foreignKey];
   if (!newValue) {
-    throw new Error(
-      `newProfileProperties[${foreignKey}] is a required mapping`
-    );
+    throw new Error(`newRecordProperties[${foreignKey}] is a required mapping`);
   }
   if (methods.normalizeForeignKeyValue) {
     newValue = methods.normalizeForeignKeyValue({
@@ -150,7 +148,7 @@ function separateForeignKeys(
     throw new Error(`${foreignKey} normalized to no value`);
   }
 
-  const newUser = convertExportedProfile(exportedProfile);
+  const newUser = convertExportedRecord(exportedRecord);
   newValue = newValue.toString();
   newUser.foreignKeyValue = newValue;
   newUser.type = "new";
@@ -160,7 +158,7 @@ function separateForeignKeys(
   if (oldValue) {
     oldValue = oldValue.toString();
     if (newValue !== oldValue && oldValue.length > 0) {
-      oldUser = convertExportedProfile(exportedProfile);
+      oldUser = convertExportedRecord(exportedRecord);
       oldUser.foreignKeyValue = oldValue;
       oldUser.type = "old";
       oldUser.toDelete = true;

@@ -16,13 +16,13 @@ import {
   getSourceFilters,
   UniquePropertyBootstrapOptions,
   getUniquePropertyBootstrapOptions,
-  ProfilesPluginMethod,
-  getProfiles,
+  RecordsPluginMethod,
+  getRecords,
   GetChangedRowsMethod,
-  ProfilePropertyPluginMethod,
-  ProfilePropertiesPluginMethod,
-  getProfileProperty,
-  getProfileProperties,
+  RecordPropertyPluginMethod,
+  RecordPropertiesPluginMethod,
+  getRecordProperty,
+  getRecordProperties,
   GetPropertyValueMethod,
   GetPropertyValuesMethod,
   SourceRunPercentCompleteMethod,
@@ -88,16 +88,16 @@ export const buildConnection: BuildConnectionMethod = ({
   });
   const uniquePropertyBootstrapOptions: UniquePropertyBootstrapOptions =
     getUniquePropertyBootstrapOptions();
-  const profiles: ProfilesPluginMethod = getProfiles({
+  const records: RecordsPluginMethod = getRecords({
     getChangedRows,
   });
-  const profileProperty: ProfilePropertyPluginMethod = getPropertyValue
-    ? getProfileProperty({
+  const recordProperty: RecordPropertyPluginMethod = getPropertyValue
+    ? getRecordProperty({
         getPropertyValue,
       })
     : null;
-  const profileProperties: ProfilePropertiesPluginMethod = getPropertyValues
-    ? getProfileProperties({
+  const recordProperties: RecordPropertiesPluginMethod = getPropertyValues
+    ? getRecordProperties({
         getPropertyValues,
       })
     : null;
@@ -127,9 +127,9 @@ export const buildConnection: BuildConnectionMethod = ({
       propertyOptions,
       scheduleOptions,
       uniquePropertyBootstrapOptions,
-      profiles,
-      profileProperty,
-      profileProperties,
+      records,
+      recordProperty,
+      recordProperties,
       sourceRunPercentComplete,
     },
   };

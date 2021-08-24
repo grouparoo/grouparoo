@@ -84,7 +84,7 @@ export interface PluginConnection {
     uniquePropertyBootstrapOptions?: UniquePropertyBootstrapOptions;
     scheduleOptions?: ScheduleOptionsMethod;
     propertyOptions?: PropertyOptionsMethod;
-    records?: GrouparooRecordsPluginMethod;
+    records?: RecordsPluginMethod;
     recordProperty?: RecordPropertyPluginMethod;
     recordProperties?: RecordPropertiesPluginMethod;
     destinationOptions?: DestinationOptionsMethod;
@@ -132,7 +132,7 @@ export type PluginOptionType =
  * Only returns the nextHighWaterMark and a count of how many records were imported.
  * Within this method you should call plugin.createImport()
  */
-export interface GrouparooRecordsPluginMethod {
+export interface RecordsPluginMethod {
   (argument: {
     connection: any;
     schedule: Schedule;
@@ -152,10 +152,10 @@ export interface GrouparooRecordsPluginMethod {
     limit: number;
     highWaterMark: HighWaterMark;
     sourceOffset: number | string;
-  }): Promise<GrouparooRecordsPluginMethodResponse>;
+  }): Promise<RecordsPluginMethodResponse>;
 }
 
-export interface GrouparooRecordsPluginMethodResponse {
+export interface RecordsPluginMethodResponse {
   importsCount: number;
   highWaterMark: HighWaterMark;
   sourceOffset: number | string;
@@ -163,7 +163,7 @@ export interface GrouparooRecordsPluginMethodResponse {
 
 /**
  * Method to load a single record property for a single record.
- * It returns a key/value hash for the new GrouparooRecord Property values
+ * It returns a key/value hash for the new Record Property values
  */
 export interface RecordPropertyPluginMethod {
   (argument: {
@@ -190,7 +190,7 @@ export type RecordPropertyPluginMethodResponse = Array<
 
 /**
  * Method to load many record properties for a many records.
- * It returns an array of key/value hashes for the new GrouparooRecord Property values, ordered by the record inputs
+ * It returns an array of key/value hashes for the new Record Property values, ordered by the record inputs
  */
 export interface RecordPropertiesPluginMethod {
   (argument: {
@@ -219,7 +219,7 @@ export type RecordPropertiesPluginMethodResponse = {
 
 /**
  * The record data that a Destination will receive.
- * Comprised of data from the GrouparooRecord and Export models.
+ * Comprised of data from the Record and Export models.
  */
 export interface ExportedRecord {
   record: GrouparooRecord;
