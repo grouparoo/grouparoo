@@ -300,30 +300,48 @@ class Generator {
         bucket = `plugin-${index + 1}`;
       }
 
-      const cacheKey = `${bucket}-cache-options`;
+      const cacheKey = `${bucket}-cache`;
       cachePaths[cacheKey] = cachePaths[cacheKey] || [];
       cachePaths[cacheKey].push(path);
     }
   }
 
   addDistCache(cachePaths) {
-    const cacheKey = "dist-cache-options";
     const pluginPaths = allPluginPaths(glob).map((p) =>
       path.relative(this.rootPath, p)
     );
-    const pluginDistDirs = pluginPaths;
-    const cliDistDir = ["cli"];
+    const pluginDistDirs = pluginPaths.map((p) => `${p}/dist`);
+    const cliDistDir = ["cli/dist"];
+    const combinedDistDirs = [].concat(pluginDistDirs, cliDistDir).sort();
+    // console.log(combinedDistDirs);
 
-    const prefix = " ".repeat(12) + "- ";
-    const combinedDistDirs = []
-      .concat(pluginDistDirs, cliDistDir)
-      .map((p) => `${p}/dist`);
+    for (const dir of combinedDistDirs) {
+      let bucket = "module-other";
+      const name = dir.replace("plugins/@grouparoo/", "").replace("/dist", "");
 
-    cachePaths[cacheKey] = combinedDistDirs.sort();
+      let index = -1;
+      for (let i = 0; i < PLUGIN_LETTER_BUCKETS.length; i++) {
+        const letter = PLUGIN_LETTER_BUCKETS[i];
+        if (name <= letter) {
+          index = i;
+          break;
+        }
+      }
+      if (index < 0) {
+        index = PLUGIN_LETTER_BUCKETS.length;
+      }
+      bucket = `dist-${index + 1}`;
+
+      const cacheKey = `${bucket}-cache`;
+      if (!cachePaths[cacheKey]) cachePaths[cacheKey] = [];
+      cachePaths[cacheKey].push(dir);
+    }
+
+    // cachePaths[cacheKey] = combinedDistDirs.sort();
   }
 
   addCoreCache(cachePaths) {
-    const cacheKey = "core-cache-options";
+    const cacheKey = "core-cache";
 
     const directories = [
       "core/dist",
@@ -346,6 +364,7 @@ class Generator {
     this.addDistCache(cachePaths);
     this.addCoreCache(cachePaths);
     this.caches = cachePaths;
+
     return this.caches;
   }
 
