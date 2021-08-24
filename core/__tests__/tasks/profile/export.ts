@@ -8,6 +8,8 @@ import {
   Destination,
   Export,
   plugin,
+  Source,
+  Property,
 } from "../../../src";
 import { Op } from "sequelize";
 
@@ -231,7 +233,12 @@ describe("tasks/profile:export", () => {
       });
 
       test("it will append destinationIds from imports", async () => {
-        const run = await helper.factories.run();
+        const property = await Property.findOne({ where: { key: "email" } });
+        const source = await Source.findOne({
+          where: { id: property.sourceId },
+        });
+        const schedule = await helper.factories.schedule(source);
+        const run = await helper.factories.run(schedule);
         const _import = await helper.factories.import(run, {
           userId: 123,
           email: "bowser@example.com", // create a new profile, not in the group

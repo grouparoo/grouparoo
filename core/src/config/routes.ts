@@ -108,7 +108,6 @@ export const DEFAULT = {
         { path: "/v:apiVersion/destination", action: "destination:create" },
         { path: "/v:apiVersion/destination/:id/export", action: "destination:export" },
         { path: "/v:apiVersion/file", action: "file:create" },
-        { path: "/v:apiVersion/import", action: "import:create" }
       ],
 
       put: [

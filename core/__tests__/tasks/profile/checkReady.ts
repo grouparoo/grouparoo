@@ -1,8 +1,19 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, config, task, specHelper } from "actionhero";
-import { Group, plugin, Profile, ProfileProperty } from "../../../src";
+import {
+  Group,
+  plugin,
+  Profile,
+  ProfileProperty,
+  Schedule,
+  Source,
+} from "../../../src";
 
 describe("tasks/profile:checkReady", () => {
+  let source: Source;
+  let schedule: Schedule;
+  let group: Group;
+
   helper.grouparooTestServer({
     truncate: true,
     enableTestPlugin: true,
@@ -15,7 +26,10 @@ describe("tasks/profile:checkReady", () => {
     await plugin.updateSetting("core", "runs-profile-batch-size", 100);
   });
 
-  let group: Group;
+  beforeAll(async () => {
+    source = await Source.findOne();
+    schedule = await helper.factories.schedule(source);
+  });
 
   beforeAll(async () => {
     group = await helper.factories.group();
@@ -137,7 +151,7 @@ describe("tasks/profile:checkReady", () => {
     });
 
     test("it updates the imports new data and updates the run counts", async () => {
-      const run = await helper.factories.run();
+      const run = await helper.factories.run(schedule);
 
       const _importA = await helper.factories.import(run, {
         email: "mario@example.com",
@@ -201,7 +215,7 @@ describe("tasks/profile:checkReady", () => {
     });
 
     test("it will optionally mark the imports as exported to complete the lifecycle", async () => {
-      const run = await helper.factories.run();
+      const run = await helper.factories.run(schedule);
 
       const _importA = await helper.factories.import(run, {
         email: "mario@example.com",

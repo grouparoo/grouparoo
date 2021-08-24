@@ -1,6 +1,7 @@
 import { helper, relaxedSnapshot } from "@grouparoo/spec-helper";
 import { Profile, Group, Destination, GrouparooPlugin } from "../../../src";
 import { api } from "actionhero";
+import { ProfileOps } from "../../../src/modules/ops/profile";
 
 describe("test grouparoo profiles", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -66,9 +67,10 @@ describe("test grouparoo profiles", () => {
       await destination.update({ state: "ready" });
 
       // make the profile
-      const response = await Profile.findOrCreateByUniqueProfileProperties({
-        userId: ["person1@example.com"],
-      });
+      const response = await ProfileOps.findOrCreateByUniqueProfileProperties(
+        { userId: ["person1@example.com"] },
+        true
+      );
       profile = response.profile;
 
       // import & export the profile
