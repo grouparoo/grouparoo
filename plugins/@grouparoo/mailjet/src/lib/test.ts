@@ -1,11 +1,11 @@
 import { TestPluginMethod } from "@grouparoo/core";
 import { connect } from "./connect";
+import { MailjetClient } from "./client";
 
 export const test: TestPluginMethod = async ({ appOptions }) => {
-  const client = await connect(appOptions);
-  // const { portalId } = await client.getAccountDetails();
-  // const success = portalId > 0;
-  // const message = success ? `Connected to account ${portalId}` : null;
-
-  return { success: true, message: "" };
+  const client: MailjetClient = await connect(appOptions);
+  const lists = await client.getLists();
+  const success = !!lists;
+  const message = success ? `${lists.length} Mailjet lists available` : null;
+  return { success, message };
 };

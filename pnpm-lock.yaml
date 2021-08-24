@@ -70,6 +70,7 @@ importers:
       '@grouparoo/iterable': link:../../plugins/@grouparoo/iterable
       '@grouparoo/logger': link:../../plugins/@grouparoo/logger
       '@grouparoo/mailchimp': link:../../plugins/@grouparoo/mailchimp
+      '@grouparoo/mailjet': link:../../plugins/@grouparoo/mailjet
       '@grouparoo/marketo': link:../../plugins/@grouparoo/marketo
       '@grouparoo/mixpanel': link:../../plugins/@grouparoo/mixpanel
       '@grouparoo/mongo': link:../../plugins/@grouparoo/mongo
@@ -130,6 +131,7 @@ importers:
       '@grouparoo/iterable': 0.5.3-alpha.5
       '@grouparoo/logger': 0.5.3-alpha.5
       '@grouparoo/mailchimp': 0.5.3-alpha.5
+      '@grouparoo/mailjet': 0.5.3-alpha.5
       '@grouparoo/marketo': 0.5.3-alpha.5
       '@grouparoo/mixpanel': 0.5.3-alpha.5
       '@grouparoo/mongo': 0.5.3-alpha.5

@@ -34,6 +34,13 @@ class MailjetClient {
     return null;
   }
 
+  async getLists(): Promise<Array<any>> {
+    const request = await this.client
+      .get("contactslist", { version: "v3" })
+      .request();
+    return request?.body?.Data;
+  }
+
   async deleteList(listId) {
     await this.client
       .delete("contactslist", { version: "v3" })
