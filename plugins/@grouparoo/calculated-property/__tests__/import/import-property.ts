@@ -32,6 +32,7 @@ async function getPropertyValue(fn: string) {
     propertyFilters: null,
   });
 }
+
 describe("calculated-property/profileProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => helper.disableTestPluginImport());
@@ -45,18 +46,72 @@ describe("calculated-property/profileProperty", () => {
       email: ["ejervois0@example.com"],
       firstName: ["Mario"],
       lastName: ["Jones"],
+      ltv: ["390.42"],
+      lastLoginAt: ["2021-08-23 15:02:39.297-07"],
+      isVIP: ["true"],
+      purchases: [null],
     });
     expect(profile.id).toBeTruthy();
   });
 
-  test("it concatenates a string to create a property", async () => {
-    const fn = `() => {return "hi {{firstName}}"}`;
+  test("it evaluates string properties as expected", async () => {
+    const fn = `() => {
+        return "hi {{firstName}}"
+    }`;
     const value = await getPropertyValue(fn);
     expect(value[0]).toEqual(`hi Mario`);
   });
-  // does math with a property to generate a new property
-  // throws if no function
-  // throws if function returns undefined
-  // will parse a null/undefined mustache variable as ""
-  // dates can be parsed back into a date correctly
+  test("it evaluates float properties as expected", async () => {
+    const fn = `() => {
+        return {{ltv}} * 2 
+    }`;
+    const value = await getPropertyValue(fn);
+    expect(value[0]).toEqual(780.84);
+  });
+  test("it evaluates null properties as an empty string", async () => {
+    const fn = `() => { 
+        if ("{{purchases}}" === "") return true; 
+        return false;}`;
+    const value = await getPropertyValue(fn);
+    expect(value[0]).toBeTruthy;
+  });
+  test("it evaluates boolean properties as expected", async () => {
+    const fn = `() => {
+        if({{isVIP}} === true) return true;
+        return false;
+    }`;
+    const value = await getPropertyValue(fn);
+    expect(value[0]).toBeTruthy;
+  });
+
+  // TODO: dates... how to get timestamp to play nicely with date...
+  test.only("it evaluates date strings as expected", async () => {
+    const fn = `() => {
+          const date = new Date("{{lastLoginAt.iso}}");
+          return date.toISOString();
+      }`;
+    const value = await getPropertyValue(fn);
+    expect(value[0]).toEqual("2021-08-23T22:02:39.297Z");
+  });
+
+  test("it throws if customFunction is empty", async () => {
+    const fn = `() => {}`;
+    await expect(getPropertyValue(fn)).rejects.toThrowError(
+      "Could not calculate property: Error: Calculated property's /`customFunction/` undefined"
+    );
+  });
+  test("it throws if customFunction returns undefined", async () => {
+    const fn = `() => { return undefined}`;
+    await expect(getPropertyValue(fn)).rejects.toThrowError(
+      "Could not calculate property: Error: Calculated property's /`customFunction/` undefined"
+    );
+  });
+  test("it throws if mustached property does not exist", async () => {
+    const fn = `() => {
+      return {{fakeProperty}}
+    }`;
+    await expect(getPropertyValue(fn)).rejects.toThrowError(
+      "Could not calculate property: Error: Calculated property's /`customFunction/` undefined"
+    );
+  });
 });
