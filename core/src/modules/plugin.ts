@@ -351,7 +351,7 @@ export namespace plugin {
   export async function replaceTemplateProfileVariables(
     string: string,
     profile: Profile,
-strict = true
+    strict = true
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
 
