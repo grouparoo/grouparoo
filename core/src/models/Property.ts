@@ -36,7 +36,7 @@ import { Group } from "./Group";
 import { GroupRule } from "./GroupRule";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
-import { GrouparooRecord } from "./Record";
+import { GrouparooRecord } from "./GrouparooRecord";
 import { RecordProperty } from "./RecordProperty";
 import { Run } from "./Run";
 import { Source } from "./Source";

@@ -1,5 +1,5 @@
 import { RetryableTask } from "../../classes/tasks/retryableTask";
-import { GrouparooRecord } from "../../models/Record";
+import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { RecordProperty } from "../../models/RecordProperty";
 import { Property } from "../../models/Property";
 import { Mapping } from "../../models/Mapping";

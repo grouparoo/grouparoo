@@ -10,7 +10,7 @@ import {
   DataType,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
-import { GrouparooRecord } from "./Record";
+import { GrouparooRecord } from "./GrouparooRecord";
 import { Property } from "./Property";
 import { RecordPropertyOps } from "../modules/ops/recordProperty";
 import { StateMachine } from "../modules/stateMachine";

@@ -1,5 +1,5 @@
 import Sequelize, { Op } from "sequelize";
-import { GrouparooRecord } from "./Record";
+import { GrouparooRecord } from "./GrouparooRecord";
 import {
   Model,
   Table,

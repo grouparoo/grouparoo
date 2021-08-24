@@ -1,6 +1,6 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Export } from "../../models/Export";
-import { GrouparooRecord } from "../../models/Record";
+import { GrouparooRecord } from "../../models/GrouparooRecord";
 
 export class RecordDestroy extends CLSTask {
   constructor() {

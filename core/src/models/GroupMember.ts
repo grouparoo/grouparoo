@@ -17,7 +17,7 @@ import {
 import * as uuid from "uuid";
 import { Op, WhereAttributeHash } from "sequelize";
 import { Group } from "./Group";
-import { GrouparooRecord } from "./Record";
+import { GrouparooRecord } from "./GrouparooRecord";
 import { Log } from "./Log";
 import { APIData } from "../modules/apiData";
 

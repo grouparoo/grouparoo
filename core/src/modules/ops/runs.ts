@@ -1,5 +1,5 @@
 import { Run } from "../../models/Run";
-import { GrouparooRecord } from "../../models/Record";
+import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { Group } from "../../models/Group";
 import { Schedule } from "../../models/Schedule";
 import { GroupMember } from "../../models/GroupMember";

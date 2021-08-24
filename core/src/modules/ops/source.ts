@@ -10,7 +10,7 @@ import {
   PropertyFiltersWithKey,
   SimplePropertyOptions,
 } from "../../models/Property";
-import { GrouparooRecord } from "../../models/Record";
+import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { App } from "../../models/App";
 import { Option } from "../../models/Option";
 import { OptionHelper } from "../optionHelper";

@@ -27,7 +27,7 @@ export { Notification } from "./models/Notification";
 export { Mapping } from "./models/Mapping";
 export { Option } from "./models/Option";
 export { Permission } from "./models/Permission";
-export { GrouparooRecord } from "./models/Record";
+export { GrouparooRecord } from "./models/GrouparooRecord";
 export { RecordProperty } from "./models/RecordProperty";
 export {
   Property,

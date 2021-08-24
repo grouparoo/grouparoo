@@ -3,7 +3,7 @@ import { plugin } from "../plugin";
 import { App } from "../../models/App";
 import { Source } from "../../models/Source";
 import { Property } from "../../models/Property";
-import { GrouparooRecord } from "../../models/Record";
+import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 import { Group } from "../../models/Group";

@@ -30,7 +30,7 @@ import { DestinationOps } from "./../modules/ops/destination";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { App } from "./App";
-import { GrouparooRecord } from "./../models/Record";
+import { GrouparooRecord } from "./../models/GrouparooRecord";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { Export } from "./Export";
 import { ExportProcessor } from "./ExportProcessor";

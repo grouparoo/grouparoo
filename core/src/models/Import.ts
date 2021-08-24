@@ -17,7 +17,7 @@ import {
 import * as uuid from "uuid";
 import { config } from "actionhero";
 import { CLS } from "../modules/cls";
-import { GrouparooRecord } from "./Record";
+import { GrouparooRecord } from "./GrouparooRecord";
 import { Run } from "./Run";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";

@@ -1,6 +1,6 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Op } from "sequelize";
-import { GrouparooRecord } from "../models/Record";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import { Property, SimplePropertyOptions } from "../models/Property";
 import { RecordProperty } from "../models/RecordProperty";
 import { Group } from "../models/Group";

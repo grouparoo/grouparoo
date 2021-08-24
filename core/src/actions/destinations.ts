@@ -3,7 +3,7 @@ import { CLS } from "../modules/cls";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Destination } from "../models/Destination";
 import { App } from "../models/App";
-import { GrouparooRecord } from "../models/Record";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import { Group } from "../models/Group";
 import { Run } from "../models/Run";
 import { GroupMember } from "../models/GroupMember";

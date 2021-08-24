@@ -12,7 +12,7 @@ import { Import } from "../models/Import";
 import { Log } from "../models/Log";
 import { Mapping } from "../models/Mapping";
 import { Option } from "../models/Option";
-import { GrouparooRecord } from "../models/Record";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
 import { Property } from "../models/Property";
 import { Filter } from "../models/Filter";

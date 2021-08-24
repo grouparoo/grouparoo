@@ -1,6 +1,6 @@
 import { api, config, chatRoom } from "actionhero";
 import { Group } from "../models/Group";
-import { GrouparooRecord } from "../models/Record";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import {
   StatusReporters,
   StatusMetric,

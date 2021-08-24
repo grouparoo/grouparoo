@@ -5,7 +5,7 @@ import {
   DestinationSyncOperations,
   SimpleDestinationOptions,
 } from "../../models/Destination";
-import { GrouparooRecord } from "../../models/Record";
+import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { Export, ExportRecordPropertiesWithType } from "../../models/Export";
 import { Group } from "../../models/Group";
 import { Property } from "../../models/Property";

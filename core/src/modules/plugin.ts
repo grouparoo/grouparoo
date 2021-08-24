@@ -17,7 +17,7 @@ import { Log } from "../models/Log";
 import { Mapping } from "../models/Mapping";
 import { Option } from "../models/Option";
 import { Permission } from "../models/Permission";
-import { GrouparooRecord } from "../models/Record";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
 import { Property } from "../models/Property";
 import { Filter } from "../models/Filter";

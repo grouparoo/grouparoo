@@ -7,7 +7,7 @@ import { GroupMember } from "../models/GroupMember";
 import { Log } from "../models/Log";
 import { Import } from "../models/Import";
 import { Export } from "../models/Export";
-import { GrouparooRecord } from "../models/Record";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
 import { Run } from "../models/Run";
 import { Team } from "../models/Team";

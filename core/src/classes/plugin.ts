@@ -12,7 +12,7 @@ import {
   SimplePropertyOptions,
   PropertyFiltersWithKey,
 } from "../models/Property";
-import { GrouparooRecord } from "../models/Record";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import { HighWaterMark } from "../models/Run";
 import { Property } from "../models/Property";
 import {

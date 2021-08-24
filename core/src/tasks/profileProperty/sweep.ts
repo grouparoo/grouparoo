@@ -1,6 +1,6 @@
 import { config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { GrouparooRecord } from "../../models/Record";
+import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { RecordProperty } from "../../models/RecordProperty";
 import { Property } from "../../models/Property";
 

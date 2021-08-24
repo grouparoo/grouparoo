@@ -15,7 +15,7 @@ import {
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Destination } from "./Destination";
-import { GrouparooRecord } from "./Record";
+import { GrouparooRecord } from "./GrouparooRecord";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { QueryTypes } from "sequelize";

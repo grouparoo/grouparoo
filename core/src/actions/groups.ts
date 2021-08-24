@@ -3,7 +3,7 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Group, GROUP_RULE_LIMIT } from "../models/Group";
 import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
-import { GrouparooRecord } from "../models/Record";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import { GroupMember } from "../models/GroupMember";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";

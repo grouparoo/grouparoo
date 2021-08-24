@@ -1,6 +1,6 @@
 import { api, config } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
-import { GrouparooRecord } from "../models/Record";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
 import { internalRun } from "../modules/internalRun";
 import { Op } from "sequelize";

@@ -4,7 +4,7 @@ import {
   extractNonNullParts,
   logModel,
 } from "../../classes/codeConfig";
-import { GrouparooRecord } from "../../models/Record";
+import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { Property } from "../../models/Property";
 
 export async function loadRecord(

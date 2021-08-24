@@ -2,7 +2,7 @@ import os from "os";
 import fs from "fs";
 import CsvStringify from "csv-stringify";
 import { log } from "actionhero";
-import { GrouparooRecord } from "../models/Record";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import { Group } from "../models/Group";
 import { Run } from "../models/Run";
 import { Property } from "../models/Property";

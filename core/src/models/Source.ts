@@ -34,7 +34,7 @@ import { App } from "./App";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
 import { Schedule } from "./Schedule";
-import { GrouparooRecord } from "./Record";
+import { GrouparooRecord } from "./GrouparooRecord";
 import {
   Property,
   PropertyFiltersWithKey,

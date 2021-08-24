@@ -13,7 +13,7 @@ import { File } from "../models/File";
 import { Group } from "../models/Group";
 import { GroupRule } from "../models/GroupRule";
 import { Export } from "../models/Export";
-import { GrouparooRecord } from "../models/Record";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
 import { Property } from "../models/Property";
 import { Run } from "../models/Run";

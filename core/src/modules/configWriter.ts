@@ -16,7 +16,7 @@ import {
 } from "../classes/codeConfig";
 
 import { getConfigDir } from "../modules/pluginDetails";
-import { GrouparooRecord } from "../models/Record";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 
 type WritableConfigObject = {
   filePath: string;

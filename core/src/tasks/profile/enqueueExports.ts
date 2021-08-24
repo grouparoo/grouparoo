@@ -1,7 +1,7 @@
 import { Op } from "sequelize";
 import { config } from "actionhero";
 import { Import } from "../../models/Import";
-import { GrouparooRecord } from "../../models/Record";
+import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { RecordProperty } from "../../models/RecordProperty";
 import { CLS } from "../../modules/cls";
