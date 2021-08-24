@@ -32,6 +32,8 @@ async function calculateProfilePropertyValue(
   const vm = new NodeVM({
     console: "inherit",
     sandbox: {},
+    argv: [],
+    env: {},
   });
 
   try {
