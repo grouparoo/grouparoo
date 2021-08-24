@@ -210,6 +210,25 @@ describe("models/profile", () => {
       expect(properties.house.values).toEqual([null]);
     });
 
+    test("cannot create a new profile without a source or override", async () => {
+      await expect(
+        ProfileOps.findOrCreateByUniqueProfileProperties({
+          email: ["yoshi@example.com"],
+        })
+      ).rejects.toThrow(
+        'could not create a new profile because no profile property in {"email":["yoshi@example.com"]} is unique and owned by the source'
+      );
+
+      await expect(
+        ProfileOps.findOrCreateByUniqueProfileProperties(
+          { email: ["yoshi@example.com"] },
+          false
+        )
+      ).rejects.toThrow(
+        'could not create a new profile because no profile property in {"email":["yoshi@example.com"]} is unique and owned by the source'
+      );
+    });
+
     test("properties will include the value, type, unique, and timestamps", async () => {
       const properties = await toad.getProperties();
       expect(properties.email.type).toBe("email");
