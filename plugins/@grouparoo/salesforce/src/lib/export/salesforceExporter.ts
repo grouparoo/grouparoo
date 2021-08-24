@@ -7,7 +7,7 @@ import {
 import { connect } from "../connect";
 import { getFieldMap, SalesforceCacheData } from "../objects";
 import {
-  exportProfilesInBatch,
+  exportRecordsInBatch,
   BatchConfig,
   BatchExport,
   BatchGroupMode,
@@ -297,8 +297,8 @@ function buildUserPayload(
   const row: any = {};
   const {
     destinationId,
-    oldProfileProperties,
-    newProfileProperties,
+    oldRecordProperties,
+    newRecordProperties,
     foreignKeyValue,
   } = exportedProfile;
 
@@ -309,11 +309,11 @@ function buildUserPayload(
 
   const referenceData = {};
   // set profile properties, including old ones
-  const newKeys = Object.keys(newProfileProperties);
-  const oldKeys = Object.keys(oldProfileProperties);
+  const newKeys = Object.keys(newRecordProperties);
+  const oldKeys = Object.keys(oldRecordProperties);
   const allKeys = oldKeys.concat(newKeys);
   for (const keyName of allKeys) {
-    const value = newProfileProperties[keyName]; // includes clearing out removed ones (by setting to null)
+    const value = newRecordProperties[keyName]; // includes clearing out removed ones (by setting to null)
     const { reference, fieldName } = parseFieldName({
       profileReferenceObject,
       key: keyName,
@@ -488,8 +488,8 @@ const addToGroups: BatchMethodAddToGroups = async ({
   const users = [];
   for (const name in groupMap) {
     const id = await getListId(client, name, config.data);
-    const profiles = groupMap[name] || [];
-    for (const exportedProfile of profiles) {
+    const records = groupMap[name] || [];
+    for (const exportedProfile of records) {
       payload.push({
         [membershipGroupField]: id,
         [membershipProfileField]: exportedProfile.destinationId,
@@ -519,8 +519,8 @@ const removeFromGroups: BatchMethodRemoveFromGroups = async ({
   const users = [];
   for (const name in groupMap) {
     const id = await getListId(client, name, config.data);
-    const profiles = groupMap[name] || [];
-    const destIds = profiles.map((pro) => pro.destinationId);
+    const records = groupMap[name] || [];
+    const destIds = records.map((pro) => pro.destinationId);
     if (destIds.length > 0) {
       const query = {
         [membershipGroupField]: id,
@@ -702,7 +702,7 @@ export const exportSalesforceBatch: ExportSalesforceMethod = async ({
     referenceFields,
     cacheData,
   });
-  return exportProfilesInBatch(
+  return exportRecordsInBatch(
     exports,
     {
       findSize,

@@ -2,7 +2,7 @@ import { BatchExport } from "@grouparoo/app-templates/dist/destination/batch";
 import {
   Errors,
   ErrorWithProfileId,
-  ExportProfilesPluginMethod,
+  ExportRecordsPluginMethod,
 } from "@grouparoo/core";
 import EloquaClient from "../client/client";
 import util from "util";
@@ -81,8 +81,8 @@ const buildImportDefinitionData = ({ profileToExport, syncOperations }) => {
   const {
     destinationId,
     profileId,
-    oldProfileProperties,
-    newProfileProperties,
+    oldRecordProperties,
+    newRecordProperties,
     foreignKeyValue,
   } = profileToExport;
 
@@ -107,13 +107,13 @@ const buildImportDefinitionData = ({ profileToExport, syncOperations }) => {
     payload.profileId = profileId;
   }
   // set profile properties, including old ones
-  const newKeys = Object.keys(newProfileProperties);
-  const oldKeys = Object.keys(oldProfileProperties);
+  const newKeys = Object.keys(newRecordProperties);
+  const oldKeys = Object.keys(oldRecordProperties);
   const allKeys = new Set([...oldKeys, ...newKeys]);
 
   for (const key of allKeys) {
     exportedProfileFields.add(key);
-    const value = newProfileProperties[key]; // includes clearing out removed ones (by setting to null)
+    const value = newRecordProperties[key]; // includes clearing out removed ones (by setting to null)
     payload[key] = formatVar(value);
   }
   return payload;
@@ -166,12 +166,12 @@ export async function deleteContacts({
 }
 
 async function assignForeignKeys({ appId, exportedProfile }) {
-  const { oldProfileProperties, newProfileProperties } = exportedProfile;
+  const { oldRecordProperties, newRecordProperties } = exportedProfile;
 
-  let newValue = newProfileProperties.emailAddress;
-  let oldValue = oldProfileProperties.emailAddress;
+  let newValue = newRecordProperties.emailAddress;
+  let oldValue = oldRecordProperties.emailAddress;
   if (!newValue) {
-    throw new Error(`newProfileProperties[emailAddress] is a required mapping`);
+    throw new Error(`newRecordProperties[emailAddress] is a required mapping`);
   }
   newValue = newValue.toString().toLowerCase().trim();
   if (oldValue) {
@@ -246,11 +246,11 @@ async function buildBatchExports({ appId, exports: _exports }) {
   return batchExports;
 }
 
-export const exportProfiles: ExportProfilesPluginMethod = async ({
+export const exportRecords: ExportRecordsPluginMethod = async ({
   appId,
   appOptions,
   syncOperations,
-  exports: profilesToExport,
+  exports: recordsToExport,
 }) => {
   client = await connect(appOptions);
   return exportBatch({
@@ -258,7 +258,7 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
     appId,
     appOptions,
     syncOperations,
-    exports: profilesToExport,
+    exports: recordsToExport,
   });
 };
 

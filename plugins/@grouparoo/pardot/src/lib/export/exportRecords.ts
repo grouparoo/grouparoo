@@ -1,7 +1,7 @@
 import {
   buildBatchExports,
   BatchExport,
-  exportProfilesInBatch,
+  exportRecordsInBatch,
   BatchSyncMode,
   BatchGroupMode,
   BatchMethodGetClient,
@@ -14,7 +14,7 @@ import {
   BatchMethodNormalizeGroupName,
   BatchMethodRemoveFromGroups,
 } from "@grouparoo/app-templates/dist/destination/batch";
-import { ExportProfilesPluginMethod } from "@grouparoo/core";
+import { ExportRecordsPluginMethod } from "@grouparoo/core";
 import PardotClient from "../client";
 import { connect } from "../connect";
 import { PardotCacheData, getListId } from "./listMethods";
@@ -117,8 +117,8 @@ async function buildPayload(
 ) {
   const {
     destinationId,
-    oldProfileProperties,
-    newProfileProperties,
+    oldRecordProperties,
+    newRecordProperties,
     oldGroups,
     newGroups,
     foreignKeyValue,
@@ -132,15 +132,15 @@ async function buildPayload(
   }
 
   // set profile properties, including old ones
-  const newKeys = Object.keys(newProfileProperties);
-  const oldKeys = Object.keys(oldProfileProperties);
+  const newKeys = Object.keys(newRecordProperties);
+  const oldKeys = Object.keys(oldRecordProperties);
   const allKeys = new Set([...oldKeys, ...newKeys]);
 
   for (const key of allKeys) {
     if (["id", "email"].includes(key)) {
       continue; // set above
     }
-    const value = newProfileProperties[key]; // includes clearing out removed ones (by setting to null)
+    const value = newRecordProperties[key]; // includes clearing out removed ones (by setting to null)
     payload[key] = formatVar(value);
   }
 
@@ -212,7 +212,7 @@ export async function exportBatch({
   const cacheData = { appId, appOptions };
   const data: PardotData = { cacheData };
 
-  return exportProfilesInBatch(
+  return exportRecordsInBatch(
     exports,
     {
       findSize,
@@ -238,13 +238,13 @@ export async function exportBatch({
   );
 }
 
-export const exportProfiles: ExportProfilesPluginMethod = async ({
+export const exportRecords: ExportRecordsPluginMethod = async ({
   appId,
   appOptions,
   syncOperations,
-  exports: profilesToExport,
+  exports: recordsToExport,
 }) => {
-  const batchExports = buildBatchExports(profilesToExport);
+  const batchExports = buildBatchExports(recordsToExport);
   return exportBatch({
     appId,
     appOptions,

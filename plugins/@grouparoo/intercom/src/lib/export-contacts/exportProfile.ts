@@ -1,7 +1,7 @@
 import { api } from "actionhero";
 import {
   Errors,
-  ExportProfilePluginMethod,
+  ExportRecordPluginMethod,
   SimpleDestinationOptions,
   DestinationSyncOperations,
   makeBaseCacheKey,
@@ -24,7 +24,7 @@ interface IntercomContact {
   };
 }
 
-export const exportProfile: ExportProfilePluginMethod = async (args) => {
+export const exportRecord: ExportRecordPluginMethod = async (args) => {
   try {
     const retryDelay = await getLock(args);
 
@@ -67,22 +67,22 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
   }
 };
 
-export const sendProfile: ExportProfilePluginMethod = async ({
+export const sendProfile: ExportRecordPluginMethod = async ({
   appId,
   appOptions,
   destinationOptions,
   syncOperations,
   export: {
     toDelete,
-    newProfileProperties,
-    oldProfileProperties,
+    newRecordProperties,
+    oldRecordProperties,
     newGroups,
     oldGroups,
   },
 }) => {
   const client = await connect(appOptions);
-  const external_id = cleanExternalId(newProfileProperties.external_id);
-  const email = cleanEmail(newProfileProperties.email);
+  const external_id = cleanExternalId(newRecordProperties.external_id);
+  const email = cleanEmail(newRecordProperties.email);
   const cacheData: IntercomCacheData = { appId, appOptions };
 
   if (!external_id && !email) {
@@ -91,8 +91,8 @@ export const sendProfile: ExportProfilePluginMethod = async ({
 
   const found = await findContact(
     client,
-    newProfileProperties,
-    oldProfileProperties
+    newRecordProperties,
+    oldRecordProperties
   );
 
   if (toDelete) {
@@ -113,8 +113,8 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     client,
     cacheData,
     { email, external_id },
-    oldProfileProperties,
-    newProfileProperties
+    oldRecordProperties,
+    newRecordProperties
   );
   const contact = await createOrUpdateUser(
     client,
@@ -183,13 +183,13 @@ function filterUser(users: IntercomContact[], key: string, value) {
 }
 
 function getUniqueValues(
-  newProfileProperties,
-  oldProfileProperties
+  newRecordProperties,
+  oldRecordProperties
 ): Array<{ field: string; operator: string; value: string }> {
-  const newId = cleanExternalId(newProfileProperties.external_id);
-  let oldId = cleanExternalId(oldProfileProperties.external_id);
-  const newEmail = cleanEmail(newProfileProperties.email);
-  let oldEmail = cleanEmail(oldProfileProperties.email);
+  const newId = cleanExternalId(newRecordProperties.external_id);
+  let oldId = cleanExternalId(oldRecordProperties.external_id);
+  const newEmail = cleanEmail(newRecordProperties.email);
+  let oldEmail = cleanEmail(oldRecordProperties.email);
 
   if (oldId && oldId === newId) {
     oldId = null; // same
@@ -233,10 +233,10 @@ function getUniqueValues(
 
 export async function findContact(
   client,
-  newProfileProperties,
-  oldProfileProperties
+  newRecordProperties,
+  oldRecordProperties
 ): Promise<IntercomContact> {
-  const values = getUniqueValues(newProfileProperties, oldProfileProperties);
+  const values = getUniqueValues(newRecordProperties, oldRecordProperties);
   if (values.length === 0) {
     throw new Error("Nothing to search for existing Intercom contact");
   }
@@ -315,18 +315,18 @@ async function makePayload(
   client: any,
   cacheData: IntercomCacheData,
   { email, external_id },
-  oldProfileProperties: {
+  oldRecordProperties: {
     [key: string]: any;
   },
-  newProfileProperties: {
+  newRecordProperties: {
     [key: string]: any;
   }
 ) {
   const payload: any = { external_id, email };
 
   // set profile properties, including old ones
-  const newKeys = Object.keys(newProfileProperties);
-  const oldKeys = Object.keys(oldProfileProperties);
+  const newKeys = Object.keys(newRecordProperties);
+  const oldKeys = Object.keys(oldRecordProperties);
   const allKeys = oldKeys.concat(newKeys);
 
   const knownAttributes = await getKnownAttributeMap(client, cacheData);
@@ -337,7 +337,7 @@ async function makePayload(
     if (!knownAttributes[key]) {
       continue; // unknown key
     }
-    const value = newProfileProperties[key]; // includes clearing out removed ones
+    const value = newRecordProperties[key]; // includes clearing out removed ones
     const formatted = formatVar(value);
 
     const pieces = key.split("."); // for example, custom_attributes.my_field
@@ -540,7 +540,7 @@ function useRedis() {
 const ITERCOM_DELAY_TTL_SECONDS = 3 * 60; // 3 minutes
 async function getLock({
   appId,
-  export: { newProfileProperties, oldProfileProperties },
+  export: { newRecordProperties, oldRecordProperties },
 }): Promise<number> {
   if (!useRedis()) {
     return 0;
@@ -550,7 +550,7 @@ async function getLock({
   const expireAt = (now + ITERCOM_DELAY_TTL_SECONDS * 1000).toString();
 
   // try for each of the key values that we use in lookups
-  const values = getUniqueValues(oldProfileProperties, newProfileProperties);
+  const values = getUniqueValues(oldRecordProperties, newRecordProperties);
   const retryValues: number[] = [];
   for (const value of values) {
     retryValues.push(

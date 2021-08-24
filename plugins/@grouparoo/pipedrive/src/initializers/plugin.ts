@@ -4,7 +4,7 @@ import { plugin, DestinationSyncMode } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 
-import { exportProfile } from "../lib/export/exportProfile";
+import { exportRecord } from "../lib/export/exportRecord";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
@@ -58,13 +58,13 @@ export class Plugins extends Initializer {
         {
           name: "pipedrive-export",
           direction: "export",
-          description: "Export profiles to Pipedrive as Person contacts",
+          description: "Export records to Pipedrive as Person contacts",
           app: "pipedrive",
           syncModes,
           defaultSyncMode,
           options: [],
           methods: {
-            exportProfile,
+            exportRecord,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,

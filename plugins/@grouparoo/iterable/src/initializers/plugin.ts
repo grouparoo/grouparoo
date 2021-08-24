@@ -4,7 +4,7 @@ import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 
-import { exportProfile } from "../lib/export/exportProfile";
+import { exportRecord } from "../lib/export/exportRecord";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
@@ -59,13 +59,13 @@ export class Plugins extends Initializer {
           name: "iterable-export",
           direction: "export",
           description:
-            "Export profiles to Iterable as Users and put them in static Lists.",
+            "Export records to Iterable as Users and put them in static Lists.",
           app: "iterable",
           syncModes,
           defaultSyncMode,
           options: [],
           methods: {
-            exportProfile,
+            exportRecord,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,

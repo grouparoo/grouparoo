@@ -1,36 +1,36 @@
-import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
 import Sailthru from "../client";
 
 import { log } from "actionhero";
 
 // https://getstarted.sailthru.com/developers/api/user/
 
-export const exportProfile: ExportProfilePluginMethod = async ({
+export const exportRecord: ExportRecordPluginMethod = async ({
   appOptions,
   syncOperations,
   export: {
-    newProfileProperties,
-    oldProfileProperties,
+    newRecordProperties,
+    oldRecordProperties,
     newGroups,
     oldGroups,
     toDelete,
   },
 }) => {
   const client = new Sailthru(appOptions);
-  const email = newProfileProperties.email;
+  const email = newRecordProperties.email;
 
   if (!email) {
-    throw new Error(`newProfileProperties[email] is a required mapping`);
+    throw new Error(`newRecordProperties[email] is a required mapping`);
   }
 
-  const sid = await client.findSid(newProfileProperties, oldProfileProperties);
+  const sid = await client.findSid(newRecordProperties, oldRecordProperties);
 
   if (toDelete) {
     await deleteUser(
       client,
       syncOperations,
-      newProfileProperties,
-      oldProfileProperties,
+      newRecordProperties,
+      oldRecordProperties,
       sid,
       1
     );
@@ -51,15 +51,15 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   // TODO: extid if that's a thing
 
   // set profile properties, including old ones
-  const newKeys = Object.keys(newProfileProperties);
-  const oldKeys = Object.keys(oldProfileProperties);
+  const newKeys = Object.keys(newRecordProperties);
+  const oldKeys = Object.keys(oldRecordProperties);
   const allKeys = oldKeys.concat(newKeys);
   for (const key of allKeys) {
     if (key === "email") {
       // not doing this one
       continue;
     }
-    const value = newProfileProperties[key]; // includes clearing out removed ones
+    const value = newRecordProperties[key]; // includes clearing out removed ones
     payload.vars[key] = formatVar(value);
   }
 
@@ -83,7 +83,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   if (!payload.id) {
     if (!syncOperations.create) {
       throw new Errors.InfoError(
-        "Destination sync mode does not create new profiles."
+        "Destination sync mode does not create new records."
       );
     }
     // new user, use email
@@ -91,7 +91,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     payload.key = "email";
   } else if (!syncOperations.update) {
     throw new Errors.InfoError(
-      "Destination sync mode does not update existing profiles."
+      "Destination sync mode does not update existing records."
     );
   }
 
@@ -139,20 +139,20 @@ async function deleteEmail(client, email) {
 async function deleteUser(
   client: Sailthru,
   syncOperations,
-  newProfileProperties: { [key: string]: any },
-  oldProfileProperties: { [key: string]: any },
+  newRecordProperties: { [key: string]: any },
+  oldRecordProperties: { [key: string]: any },
   cachedSid: string,
   attemptNum: number
 ) {
   if (!syncOperations.delete) {
     throw new Errors.InfoError(
-      "Destination sync mode does not delete profiles."
+      "Destination sync mode does not delete records."
     );
   }
   const sid =
     cachedSid ||
-    (await client.findSid(newProfileProperties, oldProfileProperties));
-  const email = newProfileProperties.email;
+    (await client.findSid(newRecordProperties, oldRecordProperties));
+  const email = newRecordProperties.email;
 
   if (attemptNum > MAX_DELETE_ATTEMPTS) {
     if (!(await deleteEmail(client, email))) {
@@ -176,8 +176,8 @@ async function deleteUser(
   await deleteUser(
     client,
     syncOperations,
-    newProfileProperties,
-    oldProfileProperties,
+    newRecordProperties,
+    oldRecordProperties,
     null, // look up by email again
     attemptNum
   );
@@ -185,7 +185,7 @@ async function deleteUser(
 }
 async function ensureList(client, name, make) {
   // sailthru has a race condition that will have it make many lists
-  // with the same name if they are sent at the same time on profiles
+  // with the same name if they are sent at the same time on records
   const list = await client.getList(name);
   if (!list) {
     // now we have to make it.

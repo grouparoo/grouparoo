@@ -5,7 +5,7 @@ import path from "path";
 import { test } from "./../lib/test";
 import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
-import { exportProfile } from "../lib/export/exportProfile";
+import { exportRecord } from "../lib/export/exportRecord";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
 
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
@@ -89,7 +89,7 @@ export class Plugins extends Initializer {
               key: "table",
               displayName: "Table",
               required: true,
-              description: "The table used to export profiles.",
+              description: "The table used to export records.",
             },
             {
               key: "primaryKey",
@@ -108,7 +108,7 @@ export class Plugins extends Initializer {
               displayName: "Group Foreign Key",
               required: true,
               description:
-                "The foreign key that the groups table uses to reference the profiles table.",
+                "The foreign key that the groups table uses to reference the records table.",
             },
             {
               key: "groupColumnName",
@@ -118,7 +118,7 @@ export class Plugins extends Initializer {
             },
           ],
           methods: {
-            exportProfile,
+            exportRecord,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,

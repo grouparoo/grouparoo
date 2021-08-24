@@ -1,7 +1,7 @@
-import { plugin, ProfilesPluginMethod } from "@grouparoo/core";
+import { plugin, RecordsPluginMethod } from "@grouparoo/core";
 import { parseProfiles } from "../shared/parseProfiles";
 
-export const profiles: ProfilesPluginMethod = async ({
+export const records: RecordsPluginMethod = async ({
   source,
   sourceOptions,
   sourceMapping,

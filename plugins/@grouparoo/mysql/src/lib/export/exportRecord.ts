@@ -1,9 +1,9 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { ExportRecordPluginMethod } from "@grouparoo/core";
 
-export const exportProfile: ExportProfilePluginMethod = async ({
+export const exportRecord: ExportRecordPluginMethod = async ({
   connection,
   destination,
-  export: { newProfileProperties, oldProfileProperties, newGroups, toDelete },
+  export: { newRecordProperties, oldRecordProperties, newGroups, toDelete },
 }) => {
   let success = false;
   let error;
@@ -17,13 +17,13 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   groupForeignKey = groupForeignKey?.toString();
   groupColumnName = groupColumnName?.toString();
 
-  if (Object.keys(newProfileProperties).length === 0) {
+  if (Object.keys(newRecordProperties).length === 0) {
     return { success: true };
   }
 
-  if (!newProfileProperties[primaryKey]) {
+  if (!newRecordProperties[primaryKey]) {
     throw new Error(
-      `newProfileProperties[primaryKey] (${primaryKey}) is a required mapping`
+      `newRecordProperties[primaryKey] (${primaryKey}) is a required mapping`
     );
   }
 
@@ -33,30 +33,30 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       await connection.asyncQuery(`DELETE FROM ?? WHERE ?? = ?`, [
         table,
         primaryKey,
-        newProfileProperties[primaryKey],
+        newRecordProperties[primaryKey],
       ]);
-    } else if (newProfileProperties[primaryKey]) {
+    } else if (newRecordProperties[primaryKey]) {
       const existingRecords = await connection.asyncQuery(
         `SELECT * FROM ?? WHERE ?? = ?`,
-        [table, primaryKey, newProfileProperties[primaryKey]]
+        [table, primaryKey, newRecordProperties[primaryKey]]
       );
 
       if (existingRecords.length === 1) {
         // update
         await connection.asyncQuery(`UPDATE ?? SET ? WHERE ?? = ?`, [
           table,
-          newProfileProperties,
+          newRecordProperties,
           primaryKey,
-          newProfileProperties[primaryKey],
+          newRecordProperties[primaryKey],
         ]);
 
         // erase old columns
         const columnsToErase = Object.keys(existingRecords[0]).filter(
           (k) =>
-            (newProfileProperties[k] === null ||
-              newProfileProperties[k] === undefined) &&
-            oldProfileProperties[k] !== null &&
-            oldProfileProperties[k] !== undefined
+            (newRecordProperties[k] === null ||
+              newRecordProperties[k] === undefined) &&
+            oldRecordProperties[k] !== null &&
+            oldRecordProperties[k] !== undefined
         );
 
         if (columnsToErase.length > 0) {
@@ -67,7 +67,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
             table,
             nullData,
             primaryKey,
-            newProfileProperties[primaryKey],
+            newRecordProperties[primaryKey],
           ]);
         }
       } else {
@@ -75,19 +75,19 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         await connection.asyncQuery(`DELETE FROM ?? WHERE ?? = ?`, [
           table,
           primaryKey,
-          newProfileProperties[primaryKey],
+          newRecordProperties[primaryKey],
         ]);
 
         await connection.asyncQuery(`INSERT INTO ?? SET ?`, [
           table,
-          newProfileProperties,
+          newRecordProperties,
         ]);
       }
     } else {
       // just insert
       await connection.asyncQuery(`INSERT INTO ?? SET ?`, [
         table,
-        newProfileProperties,
+        newRecordProperties,
       ]);
     }
 
@@ -96,13 +96,13 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     await connection.asyncQuery(`DELETE FROM ?? WHERE ?? = ?`, [
       groupsTable,
       groupForeignKey,
-      newProfileProperties[primaryKey],
+      newRecordProperties[primaryKey],
     ]);
 
     if (!toDelete) {
       for (const i in newGroups) {
         const data = {};
-        data[groupForeignKey] = newProfileProperties[primaryKey];
+        data[groupForeignKey] = newRecordProperties[primaryKey];
         data[groupColumnName] = newGroups[i];
         await connection.asyncQuery(`INSERT IGNORE INTO ?? SET ?`, [
           groupsTable,

@@ -1,36 +1,36 @@
-import { ExportProfilePluginMethod, Errors } from "@grouparoo/core";
+import { ExportRecordPluginMethod, Errors } from "@grouparoo/core";
 import { HTTPError } from "onesignal-node";
 import { connect } from "../connect";
 
-export const exportProfile: ExportProfilePluginMethod = async ({
+export const exportRecord: ExportRecordPluginMethod = async ({
   appOptions,
   syncOperations,
   export: {
-    newProfileProperties,
-    oldProfileProperties,
+    newRecordProperties,
+    oldRecordProperties,
     newGroups,
     oldGroups,
     toDelete,
   },
 }) => {
-  if (Object.keys(newProfileProperties).length === 0) {
+  if (Object.keys(newRecordProperties).length === 0) {
     return { success: true };
   }
 
   const client = await connect(appOptions);
 
-  const extUserId = newProfileProperties["external_user_id"];
+  const extUserId = newRecordProperties["external_user_id"];
   if (!extUserId) {
     throw new Error(
-      `newProfileProperties[external_user_id] is a required mapping`
+      `newRecordProperties[external_user_id] is a required mapping`
     );
   }
 
   const payload: any = { tags: {} };
 
   // set profile properties, including old ones.
-  const newKeys = Object.keys(newProfileProperties);
-  const oldKeys = Object.keys(oldProfileProperties);
+  const newKeys = Object.keys(newRecordProperties);
+  const oldKeys = Object.keys(oldRecordProperties);
   const allKeys = new Set([...newKeys, ...oldKeys]);
 
   if (toDelete) {
@@ -43,7 +43,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       continue;
     }
 
-    const value = newProfileProperties[key];
+    const value = newRecordProperties[key];
     const normalizedKey = normalizeTagKey(key);
     payload.tags[normalizedKey] = formatVar(value);
   }

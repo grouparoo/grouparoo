@@ -4,7 +4,7 @@ import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 
-import { exportProfile } from "../lib/export/exportProfile";
+import { exportRecord } from "../lib/export/exportRecord";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
@@ -70,13 +70,13 @@ export class Plugins extends Initializer {
         {
           name: "customerio-export",
           direction: "export",
-          description: "Export profiles to customer.io as Customers",
+          description: "Export records to customer.io as Customers",
           app: "customerio",
           syncModes,
           defaultSyncMode,
           options: [],
           methods: {
-            exportProfile,
+            exportRecord,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,

@@ -1,29 +1,29 @@
-import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 
-export const exportProfile: ExportProfilePluginMethod = async ({
+export const exportRecord: ExportRecordPluginMethod = async ({
   appOptions,
   syncOperations,
   export: {
-    newProfileProperties,
-    oldProfileProperties,
+    newRecordProperties,
+    oldRecordProperties,
     newGroups,
     oldGroups,
     toDelete,
   },
 }) => {
-  if (Object.keys(newProfileProperties).length === 0) {
+  if (Object.keys(newRecordProperties).length === 0) {
     return { success: true };
   }
 
   const client = await connect(appOptions);
 
-  const customerId = newProfileProperties["customer_id"];
-  const oldCustomerId = oldProfileProperties["customer_id"];
+  const customerId = newRecordProperties["customer_id"];
+  const oldCustomerId = oldRecordProperties["customer_id"];
   let newCustomer = null;
 
   if (!customerId) {
-    throw new Error(`newProfileProperties[customer_id] is a required mapping`);
+    throw new Error(`newRecordProperties[customer_id] is a required mapping`);
   }
   newCustomer = await client.getCustomer(customerId);
 
@@ -44,8 +44,8 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   const payload: any = {};
 
   // set profile properties, including old ones
-  const newKeys = Object.keys(newProfileProperties);
-  const oldKeys = Object.keys(oldProfileProperties);
+  const newKeys = Object.keys(newRecordProperties);
+  const oldKeys = Object.keys(oldRecordProperties);
   const allKeys = new Set([...newKeys, ...oldKeys]);
 
   for (const key of allKeys) {
@@ -54,7 +54,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       continue;
     }
 
-    const value = newProfileProperties[key];
+    const value = newRecordProperties[key];
     payload[key] = formatVar(value);
   }
 
@@ -74,11 +74,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   if (!newCustomer && !syncOperations.create) {
     throw new Errors.InfoError(
-      "Destination sync mode does not create new profiles."
+      "Destination sync mode does not create new records."
     );
   } else if (newCustomer && !syncOperations.update) {
     throw new Errors.InfoError(
-      "Destination sync mode does not update existing profiles."
+      "Destination sync mode does not update existing records."
     );
   }
 

@@ -1,4 +1,4 @@
-import { exportProfiles } from "./exportProfiles";
+import { exportRecords } from "./exportRecords";
 import { destinationOptions } from "./destinationOptions";
 import { destinationMappingOptions } from "./destinationMappingOptions";
 import { exportArrayProperties } from "./exportArrayProperties";
@@ -20,7 +20,7 @@ export function buildConnection(): PluginConnection {
       },
     ],
     methods: {
-      exportProfiles,
+      exportRecords,
       destinationOptions,
       destinationMappingOptions,
       exportArrayProperties,

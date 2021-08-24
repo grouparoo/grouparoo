@@ -4,7 +4,7 @@ import { plugin, DestinationSyncMode } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 
-import { exportProfile } from "../lib/export-contacts/exportProfile";
+import { exportRecord } from "../lib/export-contacts/exportRecord";
 import { destinationOptions } from "../lib/export-contacts/destinationOptions";
 import { destinationMappingOptions } from "../lib/export-contacts/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export-contacts/exportArrayProperties";
@@ -75,7 +75,7 @@ export class Plugins extends Initializer {
             },
           ],
           methods: {
-            exportProfile,
+            exportRecord,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,

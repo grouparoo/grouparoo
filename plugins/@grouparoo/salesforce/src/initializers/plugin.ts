@@ -5,7 +5,7 @@ import { DestinationSyncMode, plugin } from "@grouparoo/core";
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
 
-import { exportProfiles } from "../lib/export-objects/exportProfiles";
+import { exportRecords } from "../lib/export-objects/exportRecords";
 import { destinationOptions } from "../lib/export-objects/destinationOptions";
 import { destinationMappingOptions } from "../lib/export-objects/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export-objects/exportArrayProperties";
@@ -93,7 +93,7 @@ export class Plugins extends Initializer {
               displayName: "Profile Match Field",
               required: true,
               description:
-                "Which field in the profile Object is used to match Grouparoo profiles?",
+                "Which field in the profile Object is used to match Grouparoo records?",
             },
             {
               key: "groupObject",
@@ -149,11 +149,11 @@ export class Plugins extends Initializer {
               displayName: "Profile Reference Match Field",
               required: false,
               description:
-                "If there is a reference field, how should it be matched to Grouparoo profiles?",
+                "If there is a reference field, how should it be matched to Grouparoo records?",
             },
           ],
           methods: {
-            exportProfiles,
+            exportRecords,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,

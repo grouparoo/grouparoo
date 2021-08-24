@@ -1,7 +1,7 @@
 import {
   Errors,
-  ErrorWithProfileId,
-  ProcessExportedProfilesPluginMethod,
+  ErrorWithRecordId,
+  ProcessExportedRecordsPluginMethod,
 } from "@grouparoo/core";
 import EloquaClient from "../client/client";
 import { connect } from "../connect";
@@ -11,7 +11,7 @@ import { GrouparooCLI } from "@grouparoo/core/dist/modules/cli";
 import error = GrouparooCLI.logger.error;
 let client: EloquaClient;
 
-export const processExportedProfiles: ProcessExportedProfilesPluginMethod =
+export const processExportedRecords: ProcessExportedRecordsPluginMethod =
   async ({
     appId,
     appOptions,
@@ -41,7 +41,7 @@ export const processExportedProfiles: ProcessExportedProfilesPluginMethod =
         return {
           success: true,
           processExports: {
-            profileIds: _exports.map((e) => e.profileId),
+            recordIds: _exports.map((e) => e.recordId),
             remoteKey,
             processDelay: 1000,
           },
@@ -52,8 +52,8 @@ export const processExportedProfiles: ProcessExportedProfilesPluginMethod =
         if (sync.status === "warning") {
           const rejectsResponse = await client.bulk.getSyncRejects(remoteKey);
           for (const item of rejectsResponse.items) {
-            const rejected = <ErrorWithProfileId>new Error(item["message"]);
-            rejected.profileId = getContactProfileId({
+            const rejected = <ErrorWithRecordId>new Error(item["message"]);
+            rejected.recordId = getContactProfileId({
               email: item["fieldValues"].emailAddress,
               exports: _exports,
             });
@@ -82,7 +82,7 @@ export const processExportedProfiles: ProcessExportedProfilesPluginMethod =
       return {
         success: true,
         processExports: {
-          profileIds: _exports.map((e) => e.profileId),
+          recordIds: _exports.map((e) => e.recordId),
           remoteKey,
           processDelay: 1000,
         },
@@ -97,11 +97,11 @@ async function postFKChange({
   errors,
 }) {
   for (const contact of _exports) {
-    if (errors.find((error) => error.profileId === contact.profileId)) {
+    if (errors.find((error) => error.recordId === contact.recordId)) {
       continue;
     }
-    let newValue = contact.newProfileProperties.emailAddress;
-    let oldValue = contact.oldProfileProperties.emailAddress;
+    let newValue = contact.newRecordProperties.emailAddress;
+    let oldValue = contact.oldRecordProperties.emailAddress;
     newValue = newValue.toString().toLowerCase().trim();
     if (oldValue) {
       oldValue = oldValue.toString().toLowerCase().trim();
@@ -125,7 +125,7 @@ async function handleLists({ appId, appOptions, exports: _exports, errors }) {
   let listsToUpdate = {};
 
   for (const contact of _exports) {
-    if (errors.find((error) => error.profileId === contact.profileId)) {
+    if (errors.find((error) => error.recordId === contact.recordId)) {
       continue;
     }
     // add to lists
@@ -137,7 +137,7 @@ async function handleLists({ appId, appOptions, exports: _exports, errors }) {
         listsToUpdate,
         listId,
         listName,
-        email: contact.newProfileProperties.emailAddress,
+        email: contact.newRecordProperties.emailAddress,
         isRemoving: false,
       });
     }
@@ -157,7 +157,7 @@ async function handleLists({ appId, appOptions, exports: _exports, errors }) {
           listsToUpdate,
           listId,
           listName,
-          email: contact.newProfileProperties.emailAddress,
+          email: contact.newRecordProperties.emailAddress,
           isRemoving: true,
         });
       }
@@ -177,15 +177,15 @@ async function handleLists({ appId, appOptions, exports: _exports, errors }) {
 }
 
 function getContactProfileId({ email, exports: _exports }): string {
-  // look for profile by id on newProfileProperties;
+  // look for profile by id on newRecordProperties;
   for (const profile of _exports) {
-    if (profile.newProfileProperties.emailAddress === email) {
+    if (profile.newRecordProperties.emailAddress === email) {
       return profile.profileId;
     }
   }
-  // look for profile by id on oldProfileProperties;
+  // look for profile by id on oldRecordProperties;
   for (const profile of _exports) {
-    if (profile.oldProfileProperties.emailAddress === email) {
+    if (profile.oldRecordProperties.emailAddress === email) {
       return profile.profileId;
     }
   }

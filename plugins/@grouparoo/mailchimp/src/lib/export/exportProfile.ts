@@ -1,9 +1,9 @@
-import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { generateMailchimpId } from "../shared/generateMailchimpId";
 import { clearGroups, getUser, updateProfile } from "../shared/updateProfile";
 
-export const exportProfile: ExportProfilePluginMethod = async ({
+export const exportRecord: ExportRecordPluginMethod = async ({
   appOptions,
   destinationOptions,
   export: profileToExport,
@@ -13,31 +13,29 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   const {
     toDelete,
-    newProfileProperties,
-    oldProfileProperties,
+    newRecordProperties,
+    oldRecordProperties,
     oldGroups,
     newGroups,
   } = profileToExport;
 
   // if we received no mapped data... just exit
-  if (Object.keys(newProfileProperties).length === 0) {
+  if (Object.keys(newRecordProperties).length === 0) {
     return { success: true };
   }
   const listId = destinationOptions.listId?.toString();
-  const email_address = newProfileProperties["email_address"]; // this is a required key for mailchimp
+  const email_address = newRecordProperties["email_address"]; // this is a required key for mailchimp
   if (!email_address) {
-    throw new Error(
-      `newProfileProperties[email_address] is a required mapping`
-    );
+    throw new Error(`newRecordProperties[email_address] is a required mapping`);
   }
   const mailchimpId = generateMailchimpId(email_address);
   // consider if the the email address has changed
   if (
-    oldProfileProperties["email_address"] &&
-    email_address !== oldProfileProperties["email_address"]
+    oldRecordProperties["email_address"] &&
+    email_address !== oldRecordProperties["email_address"]
   ) {
     const oldMailchimpId = generateMailchimpId(
-      oldProfileProperties["email_address"]
+      oldRecordProperties["email_address"]
     );
     const oldUserResponse = await getUser(client, listId, oldMailchimpId);
     const userResponse = await getUser(client, listId, mailchimpId);
@@ -47,11 +45,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     const foundUser = userResponse || oldUserResponse;
     if (!foundUser && !syncOperations.create) {
       throw new Errors.InfoError(
-        "Destination sync mode does not allow creating new profiles."
+        "Destination sync mode does not allow creating new records."
       );
     } else if (oldUserResponse && !syncOperations.update) {
       throw new Errors.InfoError(
-        "Destination sync mode does not allow updating existing profiles."
+        "Destination sync mode does not allow updating existing records."
       );
     }
     try {

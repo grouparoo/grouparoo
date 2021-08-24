@@ -27,8 +27,8 @@ export const updateProfile: UpdateProfileMethod = async ({
   email_address,
   export: {
     toDelete,
-    newProfileProperties,
-    oldProfileProperties,
+    newRecordProperties,
+    oldRecordProperties,
     newGroups,
     oldGroups,
   },
@@ -53,17 +53,17 @@ export const updateProfile: UpdateProfileMethod = async ({
 
   // the way to "erase" a merge_var in mailchimp is by setting the value to "", regardless of the merge_var type
   const mergeFields = {};
-  for (const k in newProfileProperties) {
+  for (const k in newRecordProperties) {
     mergeFields[k] =
-      newProfileProperties[k] === null || newProfileProperties[k] === undefined
+      newRecordProperties[k] === null || newRecordProperties[k] === undefined
         ? ""
-        : newProfileProperties[k];
+        : newRecordProperties[k];
   }
 
   // delete old merge tags
-  for (const k in oldProfileProperties) {
+  for (const k in oldRecordProperties) {
     // "" is how you delete something from mailchimp
-    if (newProfileProperties[k] === undefined) mergeFields[k] = "";
+    if (newRecordProperties[k] === undefined) mergeFields[k] = "";
   }
 
   // mailchimp cannot handle boolean types directly
@@ -97,13 +97,13 @@ export const updateProfile: UpdateProfileMethod = async ({
 
   if (exists && !syncOperations.update) {
     throw new Errors.InfoError(
-      "Destination sync mode does not allow updating existing profiles."
+      "Destination sync mode does not allow updating existing records."
     );
   }
 
   if (!exists && !syncOperations.create) {
     throw new Errors.InfoError(
-      "Destination sync mode does not allow creating new profiles."
+      "Destination sync mode does not allow creating new records."
     );
   }
 
@@ -181,7 +181,7 @@ async function deleteContact(
 
   if (doThrow && !syncOperations.delete) {
     throw new Errors.InfoError(
-      "Destination sync mode does not allow removing profiles."
+      "Destination sync mode does not allow removing records."
     );
   }
 }

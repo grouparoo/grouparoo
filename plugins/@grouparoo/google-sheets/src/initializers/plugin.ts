@@ -4,7 +4,7 @@ import { plugin } from "@grouparoo/core";
 import { test } from "../lib/test";
 
 import { sourcePreview } from "../lib/sheet-import/sourcePreview";
-import { profiles } from "../lib/sheet-import/profiles";
+import { records } from "../lib/sheet-import/records";
 import { propertyOptions } from "../lib/sheet-import/propertyOptions";
 import { uniquePropertyBootstrapOptions } from "../lib/sheet-import/uniquePropertyBootstrapOptions";
 import { sourceRunPercentComplete } from "../lib/sheet-import/sourceRunPercentComplete";
@@ -75,7 +75,7 @@ export class Plugins extends Initializer {
           methods: {
             sourcePreview,
             propertyOptions,
-            profiles,
+            records,
             sourceRunPercentComplete,
             uniquePropertyBootstrapOptions,
           },

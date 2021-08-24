@@ -1,8 +1,8 @@
-import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { addToList, removeFromList } from "./listMethods";
 
-export const exportProfile: ExportProfilePluginMethod = async (args) => {
+export const exportRecord: ExportRecordPluginMethod = async (args) => {
   try {
     return sendProfile(args);
   } catch (error) {
@@ -14,27 +14,27 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
   }
 };
 
-export const sendProfile: ExportProfilePluginMethod = async ({
+export const sendProfile: ExportRecordPluginMethod = async ({
   appId,
   appOptions,
   syncOperations,
   export: {
     toDelete,
-    newProfileProperties,
-    oldProfileProperties,
+    newRecordProperties,
+    oldRecordProperties,
     newGroups,
     oldGroups,
   },
 }) => {
-  if (Object.keys(newProfileProperties).length === 0) {
+  if (Object.keys(newRecordProperties).length === 0) {
     return { success: true };
   }
 
   const client = await connect(appOptions);
-  const email = newProfileProperties["email"]; // this is how we will identify profiles
-  const currentEmail = oldProfileProperties["email"];
+  const email = newRecordProperties["email"]; // this is how we will identify records
+  const currentEmail = oldRecordProperties["email"];
   if (!email) {
-    throw new Error(`newProfileProperties[email] is a required mapping`);
+    throw new Error(`newRecordProperties[email] is a required mapping`);
   }
 
   const { user: newUser } = await client.users.get({ email });
@@ -49,7 +49,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     if (userToDelete) {
       if (!syncOperations.delete) {
         throw new Errors.InfoError(
-          "Destination sync mode does not delete profiles."
+          "Destination sync mode does not delete records."
         );
       }
       await client.users.delete({ email: userToDelete.email });
@@ -58,15 +58,15 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   } else {
     // create the user and set properties
     const deletePropertiesPayload = {};
-    const newPropertyKeys = Object.keys(newProfileProperties);
-    Object.keys(oldProfileProperties)
+    const newPropertyKeys = Object.keys(newRecordProperties);
+    Object.keys(oldRecordProperties)
       .filter((k) => !newPropertyKeys.includes(k))
       .forEach((k) => (deletePropertiesPayload[k] = null));
 
     const dataFields = Object.assign(
       {},
       deletePropertiesPayload,
-      newProfileProperties
+      newRecordProperties
     );
     let formattedDataFields = {};
 
@@ -87,13 +87,13 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     // if someone with the new email already exists, leave the old one alone
     if (oldUser && !newUser) {
       const emailPayload = { currentEmail, newEmail: email };
-      if (newProfileProperties.userId) {
-        emailPayload["currentUserId"] = newProfileProperties.userId;
+      if (newRecordProperties.userId) {
+        emailPayload["currentUserId"] = newRecordProperties.userId;
       }
       try {
         if (!syncOperations.update) {
           throw new Errors.InfoError(
-            "Destination sync mode does not update existing profiles."
+            "Destination sync mode does not update existing records."
           );
         }
         await client.users.updateEmail(emailPayload);
@@ -107,11 +107,11 @@ export const sendProfile: ExportProfilePluginMethod = async ({
 
     if (!newUser && !syncOperations.create) {
       throw new Errors.InfoError(
-        "Destination sync mode does not create new profiles."
+        "Destination sync mode does not create new records."
       );
     } else if (newUser && !syncOperations.update) {
       throw new Errors.InfoError(
-        "Destination sync mode does not update existing profiles."
+        "Destination sync mode does not update existing records."
       );
     }
 

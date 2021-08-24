@@ -1,7 +1,7 @@
 import {
   DestinationSyncOperations,
   Errors,
-  ExportProfilePluginMethod,
+  ExportRecordPluginMethod,
 } from "@grouparoo/core";
 import { connect } from "../connect";
 import {
@@ -9,26 +9,24 @@ import {
   getRequiredFields,
 } from "./destinationMappingOptions";
 
-export const exportProfile: ExportProfilePluginMethod = async ({
+export const exportRecord: ExportRecordPluginMethod = async ({
   appOptions,
   syncOperations,
   export: {
     toDelete,
-    newProfileProperties,
-    oldProfileProperties,
+    newRecordProperties,
+    oldRecordProperties,
     newGroups,
     oldGroups,
   },
 }) => {
   try {
     const client = await connect(appOptions);
-    let external_id = newProfileProperties.external_id;
-    let email = newProfileProperties.email;
+    let external_id = newRecordProperties.external_id;
+    let email = newRecordProperties.email;
 
     if (!external_id) {
-      throw new Error(
-        `newProfileProperties[external_id] is a required mapping`
-      );
+      throw new Error(`newRecordProperties[external_id] is a required mapping`);
     }
 
     // zendesk does this itself
@@ -38,8 +36,8 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
     const user = await findUser(
       client,
-      newProfileProperties,
-      oldProfileProperties
+      newRecordProperties,
+      oldRecordProperties
     );
 
     // tags need to be formatted
@@ -53,7 +51,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           await client.users.delete(user.id);
         } else {
           throw new Errors.InfoError(
-            "Destination sync mode does not allow removing profiles."
+            "Destination sync mode does not allow removing records."
           );
         }
 
@@ -72,12 +70,12 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     const payload: any = { verified: true };
 
     // set profile properties, including old ones
-    const newKeys = Object.keys(newProfileProperties);
-    const oldKeys = Object.keys(oldProfileProperties);
+    const newKeys = Object.keys(newRecordProperties);
+    const oldKeys = Object.keys(oldRecordProperties);
     const allKeys = oldKeys.concat(newKeys);
     const rootFields = await getRootFields(client);
     for (const key of allKeys) {
-      const value = newProfileProperties[key]; // includes clearing out removed ones
+      const value = newRecordProperties[key]; // includes clearing out removed ones
       const root = rootFields[key];
       const formatted = formatVar(value);
       if (root) {
@@ -124,14 +122,14 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     if (user) {
       if (!syncOperations.update) {
         throw new Errors.InfoError(
-          "Destination sync mode does not allow updating existing profiles."
+          "Destination sync mode does not allow updating existing records."
         );
       }
       updated = await client.users.update(user.id, { user: payload });
     } else {
       if (!syncOperations.create) {
         throw new Errors.InfoError(
-          "Destination sync mode does not allow creating new profiles."
+          "Destination sync mode does not allow creating new records."
         );
       }
       updated = await client.users.createOrUpdate({ user: payload });
@@ -142,7 +140,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       // https://developer.zendesk.com/rest_api/docs/support/users#email-address
       if (!syncOperations.update) {
         throw new Errors.InfoError(
-          "Destination sync mode does not allow updating existing profiles."
+          "Destination sync mode does not allow updating existing records."
         );
       }
       await makeEmailPrimary(client, updated.id, email);
@@ -192,11 +190,11 @@ export async function searchForUser(client, findBy: any) {
 }
 export async function findUser(
   client,
-  newProfileProperties,
-  oldProfileProperties
+  newRecordProperties,
+  oldRecordProperties
 ) {
-  const newId = newProfileProperties.external_id;
-  const oldId = oldProfileProperties.external_id;
+  const newId = newRecordProperties.external_id;
+  const oldId = oldRecordProperties.external_id;
 
   let found = null;
   if (!found && newId) {

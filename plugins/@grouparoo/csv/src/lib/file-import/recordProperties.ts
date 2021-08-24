@@ -1,12 +1,10 @@
-import { ProfilePropertiesPluginMethod } from "@grouparoo/core";
+import { RecordPropertiesPluginMethod, plugin } from "@grouparoo/core";
 import { parseProfileProperties } from "../shared/parseProfileProperties";
-import { downloadAndRefreshFile } from "./downloadAndRefreshFile";
 
-export const profileProperties: ProfilePropertiesPluginMethod = async ({
-  profiles,
+export const profileProperties: RecordPropertiesPluginMethod = async ({
+  records,
   propertyOptions,
   sourceMapping,
-  sourceId,
   sourceOptions,
 }) => {
   const columnNameHash: { [columnName: string]: string } = {};
@@ -16,19 +14,20 @@ export const profileProperties: ProfilePropertiesPluginMethod = async ({
   }
   if (Object.keys(columnNameHash).length === 0) return;
 
-  const localPath = await downloadAndRefreshFile(sourceId, sourceOptions);
+  const fileId = sourceOptions.fileId?.toString();
+  const localPath = await plugin.getLocalFilePath(fileId);
   const mappedCSVColumn: string = Object.keys(sourceMapping)[0];
   const tableMappingCol: string = Object.values(sourceMapping)[0];
   const primaryKeysHash: { [pk: string]: string } = {};
 
-  for (const i in profiles) {
-    const properties = await profiles[i].getProperties();
+  for (const i in records) {
+    const properties = await records[i].getProperties();
     if (
       properties[tableMappingCol]?.values.length > 0 &&
       properties[tableMappingCol].values[0] // not null or undefined
     ) {
       primaryKeysHash[properties[tableMappingCol].values[0].toString()] =
-        profiles[i].id;
+        records[i].id;
     }
   }
 

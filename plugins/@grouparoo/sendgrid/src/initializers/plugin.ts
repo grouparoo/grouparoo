@@ -4,7 +4,7 @@ import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 
-import { exportProfile } from "../lib/export/exportProfile";
+import { exportRecord } from "../lib/export/exportRecord";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
@@ -59,13 +59,13 @@ export class Plugins extends Initializer {
           name: "sendgrid-export-marketing",
           direction: "export",
           description:
-            "Export profiles to Sendgrid marketing as Contacts and put them in static Lists.",
+            "Export records to Sendgrid marketing as Contacts and put them in static Lists.",
           app: "sendgrid",
           syncModes,
           defaultSyncMode,
           options: [],
           methods: {
-            exportProfile,
+            exportRecord,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,

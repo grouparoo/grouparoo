@@ -1,5 +1,5 @@
 import {
-  exportProfilesInGroups,
+  exportRecordsInGroups,
   GroupConfig,
   GroupMethodAddToGroups,
   GroupMethodGetClient,
@@ -75,10 +75,10 @@ function updatePayload(
 ) {
   const fields = {}; // the fields in play
   for (const user of users) {
-    for (const field in user.oldProfileProperties) {
+    for (const field in user.oldRecordProperties) {
       fields[field] = true;
     }
-    for (const field in user.newProfileProperties) {
+    for (const field in user.newRecordProperties) {
       fields[field] = true;
     }
   }
@@ -87,7 +87,7 @@ function updatePayload(
 
   for (const user of users) {
     try {
-      const me = userData(schema, user.newProfileProperties);
+      const me = userData(schema, user.newRecordProperties);
       const key = makeSampleKey(me);
       dataMap[key] = user;
       data.push(me);
@@ -292,14 +292,14 @@ export const exportFacebookProfiles: ExportFacebookMethod = async ({
   appOptions,
   model,
   syncOperations,
-  exports: profilesToExport,
+  exports: recordsToExport,
 }) => {
   const cacheData = { appId, appOptions };
   const batchSize = 10000;
   const data: FacebookData = { cacheData, model };
 
-  return exportProfilesInGroups(
-    profilesToExport,
+  return exportRecordsInGroups(
+    recordsToExport,
     {
       batchSize,
       groupMode: GroupSizeMode.WithinGroup,

@@ -1,5 +1,5 @@
 import { PluginConnection, DestinationSyncMode } from "@grouparoo/core";
-import { exportProfile } from "./exportProfile";
+import { exportRecord } from "./exportRecord";
 
 import { getDestinationOptions } from "../shared/connectionOptions";
 import { getDestinationMappingOptions } from "../shared/destinationMappingOptions";
@@ -25,7 +25,7 @@ export const idDestinationConnection: PluginConnection = {
   methods: {
     destinationOptions: getDestinationOptions(["listId"]),
     destinationMappingOptions: getDestinationMappingOptions("id"),
-    exportProfile,
+    exportRecord,
     exportArrayProperties,
   },
 };

@@ -1,4 +1,4 @@
-import { ExportProfilePluginMethod, Errors } from "@grouparoo/core";
+import { ExportRecordPluginMethod, Errors } from "@grouparoo/core";
 import { PipedriveClient } from "../client";
 import { connect } from "../connect";
 import {
@@ -7,7 +7,7 @@ import {
 } from "./destinationMappingOptions";
 import { getGroupFieldKey } from "./listMethods";
 
-export const exportProfile: ExportProfilePluginMethod = async (args) => {
+export const exportRecord: ExportRecordPluginMethod = async (args) => {
   try {
     return await handleProfileChanges(args);
   } catch (error) {
@@ -20,27 +20,27 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
   }
 };
 
-const handleProfileChanges: ExportProfilePluginMethod = async ({
+const handleProfileChanges: ExportRecordPluginMethod = async ({
   appId,
   appOptions,
   syncOperations,
   export: {
-    newProfileProperties,
-    oldProfileProperties,
+    newRecordProperties,
+    oldRecordProperties,
     newGroups,
     oldGroups,
     toDelete,
   },
 }) => {
-  if (Object.keys(newProfileProperties).length === 0) {
+  if (Object.keys(newRecordProperties).length === 0) {
     return { success: true };
   }
 
   const client = await connect(appOptions);
   const cacheData: PipedriveCacheData = { appId, appOptions };
 
-  const newEmail = newProfileProperties["Email"];
-  const oldEmail = oldProfileProperties["Email"];
+  const newEmail = newRecordProperties["Email"];
+  const oldEmail = oldRecordProperties["Email"];
 
   const newFoundId = await client.findPersonIdByEmail(newEmail);
 
@@ -53,7 +53,7 @@ const handleProfileChanges: ExportProfilePluginMethod = async ({
   if (toDelete) {
     if (!syncOperations.delete) {
       throw new Errors.InfoError(
-        "Destination sync mode does not delete profiles."
+        "Destination sync mode does not delete records."
       );
     }
 
@@ -64,19 +64,19 @@ const handleProfileChanges: ExportProfilePluginMethod = async ({
     return { success: true };
   }
 
-  if (!newProfileProperties["Email"]) {
-    throw new Error(`newProfileProperties[Email] is a required mapping`);
+  if (!newRecordProperties["Email"]) {
+    throw new Error(`newRecordProperties[Email] is a required mapping`);
   }
 
-  if (!newProfileProperties["Name"]) {
-    throw new Error(`newProfileProperties[Name] is a required mapping`);
+  if (!newRecordProperties["Name"]) {
+    throw new Error(`newRecordProperties[Name] is a required mapping`);
   }
 
   const payload = await makePayload(
     client,
     cacheData,
-    oldProfileProperties,
-    newProfileProperties,
+    oldRecordProperties,
+    newRecordProperties,
     oldGroups,
     newGroups
   );
@@ -85,7 +85,7 @@ const handleProfileChanges: ExportProfilePluginMethod = async ({
     // Update existing Person
     if (!syncOperations.update) {
       throw new Errors.InfoError(
-        "Destination sync mode does not update existing profiles."
+        "Destination sync mode does not update existing records."
       );
     }
 
@@ -93,7 +93,7 @@ const handleProfileChanges: ExportProfilePluginMethod = async ({
   } else {
     if (!syncOperations.create) {
       throw new Errors.InfoError(
-        "Destination sync mode does not create new profiles."
+        "Destination sync mode does not create new records."
       );
     }
     // Create new Person
@@ -106,10 +106,10 @@ const handleProfileChanges: ExportProfilePluginMethod = async ({
 async function makePayload(
   client: PipedriveClient,
   cacheData: PipedriveCacheData,
-  oldProfileProperties: {
+  oldRecordProperties: {
     [key: string]: any;
   },
-  newProfileProperties: {
+  newRecordProperties: {
     [key: string]: any;
   },
   oldGroups: string[],
@@ -118,15 +118,15 @@ async function makePayload(
   const payload: any = {};
 
   // set profile properties, including old ones
-  const newFields = Object.keys(newProfileProperties);
-  const oldFields = Object.keys(oldProfileProperties);
+  const newFields = Object.keys(newRecordProperties);
+  const oldFields = Object.keys(oldRecordProperties);
   const allFields = new Set([...newFields, ...oldFields]);
 
   // get fields
   const fieldKeys = await getKnownPersonFieldMap(client, cacheData);
 
   for (const fieldName of allFields) {
-    const value = newProfileProperties[fieldName];
+    const value = newRecordProperties[fieldName];
     const pipedriveKey = fieldKeys[fieldName];
 
     if (!pipedriveKey) {

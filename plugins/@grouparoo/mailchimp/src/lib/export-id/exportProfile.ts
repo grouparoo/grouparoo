@@ -1,8 +1,8 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { ExportRecordPluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { updateProfile } from "../shared/updateProfile";
 
-export const exportProfile: ExportProfilePluginMethod = async ({
+export const exportRecord: ExportRecordPluginMethod = async ({
   appOptions,
   destinationOptions,
   export: profileToExport,
@@ -10,18 +10,18 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 }) => {
   const client = await connect(appOptions);
 
-  const { newProfileProperties } = profileToExport;
+  const { newRecordProperties } = profileToExport;
 
   // if we received no mapped data... just exit
-  if (Object.keys(newProfileProperties).length === 0) {
+  if (Object.keys(newRecordProperties).length === 0) {
     return { success: true };
   }
 
   const listId = destinationOptions.listId?.toString();
 
-  const mailchimpId = newProfileProperties["mailchimp_id"]; // this is a required key for mailchimp
+  const mailchimpId = newRecordProperties["mailchimp_id"]; // this is a required key for mailchimp
   if (!mailchimpId) {
-    throw new Error(`newProfileProperties[mailchimp_id] is a required mapping`);
+    throw new Error(`newRecordProperties[mailchimp_id] is a required mapping`);
   }
 
   return updateProfile({
@@ -29,7 +29,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     client,
     listId,
     mailchimpId,
-    email_address: newProfileProperties["email_address"],
+    email_address: newRecordProperties["email_address"],
     export: profileToExport,
   });
 };

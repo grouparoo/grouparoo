@@ -1,9 +1,9 @@
-import { ExportProfilesPluginMethod } from "@grouparoo/core";
+import { ExportRecordsPluginMethod } from "@grouparoo/core";
 import fs from "fs";
 import { getFilePath } from "../utils/getFilePath";
 import { log } from "actionhero";
 
-export const exportProfiles: ExportProfilesPluginMethod = async ({
+export const exportRecords: ExportRecordsPluginMethod = async ({
   appOptions,
   exports,
 }) => {
@@ -12,9 +12,9 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
 
   exports.map((_export) => {
     const {
-      profile,
-      oldProfileProperties,
-      newProfileProperties,
+      record,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       toDelete,
@@ -22,9 +22,9 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
 
     const line = JSON.stringify({
       time: new Date(),
-      id: profile.id,
-      oldProfileProperties,
-      newProfileProperties,
+      id: record.id,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       toDelete,
@@ -35,7 +35,7 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
 
   if (appOptions.stdout?.toString() === "true") {
     log(
-      `exporting ${lines.length} profiles:\r\n` +
+      `exporting ${lines.length} records:\r\n` +
         lines.map((line) => ` ----> ${line}`).join("\r\n"),
       "notice"
     );

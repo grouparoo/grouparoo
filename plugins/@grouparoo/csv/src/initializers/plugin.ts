@@ -5,21 +5,21 @@ import { test } from "../lib/test";
 
 import { sourceOptions as fileSourceOptions } from "../lib/file-import/sourceOptions";
 import { sourcePreview as fileSourcePreview } from "../lib/file-import/sourcePreview";
-import { profiles as fileProfiles } from "../lib/file-import/profiles";
+import { records as fileProfiles } from "../lib/file-import/records";
 import { propertyOptions as filePropertyOptions } from "../lib/file-import/propertyOptions";
 import { sourceRunPercentComplete as fileSourceRunPercentComplete } from "../lib/file-import/sourceRunPercentComplete";
 import { uniquePropertyBootstrapOptions as fileUniquePropertyBootstrapOptions } from "../lib/file-import/uniquePropertyBootstrapOptions";
-import { profileProperty as fileProfileProperty } from "../lib/file-import/profileProperty";
-import { profileProperties as fileProfileProperties } from "../lib/file-import/profileProperties";
+import { profileProperty as fileRecordProperty } from "../lib/file-import/recordProperty";
+import { profileProperties as fileRecordProperties } from "../lib/file-import/recordProperties";
 
 import { sourceOptions as remoteSourceOptions } from "../lib/remote-import/sourceOptions";
 import { sourcePreview as remoteSourcePreview } from "../lib/remote-import/sourcePreview";
-import { profiles as remoteProfiles } from "../lib/remote-import/profiles";
+import { records as remoteProfiles } from "../lib/remote-import/records";
 import { propertyOptions as remotePropertyOptions } from "../lib/remote-import/propertyOptions";
 import { sourceRunPercentComplete as remoteSourceRunPercentComplete } from "../lib/remote-import/sourceRunPercentComplete";
 import { uniquePropertyBootstrapOptions as remoteUniquePropertyBootstrapOptions } from "../lib/remote-import/uniquePropertyBootstrapOptions";
-import { profileProperty as remoteProfileProperty } from "../lib/remote-import/profileProperty";
-import { profileProperties as remoteProfileProperties } from "../lib/remote-import/profileProperties";
+import { profileProperty as remoteRecordProperty } from "../lib/remote-import/recordProperty";
+import { profileProperties as remoteRecordProperties } from "../lib/remote-import/recordProperties";
 
 import {
   CSVAppTemplate,
@@ -73,11 +73,11 @@ export class Plugins extends Initializer {
             sourceOptions: fileSourceOptions,
             sourcePreview: fileSourcePreview,
             propertyOptions: filePropertyOptions,
-            profiles: fileProfiles,
+            records: fileProfiles,
             sourceRunPercentComplete: fileSourceRunPercentComplete,
             uniquePropertyBootstrapOptions: fileUniquePropertyBootstrapOptions,
-            profileProperty: fileProfileProperty,
-            profileProperties: fileProfileProperties,
+            recordProperty: fileRecordProperty,
+            recordProperties: fileRecordProperties,
           },
         },
         {
@@ -106,12 +106,12 @@ export class Plugins extends Initializer {
             sourceOptions: remoteSourceOptions,
             sourcePreview: remoteSourcePreview,
             propertyOptions: remotePropertyOptions,
-            profiles: remoteProfiles,
+            records: remoteProfiles,
             sourceRunPercentComplete: remoteSourceRunPercentComplete,
             uniquePropertyBootstrapOptions:
               remoteUniquePropertyBootstrapOptions,
-            profileProperty: remoteProfileProperty,
-            profileProperties: remoteProfileProperties,
+            recordProperty: remoteRecordProperty,
+            recordProperties: remoteRecordProperties,
           },
         },
       ],

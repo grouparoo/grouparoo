@@ -7,7 +7,7 @@ export interface dbtConnectionResponse {
 
 export interface dbtConnectionRequest {
   profile?: string; // Which profile to load. Overrides setting in dbt_project.yml.
-  target?: string; // Which target to load for the given profile. Overrides default in profiles.yml
+  target?: string; // Which target to load for the given profile. Overrides default in records.yml
   projectDirRelativePath?: string;
   profileDirRelativePath?: string;
   projectDirFullPath?: string;
@@ -31,7 +31,7 @@ const dbtConnection: dbtConnectionMethod = async ({
     cmd += ` --project-dir '${projectDirFullPath}'`;
   }
   if (profileDirFullPath) {
-    cmd += ` --profiles-dir '${profileDirFullPath}'`;
+    cmd += ` --records-dir '${profileDirFullPath}'`;
   }
 
   const response = await runCommand(cmd);
@@ -52,11 +52,11 @@ function parseCommandResponse(
   //    'python version: 3.7.9\n' +
   //    'python path: /Users/brian/.pyenv/versions/3.7.9/bin/python\n' +
   //    'os info: Darwin-20.3.0-x86_64-i386-64bit\n' +
-  //    'Using profiles.yml file at /Users/brian/grouparoo/x64_grouparoo/plugins/@grouparoo/dbt/__tests__/projects/postgresx/profiles.yml\n' +
+  //    'Using records.yml file at /Users/brian/grouparoo/x64_grouparoo/plugins/@grouparoo/dbt/__tests__/projects/postgresx/records.yml\n' +
   //    'Using dbt_project.yml file at /Users/brian/grouparoo/x64_grouparoo/plugins/@grouparoo/dbt/__tests__/projects/default/dbt_project.yml\n' +
   //    '\n' +
   //    'Configuration:\n' +
-  //    '  profiles.yml file [ERROR not found]\n' +
+  //    '  records.yml file [ERROR not found]\n' +
   //    '  dbt_project.yml file [OK found and valid]\n' +
   //    '\n' +
   //    error: falsy
@@ -67,11 +67,11 @@ function parseCommandResponse(
   //    'python version: 3.7.9\n' +
   //    'python path: /Users/brian/.pyenv/versions/3.7.9/bin/python\n' +
   //    'os info: Darwin-20.3.0-x86_64-i386-64bit\n' +
-  //    'Using profiles.yml file at /Users/brian/grouparoo/x64_grouparoo/plugins/@grouparoo/dbt/__tests__/projects/postgres/profiles.yml\n' +
+  //    'Using records.yml file at /Users/brian/grouparoo/x64_grouparoo/plugins/@grouparoo/dbt/__tests__/projects/postgres/records.yml\n' +
   //    'Using dbt_project.yml file at /Users/brian/grouparoo/x64_grouparoo/plugins/@grouparoo/dbt/__tests__/projects/defaultx/dbt_project.yml\n' +
   //    '\n' +
   //    'Configuration:\n' +
-  //    '  profiles.yml file [OK found and valid]\n' +
+  //    '  records.yml file [OK found and valid]\n' +
   //    '  dbt_project.yml file [ERROR not found]\n' +
   //    '\n' +
   //    'Required dependencies:\n' +

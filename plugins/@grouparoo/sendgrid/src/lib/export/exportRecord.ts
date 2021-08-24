@@ -1,11 +1,11 @@
-import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { getListId } from "./listMethods";
 import { isReservedField, isReadOnlyField } from "./destinationMappingOptions";
 import { getFieldId } from "./fieldsMethods";
 import { log } from "actionhero";
 
-export const exportProfile: ExportProfilePluginMethod = async (args) => {
+export const exportRecord: ExportRecordPluginMethod = async (args) => {
   try {
     return sendProfile(args);
   } catch (error) {
@@ -17,27 +17,27 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
   }
 };
 
-export const sendProfile: ExportProfilePluginMethod = async ({
+export const sendProfile: ExportRecordPluginMethod = async ({
   appId,
   appOptions,
   syncOperations,
   destinationOptions,
   export: {
     toDelete,
-    newProfileProperties,
-    oldProfileProperties,
+    newRecordProperties,
+    oldRecordProperties,
     newGroups,
     oldGroups,
   },
 }) => {
-  if (Object.keys(newProfileProperties).length === 0) {
+  if (Object.keys(newRecordProperties).length === 0) {
     return { success: true };
   }
   const client = await connect(appOptions);
-  const email = cleanEmail(newProfileProperties["email"]); // this is how we will identify profiles
-  const oldEmail = cleanEmail(oldProfileProperties["email"]);
+  const email = cleanEmail(newRecordProperties["email"]); // this is how we will identify records
+  const oldEmail = cleanEmail(oldRecordProperties["email"]);
   if (!email) {
-    throw new Error(`newProfileProperties[email] is a required mapping`);
+    throw new Error(`newRecordProperties[email] is a required mapping`);
   }
   const user = await client.getUser(email);
   let oldUser = null;
@@ -62,15 +62,15 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   } else {
     // create the user and set properties
     const deletePropertiesPayload = {};
-    const newPropertyKeys = Object.keys(newProfileProperties);
-    Object.keys(oldProfileProperties)
+    const newPropertyKeys = Object.keys(newRecordProperties);
+    Object.keys(oldRecordProperties)
       .filter((k) => !newPropertyKeys.includes(k))
       .forEach((k) => (deletePropertiesPayload[k] = ""));
 
     const dataFields = Object.assign(
       {},
       deletePropertiesPayload,
-      newProfileProperties
+      newRecordProperties
     );
     const formattedDataFields = {};
     formattedDataFields["custom_fields"] = {};
@@ -115,11 +115,11 @@ export const sendProfile: ExportProfilePluginMethod = async ({
 
     if (!user && !syncOperations.create) {
       throw new Errors.InfoError(
-        "Destination sync mode does not create new profiles."
+        "Destination sync mode does not create new records."
       );
     } else if (user && !syncOperations.update) {
       throw new Errors.InfoError(
-        "Destination sync mode does not update existing profiles."
+        "Destination sync mode does not update existing records."
       );
     }
     await client.addOrUpdateUser(formattedDataFields, listsToAdd);

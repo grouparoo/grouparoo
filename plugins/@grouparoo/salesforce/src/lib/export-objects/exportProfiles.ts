@@ -5,7 +5,7 @@ import {
 import { exportSalesforceBatch } from "../export/salesforceExporter";
 import { destinationModel } from "./model";
 import {
-  ExportProfilesPluginMethod,
+  ExportRecordsPluginMethod,
   ErrorWithProfileId,
   SimpleAppOptions,
   SimpleDestinationOptions,
@@ -42,14 +42,14 @@ export const exportBatch: MyBatchMethod = async ({
   });
 };
 
-export const exportProfiles: ExportProfilesPluginMethod = async ({
+export const exportRecords: ExportRecordsPluginMethod = async ({
   appId,
   appOptions,
   destinationOptions,
   syncOperations,
-  exports: profilesToExport,
+  exports: recordsToExport,
 }) => {
-  const batchExports = buildBatchExports(profilesToExport);
+  const batchExports = buildBatchExports(recordsToExport);
   return exportBatch({
     appId,
     appOptions,

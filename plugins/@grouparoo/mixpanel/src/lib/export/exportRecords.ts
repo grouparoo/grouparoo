@@ -12,9 +12,9 @@ import {
   BatchMethodUpdateByDestinationIds,
   BatchSyncMode,
   buildBatchExports,
-  exportProfilesInBatch,
+  exportRecordsInBatch,
 } from "@grouparoo/app-templates/dist/destination/batch";
-import { ExportProfilesPluginMethod } from "@grouparoo/core";
+import { ExportRecordsPluginMethod } from "@grouparoo/core";
 import Mixpanel from "../client/mixpanel";
 import { connect } from "../connect";
 
@@ -30,11 +30,11 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   foreignKeys,
   getByForeignKey,
 }) => {
-  const profiles = await client.query.profile.getByDistinctIds(foreignKeys);
+  const records = await client.query.profile.getByDistinctIds(foreignKeys);
   for (const foreignKey of foreignKeys) {
     const user = getByForeignKey(foreignKey);
     try {
-      const filteredProfiles = profiles.filter(
+      const filteredProfiles = records.filter(
         (p) => p["$distinct_id"] === foreignKey
       );
       if (filteredProfiles && filteredProfiles.length > 0) {
@@ -70,9 +70,9 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
 }) => {
   for (const user of users) {
     try {
-      const { newProfileProperties, oldProfileProperties } = user;
-      const distinctId = newProfileProperties["$distinct_id"];
-      const oldDistinctId = oldProfileProperties["$distinct_id"];
+      const { newRecordProperties, oldRecordProperties } = user;
+      const distinctId = newRecordProperties["$distinct_id"];
+      const oldDistinctId = oldRecordProperties["$distinct_id"];
       if (
         oldDistinctId &&
         oldDistinctId !== distinctId &&
@@ -115,8 +115,8 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
 
 async function updateProfile(client: Mixpanel, exportedProfile: BatchExport) {
   const {
-    oldProfileProperties,
-    newProfileProperties,
+    oldRecordProperties,
+    newRecordProperties,
     oldGroups,
     newGroups,
     foreignKeyValue,
@@ -124,12 +124,12 @@ async function updateProfile(client: Mixpanel, exportedProfile: BatchExport) {
 
   // create the profile and set properties
   const deletePropertiesPayload = {};
-  const newPropertyKeys = Object.keys(newProfileProperties);
-  Object.keys(oldProfileProperties)
+  const newPropertyKeys = Object.keys(newRecordProperties);
+  Object.keys(oldRecordProperties)
     .filter((k) => !newPropertyKeys.includes(k))
     .forEach((k) => (deletePropertiesPayload[k] = null));
 
-  let payload = Object.assign(newProfileProperties, deletePropertiesPayload);
+  let payload = Object.assign(newRecordProperties, deletePropertiesPayload);
   const formattedDataFields = {};
   for (const key of Object.keys(payload)) {
     if (key === "$distinct_id") {
@@ -213,7 +213,7 @@ export async function exportBatch({ appOptions, syncOperations, exports }) {
   const batchSize = 200;
   const findSize = 200;
 
-  return exportProfilesInBatch(
+  return exportRecordsInBatch(
     exports,
     {
       findSize,
@@ -238,12 +238,12 @@ export async function exportBatch({ appOptions, syncOperations, exports }) {
   );
 }
 
-export const exportProfiles: ExportProfilesPluginMethod = async ({
+export const exportRecords: ExportRecordsPluginMethod = async ({
   appOptions,
   syncOperations,
-  exports: profilesToExport,
+  exports: recordsToExport,
 }) => {
-  const batchExports = buildBatchExports(profilesToExport);
+  const batchExports = buildBatchExports(recordsToExport);
   return exportBatch({
     appOptions,
     syncOperations,

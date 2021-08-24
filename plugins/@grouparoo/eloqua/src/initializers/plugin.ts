@@ -4,8 +4,8 @@ import { plugin, DestinationSyncMode } from "@grouparoo/core";
 
 import { test } from "../lib/test";
 
-import { exportProfiles } from "../lib/export/exportProfiles";
-import { processExportedProfiles } from "../lib/export/processExportedProfiles";
+import { exportRecords } from "../lib/export/exportRecords";
+import { processExportedRecords } from "../lib/export/processExportedRecords";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
@@ -71,14 +71,14 @@ export class Plugins extends Initializer {
         {
           name: "eloqua-export",
           direction: "export",
-          description: "Export profiles to Eloqua as Contacts",
+          description: "Export records to Eloqua as Contacts",
           app: "eloqua",
           syncModes,
           defaultSyncMode,
           options: [],
           methods: {
-            exportProfiles,
-            processExportedProfiles,
+            exportRecords,
+            processExportedRecords,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,

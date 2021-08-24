@@ -1,11 +1,11 @@
-import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
 import { validateQuery } from "../validateQuery";
 
-export const exportProfile: ExportProfilePluginMethod = async ({
+export const exportRecord: ExportRecordPluginMethod = async ({
   connection,
   destination,
   syncOperations,
-  export: { newProfileProperties, oldProfileProperties, newGroups, toDelete },
+  export: { newRecordProperties, oldRecordProperties, newGroups, toDelete },
 }) => {
   let error: Error;
 
@@ -18,13 +18,13 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   groupForeignKey = groupForeignKey?.toString();
   groupColumnName = groupColumnName?.toString();
 
-  if (Object.keys(newProfileProperties).length === 0) {
+  if (Object.keys(newRecordProperties).length === 0) {
     return { success: true };
   }
 
-  if (!newProfileProperties[primaryKey]) {
+  if (!newRecordProperties[primaryKey]) {
     throw new Error(
-      `newProfileProperties[primaryKey] (${primaryKey}) is a required mapping`
+      `newRecordProperties[primaryKey] (${primaryKey}) is a required mapping`
     );
   }
 
@@ -33,41 +33,41 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     if (toDelete) {
       if (!syncOperations.delete) {
         throw new Errors.InfoError(
-          "Destination sync mode does not delete profiles."
+          "Destination sync mode does not delete records."
         );
       }
       // delete
-      const query = `DELETE FROM "${table}" WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
+      const query = `DELETE FROM "${table}" WHERE ${primaryKey} = ${newRecordProperties[primaryKey]}`;
       validateQuery(query);
       await connection.asyncQuery(query);
-    } else if (newProfileProperties[primaryKey]) {
-      const query = `SELECT * FROM "${table}" WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
+    } else if (newRecordProperties[primaryKey]) {
+      const query = `SELECT * FROM "${table}" WHERE ${primaryKey} = ${newRecordProperties[primaryKey]}`;
       validateQuery(query);
       const existingRecords = await connection.asyncQuery(query);
       if (existingRecords.length === 1) {
         if (!syncOperations.update) {
           throw new Errors.InfoError(
-            "Destination sync mode does not update existing profiles."
+            "Destination sync mode does not update existing records."
           );
         }
         // update
         let updateStatement = `UPDATE "${table}" SET`;
-        const maxIdx = Object.keys(newProfileProperties).length - 1;
-        Object.keys(newProfileProperties).map((key, idx) => {
-          updateStatement += ` ${key} = "${newProfileProperties[key]}"`;
+        const maxIdx = Object.keys(newRecordProperties).length - 1;
+        Object.keys(newRecordProperties).map((key, idx) => {
+          updateStatement += ` ${key} = "${newRecordProperties[key]}"`;
           if (idx < maxIdx) updateStatement += `,`;
         });
-        updateStatement += ` WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
+        updateStatement += ` WHERE ${primaryKey} = ${newRecordProperties[primaryKey]}`;
         validateQuery(updateStatement);
         await connection.asyncQuery(updateStatement);
 
         // erase old columns
         const columnsToErase = Object.keys(existingRecords[0]).filter(
           (k) =>
-            (newProfileProperties[k] === null ||
-              newProfileProperties[k] === undefined) &&
-            oldProfileProperties[k] !== null &&
-            oldProfileProperties[k] !== undefined
+            (newRecordProperties[k] === null ||
+              newRecordProperties[k] === undefined) &&
+            oldRecordProperties[k] !== null &&
+            oldRecordProperties[k] !== undefined
         );
 
         if (columnsToErase.length > 0) {
@@ -77,28 +77,28 @@ export const exportProfile: ExportProfilePluginMethod = async ({
             eraseStatement += ` ${col} = NULL`;
             if (idx < maxIdx) eraseStatement += `,`;
           });
-          eraseStatement += ` WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
+          eraseStatement += ` WHERE ${primaryKey} = ${newRecordProperties[primaryKey]}`;
           validateQuery(eraseStatement);
           await connection.asyncQuery(eraseStatement);
         }
       } else {
         // delete
-        const deleteQuery = `DELETE FROM "${table}" WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
+        const deleteQuery = `DELETE FROM "${table}" WHERE ${primaryKey} = ${newRecordProperties[primaryKey]}`;
         validateQuery(deleteQuery);
         await connection.asyncQuery(deleteQuery);
 
         // insert
-        await insert(connection, table, syncOperations, newProfileProperties);
+        await insert(connection, table, syncOperations, newRecordProperties);
       }
     } else {
       // just insert
-      await insert(connection, table, syncOperations, newProfileProperties);
+      await insert(connection, table, syncOperations, newRecordProperties);
     }
 
     // --- Groups --- //
 
     // delete existing groups
-    const deleteGroupsQuery = `DELETE FROM "${groupsTable}" WHERE ${groupForeignKey} = ${newProfileProperties[primaryKey]}`;
+    const deleteGroupsQuery = `DELETE FROM "${groupsTable}" WHERE ${groupForeignKey} = ${newRecordProperties[primaryKey]}`;
     validateQuery(deleteGroupsQuery);
     await connection.asyncQuery(deleteGroupsQuery);
 
@@ -106,7 +106,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     if (!toDelete) {
       for (const i in newGroups) {
         const data = {};
-        data[groupForeignKey] = newProfileProperties[primaryKey];
+        data[groupForeignKey] = newRecordProperties[primaryKey];
         data[groupColumnName] = newGroups[i];
 
         const groupInsertQuery = `INSERT INTO "${groupsTable}" (${buildKeyList(
@@ -131,17 +131,17 @@ const insert = async (
   connection,
   table,
   syncOperations,
-  newProfileProperties
+  newRecordProperties
 ) => {
   if (!syncOperations.create) {
     throw new Errors.InfoError(
-      "Destination sync mode does not create new profiles."
+      "Destination sync mode does not create new records."
     );
   }
   // insert
   const query = `INSERT INTO "${table}" (${buildKeyList(
-    newProfileProperties
-  )}) VALUES (${buildValueList(newProfileProperties)})`;
+    newRecordProperties
+  )}) VALUES (${buildValueList(newRecordProperties)})`;
   validateQuery(query);
   await connection.asyncQuery(query);
 };

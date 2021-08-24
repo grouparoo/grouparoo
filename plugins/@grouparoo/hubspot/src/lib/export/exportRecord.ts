@@ -1,5 +1,5 @@
 import {
-  ExportProfilePluginMethod,
+  ExportRecordPluginMethod,
   Errors,
   SimpleAppOptions,
   DestinationSyncOperations,
@@ -29,29 +29,29 @@ const deleteContactOrClearGroups = async (
   }
 };
 
-export const exportProfile: ExportProfilePluginMethod = async ({
+export const exportRecord: ExportRecordPluginMethod = async ({
   appId,
   appOptions,
   syncOperations,
   export: {
     toDelete,
-    newProfileProperties,
-    oldProfileProperties,
+    newRecordProperties,
+    oldRecordProperties,
     newGroups,
     oldGroups,
   },
 }) => {
   // if we received no mapped data... just exit
-  if (Object.keys(newProfileProperties).length === 0) {
+  if (Object.keys(newRecordProperties).length === 0) {
     return { success: true };
   }
 
   const client = await connect(appOptions);
 
-  const email = newProfileProperties["email"]; // this is how we will identify profiles
-  const oldEmail = oldProfileProperties["email"];
+  const email = newRecordProperties["email"]; // this is how we will identify records
+  const oldEmail = oldRecordProperties["email"];
   if (!email) {
-    throw new Error(`newProfileProperties[email] is a required mapping`);
+    throw new Error(`newRecordProperties[email] is a required mapping`);
   }
 
   try {
@@ -64,7 +64,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     if (toDelete) {
       if (!syncOperations.delete) {
         throw new Error(
-          "Destination sync mode does not allow removing profiles"
+          "Destination sync mode does not allow removing records"
         );
       }
       const contactToDelete = contact || oldContact;
@@ -76,14 +76,14 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       // create the contact and set properties
       const deletePropertiesPayload = {};
 
-      const newPropertyKeys = Object.keys(newProfileProperties);
-      Object.keys(oldProfileProperties)
+      const newPropertyKeys = Object.keys(newRecordProperties);
+      Object.keys(oldRecordProperties)
         .filter((k) => !newPropertyKeys.includes(k))
         .forEach((k) => (deletePropertiesPayload[k] = null));
 
       const payload = Object.assign(
         { email },
-        newProfileProperties,
+        newRecordProperties,
         deletePropertiesPayload
       );
       const formattedDataFields = {};
@@ -100,13 +100,13 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
       if (contact && !syncOperations.update) {
         throw new Errors.InfoError(
-          "Destination sync mode does not allow updating existing profiles."
+          "Destination sync mode does not allow updating existing records."
         );
       }
 
       if (!contact && !syncOperations.create) {
         throw new Errors.InfoError(
-          "Destination sync mode does not allow creating new profiles."
+          "Destination sync mode does not allow creating new records."
         );
       }
 

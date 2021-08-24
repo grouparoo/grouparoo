@@ -1,7 +1,7 @@
 import Spreadsheet from "./spreadsheet";
-import { plugin, ProfilesPluginMethod } from "@grouparoo/core";
+import { plugin, RecordsPluginMethod } from "@grouparoo/core";
 
-export const profiles: ProfilesPluginMethod = async ({
+export const records: RecordsPluginMethod = async ({
   run,
   appOptions,
   source,

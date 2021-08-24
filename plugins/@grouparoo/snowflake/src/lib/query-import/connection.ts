@@ -6,7 +6,7 @@ export function getConnection() {
   return buildConnection({
     app: "snowflake",
     name: "snowflake-query-import",
-    description: "Import or update profiles via a custom Snowflake query.",
+    description: "Import or update records via a custom Snowflake query.",
     executeQuery,
     getChangedRows,
   });

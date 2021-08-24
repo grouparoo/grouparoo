@@ -1,12 +1,12 @@
-import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
 import { validateQuery } from "../validateQuery";
 import format from "pg-format";
 
-export const exportProfile: ExportProfilePluginMethod = async ({
+export const exportRecord: ExportRecordPluginMethod = async ({
   connection,
   destination,
   syncOperations,
-  export: { newProfileProperties, oldProfileProperties, newGroups, toDelete },
+  export: { newRecordProperties, oldRecordProperties, newGroups, toDelete },
 }) => {
   let error: Error;
 
@@ -19,13 +19,13 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   groupForeignKey = groupForeignKey?.toString();
   groupColumnName = groupColumnName?.toString();
 
-  if (Object.keys(newProfileProperties).length === 0) {
+  if (Object.keys(newRecordProperties).length === 0) {
     return { success: true };
   }
 
-  if (!newProfileProperties[primaryKey]) {
+  if (!newRecordProperties[primaryKey]) {
     throw new Error(
-      `newProfileProperties[primaryKey] (${primaryKey}) is a required mapping`
+      `newRecordProperties[primaryKey] (${primaryKey}) is a required mapping`
     );
   }
 
@@ -34,7 +34,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     if (toDelete) {
       if (!syncOperations.delete) {
         throw new Errors.InfoError(
-          "Destination sync mode does not delete profiles."
+          "Destination sync mode does not delete records."
         );
       }
       // delete
@@ -44,18 +44,18 @@ export const exportProfile: ExportProfilePluginMethod = async ({
             `DELETE FROM %I WHERE %I = %L`,
             table,
             primaryKey,
-            newProfileProperties[primaryKey]
+            newRecordProperties[primaryKey]
           )
         )
       );
-    } else if (newProfileProperties[primaryKey]) {
+    } else if (newRecordProperties[primaryKey]) {
       const existingRecords = await connection.query(
         validateQuery(
           format(
             `SELECT * FROM %I WHERE %I = %L`,
             table,
             primaryKey,
-            newProfileProperties[primaryKey]
+            newRecordProperties[primaryKey]
           )
         )
       );
@@ -63,33 +63,33 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       if (existingRecords.rows.length === 1) {
         if (!syncOperations.update) {
           throw new Errors.InfoError(
-            "Destination sync mode does not update existing profiles."
+            "Destination sync mode does not update existing records."
           );
         }
         // update
         let updateStatement = `UPDATE %I SET`;
         const updateVariables = [table];
-        const length = Object.keys(newProfileProperties).length - 1;
+        const length = Object.keys(newRecordProperties).length - 1;
         let idx = 0;
-        for (const key in newProfileProperties) {
+        for (const key in newRecordProperties) {
           updateStatement += ` %I = %L${idx < length ? "," : ""} `;
           updateVariables.push(key);
-          updateVariables.push(newProfileProperties[key]);
+          updateVariables.push(newRecordProperties[key]);
           idx++;
         }
         updateStatement += ` WHERE %I = %L`;
         updateVariables.push(primaryKey);
-        updateVariables.push(newProfileProperties[primaryKey]);
+        updateVariables.push(newRecordProperties[primaryKey]);
         updateStatement = format(updateStatement, ...updateVariables);
         await connection.query(validateQuery(updateStatement));
 
         // erase old columns
         const columnsToErase = Object.keys(existingRecords.rows[0]).filter(
           (k) =>
-            (newProfileProperties[k] === null ||
-              newProfileProperties[k] === undefined) &&
-            oldProfileProperties[k] !== null &&
-            oldProfileProperties[k] !== undefined
+            (newRecordProperties[k] === null ||
+              newRecordProperties[k] === undefined) &&
+            oldRecordProperties[k] !== null &&
+            oldRecordProperties[k] !== undefined
         );
 
         if (columnsToErase.length > 0) {
@@ -105,7 +105,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           });
           eraseStatement += ` WHERE %I = %L`;
           eraseVariables.push(primaryKey);
-          eraseVariables.push(newProfileProperties[primaryKey]);
+          eraseVariables.push(newRecordProperties[primaryKey]);
           eraseStatement = format(eraseStatement, ...eraseVariables);
           await connection.query(validateQuery(eraseStatement));
         }
@@ -117,16 +117,16 @@ export const exportProfile: ExportProfilePluginMethod = async ({
               `DELETE FROM %I WHERE %I = %L`,
               table,
               primaryKey,
-              newProfileProperties[primaryKey]
+              newRecordProperties[primaryKey]
             )
           )
         );
         // insert
-        await insert(connection, table, syncOperations, newProfileProperties);
+        await insert(connection, table, syncOperations, newRecordProperties);
       }
     } else {
       // just insert
-      await insert(connection, table, syncOperations, newProfileProperties);
+      await insert(connection, table, syncOperations, newRecordProperties);
     }
 
     // --- Groups --- //
@@ -138,7 +138,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           `DELETE FROM %I WHERE %I = %L`,
           groupsTable,
           groupForeignKey,
-          newProfileProperties[primaryKey]
+          newRecordProperties[primaryKey]
         )
       )
     );
@@ -147,7 +147,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     if (!toDelete) {
       for (const i in newGroups) {
         const data = {};
-        data[groupForeignKey] = newProfileProperties[primaryKey];
+        data[groupForeignKey] = newRecordProperties[primaryKey];
         data[groupColumnName] = newGroups[i];
 
         // There may be 2 tasks writing to the user at the same time, so we need to be safer with our writes...
@@ -185,11 +185,11 @@ const insert = async (
   connection,
   table,
   syncOperations,
-  newProfileProperties
+  newRecordProperties
 ) => {
   if (!syncOperations.create) {
     throw new Errors.InfoError(
-      "Destination sync mode does not create new profiles."
+      "Destination sync mode does not create new records."
     );
   }
   await connection.query(
@@ -197,8 +197,8 @@ const insert = async (
       format(
         `INSERT INTO %I (%I) VALUES (%L)`,
         table,
-        Object.keys(newProfileProperties),
-        Object.values(newProfileProperties)
+        Object.keys(newRecordProperties),
+        Object.values(newRecordProperties)
       )
     )
   );

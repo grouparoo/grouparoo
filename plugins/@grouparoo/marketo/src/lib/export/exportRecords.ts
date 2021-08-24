@@ -1,7 +1,7 @@
 import {
   buildBatchExports,
   BatchExport,
-  exportProfilesInBatch,
+  exportRecordsInBatch,
   BatchGroupMode,
   BatchMethodGetClient,
   BatchMethodFindAndSetDestinationIds,
@@ -15,7 +15,7 @@ import {
   BatchMethodNormalizeGroupName,
   BatchMethodRemoveFromGroups,
 } from "@grouparoo/app-templates/dist/destination/batch";
-import { ExportProfilesPluginMethod } from "@grouparoo/core";
+import { ExportRecordsPluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { getListId, MarketoCacheData } from "./listMethods";
 
@@ -115,7 +115,7 @@ async function updateUsers(client, users: BatchExport[], options) {
     try {
       if (!result.id) {
         throw new Error(
-          `Marketo profile error: ${user.profileId} ${JSON.stringify(result)}`
+          `Marketo profile error: ${user.recordId} ${JSON.stringify(result)}`
         );
       }
       if (user.destinationId && user.destinationId !== result.id) {
@@ -135,8 +135,8 @@ function buildPayload(exportedProfile: BatchExport): any {
   const user: any = {};
   const {
     destinationId,
-    oldProfileProperties,
-    newProfileProperties,
+    oldRecordProperties,
+    newRecordProperties,
     foreignKeyValue,
   } = exportedProfile;
 
@@ -146,14 +146,14 @@ function buildPayload(exportedProfile: BatchExport): any {
   }
 
   // set profile properties, including old ones
-  const newKeys = Object.keys(newProfileProperties);
-  const oldKeys = Object.keys(oldProfileProperties);
+  const newKeys = Object.keys(newRecordProperties);
+  const oldKeys = Object.keys(oldRecordProperties);
   const allKeys = oldKeys.concat(newKeys);
   for (const key of allKeys) {
     if (["id", "email"].includes(key)) {
       continue; // set above
     }
-    const value = newProfileProperties[key]; // includes clearing out removed ones (by setting to null)
+    const value = newRecordProperties[key]; // includes clearing out removed ones (by setting to null)
     user[key] = formatVar(value);
   }
 
@@ -273,7 +273,7 @@ export async function exportBatch({
   const findSize = 300;
   const data: MarketoData = { cacheData };
 
-  return exportProfilesInBatch(
+  return exportRecordsInBatch(
     exports,
     {
       findSize,
@@ -298,13 +298,13 @@ export async function exportBatch({
   );
 }
 
-export const exportProfiles: ExportProfilesPluginMethod = async ({
+export const exportRecords: ExportRecordsPluginMethod = async ({
   appId,
   appOptions,
   syncOperations,
-  exports: profilesToExport,
+  exports: recordsToExport,
 }) => {
-  const batchExports = buildBatchExports(profilesToExport);
+  const batchExports = buildBatchExports(recordsToExport);
   return exportBatch({
     appId,
     appOptions,

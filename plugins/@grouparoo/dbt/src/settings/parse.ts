@@ -7,7 +7,7 @@ import { dbtConnectionToGrouparooOptions } from "./plugins";
 
 export interface dbtProfileRequest {
   profile?: string; // Which profile to load. Overrides setting in dbt_project.yml.
-  target?: string; // Which target to load for the given profile. Overrides default in profiles.yml
+  target?: string; // Which target to load for the given profile. Overrides default in records.yml
   projectDirRelativePath?: string;
   profileDirRelativePath?: string;
   projectDirFullPath?: string;
@@ -90,9 +90,7 @@ const getProfilePath: GetProfilePathMethod = async ({
   }
 
   const defaultDir = path.resolve(path.join(os.homedir(), ".dbt"));
-  const defaultProfilePath = path.resolve(
-    path.join(defaultDir, "profiles.yml")
-  );
+  const defaultProfilePath = path.resolve(path.join(defaultDir, "records.yml"));
   if (fs.existsSync(defaultProfilePath)) {
     profileDirPath = defaultDir;
   }
@@ -156,7 +154,7 @@ const parseProfile: ParseProfileMethod = async (
     throw new Error(`Unknown dbt profile directory. ${instructions}`);
   }
 
-  const profilePath = path.join(profileDirPath, "profiles.yml");
+  const profilePath = path.join(profileDirPath, "records.yml");
   if (!fs.existsSync(profilePath)) {
     throw new Error(
       `dbt profile (${profilePath}) does not exist. ${instructions}`
@@ -171,7 +169,7 @@ const parseProfile: ParseProfileMethod = async (
   if (!settings) {
     let debug = `Unknown profile (${profile}) in yml (${profilePath}).`;
     debug += " Use `profile` in dbtProfile to specify which should be used.";
-    debug += ` Valid profiles are: ${Object.keys(document).join(", ")}`;
+    debug += ` Valid records are: ${Object.keys(document).join(", ")}`;
     throw new Error(debug);
   }
 
