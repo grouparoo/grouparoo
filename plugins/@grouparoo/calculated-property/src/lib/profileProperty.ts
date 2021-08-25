@@ -18,17 +18,12 @@ async function calculateProfilePropertyValue(
       profile,
       false
     );
+
     //fail at every level if someone tries to require a library... this should never be allowed to hit vm.run
     const illegalStrings = [`require(`, `process.env`];
     for (const i in illegalStrings) {
       if (populatedFunction.includes(illegalStrings[i])) {
-        const errorString =
-          "Error validating Calculated Property `" +
-          propertyName +
-          "`. customFunction cannot use" +
-          illegalStrings[i];
-
-        GrouparooCLI.logger.fatal(errorString);
+        populatedFunction = `()=>{ throw Error("cannot use ${illegalStrings[i]} in a calculated property")}`;
       }
     }
     //returns a string of the entire function
