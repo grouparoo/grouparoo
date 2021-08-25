@@ -20,7 +20,7 @@ async function calculateProfilePropertyValue(
     );
 
     //fail at every level if someone tries to require a library... this should never be allowed to hit vm.run
-    const illegalStrings = [`require(`, `process.env`];
+    const illegalStrings = [`require(`, `process.env`, `async`];
     for (const i in illegalStrings) {
       if (populatedFunction.includes(illegalStrings[i])) {
         populatedFunction = `()=>{ throw Error("cannot use ${illegalStrings[i]} in a calculated property")}`;

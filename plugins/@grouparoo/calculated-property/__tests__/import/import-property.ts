@@ -73,7 +73,7 @@ describe("calculated-property/profileProperty", () => {
         if ("{{purchases}}" === "") return true; 
         return false;}`;
     const value = await getPropertyValue(fn);
-    expect(value[0]).toBeTruthy;
+    expect(value[0]).toEqual(true);
   });
   test("it evaluates boolean properties as expected", async () => {
     const fn = `() => {
@@ -81,7 +81,7 @@ describe("calculated-property/profileProperty", () => {
         return false;
     }`;
     const value = await getPropertyValue(fn);
-    expect(value[0]).toBeTruthy;
+    expect(value[0]).toEqual(true);
   });
 
   test("it evaluates date strings as expected", async () => {
@@ -111,6 +111,36 @@ describe("calculated-property/profileProperty", () => {
     }`;
     await expect(getPropertyValue(fn)).rejects.toThrowError(
       "Could not calculate property: Error: Calculated property's /`customFunction/` undefined"
+    );
+  });
+  test("it throws if customFunction throws", async () => {
+    const fn = `() => {
+      throw Error("test error")
+      return "hi"
+    }`;
+    await expect(getPropertyValue(fn)).rejects.toThrowError(
+      "Could not calculate property: Error: test error"
+    );
+  });
+  test("it throws if customFunction is not valid javascript", async () => {
+    const fn = `() => {
+      not;valid/javascript > 4;
+    }`;
+    await expect(getPropertyValue(fn)).rejects.toThrowError(
+      "Could not calculate property: ReferenceError: not is not defined"
+    );
+  });
+  test("it throws if customFunction is not defined", async () => {
+    const fn = ``;
+    //vm gets confused by the empty string, hence the different error here
+    await expect(getPropertyValue(fn)).rejects.toThrowError(
+      "Could not calculate property: SyntaxError: Unexpected token ';'"
+    );
+  });
+  test("it throws if customFunction contains an illegal string", async () => {
+    const fn = `async () => { return new Promise((resolve) => resolve("value")); }`;
+    await expect(getPropertyValue(fn)).rejects.toThrowError(
+      "Could not calculate property: Error: cannot use async in a calculated property"
     );
   });
 });
