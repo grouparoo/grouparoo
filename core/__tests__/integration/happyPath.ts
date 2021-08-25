@@ -11,12 +11,12 @@ import {
   ScheduleRun,
 } from "../../src/actions/schedules";
 import {
-  ProfileCreate,
-  ProfilesList,
-  ProfileView,
+  RecordCreate,
+  RecordsList,
+  RecordView,
 } from "../../src/actions/records";
 import {
-  GroupAddProfile,
+  GroupAddRecord,
   GroupCreate,
   GroupView,
 } from "../../src/actions/groups";
@@ -26,7 +26,7 @@ import {
   SourceEdit,
 } from "../../src/actions/sources";
 
-function simpleProfileValues(complexProfileValues): { [key: string]: any } {
+function simpleRecordValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
   const simpleRecordProperties = {};
   keys.forEach((key) => {
@@ -223,13 +223,13 @@ describe("integration/happyPath", () => {
           ltv: 100.12,
         },
       };
-      const { error, record } = await specHelper.runAction<ProfileCreate>(
+      const { error, record } = await specHelper.runAction<RecordCreate>(
         "record:create",
         connection
       );
       expect(error).toBeUndefined();
       expect(record.id).toBeTruthy();
-      expect(simpleProfileValues(record.properties)).toEqual({
+      expect(simpleRecordValues(record.properties)).toEqual({
         email: ["luigi@example.com"],
         firstName: ["Luigi"],
         lastName: ["Mario"],
@@ -265,8 +265,8 @@ describe("integration/happyPath", () => {
         id: groupId,
         recordId,
       };
-      const { error, success } = await specHelper.runAction<GroupAddProfile>(
-        "group:addProfile",
+      const { error, success } = await specHelper.runAction<GroupAddRecord>(
+        "group:addRecord",
         connection
       );
       expect(error).toBeUndefined();
@@ -278,7 +278,7 @@ describe("integration/happyPath", () => {
         csrfToken,
         id: recordId,
       };
-      const { error, groups } = await specHelper.runAction<ProfileView>(
+      const { error, groups } = await specHelper.runAction<RecordView>(
         "record:view",
         connection
       );
@@ -305,10 +305,10 @@ describe("integration/happyPath", () => {
         id: groupId,
       };
       const { error: listError, records } =
-        await specHelper.runAction<ProfilesList>("records:list", connection);
+        await specHelper.runAction<RecordsList>("records:list", connection);
       expect(listError).toBeUndefined();
       expect(records.length).toBe(1);
-      expect(simpleProfileValues(records[0].properties).email).toEqual([
+      expect(simpleRecordValues(records[0].properties).email).toEqual([
         "luigi@example.com",
       ]);
     });
@@ -369,10 +369,10 @@ describe("integration/happyPath", () => {
         id: groupId,
       };
       const { error: listError, records } =
-        await specHelper.runAction<ProfilesList>("records:list", connection);
+        await specHelper.runAction<RecordsList>("records:list", connection);
       expect(listError).toBeUndefined();
       expect(records.length).toBe(1);
-      expect(simpleProfileValues(records[0].properties).email[0]).toMatch(
+      expect(simpleRecordValues(records[0].properties).email[0]).toMatch(
         /@example.com/
       );
     });

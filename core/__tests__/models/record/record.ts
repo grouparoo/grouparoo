@@ -13,7 +13,7 @@ import {
 } from "../../../src";
 import { RecordOps } from "../../../src/modules/ops/record";
 
-function simpleProfileValues(complexProfileValues): { [key: string]: any } {
+function simpleRecordValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
   const simpleRecordProperties = {};
   keys.forEach((key) => {
@@ -340,7 +340,7 @@ describe("models/record", () => {
       test("it can add a new record property when the schema is prepared", async () => {
         await record.addOrUpdateProperties({ email: ["luigi@example.com"] });
         const properties = await record.getProperties();
-        expect(simpleProfileValues(properties)).toEqual({
+        expect(simpleRecordValues(properties)).toEqual({
           email: ["luigi@example.com"],
           firstName: [null],
           lastName: [null],
@@ -514,7 +514,7 @@ describe("models/record", () => {
           });
 
           const properties = await record.getProperties();
-          expect(simpleProfileValues(properties)).toEqual({
+          expect(simpleRecordValues(properties)).toEqual({
             email: ["luigi@example.com"],
             firstName: ["Luigi"],
             lastName: ["Mario"],
@@ -535,7 +535,7 @@ describe("models/record", () => {
             email: ["luigi-again@example.com"],
           });
           const properties = await record.getProperties();
-          expect(simpleProfileValues(properties)).toEqual({
+          expect(simpleRecordValues(properties)).toEqual({
             email: ["luigi-again@example.com"],
             firstName: ["Luigi"],
             lastName: ["Mario"],
@@ -547,15 +547,15 @@ describe("models/record", () => {
         test("it will ignore the property _meta, as it is reserved", async () => {
           await record.addOrUpdateProperties({ _meta: ["bla"] });
           const properties = await record.getProperties();
-          expect(simpleProfileValues(properties)._meta).toBeFalsy();
-          expect(simpleProfileValues(properties).firstName).toEqual(["Luigi"]);
+          expect(simpleRecordValues(properties)._meta).toBeFalsy();
+          expect(simpleRecordValues(properties).firstName).toEqual(["Luigi"]);
         });
 
         test("it can remove an existing property", async () => {
           await record.removeProperty("email");
           const properties = await record.getProperties();
           expect(properties["email"]).toBeUndefined();
-          expect(simpleProfileValues(properties)).toEqual({
+          expect(simpleRecordValues(properties)).toEqual({
             firstName: ["Luigi"],
             lastName: ["Mario"],
             color: ["green"],
@@ -574,7 +574,7 @@ describe("models/record", () => {
         test("it will not raise when trying to remove a non-existent property", async () => {
           await record.removeProperty("funky");
           const properties = await record.getProperties();
-          expect(simpleProfileValues(properties)).toEqual({
+          expect(simpleRecordValues(properties)).toEqual({
             email: ["luigi@example.com"],
             firstName: ["Luigi"],
             lastName: ["Mario"],
@@ -586,7 +586,7 @@ describe("models/record", () => {
         test("record properties can be addded by key", async () => {
           await record.addOrUpdateProperties({ email: ["luigi@example.com"] });
           const properties = await record.getProperties();
-          expect(simpleProfileValues(properties).email).toEqual([
+          expect(simpleRecordValues(properties).email).toEqual([
             "luigi@example.com",
           ]);
         });
@@ -600,7 +600,7 @@ describe("models/record", () => {
           });
 
           const properties = await record.getProperties();
-          expect(simpleProfileValues(properties).email).toEqual([
+          expect(simpleRecordValues(properties).email).toEqual([
             "luigi@example.com",
           ]);
         });
@@ -669,7 +669,7 @@ describe("models/record", () => {
             purchases: ["star", "mushroom", "mushroom", "go kart"],
           });
           const properties = await record.getProperties();
-          expect(simpleProfileValues(properties)).toEqual({
+          expect(simpleRecordValues(properties)).toEqual({
             email: ["luigi@example.com"],
             firstName: ["Luigi"],
             lastName: ["Mario"],
@@ -949,7 +949,7 @@ describe("models/record", () => {
       await record.addOrUpdateProperties({ userId: [1001] });
       await record.addOrUpdateProperties({ email: ["peach@example.com"] });
       let properties = await record.getProperties();
-      expect(simpleProfileValues(properties)).toEqual({
+      expect(simpleRecordValues(properties)).toEqual({
         userId: [1001],
         email: ["peach@example.com"],
         color: [null],
@@ -967,7 +967,7 @@ describe("models/record", () => {
       await record.import();
 
       properties = await record.getProperties();
-      expect(simpleProfileValues(properties)).toEqual({
+      expect(simpleRecordValues(properties)).toEqual({
         userId: [1001],
         email: ["peach@example.com"],
         color: ["pink"],
@@ -1001,7 +1001,7 @@ describe("models/record", () => {
         (v) => v.state === "pending"
       );
       expect(pendingProperties.length).toBe(0);
-      expect(simpleProfileValues(properties)).toEqual({
+      expect(simpleRecordValues(properties)).toEqual({
         userId: [1003],
         email: ["bowser@example.com"],
         color: ["green"],
@@ -1036,7 +1036,7 @@ describe("models/record", () => {
       );
       expect(pendingProperties.length).toBe(0);
 
-      expect(simpleProfileValues(properties)).toEqual({
+      expect(simpleRecordValues(properties)).toEqual({
         userId: [1002],
         email: [null],
         color: ["pink"],
@@ -1070,7 +1070,7 @@ describe("models/record", () => {
         const record = await GrouparooRecord.create();
         await record.addOrUpdateProperties({ userId: [1010] });
         let properties = await record.getProperties();
-        expect(simpleProfileValues(properties)).toEqual({
+        expect(simpleRecordValues(properties)).toEqual({
           userId: [1010],
           email: [null],
           color: [null],
@@ -1095,7 +1095,7 @@ describe("models/record", () => {
         await record.import();
 
         properties = await record.getProperties();
-        expect(simpleProfileValues(properties)).toEqual({
+        expect(simpleRecordValues(properties)).toEqual({
           userId: [1010],
           email: ["daisy@example.com"],
           color: ["pink"],
@@ -1108,7 +1108,7 @@ describe("models/record", () => {
       test("properties from a dependent source can be cleared at the same time if the mapping is gone", async () => {
         const record = daisyProfile;
         let properties = await record.getProperties();
-        expect(simpleProfileValues(properties)).toEqual({
+        expect(simpleRecordValues(properties)).toEqual({
           userId: [1010],
           email: ["daisy@example.com"],
           color: ["pink"],
@@ -1130,7 +1130,7 @@ describe("models/record", () => {
         await record.import();
 
         properties = await record.getProperties();
-        expect(simpleProfileValues(properties)).toEqual({
+        expect(simpleRecordValues(properties)).toEqual({
           userId: [null],
           email: [null],
           color: [null],

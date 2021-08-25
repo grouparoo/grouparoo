@@ -61,7 +61,7 @@ Object {
     "ltv": 100,
     "primary-id": Any<Number>,
   },
-  "recordId": StringMatching /\\^pro_/,
+  "recordId": StringMatching /\\^rec_/,
   "retryCount": 0,
   "sendAt": Any<Number>,
   "startedAt": Any<Number>,

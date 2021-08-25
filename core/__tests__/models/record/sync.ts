@@ -9,7 +9,7 @@ import {
 } from "../../../src";
 import { api } from "actionhero";
 
-function simpleProfileValues(complexProfileValues): { [key: string]: any } {
+function simpleRecordValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
   const simpleRecordProperties = {};
   keys.forEach((key) => {
@@ -46,7 +46,7 @@ describe("record sync", () => {
 
   test("syncing a record will import properties", async () => {
     let properties = await record.getProperties();
-    expect(simpleProfileValues(properties)).toEqual(
+    expect(simpleRecordValues(properties)).toEqual(
       expect.objectContaining({
         firstName: [null],
         isVIP: [null],
@@ -58,7 +58,7 @@ describe("record sync", () => {
     await record.sync();
 
     properties = await record.getProperties();
-    expect(simpleProfileValues(properties)).toEqual(
+    expect(simpleRecordValues(properties)).toEqual(
       expect.objectContaining({
         firstName: ["Mario"],
         isVIP: [true],

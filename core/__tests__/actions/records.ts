@@ -22,7 +22,7 @@ import {
 import { GroupAddRecord, GroupRemoveRecord } from "../../src/actions/groups";
 import { ConfigWriter } from "../../src/modules/configWriter";
 
-function simpleProfileValues(complexProfileValues): { [key: string]: any } {
+function simpleRecordValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
   const simpleRecordProperties = {};
   keys.forEach((key) => {
@@ -82,7 +82,7 @@ describe("actions/records", () => {
       expect(error).toBeUndefined();
       expect(record.id).toBeTruthy();
       expect(record.state).toBe("pending");
-      expect(simpleProfileValues(record.properties)).toEqual({
+      expect(simpleRecordValues(record.properties)).toEqual({
         userId: [123],
         email: ["luigi@example.com"],
         firstName: ["Luigi"],
@@ -138,7 +138,7 @@ describe("actions/records", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(simpleProfileValues(record.properties).userId).toEqual([999]);
+      expect(simpleRecordValues(record.properties).userId).toEqual([999]);
     });
 
     test("a writer can add a new property to a record", async () => {
@@ -156,7 +156,7 @@ describe("actions/records", () => {
       expect(error).toBeUndefined();
       expect(record.id).toBeTruthy();
       expect(record.state).toBe("ready");
-      expect(simpleProfileValues(record.properties)).toEqual({
+      expect(simpleRecordValues(record.properties)).toEqual({
         userId: [999],
         email: ["luigi@example.com"],
         firstName: ["Luigi"],
@@ -182,7 +182,7 @@ describe("actions/records", () => {
       expect(error).toBeUndefined();
       expect(record.id).toBeTruthy();
       expect(record.state).toBe("ready");
-      expect(simpleProfileValues(record.properties)).toEqual({
+      expect(simpleRecordValues(record.properties)).toEqual({
         userId: [999],
         email: ["luigi@example.com"],
         firstName: ["Luigi"],
@@ -205,7 +205,7 @@ describe("actions/records", () => {
       );
       expect(error).toBeUndefined();
       expect(records.length).toBe(1);
-      expect(simpleProfileValues(records[0].properties).userId).toEqual([999]);
+      expect(simpleRecordValues(records[0].properties).userId).toEqual([999]);
       expect(total).toBe(1);
     });
 
@@ -504,22 +504,22 @@ describe("actions/records", () => {
           await specHelper.runAction<RecordsList>("records:list", connection);
         expect(error).toBeUndefined();
         expect(records.length).toBe(4);
-        expect(simpleProfileValues(records[0].properties).email).toEqual([
+        expect(simpleRecordValues(records[0].properties).email).toEqual([
           "mario@example.com",
         ]);
-        expect(simpleProfileValues(records[0].properties).userId).toEqual([1]);
-        expect(simpleProfileValues(records[1].properties).email).toEqual([
+        expect(simpleRecordValues(records[0].properties).userId).toEqual([1]);
+        expect(simpleRecordValues(records[1].properties).email).toEqual([
           "luigi@example.com",
         ]);
-        expect(simpleProfileValues(records[1].properties).userId).toEqual([2]);
-        expect(simpleProfileValues(records[2].properties).email).toEqual([
+        expect(simpleRecordValues(records[1].properties).userId).toEqual([2]);
+        expect(simpleRecordValues(records[2].properties).email).toEqual([
           "toad@mushroom-kingdom.gov",
         ]);
-        expect(simpleProfileValues(records[2].properties).userId).toEqual([3]);
-        expect(simpleProfileValues(records[3].properties).email).toEqual([
+        expect(simpleRecordValues(records[2].properties).userId).toEqual([3]);
+        expect(simpleRecordValues(records[3].properties).email).toEqual([
           "peach@mushroom-kingdom.gov",
         ]);
-        expect(simpleProfileValues(records[3].properties).userId).toEqual([4]);
+        expect(simpleRecordValues(records[3].properties).userId).toEqual([4]);
         expect(total).toBe(4);
       });
 
@@ -532,14 +532,14 @@ describe("actions/records", () => {
           await specHelper.runAction<RecordsList>("records:list", connection);
         expect(error).toBeUndefined();
         expect(records.length).toBe(2);
-        expect(simpleProfileValues(records[0].properties).email).toEqual([
+        expect(simpleRecordValues(records[0].properties).email).toEqual([
           "mario@example.com",
         ]);
-        expect(simpleProfileValues(records[0].properties).userId).toEqual([1]);
-        expect(simpleProfileValues(records[1].properties).email).toEqual([
+        expect(simpleRecordValues(records[0].properties).userId).toEqual([1]);
+        expect(simpleRecordValues(records[1].properties).email).toEqual([
           "peach@mushroom-kingdom.gov",
         ]);
-        expect(simpleProfileValues(records[1].properties).userId).toEqual([4]);
+        expect(simpleRecordValues(records[1].properties).userId).toEqual([4]);
         expect(total).toBe(2);
       });
 
@@ -553,10 +553,10 @@ describe("actions/records", () => {
           await specHelper.runAction<RecordsList>("records:list", connection);
         expect(error).toBeUndefined();
         expect(records.length).toBe(1);
-        expect(simpleProfileValues(records[0].properties).email).toEqual([
+        expect(simpleRecordValues(records[0].properties).email).toEqual([
           "peach@mushroom-kingdom.gov",
         ]);
-        expect(simpleProfileValues(records[0].properties).userId).toEqual([4]);
+        expect(simpleRecordValues(records[0].properties).userId).toEqual([4]);
         expect(total).toBe(1);
       });
 
@@ -571,10 +571,10 @@ describe("actions/records", () => {
           await specHelper.runAction<RecordsList>("records:list", connection);
         expect(error).toBeUndefined();
         expect(records.length).toBe(1);
-        expect(simpleProfileValues(records[0].properties).email).toEqual([
+        expect(simpleRecordValues(records[0].properties).email).toEqual([
           "peach@mushroom-kingdom.gov",
         ]);
-        expect(simpleProfileValues(records[0].properties).userId).toEqual([4]);
+        expect(simpleRecordValues(records[0].properties).userId).toEqual([4]);
         expect(total).toBe(1);
 
         connection.params = {
@@ -599,10 +599,10 @@ describe("actions/records", () => {
           await specHelper.runAction<RecordsList>("records:list", connection);
         expect(error).toBeUndefined();
         expect(records.length).toBe(1);
-        expect(simpleProfileValues(records[0].properties).email).toEqual([
+        expect(simpleRecordValues(records[0].properties).email).toEqual([
           "peach@mushroom-kingdom.gov",
         ]);
-        expect(simpleProfileValues(records[0].properties).userId).toEqual([4]);
+        expect(simpleRecordValues(records[0].properties).userId).toEqual([4]);
         expect(total).toBe(1);
       });
 
@@ -618,10 +618,10 @@ describe("actions/records", () => {
           await specHelper.runAction<RecordsList>("records:list", connection);
         expect(error).toBeUndefined();
         expect(records.length).toBe(1);
-        expect(simpleProfileValues(records[0].properties).email).toEqual([
+        expect(simpleRecordValues(records[0].properties).email).toEqual([
           "peach@mushroom-kingdom.gov",
         ]);
-        expect(simpleProfileValues(records[0].properties).userId).toEqual([4]);
+        expect(simpleRecordValues(records[0].properties).userId).toEqual([4]);
         expect(total).toBe(1);
 
         connection.params = {
@@ -674,10 +674,10 @@ describe("actions/records", () => {
           await specHelper.runAction<RecordsList>("records:list", connection);
         expect(error).toBeUndefined();
         expect(records.length).toBe(1);
-        expect(simpleProfileValues(records[0].properties).email).toEqual([
+        expect(simpleRecordValues(records[0].properties).email).toEqual([
           "peach@mushroom-kingdom.gov",
         ]);
-        expect(simpleProfileValues(records[0].properties).userId).toEqual([4]);
+        expect(simpleRecordValues(records[0].properties).userId).toEqual([4]);
         expect(total).toBe(1);
       });
 
@@ -816,7 +816,7 @@ describe("actions/records", () => {
       );
       expect(error).toBeUndefined();
       expect(record.id).toBeTruthy();
-      expect(simpleProfileValues(record.properties)).toEqual({
+      expect(simpleRecordValues(record.properties)).toEqual({
         firstName: ["Toad"],
         email: ["toad@example.com"],
         isVIP: [null],
