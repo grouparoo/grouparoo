@@ -1,4 +1,4 @@
-import { Action } from "actionhero"
+import { Action } from "actionhero";
 import { AuthenticatedAction, Status } from "@grouparoo/core";
 import { collectDefaultMetrics, Gauge, Registry } from "prom-client";
 
