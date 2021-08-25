@@ -4,16 +4,15 @@ import { collectDefaultMetrics, Gauge, Registry } from "prom-client";
 
 const register = new Registry();
 
-export default class PrometheusAction extends Action {
+export default class PrometheusAction extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "prometheus:getMetrics";
     this.description = "Metrics endpoint supporting prometheus format";
-    this.middleware = ["authenticated-action"];
     this.permission = { topic: "system", mode: "read" };
   }
 
-  async run(data) {
+  async runWithinTransaction(data) {
     data.connection.rawConnection.responseHeaders.push([
       "Content-Type",
       "text/plain",
