@@ -46,9 +46,9 @@ describe("calculated-property/profileProperty", () => {
       email: ["ejervois0@example.com"],
       firstName: ["Mario"],
       lastName: ["Jones"],
-      ltv: ["390.42"],
+      ltv: [390.42],
       lastLoginAt: ["2021-08-23 15:02:39.297-07"],
-      isVIP: ["true"],
+      isVIP: [true],
       purchases: [null],
     });
     expect(profile.id).toBeTruthy();
