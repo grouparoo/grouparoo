@@ -80,6 +80,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
     return {
       id: this.id,
       state: this.state,
+      modelId: this.modelId,
       properties,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),

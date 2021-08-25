@@ -471,14 +471,14 @@ describe("actions/records", () => {
           id: group.id,
           recordId: mario.id,
         };
-        await specHelper.runAction("group:addProfile", connection);
+        await specHelper.runAction("group:addRecord", connection);
 
         connection.params = {
           csrfToken,
           id: group.id,
           recordId: peach.id,
         };
-        await specHelper.runAction("group:addProfile", connection);
+        await specHelper.runAction("group:addRecord", connection);
       }, 10 * 1000);
 
       afterAll(async () => {

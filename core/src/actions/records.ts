@@ -38,12 +38,10 @@ export class RecordsList extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const { records, total } = await RecordOps.search(params);
-    const recordData: AsyncReturnType<GrouparooRecord["apiData"]>[] = [];
-    for (const record of records) {
-      recordData.push(await record.apiData());
-    }
-
-    return { total, records: recordData };
+    return {
+      total,
+      records: await Promise.all(records.map((record) => record.apiData())),
+    };
   }
 }
 
