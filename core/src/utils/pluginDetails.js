@@ -55,6 +55,7 @@ function getPluginManifest() {
       grouparoo: { plugins: [] },
     },
     plugins: [],
+    missingPlugins: [],
   };
 
   // parent
@@ -88,9 +89,9 @@ function getPluginManifest() {
 
     let pluginPath = "";
     try {
-      pluginPath = require.resolve(pluginName);
+      pluginPath = require.resolve(pluginName); // require("@grouparoo/mysql")
     } catch {
-      pluginPath = path.join(parentPath, "node_modules", pluginName);
+      pluginPath = path.join(parentPath, "node_modules", pluginName); // require("../../../staging-enterprise/@grouparoo/mysql")
       if (!fs.existsSync(pluginPath)) {
         pluginPath = path.join(
           grouparooMonorepoApp
@@ -109,7 +110,13 @@ function getPluginManifest() {
       }
     }
 
-    if (!fs.existsSync(pluginPath)) continue;
+    if (!fs.existsSync(pluginPath)) {
+      if (!manifest.missingPlugins.includes(pluginName)) {
+        manifest.missingPlugins.push(pluginName);
+      }
+      continue;
+    }
+
     pluginPath = fs.realpathSync(pluginPath);
 
     const pluginPkg = readPackageJson(path.join(pluginPath, "package.json"));
