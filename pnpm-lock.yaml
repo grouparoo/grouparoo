@@ -230,7 +230,7 @@ importers:
       '@types/pluralize': 0.0.29
       '@types/validator': '*'
       actionhero: 27.0.1
-      ah-sequelize-plugin: 3.1.0
+      ah-sequelize-plugin: 3.2.0
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
@@ -279,7 +279,7 @@ importers:
       '@types/node': 16.7.1
       '@types/validator': 13.6.3
       actionhero: 27.0.1
-      ah-sequelize-plugin: 3.1.0_29f5a666cc74506025e0a2ada7c6dd2c
+      ah-sequelize-plugin: 3.2.0_29f5a666cc74506025e0a2ada7c6dd2c
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
@@ -461,6 +461,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -478,6 +479,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -599,6 +601,7 @@ importers:
       js-sha256: 0.9.0
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -618,6 +621,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -717,6 +721,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       type-fest: 2.1.0
       typescript: 4.3.5
@@ -735,6 +740,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       type-fest: 2.1.0
       typescript: 4.3.5
@@ -753,6 +759,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -769,6 +776,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -786,6 +794,7 @@ importers:
       nock: 13.1.2
       node-iterable-api: 1.0.3
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -802,6 +811,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -844,6 +854,7 @@ importers:
       mailchimp-api-v3: 1.15.0
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       type-fest: 2.1.0
       typescript: 4.3.5
@@ -861,6 +872,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       type-fest: 2.1.0
       typescript: 4.3.5
@@ -879,6 +891,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -895,6 +908,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -1032,6 +1046,7 @@ importers:
       nock: 13.1.2
       onesignal-node: 3.3.0
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -1048,6 +1063,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -1067,6 +1083,7 @@ importers:
       jsforce: 1.10.1
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -1085,6 +1102,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -1102,6 +1120,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -1118,6 +1137,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -1138,6 +1158,7 @@ importers:
       pg-hstore: 2.3.4
       postgres-date: 2.0.1
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -1157,6 +1178,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.0.6
       prettier: 2.3.2
+      sequelize: 6.6.2_pg-hstore@2.3.4+pg@8.7.1
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -1172,6 +1194,7 @@ importers:
       actionhero: 27.0.1
       jest: 27.0.6
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -1186,6 +1209,7 @@ importers:
       actionhero: 27.0.1
       jest: 27.0.6
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -1203,6 +1227,7 @@ importers:
       nock: 13.1.2
       prettier: 2.3.2
       sailthru-client: 3.0.5
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -1219,6 +1244,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -1236,6 +1262,7 @@ importers:
       jsforce: 1.10.1
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -1252,6 +1279,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -1269,6 +1297,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -1285,6 +1314,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -1399,6 +1429,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.0.6
       prettier: 2.3.2
+      sequelize: 6.6.2
       sqlite3: 5.0.2
       ts-jest: 27.0.5
       type-fest: 2.1.0
@@ -1418,6 +1449,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.0.6
       prettier: 2.3.2
+      sequelize: 6.6.2_sqlite3@5.0.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       type-fest: 2.1.0
       typescript: 4.3.5
@@ -1436,6 +1468,7 @@ importers:
       nock: 13.1.2
       node-zendesk: 2.1.0
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
@@ -1452,6 +1485,7 @@ importers:
       jest: 27.0.6
       nock: 13.1.2
       prettier: 2.3.2
+      sequelize: 6.6.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
       typescript: 4.3.5
 
@@ -4151,8 +4185,8 @@ packages:
       clean-stack: 2.2.0
       indent-string: 4.0.0
 
-  /ah-sequelize-plugin/3.1.0_29f5a666cc74506025e0a2ada7c6dd2c:
-    resolution: {integrity: sha512-nHlxCHS8ak2pQYoJ44iKGsJb+huo7j662CdlvOTiRF3YM4YL0o+nfDpOSKar905xOsnHQDSANw3505WKCqy0jQ==}
+  /ah-sequelize-plugin/3.2.0_29f5a666cc74506025e0a2ada7c6dd2c:
+    resolution: {integrity: sha512-sypYl3Ze7iAh9bQjzc2VFGCplHWLpU2XVH6mfdfYgvnxElLOhxtG8GC+0g9XULb2dfzniKMjXu2BpbVRxrgmZg==}
     engines: {node: '>=8.0.0'}
     peerDependencies:
       actionhero: '>=22.0.0'
@@ -6102,7 +6136,6 @@ packages:
 
   /dottie/2.0.2:
     resolution: {integrity: sha512-fmrwR04lsniq/uSr8yikThDTrM7epXHBAAjH9TbeH3rEA8tdCO7mRzB9hdmdGyJCxF8KERo9CITcm3kGuoyMhg==}
-    dev: false
 
   /duplexer/0.1.2:
     resolution: {integrity: sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==}
@@ -7609,7 +7642,6 @@ packages:
   /inflection/1.12.0:
     resolution: {integrity: sha1-ogCTVlbW9fa8TcdQLhrstwMihBY=}
     engines: {'0': node >= 0.4.0}
-    dev: false
 
   /inflight/1.0.6:
     resolution: {integrity: sha1-Sb1jMdfQLQwJvJEKEHW6gWW1bfk=}
@@ -9782,7 +9814,6 @@ packages:
     resolution: {integrity: sha512-PTc2vcT8K9J5/9rDEPe5czSIKgLoGsH8UNpA4qZTVw0Vd/Uz19geE9abbIOQKaAQFcnQ3v5YEXrbSc5BpshH+w==}
     dependencies:
       moment: 2.29.1
-    dev: false
 
   /moment/2.24.0:
     resolution: {integrity: sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==}
@@ -12183,7 +12214,6 @@ packages:
     resolution: {integrity: sha512-CybGs60B7oYU/qSQ6kuaFmRd9sTZ6oXSc0toqePvV74Ac6/IFZSI1ReFQmtCN+uvW1Mtqdwpvt/LGOiCBAY2Mg==}
     dependencies:
       any-promise: 1.3.0
-    dev: false
 
   /retry-request/4.2.2:
     resolution: {integrity: sha512-xA93uxUD/rogV7BV59agW/JHPGXeREMWiZc9jhcwY4YdZ7QOtC7qbomYg0n4wyk2lJhggjvKvhNX8wln/Aldhg==}
@@ -12387,7 +12417,6 @@ packages:
   /sequelize-pool/6.1.0:
     resolution: {integrity: sha512-4YwEw3ZgK/tY/so+GfnSgXkdwIJJ1I32uZJztIEgZeAO6HMgj64OzySbWLgxj+tXhZCJnzRfkY9gINw8Ft8ZMg==}
     engines: {node: '>= 10.0.0'}
-    dev: false
 
   /sequelize-typescript/2.1.0_3085a4116b0c716572b52e702166f4a9:
     resolution: {integrity: sha512-wwPxydBQ/wIZ92pFxDQEAhW8uRHqwFZGm6JkPmpsCjrODWrH8TANZiOCjwGouygFMgBwCNK91RNwLe5TYoy5pg==}
@@ -12444,7 +12473,6 @@ packages:
       wkx: 0.5.0
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /sequelize/6.6.2_98f032adade92d92d5295670c0365597:
     resolution: {integrity: sha512-H/zrzmTK+tis9PJaSigkuXI57nKBvNCtPQol0yxCvau1iWLzSOuq8t3tMOVeQ+Ep8QH2HoD9/+FCCIAqzUr/BQ==}
@@ -12490,6 +12518,49 @@ packages:
       - supports-color
     dev: false
 
+  /sequelize/6.6.2_pg-hstore@2.3.4+pg@8.7.1:
+    resolution: {integrity: sha512-H/zrzmTK+tis9PJaSigkuXI57nKBvNCtPQol0yxCvau1iWLzSOuq8t3tMOVeQ+Ep8QH2HoD9/+FCCIAqzUr/BQ==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      mariadb: '*'
+      mysql2: '*'
+      pg: '*'
+      pg-hstore: '*'
+      sqlite3: '*'
+      tedious: '*'
+    peerDependenciesMeta:
+      mariadb:
+        optional: true
+      mysql2:
+        optional: true
+      pg:
+        optional: true
+      pg-hstore:
+        optional: true
+      sqlite3:
+        optional: true
+      tedious:
+        optional: true
+    dependencies:
+      debug: 4.3.2
+      dottie: 2.0.2
+      inflection: 1.12.0
+      lodash: 4.17.21
+      moment: 2.29.1
+      moment-timezone: 0.5.33
+      pg: 8.7.1
+      pg-hstore: 2.3.4
+      retry-as-promised: 3.2.0
+      semver: 7.3.5
+      sequelize-pool: 6.1.0
+      toposort-class: 1.0.1
+      uuid: 8.3.2
+      validator: 10.11.0
+      wkx: 0.5.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /sequelize/6.6.2_pg@8.7.1:
     resolution: {integrity: sha512-H/zrzmTK+tis9PJaSigkuXI57nKBvNCtPQol0yxCvau1iWLzSOuq8t3tMOVeQ+Ep8QH2HoD9/+FCCIAqzUr/BQ==}
     engines: {node: '>=10.0.0'}
@@ -12531,6 +12602,48 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: false
+
+  /sequelize/6.6.2_sqlite3@5.0.2:
+    resolution: {integrity: sha512-H/zrzmTK+tis9PJaSigkuXI57nKBvNCtPQol0yxCvau1iWLzSOuq8t3tMOVeQ+Ep8QH2HoD9/+FCCIAqzUr/BQ==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      mariadb: '*'
+      mysql2: '*'
+      pg: '*'
+      pg-hstore: '*'
+      sqlite3: '*'
+      tedious: '*'
+    peerDependenciesMeta:
+      mariadb:
+        optional: true
+      mysql2:
+        optional: true
+      pg:
+        optional: true
+      pg-hstore:
+        optional: true
+      sqlite3:
+        optional: true
+      tedious:
+        optional: true
+    dependencies:
+      debug: 4.3.2
+      dottie: 2.0.2
+      inflection: 1.12.0
+      lodash: 4.17.21
+      moment: 2.29.1
+      moment-timezone: 0.5.33
+      retry-as-promised: 3.2.0
+      semver: 7.3.5
+      sequelize-pool: 6.1.0
+      sqlite3: 5.0.2
+      toposort-class: 1.0.1
+      uuid: 8.3.2
+      validator: 10.11.0
+      wkx: 0.5.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
 
   /sequin/0.1.1:
     resolution: {integrity: sha1-XC04nWajg3NOqvvEXt6ywcsb5wE=}
@@ -13416,7 +13529,6 @@ packages:
 
   /toposort-class/1.0.1:
     resolution: {integrity: sha1-f/0feMi+KMO6Rc1OGj9e4ZO9mYg=}
-    dev: false
 
   /tory/0.4.4:
     resolution: {integrity: sha512-3adfSSM9XKcbmKADXNGP+3oCO2VbJV9WjOR6kNuXV1n/A1WEtKrJ1KobvR62sm3Q1o1cNDDB8H5ZyqqXa4ySfA==}
@@ -13995,7 +14107,6 @@ packages:
   /validator/10.11.0:
     resolution: {integrity: sha512-X/p3UZerAIsbBfN/IwahhYaBbY68EN/UQBWHtsbXGT5bfrH/p4NQzUCG1kF/rtKaNpnJ7jAu6NGTdSNtyNIXMw==}
     engines: {node: '>= 0.10'}
-    dev: false
 
   /validator/13.6.0:
     resolution: {integrity: sha512-gVgKbdbHgtxpRyR8K0O6oFZPhhB5tT1jeEHZR0Znr9Svg03U0+r9DXWMrnRAB+HtCStDQKlaIZm42tVsVjqtjg==}
@@ -14534,7 +14645,6 @@ packages:
     resolution: {integrity: sha512-Xng/d4Ichh8uN4l0FToV/258EjMGU9MGcA0HV2d9B/ZpZB3lqQm7nkOdZdm5GhKtLLhAE7PiVQwN4eN+2YJJUg==}
     dependencies:
       '@types/node': 16.7.1
-    dev: false
 
   /word-wrap/1.2.3:
     resolution: {integrity: sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==}
