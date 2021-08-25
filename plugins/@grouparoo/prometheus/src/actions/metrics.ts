@@ -1,9 +1,28 @@
+import { Action } from "actionhero"
 import { AuthenticatedAction, Status } from "@grouparoo/core";
 import { collectDefaultMetrics, Gauge, Registry } from "prom-client";
 
-//TODO: target specific metrics *OR* generalize to any metric
 const register = new Registry();
 
+export default class PrometheusAction extends Action {
+  constructor() {
+    super();
+    this.name = "prometheus:getMetrics";
+    this.description = "Metrics endpoint supporting prometheus format";
+    this.middleware = ["authenticated-action"];
+    this.permission = { topic: "system", mode: "read" };
+  }
+
+  async run(data) {
+    data.connection.rawConnection.responseHeaders.push([
+      "Content-Type",
+      "text/plain",
+    ]);
+    data.response = await register.metrics();
+  }
+}
+
+//TODO: target specific metrics *OR* generalize to any metric
 const workersCount = new Gauge({
   name: "workers_count",
   help: "Number of workers in the cluster",
@@ -13,23 +32,6 @@ const workersCount = new Gauge({
   },
 });
 register.registerMetric(workersCount);
-
-export default class PrometheusAction extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "prometheus:getMetrics";
-    this.description = "Metrics endpoint supporting prometheus format";
-    this.permission = { topic: "system", mode: "read" };
-  }
-
-  async runWithinTransaction(data) {
-    data.connection.rawConnection.responseHeaders.push([
-      "Content-Type",
-      "text/plain",
-    ]);
-    data.response = await register.metrics();
-  }
-}
 
 //SEE: https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md
 //SEE: https://github.com/grouparoo/grouparoo/blob/c850e80cae15615ce8276bc7d5e66d72f600ce95/core/__tests__/modules/status.ts#L106
