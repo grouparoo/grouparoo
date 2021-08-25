@@ -19,6 +19,7 @@ const renames: { [table: string]: [string, string][] } = {
     ["profilesCreated", "recordsCreated"],
     ["profilesImported", "recordsImported"],
   ],
+  schedules: [["confirmProfiles", "confirmRecords"]],
 };
 
 export default {
