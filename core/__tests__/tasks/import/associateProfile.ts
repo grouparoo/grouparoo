@@ -9,30 +9,30 @@ import {
   Source,
 } from "../../../src";
 
-describe("tasks/import:associateProfile", () => {
+describe("tasks/import:associateRecord", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   let primarySource: Source;
   let primarySchedule: Schedule;
 
-  describe("import:associateProfile", () => {
+  describe("import:associateRecord", () => {
     beforeAll(async () => {
       primarySource = await Source.findOne();
       primarySchedule = await helper.factories.schedule(primarySource);
     });
 
     test("can be enqueued", async () => {
-      await task.enqueue("import:associateProfile", { importId: "abc123" });
+      await task.enqueue("import:associateRecord", { importId: "abc123" });
       const found = await specHelper.findEnqueuedTasks(
-        "import:associateProfile"
+        "import:associateRecord"
       );
       expect(found.length).toEqual(1);
       expect(found[0].timestamp).toBeNull();
     });
 
     test("does not throw if the import cannot be found", async () => {
-      await specHelper.runTask("import:associateProfile", {
+      await specHelper.runTask("import:associateRecord", {
         importId: "missing",
       });
     });
@@ -45,12 +45,12 @@ describe("tasks/import:associateProfile", () => {
         firstName: "Toad",
       });
       expect(_import.recordId).toBeFalsy();
-      expect(_import.profileAssociatedAt).toBeFalsy();
+      expect(_import.recordAssociatedAt).toBeFalsy();
 
-      let profilesCount = await GrouparooRecord.count();
-      expect(profilesCount).toBe(0);
+      let recordsCount = await GrouparooRecord.count();
+      expect(recordsCount).toBe(0);
 
-      await specHelper.runTask("import:associateProfile", {
+      await specHelper.runTask("import:associateRecord", {
         importId: _import.id,
       });
 
@@ -58,7 +58,7 @@ describe("tasks/import:associateProfile", () => {
       const record = await GrouparooRecord.findOne();
       expect(record).toBeTruthy();
       expect(_import.recordId).toBe(record.id);
-      expect(_import.profileAssociatedAt).toBeTruthy();
+      expect(_import.recordAssociatedAt).toBeTruthy();
 
       expect(_import.oldRecordProperties).toEqual({
         email: ["toad@example.com"],
@@ -78,8 +78,8 @@ describe("tasks/import:associateProfile", () => {
       await run.updateTotals();
 
       expect(run.importsCreated).toBe(1);
-      expect(run.profilesCreated).toBe(1);
-      expect(run.profilesImported).toBe(0);
+      expect(run.recordsCreated).toBe(1);
+      expect(run.recordsImported).toBe(0);
     });
 
     test("if there is an error, the import will have the error appended after a few attempts", async () => {
@@ -88,30 +88,30 @@ describe("tasks/import:associateProfile", () => {
         thing: "stuff",
       });
 
-      let found = await specHelper.findEnqueuedTasks("import:associateProfile");
+      let found = await specHelper.findEnqueuedTasks("import:associateRecord");
       expect(found.length).toEqual(1);
       expect(found[0].args[0]).toEqual({ importId: _import.id, attempts: 0 });
 
       // attempt 1
-      await specHelper.runTask("import:associateProfile", found[0].args[0]);
+      await specHelper.runTask("import:associateRecord", found[0].args[0]);
 
       await _import.reload();
       expect(_import.errorMessage).toBeFalsy();
-      found = await specHelper.findEnqueuedTasks("import:associateProfile");
+      found = await specHelper.findEnqueuedTasks("import:associateRecord");
       expect(found.length).toEqual(2);
       expect(found[1].args[0]).toEqual({ importId: _import.id, attempts: 1 });
 
       // attempt 2
-      await specHelper.runTask("import:associateProfile", found[1].args[0]);
+      await specHelper.runTask("import:associateRecord", found[1].args[0]);
 
       await _import.reload();
       expect(_import.errorMessage).toBeFalsy();
-      found = await specHelper.findEnqueuedTasks("import:associateProfile");
+      found = await specHelper.findEnqueuedTasks("import:associateRecord");
       expect(found.length).toEqual(3);
       expect(found[2].args[0]).toEqual({ importId: _import.id, attempts: 2 });
 
       // attempt 3
-      await specHelper.runTask("import:associateProfile", found[2].args[0]);
+      await specHelper.runTask("import:associateRecord", found[2].args[0]);
 
       await _import.reload();
       expect(_import.errorMessage).toMatch(
@@ -121,7 +121,7 @@ describe("tasks/import:associateProfile", () => {
       expect(errorMetadata.message).toMatch(
         /there are no unique record properties provided in {"thing":"stuff"}/
       );
-      expect(errorMetadata.step).toBe("import:associateProfile");
+      expect(errorMetadata.step).toBe("import:associateRecord");
       expect(errorMetadata.stack).toMatch(
         /findOrCreateByUniqueRecordProperties/
       );
@@ -149,12 +149,12 @@ describe("tasks/import:associateProfile", () => {
         someNonexistentProp: "Hi there",
       });
       expect(_import.recordId).toBeFalsy();
-      expect(_import.profileAssociatedAt).toBeFalsy();
+      expect(_import.recordAssociatedAt).toBeFalsy();
 
-      let profilesCount = await GrouparooRecord.count();
-      expect(profilesCount).toBe(0);
+      let recordsCount = await GrouparooRecord.count();
+      expect(recordsCount).toBe(0);
 
-      await specHelper.runTask("import:associateProfile", {
+      await specHelper.runTask("import:associateRecord", {
         importId: _import.id,
       });
 
@@ -162,7 +162,7 @@ describe("tasks/import:associateProfile", () => {
       const record = await GrouparooRecord.findOne();
       expect(record).toBeTruthy();
       expect(_import.recordId).toBe(record.id);
-      expect(_import.profileAssociatedAt).toBeTruthy();
+      expect(_import.recordAssociatedAt).toBeTruthy();
 
       const properties = await record.simplifiedProperties();
       expect(properties.email).toEqual(["bowserjr@example.com"]);
@@ -185,7 +185,7 @@ describe("tasks/import:associateProfile", () => {
         userId: 99999999, // doesn't exist in source
       });
 
-      await specHelper.runTask("import:associateProfile", {
+      await specHelper.runTask("import:associateRecord", {
         importId: _import.id,
         attempts: 3,
       });

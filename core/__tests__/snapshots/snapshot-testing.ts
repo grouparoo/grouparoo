@@ -24,7 +24,7 @@ describe("test grouparoo records", () => {
       const testPluginConnection = testPlugin.connections.find(
         (c) => c.name === "test-plugin-import"
       );
-      testPluginConnection.methods.profileProperty = async ({ property }) => {
+      testPluginConnection.methods.recordProperty = async ({ property }) => {
         const data = {
           userId: [100],
           isVIP: [true],
@@ -111,7 +111,7 @@ describe("test grouparoo records", () => {
       expect(exportApiData.length).toEqual(1);
 
       expect(exportApiData[0]).toMatchSnapshot({
-        recordId: expect.stringMatching(/^pro_/),
+        recordId: expect.stringMatching(/^rec_/),
         state: "pending",
         startedAt: expect.any(Number),
         sendAt: expect.any(Number),

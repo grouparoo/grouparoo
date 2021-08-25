@@ -2,7 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import { Property, RecordProperty, GrouparooRecord } from "../../../src";
 
-describe("tasks/profileProperties:sweep", () => {
+describe("tasks/recordProperties:sweep", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
@@ -21,16 +21,16 @@ describe("tasks/profileProperties:sweep", () => {
   });
 
   test("a record property with a missing record", async () => {
-    const profileProperty = await RecordProperty.create({
+    const recordProperty = await RecordProperty.create({
       recordId: "missing",
       propertyId: emailProperty.id,
       rawValue: "person@example.com",
       position: 0,
     });
 
-    await specHelper.runTask("profileProperties:sweep", {});
+    await specHelper.runTask("recordProperties:sweep", {});
 
-    await expect(profileProperty.reload()).rejects.toThrow(
+    await expect(recordProperty.reload()).rejects.toThrow(
       /does not exist anymore/
     );
 
@@ -47,7 +47,7 @@ describe("tasks/profileProperties:sweep", () => {
       email: ["luigi@example.com"],
     });
 
-    const profileProperty = await RecordProperty.create(
+    const recordProperty = await RecordProperty.create(
       {
         id: "rule_missing",
         recordId: luigi.id,
@@ -59,9 +59,9 @@ describe("tasks/profileProperties:sweep", () => {
       { hooks: false } // we need to skip validations
     );
 
-    await specHelper.runTask("profileProperties:sweep", {});
+    await specHelper.runTask("recordProperties:sweep", {});
 
-    await expect(profileProperty.reload()).rejects.toThrow(
+    await expect(recordProperty.reload()).rejects.toThrow(
       /does not exist anymore/
     );
 

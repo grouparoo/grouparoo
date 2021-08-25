@@ -247,7 +247,7 @@ describe("models/export", () => {
     });
 
     const group = await helper.factories.group();
-    await group.addProfile(record);
+    await group.addRecord(record);
 
     const destination = await helper.factories.destination();
     await destination.trackGroup(group);
@@ -318,7 +318,7 @@ describe("models/export", () => {
     await record.update({ state: "ready" });
 
     const group = await helper.factories.group();
-    await group.addProfile(record);
+    await group.addRecord(record);
 
     const destination = await helper.factories.destination();
     await destination.trackGroup(group);
@@ -360,7 +360,7 @@ describe("models/export", () => {
   test("exports can be marked as having changes or not", async () => {
     await Export.destroy({ where: { destinationId: destination.id } });
     const group = await helper.factories.group();
-    await group.addProfile(record);
+    await group.addRecord(record);
     await destination.trackGroup(group);
 
     const oldExport = await Export.create({

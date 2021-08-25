@@ -495,11 +495,11 @@ describe("models/destination", () => {
         });
 
         group = await helper.factories.group();
-        await group.addProfile(mario);
+        await group.addRecord(mario);
       });
 
       afterAll(async () => {
-        await group.removeProfile(mario);
+        await group.removeRecord(mario);
         await group.destroy();
         await mario.destroy();
       });

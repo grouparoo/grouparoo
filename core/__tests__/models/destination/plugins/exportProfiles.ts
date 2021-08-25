@@ -9,7 +9,7 @@ describe("models/destination", () => {
     helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
     beforeAll(async () => await helper.factories.properties());
 
-    describe("with custom exportProfiles plugin", () => {
+    describe("with custom exportRecords plugin", () => {
       let app: App;
       let destination: Destination;
       let exportArgs = {
@@ -84,7 +84,7 @@ describe("models/destination", () => {
                   };
                 },
                 exportArrayProperties: async () => exportArrayProperties,
-                exportProfiles: async ({
+                exportRecords: async ({
                   app,
                   appOptions,
                   destination,
@@ -137,7 +137,7 @@ describe("models/destination", () => {
         await destination.destroy();
       });
 
-      test("the app exportProfiles method can be called by the destination and exports will be created and mappings followed", async () => {
+      test("the app exportRecords method can be called by the destination and exports will be created and mappings followed", async () => {
         await destination.setMapping({
           uid: "userId",
           customer_email: "email",
@@ -161,8 +161,8 @@ describe("models/destination", () => {
           userId: [1001],
           email: ["newemail@example.com"],
         });
-        await groupA.addProfile(record);
-        await groupB.addProfile(record);
+        await groupA.addRecord(record);
+        await groupB.addRecord(record);
 
         const oldExport = await helper.factories.export(record, destination, {
           newRecordProperties: {
@@ -439,8 +439,8 @@ describe("models/destination", () => {
         );
 
         const record = await helper.factories.record();
-        await groupA.addProfile(record);
-        await groupB.addProfile(record);
+        await groupA.addRecord(record);
+        await groupB.addRecord(record);
 
         const oldExport = await helper.factories.export(record, destination, {
           newRecordProperties: {},
@@ -504,8 +504,8 @@ describe("models/destination", () => {
           );
 
           const record = await helper.factories.record();
-          await groupA.addProfile(record);
-          await groupB.addProfile(record);
+          await groupA.addRecord(record);
+          await groupB.addRecord(record);
 
           const oldExport = await helper.factories.export(record, destination, {
             newRecordProperties: {},
@@ -551,7 +551,7 @@ describe("models/destination", () => {
       test("if an export has the same data as the previous export, and force=false, it will not be sent to the destination", async () => {
         const record = await helper.factories.record();
         const group = await helper.factories.group();
-        await group.addProfile(record);
+        await group.addRecord(record);
         await destination.trackGroup(group);
 
         const oldExport = await Export.create({
@@ -595,7 +595,7 @@ describe("models/destination", () => {
       test("if an export has the same data as the previous export, and force=true, it will be sent to the destination", async () => {
         const record = await helper.factories.record();
         const group = await helper.factories.group();
-        await group.addProfile(record);
+        await group.addRecord(record);
         await destination.trackGroup(group);
 
         const oldExport = await Export.create({
@@ -642,7 +642,7 @@ describe("models/destination", () => {
           email: ["newEmail@example.com"],
         });
         const group = await helper.factories.group();
-        await group.addProfile(record);
+        await group.addRecord(record);
         await destination.trackGroup(group);
 
         await destination.setMapping({
@@ -838,11 +838,11 @@ describe("models/destination", () => {
           where: { destinationId: destination.id },
         });
 
-        const profileError = new Error("oh no!");
-        profileError["recordId"] = record.id;
+        const recordError = new Error("oh no!");
+        recordError["recordId"] = record.id;
         exportProfilesResponse = {
           success: false,
-          errors: [profileError],
+          errors: [recordError],
           retryDelay: 1000,
         };
 
@@ -895,12 +895,12 @@ describe("models/destination", () => {
           where: { destinationId: destination.id },
         });
 
-        const profileError = new Error("oh no!");
-        profileError["recordId"] = record.id;
-        profileError["errorLevel"] = "info";
+        const recordError = new Error("oh no!");
+        recordError["recordId"] = record.id;
+        recordError["errorLevel"] = "info";
         exportProfilesResponse = {
           success: false,
-          errors: [profileError],
+          errors: [recordError],
           retryDelay: 1000,
         };
 
@@ -941,41 +941,41 @@ describe("models/destination", () => {
           destinationGroupMemberships
         );
 
-        const profile1 = await helper.factories.record();
-        await destination.exportRecord(profile1);
+        const record1 = await helper.factories.record();
+        await destination.exportRecord(record1);
         const _export1 = await Export.findOne({
           where: {
             destinationId: destination.id,
-            recordId: profile1.id,
+            recordId: record1.id,
           },
         });
 
-        const profile2 = await helper.factories.record();
-        await destination.exportRecord(profile2);
+        const record2 = await helper.factories.record();
+        await destination.exportRecord(record2);
         const _export2 = await Export.findOne({
           where: {
             destinationId: destination.id,
-            recordId: profile2.id,
+            recordId: record2.id,
           },
         });
 
-        const profile3 = await helper.factories.record();
-        await destination.exportRecord(profile3);
+        const record3 = await helper.factories.record();
+        await destination.exportRecord(record3);
         const _export3 = await Export.findOne({
           where: {
             destinationId: destination.id,
-            recordId: profile3.id,
+            recordId: record3.id,
           },
         });
 
-        const profileError1 = new Error("oh no!");
-        profileError1["recordId"] = profile1.id;
-        const profileError2 = new Error("inform me!");
-        profileError2["recordId"] = profile2.id;
-        profileError2["errorLevel"] = "info";
+        const recordError1 = new Error("oh no!");
+        recordError1["recordId"] = record1.id;
+        const recordError2 = new Error("inform me!");
+        recordError2["recordId"] = record2.id;
+        recordError2["errorLevel"] = "info";
         exportProfilesResponse = {
           success: false,
-          errors: [profileError1, profileError2],
+          errors: [recordError1, recordError2],
           retryDelay: 1000,
         };
 

@@ -345,16 +345,16 @@ describe("models/group", () => {
 
   describe("with members", () => {
     test("adding and removing a group member creates a custom log message and imports", async () => {
-      const group = await helper.factories.group();
-      const record = await helper.factories.record();
-      await group.addProfile(record);
+      const group: Group = await helper.factories.group();
+      const record: GrouparooRecord = await helper.factories.record();
+      await group.addRecord(record);
 
       let log = await Log.findOne({
         where: { topic: "groupMember", verb: "create" },
       });
       expect(log.message).toMatch(/added to group/);
 
-      await group.removeProfile(record);
+      await group.removeRecord(record);
 
       log = await Log.findOne({
         where: { topic: "groupMember", verb: "destroy" },
@@ -436,15 +436,15 @@ describe("models/group", () => {
     });
 
     test("it can add a member", async () => {
-      await group.addProfile(record);
+      await group.addRecord(record);
       const records = await group.$get("records");
       expect(records.length).toBe(1);
-      const profileIds = records.map((p) => p.id);
-      expect(profileIds).toContain(record.id);
+      const recordIds = records.map((p) => p.id);
+      expect(recordIds).toContain(record.id);
     });
 
     test("it cannot add a member a second time", async () => {
-      await expect(group.addProfile(record)).rejects.toThrow(
+      await expect(group.addRecord(record)).rejects.toThrow(
         /There is already a GroupMember/
       );
 
@@ -453,27 +453,27 @@ describe("models/group", () => {
     });
 
     test("it can list members", async () => {
-      await group.addProfile(anotherProfile);
+      await group.addRecord(anotherProfile);
       const records = await group.$get("records");
       expect(records.length).toBe(2);
     });
 
     test("it can count members", async () => {
-      const count = await group.profilesCount();
+      const count = await group.recordsCount();
       expect(count).toBe(2);
     });
 
     test("it can remove a member", async () => {
-      await group.removeProfile(anotherProfile);
+      await group.removeRecord(anotherProfile);
       const records = await group.$get("records");
       expect(records.length).toBe(1);
-      const profileIds = records.map((p) => p.id);
-      expect(profileIds).toContain(record.id);
-      expect(profileIds).not.toContain(anotherProfile.id);
+      const recordIds = records.map((p) => p.id);
+      expect(recordIds).toContain(record.id);
+      expect(recordIds).not.toContain(anotherProfile.id);
     });
 
     test("it cannot remove a non-member", async () => {
-      await expect(group.removeProfile(anotherProfile)).rejects.toThrow(
+      await expect(group.removeRecord(anotherProfile)).rejects.toThrow(
         /record is not a member of this group/
       );
     });

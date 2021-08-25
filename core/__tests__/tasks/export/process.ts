@@ -33,13 +33,13 @@ describe("tasks/export:process", () => {
     expect(exportProcessor.completedAt.getTime()).toBe(new Date(0).getTime());
   });
 
-  test("throws error if plugin does not have a processExportedProfiles method", async () => {
+  test("throws error if plugin does not have a processExportedRecords method", async () => {
     const exportProcessor = await helper.factories.exportProcessor();
 
     await expect(
       specHelper.runTask("export:process", {
         exportProcessorId: exportProcessor.id,
       })
-    ).rejects.toThrow(/has no `processExportedProfiles` method/);
+    ).rejects.toThrow(/has no `processExportedRecords` method/);
   });
 });

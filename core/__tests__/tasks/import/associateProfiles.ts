@@ -26,7 +26,7 @@ describe("tasks/import:associateProfiles", () => {
     await specHelper.runTask("import:associateProfiles", {});
 
     const foundTasks = await specHelper.findEnqueuedTasks(
-      "import:associateProfile"
+      "import:associateRecord"
     );
     expect(foundTasks.length).toBe(1);
     expect(foundTasks[0].args[0].importId).toBe(_import.id);
@@ -35,12 +35,12 @@ describe("tasks/import:associateProfiles", () => {
   test("it will not include imports that have already been associated to a record", async () => {
     const _import = await helper.factories.import();
     await api.resque.queue.connection.redis.flushdb();
-    await _import.update({ recordId: "abc", profileAssociatedAt: new Date() });
+    await _import.update({ recordId: "abc", recordAssociatedAt: new Date() });
 
     await specHelper.runTask("import:associateProfiles", {});
 
     const foundTasks = await specHelper.findEnqueuedTasks(
-      "import:associateProfile"
+      "import:associateRecord"
     );
     expect(foundTasks.length).toBe(0);
   });
@@ -53,7 +53,7 @@ describe("tasks/import:associateProfiles", () => {
     await specHelper.runTask("import:associateProfiles", {});
 
     const foundTasks = await specHelper.findEnqueuedTasks(
-      "import:associateProfile"
+      "import:associateRecord"
     );
     expect(foundTasks.length).toBe(0);
   });
@@ -66,7 +66,7 @@ describe("tasks/import:associateProfiles", () => {
     await specHelper.runTask("import:associateProfiles", {});
 
     const foundTasks = await specHelper.findEnqueuedTasks(
-      "import:associateProfile"
+      "import:associateRecord"
     );
     expect(foundTasks.length).toBe(1);
     expect(foundTasks[0].args[0].importId).toBe(_import.id);
@@ -84,7 +84,7 @@ describe("tasks/import:associateProfiles", () => {
     await specHelper.runTask("import:associateProfiles", {}); // second enqueue, should find no imports
 
     const foundTasks = await specHelper.findEnqueuedTasks(
-      "import:associateProfile"
+      "import:associateRecord"
     );
     expect(foundTasks.length).toBe(0);
   });
@@ -114,7 +114,7 @@ describe("tasks/import:associateProfiles", () => {
     await specHelper.runTask("import:associateProfiles", {});
 
     const foundTasks = await specHelper.findEnqueuedTasks(
-      "import:associateProfile"
+      "import:associateRecord"
     );
     expect(foundTasks.length).toBe(0);
   });

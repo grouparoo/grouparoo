@@ -194,8 +194,8 @@ describe("models/destination", () => {
           userId: [1001],
           email: ["newemail@example.com"],
         });
-        await groupA.addProfile(record);
-        await groupB.addProfile(record);
+        await groupA.addRecord(record);
+        await groupB.addRecord(record);
 
         const oldExport = await helper.factories.export(record, destination, {
           newRecordProperties: {
@@ -274,7 +274,7 @@ describe("models/destination", () => {
           userId: [1001],
           email: ["newemail@example.com"],
         });
-        await groupA.addProfile(record);
+        await groupA.addRecord(record);
 
         // create a previous export
         const _export = await Export.create({
@@ -390,7 +390,7 @@ describe("models/destination", () => {
           userId: [1002],
           email: ["newemail@example.com"],
         });
-        await groupA.addProfile(record);
+        await groupA.addRecord(record);
 
         await destination.exportRecord(record);
 
@@ -420,7 +420,7 @@ describe("models/destination", () => {
         await destination.trackGroup(group);
 
         const record = await helper.factories.record();
-        await group.addProfile(record);
+        await group.addRecord(record);
 
         // create a previous export
         const _export = await Export.create({
@@ -464,7 +464,7 @@ describe("models/destination", () => {
         await destination.trackGroup(group);
 
         const record = await helper.factories.record();
-        await group.addProfile(record);
+        await group.addRecord(record);
 
         const destinationGroupMemberships = {};
         destinationGroupMemberships[group.id] = group.name;
@@ -568,8 +568,8 @@ describe("models/destination", () => {
         );
 
         const record = await helper.factories.record();
-        await groupA.addProfile(record);
-        await groupB.addProfile(record);
+        await groupA.addRecord(record);
+        await groupB.addRecord(record);
 
         const oldExport = await helper.factories.export(record, destination, {
           newRecordProperties: {},
@@ -623,8 +623,8 @@ describe("models/destination", () => {
           );
 
           const record = await helper.factories.record();
-          await groupA.addProfile(record);
-          await groupB.addProfile(record);
+          await groupA.addRecord(record);
+          await groupB.addRecord(record);
 
           const oldExport = await helper.factories.export(record, destination, {
             newRecordProperties: {},
@@ -661,7 +661,7 @@ describe("models/destination", () => {
       test("if an export has the same data as the previous export, and force=false, it will not be sent to the destination", async () => {
         const record = await helper.factories.record();
         const group = await helper.factories.group();
-        await group.addProfile(record);
+        await group.addRecord(record);
         await destination.trackGroup(group);
 
         const oldExport = await Export.create({
@@ -700,7 +700,7 @@ describe("models/destination", () => {
       test("if an export has the same data as the previous export, and force=true, it will be sent to the destination", async () => {
         const record = await helper.factories.record();
         const group = await helper.factories.group();
-        await group.addProfile(record);
+        await group.addRecord(record);
         await destination.trackGroup(group);
 
         const oldExport = await Export.create({
@@ -742,7 +742,7 @@ describe("models/destination", () => {
           email: ["newEmail@example.com"],
         });
         const group = await helper.factories.group();
-        await group.addProfile(record);
+        await group.addRecord(record);
         await destination.trackGroup(group);
 
         await destination.setMapping({
@@ -785,7 +785,7 @@ describe("models/destination", () => {
             email: ["newEmail@example.com"],
           });
           const group = await helper.factories.group();
-          await group.addProfile(record);
+          await group.addRecord(record);
           await destination.trackGroup(group);
 
           await destination.setMapping({
@@ -1172,7 +1172,7 @@ describe("models/destination", () => {
           );
 
           record = await helper.factories.record();
-          await group.addProfile(record);
+          await group.addRecord(record);
         });
 
         afterAll(async () => {

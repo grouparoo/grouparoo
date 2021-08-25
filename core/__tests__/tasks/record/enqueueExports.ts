@@ -48,7 +48,7 @@ describe("tasks/records:enqueueExports", () => {
       );
       await _import.update({
         groupsUpdatedAt: new Date(),
-        profileUpdatedAt: new Date(),
+        recordUpdatedAt: new Date(),
         exportedAt: null,
       });
 
@@ -72,15 +72,15 @@ describe("tasks/records:enqueueExports", () => {
       );
       await _import.update({
         groupsUpdatedAt: new Date(),
-        profileUpdatedAt: new Date(),
+        recordUpdatedAt: new Date(),
         exportedAt: null,
       });
 
       const emailProperty = await Property.findOne({ where: { key: "email" } });
-      const profileProperty = await RecordProperty.findOne({
+      const recordProperty = await RecordProperty.findOne({
         where: { recordId: record.id, propertyId: emailProperty.id },
       });
-      await profileProperty.update({ state: "pending" });
+      await recordProperty.update({ state: "pending" });
 
       await specHelper.runTask("records:enqueueExports", {});
 
@@ -102,7 +102,7 @@ describe("tasks/records:enqueueExports", () => {
       );
       await marioImport.update({
         groupsUpdatedAt: new Date(),
-        profileUpdatedAt: new Date(),
+        recordUpdatedAt: new Date(),
         exportedAt: null,
       });
 
@@ -117,7 +117,7 @@ describe("tasks/records:enqueueExports", () => {
       );
       await luigiImport.update({
         groupsUpdatedAt: null,
-        profileUpdatedAt: null,
+        recordUpdatedAt: null,
         exportedAt: null,
       });
 
@@ -132,7 +132,7 @@ describe("tasks/records:enqueueExports", () => {
       );
       await toadImport.update({
         groupsUpdatedAt: new Date(),
-        profileUpdatedAt: new Date(),
+        recordUpdatedAt: new Date(),
         exportedAt: null,
       });
 
@@ -165,7 +165,7 @@ describe("tasks/records:enqueueExports", () => {
       );
       await marioImport.update({
         groupsUpdatedAt: new Date(),
-        profileUpdatedAt: new Date(),
+        recordUpdatedAt: new Date(),
         exportedAt: null,
       });
 
@@ -179,7 +179,7 @@ describe("tasks/records:enqueueExports", () => {
       );
       await luigiImport.update({
         groupsUpdatedAt: new Date(),
-        profileUpdatedAt: new Date(),
+        recordUpdatedAt: new Date(),
         exportedAt: null,
       });
 

@@ -13,13 +13,13 @@ import {
   AggregationMethod,
 } from "../../../src";
 
-describe("tasks/profileProperty:importProfileProperties", () => {
+describe("tasks/recordProperty:importProfileProperties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
 
   let userIdCounter = 1;
-  describe("profileProperty:importProfileProperties", () => {
+  describe("recordProperty:importProfileProperties", () => {
     let testPluginConnection: PluginConnection;
 
     beforeAll(async () => {
@@ -30,7 +30,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       testPluginConnection = testPlugin.connections.find(
         (c) => c.name === "test-plugin-import"
       );
-      testPluginConnection.methods.profileProperties = async ({
+      testPluginConnection.methods.recordProperties = async ({
         properties,
         records,
       }) => {
@@ -59,16 +59,16 @@ describe("tasks/profileProperty:importProfileProperties", () => {
     });
 
     afterAll(() => {
-      delete testPluginConnection.methods.profileProperties;
+      delete testPluginConnection.methods.recordProperties;
     });
 
     test("can be enqueued", async () => {
-      await task.enqueue("profileProperty:importProfileProperties", {
-        profileIds: ["abc"],
+      await task.enqueue("recordProperty:importProfileProperties", {
+        recordIds: ["abc"],
         propertyIds: ["abc"],
       });
       const found = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperties"
+        "recordProperty:importProfileProperties"
       );
       expect(found.length).toEqual(1);
     });
@@ -77,18 +77,18 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       const property = await Property.findOne();
       const record = await helper.factories.record();
 
-      await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: ["missing"],
+      await specHelper.runTask("recordProperty:importProfileProperties", {
+        recordIds: ["missing"],
         propertyIds: ["missing"],
       });
 
-      await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [record.id],
+      await specHelper.runTask("recordProperty:importProfileProperties", {
+        recordIds: [record.id],
         propertyIds: ["missing"],
       });
 
-      await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: ["missing"],
+      await specHelper.runTask("recordProperty:importProfileProperties", {
+        recordIds: ["missing"],
         propertyIds: [property.id],
       });
 
@@ -101,20 +101,20 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         userId: [1],
         email: ["old@example.com"],
       });
-      const profileProperty = await RecordProperty.findOne({
+      const recordProperty = await RecordProperty.findOne({
         where: { rawValue: "1" },
       });
-      await profileProperty.update({ state: "pending" });
+      await recordProperty.update({ state: "pending" });
 
-      await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [record.id],
-        propertyIds: [profileProperty.propertyId],
+      await specHelper.runTask("recordProperty:importProfileProperties", {
+        recordIds: [record.id],
+        propertyIds: [recordProperty.propertyId],
       });
 
       // new value and state
-      await profileProperty.reload();
-      expect(profileProperty.state).toBe("ready");
-      expect(profileProperty.rawValue).toBe(`1`);
+      await recordProperty.reload();
+      expect(recordProperty.state).toBe("ready");
+      expect(recordProperty.rawValue).toBe(`1`);
       await record.destroy();
     });
 
@@ -128,10 +128,10 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         userId: [null],
         email: ["old@example.com"],
       });
-      const profileProperty = await RecordProperty.findOne({
+      const recordProperty = await RecordProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
-      await profileProperty.update({ state: "pending" });
+      await recordProperty.update({ state: "pending" });
 
       const userIdProfileProperty = await RecordProperty.findOne({
         where: {
@@ -141,21 +141,21 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       });
       await userIdProfileProperty.update({ state: "pending" });
 
-      await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [record.id],
-        propertyIds: [profileProperty.propertyId],
+      await specHelper.runTask("recordProperty:importProfileProperties", {
+        recordIds: [record.id],
+        propertyIds: [recordProperty.propertyId],
       });
 
       // no change
-      await profileProperty.reload();
-      expect(profileProperty.state).toBe("pending");
-      expect(profileProperty.rawValue).toBe(`old@example.com`);
+      await recordProperty.reload();
+      expect(recordProperty.state).toBe("pending");
+      expect(recordProperty.rawValue).toBe(`old@example.com`);
 
       // sendAt is slightly in the future from (now - 5 minutes) to try again soon
-      expect(profileProperty.startedAt.getTime()).toBeGreaterThan(
+      expect(recordProperty.startedAt.getTime()).toBeGreaterThan(
         new Date().getTime() - 1000 * 60 * 5
       );
-      expect(profileProperty.startedAt.getTime()).toBeLessThan(
+      expect(recordProperty.startedAt.getTime()).toBeLessThan(
         new Date().getTime()
       );
       await record.destroy();
@@ -184,8 +184,8 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       });
       await userIdProfileProperty.update({ state: "pending" });
 
-      await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [record.id],
+      await specHelper.runTask("recordProperty:importProfileProperties", {
+        recordIds: [record.id],
         propertyIds: [
           emailProfileProperty.propertyId,
           userIdProfileProperty.propertyId,
@@ -205,7 +205,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
 
     test("will set value to null for record properties that no longer exist", async () => {
       const spy = jest
-        .spyOn(testPluginConnection.methods, "profileProperties")
+        .spyOn(testPluginConnection.methods, "recordProperties")
         .mockImplementation(() => undefined);
 
       const record: GrouparooRecord = await helper.factories.record();
@@ -213,40 +213,40 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         userId: [99],
         email: ["someoldemail@example.com"],
       });
-      const profileProperty = await RecordProperty.findOne({
+      const recordProperty = await RecordProperty.findOne({
         where: { rawValue: "99" },
       });
-      await profileProperty.update({ state: "pending" });
+      await recordProperty.update({ state: "pending" });
 
-      await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [record.id],
-        propertyIds: [profileProperty.propertyId],
+      await specHelper.runTask("recordProperty:importProfileProperties", {
+        recordIds: [record.id],
+        propertyIds: [recordProperty.propertyId],
       });
 
       // new value and state
-      await profileProperty.reload();
-      expect(profileProperty.state).toBe("ready");
-      expect(profileProperty.rawValue).toBe(null);
+      await recordProperty.reload();
+      expect(recordProperty.state).toBe("ready");
+      expect(recordProperty.rawValue).toBe(null);
       await record.destroy();
 
       spy.mockRestore();
     });
 
     describe("with records", () => {
-      let profileA: GrouparooRecord;
-      let profileB: GrouparooRecord;
-      let profileC: GrouparooRecord;
+      let recordA: GrouparooRecord;
+      let recordB: GrouparooRecord;
+      let recordC: GrouparooRecord;
 
       beforeAll(async () => {
-        profileA = await helper.factories.record();
-        profileB = await helper.factories.record();
-        profileC = await helper.factories.record();
+        recordA = await helper.factories.record();
+        recordB = await helper.factories.record();
+        recordC = await helper.factories.record();
       });
 
       afterAll(async () => {
-        await profileA.destroy();
-        await profileB.destroy();
-        await profileC.destroy();
+        await recordA.destroy();
+        await recordB.destroy();
+        await recordC.destroy();
       });
 
       beforeEach(async () => {
@@ -254,13 +254,13 @@ describe("tasks/profileProperty:importProfileProperties", () => {
           { state: "pending" },
           {
             where: {
-              recordId: { [Op.in]: [profileA.id, profileB.id, profileC.id] },
+              recordId: { [Op.in]: [recordA.id, recordB.id, recordC.id] },
             },
           }
         );
       });
 
-      test("will fan out non-unique profileProperties for multiple properties", async () => {
+      test("will fan out non-unique recordProperties for multiple properties", async () => {
         plugin.registerPlugin({
           name: "test-plugin",
           apps: [
@@ -285,7 +285,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
               methods: {
                 propertyOptions: async () => [],
                 sourceFilters: async () => [],
-                profileProperties: async ({ properties, records }) => {
+                recordProperties: async ({ properties, records }) => {
                   // only returns data for the first record
                   return {
                     [records[0].id]: {
@@ -323,9 +323,9 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         );
         await newPropertyA.update({ state: "ready" });
         await newPropertyB.update({ state: "ready" });
-        await profileA.buildNullProperties();
-        await profileB.buildNullProperties();
-        await profileC.buildNullProperties();
+        await recordA.buildNullProperties();
+        await recordB.buildNullProperties();
+        await recordC.buildNullProperties();
 
         await RecordProperty.update(
           { state: "ready" },
@@ -344,20 +344,20 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         );
 
         // import
-        await specHelper.runTask("profileProperty:importProfileProperties", {
-          profileIds: [profileA.id, profileB.id, profileC.id],
+        await specHelper.runTask("recordProperty:importProfileProperties", {
+          recordIds: [recordA.id, recordB.id, recordC.id],
           propertyIds: [newPropertyA.id, newPropertyB.id],
         });
 
-        const profilePropertiesA = await profileA.getProperties();
-        const profilePropertiesB = await profileB.getProperties();
-        const profilePropertiesC = await profileC.getProperties();
-        expect(profilePropertiesA[newPropertyA.id].values).toEqual(["foo"]);
-        expect(profilePropertiesB[newPropertyA.id].values).toEqual(["foo"]);
-        expect(profilePropertiesC[newPropertyA.id].values).toEqual(["foo"]);
-        expect(profilePropertiesA[newPropertyB.id].values).toEqual(["bar"]);
-        expect(profilePropertiesB[newPropertyB.id].values).toEqual(["bar"]);
-        expect(profilePropertiesC[newPropertyB.id].values).toEqual(["bar"]);
+        const recordPropertiesA = await recordA.getProperties();
+        const recordPropertiesB = await recordB.getProperties();
+        const recordPropertiesC = await recordC.getProperties();
+        expect(recordPropertiesA[newPropertyA.id].values).toEqual(["foo"]);
+        expect(recordPropertiesB[newPropertyA.id].values).toEqual(["foo"]);
+        expect(recordPropertiesC[newPropertyA.id].values).toEqual(["foo"]);
+        expect(recordPropertiesA[newPropertyB.id].values).toEqual(["bar"]);
+        expect(recordPropertiesB[newPropertyB.id].values).toEqual(["bar"]);
+        expect(recordPropertiesC[newPropertyB.id].values).toEqual(["bar"]);
 
         // cleanup
         await newPropertyA.destroy();
@@ -371,23 +371,23 @@ describe("tasks/profileProperty:importProfileProperties", () => {
 
         // run once to set userId
         for (const property of properties) {
-          await specHelper.runTask("profileProperty:importProfileProperties", {
-            profileIds: [profileA.id, profileB.id, profileC.id],
+          await specHelper.runTask("recordProperty:importProfileProperties", {
+            recordIds: [recordA.id, recordB.id, recordC.id],
             propertyIds: [property.id],
           });
         }
 
         // run again for other properties
         for (const property of properties) {
-          await specHelper.runTask("profileProperty:importProfileProperties", {
-            profileIds: [profileA.id, profileB.id, profileC.id],
+          await specHelper.runTask("recordProperty:importProfileProperties", {
+            recordIds: [recordA.id, recordB.id, recordC.id],
             propertyIds: [property.id],
           });
         }
 
-        const profileProperties = await profileA.getProperties();
-        expect(profileProperties.firstName.values).toEqual(["Mario"]);
-        expect(profileProperties.lastName.values).toEqual(["Mario"]);
+        const recordProperties = await recordA.getProperties();
+        expect(recordProperties.firstName.values).toEqual(["Mario"]);
+        expect(recordProperties.lastName.values).toEqual(["Mario"]);
       });
     });
   });

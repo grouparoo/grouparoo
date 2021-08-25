@@ -41,8 +41,8 @@ describe("tasks/group:exportToCSV", () => {
 
       group = await Group.create({ name: "test group", type: "manual" });
       await group.update({ state: "ready" });
-      await group.addProfile(mario);
-      await group.addProfile(luigi);
+      await group.addRecord(mario);
+      await group.addRecord(luigi);
     });
 
     test("can be enqueued", async () => {

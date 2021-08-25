@@ -1079,7 +1079,7 @@ describe("modules/codeConfig", () => {
           source: ["users_table"],
           team: [],
           teammember: [],
-          record: ["profile_john", "profile_matthew"],
+          record: ["record_john", "record_matthew"],
         });
         expect(deletedIds).toEqual({
           apikey: [],
@@ -1102,7 +1102,7 @@ describe("modules/codeConfig", () => {
         expect(records.length).toBe(2);
 
         const john = records[0];
-        expect(john.id).toBe("profile_john");
+        expect(john.id).toBe("record_john");
         expect(john.state).toBe("pending");
 
         const johnProps = await john.getProperties();
@@ -1112,7 +1112,7 @@ describe("modules/codeConfig", () => {
         expect(johnProps.email.values).toEqual([null]);
 
         const matthew = records[1];
-        expect(matthew.id).toBe("profile_matthew");
+        expect(matthew.id).toBe("record_matthew");
         expect(matthew.state).toBe("pending");
 
         const matthewProps = await matthew.getProperties();
@@ -1431,7 +1431,7 @@ describe("modules/codeConfig", () => {
           )
         );
         expect(errors[0]).toMatch(
-          /Could not find object with ID: missing_profile_property/
+          /Could not find object with ID: missing_record_property/
         );
       });
     });

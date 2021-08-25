@@ -123,7 +123,7 @@ describe("modules/codeConfig", () => {
 
           expect(errors.length).toBe(1);
           expect(errors[0]).toMatch(
-            /Could not find object with ID: missing_profile_property/
+            /Could not find object with ID: missing_record_property/
           );
 
           throw new Error("test-rollback");
@@ -156,7 +156,7 @@ describe("modules/codeConfig", () => {
 
           expect(errors.length).toBe(1);
           expect(errors[0]).toMatch(
-            /Could not find object with ID: missing_profile_property/
+            /Could not find object with ID: missing_record_property/
           );
 
           throw new Error("test-rollback");

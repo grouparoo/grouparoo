@@ -39,7 +39,7 @@ describe("models/record", () => {
     const record = await GrouparooRecord.findOne();
     const logs = await record.$get("logs");
     expect(logs.length).toBe(1);
-    expect(logs[0].topic).toBe("record");
+    expect(logs[0].topic).toBe("grouparooRecord");
     expect(logs[0].verb).toBe("create");
     expect(logs[0].message).toBe("record created");
   });
@@ -49,7 +49,7 @@ describe("models/record", () => {
     await record.destroy();
     const logs = await record.$get("logs", { order: [["createdAt", "asc"]] });
     expect(logs.length).toBe(2);
-    expect(logs[1].topic).toBe("record");
+    expect(logs[1].topic).toBe("grouparooRecord");
     expect(logs[1].verb).toBe("destroy");
     expect(logs[1].message).toBe("record destroyed");
   });
@@ -608,7 +608,7 @@ describe("models/record", () => {
         test("orphan record properties will be removed", async () => {
           await record.reload();
 
-          const profileProperty = await RecordProperty.create(
+          const recordProperty = await RecordProperty.create(
             {
               id: "rule_missing",
               recordId: record.id,
@@ -623,7 +623,7 @@ describe("models/record", () => {
           const properties = await record.getProperties(); // does not throw
           expect(Object.keys(properties).length).toBe(5);
 
-          await expect(profileProperty.reload()).rejects.toThrow(
+          await expect(recordProperty.reload()).rejects.toThrow(
             /does not exist anymore/
           );
         });
@@ -886,11 +886,11 @@ describe("models/record", () => {
                 record,
               }) => {
                 const table = sourceOptions.table.toString();
-                const profileProperties = await record.simplifiedProperties();
+                const recordProperties = await record.simplifiedProperties();
                 const mappingKey = Object.values(sourceMapping)[0];
                 const mappingVal =
-                  profileProperties[mappingKey].length > 0 &&
-                  profileProperties[mappingKey][0]?.toString();
+                  recordProperties[mappingKey].length > 0 &&
+                  recordProperties[mappingKey][0]?.toString();
 
                 return mappingVal &&
                   importResult[table] &&
@@ -991,8 +991,8 @@ describe("models/record", () => {
       const connection = api.plugins.plugins.filter(
         (p) => p.name === "test-plugin"
       )[0].connections[0];
-      const oldMethod = connection.methods.profileProperty;
-      delete connection.methods.profileProperty;
+      const oldMethod = connection.methods.recordProperty;
+      delete connection.methods.recordProperty;
 
       await record.import();
 
@@ -1007,7 +1007,7 @@ describe("models/record", () => {
         color: ["green"],
       });
 
-      connection.methods.profileProperty = oldMethod;
+      connection.methods.recordProperty = oldMethod;
     });
 
     test("after importing, all missing properties will have created a null record property", async () => {
@@ -1141,19 +1141,19 @@ describe("models/record", () => {
   });
 
   describe("merging", () => {
-    let profileA: GrouparooRecord;
-    let profileB: GrouparooRecord;
+    let recordA: GrouparooRecord;
+    let recordB: GrouparooRecord;
 
     beforeAll(async () => {
       await GrouparooRecord.truncate();
       await helper.factories.properties();
 
       // create the records
-      profileA = await helper.factories.record();
-      await profileA.import();
+      recordA = await helper.factories.record();
+      await recordA.import();
 
-      profileB = await helper.factories.record();
-      await profileB.import();
+      recordB = await helper.factories.record();
+      await recordB.import();
 
       // disable the test plugin import so we can explicitly set record properties
       helper.disableTestPluginImport();
@@ -1166,25 +1166,25 @@ describe("models/record", () => {
     });
 
     test("the records both have properties", async () => {
-      const propertiesA = await profileA.getProperties();
-      const propertiesB = await profileB.getProperties();
+      const propertiesA = await recordA.getProperties();
+      const propertiesB = await recordB.getProperties();
       expect(Object.keys(propertiesA).length).toBe(9);
       expect(Object.keys(propertiesB).length).toBe(9);
     });
 
     test("record A has newer email, record B has newer userId, record B has a newer ltv but it is null", async () => {
-      await profileA.addOrUpdateProperties({ ltv: [123.45] });
-      await profileB.addOrUpdateProperties({ userId: [100] });
-      await profileB.addOrUpdateProperties({ firstName: ["fname"] });
+      await recordA.addOrUpdateProperties({ ltv: [123.45] });
+      await recordB.addOrUpdateProperties({ userId: [100] });
+      await recordB.addOrUpdateProperties({ firstName: ["fname"] });
 
       // bump the updatedAt time for the email record property, even though they remain null
       await helper.sleep(1001);
-      await profileA.addOrUpdateProperties({
+      await recordA.addOrUpdateProperties({
         email: ["new-email@example.com"],
       });
 
-      const propertiesA = await profileA.getProperties();
-      const propertiesB = await profileB.getProperties();
+      const propertiesA = await recordA.getProperties();
+      const propertiesB = await recordB.getProperties();
 
       expect(propertiesA.email.values).toEqual(["new-email@example.com"]);
       expect(propertiesA.userId.values).toBeTruthy();
@@ -1202,21 +1202,21 @@ describe("models/record", () => {
     });
 
     test("record A and B each have different purchases", async () => {
-      await profileA.addOrUpdateProperties({ purchases: ["hat"] });
-      await profileB.addOrUpdateProperties({ purchases: ["shoe"] });
+      await recordA.addOrUpdateProperties({ purchases: ["hat"] });
+      await recordB.addOrUpdateProperties({ purchases: ["shoe"] });
     });
 
     test("merging records moved the properties", async () => {
-      await RecordOps.merge(profileA, profileB);
+      await RecordOps.merge(recordA, recordB);
 
-      const propertiesA = await profileA.getProperties();
-      const propertiesB = await profileB.getProperties();
+      const propertiesA = await recordA.getProperties();
+      const propertiesB = await recordB.getProperties();
       expect(Object.keys(propertiesA).length).toBe(9);
       expect(Object.keys(propertiesB).length).toBe(0);
     });
 
     test("the merged record kept the newer non-null properties", async () => {
-      const properties = await profileA.getProperties();
+      const properties = await recordA.getProperties();
       expect(properties.email.values).toEqual(["new-email@example.com"]);
       expect(properties.userId.values).toEqual([100]);
       expect(properties.firstName.values).toEqual(["fname"]);
@@ -1225,14 +1225,14 @@ describe("models/record", () => {
 
     test("the merged records should have only kept the array properties of the newest record property", async () => {
       // we can't be sure of the array-order for the combined records.  A re-import should be deterministic too
-      const propertiesA = await profileA.getProperties();
+      const propertiesA = await recordA.getProperties();
       expect(propertiesA.purchases.values).toEqual(["shoe"]);
     });
 
     test("the merged record is pending", async () => {
-      await profileA.reload();
-      expect(profileA.state).toBe("pending");
-      const properties = await profileA.getProperties();
+      await recordA.reload();
+      expect(recordA.state).toBe("pending");
+      const properties = await recordA.getProperties();
       for (const k in properties) {
         expect(properties[k].state).toBe("pending");
       }
@@ -1240,14 +1240,14 @@ describe("models/record", () => {
 
     test("the merged record has a log entry about the merge", async () => {
       const logs = await Log.findAll({
-        where: { ownerId: profileA.id, verb: "merge" },
+        where: { ownerId: recordA.id, verb: "merge" },
       });
       expect(logs.length).toEqual(1);
-      expect(logs[0].message).toEqual(`merged with record ${profileB.id}`);
+      expect(logs[0].message).toEqual(`merged with record ${recordB.id}`);
     });
 
     test("after merging the other record is deleted", async () => {
-      await expect(profileB.reload()).rejects.toThrow(/does not exist/);
+      await expect(recordB.reload()).rejects.toThrow(/does not exist/);
       const records = await GrouparooRecord.findAll();
       expect(records.length).toBe(1);
     });

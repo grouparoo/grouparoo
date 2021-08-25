@@ -30,7 +30,7 @@ describe("model/group", () => {
 
   describe("rules", () => {
     describe("top level group rules", () => {
-      test("groupRule can be saved without topLevel indicating they have a profileColumn", async () => {
+      test("groupRule can be saved without topLevel indicating they have a recordColumn", async () => {
         await group.setRules([
           {
             key: "grouparooId",
@@ -54,13 +54,13 @@ describe("model/group", () => {
         const groupRule = await GroupRule.findOne({
           where: { groupId: group.id },
         });
-        expect(groupRule.profileColumn).toBe("grouparooId");
+        expect(groupRule.recordColumn).toBe("grouparooId");
         expect(groupRule.propertyId).toBe(null);
 
         expect(await group.countPotentialMembers()).toBe(4);
       });
 
-      test("groupRule cannot be saved with topLevel with an invalid profileColumn", async () => {
+      test("groupRule cannot be saved with topLevel with an invalid recordColumn", async () => {
         await expect(
           group.setRules([
             {
@@ -71,7 +71,7 @@ describe("model/group", () => {
         ).rejects.toThrow(/cannot find property koopa/);
       });
 
-      test("GroupRules must have either a profilePropertyId or a profileColumn", async () => {
+      test("GroupRules must have either a recordPropertyId or a recordColumn", async () => {
         await expect(
           GroupRule.create({
             position: 1,
@@ -79,7 +79,7 @@ describe("model/group", () => {
             groupId: group.id,
           })
         ).rejects.toThrow(
-          /either propertyId or profileColumn is required for a GroupRule/
+          /either propertyId or recordColumn is required for a GroupRule/
         );
       });
 
@@ -90,7 +90,7 @@ describe("model/group", () => {
         const count = await group.countPotentialMembers([
           {
             key: "grouparooId",
-            match: "pro%",
+            match: "rec%",
             operation: { op: "like" },
             topLevel: true,
           },
@@ -102,7 +102,7 @@ describe("model/group", () => {
           group.countPotentialMembers([
             {
               key: "id",
-              match: "pro%",
+              match: "rec%",
               operation: { op: "exists" },
             },
           ])
@@ -123,15 +123,15 @@ describe("model/group", () => {
 
         test("partial matches", async () => {
           await group.setRules([
-            { key: "grouparooId", match: "pro%", operation: { op: "like" } },
+            { key: "grouparooId", match: "rec%", operation: { op: "like" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("multiple rules with same key", async () => {
           await group.setRules([
-            { key: "grouparooId", match: "pro%", operation: { op: "like" } },
-            { key: "grouparooId", match: "pro_%", operation: { op: "like" } },
+            { key: "grouparooId", match: "rec%", operation: { op: "like" } },
+            { key: "grouparooId", match: "rec_%", operation: { op: "like" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });

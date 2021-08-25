@@ -59,7 +59,7 @@ describe("tasks/runs:updateCounts", () => {
         creatorType: "schedule",
         state: "complete",
         importsCreated: 1,
-        profilesImported: 0,
+        recordsImported: 0,
       });
 
       const runsChecked = await specHelper.runTask("runs:updateCounts", {});
@@ -73,7 +73,7 @@ describe("tasks/runs:updateCounts", () => {
         creatorType: "schedule",
         state: "complete",
         importsCreated: 1,
-        profilesImported: 1,
+        recordsImported: 1,
       });
 
       const runsChecked = await specHelper.runTask("runs:updateCounts", {});

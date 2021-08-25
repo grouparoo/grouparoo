@@ -377,7 +377,7 @@ describe("models/app", () => {
   describe("with plugin", () => {
     let app: App;
     let testCounter = 0;
-    let profilePropertyCount = 0;
+    let recordPropertyCount = 0;
     let parallelism = Infinity;
     let appOptionsReturnType: PluginOptionType = "list";
 
@@ -423,8 +423,8 @@ describe("models/app", () => {
                   sourceOffset: 0,
                 };
               },
-              profileProperty: async ({ app, property, record }) => {
-                profilePropertyCount++;
+              recordProperty: async ({ app, property, record }) => {
+                recordPropertyCount++;
                 return ["test@example.com"];
               },
             },

@@ -9,7 +9,7 @@ Object {
   "matchType": "all",
   "name": "test group",
   "nextCalculatedAt": Any<Number>,
-  "profilesCount": 1,
+  "recordsCount": 1,
   "rules": Array [
     Object {
       "key": "email",
@@ -153,7 +153,7 @@ Object {
       "matchType": "all",
       "name": "test group",
       "nextCalculatedAt": Any<Number>,
-      "profilesCount": 1,
+      "recordsCount": 1,
       "rules": Array [
         Object {
           "key": "email",

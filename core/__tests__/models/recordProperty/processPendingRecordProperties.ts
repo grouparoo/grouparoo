@@ -6,15 +6,15 @@ import {
   GrouparooRecord,
   RecordProperty,
   PluginConnection,
-  ProfilePropertyPluginMethod,
-  ProfilePropertiesPluginMethod,
+  RecordPropertyPluginMethod,
+  RecordPropertiesPluginMethod,
   GrouparooPlugin,
 } from "../../../src";
-import { ProfilePropertyOps } from "../../../src/modules/ops/profileProperty";
+import { RecordPropertyOps } from "../../../src/modules/ops/recordProperty";
 
-describe("models/source/processPendingProfileProperties", () => {
-  let profileA: GrouparooRecord;
-  let profileB: GrouparooRecord;
+describe("models/source/processPendingRecordProperties", () => {
+  let recordA: GrouparooRecord;
+  let recordB: GrouparooRecord;
   let source: Source;
 
   let userId: Property;
@@ -31,8 +31,8 @@ describe("models/source/processPendingProfileProperties", () => {
   beforeAll(async () => await helper.factories.properties());
 
   let testPluginConnection: PluginConnection;
-  let prevProfilePropertyMethod: ProfilePropertyPluginMethod;
-  let prevProfilePropertiesMethod: ProfilePropertiesPluginMethod;
+  let prevRecordPropertyMethod: RecordPropertyPluginMethod;
+  let prevRecordPropertiesMethod: RecordPropertiesPluginMethod;
 
   beforeAll(async () => {
     const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
@@ -43,15 +43,13 @@ describe("models/source/processPendingProfileProperties", () => {
       (c) => c.name === "test-plugin-import"
     );
 
-    prevProfilePropertyMethod = testPluginConnection.methods.profileProperty;
-    prevProfilePropertiesMethod =
-      testPluginConnection.methods.profileProperties;
+    prevRecordPropertyMethod = testPluginConnection.methods.recordProperty;
+    prevRecordPropertiesMethod = testPluginConnection.methods.recordProperties;
   });
 
   function resetPlugin() {
-    testPluginConnection.methods.profileProperty = prevProfilePropertyMethod;
-    testPluginConnection.methods.profileProperties =
-      prevProfilePropertiesMethod;
+    testPluginConnection.methods.recordProperty = prevRecordPropertyMethod;
+    testPluginConnection.methods.recordProperties = prevRecordPropertiesMethod;
   }
 
   afterAll(() => {
@@ -60,8 +58,8 @@ describe("models/source/processPendingProfileProperties", () => {
 
   beforeAll(async () => {
     source = await Source.findOne();
-    profileA = await helper.factories.record();
-    profileB = await helper.factories.record();
+    recordA = await helper.factories.record();
+    recordB = await helper.factories.record();
 
     userId = await Property.findOne({ where: { key: "userId" } });
     email = await Property.findOne({ where: { key: "email" } });
@@ -88,16 +86,16 @@ describe("models/source/processPendingProfileProperties", () => {
     expect(await Property.count()).toBe(9);
   });
 
-  describe("plugin has both importProfileProperty and importProfileProperties methods", () => {
+  describe("plugin has both importRecordProperty and importRecordProperties methods", () => {
     test("a blend of exact and non-exact properties from the same source will be properly grouped", async () => {
       await makeExact(["userId", "email", "firstName", "lastName"]); // 4 exact properties
 
-      await ProfilePropertyOps.processPendingProfileProperties(source);
+      await RecordPropertyOps.processPendingRecordProperties(source);
       const propertiesTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperties"
+        "recordProperty:importRecordProperties"
       );
       const propertyTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperty"
+        "recordProperty:importRecordProperty"
       );
 
       const comboPropertiesTasks = propertiesTasks.filter(
@@ -115,8 +113,8 @@ describe("models/source/processPendingProfileProperties", () => {
       expect(comboPropertiesTasks[0].args[0].propertyIds.sort()).toEqual(
         [userId.id, email.id, firstName.id, lastName.id].sort()
       );
-      expect(comboPropertiesTasks[0].args[0].profileIds.sort()).toEqual(
-        [profileA.id, profileB.id].sort()
+      expect(comboPropertiesTasks[0].args[0].recordIds.sort()).toEqual(
+        [recordA.id, recordB.id].sort()
       );
     });
 
@@ -133,12 +131,12 @@ describe("models/source/processPendingProfileProperties", () => {
         "lastLoginAt",
       ]); // 9 exact properties
 
-      await ProfilePropertyOps.processPendingProfileProperties(source);
+      await RecordPropertyOps.processPendingRecordProperties(source);
       const propertiesTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperties"
+        "recordProperty:importRecordProperties"
       );
       const propertyTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperty"
+        "recordProperty:importRecordProperty"
       );
 
       const comboPropertiesTasks = propertiesTasks.filter(
@@ -166,20 +164,20 @@ describe("models/source/processPendingProfileProperties", () => {
           // purchases.id, -- array property
         ].sort()
       );
-      expect(comboPropertiesTasks[0].args[0].profileIds.sort()).toEqual(
-        [profileA.id, profileB.id].sort()
+      expect(comboPropertiesTasks[0].args[0].recordIds.sort()).toEqual(
+        [recordA.id, recordB.id].sort()
       );
     });
 
     test("no exact properties", async () => {
       await makeExact([]); // 0 exact properties
 
-      await ProfilePropertyOps.processPendingProfileProperties(source);
+      await RecordPropertyOps.processPendingRecordProperties(source);
       const propertiesTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperties"
+        "recordProperty:importRecordProperties"
       );
       const propertyTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperty"
+        "recordProperty:importRecordProperty"
       );
 
       const comboPropertiesTasks = propertiesTasks.filter(
@@ -195,21 +193,21 @@ describe("models/source/processPendingProfileProperties", () => {
     });
   });
 
-  describe("plugin has only importProfileProperty method", () => {
+  describe("plugin has only importRecordProperty method", () => {
     beforeAll(() => {
       resetPlugin();
-      delete testPluginConnection.methods.profileProperties;
+      delete testPluginConnection.methods.recordProperties;
     });
 
     test("a blend of exact and non-exact properties from the same source will be properly grouped", async () => {
       await makeExact(["userId", "email", "firstName", "lastName"]); // 4 exact properties
 
-      await ProfilePropertyOps.processPendingProfileProperties(source);
+      await RecordPropertyOps.processPendingRecordProperties(source);
       const propertiesTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperties"
+        "recordProperty:importRecordProperties"
       );
       const propertyTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperty"
+        "recordProperty:importRecordProperty"
       );
 
       expect(propertyTasks.length).toEqual(9 * 2); // 9 properties * 2 records
@@ -219,12 +217,12 @@ describe("models/source/processPendingProfileProperties", () => {
     test("no exact properties", async () => {
       await makeExact([]); // 0 exact properties
 
-      await ProfilePropertyOps.processPendingProfileProperties(source);
+      await RecordPropertyOps.processPendingRecordProperties(source);
       const propertiesTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperties"
+        "recordProperty:importRecordProperties"
       );
       const propertyTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperty"
+        "recordProperty:importRecordProperty"
       );
 
       expect(propertyTasks.length).toEqual(9 * 2); // 9 properties * 2 records

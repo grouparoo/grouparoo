@@ -534,7 +534,7 @@ describe("models/source", () => {
       });
     });
 
-    test("it throws an error if the mapping does not include the key of a profilePropertyRyle", async () => {
+    test("it throws an error if the mapping does not include the key of a recordPropertyRyle", async () => {
       await expect(
         source.setMapping({
           local_user_id: "TheUserID",
@@ -789,7 +789,7 @@ describe("models/source", () => {
 
       originalProfilePropertyMethod = api.plugins.plugins.filter(
         (p) => p.name === "@grouparoo/test-plugin"
-      )[0].connections[0].methods.profileProperty;
+      )[0].connections[0].methods.recordProperty;
     });
 
     afterAll(async () => {
@@ -801,7 +801,7 @@ describe("models/source", () => {
     afterEach(() => {
       api.plugins.plugins.filter(
         (p) => p.name === "@grouparoo/test-plugin"
-      )[0].connections[0].methods.profileProperty = originalProfilePropertyMethod;
+      )[0].connections[0].methods.recordProperty = originalProfilePropertyMethod;
     });
 
     test("it will not import a draft property (single)", async () => {
@@ -847,7 +847,7 @@ describe("models/source", () => {
     test("if importing returned null, it will not be included in the response hash to set record properties", async () => {
       api.plugins.plugins.filter(
         (p) => p.name === "@grouparoo/test-plugin"
-      )[0].connections[0].methods.profileProperty = async () => {
+      )[0].connections[0].methods.recordProperty = async () => {
         return null;
       };
 
@@ -859,7 +859,7 @@ describe("models/source", () => {
     test("if importing returned undefined, it will not be included in the response hash to set record properties", async () => {
       api.plugins.plugins.filter(
         (p) => p.name === "@grouparoo/test-plugin"
-      )[0].connections[0].methods.profileProperty = async () => {
+      )[0].connections[0].methods.recordProperty = async () => {
         return undefined;
       };
 
@@ -911,7 +911,7 @@ describe("models/source", () => {
 
       const previousRun = await helper.factories.run(schedule, {
         createdAt: new Date(0),
-        profilesReadCount: 1,
+        recordsReadCount: 1,
         state: "complete",
       });
       const run = await helper.factories.run(schedule);
@@ -966,7 +966,7 @@ describe("models/source", () => {
     });
   });
 
-  describe("#applyNonUniqueMappedResultsToAllProfiles", () => {
+  describe("#applyNonUniqueMappedResultsToAllRecords", () => {
     let source: Source;
     let sourceMapping: SourceMapping;
     let propertyA: Property;

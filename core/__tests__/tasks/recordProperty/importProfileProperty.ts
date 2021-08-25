@@ -7,40 +7,40 @@ import {
   Property,
 } from "../../../src";
 
-describe("tasks/profileProperty:importProfileProperty", () => {
+describe("tasks/recordProperty:importRecordProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
 
-  describe("profileProperty:importProfileProperty", () => {
+  describe("recordProperty:importRecordProperty", () => {
     test("can be enqueued", async () => {
-      await task.enqueue("profileProperty:importProfileProperty", {
+      await task.enqueue("recordProperty:importRecordProperty", {
         recordId: "abc",
         propertyId: "abc",
       });
       const found = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperty"
+        "recordProperty:importRecordProperty"
       );
       expect(found.length).toEqual(1);
     });
 
     test("does not throw if the record or property cannot be found", async () => {
-      const profileProperty = await Property.findOne();
+      const recordProperty = await Property.findOne();
       const record = await helper.factories.record();
 
-      await specHelper.runTask("profileProperty:importProfileProperty", {
+      await specHelper.runTask("recordProperty:importRecordProperty", {
         recordId: "missing",
         propertyId: "missing",
       });
 
-      await specHelper.runTask("profileProperty:importProfileProperty", {
+      await specHelper.runTask("recordProperty:importRecordProperty", {
         recordId: record.id,
         propertyId: "missing",
       });
 
-      await specHelper.runTask("profileProperty:importProfileProperty", {
+      await specHelper.runTask("recordProperty:importRecordProperty", {
         recordId: "missing",
-        propertyId: profileProperty.id,
+        propertyId: recordProperty.id,
       });
 
       await record.destroy();
@@ -52,20 +52,20 @@ describe("tasks/profileProperty:importProfileProperty", () => {
         userId: [1],
         email: ["old@example.com"],
       });
-      const profileProperty = await RecordProperty.findOne({
+      const recordProperty = await RecordProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
-      await profileProperty.update({ state: "pending" });
+      await recordProperty.update({ state: "pending" });
 
-      await specHelper.runTask("profileProperty:importProfileProperty", {
+      await specHelper.runTask("recordProperty:importRecordProperty", {
         recordId: record.id,
-        propertyId: profileProperty.propertyId,
+        propertyId: recordProperty.propertyId,
       });
 
       // new value and state
-      await profileProperty.reload();
-      expect(profileProperty.state).toBe("ready");
-      expect(profileProperty.rawValue).toBe(`${record.id}@example.com`);
+      await recordProperty.reload();
+      expect(recordProperty.state).toBe("ready");
+      expect(recordProperty.rawValue).toBe(`${record.id}@example.com`);
     });
 
     test("will set value to null if the record property no longer exists", async () => {
@@ -78,7 +78,7 @@ describe("tasks/profileProperty:importProfileProperty", () => {
       );
 
       const spy = jest
-        .spyOn(testPluginConnection.methods, "profileProperty")
+        .spyOn(testPluginConnection.methods, "recordProperty")
         .mockImplementation(() => undefined);
 
       const record: GrouparooRecord = await helper.factories.record();
@@ -86,20 +86,20 @@ describe("tasks/profileProperty:importProfileProperty", () => {
         userId: [99],
         email: ["someoldemail@example.com"],
       });
-      const profileProperty = await RecordProperty.findOne({
+      const recordProperty = await RecordProperty.findOne({
         where: { rawValue: "someoldemail@example.com", recordId: record.id },
       });
-      await profileProperty.update({ state: "pending" });
+      await recordProperty.update({ state: "pending" });
 
-      await specHelper.runTask("profileProperty:importProfileProperty", {
+      await specHelper.runTask("recordProperty:importRecordProperty", {
         recordId: record.id,
-        propertyId: profileProperty.propertyId,
+        propertyId: recordProperty.propertyId,
       });
 
       // new value and state
-      await profileProperty.reload();
-      expect(profileProperty.state).toBe("ready");
-      expect(profileProperty.rawValue).toBe(null);
+      await recordProperty.reload();
+      expect(recordProperty.state).toBe("ready");
+      expect(recordProperty.rawValue).toBe(null);
 
       spy.mockRestore();
 
@@ -116,10 +116,10 @@ describe("tasks/profileProperty:importProfileProperty", () => {
         userId: [null],
         email: ["old@example.com"],
       });
-      const profileProperty = await RecordProperty.findOne({
+      const recordProperty = await RecordProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
-      await profileProperty.update({ state: "pending" });
+      await recordProperty.update({ state: "pending" });
 
       const userIdProfileProperty = await RecordProperty.findOne({
         where: {
@@ -129,21 +129,21 @@ describe("tasks/profileProperty:importProfileProperty", () => {
       });
       await userIdProfileProperty.update({ state: "pending" });
 
-      await specHelper.runTask("profileProperty:importProfileProperty", {
+      await specHelper.runTask("recordProperty:importRecordProperty", {
         recordId: record.id,
-        propertyId: profileProperty.propertyId,
+        propertyId: recordProperty.propertyId,
       });
 
       // no change
-      await profileProperty.reload();
-      expect(profileProperty.state).toBe("pending");
-      expect(profileProperty.rawValue).toBe(`old@example.com`);
+      await recordProperty.reload();
+      expect(recordProperty.state).toBe("pending");
+      expect(recordProperty.rawValue).toBe(`old@example.com`);
 
       // sendAt is slightly in the future from (now - 5 minutes) to try again soon
-      expect(profileProperty.startedAt.getTime()).toBeGreaterThan(
+      expect(recordProperty.startedAt.getTime()).toBeGreaterThan(
         new Date().getTime() - 1000 * 60 * 5
       );
-      expect(profileProperty.startedAt.getTime()).toBeLessThan(
+      expect(recordProperty.startedAt.getTime()).toBeLessThan(
         new Date().getTime()
       );
     });

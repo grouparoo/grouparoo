@@ -14,7 +14,7 @@ describe("models/destination", () => {
     helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
     beforeAll(async () => await helper.factories.properties());
 
-    describe("with custom processExportedProfiles", () => {
+    describe("with custom processExportedRecords", () => {
       let app: App;
       let destination: Destination;
       let exportArgs = {
@@ -113,7 +113,7 @@ describe("models/destination", () => {
                   };
                 },
                 exportArrayProperties: async () => exportArrayProperties,
-                exportProfiles: async ({
+                exportRecords: async ({
                   app,
                   appOptions,
                   destination,
@@ -130,7 +130,7 @@ describe("models/destination", () => {
 
                   return exportProfilesResponse;
                 },
-                processExportedProfiles: async ({
+                processExportedRecords: async ({
                   app,
                   appOptions,
                   destination,
@@ -188,7 +188,7 @@ describe("models/destination", () => {
         await destination.destroy();
       });
 
-      test("the exportProfiles method can indicate exports will be processed later and models will be created", async () => {
+      test("the exportRecords method can indicate exports will be processed later and models will be created", async () => {
         await destination.setMapping({
           uid: "userId",
           customer_email: "email",
@@ -201,7 +201,7 @@ describe("models/destination", () => {
         await record.addOrUpdateProperties({
           email: ["newemail@example.com"],
         });
-        await groupA.addProfile(record);
+        await groupA.addRecord(record);
 
         await destination.exportRecord(record);
         await specHelper.runTask("export:enqueue", {});
@@ -216,7 +216,7 @@ describe("models/destination", () => {
           errors: null,
           retryDelay: null,
           processExports: {
-            profileIds: [record.id],
+            recordIds: [record.id],
             processDelay: 1000,
             remoteKey: "remote-import-id",
           },
@@ -249,7 +249,7 @@ describe("models/destination", () => {
         await record.destroy();
       });
 
-      test("the processExportedProfiles method can be called by the destination", async () => {
+      test("the processExportedRecords method can be called by the destination", async () => {
         const exportProcessor = await helper.factories.exportProcessor(
           destination,
           {
@@ -257,14 +257,14 @@ describe("models/destination", () => {
             remoteKey: "my-remote-key",
           }
         );
-        const profile1 = await helper.factories.record();
-        const profile2 = await helper.factories.record();
-        const export1 = await helper.factories.export(profile1, destination, {
+        const record1 = await helper.factories.record();
+        const record2 = await helper.factories.record();
+        const export1 = await helper.factories.export(record1, destination, {
           startedAt: new Date(),
           state: "processing",
           exportProcessorId: exportProcessor.id,
         });
-        const export2 = await helper.factories.export(profile2, destination, {
+        const export2 = await helper.factories.export(record2, destination, {
           startedAt: new Date(),
           state: "processing",
           exportProcessorId: exportProcessor.id,
@@ -297,11 +297,11 @@ describe("models/destination", () => {
         expect(export2.completedAt).toBeTruthy();
         expect(export2.errorMessage).toBeNull();
 
-        await profile1.destroy();
-        await profile2.destroy();
+        await record1.destroy();
+        await record2.destroy();
       });
 
-      test("the processExportedProfiles method can throw an error and it will be retried", async () => {
+      test("the processExportedRecords method can throw an error and it will be retried", async () => {
         const exportProcessor = await helper.factories.exportProcessor(
           destination,
           {
@@ -364,7 +364,7 @@ describe("models/destination", () => {
         await record.destroy();
       });
 
-      test("the processExportedProfiles method can throw an error and the processor/exports will be marked as failed if retried too many times", async () => {
+      test("the processExportedRecords method can throw an error and the processor/exports will be marked as failed if retried too many times", async () => {
         const setting = await Setting.findOne({
           where: { key: "export-processors-max-retries-count" },
         });
@@ -425,30 +425,30 @@ describe("models/destination", () => {
             processAt: new Date(0),
           }
         );
-        const profile1 = await helper.factories.record();
-        const export1 = await helper.factories.export(profile1, destination, {
+        const record1 = await helper.factories.record();
+        const export1 = await helper.factories.export(record1, destination, {
           startedAt: new Date(),
           state: "processing",
           exportProcessorId: exportProcessor.id,
         });
-        const profile2 = await helper.factories.record();
-        const export2 = await helper.factories.export(profile2, destination, {
+        const record2 = await helper.factories.record();
+        const export2 = await helper.factories.export(record2, destination, {
           startedAt: new Date(),
           state: "processing",
           exportProcessorId: exportProcessor.id,
         });
-        const profile3 = await helper.factories.record();
-        const export3 = await helper.factories.export(profile3, destination, {
+        const record3 = await helper.factories.record();
+        const export3 = await helper.factories.export(record3, destination, {
           startedAt: new Date(),
           state: "processing",
           exportProcessorId: exportProcessor.id,
         });
 
-        const profileError1 = new Error("oh no!");
-        profileError1["recordId"] = profile1.id;
-        const profileError2 = new Error("info error!");
-        profileError2["recordId"] = profile2.id;
-        profileError2["errorLevel"] = "info";
+        const recordError1 = new Error("oh no!");
+        recordError1["recordId"] = record1.id;
+        const recordError2 = new Error("info error!");
+        recordError2["recordId"] = record2.id;
+        recordError2["errorLevel"] = "info";
 
         await specHelper.runTask("export:enqueueProcessors", {});
 
@@ -457,7 +457,7 @@ describe("models/destination", () => {
 
         processProfilesResponse = {
           success: false,
-          errors: [profileError1, profileError2],
+          errors: [recordError1, recordError2],
           retryDelay: 1000,
           processExports: null,
         };
@@ -472,7 +472,7 @@ describe("models/destination", () => {
 
         // Failed exports get their error set
         await export1.reload();
-        expect(export1.recordId).toBe(profile1.id);
+        expect(export1.recordId).toBe(record1.id);
         expect(export1.state).toBe("pending"); // kicked back to pending state
         expect(export1.completedAt).toBeFalsy();
         expect(export1.errorMessage).toBe("oh no!");
@@ -480,7 +480,7 @@ describe("models/destination", () => {
         expect(export1.exportProcessorId).toBeNull(); // cleared
 
         await export2.reload();
-        expect(export2.recordId).toBe(profile2.id);
+        expect(export2.recordId).toBe(record2.id);
         expect(export2.state).toBe("failed"); // marked as failed
         expect(export2.completedAt).toBeFalsy();
         expect(export2.errorMessage).toBe("info error!");
@@ -489,16 +489,16 @@ describe("models/destination", () => {
 
         // Successful exports will be marked as complete
         await export3.reload();
-        expect(export3.recordId).toBe(profile3.id);
+        expect(export3.recordId).toBe(record3.id);
         expect(export3.state).toBe("complete");
         expect(export3.completedAt).toBeTruthy();
         expect(export3.errorMessage).toBeNull();
         expect(export3.exportProcessorId).toBe(exportProcessor.id);
 
         await export1.destroy();
-        await profile1.destroy();
-        await profile2.destroy();
-        await profile3.destroy();
+        await record1.destroy();
+        await record2.destroy();
+        await record3.destroy();
       });
 
       test("failed exports will be retried, sent back to pending and cleared of an exportProcessor", async () => {
@@ -508,15 +508,15 @@ describe("models/destination", () => {
             processAt: new Date(0),
           }
         );
-        const profile1 = await helper.factories.record();
-        const export1 = await helper.factories.export(profile1, destination, {
+        const record1 = await helper.factories.record();
+        const export1 = await helper.factories.export(record1, destination, {
           startedAt: new Date(),
           state: "processing",
           exportProcessorId: exportProcessor.id,
         });
 
-        const profileError1 = new Error("oh no!");
-        profileError1["recordId"] = profile1.id;
+        const recordError1 = new Error("oh no!");
+        recordError1["recordId"] = record1.id;
 
         await specHelper.runTask("export:enqueueProcessors", {});
 
@@ -525,7 +525,7 @@ describe("models/destination", () => {
 
         processProfilesResponse = {
           success: false,
-          errors: [profileError1],
+          errors: [recordError1],
           retryDelay: 1000,
           processExports: null,
         };
@@ -540,7 +540,7 @@ describe("models/destination", () => {
 
         // Failed export gets kicked back to pending, bump retry and clear processor
         await export1.reload();
-        expect(export1.recordId).toBe(profile1.id);
+        expect(export1.recordId).toBe(record1.id);
         expect(export1.state).toBe("pending"); // kicked back to pending state
         expect(export1.completedAt).toBeFalsy();
         expect(export1.errorMessage).toBe("oh no!");
@@ -549,10 +549,10 @@ describe("models/destination", () => {
         expect(export1.retryCount).toBe(1);
 
         await export1.destroy();
-        await profile1.destroy();
+        await record1.destroy();
       });
 
-      test("the processExportedProfiles method can return processExports to have them reprocessed", async () => {
+      test("the processExportedRecords method can return processExports to have them reprocessed", async () => {
         const exportProcessor = await helper.factories.exportProcessor(
           destination,
           {
@@ -560,20 +560,20 @@ describe("models/destination", () => {
             remoteKey: "my-remote-key",
           }
         );
-        const profile1 = await helper.factories.record();
-        const profile2 = await helper.factories.record();
-        const profile3 = await helper.factories.record();
-        const export1 = await helper.factories.export(profile1, destination, {
+        const record1 = await helper.factories.record();
+        const record2 = await helper.factories.record();
+        const record3 = await helper.factories.record();
+        const export1 = await helper.factories.export(record1, destination, {
           startedAt: new Date(),
           state: "processing",
           exportProcessorId: exportProcessor.id,
         });
-        const export2 = await helper.factories.export(profile2, destination, {
+        const export2 = await helper.factories.export(record2, destination, {
           startedAt: new Date(),
           state: "processing",
           exportProcessorId: exportProcessor.id,
         });
-        const export3 = await helper.factories.export(profile3, destination, {
+        const export3 = await helper.factories.export(record3, destination, {
           startedAt: new Date(),
           state: "processing",
           exportProcessorId: exportProcessor.id,
@@ -590,7 +590,7 @@ describe("models/destination", () => {
         processProfilesResponse = {
           success: true,
           processExports: {
-            profileIds: [profile1.id, profile2.id], // profile3 was successful
+            recordIds: [record1.id, record2.id], // record3 was successful
             processDelay: 1000,
           },
           errors: null,
@@ -653,12 +653,12 @@ describe("models/destination", () => {
         expect(export2.completedAt).toBeTruthy();
         expect(export2.exportProcessorId).toBe(exportProcessor.id);
 
-        await profile1.destroy();
-        await profile2.destroy();
-        await profile3.destroy();
+        await record1.destroy();
+        await record2.destroy();
+        await record3.destroy();
       });
 
-      test("the processor/exports will be marked as failed if the processExportedProfiles method returns processExports too many times", async () => {
+      test("the processor/exports will be marked as failed if the processExportedRecords method returns processExports too many times", async () => {
         const setting = await Setting.findOne({
           where: { key: "export-processors-max-retries-count" },
         });
@@ -689,7 +689,7 @@ describe("models/destination", () => {
         processProfilesResponse = {
           success: true,
           processExports: {
-            profileIds: [record.id],
+            recordIds: [record.id],
             processDelay: 1000,
           },
           errors: null,
@@ -719,7 +719,7 @@ describe("models/destination", () => {
         await record.destroy();
       });
 
-      test("processExportedProfiles can handle parallelsim limits", async () => {
+      test("processExportedRecords can handle parallelsim limits", async () => {
         parallelismResponse = 0;
 
         const exportProcessor = await helper.factories.exportProcessor(
@@ -728,8 +728,8 @@ describe("models/destination", () => {
             processAt: new Date(0),
           }
         );
-        const profile1 = await helper.factories.record();
-        const export1 = await helper.factories.export(profile1, destination, {
+        const record1 = await helper.factories.record();
+        const export1 = await helper.factories.export(record1, destination, {
           startedAt: new Date(),
           state: "processing",
           exportProcessorId: exportProcessor.id,
@@ -774,7 +774,7 @@ describe("models/destination", () => {
         expect(export1.completedAt).toBeTruthy();
         expect(export1.errorMessage).toBeNull();
 
-        await profile1.destroy();
+        await record1.destroy();
       });
     });
   });

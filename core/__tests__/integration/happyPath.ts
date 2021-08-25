@@ -298,7 +298,7 @@ describe("integration/happyPath", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(group.profilesCount).toBe(1);
+      expect(group.recordsCount).toBe(1);
 
       connection.params = {
         csrfToken,
@@ -362,7 +362,7 @@ describe("integration/happyPath", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(group.profilesCount).toBe(1);
+      expect(group.recordsCount).toBe(1);
 
       connection.params = {
         csrfToken,

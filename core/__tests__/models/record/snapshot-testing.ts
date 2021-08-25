@@ -109,7 +109,7 @@ describe("test grouparoo records", () => {
       expect(exportApiData.length).toEqual(1);
 
       expect(exportApiData[0]).toMatchSnapshot({
-        recordId: expect.stringMatching(/^pro_/),
+        recordId: expect.stringMatching(/^rec_/),
         startedAt: expect.any(Number),
         sendAt: expect.any(Number),
         state: "pending",

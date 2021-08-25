@@ -23,7 +23,7 @@ describe("modules/codeConfig", () => {
       const testPluginConnection = testPlugin.connections.find(
         (c) => c.name === "test-plugin-import"
       );
-      testPluginConnection.methods.profileProperty = async ({ property }) => {
+      testPluginConnection.methods.recordProperty = async ({ property }) => {
         const data = {
           userId: [100],
           isVIP: [true],

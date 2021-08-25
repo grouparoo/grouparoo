@@ -49,7 +49,7 @@ describe("tasks/export:send", () => {
       await record.addOrUpdateProperties({ email: ["mario@example.com"] });
 
       group = await helper.factories.group({ type: "manual" });
-      await group.addProfile(record);
+      await group.addRecord(record);
 
       destination = await helper.factories.destination();
       await destination.trackGroup(group);
@@ -74,8 +74,8 @@ describe("tasks/export:send", () => {
       await run.updateTotals();
 
       expect(run.importsCreated).toBe(1);
-      expect(run.profilesCreated).toBe(0);
-      expect(run.profilesImported).toBe(0);
+      expect(run.recordsCreated).toBe(0);
+      expect(run.recordsImported).toBe(0);
     });
 
     test("the record can be imported and exported", async () => {

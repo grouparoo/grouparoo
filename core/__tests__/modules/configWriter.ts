@@ -386,7 +386,7 @@ describe("modules/configWriter", () => {
       await source.update({ state: "ready" });
       const property: Property = await Property.findOne();
       const record: GrouparooRecord = await helper.factories.record();
-      const profile2: GrouparooRecord = await helper.factories.record();
+      const record2: GrouparooRecord = await helper.factories.record();
       const setting: Setting = await changeClusterNameSetting();
 
       const configObjects = await ConfigWriter.getConfigObjects();
@@ -412,7 +412,7 @@ describe("modules/configWriter", () => {
           filePath: `development/records.json`,
           object: [
             await record.getConfigObject(),
-            await profile2.getConfigObject(),
+            await record2.getConfigObject(),
           ],
         },
       ]);

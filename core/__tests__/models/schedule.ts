@@ -138,7 +138,7 @@ describe("models/schedule", () => {
                 propertyOptions: async () => {
                   return null;
                 },
-                profileProperty: async () => {
+                recordProperty: async () => {
                   return [];
                 },
               },
@@ -504,7 +504,7 @@ describe("models/schedule", () => {
                   importsCount: 100,
                 };
               },
-              profileProperty: async () => {
+              recordProperty: async () => {
                 return [];
               },
               sourceFilters: async () => {

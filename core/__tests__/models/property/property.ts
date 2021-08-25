@@ -205,24 +205,24 @@ describe("models/property", () => {
       await property.setOptions({ column: "name" });
       await property.update({ state: "ready" });
 
-      const profileA = await helper.factories.record();
-      const profileB = await helper.factories.record();
-      const profileC = await helper.factories.record();
-      await profileA.addOrUpdateProperties({ name: ["mario"] });
-      await profileB.addOrUpdateProperties({ name: ["toad"] });
-      await profileC.addOrUpdateProperties({ name: ["toad"] });
+      const recordA = await helper.factories.record();
+      const recordB = await helper.factories.record();
+      const recordC = await helper.factories.record();
+      await recordA.addOrUpdateProperties({ name: ["mario"] });
+      await recordB.addOrUpdateProperties({ name: ["toad"] });
+      await recordC.addOrUpdateProperties({ name: ["toad"] });
 
       await expect(property.update({ unique: true })).rejects.toThrow(
         /cannot make this property unique as there are 2 records with the value 'toad'/
       );
 
-      await profileC.addOrUpdateProperties({ name: ["peach"] });
+      await recordC.addOrUpdateProperties({ name: ["peach"] });
 
       await property.update({ unique: true }); // does not throw
 
-      await profileA.destroy();
-      await profileB.destroy();
-      await profileC.destroy();
+      await recordA.destroy();
+      await recordB.destroy();
+      await recordC.destroy();
       await property.destroy();
     });
 
@@ -303,7 +303,7 @@ describe("models/property", () => {
           direction: "import",
           options: [],
           methods: {
-            profileProperty: async () => {
+            recordProperty: async () => {
               return [];
             },
           },
@@ -509,7 +509,7 @@ describe("models/property", () => {
     await api.resque.queue.connection.redis.flushdb();
     await property.update({ unique: true });
     let foundTasks = await specHelper.findEnqueuedTasks(
-      "property:updateProfileProperties"
+      "property:updateRecordProperties"
     );
     expect(foundTasks.length).toBe(1);
     expect(foundTasks[0].args[0].propertyId).toBe(property.id);
@@ -518,7 +518,7 @@ describe("models/property", () => {
     await api.resque.queue.connection.redis.flushdb();
     await property.update({ key: "new name" });
     foundTasks = await specHelper.findEnqueuedTasks(
-      "property:updateProfileProperties"
+      "property:updateRecordProperties"
     );
     expect(foundTasks.length).toBe(0);
 
@@ -710,15 +710,11 @@ describe("models/property", () => {
                   },
                 ];
               },
-              profileProperty: async ({
-                property,
-                propertyOptions,
-                record,
-              }) => {
+              recordProperty: async ({ property, propertyOptions, record }) => {
                 const s = `the time is {{now.sql}} + ${JSON.stringify(
                   propertyOptions
                 )}`;
-                const q = await property.parameterizedQueryFromProfile(
+                const q = await property.parameterizedQueryFromRecord(
                   s,
                   record
                 );

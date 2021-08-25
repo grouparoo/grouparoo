@@ -419,17 +419,17 @@ describe("actions/destinations", () => {
             email: "email",
           },
         };
-        const { error, record: _profile } =
+        const { error, record: _record } =
           await specHelper.runAction<DestinationRecordPreview>(
             "destination:recordPreview",
             connection
           );
         expect(error).toBeUndefined();
-        expect(_profile.properties["primary-id"].values).toEqual([1]);
-        expect(_profile.properties["email"].values).toEqual([
+        expect(_record.properties["primary-id"].values).toEqual([1]);
+        expect(_record.properties["email"].values).toEqual([
           "yoshi@example.com",
         ]);
-        expect(_profile.groupNames).toEqual(["another-group-tag"]);
+        expect(_record.groupNames).toEqual(["another-group-tag"]);
       });
 
       test("an administrator can get a preview of a record to be exported to a destination, with an un-set optional property", async () => {
@@ -444,16 +444,16 @@ describe("actions/destinations", () => {
             "something-new-string": "",
           },
         };
-        const { error, record: _profile } =
+        const { error, record: _record } =
           await specHelper.runAction<DestinationRecordPreview>(
             "destination:recordPreview",
             connection
           );
         expect(error).toBeUndefined();
-        expect(_profile.properties["primary-id"].values).toEqual([1]);
-        expect(_profile.properties["something-new-null"]).toBeFalsy();
-        expect(_profile.properties["something-new-undefined"]).toBeFalsy();
-        expect(_profile.properties["something-new-string"]).toBeFalsy();
+        expect(_record.properties["primary-id"].values).toEqual([1]);
+        expect(_record.properties["something-new-null"]).toBeFalsy();
+        expect(_record.properties["something-new-undefined"]).toBeFalsy();
+        expect(_record.properties["something-new-string"]).toBeFalsy();
       });
 
       test("destination:recordPreview will not fail if a new record property has just been created or there are missing properties", async () => {
@@ -475,14 +475,14 @@ describe("actions/destinations", () => {
             color: "color",
           },
         };
-        const { error, record: _profile } =
+        const { error, record: _record } =
           await specHelper.runAction<DestinationRecordPreview>(
             "destination:recordPreview",
             connection
           );
         expect(error).toBeUndefined();
-        expect(_profile.properties["primary-id"].values).toEqual([1]);
-        expect(_profile.properties["color"].values).toEqual([null]);
+        expect(_record.properties["primary-id"].values).toEqual([1]);
+        expect(_record.properties["color"].values).toEqual([null]);
 
         await colorProperty.destroy();
       });

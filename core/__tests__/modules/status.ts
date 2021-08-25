@@ -388,8 +388,8 @@ describe("modules/status", () => {
 
     test("it gathers records", async () => {
       const records = await FinalSummaryReporters.Records.getData();
-      expect(records[0].profilesCreated).toEqual(1);
-      expect(records[0].profilesUpdated).toEqual(1);
+      expect(records[0].recordsCreated).toEqual(1);
+      expect(records[0].recordsUpdated).toEqual(1);
       expect(records[0].allProfiles).toEqual(2);
     });
 
@@ -419,8 +419,8 @@ describe("modules/status", () => {
           );
           const now = new Date();
           await _import.update({
-            profileAssociatedAt: now,
-            profileUpdatedAt: now,
+            recordAssociatedAt: now,
+            recordUpdatedAt: now,
             groupsUpdatedAt: now,
           });
 
@@ -429,8 +429,8 @@ describe("modules/status", () => {
           const sources = await FinalSummaryReporters.Sources.getData();
           expect(sources[0].name).toEqual(source.name);
           expect(sources[0].importsCreated).toEqual(1);
-          expect(sources[0].profilesCreated).toEqual(0);
-          expect(sources[0].profilesImported).toEqual(1);
+          expect(sources[0].recordsCreated).toEqual(0);
+          expect(sources[0].recordsImported).toEqual(1);
           expect(sources[0].error).toEqual(null);
         }
       );

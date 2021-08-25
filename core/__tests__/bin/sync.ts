@@ -19,7 +19,7 @@ describe("bin/sync", () => {
     const testPluginConnection = testPlugin.connections.find(
       (c) => c.name === "test-plugin-import"
     );
-    testPluginConnection.methods.profileProperty = async ({ property }) => {
+    testPluginConnection.methods.recordProperty = async ({ property }) => {
       const data = {
         userId: [100],
         isVIP: [true],
@@ -69,14 +69,14 @@ describe("bin/sync", () => {
     });
 
     test("it can sync by record id", async () => {
-      await instance.run({ params: { profileProperty: record.id } });
+      await instance.run({ params: { recordProperty: record.id } });
       const output = messages.join(" ");
       expect(output).toContain(`* id: ${record.id}`);
       expect(output).toContain(`* email: mario@example.com`);
     });
 
     test("it can sync by record property", async () => {
-      await instance.run({ params: { profileProperty: "mario@example.com" } });
+      await instance.run({ params: { recordProperty: "mario@example.com" } });
       const output = messages.join(" ");
       expect(output).toContain(`* id: ${record.id}`);
       expect(output).toContain(`* email: mario@example.com`);
@@ -84,7 +84,7 @@ describe("bin/sync", () => {
 
     test("it can sync by record property and property", async () => {
       await instance.run({
-        params: { profileProperty: "mario@example.com", property: "email" },
+        params: { recordProperty: "mario@example.com", property: "email" },
       });
       const output = messages.join(" ");
       expect(output).toContain(`* id: ${record.id}`);
@@ -93,7 +93,7 @@ describe("bin/sync", () => {
 
     test("it will fail with if it cannot provide the explicit property", async () => {
       await instance.run({
-        params: { profileProperty: "mario@example.com", property: "foo" },
+        params: { recordProperty: "mario@example.com", property: "foo" },
       });
       const output = messages.join(" ");
       expect(output).toContain(
@@ -105,7 +105,7 @@ describe("bin/sync", () => {
       process.env.GROUPAROO_LOG_LEVEL = "alert"; // disable other log messages
 
       await instance.run({
-        params: { profileProperty: "mario@example.com", json: true },
+        params: { recordProperty: "mario@example.com", json: true },
       });
       const output = messages.join("");
 

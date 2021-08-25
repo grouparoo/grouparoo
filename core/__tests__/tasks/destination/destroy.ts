@@ -55,8 +55,8 @@ describe("tasks/destination:destroy", () => {
         group = await helper.factories.group();
         mario = await helper.factories.record();
         luigi = await helper.factories.record();
-        await group.addProfile(mario);
-        await group.addProfile(luigi);
+        await group.addRecord(mario);
+        await group.addRecord(luigi);
         await destination.trackGroup(group);
 
         await group.update({ state: groupState });

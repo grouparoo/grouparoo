@@ -46,9 +46,9 @@ describe("models/run", () => {
     let team: Team;
     let teamMember: TeamMember;
     let schedule: Schedule;
-    let profileA: GrouparooRecord;
-    let profileB: GrouparooRecord;
-    let profileC: GrouparooRecord;
+    let recordA: GrouparooRecord;
+    let recordB: GrouparooRecord;
+    let recordC: GrouparooRecord;
 
     beforeAll(async () => {
       source = await helper.factories.source();
@@ -68,9 +68,9 @@ describe("models/run", () => {
         ])
       );
 
-      profileA = await helper.factories.record();
-      profileB = await helper.factories.record();
-      profileC = await helper.factories.record();
+      recordA = await helper.factories.record();
+      recordB = await helper.factories.record();
+      recordC = await helper.factories.record();
     });
 
     describe("creatorName", () => {
@@ -170,7 +170,7 @@ describe("models/run", () => {
         expect(run.percentComplete).toBe(0);
 
         // 1 member
-        await profileA.updateGroupMembership();
+        await recordA.updateGroupMembership();
         await run.determinePercentComplete();
         expect(run.percentComplete).toBe(16);
       });
@@ -188,7 +188,7 @@ describe("models/run", () => {
         expect(run.percentComplete).toBe(49);
 
         // 1 member
-        await profileA.updateGroupMembership();
+        await recordA.updateGroupMembership();
         await run.determinePercentComplete();
         expect(run.percentComplete).toBe(65);
       });
@@ -209,9 +209,9 @@ describe("models/run", () => {
         });
 
         // 3 members
-        await profileA.updateGroupMembership();
-        await profileB.updateGroupMembership();
-        await profileC.updateGroupMembership();
+        await recordA.updateGroupMembership();
+        await recordB.updateGroupMembership();
+        await recordC.updateGroupMembership();
         await run.determinePercentComplete();
         expect(run.percentComplete).toBe(99);
       });
@@ -235,7 +235,7 @@ describe("models/run", () => {
           topic: "group",
           verb: "update",
           message: "all good",
-          data: { profilesCount: 10 }, // previous group size was 10
+          data: { recordsCount: 10 }, // previous group size was 10
         });
 
         run = await Run.create({
@@ -246,9 +246,9 @@ describe("models/run", () => {
         });
 
         // 3 members left (manually added because group is deleted)
-        await GroupMember.create({ groupId: group.id, recordId: profileA.id });
-        await GroupMember.create({ groupId: group.id, recordId: profileB.id });
-        await GroupMember.create({ groupId: group.id, recordId: profileC.id });
+        await GroupMember.create({ groupId: group.id, recordId: recordA.id });
+        await GroupMember.create({ groupId: group.id, recordId: recordB.id });
+        await GroupMember.create({ groupId: group.id, recordId: recordC.id });
 
         await run.determinePercentComplete();
         expect(run.percentComplete).toBe(70);
@@ -537,11 +537,11 @@ describe("models/run", () => {
         recordId: "a",
         creatorType: "run",
         creatorId: run.id,
-        profileAssociatedAt: new Date(),
-        profileUpdatedAt: new Date(),
+        recordAssociatedAt: new Date(),
+        recordUpdatedAt: new Date(),
         groupsUpdatedAt: new Date(),
         exportedAt: new Date(),
-        createdProfile: true,
+        createdRecord: true,
       });
 
       await utils.sleep(100);
@@ -550,8 +550,8 @@ describe("models/run", () => {
         recordId: "a",
         creatorType: "run",
         creatorId: run.id,
-        profileAssociatedAt: new Date(),
-        profileUpdatedAt: new Date(),
+        recordAssociatedAt: new Date(),
+        recordUpdatedAt: new Date(),
         groupsUpdatedAt: new Date(),
         exportedAt: new Date(),
       });
@@ -562,8 +562,8 @@ describe("models/run", () => {
         recordId: "b",
         creatorType: "run",
         creatorId: run.id,
-        profileAssociatedAt: new Date(),
-        profileUpdatedAt: new Date(),
+        recordAssociatedAt: new Date(),
+        recordUpdatedAt: new Date(),
         groupsUpdatedAt: new Date(),
         exportedAt: new Date(),
       });
@@ -576,8 +576,8 @@ describe("models/run", () => {
     it("can update totals from imports", async () => {
       await run.updateTotals();
       expect(run.importsCreated).toBe(3);
-      expect(run.profilesCreated).toBe(1);
-      expect(run.profilesImported).toBe(2);
+      expect(run.recordsCreated).toBe(1);
+      expect(run.recordsImported).toBe(2);
     });
 
     it("returns a quantizedTimeline of imports based on sate change time", async () => {
@@ -588,12 +588,12 @@ describe("models/run", () => {
       let groupsTotal = 0;
       quantizedTimeline.map((q) => {
         expect(q.steps.associate).toBeLessThanOrEqual(1);
-        expect(q.steps.profilesUpdated).toBeLessThanOrEqual(1);
+        expect(q.steps.recordsUpdated).toBeLessThanOrEqual(1);
         expect(q.steps.groupsUpdated).toBeLessThanOrEqual(1);
         expect(q.steps.exported).toBeLessThanOrEqual(1);
 
         associateTotal += q.steps.associate;
-        updateTotal += q.steps.profilesUpdated;
+        updateTotal += q.steps.recordsUpdated;
         groupsTotal += q.steps.groupsUpdated;
       });
 
@@ -637,7 +637,7 @@ describe("models/run", () => {
                   },
                 },
               ],
-              profileProperty: async ({ propertyOptions }) => {
+              recordProperty: async ({ propertyOptions }) => {
                 if (propertyOptions.column) {
                   throw new Error(propertyOptions.column.toString());
                 } else {

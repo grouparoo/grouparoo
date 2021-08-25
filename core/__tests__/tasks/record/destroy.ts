@@ -59,7 +59,7 @@ describe("tasks/record:destroy", () => {
     const destination: Destination = await helper.factories.destination();
     const group: Group = await helper.factories.group();
 
-    await group.addProfile(record);
+    await group.addRecord(record);
     await RecordProperty.update(
       { state: "ready" },
       { where: { recordId: record.id } }
@@ -74,8 +74,8 @@ describe("tasks/record:destroy", () => {
     );
     await destination.exportRecord(record);
 
-    let profileGroups = await record.$get("groups");
-    expect(profileGroups.length).toBe(1);
+    let recordGroups = await record.$get("groups");
+    expect(recordGroups.length).toBe(1);
 
     await specHelper.runTask("export:enqueue", {});
     let foundTasks = await specHelper.findEnqueuedTasks("export:send");
@@ -99,8 +99,8 @@ describe("tasks/record:destroy", () => {
     await record.reload();
     expect(record.state).toBe("ready");
 
-    profileGroups = await record.$get("groups");
-    expect(profileGroups.length).toBe(0); // removed from groups
+    recordGroups = await record.$get("groups");
+    expect(recordGroups.length).toBe(0); // removed from groups
 
     exportCount = await Export.count({
       where: { recordId: record.id, state: { [Op.ne]: "complete" } },

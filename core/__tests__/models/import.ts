@@ -14,7 +14,7 @@ describe("models/import", () => {
       creatorId: "",
     });
 
-    const tasks = await specHelper.findEnqueuedTasks("import:associateProfile");
+    const tasks = await specHelper.findEnqueuedTasks("import:associateRecord");
     expect(tasks.length).toBe(1);
   });
 

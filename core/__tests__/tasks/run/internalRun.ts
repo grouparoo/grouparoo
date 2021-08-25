@@ -53,14 +53,14 @@ describe("tasks/run:internalRun", () => {
 
       await record.reload({ include: [RecordProperty] });
       expect(record.state).toBe("pending");
-      record.profileProperties.forEach((p) => expect(p.state).toBe("pending"));
+      record.recordProperties.forEach((p) => expect(p.state).toBe("pending"));
 
       const imports = await Import.findAll();
       expect(imports.length).toBe(1);
       expect(imports[0].recordId).toBe(record.id);
     });
 
-    test("if the run was created due to a property, only those profileProperties will become pending", async () => {
+    test("if the run was created due to a property, only those recordProperties will become pending", async () => {
       const property = await Property.findOne({ where: { key: "email" } });
       const run = await internalRun("property", property.id);
       await specHelper.runTask("run:internalRun", { runId: run.id });
@@ -72,14 +72,14 @@ describe("tasks/run:internalRun", () => {
 
       await record.reload({ include: [RecordProperty] });
       expect(record.state).toBe("pending");
-      expect(new Set(record.profileProperties.map((p) => p.state))).toEqual(
+      expect(new Set(record.recordProperties.map((p) => p.state))).toEqual(
         new Set(["ready", "pending"])
       );
-      for (const profileProperty of record.profileProperties) {
-        if (profileProperty.propertyId === property.id) {
-          expect(profileProperty.state).toBe("pending");
+      for (const recordProperty of record.recordProperties) {
+        if (recordProperty.propertyId === property.id) {
+          expect(recordProperty.state).toBe("pending");
         } else {
-          expect(profileProperty.state).toBe("ready");
+          expect(recordProperty.state).toBe("ready");
         }
       }
 

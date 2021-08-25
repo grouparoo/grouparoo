@@ -40,7 +40,7 @@ Object {
       "matchType": "all",
       "name": "People with Email Addresses",
       "nextCalculatedAt": Any<Number>,
-      "profilesCount": 1,
+      "recordsCount": 1,
       "rules": Array [
         Object {
           "key": "userId",
@@ -195,7 +195,7 @@ Object {
       "matchType": "all",
       "name": "People with Email Addresses",
       "nextCalculatedAt": Any<Number>,
-      "profilesCount": 1,
+      "recordsCount": 1,
       "rules": Array [
         Object {
           "key": "userId",

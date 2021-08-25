@@ -471,7 +471,7 @@ describe("models/destination", () => {
         expect(response.value).not.toBeFalsy();
       });
 
-      test("it throws an error if the mapping does not include the key of a profilePropertyRyle", async () => {
+      test("it throws an error if the mapping does not include the key of a recordPropertyRyle", async () => {
         destination = await helper.factories.destination();
         await expect(
           destination.setMapping({
@@ -700,7 +700,7 @@ describe("models/destination", () => {
           userId: [1],
           email: ["yoshi@example.com"],
         });
-        await group.addProfile(record);
+        await group.addRecord(record);
         await destination.trackGroup(group);
 
         const mapping = {
@@ -711,16 +711,14 @@ describe("models/destination", () => {
         const destinationGroupMemberships = {};
         destinationGroupMemberships[group.id] = "another-group-tag";
 
-        const _profile = await destination.recordPreview(
+        const _record = await destination.recordPreview(
           record,
           mapping,
           destinationGroupMemberships
         );
-        expect(_profile.properties["primary-id"].values[0]).toBe(1);
-        expect(_profile.properties["email"].values[0]).toBe(
-          "yoshi@example.com"
-        );
-        expect(_profile.groupNames).toEqual(["another-group-tag"]);
+        expect(_record.properties["primary-id"].values[0]).toBe(1);
+        expect(_record.properties["email"].values[0]).toBe("yoshi@example.com");
+        expect(_record.groupNames).toEqual(["another-group-tag"]);
 
         await record.destroy();
       });
@@ -732,7 +730,7 @@ describe("models/destination", () => {
           email: ["yoshi@example.com"],
           ltv: [123],
         });
-        await group.addProfile(record);
+        await group.addRecord(record);
         await destination.trackGroup(group);
 
         const mapping = {
@@ -740,13 +738,13 @@ describe("models/destination", () => {
           "string-property": "ltv",
         };
 
-        const _profile = await destination.recordPreview(record, mapping, {});
+        const _record = await destination.recordPreview(record, mapping, {});
 
-        expect(_profile.properties["primary-id"].values[0]).toBe(1);
-        expect(_profile.properties["primary-id"].type).toBe("integer");
+        expect(_record.properties["primary-id"].values[0]).toBe(1);
+        expect(_record.properties["primary-id"].type).toBe("integer");
 
-        expect(_profile.properties["string-property"].values[0]).toBe("123");
-        expect(_profile.properties["string-property"].type).toBe("string");
+        expect(_record.properties["string-property"].values[0]).toBe("123");
+        expect(_record.properties["string-property"].type).toBe("string");
 
         await record.destroy();
       });
@@ -755,7 +753,7 @@ describe("models/destination", () => {
         it("determined relevant destinations for a record", async () => {
           const otherDestination = await helper.factories.destination();
           const record = await helper.factories.record();
-          await group.addProfile(record);
+          await group.addRecord(record);
 
           // before the destinations are ready
           await destination.trackGroup(group);
@@ -780,7 +778,7 @@ describe("models/destination", () => {
           );
 
           await destination.unTrackGroup();
-          await group.removeProfile(record);
+          await group.removeRecord(record);
           await otherDestination.unTrackGroup();
           await otherDestination.destroy();
         });

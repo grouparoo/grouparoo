@@ -365,10 +365,10 @@ describe("actions/properties", () => {
     });
 
     test("an administrator can see a record preview of a property", async () => {
-      const _profile = await helper.factories.record();
-      await _profile.addOrUpdateProperties({ userId: [1001] });
+      const _record = await helper.factories.record();
+      await _record.addOrUpdateProperties({ userId: [1001] });
 
-      const originalProperties = _profile.getProperties();
+      const originalProperties = _record.getProperties();
       expect(originalProperties["email"]).toBeFalsy();
 
       connection.params = {
@@ -381,10 +381,10 @@ describe("actions/properties", () => {
           connection
         );
       expect(error).toBeUndefined();
-      expect(record.id).toBe(_profile.id);
+      expect(record.id).toBe(_record.id);
       expect(record.properties["email"].values).toBeTruthy();
 
-      await _profile.destroy();
+      await _record.destroy();
     });
 
     test("an administrator can remove a property", async () => {

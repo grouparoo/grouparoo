@@ -133,7 +133,7 @@ describe("record sync", () => {
         otherGroup = await helper.factories.group();
         await otherGroup.update({ type: "calculated" });
         await otherGroup.setRules([
-          { key: "grouparooId", match: "pro%", operation: { op: "like" } },
+          { key: "grouparooId", match: "rec%", operation: { op: "like" } },
         ]);
         otherDestination = await helper.factories.destination();
         await otherDestination.trackGroup(otherGroup);
@@ -190,8 +190,8 @@ describe("record sync", () => {
         const testPluginConnection = testPlugin.connections.find(
           (c) => c.name === "test-plugin-import"
         );
-        const originalMethod = testPluginConnection.methods.profileProperty;
-        testPluginConnection.methods.profileProperty = async ({ property }) => {
+        const originalMethod = testPluginConnection.methods.recordProperty;
+        testPluginConnection.methods.recordProperty = async ({ property }) => {
           const data = {
             firstName: ["Luigi"],
           };
@@ -220,7 +220,7 @@ describe("record sync", () => {
         expect(exports[0].destinationId).toBe(otherDestination.id);
 
         // reset the plugin
-        testPluginConnection.methods.profileProperty = originalMethod;
+        testPluginConnection.methods.recordProperty = originalMethod;
       });
 
       test("record sync will create a toDelete export if destination had untracked the group but not yet run", async () => {

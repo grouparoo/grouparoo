@@ -59,7 +59,7 @@ describe("modules/plugin", () => {
                   sourceOffset: 0,
                 };
               },
-              profileProperty: async ({ property, record }) => {
+              recordProperty: async ({ property, record }) => {
                 return ["value"];
               },
             },
@@ -79,7 +79,7 @@ describe("modules/plugin", () => {
       );
     });
 
-    test("destination plugins need either exportRecord or exportProfiles methods", () => {
+    test("destination plugins need either exportRecord or exportRecords methods", () => {
       expect(() =>
         plugin.registerPlugin({
           name: "@grouparoo/sample-plugin/export",
@@ -96,7 +96,7 @@ describe("modules/plugin", () => {
           ],
         })
       ).toThrow(
-        /export connections must provide either connection.methods.exportRecord or connection.methods.exportProfiles/
+        /export connections must provide either connection.methods.exportRecord or connection.methods.exportRecords/
       );
     });
   });
@@ -300,7 +300,7 @@ describe("modules/plugin", () => {
         });
 
         const tasks = await specHelper.findEnqueuedTasks(
-          "import:associateProfile"
+          "import:associateRecord"
         );
 
         expect(tasks.length).toBe(1);
@@ -351,7 +351,7 @@ describe("modules/plugin", () => {
         });
 
         const tasks = await specHelper.findEnqueuedTasks(
-          "import:associateProfile"
+          "import:associateRecord"
         );
 
         expect(tasks.length).toBe(2);

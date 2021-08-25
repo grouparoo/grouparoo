@@ -319,7 +319,7 @@ describe("tasks/records:confirm", () => {
     // associate the import
     await _import.update({
       recordId: "someId",
-      profileAssociatedAt: new Date(),
+      recordAssociatedAt: new Date(),
     });
 
     // try to confirm again
@@ -350,9 +350,9 @@ describe("tasks/records:confirm", () => {
   test("only processes records up to the batch size", async () => {
     await plugin.updateSetting("core", "runs-record-batch-size", 2);
 
-    const profile1: GrouparooRecord = await helper.factories.record();
-    const profile2: GrouparooRecord = await helper.factories.record();
-    const profile3: GrouparooRecord = await helper.factories.record();
+    const record1: GrouparooRecord = await helper.factories.record();
+    const record2: GrouparooRecord = await helper.factories.record();
+    const record3: GrouparooRecord = await helper.factories.record();
 
     await RecordProperty.update(
       {
@@ -361,7 +361,7 @@ describe("tasks/records:confirm", () => {
       },
       {
         where: {
-          recordId: [profile1.id, profile2.id, profile3.id],
+          recordId: [record1.id, record2.id, record3.id],
         },
       }
     );
@@ -370,7 +370,7 @@ describe("tasks/records:confirm", () => {
       { state: "ready" },
       {
         where: {
-          id: [profile1.id, profile2.id, profile3.id],
+          id: [record1.id, record2.id, record3.id],
         },
       }
     );
@@ -378,11 +378,11 @@ describe("tasks/records:confirm", () => {
     const count = await specHelper.runTask("records:confirm", {});
     expect(count).toBe(2);
 
-    await profile1.reload();
-    await profile2.reload();
-    await profile3.reload();
+    await record1.reload();
+    await record2.reload();
+    await record3.reload();
 
-    const states = [profile1.state, profile2.state, profile3.state].sort();
+    const states = [record1.state, record2.state, record3.state].sort();
     expect(states).toEqual(["pending", "pending", "ready"]);
   });
 >>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/record/confirm.ts

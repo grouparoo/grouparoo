@@ -65,7 +65,7 @@ describe("tasks/record:export", () => {
           type: "manual",
           matchType: "all",
         });
-        await group.addProfile(record);
+        await group.addRecord(record);
 
         plugin.registerPlugin({
           name: "test-plugin",
@@ -170,18 +170,18 @@ describe("tasks/record:export", () => {
         });
 
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
-          "import:associateProfile"
+          "import:associateRecord"
         );
         expect(foundAssociateTasks.length).toEqual(2);
         expect(
           foundAssociateTasks.map((t) => t.args[0].importId).sort()
         ).toEqual([importA.id, importB.id].sort());
 
-        await specHelper.runTask("import:associateProfile", {
+        await specHelper.runTask("import:associateRecord", {
           importId: importA.id,
           attempts: 0,
         });
-        await specHelper.runTask("import:associateProfile", {
+        await specHelper.runTask("import:associateRecord", {
           importId: importB.id,
           attempts: 0,
         });
@@ -250,13 +250,13 @@ describe("tasks/record:export", () => {
         });
 
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
-          "import:associateProfile"
+          "import:associateRecord"
         );
         expect(foundAssociateTasks.length).toEqual(1);
 
         await Promise.all(
           foundAssociateTasks.map(async (t) =>
-            specHelper.runTask("import:associateProfile", t.args[0])
+            specHelper.runTask("import:associateRecord", t.args[0])
           )
         );
 
@@ -329,7 +329,7 @@ describe("tasks/record:export", () => {
             creatorType: "run",
             creatorId: run.id,
             recordId: record.id,
-            profileUpdatedAt: new Date(),
+            recordUpdatedAt: new Date(),
             groupsUpdatedAt: new Date(),
             data: {},
             oldGroupIds: [],

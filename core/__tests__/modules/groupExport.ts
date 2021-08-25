@@ -72,7 +72,7 @@ describe("modules/groupExport", () => {
       "a group's records can be exported and create a run",
       async () => {
         const records = [mario, luigi, toad, peach];
-        for (const p of records) await group.addProfile(p);
+        for (const p of records) await group.addRecord(p);
 
         const response = await groupExportToCSV(group, 1);
         filename = response.filename;

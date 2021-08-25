@@ -49,7 +49,7 @@ describe("tasks/export:sendBatch", () => {
       await record.addOrUpdateProperties({ email: ["mario@example.com"] });
 
       group = await helper.factories.group({ type: "manual" });
-      await group.addProfile(record);
+      await group.addRecord(record);
 
       destination = await helper.factories.destination(null, {
         type: "test-plugin-export-batch",
@@ -76,8 +76,8 @@ describe("tasks/export:sendBatch", () => {
       await run.updateTotals();
 
       expect(run.importsCreated).toBe(1);
-      expect(run.profilesCreated).toBe(0);
-      expect(run.profilesImported).toBe(0);
+      expect(run.recordsCreated).toBe(0);
+      expect(run.recordsImported).toBe(0);
     });
 
     test("the record can be imported and exported", async () => {
@@ -182,7 +182,7 @@ describe("tasks/export:sendBatch", () => {
                   };
                 },
                 exportArrayProperties: async () => [],
-                exportProfiles: async () => {
+                exportRecords: async () => {
                   return exportProfilesResponse;
                 },
               },
