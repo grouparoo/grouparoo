@@ -6,7 +6,7 @@ export const propertyOptions: PropertyOptionsMethod = async () => [
     required: true,
     description:
       "Javascript function to transform existing Property(ies) to create a new one",
-    type: "text",
+    type: "textarea",
     options: async () => {
       return null;
     },
