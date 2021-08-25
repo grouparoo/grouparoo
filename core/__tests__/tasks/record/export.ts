@@ -353,7 +353,7 @@ describe("tasks/record:export", () => {
           const errorMetadata = JSON.parse(_import.errorMetadata);
           expect(errorMetadata.message).toMatch(/oh no/);
           expect(errorMetadata.step).toBe("record:export");
-          expect(errorMetadata.stack).toMatch(/ProfileExport/);
+          expect(errorMetadata.stack).toMatch(/RecordExport/);
 
           await _import.destroy();
         });

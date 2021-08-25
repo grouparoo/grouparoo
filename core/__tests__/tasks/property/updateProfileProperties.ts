@@ -7,7 +7,7 @@ import {
   Source,
 } from "./../../../src";
 
-describe("tasks/property:updateProfileProperties", () => {
+describe("tasks/property:updateRecordProperties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let source: Source;
 
@@ -25,11 +25,11 @@ describe("tasks/property:updateProfileProperties", () => {
   });
 
   test("can be enqueued", async () => {
-    await task.enqueue("property:updateProfileProperties", {
+    await task.enqueue("property:updateRecordProperties", {
       propertyId: "abc123",
     });
     const found = await specHelper.findEnqueuedTasks(
-      "property:updateProfileProperties"
+      "property:updateRecordProperties"
     );
     expect(found.length).toEqual(1);
     expect(found[0].args[0].propertyId).toBe("abc123");
@@ -54,13 +54,13 @@ describe("tasks/property:updateProfileProperties", () => {
 
     await property.update({ unique: true });
     let foundTasks = await specHelper.findEnqueuedTasks(
-      "property:updateProfileProperties"
+      "property:updateRecordProperties"
     );
     expect(foundTasks.length).toBe(1);
     expect(foundTasks[0].args[0].propertyId).toBe(property.id);
 
     await specHelper.runTask(
-      "property:updateProfileProperties",
+      "property:updateRecordProperties",
       foundTasks[0].args[0]
     );
 

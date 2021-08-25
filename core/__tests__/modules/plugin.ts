@@ -253,14 +253,14 @@ describe("modules/plugin", () => {
       });
     });
 
-    describe("replaceTemplateProfilePropertyKeysWithProfilePropertyId and replaceTemplateProfilePropertyIdsWithProfilePropertyKeys", () => {
+    describe("replaceTemplateRecordPropertyKeysWithRecordPropertyId and replaceTemplateRecordPropertyIdsWithRecordPropertyKeys", () => {
       test("they work to convert each other", async () => {
         const property = await Property.findOne({
           where: { key: "userId" },
         });
         const initialString = "select * from users where id = {{ userId }}";
         const replacedWithId =
-          await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyId(
+          await plugin.replaceTemplateRecordPropertyKeysWithRecordPropertyId(
             initialString
           );
         expect(replacedWithId).toEqual(
@@ -268,7 +268,7 @@ describe("modules/plugin", () => {
         );
 
         expect(
-          await plugin.replaceTemplateProfilePropertyIdsWithProfilePropertyKeys(
+          await plugin.replaceTemplateRecordPropertyIdsWithRecordPropertyKeys(
             replacedWithId
           )
         ).toEqual(initialString);

@@ -13,13 +13,13 @@ import {
   AggregationMethod,
 } from "../../../src";
 
-describe("tasks/recordProperty:importProfileProperties", () => {
+describe("tasks/recordProperty:importRecordProperties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
 
   let userIdCounter = 1;
-  describe("recordProperty:importProfileProperties", () => {
+  describe("recordProperty:importRecordProperties", () => {
     let testPluginConnection: PluginConnection;
 
     beforeAll(async () => {
@@ -63,12 +63,12 @@ describe("tasks/recordProperty:importProfileProperties", () => {
     });
 
     test("can be enqueued", async () => {
-      await task.enqueue("recordProperty:importProfileProperties", {
+      await task.enqueue("recordProperty:importRecordProperties", {
         recordIds: ["abc"],
         propertyIds: ["abc"],
       });
       const found = await specHelper.findEnqueuedTasks(
-        "recordProperty:importProfileProperties"
+        "recordProperty:importRecordProperties"
       );
       expect(found.length).toEqual(1);
     });
@@ -77,17 +77,17 @@ describe("tasks/recordProperty:importProfileProperties", () => {
       const property = await Property.findOne();
       const record = await helper.factories.record();
 
-      await specHelper.runTask("recordProperty:importProfileProperties", {
+      await specHelper.runTask("recordProperty:importRecordProperties", {
         recordIds: ["missing"],
         propertyIds: ["missing"],
       });
 
-      await specHelper.runTask("recordProperty:importProfileProperties", {
+      await specHelper.runTask("recordProperty:importRecordProperties", {
         recordIds: [record.id],
         propertyIds: ["missing"],
       });
 
-      await specHelper.runTask("recordProperty:importProfileProperties", {
+      await specHelper.runTask("recordProperty:importRecordProperties", {
         recordIds: ["missing"],
         propertyIds: [property.id],
       });
@@ -106,7 +106,7 @@ describe("tasks/recordProperty:importProfileProperties", () => {
       });
       await recordProperty.update({ state: "pending" });
 
-      await specHelper.runTask("recordProperty:importProfileProperties", {
+      await specHelper.runTask("recordProperty:importRecordProperties", {
         recordIds: [record.id],
         propertyIds: [recordProperty.propertyId],
       });
@@ -133,15 +133,15 @@ describe("tasks/recordProperty:importProfileProperties", () => {
       });
       await recordProperty.update({ state: "pending" });
 
-      const userIdProfileProperty = await RecordProperty.findOne({
+      const userIdRecordProperty = await RecordProperty.findOne({
         where: {
           recordId: record.id,
           propertyId: userIdProperty.id,
         },
       });
-      await userIdProfileProperty.update({ state: "pending" });
+      await userIdRecordProperty.update({ state: "pending" });
 
-      await specHelper.runTask("recordProperty:importProfileProperties", {
+      await specHelper.runTask("recordProperty:importRecordProperties", {
         recordIds: [record.id],
         propertyIds: [recordProperty.propertyId],
       });
@@ -171,35 +171,35 @@ describe("tasks/recordProperty:importProfileProperties", () => {
         userId: ["2"],
         email: ["old@example.com"],
       });
-      const emailProfileProperty = await RecordProperty.findOne({
+      const emailRecordProperty = await RecordProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
-      await emailProfileProperty.update({ state: "pending" });
+      await emailRecordProperty.update({ state: "pending" });
 
-      const userIdProfileProperty = await RecordProperty.findOne({
+      const userIdRecordProperty = await RecordProperty.findOne({
         where: {
           recordId: record.id,
           propertyId: userIdProperty.id,
         },
       });
-      await userIdProfileProperty.update({ state: "pending" });
+      await userIdRecordProperty.update({ state: "pending" });
 
-      await specHelper.runTask("recordProperty:importProfileProperties", {
+      await specHelper.runTask("recordProperty:importRecordProperties", {
         recordIds: [record.id],
         propertyIds: [
-          emailProfileProperty.propertyId,
-          userIdProfileProperty.propertyId,
+          emailRecordProperty.propertyId,
+          userIdRecordProperty.propertyId,
         ],
       });
 
       // new value and state
-      await emailProfileProperty.reload();
-      expect(emailProfileProperty.state).toBe("ready");
-      expect(emailProfileProperty.rawValue).toBe(`${record.id}@example.com`);
+      await emailRecordProperty.reload();
+      expect(emailRecordProperty.state).toBe("ready");
+      expect(emailRecordProperty.rawValue).toBe(`${record.id}@example.com`);
 
-      await userIdProfileProperty.reload();
-      expect(userIdProfileProperty.state).toBe("ready");
-      expect(userIdProfileProperty.rawValue).toBe(`2`);
+      await userIdRecordProperty.reload();
+      expect(userIdRecordProperty.state).toBe("ready");
+      expect(userIdRecordProperty.rawValue).toBe(`2`);
       await record.destroy();
     });
 
@@ -218,7 +218,7 @@ describe("tasks/recordProperty:importProfileProperties", () => {
       });
       await recordProperty.update({ state: "pending" });
 
-      await specHelper.runTask("recordProperty:importProfileProperties", {
+      await specHelper.runTask("recordProperty:importRecordProperties", {
         recordIds: [record.id],
         propertyIds: [recordProperty.propertyId],
       });
@@ -344,7 +344,7 @@ describe("tasks/recordProperty:importProfileProperties", () => {
         );
 
         // import
-        await specHelper.runTask("recordProperty:importProfileProperties", {
+        await specHelper.runTask("recordProperty:importRecordProperties", {
           recordIds: [recordA.id, recordB.id, recordC.id],
           propertyIds: [newPropertyA.id, newPropertyB.id],
         });
@@ -371,7 +371,7 @@ describe("tasks/recordProperty:importProfileProperties", () => {
 
         // run once to set userId
         for (const property of properties) {
-          await specHelper.runTask("recordProperty:importProfileProperties", {
+          await specHelper.runTask("recordProperty:importRecordProperties", {
             recordIds: [recordA.id, recordB.id, recordC.id],
             propertyIds: [property.id],
           });
@@ -379,7 +379,7 @@ describe("tasks/recordProperty:importProfileProperties", () => {
 
         // run again for other properties
         for (const property of properties) {
-          await specHelper.runTask("recordProperty:importProfileProperties", {
+          await specHelper.runTask("recordProperty:importRecordProperties", {
             recordIds: [recordA.id, recordB.id, recordC.id],
             propertyIds: [property.id],
           });

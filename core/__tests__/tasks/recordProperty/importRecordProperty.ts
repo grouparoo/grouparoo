@@ -121,13 +121,13 @@ describe("tasks/recordProperty:importRecordProperty", () => {
       });
       await recordProperty.update({ state: "pending" });
 
-      const userIdProfileProperty = await RecordProperty.findOne({
+      const userIdRecordProperty = await RecordProperty.findOne({
         where: {
           recordId: record.id,
           propertyId: userIdProperty.id,
         },
       });
-      await userIdProfileProperty.update({ state: "pending" });
+      await userIdRecordProperty.update({ state: "pending" });
 
       await specHelper.runTask("recordProperty:importRecordProperty", {
         recordId: record.id,

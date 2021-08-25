@@ -2,7 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { Import } from "../../../src";
 
-describe("tasks/import:associateProfiles", () => {
+describe("tasks/import:associateRecords", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -12,9 +12,9 @@ describe("tasks/import:associateProfiles", () => {
   });
 
   test("can be enqueued", async () => {
-    await task.enqueue("import:associateProfiles", {});
+    await task.enqueue("import:associateRecords", {});
     const foundTasks = await specHelper.findEnqueuedTasks(
-      "import:associateProfiles"
+      "import:associateRecords"
     );
     expect(foundTasks.length).toEqual(1);
   });
@@ -23,7 +23,7 @@ describe("tasks/import:associateProfiles", () => {
     const _import = await helper.factories.import();
     await api.resque.queue.connection.redis.flushdb(); // delete the associate task that was created along with the import
 
-    await specHelper.runTask("import:associateProfiles", {});
+    await specHelper.runTask("import:associateRecords", {});
 
     const foundTasks = await specHelper.findEnqueuedTasks(
       "import:associateRecord"
@@ -37,7 +37,7 @@ describe("tasks/import:associateProfiles", () => {
     await api.resque.queue.connection.redis.flushdb();
     await _import.update({ recordId: "abc", recordAssociatedAt: new Date() });
 
-    await specHelper.runTask("import:associateProfiles", {});
+    await specHelper.runTask("import:associateRecords", {});
 
     const foundTasks = await specHelper.findEnqueuedTasks(
       "import:associateRecord"
@@ -50,7 +50,7 @@ describe("tasks/import:associateProfiles", () => {
     await api.resque.queue.connection.redis.flushdb();
     await _import.update({ startedAt: new Date() });
 
-    await specHelper.runTask("import:associateProfiles", {});
+    await specHelper.runTask("import:associateRecords", {});
 
     const foundTasks = await specHelper.findEnqueuedTasks(
       "import:associateRecord"
@@ -63,7 +63,7 @@ describe("tasks/import:associateProfiles", () => {
     await api.resque.queue.connection.redis.flushdb();
     await _import.update({ startedAt: 0 });
 
-    await specHelper.runTask("import:associateProfiles", {});
+    await specHelper.runTask("import:associateRecords", {});
 
     const foundTasks = await specHelper.findEnqueuedTasks(
       "import:associateRecord"
@@ -78,10 +78,10 @@ describe("tasks/import:associateProfiles", () => {
     const _import = await helper.factories.import(); // import with old startedAt
     await _import.update({ startedAt: 0 });
 
-    await specHelper.runTask("import:associateProfiles", {}); // first enqueue, sets startedAt
+    await specHelper.runTask("import:associateRecords", {}); // first enqueue, sets startedAt
     await api.resque.queue.connection.redis.flushdb();
 
-    await specHelper.runTask("import:associateProfiles", {}); // second enqueue, should find no imports
+    await specHelper.runTask("import:associateRecords", {}); // second enqueue, should find no imports
 
     const foundTasks = await specHelper.findEnqueuedTasks(
       "import:associateRecord"
@@ -99,7 +99,7 @@ describe("tasks/import:associateProfiles", () => {
     expect(run.state).toBe("complete");
 
     await api.resque.queue.connection.redis.flushdb();
-    await specHelper.runTask("import:associateProfiles", {});
+    await specHelper.runTask("import:associateRecords", {});
 
     await run.reload();
     expect(run.state).toBe("running");
@@ -111,7 +111,7 @@ describe("tasks/import:associateProfiles", () => {
 
     await _import.update({ errorMessage: "I broke" });
 
-    await specHelper.runTask("import:associateProfiles", {});
+    await specHelper.runTask("import:associateRecords", {});
 
     const foundTasks = await specHelper.findEnqueuedTasks(
       "import:associateRecord"

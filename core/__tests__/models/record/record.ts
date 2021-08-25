@@ -15,11 +15,11 @@ import { RecordOps } from "../../../src/modules/ops/record";
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
-  const simpleProfileProperties = {};
+  const simpleRecordProperties = {};
   keys.forEach((key) => {
-    simpleProfileProperties[key] = complexProfileValues[key].values;
+    simpleRecordProperties[key] = complexProfileValues[key].values;
   });
-  return simpleProfileProperties;
+  return simpleRecordProperties;
 }
 
 describe("models/record", () => {

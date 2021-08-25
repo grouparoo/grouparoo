@@ -24,11 +24,11 @@ import { ConfigWriter } from "../../src/modules/configWriter";
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
-  const simpleProfileProperties = {};
+  const simpleRecordProperties = {};
   keys.forEach((key) => {
-    simpleProfileProperties[key] = complexProfileValues[key].values;
+    simpleRecordProperties[key] = complexProfileValues[key].values;
   });
-  return simpleProfileProperties;
+  return simpleRecordProperties;
 }
 
 describe("actions/records", () => {

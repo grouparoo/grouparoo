@@ -2,8 +2,8 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import {
   PluginConnection,
-  ProfilePropertyPluginMethod,
-  ProfilePropertiesPluginMethod,
+  RecordPropertyPluginMethod,
+  RecordPropertiesPluginMethod,
   Property,
   GrouparooPlugin,
   Source,
@@ -19,8 +19,8 @@ describe("tasks/recordProperties:enqueue", () => {
 
   let propertiesCount: number;
   let testPluginConnection: PluginConnection;
-  let prevProfilePropertyMethod: ProfilePropertyPluginMethod;
-  let prevProfilePropertiesMethod: ProfilePropertiesPluginMethod;
+  let prevRecordPropertyMethod: RecordPropertyPluginMethod;
+  let prevRecordPropertiesMethod: RecordPropertiesPluginMethod;
 
   beforeAll(async () => {
     const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
@@ -31,13 +31,13 @@ describe("tasks/recordProperties:enqueue", () => {
       (c) => c.name === "test-plugin-import"
     );
 
-    prevProfilePropertyMethod = testPluginConnection.methods.recordProperty;
-    prevProfilePropertiesMethod = testPluginConnection.methods.recordProperties;
+    prevRecordPropertyMethod = testPluginConnection.methods.recordProperty;
+    prevRecordPropertiesMethod = testPluginConnection.methods.recordProperties;
   });
 
   function resetPlugin() {
-    testPluginConnection.methods.recordProperty = prevProfilePropertyMethod;
-    testPluginConnection.methods.recordProperties = prevProfilePropertiesMethod;
+    testPluginConnection.methods.recordProperty = prevRecordPropertyMethod;
+    testPluginConnection.methods.recordProperties = prevRecordPropertiesMethod;
   }
 
   afterAll(() => {
@@ -107,29 +107,29 @@ describe("tasks/recordProperties:enqueue", () => {
           await luigi.markPending();
           const start = new Date();
 
-          const pendingProfileProperties = await RecordProperty.findAll({
+          const pendingRecordProperties = await RecordProperty.findAll({
             where: { state: "pending" },
           });
-          expect(pendingProfileProperties.length).toBe(propertiesCount * 2);
-          for (const p of pendingProfileProperties) {
+          expect(pendingRecordProperties.length).toBe(propertiesCount * 2);
+          for (const p of pendingRecordProperties) {
             expect(p.startedAt).toBe(null);
             await p.update({ startedAt: null });
           }
 
           await specHelper.runTask("recordProperties:enqueue", {});
 
-          const importProfilePropertiesTasks =
+          const importRecordPropertiesTasks =
             await specHelper.findEnqueuedTasks(
-              "recordProperty:importProfileProperties"
+              "recordProperty:importRecordProperties"
             );
           const importRecordPropertyTasks = await specHelper.findEnqueuedTasks(
             "recordProperty:importRecordProperty"
           );
 
-          expect(importProfilePropertiesTasks.length).toBe(0);
+          expect(importRecordPropertiesTasks.length).toBe(0);
           expect(importRecordPropertyTasks.length).toBe(propertiesCount * 2);
 
-          for (const p of pendingProfileProperties) {
+          for (const p of pendingRecordProperties) {
             await p.reload();
             expect(p.startedAt.getTime()).toBeGreaterThanOrEqual(
               start.getTime()
@@ -142,29 +142,29 @@ describe("tasks/recordProperties:enqueue", () => {
           await luigi.markPending();
           const start = new Date();
 
-          const pendingProfileProperties = await RecordProperty.findAll({
+          const pendingRecordProperties = await RecordProperty.findAll({
             where: { state: "pending" },
           });
-          expect(pendingProfileProperties.length).toBe(propertiesCount * 2);
-          for (const p of pendingProfileProperties) {
+          expect(pendingRecordProperties.length).toBe(propertiesCount * 2);
+          for (const p of pendingRecordProperties) {
             expect(p.startedAt).toBe(null);
             await p.update({ startedAt: new Date(0) });
           }
 
           await specHelper.runTask("recordProperties:enqueue", {});
 
-          const importProfilePropertiesTasks =
+          const importRecordPropertiesTasks =
             await specHelper.findEnqueuedTasks(
-              "recordProperty:importProfileProperties"
+              "recordProperty:importRecordProperties"
             );
           const importRecordPropertyTasks = await specHelper.findEnqueuedTasks(
             "recordProperty:importRecordProperty"
           );
 
-          expect(importProfilePropertiesTasks.length).toBe(0);
+          expect(importRecordPropertiesTasks.length).toBe(0);
           expect(importRecordPropertyTasks.length).toBe(propertiesCount * 2);
 
-          for (const p of pendingProfileProperties) {
+          for (const p of pendingRecordProperties) {
             await p.reload();
             expect(p.startedAt.getTime()).toBeGreaterThanOrEqual(
               start.getTime()
@@ -176,26 +176,26 @@ describe("tasks/recordProperties:enqueue", () => {
           await mario.markPending();
           await luigi.markPending();
 
-          const pendingProfileProperties = await RecordProperty.findAll({
+          const pendingRecordProperties = await RecordProperty.findAll({
             where: { state: "pending" },
           });
-          expect(pendingProfileProperties.length).toBe(propertiesCount * 2);
-          for (const p of pendingProfileProperties) {
+          expect(pendingRecordProperties.length).toBe(propertiesCount * 2);
+          for (const p of pendingRecordProperties) {
             expect(p.startedAt).toBe(null);
             await p.update({ startedAt: new Date() });
           }
 
           await specHelper.runTask("recordProperties:enqueue", {});
 
-          const importProfilePropertiesTasks =
+          const importRecordPropertiesTasks =
             await specHelper.findEnqueuedTasks(
-              "recordProperty:importProfileProperties"
+              "recordProperty:importRecordProperties"
             );
           const importRecordPropertyTasks = await specHelper.findEnqueuedTasks(
             "recordProperty:importRecordProperty"
           );
 
-          expect(importProfilePropertiesTasks.length).toBe(0);
+          expect(importRecordPropertiesTasks.length).toBe(0);
           expect(importRecordPropertyTasks.length).toBe(0);
         });
       });
@@ -206,7 +206,7 @@ describe("tasks/recordProperties:enqueue", () => {
           delete testPluginConnection.methods.recordProperty;
         });
 
-        test("if there is an importProfileProperties it will be preferred", async () => {
+        test("if there is an importRecordProperties it will be preferred", async () => {
           const run = await helper.factories.run(schedule);
           const marioImport = await helper.factories.import(run, {
             email: "mario@example.com",
@@ -225,17 +225,17 @@ describe("tasks/recordProperties:enqueue", () => {
 
           await specHelper.runTask("recordProperties:enqueue", {});
 
-          const importProfilePropertiesTasks =
+          const importRecordPropertiesTasks =
             await specHelper.findEnqueuedTasks(
-              "recordProperty:importProfileProperties"
+              "recordProperty:importRecordProperties"
             );
           const importRecordPropertyTasks = await specHelper.findEnqueuedTasks(
             "recordProperty:importRecordProperty"
           );
 
           expect(importRecordPropertyTasks.length).toBe(0);
-          expect(importProfilePropertiesTasks.length).toBe(propertiesCount);
-          importProfilePropertiesTasks.forEach((t) =>
+          expect(importRecordPropertiesTasks.length).toBe(propertiesCount);
+          importRecordPropertiesTasks.forEach((t) =>
             expect(t.args[0].recordIds.length).toBe(2)
           );
         });
@@ -289,16 +289,16 @@ describe("tasks/recordProperties:enqueue", () => {
 
           await specHelper.runTask("recordProperties:enqueue", {});
 
-          const importProfilePropertiesTasks =
+          const importRecordPropertiesTasks =
             await specHelper.findEnqueuedTasks(
-              "recordProperty:importProfileProperties"
+              "recordProperty:importRecordProperties"
             );
           const importRecordPropertyTasks = await specHelper.findEnqueuedTasks(
             "recordProperty:importRecordProperty"
           );
 
           expect(importRecordPropertyTasks.length).toBe(0);
-          expect(importProfilePropertiesTasks.length).toBe(0);
+          expect(importRecordPropertiesTasks.length).toBe(0);
 
           const newPendingProperties = await RecordProperty.findAll({
             where: {

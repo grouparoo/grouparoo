@@ -766,7 +766,7 @@ describe("models/source", () => {
     let source: Source;
     let record: GrouparooRecord;
     let lnameProperty: Property;
-    let originalProfilePropertyMethod;
+    let originalRecordPropertyMethod;
 
     beforeAll(async () => {
       source = await Source.create({
@@ -787,7 +787,7 @@ describe("models/source", () => {
         type: "string",
       });
 
-      originalProfilePropertyMethod = api.plugins.plugins.filter(
+      originalRecordPropertyMethod = api.plugins.plugins.filter(
         (p) => p.name === "@grouparoo/test-plugin"
       )[0].connections[0].methods.recordProperty;
     });
@@ -801,7 +801,7 @@ describe("models/source", () => {
     afterEach(() => {
       api.plugins.plugins.filter(
         (p) => p.name === "@grouparoo/test-plugin"
-      )[0].connections[0].methods.recordProperty = originalProfilePropertyMethod;
+      )[0].connections[0].methods.recordProperty = originalRecordPropertyMethod;
     });
 
     test("it will not import a draft property (single)", async () => {
