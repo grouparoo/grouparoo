@@ -4,6 +4,7 @@ import { App } from "../models/App";
 import { GrouparooPlugin, PluginApp } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
 import { ConfigWriter } from "../modules/configWriter";
+import { APIData } from "../modules/apiData";
 
 export class AppsList extends AuthenticatedAction {
   constructor() {
@@ -13,11 +14,12 @@ export class AppsList extends AuthenticatedAction {
     this.permission = { topic: "app", mode: "read" };
     this.outputExample = {};
     this.inputs = {
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       state: { required: false },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [
           ["name", "desc"],
           ["createdAt", "desc"],
@@ -143,7 +145,7 @@ export class AppCreate extends AuthenticatedAction {
       name: { required: false },
       type: { required: true },
       state: { required: false },
-      options: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
     };
   }
 
@@ -174,15 +176,13 @@ export class AppEdit extends AuthenticatedAction {
       name: { required: false },
       type: { required: false },
       state: { required: false },
-      options: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
     };
   }
 
   async runWithinTransaction({ params }) {
     const app = await App.findById(params.id);
-    if (params.options) {
-      await app.setOptions(params.options);
-    }
+    if (params.options) await app.setOptions(params.options);
     await app.update(params);
 
     await ConfigWriter.run();
@@ -200,7 +200,7 @@ export class AppTest extends AuthenticatedAction {
     this.permission = { topic: "app", mode: "write" };
     this.inputs = {
       id: { required: true },
-      options: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
     };
   }
 

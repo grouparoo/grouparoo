@@ -65,7 +65,6 @@ export interface PropertyConfigurationObject extends ConfigurationObject {
   identifying?: boolean;
   unique?: boolean;
   isArray?: boolean;
-  keepValueIfNotFound?: boolean;
   options?: { [key: string]: any };
   filters?: PropertyFiltersWithKey[];
 }

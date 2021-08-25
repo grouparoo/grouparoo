@@ -5,6 +5,7 @@ import { Source } from "../../models/Source";
 import { App } from "../../models/App";
 import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
+import { ProfileOps } from "../../modules/ops/profile";
 
 export class DestroySweeper extends CLSTask {
   constructor() {
@@ -48,6 +49,12 @@ export class DestroySweeper extends CLSTask {
     const apps = await App.findAll({ where: { state: "deleted" } });
     for (const app of apps) {
       await CLS.enqueueTask("app:destroy", { appId: app.id });
+    }
+
+    // --- PROFILES ---
+    const profiles = await ProfileOps.getProfilesToDestroy();
+    for (const profile of profiles) {
+      await CLS.enqueueTask("profile:destroy", { profileId: profile.id });
     }
   }
 }

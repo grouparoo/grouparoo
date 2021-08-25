@@ -2,6 +2,7 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Run } from "../models/Run";
 import { Op } from "sequelize";
 import { Schedule } from "../models/Schedule";
+import { APIData } from "../modules/apiData";
 
 export class RunsList extends AuthenticatedAction {
   constructor() {
@@ -15,10 +16,11 @@ export class RunsList extends AuthenticatedAction {
       topic: { required: false },
       state: { required: false },
       hasError: { required: false },
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [["updatedAt", "desc"]],
       },
     };

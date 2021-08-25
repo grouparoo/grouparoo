@@ -1,7 +1,7 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { SetupStep } from "../models/SetupStep";
-import { Setting } from "../models/Setting";
 import { AsyncReturnType } from "type-fest";
+import { APIData } from "../modules/apiData";
 
 export class SetupStepsList extends AuthenticatedAction {
   constructor() {
@@ -41,7 +41,7 @@ export class SetupStepEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.inputs = {
       id: { required: true },
-      skipped: { required: false },
+      skipped: { required: false, formatter: APIData.ensureBoolean },
     };
   }
 

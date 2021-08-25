@@ -381,12 +381,12 @@ describe("integration/runs/mysql", () => {
         csrfToken,
         id: schedule.id,
       };
-      const { error, success } = await specHelper.runAction<ScheduleRun>(
+      const { error, run: apiRun } = await specHelper.runAction<ScheduleRun>(
         "schedule:run",
         session
       );
       expect(error).toBeUndefined();
-      expect(success).toBe(true);
+      expect(apiRun.id).toBeTruthy();
 
       // check that the run is enqueued
       const found = await specHelper.findEnqueuedTasks("schedule:run");
@@ -394,11 +394,7 @@ describe("integration/runs/mysql", () => {
       expect(found[0].args[0].scheduleId).toBe(schedule.id);
 
       // run the schedule
-      const run = await Run.create({
-        creatorId: schedule.id,
-        creatorType: "schedule",
-        state: "running",
-      });
+      const run = await Run.findById(apiRun.id);
 
       // run the schedule twice to complete the run
       await specHelper.runTask("schedule:run", { runId: run.id });
@@ -506,19 +502,20 @@ describe("integration/runs/mysql", () => {
         csrfToken,
         id: schedule.id,
       };
-      const { error, success } = await specHelper.runAction<ScheduleRun>(
+      const { error, run: apiRun } = await specHelper.runAction<ScheduleRun>(
         "schedule:run",
         session
       );
       expect(error).toBeUndefined();
-      expect(success).toBe(true);
+      expect(apiRun.id).toBeTruthy();
+
+      // check that the run is enqueued
+      const found = await specHelper.findEnqueuedTasks("schedule:run");
+      expect(found.length).toEqual(2);
+      expect(found[1].args[0].scheduleId).toBe(schedule.id);
 
       // run the schedule
-      const run = await Run.create({
-        creatorId: schedule.id,
-        creatorType: "schedule",
-        state: "running",
-      });
+      const run = await Run.findById(apiRun.id);
 
       // run the schedule twice to complete the run
       await specHelper.runTask("schedule:run", { runId: run.id });

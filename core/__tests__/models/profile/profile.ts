@@ -134,10 +134,13 @@ describe("models/profile", () => {
 
     test("it cannot find the profile by color and will create a new one", async () => {
       const { profile, isNew } =
-        await ProfileOps.findOrCreateByUniqueProfileProperties({
-          email: ["luigi@example.com"],
-          color: ["green"],
-        });
+        await ProfileOps.findOrCreateByUniqueProfileProperties(
+          {
+            email: ["luigi@example.com"],
+            color: ["green"],
+          },
+          source
+        );
 
       expect(isNew).toBe(true);
       expect(profile.id).not.toBe(toad.id);
@@ -145,24 +148,33 @@ describe("models/profile", () => {
 
     test("it will throw an error if no unique profile properties are included", async () => {
       await expect(
-        ProfileOps.findOrCreateByUniqueProfileProperties({
-          color: ["orange"],
-        })
+        ProfileOps.findOrCreateByUniqueProfileProperties(
+          {
+            color: ["orange"],
+          },
+          source
+        )
       ).rejects.toThrow(
         'there are no unique profile properties provided in {"color":["orange"]}'
       );
     });
 
     test("it will lock when creating new profiles so duplicate profiles are not created", async () => {
-      const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        email: ["bowser@example.com"],
-        color: ["green"],
-      });
+      const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties(
+        {
+          email: ["bowser@example.com"],
+          color: ["green"],
+        },
+        source
+      );
 
-      const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        email: ["bowser@example.com"],
-        house: ["castle"],
-      });
+      const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties(
+        {
+          email: ["bowser@example.com"],
+          house: ["castle"],
+        },
+        source
+      );
 
       expect(responseA.profile.id).toEqual(responseB.profile.id);
       expect(responseA.isNew).toBe(true);
@@ -170,15 +182,21 @@ describe("models/profile", () => {
     });
 
     test("it will merge overlapping unique properties and not store non-unique properties", async () => {
-      const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        email: ["koopa@example.com"],
-        userId: [99],
-      });
+      const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties(
+        {
+          email: ["koopa@example.com"],
+          userId: [99],
+        },
+        source
+      );
 
-      const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        userId: [99],
-        house: ["castle"],
-      });
+      const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties(
+        {
+          userId: [99],
+          house: ["castle"],
+        },
+        source
+      );
 
       expect(responseA.profile.id).toEqual(responseB.profile.id);
       expect(responseA.isNew).toBe(true);
@@ -190,6 +208,25 @@ describe("models/profile", () => {
       expect(properties.userId.values).toEqual([99]);
       expect(properties.house.values).toEqual([null]);
       expect(properties.house.values).toEqual([null]);
+    });
+
+    test("cannot create a new profile without a source or override", async () => {
+      await expect(
+        ProfileOps.findOrCreateByUniqueProfileProperties({
+          email: ["yoshi@example.com"],
+        })
+      ).rejects.toThrow(
+        'could not create a new profile because no profile property in {"email":["yoshi@example.com"]} is unique and owned by the source'
+      );
+
+      await expect(
+        ProfileOps.findOrCreateByUniqueProfileProperties(
+          { email: ["yoshi@example.com"] },
+          false
+        )
+      ).rejects.toThrow(
+        'could not create a new profile because no profile property in {"email":["yoshi@example.com"]} is unique and owned by the source'
+      );
     });
 
     test("properties will include the value, type, unique, and timestamps", async () => {
@@ -816,7 +853,7 @@ describe("models/profile", () => {
     let app: App;
     let source: Source;
 
-    let importResult: Record<string, any> = {};
+    let importResult: { [table: string]: { [mappingValue: string]: any } } = {};
 
     beforeAll(async () => {
       await Profile.truncate();
@@ -840,10 +877,26 @@ describe("models/profile", () => {
             description: "a test app connection",
             app: "test-template-app",
             direction: "import" as "import",
-            options: [],
+            options: [{ key: "table", required: true }],
             methods: {
-              profileProperty: async ({ property }) => {
-                return importResult[property.key];
+              profileProperty: async ({
+                property,
+                sourceOptions,
+                sourceMapping,
+                profile,
+              }) => {
+                const table = sourceOptions.table.toString();
+                const profileProperties = await profile.simplifiedProperties();
+                const mappingKey = Object.values(sourceMapping)[0];
+                const mappingVal =
+                  profileProperties[mappingKey].length > 0 &&
+                  profileProperties[mappingKey][0]?.toString();
+
+                return mappingVal &&
+                  importResult[table] &&
+                  importResult[table][mappingVal]
+                  ? importResult[table][mappingVal][property.key]
+                  : undefined;
               },
             },
           },
@@ -864,6 +917,7 @@ describe("models/profile", () => {
       });
       await source.bootstrapUniqueProperty("userId", "integer", "id");
       await source.setMapping({ id: "userId" });
+      await source.setOptions({ table: "users" });
       await source.update({ state: "ready" });
 
       emailProperty = await Property.create({
@@ -902,9 +956,13 @@ describe("models/profile", () => {
       });
 
       importResult = {
-        userId: [1001],
-        email: ["peach@example.com"],
-        color: ["pink"],
+        users: {
+          "1001": {
+            userId: [1001],
+            email: ["peach@example.com"],
+            color: ["pink"],
+          },
+        },
       };
       await profile.import();
 
@@ -939,6 +997,10 @@ describe("models/profile", () => {
       await profile.import();
 
       properties = await profile.getProperties();
+      const pendingProperties = Object.values(properties).filter(
+        (v) => v.state === "pending"
+      );
+      expect(pendingProperties.length).toBe(0);
       expect(simpleProfileValues(properties)).toEqual({
         userId: [1003],
         email: ["bowser@example.com"],
@@ -959,12 +1021,21 @@ describe("models/profile", () => {
       ]);
 
       importResult = {
-        userId: [1002],
-        color: ["pink"],
+        users: {
+          "1002": {
+            userId: [1002],
+            color: ["pink"],
+          },
+        },
       };
       await profile.import();
 
       properties = await profile.getProperties();
+      const pendingProperties = Object.values(properties).filter(
+        (v) => v.state === "pending"
+      );
+      expect(pendingProperties.length).toBe(0);
+
       expect(simpleProfileValues(properties)).toEqual({
         userId: [1002],
         email: [null],
@@ -972,39 +1043,100 @@ describe("models/profile", () => {
       });
     });
 
-    test("properties marked as keepValueIfNotFound=true will not be cleared if it no longer exists", async () => {
-      await Property.update(
-        { keepValueIfNotFound: true },
-        { where: { key: "email" } }
-      );
+    describe("with a dependent source", () => {
+      let purchasesTable: Source;
+      let daisyProfile: Profile;
 
-      const profile = await Profile.create();
-      await profile.addOrUpdateProperties({
-        userId: [1006],
-        email: ["myemail@demo.com"],
-      });
-      let properties = await profile.getProperties();
-      expect(Object.keys(properties).sort()).toEqual([
-        "color",
-        "email",
-        "userId",
-      ]);
+      beforeAll(async () => {
+        purchasesTable = await Source.create({
+          appId: app.id,
+          name: "test import purchases source",
+          type: "import-from-test-template-app",
+        });
+        await purchasesTable.setOptions({ table: "purchases" });
+        await purchasesTable.setMapping({ user_id: "userId" });
+        await purchasesTable.update({ state: "ready" });
 
-      importResult = {};
-      await profile.markPending();
-      await profile.import();
-
-      properties = await profile.getProperties();
-      expect(simpleProfileValues(properties)).toEqual({
-        userId: [null],
-        color: [null],
-        email: ["myemail@demo.com"],
+        const purchasesCountProperty = await Property.create({
+          key: "myPurchasesCount",
+          type: "integer",
+          unique: false,
+          sourceId: purchasesTable.id,
+        });
+        await purchasesCountProperty.update({ state: "ready" });
       });
 
-      await Property.update(
-        { keepValueIfNotFound: false },
-        { where: { key: "email" } }
-      );
+      test("properties from a dependent source can be imported at the same time", async () => {
+        const profile = await Profile.create();
+        await profile.addOrUpdateProperties({ userId: [1010] });
+        let properties = await profile.getProperties();
+        expect(simpleProfileValues(properties)).toEqual({
+          userId: [1010],
+          email: [null],
+          color: [null],
+          myPurchasesCount: [null],
+        });
+
+        importResult = {
+          users: {
+            "1010": {
+              userId: [1010],
+              email: ["daisy@example.com"],
+              color: ["pink"],
+            },
+          },
+          purchases: {
+            "1010": {
+              myPurchasesCount: [2020],
+            },
+          },
+        };
+        await profile.markPending();
+        await profile.import();
+
+        properties = await profile.getProperties();
+        expect(simpleProfileValues(properties)).toEqual({
+          userId: [1010],
+          email: ["daisy@example.com"],
+          color: ["pink"],
+          myPurchasesCount: [2020],
+        });
+
+        daisyProfile = profile;
+      });
+
+      test("properties from a dependent source can be cleared at the same time if the mapping is gone", async () => {
+        const profile = daisyProfile;
+        let properties = await profile.getProperties();
+        expect(simpleProfileValues(properties)).toEqual({
+          userId: [1010],
+          email: ["daisy@example.com"],
+          color: ["pink"],
+          myPurchasesCount: [2020],
+        });
+
+        importResult = {
+          users: {
+            // daisy is gone
+          },
+          purchases: {
+            "1010": {
+              // related row still here
+              myPurchasesCount: [2020],
+            },
+          },
+        };
+        await profile.markPending();
+        await profile.import();
+
+        properties = await profile.getProperties();
+        expect(simpleProfileValues(properties)).toEqual({
+          userId: [null],
+          email: [null],
+          color: [null],
+          myPurchasesCount: [null],
+        });
+      });
     });
   });
 

@@ -12,6 +12,7 @@ import { OptionHelper } from "../modules/optionHelper";
 import { destinationTypeConversions } from "../modules/destinationTypeConversions";
 import { AsyncReturnType } from "type-fest";
 import { ConfigWriter } from "../modules/configWriter";
+import { APIData } from "../modules/apiData";
 
 export class DestinationsList extends AuthenticatedAction {
   constructor() {
@@ -21,11 +22,12 @@ export class DestinationsList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       state: { required: false },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [
           ["name", "desc"],
           ["createdAt", "desc"],
@@ -115,8 +117,12 @@ export class DestinationCreate extends AuthenticatedAction {
       type: { required: true },
       state: { required: false },
       appId: { required: true },
-      options: { required: false },
-      mapping: { required: false, default: {} },
+      options: { required: false, formatter: APIData.ensureObject },
+      mapping: {
+        required: false,
+        formatter: APIData.ensureObject,
+        default: {},
+      },
       syncMode: { required: false },
       destinationGroupMemberships: { required: false },
     };
@@ -156,8 +162,8 @@ export class DestinationEdit extends AuthenticatedAction {
       id: { required: true },
       name: { required: false },
       state: { required: false },
-      options: { required: false },
-      mapping: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
+      mapping: { required: false, formatter: APIData.ensureObject },
       syncMode: { required: false },
       destinationGroupMemberships: { required: false },
       trackedGroupId: { required: false },
@@ -215,19 +221,15 @@ export class DestinationConnectionOptions extends AuthenticatedAction {
     this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       id: { required: true },
-      options: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
     };
   }
 
   async runWithinTransaction({ params }) {
     const destination = await Destination.findById(params.id);
-
-    const options =
-      typeof params.options === "string"
-        ? JSON.parse(params.options)
-        : params.options;
-
-    return { options: await destination.destinationConnectionOptions(options) };
+    return {
+      options: await destination.destinationConnectionOptions(params.options),
+    };
   }
 }
 
@@ -305,7 +307,11 @@ export class DestinationExport extends AuthenticatedAction {
     this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       id: { required: true },
-      force: { required: false, default: true },
+      force: {
+        required: false,
+        default: true,
+        formatter: APIData.ensureBoolean,
+      },
     };
   }
 
@@ -328,8 +334,11 @@ export class DestinationProfilePreview extends AuthenticatedAction {
       id: { required: true },
       groupId: { required: false },
       profileId: { required: false },
-      mapping: { required: false },
-      destinationGroupMemberships: { required: false },
+      mapping: { required: false, formatter: APIData.ensureObject },
+      destinationGroupMemberships: {
+        required: false,
+        formatter: APIData.ensureObject,
+      },
     };
   }
 
@@ -356,11 +365,6 @@ export class DestinationProfilePreview extends AuthenticatedAction {
     let mapping = params.mapping;
     if (!mapping) {
       mapping = await destination.getMapping();
-    } else {
-      try {
-        // this is a GET, so we need to parse
-        mapping = JSON.parse(mapping);
-      } catch {}
     }
 
     let destinationGroupMemberships = params.destinationGroupMemberships;
@@ -371,11 +375,6 @@ export class DestinationProfilePreview extends AuthenticatedAction {
       destinationGroupMembershipsArray.map(
         (dgm) => (destinationGroupMemberships[dgm.groupId] = dgm.remoteKey)
       );
-    } else {
-      try {
-        // this is a GET, so we need to parse
-        destinationGroupMemberships = JSON.parse(destinationGroupMemberships);
-      } catch {}
     }
 
     if (

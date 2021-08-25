@@ -52,8 +52,7 @@ export class ProfilesConfirm extends CLSTask {
       count += await ProfileOps.confirmExistence(
         limit - count,
         latestRun.completedAt,
-        schedule.sourceId,
-        latestRun
+        schedule.sourceId
       );
     }
 

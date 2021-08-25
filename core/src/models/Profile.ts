@@ -22,6 +22,7 @@ import { ProfileOps } from "../modules/ops/profile";
 import { APIData } from "../modules/apiData";
 import { GroupRule } from "./GroupRule";
 import { ProfileConfigurationObject } from "../classes/codeConfig";
+import { Source } from "./Source";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -152,8 +153,19 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps._import(this, toSave, toLock);
   }
 
-  async export(force = false, oldGroupsOverride?: Group[], saveExports = true) {
-    return ProfileOps._export(this, force, oldGroupsOverride, saveExports);
+  async export(
+    force = false,
+    oldGroupsOverride?: Group[],
+    saveExports = true,
+    sync = true
+  ) {
+    return ProfileOps._export(
+      this,
+      force,
+      oldGroupsOverride,
+      saveExports,
+      sync
+    );
   }
 
   async logMessage(verb: "create" | "update" | "destroy") {
@@ -213,10 +225,13 @@ export class Profile extends LoggedModel<Profile> {
     return instance;
   }
 
-  static async findOrCreateByUniqueProfileProperties(hash: {
-    [key: string]: Array<string | number | boolean | Date>;
-  }) {
-    return ProfileOps.findOrCreateByUniqueProfileProperties(hash);
+  static async findOrCreateByUniqueProfileProperties(
+    hash: {
+      [key: string]: Array<string | number | boolean | Date>;
+    },
+    source?: boolean | Source
+  ) {
+    return ProfileOps.findOrCreateByUniqueProfileProperties(hash, source);
   }
 
   @BeforeSave

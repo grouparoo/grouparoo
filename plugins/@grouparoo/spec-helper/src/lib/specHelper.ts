@@ -145,6 +145,16 @@ export namespace helper {
     });
   }
 
+  export async function waitUntil(newNock, guard) {
+    let attempts = 0;
+    while (!(await guard()) && attempts < 10) {
+      attempts++;
+      if (newNock) {
+        await this.sleep(shortTime * 3);
+      }
+    }
+  }
+
   export async function truncate() {
     for (const model of models) {
       await model.truncate();
@@ -534,7 +544,8 @@ export namespace helper {
     }
 
     const { profile } = await Profile.findOrCreateByUniqueProfileProperties(
-      arrayedArgs
+      arrayedArgs,
+      true // always allow this method to create new profiles
     );
     const snapshot = await profile.snapshot(opts.saveExports);
     await profile.reload();

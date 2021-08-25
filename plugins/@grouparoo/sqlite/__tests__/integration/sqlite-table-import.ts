@@ -21,6 +21,7 @@ import {
 import { SessionCreate } from "@grouparoo/core/src/actions/session";
 import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
 import {
+  SourceBootstrapUniqueProperty,
   SourceCreate,
   SourceEdit,
   SourcePreview,
@@ -49,7 +50,6 @@ const {
 describe("integration/runs/sqlite", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => helper.disableTestPluginImport());
-  beforeAll(async () => await helper.factories.properties());
   beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
   let session;
@@ -110,8 +110,6 @@ describe("integration/runs/sqlite", () => {
       type: "sqlite-table-import",
       appId: app.id,
       options: { table: usersTableName },
-      mapping: { id: "userId" },
-      state: "ready",
     };
     const sourceResponse = await specHelper.runAction<SourceCreate>(
       "source:create",
@@ -119,6 +117,36 @@ describe("integration/runs/sqlite", () => {
     );
     expect(sourceResponse.error).toBeUndefined();
     source = sourceResponse.source;
+
+    // bootstrap
+    session.params = {
+      csrfToken,
+      id: source.id,
+      key: "userId",
+      type: "integer",
+      mappedColumn: "id",
+    };
+    const bootstrapResponse =
+      await specHelper.runAction<SourceBootstrapUniqueProperty>(
+        "source:bootstrapUniqueProperty",
+        session
+      );
+    expect(bootstrapResponse.error).toBeUndefined();
+    expect(bootstrapResponse.property).toBeTruthy();
+
+    // update source
+    session.params = {
+      csrfToken,
+      id: source.id,
+      mapping: { id: "userId" },
+      state: "ready",
+    };
+    const sourceEditResponse = await specHelper.runAction<SourceEdit>(
+      "source:edit",
+      session
+    );
+    expect(sourceEditResponse.error).toBeUndefined();
+    source = sourceEditResponse.source;
 
     // create the schedule
     session.params = {
@@ -220,48 +248,49 @@ describe("integration/runs/sqlite", () => {
     expect(error).toBeUndefined();
   });
 
-  test("replace the email property with a new one for this source", async () => {
-    // delete the old rule
-    const oldProperty = await Property.findOne({
-      where: { key: "email" },
+  describe("create properties", () => {
+    ["email", "first_name", "last_name"].forEach((propertyName) => {
+      test(`add additional property: ${propertyName}`, async () => {
+        // create the new rule
+        session.params = {
+          csrfToken,
+          sourceId: source.id,
+          key: propertyName,
+          type: "string",
+        };
+
+        const { error, property, pluginOptions } =
+          await specHelper.runAction<PropertyCreate>(
+            "property:create",
+            session
+          );
+        expect(error).toBeUndefined();
+        expect(property.id).toBeTruthy();
+
+        // check the pluginOptions
+        expect(pluginOptions.length).toBe(2);
+        expect(pluginOptions[0].key).toBe("column");
+        expect(pluginOptions[1].key).toBe("aggregationMethod");
+        expect(pluginOptions[0].required).toBe(true);
+        expect(pluginOptions[0].options[0].key).toBe("id");
+        expect(pluginOptions[1].options[0].key).toBe("exact");
+        expect(pluginOptions[1].required).toBe(true);
+
+        // set the options
+        session.params = {
+          csrfToken,
+          id: property.id,
+          unique: true,
+          options: { column: propertyName, aggregationMethod: "exact" },
+          state: "ready",
+        };
+        const { error: editError } = await specHelper.runAction(
+          "property:edit",
+          session
+        );
+        expect(editError).toBeUndefined();
+      });
     });
-    await oldProperty.destroy();
-
-    // create the new rule
-    session.params = {
-      csrfToken,
-      sourceId: source.id,
-      key: "email",
-      type: "string",
-    };
-
-    const { error, property, pluginOptions } =
-      await specHelper.runAction<PropertyCreate>("property:create", session);
-    expect(error).toBeUndefined();
-    expect(property.id).toBeTruthy();
-
-    // check the pluginOptions
-    expect(pluginOptions.length).toBe(2);
-    expect(pluginOptions[0].key).toBe("column");
-    expect(pluginOptions[1].key).toBe("aggregationMethod");
-    expect(pluginOptions[0].required).toBe(true);
-    expect(pluginOptions[0].options[0].key).toBe("id");
-    expect(pluginOptions[1].options[0].key).toBe("exact");
-    expect(pluginOptions[1].required).toBe(true);
-
-    // set the options
-    session.params = {
-      csrfToken,
-      id: property.id,
-      unique: true,
-      options: { column: "email", aggregationMethod: "exact" },
-      state: "ready",
-    };
-    const { error: editError } = await specHelper.runAction<PropertyEdit>(
-      "property:edit",
-      session
-    );
-    expect(editError).toBeUndefined();
   });
 
   test("create the test group", async () => {
@@ -340,8 +369,8 @@ describe("integration/runs/sqlite", () => {
       mapping: {
         id: "userId",
         customer_email: "email",
-        fname: "firstName",
-        lname: "lastName",
+        fname: "first_name",
+        lname: "last_name",
       },
       state: "ready",
     };
@@ -359,12 +388,12 @@ describe("integration/runs/sqlite", () => {
         csrfToken,
         id: schedule.id,
       };
-      const { error, success } = await specHelper.runAction<ScheduleRun>(
+      const { error, run: apiRun } = await specHelper.runAction<ScheduleRun>(
         "schedule:run",
         session
       );
       expect(error).toBeUndefined();
-      expect(success).toBe(true);
+      expect(apiRun.id).toBeTruthy();
 
       // check that the run is enqueued
       const found = await specHelper.findEnqueuedTasks("schedule:run");
@@ -372,11 +401,7 @@ describe("integration/runs/sqlite", () => {
       expect(found[0].args[0].scheduleId).toBe(schedule.id);
 
       // run the schedule
-      const run = await Run.create({
-        creatorId: schedule.id,
-        creatorType: "schedule",
-        state: "running",
-      });
+      const run = await Run.findById(apiRun.id);
 
       // run the schedule twice to complete the run
       await specHelper.runTask("schedule:run", { runId: run.id });
@@ -485,19 +510,20 @@ describe("integration/runs/sqlite", () => {
         csrfToken,
         id: schedule.id,
       };
-      const { error, success } = await specHelper.runAction<ScheduleRun>(
+      const { error, run: apiRun } = await specHelper.runAction<ScheduleRun>(
         "schedule:run",
         session
       );
       expect(error).toBeUndefined();
-      expect(success).toBe(true);
+      expect(apiRun.id).toBeTruthy();
+
+      // check that the run is enqueued
+      const found = await specHelper.findEnqueuedTasks("schedule:run");
+      expect(found.length).toEqual(2);
+      expect(found[1].args[0].scheduleId).toBe(schedule.id);
 
       // run the schedule
-      const run = await Run.create({
-        creatorId: schedule.id,
-        creatorType: "schedule",
-        state: "running",
-      });
+      const run = await Run.findById(apiRun.id);
 
       // run the schedule twice to complete the run
       await specHelper.runTask("schedule:run", { runId: run.id });

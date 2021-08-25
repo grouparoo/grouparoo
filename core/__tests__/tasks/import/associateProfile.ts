@@ -1,13 +1,27 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Profile, ProfileProperty } from "../../../src";
+import {
+  Profile,
+  ProfileProperty,
+  Run,
+  Import,
+  Schedule,
+  Source,
+} from "../../../src";
 
 describe("tasks/import:associateProfile", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
+  let primarySource: Source;
+  let primarySchedule: Schedule;
 
   describe("import:associateProfile", () => {
+    beforeAll(async () => {
+      primarySource = await Source.findOne();
+      primarySchedule = await helper.factories.schedule(primarySource);
+    });
+
     test("can be enqueued", async () => {
       await task.enqueue("import:associateProfile", { importId: "abc123" });
       const found = await specHelper.findEnqueuedTasks(
@@ -24,7 +38,7 @@ describe("tasks/import:associateProfile", () => {
     });
 
     test("it will create a new profile from provided import data and update the run if present", async () => {
-      const run = await helper.factories.run();
+      const run = await helper.factories.run(primarySchedule);
 
       const _import = await helper.factories.import(run, {
         email: "toad@example.com",
@@ -69,7 +83,7 @@ describe("tasks/import:associateProfile", () => {
     });
 
     test("if there is an error, the import will have the error appended after a few attempts", async () => {
-      const run = await helper.factories.run();
+      const run = await helper.factories.run(primarySchedule);
       const _import = await helper.factories.import(run, {
         thing: "stuff",
       });
@@ -126,7 +140,7 @@ describe("tasks/import:associateProfile", () => {
     test("it will set properties included in the import data", async () => {
       await Profile.truncate();
 
-      const run = await helper.factories.run();
+      const run = await helper.factories.run(primarySchedule);
 
       const _import = await helper.factories.import(run, {
         email: "bowserjr@example.com",
@@ -155,6 +169,37 @@ describe("tasks/import:associateProfile", () => {
       expect(properties.firstName).toEqual(["Bowser"]);
       expect(properties.lastName).toEqual(["Jr"]);
       expect(properties.someNonexistentProp).toBeUndefined();
+    });
+
+    // Prevent data in Secondary Sources from Creating Profiles that do not exist in the Primary Sources
+    test("prevents import when unable to create profile from secondary source", async () => {
+      // make a new source and property
+      const source: Source = await helper.factories.source();
+      await source.setOptions({ table: "otherTable" });
+      await source.setMapping({ user_id: "userId" });
+      await source.update({ state: "ready" });
+      const schedule: Schedule = await helper.factories.schedule(source);
+      const run: Run = await helper.factories.run(schedule);
+      const _import: Import = await helper.factories.import(run, {
+        thing: "stuff",
+        userId: 99999999, // doesn't exist in source
+      });
+
+      await specHelper.runTask("import:associateProfile", {
+        importId: _import.id,
+        attempts: 3,
+      });
+
+      await _import.reload();
+      expect(_import.errorMessage).toMatch(
+        /could not create a new profile because no profile property/
+      );
+
+      // cleanup
+      await _import.destroy();
+      await run.destroy();
+      await schedule.destroy();
+      await source.destroy();
     });
   });
 });

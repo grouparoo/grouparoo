@@ -4,6 +4,8 @@ import { ProfileOps } from "./profile";
 import { CLS } from "../../modules/cls";
 import { Op } from "sequelize";
 import { config } from "actionhero";
+import { Schedule } from "../../models/Schedule";
+import { Source } from "../../models/Source";
 
 export namespace ImportOps {
   const defaultImportProcessingDelay = 1000 * 60 * 5;
@@ -66,11 +68,24 @@ export namespace ImportOps {
   }
 
   export async function associateProfile(_import: Import) {
-    const {
-      profile,
-      isNew,
-      // will throw if there are no unique profile properties
-    } = await ProfileOps.findOrCreateByUniqueProfileProperties(_import.data);
+    let run: Run;
+    let schedule: Schedule;
+    let source: Source;
+
+    run = await Run.findOne({
+      where: { id: _import.creatorId, creatorType: "schedule" },
+    });
+    if (run && run.creatorType === "schedule")
+      schedule = await Schedule.findOne({ where: { id: run.creatorId } });
+    if (schedule)
+      source = await Source.findOne({ where: { id: schedule.sourceId } });
+
+    // will throw if there are no unique profile properties
+    const { profile, isNew } =
+      await ProfileOps.findOrCreateByUniqueProfileProperties(
+        _import.data,
+        source
+      );
 
     const oldProfileProperties = await profile.simplifiedProperties();
     const oldGroups = await profile.$get("groups");

@@ -1,14 +1,17 @@
+import Sequelize from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addColumn("destinations", "syncMode", {
-        type: DataTypes.STRING(191),
-        allowNull: true,
-      });
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.addColumn("destinations", "syncMode", {
+      type: DataTypes.STRING(191),
+      allowNull: true,
     });
   },
 
-  down: async function (migration) {
-    await migration.removeColumn("destinations", "syncMode");
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("destinations", "syncMode");
   },
 };

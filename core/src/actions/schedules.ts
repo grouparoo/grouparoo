@@ -1,7 +1,9 @@
 import { Schedule } from "../models/Schedule";
+import { Run } from "../models/Run";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
+import { APIData } from "../modules/apiData";
 
 export class SchedulesList extends AuthenticatedAction {
   constructor() {
@@ -11,11 +13,12 @@ export class SchedulesList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "read" };
     this.inputs = {
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       state: { required: false },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [
           ["name", "desc"],
           ["createdAt", "desc"],
@@ -58,8 +61,42 @@ export class ScheduleRun extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const schedule = await Schedule.findById(params.id);
-    await schedule.enqueueRun();
-    return { success: true };
+    const run = await schedule.enqueueRun();
+    return { run: await run.apiData() };
+  }
+}
+
+export class SchedulesRun extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "schedules:run";
+    this.description = "run all schedules";
+    this.outputExample = {};
+    this.permission = { topic: "source", mode: "write" };
+  }
+
+  async runWithinTransaction() {
+    const runs: Run[] = [];
+    const schedules = await Schedule.findAll();
+
+    for (const schedule of schedules) {
+      const runningRun = await Run.scope(null).findOne({
+        where: {
+          state: "running",
+          creatorId: schedule.id,
+          creatorType: "schedule",
+        },
+      });
+
+      if (runningRun) {
+        runs.push(runningRun);
+      } else {
+        const newRun = await schedule.enqueueRun();
+        runs.push(newRun);
+      }
+    }
+
+    return { runs: await Promise.all(runs.map((run) => run.apiData())) };
   }
 }
 
@@ -73,12 +110,16 @@ export class ScheduleCreate extends AuthenticatedAction {
     this.inputs = {
       name: { required: false },
       sourceId: { required: true },
-      recurring: { required: true },
-      confirmProfiles: { required: false },
+      recurring: { required: true, formatter: APIData.ensureBoolean },
+      confirmProfiles: { required: false, formatter: APIData.ensureBoolean },
       state: { required: false },
-      options: { required: false },
-      recurringFrequency: { required: true, default: 0 },
-      filters: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
+      recurringFrequency: {
+        required: true,
+        default: 0,
+        formatter: APIData.ensureNumber,
+      },
+      filters: { required: false, formatter: APIData.ensureObject },
     };
   }
 
@@ -115,12 +156,12 @@ export class ScheduleEdit extends AuthenticatedAction {
       id: { required: true },
       name: { required: false },
       sourceId: { required: false },
-      recurring: { required: false },
-      confirmProfiles: { required: false },
+      recurring: { required: false, formatter: APIData.ensureBoolean },
+      confirmProfiles: { required: false, formatter: APIData.ensureBoolean },
       state: { required: false },
-      options: { required: false },
-      recurringFrequency: { required: false },
-      filters: { required: false },
+      options: { required: false, formatter: APIData.ensureObject },
+      recurringFrequency: { required: false, formatter: APIData.ensureNumber },
+      filters: { required: false, formatter: APIData.ensureObject },
     };
   }
 

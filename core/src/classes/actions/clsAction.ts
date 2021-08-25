@@ -2,6 +2,10 @@ import { Action } from "actionhero";
 import { APM } from "../../modules/apm";
 import { CLS } from "../../modules/cls";
 import { AsyncReturnType } from "type-fest";
+import {
+  ActionPermissionTopic,
+  ActionPermissionMode,
+} from "../../models/Permission";
 
 export interface ActionData {
   [key: string]: any;
@@ -9,8 +13,8 @@ export interface ActionData {
 
 export abstract class CLSAction extends Action {
   permission: {
-    topic: string;
-    mode: "read" | "write"; // "read" make it a deferred transaction
+    topic: ActionPermissionTopic;
+    mode: ActionPermissionMode;
   };
 
   constructor() {
@@ -18,9 +22,7 @@ export abstract class CLSAction extends Action {
   }
 
   isWriteTransaction() {
-    if (this.permission?.mode === "read") {
-      return false;
-    }
+    if (this.permission?.mode === "read") return false;
     return true;
   }
 

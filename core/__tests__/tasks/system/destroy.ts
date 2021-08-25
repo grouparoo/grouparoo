@@ -1,5 +1,14 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Property, Source, App, Destination, Group } from "../../../src";
+import {
+  Property,
+  Source,
+  App,
+  Destination,
+  Group,
+  Profile,
+  ProfileProperty,
+  Export,
+} from "../../../src";
 import { api, task, specHelper } from "actionhero";
 
 describe("tasks/destroy", () => {
@@ -81,6 +90,92 @@ describe("tasks/destroy", () => {
       const found = await specHelper.findEnqueuedTasks("app:destroy");
       expect(found.length).toEqual(1);
       expect(found[0].args[0].appId).toBe(app.id);
+    });
+
+    describe("profiles", () => {
+      let userIdProperty: Property;
+      beforeAll(async () => {
+        userIdProperty = await Property.findOne({ where: { key: "userId" } });
+        expect(userIdProperty.directlyMapped).toBe(true);
+      });
+
+      test("it will enqueue destroy task for profiles with a directlyMapped property set to null", async () => {
+        const profile: Profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({
+          userId: [null],
+          isVIP: [true],
+          ltv: [213],
+        });
+
+        await ProfileProperty.update(
+          { state: "ready" },
+          { where: { profileId: profile.id } }
+        );
+        await profile.update({ state: "ready" });
+
+        await specHelper.runTask("destroy", {});
+
+        const found = await specHelper.findEnqueuedTasks("profile:destroy");
+        expect(found.length).toEqual(1);
+        expect(found[0].args[0].profileId).toBe(profile.id);
+
+        await profile.destroy();
+      });
+
+      test("does not enqueue destroy task for profiles that aren't done importing", async () => {
+        const profile: Profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({
+          userId: [null],
+          isVIP: [true],
+          ltv: [213],
+        });
+
+        await ProfileProperty.update(
+          { state: "pending" },
+          { where: { profileId: profile.id } }
+        );
+        await profile.update({ state: "pending" });
+
+        await specHelper.runTask("destroy", {});
+
+        const found = await specHelper.findEnqueuedTasks("profile:destroy");
+        expect(found.length).toEqual(0);
+
+        await profile.destroy();
+      });
+
+      // this test should be last
+      test("it will enqueue destroy task for profiles when there is no directlyMapped property", async () => {
+        const profile: Profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({
+          userId: [1000],
+          isVIP: [true],
+          ltv: [213],
+        });
+
+        await ProfileProperty.update(
+          { state: "ready" },
+          { where: { profileId: profile.id } }
+        );
+        await profile.update({ state: "ready" });
+
+        await specHelper.runTask("destroy", {});
+
+        let found = await specHelper.findEnqueuedTasks("profile:destroy");
+        expect(found.length).toEqual(0);
+
+        // now remove the directly mapped property
+        // @ts-ignore
+        await userIdProperty.destroy({ hooks: false });
+
+        await specHelper.runTask("destroy", {});
+
+        found = await specHelper.findEnqueuedTasks("profile:destroy");
+        expect(found.length).toEqual(1);
+        expect(found[0].args[0].profileId).toBe(profile.id);
+
+        await profile.destroy();
+      });
     });
   });
 });

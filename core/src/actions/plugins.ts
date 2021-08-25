@@ -4,6 +4,7 @@ import { Plugins } from "../modules/plugins";
 import { api } from "actionhero";
 import path from "path";
 import fs from "fs";
+import { APIData } from "../modules/apiData";
 
 const restartSleepTime = 100;
 
@@ -55,13 +56,19 @@ export class PluginInstall extends AuthenticatedAction {
     this.permission = { topic: "system", mode: "write" };
     this.inputs = {
       plugin: { required: true },
-      restart: { required: false, default: "false" },
+      restart: {
+        required: false,
+        default: false,
+        formatter: APIData.ensureBoolean,
+      },
     };
     this.outputExample = {};
   }
 
   async runWithinTransaction({
     params,
+  }: {
+    params: { plugin: string; restart: boolean };
   }): Promise<{ success: boolean; checkIn?: number }> {
     const response = await Plugins.install(params.plugin);
 
@@ -82,12 +89,20 @@ export class PluginUninstall extends AuthenticatedAction {
     this.permission = { topic: "system", mode: "write" };
     this.inputs = {
       plugin: { required: true },
-      restart: { required: false, default: "false" },
+      restart: {
+        required: false,
+        default: false,
+        formatter: APIData.ensureBoolean,
+      },
     };
     this.outputExample = {};
   }
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: { plugin: string; restart: boolean };
+  }) {
     const response = await Plugins.uninstall(params.plugin);
 
     if (!response.success) return { success: false };

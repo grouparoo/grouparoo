@@ -1,11 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Import } from "../../src";
-import {
-  ImportCreate,
-  ImportsList,
-  ImportView,
-} from "../../src/actions/imports";
+import { ImportsList, ImportView } from "../../src/actions/imports";
 import { SessionCreate } from "../../src/actions/session";
 
 describe("actions/imports", () => {
@@ -21,67 +17,6 @@ describe("actions/imports", () => {
       where: { topic: "import" },
     });
     await permissions[0].update({ write: true, read: true });
-  });
-
-  test("an import cannot be created without an apiKey", async () => {
-    const { error, import: _import } = await specHelper.runAction<ImportCreate>(
-      "import:create",
-      {
-        properties: {
-          email: "toad@mushroom-kingdom.gov",
-          hat: "mushroom",
-        },
-      }
-    );
-
-    expect(error.code).toBe("AUTHENTICATION_ERROR");
-  });
-
-  test("an import can be added that contains unique profile properties", async () => {
-    const { error, import: _import } = await specHelper.runAction<ImportCreate>(
-      "import:create",
-      {
-        apiKey,
-        properties: {
-          email: "toad@mushroom-kingdom.gov",
-          hat: "mushroom",
-        },
-      }
-    );
-
-    expect(error).toBeFalsy();
-    expect(_import.id).toBeTruthy();
-    expect(_import.creatorType).toBe("api");
-  });
-
-  test("import properties are parsed from JSON as needed", async () => {
-    const { error, import: _import } = await specHelper.runAction<ImportCreate>(
-      "import:create",
-      {
-        apiKey,
-        properties: JSON.stringify({
-          email: "toad@mushroom-kingdom.gov",
-          hat: "mushroom",
-        }),
-      }
-    );
-
-    expect(error).toBeFalsy();
-    expect(_import.id).toBeTruthy();
-    expect(_import.creatorType).toBe("api");
-  });
-
-  test("an import cannot be added if it has no unique profile properties", async () => {
-    const { error, import: _import } = await specHelper.runAction<ImportCreate>(
-      "import:create",
-      {
-        apiKey,
-        properties: { hat: "mushroom" },
-      }
-    );
-
-    expect(error.message).toMatch(/no unique profile property included/);
-    expect(_import).toBeFalsy();
   });
 
   describe("with session", () => {
@@ -105,6 +40,13 @@ describe("actions/imports", () => {
       csrfToken = sessionResponse.csrfToken;
     });
 
+    beforeAll(async () => {
+      await helper.factories.import(undefined, {
+        email: "toad@mushroom-kingdom.gov",
+        something: "else",
+      });
+    });
+
     test("an import can be viewed", async () => {
       const i = await Import.findOne();
       connection.params = { csrfToken, id: i.id };
@@ -126,7 +68,7 @@ describe("actions/imports", () => {
       );
 
       expect(error).toBeFalsy();
-      expect(imports.length).toBe(2);
+      expect(imports.length).toBe(1);
       expect(imports[0].id).toBeTruthy();
       expect(imports[0].data.email).toBe("toad@mushroom-kingdom.gov");
     });

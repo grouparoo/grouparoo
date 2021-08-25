@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "grouparoo",
   "description": "The Grouparoo CLI and Project Generator",
-  "version": "0.5.3-alpha.4",
+  "version": "0.5.3-alpha.5",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -44,7 +44,7 @@
     "@types/fs-extra": "*",
     "@types/node": "*",
     "prettier": "2.3.2",
-    "ts-node": "10.2.0",
+    "ts-node": "10.2.1",
     "typescript": "4.3.5"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"

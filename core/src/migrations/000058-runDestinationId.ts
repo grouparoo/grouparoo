@@ -1,17 +1,18 @@
+import Sequelize from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addColumn("runs", "destinationId", {
-        type: DataTypes.STRING(40),
-        allowNull: true,
-        defaultValue: null,
-      });
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.addColumn("runs", "destinationId", {
+      type: DataTypes.STRING(40),
+      allowNull: true,
+      defaultValue: null,
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.removeColumn("runs", "destinationId");
-    });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("runs", "destinationId");
   },
 };

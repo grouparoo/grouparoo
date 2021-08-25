@@ -8,6 +8,7 @@ import { ConfigWriter } from "../modules/configWriter";
 import { ProfileOps } from "../modules/ops/profile";
 import { AsyncReturnType } from "type-fest";
 import Sequelize from "sequelize";
+import { APIData } from "../modules/apiData";
 
 export class ProfilesList extends AuthenticatedAction {
   constructor() {
@@ -23,13 +24,13 @@ export class ProfilesList extends AuthenticatedAction {
       state: { required: false },
       caseSensitive: {
         required: false,
-        formatter: (p: string | boolean) =>
-          p.toString().toLowerCase() === "true",
+        formatter: APIData.ensureBoolean,
       },
-      limit: { required: true, default: 100 },
-      offset: { required: true, default: 0 },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [["createdAt", "asc"]],
       },
     };
@@ -56,9 +57,13 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
     this.inputs = {
       propertyId: { required: true },
       match: { required: true },
-      limit: { required: false, default: 25 },
-      offset: { required: false, default: 0 },
-      order: { required: false, default: [["rawValue", "asc"]] },
+      limit: { required: false, default: 25, formatter: APIData.ensureNumber },
+      offset: { required: false, default: 0, formatter: APIData.ensureNumber },
+      order: {
+        required: false,
+        formatter: APIData.ensureObject,
+        default: [["rawValue", "asc"]],
+      },
     };
   }
 
@@ -114,15 +119,20 @@ export class ProfileCreate extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "profile", mode: "write" };
     this.inputs = {
-      properties: { required: false, default: {} },
+      properties: {
+        required: false,
+        default: {},
+        formatter: APIData.ensureObject,
+      },
     };
   }
 
   async runWithinTransaction({ params }) {
     const profile = new Profile(params);
     await profile.save();
-    await profile.addOrUpdateProperties(params.properties);
-
+    if (params.properties) {
+      await profile.addOrUpdateProperties(params.properties);
+    }
     const groups = await profile.$get("groups");
 
     await ConfigWriter.run();
@@ -168,8 +178,16 @@ export class ProfileEdit extends AuthenticatedAction {
     this.permission = { topic: "profile", mode: "write" };
     this.inputs = {
       id: { required: true },
-      properties: { required: false, default: {} },
-      removedProperties: { required: false, default: [] },
+      properties: {
+        required: false,
+        default: {},
+        formatter: APIData.ensureObject,
+      },
+      removedProperties: {
+        required: false,
+        default: [],
+        formatter: APIData.ensureObject,
+      },
     };
   }
 
@@ -177,8 +195,12 @@ export class ProfileEdit extends AuthenticatedAction {
     const profile = await Profile.findById(params.id);
 
     await profile.update(params);
-    await profile.addOrUpdateProperties(params.properties);
-    await profile.removeProperties(params.removedProperties);
+    if (params.properties) {
+      await profile.addOrUpdateProperties(params.properties);
+    }
+    if (params.removedProperties) {
+      await profile.removeProperties(params.removedProperties);
+    }
 
     await profile.sync(false);
 

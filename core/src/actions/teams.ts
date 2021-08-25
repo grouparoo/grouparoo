@@ -5,6 +5,7 @@ import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 import { Setting } from "../models/Setting";
 import { GrouparooSubscription } from "../modules/grouparooSubscription";
+import { APIData } from "../modules/apiData";
 
 export class TeamInitialize extends CLSAction {
   constructor() {
@@ -19,7 +20,11 @@ export class TeamInitialize extends CLSAction {
       password: { required: true },
       email: { required: true },
       companyName: { required: false },
-      subscribed: { required: false, default: true },
+      subscribed: {
+        required: false,
+        default: true,
+        formatter: APIData.ensureBoolean,
+      },
     };
   }
 
@@ -94,12 +99,15 @@ export class TeamCreate extends AuthenticatedAction {
       name: { required: true },
       permissionAllRead: { required: false, default: true },
       permissionAllWrite: { required: false, default: false },
+      permissions: { required: false, formatter: APIData.ensureObject },
     };
   }
 
   async runWithinTransaction({ params }) {
     const team = new Team(params);
     await team.save();
+    if (params.permissions) await team.setPermissions(params.permissions);
+
     return { team: await team.apiData() };
   }
 }
@@ -118,7 +126,7 @@ export class TeamEdit extends AuthenticatedAction {
       permissionAllWrite: { required: false },
       disabledPermissionAllRead: { required: false },
       disabledPermissionAllWrite: { required: false },
-      permissions: { required: false },
+      permissions: { required: false, formatter: APIData.ensureObject },
     };
   }
 
@@ -132,15 +140,7 @@ export class TeamEdit extends AuthenticatedAction {
     }
 
     await team.update(updateParams);
-
-    let permissions = params.permissions;
-    if (permissions) {
-      try {
-        permissions = JSON.parse(permissions);
-      } catch (error) {}
-
-      await team.setPermissions(permissions);
-    }
+    if (params.permissions) await team.setPermissions(params.permissions);
 
     return { team: await team.apiData() };
   }

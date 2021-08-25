@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
-import { Source } from "../../src";
+import { specHelper, api } from "actionhero";
+import { Run, Schedule, Source } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   ScheduleCreate,
@@ -8,6 +8,7 @@ import {
   ScheduleEdit,
   ScheduleFilterOptions,
   ScheduleRun,
+  SchedulesRun,
   SchedulesList,
   ScheduleView,
 } from "../../src/actions/schedules";
@@ -178,20 +179,59 @@ describe("actions/schedules", () => {
       });
 
       test("an administrator can request a schedule run and enqueue a runConnection task", async () => {
+        await api.resque.queue.connection.redis.flushdb();
+        await Run.truncate();
+
         connection.params = {
           csrfToken,
           id,
         };
-        const { error, success } = await specHelper.runAction<ScheduleRun>(
+        const { error, run } = await specHelper.runAction<ScheduleRun>(
           "schedule:run",
           connection
         );
         expect(error).toBeUndefined();
-        expect(success).toBe(true);
+        expect(run.id).toBeTruthy();
 
         const tasks = await specHelper.findEnqueuedTasks("schedule:run");
         expect(tasks.length).toBe(1);
         expect(tasks[0].args[0].scheduleId).toBe(id);
+      });
+
+      test("an administrator can request to run all schedules and create new runs", async () => {
+        await api.resque.queue.connection.redis.flushdb();
+        await Run.truncate();
+
+        connection.params = { csrfToken };
+        const { error, runs } = await specHelper.runAction<SchedulesRun>(
+          "schedules:run",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(runs.length).toBe(1);
+
+        const tasks = await specHelper.findEnqueuedTasks("schedule:run");
+        expect(tasks.length).toBe(1);
+        expect(tasks[0].args[0].scheduleId).toBe(id);
+      });
+
+      test("an administrator can request to run all schedules and include running runs", async () => {
+        await api.resque.queue.connection.redis.flushdb();
+        await Run.truncate();
+        const run = await Run.create({
+          state: "running",
+          creatorType: "schedule",
+          creatorId: id,
+        });
+
+        connection.params = { csrfToken };
+        const { error, runs } = await specHelper.runAction<SchedulesRun>(
+          "schedules:run",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(runs.length).toBe(1);
+        expect(runs[0].id).toEqual(run.id);
       });
 
       test("an administrator can destroy a connection", async () => {

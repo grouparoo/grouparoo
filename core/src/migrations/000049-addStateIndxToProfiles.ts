@@ -1,25 +1,23 @@
-export default {
-  up: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addIndex("profiles", ["state"], {
-        fields: ["state"],
-      });
+import Sequelize from "sequelize";
 
-      await migration.addIndex("profileProperties", ["state"], {
-        fields: ["state"],
-      });
+export default {
+  up: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.addIndex("profiles", ["state"], {
+      fields: ["state"],
+    });
+
+    await queryInterface.addIndex("profileProperties", ["state"], {
+      fields: ["state"],
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.removeIndex("profiles", ["state"], {
-        fields: ["state"],
-      });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeIndex("profiles", ["state"], {
+      fields: ["state"],
+    });
 
-      await migration.removeIndex("profileProperties", ["state"], {
-        fields: ["state"],
-      });
+    await queryInterface.removeIndex("profileProperties", ["state"], {
+      fields: ["state"],
     });
   },
 };

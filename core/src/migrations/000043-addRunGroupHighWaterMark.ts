@@ -1,16 +1,17 @@
+import Sequelize from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addColumn("runs", "groupHighWaterMark", {
-        type: DataTypes.BIGINT,
-        allowNull: true,
-      });
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.addColumn("runs", "groupHighWaterMark", {
+      type: DataTypes.BIGINT,
+      allowNull: true,
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.removeColumn("runs", "groupHighWaterMark");
-    });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("runs", "groupHighWaterMark");
   },
 };

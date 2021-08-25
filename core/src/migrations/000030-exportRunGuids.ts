@@ -1,23 +1,24 @@
-export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addColumn("runs", "exportsCreated", {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-        defaultValue: 0,
-      });
+import Sequelize from "sequelize";
 
-      await migration.addColumn("exports", "runGuids", {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      });
+export default {
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.addColumn("runs", "exportsCreated", {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      defaultValue: 0,
+    });
+
+    await queryInterface.addColumn("exports", "runGuids", {
+      type: DataTypes.TEXT,
+      allowNull: true,
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.removeColumn("runs", "exportsCreated");
-      await migration.removeColumn("exports", "runGuids");
-    });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("runs", "exportsCreated");
+    await queryInterface.removeColumn("exports", "runGuids");
   },
 };

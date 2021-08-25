@@ -11,6 +11,7 @@ import {
   App,
   Profile,
   ProfileProperty,
+  Schedule,
 } from "../../../src";
 
 describe("tasks/profileProperties:enqueue", () => {
@@ -76,9 +77,14 @@ describe("tasks/profileProperties:enqueue", () => {
     });
 
     describe("with properties", () => {
+      let source: Source;
+      let schedule: Schedule;
+
       beforeAll(async () => {
         await helper.factories.properties();
         propertiesCount = await Property.scope(null).count();
+        source = await Source.findOne();
+        schedule = await helper.factories.schedule(source);
       });
 
       test("can be enqueued", async () => {
@@ -212,7 +218,7 @@ describe("tasks/profileProperties:enqueue", () => {
         });
 
         test("if there is an importProfileProperties it will be preferred", async () => {
-          const run = await helper.factories.run();
+          const run = await helper.factories.run(schedule);
           const marioImport = await helper.factories.import(run, {
             email: "mario@example.com",
             firstName: "Mario",
@@ -252,7 +258,7 @@ describe("tasks/profileProperties:enqueue", () => {
             1
           );
 
-          const run = await helper.factories.run();
+          const run = await helper.factories.run(schedule);
           const marioImport = await helper.factories.import(run, {
             email: "mario@example.com",
             firstName: "Mario",
@@ -309,7 +315,7 @@ describe("tasks/profileProperties:enqueue", () => {
             isVIP: [false],
           });
 
-          const run = await helper.factories.run();
+          const run = await helper.factories.run(schedule);
           const daisyImport = await helper.factories.import(run, {
             email: "daisy@example.com",
           });

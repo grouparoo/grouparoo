@@ -1,7 +1,10 @@
-const getDestinations = async (migration) => {
-  const [destinationOptions] = await migration.sequelize.query(
-    `SELECT "ownerId" AS "id", "key", "value", "syncMode" FROM "options" o JOIN "destinations" d ON o."ownerId"=d.id WHERE "state"='ready' AND d.type='intercom-export-contacts' AND "locked" IS NULL`
-  );
+import Sequelize from "sequelize";
+
+const getDestinations = async (queryInterface: Sequelize.QueryInterface) => {
+  const [destinationOptions]: [Record<string, any>[], any] =
+    await queryInterface.sequelize.query(
+      `SELECT "ownerId" AS "id", "key", "value", "syncMode" FROM "options" o JOIN "destinations" d ON o."ownerId"=d.id WHERE "state"='ready' AND d.type='intercom-export-contacts' AND "locked" IS NULL`
+    );
 
   const destinations: {
     [key: string]: {
@@ -10,12 +13,12 @@ const getDestinations = async (migration) => {
       removalMode: string;
     };
   } = destinationOptions.reduce((dest, opt) => {
-    if (!dest[opt.id]) {
-      dest[opt.id] = {
-        syncMode: opt.syncMode,
+    if (!dest[opt["id"]]) {
+      dest[opt["id"]] = {
+        syncMode: opt["syncMode"],
       };
     }
-    dest[opt.id][opt.key] = opt.value;
+    dest[opt["id"]][opt["key"]] = opt["value"];
     return dest;
   }, {});
 
@@ -23,51 +26,49 @@ const getDestinations = async (migration) => {
 };
 
 export default {
-  up: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      // Get current options for intercom destinations
-      const intercomDestinations = await getDestinations(migration);
+  up: async (queryInterface: Sequelize.QueryInterface) => {
+    // Get current options for intercom destinations
+    const intercomDestinations = await getDestinations(queryInterface);
 
-      // determine and update correct sync mode based on options
-      for (const destId in intercomDestinations) {
-        const dest = intercomDestinations[destId];
-        let syncMode: string;
+    // determine and update correct sync mode based on options
+    for (const destId in intercomDestinations) {
+      const dest = intercomDestinations[destId];
+      let syncMode: string;
 
-        if (dest.creationMode === "Enrich") {
-          // Don't create people
-          syncMode = "enrich";
-        } else if (dest.removalMode === "Skip") {
-          // You can create, but not delete
-          syncMode = "additive";
-        } else {
-          // You can do everything
-          syncMode = "sync";
+      if (dest.creationMode === "Enrich") {
+        // Don't create people
+        syncMode = "enrich";
+      } else if (dest.removalMode === "Skip") {
+        // You can create, but not delete
+        syncMode = "additive";
+      } else {
+        // You can do everything
+        syncMode = "sync";
+      }
+
+      await queryInterface.sequelize.query(
+        `UPDATE "destinations" SET "syncMode"=? WHERE "id"=?`,
+        {
+          replacements: [syncMode, destId],
         }
+      );
+    }
 
-        await migration.sequelize.query(
-          `UPDATE "destinations" SET "syncMode"=? WHERE "id"=?`,
-          {
-            replacements: [syncMode, destId],
-          }
-        );
-      }
-
-      // clear option values that are no longer supported
-      const destinationIds = Object.keys(intercomDestinations);
-      if (destinationIds.length > 0) {
-        await migration.sequelize.query(
-          `UPDATE "options" SET "value"='' WHERE ("value"='Skip' OR "value"='Enrich') AND "ownerId" IN(?) AND "key" IN ('creationMode', 'removalMode')`,
-          {
-            replacements: [destinationIds],
-          }
-        );
-      }
-    });
+    // clear option values that are no longer supported
+    const destinationIds = Object.keys(intercomDestinations);
+    if (destinationIds.length > 0) {
+      await queryInterface.sequelize.query(
+        `UPDATE "options" SET "value"='' WHERE ("value"='Skip' OR "value"='Enrich') AND "ownerId" IN(?) AND "key" IN ('creationMode', 'removalMode')`,
+        {
+          replacements: [destinationIds],
+        }
+      );
+    }
   },
 
-  down: async function (migration) {
+  down: async (queryInterface: Sequelize.QueryInterface) => {
     // Get sync modes
-    const destinations = await getDestinations(migration);
+    const destinations = await getDestinations(queryInterface);
 
     const noCreateIds = [];
     const noDeleteIds = [];
@@ -85,7 +86,7 @@ export default {
     }
 
     // Set removalMode="Skip" for destinations that don't delete
-    await migration.bulkUpdate(
+    await queryInterface.bulkUpdate(
       "options",
       {
         value: "Skip",
@@ -97,7 +98,7 @@ export default {
     );
 
     // Set creationMode="Enrich" for destinations that don't create
-    await migration.bulkUpdate(
+    await queryInterface.bulkUpdate(
       "options",
       { value: "Enrich" },
       {
@@ -107,7 +108,7 @@ export default {
     );
 
     // Remove syncMode value
-    await migration.bulkUpdate(
+    await queryInterface.bulkUpdate(
       "destinations",
       {
         syncMode: null,

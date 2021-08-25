@@ -1,23 +1,23 @@
+import Sequelize from "sequelize";
+
 export default {
-  up: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      // Set all existing instances to "enrich" to maintain same behavior
-      await migration.bulkUpdate(
-        "destinations",
-        {
-          syncMode: "enrich",
-        },
-        {
-          state: "ready",
-          type: "onesignal-export",
-          locked: null,
-        }
-      );
-    });
+  up: async (queryInterface: Sequelize.QueryInterface) => {
+    // Set all existing instances to "enrich" to maintain same behavior
+    await queryInterface.bulkUpdate(
+      "destinations",
+      {
+        syncMode: "enrich",
+      },
+      {
+        state: "ready",
+        type: "onesignal-export",
+        locked: null,
+      }
+    );
   },
 
-  down: async function (migration) {
-    await migration.bulkUpdate(
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.bulkUpdate(
       "destinations",
       {
         syncMode: null,

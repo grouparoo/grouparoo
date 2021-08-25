@@ -33,6 +33,8 @@ export interface ImportProfileProperties {
   [key: string]: any;
 }
 
+const IMPORT_CREATORS = ["run"] as const;
+
 @Table({ tableName: "imports", paranoid: false })
 export class Import extends Model {
   idPrefix() {
@@ -49,8 +51,8 @@ export class Import extends Model {
   updatedAt: Date;
 
   @AllowNull(false)
-  @Column
-  creatorType: string;
+  @Column(DataType.ENUM(...IMPORT_CREATORS))
+  creatorType: typeof IMPORT_CREATORS[number];
 
   @AllowNull(false)
   @ForeignKey(() => Run)

@@ -1,16 +1,17 @@
+import Sequelize from "sequelize";
+
 export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addColumn("imports", "startedAt", {
-        type: DataTypes.DATE,
-        allowNull: true,
-      });
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.addColumn("imports", "startedAt", {
+      type: DataTypes.DATE,
+      allowNull: true,
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.removeColumn("imports", "startedAt");
-    });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("imports", "startedAt");
   },
 };

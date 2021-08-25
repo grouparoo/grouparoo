@@ -1,22 +1,23 @@
-export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addColumn("schedules", "confirmProfiles", {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      });
+import Sequelize from "sequelize";
 
-      await migration.changeColumn("schedules", "confirmProfiles", {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-      });
+export default {
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.addColumn("schedules", "confirmProfiles", {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    });
+
+    await queryInterface.changeColumn("schedules", "confirmProfiles", {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.removeColumn("schedules", "confirmProfiles");
-    });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("schedules", "confirmProfiles");
   },
 };

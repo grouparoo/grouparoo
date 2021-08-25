@@ -355,34 +355,31 @@ export namespace ProfileOps {
     }
   }
 
-  async function resolvePendingProperties(
-    profile: Profile,
-    excludeSourceIds: Array<string> = []
-  ) {
+  async function resolvePendingProperties(profile: Profile, sourceId?: string) {
     const pendingProperties = await ProfileProperty.findAll({
       where: { profileId: profile.id, state: "pending" },
     });
 
-    const destroyProfilePropertyIds = [];
-    const keepProfilePropertyIds = [];
+    const clearProfilePropertyIds = [];
     for (let profileProperty of pendingProperties) {
       const property = await Property.findOneWithCache(
         profileProperty.propertyId
       );
-      if (!excludeSourceIds.includes(property.sourceId)) {
-        if (property.keepValueIfNotFound) {
-          keepProfilePropertyIds.push(profileProperty.id);
-        } else {
-          destroyProfilePropertyIds.push(profileProperty.id);
-        }
+      if (!sourceId || property.sourceId === sourceId) {
+        clearProfilePropertyIds.push(profileProperty.id);
       }
     }
 
     await ProfileProperty.update(
-      { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
-      { where: { id: keepProfilePropertyIds } }
+      {
+        state: "ready",
+        rawValue: null,
+        stateChangedAt: new Date(),
+        valueChangedAt: new Date(),
+        confirmedAt: new Date(),
+      },
+      { where: { id: clearProfilePropertyIds } }
     );
-    await ProfileProperty.destroy({ where: { id: destroyProfilePropertyIds } });
   }
 
   /**
@@ -475,7 +472,6 @@ export namespace ProfileOps {
     }
 
     try {
-      const excludeSourceIds = [];
       const sources = await Source.findAll({
         where: { state: "ready" },
         include: [Mapping, Property],
@@ -484,13 +480,15 @@ export namespace ProfileOps {
 
       for (const source of sortedSources) {
         const { canImport, properties } = await source.import(profile);
-        if (!canImport) excludeSourceIds.push(source.id);
+
         // We need to save each property as it is loaded so it can be used as a mapping for the next source
-        if (toSave) await addOrUpdateProperties([profile], [properties], false);
+        if (canImport && toSave) {
+          await addOrUpdateProperties([profile], [properties], false);
+          await resolvePendingProperties(profile, source.id);
+        }
       }
 
       if (toSave) {
-        await resolvePendingProperties(profile, excludeSourceIds);
         await buildNullProperties([profile]);
 
         await profile.save();
@@ -515,7 +513,8 @@ export namespace ProfileOps {
     profile: Profile,
     force = false,
     oldGroups: Group[] = [],
-    saveExports = true
+    saveExports = true,
+    sync = true
   ) {
     const groups = await profile.$get("groups");
 
@@ -558,7 +557,7 @@ export namespace ProfileOps {
       destinations.map((destination) =>
         destination.exportProfile(
           profile,
-          true, // sync = true -> do the export in-line
+          sync, // sync = true -> do the export in-line
           force, // force = true -> do the export even if it looks like the data hasn't changed
           saveExports // saveExports = true -> should we really save these exports, or do we just want examples for the next export?
         )
@@ -582,10 +581,15 @@ export namespace ProfileOps {
   /**
    * The method you'll be using to create profiles with arbitrary data.
    * Hash looks like {email: "person@example.com", id: 123}
+   *
+   * This method today always returns a profile by finding it or making a a new one... unless it throws because the source isn't allowed to make new profiles.
    */
-  export async function findOrCreateByUniqueProfileProperties(hash: {
-    [key: string]: Array<string | number | boolean | Date>;
-  }) {
+  export async function findOrCreateByUniqueProfileProperties(
+    hash: {
+      [key: string]: Array<string | number | boolean | Date>;
+    },
+    source?: boolean | Source
+  ) {
     let profile: Profile;
     let isNew = false;
     let profileProperty: ProfileProperty;
@@ -594,11 +598,14 @@ export namespace ProfileOps {
     );
     const uniquePropertiesHash = {};
 
-    uniqueProperties.forEach((rule) => {
-      if (hash[rule.key] !== null && hash[rule.key] !== undefined) {
-        uniquePropertiesHash[rule.id] = hash[rule.key];
-      } else if (hash[rule.id] !== null && hash[rule.id] !== undefined) {
-        uniquePropertiesHash[rule.id] = hash[rule.id];
+    uniqueProperties.forEach((property) => {
+      if (hash[property.key] !== null && hash[property.key] !== undefined) {
+        uniquePropertiesHash[property.id] = hash[property.key];
+      } else if (
+        hash[property.id] !== null &&
+        hash[property.id] !== undefined
+      ) {
+        uniquePropertiesHash[property.id] = hash[property.id];
       }
     });
 
@@ -610,12 +617,12 @@ export namespace ProfileOps {
       );
     }
 
-    const keys = Object.keys(uniquePropertiesHash);
+    const uniquePropertyIds = Object.keys(uniquePropertiesHash);
     const lockReleases = [];
 
     try {
-      for (const i in keys) {
-        const id = keys[i];
+      for (const i in uniquePropertyIds) {
+        const id = uniquePropertyIds[i];
         const value = uniquePropertiesHash[id];
         const property = uniqueProperties.find((r) => r.id === id);
 
@@ -639,6 +646,24 @@ export namespace ProfileOps {
           where: { id: profileProperty.profileId },
         });
       } else {
+        const canCreateNewProfile =
+          typeof source === "boolean"
+            ? source
+            : source instanceof Source
+            ? (await Property.findAllWithCache())
+                .filter((p) => p.unique === true && p.sourceId === source.id)
+                .map((p) => p.key)
+                .filter((key) => !!hash[key]).length > 0
+            : false;
+
+        if (!canCreateNewProfile) {
+          throw new Error(
+            `could not create a new profile because no profile property in ${JSON.stringify(
+              hash
+            )} is unique and owned by the source`
+          );
+        }
+
         profile = await Profile.create();
         profile = await profile.reload();
         const { releaseLock } = await waitForLock(`profile:${profile.id}`);
@@ -678,7 +703,7 @@ export namespace ProfileOps {
   /**
    * Look for profiles that don't have a directlyMapped property and are done importing/exporting.
    */
-  export async function getProfilesToSweep() {
+  export async function getProfilesToDestroy() {
     const limit: number = parseInt(
       (await plugin.readSetting("core", "runs-profile-batch-size")).value
     );
@@ -702,12 +727,6 @@ export namespace ProfileOps {
         `
   SELECT "id" FROM "profiles"
   WHERE "state"='ready'
-  AND 0 = (
-    SELECT count("exports"."id") FROM "exports"
-      WHERE
-        "exports"."profileId"="profiles"."id"
-        AND "exports"."state" IN ('pending', 'processing')
-  )
   AND "id" IN (
     SELECT DISTINCT("profileId") FROM "profileProperties"
     JOIN properties ON "properties"."id"="profileProperties"."propertyId"
@@ -732,61 +751,40 @@ export namespace ProfileOps {
   export async function confirmExistence(
     limit: number,
     fromDate: Date,
-    sourceId?: string,
-    run?: Run
+    sourceId?: string
   ) {
     const properties = await Property.findAllWithCache();
     const directlyMapped = properties.filter(
       (p) => p.directlyMapped && (!sourceId || sourceId === p.sourceId)
     );
 
-    const profiles = await Profile.findAll({
-      limit,
-      where: { state: "ready" },
-      include: [
-        GroupMember,
-        {
-          model: ProfileProperty,
-          required: true,
-          where: {
-            state: "ready",
-            confirmedAt: {
-              [Op.lt]: fromDate,
-            },
-            rawValue: {
-              [Op.ne]: null,
-            },
-            propertyId: directlyMapped.map((p) => p.id),
-          },
+    const profileProperties = await ProfileProperty.findAll({
+      where: {
+        state: "ready",
+        confirmedAt: {
+          [Op.lt]: fromDate,
         },
-      ],
+        rawValue: {
+          [Op.ne]: null,
+        },
+        propertyId: directlyMapped.map((p) => p.id),
+      },
+      limit,
     });
 
-    const now = new Date();
-    const bulkImports = [];
+    const profileIds = profileProperties.map((pp) => pp.profileId);
 
-    const creatorInfo = run
-      ? { creatorType: "run", creatorId: run.id }
-      : { creatorType: "task", creatorId: "profiles:confirm" };
+    // Only mark profile and directlyMapped property pending
+    await markPendingByIds(profileIds, false);
+    await ProfileProperty.update(
+      { state: "pending", startedAt: null },
+      { where: { id: profileProperties.map((pp) => pp.id) } }
+    );
 
-    for (const profile of profiles) {
-      delete profile.profileProperties; // get all profile properties
-      const oldProfileProperties = await profile.simplifiedProperties();
-      const oldGroupIds = profile.groupMembers.map((gm) => gm.groupId);
-
-      bulkImports.push({
-        profileId: profile.id,
-        profileAssociatedAt: now,
-        oldProfileProperties,
-        oldGroupIds,
-        ...creatorInfo,
-      });
-    }
-
-    await Import.bulkCreate(bulkImports);
-    await markPendingByIds(profiles.map((p) => p.id));
-
-    return profiles.length;
+    const uniqueProfileIds = profileIds.filter(
+      (val, idx, arr) => arr.indexOf(val) === idx
+    );
+    return uniqueProfileIds.length;
   }
 
   /**

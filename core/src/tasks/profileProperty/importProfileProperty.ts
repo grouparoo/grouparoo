@@ -79,7 +79,7 @@ export class ImportProfileProperty extends RetryableTask {
       await ProfileProperty.update(
         {
           state: "ready",
-          rawValue: property.keepValueIfNotFound ? undefined : null,
+          rawValue: null,
           stateChangedAt: new Date(),
           confirmedAt: new Date(),
         },

@@ -6,6 +6,7 @@ import {
   plugin,
   Profile,
   ProfileProperty,
+  Property,
   Run,
   Schedule,
   Source,
@@ -17,8 +18,16 @@ describe("tasks/profiles:confirm", () => {
     enableTestPlugin: true,
     disableTestPluginImport: true,
   });
+
+  let directlyMappedProperty: Property;
+
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
-  beforeAll(async () => await helper.factories.properties());
+  beforeAll(async () => {
+    await helper.factories.properties();
+    directlyMappedProperty = await Property.findOne({
+      where: { key: "userId" },
+    });
+  });
 
   afterEach(async () => {
     await plugin.updateSetting("core", "runs-profile-batch-size", 100);
@@ -31,7 +40,7 @@ describe("tasks/profiles:confirm", () => {
     expect(found.length).toEqual(1);
   });
 
-  test("creates imports and marks profiles pending if they haven't been confirmed in a while", async () => {
+  test("marks profiles and directlyMapped pending if they haven't been confirmed in a while", async () => {
     const staleProfile: Profile = await helper.factories.profile();
     const recentProfile: Profile = await helper.factories.profile();
 
@@ -77,30 +86,25 @@ describe("tasks/profiles:confirm", () => {
     expect(staleProfile.state).toBe("pending");
     expect(recentProfile.state).toBe("ready"); // dont need to confirm
 
-    const staleProfileProperties = await ProfileProperty.findAll({
+    const pendingProfileProperties = await ProfileProperty.findAll({
       where: {
         state: "pending",
-        profileId: staleProfile.id,
+        profileId: [staleProfile.id, recentProfile.id],
       },
     });
-    expect(staleProfileProperties.length).toBe(9);
+    expect(pendingProfileProperties.length).toBe(1);
+    expect(pendingProfileProperties[0].propertyId).toBe(
+      directlyMappedProperty.id // only the directlyMapped is marked pending
+    );
+    expect(pendingProfileProperties[0].profileId).toBe(staleProfile.id);
 
-    const recentProfileProperties = await ProfileProperty.findAll({
+    const readyProfileProperties = await ProfileProperty.findAll({
       where: {
         state: "ready",
-        profileId: recentProfile.id,
+        profileId: [staleProfile.id, recentProfile.id],
       },
     });
-    expect(recentProfileProperties.length).toBe(9);
-
-    const imports = await Import.findAll({
-      where: { profileId: [staleProfile.id, recentProfile.id] },
-    });
-
-    expect(imports.length).toBe(1);
-    expect(imports[0].profileId).toBe(staleProfile.id);
-    expect(imports[0].creatorType).toBe("task");
-    expect(imports[0].creatorId).toBe("profiles:confirm");
+    expect(readyProfileProperties.length).toBe(9 + 8);
 
     await staleProfile.destroy();
     await recentProfile.destroy();
@@ -129,14 +133,17 @@ describe("tasks/profiles:confirm", () => {
     await profile.reload();
     expect(profile.state).toBe("pending");
 
-    const imports = await Import.findAll({
+    const pendingProfileProperties = await ProfileProperty.findAll({
       where: {
         profileId: profile.id,
-        creatorType: "task",
-        creatorId: "profiles:confirm",
+        state: "pending",
       },
     });
-    expect(imports.length).toBe(1);
+
+    expect(pendingProfileProperties.length).toBe(1);
+    expect(pendingProfileProperties[0].propertyId).toBe(
+      directlyMappedProperty.id
+    );
 
     await profile.destroy();
   });
@@ -164,19 +171,19 @@ describe("tasks/profiles:confirm", () => {
     await profile.reload();
     expect(profile.state).toBe("ready");
 
-    const imports = await Import.findAll({
+    const pendingProfileProperties = await ProfileProperty.findAll({
       where: {
         profileId: profile.id,
-        creatorType: "task",
-        creatorId: "profiles:confirm",
+        state: "pending",
       },
     });
-    expect(imports.length).toBe(0);
+
+    expect(pendingProfileProperties.length).toBe(0);
 
     await profile.destroy();
   });
 
-  test("creates imports for profiles that haven't been confirmed if the schedule has run and it's marked as confirmProfiles=true", async () => {
+  test("marks profiles and directlyMapped pending that haven't been confirmed if the schedule has run and it's marked as confirmProfiles=true", async () => {
     await plugin.updateSetting("core", "confirm-profiles-days", 0);
 
     const source = await Source.findOne();
@@ -208,20 +215,23 @@ describe("tasks/profiles:confirm", () => {
     await profile.reload();
     expect(profile.state).toBe("pending");
 
-    const imports = await Import.findAll({
+    const pendingProfileProperties = await ProfileProperty.findAll({
       where: {
         profileId: profile.id,
-        creatorType: "run",
-        creatorId: run.id,
+        state: "pending",
       },
     });
-    expect(imports.length).toBe(1);
+
+    expect(pendingProfileProperties.length).toBe(1);
+    expect(pendingProfileProperties[0].propertyId).toBe(
+      directlyMappedProperty.id
+    );
 
     await profile.destroy();
     await schedule.destroy();
   });
 
-  test("does not create imports for profiles that haven't been confirmed if the schedule has run and it's marked as confirmProfiles=false", async () => {
+  test("does not mark profiles pending that haven't been confirmed if the schedule has run and it's marked as confirmProfiles=false", async () => {
     await plugin.updateSetting("core", "confirm-profiles-days", 0);
 
     const source = await Source.findOne();
@@ -253,14 +263,14 @@ describe("tasks/profiles:confirm", () => {
     await profile.reload();
     expect(profile.state).toBe("ready");
 
-    const imports = await Import.findAll({
+    const pendingProfileProperties = await ProfileProperty.findAll({
       where: {
         profileId: profile.id,
-        creatorType: "run",
-        creatorId: run.id,
+        state: "pending",
       },
     });
-    expect(imports.length).toBe(0);
+
+    expect(pendingProfileProperties.length).toBe(0);
 
     await profile.destroy();
     await schedule.destroy();

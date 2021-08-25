@@ -1,21 +1,22 @@
-export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addColumn("exports", "errorLevel", {
-        type: DataTypes.STRING(191),
-        allowNull: true,
-        defaultValue: null,
-      });
+import Sequelize from "sequelize";
 
-      await migration.sequelize.query(
-        `UPDATE "exports" SET "errorLevel"='error' WHERE "errorMessage" IS NOT NULL`
-      );
+export default {
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.addColumn("exports", "errorLevel", {
+      type: DataTypes.STRING(191),
+      allowNull: true,
+      defaultValue: null,
     });
+
+    await queryInterface.sequelize.query(
+      `UPDATE "exports" SET "errorLevel"='error' WHERE "errorMessage" IS NOT NULL`
+    );
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.removeColumn("exports", "errorLevel");
-    });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("exports", "errorLevel");
   },
 };

@@ -1,6 +1,7 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Import } from "../models/Import";
 import { Property } from "../models/Property";
+import { APIData } from "../modules/apiData";
 
 export class ImportsList extends AuthenticatedAction {
   constructor() {
@@ -12,10 +13,11 @@ export class ImportsList extends AuthenticatedAction {
     this.inputs = {
       creatorId: { required: false },
       profileId: { required: false },
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       order: {
         required: false,
+        formatter: APIData.ensureObject,
         default: [["createdAt", "desc"]],
       },
     };
@@ -56,45 +58,6 @@ export class ImportView extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const _import = await Import.findById(params.id);
-    return { import: await _import.apiData() };
-  }
-}
-
-export class ImportCreate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "import:create";
-    this.description = "create an import";
-    this.outputExample = {};
-    this.permission = { topic: "import", mode: "write" };
-    this.inputs = {
-      properties: { required: true },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    let { properties: _properties } = params;
-
-    if (typeof _properties === "string") _properties = JSON.parse(_properties);
-
-    const properties = await Property.findAll();
-    let foundUniqueProperty = false;
-    properties.forEach((property) => {
-      if (property.unique && _properties[property.key]) {
-        foundUniqueProperty = true;
-      }
-    });
-    if (!foundUniqueProperty) {
-      throw new Error("no unique profile property included");
-    }
-
-    const _import = await Import.create({
-      data: _properties,
-      rawData: _properties,
-      creatorType: "api",
-      creatorId: "?",
-    });
-
     return { import: await _import.apiData() };
   }
 }

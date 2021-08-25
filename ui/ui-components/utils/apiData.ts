@@ -145,11 +145,7 @@ import {
   GroupsList,
   GroupsRuleOptions,
 } from "@grouparoo/core/src/actions/groups";
-import {
-  ImportsList,
-  ImportCreate,
-  ImportView,
-} from "@grouparoo/core/src/actions/imports";
+import { ImportsList, ImportView } from "@grouparoo/core/src/actions/imports";
 import { LogsList } from "@grouparoo/core/src/actions/logs";
 import {
   NotificationsList,
@@ -217,6 +213,7 @@ import {
   ScheduleDestroy,
   ScheduleEdit,
   ScheduleRun,
+  SchedulesRun,
   ScheduleView,
   ScheduleFilterOptions,
   SchedulesList,
@@ -442,9 +439,6 @@ export namespace Actions {
   export type ImportsList = AsyncReturnType<
     typeof ImportsList.prototype.runWithinTransaction
   >;
-  export type ImportCreate = AsyncReturnType<
-    typeof ImportCreate.prototype.runWithinTransaction
-  >;
   export type ImportView = AsyncReturnType<
     typeof ImportView.prototype.runWithinTransaction
   >;
@@ -625,6 +619,9 @@ export namespace Actions {
   >;
   export type ScheduleRun = AsyncReturnType<
     typeof ScheduleRun.prototype.runWithinTransaction
+  >;
+  export type SchedulesRun = AsyncReturnType<
+    typeof SchedulesRun.prototype.runWithinTransaction
   >;
   export type ScheduleView = AsyncReturnType<
     typeof ScheduleView.prototype.runWithinTransaction

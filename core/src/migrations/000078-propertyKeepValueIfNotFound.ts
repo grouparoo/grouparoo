@@ -1,22 +1,23 @@
-export default {
-  up: async function (migration, DataTypes) {
-    await migration.sequelize.transaction(async () => {
-      await migration.addColumn("properties", "keepValueIfNotFound", {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true,
-      });
+import Sequelize from "sequelize";
 
-      await migration.changeColumn("properties", "keepValueIfNotFound", {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-      });
+export default {
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
+    await queryInterface.addColumn("properties", "keepValueIfNotFound", {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    });
+
+    await queryInterface.changeColumn("properties", "keepValueIfNotFound", {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
     });
   },
 
-  down: async function (migration) {
-    await migration.sequelize.transaction(async () => {
-      await migration.removeColumn("properties", "keepValueIfNotFound");
-    });
+  down: async (queryInterface: Sequelize.QueryInterface) => {
+    await queryInterface.removeColumn("properties", "keepValueIfNotFound");
   },
 };

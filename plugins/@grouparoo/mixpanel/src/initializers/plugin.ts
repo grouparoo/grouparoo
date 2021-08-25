@@ -1,17 +1,18 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin, DestinationSyncMode } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "../lib/test";
 
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
-import { exportProfile } from "../lib/export/exportProfile";
+import { exportProfiles } from "../lib/export/exportProfiles";
 
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
+
+const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 
 const packageJSON = require("./../../package.json");
 
@@ -82,7 +83,7 @@ export class Plugins extends Initializer {
           defaultSyncMode,
           options: [],
           methods: {
-            exportProfile,
+            exportProfiles,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,
