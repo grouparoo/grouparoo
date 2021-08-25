@@ -40,9 +40,9 @@ describe("modules/codeConfig", () => {
       };
     });
 
-    test("getProfile will throw an error when not using a bootstrapped property", async () => {
+    test("getRecord will throw an error when not using a bootstrapped property", async () => {
       await expect(
-        helper.getProfile({
+        helper.getRecord({
           email: "example@example.com",
         })
       ).rejects.toThrow(
@@ -51,7 +51,7 @@ describe("modules/codeConfig", () => {
     });
 
     test("a record snapshot can be tested with a bootstrapped property", async () => {
-      const { record, snapshot } = await helper.getProfile({
+      const { record, snapshot } = await helper.getRecord({
         userId: 100,
       });
 
@@ -67,7 +67,7 @@ describe("modules/codeConfig", () => {
     });
 
     test("a record snapshot can be tested with multiple unique properties", async () => {
-      const { record, snapshot } = await helper.getProfile({
+      const { record, snapshot } = await helper.getRecord({
         email: "example@example.com",
         userId: 100,
       });

@@ -77,7 +77,7 @@ module.exports = async function getConfig() {
 
     {
       id: "record_john",
-      class: "GrouparooRecord",
+      class: "record",
       properties: {
         first_name: ["John"],
       },
