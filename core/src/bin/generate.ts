@@ -116,7 +116,13 @@ Commands:
     const [template, id] = params._arguments || [];
     if (template) params.template = template;
     if (id) params.id = id;
-    params.path = getConfigDir();
+    params.path = await getConfigDir();
+
+    if (!params.path) {
+      return GrouparooCLI.logger.fatal(
+        `The config directory has been disabled, so config files cannot be generated`
+      );
+    }
 
     GrouparooCLI.logCLI(
       this.name

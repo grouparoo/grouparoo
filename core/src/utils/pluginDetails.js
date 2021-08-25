@@ -1,5 +1,8 @@
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
+const tar = require("tar");
+require("isomorphic-fetch");
 
 let initialPackageJSON = {};
 if (process.env.INIT_CWD) {
@@ -38,9 +41,40 @@ function getParentPath() {
   return path.join(__dirname, "..", "..", "..", "..", "..");
 }
 
-function getConfigDir() {
-  const configDir =
+let extractedConfigDir;
+async function getConfigDir() {
+  if (process.env.GROUPAROO_CONFIG_DIR === "false") return false;
+
+  let configDir =
     process.env.GROUPAROO_CONFIG_DIR || path.join(getParentPath(), "config");
+
+  if (process.env.GROUPAROO_CONFIG_ARCHIVE) {
+    if (!extractedConfigDir) {
+      const workingDir = fs.mkdtempSync(path.join(os.tmpdir(), "grouparoo-"));
+
+      let archivePath = process.env.GROUPAROO_CONFIG_ARCHIVE;
+      if (archivePath.startsWith("http://" || "https://")) {
+        const res = await fetch(archivePath);
+        archivePath = path.join(workingDir, "grouparoo.tar.gz");
+        const fileStream = fs.createWriteStream(archivePath);
+        await new Promise((resolve, reject) => {
+          res.body.pipe(fileStream);
+          res.body.on("error", reject);
+          fileStream.on("finish", resolve);
+        });
+      }
+
+      extractedConfigDir = path.join(workingDir, "extracted");
+      fs.mkdirSync(extractedConfigDir);
+      await tar.extract({ cwd: extractedConfigDir, file: archivePath });
+    }
+
+    configDir = path.join(
+      extractedConfigDir,
+      process.env.GROUPAROO_CONFIG_DIR || "config"
+    );
+  }
+
   return configDir;
 }
 

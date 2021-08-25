@@ -36,7 +36,7 @@ import { loadProfile } from "./profile";
 import Sequelize from "sequelize";
 
 export async function loadConfigDirectory(
-  configDir: string,
+  configDir: string | false,
   externallyValidate: boolean = true
 ): Promise<{
   seenIds: IdsByClass;
@@ -47,25 +47,29 @@ export async function loadConfigDirectory(
   let deletedIds: IdsByClass = {};
   let errors: string[] = [];
 
-  const configObjects = await loadConfigObjects(configDir);
+  if (configDir) {
+    const configObjects = await loadConfigObjects(configDir);
 
-  const response = await processConfigObjects(
-    configObjects,
-    externallyValidate
-  );
-  seenIds = response.seenIds;
-  errors = response.errors;
+    const response = await processConfigObjects(
+      configObjects,
+      externallyValidate
+    );
+    seenIds = response.seenIds;
+    errors = response.errors;
 
-  if (errors.length === 0) {
-    deletedIds = await deleteLockedObjects(seenIds);
+    if (errors.length === 0) {
+      deletedIds = await deleteLockedObjects(seenIds);
+    }
   }
 
   return { seenIds, errors, deletedIds };
 }
 
 export async function loadConfigObjects(
-  configDir: string
+  configDir: string | false
 ): Promise<AnyConfigurationObject[]> {
+  if (!configDir) return [];
+
   const globSearch = path.join(configDir, "**", "+(*.json|*.js)");
   const configFiles = glob.sync(globSearch);
   let configObjects: AnyConfigurationObject[] = [];

@@ -26,7 +26,7 @@ export class CodeConfig extends CLSInitializer {
   }
 
   async startWithinTransaction() {
-    const configDir = getConfigDir();
+    const configDir = await getConfigDir();
     const { errors } = await loadConfigDirectory(configDir);
 
     if (errors.length > 0) throw new Error("code config error");
