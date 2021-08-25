@@ -4,8 +4,8 @@ import { Op } from "sequelize";
 import {
   GrouparooPlugin,
   PluginConnection,
-  Profile,
-  ProfileProperty,
+  GrouparooRecord,
+  RecordProperty,
   Property,
   Source,
   plugin,
@@ -32,25 +32,25 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       );
       testPluginConnection.methods.profileProperties = async ({
         properties,
-        profiles,
+        records,
       }) => {
         const response = {};
 
-        for (const i in profiles) {
-          const profile = profiles[i];
+        for (const i in records) {
+          const record = records[i];
           const data = {
             userId: userIdCounter++,
             isVIP: true,
-            email: `${profile.id}@example.com`,
+            email: `${record.id}@example.com`,
             firstName: "Mario",
             lastName: "Mario",
             ltv: 100.0,
             lastLoginAt: new Date(),
           };
 
-          response[profile.id] = {};
+          response[record.id] = {};
           for (const property of properties) {
-            response[profile.id][property.id] = data[property.key];
+            response[record.id][property.id] = data[property.key];
           }
         }
 
@@ -73,9 +73,9 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       expect(found.length).toEqual(1);
     });
 
-    test("does not throw if the profile or property cannot be found", async () => {
+    test("does not throw if the record or property cannot be found", async () => {
       const property = await Property.findOne();
-      const profile = await helper.factories.profile();
+      const record = await helper.factories.record();
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
         profileIds: ["missing"],
@@ -83,7 +83,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       });
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [profile.id],
+        profileIds: [record.id],
         propertyIds: ["missing"],
       });
 
@@ -92,22 +92,22 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         propertyIds: [property.id],
       });
 
-      await profile.destroy();
+      await record.destroy();
     });
 
-    test("will import profile properties that have no dependencies", async () => {
-      const profile: Profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({
+    test("will import record properties that have no dependencies", async () => {
+      const record: GrouparooRecord = await helper.factories.record();
+      await record.addOrUpdateProperties({
         userId: [1],
         email: ["old@example.com"],
       });
-      const profileProperty = await ProfileProperty.findOne({
+      const profileProperty = await RecordProperty.findOne({
         where: { rawValue: "1" },
       });
       await profileProperty.update({ state: "pending" });
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [profile.id],
+        profileIds: [record.id],
         propertyIds: [profileProperty.propertyId],
       });
 
@@ -115,34 +115,34 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       await profileProperty.reload();
       expect(profileProperty.state).toBe("ready");
       expect(profileProperty.rawValue).toBe(`1`);
-      await profile.destroy();
+      await record.destroy();
     });
 
-    test("will not import profile properties that have pending dependencies", async () => {
+    test("will not import record properties that have pending dependencies", async () => {
       const userIdProperty = await Property.findOne({
         where: { key: "userId" },
       });
 
-      const profile: Profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({
+      const record: GrouparooRecord = await helper.factories.record();
+      await record.addOrUpdateProperties({
         userId: [null],
         email: ["old@example.com"],
       });
-      const profileProperty = await ProfileProperty.findOne({
+      const profileProperty = await RecordProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
       await profileProperty.update({ state: "pending" });
 
-      const userIdProfileProperty = await ProfileProperty.findOne({
+      const userIdProfileProperty = await RecordProperty.findOne({
         where: {
-          profileId: profile.id,
+          recordId: record.id,
           propertyId: userIdProperty.id,
         },
       });
       await userIdProfileProperty.update({ state: "pending" });
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [profile.id],
+        profileIds: [record.id],
         propertyIds: [profileProperty.propertyId],
       });
 
@@ -158,34 +158,34 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       expect(profileProperty.startedAt.getTime()).toBeLessThan(
         new Date().getTime()
       );
-      await profile.destroy();
+      await record.destroy();
     });
 
-    test("will import profile properties that have pending dependencies imported at the same time", async () => {
+    test("will import record properties that have pending dependencies imported at the same time", async () => {
       const userIdProperty = await Property.findOne({
         where: { key: "userId" },
       });
 
-      const profile: Profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({
+      const record: GrouparooRecord = await helper.factories.record();
+      await record.addOrUpdateProperties({
         userId: ["2"],
         email: ["old@example.com"],
       });
-      const emailProfileProperty = await ProfileProperty.findOne({
+      const emailProfileProperty = await RecordProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
       await emailProfileProperty.update({ state: "pending" });
 
-      const userIdProfileProperty = await ProfileProperty.findOne({
+      const userIdProfileProperty = await RecordProperty.findOne({
         where: {
-          profileId: profile.id,
+          recordId: record.id,
           propertyId: userIdProperty.id,
         },
       });
       await userIdProfileProperty.update({ state: "pending" });
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [profile.id],
+        profileIds: [record.id],
         propertyIds: [
           emailProfileProperty.propertyId,
           userIdProfileProperty.propertyId,
@@ -195,31 +195,31 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       // new value and state
       await emailProfileProperty.reload();
       expect(emailProfileProperty.state).toBe("ready");
-      expect(emailProfileProperty.rawValue).toBe(`${profile.id}@example.com`);
+      expect(emailProfileProperty.rawValue).toBe(`${record.id}@example.com`);
 
       await userIdProfileProperty.reload();
       expect(userIdProfileProperty.state).toBe("ready");
       expect(userIdProfileProperty.rawValue).toBe(`2`);
-      await profile.destroy();
+      await record.destroy();
     });
 
-    test("will set value to null for profile properties that no longer exist", async () => {
+    test("will set value to null for record properties that no longer exist", async () => {
       const spy = jest
         .spyOn(testPluginConnection.methods, "profileProperties")
         .mockImplementation(() => undefined);
 
-      const profile: Profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({
+      const record: GrouparooRecord = await helper.factories.record();
+      await record.addOrUpdateProperties({
         userId: [99],
         email: ["someoldemail@example.com"],
       });
-      const profileProperty = await ProfileProperty.findOne({
+      const profileProperty = await RecordProperty.findOne({
         where: { rawValue: "99" },
       });
       await profileProperty.update({ state: "pending" });
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [profile.id],
+        profileIds: [record.id],
         propertyIds: [profileProperty.propertyId],
       });
 
@@ -227,20 +227,20 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       await profileProperty.reload();
       expect(profileProperty.state).toBe("ready");
       expect(profileProperty.rawValue).toBe(null);
-      await profile.destroy();
+      await record.destroy();
 
       spy.mockRestore();
     });
 
-    describe("with profiles", () => {
-      let profileA: Profile;
-      let profileB: Profile;
-      let profileC: Profile;
+    describe("with records", () => {
+      let profileA: GrouparooRecord;
+      let profileB: GrouparooRecord;
+      let profileC: GrouparooRecord;
 
       beforeAll(async () => {
-        profileA = await helper.factories.profile();
-        profileB = await helper.factories.profile();
-        profileC = await helper.factories.profile();
+        profileA = await helper.factories.record();
+        profileB = await helper.factories.record();
+        profileC = await helper.factories.record();
       });
 
       afterAll(async () => {
@@ -250,11 +250,11 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       });
 
       beforeEach(async () => {
-        await ProfileProperty.update(
+        await RecordProperty.update(
           { state: "pending" },
           {
             where: {
-              profileId: { [Op.in]: [profileA.id, profileB.id, profileC.id] },
+              recordId: { [Op.in]: [profileA.id, profileB.id, profileC.id] },
             },
           }
         );
@@ -285,10 +285,10 @@ describe("tasks/profileProperty:importProfileProperties", () => {
               methods: {
                 propertyOptions: async () => [],
                 sourceFilters: async () => [],
-                profileProperties: async ({ properties, profiles }) => {
-                  // only returns data for the first profile
+                profileProperties: async ({ properties, records }) => {
+                  // only returns data for the first record
                   return {
-                    [profiles[0].id]: {
+                    [records[0].id]: {
                       [properties[0].id]: ["foo"],
                       [properties[1].id]: ["bar"],
                     },
@@ -327,7 +327,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         await profileB.buildNullProperties();
         await profileC.buildNullProperties();
 
-        await ProfileProperty.update(
+        await RecordProperty.update(
           { state: "ready" },
           {
             where: {
@@ -338,7 +338,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
             },
           }
         );
-        await ProfileProperty.update(
+        await RecordProperty.update(
           { rawValue: "Mario" },
           { where: { propertyId: "lastName" } }
         );
@@ -366,7 +366,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         await app.destroy();
       });
 
-      test("can be run for the same profile more than once without deadlock", async () => {
+      test("can be run for the same record more than once without deadlock", async () => {
         const properties = await Property.findAll();
 
         // run once to set userId

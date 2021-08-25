@@ -1,8 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import {
-  Profile,
-  ProfileProperty,
+  GrouparooRecord,
+  RecordProperty,
   Run,
   Import,
   Schedule,
@@ -37,17 +37,17 @@ describe("tasks/import:associateProfile", () => {
       });
     });
 
-    test("it will create a new profile from provided import data and update the run if present", async () => {
+    test("it will create a new record from provided import data and update the run if present", async () => {
       const run = await helper.factories.run(primarySchedule);
 
       const _import = await helper.factories.import(run, {
         email: "toad@example.com",
         firstName: "Toad",
       });
-      expect(_import.profileId).toBeFalsy();
+      expect(_import.recordId).toBeFalsy();
       expect(_import.profileAssociatedAt).toBeFalsy();
 
-      let profilesCount = await Profile.count();
+      let profilesCount = await GrouparooRecord.count();
       expect(profilesCount).toBe(0);
 
       await specHelper.runTask("import:associateProfile", {
@@ -55,12 +55,12 @@ describe("tasks/import:associateProfile", () => {
       });
 
       await _import.reload();
-      const profile = await Profile.findOne();
-      expect(profile).toBeTruthy();
-      expect(_import.profileId).toBe(profile.id);
+      const record = await GrouparooRecord.findOne();
+      expect(record).toBeTruthy();
+      expect(_import.recordId).toBe(record.id);
       expect(_import.profileAssociatedAt).toBeTruthy();
 
-      expect(_import.oldProfileProperties).toEqual({
+      expect(_import.oldRecordProperties).toEqual({
         email: ["toad@example.com"],
         firstName: [null],
         isVIP: [null],
@@ -72,7 +72,7 @@ describe("tasks/import:associateProfile", () => {
         userId: [null],
       });
       expect(_import.oldGroupIds).toEqual([]);
-      expect(_import.newProfileProperties).toEqual({});
+      expect(_import.newRecordProperties).toEqual({});
       expect(_import.newGroupIds).toEqual([]);
 
       await run.updateTotals();
@@ -115,30 +115,30 @@ describe("tasks/import:associateProfile", () => {
 
       await _import.reload();
       expect(_import.errorMessage).toMatch(
-        /there are no unique profile properties provided in {"thing":"stuff"}/
+        /there are no unique record properties provided in {"thing":"stuff"}/
       );
       const errorMetadata = JSON.parse(_import.errorMetadata);
       expect(errorMetadata.message).toMatch(
-        /there are no unique profile properties provided in {"thing":"stuff"}/
+        /there are no unique record properties provided in {"thing":"stuff"}/
       );
       expect(errorMetadata.step).toBe("import:associateProfile");
       expect(errorMetadata.stack).toMatch(
-        /findOrCreateByUniqueProfileProperties/
+        /findOrCreateByUniqueRecordProperties/
       );
     });
 
-    test("the profile and properties should be marked as pending", async () => {
-      const property = await ProfileProperty.findOne({
+    test("the record and properties should be marked as pending", async () => {
+      const property = await RecordProperty.findOne({
         where: { rawValue: "toad@example.com" },
       });
       expect(property.state).toEqual("pending");
 
-      const profile = await Profile.findById(property.profileId);
-      expect(profile.state).toEqual("pending");
+      const record = await GrouparooRecord.findById(property.recordId);
+      expect(record.state).toEqual("pending");
     });
 
     test("it will set properties included in the import data", async () => {
-      await Profile.truncate();
+      await GrouparooRecord.truncate();
 
       const run = await helper.factories.run(primarySchedule);
 
@@ -148,10 +148,10 @@ describe("tasks/import:associateProfile", () => {
         lastName: "Jr",
         someNonexistentProp: "Hi there",
       });
-      expect(_import.profileId).toBeFalsy();
+      expect(_import.recordId).toBeFalsy();
       expect(_import.profileAssociatedAt).toBeFalsy();
 
-      let profilesCount = await Profile.count();
+      let profilesCount = await GrouparooRecord.count();
       expect(profilesCount).toBe(0);
 
       await specHelper.runTask("import:associateProfile", {
@@ -159,20 +159,20 @@ describe("tasks/import:associateProfile", () => {
       });
 
       await _import.reload();
-      const profile = await Profile.findOne();
-      expect(profile).toBeTruthy();
-      expect(_import.profileId).toBe(profile.id);
+      const record = await GrouparooRecord.findOne();
+      expect(record).toBeTruthy();
+      expect(_import.recordId).toBe(record.id);
       expect(_import.profileAssociatedAt).toBeTruthy();
 
-      const properties = await profile.simplifiedProperties();
+      const properties = await record.simplifiedProperties();
       expect(properties.email).toEqual(["bowserjr@example.com"]);
       expect(properties.firstName).toEqual(["Bowser"]);
       expect(properties.lastName).toEqual(["Jr"]);
       expect(properties.someNonexistentProp).toBeUndefined();
     });
 
-    // Prevent data in Secondary Sources from Creating Profiles that do not exist in the Primary Sources
-    test("prevents import when unable to create profile from secondary source", async () => {
+    // Prevent data in Secondary Sources from Creating Records that do not exist in the Primary Sources
+    test("prevents import when unable to create record from secondary source", async () => {
       // make a new source and property
       const source: Source = await helper.factories.source();
       await source.setOptions({ table: "otherTable" });
@@ -192,7 +192,7 @@ describe("tasks/import:associateProfile", () => {
 
       await _import.reload();
       expect(_import.errorMessage).toMatch(
-        /could not create a new profile because no profile property/
+        /could not create a new record because no record property/
       );
 
       // cleanup

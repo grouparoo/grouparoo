@@ -1,22 +1,27 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Destination, Profile, Export, ProfileProperty } from "../../src";
+import {
+  Destination,
+  GrouparooRecord,
+  Export,
+  RecordProperty,
+} from "../../src";
 import { Op } from "sequelize";
 
 describe("models/export", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   let destination: Destination;
-  let profile: Profile;
+  let record: GrouparooRecord;
   let _export: Export;
 
   beforeAll(async () => {
     await helper.factories.properties();
     destination = await helper.factories.destination();
-    profile = await helper.factories.profile();
+    record = await helper.factories.record();
   });
 
   test("an export can be created and saved with both single-value and array properties", async () => {
-    const oldProfileProperties = {
+    const oldRecordProperties = {
       string: { type: "string", rawValue: "name" },
       email: { type: "email", rawValue: "oldEmail" },
       integer: { type: "integer", rawValue: "1" },
@@ -24,7 +29,7 @@ describe("models/export", () => {
       date: { type: "date", rawValue: "1" },
       phoneNumber: { type: "phoneNumber", rawValue: "+1 412 897 0001" },
     };
-    const newProfileProperties = {
+    const newRecordProperties = {
       string: { type: "string", rawValue: ["full", "name"] },
       email: { type: "email", rawValue: ["oldEmail", "newEmail"] },
       integer: { type: "integer", rawValue: ["1", "2"] },
@@ -40,10 +45,10 @@ describe("models/export", () => {
 
     _export = await Export.create({
       destinationId: destination.id,
-      profileId: profile.id,
+      recordId: record.id,
       startedAt: new Date(),
-      oldProfileProperties,
-      newProfileProperties,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       state: "complete",
@@ -57,7 +62,7 @@ describe("models/export", () => {
 
   test("an export can be deserialized returning Grouparoo types", async () => {
     const _export = await Export.findOne();
-    expect(_export.oldProfileProperties).toEqual({
+    expect(_export.oldRecordProperties).toEqual({
       string: "name",
       email: "oldEmail",
       date: new Date(1),
@@ -65,7 +70,7 @@ describe("models/export", () => {
       integer: 1,
       phoneNumber: "+1 412 897 0001",
     });
-    expect(_export.newProfileProperties).toEqual({
+    expect(_export.newRecordProperties).toEqual({
       string: ["full", "name"],
       email: ["oldEmail", "newEmail"],
       date: [new Date(1), new Date(2)],
@@ -78,7 +83,7 @@ describe("models/export", () => {
   });
 
   test("exports with the old serialization will not throw but assume every property is a string", async () => {
-    const oldProfileProperties = {
+    const oldRecordProperties = {
       string: "name",
       email: "oldEmail",
       integer: 1,
@@ -86,7 +91,7 @@ describe("models/export", () => {
       date: new Date(1).toISOString(),
       phoneNumber: "+1 412 897 0001",
     };
-    const newProfileProperties = {
+    const newRecordProperties = {
       string: ["full", "name"],
       email: ["oldEmail", "newEmail"],
       integer: [1, 2],
@@ -99,16 +104,16 @@ describe("models/export", () => {
 
     const oldExport = await Export.create({
       destinationId: destination.id,
-      profileId: profile.id,
+      recordId: record.id,
       startedAt: new Date(),
-      oldProfileProperties,
-      newProfileProperties,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       state: "complete",
     });
 
-    expect(oldExport.oldProfileProperties).toEqual({
+    expect(oldExport.oldRecordProperties).toEqual({
       string: "name",
       email: "oldEmail",
       date: "1970-01-01T00:00:00.001Z",
@@ -116,7 +121,7 @@ describe("models/export", () => {
       integer: 1,
       phoneNumber: "+1 412 897 0001",
     });
-    expect(oldExport.newProfileProperties).toEqual({
+    expect(oldExport.newRecordProperties).toEqual({
       string: ["full", "name"],
       email: ["oldEmail", "newEmail"],
       date: ["1970-01-01T00:00:00.001Z", "1970-01-01T00:00:00.002Z"],
@@ -131,7 +136,7 @@ describe("models/export", () => {
   });
 
   test("export serialization is OK with null values with types", async () => {
-    const oldProfileProperties = {
+    const oldRecordProperties = {
       string: { type: "string", rawValue: null },
       email: { type: "email", rawValue: null },
       integer: { type: "integer", rawValue: null },
@@ -139,7 +144,7 @@ describe("models/export", () => {
       date: { type: "date", rawValue: null },
       phoneNumber: { type: "phoneNumber", rawValue: null },
     };
-    const newProfileProperties = {
+    const newRecordProperties = {
       string: { type: "string", rawValue: [null, null] },
       email: { type: "email", rawValue: [null, null] },
       integer: { type: "integer", rawValue: [null, null] },
@@ -153,16 +158,16 @@ describe("models/export", () => {
 
     const nullExport = await Export.create({
       destinationId: destination.id,
-      profileId: profile.id,
+      recordId: record.id,
       startedAt: new Date(),
-      oldProfileProperties,
-      newProfileProperties,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups: [],
       newGroups: [],
       state: "complete",
     });
 
-    expect(nullExport.oldProfileProperties).toEqual({
+    expect(nullExport.oldRecordProperties).toEqual({
       string: null,
       email: null,
       date: null,
@@ -170,7 +175,7 @@ describe("models/export", () => {
       integer: null,
       phoneNumber: null,
     });
-    expect(nullExport.newProfileProperties).toEqual({
+    expect(nullExport.newRecordProperties).toEqual({
       string: [null, null],
       email: [null, null],
       date: [null, null],
@@ -183,7 +188,7 @@ describe("models/export", () => {
   });
 
   test("export serialization is OK with null values without types", async () => {
-    const oldProfileProperties = {
+    const oldRecordProperties = {
       string: null,
       email: null,
       integer: null,
@@ -191,7 +196,7 @@ describe("models/export", () => {
       date: null,
       phoneNumber: null,
     };
-    const newProfileProperties = {
+    const newRecordProperties = {
       string: [null, null],
       email: [null, null],
       integer: [null, null],
@@ -202,16 +207,16 @@ describe("models/export", () => {
 
     const oldNullExport = await Export.create({
       destinationId: destination.id,
-      profileId: profile.id,
+      recordId: record.id,
       startedAt: new Date(),
-      oldProfileProperties,
-      newProfileProperties,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups: [],
       newGroups: [],
       state: "complete",
     });
 
-    expect(oldNullExport.oldProfileProperties).toEqual({
+    expect(oldNullExport.oldRecordProperties).toEqual({
       string: null,
       email: null,
       date: null,
@@ -219,7 +224,7 @@ describe("models/export", () => {
       integer: null,
       phoneNumber: null,
     });
-    expect(oldNullExport.newProfileProperties).toEqual({
+    expect(oldNullExport.newRecordProperties).toEqual({
       string: [null, null],
       email: [null, null],
       date: [null, null],
@@ -232,8 +237,8 @@ describe("models/export", () => {
   });
 
   test("when destinations build exports, properties are serialized back to strings", async () => {
-    const profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+    const record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       userId: [123],
       email: ["person@example.com"],
       lastLoginAt: [new Date(10)],
@@ -242,7 +247,7 @@ describe("models/export", () => {
     });
 
     const group = await helper.factories.group();
-    await group.addProfile(profile);
+    await group.addProfile(record);
 
     const destination = await helper.factories.destination();
     await destination.trackGroup(group);
@@ -255,14 +260,12 @@ describe("models/export", () => {
     });
     await destination.update({ state: "ready" });
 
-    await profile.export();
+    await record.export();
     const _export = await Export.findOne({
-      where: { profileId: profile.id },
+      where: { recordId: record.id },
     });
 
-    const rawProperties = JSON.parse(
-      _export["dataValues"].newProfileProperties
-    );
+    const rawProperties = JSON.parse(_export["dataValues"].newRecordProperties);
 
     expect(rawProperties["primary-id"]).toEqual({
       type: "integer",
@@ -286,36 +289,36 @@ describe("models/export", () => {
     });
 
     // the value types are returned to the model properties
-    expect(_export.newProfileProperties["primary-id"]).toEqual(123);
-    expect(_export.newProfileProperties.email).toEqual("person@example.com");
-    expect(_export.newProfileProperties.lastLoginAt).toEqual(new Date(10));
-    expect(_export.newProfileProperties.ltv).toEqual(100.99);
-    expect(_export.newProfileProperties.isVIP).toEqual(true);
+    expect(_export.newRecordProperties["primary-id"]).toEqual(123);
+    expect(_export.newRecordProperties.email).toEqual("person@example.com");
+    expect(_export.newRecordProperties.lastLoginAt).toEqual(new Date(10));
+    expect(_export.newRecordProperties.ltv).toEqual(100.99);
+    expect(_export.newRecordProperties.isVIP).toEqual(true);
 
     // cleanup
-    await profile.destroy();
+    await record.destroy();
     await destination.unTrackGroup();
     await group.destroy();
     await destination.destroy();
   });
 
-  test("a profile.export can simulate the next export", async () => {
-    const profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+  test("a record.export can simulate the next export", async () => {
+    const record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       userId: [123],
       email: ["person@example.com"],
       lastLoginAt: [new Date(10)],
       ltv: [100.99],
       isVIP: [true],
     });
-    await ProfileProperty.update(
+    await RecordProperty.update(
       { state: "ready" },
-      { where: { profileId: profile.id } }
+      { where: { recordId: record.id } }
     );
-    await profile.update({ state: "ready" });
+    await record.update({ state: "ready" });
 
     const group = await helper.factories.group();
-    await group.addProfile(profile);
+    await group.addProfile(record);
 
     const destination = await helper.factories.destination();
     await destination.trackGroup(group);
@@ -328,11 +331,11 @@ describe("models/export", () => {
     });
     await destination.update({ state: "ready" });
 
-    const _exports = await profile.export(false, [], false);
+    const _exports = await record.export(false, [], false);
     expect(_exports.length).toEqual(1);
 
     const rawProperties = JSON.parse(
-      _exports[0]["dataValues"].newProfileProperties
+      _exports[0]["dataValues"].newRecordProperties
     );
 
     expect(rawProperties["primary-id"]).toEqual({
@@ -345,10 +348,10 @@ describe("models/export", () => {
     });
 
     // no exports were saved in the DB
-    expect(await Export.count({ where: { profileId: profile.id } })).toEqual(0);
+    expect(await Export.count({ where: { recordId: record.id } })).toEqual(0);
 
     // cleanup
-    await profile.destroy();
+    await record.destroy();
     await destination.unTrackGroup();
     await group.destroy();
     await destination.destroy();
@@ -357,21 +360,21 @@ describe("models/export", () => {
   test("exports can be marked as having changes or not", async () => {
     await Export.destroy({ where: { destinationId: destination.id } });
     const group = await helper.factories.group();
-    await group.addProfile(profile);
+    await group.addProfile(record);
     await destination.trackGroup(group);
 
     const oldExport = await Export.create({
       destinationId: destination.id,
-      profileId: profile.id,
+      recordId: record.id,
       startedAt: new Date(),
-      oldProfileProperties: {},
-      newProfileProperties: {},
+      oldRecordProperties: {},
+      newRecordProperties: {},
       oldGroups: [],
       newGroups: [],
       state: "complete",
     });
 
-    await destination.exportProfile(profile);
+    await destination.exportRecord(record);
 
     const newExport = await Export.findOne({
       where: {
@@ -388,13 +391,13 @@ describe("models/export", () => {
     await newExport.destroy();
   });
 
-  test("old entries can be swept away, not the newest one for each profile + destination", async () => {
+  test("old entries can be swept away, not the newest one for each record + destination", async () => {
     const oldExport = await Export.create({
       destinationId: destination.id,
-      profileId: profile.id,
+      recordId: record.id,
       startedAt: new Date(),
-      oldProfileProperties: {},
-      newProfileProperties: {},
+      oldRecordProperties: {},
+      newRecordProperties: {},
       oldGroups: [],
       newGroups: [],
       state: "pending",
@@ -402,10 +405,10 @@ describe("models/export", () => {
 
     const oldExportMostRecent = await Export.create({
       destinationId: destination.id,
-      profileId: profile.id,
+      recordId: record.id,
       startedAt: new Date(),
-      oldProfileProperties: {},
-      newProfileProperties: {},
+      oldRecordProperties: {},
+      newRecordProperties: {},
       oldGroups: [],
       newGroups: [],
       completedAt: new Date(),
@@ -441,10 +444,10 @@ describe("models/export", () => {
     beforeEach(async () => {
       errorExport = await Export.create({
         destinationId: destination.id,
-        profileId: profile.id,
+        recordId: record.id,
         startedAt: new Date(),
-        oldProfileProperties: { firstName: "old" },
-        newProfileProperties: { firstName: "new" },
+        oldRecordProperties: { firstName: "old" },
+        newRecordProperties: { firstName: "new" },
         oldGroups: [],
         newGroups: [],
         state: "complete",

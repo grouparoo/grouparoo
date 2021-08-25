@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`modules/codeConfig with code config a profile snapshot can be tested with a bootstrapped property 1`] = `
+exports[`modules/codeConfig with code config a record snapshot can be tested with a bootstrapped property 1`] = `
 Object {
   "exports": Array [
     Object {
@@ -17,13 +17,13 @@ Object {
       "newGroups": Array [
         "Literally Everyone",
       ],
-      "newProfileProperties": Object {
+      "newRecordProperties": Object {
         "primary-id": 100,
         "secondary-id": "example@example.com",
       },
       "oldGroups": Array [],
-      "oldProfileProperties": Object {},
-      "profileId": Any<String>,
+      "oldRecordProperties": Object {},
+      "recordId": Any<String>,
       "retryCount": 0,
       "sendAt": Any<Number>,
       "startedAt": Any<Number>,
@@ -155,7 +155,7 @@ Object {
 }
 `;
 
-exports[`modules/codeConfig with code config a profile snapshot can be tested with multiple unique properties 1`] = `
+exports[`modules/codeConfig with code config a record snapshot can be tested with multiple unique properties 1`] = `
 Object {
   "exports": Array [
     Object {
@@ -172,13 +172,13 @@ Object {
       "newGroups": Array [
         "Literally Everyone",
       ],
-      "newProfileProperties": Object {
+      "newRecordProperties": Object {
         "primary-id": 100,
         "secondary-id": "example@example.com",
       },
       "oldGroups": Array [],
-      "oldProfileProperties": Object {},
-      "profileId": Any<String>,
+      "oldRecordProperties": Object {},
+      "recordId": Any<String>,
       "retryCount": 0,
       "sendAt": Any<Number>,
       "startedAt": Any<Number>,

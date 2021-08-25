@@ -4,11 +4,11 @@ import { Op } from "sequelize";
 import {
   App,
   Destination,
+  GrouparooRecord,
   Log,
   Option,
-  Profile,
-  ProfileProperty,
   Property,
+  RecordProperty,
   Schedule,
   Source,
   SourceMapping,
@@ -505,7 +505,7 @@ describe("models/source", () => {
       });
     });
 
-    test("a plugin with a profiles method can have a schedule", async () => {
+    test("a plugin with a records method can have a schedule", async () => {
       const scheduleAvailable = await source.scheduleAvailable();
       expect(scheduleAvailable).toBe(true);
     });
@@ -764,7 +764,7 @@ describe("models/source", () => {
 
   describe("import", () => {
     let source: Source;
-    let profile: Profile;
+    let record: GrouparooRecord;
     let lnameProperty: Property;
     let originalProfilePropertyMethod;
 
@@ -778,8 +778,8 @@ describe("models/source", () => {
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
-      profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ userId: [1000] });
+      record = await helper.factories.record();
+      await record.addOrUpdateProperties({ userId: [1000] });
 
       lnameProperty = await Property.create({
         key: "__lname",
@@ -793,7 +793,7 @@ describe("models/source", () => {
     });
 
     afterAll(async () => {
-      await profile.destroy();
+      await record.destroy();
       await lnameProperty.destroy();
       await source.destroy();
     });
@@ -806,70 +806,64 @@ describe("models/source", () => {
 
     test("it will not import a draft property (single)", async () => {
       expect(lnameProperty.state).toBe("draft");
-      const property = await source.importProfileProperty(
-        profile,
-        lnameProperty
-      );
+      const property = await source.importRecordProperty(record, lnameProperty);
       expect(property).toBeUndefined();
     });
 
     test("it will not import a draft property (batch)", async () => {
       expect(lnameProperty.state).toBe("draft");
-      const { properties } = await source.import(profile);
+      const { properties } = await source.import(record);
       expect(properties).toEqual({});
     });
 
-    test("it can import one profile property for a profile", async () => {
+    test("it can import one record property for a record", async () => {
       await lnameProperty.setOptions({ column: "lname" });
       await lnameProperty.update({ state: "ready" });
-      const property = await source.importProfileProperty(
-        profile,
-        lnameProperty
-      );
+      const property = await source.importRecordProperty(record, lnameProperty);
       expect(property).toEqual("...mario");
     });
 
-    test("it can import one profile property for a profile with an override of the property options", async () => {
+    test("it can import one record property for a record with an override of the property options", async () => {
       await expect(
-        source.importProfileProperty(profile, lnameProperty, {
+        source.importRecordProperty(record, lnameProperty, {
           something: "else",
         })
       ).rejects.toThrow(/column is required/);
 
-      await source.importProfileProperty(profile, lnameProperty, {
+      await source.importRecordProperty(record, lnameProperty, {
         column: "abc",
       }); // does not throw
     });
 
-    test("it can import one profile property for a profile with an override of the property filters", async () => {
-      await source.importProfileProperty(profile, lnameProperty, null, []); // does not throw
+    test("it can import one record property for a record with an override of the property filters", async () => {
+      await source.importRecordProperty(record, lnameProperty, null, []); // does not throw
     });
 
-    test("it can import all profile properties for this source, mapped to the property ids properly", async () => {
-      const { properties } = await source.import(profile);
+    test("it can import all record properties for this source, mapped to the property ids properly", async () => {
+      const { properties } = await source.import(record);
       expect(properties).toEqual({ [lnameProperty.id]: "...mario" });
     });
 
-    test("if importing returned null, it will not be included in the response hash to set profile properties", async () => {
+    test("if importing returned null, it will not be included in the response hash to set record properties", async () => {
       api.plugins.plugins.filter(
         (p) => p.name === "@grouparoo/test-plugin"
       )[0].connections[0].methods.profileProperty = async () => {
         return null;
       };
 
-      const { canImport, properties } = await source.import(profile);
+      const { canImport, properties } = await source.import(record);
       expect(canImport).toBe(true);
       expect(properties).toEqual({});
     });
 
-    test("if importing returned undefined, it will not be included in the response hash to set profile properties", async () => {
+    test("if importing returned undefined, it will not be included in the response hash to set record properties", async () => {
       api.plugins.plugins.filter(
         (p) => p.name === "@grouparoo/test-plugin"
       )[0].connections[0].methods.profileProperty = async () => {
         return undefined;
       };
 
-      const { canImport, properties } = await source.import(profile);
+      const { canImport, properties } = await source.import(record);
       expect(canImport).toBe(true);
       expect(properties).toEqual({});
     });
@@ -877,7 +871,7 @@ describe("models/source", () => {
     test("if plugin doesn't support directly importing properties, it will return canImport: false and property hash will be empty", async () => {
       helper.disableTestPluginImport();
 
-      const { canImport, properties } = await source.import(profile);
+      const { canImport, properties } = await source.import(record);
       expect(canImport).toBe(false);
       expect(properties).toEqual({});
     });
@@ -949,17 +943,17 @@ describe("models/source", () => {
     });
 
     test("pending imports can be listed", async () => {
-      const profile = await helper.factories.profile();
-      await profile.buildNullProperties();
+      const record = await helper.factories.record();
+      await record.buildNullProperties();
       const emailProperty = await Property.findOne({
         where: { key: "email" },
       });
 
-      await ProfileProperty.update(
+      await RecordProperty.update(
         { state: "pending" },
         {
           where: {
-            profileId: profile.id,
+            recordId: record.id,
             propertyId: { [Op.in]: [emailProperty.id] },
           },
         }
@@ -977,8 +971,8 @@ describe("models/source", () => {
     let sourceMapping: SourceMapping;
     let propertyA: Property;
     let propertyB: Property;
-    let mario: Profile;
-    let luigi: Profile;
+    let mario: GrouparooRecord;
+    let luigi: GrouparooRecord;
 
     beforeAll(async () => {
       source = await Source.create({
@@ -1003,8 +997,8 @@ describe("models/source", () => {
         { column: "frenchWord" }
       );
 
-      mario = await helper.factories.profile();
-      luigi = await helper.factories.profile();
+      mario = await helper.factories.record();
+      luigi = await helper.factories.record();
     });
 
     afterAll(async () => {
@@ -1019,22 +1013,22 @@ describe("models/source", () => {
       expect(await source.scheduleAvailable()).toBe(false);
     });
 
-    test("it will throw if the profile properties in are not ready", async () => {
+    test("it will throw if the record properties in are not ready", async () => {
       await mario.markPending();
 
-      const profiles = [mario];
+      const records = [mario];
       const properties = [propertyA];
       const response = { [mario.id]: { [propertyA.id]: ["hello"] } };
       await expect(
-        SourceOps.applyNonUniqueMappedResultsToAllProfiles(response, {
-          profiles,
+        SourceOps.applyNonUniqueMappedResultsToAllRecords(response, {
+          records,
           properties,
           sourceMapping,
         })
       ).rejects.toThrow(/ is not ready/);
     });
 
-    describe("with ready profile properties", () => {
+    describe("with ready record properties", () => {
       beforeAll(async () => {
         await mario.import();
         await luigi.import();
@@ -1045,12 +1039,12 @@ describe("models/source", () => {
         await propertyB.update({ isArray: false, unique: false });
       });
 
-      test("it will apply non-unique properties to all profiles in the batch (1 property)", async () => {
-        const profiles = [mario, luigi];
+      test("it will apply non-unique properties to all records in the batch (1 property)", async () => {
+        const records = [mario, luigi];
         const properties = [propertyA];
         const response = { [mario.id]: { [propertyA.id]: ["hola"] } };
-        await SourceOps.applyNonUniqueMappedResultsToAllProfiles(response, {
-          profiles,
+        await SourceOps.applyNonUniqueMappedResultsToAllRecords(response, {
+          records,
           properties,
           sourceMapping,
         });
@@ -1061,14 +1055,14 @@ describe("models/source", () => {
         });
       });
 
-      test("it will apply non-unique properties to all profiles in the batch (2 properties)", async () => {
-        const profiles = [mario, luigi];
+      test("it will apply non-unique properties to all records in the batch (2 properties)", async () => {
+        const records = [mario, luigi];
         const properties = [propertyA, propertyB];
         const response = {
           [mario.id]: { [propertyA.id]: ["hola"], [propertyB.id]: ["bonjour"] },
         };
-        await SourceOps.applyNonUniqueMappedResultsToAllProfiles(response, {
-          profiles,
+        await SourceOps.applyNonUniqueMappedResultsToAllRecords(response, {
+          records,
           properties,
           sourceMapping,
         });
@@ -1082,13 +1076,13 @@ describe("models/source", () => {
       test("it returns undefined when the source does not have a record for the property", async () => {
         await luigi.addOrUpdateProperties({ lastName: ["x"] }); // change the value of the property that is mapped
 
-        const profiles = [mario, luigi];
+        const records = [mario, luigi];
         const properties = [propertyA, propertyB];
         const response = {
           [mario.id]: { [propertyA.id]: ["hola"], [propertyB.id]: ["bonjour"] },
         };
-        await SourceOps.applyNonUniqueMappedResultsToAllProfiles(response, {
-          profiles,
+        await SourceOps.applyNonUniqueMappedResultsToAllRecords(response, {
+          records,
           properties,
           sourceMapping,
         });

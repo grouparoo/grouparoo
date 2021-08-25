@@ -3,7 +3,7 @@ import {
   plugin,
   App,
   Destination,
-  Profile,
+  GrouparooRecord,
   Group,
   DestinationMappingOptionsResponseTypes,
 } from "../../../../src";
@@ -23,7 +23,7 @@ describe("models/destination", () => {
     ) {
       if (output !== null) {
         expect(
-          DestinationOps.formatOutgoingProfileProperties(
+          DestinationOps.formatOutgoingRecordProperties(
             input,
             grouparooType,
             destinationType
@@ -31,7 +31,7 @@ describe("models/destination", () => {
         ).toEqual(output);
       } else {
         expect(() =>
-          DestinationOps.formatOutgoingProfileProperties(
+          DestinationOps.formatOutgoingRecordProperties(
             input,
             grouparooType,
             destinationType
@@ -57,7 +57,7 @@ describe("models/destination", () => {
       mapping.map(([input, type]: [any, string]) => {
         test(`exporting type ${type} to any`, () => {
           expect(
-            DestinationOps.formatOutgoingProfileProperties(input, type, "any")
+            DestinationOps.formatOutgoingRecordProperties(input, type, "any")
           ).toEqual(input);
         });
       });
@@ -79,7 +79,7 @@ describe("models/destination", () => {
         types.map((outputType) => {
           test(`exporting null type ${inputType} to ${outputType}`, () => {
             expect(
-              DestinationOps.formatOutgoingProfileProperties(
+              DestinationOps.formatOutgoingRecordProperties(
                 null,
                 inputType,
                 outputType
@@ -339,8 +339,8 @@ describe("models/destination", () => {
     let destination: Destination;
     let known = [];
     let required = [];
-    let newProfileProperties = {};
-    let oldProfileProperties = {};
+    let newRecordProperties = {};
+    let oldRecordProperties = {};
 
     beforeAll(async () => {
       plugin.registerPlugin({
@@ -385,9 +385,9 @@ describe("models/destination", () => {
                 };
               },
               exportArrayProperties: async () => [],
-              exportProfile: async (args) => {
-                oldProfileProperties = args.export.oldProfileProperties;
-                newProfileProperties = args.export.newProfileProperties;
+              exportRecord: async (args) => {
+                oldRecordProperties = args.export.oldRecordProperties;
+                newRecordProperties = args.export.newRecordProperties;
                 return { success: true };
               },
             },
@@ -482,11 +482,11 @@ describe("models/destination", () => {
     });
 
     describe("with tracked group", () => {
-      let mario: Profile;
+      let mario: GrouparooRecord;
       let group: Group;
 
       beforeAll(async () => {
-        mario = await helper.factories.profile();
+        mario = await helper.factories.record();
         await mario.addOrUpdateProperties({
           email: ["mario@example.com"],
           userId: [1],
@@ -512,13 +512,13 @@ describe("models/destination", () => {
         await destination.unTrackGroup();
       });
 
-      test("profile properties will be converted to the type requested by the plugin", async () => {
+      test("record properties will be converted to the type requested by the plugin", async () => {
         // int -> number OK
         required = [{ key: "remote-id", type: "number" }];
         await destination.setMapping({ "remote-id": "userId", email: "email" });
         await mario.export(true);
-        expect(oldProfileProperties).toEqual({});
-        expect(newProfileProperties).toEqual({
+        expect(oldRecordProperties).toEqual({});
+        expect(newRecordProperties).toEqual({
           "remote-id": 1,
           email: "mario@example.com",
         });
@@ -527,11 +527,11 @@ describe("models/destination", () => {
         required = [{ key: "remote-id", type: "string" }];
         await destination.setMapping({ "remote-id": "userId", email: "email" });
         await mario.export(true);
-        expect(oldProfileProperties).toEqual({
+        expect(oldRecordProperties).toEqual({
           "remote-id": "1",
           email: "mario@example.com",
         });
-        expect(newProfileProperties).toEqual({
+        expect(newRecordProperties).toEqual({
           "remote-id": "1",
           email: "mario@example.com",
         });

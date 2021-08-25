@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Import, Profile, ProfileProperty, Run } from "../../../../src";
+import { Import, GrouparooRecord, RecordProperty, Run } from "../../../../src";
 import { api, task, specHelper } from "actionhero";
 import { StatusTask } from "../../../../src/tasks/system/status/status";
 import { Status } from "../../../../src/modules/status";
@@ -36,9 +36,9 @@ describe("tasks/status", () => {
       expect(complete).toBe(true);
     });
 
-    test("will not be complete with a pending profile", async () => {
-      const profile = await helper.factories.profile();
-      await profile.update({ state: "pending" });
+    test("will not be complete with a pending record", async () => {
+      const record = await helper.factories.record();
+      await record.update({ state: "pending" });
 
       await Status.setAll();
 
@@ -46,17 +46,17 @@ describe("tasks/status", () => {
       const instance = new StatusTask();
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(false);
-      await profile.destroy();
+      await record.destroy();
     });
 
     test("will not be complete with a pending import", async () => {
-      const profile = await helper.factories.profile();
-      await ProfileProperty.update(
+      const record = await helper.factories.record();
+      await RecordProperty.update(
         { state: "ready" },
-        { where: { profileId: profile.id } }
+        { where: { recordId: record.id } }
       );
-      await profile.update({ state: "ready" });
-      await helper.factories.import(null, { profileId: profile.id });
+      await record.update({ state: "ready" });
+      await helper.factories.import(null, { recordId: record.id });
 
       await Status.setAll();
 
@@ -64,18 +64,18 @@ describe("tasks/status", () => {
       const instance = new StatusTask();
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(false);
-      await profile.destroy();
+      await record.destroy();
     });
 
     test("will not be complete with a pending export", async () => {
-      const profile = await helper.factories.profile();
-      await ProfileProperty.update(
+      const record = await helper.factories.record();
+      await RecordProperty.update(
         { state: "ready" },
-        { where: { profileId: profile.id } }
+        { where: { recordId: record.id } }
       );
       await Run.truncate();
-      await profile.update({ state: "ready" });
-      await helper.factories.export(profile);
+      await record.update({ state: "ready" });
+      await helper.factories.export(record);
 
       await Status.setAll();
 
@@ -83,7 +83,7 @@ describe("tasks/status", () => {
       const instance = new StatusTask();
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(false);
-      await profile.destroy();
+      await record.destroy();
     });
 
     test("will not be complete with a pending run", async () => {
@@ -98,14 +98,14 @@ describe("tasks/status", () => {
       await run.destroy();
     });
 
-    test("will not complete with profiles to delete", async () => {
-      const profile: Profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ userId: [null] });
-      await ProfileProperty.update(
+    test("will not complete with records to delete", async () => {
+      const record: GrouparooRecord = await helper.factories.record();
+      await record.addOrUpdateProperties({ userId: [null] });
+      await RecordProperty.update(
         { state: "ready" },
-        { where: { profileId: profile.id } }
+        { where: { recordId: record.id } }
       );
-      await profile.update({ state: "ready" });
+      await record.update({ state: "ready" });
       await Run.truncate();
       await Import.truncate();
 
@@ -116,7 +116,7 @@ describe("tasks/status", () => {
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(false);
 
-      await profile.destroy();
+      await record.destroy();
     });
 
     // test("running the task will create a status sample", async () => {

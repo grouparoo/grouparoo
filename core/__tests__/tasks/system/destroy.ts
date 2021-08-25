@@ -5,8 +5,8 @@ import {
   App,
   Destination,
   Group,
-  Profile,
-  ProfileProperty,
+  GrouparooRecord,
+  RecordProperty,
   Export,
 } from "../../../src";
 import { api, task, specHelper } from "actionhero";
@@ -92,76 +92,76 @@ describe("tasks/destroy", () => {
       expect(found[0].args[0].appId).toBe(app.id);
     });
 
-    describe("profiles", () => {
+    describe("records", () => {
       let userIdProperty: Property;
       beforeAll(async () => {
         userIdProperty = await Property.findOne({ where: { key: "userId" } });
         expect(userIdProperty.directlyMapped).toBe(true);
       });
 
-      test("it will enqueue destroy task for profiles with a directlyMapped property set to null", async () => {
-        const profile: Profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({
+      test("it will enqueue destroy task for records with a directlyMapped property set to null", async () => {
+        const record: GrouparooRecord = await helper.factories.record();
+        await record.addOrUpdateProperties({
           userId: [null],
           isVIP: [true],
           ltv: [213],
         });
 
-        await ProfileProperty.update(
+        await RecordProperty.update(
           { state: "ready" },
-          { where: { profileId: profile.id } }
+          { where: { recordId: record.id } }
         );
-        await profile.update({ state: "ready" });
+        await record.update({ state: "ready" });
 
         await specHelper.runTask("destroy", {});
 
-        const found = await specHelper.findEnqueuedTasks("profile:destroy");
+        const found = await specHelper.findEnqueuedTasks("record:destroy");
         expect(found.length).toEqual(1);
-        expect(found[0].args[0].profileId).toBe(profile.id);
+        expect(found[0].args[0].recordId).toBe(record.id);
 
-        await profile.destroy();
+        await record.destroy();
       });
 
-      test("does not enqueue destroy task for profiles that aren't done importing", async () => {
-        const profile: Profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({
+      test("does not enqueue destroy task for records that aren't done importing", async () => {
+        const record: GrouparooRecord = await helper.factories.record();
+        await record.addOrUpdateProperties({
           userId: [null],
           isVIP: [true],
           ltv: [213],
         });
 
-        await ProfileProperty.update(
+        await RecordProperty.update(
           { state: "pending" },
-          { where: { profileId: profile.id } }
+          { where: { recordId: record.id } }
         );
-        await profile.update({ state: "pending" });
+        await record.update({ state: "pending" });
 
         await specHelper.runTask("destroy", {});
 
-        const found = await specHelper.findEnqueuedTasks("profile:destroy");
+        const found = await specHelper.findEnqueuedTasks("record:destroy");
         expect(found.length).toEqual(0);
 
-        await profile.destroy();
+        await record.destroy();
       });
 
       // this test should be last
-      test("it will enqueue destroy task for profiles when there is no directlyMapped property", async () => {
-        const profile: Profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({
+      test("it will enqueue destroy task for records when there is no directlyMapped property", async () => {
+        const record: GrouparooRecord = await helper.factories.record();
+        await record.addOrUpdateProperties({
           userId: [1000],
           isVIP: [true],
           ltv: [213],
         });
 
-        await ProfileProperty.update(
+        await RecordProperty.update(
           { state: "ready" },
-          { where: { profileId: profile.id } }
+          { where: { recordId: record.id } }
         );
-        await profile.update({ state: "ready" });
+        await record.update({ state: "ready" });
 
         await specHelper.runTask("destroy", {});
 
-        let found = await specHelper.findEnqueuedTasks("profile:destroy");
+        let found = await specHelper.findEnqueuedTasks("record:destroy");
         expect(found.length).toEqual(0);
 
         // now remove the directly mapped property
@@ -170,11 +170,11 @@ describe("tasks/destroy", () => {
 
         await specHelper.runTask("destroy", {});
 
-        found = await specHelper.findEnqueuedTasks("profile:destroy");
+        found = await specHelper.findEnqueuedTasks("record:destroy");
         expect(found.length).toEqual(1);
-        expect(found[0].args[0].profileId).toBe(profile.id);
+        expect(found[0].args[0].recordId).toBe(record.id);
 
-        await profile.destroy();
+        await record.destroy();
       });
     });
   });

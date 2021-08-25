@@ -52,7 +52,7 @@ describe("tasks/runs:updateCounts", () => {
       expect(runsChecked).toBe(0);
     });
 
-    test("it will find runs in the complete state that have un-imported profiles", async () => {
+    test("it will find runs in the complete state that have un-imported records", async () => {
       const schedule = await helper.factories.schedule();
       const run = await Run.create({
         creatorId: schedule.id,
@@ -66,7 +66,7 @@ describe("tasks/runs:updateCounts", () => {
       expect(runsChecked).toBe(1);
     });
 
-    test("it will not find runs in the complete state that have all their profiles imported", async () => {
+    test("it will not find runs in the complete state that have all their records imported", async () => {
       const schedule = await helper.factories.schedule();
       const run = await Run.create({
         creatorId: schedule.id,

@@ -193,7 +193,7 @@ describe("models/property", () => {
           isArray: true,
           unique: true,
         })
-      ).rejects.toThrow(/unique profile properties cannot be arrays/);
+      ).rejects.toThrow(/unique record properties cannot be arrays/);
     });
 
     test("a property cannot be made unique if there are non-unique values already", async () => {
@@ -205,9 +205,9 @@ describe("models/property", () => {
       await property.setOptions({ column: "name" });
       await property.update({ state: "ready" });
 
-      const profileA = await helper.factories.profile();
-      const profileB = await helper.factories.profile();
-      const profileC = await helper.factories.profile();
+      const profileA = await helper.factories.record();
+      const profileB = await helper.factories.record();
+      const profileC = await helper.factories.record();
       await profileA.addOrUpdateProperties({ name: ["mario"] });
       await profileB.addOrUpdateProperties({ name: ["toad"] });
       await profileC.addOrUpdateProperties({ name: ["toad"] });
@@ -492,7 +492,7 @@ describe("models/property", () => {
     await source.destroy();
   });
 
-  test("updating a property's unique property queues a task to update the profile properties", async () => {
+  test("updating a property's unique property queues a task to update the record properties", async () => {
     const source = await helper.factories.source();
     await source.setOptions({ table: "test table" });
     await source.setMapping({ id: "userId" });
@@ -713,14 +713,14 @@ describe("models/property", () => {
               profileProperty: async ({
                 property,
                 propertyOptions,
-                profile,
+                record,
               }) => {
                 const s = `the time is {{now.sql}} + ${JSON.stringify(
                   propertyOptions
                 )}`;
                 const q = await property.parameterizedQueryFromProfile(
                   s,
-                  profile
+                  record
                 );
 
                 if (propertyOptions.column?.toString().match(/throw/)) {
@@ -1005,11 +1005,11 @@ describe("models/property", () => {
         }
       );
 
-      test("creating or editing a property options will test the query against a profile", async () => {
+      test("creating or editing a property options will test the query against a record", async () => {
         expect(queryCounter).toBe(0);
 
-        const profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({ userId: [1000] });
+        const record = await helper.factories.record();
+        await record.addOrUpdateProperties({ userId: [1000] });
 
         const property = await Property.create({
           key: "test",
@@ -1037,12 +1037,12 @@ describe("models/property", () => {
         // no change
         expect(queryCounter).toBeGreaterThan(2);
         await property.destroy();
-        await profile.destroy();
+        await record.destroy();
       });
 
-      test("options cannot be saved if they fail testing import against a profile", async () => {
-        const profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({ userId: [1000] });
+      test("options cannot be saved if they fail testing import against a record", async () => {
+        const record = await helper.factories.record();
+        await record.addOrUpdateProperties({ userId: [1000] });
 
         const property = await Property.create({
           key: "test",
@@ -1056,12 +1056,12 @@ describe("models/property", () => {
 
         expect(await property.getOptions()).toEqual({});
         await property.destroy();
-        await profile.destroy();
+        await record.destroy();
       });
 
       test("the property can be tested against the existing options or potential new options", async () => {
-        const profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({ userId: [1000] });
+        const record = await helper.factories.record();
+        await record.addOrUpdateProperties({ userId: [1000] });
 
         const property = await Property.create({
           key: "test",
@@ -1071,7 +1071,7 @@ describe("models/property", () => {
         await property.setOptions({ column: "~" });
         await property.update({ state: "ready" });
 
-        await profile.addOrUpdateProperties({ test: [true] });
+        await record.addOrUpdateProperties({ test: [true] });
 
         // against saved query
         const response = await property.test();
@@ -1081,7 +1081,7 @@ describe("models/property", () => {
         const responseAgain = await property.test({ column: "abc" });
         expect(responseAgain[0]).toMatch('+ {"column":"abc"}');
 
-        await profile.destroy();
+        await record.destroy();
         await property.destroy();
       });
 

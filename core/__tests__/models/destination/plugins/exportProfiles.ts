@@ -156,16 +156,16 @@ describe("models/destination", () => {
           destinationGroupMemberships
         );
 
-        const profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({
+        const record = await helper.factories.record();
+        await record.addOrUpdateProperties({
           userId: [1001],
           email: ["newemail@example.com"],
         });
-        await groupA.addProfile(profile);
-        await groupB.addProfile(profile);
+        await groupA.addProfile(record);
+        await groupB.addProfile(record);
 
-        const oldExport = await helper.factories.export(profile, destination, {
-          newProfileProperties: {
+        const oldExport = await helper.factories.export(record, destination, {
+          newRecordProperties: {
             customer_email: { type: "email", rawValue: "oldmail@example.com" },
           },
           state: "complete",
@@ -177,7 +177,7 @@ describe("models/destination", () => {
           id: oldExport.id,
         });
 
-        await destination.exportProfile(profile);
+        await destination.exportRecord(record);
 
         // there should be no export:send tasks
         let foundTasks = await specHelper.findEnqueuedTasks("export:send");
@@ -196,11 +196,11 @@ describe("models/destination", () => {
         expect(exportArgs.destination.id).toEqual(destination.id);
         expect(exportArgs.app.id).toEqual(app.id);
         expect(exportArgs.exports.length).toEqual(1);
-        expect(exportArgs.exports[0].profile.id).toEqual(profile.id);
-        expect(exportArgs.exports[0].oldProfileProperties).toEqual({
+        expect(exportArgs.exports[0].record.id).toEqual(record.id);
+        expect(exportArgs.exports[0].oldRecordProperties).toEqual({
           customer_email: "oldmail@example.com",
         });
-        expect(exportArgs.exports[0].newProfileProperties).toEqual({
+        expect(exportArgs.exports[0].newRecordProperties).toEqual({
           customer_email: "newemail@example.com",
           uid: 1001,
         });
@@ -216,15 +216,15 @@ describe("models/destination", () => {
         });
         expect(_exports.length).toBe(2);
         expect(_exports[1].destinationId).toBe(destination.id);
-        expect(_exports[1].profileId).toBe(profile.id);
+        expect(_exports[1].recordId).toBe(record.id);
         expect(
           _exports[1].completedAt.getTime() - _exports[0].startedAt.getTime()
         ).toBeGreaterThan(0);
         expect(_exports[1].errorMessage).toBeFalsy();
-        expect(_exports[1].oldProfileProperties).toEqual({
+        expect(_exports[1].oldRecordProperties).toEqual({
           customer_email: "oldmail@example.com",
         });
-        expect(_exports[1].newProfileProperties).toEqual({
+        expect(_exports[1].newRecordProperties).toEqual({
           customer_email: "newemail@example.com",
           uid: 1001,
         });
@@ -233,10 +233,10 @@ describe("models/destination", () => {
           [groupA, groupB].map((g) => `${g.name}+`).sort()
         );
 
-        await profile.destroy();
+        await record.destroy();
       });
 
-      test("profile properties previously mapped but now removed will be included as oldProfileProperties in the export", async () => {
+      test("record properties previously mapped but now removed will be included as oldRecordProperties in the export", async () => {
         await destination.setMapping({
           uid: "userId",
           customer_email: "email",
@@ -246,27 +246,27 @@ describe("models/destination", () => {
 
         await destination.trackGroup(groupA);
 
-        const profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({
+        const record = await helper.factories.record();
+        await record.addOrUpdateProperties({
           userId: [1001],
           email: ["newemail@example.com"],
         });
 
         // create a previous export
         const _export = await Export.create({
-          profileId: profile.id,
+          recordId: record.id,
           destinationId: destination.id,
-          newProfileProperties: {
+          newRecordProperties: {
             customer_email: { type: "email", rawValue: "oldmail@example.com" },
             gender: { type: "string", rawValue: "Male" },
           },
-          oldProfileProperties: {},
+          oldRecordProperties: {},
           oldGroups: [],
           newGroups: [],
           state: "complete",
         });
 
-        await destination.exportProfile(profile);
+        await destination.exportRecord(record);
 
         // there should be no export:send tasks
         let foundTasks = await specHelper.findEnqueuedTasks("export:send");
@@ -283,19 +283,19 @@ describe("models/destination", () => {
         await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
 
         expect(exportArgs.exports.length).toBe(1);
-        expect(exportArgs.exports[0].oldProfileProperties).toEqual({
+        expect(exportArgs.exports[0].oldRecordProperties).toEqual({
           customer_email: "oldmail@example.com",
           gender: "Male",
         });
-        expect(exportArgs.exports[0].newProfileProperties).toEqual({
+        expect(exportArgs.exports[0].newRecordProperties).toEqual({
           customer_email: "newemail@example.com",
           uid: 1001,
         });
 
-        await profile.destroy();
+        await record.destroy();
       });
 
-      test("if the directlyMapped property has been removed, newProfileProperties will use oldProfileProperties values in the export", async () => {
+      test("if the directlyMapped property has been removed, newRecordProperties will use oldRecordProperties values in the export", async () => {
         await destination.setMapping({
           is_vip: "isVIP",
           customer_email: "email",
@@ -305,8 +305,8 @@ describe("models/destination", () => {
         const groupA = await helper.factories.group();
         await destination.trackGroup(groupA);
 
-        const profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({
+        const record = await helper.factories.record();
+        await record.addOrUpdateProperties({
           userId: [null],
           email: [null],
           isVIP: [null],
@@ -315,20 +315,20 @@ describe("models/destination", () => {
 
         // create a previous export
         await Export.create({
-          profileId: profile.id,
+          recordId: record.id,
           destinationId: destination.id,
-          newProfileProperties: {
+          newRecordProperties: {
             customer_email: { type: "email", rawValue: "oldmail@example.com" },
             is_vip: { type: "boolean", rawValue: "false" },
             first_name: { type: "string", rawValue: "Joe" },
           },
-          oldProfileProperties: {},
+          oldRecordProperties: {},
           oldGroups: [],
           newGroups: ["someGroup"],
           state: "complete",
         });
 
-        await destination.exportProfile(profile);
+        await destination.exportRecord(record);
 
         // there should be no export:send tasks
         let foundTasks = await specHelper.findEnqueuedTasks("export:send");
@@ -348,12 +348,12 @@ describe("models/destination", () => {
         expect(exportArgs.exports[0].toDelete).toBe(true);
 
         // Old properties that are still mapped stay the same
-        expect(exportArgs.exports[0].oldProfileProperties).toEqual({
+        expect(exportArgs.exports[0].oldRecordProperties).toEqual({
           customer_email: "oldmail@example.com",
           is_vip: false,
           first_name: "Joe", // will not be set since it's no longer a mapping
         });
-        expect(exportArgs.exports[0].newProfileProperties).toEqual({
+        expect(exportArgs.exports[0].newRecordProperties).toEqual({
           customer_email: "oldmail@example.com",
           is_vip: false,
         });
@@ -362,10 +362,10 @@ describe("models/destination", () => {
         expect(exportArgs.exports[0].oldGroups).toEqual(["someGroup"]);
         expect(exportArgs.exports[0].newGroups).toEqual([]);
 
-        await profile.destroy();
+        await record.destroy();
       });
 
-      test('if a profile is removed from all groups tracked by this destination in "sync" syncMode, toDelete is true', async () => {
+      test('if a record is removed from all groups tracked by this destination in "sync" syncMode, toDelete is true', async () => {
         expect(destination.syncMode).toBe("sync");
 
         await destination.setMapping({
@@ -383,10 +383,10 @@ describe("models/destination", () => {
           destinationGroupMemberships
         );
 
-        const profile = await helper.factories.profile();
+        const record = await helper.factories.record();
 
-        const oldExport = await helper.factories.export(profile, destination, {
-          newProfileProperties: {},
+        const oldExport = await helper.factories.export(record, destination, {
+          newRecordProperties: {},
           newGroups: [groupA.name, groupB.name].sort(),
           startedAt: new Date(),
           completedAt: new Date(),
@@ -396,7 +396,7 @@ describe("models/destination", () => {
           id: oldExport.id,
         });
 
-        await destination.exportProfile(profile);
+        await destination.exportRecord(record);
 
         // there should be no export:send tasks
         let foundTasks = await specHelper.findEnqueuedTasks("export:send");
@@ -413,7 +413,7 @@ describe("models/destination", () => {
         await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
 
         expect(exportArgs.exports.length).toBe(1);
-        expect(exportArgs.exports[0].profile.id).toEqual(profile.id);
+        expect(exportArgs.exports[0].record.id).toEqual(record.id);
         expect(exportArgs.exports[0].oldGroups).toEqual(
           [groupA, groupB].map((g) => g.name).sort()
         );
@@ -421,7 +421,7 @@ describe("models/destination", () => {
         expect(exportArgs.exports[0].toDelete).toEqual(true);
       });
 
-      test("if profile is removed from destination's tracked group, toDelete is true", async () => {
+      test("if record is removed from destination's tracked group, toDelete is true", async () => {
         await destination.setMapping({
           uid: "userId",
           customer_email: "email",
@@ -438,12 +438,12 @@ describe("models/destination", () => {
           destinationGroupMemberships
         );
 
-        const profile = await helper.factories.profile();
-        await groupA.addProfile(profile);
-        await groupB.addProfile(profile);
+        const record = await helper.factories.record();
+        await groupA.addProfile(record);
+        await groupB.addProfile(record);
 
-        const oldExport = await helper.factories.export(profile, destination, {
-          newProfileProperties: {},
+        const oldExport = await helper.factories.export(record, destination, {
+          newRecordProperties: {},
           newGroups: [groupA.name, groupB.name].sort(),
           startedAt: new Date(),
           completedAt: new Date(),
@@ -454,7 +454,7 @@ describe("models/destination", () => {
         });
 
         await destination.trackGroup(groupC);
-        await destination.exportProfile(profile);
+        await destination.exportRecord(record);
 
         // there should be no export:send tasks
         let foundTasks = await specHelper.findEnqueuedTasks("export:send");
@@ -471,7 +471,7 @@ describe("models/destination", () => {
         await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
 
         expect(exportArgs.exports.length).toBe(1);
-        expect(exportArgs.exports[0].profile.id).toEqual(profile.id);
+        expect(exportArgs.exports[0].record.id).toEqual(record.id);
         expect(exportArgs.exports[0].oldGroups).toEqual(
           [groupA, groupB].map((g) => g.name).sort()
         );
@@ -480,11 +480,11 @@ describe("models/destination", () => {
         );
         expect(exportArgs.exports[0].toDelete).toEqual(true); // delete
 
-        await profile.destroy();
+        await record.destroy();
       });
 
       test.each(["enrich", "additive"])(
-        "if profile is removed from destination's tracked group in %p syncMode, toDelete is false and groups are cleared",
+        "if record is removed from destination's tracked group in %p syncMode, toDelete is false and groups are cleared",
         async (syncMode) => {
           await destination.update({ syncMode });
           await destination.setMapping({
@@ -503,27 +503,23 @@ describe("models/destination", () => {
             destinationGroupMemberships
           );
 
-          const profile = await helper.factories.profile();
-          await groupA.addProfile(profile);
-          await groupB.addProfile(profile);
+          const record = await helper.factories.record();
+          await groupA.addProfile(record);
+          await groupB.addProfile(record);
 
-          const oldExport = await helper.factories.export(
-            profile,
-            destination,
-            {
-              newProfileProperties: {},
-              newGroups: [groupA.name, groupB.name].sort(),
-              startedAt: new Date(),
-              completedAt: new Date(),
-              state: "complete",
-            }
-          );
+          const oldExport = await helper.factories.export(record, destination, {
+            newRecordProperties: {},
+            newGroups: [groupA.name, groupB.name].sort(),
+            startedAt: new Date(),
+            completedAt: new Date(),
+            state: "complete",
+          });
           await specHelper.deleteEnqueuedTasks("exports:send", {
             id: oldExport.id,
           });
 
           await destination.trackGroup(groupC);
-          await destination.exportProfile(profile);
+          await destination.exportRecord(record);
 
           // there should be no export:send tasks
           let foundTasks = await specHelper.findEnqueuedTasks("export:send");
@@ -540,37 +536,37 @@ describe("models/destination", () => {
           await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
 
           expect(exportArgs.exports.length).toBe(1);
-          expect(exportArgs.exports[0].profile.id).toEqual(profile.id);
+          expect(exportArgs.exports[0].record.id).toEqual(record.id);
           expect(exportArgs.exports[0].oldGroups).toEqual(
             [groupA, groupB].map((g) => g.name).sort()
           );
           expect(exportArgs.exports[0].newGroups).toEqual([]); // groups cleared
           expect(exportArgs.exports[0].toDelete).toEqual(false); // no delete
 
-          await profile.destroy();
+          await record.destroy();
           await destination.update({ syncMode: "sync" });
         }
       );
 
       test("if an export has the same data as the previous export, and force=false, it will not be sent to the destination", async () => {
-        const profile = await helper.factories.profile();
+        const record = await helper.factories.record();
         const group = await helper.factories.group();
-        await group.addProfile(profile);
+        await group.addProfile(record);
         await destination.trackGroup(group);
 
         const oldExport = await Export.create({
           destinationId: destination.id,
-          profileId: profile.id,
+          recordId: record.id,
           startedAt: new Date(),
           completedAt: new Date(),
-          oldProfileProperties: {},
-          newProfileProperties: {},
+          oldRecordProperties: {},
+          newRecordProperties: {},
           oldGroups: [],
           newGroups: [],
           state: "complete",
         });
 
-        await destination.exportProfile(profile);
+        await destination.exportRecord(record);
         const newExport = await Export.findOne({
           where: {
             destinationId: destination.id,
@@ -590,31 +586,31 @@ describe("models/destination", () => {
         expect(foundTasks.length).toBe(1);
         await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
 
-        expect(exportArgs.exports.length).toBe(0); // plugin#exportProfile not called
+        expect(exportArgs.exports.length).toBe(0); // plugin#exportRecord not called
 
         await newExport.reload();
         expect(newExport.completedAt).toBeTruthy();
       });
 
       test("if an export has the same data as the previous export, and force=true, it will be sent to the destination", async () => {
-        const profile = await helper.factories.profile();
+        const record = await helper.factories.record();
         const group = await helper.factories.group();
-        await group.addProfile(profile);
+        await group.addProfile(record);
         await destination.trackGroup(group);
 
         const oldExport = await Export.create({
           destinationId: destination.id,
-          profileId: profile.id,
+          recordId: record.id,
           startedAt: new Date(),
           completedAt: new Date(),
-          oldProfileProperties: {},
-          newProfileProperties: {},
+          oldRecordProperties: {},
+          newRecordProperties: {},
           oldGroups: [],
           newGroups: [],
           state: "complete",
         });
 
-        await destination.exportProfile(profile, false, true);
+        await destination.exportRecord(record, false, true);
         const newExport = await Export.findOne({
           where: {
             destinationId: destination.id,
@@ -634,19 +630,19 @@ describe("models/destination", () => {
         expect(foundTasks.length).toBe(1);
         await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
 
-        expect(exportArgs.exports.length).toBe(1); // plugin#exportProfile was called
+        expect(exportArgs.exports.length).toBe(1); // plugin#exportRecord was called
 
         await newExport.reload();
         expect(newExport.completedAt).toBeTruthy();
       });
 
       test("if there is no previous export, it will be sent to the destination and all data will be new", async () => {
-        const profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({
+        const record = await helper.factories.record();
+        await record.addOrUpdateProperties({
           email: ["newEmail@example.com"],
         });
         const group = await helper.factories.group();
-        await group.addProfile(profile);
+        await group.addProfile(record);
         await destination.trackGroup(group);
 
         await destination.setMapping({
@@ -659,13 +655,13 @@ describe("models/destination", () => {
           destinationGroupMemberships
         );
 
-        await destination.exportProfile(profile);
+        await destination.exportRecord(record);
         const newExport = await Export.findOne({
           where: { destinationId: destination.id },
         });
 
-        expect(newExport.oldProfileProperties).toEqual({});
-        expect(newExport.newProfileProperties).toEqual({
+        expect(newExport.oldRecordProperties).toEqual({});
+        expect(newExport.newRecordProperties).toEqual({
           customer_email: "newemail@example.com",
         });
         expect(newExport.oldGroups).toEqual([]);
@@ -681,12 +677,12 @@ describe("models/destination", () => {
         expect(foundTasks.length).toBe(1);
         await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
 
-        expect(exportArgs.exports.length).toBe(1); // plugin#exportProfile was called
+        expect(exportArgs.exports.length).toBe(1); // plugin#exportRecord was called
 
-        await profile.destroy();
+        await record.destroy();
       });
 
-      test("exportProfile can handle parallelsims export:sendBatch and the export can be retried", async () => {
+      test("exportRecord can handle parallelsims export:sendBatch and the export can be retried", async () => {
         parallelismResponse = 0;
 
         const group = await helper.factories.group();
@@ -696,9 +692,9 @@ describe("models/destination", () => {
           destinationGroupMemberships
         );
 
-        const profile = await helper.factories.profile();
+        const record = await helper.factories.record();
 
-        await destination.exportProfile(profile);
+        await destination.exportRecord(record);
         const _export = await Export.findOne({
           where: { destinationId: destination.id },
         });
@@ -745,9 +741,9 @@ describe("models/destination", () => {
           destinationGroupMemberships
         );
 
-        const profile = await helper.factories.profile();
+        const record = await helper.factories.record();
 
-        await expect(destination.exportProfile(profile, true)).rejects.toThrow(
+        await expect(destination.exportRecord(record, true)).rejects.toThrow(
           /parallelism limit reached for test-template-app/
         );
 
@@ -763,14 +759,14 @@ describe("models/destination", () => {
           destinationGroupMemberships
         );
 
-        const profile = await helper.factories.profile();
+        const record = await helper.factories.record();
         const run = await helper.factories.run(group, { state: "running" });
 
         exportProfilesThrow = new Error("oh no!");
 
         let thrownError: Error;
         try {
-          await destination.exportProfile(profile, true);
+          await destination.exportRecord(record, true);
         } catch (error) {
           thrownError = error;
         }
@@ -792,11 +788,11 @@ describe("models/destination", () => {
           destinationGroupMemberships
         );
 
-        const profile = await helper.factories.profile();
+        const record = await helper.factories.record();
         const run = await helper.factories.run(group, { state: "running" });
 
         const error = new Error("oh no!");
-        error["profileId"] = profile.id;
+        error["recordId"] = record.id;
 
         exportProfilesResponse = {
           success: false,
@@ -806,13 +802,13 @@ describe("models/destination", () => {
 
         let combinedError: Error;
         try {
-          await destination.exportProfile(profile, true);
+          await destination.exportRecord(record, true);
         } catch (error) {
           combinedError = error;
         }
 
         expect(combinedError.message).toMatch(
-          /error exporting 1 profiles to destination test plugin destination/
+          /error exporting 1 records to destination test plugin destination/
         );
         expect(combinedError.message).toMatch(/oh no!/);
         expect(combinedError["errors"].map((e) => e.message)).toEqual([
@@ -836,14 +832,14 @@ describe("models/destination", () => {
           destinationGroupMemberships
         );
 
-        const profile = await helper.factories.profile();
-        await destination.exportProfile(profile);
+        const record = await helper.factories.record();
+        await destination.exportRecord(record);
         const _export = await Export.findOne({
           where: { destinationId: destination.id },
         });
 
         const profileError = new Error("oh no!");
-        profileError["profileId"] = profile.id;
+        profileError["recordId"] = record.id;
         exportProfilesResponse = {
           success: false,
           errors: [profileError],
@@ -893,14 +889,14 @@ describe("models/destination", () => {
           destinationGroupMemberships
         );
 
-        const profile = await helper.factories.profile();
-        await destination.exportProfile(profile);
+        const record = await helper.factories.record();
+        await destination.exportRecord(record);
         const _export = await Export.findOne({
           where: { destinationId: destination.id },
         });
 
         const profileError = new Error("oh no!");
-        profileError["profileId"] = profile.id;
+        profileError["recordId"] = record.id;
         profileError["errorLevel"] = "info";
         exportProfilesResponse = {
           success: false,
@@ -937,7 +933,7 @@ describe("models/destination", () => {
         };
       });
 
-      test("the export can be retried for some profiles", async () => {
+      test("the export can be retried for some records", async () => {
         const group = await helper.factories.group();
         const destinationGroupMemberships = {};
         destinationGroupMemberships[group.id] = group.name;
@@ -945,37 +941,37 @@ describe("models/destination", () => {
           destinationGroupMemberships
         );
 
-        const profile1 = await helper.factories.profile();
-        await destination.exportProfile(profile1);
+        const profile1 = await helper.factories.record();
+        await destination.exportRecord(profile1);
         const _export1 = await Export.findOne({
           where: {
             destinationId: destination.id,
-            profileId: profile1.id,
+            recordId: profile1.id,
           },
         });
 
-        const profile2 = await helper.factories.profile();
-        await destination.exportProfile(profile2);
+        const profile2 = await helper.factories.record();
+        await destination.exportRecord(profile2);
         const _export2 = await Export.findOne({
           where: {
             destinationId: destination.id,
-            profileId: profile2.id,
+            recordId: profile2.id,
           },
         });
 
-        const profile3 = await helper.factories.profile();
-        await destination.exportProfile(profile3);
+        const profile3 = await helper.factories.record();
+        await destination.exportRecord(profile3);
         const _export3 = await Export.findOne({
           where: {
             destinationId: destination.id,
-            profileId: profile3.id,
+            recordId: profile3.id,
           },
         });
 
         const profileError1 = new Error("oh no!");
-        profileError1["profileId"] = profile1.id;
+        profileError1["recordId"] = profile1.id;
         const profileError2 = new Error("inform me!");
-        profileError2["profileId"] = profile2.id;
+        profileError2["recordId"] = profile2.id;
         profileError2["errorLevel"] = "info";
         exportProfilesResponse = {
           success: false,

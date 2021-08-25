@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test grouparoo profiles within a mock environment groups match the snapshot 1`] = `
+exports[`test grouparoo records within a mock environment groups match the snapshot 1`] = `
 Object {
   "calculatedAt": null,
   "createdAt": Any<Number>,
@@ -31,7 +31,7 @@ Object {
 }
 `;
 
-exports[`test grouparoo profiles within a mock environment potential exports match the snapshot 1`] = `
+exports[`test grouparoo records within a mock environment potential exports match the snapshot 1`] = `
 Object {
   "completedAt": null,
   "createdAt": null,
@@ -46,7 +46,7 @@ Object {
   "newGroups": Array [
     "remote_group_name",
   ],
-  "newProfileProperties": ObjectContaining {
+  "newRecordProperties": ObjectContaining {
     "email": StringMatching /@example\\.com/,
     "isVIP": true,
     "ltv": 100,
@@ -55,13 +55,13 @@ Object {
   "oldGroups": Array [
     "remote_group_name",
   ],
-  "oldProfileProperties": ObjectContaining {
+  "oldRecordProperties": ObjectContaining {
     "email": StringMatching /@example\\.com/,
     "isVIP": true,
     "ltv": 100,
     "primary-id": Any<Number>,
   },
-  "profileId": StringMatching /\\^pro_/,
+  "recordId": StringMatching /\\^pro_/,
   "retryCount": 0,
   "sendAt": Any<Number>,
   "startedAt": Any<Number>,
@@ -70,7 +70,7 @@ Object {
 }
 `;
 
-exports[`test grouparoo profiles within a mock environment profile properties match the snapshot 1`] = `
+exports[`test grouparoo records within a mock environment record properties match the snapshot 1`] = `
 Object {
   "email": Array [
     "example@example.com",
@@ -104,7 +104,7 @@ Object {
 }
 `;
 
-exports[`test grouparoo profiles within a mock environment the profile can be snapshot-ed 1`] = `
+exports[`test grouparoo records within a mock environment the record can be snapshot-ed 1`] = `
 Object {
   "exports": Array [
     Object {
@@ -121,7 +121,7 @@ Object {
       "newGroups": Array [
         "remote_group_name",
       ],
-      "newProfileProperties": Object {
+      "newRecordProperties": Object {
         "email": "example@example.com",
         "isVIP": true,
         "ltv": 100,
@@ -130,13 +130,13 @@ Object {
       "oldGroups": Array [
         "remote_group_name",
       ],
-      "oldProfileProperties": Object {
+      "oldRecordProperties": Object {
         "email": "example@example.com",
         "isVIP": true,
         "ltv": 100,
         "primary-id": 100,
       },
-      "profileId": Any<String>,
+      "recordId": Any<String>,
       "retryCount": 0,
       "sendAt": Any<Number>,
       "startedAt": Any<Number>,

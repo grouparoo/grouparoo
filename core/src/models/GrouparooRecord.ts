@@ -43,13 +43,18 @@ const STATE_TRANSITIONS = [
 @Table({ tableName: "records", paranoid: false })
 export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   idPrefix() {
-    return "pro";
+    return "rec";
   }
 
   @AllowNull(false)
   @Default("pending")
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
+
+  @AllowNull(false)
+  @Default("x") // TODO
+  @Column(DataType.STRING)
+  modelId: string;
 
   @HasMany(() => RecordProperty)
   recordProperties: RecordProperty[];

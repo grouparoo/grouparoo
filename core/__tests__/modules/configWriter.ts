@@ -12,7 +12,7 @@ import { Property } from "../../src/models/Property";
 import { Schedule } from "../../src/models/Schedule";
 import { Setting } from "../../src/models/Setting";
 import { Source } from "../../src/models/Source";
-import { Profile } from "../../src/models/Profile";
+import { GrouparooRecord } from "../../src/models/GrouparooRecord";
 
 import { ConfigWriter } from "../../src/modules/configWriter";
 import { MappingHelper } from "../../src/modules/mappingHelper";
@@ -385,8 +385,8 @@ describe("modules/configWriter", () => {
       await source.setMapping({ id: "userId_03" });
       await source.update({ state: "ready" });
       const property: Property = await Property.findOne();
-      const profile: Profile = await helper.factories.profile();
-      const profile2: Profile = await helper.factories.profile();
+      const record: GrouparooRecord = await helper.factories.record();
+      const profile2: GrouparooRecord = await helper.factories.record();
       const setting: Setting = await changeClusterNameSetting();
 
       const configObjects = await ConfigWriter.getConfigObjects();
@@ -409,9 +409,9 @@ describe("modules/configWriter", () => {
           object: await setting.getConfigObject(),
         },
         {
-          filePath: `development/profiles.json`,
+          filePath: `development/records.json`,
           object: [
-            await profile.getConfigObject(),
+            await record.getConfigObject(),
             await profile2.getConfigObject(),
           ],
         },
@@ -635,7 +635,7 @@ describe("modules/configWriter", () => {
 
       expect(config.id).toBeTruthy();
 
-      const { name, recurring, recurringFrequency, confirmProfiles } = schedule;
+      const { name, recurring, recurringFrequency, confirmRecords } = schedule;
       const options = await schedule.$get("__options");
       expect(options.length).toEqual(1);
 
@@ -646,7 +646,7 @@ describe("modules/configWriter", () => {
         sourceId: source.getConfigId(),
         recurring,
         recurringFrequency,
-        confirmProfiles,
+        confirmRecords,
         options: Object.fromEntries(options.map((o) => [o.key, o.value])),
         filters: [
           {
@@ -795,7 +795,7 @@ describe("modules/configWriter", () => {
       expect(group.getConfigId()).toEqual(group.id);
     });
 
-    test("group rules properly set IDs for profile column properties", async () => {
+    test("group rules properly set IDs for record column properties", async () => {
       let group: Group = await helper.factories.group({ type: "calculated" });
       await group.setRules([
         { key: "grouparooId", match: "nobody", operation: { op: "eq" } },
@@ -956,23 +956,23 @@ describe("modules/configWriter", () => {
       expect(options.table).toEqual("my_table_456");
     });
 
-    // --- Profile ---
+    // --- GrouparooRecord ---
 
-    test("profiles can provide their config objects", async () => {
-      const profile: Profile = await helper.factories.profile();
+    test("records can provide their config objects", async () => {
+      const record: GrouparooRecord = await helper.factories.record();
       const properties = { [bootstrapPropertyId]: [12] };
       const bootstrapProperty = await Property.findByPk(bootstrapPropertyId);
 
-      await profile.addOrUpdateProperties({
+      await record.addOrUpdateProperties({
         ...properties,
         [property.id]: ["some_value"],
       });
 
-      const config = await profile.getConfigObject();
+      const config = await record.getConfigObject();
       expect(config.id).toBeTruthy();
       expect(config).toEqual({
-        class: "Profile",
-        id: profile.id,
+        class: "GrouparooRecord",
+        id: record.id,
         properties: {
           [bootstrapProperty.getConfigId()]: [12],
         },

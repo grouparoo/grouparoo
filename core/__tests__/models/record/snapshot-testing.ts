@@ -1,9 +1,14 @@
 import { helper, relaxedSnapshot } from "@grouparoo/spec-helper";
-import { Profile, Group, Destination, GrouparooPlugin } from "../../../src";
+import {
+  GrouparooRecord,
+  Group,
+  Destination,
+  GrouparooPlugin,
+} from "../../../src";
 import { api } from "actionhero";
-import { ProfileOps } from "../../../src/modules/ops/profile";
+import { RecordOps } from "../../../src/modules/ops/record";
 
-describe("test grouparoo profiles", () => {
+describe("test grouparoo records", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
@@ -14,7 +19,7 @@ describe("test grouparoo profiles", () => {
     const testPluginConnection = testPlugin.connections.find(
       (c) => c.name === "test-plugin-import"
     );
-    testPluginConnection.methods.profileProperty = async ({ property }) => {
+    testPluginConnection.methods.recordProperty = async ({ property }) => {
       const data = {
         userId: [100],
         isVIP: [true],
@@ -32,7 +37,7 @@ describe("test grouparoo profiles", () => {
   });
 
   describe("within a mock environment", () => {
-    let profile: Profile;
+    let record: GrouparooRecord;
     let group: Group;
     let destination: Destination;
 
@@ -66,24 +71,24 @@ describe("test grouparoo profiles", () => {
       await group.update({ state: "ready" });
       await destination.update({ state: "ready" });
 
-      // make the profile
-      const response = await ProfileOps.findOrCreateByUniqueProfileProperties(
+      // make the record
+      const response = await RecordOps.findOrCreateByUniqueRecordProperties(
         { userId: ["person1@example.com"] },
         true
       );
-      profile = response.profile;
+      record = response.record;
 
-      // import & export the profile
-      await profile.sync();
+      // import & export the record
+      await record.sync();
     });
 
-    test("profile properties match the snapshot", async () => {
-      const properties = await profile.simplifiedProperties();
+    test("record properties match the snapshot", async () => {
+      const properties = await record.simplifiedProperties();
       expect(properties).toMatchSnapshot();
     });
 
     test("groups match the snapshot", async () => {
-      const groups = await profile.$get("groups");
+      const groups = await record.$get("groups");
       let groupApiData = [];
       for (const g of groups) groupApiData.push(await g.apiData());
 
@@ -98,24 +103,24 @@ describe("test grouparoo profiles", () => {
     });
 
     test("potential exports match the snapshot", async () => {
-      const _exports = await profile.export(true, [], false);
+      const _exports = await record.export(true, [], false);
       const exportApiData = [];
       for (const e of _exports) exportApiData.push(await e.apiData(false));
       expect(exportApiData.length).toEqual(1);
 
       expect(exportApiData[0]).toMatchSnapshot({
-        profileId: expect.stringMatching(/^pro_/),
+        recordId: expect.stringMatching(/^pro_/),
         startedAt: expect.any(Number),
         sendAt: expect.any(Number),
         state: "pending",
         destinationName: "test destination",
-        newProfileProperties: expect.objectContaining({
+        newRecordProperties: expect.objectContaining({
           email: expect.stringMatching(/@example.com/),
           "primary-id": expect.any(Number),
           isVIP: true,
           ltv: 100,
         }),
-        oldProfileProperties: expect.objectContaining({
+        oldRecordProperties: expect.objectContaining({
           email: expect.stringMatching(/@example.com/),
           "primary-id": expect.any(Number),
           isVIP: true,
@@ -124,8 +129,8 @@ describe("test grouparoo profiles", () => {
       });
     });
 
-    test("the profile can be snapshot-ed", async () => {
-      const snapshot = await profile.snapshot();
+    test("the record can be snapshot-ed", async () => {
+      const snapshot = await record.snapshot();
       expect(snapshot).toMatchSnapshot(relaxedSnapshot(snapshot));
     });
   });

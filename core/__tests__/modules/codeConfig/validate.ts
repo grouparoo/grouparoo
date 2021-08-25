@@ -90,7 +90,7 @@ describe("modules/codeConfig", () => {
             source: ["users_table"],
             team: ["admin_team"],
             teammember: ["demo"],
-            profile: [],
+            record: [],
           });
 
           throw new Error("test-rollback");

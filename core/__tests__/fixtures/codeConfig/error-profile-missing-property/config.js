@@ -62,7 +62,7 @@ module.exports = async function getConfig() {
 
     {
       id: "profile_john",
-      class: "Profile",
+      class: "GrouparooRecord",
       properties: {
         unknown_property_id: ["32"],
       },

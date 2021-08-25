@@ -1,25 +1,25 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Profile, Group, Run, Import, ProfileProperty } from "../../src";
+import { GrouparooRecord, Group, Run, Import, RecordProperty } from "../../src";
 import { specHelper } from "actionhero";
 
 export namespace SharedGroupTests {
   let actionhero;
   let run: Run;
   let group: Group;
-  let mario: Profile;
-  let luigi: Profile;
-  let peach: Profile;
-  let toad: Profile;
+  let mario: GrouparooRecord;
+  let luigi: GrouparooRecord;
+  let peach: GrouparooRecord;
+  let toad: GrouparooRecord;
 
   export async function beforeAll() {
-    await Profile.truncate();
+    await GrouparooRecord.truncate();
     await helper.factories.properties();
     helper.disableTestPluginImport();
 
-    mario = await Profile.create();
-    luigi = await Profile.create();
-    peach = await Profile.create();
-    toad = await Profile.create();
+    mario = await GrouparooRecord.create();
+    luigi = await GrouparooRecord.create();
+    peach = await GrouparooRecord.create();
+    toad = await GrouparooRecord.create();
 
     await mario.addOrUpdateProperties({
       userId: [1],
@@ -88,9 +88,9 @@ export namespace SharedGroupTests {
 
     run = await helper.factories.run();
 
-    await ProfileProperty.update(
+    await RecordProperty.update(
       { state: "ready" },
-      { where: { profileId: [mario.id, luigi.id, peach.id, toad.id] } }
+      { where: { recordId: [mario.id, luigi.id, peach.id, toad.id] } }
     );
 
     await mario.update({ state: "ready" });

@@ -1,7 +1,7 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import {
-  Profile,
+  GrouparooRecord,
   Import,
   App,
   Group,
@@ -13,41 +13,41 @@ import {
 } from "../../../src";
 import { Op } from "sequelize";
 
-describe("tasks/profile:export", () => {
+describe("tasks/record:export", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
-  describe("profile:export", () => {
+  describe("record:export", () => {
     test("can be enqueued", async () => {
-      await task.enqueue("profile:export", { profileId: "abc123" });
-      const found = await specHelper.findEnqueuedTasks("profile:export");
+      await task.enqueue("record:export", { recordId: "abc123" });
+      const found = await specHelper.findEnqueuedTasks("record:export");
       expect(found.length).toEqual(1);
     });
 
-    test("does not throw if the profile cannot be found", async () => {
-      await specHelper.runTask("profile:export", {
-        profileId: "missing",
+    test("does not throw if the record cannot be found", async () => {
+      await specHelper.runTask("record:export", {
+        recordId: "missing",
       });
     });
 
-    test("enqueuing more than one tasks for the same profile will de-duplicate", async () => {
-      await task.enqueue("profile:export", { profileId: "abc123" });
-      await task.enqueue("profile:export", { profileId: "abc123" });
+    test("enqueuing more than one tasks for the same record will de-duplicate", async () => {
+      await task.enqueue("record:export", { recordId: "abc123" });
+      await task.enqueue("record:export", { recordId: "abc123" });
 
-      const found = await specHelper.findEnqueuedTasks("profile:export");
+      const found = await specHelper.findEnqueuedTasks("record:export");
       expect(found.length).toEqual(1);
     });
 
-    test("enqueuing more tasks for different profiles is OK", async () => {
-      await task.enqueue("profile:export", { profileId: "abc123" });
-      await task.enqueue("profile:export", { profileId: "cde456" });
+    test("enqueuing more tasks for different records is OK", async () => {
+      await task.enqueue("record:export", { recordId: "abc123" });
+      await task.enqueue("record:export", { recordId: "cde456" });
 
-      const found = await specHelper.findEnqueuedTasks("profile:export");
+      const found = await specHelper.findEnqueuedTasks("record:export");
       expect(found.length).toEqual(2);
     });
 
     describe("with multiple destinations and imports", () => {
-      let profile: Profile;
+      let record: GrouparooRecord;
       let group: Group;
       let app: App;
       let destination: Destination;
@@ -57,15 +57,15 @@ describe("tasks/profile:export", () => {
         await helper.factories.properties();
         helper.disableTestPluginImport();
 
-        profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({ email: ["mario@example.com"] });
+        record = await helper.factories.record();
+        await record.addOrUpdateProperties({ email: ["mario@example.com"] });
 
         group = await helper.factories.group({
           name: "test group",
           type: "manual",
           matchType: "all",
         });
-        await group.addProfile(profile);
+        await group.addProfile(record);
 
         plugin.registerPlugin({
           name: "test-plugin",
@@ -89,7 +89,7 @@ describe("tasks/profile:export", () => {
               syncModes: ["sync", "additive", "enrich"],
               options: [],
               methods: {
-                exportProfile: async () => {
+                exportRecord: async () => {
                   return { success: true };
                 },
                 exportArrayProperties: async () => [],
@@ -152,8 +152,8 @@ describe("tasks/profile:export", () => {
       });
 
       it("updates the run and imports", async () => {
-        let profiles = await Profile.findAll();
-        expect(profiles.length).toBe(1);
+        let records = await GrouparooRecord.findAll();
+        expect(records.length).toBe(1);
 
         const runA = await helper.factories.run(null, { state: "running" });
         const runB = await helper.factories.run(null, { state: "running" });
@@ -186,23 +186,23 @@ describe("tasks/profile:export", () => {
           attempts: 0,
         });
 
-        profiles = await Profile.findAll();
-        expect(profiles.length).toBe(1);
+        records = await GrouparooRecord.findAll();
+        expect(records.length).toBe(1);
 
         await ImportWorkflow();
 
-        await profiles[0].reload();
-        const properties = await profiles[0].simplifiedProperties();
+        await records[0].reload();
+        const properties = await records[0].simplifiedProperties();
         expect(properties.email).toEqual(["mario@example.com"]);
         expect(properties.firstName).toEqual(["Super"]);
         expect(properties.lastName).toEqual(["Mario"]);
 
         const foundExportTasks = await specHelper.findEnqueuedTasks(
-          "profile:export"
+          "record:export"
         );
         expect(foundExportTasks.length).toEqual(1);
 
-        await specHelper.runTask("profile:export", foundExportTasks[0].args[0]);
+        await specHelper.runTask("record:export", foundExportTasks[0].args[0]);
         await specHelper.runTask("export:enqueue", {});
         const foundSendTasks = await specHelper.findEnqueuedTasks(
           "export:send"
@@ -215,10 +215,10 @@ describe("tasks/profile:export", () => {
         const _export = _exports[0];
 
         expect(_export.destinationId).toBe(destination.id);
-        expect(_export.profileId).toBe(profile.id);
+        expect(_export.recordId).toBe(record.id);
         expect(_export.completedAt).toBeTruthy();
-        expect(_export.oldProfileProperties).toEqual({});
-        expect(_export.newProfileProperties).toEqual({
+        expect(_export.oldRecordProperties).toEqual({});
+        expect(_export.newRecordProperties).toEqual({
           email: "mario@example.com",
           firstName: "Super",
           lastName: "Mario",
@@ -241,7 +241,7 @@ describe("tasks/profile:export", () => {
         const run = await helper.factories.run(schedule);
         const _import = await helper.factories.import(run, {
           userId: 123,
-          email: "bowser@example.com", // create a new profile, not in the group
+          email: "bowser@example.com", // create a new record, not in the group
           firstName: "Bowser",
           lastName: "Koopa",
           _meta: {
@@ -260,17 +260,17 @@ describe("tasks/profile:export", () => {
           )
         );
 
-        const profiles = await Profile.findAll();
-        expect(profiles.length).toBe(2);
+        const records = await GrouparooRecord.findAll();
+        expect(records.length).toBe(2);
 
         await ImportWorkflow();
 
         const foundExportTasks = await specHelper.findEnqueuedTasks(
-          "profile:export"
+          "record:export"
         );
         expect(foundExportTasks.length).toEqual(1);
 
-        await specHelper.runTask("profile:export", foundExportTasks[0].args[0]);
+        await specHelper.runTask("record:export", foundExportTasks[0].args[0]);
         await specHelper.runTask("export:enqueue", {});
         const foundSendTasks = await specHelper.findEnqueuedTasks(
           "export:send"
@@ -283,10 +283,10 @@ describe("tasks/profile:export", () => {
         const _export = _exports[0];
 
         expect(_export.destinationId).toBe(destination.id);
-        expect(_export.profileId).not.toBe(profile.id);
+        expect(_export.recordId).not.toBe(record.id);
         expect(_export.completedAt).toBeTruthy();
-        expect(_export.oldProfileProperties).toEqual({});
-        expect(_export.newProfileProperties).toEqual({
+        expect(_export.oldRecordProperties).toEqual({});
+        expect(_export.newRecordProperties).toEqual({
           email: "bowser@example.com",
           firstName: "Bowser",
           lastName: "Koopa",
@@ -295,7 +295,7 @@ describe("tasks/profile:export", () => {
         expect(_export.newGroups).toEqual([]);
       });
 
-      describe("with exportProfile", () => {
+      describe("with exportRecord", () => {
         let counter = 0;
 
         beforeEach(() => {
@@ -303,19 +303,21 @@ describe("tasks/profile:export", () => {
         });
 
         beforeAll(async () => {
-          await Profile.destroy({ where: { id: { [Op.ne]: profile.id } } });
+          await GrouparooRecord.destroy({
+            where: { id: { [Op.ne]: record.id } },
+          });
 
-          Destination.prototype.exportProfile = jest.fn(() => {
+          Destination.prototype.exportRecord = jest.fn(() => {
             counter++;
             throw new Error("oh no");
           });
         });
 
-        it("will not profiles not yet in the ready state", async () => {
-          await profile.update({ state: "pending" });
+        it("will not records not yet in the ready state", async () => {
+          await record.update({ state: "pending" });
 
-          await specHelper.runTask("profile:export", {
-            profileId: profile.id,
+          await specHelper.runTask("record:export", {
+            recordId: record.id,
           }); // does not throw because it did not run
 
           expect(counter).toBe(0);
@@ -326,7 +328,7 @@ describe("tasks/profile:export", () => {
           const _import = await Import.create({
             creatorType: "run",
             creatorId: run.id,
-            profileId: profile.id,
+            recordId: record.id,
             profileUpdatedAt: new Date(),
             groupsUpdatedAt: new Date(),
             data: {},
@@ -334,14 +336,14 @@ describe("tasks/profile:export", () => {
             newGroupIds: [group.id],
           });
 
-          await profile.import();
-          await profile.updateGroupMembership();
+          await record.import();
+          await record.updateGroupMembership();
 
           expect(_import.errorMessage).toBeFalsy();
 
           // I don't throw, but append the error to the Export
-          await specHelper.runTask("profile:export", {
-            profileId: profile.id,
+          await specHelper.runTask("record:export", {
+            recordId: record.id,
           });
 
           expect(counter).toBe(1);
@@ -350,7 +352,7 @@ describe("tasks/profile:export", () => {
           expect(_import.errorMessage).toMatch(/oh no/);
           const errorMetadata = JSON.parse(_import.errorMetadata);
           expect(errorMetadata.message).toMatch(/oh no/);
-          expect(errorMetadata.step).toBe("profile:export");
+          expect(errorMetadata.step).toBe("record:export");
           expect(errorMetadata.stack).toMatch(/ProfileExport/);
 
           await _import.destroy();

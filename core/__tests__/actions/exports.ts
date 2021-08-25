@@ -1,6 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Export } from "../../src";
+import {
+  Destination,
+  Export,
+  ExportProcessor,
+  GrouparooRecord,
+} from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   ExportsList,
@@ -23,13 +28,13 @@ describe("actions/exports", () => {
   describe("reader signed in", () => {
     let connection;
     let csrfToken;
-    let destination;
-    let profile;
-    let exportProcessor;
+    let destination: Destination;
+    let record: GrouparooRecord;
+    let exportProcessor: ExportProcessor;
     let id;
 
     beforeAll(async () => {
-      profile = await helper.factories.profile();
+      record = await helper.factories.record();
       destination = await helper.factories.destination();
       exportProcessor = await helper.factories.exportProcessor(destination);
 
@@ -37,9 +42,9 @@ describe("actions/exports", () => {
 
       const firstExport = await Export.create({
         destinationId: destination.id,
-        profileId: profile.id,
-        oldProfileProperties: {},
-        newProfileProperties: {},
+        recordId: record.id,
+        oldRecordProperties: {},
+        newRecordProperties: {},
         oldGroups: [],
         newGroups: [],
         state: "pending",
@@ -48,10 +53,10 @@ describe("actions/exports", () => {
 
       await Export.create({
         destinationId: destination.id,
-        profileId: "other-profile",
+        recordId: "other-record",
         startedAt: new Date(),
-        oldProfileProperties: {},
-        newProfileProperties: {},
+        oldRecordProperties: {},
+        newRecordProperties: {},
         oldGroups: [],
         newGroups: [],
         state: "pending",
@@ -60,10 +65,10 @@ describe("actions/exports", () => {
       await Export.create({
         destinationId: destination.id,
         exportProcessorId: exportProcessor.id,
-        profileId: "another-profile",
+        recordId: "another-record",
         startedAt: new Date(),
-        oldProfileProperties: {},
-        newProfileProperties: {},
+        oldRecordProperties: {},
+        newRecordProperties: {},
         oldGroups: [],
         newGroups: [],
         state: "processing",
@@ -71,11 +76,11 @@ describe("actions/exports", () => {
 
       await Export.create({
         destinationId: otherDestination.id,
-        profileId: profile.id,
+        recordId: record.id,
         startedAt: new Date(),
         completedAt: new Date(),
-        oldProfileProperties: {},
-        newProfileProperties: {},
+        oldRecordProperties: {},
+        newRecordProperties: {},
         oldGroups: [],
         newGroups: [],
         state: "complete",
@@ -83,10 +88,10 @@ describe("actions/exports", () => {
 
       await Export.create({
         destinationId: otherDestination.id,
-        profileId: profile.id,
+        recordId: record.id,
         startedAt: new Date(),
-        oldProfileProperties: {},
-        newProfileProperties: {},
+        oldRecordProperties: {},
+        newRecordProperties: {},
         oldGroups: [],
         newGroups: [],
         errorMessage: "broken",
@@ -127,8 +132,8 @@ describe("actions/exports", () => {
       expect(_export.destination.id).toBe(destination.id);
     });
 
-    test("a reader can ask for exports about a profile", async () => {
-      connection.params = { csrfToken, profileId: profile.id };
+    test("a reader can ask for exports about a record", async () => {
+      connection.params = { csrfToken, recordId: record.id };
       const { error, exports, total } = await specHelper.runAction<ExportsList>(
         "exports:list",
         connection
@@ -136,8 +141,8 @@ describe("actions/exports", () => {
 
       expect(error).toBeUndefined();
       expect(exports.length).toBe(3);
-      expect(exports[0].profileId).toBe(profile.id);
-      expect(exports[1].profileId).toBe(profile.id);
+      expect(exports[0].recordId).toBe(record.id);
+      expect(exports[1].recordId).toBe(record.id);
       expect(total).toBe(3);
     });
 
@@ -186,8 +191,8 @@ describe("actions/exports", () => {
       });
     });
 
-    test("a reader can get export totals for a profile", async () => {
-      connection.params = { csrfToken, profileId: profile.id };
+    test("a reader can get export totals for a record", async () => {
+      connection.params = { csrfToken, recordId: record.id };
       const { error, totals } = await specHelper.runAction<ExportsTotals>(
         "exports:totals",
         connection

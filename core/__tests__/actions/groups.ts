@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Group, Profile, Team, TeamMember } from "../../src";
+import { Group, GrouparooRecord, Team, TeamMember } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   GroupCountComponentMembers,
@@ -211,8 +211,8 @@ describe("actions/groups", () => {
 
     describe("calculated group", () => {
       let group: Group;
-      let mario: Profile;
-      let luigi: Profile;
+      let mario: GrouparooRecord;
+      let luigi: GrouparooRecord;
 
       beforeAll(async () => {
         await helper.factories.properties();
@@ -231,10 +231,10 @@ describe("actions/groups", () => {
       });
 
       beforeAll(async () => {
-        await Profile.truncate();
+        await GrouparooRecord.truncate();
 
-        mario = await Profile.create();
-        luigi = await Profile.create();
+        mario = await GrouparooRecord.create();
+        luigi = await GrouparooRecord.create();
 
         await mario.addOrUpdateProperties({
           firstName: ["Mario"],

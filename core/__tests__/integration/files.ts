@@ -11,7 +11,7 @@ describe("integration/files", () => {
 
   test("a file can be set", async () => {
     const source = makeCopy(
-      path.join(__dirname, "..", "data", "profiles-10.csv")
+      path.join(__dirname, "..", "data", "records-10.csv")
     );
 
     const type = "csv";

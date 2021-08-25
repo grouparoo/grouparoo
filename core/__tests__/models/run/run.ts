@@ -10,7 +10,7 @@ import {
   Group,
   Team,
   TeamMember,
-  Profile,
+  GrouparooRecord,
   GroupMember,
   Log,
 } from "../../../src";
@@ -46,9 +46,9 @@ describe("models/run", () => {
     let team: Team;
     let teamMember: TeamMember;
     let schedule: Schedule;
-    let profileA: Profile;
-    let profileB: Profile;
-    let profileC: Profile;
+    let profileA: GrouparooRecord;
+    let profileB: GrouparooRecord;
+    let profileC: GrouparooRecord;
 
     beforeAll(async () => {
       source = await helper.factories.source();
@@ -68,9 +68,9 @@ describe("models/run", () => {
         ])
       );
 
-      profileA = await helper.factories.profile();
-      profileB = await helper.factories.profile();
-      profileC = await helper.factories.profile();
+      profileA = await helper.factories.record();
+      profileB = await helper.factories.record();
+      profileC = await helper.factories.record();
     });
 
     describe("creatorName", () => {
@@ -246,9 +246,9 @@ describe("models/run", () => {
         });
 
         // 3 members left (manually added because group is deleted)
-        await GroupMember.create({ groupId: group.id, profileId: profileA.id });
-        await GroupMember.create({ groupId: group.id, profileId: profileB.id });
-        await GroupMember.create({ groupId: group.id, profileId: profileC.id });
+        await GroupMember.create({ groupId: group.id, recordId: profileA.id });
+        await GroupMember.create({ groupId: group.id, recordId: profileB.id });
+        await GroupMember.create({ groupId: group.id, recordId: profileC.id });
 
         await run.determinePercentComplete();
         expect(run.percentComplete).toBe(70);
@@ -287,12 +287,12 @@ describe("models/run", () => {
 
   describe("determineState", () => {
     let run: Run;
-    let profile: Profile;
+    let record: GrouparooRecord;
 
     beforeEach(async () => {
       Import.truncate();
 
-      profile = await helper.factories.profile();
+      record = await helper.factories.record();
 
       run = await Run.create({
         creatorId: schedule.id,
@@ -303,7 +303,7 @@ describe("models/run", () => {
 
     afterEach(async () => {
       await run.destroy();
-      await profile.destroy();
+      await record.destroy();
     });
 
     it("will keep the state running if there are incomplete imports", async () => {
@@ -455,7 +455,7 @@ describe("models/run", () => {
       expect(foundPreviousRun.id).toBe(previousRun.id);
     });
 
-    test("will not find a previous run which found 0 profiles", async () => {
+    test("will not find a previous run which found 0 records", async () => {
       previousRun = await Run.create({
         creatorId: schedule.id,
         creatorType: "schedule",
@@ -534,7 +534,7 @@ describe("models/run", () => {
       await utils.sleep(100);
 
       await Import.create({
-        profileId: "a",
+        recordId: "a",
         creatorType: "run",
         creatorId: run.id,
         profileAssociatedAt: new Date(),
@@ -547,7 +547,7 @@ describe("models/run", () => {
       await utils.sleep(100);
 
       await Import.create({
-        profileId: "a",
+        recordId: "a",
         creatorType: "run",
         creatorId: run.id,
         profileAssociatedAt: new Date(),
@@ -559,7 +559,7 @@ describe("models/run", () => {
       await utils.sleep(100);
 
       await Import.create({
-        profileId: "b",
+        recordId: "b",
         creatorType: "run",
         creatorId: run.id,
         profileAssociatedAt: new Date(),
@@ -651,7 +651,7 @@ describe("models/run", () => {
     });
 
     test("creating a run will throw and become complete if there is an error with a property", async () => {
-      await Profile.truncate();
+      await GrouparooRecord.truncate();
 
       const app = await App.create({
         name: "bad app",
@@ -676,12 +676,12 @@ describe("models/run", () => {
       );
       await property.update({ state: "ready" });
 
-      // we need at least one profile to test against
-      const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ userId: [1000] });
+      // we need at least one record to test against
+      const record = await helper.factories.record();
+      await record.addOrUpdateProperties({ userId: [1000] });
 
-      // importing the profile should raise...
-      await expect(profile.import()).rejects.toThrow(/something-broken/);
+      // importing the record should raise...
+      await expect(record.import()).rejects.toThrow(/something-broken/);
 
       // ... which means that no run should be able to be created
       await expect(

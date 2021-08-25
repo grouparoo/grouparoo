@@ -1,6 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Profile, ProfileProperty, Property, Source } from "./../../../src";
+import {
+  GrouparooRecord,
+  RecordProperty,
+  Property,
+  Source,
+} from "./../../../src";
 
 describe("tasks/property:updateProfileProperties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -40,10 +45,10 @@ describe("tasks/property:updateProfileProperties", () => {
     await property.setOptions({ column: "col" });
     await property.update({ state: "ready" });
 
-    const profile: Profile = await helper.factories.profile();
-    await profile.buildNullProperties();
-    const profileProperty = await ProfileProperty.findOne({
-      where: { profileId: profile.id, propertyId: property.id },
+    const record: GrouparooRecord = await helper.factories.record();
+    await record.buildNullProperties();
+    const profileProperty = await RecordProperty.findOne({
+      where: { recordId: record.id, propertyId: property.id },
     });
     expect(profileProperty.unique).toBe(false);
 

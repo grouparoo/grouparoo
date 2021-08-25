@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { groupExportToCSV } from "./../../src/modules/groupExport";
-import { Profile, Group, Run } from "./../../src";
+import { GrouparooRecord, Group, Run } from "./../../src";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
 
@@ -14,17 +14,17 @@ describe("modules/groupExport", () => {
   describe("groupExport", () => {
     let filename: string;
     let runId: string;
-    let mario: Profile;
-    let luigi: Profile;
-    let peach: Profile;
-    let toad: Profile;
+    let mario: GrouparooRecord;
+    let luigi: GrouparooRecord;
+    let peach: GrouparooRecord;
+    let toad: GrouparooRecord;
     let group: Group;
 
     beforeAll(async () => {
-      mario = await Profile.create();
-      luigi = await Profile.create();
-      peach = await Profile.create();
-      toad = await Profile.create();
+      mario = await GrouparooRecord.create();
+      luigi = await GrouparooRecord.create();
+      peach = await GrouparooRecord.create();
+      toad = await GrouparooRecord.create();
       group = await helper.factories.group();
 
       await mario.addOrUpdateProperties({
@@ -69,10 +69,10 @@ describe("modules/groupExport", () => {
     }, 10 * 1000);
 
     test(
-      "a group's profiles can be exported and create a run",
+      "a group's records can be exported and create a run",
       async () => {
-        const profiles = [mario, luigi, toad, peach];
-        for (const p of profiles) await group.addProfile(p);
+        const records = [mario, luigi, toad, peach];
+        for (const p of records) await group.addProfile(p);
 
         const response = await groupExportToCSV(group, 1);
         filename = response.filename;
@@ -87,7 +87,7 @@ describe("modules/groupExport", () => {
       expect(run.completedAt).toBeTruthy();
     });
 
-    test("the exported csv will contain profile data", async () => {
+    test("the exported csv will contain record data", async () => {
       const rows = parse(fs.readFileSync(filename), { columns: true });
       let lastLoginAt: Date;
 

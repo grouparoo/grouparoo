@@ -3,15 +3,15 @@ import { Op } from "sequelize";
 import { api, task, specHelper } from "actionhero";
 import {
   Property,
-  ProfileProperty,
-  Profile,
+  RecordProperty,
+  GrouparooRecord,
   Destination,
   Group,
   Export,
   Import,
 } from "../../../src";
 
-describe("tasks/profile:destroy", () => {
+describe("tasks/record:destroy", () => {
   helper.grouparooTestServer({
     truncate: true,
     enableTestPlugin: true,
@@ -28,43 +28,43 @@ describe("tasks/profile:destroy", () => {
   });
 
   test("can be enqueued", async () => {
-    await task.enqueue("profile:destroy", { profileId: "john-doe" });
-    const found = await specHelper.findEnqueuedTasks("profile:destroy");
+    await task.enqueue("record:destroy", { recordId: "john-doe" });
+    const found = await specHelper.findEnqueuedTasks("record:destroy");
     expect(found.length).toEqual(1);
-    expect(found[0].args[0].profileId).toBe("john-doe");
+    expect(found[0].args[0].recordId).toBe("john-doe");
   });
 
-  test("does not delete profiles that aren't ready", async () => {
-    const profile: Profile = await helper.factories.profile();
-    await profile.update({ state: "pending" });
+  test("does not delete records that aren't ready", async () => {
+    const record: GrouparooRecord = await helper.factories.record();
+    await record.update({ state: "pending" });
 
-    await specHelper.runTask("profile:destroy", { profileId: profile.id });
-    await profile.reload();
-    expect(profile.state).toBe("pending");
+    await specHelper.runTask("record:destroy", { recordId: record.id });
+    await record.reload();
+    expect(record.state).toBe("pending");
 
     // make it ready
-    await ProfileProperty.update(
+    await RecordProperty.update(
       { state: "ready" },
-      { where: { profileId: profile.id } }
+      { where: { recordId: record.id } }
     );
-    await profile.update({ state: "ready" });
+    await record.update({ state: "ready" });
 
-    await specHelper.runTask("profile:destroy", { profileId: profile.id });
-    await expect(profile.reload()).rejects.toThrow(/does not exist anymore/);
+    await specHelper.runTask("record:destroy", { recordId: record.id });
+    await expect(record.reload()).rejects.toThrow(/does not exist anymore/);
   });
 
-  test("exports profiles and removes them from groups before destroying", async () => {
-    const profile: Profile = await helper.factories.profile();
+  test("exports records and removes them from groups before destroying", async () => {
+    const record: GrouparooRecord = await helper.factories.record();
 
     const destination: Destination = await helper.factories.destination();
     const group: Group = await helper.factories.group();
 
-    await group.addProfile(profile);
-    await ProfileProperty.update(
+    await group.addProfile(record);
+    await RecordProperty.update(
       { state: "ready" },
-      { where: { profileId: profile.id } }
+      { where: { recordId: record.id } }
     );
-    await profile.update({ state: "ready" });
+    await record.update({ state: "ready" });
 
     await destination.trackGroup(group);
     const destinationGroupMemberships = {};
@@ -72,9 +72,9 @@ describe("tasks/profile:destroy", () => {
     await destination.setDestinationGroupMemberships(
       destinationGroupMemberships
     );
-    await destination.exportProfile(profile);
+    await destination.exportRecord(record);
 
-    let profileGroups = await profile.$get("groups");
+    let profileGroups = await record.$get("groups");
     expect(profileGroups.length).toBe(1);
 
     await specHelper.runTask("export:enqueue", {});
@@ -86,35 +86,35 @@ describe("tasks/profile:destroy", () => {
     await api.resque.queue.connection.redis.flushdb();
 
     let exportCount = await Export.count({
-      where: { profileId: profile.id, state: { [Op.ne]: "complete" } },
+      where: { recordId: record.id, state: { [Op.ne]: "complete" } },
     });
     expect(exportCount).toBe(0);
-    await profile.reload();
-    expect(profile.state).toBe("ready");
+    await record.reload();
+    expect(record.state).toBe("ready");
 
     // try to delete
-    await specHelper.runTask("profile:destroy", { profileId: profile.id });
+    await specHelper.runTask("record:destroy", { recordId: record.id });
 
-    // profile is still there, but is now being exported
-    await profile.reload();
-    expect(profile.state).toBe("ready");
+    // record is still there, but is now being exported
+    await record.reload();
+    expect(record.state).toBe("ready");
 
-    profileGroups = await profile.$get("groups");
+    profileGroups = await record.$get("groups");
     expect(profileGroups.length).toBe(0); // removed from groups
 
     exportCount = await Export.count({
-      where: { profileId: profile.id, state: { [Op.ne]: "complete" } },
+      where: { recordId: record.id, state: { [Op.ne]: "complete" } },
     });
     expect(exportCount).toBe(1);
 
     // try to delete
-    await specHelper.runTask("profile:destroy", { profileId: profile.id });
+    await specHelper.runTask("record:destroy", { recordId: record.id });
 
     // does nothing, there's an export being processed
-    await profile.reload();
-    expect(profile.state).toBe("ready");
+    await record.reload();
+    expect(record.state).toBe("ready");
     exportCount = await Export.count({
-      where: { profileId: profile.id, state: { [Op.ne]: "complete" } },
+      where: { recordId: record.id, state: { [Op.ne]: "complete" } },
     });
     expect(exportCount).toBe(1); // still only 1
 
@@ -132,40 +132,40 @@ describe("tasks/profile:destroy", () => {
     expect(finalExport.newGroups.length).toBe(0);
 
     // now we can destroy
-    await specHelper.runTask("profile:destroy", { profileId: profile.id });
-    await expect(profile.reload()).rejects.toThrow(/does not exist anymore/);
+    await specHelper.runTask("record:destroy", { recordId: record.id });
+    await expect(record.reload()).rejects.toThrow(/does not exist anymore/);
   });
 
   test("all related models are cleaned up", async () => {
-    const profile: Profile = await helper.factories.profile();
+    const record: GrouparooRecord = await helper.factories.record();
     const _import: Import = await helper.factories.import(
       undefined,
       undefined,
-      profile.id
+      record.id
     );
-    const _export: Export = await helper.factories.export(profile);
+    const _export: Export = await helper.factories.export(record);
     await _export.update({ state: "complete" });
 
-    await profile.addOrUpdateProperties({
+    await record.addOrUpdateProperties({
       userId: [null],
       isVIP: [true],
       ltv: [213],
     });
 
-    await ProfileProperty.update(
+    await RecordProperty.update(
       { state: "ready" },
-      { where: { profileId: profile.id } }
+      { where: { recordId: record.id } }
     );
-    await profile.update({ state: "ready" });
+    await record.update({ state: "ready" });
 
-    await specHelper.runTask("profile:destroy", { profileId: profile.id });
+    await specHelper.runTask("record:destroy", { recordId: record.id });
 
-    const properties = await ProfileProperty.findAll({
-      where: { profileId: profile.id },
+    const properties = await RecordProperty.findAll({
+      where: { recordId: record.id },
     });
     expect(properties.length).toBe(0);
 
-    await expect(profile.reload()).rejects.toThrow(/does not exist anymore/);
+    await expect(record.reload()).rejects.toThrow(/does not exist anymore/);
     await expect(_import.reload()).rejects.toThrow(/does not exist anymore/);
     await expect(_export.reload()).rejects.toThrow(/does not exist anymore/);
   });

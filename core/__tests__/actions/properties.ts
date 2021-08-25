@@ -12,7 +12,7 @@ import {
   PropertyGroups,
   PropertyMakeIdentifying,
   PropertyPluginOptions,
-  PropertyProfilePreview,
+  PropertyRecordPreview,
   PropertyTest,
   PropertyView,
 } from "../../src/actions/properties";
@@ -90,7 +90,7 @@ describe("actions/properties", () => {
       );
 
       expect(error.message).toMatch(
-        /unique profile properties cannot be arrays/
+        /unique record properties cannot be arrays/
       );
     });
 
@@ -259,8 +259,8 @@ describe("actions/properties", () => {
     });
 
     test("an administrator can list all the properties with examples", async () => {
-      const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ email: ["person@example.com"] });
+      const record = await helper.factories.record();
+      await record.addOrUpdateProperties({ email: ["person@example.com"] });
 
       connection.params = {
         csrfToken,
@@ -295,7 +295,7 @@ describe("actions/properties", () => {
       );
       expect(secondRequest.examples).toBeUndefined();
 
-      await profile.destroy();
+      await record.destroy();
     });
 
     test("an administrator can list rules in a certain state", async () => {
@@ -364,8 +364,8 @@ describe("actions/properties", () => {
       expect(property.unique).toBe(true);
     });
 
-    test("an administrator can see a profile preview of a property", async () => {
-      const _profile = await helper.factories.profile();
+    test("an administrator can see a record preview of a property", async () => {
+      const _profile = await helper.factories.record();
       await _profile.addOrUpdateProperties({ userId: [1001] });
 
       const originalProperties = _profile.getProperties();
@@ -375,14 +375,14 @@ describe("actions/properties", () => {
         csrfToken,
         id,
       };
-      const { error, profile } =
-        await specHelper.runAction<PropertyProfilePreview>(
-          "property:profilePreview",
+      const { error, record } =
+        await specHelper.runAction<PropertyRecordPreview>(
+          "property:recordPreview",
           connection
         );
       expect(error).toBeUndefined();
-      expect(profile.id).toBe(_profile.id);
-      expect(profile.properties["email"].values).toBeTruthy();
+      expect(record.id).toBe(_profile.id);
+      expect(record.properties["email"].values).toBeTruthy();
 
       await _profile.destroy();
     });
@@ -458,7 +458,7 @@ describe("actions/properties", () => {
 
                   return response;
                 },
-                profiles: async () => {
+                records: async () => {
                   return {
                     importsCount: 0,
                     sourceOffset: 0,

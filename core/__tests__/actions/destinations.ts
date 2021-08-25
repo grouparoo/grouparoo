@@ -3,7 +3,7 @@ import { specHelper, api } from "actionhero";
 import {
   Destination,
   Group,
-  Profile,
+  GrouparooRecord,
   Source,
   Run,
   App,
@@ -18,7 +18,7 @@ import {
   DestinationExport,
   DestinationExportArrayProperties,
   DestinationMappingOptions,
-  DestinationProfilePreview,
+  DestinationRecordPreview,
   DestinationsList,
   DestinationView,
 } from "../../src/actions/destinations";
@@ -279,7 +279,7 @@ describe("actions/destinations", () => {
       expect(exportArrayProperties).toEqual([]);
     });
 
-    test("an administrator cannot set a mapping for an array profile property if it is not allowed by the exportArrayProperties", async () => {
+    test("an administrator cannot set a mapping for an array record property if it is not allowed by the exportArrayProperties", async () => {
       connection.params = {
         csrfToken,
         id,
@@ -290,7 +290,7 @@ describe("actions/destinations", () => {
         connection
       );
       expect(error.message).toMatch(
-        /purchases is an array profile property that .* cannot support/
+        /purchases is an array record property that .* cannot support/
       );
     });
 
@@ -311,16 +311,16 @@ describe("actions/destinations", () => {
 
     describe("with group", () => {
       let group: Group;
-      let profile: Profile;
+      let record: GrouparooRecord;
       beforeAll(async () => {
-        profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({
+        record = await helper.factories.record();
+        await record.addOrUpdateProperties({
           userId: [1],
           email: ["yoshi@example.com"],
         });
 
         group = await helper.factories.group();
-        await group.addProfile(profile);
+        await group.addRecord(record);
       });
 
       test("an administrator can add a group to be tracked", async () => {
@@ -367,61 +367,61 @@ describe("actions/destinations", () => {
         ]);
       });
 
-      test("an administrator can get a preview of a profile to be exported to a destination, existing mapping & destinationGroupMemberships + no profile", async () => {
+      test("an administrator can get a preview of a record to be exported to a destination, existing mapping & destinationGroupMemberships + no record", async () => {
         connection.params = {
           csrfToken,
           id,
           groupId: group.id,
         };
-        const { error, profile: _profile } =
-          await specHelper.runAction<DestinationProfilePreview>(
-            "destination:profilePreview",
+        const { error, record: _record } =
+          await specHelper.runAction<DestinationRecordPreview>(
+            "destination:recordPreview",
             connection
           );
         expect(error).toBeUndefined();
-        expect(_profile.properties["primary-id"].values).toEqual([1]);
-        expect(_profile.properties["something-else"].values).toEqual([
+        expect(_record.properties["primary-id"].values).toEqual([1]);
+        expect(_record.properties["something-else"].values).toEqual([
           "yoshi@example.com",
         ]);
-        expect(_profile.groupNames).toEqual(["remote-group-tag"]);
+        expect(_record.groupNames).toEqual(["remote-group-tag"]);
       });
 
-      test("an administrator can get a preview of a profile to be exported to a destination, existing mapping & destinationGroupMemberships + profile", async () => {
+      test("an administrator can get a preview of a record to be exported to a destination, existing mapping & destinationGroupMemberships + record", async () => {
         connection.params = {
           csrfToken,
           id,
-          profileId: profile.id,
+          recordId: record.id,
         };
-        const { error, profile: _profile } =
-          await specHelper.runAction<DestinationProfilePreview>(
-            "destination:profilePreview",
+        const { error, record: _record } =
+          await specHelper.runAction<DestinationRecordPreview>(
+            "destination:recordPreview",
             connection
           );
         expect(error).toBeUndefined();
-        expect(_profile.properties["primary-id"].values).toEqual([1]);
-        expect(_profile.properties["something-else"].values).toEqual([
+        expect(_record.properties["primary-id"].values).toEqual([1]);
+        expect(_record.properties["something-else"].values).toEqual([
           "yoshi@example.com",
         ]);
-        expect(_profile.groupNames).toEqual(["remote-group-tag"]);
+        expect(_record.groupNames).toEqual(["remote-group-tag"]);
       });
 
-      test("an administrator can get a preview of a profile to be exported to a destination, updated mapping & destinationGroupMemberships", async () => {
+      test("an administrator can get a preview of a record to be exported to a destination, updated mapping & destinationGroupMemberships", async () => {
         const destinationGroupMemberships = {};
         destinationGroupMemberships[group.id] = "another-group-tag";
 
         connection.params = {
           csrfToken,
           id,
-          profileId: profile.id,
+          recordId: record.id,
           destinationGroupMemberships,
           mapping: {
             "primary-id": "userId",
             email: "email",
           },
         };
-        const { error, profile: _profile } =
-          await specHelper.runAction<DestinationProfilePreview>(
-            "destination:profilePreview",
+        const { error, record: _profile } =
+          await specHelper.runAction<DestinationRecordPreview>(
+            "destination:recordPreview",
             connection
           );
         expect(error).toBeUndefined();
@@ -432,11 +432,11 @@ describe("actions/destinations", () => {
         expect(_profile.groupNames).toEqual(["another-group-tag"]);
       });
 
-      test("an administrator can get a preview of a profile to be exported to a destination, with an un-set optional property", async () => {
+      test("an administrator can get a preview of a record to be exported to a destination, with an un-set optional property", async () => {
         connection.params = {
           csrfToken,
           id,
-          profileId: profile.id,
+          recordId: record.id,
           mapping: {
             "primary-id": "userId",
             "something-new-null": null,
@@ -444,9 +444,9 @@ describe("actions/destinations", () => {
             "something-new-string": "",
           },
         };
-        const { error, profile: _profile } =
-          await specHelper.runAction<DestinationProfilePreview>(
-            "destination:profilePreview",
+        const { error, record: _profile } =
+          await specHelper.runAction<DestinationRecordPreview>(
+            "destination:recordPreview",
             connection
           );
         expect(error).toBeUndefined();
@@ -456,7 +456,7 @@ describe("actions/destinations", () => {
         expect(_profile.properties["something-new-string"]).toBeFalsy();
       });
 
-      test("destination:profilePreview will not fail if a new profile property has just been created or there are missing properties", async () => {
+      test("destination:recordPreview will not fail if a new record property has just been created or there are missing properties", async () => {
         const source = await Source.findOne({ where: { state: "ready" } });
         const colorProperty = await Property.create({
           key: "color",
@@ -475,9 +475,9 @@ describe("actions/destinations", () => {
             color: "color",
           },
         };
-        const { error, profile: _profile } =
-          await specHelper.runAction<DestinationProfilePreview>(
-            "destination:profilePreview",
+        const { error, record: _profile } =
+          await specHelper.runAction<DestinationRecordPreview>(
+            "destination:recordPreview",
             connection
           );
         expect(error).toBeUndefined();

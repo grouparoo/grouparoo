@@ -1,7 +1,7 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import {
-  Profile,
+  GrouparooRecord,
   Group,
   Destination,
   Export,
@@ -39,14 +39,17 @@ describe("tasks/export:sendBatch", () => {
   });
 
   describe("within an export workflow", () => {
-    let destination: Destination, group: Group, profile: Profile, run: Run;
+    let destination: Destination,
+      group: Group,
+      record: GrouparooRecord,
+      run: Run;
 
     beforeAll(async () => {
-      profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ email: ["mario@example.com"] });
+      record = await helper.factories.record();
+      await record.addOrUpdateProperties({ email: ["mario@example.com"] });
 
       group = await helper.factories.group({ type: "manual" });
-      await group.addProfile(profile);
+      await group.addProfile(record);
 
       destination = await helper.factories.destination(null, {
         type: "test-plugin-export-batch",
@@ -77,16 +80,16 @@ describe("tasks/export:sendBatch", () => {
       expect(run.profilesImported).toBe(0);
     });
 
-    test("the profile can be imported and exported", async () => {
+    test("the record can be imported and exported", async () => {
       await ImportWorkflow();
     });
 
     test("export:sendBatch will be enqueued after a batch from the run", async () => {
       const foundExportTasks = await specHelper.findEnqueuedTasks(
-        "profile:export"
+        "record:export"
       );
       expect(foundExportTasks.length).toBe(1);
-      await specHelper.runTask("profile:export", foundExportTasks[0].args[0]);
+      await specHelper.runTask("record:export", foundExportTasks[0].args[0]);
       let foundExportSendBatchTasks = await specHelper.findEnqueuedTasks(
         "export:sendBatch"
       );
@@ -216,7 +219,7 @@ describe("tasks/export:sendBatch", () => {
           retryDelay: null,
         };
 
-        await destination.exportProfile(profile);
+        await destination.exportRecord(record);
         const _export = await Export.findOne({
           where: { destinationId: destination.id },
         });
@@ -247,14 +250,14 @@ describe("tasks/export:sendBatch", () => {
       test("if the export fails with a retryDelay, the export will have the error message appended", async () => {
         // this export will fail
         const error = new Error("oh no!");
-        error["profileId"] = profile.id;
+        error["recordId"] = record.id;
         exportProfilesResponse = {
           success: false,
           errors: [error],
           retryDelay: 1000 * 5,
         };
 
-        await destination.exportProfile(profile);
+        await destination.exportRecord(record);
         const _export = await Export.findOne({
           where: { destinationId: destination.id },
         });
@@ -281,14 +284,14 @@ describe("tasks/export:sendBatch", () => {
       test("if the export fails without a retryDelay, the export will have the error message appended", async () => {
         // this export will fail
         const error = new Error("oh no!");
-        error["profileId"] = profile.id;
+        error["recordId"] = record.id;
         exportProfilesResponse = {
           success: false,
           errors: [error],
           retryDelay: undefined,
         };
 
-        await destination.exportProfile(profile);
+        await destination.exportRecord(record);
         const _export = await Export.findOne({
           where: { destinationId: destination.id },
         });

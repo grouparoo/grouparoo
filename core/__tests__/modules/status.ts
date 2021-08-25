@@ -5,7 +5,7 @@ import {
   FinalSummaryReporters,
 } from "../../src/modules/statusReporters";
 import { Status } from "../../src/modules/status";
-import { Destination, Profile, Source, Schedule } from "../../src";
+import { Destination, GrouparooRecord, Source, Schedule } from "../../src";
 
 describe("modules/status", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -188,14 +188,14 @@ describe("modules/status", () => {
             },
           ],
         },
-        Profile: {
+        GrouparooRecord: {
           pending: [
             {
               metric: {
                 aggregation: "count",
                 collection: "pending",
                 count: 0,
-                topic: "Profile",
+                topic: "GrouparooRecord",
               },
               timestamp: expect.any(Number),
             },
@@ -206,7 +206,7 @@ describe("modules/status", () => {
                 aggregation: "count",
                 collection: "deleted",
                 count: 0,
-                topic: "Profile",
+                topic: "GrouparooRecord",
               },
               timestamp: expect.any(Number),
             },
@@ -217,7 +217,7 @@ describe("modules/status", () => {
                 aggregation: "count",
                 collection: "totals",
                 count: 0,
-                topic: "Profile",
+                topic: "GrouparooRecord",
               },
               timestamp: expect.any(Number),
             },
@@ -374,23 +374,23 @@ describe("modules/status", () => {
   });
 
   describe("final summary", () => {
-    let oldProfile: Profile;
-    let newProfile: Profile;
+    let oldProfile: GrouparooRecord;
+    let newProfile: GrouparooRecord;
 
     beforeEach(async () => {
       await helper.truncate();
       await helper.factories.properties();
-      oldProfile = await helper.factories.profile();
+      oldProfile = await helper.factories.record();
       await helper.changeTimestamps(oldProfile, true); // 'true' will set both updatedAt and createdAt
 
-      newProfile = await helper.factories.profile();
+      newProfile = await helper.factories.record();
     });
 
-    test("it gathers profiles", async () => {
-      const profiles = await FinalSummaryReporters.Profiles.getData();
-      expect(profiles[0].profilesCreated).toEqual(1);
-      expect(profiles[0].profilesUpdated).toEqual(1);
-      expect(profiles[0].allProfiles).toEqual(2);
+    test("it gathers records", async () => {
+      const records = await FinalSummaryReporters.Records.getData();
+      expect(records[0].profilesCreated).toEqual(1);
+      expect(records[0].profilesUpdated).toEqual(1);
+      expect(records[0].allProfiles).toEqual(2);
     });
 
     describe("it gathers sources", () => {
@@ -443,7 +443,7 @@ describe("modules/status", () => {
       const warning = warnings[0];
       expect(warning.name).toBe("Schedules");
       expect(warning.message).toBe(
-        `No schedules found.  The run command uses schedules to know what profiles to import.`
+        `No schedules found.  The run command uses schedules to know what records to import.`
       );
       expect(warning.link).toBe(
         `See this link for more info: https://www.grouparoo.com/docs/getting-started/product-concepts#schedule`

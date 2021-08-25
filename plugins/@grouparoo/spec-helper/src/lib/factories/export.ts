@@ -26,7 +26,7 @@ export default async (
   if (!record) record = await RecordFactory();
   if (!destination) destination = await DestinationFactory();
 
-  props.Id = record.id;
+  props.recordId = record.id;
   props.destinationId = destination.id;
 
   const mergedProps = await data(props);

@@ -7,7 +7,7 @@ describe("models/log", () => {
 
   test("a log entry can be created and data saved to JSON", async () => {
     const log = await Log.create({
-      topic: "profile",
+      topic: "record",
       verb: "create",
       message: "hello",
       ownerId: "abc",
@@ -27,7 +27,7 @@ describe("models/log", () => {
 
   test("old entries can be swept away", async () => {
     const oldLog = await Log.create({
-      topic: "profile",
+      topic: "record",
       verb: "create",
       message: "",
       ownerId: "abc",

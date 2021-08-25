@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Source, App, Property, Mapping, Profile } from "../../../src";
+import { Source, App, Property, Mapping, GrouparooRecord } from "../../../src";
 import { SourceOps } from "../../../src/modules/ops/source";
 
 describe("models/source/sortByDependencies", () => {
@@ -101,10 +101,10 @@ describe("models/source/sortByDependencies", () => {
     ]);
   });
 
-  test("a Profile can be imported with chained sources", async () => {
-    const profile: Profile = await helper.factories.profile();
-    await profile.import();
-    const properties = await profile.getProperties();
+  test("a GrouparooRecord can be imported with chained sources", async () => {
+    const record: GrouparooRecord = await helper.factories.record();
+    await record.import();
+    const properties = await record.getProperties();
     expect(properties.product_name.values[0]).toBeTruthy();
   });
 });

@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { cache, Connection, specHelper } from "actionhero";
-import { Profile, Import, Export, App, Property } from "../../src";
+import { GrouparooRecord, Import, Export, App, Property } from "../../src";
 import { SessionCreate, SessionView } from "../../src/actions/session";
 import { ResetCache, ResetCluster, ResetData } from "../../src/actions/reset";
 
@@ -54,7 +54,7 @@ describe("actions/cluster", () => {
 
     describe("reset:data", () => {
       test("the data can be reset", async () => {
-        await helper.factories.profile();
+        await helper.factories.record();
         await helper.factories.import();
         await helper.factories.export();
 
@@ -67,7 +67,7 @@ describe("actions/cluster", () => {
         expect(success).toBe(true);
 
         // removed data models
-        expect(await Profile.count()).toBe(0);
+        expect(await GrouparooRecord.count()).toBe(0);
         expect(await Import.count()).toBe(0);
         expect(await Export.count()).toBe(0);
 
@@ -79,7 +79,7 @@ describe("actions/cluster", () => {
 
     describe("reset:cluster", () => {
       test("the cluster can be reset", async () => {
-        await helper.factories.profile();
+        await helper.factories.record();
 
         connection.params = { csrfToken };
         const { success, counts, error } =
@@ -88,7 +88,7 @@ describe("actions/cluster", () => {
         expect(success).toBe(true);
 
         // removed most models
-        expect(counts.Profile).toBeGreaterThan(0);
+        expect(counts.GrouparooRecord).toBeGreaterThan(0);
         expect(counts.Source).toBeGreaterThan(0);
         expect(counts.Property).toBeGreaterThan(0);
         expect(counts.App).toBeGreaterThan(0);

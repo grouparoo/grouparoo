@@ -1,11 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
 import {
-  Profile,
+  GrouparooRecord,
   Group,
   Destination,
   Export,
   GrouparooPlugin,
-  ProfileProperty,
+  RecordProperty,
 } from "../../../src";
 import { api } from "actionhero";
 
@@ -18,8 +18,8 @@ function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   return simpleProfileProperties;
 }
 
-describe("profile sync", () => {
-  let profile: Profile;
+describe("record sync", () => {
+  let record: GrouparooRecord;
   let group: Group;
   let destination: Destination;
 
@@ -30,22 +30,22 @@ describe("profile sync", () => {
   });
 
   afterEach(async () => {
-    await Profile.truncate();
-    await ProfileProperty.truncate();
+    await GrouparooRecord.truncate();
+    await RecordProperty.truncate();
     await Group.truncate();
     await Destination.truncate();
     await Export.truncate();
   });
 
   beforeEach(async () => {
-    profile = await helper.factories.profile();
+    record = await helper.factories.record();
     group = await helper.factories.group();
     await group.update({ type: "calculated" });
     destination = await helper.factories.destination();
   });
 
-  test("syncing a profile will import properties", async () => {
-    let properties = await profile.getProperties();
+  test("syncing a record will import properties", async () => {
+    let properties = await record.getProperties();
     expect(simpleProfileValues(properties)).toEqual(
       expect.objectContaining({
         firstName: [null],
@@ -55,9 +55,9 @@ describe("profile sync", () => {
       })
     );
 
-    await profile.sync();
+    await record.sync();
 
-    properties = await profile.getProperties();
+    properties = await record.getProperties();
     expect(simpleProfileValues(properties)).toEqual(
       expect.objectContaining({
         firstName: ["Mario"],
@@ -68,8 +68,8 @@ describe("profile sync", () => {
     );
   });
 
-  test("syncing a profile will update group membership", async () => {
-    let groups = await profile.$get("groups");
+  test("syncing a record will update group membership", async () => {
+    let groups = await record.$get("groups");
     expect(groups).toEqual([]);
 
     await group.setRules([
@@ -77,9 +77,9 @@ describe("profile sync", () => {
     ]);
     await group.update({ state: "ready" });
 
-    await profile.sync();
+    await record.sync();
 
-    groups = await profile.$get("groups");
+    groups = await record.$get("groups");
     expect(groups.length).toEqual(1);
     expect(groups[0].name).toEqual(group.name);
   });
@@ -94,32 +94,32 @@ describe("profile sync", () => {
     });
 
     test("syncing will create exports", async () => {
-      const createdExports = await profile.sync();
-      const foundExports = await profile.$get("exports");
+      const createdExports = await record.sync();
+      const foundExports = await record.$get("exports");
 
       expect(createdExports.length).toBe(1);
       expect(foundExports.length).toBe(1);
     });
 
     test("optionally exports can be predicted but not saved", async () => {
-      const createdExports = await profile.sync(undefined, false);
-      const foundExports = await profile.$get("exports");
+      const createdExports = await record.sync(undefined, false);
+      const foundExports = await record.$get("exports");
 
       expect(createdExports.length).toBe(1);
       expect(foundExports.length).toBe(0);
     });
 
     test("exports will be forced by default", async () => {
-      await profile.sync();
-      const createdExports = await profile.sync();
+      await record.sync();
+      const createdExports = await record.sync();
       expect(createdExports.length).toBe(1);
       expect(createdExports[0].force).toBe(true);
       expect(createdExports[0].hasChanges).toBe(true);
     });
 
     test("optionally a sync will not force the export", async () => {
-      await profile.sync();
-      const createdExports = await profile.sync(false);
+      await record.sync();
+      const createdExports = await record.sync(false);
       expect(createdExports.length).toBe(1);
       expect(createdExports[0].force).toBe(false);
       expect(createdExports[0].hasChanges).toBe(false);
@@ -139,10 +139,10 @@ describe("profile sync", () => {
         await otherDestination.trackGroup(otherGroup);
       });
 
-      test("profile sync will create a toDelete export if the group's rules remove it from the group", async () => {
+      test("record sync will create a toDelete export if the group's rules remove it from the group", async () => {
         // add to both groups initially
-        await profile.sync();
-        let groups = await profile.$get("groups");
+        await record.sync();
+        let groups = await record.$get("groups");
         expect(groups.length).toBe(2);
 
         // change the rules
@@ -151,8 +151,8 @@ describe("profile sync", () => {
         ]);
 
         // test
-        let exports = await profile.sync();
-        groups = await profile.$get("groups");
+        let exports = await record.sync();
+        groups = await record.$get("groups");
         expect(groups.length).toBe(1);
         expect(groups[0].id).toBe(otherGroup.id);
         expect(exports.length).toBe(2);
@@ -166,7 +166,7 @@ describe("profile sync", () => {
         expect(otherDestinationExport.toDelete).toBe(false);
 
         // sync again and ensure that there is only one export next time
-        exports = await profile.sync();
+        exports = await record.sync();
         expect(exports.length).toBe(1);
         expect(exports[0].destinationId).toBe(otherDestination.id);
 
@@ -176,11 +176,11 @@ describe("profile sync", () => {
         ]);
       });
 
-      test("profile sync will create a toDelete export if the profile's properties remove it from the group", async () => {
+      test("record sync will create a toDelete export if the record's properties remove it from the group", async () => {
         // add to both groups initially
-        await profile.sync();
+        await record.sync();
 
-        let groups = await profile.$get("groups");
+        let groups = await record.$get("groups");
         expect(groups.length).toBe(2);
 
         // find and hack the plugin
@@ -200,8 +200,8 @@ describe("profile sync", () => {
         };
 
         // test
-        let exports = await profile.sync();
-        groups = await profile.$get("groups");
+        let exports = await record.sync();
+        groups = await record.$get("groups");
         expect(groups.length).toBe(1);
         expect(groups[0].id).toBe(otherGroup.id);
         expect(exports.length).toBe(2);
@@ -215,7 +215,7 @@ describe("profile sync", () => {
         expect(otherDestinationExport.toDelete).toBe(false);
 
         // sync again and ensure that there is only one export next time
-        exports = await profile.sync();
+        exports = await record.sync();
         expect(exports.length).toBe(1);
         expect(exports[0].destinationId).toBe(otherDestination.id);
 
@@ -223,17 +223,17 @@ describe("profile sync", () => {
         testPluginConnection.methods.profileProperty = originalMethod;
       });
 
-      test("profile sync will create a toDelete export if destination had untracked the group but not yet run", async () => {
+      test("record sync will create a toDelete export if destination had untracked the group but not yet run", async () => {
         // add to both groups initially
-        await profile.sync();
-        let groups = await profile.$get("groups");
+        await record.sync();
+        let groups = await record.$get("groups");
         expect(groups.length).toBe(2);
 
         // change the destination
         await destination.unTrackGroup();
 
         // test
-        let exports = await profile.sync();
+        let exports = await record.sync();
         expect(exports.length).toBe(2);
         const destinationExport = exports.find(
           (e) => e.destinationId === destination.id
@@ -245,7 +245,7 @@ describe("profile sync", () => {
         expect(otherDestinationExport.toDelete).toBe(false);
 
         // sync again and ensure that there is only one export next time
-        exports = await profile.sync();
+        exports = await record.sync();
         expect(exports.length).toBe(1);
         expect(exports[0].destinationId).toBe(otherDestination.id);
 

@@ -31,7 +31,7 @@ describe("modules/plugin", () => {
           {
             name: "sample-plugin-import",
             direction: "import",
-            description: "import or update profiles from an uploaded file",
+            description: "import or update records from an uploaded file",
             app: "sample-plugin-app",
             options: [],
             methods: {
@@ -52,14 +52,14 @@ describe("modules/plugin", () => {
               sourceFilters: async () => {
                 return [];
               },
-              profiles: async () => {
+              records: async () => {
                 return {
                   importsCount: 0,
                   highWaterMark: { col: 0 },
                   sourceOffset: 0,
                 };
               },
-              profileProperty: async ({ property, profile }) => {
+              profileProperty: async ({ property, record }) => {
                 return ["value"];
               },
             },
@@ -79,7 +79,7 @@ describe("modules/plugin", () => {
       );
     });
 
-    test("destination plugins need either exportProfile or exportProfiles methods", () => {
+    test("destination plugins need either exportRecord or exportProfiles methods", () => {
       expect(() =>
         plugin.registerPlugin({
           name: "@grouparoo/sample-plugin/export",
@@ -96,7 +96,7 @@ describe("modules/plugin", () => {
           ],
         })
       ).toThrow(
-        /export connections must provide either connection.methods.exportProfile or connection.methods.exportProfiles/
+        /export connections must provide either connection.methods.exportRecord or connection.methods.exportProfiles/
       );
     });
   });
@@ -217,37 +217,37 @@ describe("modules/plugin", () => {
     });
 
     describe("replaceTemplateProfileVariables", () => {
-      it("will replace parts of the string with profile information", async () => {
-        const profile = await helper.factories.profile({
+      it("will replace parts of the string with record information", async () => {
+        const record = await helper.factories.record({
           createdAt: new Date(0),
         });
-        await profile.addOrUpdateProperties({
+        await record.addOrUpdateProperties({
           userId: [5],
           email: ["luigi@example.com"],
         });
 
         const initialString =
-          "select first_name from users where id = {{userId}} and email = '{{email}}' # Profile Created at {{createdAt.sql}}";
+          "select first_name from users where id = {{userId}} and email = '{{email}}' # GrouparooRecord Created at {{createdAt.sql}}";
 
         const replacedString = await plugin.replaceTemplateProfileVariables(
           initialString,
-          profile
+          record
         );
 
         expect(replacedString).toContain("where id = 5");
         expect(replacedString).toContain("and email = 'luigi@example.com'");
         expect(replacedString).toContain(
-          "Profile Created at 1970-01-01 00:00:00"
+          "GrouparooRecord Created at 1970-01-01 00:00:00"
         );
       });
 
       test("it throws an error if a template variable is missing", async () => {
-        const profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({ userId: null });
+        const record = await helper.factories.record();
+        await record.addOrUpdateProperties({ userId: null });
         await expect(
           plugin.replaceTemplateProfileVariables(
             `select email where id = {{userId}}`,
-            profile
+            record
           )
         ).rejects.toThrow('missing mustache key "userId"');
       });

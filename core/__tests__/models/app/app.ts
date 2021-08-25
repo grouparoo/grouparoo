@@ -416,14 +416,14 @@ describe("models/app", () => {
             direction: "import" as "import",
             options: [],
             methods: {
-              profiles: async () => {
+              records: async () => {
                 return {
                   importsCount: 0,
                   highWaterMark: { col: "0" },
                   sourceOffset: 0,
                 };
               },
-              profileProperty: async ({ app, property, profile }) => {
+              profileProperty: async ({ app, property, record }) => {
                 profilePropertyCount++;
                 return ["test@example.com"];
               },

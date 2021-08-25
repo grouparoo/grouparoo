@@ -2,10 +2,12 @@ import Sequelize from "sequelize";
 
 const renames: { [table: string]: [string, string][] } = {
   exports: [
+    ["profileId", "recordId"],
     ["oldProfileProperties", "oldRecordProperties"],
     ["newProfileProperties", "newRecordProperties"],
   ],
   groupMembers: [["profileId", "recordId"]],
+  groupRules: [["profileColumn", "recordColumn"]],
   imports: [
     ["profileId", "recordId"],
     ["oldProfileProperties", "oldRecordProperties"],

@@ -3,8 +3,8 @@ import { specHelper, api } from "actionhero";
 import {
   Source,
   Property,
-  Profile,
-  ProfileProperty,
+  GrouparooRecord,
+  RecordProperty,
   PluginConnection,
   ProfilePropertyPluginMethod,
   ProfilePropertiesPluginMethod,
@@ -13,8 +13,8 @@ import {
 import { ProfilePropertyOps } from "../../../src/modules/ops/profileProperty";
 
 describe("models/source/processPendingProfileProperties", () => {
-  let profileA: Profile;
-  let profileB: Profile;
+  let profileA: GrouparooRecord;
+  let profileB: GrouparooRecord;
   let source: Source;
 
   let userId: Property;
@@ -60,8 +60,8 @@ describe("models/source/processPendingProfileProperties", () => {
 
   beforeAll(async () => {
     source = await Source.findOne();
-    profileA = await helper.factories.profile();
-    profileB = await helper.factories.profile();
+    profileA = await helper.factories.record();
+    profileB = await helper.factories.record();
 
     userId = await Property.findOne({ where: { key: "userId" } });
     email = await Property.findOne({ where: { key: "email" } });
@@ -78,7 +78,7 @@ describe("models/source/processPendingProfileProperties", () => {
 
   beforeEach(async () => {
     await api.resque.queue.connection.redis.flushdb();
-    await ProfileProperty.update(
+    await RecordProperty.update(
       { state: "pending", startedAt: null },
       { where: {} }
     );
@@ -212,7 +212,7 @@ describe("models/source/processPendingProfileProperties", () => {
         "profileProperty:importProfileProperty"
       );
 
-      expect(propertyTasks.length).toEqual(9 * 2); // 9 properties * 2 profiles
+      expect(propertyTasks.length).toEqual(9 * 2); // 9 properties * 2 records
       expect(propertiesTasks.length).toBe(0);
     });
 
@@ -227,7 +227,7 @@ describe("models/source/processPendingProfileProperties", () => {
         "profileProperty:importProfileProperty"
       );
 
-      expect(propertyTasks.length).toEqual(9 * 2); // 9 properties * 2 profiles
+      expect(propertyTasks.length).toEqual(9 * 2); // 9 properties * 2 records
       expect(propertiesTasks.length).toBe(0);
     });
   });

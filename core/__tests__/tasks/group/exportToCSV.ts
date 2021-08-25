@@ -1,14 +1,14 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Group, Import, Profile, File, Run } from "../../../src";
+import { Group, Import, GrouparooRecord, File, Run } from "../../../src";
 import fs from "fs";
 
 describe("tasks/group:exportToCSV", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   describe("group:exportToCSV", () => {
-    let mario: Profile;
-    let luigi: Profile;
+    let mario: GrouparooRecord;
+    let luigi: GrouparooRecord;
     let group: Group;
 
     beforeEach(async () => {
@@ -20,10 +20,10 @@ describe("tasks/group:exportToCSV", () => {
       await helper.factories.properties();
       helper.disableTestPluginImport();
 
-      await Profile.truncate();
+      await GrouparooRecord.truncate();
 
-      mario = await Profile.create();
-      luigi = await Profile.create();
+      mario = await GrouparooRecord.create();
+      luigi = await GrouparooRecord.create();
 
       await mario.addOrUpdateProperties({
         userId: [1],

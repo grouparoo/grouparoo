@@ -7,10 +7,10 @@ import {
   Destination,
   Group,
   GroupMember,
+  GrouparooRecord,
   GroupRule,
   Option,
   plugin,
-  Profile,
   Property,
   Run,
   Schedule,
@@ -57,7 +57,7 @@ describe("modules/codeConfig", () => {
           source: ["users_table"],
           team: ["admin_team"],
           teammember: ["demo"],
-          profile: [],
+          record: [],
         });
         expect(deletedIds).toEqual({
           apikey: [],
@@ -69,7 +69,7 @@ describe("modules/codeConfig", () => {
           source: [],
           team: [],
           teammember: [],
-          profile: [],
+          record: [],
         });
       });
 
@@ -126,7 +126,7 @@ describe("modules/codeConfig", () => {
         expect(schedules[0].name).toBe("Users Table Schedule");
         expect(schedules[0].state).toBe("ready");
         expect(schedules[0].recurring).toBe(true);
-        expect(schedules[0].confirmProfiles).toBe(true);
+        expect(schedules[0].confirmRecords).toBe(true);
         expect(schedules[0].recurringFrequency).toBe(900000);
         expect(schedules[0].locked).toBe("config:code");
       });
@@ -285,7 +285,7 @@ describe("modules/codeConfig", () => {
         source: ["users_table"],
         team: ["admin_team"],
         teammember: ["demo"],
-        profile: [],
+        record: [],
       });
       expect(deletedIds).toEqual({
         apikey: [],
@@ -297,7 +297,7 @@ describe("modules/codeConfig", () => {
         source: [],
         team: [],
         teammember: [],
-        profile: [],
+        record: [],
       });
     });
 
@@ -355,7 +355,7 @@ describe("modules/codeConfig", () => {
     });
 
     test("property options will be updated before validating", async () => {
-      const profile = await Profile.create(); // validations only happen if there's a profile
+      const record = await GrouparooRecord.create(); // validations only happen if there's a record
 
       const nameProperty = await Property.findById("first_name");
       let options = await nameProperty.getOptions();
@@ -378,7 +378,7 @@ describe("modules/codeConfig", () => {
       options = await nameProperty.getOptions();
       expect(options).toEqual({ column: "other_first_name" });
 
-      await profile.destroy();
+      await record.destroy();
     });
 
     test("groups can have changed names and rules", async () => {
@@ -484,7 +484,7 @@ describe("modules/codeConfig", () => {
         source: ["users_table"],
         team: [],
         teammember: [],
-        profile: [],
+        record: [],
       });
       expect(deletedIds).toEqual({
         apikey: ["website_key"],
@@ -496,7 +496,7 @@ describe("modules/codeConfig", () => {
         source: [],
         team: ["admin_team"],
         teammember: ["demo"],
-        profile: [],
+        record: [],
       });
     });
 
@@ -567,7 +567,7 @@ describe("modules/codeConfig", () => {
         source: [],
         team: [],
         teammember: [],
-        profile: [],
+        record: [],
       });
       expect(deletedIds).toEqual({
         apikey: [],
@@ -579,7 +579,7 @@ describe("modules/codeConfig", () => {
         source: ["users_table"],
         team: [],
         teammember: [],
-        profile: [],
+        record: [],
       });
     });
 
@@ -649,9 +649,9 @@ describe("modules/codeConfig", () => {
 
       await highValue.stopPreviousRuns();
 
-      const profile: Profile = await helper.factories.profile();
+      const record: GrouparooRecord = await helper.factories.record();
       await GroupMember.create({
-        profileId: profile.id,
+        recordId: record.id,
         groupId: "high_value",
       });
 
@@ -671,7 +671,7 @@ describe("modules/codeConfig", () => {
       await emailGroup.stopPreviousRuns();
 
       await GroupMember.create({
-        profileId: profile.id,
+        recordId: record.id,
         groupId: "email_group",
       });
 
@@ -712,7 +712,7 @@ describe("modules/codeConfig", () => {
         source: ["users_table"],
         team: ["admin_team"],
         teammember: ["demo"],
-        profile: [],
+        record: [],
       });
       expect(deletedIds).toEqual({
         apikey: [],
@@ -724,7 +724,7 @@ describe("modules/codeConfig", () => {
         source: [],
         team: [],
         teammember: [],
-        profile: [],
+        record: [],
       });
     });
 
@@ -911,7 +911,7 @@ describe("modules/codeConfig", () => {
     });
   });
 
-  describe("Profile columns in calculated group rules", () => {
+  describe("GrouparooRecord columns in calculated group rules", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
       const { errors, seenIds } = await loadConfigDirectory(
@@ -935,11 +935,11 @@ describe("modules/codeConfig", () => {
         source: [],
         team: [],
         teammember: [],
-        profile: [],
+        record: [],
       });
     });
 
-    test("topLevel rules for profile columns are created", async () => {
+    test("topLevel rules for record columns are created", async () => {
       const group = await Group.findById("group_exists");
       const rules = await group.getRules();
       expect(rules).toEqual([
@@ -956,7 +956,7 @@ describe("modules/codeConfig", () => {
       ]);
     });
 
-    test("topLevel rules for date profile columns are correctly created", async () => {
+    test("topLevel rules for date record columns are correctly created", async () => {
       const group = await Group.findById("group_recent");
       const rules = await group.getRules();
       expect(rules).toEqual([
@@ -1027,11 +1027,11 @@ describe("modules/codeConfig", () => {
       await helper.truncate();
     });
 
-    describe("sample profiles", () => {
-      test("profiles are not loaded by default", async () => {
+    describe("sample records", () => {
+      test("records are not loaded by default", async () => {
         api.codeConfig.allowLockedModelChanges = true;
         const { errors, seenIds, deletedIds } = await loadConfigDirectory(
-          path.join(__dirname, "..", "..", "fixtures", "codeConfig", "profiles")
+          path.join(__dirname, "..", "..", "fixtures", "codeConfig", "records")
         );
         expect(errors).toEqual([]);
         expect(seenIds).toEqual({
@@ -1044,7 +1044,7 @@ describe("modules/codeConfig", () => {
           source: ["users_table"],
           team: [],
           teammember: [],
-          profile: [],
+          record: [],
         });
         expect(deletedIds).toEqual({
           apikey: [],
@@ -1056,17 +1056,17 @@ describe("modules/codeConfig", () => {
           source: [],
           team: [],
           teammember: [],
-          profile: [],
+          record: [],
         });
       });
 
-      test("profiles are loaded in cli:config mode", async () => {
+      test("records are loaded in cli:config mode", async () => {
         await helper.truncate();
 
         process.env.GROUPAROO_RUN_MODE = "cli:config";
         api.codeConfig.allowLockedModelChanges = true;
         const { errors, seenIds, deletedIds } = await loadConfigDirectory(
-          path.join(__dirname, "..", "..", "fixtures", "codeConfig", "profiles")
+          path.join(__dirname, "..", "..", "fixtures", "codeConfig", "records")
         );
         expect(errors).toEqual([]);
         expect(seenIds).toEqual({
@@ -1079,7 +1079,7 @@ describe("modules/codeConfig", () => {
           source: ["users_table"],
           team: [],
           teammember: [],
-          profile: ["profile_john", "profile_matthew"],
+          record: ["profile_john", "profile_matthew"],
         });
         expect(deletedIds).toEqual({
           apikey: [],
@@ -1091,15 +1091,17 @@ describe("modules/codeConfig", () => {
           source: [],
           team: [],
           teammember: [],
-          profile: [],
+          record: [],
         });
       });
 
-      test("profiles are created", async () => {
-        const profiles = await Profile.findAll({ order: [["id", "asc"]] });
-        expect(profiles.length).toBe(2);
+      test("records are created", async () => {
+        const records = await GrouparooRecord.findAll({
+          order: [["id", "asc"]],
+        });
+        expect(records.length).toBe(2);
 
-        const john = profiles[0];
+        const john = records[0];
         expect(john.id).toBe("profile_john");
         expect(john.state).toBe("pending");
 
@@ -1109,7 +1111,7 @@ describe("modules/codeConfig", () => {
         expect(johnProps.email.state).toBe("pending");
         expect(johnProps.email.values).toEqual([null]);
 
-        const matthew = profiles[1];
+        const matthew = records[1];
         expect(matthew.id).toBe("profile_matthew");
         expect(matthew.state).toBe("pending");
 
@@ -1151,7 +1153,7 @@ describe("modules/codeConfig", () => {
           source: ["users_table"],
           team: ["admin_team"],
           teammember: ["demo"],
-          profile: [],
+          record: [],
         });
         expect(deletedIds).toEqual({
           apikey: [],
@@ -1163,7 +1165,7 @@ describe("modules/codeConfig", () => {
           source: [],
           team: [],
           teammember: [],
-          profile: [],
+          record: [],
         });
       });
 
@@ -1454,7 +1456,7 @@ describe("modules/codeConfig", () => {
       });
     });
 
-    describe("profile", () => {
+    describe("record", () => {
       beforeAll(async () => {
         process.env.GROUPAROO_RUN_MODE = "cli:config";
         api.codeConfig.allowLockedModelChanges = true;
@@ -1468,13 +1470,13 @@ describe("modules/codeConfig", () => {
             "..",
             "fixtures",
             "codeConfig",
-            "error-profile-non-unique-property"
+            "error-record-non-unique-property"
           )
         );
 
         expect(errors.length).toBe(1);
         expect(errors[0]).toMatch(
-          /there are no directly mapped profile properties provided in/
+          /there are no directly mapped record properties provided in/
         );
       });
 
@@ -1486,7 +1488,7 @@ describe("modules/codeConfig", () => {
             "..",
             "fixtures",
             "codeConfig",
-            "error-profile-missing-property"
+            "error-record-missing-property"
           )
         );
 
@@ -1553,7 +1555,7 @@ describe("modules/codeConfig", () => {
             direction: "import",
             options: [],
             methods: {
-              profileProperty: async () => {
+              recordProperty: async () => {
                 return [];
               },
             },

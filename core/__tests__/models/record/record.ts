@@ -2,8 +2,8 @@ import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
 import {
   plugin,
-  Profile,
-  ProfileProperty,
+  GrouparooRecord,
+  RecordProperty,
   Property,
   Group,
   GroupMember,
@@ -11,7 +11,7 @@ import {
   Source,
   Log,
 } from "../../../src";
-import { ProfileOps } from "../../../src/modules/ops/profile";
+import { RecordOps } from "../../../src/modules/ops/record";
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -22,48 +22,48 @@ function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   return simpleProfileProperties;
 }
 
-describe("models/profile", () => {
+describe("models/record", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
-  test("a profile can be created", async () => {
-    const profile = new Profile();
+  test("a record can be created", async () => {
+    const record = new GrouparooRecord();
 
-    await profile.save();
+    await record.save();
 
-    expect(profile.id.length).toBe(40);
-    expect(profile.createdAt).toBeTruthy();
-    expect(profile.updatedAt).toBeTruthy();
+    expect(record.id.length).toBe(40);
+    expect(record.createdAt).toBeTruthy();
+    expect(record.updatedAt).toBeTruthy();
   });
 
-  it("profiles can retrieve related log messages with custom messages", async () => {
-    const profile = await Profile.findOne();
-    const logs = await profile.$get("logs");
+  it("records can retrieve related log messages with custom messages", async () => {
+    const record = await GrouparooRecord.findOne();
+    const logs = await record.$get("logs");
     expect(logs.length).toBe(1);
-    expect(logs[0].topic).toBe("profile");
+    expect(logs[0].topic).toBe("record");
     expect(logs[0].verb).toBe("create");
-    expect(logs[0].message).toBe("profile created");
+    expect(logs[0].message).toBe("record created");
   });
 
-  it("deleting a profile creates a custom log messages", async () => {
-    const profile = await Profile.create();
-    await profile.destroy();
-    const logs = await profile.$get("logs", { order: [["createdAt", "asc"]] });
+  it("deleting a record creates a custom log messages", async () => {
+    const record = await GrouparooRecord.create();
+    await record.destroy();
+    const logs = await record.$get("logs", { order: [["createdAt", "asc"]] });
     expect(logs.length).toBe(2);
-    expect(logs[1].topic).toBe("profile");
+    expect(logs[1].topic).toBe("record");
     expect(logs[1].verb).toBe("destroy");
-    expect(logs[1].message).toBe("profile destroyed");
+    expect(logs[1].message).toBe("record destroyed");
   });
 
-  describe("findOrCreateByUniqueProfileProperties", () => {
+  describe("findOrCreateByUniqueRecordProperties", () => {
     let source: Source;
-    let toad: Profile;
+    let toad: GrouparooRecord;
     let emailProperty: Property;
     let userIdProperty: Property;
     let colorProperty: Property;
     let houseProperty: Property;
 
     beforeAll(async () => {
-      await Profile.truncate();
+      await GrouparooRecord.truncate();
 
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
@@ -102,13 +102,13 @@ describe("models/profile", () => {
       await houseProperty.setOptions({ column: "house" });
       await houseProperty.update({ state: "ready" });
 
-      const profile = await Profile.create();
-      await profile.addOrUpdateProperties({
+      const record = await GrouparooRecord.create();
+      await record.addOrUpdateProperties({
         email: ["toad@example.com"],
         color: ["orange"],
       });
 
-      toad = profile;
+      toad = record;
     });
 
     afterAll(async () => {
@@ -121,20 +121,20 @@ describe("models/profile", () => {
       await source.destroy();
     });
 
-    test("it can find the profile via email", async () => {
-      const { profile, isNew } =
-        await ProfileOps.findOrCreateByUniqueProfileProperties({
+    test("it can find the record via email", async () => {
+      const { record, isNew } =
+        await RecordOps.findOrCreateByUniqueRecordProperties({
           email: ["toad@example.com"],
           color: ["orange"],
         });
 
       expect(isNew).toBe(false);
-      expect(profile.id).toBe(toad.id);
+      expect(record.id).toBe(toad.id);
     });
 
-    test("it cannot find the profile by color and will create a new one", async () => {
-      const { profile, isNew } =
-        await ProfileOps.findOrCreateByUniqueProfileProperties(
+    test("it cannot find the record by color and will create a new one", async () => {
+      const { record, isNew } =
+        await RecordOps.findOrCreateByUniqueRecordProperties(
           {
             email: ["luigi@example.com"],
             color: ["green"],
@@ -143,24 +143,24 @@ describe("models/profile", () => {
         );
 
       expect(isNew).toBe(true);
-      expect(profile.id).not.toBe(toad.id);
+      expect(record.id).not.toBe(toad.id);
     });
 
-    test("it will throw an error if no unique profile properties are included", async () => {
+    test("it will throw an error if no unique record properties are included", async () => {
       await expect(
-        ProfileOps.findOrCreateByUniqueProfileProperties(
+        RecordOps.findOrCreateByUniqueRecordProperties(
           {
             color: ["orange"],
           },
           source
         )
       ).rejects.toThrow(
-        'there are no unique profile properties provided in {"color":["orange"]}'
+        'there are no unique record properties provided in {"color":["orange"]}'
       );
     });
 
-    test("it will lock when creating new profiles so duplicate profiles are not created", async () => {
-      const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties(
+    test("it will lock when creating new records so duplicate records are not created", async () => {
+      const responseA = await RecordOps.findOrCreateByUniqueRecordProperties(
         {
           email: ["bowser@example.com"],
           color: ["green"],
@@ -168,7 +168,7 @@ describe("models/profile", () => {
         source
       );
 
-      const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties(
+      const responseB = await RecordOps.findOrCreateByUniqueRecordProperties(
         {
           email: ["bowser@example.com"],
           house: ["castle"],
@@ -176,13 +176,13 @@ describe("models/profile", () => {
         source
       );
 
-      expect(responseA.profile.id).toEqual(responseB.profile.id);
+      expect(responseA.record.id).toEqual(responseB.record.id);
       expect(responseA.isNew).toBe(true);
       expect(responseB.isNew).toBe(false);
     });
 
     test("it will merge overlapping unique properties and not store non-unique properties", async () => {
-      const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties(
+      const responseA = await RecordOps.findOrCreateByUniqueRecordProperties(
         {
           email: ["koopa@example.com"],
           userId: [99],
@@ -190,7 +190,7 @@ describe("models/profile", () => {
         source
       );
 
-      const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties(
+      const responseB = await RecordOps.findOrCreateByUniqueRecordProperties(
         {
           userId: [99],
           house: ["castle"],
@@ -198,34 +198,34 @@ describe("models/profile", () => {
         source
       );
 
-      expect(responseA.profile.id).toEqual(responseB.profile.id);
+      expect(responseA.record.id).toEqual(responseB.record.id);
       expect(responseA.isNew).toBe(true);
       expect(responseB.isNew).toBe(false);
 
-      const profile = responseB.profile;
-      const properties = await profile.getProperties();
+      const record = responseB.record;
+      const properties = await record.getProperties();
       expect(properties.email.values).toEqual(["koopa@example.com"]);
       expect(properties.userId.values).toEqual([99]);
       expect(properties.house.values).toEqual([null]);
       expect(properties.house.values).toEqual([null]);
     });
 
-    test("cannot create a new profile without a source or override", async () => {
+    test("cannot create a new record without a source or override", async () => {
       await expect(
-        ProfileOps.findOrCreateByUniqueProfileProperties({
+        RecordOps.findOrCreateByUniqueRecordProperties({
           email: ["yoshi@example.com"],
         })
       ).rejects.toThrow(
-        'could not create a new profile because no profile property in {"email":["yoshi@example.com"]} is unique and owned by the source'
+        'could not create a new record because no record property in {"email":["yoshi@example.com"]} is unique and owned by the source'
       );
 
       await expect(
-        ProfileOps.findOrCreateByUniqueProfileProperties(
+        RecordOps.findOrCreateByUniqueRecordProperties(
           { email: ["yoshi@example.com"] },
           false
         )
       ).rejects.toThrow(
-        'could not create a new profile because no profile property in {"email":["yoshi@example.com"]} is unique and owned by the source'
+        'could not create a new record because no record property in {"email":["yoshi@example.com"]} is unique and owned by the source'
       );
     });
 
@@ -239,19 +239,19 @@ describe("models/profile", () => {
     });
   });
 
-  describe("profile property helpers", () => {
-    let profile: Profile;
+  describe("record property helpers", () => {
+    let record: GrouparooRecord;
     beforeAll(async () => {
-      await Profile.truncate();
+      await GrouparooRecord.truncate();
     });
 
-    test("it cannot add a profile property that is not defined", async () => {
-      profile = new Profile();
-      await profile.save();
+    test("it cannot add a record property that is not defined", async () => {
+      record = new GrouparooRecord();
+      await record.save();
       await expect(
-        profile.addOrUpdateProperties({ email: ["luigi@example.com"] })
+        record.addOrUpdateProperties({ email: ["luigi@example.com"] })
       ).rejects.toThrow("cannot find a property for id or key `email`");
-      await profile.destroy();
+      await record.destroy();
     });
 
     describe("with properties", () => {
@@ -298,8 +298,8 @@ describe("models/profile", () => {
       });
 
       beforeAll(async () => {
-        profile = new Profile();
-        await profile.save();
+        record = new GrouparooRecord();
+        await record.save();
       });
 
       afterAll(async () => {
@@ -308,8 +308,8 @@ describe("models/profile", () => {
         await source.destroy();
       });
 
-      test("creating a profile creates null profile properties", async () => {
-        const newProfile = await Profile.create();
+      test("creating a record creates null record properties", async () => {
+        const newProfile = await GrouparooRecord.create();
         const properties = await newProfile.getProperties();
         expect(Object.keys(properties).length).toBe(5);
         for (const k in properties) {
@@ -318,11 +318,11 @@ describe("models/profile", () => {
         }
       });
 
-      test("a profile can be marked as pending and it's properties will be marked as pending as well", async () => {
-        const newProfile = await Profile.create();
-        await ProfileProperty.update(
+      test("a record can be marked as pending and it's properties will be marked as pending as well", async () => {
+        const newProfile = await GrouparooRecord.create();
+        await RecordProperty.update(
           { state: "ready" },
-          { where: { profileId: newProfile.id } }
+          { where: { recordId: newProfile.id } }
         );
         await newProfile.update({ state: "ready" });
 
@@ -337,9 +337,9 @@ describe("models/profile", () => {
         }
       });
 
-      test("it can add a new profile property when the schema is prepared", async () => {
-        await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
-        const properties = await profile.getProperties();
+      test("it can add a new record property when the schema is prepared", async () => {
+        await record.addOrUpdateProperties({ email: ["luigi@example.com"] });
+        const properties = await record.getProperties();
         expect(simpleProfileValues(properties)).toEqual({
           email: ["luigi@example.com"],
           firstName: [null],
@@ -349,47 +349,47 @@ describe("models/profile", () => {
         });
       });
 
-      test("adding values to profile properties moves them to the ready state", async () => {
-        await ProfileProperty.update(
+      test("adding values to record properties moves them to the ready state", async () => {
+        await RecordProperty.update(
           { state: "pending" },
-          { where: { profileId: profile.id } }
+          { where: { recordId: record.id } }
         );
 
-        await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
-        const properties = await profile.getProperties();
+        await record.addOrUpdateProperties({ email: ["luigi@example.com"] });
+        const properties = await record.getProperties();
         expect(properties.email.state).toBe("ready");
         expect(properties.firstName.state).toBe("pending");
       });
 
-      test("profile cannot transition to ready state until all properties are ready", async () => {
-        await ProfileProperty.update(
+      test("record cannot transition to ready state until all properties are ready", async () => {
+        await RecordProperty.update(
           { state: "pending" },
-          { where: { profileId: profile.id } }
+          { where: { recordId: record.id } }
         );
 
-        await expect(profile.update({ state: "ready" })).rejects.toThrow(
-          /cannot transition profile .* to ready state as not all properties are ready/
+        await expect(record.update({ state: "ready" })).rejects.toThrow(
+          /cannot transition record .* to ready state as not all properties are ready/
         );
       });
 
-      test("profile can transition to ready state if all properties are ready", async () => {
-        await ProfileProperty.update(
+      test("record can transition to ready state if all properties are ready", async () => {
+        await RecordProperty.update(
           { state: "ready" },
-          { where: { profileId: profile.id } }
+          { where: { recordId: record.id } }
         );
 
-        await profile.update({ state: "ready" }); // does not throw
+        await record.update({ state: "ready" }); // does not throw
       });
 
-      describe("profile property timestamps (non-array)", () => {
+      describe("record property timestamps (non-array)", () => {
         test("changing a value sets valueChangedAt and confirmedAt", async () => {
           const start = new Date().getTime();
           await helper.sleep(1000);
 
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             email: ["new-email@example.com"],
           });
-          const properties = await profile.getProperties();
+          const properties = await record.getProperties();
           expect(properties.email.valueChangedAt.getTime()).toBeGreaterThan(
             start
           );
@@ -400,33 +400,33 @@ describe("models/profile", () => {
           const start = new Date().getTime();
           await helper.sleep(1000);
 
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             email: ["new-email@example.com"],
           });
-          const properties = await profile.getProperties();
+          const properties = await record.getProperties();
           expect(properties.email.valueChangedAt.getTime()).toBeLessThan(start);
           expect(properties.email.confirmedAt.getTime()).toBeGreaterThan(start);
         });
 
         test("changing state sets stateChangedAt", async () => {
-          await ProfileProperty.update(
+          await RecordProperty.update(
             { state: "pending" },
-            { where: { profileId: profile.id } }
+            { where: { recordId: record.id } }
           );
           const start = new Date().getTime();
           await helper.sleep(1000);
 
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             email: ["new-email@example.com"],
           });
-          const properties = await profile.getProperties();
+          const properties = await record.getProperties();
           expect(properties.email.stateChangedAt.getTime()).toBeGreaterThan(
             start
           );
         });
       });
 
-      describe("profile property timestamps (array)", () => {
+      describe("record property timestamps (array)", () => {
         let purchasesProperty: Property;
 
         beforeAll(async () => {
@@ -448,10 +448,10 @@ describe("models/profile", () => {
           const start = new Date().getTime();
           await helper.sleep(1000);
 
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             purchases: ["hat"],
           });
-          let properties = await profile.getProperties();
+          let properties = await record.getProperties();
           expect(properties.purchases.valueChangedAt.getTime()).toBeGreaterThan(
             start
           );
@@ -460,10 +460,10 @@ describe("models/profile", () => {
             start
           );
 
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             purchases: ["hat", "mushroom"],
           });
-          properties = await profile.getProperties();
+          properties = await record.getProperties();
           expect(properties.purchases.valueChangedAt.getTime()).toBeGreaterThan(
             firstChangeAt
           );
@@ -473,10 +473,10 @@ describe("models/profile", () => {
           const start = new Date().getTime();
           await helper.sleep(1000);
 
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             purchases: ["hat", "mushroom"],
           });
-          const properties = await profile.getProperties();
+          const properties = await record.getProperties();
           expect(properties.purchases.valueChangedAt.getTime()).toBeLessThan(
             start
           );
@@ -486,26 +486,26 @@ describe("models/profile", () => {
         });
 
         test("changing state sets stateChangedAt", async () => {
-          await ProfileProperty.update(
+          await RecordProperty.update(
             { state: "pending" },
-            { where: { profileId: profile.id } }
+            { where: { recordId: record.id } }
           );
           const start = new Date().getTime();
           await helper.sleep(1000);
 
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             purchases: ["hat", "mushroom"],
           });
-          const properties = await profile.getProperties();
+          const properties = await record.getProperties();
           expect(properties.purchases.stateChangedAt.getTime()).toBeGreaterThan(
             start
           );
         });
       });
 
-      describe("profile property lifecycle", () => {
+      describe("record property lifecycle", () => {
         test("it can add properties in bulk with proper timestamps", async () => {
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             email: ["luigi@example.com"],
             firstName: ["Luigi"],
             lastName: ["Mario"],
@@ -513,7 +513,7 @@ describe("models/profile", () => {
             userId: [123],
           });
 
-          const properties = await profile.getProperties();
+          const properties = await record.getProperties();
           expect(simpleProfileValues(properties)).toEqual({
             email: ["luigi@example.com"],
             firstName: ["Luigi"],
@@ -522,19 +522,19 @@ describe("models/profile", () => {
             userId: [123],
           });
 
-          expect(profile.createdAt.getTime()).toBeLessThan(
+          expect(record.createdAt.getTime()).toBeLessThan(
             properties.color.createdAt.getTime()
           );
-          expect(profile.updatedAt.getTime()).toBeLessThan(
+          expect(record.updatedAt.getTime()).toBeLessThan(
             properties.color.updatedAt.getTime()
           );
         });
 
         test("it can update an existing property", async () => {
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             email: ["luigi-again@example.com"],
           });
-          const properties = await profile.getProperties();
+          const properties = await record.getProperties();
           expect(simpleProfileValues(properties)).toEqual({
             email: ["luigi-again@example.com"],
             firstName: ["Luigi"],
@@ -545,15 +545,15 @@ describe("models/profile", () => {
         });
 
         test("it will ignore the property _meta, as it is reserved", async () => {
-          await profile.addOrUpdateProperties({ _meta: ["bla"] });
-          const properties = await profile.getProperties();
+          await record.addOrUpdateProperties({ _meta: ["bla"] });
+          const properties = await record.getProperties();
           expect(simpleProfileValues(properties)._meta).toBeFalsy();
           expect(simpleProfileValues(properties).firstName).toEqual(["Luigi"]);
         });
 
         test("it can remove an existing property", async () => {
-          await profile.removeProperty("email");
-          const properties = await profile.getProperties();
+          await record.removeProperty("email");
+          const properties = await record.getProperties();
           expect(properties["email"]).toBeUndefined();
           expect(simpleProfileValues(properties)).toEqual({
             firstName: ["Luigi"],
@@ -564,16 +564,16 @@ describe("models/profile", () => {
         });
 
         test("no problems arise when re-adding a deleted property", async () => {
-          let properties = await profile.getProperties();
+          let properties = await record.getProperties();
           expect(properties.email).toBeUndefined();
-          await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
-          properties = await profile.getProperties();
+          await record.addOrUpdateProperties({ email: ["luigi@example.com"] });
+          properties = await record.getProperties();
           expect(properties.email.values).toEqual(["luigi@example.com"]);
         });
 
         test("it will not raise when trying to remove a non-existent property", async () => {
-          await profile.removeProperty("funky");
-          const properties = await profile.getProperties();
+          await record.removeProperty("funky");
+          const properties = await record.getProperties();
           expect(simpleProfileValues(properties)).toEqual({
             email: ["luigi@example.com"],
             firstName: ["Luigi"],
@@ -583,35 +583,35 @@ describe("models/profile", () => {
           });
         });
 
-        test("profile properties can be addded by key", async () => {
-          await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
-          const properties = await profile.getProperties();
+        test("record properties can be addded by key", async () => {
+          await record.addOrUpdateProperties({ email: ["luigi@example.com"] });
+          const properties = await record.getProperties();
           expect(simpleProfileValues(properties).email).toEqual([
             "luigi@example.com",
           ]);
         });
 
-        test("profile properties can be addded by id", async () => {
+        test("record properties can be addded by id", async () => {
           const emailProperty = await Property.findOne({
             where: { key: "email" },
           });
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             [emailProperty.id]: ["luigi@example.com"],
           });
 
-          const properties = await profile.getProperties();
+          const properties = await record.getProperties();
           expect(simpleProfileValues(properties).email).toEqual([
             "luigi@example.com",
           ]);
         });
 
-        test("orphan profile properties will be removed", async () => {
-          await profile.reload();
+        test("orphan record properties will be removed", async () => {
+          await record.reload();
 
-          const profileProperty = await ProfileProperty.create(
+          const profileProperty = await RecordProperty.create(
             {
               id: "rule_missing",
-              profileId: profile.id,
+              recordId: record.id,
               propertyId: "missing",
               rawValue: "green-hat",
               position: 0,
@@ -620,7 +620,7 @@ describe("models/profile", () => {
             { hooks: false } // we need to skip validations
           );
 
-          const properties = await profile.getProperties(); // does not throw
+          const properties = await record.getProperties(); // does not throw
           expect(Object.keys(properties).length).toBe(5);
 
           await expect(profileProperty.reload()).rejects.toThrow(
@@ -628,14 +628,14 @@ describe("models/profile", () => {
           );
         });
 
-        test("deleting the profile also deletes the properties", async () => {
-          const beforeCount = await ProfileProperty.count({
-            where: { profileId: profile.id },
+        test("deleting the record also deletes the properties", async () => {
+          const beforeCount = await RecordProperty.count({
+            where: { recordId: record.id },
           });
           expect(beforeCount).toBe(5);
-          await profile.destroy();
-          const afterCount = await ProfileProperty.count({
-            where: { profileId: profile.id },
+          await record.destroy();
+          const afterCount = await RecordProperty.count({
+            where: { recordId: record.id },
           });
           expect(afterCount).toBe(0);
         });
@@ -660,7 +660,7 @@ describe("models/profile", () => {
         });
 
         test("multiple values can be set for array properties and the order is maintained", async () => {
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             email: ["luigi@example.com"],
             firstName: ["Luigi"],
             lastName: ["Mario"],
@@ -668,7 +668,7 @@ describe("models/profile", () => {
             userId: [123],
             purchases: ["star", "mushroom", "mushroom", "go kart"],
           });
-          const properties = await profile.getProperties();
+          const properties = await record.getProperties();
           expect(simpleProfileValues(properties)).toEqual({
             email: ["luigi@example.com"],
             firstName: ["Luigi"],
@@ -680,53 +680,53 @@ describe("models/profile", () => {
         });
 
         test("when array properties are the same, they will have bumped timestamps", async () => {
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             email: ["luigi@example.com"],
             purchases: ["star", "mushroom", "mushroom", "go kart"],
           });
-          const firstProperties = await profile.getProperties();
+          const firstProperties = await record.getProperties();
           const firstUpdate = firstProperties.purchases.updatedAt;
 
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             email: ["luigi@example.com"],
             purchases: ["star", "mushroom", "mushroom", "go kart"],
           });
-          const secondProperties = await profile.getProperties();
+          const secondProperties = await record.getProperties();
           expect(
             secondProperties.purchases.updatedAt.getTime()
           ).toBeGreaterThanOrEqual(firstUpdate.getTime());
         });
 
         test("when any array property has changed, they will all be updated", async () => {
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             email: ["luigi@example.com"],
             purchases: ["star", "mushroom", "mushroom", "go kart"],
           });
-          const firstProperties = await profile.getProperties();
+          const firstProperties = await record.getProperties();
           const firstUpdate = firstProperties.purchases.updatedAt;
 
           await helper.sleep(1000);
 
-          await profile.addOrUpdateProperties({
+          await record.addOrUpdateProperties({
             email: ["luigi@example.com"],
             purchases: ["go kart"],
           });
-          const secondProperties = await profile.getProperties();
+          const secondProperties = await record.getProperties();
           expect(
             secondProperties.purchases.updatedAt.getTime()
           ).toBeGreaterThan(firstUpdate.getTime());
         });
 
-        test("other profile properties do not accept array values", async () => {
+        test("other record properties do not accept array values", async () => {
           await expect(
-            profile.addOrUpdateProperties({
+            record.addOrUpdateProperties({
               firstName: ["Luigi"],
               lastName: ["Mario"],
               color: ["green", "blue", "red"],
               userId: [123],
             })
           ).rejects.toThrow(
-            /cannot set multiple profile properties for a non-array property/
+            /cannot set multiple record properties for a non-array property/
           );
         });
       });
@@ -734,7 +734,7 @@ describe("models/profile", () => {
   });
 
   describe("with a manual group", () => {
-    let profile: Profile;
+    let record: GrouparooRecord;
     let group: Group;
 
     beforeAll(async () => {
@@ -744,26 +744,26 @@ describe("models/profile", () => {
         state: "ready",
       });
 
-      profile = await Profile.create();
-      await group.addProfile(profile);
+      record = await GrouparooRecord.create();
+      await group.addRecord(record);
     });
 
-    test("the profile can return the groups it is a member of", async () => {
-      const groups = await profile.$get("groups");
+    test("the record can return the groups it is a member of", async () => {
+      const groups = await record.$get("groups");
       expect(groups.length).toBe(1);
       expect(groups[0].name).toBe("test group");
     });
 
     test("calculating memberships will include the manual group", async () => {
-      const groups = await profile.updateGroupMembership();
+      const groups = await record.updateGroupMembership();
       expect(groups[group.id]).toEqual(true);
     });
 
-    test("deleting the profile will also delete the groupMember", async () => {
+    test("deleting the record will also delete the groupMember", async () => {
       let count = await GroupMember.count({ where: { groupId: group.id } });
       expect(count).toBe(1);
 
-      await profile.destroy();
+      await record.destroy();
 
       count = await GroupMember.count({ where: { groupId: group.id } });
       expect(count).toBe(0);
@@ -772,13 +772,13 @@ describe("models/profile", () => {
 
   describe("with a calculated group", () => {
     let group: Group;
-    let profile: Profile;
+    let record: GrouparooRecord;
     let app: App;
     let source: Source;
     let emailProperty: Property;
 
     beforeAll(async () => {
-      await Profile.truncate();
+      await GrouparooRecord.truncate();
 
       app = await App.create({
         name: "test app",
@@ -811,8 +811,8 @@ describe("models/profile", () => {
         type: "calculated",
       });
 
-      profile = await Profile.create();
-      await profile.addOrUpdateProperties({
+      record = await GrouparooRecord.create();
+      await record.addOrUpdateProperties({
         email: ["mario@example.com"],
       });
     });
@@ -828,7 +828,7 @@ describe("models/profile", () => {
     });
 
     describe("#updateGroupMembership", () => {
-      test("profiles can re-calculate their group memberships", async () => {
+      test("records can re-calculate their group memberships", async () => {
         let members = await group.$get("groupMembers");
         expect(members.length).toBe(0);
 
@@ -837,12 +837,12 @@ describe("models/profile", () => {
           { key: "email", match: "%@example.com", operation: { op: "like" } },
         ]);
 
-        const groupMemberships = await profile.updateGroupMembership();
+        const groupMemberships = await record.updateGroupMembership();
         expect(groupMemberships[group.id]).toBe(true);
 
         members = await group.$get("groupMembers");
         expect(members.length).toBe(1);
-        expect(members[0].profileId).toBe(profile.id);
+        expect(members[0].recordId).toBe(record.id);
       });
     });
   });
@@ -856,7 +856,7 @@ describe("models/profile", () => {
     let importResult: { [table: string]: { [mappingValue: string]: any } } = {};
 
     beforeAll(async () => {
-      await Profile.truncate();
+      await GrouparooRecord.truncate();
 
       plugin.registerPlugin({
         name: "test-plugin",
@@ -879,14 +879,14 @@ describe("models/profile", () => {
             direction: "import" as "import",
             options: [{ key: "table", required: true }],
             methods: {
-              profileProperty: async ({
+              recordProperty: async ({
                 property,
                 sourceOptions,
                 sourceMapping,
-                profile,
+                record,
               }) => {
                 const table = sourceOptions.table.toString();
-                const profileProperties = await profile.simplifiedProperties();
+                const profileProperties = await record.simplifiedProperties();
                 const mappingKey = Object.values(sourceMapping)[0];
                 const mappingVal =
                   profileProperties[mappingKey].length > 0 &&
@@ -944,11 +944,11 @@ describe("models/profile", () => {
       await App.truncate();
     });
 
-    test("it can pull profile properties in from all connected apps", async () => {
-      const profile = await Profile.create();
-      await profile.addOrUpdateProperties({ userId: [1001] });
-      await profile.addOrUpdateProperties({ email: ["peach@example.com"] });
-      let properties = await profile.getProperties();
+    test("it can pull record properties in from all connected apps", async () => {
+      const record = await GrouparooRecord.create();
+      await record.addOrUpdateProperties({ userId: [1001] });
+      await record.addOrUpdateProperties({ email: ["peach@example.com"] });
+      let properties = await record.getProperties();
       expect(simpleProfileValues(properties)).toEqual({
         userId: [1001],
         email: ["peach@example.com"],
@@ -964,9 +964,9 @@ describe("models/profile", () => {
           },
         },
       };
-      await profile.import();
+      await record.import();
 
-      properties = await profile.getProperties();
+      properties = await record.getProperties();
       expect(simpleProfileValues(properties)).toEqual({
         userId: [1001],
         email: ["peach@example.com"],
@@ -975,13 +975,13 @@ describe("models/profile", () => {
     });
 
     test("importing properties for source that doesn't support direct property imports will keep the old value", async () => {
-      const profile = await Profile.create();
-      await profile.addOrUpdateProperties({
+      const record = await GrouparooRecord.create();
+      await record.addOrUpdateProperties({
         userId: [1003],
         email: ["bowser@example.com"],
         color: ["green"],
       });
-      let properties = await profile.getProperties();
+      let properties = await record.getProperties();
       expect(Object.keys(properties).sort()).toEqual([
         "color",
         "email",
@@ -994,9 +994,9 @@ describe("models/profile", () => {
       const oldMethod = connection.methods.profileProperty;
       delete connection.methods.profileProperty;
 
-      await profile.import();
+      await record.import();
 
-      properties = await profile.getProperties();
+      properties = await record.getProperties();
       const pendingProperties = Object.values(properties).filter(
         (v) => v.state === "pending"
       );
@@ -1010,10 +1010,10 @@ describe("models/profile", () => {
       connection.methods.profileProperty = oldMethod;
     });
 
-    test("after importing, all missing properties will have created a null profile property", async () => {
-      const profile = await Profile.create();
-      await profile.addOrUpdateProperties({ userId: [1002] });
-      let properties = await profile.getProperties();
+    test("after importing, all missing properties will have created a null record property", async () => {
+      const record = await GrouparooRecord.create();
+      await record.addOrUpdateProperties({ userId: [1002] });
+      let properties = await record.getProperties();
       expect(Object.keys(properties).sort()).toEqual([
         "color",
         "email",
@@ -1028,9 +1028,9 @@ describe("models/profile", () => {
           },
         },
       };
-      await profile.import();
+      await record.import();
 
-      properties = await profile.getProperties();
+      properties = await record.getProperties();
       const pendingProperties = Object.values(properties).filter(
         (v) => v.state === "pending"
       );
@@ -1045,7 +1045,7 @@ describe("models/profile", () => {
 
     describe("with a dependent source", () => {
       let purchasesTable: Source;
-      let daisyProfile: Profile;
+      let daisyProfile: GrouparooRecord;
 
       beforeAll(async () => {
         purchasesTable = await Source.create({
@@ -1067,9 +1067,9 @@ describe("models/profile", () => {
       });
 
       test("properties from a dependent source can be imported at the same time", async () => {
-        const profile = await Profile.create();
-        await profile.addOrUpdateProperties({ userId: [1010] });
-        let properties = await profile.getProperties();
+        const record = await GrouparooRecord.create();
+        await record.addOrUpdateProperties({ userId: [1010] });
+        let properties = await record.getProperties();
         expect(simpleProfileValues(properties)).toEqual({
           userId: [1010],
           email: [null],
@@ -1091,10 +1091,10 @@ describe("models/profile", () => {
             },
           },
         };
-        await profile.markPending();
-        await profile.import();
+        await record.markPending();
+        await record.import();
 
-        properties = await profile.getProperties();
+        properties = await record.getProperties();
         expect(simpleProfileValues(properties)).toEqual({
           userId: [1010],
           email: ["daisy@example.com"],
@@ -1102,12 +1102,12 @@ describe("models/profile", () => {
           myPurchasesCount: [2020],
         });
 
-        daisyProfile = profile;
+        daisyProfile = record;
       });
 
       test("properties from a dependent source can be cleared at the same time if the mapping is gone", async () => {
-        const profile = daisyProfile;
-        let properties = await profile.getProperties();
+        const record = daisyProfile;
+        let properties = await record.getProperties();
         expect(simpleProfileValues(properties)).toEqual({
           userId: [1010],
           email: ["daisy@example.com"],
@@ -1126,10 +1126,10 @@ describe("models/profile", () => {
             },
           },
         };
-        await profile.markPending();
-        await profile.import();
+        await record.markPending();
+        await record.import();
 
-        properties = await profile.getProperties();
+        properties = await record.getProperties();
         expect(simpleProfileValues(properties)).toEqual({
           userId: [null],
           email: [null],
@@ -1141,21 +1141,21 @@ describe("models/profile", () => {
   });
 
   describe("merging", () => {
-    let profileA: Profile;
-    let profileB: Profile;
+    let profileA: GrouparooRecord;
+    let profileB: GrouparooRecord;
 
     beforeAll(async () => {
-      await Profile.truncate();
+      await GrouparooRecord.truncate();
       await helper.factories.properties();
 
-      // create the profiles
-      profileA = await helper.factories.profile();
+      // create the records
+      profileA = await helper.factories.record();
       await profileA.import();
 
-      profileB = await helper.factories.profile();
+      profileB = await helper.factories.record();
       await profileB.import();
 
-      // disable the test plugin import so we can explicitly set profile properties
+      // disable the test plugin import so we can explicitly set record properties
       helper.disableTestPluginImport();
     });
 
@@ -1165,19 +1165,19 @@ describe("models/profile", () => {
       await App.truncate();
     });
 
-    test("the profiles both have properties", async () => {
+    test("the records both have properties", async () => {
       const propertiesA = await profileA.getProperties();
       const propertiesB = await profileB.getProperties();
       expect(Object.keys(propertiesA).length).toBe(9);
       expect(Object.keys(propertiesB).length).toBe(9);
     });
 
-    test("profile A has newer email, profile B has newer userId, profile B has a newer ltv but it is null", async () => {
+    test("record A has newer email, record B has newer userId, record B has a newer ltv but it is null", async () => {
       await profileA.addOrUpdateProperties({ ltv: [123.45] });
       await profileB.addOrUpdateProperties({ userId: [100] });
       await profileB.addOrUpdateProperties({ firstName: ["fname"] });
 
-      // bump the updatedAt time for the email profile property, even though they remain null
+      // bump the updatedAt time for the email record property, even though they remain null
       await helper.sleep(1001);
       await profileA.addOrUpdateProperties({
         email: ["new-email@example.com"],
@@ -1201,13 +1201,13 @@ describe("models/profile", () => {
       );
     });
 
-    test("profile A and B each have different purchases", async () => {
+    test("record A and B each have different purchases", async () => {
       await profileA.addOrUpdateProperties({ purchases: ["hat"] });
       await profileB.addOrUpdateProperties({ purchases: ["shoe"] });
     });
 
-    test("merging profiles moved the properties", async () => {
-      await ProfileOps.merge(profileA, profileB);
+    test("merging records moved the properties", async () => {
+      await RecordOps.merge(profileA, profileB);
 
       const propertiesA = await profileA.getProperties();
       const propertiesB = await profileB.getProperties();
@@ -1215,7 +1215,7 @@ describe("models/profile", () => {
       expect(Object.keys(propertiesB).length).toBe(0);
     });
 
-    test("the merged profile kept the newer non-null properties", async () => {
+    test("the merged record kept the newer non-null properties", async () => {
       const properties = await profileA.getProperties();
       expect(properties.email.values).toEqual(["new-email@example.com"]);
       expect(properties.userId.values).toEqual([100]);
@@ -1223,13 +1223,13 @@ describe("models/profile", () => {
       expect(properties.ltv.values).toEqual([123.45]);
     });
 
-    test("the merged profiles should have only kept the array properties of the newest profile property", async () => {
-      // we can't be sure of the array-order for the combined profiles.  A re-import should be deterministic too
+    test("the merged records should have only kept the array properties of the newest record property", async () => {
+      // we can't be sure of the array-order for the combined records.  A re-import should be deterministic too
       const propertiesA = await profileA.getProperties();
       expect(propertiesA.purchases.values).toEqual(["shoe"]);
     });
 
-    test("the merged profile is pending", async () => {
+    test("the merged record is pending", async () => {
       await profileA.reload();
       expect(profileA.state).toBe("pending");
       const properties = await profileA.getProperties();
@@ -1238,18 +1238,18 @@ describe("models/profile", () => {
       }
     });
 
-    test("the merged profile has a log entry about the merge", async () => {
+    test("the merged record has a log entry about the merge", async () => {
       const logs = await Log.findAll({
         where: { ownerId: profileA.id, verb: "merge" },
       });
       expect(logs.length).toEqual(1);
-      expect(logs[0].message).toEqual(`merged with profile ${profileB.id}`);
+      expect(logs[0].message).toEqual(`merged with record ${profileB.id}`);
     });
 
-    test("after merging the other profile is deleted", async () => {
+    test("after merging the other record is deleted", async () => {
       await expect(profileB.reload()).rejects.toThrow(/does not exist/);
-      const profiles = await Profile.findAll();
-      expect(profiles.length).toBe(1);
+      const records = await GrouparooRecord.findAll();
+      expect(records.length).toBe(1);
     });
   });
 });

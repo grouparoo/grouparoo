@@ -50,8 +50,8 @@ describe("modules/codeConfig", () => {
       );
     });
 
-    test("a profile snapshot can be tested with a bootstrapped property", async () => {
-      const { profile, snapshot } = await helper.getProfile({
+    test("a record snapshot can be tested with a bootstrapped property", async () => {
+      const { record, snapshot } = await helper.getProfile({
         userId: 100,
       });
 
@@ -63,11 +63,11 @@ describe("modules/codeConfig", () => {
       expect(snapshot.properties.userId.values).toEqual([100]);
       expect(snapshot.groups.length).toBe(1);
       expect(snapshot.groups[0].name).toBe("People with Email Addresses");
-      expect(profile.state).toBe("ready");
+      expect(record.state).toBe("ready");
     });
 
-    test("a profile snapshot can be tested with multiple unique properties", async () => {
-      const { profile, snapshot } = await helper.getProfile({
+    test("a record snapshot can be tested with multiple unique properties", async () => {
+      const { record, snapshot } = await helper.getProfile({
         email: "example@example.com",
         userId: 100,
       });
@@ -80,7 +80,7 @@ describe("modules/codeConfig", () => {
       expect(snapshot.properties.userId.values).toEqual([100]);
       expect(snapshot.groups.length).toBe(1);
       expect(snapshot.groups[0].name).toBe("People with Email Addresses");
-      expect(profile.state).toBe("ready");
+      expect(record.state).toBe("ready");
     });
   });
 });

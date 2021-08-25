@@ -2,13 +2,19 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, config, task, specHelper } from "actionhero";
 import {
   Group,
+<<<<<<< HEAD:core/__tests__/tasks/record/checkReady/checkReady.ts
   Profile,
   ProfileProperty,
+=======
+  plugin,
+  GrouparooRecord,
+  RecordProperty,
+>>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/record/checkReady.ts
   Schedule,
   Source,
 } from "../../../../src";
 
-describe("tasks/profile:checkReady", () => {
+describe("tasks/record:checkReady", () => {
   let source: Source;
   let schedule: Schedule;
   let group: Group;
@@ -21,6 +27,13 @@ describe("tasks/profile:checkReady", () => {
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
 
+<<<<<<< HEAD:core/__tests__/tasks/record/checkReady/checkReady.ts
+=======
+  afterEach(async () => {
+    await plugin.updateSetting("core", "runs-record-batch-size", 100);
+  });
+
+>>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/record/checkReady.ts
   beforeAll(async () => {
     source = await Source.findOne();
     schedule = await helper.factories.schedule(source);
@@ -41,48 +54,48 @@ describe("tasks/profile:checkReady", () => {
     await group.update({ state: "ready" });
   });
 
-  describe("profiles:checkReady", () => {
+  describe("records:checkReady", () => {
     test("can be enqueued", async () => {
-      await task.enqueue("profiles:checkReady", {});
-      const found = await specHelper.findEnqueuedTasks("profiles:checkReady");
+      await task.enqueue("records:checkReady", {});
+      const found = await specHelper.findEnqueuedTasks("records:checkReady");
       expect(found.length).toEqual(1);
     });
 
-    test("it will find profiles which are not ready but have all properties ready", async () => {
-      const mario = await helper.factories.profile();
+    test("it will find records which are not ready but have all properties ready", async () => {
+      const mario = await helper.factories.record();
       await mario.import();
       await mario.update({ state: "pending" });
 
-      const luigi = await helper.factories.profile();
+      const luigi = await helper.factories.record();
       await luigi.import();
       await luigi.update({ state: "pending" });
 
       // toad is ready already
-      const toad = await helper.factories.profile();
+      const toad = await helper.factories.record();
       await toad.import();
       await toad.update({ state: "ready" });
 
-      // peach has 1 pending profile property
-      const peach = await helper.factories.profile();
+      // peach has 1 pending record property
+      const peach = await helper.factories.record();
       await peach.import();
-      const peachProperty = await ProfileProperty.findOne({
-        where: { profileId: peach.id },
+      const peachProperty = await RecordProperty.findOne({
+        where: { recordId: peach.id },
       });
       await peachProperty.update({ state: "pending" });
       await peach.update({ state: "pending" });
 
-      // bowser has all pending profile properties
-      const bowser = await helper.factories.profile();
+      // bowser has all pending record properties
+      const bowser = await helper.factories.record();
       await bowser.import();
-      const bowserProperties = await ProfileProperty.findAll({
-        where: { profileId: bowser.id },
+      const bowserProperties = await RecordProperty.findAll({
+        where: { recordId: bowser.id },
       });
       for (const p of bowserProperties) {
         await p.update({ state: "pending" });
       }
       await bowser.update({ state: "pending" });
 
-      await specHelper.runTask("profiles:checkReady", {});
+      await specHelper.runTask("records:checkReady", {});
 
       await mario.reload();
       await luigi.reload();
@@ -103,24 +116,49 @@ describe("tasks/profile:checkReady", () => {
       await bowser.destroy();
     });
 
-    test("it updates the group memberships", async () => {
-      const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ lastName: ["Mario"] });
-      await profile.import();
-      await profile.update({ state: "pending" });
+<<<<<<< HEAD:core/__tests__/tasks/record/checkReady/checkReady.ts
+=======
+    test("batch size can be configured with a setting", async () => {
+      await plugin.updateSetting("core", "runs-record-batch-size", 1);
 
-      let groups = await profile.$get("groups");
+      const mario = await helper.factories.record();
+      await mario.import();
+      await mario.update({ state: "pending" });
+
+      const luigi = await helper.factories.record();
+      await luigi.import();
+      await luigi.update({ state: "pending" });
+
+      await specHelper.runTask("records:checkReady", {});
+
+      await mario.reload();
+      await luigi.reload();
+
+      expect([mario.state, luigi.state].sort()).toEqual(["pending", "ready"]);
+
+      await mario.destroy();
+      await luigi.destroy();
+    });
+
+>>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/record/checkReady.ts
+    test("it updates the group memberships", async () => {
+      const record = await helper.factories.record();
+      await record.addOrUpdateProperties({ lastName: ["Mario"] });
+      await record.import();
+      await record.update({ state: "pending" });
+
+      let groups = await record.$get("groups");
       expect(groups.length).toBe(0);
 
-      await specHelper.runTask("profiles:checkReady", {});
+      await specHelper.runTask("records:checkReady", {});
 
-      await profile.reload();
-      expect(profile.state).toBe("ready");
+      await record.reload();
+      expect(record.state).toBe("ready");
 
-      groups = await profile.$get("groups");
+      groups = await record.$get("groups");
       expect(groups.length).toBe(1);
 
-      await profile.destroy();
+      await record.destroy();
     });
 
     test("it updates the imports new data and updates the run counts", async () => {
@@ -144,41 +182,37 @@ describe("tasks/profile:checkReady", () => {
         importId: _importB.id,
       });
 
-      const profile = await Profile.findOne();
-      await profile.import();
-      await profile.update({ state: "pending" });
+      const record = await GrouparooRecord.findOne();
+      await record.import();
+      await record.update({ state: "pending" });
 
       expect(_importA.newGroupIds).toEqual([]);
-      expect(_importA.newProfileProperties).toEqual({});
+      expect(_importA.newRecordProperties).toEqual({});
       expect(_importB.newGroupIds).toEqual([]);
-      expect(_importB.newProfileProperties).toEqual({});
+      expect(_importB.newRecordProperties).toEqual({});
 
       expect(run.profilesCreated).toEqual(0);
       expect(run.profilesImported).toEqual(0);
 
-      await specHelper.runTask("profiles:checkReady", {});
+      await specHelper.runTask("records:checkReady", {});
 
-      await profile.reload();
-      expect(profile.state).toBe("ready");
+      await record.reload();
+      expect(record.state).toBe("ready");
 
       await _importA.reload();
       await _importB.reload();
       await run.updateTotals();
 
-      expect(_importA.newProfileProperties.email).toEqual([
-        "mario@example.com",
-      ]);
-      expect(_importA.newProfileProperties.firstName).toEqual(["Super"]);
-      expect(_importA.newProfileProperties.lastName).toEqual(["Mario"]);
+      expect(_importA.newRecordProperties.email).toEqual(["mario@example.com"]);
+      expect(_importA.newRecordProperties.firstName).toEqual(["Super"]);
+      expect(_importA.newRecordProperties.lastName).toEqual(["Mario"]);
       expect(_importA.newGroupIds).toEqual([group.id]);
       expect(_importA.groupsUpdatedAt).toBeTruthy();
       expect(_importA.exportedAt).toBeNull();
 
-      expect(_importB.newProfileProperties.email).toEqual([
-        "mario@example.com",
-      ]);
-      expect(_importB.newProfileProperties.firstName).toEqual(["Super"]);
-      expect(_importB.newProfileProperties.lastName).toEqual(["Mario"]);
+      expect(_importB.newRecordProperties.email).toEqual(["mario@example.com"]);
+      expect(_importB.newRecordProperties.firstName).toEqual(["Super"]);
+      expect(_importB.newRecordProperties.lastName).toEqual(["Mario"]);
       expect(_importB.newGroupIds).toEqual([group.id]);
       expect(_importB.groupsUpdatedAt).toBeTruthy();
       expect(_importB.exportedAt).toBeNull();
@@ -200,15 +234,15 @@ describe("tasks/profile:checkReady", () => {
         importId: _importA.id,
       });
 
-      const profile = await Profile.findOne();
-      await profile.import();
-      await profile.update({ state: "pending" });
+      const record = await GrouparooRecord.findOne();
+      await record.import();
+      await record.update({ state: "pending" });
 
       process.env.GROUPAROO_DISABLE_EXPORTS = "true";
-      await specHelper.runTask("profiles:checkReady", {});
+      await specHelper.runTask("records:checkReady", {});
 
-      await profile.reload();
-      expect(profile.state).toBe("ready");
+      await record.reload();
+      expect(record.state).toBe("ready");
 
       await _importA.reload();
       expect(_importA.groupsUpdatedAt).toBeTruthy();

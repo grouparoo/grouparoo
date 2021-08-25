@@ -76,7 +76,7 @@ module.exports = async function getConfig() {
 
     {
       id: "profile_john",
-      class: "Profile",
+      class: "GrouparooRecord",
       properties: {
         user_id: [20],
       },
@@ -84,7 +84,7 @@ module.exports = async function getConfig() {
 
     {
       id: "profile_matthew",
-      class: "Profile",
+      class: "GrouparooRecord",
       properties: {
         user_id: [100],
       },

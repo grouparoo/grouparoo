@@ -1,11 +1,11 @@
 import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
-import { Profile, Group } from "../../../../src";
+import { GrouparooRecord, Group } from "../../../../src";
 import { helper } from "@grouparoo/spec-helper";
 
 describe("model/group", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let group: Group;
-  let luigi: Profile;
+  let luigi: GrouparooRecord;
 
   beforeAll(async () => {
     const response = await SharedGroupTests.beforeAll();

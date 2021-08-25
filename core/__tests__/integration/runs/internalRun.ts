@@ -1,16 +1,16 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { Import, Run, Profile, Source, Property } from "../../../src";
+import { Import, Run, GrouparooRecord, Source, Property } from "../../../src";
 
 describe("integration/runs/internalRun", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   let property: Property;
-  let profile: Profile;
+  let record: GrouparooRecord;
   let run: Run;
   let source: Source;
 
-  describe("adding a new Profile Property will import and sync all profiles", () => {
+  describe("adding a new GrouparooRecord Property will import and sync all records", () => {
     test("adding a property with a query creates a run and internalRun task", async () => {
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
@@ -18,8 +18,8 @@ describe("integration/runs/internalRun", () => {
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
-      profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ userId: [1] });
+      record = await helper.factories.record();
+      await record.addOrUpdateProperties({ userId: [1] });
 
       await api.resque.queue.connection.redis.flushdb();
       await Run.truncate();
@@ -41,21 +41,21 @@ describe("integration/runs/internalRun", () => {
       run = runs[0];
     });
 
-    test("the internalRun task will mark every profile as pending and create imports", async () => {
+    test("the internalRun task will mark every record as pending and create imports", async () => {
       await specHelper.deleteEnqueuedTasks("run:internalRun", {
         runId: run.id,
       });
       await specHelper.runTask("run:internalRun", { runId: run.id });
 
-      await profile.reload();
-      expect(profile.state).toBe("pending");
+      await record.reload();
+      expect(record.state).toBe("pending");
 
       const imports = await Import.findAll();
       expect(imports.length).toBe(1);
-      expect(imports[0].profileId).toBe(profile.id);
+      expect(imports[0].recordId).toBe(record.id);
     });
 
-    test("the run will be complete when all the profiles have been touched", async () => {
+    test("the run will be complete when all the records have been touched", async () => {
       await specHelper.deleteEnqueuedTasks("run:internalRun", {
         runId: run.id,
       });
@@ -69,15 +69,15 @@ describe("integration/runs/internalRun", () => {
     test("run the rest of the import pipeline", async () => {
       await ImportWorkflow();
 
-      await profile.reload();
-      expect(profile.state).toBe("ready");
+      await record.reload();
+      expect(record.state).toBe("ready");
 
       // run all enqueued export tasks
       const foundExportTasks = await specHelper.findEnqueuedTasks(
-        "profile:export"
+        "record:export"
       );
       expect(foundExportTasks.length).toEqual(1);
-      await specHelper.runTask("profile:export", foundExportTasks[0].args[0]);
+      await specHelper.runTask("record:export", foundExportTasks[0].args[0]);
 
       // run all export:send jobs
       const foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
@@ -131,7 +131,7 @@ describe("integration/runs/internalRun", () => {
       });
 
       // both new properties are marked as pending
-      const properties = await profile.getProperties();
+      const properties = await record.getProperties();
       expect(properties.userId.state).toBe("ready");
       expect(properties.email.state).toBe("ready");
       expect(properties.firstName.state).toBe("pending");

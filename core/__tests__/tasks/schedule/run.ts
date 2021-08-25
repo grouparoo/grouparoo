@@ -98,7 +98,7 @@ describe("tasks/schedule:run", () => {
                   },
                 },
               ],
-              profiles: async () => {
+              records: async () => {
                 return {
                   highWaterMark: { updated_at: 200 },
                   sourceOffset: 100,

@@ -8,8 +8,8 @@ import {
   GrouparooPlugin,
   Source,
   App,
-  Profile,
-  ProfileProperty,
+  GrouparooRecord,
+  RecordProperty,
   Schedule,
 } from "../../../../src";
 
@@ -46,6 +46,17 @@ describe("tasks/profileProperties:enqueue", () => {
     resetPlugin();
   });
 
+<<<<<<< HEAD:core/__tests__/tasks/recordProperty/enqueue/enqueue.ts
+=======
+  afterEach(async () => {
+    await plugin.updateSetting(
+      "core",
+      "imports-record-properties-batch-size",
+      50
+    );
+  });
+
+>>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/recordProperty/enqueue.ts
   describe("profileProperties:enqueue", () => {
     describe("when bootstrapping", () => {
       afterAll(async () => {
@@ -86,16 +97,16 @@ describe("tasks/profileProperties:enqueue", () => {
         expect(found.length).toEqual(1);
       });
 
-      describe("with profiles", () => {
-        let mario: Profile;
-        let luigi: Profile;
+      describe("with records", () => {
+        let mario: GrouparooRecord;
+        let luigi: GrouparooRecord;
 
         beforeAll(async () => {
           resetPlugin();
           delete testPluginConnection.methods.profileProperties;
 
-          mario = await helper.factories.profile();
-          luigi = await helper.factories.profile();
+          mario = await helper.factories.record();
+          luigi = await helper.factories.record();
 
           await mario.addOrUpdateProperties({ email: ["mario@example.com"] });
           await luigi.addOrUpdateProperties({ email: ["luigi@example.com"] });
@@ -104,12 +115,12 @@ describe("tasks/profileProperties:enqueue", () => {
           await luigi.import();
         });
 
-        test("it will enqueue batches of profile properties in the pending state and a null startedAt", async () => {
+        test("it will enqueue batches of record properties in the pending state and a null startedAt", async () => {
           await mario.markPending();
           await luigi.markPending();
           const start = new Date();
 
-          const pendingProfileProperties = await ProfileProperty.findAll({
+          const pendingProfileProperties = await RecordProperty.findAll({
             where: { state: "pending" },
           });
           expect(pendingProfileProperties.length).toBe(propertiesCount * 2);
@@ -139,12 +150,12 @@ describe("tasks/profileProperties:enqueue", () => {
           }
         });
 
-        test("it will enqueue batches of profile properties in the pending state and an old startedAt (stuck)", async () => {
+        test("it will enqueue batches of record properties in the pending state and an old startedAt (stuck)", async () => {
           await mario.markPending();
           await luigi.markPending();
           const start = new Date();
 
-          const pendingProfileProperties = await ProfileProperty.findAll({
+          const pendingProfileProperties = await RecordProperty.findAll({
             where: { state: "pending" },
           });
           expect(pendingProfileProperties.length).toBe(propertiesCount * 2);
@@ -174,11 +185,11 @@ describe("tasks/profileProperties:enqueue", () => {
           }
         });
 
-        test("it will not enqueue batches of profile properties in the pending state and a recent startedAt", async () => {
+        test("it will not enqueue batches of record properties in the pending state and a recent startedAt", async () => {
           await mario.markPending();
           await luigi.markPending();
 
-          const pendingProfileProperties = await ProfileProperty.findAll({
+          const pendingProfileProperties = await RecordProperty.findAll({
             where: { state: "pending" },
           });
           expect(pendingProfileProperties.length).toBe(propertiesCount * 2);
@@ -241,6 +252,49 @@ describe("tasks/profileProperties:enqueue", () => {
             expect(t.args[0].profileIds.length).toBe(2)
           );
         });
+<<<<<<< HEAD:core/__tests__/tasks/recordProperty/enqueue/enqueue.ts
+=======
+
+        test("the batch size can be configured via a setting", async () => {
+          await plugin.updateSetting(
+            "core",
+            "imports-record-properties-batch-size",
+            1
+          );
+
+          const run = await helper.factories.run(schedule);
+          const marioImport = await helper.factories.import(run, {
+            email: "mario@example.com",
+            firstName: "Mario",
+          });
+          const luigiImport = await helper.factories.import(run, {
+            email: "luigi@example.com",
+          });
+
+          await specHelper.runTask("import:associateProfile", {
+            importId: marioImport.id,
+          });
+          await specHelper.runTask("import:associateProfile", {
+            importId: luigiImport.id,
+          });
+
+          await specHelper.runTask("profileProperties:enqueue", {});
+
+          const importProfilePropertiesTasks =
+            await specHelper.findEnqueuedTasks(
+              "profileProperty:importProfileProperties"
+            );
+          const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
+            "profileProperty:importProfileProperty"
+          );
+
+          expect(importProfilePropertyTasks.length).toBe(0);
+          expect(importProfilePropertiesTasks.length).toBe(propertiesCount);
+          importProfilePropertiesTasks.forEach((t) =>
+            expect(t.args[0].profileIds.length).toBe(1)
+          );
+        });
+>>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/recordProperty/enqueue.ts
       });
 
       describe("without a profileProperty or profileProperties method", () => {
@@ -251,8 +305,8 @@ describe("tasks/profileProperties:enqueue", () => {
         });
 
         test("if there is no import method, it will just mark properties as ready", async () => {
-          const daisy: Profile = await helper.factories.profile();
-          const peach: Profile = await helper.factories.profile();
+          const daisy: GrouparooRecord = await helper.factories.record();
+          const peach: GrouparooRecord = await helper.factories.record();
 
           await daisy.addOrUpdateProperties({
             email: ["daisy@example.com"],
@@ -281,10 +335,10 @@ describe("tasks/profileProperties:enqueue", () => {
             importId: peachImport.id,
           });
 
-          const pendingProperties = await ProfileProperty.findAll({
+          const pendingProperties = await RecordProperty.findAll({
             where: {
               state: "pending",
-              profileId: [daisy.id, peach.id],
+              recordId: [daisy.id, peach.id],
             },
           });
           expect(pendingProperties.length).toBe(propertiesCount * 2);
@@ -302,17 +356,17 @@ describe("tasks/profileProperties:enqueue", () => {
           expect(importProfilePropertyTasks.length).toBe(0);
           expect(importProfilePropertiesTasks.length).toBe(0);
 
-          const newPendingProperties = await ProfileProperty.findAll({
+          const newPendingProperties = await RecordProperty.findAll({
             where: {
               state: "pending",
-              profileId: [daisy.id, peach.id],
+              recordId: [daisy.id, peach.id],
             },
           });
           expect(newPendingProperties.length).toBe(0);
 
           const oldValues = pendingProperties.map((p) => p.rawValue);
           const newValues = (
-            await ProfileProperty.findAll({
+            await RecordProperty.findAll({
               where: {
                 id: pendingProperties.map((p) => p.id),
                 state: "ready",

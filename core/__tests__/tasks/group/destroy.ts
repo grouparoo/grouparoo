@@ -6,7 +6,7 @@ import {
   Destination,
   Group,
   Import,
-  Profile,
+  GrouparooRecord,
   Run,
   plugin,
 } from "./../../../src";
@@ -19,8 +19,8 @@ describe("tasks/group:destroy", () => {
   });
 
   describe("group:run", () => {
-    let mario: Profile;
-    let luigi: Profile;
+    let mario: GrouparooRecord;
+    let luigi: GrouparooRecord;
 
     beforeEach(async () => {
       await api.resque.queue.connection.redis.flushdb();
@@ -31,10 +31,10 @@ describe("tasks/group:destroy", () => {
       await helper.factories.properties();
       helper.disableTestPluginImport();
 
-      await Profile.truncate();
+      await GrouparooRecord.truncate();
 
-      mario = await Profile.create();
-      luigi = await Profile.create();
+      mario = await GrouparooRecord.create();
+      luigi = await GrouparooRecord.create();
 
       await mario.addOrUpdateProperties({
         userId: [1],
@@ -137,7 +137,7 @@ describe("tasks/group:destroy", () => {
 
       await group.update({ state: "deleted" }); // mark group as deleted
 
-      // remove the profiles
+      // remove the records
       let run: Run = await specHelper.runTask("group:destroy", {
         groupId: group.id,
       });
@@ -201,7 +201,7 @@ describe("tasks/group:destroy", () => {
 
       await group.stopPreviousRuns(); // force stop it to continue tests...
 
-      // remove the profiles
+      // remove the records
       run = await specHelper.runTask("group:destroy", { groupId: group.id });
 
       reloadedGroup = await Group.findById(group.id);

@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { Property, ProfileProperty, Profile } from "../../../src";
+import { Property, RecordProperty, GrouparooRecord } from "../../../src";
 
 describe("tasks/profileProperties:sweep", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -8,11 +8,11 @@ describe("tasks/profileProperties:sweep", () => {
   beforeAll(async () => await helper.factories.properties());
 
   let emailProperty: Property;
-  let mario: Profile;
+  let mario: GrouparooRecord;
 
   beforeAll(async () => {
     emailProperty = await Property.findOne({ where: { key: "email" } });
-    mario = await helper.factories.profile();
+    mario = await helper.factories.record();
     await mario.addOrUpdateProperties({
       firstName: ["Mario"],
       lastName: ["Mario"],
@@ -20,9 +20,9 @@ describe("tasks/profileProperties:sweep", () => {
     });
   });
 
-  test("a profile property with a missing profile", async () => {
-    const profileProperty = await ProfileProperty.create({
-      profileId: "missing",
+  test("a record property with a missing record", async () => {
+    const profileProperty = await RecordProperty.create({
+      recordId: "missing",
       propertyId: emailProperty.id,
       rawValue: "person@example.com",
       position: 0,
@@ -34,23 +34,23 @@ describe("tasks/profileProperties:sweep", () => {
       /does not exist anymore/
     );
 
-    // other profiles' properties are OK
+    // other records' properties are OK
     const marioProperties = await mario.getProperties();
     expect(marioProperties["email"].values).toEqual(["mario@example.com"]);
   });
 
-  test("a profile property with a missing property", async () => {
-    const luigi: Profile = await helper.factories.profile();
+  test("a record property with a missing property", async () => {
+    const luigi: GrouparooRecord = await helper.factories.record();
     await luigi.addOrUpdateProperties({
       firstName: ["Luigi"],
       lastName: ["Mario"],
       email: ["luigi@example.com"],
     });
 
-    const profileProperty = await ProfileProperty.create(
+    const profileProperty = await RecordProperty.create(
       {
         id: "rule_missing",
-        profileId: luigi.id,
+        recordId: luigi.id,
         propertyId: "missing",
         rawValue: "green-hat",
         position: 0,
