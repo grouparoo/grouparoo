@@ -22,7 +22,7 @@ export class Plugins extends Initializer {
   async initialize() {
     plugin.registerPlugin({
       name: packageJSON.name,
-      icon: "/public/@grouparoo/calculated-property/calculated-property.svg",
+      icon: "/public/@grouparoo/calculated-property/calculated-property.png",
       templates: [
         CalculatedPropertyAppTemplate,
         CalculatedPropertySourceTemplate,
