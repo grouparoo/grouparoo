@@ -1,5 +1,5 @@
 import {
-  ErrorWithProfileId,
+  ErrorWithRecordId,
   SimpleAppOptions,
   objectCache,
   DestinationSyncOperations,
@@ -413,7 +413,7 @@ function processResults(results, users: BatchExport[], type: ResultType) {
     const user = users[i];
     const result = results[i];
     try {
-      const id = processResult(result, user.profileId, type);
+      const id = processResult(result, user.recordId, type);
       if (type === ResultType.USER) {
         if (user.destinationId && user.destinationId !== id) {
           throw new Error(
@@ -671,7 +671,7 @@ export interface ExportSalesforceMethod {
   }): Promise<{
     success: boolean;
     retryDelay?: number;
-    errors?: ErrorWithProfileId[];
+    errors?: ErrorWithRecordId[];
   }>;
 }
 export const exportSalesforceBatch: ExportSalesforceMethod = async ({

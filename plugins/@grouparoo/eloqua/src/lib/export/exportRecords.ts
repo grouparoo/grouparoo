@@ -1,7 +1,7 @@
 import { BatchExport } from "@grouparoo/app-templates/dist/destination/batch";
 import {
   Errors,
-  ErrorWithProfileId,
+  ErrorWithRecordId,
   ExportRecordsPluginMethod,
 } from "@grouparoo/core";
 import EloquaClient from "../client/client";
@@ -77,14 +77,14 @@ const execImportDefinitionRequests = async (
   }
 };
 
-const buildImportDefinitionData = ({ profileToExport, syncOperations }) => {
+const buildImportDefinitionData = ({ recordToExport, syncOperations }) => {
   const {
     destinationId,
-    profileId,
+    recordId,
     oldRecordProperties,
     newRecordProperties,
     foreignKeyValue,
-  } = profileToExport;
+  } = recordToExport;
 
   const payload: any = {};
 
@@ -103,8 +103,8 @@ const buildImportDefinitionData = ({ profileToExport, syncOperations }) => {
       );
     }
   }
-  if (profileId) {
-    payload.profileId = profileId;
+  if (recordId) {
+    payload.recordId = recordId;
   }
   // set profile properties, including old ones
   const newKeys = Object.keys(newRecordProperties);
@@ -222,7 +222,7 @@ export async function exportBatch({
     return {
       success: true,
       processExports: {
-        profileIds: addOrUpdateImportDefinitionData.map((e) => e.profileId),
+        recordIds: addOrUpdateImportDefinitionData.map((e) => e.recordId),
         remoteKey: sync.uri,
         processDelay: 10000,
       },
@@ -264,21 +264,21 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
 
 export function checkErrors(
   exportedProfiles: ErrorCheckExport[]
-): ErrorWithProfileId[] {
-  let errors: ErrorWithProfileId[] = []; // for ones that go wrong
+): ErrorWithRecordId[] {
+  let errors: ErrorWithRecordId[] = []; // for ones that go wrong
   for (const exportedProfile of exportedProfiles) {
     let { error, skippedMessage } = exportedProfile;
     if (error) {
       if (typeof error === "string") {
         error = new Error(error);
       }
-      error.profileId = exportedProfile.profileId;
+      error.recordId = exportedProfile.recordId;
       errors.push(error);
       log(error?.stack || error, "error");
     } else if (skippedMessage) {
       errors = errors || [];
-      const skip = <ErrorWithProfileId>new Error(skippedMessage);
-      skip.profileId = exportedProfile.profileId;
+      const skip = <ErrorWithRecordId>new Error(skippedMessage);
+      skip.recordId = exportedProfile.recordId;
       skip.errorLevel = "info";
       errors.push(skip);
     }
@@ -299,16 +299,16 @@ function formatVar(value) {
 
 function processAddAndUpdatedExports({ syncOperations, exports: _exports }) {
   const addOrUpdateImportDefinitionData = [];
-  for (const profile of _exports) {
-    if (profile.processed || profile.error) {
+  for (const record of _exports) {
+    if (record.processed || record.error) {
       continue;
     }
     try {
       addOrUpdateImportDefinitionData.push(
-        buildImportDefinitionData({ profileToExport: profile, syncOperations })
+        buildImportDefinitionData({ recordToExport: record, syncOperations })
       );
     } catch (error) {
-      profile.error = error;
+      record.error = error;
     }
   }
   return addOrUpdateImportDefinitionData;

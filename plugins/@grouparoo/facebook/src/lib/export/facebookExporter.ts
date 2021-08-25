@@ -15,20 +15,20 @@ import { connect, Client } from "../connect";
 import { getAudienceId, FacebookCacheData } from "./audienceMethods";
 import { userData } from "./data";
 
-import { ErrorWithProfileId, ExportedProfile } from "@grouparoo/core";
+import { ErrorWithRecordId, ExportedRecord } from "@grouparoo/core";
 import { FacebookModel } from "./model";
 
 export interface ExportFacebookMethod {
   (argument: {
     appId: string;
     appOptions: SimpleAppOptions;
-    exports: ExportedProfile[];
+    exports: ExportedRecord[];
     syncOperations: DestinationSyncOperations;
     model: FacebookModel;
   }): Promise<{
     success: boolean;
     retryDelay?: number;
-    errors?: ErrorWithProfileId[];
+    errors?: ErrorWithRecordId[];
   }>;
 }
 
@@ -178,7 +178,7 @@ async function updateAudience(
     if (user) {
       const message = invalid_entry_samples[data];
       user.error = new Error(`Facebook data invalid: ${message}`);
-      mapped[data] = user.profileId;
+      mapped[data] = user.recordId;
     }
   }
 

@@ -6,7 +6,7 @@ import { exportSalesforceBatch } from "../export/salesforceExporter";
 import { destinationModel } from "./model";
 import {
   ExportRecordsPluginMethod,
-  ErrorWithProfileId,
+  ErrorWithRecordId,
   SimpleAppOptions,
   SimpleDestinationOptions,
   DestinationSyncOperations,
@@ -22,7 +22,7 @@ export interface MyBatchMethod {
   }): Promise<{
     success: boolean;
     retryDelay?: number;
-    errors?: ErrorWithProfileId[];
+    errors?: ErrorWithRecordId[];
   }>;
 }
 

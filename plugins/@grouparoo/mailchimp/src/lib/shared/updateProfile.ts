@@ -1,5 +1,5 @@
 import {
-  ExportedProfile,
+  ExportedRecord,
   DestinationSyncOperations,
   Errors,
 } from "@grouparoo/core";
@@ -11,7 +11,7 @@ export interface UpdateProfileMethod {
     listId: string;
     mailchimpId: string;
     email_address: string;
-    export: ExportedProfile;
+    export: ExportedRecord;
   }): Promise<{
     success: boolean;
     retryDelay?: number;
