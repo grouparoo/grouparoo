@@ -43,7 +43,7 @@ export class Plugins extends Initializer {
     const defaultSyncMode: DestinationSyncMode = "sync";
     plugin.registerPlugin({
       name: packageJSON.name,
-      icon: "/public/@grouparoo/redshift/redshift.svg",
+      icon: "/public/@grouparoo/redshift/redshift.png",
       templates: [
         new AppTemplate("redshift", [
           path.join(templateRoot, "app", "*.template"),

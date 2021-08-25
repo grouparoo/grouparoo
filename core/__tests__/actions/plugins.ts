@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
 import path from "path";
-// import fs from "fs";
 import { specHelper } from "actionhero";
 import {
   PluginsAvailableList,
@@ -10,28 +9,20 @@ import {
 import PluginDetails from "./../../src/utils/pluginDetails";
 const coreVersion = PluginDetails.getCoreVersion();
 
+const nockFile = path.join(
+  __dirname,
+  "..",
+  "fixtures",
+  "actions",
+  "plugins.js"
+);
+
+// these comments to use nock
+require("./../fixtures/actions/plugins");
+// or these to make it record a new one
+//helper.recordNock(nockFile);
+
 describe("actions/plugins", () => {
-  beforeAll(async () => {
-    const nockFile = path.join(
-      __dirname,
-      "..",
-      "fixtures",
-      "actions",
-      "plugins.ts"
-    );
-
-    // --- record new nock file ---
-    // const nock = await import("nock");
-    // nock.recorder.rec({
-    //   logging: (content) => {
-    //     fs.appendFileSync(nockFile, content);
-    //   },
-    // });
-
-    // --- use recorded nock file ---
-    await import(nockFile);
-  });
-
   helper.grouparooTestServer({ truncate: true });
 
   test("can list installed plugins", async () => {
@@ -44,7 +35,7 @@ describe("actions/plugins", () => {
     expect(plugins[0]).toEqual({
       name: "@grouparoo/core",
       currentVersion: coreVersion,
-      latestVersion: "0.3.2", // from nock recording
+      latestVersion: "0.5.2", // from nock recording
       upToDate: true,
       license: "MPL-2.0",
       url: "https://github.com/grouparoo/grouparoo",
@@ -64,7 +55,7 @@ describe("actions/plugins", () => {
       expect.objectContaining({
         name: "Postgres",
         imageUrl:
-          "https://www.grouparoo.com/images/home/integrations/postgres/postgres.svg",
+          "https://www.grouparoo.com/images/home/integrations/postgres/postgres.png",
         packageName: "@grouparoo/postgres",
         source: true,
         destination: true,
