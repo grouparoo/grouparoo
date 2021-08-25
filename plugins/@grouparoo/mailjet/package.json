@@ -30,7 +30,7 @@
   "dependencies": {
     "@grouparoo/app-templates": "0.5.3-alpha.5",
     "axios": "0.21.1",
-    "node-mailjet": "^3.3.4"
+    "node-mailjet": "3.3.4"
   },
   "devDependencies": {
     "@grouparoo/core": "0.5.3-alpha.5",
