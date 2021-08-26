@@ -435,6 +435,31 @@ describe("modules/codeConfig", () => {
     });
   });
 
+  describe("disabled config", () => {
+    test("nothing is deleted if config dir is disabled", async () => {
+      api.codeConfig.allowLockedModelChanges = true;
+      const { errors, seenIds, deletedIds } = await loadConfigDirectory(false);
+      expect(errors).toEqual([]);
+      expect(seenIds).toEqual({});
+      expect(deletedIds).toEqual({});
+
+      const apps = await App.findAll();
+      expect(apps.length).toBe(1);
+
+      const properties = await Property.findAll();
+      expect(properties.length).toBe(4);
+
+      const groups = await Group.findAll();
+      expect(groups.length).toBe(1);
+
+      const teams = await Team.findAll();
+      expect(teams.length).toBe(1);
+
+      const teamMembers = await TeamMember.findAll();
+      expect(teamMembers.length).toBe(1);
+    });
+  });
+
   describe("partially empty config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
