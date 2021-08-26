@@ -35,7 +35,10 @@ describe("actions/status", () => {
       });
 
       describe("config mode", () => {
-        const localFile = ConfigUser.localUserFilePath();
+        let localFile: string;
+        beforeAll(async () => {
+          localFile = await ConfigUser.localUserFilePath();
+        });
 
         beforeEach(async () => {
           process.env.GROUPAROO_RUN_MODE = "cli:config";

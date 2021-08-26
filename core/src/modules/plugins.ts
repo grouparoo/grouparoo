@@ -1,10 +1,14 @@
 import { config } from "actionhero";
 import path from "path";
-import PluginDetails from "../utils/pluginDetails";
 import pacote from "pacote";
 import { log } from "actionhero";
 import compareVersions from "compare-versions";
 import { spawnPromise } from "./spawnPromise";
+import {
+  getParentPath,
+  getCoreVersion,
+  getPluginManifest,
+} from "../modules/pluginDetails";
 import "isomorphic-fetch";
 
 export namespace Plugins {
@@ -39,8 +43,8 @@ export namespace Plugins {
   }
 
   export async function installedPluginVersions() {
-    const pluginManifest = PluginDetails.getPluginManifest();
-    const coreVersion = PluginDetails.getCoreVersion();
+    const pluginManifest = getPluginManifest();
+    const coreVersion = getCoreVersion();
 
     const plugins: PluginWithVersion[] = [
       {
@@ -100,11 +104,6 @@ export namespace Plugins {
   }
 
   function getCli() {
-    return path.join(
-      PluginDetails.getParentPath(),
-      "node_modules",
-      ".bin",
-      "grouparoo"
-    );
+    return path.join(getParentPath(), "node_modules", ".bin", "grouparoo");
   }
 }

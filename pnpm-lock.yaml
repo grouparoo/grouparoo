@@ -232,6 +232,7 @@ importers:
       '@types/node': '*'
       '@types/pacote': 11.1.1
       '@types/pluralize': 0.0.29
+      '@types/tar': 4.0.5
       '@types/validator': '*'
       actionhero: 27.0.1
       ah-sequelize-plugin: 3.2.0
@@ -268,6 +269,7 @@ importers:
       sequelize: 6.6.2
       sequelize-typescript: 2.1.0
       sqlite3: 5.0.2
+      tar: 6.1.10
       ts-jest: 27.0.5
       ts-node: 10.2.1
       type-fest: 2.1.0
@@ -313,6 +315,7 @@ importers:
       sequelize: 6.6.2_98f032adade92d92d5295670c0365597
       sequelize-typescript: 2.1.0_3085a4116b0c716572b52e702166f4a9
       sqlite3: 5.0.2
+      tar: 6.1.10
       ts-node: 10.2.1_f50b86b1778cd2aa4e5405c08bb39559
       umzug: 3.0.0-beta.5
       uuid: 8.3.2
@@ -324,6 +327,7 @@ importers:
       '@types/jest': 27.0.1
       '@types/pacote': 11.1.1
       '@types/pluralize': 0.0.29
+      '@types/tar': 4.0.5
       csv-parse: 4.16.0
       jest: 27.0.6_ts-node@10.2.1
       jest-fetch-mock: 3.0.3
@@ -3897,6 +3901,12 @@ packages:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
     dev: true
 
+  /@types/minipass/3.1.0:
+    resolution: {integrity: sha512-b2yPKwCrB8x9SB65kcCistMoe3wrYnxxt5rJSZ1kprw0uOXvhuKi9kTQ746Y+Pbqoh+9C0N4zt0ztmTnG9yg7A==}
+    dependencies:
+      '@types/node': 16.7.1
+    dev: true
+
   /@types/mysql/2.15.19:
     resolution: {integrity: sha512-wSRg2QZv14CWcZXkgdvHbbV2ACufNy5EgI8mBBxnJIptchv7DBy/h53VMa2jDhyo0C9MO4iowE6z9vF8Ja1DkQ==}
     dependencies:
@@ -4002,6 +4012,13 @@ packages:
 
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
+    dev: true
+
+  /@types/tar/4.0.5:
+    resolution: {integrity: sha512-cgwPhNEabHaZcYIy5xeMtux2EmYBitfqEceBUi2t5+ETy4dW6kswt6WX4+HqLeiiKOo42EXbGiDmVJ2x+vi37Q==}
+    dependencies:
+      '@types/minipass': 3.1.0
+      '@types/node': 16.7.1
     dev: true
 
   /@types/testing-library__jest-dom/5.14.1:

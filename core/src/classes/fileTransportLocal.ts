@@ -1,5 +1,5 @@
 import { log, env } from "actionhero";
-import { getParentPath } from "../utils/pluginDetails";
+import { getParentPath } from "../modules/pluginDetails";
 import { FileTransport } from "./fileTransport";
 import fs from "fs-extra";
 import path from "path";

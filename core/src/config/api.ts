@@ -1,5 +1,5 @@
 import path from "path";
-import { getParentPath } from "../utils/pluginDetails";
+import { getParentPath } from "../modules/pluginDetails";
 import { api } from "actionhero";
 
 export const DEFAULT = {

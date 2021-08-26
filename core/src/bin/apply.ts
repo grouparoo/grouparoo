@@ -6,7 +6,7 @@ import {
   processConfigObjects,
   deleteLockedObjects,
 } from "../modules/configLoaders";
-import { getConfigDir } from "../utils/pluginDetails";
+import { getConfigDir } from "../modules/pluginDetails";
 import pluralize from "pluralize";
 import { Migrations } from "ah-sequelize-plugin/dist/modules/migrations";
 
@@ -36,7 +36,7 @@ export class Apply extends CLI {
   async run({ params }) {
     GrouparooCLI.logCLI(this.name);
 
-    const configDir = getConfigDir();
+    const configDir = await getConfigDir(true);
     const configObjects = await loadConfigObjects(configDir);
 
     await CLS.wrap(
