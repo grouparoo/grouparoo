@@ -215,7 +215,7 @@ describe("actions/schedules", () => {
         expect(tasks[0].args[0].scheduleId).toBe(id);
       });
 
-      test("an administrator can request to run all schedules and include running runs", async () => {
+      test("an administrator can request to run all schedules and stop running runs", async () => {
         await api.resque.queue.connection.redis.flushdb();
         await Run.truncate();
         const run = await Run.create({
@@ -231,7 +231,23 @@ describe("actions/schedules", () => {
         );
         expect(error).toBeUndefined();
         expect(runs.length).toBe(1);
-        expect(runs[0].id).toEqual(run.id);
+        expect(runs[0].id).not.toEqual(run.id);
+      });
+
+      test("an administrator can request to run some schedules by ID", async () => {
+        connection.params = { csrfToken, scheduleIds: [id] };
+        const { error, runs } = await specHelper.runAction<SchedulesRun>(
+          "schedules:run",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(runs.length).toBe(1);
+
+        connection.params = { csrfToken, scheduleIds: ["foo"] };
+        const { error: errorAgain, runs: runsAgain } =
+          await specHelper.runAction<SchedulesRun>("schedules:run", connection);
+        expect(errorAgain).toBeUndefined();
+        expect(runsAgain.length).toBe(0);
       });
 
       test("an administrator can destroy a connection", async () => {

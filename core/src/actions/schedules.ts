@@ -4,6 +4,7 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
 import { APIData } from "../modules/apiData";
+import { Op } from "sequelize";
 
 export class SchedulesList extends AuthenticatedAction {
   constructor() {
@@ -73,11 +74,19 @@ export class SchedulesRun extends AuthenticatedAction {
     this.description = "run all schedules";
     this.outputExample = {};
     this.permission = { topic: "source", mode: "write" };
+    this.inputs = {
+      scheduleIds: { required: false, formatter: APIData.ensureObject },
+    };
   }
 
-  async runWithinTransaction() {
+  async runWithinTransaction({ params }) {
     const runs: Run[] = [];
-    const schedules = await Schedule.findAll();
+
+    const where = {};
+    if (params.scheduleIds && params.scheduleIds.length > 0) {
+      where["id"] = { [Op.in]: params.scheduleIds };
+    }
+    const schedules = await Schedule.findAll({ where });
 
     for (const schedule of schedules) {
       const runningRun = await Run.scope(null).findOne({
@@ -88,12 +97,10 @@ export class SchedulesRun extends AuthenticatedAction {
         },
       });
 
-      if (runningRun) {
-        runs.push(runningRun);
-      } else {
-        const newRun = await schedule.enqueueRun();
-        runs.push(newRun);
-      }
+      if (runningRun) await runningRun.stop();
+
+      const newRun = await schedule.enqueueRun();
+      runs.push(newRun);
     }
 
     return { runs: await Promise.all(runs.map((run) => run.apiData())) };
