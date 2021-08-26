@@ -1,3 +1,5 @@
+process.env.GROUPAROO_IMPORTS_BATCH_SIZE = "100";
+
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/google-sheets": { path: path.join(__dirname, "..", "..") },
