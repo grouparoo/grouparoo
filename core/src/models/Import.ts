@@ -214,8 +214,6 @@ export class Import extends Model {
       const run = await Run.findOne({ where: { id: this.creatorId } });
       if (run && run.state === "complete") await run.buildErrorMessage();
     }
-
-    return this;
   }
 
   async associateProfile() {
