@@ -18,11 +18,17 @@ mkdir -p ~/.npm-global
 export NPM_CONFIG_PREFIX=~/.npm-global
 export PATH="$HOME/.npm-global/bin:$PATH"
 
-## pack up a version of core
+## pack up dependencies
 cd "$MONOREPO/core" && npm pack
 PACKED_CORE="$MONOREPO/core/grouparoo-core-$CORE_VERSION.tgz"
+echo "core packed to $PACKED_CORE"
+
+cd "$MONOREPO/ui/ui-community" && npm pack
+PACKED_COMMUNITY="$MONOREPO/ui/ui-community/grouparoo-ui-community-$CORE_VERSION.tgz"
+echo "ui-community packed to $PACKED_COMMUNITY"
+
 echo ""
-echo "--- core packed to $PACKED_CORE ---"
+echo "--- dependencies packed ---"
 
 ## use /local/ version of the "grouparoo" packages with
 cd "$MONOREPO/cli" && npm link .
@@ -89,7 +95,7 @@ else
     exit 1
 fi
 
-## replace core with packed core
+## replace dependencies with packed dependencies
 # Note: with quotes and slashes, sed and awk don't work so well
 
 cat << EOF > "$WORKDIR/package.json"
@@ -105,7 +111,7 @@ cat << EOF > "$WORKDIR/package.json"
   },
   "dependencies": {
     "@grouparoo/core": "$PACKED_CORE",
-    "@grouparoo/ui-community": "$CORE_VERSION"
+    "@grouparoo/ui-community": "$PACKED_COMMUNITY"
   },
   "scripts": {
     "start": "cd node_modules/@grouparoo/core && ./bin/start"
