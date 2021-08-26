@@ -1,7 +1,7 @@
 import fs from "fs";
 import { URL } from "url";
 import { join, isAbsolute } from "path";
-import { getParentPath, getPluginManifest } from "../utils/pluginDetails";
+import { getParentPath, getPluginManifest } from "../modules/pluginDetails";
 import { log } from "actionhero";
 
 import cls from "cls-hooked";

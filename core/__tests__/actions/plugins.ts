@@ -6,8 +6,8 @@ import {
   PluginsInstalledList,
 } from "../../src/actions/plugins";
 
-import PluginDetails from "./../../src/utils/pluginDetails";
-const coreVersion = PluginDetails.getCoreVersion();
+import { getCoreVersion } from "./../../src/modules/pluginDetails";
+const coreVersion = getCoreVersion();
 
 const nockFile = path.join(
   __dirname,

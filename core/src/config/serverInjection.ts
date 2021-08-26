@@ -1,5 +1,5 @@
 import path from "path";
-import { getPluginManifest } from "../utils/pluginDetails";
+import { getPluginManifest } from "../modules/pluginDetails";
 
 // have any of the active plugins provided a file to inject into the server's boot process?
 const pluginManifest = getPluginManifest();

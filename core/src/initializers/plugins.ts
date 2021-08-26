@@ -2,7 +2,7 @@ import { Initializer, api, log, utils } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
 import { App } from "../models/App";
-import { getPluginManifest } from "../utils/pluginDetails";
+import { getPluginManifest } from "../modules/pluginDetails";
 import { ConfigTemplate } from "../classes/configTemplate";
 import {
   CalculatedGroupTemplate,

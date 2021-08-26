@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { getParentPath } from "../utils/pluginDetails";
+import { getParentPath } from "../modules/pluginDetails";
 
 const envFileAttempts: string[] = [];
 

@@ -5,7 +5,7 @@ import {
   loadConfigObjects,
   processConfigObjects,
 } from "../modules/configLoaders";
-import { getConfigDir } from "../utils/pluginDetails";
+import { getConfigDir } from "../modules/pluginDetails";
 import pluralize from "pluralize";
 
 export class Validate extends CLI {

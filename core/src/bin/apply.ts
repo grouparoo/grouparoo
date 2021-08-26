@@ -6,7 +6,7 @@ import {
   processConfigObjects,
   deleteLockedObjects,
 } from "../modules/configLoaders";
-import { getConfigDir } from "../utils/pluginDetails";
+import { getConfigDir } from "../modules/pluginDetails";
 import pluralize from "pluralize";
 import { Migrations } from "ah-sequelize-plugin/dist/modules/migrations";
 

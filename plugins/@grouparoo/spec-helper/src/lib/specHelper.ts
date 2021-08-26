@@ -6,7 +6,7 @@ import { loadPath } from "./loadPath";
 
 const {
   getCoreRootPath,
-} = require(`@grouparoo/core/${loadPath}/utils/pluginDetails`);
+} = require(`@grouparoo/core/${loadPath}/modules/pluginDetails`);
 const corePath: string = getCoreRootPath();
 process.chdir(corePath);
 process.env.ACTIONHERO_CONFIG = `${corePath}/${loadPath}/config`;

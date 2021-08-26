@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import { getConfigDir } from "../utils/pluginDetails";
+import { getConfigDir } from "../modules/pluginDetails";
 import { GrouparooSubscription } from "./grouparooSubscription";
 import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";

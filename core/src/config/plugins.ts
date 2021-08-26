@@ -1,5 +1,5 @@
 import path from "path";
-import { getPluginManifest } from "../utils/pluginDetails";
+import { getPluginManifest } from "../modules/pluginDetails";
 import InjectedPlugins from "./pluginInjection";
 
 function getPluginPath(pluginName: string) {

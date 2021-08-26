@@ -3,13 +3,13 @@ import fs from "fs-extra";
 import os from "os";
 import { api, log } from "actionhero";
 import { loadConfigDirectory } from "@grouparoo/core/dist/modules/configLoaders";
-import { getConfigDir } from "@grouparoo/core/dist/utils/pluginDetails";
+import { getConfigDir } from "@grouparoo/core/dist/modules/pluginDetails";
 import { prettier } from "./shared";
 import Connection from "./connection";
 import { updateEnvVariables } from "./env";
 
 export async function deleteConfigDir() {
-  const configDir = getConfigDir();
+  const configDir = await getConfigDir();
   deleteDir(configDir);
 }
 
@@ -18,7 +18,7 @@ export async function writeConfigFiles(
   db: Connection,
   subDirs: string[]
 ) {
-  const configDir = getConfigDir();
+  const configDir = await getConfigDir();
   await generateConfig(dataset, db, configDir, subDirs);
   if (subDirs.length > 0) {
     await prettier(configDir);

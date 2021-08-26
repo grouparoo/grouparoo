@@ -15,7 +15,7 @@ import {
   getCodeConfigLockKey,
 } from "../classes/codeConfig";
 
-import { getConfigDir } from "../utils/pluginDetails";
+import { getConfigDir } from "../modules/pluginDetails";
 import { Profile } from "../models/Profile";
 
 type WritableConfigObject = {

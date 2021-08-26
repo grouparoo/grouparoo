@@ -1,4 +1,4 @@
-import { getCoreVersion, getNodeVersion } from "./utils/pluginDetails";
+import { getCoreVersion, getNodeVersion } from "./modules/pluginDetails";
 
 export async function main() {
   const { Process, log, api } = await import("actionhero");
