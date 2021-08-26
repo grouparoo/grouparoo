@@ -43,7 +43,8 @@ describe("integration/endpoint/prometheus", () => {
         url,
       });
       expect(status).toEqual(200);
-      expect(data).toBeDefined(); //TODO: a better comparison
+      expect(data).toContain(`process_cpu_user_seconds_total`);
+      expect(data).toContain(`grouparoo_workers_cluster_count 1`);
     });
   });
 });
