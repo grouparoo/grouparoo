@@ -197,6 +197,7 @@ export class Run extends Model {
 
     const errorMessage = importErrorCounts
       .map((emc) => `${emc.errorMessage} (x${emc.get("errorCount")})`)
+      .sort()
       .join("\r\n");
 
     if (importErrorCounts.length > 0) this.error = errorMessage;
