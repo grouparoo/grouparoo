@@ -27,12 +27,10 @@ export class CodeConfig extends CLSInitializer {
   }
 
   async startWithinTransaction() {
-    const configDir = await getConfigDir();
-    if (process.env.GROUPAROO_RUN_MODE === "cli:config" && !configDir) {
-      return GrouparooCLI.logger.fatal(
-        `The config directory has been disabled. To run Config UI, make sure that the GROUPAROO_CONFIG_DIR environment variable is not set to "false".`
-      );
-    }
+    const configDir = await getConfigDir(
+      process.env.GROUPAROO_RUN_MODE === "cli:config"
+    );
+
     const { errors } = await loadConfigDirectory(configDir);
 
     if (errors.length > 0) throw new Error("code config error");
