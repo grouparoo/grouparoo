@@ -1,5 +1,5 @@
 import { useApi } from "../../../hooks/useApi";
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { Row, Col, Badge, Alert, Card } from "react-bootstrap";
 import Moment from "react-moment";
 import Link from "../../../components/enterpriseLink";
@@ -128,7 +128,14 @@ export default function Page(props) {
             <Row>
               <Col>
                 <strong>Error</strong>
-                <Alert variant="danger">{run.error}</Alert>
+                <Alert variant="danger">
+                  {run.error.split("\n").map((err, errIdx) => (
+                    <Fragment key={`err-${errIdx}`}>
+                      {err}
+                      <br />
+                    </Fragment>
+                  ))}
+                </Alert>
               </Col>
             </Row>
           ) : null}
