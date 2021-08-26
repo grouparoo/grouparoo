@@ -1,10 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Import } from "../../src";
+import { Import, Run } from "../../src";
 import { specHelper } from "actionhero";
 
 describe("models/import", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
+  beforeEach(async () => await Import.truncate());
 
   test("creating an import enqueued a task to process it", async () => {
     const _import = await Import.create({
@@ -15,8 +16,6 @@ describe("models/import", () => {
 
     const tasks = await specHelper.findEnqueuedTasks("import:associateProfile");
     expect(tasks.length).toBe(1);
-
-    await _import.destroy();
   });
 
   test("the profile can be associated", async () => {
@@ -32,8 +31,27 @@ describe("models/import", () => {
 
     await _import.associateProfile();
     expect(_import.profileId).toBe(profile.id);
+  });
 
-    await _import.destroy();
+  test("an error can be set", async () => {
+    const _import: Import = await helper.factories.import();
+    await _import.setError(new Error("oh no"), "associate");
+    await _import.reload();
+
+    expect(_import.errorMessage).toMatch("oh no");
+    expect(_import.errorMetadata).toMatch("oh no");
+  });
+
+  test.only("setting an error will update complete runs", async () => {
+    const run: Run = await helper.factories.run();
+    await run.afterBatch("complete");
+    expect(run.error).toBeFalsy();
+
+    const _import: Import = await helper.factories.import(run);
+    await _import.setError(new Error("oh no"), "associate");
+
+    await run.reload();
+    expect(run.error).toEqual("Error on step associate: oh no (x1)");
   });
 
   test("old entries can be swept away", async () => {

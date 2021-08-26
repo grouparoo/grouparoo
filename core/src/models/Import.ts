@@ -208,7 +208,12 @@ export class Import extends Model {
       stack: error.stack,
     });
 
-    return this.save();
+    await this.save();
+
+    if (this.creatorType === "run") {
+      const run = await Run.findOne({ where: { id: this.creatorId } });
+      if (run && run.state === "complete") await run.buildErrorMessage();
+    }
   }
 
   async associateProfile() {
