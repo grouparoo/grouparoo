@@ -56,8 +56,22 @@ export function getParentPath() {
 }
 
 let extractedConfigDir: string;
-export async function getConfigDir() {
-  if (process.env.GROUPAROO_CONFIG_DIR === "false") return false;
+export async function getConfigDir(throwIfDisabled: true): Promise<string>;
+export async function getConfigDir(
+  throwIfDisabled: false
+): Promise<string | false>;
+export async function getConfigDir(
+  throwIfDisabled: boolean
+): Promise<string | false>;
+export async function getConfigDir(): Promise<string | false>;
+export async function getConfigDir(throwIfDisabled?: boolean) {
+  if (process.env.GROUPAROO_CONFIG_DIR === "false") {
+    if (throwIfDisabled)
+      throw new Error(
+        "The config directory has been disabled. Make sure that the `GROUPAROO_CONFIG_DIR` environment variable is not set to `false`."
+      );
+    return false;
+  }
 
   let configDir =
     process.env.GROUPAROO_CONFIG_DIR || path.join(getParentPath(), "config");

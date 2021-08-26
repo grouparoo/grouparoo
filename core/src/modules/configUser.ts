@@ -10,12 +10,7 @@ export namespace ConfigUser {
   export type ConfigUserType = { email: boolean };
 
   export async function localUserFilePath() {
-    const configDir = await getConfigDir();
-    if (!configDir) {
-      throw new Error(
-        "The config directory has been disabled. Make sure that the GROUPAROO_CONFIG_DIR environment variable is not set to `false`."
-      );
-    }
+    const configDir = await getConfigDir(true);
     return path.join(configDir, "../.local/user.json");
   }
 

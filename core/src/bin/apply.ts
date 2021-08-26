@@ -36,7 +36,7 @@ export class Apply extends CLI {
   async run({ params }) {
     GrouparooCLI.logCLI(this.name);
 
-    const configDir = await getConfigDir();
+    const configDir = await getConfigDir(true);
     const configObjects = await loadConfigObjects(configDir);
 
     await CLS.wrap(

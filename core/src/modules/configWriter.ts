@@ -204,11 +204,7 @@ export namespace ConfigWriter {
   }
 
   async function writeFile({ filePath, object }: WritableConfigObject) {
-    const configDir = await getConfigDir();
-    if (!configDir)
-      throw new Error(
-        "Cannot write config files because the config directory has been disabled. Make sure GROUPAROO_CONFIG_DIR is not set to `false`."
-      );
+    const configDir = await getConfigDir(true);
 
     const configFilePath = path.join(configDir, filePath);
     const dir = path.dirname(configFilePath);

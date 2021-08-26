@@ -34,7 +34,7 @@ export class Validate extends CLI {
   async run({ params }) {
     GrouparooCLI.logCLI(this.name);
 
-    const configDir = await getConfigDir();
+    const configDir = await getConfigDir(true);
     let configObjects: AnyConfigurationObject[];
 
     // Can we read the config directory?  Is the JSON/JS valid?

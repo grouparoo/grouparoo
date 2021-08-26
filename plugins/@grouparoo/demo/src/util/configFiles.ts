@@ -9,7 +9,7 @@ import Connection from "./connection";
 import { updateEnvVariables } from "./env";
 
 export async function deleteConfigDir() {
-  const configDir = await getConfigDir();
+  const configDir = await getConfigDir(true);
   deleteDir(configDir);
 }
 
@@ -18,7 +18,7 @@ export async function writeConfigFiles(
   db: Connection,
   subDirs: string[]
 ) {
-  const configDir = await getConfigDir();
+  const configDir = await getConfigDir(true);
   await generateConfig(dataset, db, configDir, subDirs);
   if (subDirs.length > 0) {
     await prettier(configDir);
