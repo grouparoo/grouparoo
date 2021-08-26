@@ -44,7 +44,6 @@ describe("modules/pluginDetails", () => {
         const configPath = path.join(
           __dirname,
           "..",
-          "..",
           "fixtures",
           "codeConfig",
           "initial"
