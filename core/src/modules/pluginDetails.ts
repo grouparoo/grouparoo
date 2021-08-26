@@ -105,6 +105,7 @@ type PluginManifest = {
     url: string;
     grouparoo?: GrouparooPackageJson["grouparoo"];
   }[];
+  missingPlugins: string[];
 };
 
 export function getPluginManifest() {
