@@ -1,3 +1,5 @@
+process.env.GROUPAROO_IMPORTS_BATCH_SIZE = "100";
+
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper, task } from "actionhero";
 import {
@@ -6,7 +8,6 @@ import {
   Profile,
   GroupMember,
   Run,
-  plugin,
   ProfileProperty,
 } from "../../../src";
 
@@ -27,10 +28,6 @@ describe("tasks/group:run", () => {
     beforeEach(async () => {
       await api.resque.queue.connection.redis.flushdb();
       await Import.truncate();
-    });
-
-    beforeAll(async () => {
-      await plugin.updateSetting("core", "runs-profile-batch-size", 100);
     });
 
     beforeAll(async () => {

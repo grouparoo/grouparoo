@@ -1,6 +1,7 @@
 import { plugin } from "../../modules/plugin";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { ImportOps } from "../../modules/ops/import";
+import { config } from "actionhero";
 
 export class ImportAssociateProfiles extends CLSTask {
   constructor() {
@@ -13,10 +14,7 @@ export class ImportAssociateProfiles extends CLSTask {
   }
 
   async runWithinTransaction() {
-    const limit = parseInt(
-      (await plugin.readSetting("core", "runs-profile-batch-size")).value
-    );
-
+    const limit: number = config.batchSize.imports;
     const delayMs =
       parseInt(
         (await plugin.readSetting("core", "imports-retry-delay-seconds")).value

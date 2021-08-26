@@ -1,9 +1,8 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { CLS } from "../../modules/cls";
 import { Source } from "../../models/Source";
-import { plugin } from "../../modules/plugin";
 import { ProfilePropertyOps } from "../../modules/ops/profileProperty";
-import { api, env } from "actionhero";
+import { api, env, config } from "actionhero";
 
 export class ProfilePropertiesEnqueue extends CLSTask {
   constructor() {
@@ -18,14 +17,7 @@ export class ProfilePropertiesEnqueue extends CLSTask {
 
   async runWithinTransaction(worker) {
     let count = 0;
-    const limit = parseInt(
-      (
-        await plugin.readSetting(
-          "core",
-          "imports-profile-properties-batch-size"
-        )
-      ).value
-    );
+    const limit: number = config.batchSize.profileProperties;
 
     const sources = await Source.findAll();
 
