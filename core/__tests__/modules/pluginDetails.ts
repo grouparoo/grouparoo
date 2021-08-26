@@ -19,7 +19,7 @@ describe("modules/pluginDetails", () => {
       process.env.GROUPAROO_CONFIG_ARCHIVE = previousConfigArchive;
     });
 
-    test("can get the config directory from local path", async () => {
+    test("can get the config directory from absolute local path", async () => {
       process.env.GROUPAROO_CONFIG_DIR = "/my/config/dir";
       const configDir = await getConfigDir();
       expect(configDir).toBe("/my/config/dir");
@@ -86,6 +86,14 @@ describe("modules/pluginDetails", () => {
 
         const configDir = await getConfigDir();
         expect(configDir).toBe(extractedPath);
+      });
+
+      test("GROUPAROO_CONFIG_DIR can point to a relative directory inside the archive", async () => {
+        process.env.GROUPAROO_CONFIG_ARCHIVE = archivePath;
+        process.env.GROUPAROO_CONFIG_DIR = "/some/other/dir";
+
+        const configDir = await getConfigDir();
+        expect(configDir).toMatch(/extracted\/some\/other\/dir$/);
       });
     });
   });
