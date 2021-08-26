@@ -208,12 +208,14 @@ export class Import extends Model {
       stack: error.stack,
     });
 
+    await this.save();
+
     if (this.creatorType === "run") {
       const run = await Run.findOne({ where: { id: this.creatorId } });
       if (run && run.state === "complete") await run.buildErrorMessage();
     }
 
-    return this.save();
+    return this;
   }
 
   async associateProfile() {
