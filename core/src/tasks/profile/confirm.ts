@@ -1,4 +1,5 @@
 import Moment from "moment";
+import { config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { CLS } from "../../modules/cls";
 import { plugin } from "../../modules/plugin";
@@ -17,9 +18,7 @@ export class ProfilesConfirm extends CLSTask {
   }
 
   async runWithinTransaction() {
-    const limit = parseInt(
-      (await plugin.readSetting("core", "runs-profile-batch-size")).value
-    );
+    const limit: number = config.batchSize.imports;
     const confirmDays = parseInt(
       (await plugin.readSetting("core", "confirm-profiles-days")).value
     );

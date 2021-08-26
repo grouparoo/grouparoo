@@ -1,7 +1,7 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
-import { plugin } from "../../modules/plugin";
+import { config } from "actionhero";
 
 export class GroupDestroy extends CLSTask {
   constructor() {
@@ -17,9 +17,7 @@ export class GroupDestroy extends CLSTask {
   }
 
   async runWithinTransaction(params) {
-    const limit: number = parseInt(
-      (await plugin.readSetting("core", "runs-profile-batch-size")).value
-    );
+    const limit: number = config.batchSize.imports;
 
     const group = await Group.scope(null).findOne({
       where: { id: params.groupId, state: "deleted" },

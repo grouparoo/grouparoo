@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper, utils } from "actionhero";
-import { Profile, Destination, Export, Run, plugin } from "../../../src";
+import { Profile, Destination, Export, Run } from "../../../src";
 
 describe("tasks/export:enqueue", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -197,10 +197,6 @@ describe("tasks/export:enqueue", () => {
       await deletedDestination.destroy();
     });
 
-    afterEach(async () => {
-      await plugin.updateSetting("core", "exports-profile-batch-size", 100);
-    });
-
     test("exports not yet exported or with an error will be enqueued", async () => {
       await specHelper.runTask("export:enqueue", {});
 
@@ -237,22 +233,6 @@ describe("tasks/export:enqueue", () => {
 
       const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(0);
-    });
-
-    test("batch size is variable", async () => {
-      await plugin.updateSetting("core", "exports-profile-batch-size", 1);
-      await specHelper.runTask("export:enqueue", {}); // first batch (1 for each destination)
-
-      // another instance of the task should have been enqueued
-      let foundTasks = await specHelper.findEnqueuedTasks("export:enqueue");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0]).toEqual({ count: 1 });
-
-      await specHelper.runTask("export:enqueue", {}); // second batch
-      await specHelper.runTask("export:enqueue", {}); // no one
-
-      foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
-      expect(foundTasks.length).toBe(4); // (1 + 1) + 2
     });
   });
 });

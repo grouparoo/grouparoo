@@ -1,6 +1,6 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { ProfileOps } from "../../modules/ops/profile";
-import { plugin } from "../../modules/plugin";
+import { config } from "actionhero";
 
 export class ProfilesCheckReady extends CLSTask {
   constructor() {
@@ -14,10 +14,7 @@ export class ProfilesCheckReady extends CLSTask {
   }
 
   async runWithinTransaction() {
-    const limit = parseInt(
-      (await plugin.readSetting("core", "runs-profile-batch-size")).value
-    );
-
+    const limit: number = config.batchSize.imports;
     const toExport = process.env.GROUPAROO_DISABLE_EXPORTS
       ? process.env.GROUPAROO_DISABLE_EXPORTS !== "true"
       : true;

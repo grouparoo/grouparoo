@@ -1,5 +1,5 @@
+import { log, config } from "actionhero";
 import { Destination } from "../../models/Destination";
-import { log } from "actionhero";
 import { ExportOps } from "../../modules/ops/export";
 import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { plugin } from "../../modules/plugin";
@@ -20,9 +20,7 @@ export class EnqueueExports extends RetryableTask {
 
   async runWithinTransaction(params) {
     const count = params.count || 0;
-    const limit = parseInt(
-      (await plugin.readSetting("core", "exports-profile-batch-size")).value
-    );
+    const limit: number = config.batchSize.exports;
 
     const delayMs =
       parseInt(

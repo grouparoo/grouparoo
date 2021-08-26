@@ -1,9 +1,9 @@
 import { Op } from "sequelize";
+import { config } from "actionhero";
 import { Import } from "../../models/Import";
 import { Profile } from "../../models/Profile";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { ProfileProperty } from "../../models/ProfileProperty";
-import { plugin } from "../../modules/plugin";
 import { CLS } from "../../modules/cls";
 
 export class ProfilesEnqueueExports extends CLSTask {
@@ -18,9 +18,7 @@ export class ProfilesEnqueueExports extends CLSTask {
   }
 
   async runWithinTransaction() {
-    const limit = parseInt(
-      (await plugin.readSetting("core", "runs-profile-batch-size")).value
-    );
+    const limit: number = config.batchSize.imports;
 
     const profiles = await Profile.findAll({
       limit,

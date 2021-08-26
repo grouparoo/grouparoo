@@ -62,10 +62,6 @@ describe("integration/runs/google-sheets", () => {
   });
 
   beforeAll(async () => {
-    await plugin.updateSetting("core", "runs-profile-batch-size", 100);
-  });
-
-  beforeAll(async () => {
     await helper.factories.properties();
     helper.disableTestPluginImport();
   });

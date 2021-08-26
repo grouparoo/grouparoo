@@ -1,7 +1,7 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
-import { plugin } from "../../modules/plugin";
+import { config } from "actionhero";
 
 export class RunGroup extends CLSTask {
   constructor() {
@@ -38,11 +38,7 @@ export class RunGroup extends CLSTask {
     const method = run.groupMethod || "runAddGroupMembers";
     const highWaterMark: number = run.groupHighWaterMark || 0;
     const offset: number = run.groupMemberOffset || 0;
-    const limit: number =
-      run.groupMemberLimit ||
-      parseInt(
-        (await plugin.readSetting("core", "runs-profile-batch-size")).value
-      );
+    const limit: number = run.groupMemberLimit || config.batchSize.imports;
 
     let groupMembersCount = 0;
     let nextHighWaterMark = 0;

@@ -1,3 +1,5 @@
+process.env.GROUPAROO_IMPORTS_BATCH_SIZE = "100";
+
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import {
@@ -23,10 +25,6 @@ describe("tasks/group:destroy", () => {
     beforeEach(async () => {
       await api.resque.queue.connection.redis.flushdb();
       await Import.truncate();
-    });
-
-    beforeAll(async () => {
-      await plugin.updateSetting("core", "runs-profile-batch-size", 100);
     });
 
     beforeAll(async () => {

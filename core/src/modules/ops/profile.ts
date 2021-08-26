@@ -7,7 +7,7 @@ import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
 import { GroupMember } from "../../models/GroupMember";
 import { Log } from "../../models/Log";
-import { api } from "actionhero";
+import { api, config } from "actionhero";
 import Sequelize, {
   Op,
   OrderItem,
@@ -20,8 +20,6 @@ import { GroupRule } from "../../models/GroupRule";
 import { Import } from "../../models/Import";
 import { Mapping } from "../../models/Mapping";
 import { SourceOps } from "./source";
-import { plugin } from "../plugin";
-import { Run } from "../../models/Run";
 
 export interface ProfilePropertyType {
   [key: string]: {
@@ -704,10 +702,7 @@ export namespace ProfileOps {
    * Look for profiles that don't have a directlyMapped property and are done importing/exporting.
    */
   export async function getProfilesToDestroy() {
-    const limit: number = parseInt(
-      (await plugin.readSetting("core", "runs-profile-batch-size")).value
-    );
-
+    const limit: number = config.batchSize.imports;
     let profiles: Profile[] = [];
     const directlyMappedProperties = (await Property.findAllWithCache()).filter(
       (p) => p.directlyMapped

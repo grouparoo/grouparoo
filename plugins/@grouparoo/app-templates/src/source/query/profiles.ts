@@ -5,6 +5,7 @@ import {
   ProfilesPluginMethod,
   SimpleSourceOptions,
 } from "@grouparoo/core";
+import { config } from "actionhero";
 import { DataResponseRow } from "../shared/types";
 
 export interface GetChangedRowsMethod {
@@ -35,9 +36,7 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
       : 0;
     const limit = highWaterMark.limit
       ? parseInt(highWaterMark.limit.toString())
-      : parseInt(
-          (await plugin.readSetting("core", "runs-profile-batch-size")).value
-        );
+      : config.batchSize.imports;
 
     const rows = await getChangedRows({
       appId,

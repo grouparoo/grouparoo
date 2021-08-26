@@ -52,17 +52,9 @@ export class Plugins extends CLSInitializer {
       {
         key: "groups-calculation-delay-minutes",
         title: "Groups: Calculation Delay Minutes",
-        defaultValue: 60,
+        defaultValue: 60 * 24,
         description:
           "How many minutes should wait before recalculating a calculated Group's membership?",
-        type: "number",
-      },
-      {
-        key: "runs-profile-batch-size",
-        title: "Runs: Profile Batch Size",
-        defaultValue: 1000,
-        description:
-          "How many Imports and should a Run enqueue in each batch before deferring to associate those Imports already enqueued?",
         type: "number",
       },
       {
@@ -71,14 +63,6 @@ export class Plugins extends CLSInitializer {
         defaultValue: 0,
         description:
           "Should Grouparoo periodically re-import all of your profiles, and if so, how long between runs (in hours)?",
-        type: "number",
-      },
-      {
-        key: "imports-profile-properties-batch-size",
-        title: "Imports: Profile Property Batch Size",
-        defaultValue: 500,
-        description:
-          "How many Profile Properties needing import should we process at once?",
         type: "number",
       },
       {
@@ -97,14 +81,6 @@ export class Plugins extends CLSInitializer {
           "When creating a new Run for a Source/Schedule, we check the most recent complete run to configure it.  This includes setting the starting HighWaterMark for the Run.  Should we consider those Runs which have an error?",
         type: "boolean",
         variant: "warning",
-      },
-      {
-        key: "exports-profile-batch-size",
-        title: "Exports: Profile Batch Size",
-        defaultValue: 100,
-        description:
-          "How many Profiles should a Run try to send at once to Destinations which support batch exporting?",
-        type: "number",
       },
       {
         key: "exports-retry-delay-seconds",

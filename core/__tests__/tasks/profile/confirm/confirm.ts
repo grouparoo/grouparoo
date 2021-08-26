@@ -10,7 +10,7 @@ import {
   Run,
   Schedule,
   Source,
-} from "../../../src";
+} from "../../../../src";
 
 describe("tasks/profiles:confirm", () => {
   helper.grouparooTestServer({
@@ -30,7 +30,6 @@ describe("tasks/profiles:confirm", () => {
   });
 
   afterEach(async () => {
-    await plugin.updateSetting("core", "runs-profile-batch-size", 100);
     await plugin.updateSetting("core", "confirm-profiles-days", 7);
   });
 
@@ -339,44 +338,5 @@ describe("tasks/profiles:confirm", () => {
 
     const count = await specHelper.runTask("profiles:confirm", {});
     expect(count).toBe(0); // nothing
-  });
-
-  test("only processes profiles up to the batch size", async () => {
-    await plugin.updateSetting("core", "runs-profile-batch-size", 2);
-
-    const profile1: Profile = await helper.factories.profile();
-    const profile2: Profile = await helper.factories.profile();
-    const profile3: Profile = await helper.factories.profile();
-
-    await ProfileProperty.update(
-      {
-        state: "ready",
-        confirmedAt: Moment().subtract(10, "days").toDate(),
-      },
-      {
-        where: {
-          profileId: [profile1.id, profile2.id, profile3.id],
-        },
-      }
-    );
-
-    await Profile.update(
-      { state: "ready" },
-      {
-        where: {
-          id: [profile1.id, profile2.id, profile3.id],
-        },
-      }
-    );
-
-    const count = await specHelper.runTask("profiles:confirm", {});
-    expect(count).toBe(2);
-
-    await profile1.reload();
-    await profile2.reload();
-    await profile3.reload();
-
-    const states = [profile1.state, profile2.state, profile3.state].sort();
-    expect(states).toEqual(["pending", "pending", "ready"]);
   });
 });
