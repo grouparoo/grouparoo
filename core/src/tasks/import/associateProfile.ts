@@ -50,10 +50,20 @@ export class ImportAssociateProfile extends Task {
           }
           if (_import) await _import.setError(error, this.name);
         } else {
-          await task.enqueueIn(config.tasks.timeout, this.name, {
-            importId,
-            attempts: nextAttempt,
-          });
+          try {
+            await task.enqueueIn(config.tasks.timeout + 1, this.name, {
+              importId,
+              attempts: nextAttempt,
+            });
+          } catch (error) {
+            if (
+              error?.message.match(
+                "already enqueued at this time with same arguments"
+              )
+            ) {
+              // it's ok
+            } else throw error;
+          }
         }
       }
     });
