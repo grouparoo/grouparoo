@@ -84,6 +84,7 @@ export function checkErrors(exportedProfiles: ErrorCheckExport[]): {
       errors.push(error);
       log(error?.stack || error, "error");
     } else if (skippedMessage) {
+      success = false;
       errors = errors || [];
       const skip = <ErrorWithProfileId>new Error(skippedMessage);
       skip.profileId = exportedProfile.profileId;
