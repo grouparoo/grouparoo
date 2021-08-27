@@ -35,7 +35,7 @@
     "@grouparoo/core": "0.5.3-alpha.6",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "27.0.1",
+    "actionhero": "27.0.3",
     "jest": "27.0.6",
     "prettier": "2.3.2",
     "ts-jest": "27.0.5",

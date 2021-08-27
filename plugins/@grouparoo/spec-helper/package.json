@@ -40,7 +40,7 @@
     "@types/faker": "*",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "27.0.1",
+    "actionhero": "27.0.3",
     "fs-extra": "10.0.0",
     "jest": "27.0.6",
     "prettier": "2.3.2",
