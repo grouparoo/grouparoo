@@ -19,9 +19,8 @@ export class Client {
   }
 
   getApi() {
-    if (this._api) {
-      return this._api;
-    }
+    if (this._api) return this._api;
+
     const { FacebookAdsApi } = this.sdk;
     this._api = FacebookAdsApi.init(this.accessToken);
     // make sure this is not shared
