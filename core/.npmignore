@@ -17,6 +17,5 @@ coverage
 log
 pids
 newrelic_agent.log
-public/javascript/ActionheroWebsocketClient.js
-public/javascript/ActionheroWebsocketClient.min.js
+public/client-js/*
 files/test*
