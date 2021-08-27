@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 // we are going to attach a single websocket to `window.GROUPAROO-WEBSOCKET` so that we can re-use it.
-const socketKey = "GROUPAROO-WEBSOCKET";
+const socketKey = "GROUPAROO-WEBSOCKET-CLIENT";
 
 export const useRealtimeStream = (
   room: string,
