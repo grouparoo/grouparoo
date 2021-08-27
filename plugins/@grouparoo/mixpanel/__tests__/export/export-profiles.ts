@@ -122,7 +122,7 @@ describe("mixpanel/exportProfiles", () => {
     });
 
     expect(errors).not.toBeNull();
-    expect(success).toBe(true);
+    expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
     expect(error.profileId).toEqual(id1);
@@ -193,7 +193,7 @@ describe("mixpanel/exportProfiles", () => {
     });
 
     expect(errors).not.toBeNull();
-    expect(success).toBe(true);
+    expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
     expect(error.profileId).toEqual(id1);
@@ -591,7 +591,7 @@ describe("mixpanel/exportProfiles", () => {
       });
 
       expect(errors).not.toBeNull();
-      expect(success).toBe(true);
+      expect(success).toBe(false);
 
       user1 = await client.query.profile.getByDistinctId(newEmail1);
       expect(user1["$distinct_id"]).toBe(newEmail1);
