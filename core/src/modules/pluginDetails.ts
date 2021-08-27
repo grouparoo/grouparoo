@@ -81,7 +81,10 @@ export async function getConfigDir(throwIfDisabled?: boolean) {
       const workingDir = fs.mkdtempSync(path.join(os.tmpdir(), "grouparoo-"));
 
       let archivePath = process.env.GROUPAROO_CONFIG_ARCHIVE;
-      if (archivePath.startsWith("http://" || "https://")) {
+      if (
+        archivePath.startsWith("http://") ||
+        archivePath.startsWith("https://")
+      ) {
         const res = await fetch(archivePath);
         archivePath = path.join(workingDir, "grouparoo.tar.gz");
         const buffer = await res.arrayBuffer();
