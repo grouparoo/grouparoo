@@ -37,7 +37,7 @@
     "@types/jest": "*",
     "@types/node": "*",
     "@types/pg": "*",
-    "actionhero": "27.0.1",
+    "actionhero": "27.0.3",
     "jest": "27.0.6",
     "prettier": "2.3.2",
     "sequelize": "6.6.2",

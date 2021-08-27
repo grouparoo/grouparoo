@@ -62,7 +62,7 @@
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
-    "actionhero": "27.0.1",
+    "actionhero": "27.0.3",
     "enzyme": "3.11.0",
     "jest": "27.0.6",
     "jest-environment-webdriver": "grouparoo/jest-webdriver#jest-v27-webdriver",
