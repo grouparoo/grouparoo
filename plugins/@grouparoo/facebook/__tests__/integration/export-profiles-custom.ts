@@ -702,7 +702,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
           },
         ],
       });
-      expect(success).toBe(true);
+      expect(success).toBe(false);
       expect(errors.length).toBe(1);
       let error;
       error = errors.find((e) => e.profileId === id1);
@@ -753,7 +753,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
           },
         ],
       });
-      expect(success).toBe(true);
+      expect(success).toBe(false);
       expect(errors.length).toBe(1);
       let error;
       error = errors.find((e) => e.profileId === id1);
@@ -800,7 +800,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
           },
         ],
       });
-      expect(success).toBe(true);
+      expect(success).toBe(false);
       expect(errors.length).toBe(1);
       let error;
       error = errors.find((e) => e.profileId === id1);
