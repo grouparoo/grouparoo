@@ -27,7 +27,7 @@ export class Plugins extends Initializer {
 
     plugin.registerPlugin({
       name: packageJSON.name,
-      icon: "/public/@grouparoo/mailjet/mailjet.svg",
+      icon: "/public/@grouparoo/mailjet/mailjet.png",
       templates: [
         new AppTemplate("mailjet", [
           path.join(templateRoot, "app", "*.template"),
