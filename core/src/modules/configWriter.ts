@@ -15,7 +15,7 @@ import {
   getCodeConfigLockKey,
 } from "../classes/codeConfig";
 
-import { getConfigDir } from "../utils/pluginDetails";
+import { getConfigDir } from "../modules/pluginDetails";
 import { Profile } from "../models/Profile";
 
 type WritableConfigObject = {
@@ -204,7 +204,9 @@ export namespace ConfigWriter {
   }
 
   async function writeFile({ filePath, object }: WritableConfigObject) {
-    const configFilePath = path.join(getConfigDir(), filePath);
+    const configDir = await getConfigDir(true);
+
+    const configFilePath = path.join(configDir, filePath);
     const dir = path.dirname(configFilePath);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     const stringifyFilter = (k, v) => (v === null ? undefined : v);

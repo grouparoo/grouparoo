@@ -1,6 +1,6 @@
+import { config } from "actionhero";
 import { Run } from "../../models/Run";
 import { Profile } from "../../models/Profile";
-import { plugin } from "../../modules/plugin";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Op } from "sequelize";
@@ -29,11 +29,7 @@ export class RunInternalRun extends CLSTask {
     if (run.state === "stopped") return;
 
     const offset: number = run.groupMemberOffset || 0;
-    const limit: number =
-      run.groupMemberLimit ||
-      parseInt(
-        (await plugin.readSetting("core", "runs-profile-batch-size")).value
-      );
+    const limit: number = run.groupMemberLimit || config.batchSize.imports;
 
     const profiles = await Profile.findAll({
       order: [["createdAt", "asc"]],

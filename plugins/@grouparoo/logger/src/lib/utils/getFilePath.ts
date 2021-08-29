@@ -1,4 +1,4 @@
-import { getParentPath } from "@grouparoo/core/dist/utils/pluginDetails";
+import { getParentPath } from "@grouparoo/core/dist/modules/pluginDetails";
 import path from "path";
 
 export function getFilePath(filename: string) {

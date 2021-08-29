@@ -1,3 +1,5 @@
+process.env.GROUPAROO_IMPORTS_BATCH_SIZE = "100";
+
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/google-sheets": { path: path.join(__dirname, "..", "..") },
@@ -59,10 +61,6 @@ describe("integration/runs/google-sheets", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
-  });
-
-  beforeAll(async () => {
-    await plugin.updateSetting("core", "runs-profile-batch-size", 100);
   });
 
   beforeAll(async () => {

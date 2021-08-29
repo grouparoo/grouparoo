@@ -499,7 +499,7 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
     });
 
     expect(errors).not.toBeNull();
-    expect(success).toBe(true);
+    expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
     expect(error.profileId).toEqual(id2);
@@ -521,7 +521,7 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
     expect(members.sort()).toEqual([userId1].sort()); // removed!
   });
 
-  test("is ok (and gives no error) to delete a user that doesn't exist", async () => {
+  test("try to delete a user that doesn't exist", async () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
@@ -541,7 +541,7 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
     });
 
     expect(errors).not.toBeNull();
-    expect(success).toBe(true);
+    expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
     expect(error.profileId).toEqual(id3);

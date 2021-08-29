@@ -1,7 +1,7 @@
 import os from "os";
 import { api, env, task } from "actionhero";
 import Sequelize from "sequelize";
-import PluginDetails from "../utils/pluginDetails";
+import { getCoreVersion, getPluginManifest } from "../modules/pluginDetails";
 import { Op } from "sequelize";
 import { App } from "../models/App";
 import { ApiKey } from "../models/ApiKey";
@@ -120,10 +120,10 @@ export namespace StatusReporters {
         topic: "@grouparoo/core",
         aggregation: "exact",
         key: "version",
-        value: PluginDetails.getCoreVersion(),
+        value: getCoreVersion(),
       });
 
-      const pluginManifest = PluginDetails.getPluginManifest();
+      const pluginManifest = getPluginManifest();
       pluginManifest.plugins.forEach((plugin) => {
         metrics.push({
           collection: "cluster",

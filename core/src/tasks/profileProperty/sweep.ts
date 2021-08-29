@@ -1,8 +1,8 @@
+import { config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { Property } from "../../models/Property";
-import { plugin } from "../../modules/plugin";
 
 export class ProfilePropertySweep extends CLSTask {
   constructor() {
@@ -17,15 +17,7 @@ export class ProfilePropertySweep extends CLSTask {
 
   async runWithinTransaction() {
     let count = 0;
-
-    const limit = parseInt(
-      (
-        await plugin.readSetting(
-          "core",
-          "imports-profile-properties-batch-size"
-        )
-      ).value
-    );
+    const limit: number = config.batchSize.profileProperties;
 
     // delete those profile properties who have no profile
     const profilePropertiesMissingProfile = await ProfileProperty.findAll({

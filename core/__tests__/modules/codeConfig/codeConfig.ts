@@ -1,4 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
+import path from "path";
 import {
   plugin,
   Property,
@@ -17,7 +18,6 @@ import {
   GroupMember,
   GroupRule,
 } from "../../../src";
-import path from "path";
 import { api, specHelper } from "actionhero";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
@@ -432,6 +432,31 @@ describe("modules/codeConfig", () => {
     test("apiKeys can be updated", async () => {
       const apiKeys = await ApiKey.findAll();
       expect(apiKeys[0].apiKey).toBe("def456");
+    });
+  });
+
+  describe("disabled config", () => {
+    test("nothing is deleted if config dir is disabled", async () => {
+      api.codeConfig.allowLockedModelChanges = true;
+      const { errors, seenIds, deletedIds } = await loadConfigDirectory(false);
+      expect(errors).toEqual([]);
+      expect(seenIds).toEqual({});
+      expect(deletedIds).toEqual({});
+
+      const apps = await App.findAll();
+      expect(apps.length).toBe(1);
+
+      const properties = await Property.findAll();
+      expect(properties.length).toBe(4);
+
+      const groups = await Group.findAll();
+      expect(groups.length).toBe(1);
+
+      const teams = await Team.findAll();
+      expect(teams.length).toBe(1);
+
+      const teamMembers = await TeamMember.findAll();
+      expect(teamMembers.length).toBe(1);
     });
   });
 

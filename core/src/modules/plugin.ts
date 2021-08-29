@@ -350,12 +350,14 @@ export namespace plugin {
    */
   export async function replaceTemplateProfileVariables(
     string: string,
-    profile: Profile
+    profile: Profile,
+    strict = true
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
 
     const data = await getProfileData(profile);
-    return MustacheUtils.strictlyRender(string, data);
+    if (strict === true) return MustacheUtils.strictlyRender(string, data);
+    return MustacheUtils.render(string, data);
   }
 
   /**

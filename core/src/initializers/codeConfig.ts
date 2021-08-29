@@ -1,7 +1,8 @@
 import { api } from "actionhero";
 import { loadConfigDirectory } from "../modules/configLoaders";
-import { getConfigDir } from "../utils/pluginDetails";
+import { getConfigDir } from "../modules/pluginDetails";
 import { CLSInitializer } from "../classes/initializers/clsInitializer";
+import { GrouparooCLI } from "../modules/cli";
 
 declare module "actionhero" {
   export interface Api {
@@ -26,7 +27,10 @@ export class CodeConfig extends CLSInitializer {
   }
 
   async startWithinTransaction() {
-    const configDir = getConfigDir();
+    const configDir = await getConfigDir(
+      process.env.GROUPAROO_RUN_MODE === "cli:config"
+    );
+
     const { errors } = await loadConfigDirectory(configDir);
 
     if (errors.length > 0) throw new Error("code config error");

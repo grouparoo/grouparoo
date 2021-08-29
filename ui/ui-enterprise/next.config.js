@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const withSourceMaps = require("@zeit/next-source-maps");
-const { getParentPath } = require("@grouparoo/core/dist/utils/pluginDetails");
+const { getParentPath } = require("@grouparoo/core/dist/modules/pluginDetails");
 
 function getPluginPath(pluginName) {
   const p = path.join(

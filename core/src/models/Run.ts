@@ -189,6 +189,7 @@ export class Run extends Model {
       attributes: ["errorMessage", [Sequelize.fn("COUNT", "id"), "errorCount"]],
       where: {
         creatorId: this.id,
+        creatorType: "run",
         errorMessage: { [Op.not]: null },
       },
       group: ["errorMessage"],
@@ -196,14 +197,10 @@ export class Run extends Model {
 
     const errorMessage = importErrorCounts
       .map((emc) => `${emc.errorMessage} (x${emc.get("errorCount")})`)
+      .sort()
       .join("\r\n");
 
-    if (importErrorCounts.length > 0) {
-      this.error = this.error
-        ? this.error + "\r\n" + errorMessage
-        : errorMessage;
-    }
-
+    if (importErrorCounts.length > 0) this.error = errorMessage;
     return this.save();
   }
 

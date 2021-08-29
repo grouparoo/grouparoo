@@ -27,7 +27,7 @@ export class Plugins extends Initializer {
 
     plugin.registerPlugin({
       name: packageJSON.name,
-      icon: "/public/@grouparoo/hubspot/hubspot.svg",
+      icon: "/public/@grouparoo/hubspot/hubspot.png",
       templates: [
         new AppTemplate("hubspot", [
           path.join(templateRoot, "app", "*.template"),

@@ -3,7 +3,7 @@
 const fs = require("fs-extra");
 const path = require("path");
 const glob = require("glob");
-const { getPluginManifest } = require("../src/utils/pluginDetails");
+const { getPluginManifest } = require("../src/modules/pluginDetails");
 
 async function main() {
   const pluginManifest = getPluginManifest();
@@ -58,7 +58,7 @@ main().then(
     console.log("success!");
     process.exit(0);
   },
-  error => {
+  (error) => {
     console.error(`ERROR! ${error}`);
     process.exit(1);
   }

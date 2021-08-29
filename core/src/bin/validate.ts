@@ -5,7 +5,7 @@ import {
   loadConfigObjects,
   processConfigObjects,
 } from "../modules/configLoaders";
-import { getConfigDir } from "../utils/pluginDetails";
+import { getConfigDir } from "../modules/pluginDetails";
 import pluralize from "pluralize";
 
 export class Validate extends CLI {
@@ -34,7 +34,7 @@ export class Validate extends CLI {
   async run({ params }) {
     GrouparooCLI.logCLI(this.name);
 
-    const configDir = getConfigDir();
+    const configDir = await getConfigDir(true);
     let configObjects: AnyConfigurationObject[];
 
     // Can we read the config directory?  Is the JSON/JS valid?

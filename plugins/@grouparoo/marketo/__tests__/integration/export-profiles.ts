@@ -166,7 +166,7 @@ describe("marketo/exportProfiles", () => {
     });
 
     expect(errors).not.toBeNull();
-    expect(success).toBe(true);
+    expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
     expect(error.profileId).toEqual(id1);
@@ -231,7 +231,7 @@ describe("marketo/exportProfiles", () => {
     });
 
     expect(errors).not.toBeNull();
-    expect(success).toBe(true);
+    expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
     expect(error.profileId).toEqual(id1);
@@ -528,7 +528,7 @@ describe("marketo/exportProfiles", () => {
     });
 
     expect(errors).not.toBeNull();
-    expect(success).toBe(true);
+    expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
     expect(error.profileId).toEqual(id1);

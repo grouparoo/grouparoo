@@ -2,12 +2,11 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, config, task, specHelper } from "actionhero";
 import {
   Group,
-  plugin,
   Profile,
   ProfileProperty,
   Schedule,
   Source,
-} from "../../../src";
+} from "../../../../src";
 
 describe("tasks/profile:checkReady", () => {
   let source: Source;
@@ -21,10 +20,6 @@ describe("tasks/profile:checkReady", () => {
   });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
-
-  afterEach(async () => {
-    await plugin.updateSetting("core", "runs-profile-batch-size", 100);
-  });
 
   beforeAll(async () => {
     source = await Source.findOne();
@@ -106,28 +101,6 @@ describe("tasks/profile:checkReady", () => {
       await toad.destroy();
       await peach.destroy();
       await bowser.destroy();
-    });
-
-    test("batch size can be configured with a setting", async () => {
-      await plugin.updateSetting("core", "runs-profile-batch-size", 1);
-
-      const mario = await helper.factories.profile();
-      await mario.import();
-      await mario.update({ state: "pending" });
-
-      const luigi = await helper.factories.profile();
-      await luigi.import();
-      await luigi.update({ state: "pending" });
-
-      await specHelper.runTask("profiles:checkReady", {});
-
-      await mario.reload();
-      await luigi.reload();
-
-      expect([mario.state, luigi.state].sort()).toEqual(["pending", "ready"]);
-
-      await mario.destroy();
-      await luigi.destroy();
     });
 
     test("it updates the group memberships", async () => {

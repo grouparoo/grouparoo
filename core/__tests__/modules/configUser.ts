@@ -15,37 +15,37 @@ describe("modules/ConfigUser", () => {
 
   beforeEach(async () => {
     process.env.GROUPAROO_RUN_MODE = "cli:config";
-    const localFile = ConfigUser.localUserFilePath();
+    const localFile = await ConfigUser.localUserFilePath();
     if (fs.existsSync(localFile)) fs.rmSync(localFile);
     await Setting.truncate();
   });
 
   afterEach(async () => {
     process.env.GROUPAROO_RUN_MODE = undefined;
-    const localFile = ConfigUser.localUserFilePath();
+    const localFile = await ConfigUser.localUserFilePath();
     if (fs.existsSync(localFile)) fs.rmSync(localFile);
   });
 
   test("does nothing unless in cli:config mode", async () => {
     process.env.GROUPAROO_RUN_MODE = undefined;
-    expect(fs.existsSync(ConfigUser.localUserFilePath())).toEqual(false);
+    expect(fs.existsSync(await ConfigUser.localUserFilePath())).toEqual(false);
     await ConfigUser.create({
       email: "demo@grouparoo.com",
       company: "My Company",
     });
-    expect(fs.existsSync(ConfigUser.localUserFilePath())).toEqual(false);
+    expect(fs.existsSync(await ConfigUser.localUserFilePath())).toEqual(false);
     const user = await ConfigUser.get();
     expect(user).toEqual(null);
   });
 
   // also tests the get() method
   test("writes a file to .local/user.json", async () => {
-    expect(fs.existsSync(ConfigUser.localUserFilePath())).toEqual(false);
+    expect(fs.existsSync(await ConfigUser.localUserFilePath())).toEqual(false);
     await ConfigUser.create({
       email: "demo@grouparoo.com",
       company: "My Company",
     });
-    expect(fs.existsSync(ConfigUser.localUserFilePath())).toEqual(true);
+    expect(fs.existsSync(await ConfigUser.localUserFilePath())).toEqual(true);
     const user = await ConfigUser.get();
     expect(Object.keys(user)).toEqual(["email"]);
     expect(user.email).toEqual(true);

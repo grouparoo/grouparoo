@@ -1,7 +1,23 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import os from "os";
+import path from "path";
+import tar from "tar";
+import fetch from "isomorphic-fetch";
+import { PackageJson } from "type-fest";
 
-let initialPackageJSON = {};
+type GrouparooPackageJson = PackageJson & {
+  grouparoo?: {
+    grouparoo_monorepo_app?: string;
+    plugins?: string[];
+    env?: {
+      api?: string[];
+      web?: string[];
+    };
+    serverInjection?: string[];
+  };
+};
+
+let initialPackageJSON: GrouparooPackageJson = {};
 if (process.env.INIT_CWD) {
   initialPackageJSON = readPackageJson(
     path.join(process.env.INIT_CWD, "package.json")
@@ -11,16 +27,17 @@ if (process.env.INIT_CWD) {
     path.join(process.env.PWD, "package.json")
   );
 }
-const grouparooMonorepoApp = initialPackageJSON.grouparoo
+
+export const grouparooMonorepoApp = initialPackageJSON.grouparoo
   ? initialPackageJSON.grouparoo.grouparoo_monorepo_app
   : null;
 
-function readPackageJson(path) {
+export function readPackageJson(path: string): GrouparooPackageJson {
   if (!fs.existsSync(path)) return {};
   return JSON.parse(fs.readFileSync(path).toString());
 }
 
-function getParentPath() {
+export function getParentPath() {
   if (process.env.GROUPAROO_PARENT_PATH) {
     if (path.isAbsolute(process.env.GROUPAROO_PARENT_PATH)) {
       return process.env.GROUPAROO_PARENT_PATH;
@@ -38,23 +55,84 @@ function getParentPath() {
   return path.join(__dirname, "..", "..", "..", "..", "..");
 }
 
-function getConfigDir() {
-  const configDir =
+let extractedConfigDir: string;
+export async function getConfigDir(throwIfDisabled: true): Promise<string>;
+export async function getConfigDir(
+  throwIfDisabled: false
+): Promise<string | false>;
+export async function getConfigDir(
+  throwIfDisabled: boolean
+): Promise<string | false>;
+export async function getConfigDir(): Promise<string | false>;
+export async function getConfigDir(throwIfDisabled?: boolean) {
+  if (process.env.GROUPAROO_CONFIG_DIR === "false") {
+    if (throwIfDisabled)
+      throw new Error(
+        "The config directory has been disabled. Make sure that the `GROUPAROO_CONFIG_DIR` environment variable is not set to `false`."
+      );
+    return false;
+  }
+
+  let configDir =
     process.env.GROUPAROO_CONFIG_DIR || path.join(getParentPath(), "config");
+
+  if (process.env.GROUPAROO_CONFIG_ARCHIVE) {
+    if (!extractedConfigDir) {
+      const workingDir = fs.mkdtempSync(path.join(os.tmpdir(), "grouparoo-"));
+
+      let archivePath = process.env.GROUPAROO_CONFIG_ARCHIVE;
+      if (
+        archivePath.startsWith("http://") ||
+        archivePath.startsWith("https://")
+      ) {
+        const res = await fetch(archivePath);
+        archivePath = path.join(workingDir, "grouparoo.tar.gz");
+        const buffer = await res.arrayBuffer();
+        fs.writeFileSync(archivePath, Buffer.from(buffer));
+      }
+
+      extractedConfigDir = path.join(workingDir, "extracted");
+      fs.mkdirSync(extractedConfigDir);
+      await tar.extract({ cwd: extractedConfigDir, file: archivePath });
+    }
+
+    configDir = path.join(
+      extractedConfigDir,
+      process.env.GROUPAROO_CONFIG_DIR || "config"
+    );
+  }
+
   return configDir;
 }
 
-function getCoreRootPath() {
+export function getCoreRootPath() {
   return fs.realpathSync(path.join(__dirname, "..", ".."));
 }
 
-function getPluginManifest() {
-  const manifest = {
+type PluginManifest = {
+  parent: {
+    path?: string;
+    grouparoo: GrouparooPackageJson["grouparoo"];
+  };
+  plugins: {
+    name: string;
+    path: string;
+    version: string;
+    license: string;
+    url: string;
+    grouparoo?: GrouparooPackageJson["grouparoo"];
+  }[];
+  missingPlugins: string[];
+};
+
+export function getPluginManifest() {
+  const manifest: PluginManifest = {
     parent: {
       path: null,
       grouparoo: { plugins: [] },
     },
     plugins: [],
+    missingPlugins: [],
   };
 
   // parent
@@ -81,16 +159,16 @@ function getPluginManifest() {
     }
   }
 
-  pluginNames = [...new Set(pluginNames)];
+  pluginNames = Array.from(new Set(pluginNames));
 
   for (const pluginName of pluginNames) {
     if (pluginName === "@grouparoo/core") continue;
 
     let pluginPath = "";
     try {
-      pluginPath = require.resolve(pluginName);
+      pluginPath = require.resolve(pluginName); // require("@grouparoo/mysql")
     } catch {
-      pluginPath = path.join(parentPath, "node_modules", pluginName);
+      pluginPath = path.join(parentPath, "node_modules", pluginName); // require("../../../staging-enterprise/@grouparoo/mysql")
       if (!fs.existsSync(pluginPath)) {
         pluginPath = path.join(
           grouparooMonorepoApp
@@ -109,7 +187,13 @@ function getPluginManifest() {
       }
     }
 
-    if (!fs.existsSync(pluginPath)) continue;
+    if (!fs.existsSync(pluginPath)) {
+      if (!manifest.missingPlugins.includes(pluginName)) {
+        manifest.missingPlugins.push(pluginName);
+      }
+      continue;
+    }
+
     pluginPath = fs.realpathSync(pluginPath);
 
     const pluginPkg = readPackageJson(path.join(pluginPath, "package.json"));
@@ -119,12 +203,11 @@ function getPluginManifest() {
         name: pluginPkg.name,
         version: pluginPkg.version,
         license: pluginPkg.license,
-        url:
-          pluginPkg.url ||
-          (pluginPkg.repository && pluginPkg.repository.url
-            ? pluginPkg.repository.url
-            : null) ||
-          pluginPkg.homepage,
+        url: pluginPkg.repository
+          ? typeof pluginPkg.repository === "string"
+            ? pluginPkg.repository || null
+            : pluginPkg.repository.url
+          : null || pluginPkg.homepage,
         path: pluginPath,
         grouparoo: pluginPkg.grouparoo || null,
       });
@@ -139,7 +222,7 @@ function getPluginManifest() {
   return manifest;
 }
 
-function runningCoreDirectly() {
+export function runningCoreDirectly() {
   const monorepoPackageJSON = path.join(
     __dirname,
     "..",
@@ -157,23 +240,13 @@ function runningCoreDirectly() {
   return false;
 }
 
-function getCoreVersion() {
+export function getCoreVersion() {
   const corePkgJson = readPackageJson(
     path.join(__dirname, "..", "..", "package.json")
   );
   return corePkgJson.version;
 }
 
-function getNodeVersion() {
+export function getNodeVersion() {
   return process.version;
 }
-
-exports.grouparooMonorepoApp = grouparooMonorepoApp;
-exports.readPackageJson = readPackageJson;
-exports.getParentPath = getParentPath;
-exports.getConfigDir = getConfigDir;
-exports.getPluginManifest = getPluginManifest;
-exports.runningCoreDirectly = runningCoreDirectly;
-exports.getCoreVersion = getCoreVersion;
-exports.getCoreRootPath = getCoreRootPath;
-exports.getNodeVersion = getNodeVersion;

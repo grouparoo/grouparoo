@@ -1,5 +1,5 @@
 import path from "path";
-import { getPluginManifest } from "../utils/pluginDetails";
+import { getPluginManifest } from "../modules/pluginDetails";
 import InjectedPlugins from "./pluginInjection";
 
 function getPluginPath(pluginName: string) {
@@ -14,6 +14,9 @@ const pluginManifest = getPluginManifest();
 const parentPlugins = {};
 pluginManifest.plugins.map((p) => {
   parentPlugins[p.name] = { path: p.path };
+});
+pluginManifest.missingPlugins.map((p) => {
+  console.error(`*** Could not find plugin named ${p} ***`);
 });
 
 export const DEFAULT = {

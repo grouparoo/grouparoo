@@ -1,5 +1,5 @@
 import path from "path";
-import { getParentPath } from "../utils/pluginDetails";
+import { getParentPath } from "../modules/pluginDetails";
 import { api } from "actionhero";
 
 export const DEFAULT = {
@@ -89,7 +89,6 @@ export const DEFAULT = {
             ]
           : [],
         plugin: [path.join(process.cwd(), "..", "node_modules")],
-        locale: [path.join(process.cwd(), "locales")],
         test: [path.join(process.cwd(), "__tests__")],
         // for the src and dist paths, assume we are running in compiled mode from `dist`
         src: path.join(process.cwd(), "src"),
@@ -113,9 +112,7 @@ export const test = {
         defaultRoom: {},
         otherRoom: {},
       },
-      paths: {
-        locale: [path.join(process.cwd(), "locales")],
-      },
+
       rpcTimeout: 3000,
     };
   },

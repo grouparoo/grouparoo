@@ -43,7 +43,7 @@ export class Plugins extends Initializer {
     const defaultSyncMode: DestinationSyncMode = "sync";
     plugin.registerPlugin({
       name: packageJSON.name,
-      icon: "/public/@grouparoo/postgres/postgres.svg",
+      icon: "/public/@grouparoo/postgres/postgres.png",
       templates: [
         new AppTemplate("postgres", [
           path.join(templateRoot, "app", "*.template"),

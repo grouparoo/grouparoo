@@ -9,7 +9,7 @@ import { CLI, api } from "actionhero";
 import path from "path";
 import fs from "fs-extra";
 import prettier from "prettier";
-import { getConfigDir } from "../utils/pluginDetails";
+import { getConfigDir } from "../modules/pluginDetails";
 
 export class Generate extends CLI {
   constructor() {
@@ -116,7 +116,7 @@ Commands:
     const [template, id] = params._arguments || [];
     if (template) params.template = template;
     if (id) params.id = id;
-    params.path = getConfigDir();
+    params.path = await getConfigDir(true);
 
     GrouparooCLI.logCLI(
       this.name

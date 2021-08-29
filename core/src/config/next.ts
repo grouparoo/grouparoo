@@ -1,5 +1,5 @@
 import { env } from "actionhero";
-import { getPluginManifest } from "../utils/pluginDetails";
+import { getPluginManifest } from "../modules/pluginDetails";
 import InjectedPlugins from "./pluginInjection";
 
 // learn more about the next.js app options here https://nextjs.org/docs/advanced-features/custom-server

@@ -26,7 +26,7 @@ describe("tasks/group:updateCalculatedGroups", () => {
         "core",
         "groups-calculation-delay-minutes"
       );
-      expect(setting.value).toBe("60");
+      expect(setting.value).toBe("1440");
     });
 
     test("running it will enqueue an update for groups that have never been calculated", async () => {

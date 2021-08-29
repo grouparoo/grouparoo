@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import { getConfigDir } from "../utils/pluginDetails";
+import { getConfigDir } from "../modules/pluginDetails";
 import { GrouparooSubscription } from "./grouparooSubscription";
 import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";
@@ -9,17 +9,19 @@ import { Setting } from "../models/Setting";
 export namespace ConfigUser {
   export type ConfigUserType = { email: boolean };
 
-  export function localUserFilePath() {
-    return path.join(getConfigDir(), "../.local/user.json");
+  export async function localUserFilePath() {
+    const configDir = await getConfigDir(true);
+    return path.join(configDir, "../.local/user.json");
   }
 
-  function store() {
-    const localFileDir = path.dirname(localUserFilePath());
+  async function store() {
+    const localFilePath = await localUserFilePath();
+    const localFileDir = path.dirname(localFilePath);
     if (!fs.existsSync(localFileDir)) {
       fs.mkdirSync(localFileDir, { recursive: true });
     }
     const fileContent: ConfigUserType = { email: true };
-    fs.writeFileSync(localUserFilePath(), JSON.stringify(fileContent, null, 2));
+    fs.writeFileSync(localFilePath, JSON.stringify(fileContent, null, 2));
   }
 
   async function subscribe(email: string, subscribed: boolean = true) {
@@ -49,14 +51,15 @@ export namespace ConfigUser {
     company: string;
   }) {
     if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
-    store();
+    await store();
     if (subscribed) await subscribe(email, subscribed);
     await storeCompanyName(company);
   }
 
   export async function get() {
-    if (!fs.existsSync(localUserFilePath())) return null;
-    const fileContent = fs.readFileSync(localUserFilePath()).toString();
+    const localFilePath = await localUserFilePath();
+    if (!fs.existsSync(localFilePath)) return null;
+    const fileContent = fs.readFileSync(localFilePath).toString();
     return JSON.parse(fileContent) as ConfigUserType;
   }
 }

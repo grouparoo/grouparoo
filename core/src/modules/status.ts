@@ -1,7 +1,6 @@
 import { api, config, chatRoom } from "actionhero";
 import { Group } from "../models/Group";
 import { Profile } from "../models/Profile";
-import { Schedule } from "../models/Schedule";
 import {
   StatusReporters,
   StatusMetric,
@@ -10,7 +9,7 @@ import {
 import * as uuid from "uuid";
 
 export namespace Status {
-  export const maxSamples = 500;
+  export const maxSamples = 50;
   export const sampleFrequencyMS = 1000 * 5;
   export const cachePrefix = `${config.general.cachePrefix}status:samples:`;
 

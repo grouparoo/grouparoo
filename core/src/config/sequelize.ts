@@ -1,7 +1,7 @@
 import fs from "fs";
 import { URL } from "url";
 import { join, isAbsolute } from "path";
-import { getParentPath, getPluginManifest } from "../utils/pluginDetails";
+import { getParentPath, getPluginManifest } from "../modules/pluginDetails";
 import { log } from "actionhero";
 
 import cls from "cls-hooked";
@@ -92,9 +92,9 @@ export const DEFAULT = {
     }
 
     /** Query Logging */
-    function logging(message) {
+    function logging(message: string, time: number) {
       if (typeof message !== "string") return;
-      log(message, "debug");
+      log(message, "debug", { time });
     }
 
     /** Load plugin migrations */
@@ -110,6 +110,7 @@ export const DEFAULT = {
     return {
       _toExpand: false,
       logging,
+      benchmark: true,
       autoMigrate:
         process.env.GROUPAROO_RUN_MODE === "cli:apply" ? false : true,
       dialect: dialect,

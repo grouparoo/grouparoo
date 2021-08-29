@@ -1,14 +1,9 @@
+process.env.GROUPAROO_IMPORTS_BATCH_SIZE = "100";
+
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { internalRun } from "../../../src/modules/internalRun";
-import {
-  plugin,
-  Property,
-  Run,
-  Profile,
-  ProfileProperty,
-  Import,
-} from "../../../src";
+import { Property, Run, Profile, ProfileProperty, Import } from "../../../src";
 
 describe("tasks/run:internalRun", () => {
   helper.grouparooTestServer({
@@ -26,10 +21,6 @@ describe("tasks/run:internalRun", () => {
       await Run.truncate();
       profile = await helper.factories.profile();
       await profile.buildNullProperties();
-    });
-
-    beforeAll(async () => {
-      await plugin.updateSetting("core", "runs-profile-batch-size", 100);
     });
 
     beforeEach(async () => {

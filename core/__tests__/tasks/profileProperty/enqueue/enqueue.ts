@@ -4,7 +4,6 @@ import {
   PluginConnection,
   ProfilePropertyPluginMethod,
   ProfilePropertiesPluginMethod,
-  plugin,
   Property,
   GrouparooPlugin,
   Source,
@@ -12,7 +11,7 @@ import {
   Profile,
   ProfileProperty,
   Schedule,
-} from "../../../src";
+} from "../../../../src";
 
 describe("tasks/profileProperties:enqueue", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -45,14 +44,6 @@ describe("tasks/profileProperties:enqueue", () => {
 
   afterAll(() => {
     resetPlugin();
-  });
-
-  afterEach(async () => {
-    await plugin.updateSetting(
-      "core",
-      "imports-profile-properties-batch-size",
-      50
-    );
   });
 
   describe("profileProperties:enqueue", () => {
@@ -248,46 +239,6 @@ describe("tasks/profileProperties:enqueue", () => {
           expect(importProfilePropertiesTasks.length).toBe(propertiesCount);
           importProfilePropertiesTasks.forEach((t) =>
             expect(t.args[0].profileIds.length).toBe(2)
-          );
-        });
-
-        test("the batch size can be configured via a setting", async () => {
-          await plugin.updateSetting(
-            "core",
-            "imports-profile-properties-batch-size",
-            1
-          );
-
-          const run = await helper.factories.run(schedule);
-          const marioImport = await helper.factories.import(run, {
-            email: "mario@example.com",
-            firstName: "Mario",
-          });
-          const luigiImport = await helper.factories.import(run, {
-            email: "luigi@example.com",
-          });
-
-          await specHelper.runTask("import:associateProfile", {
-            importId: marioImport.id,
-          });
-          await specHelper.runTask("import:associateProfile", {
-            importId: luigiImport.id,
-          });
-
-          await specHelper.runTask("profileProperties:enqueue", {});
-
-          const importProfilePropertiesTasks =
-            await specHelper.findEnqueuedTasks(
-              "profileProperty:importProfileProperties"
-            );
-          const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
-            "profileProperty:importProfileProperty"
-          );
-
-          expect(importProfilePropertyTasks.length).toBe(0);
-          expect(importProfilePropertiesTasks.length).toBe(propertiesCount);
-          importProfilePropertiesTasks.forEach((t) =>
-            expect(t.args[0].profileIds.length).toBe(1)
           );
         });
       });

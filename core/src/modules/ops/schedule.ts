@@ -3,8 +3,7 @@ import { Run, HighWaterMark } from "../../models/Run";
 import { Property } from "../../models/Property";
 import { Option } from "../../models/Option";
 import { Mapping } from "../../models/Mapping";
-import { plugin } from "../plugin";
-import { log } from "actionhero";
+import { log, config } from "actionhero";
 
 export namespace ScheduleOps {
   export async function run(schedule: Schedule, run: Run) {
@@ -30,10 +29,7 @@ export namespace ScheduleOps {
     const connection = await app.getConnection();
     await source.validateOptions(sourceOptions);
 
-    const limit: number = parseInt(
-      (await plugin.readSetting("core", "runs-profile-batch-size")).value
-    );
-
+    const limit: number = config.batchSize.imports;
     const sourceOffset: number | string = run.sourceOffset || 0;
 
     let highWaterMark = {};

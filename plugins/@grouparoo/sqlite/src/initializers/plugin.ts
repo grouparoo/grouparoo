@@ -42,7 +42,7 @@ export class Plugins extends Initializer {
     const defaultSyncMode: DestinationSyncMode = "sync";
     plugin.registerPlugin({
       name: packageJSON.name,
-      icon: "/public/@grouparoo/sqlite/sqlite.svg",
+      icon: "/public/@grouparoo/sqlite/sqlite.png",
       templates: [
         new AppTemplate("sqlite", [
           path.join(templateRoot, "app", "*.template"),
