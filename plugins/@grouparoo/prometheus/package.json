@@ -19,13 +19,13 @@
     "@grouparoo/spec-helper": "0.5.3-alpha.7",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "26.0.8",
+    "actionhero": "27.0.3",
     "axios": "0.21.1",
-    "jest": "27.0.6",
-    "ts-jest": "27.0.3",
+    "jest": "27.1.0",
+    "ts-jest": "27.0.5",
     "typescript": "4.3.5"
   },
   "dependencies": {
-    "prom-client": "13.1.0"
+    "prom-client": "13.2.0"
   }
 }
