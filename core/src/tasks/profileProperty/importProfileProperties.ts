@@ -151,6 +151,7 @@ export class ImportProfileProperties extends RetryableTask {
       {
         state: "ready",
         rawValue: null,
+        startedAt: null,
         stateChangedAt: new Date(),
         confirmedAt: new Date(),
       },

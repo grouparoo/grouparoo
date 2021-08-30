@@ -220,6 +220,7 @@ async function preparePropertyImports(
     await ProfileProperty.update(
       {
         state: "ready",
+        startedAt: null,
         stateChangedAt: new Date(),
         confirmedAt: new Date(),
       },

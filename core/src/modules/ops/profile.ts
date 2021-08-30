@@ -306,6 +306,7 @@ export namespace ProfileOps {
               position,
               rawValue,
               state: "ready",
+              startedAt: null,
               stateChangedAt: now,
               confirmedAt: now,
               valueChangedAt:
@@ -372,6 +373,7 @@ export namespace ProfileOps {
       {
         state: "ready",
         rawValue: null,
+        startedAt: null,
         stateChangedAt: new Date(),
         valueChangedAt: new Date(),
         confirmedAt: new Date(),
