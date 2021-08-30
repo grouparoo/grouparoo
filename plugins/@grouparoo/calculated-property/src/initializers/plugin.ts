@@ -5,7 +5,7 @@ import {
   CalculatedPropertyPropertyTemplate,
   CalculatedPropertySourceTemplate,
 } from "../lib/templates";
-import { profileProperty } from "../lib/profileProperty";
+import { recordProperty } from "../lib/recordProperty";
 
 import { test } from "../lib/test";
 import { propertyOptions } from "../lib/propertyOptions";
@@ -45,7 +45,7 @@ export class Plugins extends Initializer {
           groupAggregations: [],
           options: [],
           methods: {
-            profileProperty: profileProperty,
+            recordProperty: recordProperty,
             propertyOptions: propertyOptions,
           },
         },

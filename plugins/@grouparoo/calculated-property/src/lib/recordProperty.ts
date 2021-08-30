@@ -1,21 +1,20 @@
 import {
-  GrouparooCLI,
   plugin,
-  Profile,
-  ProfilePropertyPluginMethod,
+  GrouparooRecord,
+  RecordPropertyPluginMethod,
 } from "@grouparoo/core";
 import { NodeVM } from "vm2";
 
-async function calculateProfilePropertyValue(
+async function calculateRecordPropertyValue(
   customFunction,
-  profile: Profile,
+  record: GrouparooRecord,
   propertyName: string
 ): Promise<string> {
   let populatedFunction;
   try {
-    populatedFunction = await plugin.replaceTemplateProfileVariables(
+    populatedFunction = await plugin.replaceTemplateRecordVariables(
       customFunction,
-      profile,
+      record,
       false
     );
 
@@ -56,12 +55,12 @@ async function calculateProfilePropertyValue(
   return calculatedPropertyValue;
 }
 
-export const profileProperty: ProfilePropertyPluginMethod = async (args) => {
-  const profilePropertyValue = await calculateProfilePropertyValue(
+export const recordProperty: RecordPropertyPluginMethod = async (args) => {
+  const recordPropertyValue = await calculateRecordPropertyValue(
     args.propertyOptions.customFunction,
-    args.profile,
+    args.record,
     args.property.id
   );
 
-  return [profilePropertyValue];
+  return [recordPropertyValue];
 };
