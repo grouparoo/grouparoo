@@ -2,16 +2,16 @@ process.env.GROUPAROO_IMPORTS_BATCH_SIZE = "1";
 
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { Import, Profile } from "../../../../src";
+import { Import, GrouparooRecord } from "../../../../src";
 
-describe("tasks/profiles:enqueueExports", () => {
+describe("tasks/records:enqueueExports", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
 
-  describe("profiles:enqueueExports", () => {
+  describe("records:enqueueExports", () => {
     test("batch size can be configured with a setting", async () => {
-      const mario: Profile = await helper.factories.profile();
+      const mario: GrouparooRecord = await helper.factories.record();
       await mario.import();
       await mario.update({ state: "ready" });
       const marioImport: Import = await helper.factories.import(
@@ -21,11 +21,11 @@ describe("tasks/profiles:enqueueExports", () => {
       );
       await marioImport.update({
         groupsUpdatedAt: new Date(),
-        profileUpdatedAt: new Date(),
+        recordUpdatedAt: new Date(),
         exportedAt: null,
       });
 
-      const luigi: Profile = await helper.factories.profile();
+      const luigi: GrouparooRecord = await helper.factories.record();
       await luigi.import();
       await luigi.update({ state: "ready" });
       const luigiImport: Import = await helper.factories.import(
@@ -35,13 +35,13 @@ describe("tasks/profiles:enqueueExports", () => {
       );
       await luigiImport.update({
         groupsUpdatedAt: new Date(),
-        profileUpdatedAt: new Date(),
+        recordUpdatedAt: new Date(),
         exportedAt: null,
       });
 
-      await specHelper.runTask("profiles:enqueueExports", {});
+      await specHelper.runTask("records:enqueueExports", {});
 
-      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
+      const foundTasks = await specHelper.findEnqueuedTasks("record:export");
       expect(foundTasks.length).toEqual(1);
 
       await mario.destroy();

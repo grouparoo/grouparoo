@@ -137,10 +137,10 @@ describe("tasks/record:checkReady", () => {
         lastName: "Mario",
       });
 
-      await specHelper.runTask("import:associateProfile", {
+      await specHelper.runTask("import:associateRecord", {
         importId: _importA.id,
       });
-      await specHelper.runTask("import:associateProfile", {
+      await specHelper.runTask("import:associateRecord", {
         importId: _importB.id,
       });
 
@@ -153,8 +153,8 @@ describe("tasks/record:checkReady", () => {
       expect(_importB.newGroupIds).toEqual([]);
       expect(_importB.newRecordProperties).toEqual({});
 
-      expect(run.profilesCreated).toEqual(0);
-      expect(run.profilesImported).toEqual(0);
+      expect(run.recordsCreated).toEqual(0);
+      expect(run.recordsImported).toEqual(0);
 
       await specHelper.runTask("records:checkReady", {});
 
@@ -179,8 +179,8 @@ describe("tasks/record:checkReady", () => {
       expect(_importB.groupsUpdatedAt).toBeTruthy();
       expect(_importB.exportedAt).toBeNull();
 
-      expect(run.profilesCreated).toEqual(1);
-      expect(run.profilesImported).toEqual(1);
+      expect(run.recordsCreated).toEqual(1);
+      expect(run.recordsImported).toEqual(1);
     });
 
     test("it will optionally mark the imports as exported to complete the lifecycle", async () => {
@@ -192,7 +192,7 @@ describe("tasks/record:checkReady", () => {
         noExist: "here",
       });
 
-      await specHelper.runTask("import:associateProfile", {
+      await specHelper.runTask("import:associateRecord", {
         importId: _importA.id,
       });
 
@@ -208,7 +208,7 @@ describe("tasks/record:checkReady", () => {
 
       await _importA.reload();
       expect(_importA.groupsUpdatedAt).toBeTruthy();
-      expect(_importA.profileUpdatedAt).toBeTruthy();
+      expect(_importA.recordUpdatedAt).toBeTruthy();
       expect(_importA.exportedAt).toBeTruthy();
 
       process.env.GROUPAROO_DISABLE_EXPORTS = "false";

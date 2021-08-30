@@ -4,22 +4,22 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import {
   PluginConnection,
-  ProfilePropertyPluginMethod,
-  ProfilePropertiesPluginMethod,
+  RecordPropertyPluginMethod,
+  RecordPropertiesPluginMethod,
   Property,
   GrouparooPlugin,
   Source,
   Schedule,
 } from "../../../../src";
 
-describe("tasks/profileProperties:enqueue", () => {
+describe("tasks/recordProperties:enqueue", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
 
   let propertiesCount: number;
   let testPluginConnection: PluginConnection;
-  let prevProfilePropertyMethod: ProfilePropertyPluginMethod;
-  let prevProfilePropertiesMethod: ProfilePropertiesPluginMethod;
+  let prevRecordPropertyMethod: RecordPropertyPluginMethod;
+  let prevRecordPropertiesMethod: RecordPropertiesPluginMethod;
 
   beforeAll(async () => {
     const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
@@ -30,12 +30,11 @@ describe("tasks/profileProperties:enqueue", () => {
       (c) => c.name === "test-plugin-import"
     );
 
-    prevProfilePropertyMethod = testPluginConnection.methods.profileProperty;
-    prevProfilePropertiesMethod =
-      testPluginConnection.methods.profileProperties;
+    prevRecordPropertyMethod = testPluginConnection.methods.recordProperty;
+    prevRecordPropertiesMethod = testPluginConnection.methods.recordProperties;
   });
 
-  describe("profileProperties:enqueue", () => {
+  describe("recordProperties:enqueue", () => {
     describe("with properties", () => {
       let source: Source;
       let schedule: Schedule;
@@ -47,9 +46,9 @@ describe("tasks/profileProperties:enqueue", () => {
         schedule = await helper.factories.schedule(source);
       });
 
-      describe("with profileProperties method", () => {
+      describe("with recordProperties method", () => {
         beforeAll(async () => {
-          delete testPluginConnection.methods.profileProperty;
+          delete testPluginConnection.methods.recordProperty;
         });
 
         test("the batch size can be configured via a setting", async () => {
@@ -62,27 +61,27 @@ describe("tasks/profileProperties:enqueue", () => {
             email: "luigi@example.com",
           });
 
-          await specHelper.runTask("import:associateProfile", {
+          await specHelper.runTask("import:associateRecord", {
             importId: marioImport.id,
           });
-          await specHelper.runTask("import:associateProfile", {
+          await specHelper.runTask("import:associateRecord", {
             importId: luigiImport.id,
           });
 
-          await specHelper.runTask("profileProperties:enqueue", {});
+          await specHelper.runTask("recordProperties:enqueue", {});
 
-          const importProfilePropertiesTasks =
+          const importRecordPropertiesTasks =
             await specHelper.findEnqueuedTasks(
-              "profileProperty:importProfileProperties"
+              "recordProperty:importRecordProperties"
             );
-          const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
-            "profileProperty:importProfileProperty"
+          const importRecordPropertyTasks = await specHelper.findEnqueuedTasks(
+            "recordProperty:importRecordProperty"
           );
 
-          expect(importProfilePropertyTasks.length).toBe(0);
-          expect(importProfilePropertiesTasks.length).toBe(propertiesCount);
-          importProfilePropertiesTasks.forEach((t) =>
-            expect(t.args[0].profileIds.length).toBe(1)
+          expect(importRecordPropertyTasks.length).toBe(0);
+          expect(importRecordPropertiesTasks.length).toBe(propertiesCount);
+          importRecordPropertiesTasks.forEach((t) =>
+            expect(t.args[0].recordIds.length).toBe(1)
           );
         });
       });

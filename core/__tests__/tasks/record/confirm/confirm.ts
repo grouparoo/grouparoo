@@ -30,7 +30,7 @@ describe("tasks/records:confirm", () => {
   });
 
   afterEach(async () => {
-    await plugin.updateSetting("core", "confirm-profiles-days", 7);
+    await plugin.updateSetting("core", "confirm-records-days", 7);
   });
 
   test("can be enqueued", async () => {
@@ -40,8 +40,8 @@ describe("tasks/records:confirm", () => {
   });
 
   test("marks records and directlyMapped pending if they haven't been confirmed in a while", async () => {
-    const staleProfile: GrouparooRecord = await helper.factories.record();
-    const recentProfile: GrouparooRecord = await helper.factories.record();
+    const staleRecord: GrouparooRecord = await helper.factories.record();
+    const recentRecord: GrouparooRecord = await helper.factories.record();
 
     await RecordProperty.update(
       {
@@ -50,7 +50,7 @@ describe("tasks/records:confirm", () => {
       },
       {
         where: {
-          recordId: staleProfile.id,
+          recordId: staleRecord.id,
         },
       }
     );
@@ -62,7 +62,7 @@ describe("tasks/records:confirm", () => {
       },
       {
         where: {
-          recordId: recentProfile.id,
+          recordId: recentRecord.id,
         },
       }
     );
@@ -71,7 +71,7 @@ describe("tasks/records:confirm", () => {
       { state: "ready" },
       {
         where: {
-          id: [staleProfile.id, recentProfile.id],
+          id: [staleRecord.id, recentRecord.id],
         },
       }
     );
@@ -79,34 +79,34 @@ describe("tasks/records:confirm", () => {
     const count = await specHelper.runTask("records:confirm", {});
     expect(count).toBe(1);
 
-    await staleProfile.reload();
-    await recentProfile.reload();
+    await staleRecord.reload();
+    await recentRecord.reload();
 
-    expect(staleProfile.state).toBe("pending");
-    expect(recentProfile.state).toBe("ready"); // dont need to confirm
+    expect(staleRecord.state).toBe("pending");
+    expect(recentRecord.state).toBe("ready"); // dont need to confirm
 
-    const pendingProfileProperties = await RecordProperty.findAll({
+    const pendingRecordProperties = await RecordProperty.findAll({
       where: {
         state: "pending",
-        recordId: [staleProfile.id, recentProfile.id],
+        recordId: [staleRecord.id, recentRecord.id],
       },
     });
-    expect(pendingProfileProperties.length).toBe(1);
-    expect(pendingProfileProperties[0].propertyId).toBe(
+    expect(pendingRecordProperties.length).toBe(1);
+    expect(pendingRecordProperties[0].propertyId).toBe(
       directlyMappedProperty.id // only the directlyMapped is marked pending
     );
-    expect(pendingProfileProperties[0].recordId).toBe(staleProfile.id);
+    expect(pendingRecordProperties[0].recordId).toBe(staleRecord.id);
 
-    const readyProfileProperties = await RecordProperty.findAll({
+    const readyRecordProperties = await RecordProperty.findAll({
       where: {
         state: "ready",
-        recordId: [staleProfile.id, recentProfile.id],
+        recordId: [staleRecord.id, recentRecord.id],
       },
     });
-    expect(readyProfileProperties.length).toBe(9 + 8);
+    expect(readyRecordProperties.length).toBe(9 + 8);
 
-    await staleProfile.destroy();
-    await recentProfile.destroy();
+    await staleRecord.destroy();
+    await recentRecord.destroy();
   });
 
   test("the amount of days can be configured", async () => {
@@ -132,15 +132,15 @@ describe("tasks/records:confirm", () => {
     await record.reload();
     expect(record.state).toBe("pending");
 
-    const pendingProfileProperties = await RecordProperty.findAll({
+    const pendingRecordProperties = await RecordProperty.findAll({
       where: {
         recordId: record.id,
         state: "pending",
       },
     });
 
-    expect(pendingProfileProperties.length).toBe(1);
-    expect(pendingProfileProperties[0].propertyId).toBe(
+    expect(pendingRecordProperties.length).toBe(1);
+    expect(pendingRecordProperties[0].propertyId).toBe(
       directlyMappedProperty.id
     );
 
@@ -170,14 +170,14 @@ describe("tasks/records:confirm", () => {
     await record.reload();
     expect(record.state).toBe("ready");
 
-    const pendingProfileProperties = await RecordProperty.findAll({
+    const pendingRecordProperties = await RecordProperty.findAll({
       where: {
         recordId: record.id,
         state: "pending",
       },
     });
 
-    expect(pendingProfileProperties.length).toBe(0);
+    expect(pendingRecordProperties.length).toBe(0);
 
     await record.destroy();
   });
@@ -214,15 +214,15 @@ describe("tasks/records:confirm", () => {
     await record.reload();
     expect(record.state).toBe("pending");
 
-    const pendingProfileProperties = await RecordProperty.findAll({
+    const pendingRecordProperties = await RecordProperty.findAll({
       where: {
         recordId: record.id,
         state: "pending",
       },
     });
 
-    expect(pendingProfileProperties.length).toBe(1);
-    expect(pendingProfileProperties[0].propertyId).toBe(
+    expect(pendingRecordProperties.length).toBe(1);
+    expect(pendingRecordProperties[0].propertyId).toBe(
       directlyMappedProperty.id
     );
 
@@ -262,14 +262,14 @@ describe("tasks/records:confirm", () => {
     await record.reload();
     expect(record.state).toBe("ready");
 
-    const pendingProfileProperties = await RecordProperty.findAll({
+    const pendingRecordProperties = await RecordProperty.findAll({
       where: {
         recordId: record.id,
         state: "pending",
       },
     });
 
-    expect(pendingProfileProperties.length).toBe(0);
+    expect(pendingRecordProperties.length).toBe(0);
 
     await record.destroy();
     await schedule.destroy();
@@ -314,7 +314,7 @@ describe("tasks/records:confirm", () => {
     // associate the import
     await _import.update({
       recordId: "someId",
-      profileAssociatedAt: new Date(),
+      recordAssociatedAt: new Date(),
     });
 
     // try to confirm again
