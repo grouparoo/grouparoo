@@ -2,8 +2,8 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import {
   PluginConnection,
-  ProfilePropertyPluginMethod,
-  ProfilePropertiesPluginMethod,
+  RecordPropertyPluginMethod,
+  RecordPropertiesPluginMethod,
   Property,
   GrouparooPlugin,
   Source,
@@ -19,9 +19,8 @@ describe("tasks/profileProperties:enqueue", () => {
 
   let propertiesCount: number;
   let testPluginConnection: PluginConnection;
-  let prevProfilePropertyMethod: ProfilePropertyPluginMethod;
-  let prevProfilePropertiesMethod: ProfilePropertiesPluginMethod;
-
+  let prevProfilePropertyMethod: RecordPropertyPluginMethod;
+  let prevProfilePropertiesMethod: RecordPropertiesPluginMethod;
   beforeAll(async () => {
     const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
       (a) => a.name === "@grouparoo/test-plugin"
@@ -31,32 +30,19 @@ describe("tasks/profileProperties:enqueue", () => {
       (c) => c.name === "test-plugin-import"
     );
 
-    prevProfilePropertyMethod = testPluginConnection.methods.profileProperty;
-    prevProfilePropertiesMethod =
-      testPluginConnection.methods.profileProperties;
+    prevProfilePropertyMethod = testPluginConnection.methods.recordProperty;
+    prevProfilePropertiesMethod = testPluginConnection.methods.recordProperties;
   });
 
   function resetPlugin() {
-    testPluginConnection.methods.profileProperty = prevProfilePropertyMethod;
-    testPluginConnection.methods.profileProperties =
-      prevProfilePropertiesMethod;
+    testPluginConnection.methods.recordProperty = prevProfilePropertyMethod;
+    testPluginConnection.methods.recordProperties = prevProfilePropertiesMethod;
   }
 
   afterAll(() => {
     resetPlugin();
   });
 
-<<<<<<< HEAD:core/__tests__/tasks/recordProperty/enqueue/enqueue.ts
-=======
-  afterEach(async () => {
-    await plugin.updateSetting(
-      "core",
-      "imports-record-properties-batch-size",
-      50
-    );
-  });
-
->>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/recordProperty/enqueue.ts
   describe("profileProperties:enqueue", () => {
     describe("when bootstrapping", () => {
       afterAll(async () => {
@@ -103,7 +89,7 @@ describe("tasks/profileProperties:enqueue", () => {
 
         beforeAll(async () => {
           resetPlugin();
-          delete testPluginConnection.methods.profileProperties;
+          delete testPluginConnection.methods.recordProperties;
 
           mario = await helper.factories.record();
           luigi = await helper.factories.record();
@@ -216,7 +202,7 @@ describe("tasks/profileProperties:enqueue", () => {
       describe("with profileProperties method", () => {
         beforeAll(async () => {
           resetPlugin();
-          delete testPluginConnection.methods.profileProperty;
+          delete testPluginConnection.methods.recordProperty;
         });
 
         test("if there is an importProfileProperties it will be preferred", async () => {
@@ -252,56 +238,13 @@ describe("tasks/profileProperties:enqueue", () => {
             expect(t.args[0].profileIds.length).toBe(2)
           );
         });
-<<<<<<< HEAD:core/__tests__/tasks/recordProperty/enqueue/enqueue.ts
-=======
-
-        test("the batch size can be configured via a setting", async () => {
-          await plugin.updateSetting(
-            "core",
-            "imports-record-properties-batch-size",
-            1
-          );
-
-          const run = await helper.factories.run(schedule);
-          const marioImport = await helper.factories.import(run, {
-            email: "mario@example.com",
-            firstName: "Mario",
-          });
-          const luigiImport = await helper.factories.import(run, {
-            email: "luigi@example.com",
-          });
-
-          await specHelper.runTask("import:associateProfile", {
-            importId: marioImport.id,
-          });
-          await specHelper.runTask("import:associateProfile", {
-            importId: luigiImport.id,
-          });
-
-          await specHelper.runTask("profileProperties:enqueue", {});
-
-          const importProfilePropertiesTasks =
-            await specHelper.findEnqueuedTasks(
-              "profileProperty:importProfileProperties"
-            );
-          const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
-            "profileProperty:importProfileProperty"
-          );
-
-          expect(importProfilePropertyTasks.length).toBe(0);
-          expect(importProfilePropertiesTasks.length).toBe(propertiesCount);
-          importProfilePropertiesTasks.forEach((t) =>
-            expect(t.args[0].profileIds.length).toBe(1)
-          );
-        });
->>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/recordProperty/enqueue.ts
       });
 
       describe("without a profileProperty or profileProperties method", () => {
         beforeAll(async () => {
           resetPlugin();
-          delete testPluginConnection.methods.profileProperty;
-          delete testPluginConnection.methods.profileProperties;
+          delete testPluginConnection.methods.recordProperty;
+          delete testPluginConnection.methods.recordProperties;
         });
 
         test("if there is no import method, it will just mark properties as ready", async () => {

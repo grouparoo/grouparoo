@@ -2,14 +2,8 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, config, task, specHelper } from "actionhero";
 import {
   Group,
-<<<<<<< HEAD:core/__tests__/tasks/record/checkReady/checkReady.ts
-  Profile,
-  ProfileProperty,
-=======
-  plugin,
   GrouparooRecord,
   RecordProperty,
->>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/record/checkReady.ts
   Schedule,
   Source,
 } from "../../../../src";
@@ -27,13 +21,6 @@ describe("tasks/record:checkReady", () => {
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
 
-<<<<<<< HEAD:core/__tests__/tasks/record/checkReady/checkReady.ts
-=======
-  afterEach(async () => {
-    await plugin.updateSetting("core", "runs-record-batch-size", 100);
-  });
-
->>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/record/checkReady.ts
   beforeAll(async () => {
     source = await Source.findOne();
     schedule = await helper.factories.schedule(source);
@@ -116,31 +103,6 @@ describe("tasks/record:checkReady", () => {
       await bowser.destroy();
     });
 
-<<<<<<< HEAD:core/__tests__/tasks/record/checkReady/checkReady.ts
-=======
-    test("batch size can be configured with a setting", async () => {
-      await plugin.updateSetting("core", "runs-record-batch-size", 1);
-
-      const mario = await helper.factories.record();
-      await mario.import();
-      await mario.update({ state: "pending" });
-
-      const luigi = await helper.factories.record();
-      await luigi.import();
-      await luigi.update({ state: "pending" });
-
-      await specHelper.runTask("records:checkReady", {});
-
-      await mario.reload();
-      await luigi.reload();
-
-      expect([mario.state, luigi.state].sort()).toEqual(["pending", "ready"]);
-
-      await mario.destroy();
-      await luigi.destroy();
-    });
-
->>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/record/checkReady.ts
     test("it updates the group memberships", async () => {
       const record = await helper.factories.record();
       await record.addOrUpdateProperties({ lastName: ["Mario"] });

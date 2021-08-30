@@ -30,12 +30,7 @@ describe("tasks/records:confirm", () => {
   });
 
   afterEach(async () => {
-<<<<<<< HEAD:core/__tests__/tasks/record/confirm/confirm.ts
     await plugin.updateSetting("core", "confirm-profiles-days", 7);
-=======
-    await plugin.updateSetting("core", "runs-record-batch-size", 100);
-    await plugin.updateSetting("core", "confirm-records-days", 7);
->>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/record/confirm.ts
   });
 
   test("can be enqueued", async () => {
@@ -344,46 +339,4 @@ describe("tasks/records:confirm", () => {
     const count = await specHelper.runTask("records:confirm", {});
     expect(count).toBe(0); // nothing
   });
-<<<<<<< HEAD:core/__tests__/tasks/record/confirm/confirm.ts
-=======
-
-  test("only processes records up to the batch size", async () => {
-    await plugin.updateSetting("core", "runs-record-batch-size", 2);
-
-    const profile1: GrouparooRecord = await helper.factories.record();
-    const profile2: GrouparooRecord = await helper.factories.record();
-    const profile3: GrouparooRecord = await helper.factories.record();
-
-    await RecordProperty.update(
-      {
-        state: "ready",
-        confirmedAt: Moment().subtract(10, "days").toDate(),
-      },
-      {
-        where: {
-          recordId: [profile1.id, profile2.id, profile3.id],
-        },
-      }
-    );
-
-    await GrouparooRecord.update(
-      { state: "ready" },
-      {
-        where: {
-          id: [profile1.id, profile2.id, profile3.id],
-        },
-      }
-    );
-
-    const count = await specHelper.runTask("records:confirm", {});
-    expect(count).toBe(2);
-
-    await profile1.reload();
-    await profile2.reload();
-    await profile3.reload();
-
-    const states = [profile1.state, profile2.state, profile3.state].sort();
-    expect(states).toEqual(["pending", "pending", "ready"]);
-  });
->>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/record/confirm.ts
 });

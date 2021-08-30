@@ -1,31 +1,18 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-<<<<<<< HEAD:core/__tests__/tasks/record/enqueueExports/enqueueExports.ts
-import { Import, Profile, ProfileProperty, Property } from "../../../../src";
-=======
 import {
   Import,
-  plugin,
   GrouparooRecord,
   RecordProperty,
   Property,
-} from "../../../src";
->>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/record/enqueueExports.ts
+} from "../../../../src";
 
 describe("tasks/records:enqueueExports", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
 
-<<<<<<< HEAD:core/__tests__/tasks/record/enqueueExports/enqueueExports.ts
   describe("profiles:enqueueExports", () => {
-=======
-  afterEach(async () => {
-    await plugin.updateSetting("core", "runs-record-batch-size", 100);
-  });
-
-  describe("records:enqueueExports", () => {
->>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/record/enqueueExports.ts
     test("can be enqueued", async () => {
       await task.enqueue("records:enqueueExports", {
         recordId: "abc123",
@@ -149,48 +136,5 @@ describe("tasks/records:enqueueExports", () => {
       await luigi.destroy();
       await toad.destroy();
     });
-<<<<<<< HEAD:core/__tests__/tasks/record/enqueueExports/enqueueExports.ts
-=======
-
-    test("batch size can be configured with a setting", async () => {
-      await plugin.updateSetting("core", "runs-record-batch-size", 1);
-
-      const mario: GrouparooRecord = await helper.factories.record();
-      await mario.import();
-      await mario.update({ state: "ready" });
-      const marioImport: Import = await helper.factories.import(
-        null,
-        {},
-        mario.id
-      );
-      await marioImport.update({
-        groupsUpdatedAt: new Date(),
-        profileUpdatedAt: new Date(),
-        exportedAt: null,
-      });
-
-      const luigi: GrouparooRecord = await helper.factories.record();
-      await luigi.import();
-      await luigi.update({ state: "ready" });
-      const luigiImport: Import = await helper.factories.import(
-        null,
-        {},
-        luigi.id
-      );
-      await luigiImport.update({
-        groupsUpdatedAt: new Date(),
-        profileUpdatedAt: new Date(),
-        exportedAt: null,
-      });
-
-      await specHelper.runTask("records:enqueueExports", {});
-
-      const foundTasks = await specHelper.findEnqueuedTasks("record:export");
-      expect(foundTasks.length).toEqual(1);
-
-      await mario.destroy();
-      await luigi.destroy();
-    });
->>>>>>> f11e94f87 (WIP core action tests):core/__tests__/tasks/record/enqueueExports.ts
   });
 });
