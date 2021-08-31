@@ -28,7 +28,7 @@ const STATE_TRANSITIONS = [
 @Table({ tableName: "recordProperties", paranoid: false })
 export class RecordProperty extends LoggedModel<RecordProperty> {
   idPrefix() {
-    return "prp";
+    return "rpr";
   }
 
   @AllowNull(false)

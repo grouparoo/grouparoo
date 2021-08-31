@@ -1,4 +1,5 @@
-import Sequelize from "sequelize";
+import Sequelize, { Op } from "sequelize";
+import { config } from "actionhero";
 
 const renames: { [table: string]: [string, string][] } = {
   exports: [
@@ -29,6 +30,30 @@ export default {
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
+    if (config.sequelize?.dialect === "sqlite") {
+      // All previous SQLite indexes had been removed (migration 000053), but we need to manually remove and re-add those special indexes for the recordProperties table.
+      // Continued below at end of migration
+      // See https://github.com/sequelize/sequelize/issues/12823
+      await queryInterface.removeIndex(
+        "profileProperties",
+        ["profileId", "propertyId", "position"],
+        {
+          unique: true,
+          fields: ["profileId", "propertyId", "position"],
+        }
+      );
+
+      await queryInterface.removeIndex(
+        "profileProperties",
+        ["propertyId", "rawValue", "position", "unique"],
+        {
+          unique: true,
+          fields: ["propertyId", "rawValue", "position", "unique"],
+          where: { unique: { [Op.eq]: true } },
+        }
+      );
+    }
+
     await queryInterface.createTable("models", {
       id: {
         type: DataTypes.STRING(191),
@@ -89,6 +114,27 @@ export default {
     }
 
     await queryInterface.renameTable("profileProperties", "recordProperties");
+
+    if (config.sequelize?.dialect === "sqlite") {
+      await queryInterface.addIndex(
+        "recordProperties",
+        ["propertyId", "rawValue", "position", "unique"],
+        {
+          unique: true,
+          fields: ["propertyId", "rawValue", "position", "unique"],
+          where: { unique: { [Op.eq]: true } },
+        }
+      );
+
+      await queryInterface.addIndex(
+        "recordProperties",
+        ["recordId", "propertyId", "position"],
+        {
+          unique: true,
+          fields: ["recordId", "propertyId", "position"],
+        }
+      );
+    }
   },
 
   down: async function () {

@@ -100,7 +100,7 @@ export const CachedProperties: { expires: number; properties: Property[] } = {
 @Table({ tableName: "properties", paranoid: false })
 export class Property extends LoggedModel<Property> {
   idPrefix() {
-    return "rul";
+    return "prp";
   }
 
   @AllowNull(true)

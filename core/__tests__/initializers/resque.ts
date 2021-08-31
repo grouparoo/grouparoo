@@ -29,7 +29,9 @@ describe("initializers/resque", () => {
   helper.grouparooTestServer({ truncate: true });
 
   beforeEach(async () => {
+    helper.sleep(100);
     await api.resque.queue.connection.redis.flushdb();
+    helper.sleep(100);
   });
 
   test("it will check for missing periodic tasks if the resque leader", async () => {
