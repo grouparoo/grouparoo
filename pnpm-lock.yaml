@@ -21,6 +21,7 @@ importers:
   apps/staging-community:
     specifiers:
       '@grouparoo/bigquery': 0.5.3-alpha.7
+      '@grouparoo/calculated-property': 0.5.3-alpha.7
       '@grouparoo/core': 0.5.3-alpha.7
       '@grouparoo/csv': 0.5.3-alpha.7
       '@grouparoo/customerio': 0.5.3-alpha.7
@@ -34,6 +35,7 @@ importers:
       '@grouparoo/iterable': 0.5.3-alpha.7
       '@grouparoo/logger': 0.5.3-alpha.7
       '@grouparoo/mailchimp': 0.5.3-alpha.7
+      '@grouparoo/mailjet': 0.5.3-alpha.7
       '@grouparoo/marketo': 0.5.3-alpha.7
       '@grouparoo/mixpanel': 0.5.3-alpha.7
       '@grouparoo/mongo': 0.5.3-alpha.7
@@ -57,6 +59,7 @@ importers:
       jest: 27.0.6
     dependencies:
       '@grouparoo/bigquery': link:../../plugins/@grouparoo/bigquery
+      '@grouparoo/calculated-property': link:../../plugins/@grouparoo/calculated-property
       '@grouparoo/core': link:../../core
       '@grouparoo/csv': link:../../plugins/@grouparoo/csv
       '@grouparoo/customerio': link:../../plugins/@grouparoo/customerio
@@ -70,6 +73,7 @@ importers:
       '@grouparoo/iterable': link:../../plugins/@grouparoo/iterable
       '@grouparoo/logger': link:../../plugins/@grouparoo/logger
       '@grouparoo/mailchimp': link:../../plugins/@grouparoo/mailchimp
+      '@grouparoo/mailjet': link:../../plugins/@grouparoo/mailjet
       '@grouparoo/marketo': link:../../plugins/@grouparoo/marketo
       '@grouparoo/mixpanel': link:../../plugins/@grouparoo/mixpanel
       '@grouparoo/mongo': link:../../plugins/@grouparoo/mongo
@@ -314,7 +318,7 @@ importers:
       sequelize-typescript: 2.1.0_563c3d51b32bdb383499454e5ab951ac
       sqlite3: 5.0.2
       tar: 6.1.11
-      ts-node: 10.2.1_d4454e6645704c22c739fde21b9a24fe
+      ts-node: 10.2.1_eb14afb1492fcd444e277f1fdb668e87
       umzug: 3.0.0-beta.5
       uuid: 8.3.2
       validator: 13.6.0
