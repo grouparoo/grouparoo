@@ -1,4 +1,4 @@
-import { api, config } from "actionhero";
+import { config } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
@@ -6,7 +6,6 @@ import { internalRun } from "../modules/internalRun";
 import { Op } from "sequelize";
 import { ConfigWriter } from "../modules/configWriter";
 import { RecordOps } from "../modules/ops/record";
-import { AsyncReturnType } from "type-fest";
 import Sequelize from "sequelize";
 import { APIData } from "../modules/apiData";
 
