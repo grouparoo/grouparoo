@@ -1,7 +1,8 @@
-import { Pool, types } from "pg";
-import parseDate from "postgres-date";
-import format from "pg-format";
 import { ConnectPluginAppMethod } from "@grouparoo/core";
+import { log } from "actionhero";
+import { Pool, types } from "pg";
+import format from "pg-format";
+import parseDate from "postgres-date";
 
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   const formattedOptions: any = Object.assign({}, appOptions);
@@ -42,6 +43,14 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
       await client.query(format(`SET search_path TO %L;`, appOptions.schema));
     }
   });
+
+  // Unfortunately there's no event listener for queries so we have to intercept the call.
+  // https://github.com/brianc/node-postgres/issues/2580
+  const shim = pool.query.bind(pool);
+  (pool as any).query = (query, ...args) => {
+    log(`Query: ${query}`, "debug");
+    return shim(query, ...args);
+  };
 
   return pool;
 };
