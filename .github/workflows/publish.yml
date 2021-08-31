@@ -63,6 +63,8 @@ jobs:
     if: ${{ github.repository == 'grouparoo/grouparoo' }}
     needs: publish
     steps:
+      - name: Sleep
+        run: sleep 60
       - name: Notify
         run: >-
           curl
