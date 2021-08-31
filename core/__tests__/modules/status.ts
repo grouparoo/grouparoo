@@ -500,4 +500,17 @@ describe("modules/status", () => {
       );
     });
   });
+
+  describe("getCurrent", () => {
+    beforeEach(async () => {
+      await api.resque.queue.connection.redis.flushdb();
+      await Status.set([metric]);
+    });
+
+    it("returns the current status", async () => {
+      let foundMetric = await Status.getCurrent();
+      expect(foundMetric["test"]["test"].length).toBe(1);
+      expect(foundMetric["test"]["test"][0].metric).toEqual(metric);
+    });
+  });
 });

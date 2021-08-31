@@ -1,0 +1,31 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/prometheus",
+  "description": "Prometheus endpoint for server metrics",
+  "version": "0.5.3-alpha.7",
+  "license": "MPL-2.0",
+  "engines": {
+    "node": ">=12.0.0 <16.0.0"
+  },
+  "scripts": {
+    "lint": "prettier --check src __tests__",
+    "prepare": "rm -rf dist && tsc --declaration",
+    "pretest": "npm run lint && npm run prepare",
+    "test": "jest",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "@grouparoo/core": "0.5.3-alpha.7",
+    "@grouparoo/spec-helper": "0.5.3-alpha.7",
+    "@types/jest": "*",
+    "@types/node": "*",
+    "actionhero": "27.0.3",
+    "axios": "0.21.1",
+    "jest": "27.1.0",
+    "ts-jest": "27.0.5",
+    "typescript": "4.3.5"
+  },
+  "dependencies": {
+    "prom-client": "13.2.0"
+  }
+}

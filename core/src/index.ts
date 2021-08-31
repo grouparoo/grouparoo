@@ -3,6 +3,8 @@ export { plugin } from "./modules/plugin";
 export * from "./classes/plugin";
 export * from "./classes/fileTransport";
 export * from "./classes/configTemplate";
+export { AuthenticatedAction } from "./classes/actions/authenticatedAction";
+export { OptionallyAuthenticatedAction } from "./classes/actions/optionallyAuthenticatedAction";
 
 export { App, SimpleAppOptions } from "./models/App";
 export { ApiKey } from "./models/ApiKey";
@@ -49,6 +51,7 @@ export { Source, SimpleSourceOptions, SourceMapping } from "./models/Source";
 export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
 
+export { Status } from "./modules/status";
 export { StatusMetric } from "./modules/statusReporters";
 export { GrouparooCLI } from "./modules/cli";
 
