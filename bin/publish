@@ -19,6 +19,16 @@ then
   PRERELEASE='true'
   LERNA_VERSION_ARGS="prerelease --exact --preid alpha --force-publish --yes"
   DIST_TAG="next"
+elif [[ "$RELEASE_MODE" == "alpha-minor" ]]
+then
+  PRERELEASE='true'
+  LERNA_VERSION_ARGS="preminor --exact --force-publish --yes"
+  DIST_TAG="next"
+elif [[ "$RELEASE_MODE" == "alpha-major" ]]
+then
+  PRERELEASE='true'
+  LERNA_VERSION_ARGS="premajor --exact --force-publish --yes"
+  DIST_TAG="next"
 elif [[ "$RELEASE_MODE" == "stable" ]]
 then
   PRERELEASE='false'
