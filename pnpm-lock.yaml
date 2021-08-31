@@ -267,7 +267,7 @@ importers:
       sequelize: 6.6.2
       sequelize-typescript: 2.1.0
       sqlite3: 5.0.2
-      tar: 6.1.10
+      tar: 6.1.11
       ts-jest: 27.0.5
       ts-node: 10.2.1
       type-fest: 2.1.0
@@ -313,8 +313,8 @@ importers:
       sequelize: 6.6.2_98f032adade92d92d5295670c0365597
       sequelize-typescript: 2.1.0_563c3d51b32bdb383499454e5ab951ac
       sqlite3: 5.0.2
-      tar: 6.1.10
-      ts-node: 10.2.1_eb14afb1492fcd444e277f1fdb668e87
+      tar: 6.1.11
+      ts-node: 10.2.1_d4454e6645704c22c739fde21b9a24fe
       umzug: 3.0.0-beta.5
       uuid: 8.3.2
       validator: 13.6.0
