@@ -27,7 +27,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
     query: string,
     replacementValues: { [key: string]: any } | Array<string | number> = []
   ): Promise<Array<QueryResultObject>> {
-    log(`MySQL Query: ${query}`, "debug");
+    log(`MySQL Query: ${query}`, "info", replacementValues);
     return new Promise((resolve, reject) => {
       this.getConnection(function (acquireError, connection) {
         if (acquireError) return reject(acquireError);
