@@ -10,6 +10,8 @@ import { addToList, removeFromList } from "./listMethods";
 
 const deleteContactOrClearGroups = async (
   client: MailjetClient,
+  appId: string,
+  appOptions: SimpleAppOptions,
   syncOperations: DestinationSyncOperations,
   contact: any,
   groups: string[]
@@ -20,7 +22,7 @@ const deleteContactOrClearGroups = async (
     if (syncOperations.update) {
       // clear groups
       for (const group of groups) {
-        await removeFromList(client, contact.Email, group);
+        await removeFromList(client, appId, appOptions, contact.Email, group);
       }
     }
   }
@@ -117,6 +119,8 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       if (oldContact) {
         await deleteContactOrClearGroups(
           client,
+          appId,
+          appOptions,
           syncOperations,
           oldContact,
           oldGroups
@@ -126,14 +130,14 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       // add to lists
       for (const i in newGroups) {
         const group = newGroups[i];
-        await addToList(client, email, group);
+        await addToList(client, appId, appOptions, email, group);
       }
 
       // remove from lists
       for (const i in oldGroups) {
         const group = oldGroups[i];
         if (!newGroups.includes(group))
-          await removeFromList(client, email, group);
+          await removeFromList(client, appId, appOptions, email, group);
       }
     }
 
