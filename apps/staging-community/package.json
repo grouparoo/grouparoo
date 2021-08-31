@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@grouparoo/bigquery": "0.5.3-alpha.7",
+    "@grouparoo/calculated-property": "0.5.3-alpha.7",
     "@grouparoo/core": "0.5.3-alpha.7",
     "@grouparoo/csv": "0.5.3-alpha.7",
     "@grouparoo/customerio": "0.5.3-alpha.7",
@@ -23,6 +24,7 @@
     "@grouparoo/iterable": "0.5.3-alpha.7",
     "@grouparoo/logger": "0.5.3-alpha.7",
     "@grouparoo/mailchimp": "0.5.3-alpha.7",
+    "@grouparoo/mailjet": "0.5.3-alpha.7",
     "@grouparoo/marketo": "0.5.3-alpha.7",
     "@grouparoo/mixpanel": "0.5.3-alpha.7",
     "@grouparoo/mongo": "0.5.3-alpha.7",

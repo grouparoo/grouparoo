@@ -4,6 +4,7 @@ export * from "./classes/plugin";
 export * from "./classes/fileTransport";
 export * from "./classes/configTemplate";
 export { AuthenticatedAction } from "./classes/actions/authenticatedAction";
+export { OptionallyAuthenticatedAction } from "./classes/actions/optionallyAuthenticatedAction";
 
 export { App, SimpleAppOptions } from "./models/App";
 export { ApiKey } from "./models/ApiKey";
