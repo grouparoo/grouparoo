@@ -48,7 +48,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   // https://github.com/brianc/node-postgres/issues/2580
   const shim = pool.query.bind(pool);
   (pool as any).query = (query, ...args) => {
-    log(`Query: ${query}`, "debug");
+    log(`Postgres Query: ${query}`, "debug");
     return shim(query, ...args);
   };
 
