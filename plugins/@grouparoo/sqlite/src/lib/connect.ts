@@ -1,8 +1,8 @@
 import { ConnectPluginAppMethod } from "@grouparoo/core";
+import { getParentPath } from "@grouparoo/core/dist/modules/pluginDetails";
 import fs from "fs";
 import path from "path";
 import { SQLite } from "./sqlite";
-import { getParentPath } from "@grouparoo/core/dist/modules/pluginDetails";
 
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   const formattedOptions: any = Object.assign({}, appOptions);
