@@ -57,9 +57,12 @@ export default class EloquaClient {
     const response = await axios(params);
     const { data = {} } = response;
     const { urls = {} } = data;
-
     if (urls["base"]) {
       return urls["base"];
+    } else if (data === "Not authenticated.") {
+      throw new Error(
+        "Invalid credentials, please verify your Site Name, User Name and Password."
+      );
     }
     throw new Error("Error obtaining baseUrl");
   }
