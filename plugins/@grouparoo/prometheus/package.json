@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/prometheus",
   "description": "Prometheus endpoint for server metrics",
-  "version": "0.5.3-alpha.7",
+  "version": "0.6.0-alpha.0",
   "license": "MPL-2.0",
   "engines": {
     "node": ">=12.0.0 <16.0.0"
@@ -15,8 +15,8 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.5.3-alpha.7",
-    "@grouparoo/spec-helper": "0.5.3-alpha.7",
+    "@grouparoo/core": "0.6.0-alpha.0",
+    "@grouparoo/spec-helper": "0.6.0-alpha.0",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "27.0.3",
