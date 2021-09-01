@@ -44,7 +44,7 @@ async function getPropertyValue(query: string) {
   });
 }
 
-describe("snowflake/query/profileProperty", () => {
+describe("snowflake/integration/log-checking", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   const actionhero = require("actionhero");
   const logMock = jest.fn();
@@ -62,7 +62,7 @@ describe("snowflake/query/profileProperty", () => {
     expect(profile.id).toBeTruthy();
   });
 
-  test("can run a integer query to get a string", async () => {
+  it("should correctly do debug logging for snowflake queries", async () => {
     const sql = "SELECT first_name FROM profiles WHERE id = {{ userId }}";
     const value = await getPropertyValue(sql);
     expect(value).toEqual(["Erie"]);

@@ -37,7 +37,7 @@ async function getPropertyValue(query: string) {
   });
 }
 
-describe("postgres/query/profileProperty", () => {
+describe("postgres/integration/log-checking", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   const actionhero = require("actionhero");
   const logMock = jest.fn();
@@ -56,7 +56,7 @@ describe("postgres/query/profileProperty", () => {
 
   afterAll(async () => await afterData());
 
-  it("should correctly log out queries", async () => {
+  it("should correctly do debug logging for postgres queries", async () => {
     const sql = `SELECT first_name FROM ${usersTableName} WHERE id = {{ userId }}`;
     const value = await getPropertyValue(sql);
     expect(value).toEqual(["Erie"]);

@@ -39,7 +39,7 @@ async function getPropertyValue(query: string) {
   });
 }
 
-describe("mongo/query/profileProperty", () => {
+describe("mongo/integration/log-checking", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   const actionhero = require("actionhero");
   const logMock = jest.fn();
@@ -84,9 +84,10 @@ describe("mongo/query/profileProperty", () => {
     const value = await getPropertyValue(queryString);
     expect(value).toEqual(["Erie"]);
 
-    const [mongoCall] = logMock.mock.calls.find(
+    const [mongoCall, logLevel] = logMock.mock.calls.find(
       (c) => c[0].includes("mongo") && c[0].includes("Erie")
     );
+    expect(logLevel).toBe("debug");
     let mongoCallData: any;
     try {
       mongoCallData = JSON.parse(mongoCall.replace("[ mongo ] ", ""));
