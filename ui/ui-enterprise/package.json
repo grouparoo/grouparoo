@@ -29,30 +29,13 @@
     "lint": "prettier --check pages __tests__"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "1.2.36",
-    "@fortawesome/free-brands-svg-icons": "5.15.4",
-    "@fortawesome/free-solid-svg-icons": "5.15.4",
-    "@fortawesome/react-fontawesome": "0.1.15",
     "@zeit/next-source-maps": "0.0.3",
-    "axios": "0.21.1",
-    "date-fns": "2.23.0",
     "dotenv": "10.0.0",
-    "md5": "2.3.0",
-    "moment": "2.29.1",
     "next": "11.1.0",
-    "node-sass": "5.0.0",
-    "nprogress": "0.2.0",
-    "pluralize": "8.0.0",
     "react": "17.0.2",
     "react-bootstrap": "1.6.1",
-    "react-bootstrap-typeahead": "5.2.0",
     "react-dom": "17.0.2",
-    "react-hook-form": "6.15.5",
-    "react-markdown": "6.0.2",
-    "react-moment": "1.1.1",
-    "stacktrace-js": "2.0.2",
-    "styled-jsx": "4.0.0",
-    "swagger-ui-dist": "3.52.0"
+    "react-hook-form": "6.15.5"
   },
   "devDependencies": {
     "@grouparoo/core": "0.6.0-alpha.0",
