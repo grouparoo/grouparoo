@@ -390,7 +390,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],

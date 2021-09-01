@@ -51,7 +51,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     configuration: {
       query: {
         useLegacySql: false,
-        query: "SELECT id FROM profiles ORDER BY id ASC LIMIT 1000 OFFSET 0",
+        query: "SELECT id FROM records ORDER BY id ASC LIMIT 1000 OFFSET 0",
         defaultDataset: { datasetId: "test" },
       },
     },
@@ -213,7 +213,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     configuration: {
       query: {
         useLegacySql: false,
-        query: "SELECT id FROM profiles ORDER BY id ASC LIMIT 100 OFFSET 9999",
+        query: "SELECT id FROM records ORDER BY id ASC LIMIT 100 OFFSET 9999",
         defaultDataset: { datasetId: "test" },
       },
     },
@@ -389,7 +389,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     configuration: {
       query: {
         useLegacySql: false,
-        query: "SELECT id FROM profiles ORDER BY id ASC LIMIT 4 OFFSET 0",
+        query: "SELECT id FROM records ORDER BY id ASC LIMIT 4 OFFSET 0",
         defaultDataset: { datasetId: "test" },
       },
     },
@@ -547,7 +547,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     configuration: {
       query: {
         useLegacySql: false,
-        query: "SELECT id FROM profiles ORDER BY id ASC LIMIT 4 OFFSET 4",
+        query: "SELECT id FROM records ORDER BY id ASC LIMIT 4 OFFSET 4",
         defaultDataset: { datasetId: "test" },
       },
     },
@@ -714,7 +714,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     configuration: {
       query: {
         useLegacySql: false,
-        query: "SELECT id FROM profiles ORDER BY id ASC LIMIT 4 OFFSET 8",
+        query: "SELECT id FROM records ORDER BY id ASC LIMIT 4 OFFSET 8",
         defaultDataset: { datasetId: "test" },
       },
     },

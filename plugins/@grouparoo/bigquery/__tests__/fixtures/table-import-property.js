@@ -66,7 +66,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -181,7 +181,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `first_name` as __result FROM `profiles` WHERE  `id` = ? LIMIT 1",
+          "SELECT `first_name` as __result FROM `records` WHERE  `id` = ? LIMIT 1",
         types: ["INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -370,7 +370,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -485,7 +485,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `ltv` as __result FROM `profiles` WHERE  `id` = ? LIMIT 1",
+          "SELECT `ltv` as __result FROM `records` WHERE  `id` = ? LIMIT 1",
         types: ["INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -669,7 +669,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -805,7 +805,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `ios_app` as __result FROM `profiles` WHERE  `id` = ? LIMIT 1",
+          "SELECT `ios_app` as __result FROM `records` WHERE  `id` = ? LIMIT 1",
         types: ["INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -985,7 +985,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -1112,7 +1112,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `date` as __result FROM `profiles` WHERE  `id` = ? LIMIT 1",
+          "SELECT `date` as __result FROM `records` WHERE  `id` = ? LIMIT 1",
         types: ["INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -1290,7 +1290,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -1412,7 +1412,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `stamp` as __result FROM `profiles` WHERE  `id` = ? LIMIT 1",
+          "SELECT `stamp` as __result FROM `records` WHERE  `id` = ? LIMIT 1",
         types: ["INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -1600,7 +1600,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -1709,7 +1709,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `first_name` as __result FROM `profiles` WHERE  `email` = ? LIMIT 1",
+          "SELECT `first_name` as __result FROM `records` WHERE  `email` = ? LIMIT 1",
         types: ["STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -1889,7 +1889,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -2009,7 +2009,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `ltv` as __result FROM `profiles` WHERE  `email` = ? LIMIT 1",
+          "SELECT `ltv` as __result FROM `records` WHERE  `email` = ? LIMIT 1",
         types: ["STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -2188,7 +2188,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -2305,7 +2305,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `ios_app` as __result FROM `profiles` WHERE  `email` = ? LIMIT 1",
+          "SELECT `ios_app` as __result FROM `records` WHERE  `email` = ? LIMIT 1",
         types: ["STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -2496,7 +2496,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -2611,7 +2611,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `date` as __result FROM `profiles` WHERE  `email` = ? LIMIT 1",
+          "SELECT `date` as __result FROM `records` WHERE  `email` = ? LIMIT 1",
         types: ["STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -2798,7 +2798,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -2922,7 +2922,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `stamp` as __result FROM `profiles` WHERE  `email` = ? LIMIT 1",
+          "SELECT `stamp` as __result FROM `records` WHERE  `email` = ? LIMIT 1",
         types: ["STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -3215,7 +3215,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COALESCE(AVG(`amount`), 0) as __result FROM `purchases` WHERE  `profile_id` = ? LIMIT 1",
+          "SELECT COALESCE(AVG(`amount`), 0) as __result FROM `purchases` WHERE  `record_id` = ? LIMIT 1",
         types: ["INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -3488,7 +3488,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? LIMIT 1",
         types: ["INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -3755,7 +3755,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COALESCE(SUM(`amount`), 0) as __result FROM `purchases` WHERE  `profile_id` = ? LIMIT 1",
+          "SELECT COALESCE(SUM(`amount`), 0) as __result FROM `purchases` WHERE  `record_id` = ? LIMIT 1",
         types: ["INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -4048,7 +4048,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT MIN(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? LIMIT 1",
+          "SELECT MIN(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? LIMIT 1",
         types: ["INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -4340,7 +4340,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT MAX(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? LIMIT 1",
+          "SELECT MAX(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? LIMIT 1",
         types: ["INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -4646,7 +4646,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`date`) as __result FROM `purchases` WHERE  `profile_id` = ? LIMIT 1",
+          "SELECT COUNT(`date`) as __result FROM `purchases` WHERE  `record_id` = ? LIMIT 1",
         types: ["INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -4937,7 +4937,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT MIN(`date`) as __result FROM `purchases` WHERE  `profile_id` = ? LIMIT 1",
+          "SELECT MIN(`date`) as __result FROM `purchases` WHERE  `record_id` = ? LIMIT 1",
         types: ["INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -5243,7 +5243,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT MAX(`date`) as __result FROM `purchases` WHERE  `profile_id` = ? LIMIT 1",
+          "SELECT MAX(`date`) as __result FROM `purchases` WHERE  `record_id` = ? LIMIT 1",
         types: ["INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -5558,7 +5558,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `id` = ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `id` = ? LIMIT 1",
         types: ["INT64", "INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -5874,7 +5874,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `purchase` = ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `purchase` = ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -6141,7 +6141,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `purchase` = ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `purchase` = ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -6445,7 +6445,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `date` = ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `date` = ? LIMIT 1",
         types: ["INT64", "DATE"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -6770,7 +6770,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `stamp` = ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `stamp` = ? LIMIT 1",
         types: ["INT64", "TIMESTAMP"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -7074,7 +7074,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `amount` = ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `amount` = ? LIMIT 1",
         types: ["INT64", "FLOAT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -7377,7 +7377,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `id` != ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `id` != ? LIMIT 1",
         types: ["INT64", "INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -7678,7 +7678,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `purchase` != ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `purchase` != ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -7967,7 +7967,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `purchase` != ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `purchase` != ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -8249,7 +8249,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `date` != ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `date` != ? LIMIT 1",
         types: ["INT64", "DATE"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -8548,7 +8548,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `stamp` != ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `stamp` != ? LIMIT 1",
         types: ["INT64", "TIMESTAMP"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -8834,7 +8834,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `amount` != ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `amount` != ? LIMIT 1",
         types: ["INT64", "FLOAT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -9136,7 +9136,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  LOWER(`id`) LIKE ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  LOWER(`id`) LIKE ? LIMIT 1",
         types: ["INT64", "INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -9397,7 +9397,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  LOWER(`purchase`) LIKE ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  LOWER(`purchase`) LIKE ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -9698,7 +9698,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  LOWER(`purchase`) LIKE ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  LOWER(`purchase`) LIKE ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -10030,7 +10030,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  LOWER(`stamp`) LIKE ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  LOWER(`stamp`) LIKE ? LIMIT 1",
         types: ["INT64", "TIMESTAMP"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -10268,7 +10268,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  LOWER(`stamp`) LIKE ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  LOWER(`stamp`) LIKE ? LIMIT 1",
         types: ["INT64", "TIMESTAMP"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -10521,7 +10521,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  LOWER(`amount`) LIKE ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  LOWER(`amount`) LIKE ? LIMIT 1",
         types: ["INT64", "FLOAT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -10769,7 +10769,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  LOWER(`id`) NOT LIKE ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  LOWER(`id`) NOT LIKE ? LIMIT 1",
         types: ["INT64", "INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -11001,7 +11001,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  LOWER(`purchase`) NOT LIKE ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  LOWER(`purchase`) NOT LIKE ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -11310,7 +11310,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  LOWER(`purchase`) NOT LIKE ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  LOWER(`purchase`) NOT LIKE ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -11588,7 +11588,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  LOWER(`date`) NOT LIKE ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  LOWER(`date`) NOT LIKE ? LIMIT 1",
         types: ["INT64", "DATE"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -11844,7 +11844,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  LOWER(`stamp`) NOT LIKE ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  LOWER(`stamp`) NOT LIKE ? LIMIT 1",
         types: ["INT64", "TIMESTAMP"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -12067,7 +12067,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  LOWER(`amount`) NOT LIKE ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  LOWER(`amount`) NOT LIKE ? LIMIT 1",
         types: ["INT64", "FLOAT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -12330,7 +12330,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `id` = ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `id` = ? LIMIT 1",
         types: ["INT64", "INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -12623,7 +12623,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `purchase` = ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `purchase` = ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -12924,7 +12924,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `purchase` = ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `purchase` = ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -13246,7 +13246,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `date` = ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `date` = ? LIMIT 1",
         types: ["INT64", "DATE"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -13573,7 +13573,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `stamp` = ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `stamp` = ? LIMIT 1",
         types: ["INT64", "TIMESTAMP"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -13892,7 +13892,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `amount` = ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `amount` = ? LIMIT 1",
         types: ["INT64", "FLOAT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -14178,7 +14178,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `id` > ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `id` > ? LIMIT 1",
         types: ["INT64", "INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -14498,7 +14498,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `purchase` > ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `purchase` > ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -14804,7 +14804,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `purchase` > ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `purchase` > ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -15108,7 +15108,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `date` > ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `date` > ? LIMIT 1",
         types: ["INT64", "DATE"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -15387,7 +15387,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `stamp` > ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `stamp` > ? LIMIT 1",
         types: ["INT64", "TIMESTAMP"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -15716,7 +15716,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `amount` > ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `amount` > ? LIMIT 1",
         types: ["INT64", "FLOAT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -16016,7 +16016,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `id` < ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `id` < ? LIMIT 1",
         types: ["INT64", "INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -16341,7 +16341,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `purchase` < ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `purchase` < ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -16660,7 +16660,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `purchase` < ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `purchase` < ? LIMIT 1",
         types: ["INT64", "STRING"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -16943,7 +16943,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `date` < ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `date` < ? LIMIT 1",
         types: ["INT64", "DATE"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -17228,7 +17228,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `stamp` < ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `stamp` < ? LIMIT 1",
         types: ["INT64", "TIMESTAMP"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -17524,7 +17524,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `profile_id` = ? AND  `amount` < ? LIMIT 1",
+          "SELECT COUNT(`amount`) as __result FROM `purchases` WHERE  `record_id` = ? AND  `amount` < ? LIMIT 1",
         types: ["INT64", "FLOAT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",

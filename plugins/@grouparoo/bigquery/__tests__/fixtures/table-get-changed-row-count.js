@@ -61,7 +61,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -180,7 +180,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     configuration: {
       query: {
         useLegacySql: false,
-        query: "SELECT COUNT (*) AS __count FROM `profiles` WHERE `stamp` > ?",
+        query: "SELECT COUNT (*) AS __count FROM `records` WHERE `stamp` > ?",
         types: ["TIMESTAMP"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -302,7 +302,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -411,7 +411,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT (*) AS __count FROM `profiles` WHERE `stamp` > ? AND  `id` > ? AND  `id` < ?",
+          "SELECT COUNT (*) AS __count FROM `records` WHERE `stamp` > ? AND  `id` > ? AND  `id` < ?",
         types: ["TIMESTAMP", "INT64", "INT64"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -607,7 +607,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -732,7 +732,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     configuration: {
       query: {
         useLegacySql: false,
-        query: "SELECT COUNT (*) AS __count FROM `profiles`",
+        query: "SELECT COUNT (*) AS __count FROM `records`",
         types: [],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",

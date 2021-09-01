@@ -14,10 +14,10 @@ import {
   Property,
 } from "@grouparoo/core";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "query-profiles.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "query-records.js");
 
 import { getConnection } from "../../src/lib/query-import/connection";
-const profiles = getConnection().methods.profiles;
+const records = getConnection().methods.records;
 
 // these comments to use nock
 const newNock = false;
@@ -49,7 +49,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     highWaterMark: nextHighWaterMark,
     importsCount,
     sourceOffset: nextSourceOffset,
-  } = await profiles({
+  } = await records({
     connection,
     run,
     appOptions,
@@ -77,7 +77,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
   };
 }
 
-describe("bigquery/query/profiles", () => {
+describe("bigquery/query/records", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
@@ -101,14 +101,14 @@ describe("bigquery/query/profiles", () => {
       where: { key: "userId" },
     });
     const options = {
-      query: `SELECT id FROM profiles ORDER BY id ASC`,
+      query: `SELECT id FROM records ORDER BY id ASC`,
       propertyId: userIdProperty.id,
     };
     schedule = await helper.factories.schedule(source, { options });
     run = await helper.factories.run(schedule, { state: "running" });
   });
 
-  test("imports all profiles when no highWaterMark", async () => {
+  test("imports all records when no highWaterMark", async () => {
     let limit = 100;
     let highWaterMark = {};
     let sourceOffset = 0;

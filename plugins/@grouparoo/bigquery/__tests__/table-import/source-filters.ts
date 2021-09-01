@@ -56,7 +56,7 @@ describe("bigquery/table/sourceFilters", () => {
       "amount",
       "date",
       "id",
-      "profile_id",
+      "record_id",
       "purchase",
       "stamp",
     ]); // leaves out
@@ -96,7 +96,7 @@ describe("bigquery/table/sourceFilters", () => {
       ],
     });
     expect(columns[3]).toMatchObject({
-      key: "profile_id",
+      key: "record_id",
       ops: [
         "equals",
         "does not equal",

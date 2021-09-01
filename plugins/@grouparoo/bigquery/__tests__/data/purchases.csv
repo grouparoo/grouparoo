@@ -1,4 +1,4 @@
-﻿id,profile_id,purchase,amount,date,stamp
+﻿id,record_id,purchase,amount,date,stamp
 1,1,Apple,1.54,2020/02/01, 2020/02/01 12:13:14
 2,2,Pear,0.78,2020/02/02, 2020/02/02 12:13:14
 3,3,Strawberry,2,2020/02/03, 2020/02/03 12:13:14

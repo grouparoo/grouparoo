@@ -15,12 +15,12 @@ const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "table-profile-property-rule-options.js"
+  "table-record-property-rule-options.js"
 );
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/table-profile-property-rule-options");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -67,7 +67,7 @@ describe("bigquery/table/propertyOptions", () => {
       "amount",
       "date",
       "id",
-      "profile_id",
+      "record_id",
       "purchase",
       "stamp",
     ]);
@@ -119,7 +119,7 @@ describe("bigquery/table/propertyOptions", () => {
       "amount",
       "date",
       "id",
-      "profile_id",
+      "record_id",
       "purchase",
       "stamp",
     ]);

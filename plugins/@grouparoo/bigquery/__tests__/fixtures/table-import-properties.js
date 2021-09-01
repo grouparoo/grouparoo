@@ -68,7 +68,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -170,7 +170,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `first_name`, `id` as __pk FROM `profiles` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `first_name`",
+          "SELECT `first_name`, `id` as __pk FROM `records` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `first_name`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -359,7 +359,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -482,7 +482,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `first_name`, `last_name`, `id` as __pk FROM `profiles` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `first_name`, `last_name`",
+          "SELECT `first_name`, `last_name`, `id` as __pk FROM `records` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `first_name`, `last_name`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -664,7 +664,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -764,7 +764,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `ltv`, `id` as __pk FROM `profiles` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `ltv`",
+          "SELECT `ltv`, `id` as __pk FROM `records` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `ltv`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -951,7 +951,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -1071,7 +1071,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `ltv`, `last_name`, `id` as __pk FROM `profiles` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `ltv`, `last_name`",
+          "SELECT `ltv`, `last_name`, `id` as __pk FROM `records` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `ltv`, `last_name`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -1246,7 +1246,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -1374,7 +1374,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `ios_app`, `id` as __pk FROM `profiles` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `ios_app`",
+          "SELECT `ios_app`, `id` as __pk FROM `records` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `ios_app`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -1578,7 +1578,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -1712,7 +1712,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `ios_app`, `last_name`, `id` as __pk FROM `profiles` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `ios_app`, `last_name`",
+          "SELECT `ios_app`, `last_name`, `id` as __pk FROM `records` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `ios_app`, `last_name`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -1886,7 +1886,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -2006,7 +2006,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `date`, `id` as __pk FROM `profiles` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `date`",
+          "SELECT `date`, `id` as __pk FROM `records` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `date`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -2194,7 +2194,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -2301,7 +2301,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `date`, `last_name`, `id` as __pk FROM `profiles` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `date`, `last_name`",
+          "SELECT `date`, `last_name`, `id` as __pk FROM `records` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `date`, `last_name`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -2487,7 +2487,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -2601,7 +2601,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `stamp`, `id` as __pk FROM `profiles` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `stamp`",
+          "SELECT `stamp`, `id` as __pk FROM `records` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `stamp`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -2779,7 +2779,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -2881,7 +2881,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `stamp`, `last_name`, `id` as __pk FROM `profiles` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `stamp`, `last_name`",
+          "SELECT `stamp`, `last_name`, `id` as __pk FROM `records` WHERE  `id` IN UNNEST (?) GROUP BY `id`, `stamp`, `last_name`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -3073,7 +3073,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -3196,7 +3196,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `first_name`, `email` as __pk FROM `profiles` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `first_name`",
+          "SELECT `first_name`, `email` as __pk FROM `records` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `first_name`",
         types: [["STRING"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -3402,7 +3402,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -3513,7 +3513,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `first_name`, `last_name`, `email` as __pk FROM `profiles` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `first_name`, `last_name`",
+          "SELECT `first_name`, `last_name`, `email` as __pk FROM `records` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `first_name`, `last_name`",
         types: [["STRING"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -3691,7 +3691,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -3818,7 +3818,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `ltv`, `email` as __pk FROM `profiles` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `ltv`",
+          "SELECT `ltv`, `email` as __pk FROM `records` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `ltv`",
         types: [["STRING"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -3995,7 +3995,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -4121,7 +4121,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `ltv`, `last_name`, `email` as __pk FROM `profiles` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `ltv`, `last_name`",
+          "SELECT `ltv`, `last_name`, `email` as __pk FROM `records` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `ltv`, `last_name`",
         types: [["STRING"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -4296,7 +4296,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -4409,7 +4409,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `ios_app`, `email` as __pk FROM `profiles` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `ios_app`",
+          "SELECT `ios_app`, `email` as __pk FROM `records` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `ios_app`",
         types: [["STRING"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -4586,7 +4586,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -4695,7 +4695,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `ios_app`, `last_name`, `email` as __pk FROM `profiles` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `ios_app`, `last_name`",
+          "SELECT `ios_app`, `last_name`, `email` as __pk FROM `records` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `ios_app`, `last_name`",
         types: [["STRING"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -4893,7 +4893,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -5024,7 +5024,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `date`, `email` as __pk FROM `profiles` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `date`",
+          "SELECT `date`, `email` as __pk FROM `records` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `date`",
         types: [["STRING"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -5222,7 +5222,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -5336,7 +5336,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `date`, `last_name`, `email` as __pk FROM `profiles` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `date`, `last_name`",
+          "SELECT `date`, `last_name`, `email` as __pk FROM `records` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `date`, `last_name`",
         types: [["STRING"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -5502,7 +5502,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -5608,7 +5608,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `stamp`, `email` as __pk FROM `profiles` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `stamp`",
+          "SELECT `stamp`, `email` as __pk FROM `records` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `stamp`",
         types: [["STRING"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -5773,7 +5773,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -5903,7 +5903,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT `stamp`, `last_name`, `email` as __pk FROM `profiles` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `stamp`, `last_name`",
+          "SELECT `stamp`, `last_name`, `email` as __pk FROM `records` WHERE  `email` IN UNNEST (?) GROUP BY `email`, `stamp`, `last_name`",
         types: [["STRING"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -6203,7 +6203,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COALESCE(AVG(`amount`), 0) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COALESCE(AVG(`amount`), 0) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -6516,7 +6516,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -6811,7 +6811,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COALESCE(SUM(`amount`), 0) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COALESCE(SUM(`amount`), 0) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -7089,7 +7089,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT MIN(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT MIN(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -7383,7 +7383,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT MAX(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT MAX(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -7689,7 +7689,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`date`) as `date`, `profile_id` as __pk FROM `purchases` WHERE  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`date`) as `date`, `record_id` as __pk FROM `purchases` WHERE  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -8010,7 +8010,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT MIN(`date`) as `date`, `profile_id` as __pk FROM `purchases` WHERE  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT MIN(`date`) as `date`, `record_id` as __pk FROM `purchases` WHERE  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -8306,7 +8306,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT MAX(`date`) as `date`, `profile_id` as __pk FROM `purchases` WHERE  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT MAX(`date`) as `date`, `record_id` as __pk FROM `purchases` WHERE  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: [["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -8604,7 +8604,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `id` = ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `id` = ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["INT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -8891,7 +8891,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `purchase` = ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `purchase` = ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -9176,7 +9176,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `purchase` = ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `purchase` = ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -9483,7 +9483,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `date` = ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `date` = ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["DATE", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -9758,7 +9758,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `stamp` = ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `stamp` = ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["TIMESTAMP", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -10062,7 +10062,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `amount` = ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `amount` = ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["FLOAT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -10362,7 +10362,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `id` != ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `id` != ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["INT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -10654,7 +10654,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `purchase` != ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `purchase` != ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -10990,7 +10990,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `purchase` != ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `purchase` != ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -11289,7 +11289,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `date` != ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `date` != ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["DATE", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -11582,7 +11582,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `stamp` != ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `stamp` != ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["TIMESTAMP", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -11876,7 +11876,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `amount` != ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `amount` != ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["FLOAT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -12172,7 +12172,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`id`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  LOWER(`id`) LIKE ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["INT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -12406,7 +12406,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) LIKE ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -12719,7 +12719,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) LIKE ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -13030,7 +13030,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`stamp`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  LOWER(`stamp`) LIKE ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["TIMESTAMP", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -13281,7 +13281,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`stamp`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  LOWER(`stamp`) LIKE ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["TIMESTAMP", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -13549,7 +13549,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`amount`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  LOWER(`amount`) LIKE ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["FLOAT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -13799,7 +13799,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`id`) NOT LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  LOWER(`id`) NOT LIKE ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["INT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -14032,7 +14032,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) NOT LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) NOT LIKE ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -14344,7 +14344,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) NOT LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) NOT LIKE ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -14649,7 +14649,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`date`) NOT LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  LOWER(`date`) NOT LIKE ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["DATE", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -14890,7 +14890,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`stamp`) NOT LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  LOWER(`stamp`) NOT LIKE ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["TIMESTAMP", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -15130,7 +15130,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`amount`) NOT LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  LOWER(`amount`) NOT LIKE ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["FLOAT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -15372,7 +15372,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `id` = ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `id` = ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["INT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -15686,7 +15686,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `purchase` = ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `purchase` = ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -15966,7 +15966,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `purchase` = ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `purchase` = ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -16275,7 +16275,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `date` = ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `date` = ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["DATE", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -16543,7 +16543,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `stamp` = ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `stamp` = ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["TIMESTAMP", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -16861,7 +16861,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `amount` = ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `amount` = ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["FLOAT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -17178,7 +17178,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `id` > ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `id` > ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["INT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -17495,7 +17495,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `purchase` > ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `purchase` > ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -17815,7 +17815,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `purchase` > ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `purchase` > ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -18121,7 +18121,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `date` > ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `date` > ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["DATE", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -18406,7 +18406,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `stamp` > ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `stamp` > ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["TIMESTAMP", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -18700,7 +18700,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `amount` > ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `amount` > ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["FLOAT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -19023,7 +19023,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `id` < ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `id` < ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["INT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -19352,7 +19352,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `purchase` < ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `purchase` < ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -19663,7 +19663,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `purchase` < ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `purchase` < ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["STRING", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -19960,7 +19960,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `date` < ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `date` < ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["DATE", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -20261,7 +20261,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `stamp` < ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `stamp` < ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["TIMESTAMP", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -20557,7 +20557,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT COUNT(`amount`) as `amount`, `profile_id` as __pk FROM `purchases` WHERE  `amount` < ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+          "SELECT COUNT(`amount`) as `amount`, `record_id` as __pk FROM `purchases` WHERE  `amount` < ? AND  `record_id` IN UNNEST (?) GROUP BY `record_id`",
         types: ["FLOAT64", ["INT64"]],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -21180,7 +21180,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
@@ -21351,7 +21351,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
         queryParameters: [
           {
             parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
+            parameterValue: { value: "records" },
             name: "tableName",
           },
         ],
