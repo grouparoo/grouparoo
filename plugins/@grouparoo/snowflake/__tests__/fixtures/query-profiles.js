@@ -3,10 +3,7 @@ const nock = require("nock");
 nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
   encodedQueryParams: true,
 })
-  .post(
-    "/session/v1/login-request",
-    /1f8b08000000000000.3558ecb0ac2301045ff65d622d4c7c65d48a346db99904975198a55b16e44c527fd77270b1177c33d9773e70d4d7dad61f2065585b9c160b50ae461028cb49e166a69a0074a6baa304454a511f478beb2c170341652d0cce2375fe494dabab0228acab968f314d7b79a37e7c3e9fa0f57c6b3259446d61ff7873f6870653d612977fa8c34bb58529e262cb2d19537d0f5c029e635f93471bcb4bb76bbbf372261c3491b9df2f256901191745df7016b44eae5eb000000/
-  )
+  .post("/session/v1/login-request", /1f8b08000000000000.+/)
   .query({
     requestId: /.+/g,
     warehouse: "COMPUTE_WH",
@@ -23,13 +20,13 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         validityInSeconds: 3600,
         masterValidityInSeconds: 14400,
         displayUserName: "JDOE",
-        serverVersion: "5.19.2",
+        serverVersion: "5.31.4",
         firstLogin: false,
         remMeToken: null,
         remMeValidityInSeconds: 0,
         healthCheckInterval: 45,
         newClientForUpgrade: null,
-        sessionId: 11812616058310678,
+        sessionId: 11812616058437770,
         parameters: [
           {
             name: "TIMESTAMP_OUTPUT_FORMAT",
@@ -41,8 +38,8 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "CLIENT_RESULT_CHUNK_SIZE", value: 160 },
           { name: "TIMESTAMP_TZ_OUTPUT_FORMAT", value: "" },
           { name: "CLIENT_SESSION_KEEP_ALIVE", value: false },
-          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "CLIENT_OUT_OF_BAND_TELEMETRY_ENABLED", value: false },
+          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "ENABLE_STAGE_S3_PRIVATELINK_FOR_US_EAST_1", value: false },
           {
             name: "TIMESTAMP_NTZ_OUTPUT_FORMAT",
@@ -62,16 +59,16 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "BINARY_OUTPUT_FORMAT", value: "HEX" },
           { name: "CLIENT_ENABLE_LOG_INFO_STATEMENT_PARAMETERS", value: false },
           { name: "JS_DRIVER_DISABLE_OCSP_FOR_NON_SF_ENDPOINTS", value: false },
-          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_CONSENT_CACHE_ID_TOKEN", value: false },
           { name: "CLIENT_FORCE_PROTECT_ID_TOKEN", value: true },
+          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_STAGE_ARRAY_BINDING_THRESHOLD", value: 65280 },
           {
             name: "CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY",
             value: 3600,
           },
-          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "AUTOCOMMIT", value: true },
+          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "TIMESTAMP_LTZ_OUTPUT_FORMAT", value: "" },
         ],
         sessionInfo: {
@@ -96,7 +93,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Sun, 23 May 2021 00:08:44 GMT",
+      "Wed, 01 Sep 2021 23:10:13 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
@@ -112,7 +109,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "X-XSS-Protection",
       ": 1; mode=block",
       "Content-Length",
-      "3821",
+      "3835",
       "Connection",
       "Close",
     ]
@@ -120,10 +117,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
 nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
   encodedQueryParams: true,
 })
-  .post(
-    "/queries/v1/query-request",
-    /1f8b08000000000000.305c1410a80201000c0af2c7bee6057afb282a018e9070c95a445080b82e8efcdbc98db481b175f2bb75ed47ef763a0ac894799709c1ccb73a1c4409654849641afdec1b27a6d2c05b0c69908b31002bcd6812208fc7e0f91a7ae56000000/
-  )
+  .post("/queries/v1/query-request", /1f8b08000000000000.+/)
   .query({ requestId: /.+/g })
   .once()
   .reply(
@@ -141,8 +135,8 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "CLIENT_RESULT_CHUNK_SIZE", value: 160 },
           { name: "TIMESTAMP_TZ_OUTPUT_FORMAT", value: "" },
           { name: "CLIENT_SESSION_KEEP_ALIVE", value: false },
-          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "CLIENT_OUT_OF_BAND_TELEMETRY_ENABLED", value: false },
+          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "ENABLE_STAGE_S3_PRIVATELINK_FOR_US_EAST_1", value: false },
           {
             name: "TIMESTAMP_NTZ_OUTPUT_FORMAT",
@@ -162,16 +156,16 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "BINARY_OUTPUT_FORMAT", value: "HEX" },
           { name: "CLIENT_ENABLE_LOG_INFO_STATEMENT_PARAMETERS", value: false },
           { name: "JS_DRIVER_DISABLE_OCSP_FOR_NON_SF_ENDPOINTS", value: false },
-          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_CONSENT_CACHE_ID_TOKEN", value: false },
           { name: "CLIENT_FORCE_PROTECT_ID_TOKEN", value: true },
+          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_STAGE_ARRAY_BINDING_THRESHOLD", value: 65280 },
           {
             name: "CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY",
             value: 3600,
           },
-          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "AUTOCOMMIT", value: true },
+          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "TIMESTAMP_LTZ_OUTPUT_FORMAT", value: "" },
         ],
         rowtype: [
@@ -180,13 +174,13 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
             database: "SAMPLE_SOURCES",
             schema: "PUBLIC",
             table: "PROFILES",
+            type: "fixed",
             scale: 0,
             precision: 38,
-            byteLength: null,
-            type: "fixed",
             length: null,
-            collation: null,
+            byteLength: null,
             nullable: false,
+            collation: null,
           },
         ],
         rowset: [
@@ -203,7 +197,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         ],
         total: 10,
         returned: 10,
-        queryId: "019c6d48-0400-a26b-0029-f7830016400e",
+        queryId: "019eaace-0401-0eae-0029-f783001980b2",
         databaseProvider: null,
         finalDatabaseName: "SAMPLE_SOURCES",
         finalSchemaName: "PUBLIC",
@@ -213,7 +207,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         arrayBindSupported: false,
         statementTypeId: 4096,
         version: 1,
-        sendResultTime: 1621728526019,
+        sendResultTime: 1630537813463,
         queryResultFormat: "json",
       },
       code: null,
@@ -226,7 +220,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Sun, 23 May 2021 00:08:46 GMT",
+      "Wed, 01 Sep 2021 23:10:13 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
@@ -250,10 +244,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
 nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
   encodedQueryParams: true,
 })
-  .post(
-    "/session/v1/login-request",
-    /1f8b08000000000000.3558ecb0ac2301045ff65d622d4c7c65d48a346db99904975198a55b16e44c527fd77270b1177c33d9773e70d4d7dad61f2065585b9c160b50ae461028cb49e166a69a0074a6baa304454a511f478beb2c170341652d0cce2375fe494dabab0228acab968f314d7b79a37e7c3e9fa0f57c6b3259446d61ff7873f6870653d612977fa8c34bb58529e262cb2d19537d0f5c029e635f93471bcb4bb76bbbf372261c3491b9df2f256901191745df7016b44eae5eb000000/
-  )
+  .post("/session/v1/login-request", /1f8b08000000000000.+/)
   .query({
     requestId: /.+/g,
     warehouse: "COMPUTE_WH",
@@ -270,13 +261,13 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         validityInSeconds: 3600,
         masterValidityInSeconds: 14400,
         displayUserName: "JDOE",
-        serverVersion: "5.19.2",
+        serverVersion: "5.31.4",
         firstLogin: false,
         remMeToken: null,
         remMeValidityInSeconds: 0,
         healthCheckInterval: 45,
         newClientForUpgrade: null,
-        sessionId: 11812616058314762,
+        sessionId: 11812616058437782,
         parameters: [
           {
             name: "TIMESTAMP_OUTPUT_FORMAT",
@@ -288,8 +279,8 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "CLIENT_RESULT_CHUNK_SIZE", value: 160 },
           { name: "TIMESTAMP_TZ_OUTPUT_FORMAT", value: "" },
           { name: "CLIENT_SESSION_KEEP_ALIVE", value: false },
-          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "CLIENT_OUT_OF_BAND_TELEMETRY_ENABLED", value: false },
+          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "ENABLE_STAGE_S3_PRIVATELINK_FOR_US_EAST_1", value: false },
           {
             name: "TIMESTAMP_NTZ_OUTPUT_FORMAT",
@@ -309,16 +300,16 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "BINARY_OUTPUT_FORMAT", value: "HEX" },
           { name: "CLIENT_ENABLE_LOG_INFO_STATEMENT_PARAMETERS", value: false },
           { name: "JS_DRIVER_DISABLE_OCSP_FOR_NON_SF_ENDPOINTS", value: false },
-          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_CONSENT_CACHE_ID_TOKEN", value: false },
           { name: "CLIENT_FORCE_PROTECT_ID_TOKEN", value: true },
+          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_STAGE_ARRAY_BINDING_THRESHOLD", value: 65280 },
           {
             name: "CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY",
             value: 3600,
           },
-          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "AUTOCOMMIT", value: true },
+          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "TIMESTAMP_LTZ_OUTPUT_FORMAT", value: "" },
         ],
         sessionInfo: {
@@ -343,7 +334,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Sun, 23 May 2021 00:08:46 GMT",
+      "Wed, 01 Sep 2021 23:10:13 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
@@ -359,7 +350,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "X-XSS-Protection",
       ": 1; mode=block",
       "Content-Length",
-      "3821",
+      "3835",
       "Connection",
       "Close",
     ]
@@ -367,10 +358,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
 nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
   encodedQueryParams: true,
 })
-  .post(
-    "/queries/v1/query-request",
-    /1f8b08000000000000.30dc1410a80201000c0af2c7bee60c7ba8a82a018ba1f30549244080b82e8ef35f3602c3dac35d99c6b69896f57db3bce39d49e06ec47a5749f38a3175a708212413a6b6071562a2d3c686514c1c8185829bd20987ef87e0831fe7558000000/
-  )
+  .post("/queries/v1/query-request", /1f8b08000000000000.+/)
   .query({ requestId: /.+/g })
   .once()
   .reply(
@@ -388,8 +376,8 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "CLIENT_RESULT_CHUNK_SIZE", value: 160 },
           { name: "TIMESTAMP_TZ_OUTPUT_FORMAT", value: "" },
           { name: "CLIENT_SESSION_KEEP_ALIVE", value: false },
-          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "CLIENT_OUT_OF_BAND_TELEMETRY_ENABLED", value: false },
+          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "ENABLE_STAGE_S3_PRIVATELINK_FOR_US_EAST_1", value: false },
           {
             name: "TIMESTAMP_NTZ_OUTPUT_FORMAT",
@@ -409,16 +397,16 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "BINARY_OUTPUT_FORMAT", value: "HEX" },
           { name: "CLIENT_ENABLE_LOG_INFO_STATEMENT_PARAMETERS", value: false },
           { name: "JS_DRIVER_DISABLE_OCSP_FOR_NON_SF_ENDPOINTS", value: false },
-          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_CONSENT_CACHE_ID_TOKEN", value: false },
           { name: "CLIENT_FORCE_PROTECT_ID_TOKEN", value: true },
+          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_STAGE_ARRAY_BINDING_THRESHOLD", value: 65280 },
           {
             name: "CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY",
             value: 3600,
           },
-          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "AUTOCOMMIT", value: true },
+          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "TIMESTAMP_LTZ_OUTPUT_FORMAT", value: "" },
         ],
         rowtype: [
@@ -427,19 +415,19 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
             database: "SAMPLE_SOURCES",
             schema: "PUBLIC",
             table: "PROFILES",
+            type: "fixed",
             scale: 0,
             precision: 38,
-            byteLength: null,
-            type: "fixed",
             length: null,
-            collation: null,
+            byteLength: null,
             nullable: false,
+            collation: null,
           },
         ],
         rowset: [],
         total: 0,
         returned: 0,
-        queryId: "019c6d48-0400-a212-0029-f78300163012",
+        queryId: "019eaace-0401-0eae-0029-f783001980be",
         databaseProvider: null,
         finalDatabaseName: "SAMPLE_SOURCES",
         finalSchemaName: "PUBLIC",
@@ -449,7 +437,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         arrayBindSupported: false,
         statementTypeId: 4096,
         version: 1,
-        sendResultTime: 1621728527253,
+        sendResultTime: 1630537814168,
         queryResultFormat: "json",
       },
       code: null,
@@ -462,7 +450,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Sun, 23 May 2021 00:08:47 GMT",
+      "Wed, 01 Sep 2021 23:10:14 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
@@ -486,10 +474,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
 nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
   encodedQueryParams: true,
 })
-  .post(
-    "/session/v1/login-request",
-    /1f8b08000000000000.3558ecb0ac2301045ff65d622d4c7c65d48a346db99904975198a55b16e44c527fd77270b1177c33d9773e70d4d7dad61f2065585b9c160b50ae461028cb49e166a69a0074a6baa304454a511f478beb2c170341652d0cce2375fe494dabab0228acab968f314d7b79a37e7c3e9fa0f57c6b3259446d61ff7873f6870653d612977fa8c34bb58529e262cb2d19537d0f5c029e635f93471bcb4bb76bbbf372261c3491b9df2f256901191745df7016b44eae5eb000000/
-  )
+  .post("/session/v1/login-request", /1f8b08000000000000.+/)
   .query({
     requestId: /.+/g,
     warehouse: "COMPUTE_WH",
@@ -506,13 +491,13 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         validityInSeconds: 3600,
         masterValidityInSeconds: 14400,
         displayUserName: "JDOE",
-        serverVersion: "5.19.2",
+        serverVersion: "5.31.4",
         firstLogin: false,
         remMeToken: null,
         remMeValidityInSeconds: 0,
         healthCheckInterval: 45,
         newClientForUpgrade: null,
-        sessionId: 11812616058310682,
+        sessionId: 11812616058429634,
         parameters: [
           {
             name: "TIMESTAMP_OUTPUT_FORMAT",
@@ -524,8 +509,8 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "CLIENT_RESULT_CHUNK_SIZE", value: 160 },
           { name: "TIMESTAMP_TZ_OUTPUT_FORMAT", value: "" },
           { name: "CLIENT_SESSION_KEEP_ALIVE", value: false },
-          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "CLIENT_OUT_OF_BAND_TELEMETRY_ENABLED", value: false },
+          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "ENABLE_STAGE_S3_PRIVATELINK_FOR_US_EAST_1", value: false },
           {
             name: "TIMESTAMP_NTZ_OUTPUT_FORMAT",
@@ -545,16 +530,16 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "BINARY_OUTPUT_FORMAT", value: "HEX" },
           { name: "CLIENT_ENABLE_LOG_INFO_STATEMENT_PARAMETERS", value: false },
           { name: "JS_DRIVER_DISABLE_OCSP_FOR_NON_SF_ENDPOINTS", value: false },
-          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_CONSENT_CACHE_ID_TOKEN", value: false },
           { name: "CLIENT_FORCE_PROTECT_ID_TOKEN", value: true },
+          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_STAGE_ARRAY_BINDING_THRESHOLD", value: 65280 },
           {
             name: "CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY",
             value: 3600,
           },
-          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "AUTOCOMMIT", value: true },
+          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "TIMESTAMP_LTZ_OUTPUT_FORMAT", value: "" },
         ],
         sessionInfo: {
@@ -579,7 +564,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Sun, 23 May 2021 00:08:47 GMT",
+      "Wed, 01 Sep 2021 23:10:14 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
@@ -595,7 +580,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "X-XSS-Protection",
       ": 1; mode=block",
       "Content-Length",
-      "3821",
+      "3835",
       "Connection",
       "Close",
     ]
@@ -603,10 +588,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
 nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
   encodedQueryParams: true,
 })
-  .post(
-    "/queries/v1/query-request",
-    /1f8b08000000000000.3ab564ac92c4e4cca49f54f4bcbc9cc4b75ce28cdcb2e56b24a4bcc294ed5512a2ecc0949ad2851b2520a76f571750e51c84c51700bf2f7550808f277f3f4710d56f0f1f4f50c513051f077730b760d513050aa050094797a8553000000/
-  )
+  .post("/queries/v1/query-request", /1f8b08000000000000.+/)
   .query({ requestId: /.+/g })
   .once()
   .reply(
@@ -624,8 +606,8 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "CLIENT_RESULT_CHUNK_SIZE", value: 160 },
           { name: "TIMESTAMP_TZ_OUTPUT_FORMAT", value: "" },
           { name: "CLIENT_SESSION_KEEP_ALIVE", value: false },
-          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "CLIENT_OUT_OF_BAND_TELEMETRY_ENABLED", value: false },
+          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "ENABLE_STAGE_S3_PRIVATELINK_FOR_US_EAST_1", value: false },
           {
             name: "TIMESTAMP_NTZ_OUTPUT_FORMAT",
@@ -645,16 +627,16 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "BINARY_OUTPUT_FORMAT", value: "HEX" },
           { name: "CLIENT_ENABLE_LOG_INFO_STATEMENT_PARAMETERS", value: false },
           { name: "JS_DRIVER_DISABLE_OCSP_FOR_NON_SF_ENDPOINTS", value: false },
-          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_CONSENT_CACHE_ID_TOKEN", value: false },
           { name: "CLIENT_FORCE_PROTECT_ID_TOKEN", value: true },
+          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_STAGE_ARRAY_BINDING_THRESHOLD", value: 65280 },
           {
             name: "CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY",
             value: 3600,
           },
-          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "AUTOCOMMIT", value: true },
+          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "TIMESTAMP_LTZ_OUTPUT_FORMAT", value: "" },
         ],
         rowtype: [
@@ -663,19 +645,19 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
             database: "SAMPLE_SOURCES",
             schema: "PUBLIC",
             table: "PROFILES",
-            byteLength: null,
             scale: 0,
             precision: 38,
+            byteLength: null,
             type: "fixed",
-            length: null,
-            nullable: false,
             collation: null,
+            nullable: false,
+            length: null,
           },
         ],
         rowset: [["1"], ["2"], ["3"], ["4"]],
         total: 4,
         returned: 4,
-        queryId: "019c6d48-0400-a212-0029-f78300163016",
+        queryId: "019eaace-0401-0f50-0029-f7830019a0ba",
         databaseProvider: null,
         finalDatabaseName: "SAMPLE_SOURCES",
         finalSchemaName: "PUBLIC",
@@ -685,7 +667,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         arrayBindSupported: false,
         statementTypeId: 4096,
         version: 1,
-        sendResultTime: 1621728528108,
+        sendResultTime: 1630537814880,
         queryResultFormat: "json",
       },
       code: null,
@@ -698,7 +680,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Sun, 23 May 2021 00:08:48 GMT",
+      "Wed, 01 Sep 2021 23:10:14 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
@@ -722,10 +704,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
 nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
   encodedQueryParams: true,
 })
-  .post(
-    "/session/v1/login-request",
-    /1f8b08000000000000.3558ecb0ac2301045ff65d622d4c7c65d48a346db99904975198a55b16e44c527fd77270b1177c33d9773e70d4d7dad61f2065585b9c160b50ae461028cb49e166a69a0074a6baa304454a511f478beb2c170341652d0cce2375fe494dabab0228acab968f314d7b79a37e7c3e9fa0f57c6b3259446d61ff7873f6870653d612977fa8c34bb58529e262cb2d19537d0f5c029e635f93471bcb4bb76bbbf372261c3491b9df2f256901191745df7016b44eae5eb000000/
-  )
+  .post("/session/v1/login-request", /1f8b08000000000000.+/)
   .query({
     requestId: /.+/g,
     warehouse: "COMPUTE_WH",
@@ -742,13 +721,13 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         validityInSeconds: 3600,
         masterValidityInSeconds: 14400,
         displayUserName: "JDOE",
-        serverVersion: "5.19.2",
+        serverVersion: "5.31.4",
         firstLogin: false,
         remMeToken: null,
         remMeValidityInSeconds: 0,
         healthCheckInterval: 45,
         newClientForUpgrade: null,
-        sessionId: 11812616058310686,
+        sessionId: 11812616058429642,
         parameters: [
           {
             name: "TIMESTAMP_OUTPUT_FORMAT",
@@ -760,8 +739,8 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "CLIENT_RESULT_CHUNK_SIZE", value: 160 },
           { name: "TIMESTAMP_TZ_OUTPUT_FORMAT", value: "" },
           { name: "CLIENT_SESSION_KEEP_ALIVE", value: false },
-          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "CLIENT_OUT_OF_BAND_TELEMETRY_ENABLED", value: false },
+          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "ENABLE_STAGE_S3_PRIVATELINK_FOR_US_EAST_1", value: false },
           {
             name: "TIMESTAMP_NTZ_OUTPUT_FORMAT",
@@ -781,16 +760,16 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "BINARY_OUTPUT_FORMAT", value: "HEX" },
           { name: "CLIENT_ENABLE_LOG_INFO_STATEMENT_PARAMETERS", value: false },
           { name: "JS_DRIVER_DISABLE_OCSP_FOR_NON_SF_ENDPOINTS", value: false },
-          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_CONSENT_CACHE_ID_TOKEN", value: false },
           { name: "CLIENT_FORCE_PROTECT_ID_TOKEN", value: true },
+          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_STAGE_ARRAY_BINDING_THRESHOLD", value: 65280 },
           {
             name: "CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY",
             value: 3600,
           },
-          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "AUTOCOMMIT", value: true },
+          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "TIMESTAMP_LTZ_OUTPUT_FORMAT", value: "" },
         ],
         sessionInfo: {
@@ -815,7 +794,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Sun, 23 May 2021 00:08:48 GMT",
+      "Wed, 01 Sep 2021 23:10:15 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
@@ -831,7 +810,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "X-XSS-Protection",
       ": 1; mode=block",
       "Content-Length",
-      "3821",
+      "3835",
       "Connection",
       "Close",
     ]
@@ -839,10 +818,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
 nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
   encodedQueryParams: true,
 })
-  .post(
-    "/queries/v1/query-request",
-    /1f8b08000000000000.3ab564ac92c4e4cca49f54f4bcbc9cc4b75ce28cdcb2e56b24a4bcc294ed5512a2ecc0949ad2851b2520a76f571750e51c84c51700bf2f7550808f277f3f4710d56f0f1f4f50c513051f077730b760532946a0148d1738253000000/
-  )
+  .post("/queries/v1/query-request", /1f8b08000000000000.+/)
   .query({ requestId: /.+/g })
   .once()
   .reply(
@@ -860,8 +836,8 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "CLIENT_RESULT_CHUNK_SIZE", value: 160 },
           { name: "TIMESTAMP_TZ_OUTPUT_FORMAT", value: "" },
           { name: "CLIENT_SESSION_KEEP_ALIVE", value: false },
-          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "CLIENT_OUT_OF_BAND_TELEMETRY_ENABLED", value: false },
+          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "ENABLE_STAGE_S3_PRIVATELINK_FOR_US_EAST_1", value: false },
           {
             name: "TIMESTAMP_NTZ_OUTPUT_FORMAT",
@@ -881,16 +857,16 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "BINARY_OUTPUT_FORMAT", value: "HEX" },
           { name: "CLIENT_ENABLE_LOG_INFO_STATEMENT_PARAMETERS", value: false },
           { name: "JS_DRIVER_DISABLE_OCSP_FOR_NON_SF_ENDPOINTS", value: false },
-          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_CONSENT_CACHE_ID_TOKEN", value: false },
           { name: "CLIENT_FORCE_PROTECT_ID_TOKEN", value: true },
+          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_STAGE_ARRAY_BINDING_THRESHOLD", value: 65280 },
           {
             name: "CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY",
             value: 3600,
           },
-          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "AUTOCOMMIT", value: true },
+          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "TIMESTAMP_LTZ_OUTPUT_FORMAT", value: "" },
         ],
         rowtype: [
@@ -899,19 +875,19 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
             database: "SAMPLE_SOURCES",
             schema: "PUBLIC",
             table: "PROFILES",
+            type: "fixed",
             scale: 0,
             precision: 38,
-            byteLength: null,
-            type: "fixed",
             length: null,
-            collation: null,
+            byteLength: null,
             nullable: false,
+            collation: null,
           },
         ],
         rowset: [["5"], ["6"], ["7"], ["8"]],
         total: 4,
         returned: 4,
-        queryId: "019c6d48-0400-a212-0029-f7830016301a",
+        queryId: "019eaace-0401-0eae-0029-f783001980ce",
         databaseProvider: null,
         finalDatabaseName: "SAMPLE_SOURCES",
         finalSchemaName: "PUBLIC",
@@ -921,7 +897,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         arrayBindSupported: false,
         statementTypeId: 4096,
         version: 1,
-        sendResultTime: 1621728528938,
+        sendResultTime: 1630537815607,
         queryResultFormat: "json",
       },
       code: null,
@@ -934,7 +910,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Sun, 23 May 2021 00:08:48 GMT",
+      "Wed, 01 Sep 2021 23:10:15 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
@@ -958,10 +934,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
 nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
   encodedQueryParams: true,
 })
-  .post(
-    "/session/v1/login-request",
-    /1f8b08000000000000.3558ecb0ac2301045ff65d622d4c7c65d48a346db99904975198a55b16e44c527fd77270b1177c33d9773e70d4d7dad61f2065585b9c160b50ae461028cb49e166a69a0074a6baa304454a511f478beb2c170341652d0cce2375fe494dabab0228acab968f314d7b79a37e7c3e9fa0f57c6b3259446d61ff7873f6870653d612977fa8c34bb58529e262cb2d19537d0f5c029e635f93471bcb4bb76bbbf372261c3491b9df2f256901191745df7016b44eae5eb000000/
-  )
+  .post("/session/v1/login-request", /1f8b08000000000000.+/)
   .query({
     requestId: /.+/g,
     warehouse: "COMPUTE_WH",
@@ -978,13 +951,13 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         validityInSeconds: 3600,
         masterValidityInSeconds: 14400,
         displayUserName: "JDOE",
-        serverVersion: "5.19.2",
+        serverVersion: "5.31.4",
         firstLogin: false,
         remMeToken: null,
         remMeValidityInSeconds: 0,
         healthCheckInterval: 45,
         newClientForUpgrade: null,
-        sessionId: 11812616058310690,
+        sessionId: 11812616058429646,
         parameters: [
           {
             name: "TIMESTAMP_OUTPUT_FORMAT",
@@ -996,8 +969,8 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "CLIENT_RESULT_CHUNK_SIZE", value: 160 },
           { name: "TIMESTAMP_TZ_OUTPUT_FORMAT", value: "" },
           { name: "CLIENT_SESSION_KEEP_ALIVE", value: false },
-          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "CLIENT_OUT_OF_BAND_TELEMETRY_ENABLED", value: false },
+          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "ENABLE_STAGE_S3_PRIVATELINK_FOR_US_EAST_1", value: false },
           {
             name: "TIMESTAMP_NTZ_OUTPUT_FORMAT",
@@ -1017,16 +990,16 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "BINARY_OUTPUT_FORMAT", value: "HEX" },
           { name: "CLIENT_ENABLE_LOG_INFO_STATEMENT_PARAMETERS", value: false },
           { name: "JS_DRIVER_DISABLE_OCSP_FOR_NON_SF_ENDPOINTS", value: false },
-          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_CONSENT_CACHE_ID_TOKEN", value: false },
           { name: "CLIENT_FORCE_PROTECT_ID_TOKEN", value: true },
+          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_STAGE_ARRAY_BINDING_THRESHOLD", value: 65280 },
           {
             name: "CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY",
             value: 3600,
           },
-          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "AUTOCOMMIT", value: true },
+          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "TIMESTAMP_LTZ_OUTPUT_FORMAT", value: "" },
         ],
         sessionInfo: {
@@ -1051,7 +1024,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Sun, 23 May 2021 00:08:49 GMT",
+      "Wed, 01 Sep 2021 23:10:15 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
@@ -1067,7 +1040,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "X-XSS-Protection",
       ": 1; mode=block",
       "Content-Length",
-      "3821",
+      "3835",
       "Connection",
       "Close",
     ]
@@ -1075,10 +1048,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
 nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
   encodedQueryParams: true,
 })
-  .post(
-    "/queries/v1/query-request",
-    /1f8b08000000000000.3ab564ac92c4e4cca49f54f4bcbc9cc4b75ce28cdcb2e56b24a4bcc294ed5512a2ecc0949ad2851b2520a76f571750e51c84c51700bf2f7550808f277f3f4710d56f0f1f4f50c513051f077730b760d51b050aa05002c28698b53000000/
-  )
+  .post("/queries/v1/query-request", /1f8b08000000000000.+/)
   .query({ requestId: /.+/g })
   .once()
   .reply(
@@ -1096,8 +1066,8 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "CLIENT_RESULT_CHUNK_SIZE", value: 160 },
           { name: "TIMESTAMP_TZ_OUTPUT_FORMAT", value: "" },
           { name: "CLIENT_SESSION_KEEP_ALIVE", value: false },
-          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "CLIENT_OUT_OF_BAND_TELEMETRY_ENABLED", value: false },
+          { name: "CLIENT_METADATA_USE_SESSION_DATABASE", value: false },
           { name: "ENABLE_STAGE_S3_PRIVATELINK_FOR_US_EAST_1", value: false },
           {
             name: "TIMESTAMP_NTZ_OUTPUT_FORMAT",
@@ -1117,16 +1087,16 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "BINARY_OUTPUT_FORMAT", value: "HEX" },
           { name: "CLIENT_ENABLE_LOG_INFO_STATEMENT_PARAMETERS", value: false },
           { name: "JS_DRIVER_DISABLE_OCSP_FOR_NON_SF_ENDPOINTS", value: false },
-          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_CONSENT_CACHE_ID_TOKEN", value: false },
           { name: "CLIENT_FORCE_PROTECT_ID_TOKEN", value: true },
+          { name: "DATE_OUTPUT_FORMAT", value: "YYYY-MM-DD" },
           { name: "CLIENT_STAGE_ARRAY_BINDING_THRESHOLD", value: 65280 },
           {
             name: "CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY",
             value: 3600,
           },
-          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "AUTOCOMMIT", value: true },
+          { name: "CLIENT_SESSION_CLONE", value: false },
           { name: "TIMESTAMP_LTZ_OUTPUT_FORMAT", value: "" },
         ],
         rowtype: [
@@ -1135,19 +1105,19 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
             database: "SAMPLE_SOURCES",
             schema: "PUBLIC",
             table: "PROFILES",
-            byteLength: null,
             scale: 0,
             precision: 38,
+            byteLength: null,
             type: "fixed",
-            length: null,
-            nullable: false,
             collation: null,
+            nullable: false,
+            length: null,
           },
         ],
         rowset: [["9"], ["10"]],
         total: 2,
         returned: 2,
-        queryId: "019c6d48-0400-a212-0029-f7830016301e",
+        queryId: "019eaace-0401-0f50-0029-f7830019a0ca",
         databaseProvider: null,
         finalDatabaseName: "SAMPLE_SOURCES",
         finalSchemaName: "PUBLIC",
@@ -1157,7 +1127,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         arrayBindSupported: false,
         statementTypeId: 4096,
         version: 1,
-        sendResultTime: 1621728529677,
+        sendResultTime: 1630537816325,
         queryResultFormat: "json",
       },
       code: null,
@@ -1170,7 +1140,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Sun, 23 May 2021 00:08:49 GMT",
+      "Wed, 01 Sep 2021 23:10:16 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
