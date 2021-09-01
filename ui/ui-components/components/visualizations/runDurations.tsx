@@ -24,10 +24,12 @@ export default function RunDurationChart({ runs }: { runs: Models.RunType[] }) {
       if (run.completedAt) {
         const start = new Date(run.createdAt).getTime();
         const durationMinutes =
-          (new Date(run.completedAt).getTime() -
-            new Date(run.createdAt).getTime()) /
-          1000 /
-          60;
+          Math.round(
+            (new Date(run.completedAt).getTime() -
+              new Date(run.createdAt).getTime()) /
+              10 /
+              60
+          ) / 100;
 
         chartData[idx].push({ x: start, y: durationMinutes });
       }

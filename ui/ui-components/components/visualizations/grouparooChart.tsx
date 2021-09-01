@@ -1,107 +1,113 @@
 import { ContainerWidthSizer } from "../../utils/ContainerWidthSizer";
-import {
-  VictoryChart,
-  VictoryLine,
-  VictoryLegend,
-  VictoryTheme,
-  VictoryVoronoiContainer,
-  VictoryTooltip,
-} from "victory";
 import { ChartColors } from "./chartColors";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 export type ChartLinData = { x: number; y: number }[][];
+
+function pad(n: number) {
+  return n.toString().length === 2 ? `${n}` : `0${n}`;
+}
+
+function buildTimeLabel(t: number) {
+  const date = new Date(t);
+  return (
+    date.getUTCFullYear() +
+    "-" +
+    pad(date.getUTCMonth() + 1) +
+    "-" +
+    pad(date.getUTCDate()) +
+    " " +
+    pad(date.getUTCHours()) +
+    ":" +
+    pad(date.getUTCMinutes()) +
+    ":" +
+    pad(date.getUTCSeconds())
+  );
+}
 
 export function GrouparooChart({
   data,
   keys,
-  minPoints,
-  missingPointSpread,
-  animate,
   interpolation,
 }: {
   data: ChartLinData;
   keys: string[];
-  minPoints?: number;
-  missingPointSpread?: number;
-  animate?: boolean;
   interpolation?:
-    | "linear"
-    | "natural"
     | "basis"
-    | "basisClosed"
-    | "basisOpen"
-    | "bundle"
-    | "cardinal"
-    | "cardinalClosed"
-    | "cardinalOpen";
+    | "linear"
+    | "linearClosed"
+    | "natural"
+    | "monotone"
+    | "step";
 }) {
-  if (!data || data.length < 1) return null;
-  if (!minPoints) minPoints = 2;
-  if (!missingPointSpread) missingPointSpread = 1000; // 1 second
-
-  let yMax = 1.25;
-
-  data.forEach((line) => {
-    line = line.sort((a, b) => a.x - b.x); // ensure the x-axis points are sorted
-
-    line.forEach((point) => {
-      if (point.y > yMax) yMax = point.y + point.y / 10; // add 10% more to show the rounded curve top
-    });
-
-    while (line[0] && line.length < minPoints) {
-      line.unshift({ x: line[0].x - missingPointSpread, y: 0 });
+  const formattedData: {
+    [key: string]: number | string;
+    time: number;
+  }[] = [];
+  let lineId = 0;
+  for (const line of data) {
+    let title = keys[lineId];
+    for (const point of line) {
+      const existingPoint = formattedData.find((p) => p.time === point.x);
+      if (existingPoint) {
+        const idx = formattedData.indexOf(existingPoint);
+        formattedData.splice(idx, 1, { ...existingPoint, [title]: point.y });
+      } else {
+        formattedData.push({
+          time: point.x,
+          [title]: point.y,
+        });
+      }
     }
-  });
+    lineId++;
+  }
+
+  formattedData.sort((a, b) => a.time - b.time);
+  const minX = formattedData.length > 0 ? formattedData[0].time : 0;
+  const maxX =
+    formattedData.length > 1 ? formattedData[formattedData.length - 1].time : 1;
 
   return (
     <ContainerWidthSizer>
       {({ width, height }) => (
-        <VictoryChart
-          width={width > 15 ? width - 14 : width} // needed to fid large numbers (up to 1M)
+        <LineChart
+          width={width}
           height={height}
-          domainPadding={{ x: 25 }}
-          theme={VictoryTheme.material}
-          scale={{ x: "time" }}
-          containerComponent={
-            <VictoryVoronoiContainer
-              voronoiDimension="x"
-              labels={({ datum }) => {
-                const lineId = parseInt(datum.childName.split("-")[2]) - 1;
-                return `${keys[lineId]}: ${datum.y}`;
-              }}
-              labelComponent={
-                <VictoryTooltip
-                  cornerRadius={0}
-                  flyoutStyle={{ fill: "white" }}
-                />
-              }
-            />
-          }
-          animate={animate ? { duration: 500 } : undefined}
+          data={formattedData}
+          margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+          layout={"horizontal"}
         >
-          <VictoryLegend
-            centerTitle
-            orientation="horizontal"
-            gutter={20}
-            x={10}
-            y={10}
-            data={keys.map((k, idx) => {
-              return {
-                name: k,
-                symbol: { fill: ChartColors[idx] },
-              };
-            })}
-          />
-          {data.map((lineData, idx) => (
-            <VictoryLine
-              key={`line-${idx}`}
-              data={lineData}
-              style={{ data: { stroke: ChartColors[idx], strokeWidth: 4 } }}
-              interpolation={interpolation || "natural"}
-              domain={{ y: [0, yMax] }}
+          {keys.map((k, idx) => (
+            <Line
+              key={`line-${k}`}
+              type={interpolation ?? "monotone"}
+              dataKey={k}
+              stroke={ChartColors[idx]}
+              strokeWidth={3}
+              dot={{ stroke: ChartColors[idx], strokeWidth: 1 }}
+              isAnimationActive={false}
             />
           ))}
-        </VictoryChart>
+
+          <CartesianGrid stroke="#ddd" strokeDasharray="5 5" />
+          <XAxis
+            dataKey="time"
+            domain={[minX, maxX]}
+            type="number"
+            tickFormatter={buildTimeLabel}
+          />
+          <YAxis />
+          <Tooltip labelFormatter={(t) => `@ ${buildTimeLabel(t)}`} />
+          <Legend align="center" />
+        </LineChart>
       )}
     </ContainerWidthSizer>
   );
