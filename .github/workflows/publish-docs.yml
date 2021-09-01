@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: 14.x
       - run: npm install -g pnpm
-      - run: pnpm install --frozen-lockfile=false --unsafe-perm
+      - run: pnpm install --frozen-lockfile=false --unsafe-perm --ignore-scripts
       - run: cd core && ./bin/publish-docs
       - name: Push changes
         uses: ad-m/github-push-action@master

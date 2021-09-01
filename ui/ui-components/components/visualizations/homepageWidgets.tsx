@@ -441,7 +441,6 @@ export function PendingImports({
             data={chartData}
             keys={pendingImportKeys}
             interpolation="linear"
-            minPoints={3}
           />
         </div>
       </Card.Body>
@@ -546,7 +545,6 @@ export function PendingExports({
             data={chartData}
             keys={pendingExportKeys}
             interpolation="linear"
-            minPoints={3}
           />
         </div>
       </Card.Body>
