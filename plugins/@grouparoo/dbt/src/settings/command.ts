@@ -6,12 +6,12 @@ export interface dbtConnectionResponse {
 }
 
 export interface dbtConnectionRequest {
-  profile?: string; // Which profile to load. Overrides setting in dbt_project.yml.
-  target?: string; // Which target to load for the given profile. Overrides default in records.yml
+  record?: string; // Which record to load. Overrides setting in dbt_project.yml.
+  target?: string; // Which target to load for the given record. Overrides default in records.yml
   projectDirRelativePath?: string;
-  profileDirRelativePath?: string;
+  recordDirRelativePath?: string;
   projectDirFullPath?: string;
-  profileDirFullPath?: string;
+  recordDirFullPath?: string;
 }
 
 export interface dbtConnectionMethod {
@@ -19,19 +19,19 @@ export interface dbtConnectionMethod {
 }
 
 const dbtConnection: dbtConnectionMethod = async ({
-  profile,
+  record,
   projectDirRelativePath,
-  profileDirRelativePath,
+  recordDirRelativePath,
   projectDirFullPath,
-  profileDirFullPath,
+  recordDirFullPath,
 }) => {
   let cmd = "dbt debug";
 
   if (projectDirFullPath) {
     cmd += ` --project-dir '${projectDirFullPath}'`;
   }
-  if (profileDirFullPath) {
-    cmd += ` --records-dir '${profileDirFullPath}'`;
+  if (recordDirFullPath) {
+    cmd += ` --records-dir '${recordDirFullPath}'`;
   }
 
   const response = await runCommand(cmd);
@@ -46,7 +46,7 @@ function parseCommandResponse(
   //    stderr: '/bin/sh: dbst: command not found\n',
   //    err: truthy
 
-  // if profile not found
+  // if record not found
   //    stdout: 'Running with dbt=0.19.0\n' +
   //    'dbt version: 0.19.0\n' +
   //    'python version: 3.7.9\n' +

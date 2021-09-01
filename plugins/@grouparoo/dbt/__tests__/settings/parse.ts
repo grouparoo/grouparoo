@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 import os from "os";
-import { dbtProfile } from "../../src/settings/parse";
+import { dbtRecord } from "../../src/settings/parse";
 import { dbtSettingsResponse } from "../../src/settings/types";
 
 let previousCwd = null;
@@ -10,15 +10,15 @@ const projectsPath = path.resolve(
 );
 const defaultDirFullPath = path.join(projectsPath, "default");
 
-const profilesPath = path.resolve(
-  path.join(path.join(__dirname, "..", "profiles"))
+const recordsPath = path.resolve(
+  path.join(path.join(__dirname, "..", "records"))
 );
-const postgresDirFullPath = path.join(profilesPath, "postgres");
+const postgresDirFullPath = path.join(recordsPath, "postgres");
 
 const homeDir = os.homedir();
 const dbtDir = path.join(homeDir, ".dbt");
-const userProfilePath = path.join(dbtDir, "profiles.yml");
-const backupProfilePath = path.join(dbtDir, "profiles.backup.yml");
+const userRecordPath = path.join(dbtDir, "records.yml");
+const backupRecordPath = path.join(dbtDir, "records.backup.yml");
 
 function checkPostgres(result: dbtSettingsResponse) {
   const { type, options } = result;
@@ -38,22 +38,22 @@ function ensureDbt() {
     fs.mkdirSync(dbtDir);
   }
 }
-function backupProfile() {
-  // if this system already has a ~/profile.yml, back it up
-  if (fs.existsSync(userProfilePath)) {
-    fs.renameSync(userProfilePath, backupProfilePath);
+function backupRecord() {
+  // if this system already has a ~/record.yml, back it up
+  if (fs.existsSync(userRecordPath)) {
+    fs.renameSync(userRecordPath, backupRecordPath);
   }
 }
-function restoreProfile() {
+function restoreRecord() {
   // put it back
-  if (fs.existsSync(backupProfilePath)) {
-    fs.renameSync(backupProfilePath, userProfilePath);
+  if (fs.existsSync(backupRecordPath)) {
+    fs.renameSync(backupRecordPath, userRecordPath);
   }
 }
-function deleteProfile() {
+function deleteRecord() {
   // put it back
-  if (fs.existsSync(userProfilePath)) {
-    fs.rmSync(userProfilePath);
+  if (fs.existsSync(userRecordPath)) {
+    fs.rmSync(userRecordPath);
   }
 }
 
@@ -63,20 +63,20 @@ function replaceInFile(filePath, replaceValue, withValue) {
   fs.writeFileSync(filePath, result);
 }
 
-describe("dbt/profile", () => {
+describe("dbt/record", () => {
   beforeAll(() => {
     previousCwd = process.cwd();
     ensureDbt();
-    backupProfile();
+    backupRecord();
   });
   afterEach(() => {
     delete process.env.DBT_PROFILES_DIR;
-    deleteProfile();
+    deleteRecord();
   });
   afterAll(() => {
     // be sure to put it back
     process.chdir(previousCwd);
-    restoreProfile();
+    restoreRecord();
   });
   describe("when in random directory", () => {
     beforeAll(() => {
@@ -85,28 +85,28 @@ describe("dbt/profile", () => {
     });
 
     it("reads full paths", async () => {
-      const result = await dbtProfile({
+      const result = await dbtRecord({
         projectDirFullPath: defaultDirFullPath,
-        profileDirFullPath: postgresDirFullPath,
+        recordDirFullPath: postgresDirFullPath,
       });
       checkPostgres(result);
     });
 
-    it("does not need profile path when specifying profile name and path", async () => {
-      const result = await dbtProfile({
-        profile: "test_grouparoo_profile",
-        profileDirFullPath: postgresDirFullPath,
+    it("does not need record path when specifying record name and path", async () => {
+      const result = await dbtRecord({
+        record: "test_grouparoo_record",
+        recordDirFullPath: postgresDirFullPath,
       });
       checkPostgres(result);
     });
 
-    it("does not need profile path when specifying profile name with default location", async () => {
+    it("does not need record path when specifying record name with default location", async () => {
       fs.copyFileSync(
-        path.join(postgresDirFullPath, "profiles.yml"),
-        userProfilePath
+        path.join(postgresDirFullPath, "records.yml"),
+        userRecordPath
       );
-      const result = await dbtProfile({
-        profile: "test_grouparoo_profile",
+      const result = await dbtRecord({
+        record: "test_grouparoo_record",
       });
       checkPostgres(result);
     });
@@ -119,26 +119,26 @@ describe("dbt/profile", () => {
     });
 
     it("reads setup from relative", async () => {
-      const result = await dbtProfile({
+      const result = await dbtRecord({
         projectDirRelativePath: "projects/default",
-        profileDirFullPath: postgresDirFullPath, // still needs full one since not given
+        recordDirFullPath: postgresDirFullPath, // still needs full one since not given
       });
       checkPostgres(result);
     });
 
     it("fails if it can't find the project directory", async () => {
       await expect(
-        dbtProfile({
-          profileDirFullPath: postgresDirFullPath,
+        dbtRecord({
+          recordDirFullPath: postgresDirFullPath,
         })
       ).rejects.toThrow(/Unknown dbt project directory/);
     });
 
     it("fails if incorrect relative directory", async () => {
       await expect(
-        dbtProfile({
+        dbtRecord({
           projectDirRelativePath: "x/default",
-          profileDirFullPath: postgresDirFullPath,
+          recordDirFullPath: postgresDirFullPath,
         })
       ).rejects.toThrow(/does not exist/);
     });
@@ -150,9 +150,9 @@ describe("dbt/profile", () => {
     });
 
     it("reads setup", async () => {
-      const result = await dbtProfile({
+      const result = await dbtRecord({
         // finds relative in this dir
-        profileDirFullPath: postgresDirFullPath, // still needs full one since not given
+        recordDirFullPath: postgresDirFullPath, // still needs full one since not given
       });
       checkPostgres(result);
     });
@@ -160,150 +160,142 @@ describe("dbt/profile", () => {
 
   describe("when in subdir of project directory", () => {
     const subDir = path.resolve(path.join(defaultDirFullPath, "sub"));
-    const invalidNameDirFullPath = path.join(profilesPath, "invalid_name");
-    const invalidTargetDirFullPath = path.join(profilesPath, "invalid_target");
+    const invalidNameDirFullPath = path.join(recordsPath, "invalid_name");
+    const invalidTargetDirFullPath = path.join(recordsPath, "invalid_target");
 
     beforeAll(() => {
       process.chdir(subDir);
     });
 
     it("reads setup", async () => {
-      const result = await dbtProfile({
+      const result = await dbtRecord({
         // finds relative in parent
-        profileDirFullPath: postgresDirFullPath, // still needs full one since not given
+        recordDirFullPath: postgresDirFullPath, // still needs full one since not given
       });
       checkPostgres(result);
     });
 
     it("reads setup from relative", async () => {
-      const result = await dbtProfile({
+      const result = await dbtRecord({
         projectDirRelativePath: "../",
-        profileDirFullPath: postgresDirFullPath, // still needs full one since not given
+        recordDirFullPath: postgresDirFullPath, // still needs full one since not given
       });
       checkPostgres(result);
     });
 
-    it("can use relative path to find profile", async () => {
-      const result = await dbtProfile({
+    it("can use relative path to find record", async () => {
+      const result = await dbtRecord({
         // finds relative in parent
-        profileDirRelativePath: "../../../profiles/postgres",
+        recordDirRelativePath: "../../../records/postgres",
       });
       checkPostgres(result);
     });
 
-    it("can use env variable to find profile", async () => {
+    it("can use env variable to find record", async () => {
       process.env.DBT_PROFILES_DIR = postgresDirFullPath;
       // finds relative in parent
-      // uses env variable for profile
-      const result = await dbtProfile();
+      // uses env variable for record
+      const result = await dbtRecord();
       checkPostgres(result);
     });
 
-    it("will find it in ~/.dbt/profiles.yml", async () => {
+    it("will find it in ~/.dbt/records.yml", async () => {
       fs.copyFileSync(
-        path.join(postgresDirFullPath, "profiles.yml"),
-        userProfilePath
+        path.join(postgresDirFullPath, "records.yml"),
+        userRecordPath
       );
 
       // finds relative in parent
-      // looks in default place for profile
-      const result = await dbtProfile({});
+      // looks in default place for record
+      const result = await dbtRecord({});
       checkPostgres(result);
     });
 
-    it("fails if invalid profile name", async () => {
+    it("fails if invalid record name", async () => {
       fs.copyFileSync(
-        path.join(invalidNameDirFullPath, "profiles.yml"),
-        userProfilePath
+        path.join(invalidNameDirFullPath, "records.yml"),
+        userRecordPath
       );
       await expect(
-        dbtProfile({
+        dbtRecord({
           // finds relative in parent
-          // looks in default place for profile
+          // looks in default place for record
         })
-      ).rejects.toThrow(/Unknown profile \(test_grouparoo_profile\) in yml/);
+      ).rejects.toThrow(/Unknown record \(test_grouparoo_record\) in yml/);
     });
 
-    it("can specify profile name", async () => {
+    it("can specify record name", async () => {
       fs.copyFileSync(
-        path.join(invalidNameDirFullPath, "profiles.yml"),
-        userProfilePath
+        path.join(invalidNameDirFullPath, "records.yml"),
+        userRecordPath
       );
-      const result = await dbtProfile({
+      const result = await dbtRecord({
         // finds relative in parent
-        // looks in default place for profile
-        profile: "like_postgres_but_bad_name_here",
+        // looks in default place for record
+        record: "like_postgres_but_bad_name_here",
       });
       checkPostgres(result);
     });
 
     it("fails if invalid target name", async () => {
       fs.copyFileSync(
-        path.join(invalidTargetDirFullPath, "profiles.yml"),
-        userProfilePath
+        path.join(invalidTargetDirFullPath, "records.yml"),
+        userRecordPath
       );
       await expect(
-        dbtProfile({
+        dbtRecord({
           // finds relative in parent
-          // looks in default place for profile
+          // looks in default place for record
         })
-      ).rejects.toThrow(/Target dev does not exist in profile/);
+      ).rejects.toThrow(/Target dev does not exist in record/);
     });
 
     it("can specify target name", async () => {
       fs.copyFileSync(
-        path.join(invalidTargetDirFullPath, "profiles.yml"),
-        userProfilePath
+        path.join(invalidTargetDirFullPath, "records.yml"),
+        userRecordPath
       );
-      const result = await dbtProfile({
+      const result = await dbtRecord({
         // finds relative in parent
-        // looks in default place for profile
+        // looks in default place for record
         target: "custom_target",
       });
       checkPostgres(result);
     });
 
-    it("fails if can't find profile is there", async () => {
+    it("fails if can't find record is there", async () => {
       await expect(
-        dbtProfile({
+        dbtRecord({
           // finds relative in parent
           // won't find it
         })
-      ).rejects.toThrow(/Unknown dbt profile directory/);
+      ).rejects.toThrow(/Unknown dbt record directory/);
     });
   });
 
   describe("bigquery", () => {
-    const profileDirFullPath = path.join(profilesPath, "bigquery");
-    const keyfilePath = path.join(profilesPath, "bigquery", "my-keyfile.json");
-    const profileYml = path.join(profilesPath, "bigquery", "profiles.yml");
-    const backupYml = path.join(
-      profilesPath,
-      "bigquery",
-      "profiles.backup.yml"
-    );
+    const recordDirFullPath = path.join(recordsPath, "bigquery");
+    const keyfilePath = path.join(recordsPath, "bigquery", "my-keyfile.json");
+    const recordYml = path.join(recordsPath, "bigquery", "records.yml");
+    const backupYml = path.join(recordsPath, "bigquery", "records.backup.yml");
 
     beforeAll(() => {
       // backup yml
-      fs.copyFileSync(profileYml, backupYml);
+      fs.copyFileSync(recordYml, backupYml);
       // edit for keyfile name
-      replaceInFile(
-        profileYml,
-        "[/path/to/bigquery/keyfile.json]",
-        keyfilePath
-      );
+      replaceInFile(recordYml, "[/path/to/bigquery/keyfile.json]", keyfilePath);
     });
 
     afterAll(() => {
-      fs.renameSync(backupYml, profileYml);
+      fs.renameSync(backupYml, recordYml);
     });
 
     it("can not handle oauth-secrets", async () => {
       await expect(
-        dbtProfile({
-          profileDirFullPath,
+        dbtRecord({
+          recordDirFullPath,
           target: "oauth-secrets",
-          profile: "test_grouparoo_profile",
+          record: "test_grouparoo_record",
         })
       ).rejects.toThrow(
         /Unsupported \(by Grouparoo\) bigquery connection method: oauth-secrets/
@@ -312,10 +304,10 @@ describe("dbt/profile", () => {
 
     it("can not handle oauth", async () => {
       await expect(
-        dbtProfile({
-          profileDirFullPath,
+        dbtRecord({
+          recordDirFullPath,
           target: "oauth",
-          profile: "test_grouparoo_profile",
+          record: "test_grouparoo_record",
         })
       ).rejects.toThrow(
         /Unsupported \(by Grouparoo\) bigquery connection method: oauth/
@@ -323,10 +315,10 @@ describe("dbt/profile", () => {
     });
 
     it("parses service-account", async () => {
-      const result = await dbtProfile({
-        profileDirFullPath,
+      const result = await dbtRecord({
+        recordDirFullPath,
         target: "service-account",
-        profile: "test_grouparoo_profile",
+        record: "test_grouparoo_record",
       });
       const { type, options } = result;
       expect(type).toEqual("bigquery");
@@ -340,10 +332,10 @@ describe("dbt/profile", () => {
     });
 
     it("parses service-account-json", async () => {
-      const result = await dbtProfile({
-        profileDirFullPath,
+      const result = await dbtRecord({
+        recordDirFullPath,
         target: "service-account-json",
-        profile: "test_grouparoo_profile",
+        record: "test_grouparoo_record",
       });
       const { type, options } = result;
       expect(type).toEqual("bigquery");
@@ -357,25 +349,25 @@ describe("dbt/profile", () => {
   });
 
   describe("postgres", () => {
-    const profileDirFullPath = path.join(profilesPath, "postgres");
-    it("parses profile", async () => {
-      const result = await dbtProfile({
-        profileDirFullPath,
+    const recordDirFullPath = path.join(recordsPath, "postgres");
+    it("parses record", async () => {
+      const result = await dbtRecord({
+        recordDirFullPath,
         target: "dev",
-        profile: "test_grouparoo_profile",
+        record: "test_grouparoo_record",
       });
       checkPostgres(result);
     });
   });
 
   describe("redshift", () => {
-    const profileDirFullPath = path.join(profilesPath, "redshift");
+    const recordDirFullPath = path.join(recordsPath, "redshift");
 
     it("parses password", async () => {
-      const result = await dbtProfile({
-        profileDirFullPath,
+      const result = await dbtRecord({
+        recordDirFullPath,
         target: "password",
-        profile: "test_grouparoo_profile",
+        record: "test_grouparoo_record",
       });
       const { type, options } = result;
       expect(type).toEqual("redshift");
@@ -391,10 +383,10 @@ describe("dbt/profile", () => {
 
     it("can not handle iam", async () => {
       await expect(
-        dbtProfile({
-          profileDirFullPath,
+        dbtRecord({
+          recordDirFullPath,
           target: "iam",
-          profile: "test_grouparoo_profile",
+          record: "test_grouparoo_record",
         })
       ).rejects.toThrow(
         /Unsupported \(by Grouparoo\) redshift connection method: iam/
@@ -403,12 +395,12 @@ describe("dbt/profile", () => {
   });
 
   describe("snowflake", () => {
-    const profileDirFullPath = path.join(profilesPath, "snowflake");
+    const recordDirFullPath = path.join(recordsPath, "snowflake");
     it("parses password", async () => {
-      const result = await dbtProfile({
-        profileDirFullPath,
+      const result = await dbtRecord({
+        recordDirFullPath,
         target: "password",
-        profile: "test_grouparoo_profile",
+        record: "test_grouparoo_record",
       });
       const { type, options } = result;
       expect(type).toEqual("snowflake");
@@ -424,10 +416,10 @@ describe("dbt/profile", () => {
 
     it("can not handle key pair", async () => {
       await expect(
-        dbtProfile({
-          profileDirFullPath,
+        dbtRecord({
+          recordDirFullPath,
           target: "key_pair",
-          profile: "test_grouparoo_profile",
+          record: "test_grouparoo_record",
         })
       ).rejects.toThrow(
         /Grouparoo only supports password authentication for dbt snowflake/
@@ -436,10 +428,10 @@ describe("dbt/profile", () => {
 
     it("can not handle key sso", async () => {
       await expect(
-        dbtProfile({
-          profileDirFullPath,
+        dbtRecord({
+          recordDirFullPath,
           target: "sso",
-          profile: "test_grouparoo_profile",
+          record: "test_grouparoo_record",
         })
       ).rejects.toThrow(
         /Grouparoo only supports password authentication for dbt snowflake/
@@ -448,13 +440,13 @@ describe("dbt/profile", () => {
   });
 
   describe("unknown", () => {
-    const profileDirFullPath = path.join(profilesPath, "unknown");
+    const recordDirFullPath = path.join(recordsPath, "unknown");
     it("throws an error", async () => {
       await expect(
-        dbtProfile({
-          profileDirFullPath,
+        dbtRecord({
+          recordDirFullPath,
           target: "unknown",
-          profile: "test_grouparoo_profile",
+          record: "test_grouparoo_record",
         })
       ).rejects.toThrow(`Unknown (to Grouparoo) dbt connection type: unknown`);
     });
@@ -471,13 +463,13 @@ describe("dbt/profile", () => {
   ];
   for (const dbtType of unsupported) {
     describe(dbtType, () => {
-      const profileDirFullPath = path.join(profilesPath, "unsupported");
+      const recordDirFullPath = path.join(recordsPath, "unsupported");
       it("is not supported", async () => {
         await expect(
-          dbtProfile({
-            profileDirFullPath,
+          dbtRecord({
+            recordDirFullPath,
             target: dbtType,
-            profile: "test_grouparoo_profile",
+            record: "test_grouparoo_record",
           })
         ).rejects.toThrow(
           `Unsupported (by Grouparoo) dbt connection type: ${dbtType}`

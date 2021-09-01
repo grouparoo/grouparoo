@@ -1,4 +1,4 @@
-test_grouparoo_profile:
+test_grouparoo_record:
   outputs:
     prod:
       type: redshift

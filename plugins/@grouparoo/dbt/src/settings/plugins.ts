@@ -18,16 +18,16 @@ export const dbtConnectionToGrouparooOptions: dbtOptionMethod = async (
   // all types here: https://docs.getdbt.com/reference/records.yml
   switch (dbtType) {
     case "bigquery":
-      // https://docs.getdbt.com/reference/warehouse-records/bigquery-profile
+      // https://docs.getdbt.com/reference/warehouse-records/bigquery-record
       return bigquery(dbtConnection);
     case "postgres":
-      // https://docs.getdbt.com/reference/warehouse-records/bigquery-profile
+      // https://docs.getdbt.com/reference/warehouse-records/bigquery-record
       return postgres(dbtConnection);
     case "redshift":
-      // https://docs.getdbt.com/reference/warehouse-records/redshift-profile
+      // https://docs.getdbt.com/reference/warehouse-records/redshift-record
       return redshift(dbtConnection);
     case "snowflake":
-      // https://docs.getdbt.com/reference/warehouse-records/snowflake-profile
+      // https://docs.getdbt.com/reference/warehouse-records/snowflake-record
       return snowflake(dbtConnection);
     case "sqlserver":
     case "presto":
@@ -37,14 +37,14 @@ export const dbtConnectionToGrouparooOptions: dbtOptionMethod = async (
     case "azuresynapse":
     case "dremio":
     case "clickhouse":
-      // https://docs.getdbt.com/reference/warehouse-records/mssql-profile
-      // https://docs.getdbt.com/reference/warehouse-records/presto-profile
-      // https://docs.getdbt.com/reference/warehouse-records/spark-profile
-      // https://docs.getdbt.com/reference/warehouse-records/exasol-profile
-      // https://docs.getdbt.com/reference/warehouse-records/oracle-profile
-      // https://docs.getdbt.com/reference/warehouse-records/azuresynapse-profile
-      // https://docs.getdbt.com/reference/warehouse-records/dremio-profile
-      // https://docs.getdbt.com/reference/warehouse-records/clickhouse-profile
+      // https://docs.getdbt.com/reference/warehouse-records/mssql-record
+      // https://docs.getdbt.com/reference/warehouse-records/presto-record
+      // https://docs.getdbt.com/reference/warehouse-records/spark-record
+      // https://docs.getdbt.com/reference/warehouse-records/exasol-record
+      // https://docs.getdbt.com/reference/warehouse-records/oracle-record
+      // https://docs.getdbt.com/reference/warehouse-records/azuresynapse-record
+      // https://docs.getdbt.com/reference/warehouse-records/dremio-record
+      // https://docs.getdbt.com/reference/warehouse-records/clickhouse-record
       throw new Error(
         `Unsupported (by Grouparoo) dbt connection type: ${dbtType}`
       );
