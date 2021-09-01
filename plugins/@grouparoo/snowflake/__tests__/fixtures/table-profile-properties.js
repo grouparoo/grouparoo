@@ -3116,7 +3116,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           schemaName: "PUBLIC",
           warehouseName: "COMPUTE_WH",
           roleName: "SYSADMIN",
-        }, 
+        },
         idToken: null,
         idTokenValidityInSeconds: 0,
         responseData: null,
