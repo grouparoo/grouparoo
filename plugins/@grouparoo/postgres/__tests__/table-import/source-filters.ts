@@ -45,8 +45,8 @@ describe("postgres/table/sourceFilters", () => {
       "amount",
       "date",
       "id",
-      "profile_id",
       "purchase",
+      "record_id",
       "stamp",
     ]); // leaves out
     expect(columns.length).toBe(6);
@@ -84,8 +84,8 @@ describe("postgres/table/sourceFilters", () => {
         "less than or equal to",
       ],
     });
-    expect(columns[3]).toMatchObject({
-      key: "profile_id",
+    expect(columns[4]).toMatchObject({
+      key: "record_id",
       ops: [
         "equals",
         "does not equal",
@@ -95,7 +95,7 @@ describe("postgres/table/sourceFilters", () => {
         "less than or equal to",
       ],
     });
-    expect(columns[4]).toMatchObject({
+    expect(columns[3]).toMatchObject({
       key: "purchase",
       ops: ["equals", "does not equal", "contains", "does not contain"],
     });

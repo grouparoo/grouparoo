@@ -3,7 +3,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
 });
 import "@grouparoo/spec-helper";
-import { exportProfile } from "../../src/lib/export/exportProfile";
+import { exportRecord } from "../../src/lib/export/exportRecord";
 import {
   Destination,
   DestinationSyncModeData,
@@ -68,13 +68,13 @@ async function getUserGroups(userId) {
 
 async function runExport({
   syncOperations = DestinationSyncModeData.sync.operations,
-  oldProfileProperties,
-  newProfileProperties,
+  oldRecordProperties,
+  newRecordProperties,
   oldGroups,
   newGroups,
   toDelete,
 }) {
-  return exportProfile({
+  return exportRecord({
     appOptions,
     appId: app.id,
     connection: client,
@@ -84,10 +84,10 @@ async function runExport({
     destinationOptions: null,
     syncOperations,
     export: {
-      profile: null,
-      profileId: null,
-      oldProfileProperties,
-      newProfileProperties,
+      record: null,
+      recordId: null,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       toDelete,
@@ -95,7 +95,7 @@ async function runExport({
   });
 }
 
-describe("postgres/exportProfile", () => {
+describe("postgres/exportRecord", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -122,29 +122,29 @@ describe("postgres/exportProfile", () => {
   });
   afterAll(async () => await afterData());
 
-  test("cannot create profile on postgres if sync mode does not allow it", async () => {
+  test("cannot create record on postgres if sync mode does not allow it", async () => {
     user = await getUser(id);
     expect(user).toBe(null);
 
     await expect(
       runExport({
         syncOperations: { create: false, update: true, delete: true },
-        oldProfileProperties: {},
-        newProfileProperties: { id, email, first_name: firstName },
+        oldRecordProperties: {},
+        newRecordProperties: { id, email, first_name: firstName },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
       })
-    ).rejects.toThrow(/ sync mode does not create new profiles./);
+    ).rejects.toThrow(/ sync mode does not create new records./);
   });
 
-  test("can create profile on postgres", async () => {
+  test("can create record on postgres", async () => {
     user = await getUser(id);
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { id, email, first_name: firstName },
+      oldRecordProperties: {},
+      newRecordProperties: { id, email, first_name: firstName },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -157,8 +157,8 @@ describe("postgres/exportProfile", () => {
 
   test("can add user variables", async () => {
     await runExport({
-      oldProfileProperties: { id, email, first_name: firstName },
-      newProfileProperties: {
+      oldRecordProperties: { id, email, first_name: firstName },
+      newRecordProperties: {
         id,
         email,
         first_name: firstName,
@@ -176,18 +176,18 @@ describe("postgres/exportProfile", () => {
     expect(user["ip_address"]).toBe(ipAddress);
   });
 
-  test("cannot update existing profile if sync mode does not allow it", async () => {
+  test("cannot update existing record if sync mode does not allow it", async () => {
     await expect(
       runExport({
         syncOperations: { create: true, update: false, delete: true },
-        oldProfileProperties: {
+        oldRecordProperties: {
           id,
           email,
           first_name: firstName,
           last_name: lastName,
           ip_address: ipAddress,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           id,
           email,
           firstname: alternativeName,
@@ -210,14 +210,14 @@ describe("postgres/exportProfile", () => {
 
   test("can change user variables", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         id,
         email,
         first_name: firstName,
         last_name: lastName,
         ip_address: ipAddress,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id,
         email,
         first_name: alternativeName,
@@ -241,7 +241,7 @@ describe("postgres/exportProfile", () => {
 
   test("can clear user variables", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         id,
         email,
         first_name: alternativeName,
@@ -250,7 +250,7 @@ describe("postgres/exportProfile", () => {
         ltv: ltv,
         date: dateField,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id,
         email,
       },
@@ -269,11 +269,11 @@ describe("postgres/exportProfile", () => {
 
   test("can add user to a list that doesn't exist yet", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         id,
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id,
         email,
       },
@@ -290,11 +290,11 @@ describe("postgres/exportProfile", () => {
 
   test("can remove a user from a list", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         id,
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id,
         email,
       },
@@ -311,11 +311,11 @@ describe("postgres/exportProfile", () => {
 
   test("it tries to unsubscribe non subscribed list", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         id,
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id,
         email,
       },
@@ -331,11 +331,11 @@ describe("postgres/exportProfile", () => {
 
   test("it can change the user id and orphan the old user", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         id,
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id: alternativeId,
         email,
       },
@@ -361,11 +361,11 @@ describe("postgres/exportProfile", () => {
 
   test("can update the correct user on fk change if both ids exist", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         id,
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id: alternativeId,
         email: alternativeEmail,
       },
@@ -392,11 +392,11 @@ describe("postgres/exportProfile", () => {
 
   test("can delete the correct user on user id change if both ids exist", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         id,
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id: alternativeId,
         email: alternativeEmail,
       },
@@ -415,11 +415,11 @@ describe("postgres/exportProfile", () => {
 
   test("it can change user id along other properties", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         id: alternativeId,
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id: otherId,
         email: otherEmail,
         first_name: otherName,
@@ -445,11 +445,11 @@ describe("postgres/exportProfile", () => {
     await expect(
       runExport({
         syncOperations: { create: true, update: true, delete: false },
-        oldProfileProperties: {
+        oldRecordProperties: {
           id: otherId,
           email: otherEmail,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           id: otherId,
           email: otherEmail,
         },
@@ -459,7 +459,7 @@ describe("postgres/exportProfile", () => {
       })
     ).rejects.toThrow(/sync mode does not delete/);
 
-    // no changes to the profile
+    // no changes to the record
     const newUser = await getUser(otherId);
     expect(newUser).not.toBe(null);
     expect(newUser["email"]).toBe(otherEmail);
@@ -471,10 +471,10 @@ describe("postgres/exportProfile", () => {
 
   test("can delete a user", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         id: otherId,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id: otherId,
       },
       oldGroups: [],
@@ -490,10 +490,10 @@ describe("postgres/exportProfile", () => {
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         id: otherId,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id: otherId,
       },
       oldGroups: [],
@@ -510,8 +510,8 @@ describe("postgres/exportProfile", () => {
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         id: newId,
         email: newEmail,
         first_name: newName,
@@ -529,15 +529,15 @@ describe("postgres/exportProfile", () => {
     expect(newUserGroups).toEqual(expect.arrayContaining([listFour]));
   });
 
-  test("can add a user passing a nonexistent email on the oldProfileProperties", async () => {
+  test("can add a user passing a nonexistent email on the oldRecordProperties", async () => {
     let brandNewUser = await getUser(brandNewId);
     expect(brandNewUser).toBe(null);
     const nonexistentUser = await getUser(nonexistentId);
     expect(nonexistentUser).toBe(null);
 
     await runExport({
-      oldProfileProperties: { id: nonexistentId },
-      newProfileProperties: {
+      oldRecordProperties: { id: nonexistentId },
+      newRecordProperties: {
         id: brandNewId,
         email: brandNewEmail,
         first_name: brandNewName,
@@ -554,10 +554,10 @@ describe("postgres/exportProfile", () => {
 
   test("can delete a user when changing user id at the same time", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         id: brandNewId,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id: otherId,
       },
       oldGroups: [],
@@ -570,8 +570,8 @@ describe("postgres/exportProfile", () => {
 
   test("can delete a user when syncing for the first time", async () => {
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         id: nonexistentId,
       },
       oldGroups: [],
