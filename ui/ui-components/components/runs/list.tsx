@@ -1,6 +1,6 @@
 import { useApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { Row, Col, ButtonGroup, Button, Alert, Card } from "react-bootstrap";
 import Moment from "react-moment";
