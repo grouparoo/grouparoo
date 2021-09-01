@@ -53,7 +53,7 @@ export const processExportedRecords: ProcessExportedRecordsPluginMethod =
           const rejectsResponse = await client.bulk.getSyncRejects(remoteKey);
           for (const item of rejectsResponse.items) {
             const rejected = <ErrorWithRecordId>new Error(item["message"]);
-            rejected.recordId = getContactProfileId({
+            rejected.recordId = getContactRecordId({
               email: item["fieldValues"].emailAddress,
               exports: _exports,
             });
@@ -176,17 +176,17 @@ async function handleLists({ appId, appOptions, exports: _exports, errors }) {
   }
 }
 
-function getContactProfileId({ email, exports: _exports }): string {
-  // look for profile by id on newRecordProperties;
-  for (const profile of _exports) {
-    if (profile.newRecordProperties.emailAddress === email) {
-      return profile.profileId;
+function getContactRecordId({ email, exports: _exports }): string {
+  // look for record by id on newRecordProperties;
+  for (const record of _exports) {
+    if (record.newRecordProperties.emailAddress === email) {
+      return record.recordId;
     }
   }
-  // look for profile by id on oldRecordProperties;
-  for (const profile of _exports) {
-    if (profile.oldRecordProperties.emailAddress === email) {
-      return profile.profileId;
+  // look for record by id on oldRecordProperties;
+  for (const record of _exports) {
+    if (record.oldRecordProperties.emailAddress === email) {
+      return record.recordId;
     }
   }
   return null;

@@ -6,9 +6,9 @@ import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import EloquaClient from "../../src/lib/client/client";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
-import { exportBatch } from "../../src/lib/export/exportProfiles";
+import { exportBatch } from "../../src/lib/export/exportRecords";
 import { indexUsers } from "../utils/shared";
-import { processExportedProfiles } from "../../src/lib/export/processExportedProfiles";
+import { processExportedRecords } from "../../src/lib/export/processExportedRecords";
 
 const appId = "app_789-po09-EOEP-HKp8-3039";
 
@@ -40,11 +40,11 @@ let listId2 = null;
 
 let batchEmails = [];
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profiles.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-records.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profiles");
+require("./../fixtures/export-records");
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -97,28 +97,28 @@ async function deleteUsers(suppressErrors) {
   }
 }
 
-function generateLongProfiles(count: number) {
-  const profiles = [];
+function generateLongRecords(count: number) {
+  const records = [];
   for (let i = 0; i < count; i++) {
-    profiles.push({
+    records.push({
       emailAddress: `user${i}@demo.com`,
       firstName: `User${i}`,
       lastName: `Demo${i}`,
     });
   }
 
-  return profiles;
+  return records;
 }
 
-function makeExports(profiles: Record<string, any>[]) {
-  return profiles.map((profile, i) => ({
-    profileId: `pro${i}`,
-    oldProfileProperties: {},
-    newProfileProperties: profile,
+function makeExports(records: Record<string, any>[]) {
+  return records.map((record, i) => ({
+    recordId: `pro${i}`,
+    oldRecordProperties: {},
+    newRecordProperties: record,
     oldGroups: [],
     newGroups: [],
     toDelete: false,
-    profile: null,
+    record: null,
   }));
 }
 
@@ -127,7 +127,7 @@ async function cleanUp(suppressErrors) {
   await deleteUsers(suppressErrors);
 }
 
-describe("eloqua/exportProfile", () => {
+describe("eloqua/exportRecord", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
     await cleanUp(false);
@@ -137,7 +137,7 @@ describe("eloqua/exportProfile", () => {
     await cleanUp(true);
   }, helper.setupTime);
 
-  test("will not create profile if sync mode does not allow it", async () => {
+  test("will not create record if sync mode does not allow it", async () => {
     user1 = await client.contacts.getByEmail(email1);
     expect(user1).toBe(null);
 
@@ -148,13 +148,13 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.enrich.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {},
-          newProfileProperties: { emailAddress: email1, firstName: "John" },
+          recordId: id1,
+          oldRecordProperties: {},
+          newRecordProperties: { emailAddress: email1, firstName: "John" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -162,7 +162,7 @@ describe("eloqua/exportProfile", () => {
     expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id1);
+    expect(error.recordId).toEqual(id1);
     expect(error.message).toContain("not create");
 
     expect(processExports).toBe(undefined);
@@ -181,13 +181,13 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {},
-          newProfileProperties: { emailAddress: email1, firstName: "John" },
+          recordId: id1,
+          oldRecordProperties: {},
+          newRecordProperties: { emailAddress: email1, firstName: "John" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -210,9 +210,9 @@ describe("eloqua/exportProfile", () => {
       syncOperations: { create: true, update: false, delete: true },
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { emailAddress: email1, firstName: "John" },
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: { emailAddress: email1, firstName: "John" },
+          newRecordProperties: {
             emailAddress: email1,
             firstName: "Brian", // updated!
             lastName: "Doe", // added!
@@ -220,7 +220,7 @@ describe("eloqua/exportProfile", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -231,7 +231,7 @@ describe("eloqua/exportProfile", () => {
     expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id1);
+    expect(error.recordId).toEqual(id1);
     expect(error.message).toContain("not update");
 
     const user = await client.contacts.getByEmail(email1);
@@ -252,9 +252,9 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { emailAddress: email1, firstName: "John" },
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: { emailAddress: email1, firstName: "John" },
+          newRecordProperties: {
             emailAddress: email1,
             firstName: "John",
             lastName: "Doe",
@@ -262,16 +262,16 @@ describe("eloqua/exportProfile", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {},
-          newProfileProperties: { emailAddress: email2, firstName: "Pete" },
+          recordId: id2,
+          oldRecordProperties: {},
+          newRecordProperties: { emailAddress: email2, firstName: "Pete" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -299,17 +299,17 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             emailAddress: email1,
             firstName: "John",
             lastName: "Doe",
           },
-          newProfileProperties: { emailAddress: email1, firstName: "John" },
+          newRecordProperties: { emailAddress: email1, firstName: "John" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -332,19 +332,19 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { emailAddress: email1, firstName: "John" },
-          newProfileProperties: { emailAddress: email1, firstName: "John" },
+          recordId: id1,
+          oldRecordProperties: { emailAddress: email1, firstName: "John" },
+          newRecordProperties: { emailAddress: email1, firstName: "John" },
           oldGroups: [],
           newGroups: [list1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
     await indexUsers(newNock);
 
-    await processExportedProfiles({
+    await processExportedRecords({
       connection: null,
       app: null,
       destination: null,
@@ -355,13 +355,13 @@ describe("eloqua/exportProfile", () => {
       remoteKey: processExports.remoteKey,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { emailAddress: email1, firstName: "John" },
-          newProfileProperties: { emailAddress: email1, firstName: "John" },
+          recordId: id1,
+          oldRecordProperties: { emailAddress: email1, firstName: "John" },
+          newRecordProperties: { emailAddress: email1, firstName: "John" },
           oldGroups: [],
           newGroups: [list1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
       syncOperations: DestinationSyncModeData.sync.operations,
@@ -385,22 +385,22 @@ describe("eloqua/exportProfile", () => {
 
     const exports = [
       {
-        profileId: id1,
-        oldProfileProperties: { emailAddress: email1, firstName: "John" },
-        newProfileProperties: { emailAddress: email1, firstName: "John" },
+        recordId: id1,
+        oldRecordProperties: { emailAddress: email1, firstName: "John" },
+        newRecordProperties: { emailAddress: email1, firstName: "John" },
         oldGroups: [list1],
         newGroups: [list1, list2],
         toDelete: false,
-        profile: null,
+        record: null,
       },
       {
-        profileId: id2,
-        oldProfileProperties: { emailAddress: email2, firstName: "Pete" },
-        newProfileProperties: { emailAddress: email2, firstName: "Sally" },
+        recordId: id2,
+        oldRecordProperties: { emailAddress: email2, firstName: "Pete" },
+        newRecordProperties: { emailAddress: email2, firstName: "Sally" },
         oldGroups: [],
         newGroups: [list1],
         toDelete: false,
-        profile: null,
+        record: null,
       },
     ];
 
@@ -414,7 +414,7 @@ describe("eloqua/exportProfile", () => {
 
     await indexUsers(newNock);
 
-    await processExportedProfiles({
+    await processExportedRecords({
       connection: null,
       app: null,
       destination: null,
@@ -454,22 +454,22 @@ describe("eloqua/exportProfile", () => {
   test("can remove users from lists including ones they aren't in", async () => {
     const exports = [
       {
-        profileId: id1,
-        oldProfileProperties: { emailAddress: email1, firstName: "John" },
-        newProfileProperties: { emailAddress: email1, firstName: "John" },
+        recordId: id1,
+        oldRecordProperties: { emailAddress: email1, firstName: "John" },
+        newRecordProperties: { emailAddress: email1, firstName: "John" },
         oldGroups: [list1, list2],
         newGroups: [list1],
         toDelete: false,
-        profile: null,
+        record: null,
       },
       {
-        profileId: id2,
-        oldProfileProperties: { emailAddress: email2, firstName: "Sally" },
-        newProfileProperties: { emailAddress: email2, firstName: "Sally" },
+        recordId: id2,
+        oldRecordProperties: { emailAddress: email2, firstName: "Sally" },
+        newRecordProperties: { emailAddress: email2, firstName: "Sally" },
         oldGroups: [list2],
         newGroups: [list1],
         toDelete: false,
-        profile: null,
+        record: null,
       },
     ];
     const { success, processExports } = await exportBatch({
@@ -481,7 +481,7 @@ describe("eloqua/exportProfile", () => {
     });
     await indexUsers(newNock);
 
-    await processExportedProfiles({
+    await processExportedRecords({
       connection: null,
       app: null,
       destination: null,
@@ -512,9 +512,9 @@ describe("eloqua/exportProfile", () => {
   test("can change the email address", async () => {
     const exports = [
       {
-        profileId: id1,
-        oldProfileProperties: { emailAddress: email1, firstName: "John" },
-        newProfileProperties: {
+        recordId: id1,
+        oldRecordProperties: { emailAddress: email1, firstName: "John" },
+        newRecordProperties: {
           emailAddress: newEmail1,
           firstName: "John",
           lastName: "Test",
@@ -522,16 +522,16 @@ describe("eloqua/exportProfile", () => {
         oldGroups: [list1],
         newGroups: [list1, list2],
         toDelete: false,
-        profile: null,
+        record: null,
       },
       {
-        profileId: id2,
-        oldProfileProperties: { emailAddress: email2, firstName: "Sally" },
-        newProfileProperties: { emailAddress: email2, firstName: "Evan" },
+        recordId: id2,
+        oldRecordProperties: { emailAddress: email2, firstName: "Sally" },
+        newRecordProperties: { emailAddress: email2, firstName: "Evan" },
         oldGroups: [list1],
         newGroups: [],
         toDelete: false,
-        profile: null,
+        record: null,
       },
     ];
     const { success, processExports } = await exportBatch({
@@ -542,7 +542,7 @@ describe("eloqua/exportProfile", () => {
       exports,
     });
     await indexUsers(newNock);
-    await processExportedProfiles({
+    await processExportedRecords({
       connection: null,
       app: null,
       destination: null,
@@ -590,9 +590,9 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {},
+          newRecordProperties: {
             emailAddress: email1,
             firstName: "Evan",
             lastName: "Saran",
@@ -600,7 +600,7 @@ describe("eloqua/exportProfile", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -615,9 +615,9 @@ describe("eloqua/exportProfile", () => {
   test("can change the email address (both old and new emails exist) with ADDITIVE sync mode", async () => {
     const exports = [
       {
-        profileId: id1,
-        oldProfileProperties: { emailAddress: email1, firstName: "John" },
-        newProfileProperties: {
+        recordId: id1,
+        oldRecordProperties: { emailAddress: email1, firstName: "John" },
+        newRecordProperties: {
           emailAddress: newEmail1,
           firstName: "Other New",
           lastName: "User",
@@ -625,7 +625,7 @@ describe("eloqua/exportProfile", () => {
         oldGroups: [],
         newGroups: [],
         toDelete: false,
-        profile: null,
+        record: null,
       },
     ];
     const { success, processExports } = await exportBatch({
@@ -636,7 +636,7 @@ describe("eloqua/exportProfile", () => {
       exports,
     });
     await indexUsers(newNock);
-    await processExportedProfiles({
+    await processExportedRecords({
       connection: null,
       app: null,
       destination: null,
@@ -665,9 +665,9 @@ describe("eloqua/exportProfile", () => {
   test("can change the email address with ADDITIVE sync mode", async () => {
     const exports = [
       {
-        profileId: id1,
-        oldProfileProperties: { emailAddress: email1, firstName: "John" },
-        newProfileProperties: {
+        recordId: id1,
+        oldRecordProperties: { emailAddress: email1, firstName: "John" },
+        newRecordProperties: {
           emailAddress: newEmail2,
           firstName: "New",
           lastName: "User",
@@ -675,7 +675,7 @@ describe("eloqua/exportProfile", () => {
         oldGroups: [],
         newGroups: [],
         toDelete: false,
-        profile: null,
+        record: null,
       },
     ];
     const { success, processExports } = await exportBatch({
@@ -686,7 +686,7 @@ describe("eloqua/exportProfile", () => {
       exports,
     });
     await indexUsers(newNock);
-    await processExportedProfiles({
+    await processExportedRecords({
       connection: null,
       app: null,
       destination: null,
@@ -720,13 +720,13 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.additive.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             emailAddress: newEmail1,
             firstName: "Other New",
             lastName: "User",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             emailAddress: newEmail1,
             firstName: "John",
             lastName: "Test", // changed here
@@ -734,7 +734,7 @@ describe("eloqua/exportProfile", () => {
           oldGroups: [list1, list2],
           newGroups: [],
           toDelete: true,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -742,7 +742,7 @@ describe("eloqua/exportProfile", () => {
     expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id1);
+    expect(error.recordId).toEqual(id1);
     expect(error.message).toContain("not delete");
 
     user1 = await client.contacts.getByEmail(newEmail1); // not null!
@@ -760,13 +760,13 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             emailAddress: newEmail1,
             firstName: "John",
             lastName: "Test",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             emailAddress: email1,
             firstName: "John",
             lastName: "Test",
@@ -774,16 +774,16 @@ describe("eloqua/exportProfile", () => {
           oldGroups: [list1, list2],
           newGroups: [list1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: { emailAddress: email2, firstName: "Evan" },
-          newProfileProperties: { emailAddress: email2, firstName: "Evan" },
+          recordId: id2,
+          oldRecordProperties: { emailAddress: email2, firstName: "Evan" },
+          newRecordProperties: { emailAddress: email2, firstName: "Evan" },
           oldGroups: [],
           newGroups: [list1], // but he's being deleted!
           toDelete: true,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -807,9 +807,9 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {},
+          newRecordProperties: {
             emailAddress: email2,
             firstName: "Evan",
             lastName: "Saran",
@@ -818,7 +818,7 @@ describe("eloqua/exportProfile", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -845,13 +845,13 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: { emailAddress: email2, firstName: "Evan" },
-          newProfileProperties: { emailAddress: email3, firstName: "Evan" },
+          recordId: id2,
+          oldRecordProperties: { emailAddress: email2, firstName: "Evan" },
+          newRecordProperties: { emailAddress: email3, firstName: "Evan" },
           oldGroups: [],
           newGroups: [list1], // but he's being deleted!
           toDelete: true,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -873,9 +873,9 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {},
+          newRecordProperties: {
             emailAddress: email2,
             firstName: "Evan",
             lastName: "Saran",
@@ -884,7 +884,7 @@ describe("eloqua/exportProfile", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -900,16 +900,16 @@ describe("eloqua/exportProfile", () => {
   test("can handle invalid email error", async () => {
     const exports = [
       {
-        profileId: id2,
-        oldProfileProperties: { emailAddress: email2, firstName: "Maria" },
-        newProfileProperties: {
+        recordId: id2,
+        oldRecordProperties: { emailAddress: email2, firstName: "Maria" },
+        newRecordProperties: {
           emailAddress: "notanemail",
           firstName: "Maria",
         },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
-        profile: null,
+        record: null,
       },
     ];
 
@@ -923,8 +923,8 @@ describe("eloqua/exportProfile", () => {
     await indexUsers(newNock);
     expect(success).toBe(true);
 
-    const { success: successProcessExportedProfiles, errors } =
-      await processExportedProfiles({
+    const { success: successProcessExportedRecords, errors } =
+      await processExportedRecords({
         connection: null,
         app: null,
         destination: null,
@@ -936,11 +936,11 @@ describe("eloqua/exportProfile", () => {
         exports,
         syncOperations: DestinationSyncModeData.sync.operations,
       });
-    expect(successProcessExportedProfiles).toBe(false);
+    expect(successProcessExportedRecords).toBe(false);
     expect(errors).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          profileId: id2,
+          recordId: id2,
           message: "Invalid email address.",
         }),
       ])
@@ -957,26 +957,26 @@ describe("eloqua/exportProfile", () => {
   test("can handle required field error (email)", async () => {
     const exports = [
       {
-        profileId: id2,
-        oldProfileProperties: { emailAddress: email2, firstName: "Maria" },
-        newProfileProperties: {
+        recordId: id2,
+        oldRecordProperties: { emailAddress: email2, firstName: "Maria" },
+        newRecordProperties: {
           firstName: "Maria",
         },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
-        profile: null,
+        record: null,
       },
       {
-        profileId: "newId",
-        oldProfileProperties: {},
-        newProfileProperties: {
+        recordId: "newId",
+        oldRecordProperties: {},
+        newRecordProperties: {
           firstName: "Ron",
         },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
-        profile: null,
+        record: null,
       },
     ];
     const { success, errors } = await exportBatch({
@@ -993,7 +993,7 @@ describe("eloqua/exportProfile", () => {
     expect(errors.length).toEqual(2);
 
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("required");
 
     const error2 = errors[1];
@@ -1014,13 +1014,13 @@ describe("eloqua/exportProfile", () => {
 
     const exports = [
       {
-        profileId: id1,
-        oldProfileProperties: {
+        recordId: id1,
+        oldRecordProperties: {
           emailAddress: email1,
           firstName: "John",
           lastName: "Test",
         },
-        newProfileProperties: {
+        newRecordProperties: {
           emailAddress: email1,
           firstName: "Sam",
           lastName: "Test",
@@ -1028,31 +1028,31 @@ describe("eloqua/exportProfile", () => {
         oldGroups: [],
         newGroups: [],
         toDelete: false,
-        profile: null,
+        record: null,
       },
       {
-        profileId: id2,
-        oldProfileProperties: { emailAddress: email2, firstName: "Maria" },
-        newProfileProperties: {
+        recordId: id2,
+        oldRecordProperties: { emailAddress: email2, firstName: "Maria" },
+        newRecordProperties: {
           emailAddress: "bademail",
           firstName: "William",
         },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
-        profile: null,
+        record: null,
       },
       {
-        profileId: id3,
-        oldProfileProperties: {},
-        newProfileProperties: {
+        recordId: id3,
+        oldRecordProperties: {},
+        newRecordProperties: {
           emailAddress: email3,
           firstName: "Liz",
         },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
-        profile: null,
+        record: null,
       },
     ];
 
@@ -1066,8 +1066,8 @@ describe("eloqua/exportProfile", () => {
     await indexUsers(newNock);
     expect(success).toBe(true);
 
-    const { success: successProcessExportedProfiles, errors } =
-      await processExportedProfiles({
+    const { success: successProcessExportedRecords, errors } =
+      await processExportedRecords({
         connection: null,
         app: null,
         destination: null,
@@ -1080,11 +1080,11 @@ describe("eloqua/exportProfile", () => {
         syncOperations: DestinationSyncModeData.sync.operations,
       });
 
-    expect(successProcessExportedProfiles).toBe(false);
+    expect(successProcessExportedRecords).toBe(false);
     expect(errors).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          profileId: id2,
+          recordId: id2,
           message: "Invalid email address.",
         }),
       ])
@@ -1112,16 +1112,16 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id4,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id4,
+          oldRecordProperties: {},
+          newRecordProperties: {
             emailAddress: email4,
             firstName: "Special",
           },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -1143,13 +1143,13 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id4,
-          oldProfileProperties: {
+          recordId: id4,
+          oldRecordProperties: {
             emailAddress: email4,
             firstName: "Special",
             lastName: "User",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             emailAddress: email4,
             firstName: "Special",
             lastName: "User",
@@ -1157,7 +1157,7 @@ describe("eloqua/exportProfile", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -1180,13 +1180,13 @@ describe("eloqua/exportProfile", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id4,
-          oldProfileProperties: {
+          recordId: id4,
+          oldRecordProperties: {
             emailAddress: email4,
             firstName: "Special",
             lastName: "User",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             emailAddress: email4,
             firstName: "Special",
             lastName: "User",
@@ -1194,7 +1194,7 @@ describe("eloqua/exportProfile", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: true,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -1206,12 +1206,12 @@ describe("eloqua/exportProfile", () => {
     expect(await client.contacts.getByEmail(email4)).toBeNull();
   });
 
-  test("can handle batches with lots of profiles", async () => {
-    // generate profiles
-    const profiles = generateLongProfiles(150);
+  test("can handle batches with lots of records", async () => {
+    // generate records
+    const records = generateLongRecords(150);
 
     // run batch export
-    const exports = makeExports(profiles);
+    const exports = makeExports(records);
     const { success, errors, processExports } = await exportBatch({
       client,
       appId,
@@ -1224,26 +1224,26 @@ describe("eloqua/exportProfile", () => {
     expect(success).toBe(true);
     expect(errors.length).toBe(0);
 
-    batchEmails = profiles.map((p) => p.emailAddress);
+    batchEmails = records.map((p) => p.emailAddress);
     const users = await client.contacts.getContactsByEmail(batchEmails);
 
     // verify all were created properly
-    for (const profile of exports) {
+    for (const record of exports) {
       let user = { emailAddress: null, firstName: null, lastName: null };
       const filteredContacts = users.filter(
-        (u) => u.emailAddress === profile.newProfileProperties.emailAddress
+        (u) => u.emailAddress === record.newRecordProperties.emailAddress
       );
       if (filteredContacts.length > 0) {
         user = filteredContacts[0];
       }
       expect(user.emailAddress).toEqual(
-        profile.newProfileProperties.emailAddress
+        record.newRecordProperties.emailAddress
       );
-      expect(user.firstName).toEqual(profile.newProfileProperties.firstName);
-      expect(user.lastName).toEqual(profile.newProfileProperties.lastName);
+      expect(user.firstName).toEqual(record.newRecordProperties.firstName);
+      expect(user.lastName).toEqual(record.newRecordProperties.lastName);
       expect(
-        processExports.profileIds.find(
-          (profileId) => profileId === profile.profileId
+        processExports.recordIds.find(
+          (recordId) => recordId === record.recordId
         )
       ).not.toBeUndefined();
     }

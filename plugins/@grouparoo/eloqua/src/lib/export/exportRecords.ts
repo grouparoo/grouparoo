@@ -13,17 +13,17 @@ import { ErrorCheckExport } from "@grouparoo/app-templates/dist/destination/shar
 import { invalidate } from "./cachedMethods";
 
 let client: EloquaClient;
-let exportedProfileFields = new Set<String>();
+let exportedRecordFields = new Set<String>();
 
 const findAndSetDestinationIds = async ({ exports: _exports }) => {
   const batchEmails = _exports.map((p) => p.foreignKeyValue);
   const allResults = await client.contacts.getContactsByEmail(batchEmails);
-  for (const profile of _exports) {
+  for (const record of _exports) {
     const filteredContacts = allResults.filter(
-      (c) => c.emailAddress === profile.foreignKeyValue
+      (c) => c.emailAddress === record.foreignKeyValue
     );
     if (filteredContacts.length > 0) {
-      profile.destinationId = filteredContacts[0].id;
+      record.destinationId = filteredContacts[0].id;
     }
   }
   return _exports;
@@ -33,7 +33,7 @@ const buildImportDefinition = async ({ appId }) => {
   const allFields = await getAllContactFields(client);
   const fields = {};
   for (const field of allFields) {
-    if (exportedProfileFields.has(field.key)) {
+    if (exportedRecordFields.has(field.key)) {
       fields[field.key] = field.statement;
     }
   }
@@ -44,7 +44,7 @@ const buildImportDefinition = async ({ appId }) => {
 const buildBatches = (addOrUpdateImportDefinitionsData) => {
   const payloads = addOrUpdateImportDefinitionsData.map((p) => {
     const cleanData = Object.assign({}, p);
-    delete cleanData.profileId;
+    delete cleanData.recordId;
     return cleanData;
   });
 
@@ -106,13 +106,13 @@ const buildImportDefinitionData = ({ recordToExport, syncOperations }) => {
   if (recordId) {
     payload.recordId = recordId;
   }
-  // set profile properties, including old ones
+  // set record properties, including old ones
   const newKeys = Object.keys(newRecordProperties);
   const oldKeys = Object.keys(oldRecordProperties);
   const allKeys = new Set([...oldKeys, ...newKeys]);
 
   for (const key of allKeys) {
-    exportedProfileFields.add(key);
+    exportedRecordFields.add(key);
     const value = newRecordProperties[key]; // includes clearing out removed ones (by setting to null)
     payload[key] = formatVar(value);
   }
@@ -124,11 +124,11 @@ export async function deleteContacts({
   syncOperations,
   exports: _exports,
 }) {
-  for (const profile of _exports) {
-    if (profile.processed || profile.error) {
+  for (const record of _exports) {
+    if (record.processed || record.error) {
       continue;
     }
-    if (!profile.toDelete) {
+    if (!record.toDelete) {
       continue;
     }
     try {
@@ -137,10 +137,10 @@ export async function deleteContacts({
           "Destination sync mode does not delete contacts."
         );
       }
-      let contactIdToDelete = profile.destinationId;
-      if (profile.oldForeignKeyValue) {
+      let contactIdToDelete = record.destinationId;
+      if (record.oldForeignKeyValue) {
         const user = await client.contacts.getByEmail(
-          profile.oldForeignKeyValue
+          record.oldForeignKeyValue
         );
         if (user) {
           contactIdToDelete = user["id"];
@@ -149,24 +149,24 @@ export async function deleteContacts({
       if (!contactIdToDelete) {
         throw new Errors.InfoError(
           `destinationId not found to delete: ${
-            profile.oldForeignKeyValue
-              ? profile.oldForeignKeyValue
-              : profile.foreignKeyValue
+            record.oldForeignKeyValue
+              ? record.oldForeignKeyValue
+              : record.foreignKeyValue
           }`
         );
       }
       await client.contacts.delete(contactIdToDelete);
       await invalidate(appId);
-      profile.processed = true;
+      record.processed = true;
     } catch (error) {
-      profile.error = error;
+      record.error = error;
     }
   }
   return _exports;
 }
 
-async function assignForeignKeys({ appId, exportedProfile }) {
-  const { oldRecordProperties, newRecordProperties } = exportedProfile;
+async function assignForeignKeys({ appId, exportedRecord }) {
+  const { oldRecordProperties, newRecordProperties } = exportedRecord;
 
   let newValue = newRecordProperties.emailAddress;
   let oldValue = oldRecordProperties.emailAddress;
@@ -181,17 +181,17 @@ async function assignForeignKeys({ appId, exportedProfile }) {
     throw new Error(`emailAddress normalized to no value`);
   }
   newValue = newValue.toString();
-  exportedProfile.foreignKeyValue = newValue;
+  exportedRecord.foreignKeyValue = newValue;
 
   // record other one if applicable
   if (oldValue) {
     oldValue = oldValue.toString();
     if (newValue !== oldValue && oldValue.length > 0) {
-      exportedProfile.oldForeignKeyValue = oldValue;
+      exportedRecord.oldForeignKeyValue = oldValue;
       await invalidate(appId);
     }
   }
-  return exportedProfile;
+  return exportedRecord;
 }
 
 export async function exportBatch({
@@ -234,10 +234,10 @@ export async function exportBatch({
 
 async function buildBatchExports({ appId, exports: _exports }) {
   const batchExports: BatchExport[] = [];
-  for (const exportedProfile of _exports) {
-    let info: BatchExport = Object.assign({}, exportedProfile);
+  for (const exportedRecord of _exports) {
+    let info: BatchExport = Object.assign({}, exportedRecord);
     try {
-      info = await assignForeignKeys({ appId, exportedProfile: info });
+      info = await assignForeignKeys({ appId, exportedRecord: info });
     } catch (error) {
       info.error = error;
     }
@@ -263,22 +263,22 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
 };
 
 export function checkErrors(
-  exportedProfiles: ErrorCheckExport[]
+  exportedRecords: ErrorCheckExport[]
 ): ErrorWithRecordId[] {
   let errors: ErrorWithRecordId[] = []; // for ones that go wrong
-  for (const exportedProfile of exportedProfiles) {
-    let { error, skippedMessage } = exportedProfile;
+  for (const exportedRecord of exportedRecords) {
+    let { error, skippedMessage } = exportedRecord;
     if (error) {
       if (typeof error === "string") {
         error = new Error(error);
       }
-      error.recordId = exportedProfile.recordId;
+      error.recordId = exportedRecord.recordId;
       errors.push(error);
       log(error?.stack || error, "error");
     } else if (skippedMessage) {
       errors = errors || [];
       const skip = <ErrorWithRecordId>new Error(skippedMessage);
-      skip.recordId = exportedProfile.recordId;
+      skip.recordId = exportedRecord.recordId;
       skip.errorLevel = "info";
       errors.push(skip);
     }
