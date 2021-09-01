@@ -1,0 +1,7 @@
+{
+  "class": "App",
+  "id": "my_calculated-property_app",
+  "name": "My Calculated Property App",
+  "type": "calculated-property",
+  "options": {}
+}

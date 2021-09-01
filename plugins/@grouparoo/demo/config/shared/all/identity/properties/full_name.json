@@ -1,0 +1,14 @@
+{
+  "id": "full_name",
+  "key": "fullName",
+  "class": "property",
+  "sourceId": "my_calculated_property_source",
+  "type": "string",
+  "unique": false,
+  "identifying": false,
+  "isArray": false,
+  "options": {
+    "customFunction": "() => \"{{firstName}} {{lastName}}\""
+  },
+  "filters": null
+}
