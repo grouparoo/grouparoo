@@ -2,7 +2,7 @@ import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import { exportProfile } from "../../src/lib/export/exportProfile";
+import { exportRecord } from "../../src/lib/export/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexCustomers } from "../utils/shared";
@@ -22,7 +22,7 @@ const age = 30;
 const groupOne = "High Value";
 const groupTwo = "Spanish Speaking";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
 
 // these comments to use nock
 const newNock = false;
@@ -42,13 +42,13 @@ async function cleanUp() {
 
 async function runExport({
   syncOperations = DestinationSyncModeData.sync.operations,
-  oldProfileProperties,
-  newProfileProperties,
+  oldRecordProperties,
+  newRecordProperties,
   oldGroups,
   newGroups,
   toDelete,
 }) {
-  return exportProfile({
+  return exportRecord({
     appOptions,
     appId: null,
     connection: null,
@@ -58,10 +58,10 @@ async function runExport({
     destinationOptions: null,
     syncOperations,
     export: {
-      profile: null,
-      profileId: null,
-      oldProfileProperties,
-      newProfileProperties,
+      record: null,
+      recordId: null,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       toDelete,
@@ -69,7 +69,7 @@ async function runExport({
   });
 }
 
-describe("customer.io/exportProfile", () => {
+describe("customer.io/exportRecord", () => {
   beforeAll(async () => {
     cioClient = await connect(appOptions);
     await cleanUp();
@@ -83,8 +83,8 @@ describe("customer.io/exportProfile", () => {
     await expect(
       runExport({
         syncOperations: DestinationSyncModeData.enrich.operations,
-        oldProfileProperties: {},
-        newProfileProperties: { customer_id: customerId },
+        oldRecordProperties: {},
+        newRecordProperties: { customer_id: customerId },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -97,8 +97,8 @@ describe("customer.io/exportProfile", () => {
     expect(existingCustomer).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { customer_id: customerId },
+      oldRecordProperties: {},
+      newRecordProperties: { customer_id: customerId },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -113,8 +113,8 @@ describe("customer.io/exportProfile", () => {
   test("can not create a customer without a customer_id", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {},
-        newProfileProperties: { email },
+        oldRecordProperties: {},
+        newRecordProperties: { email },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -124,8 +124,8 @@ describe("customer.io/exportProfile", () => {
 
   test("can add user attributes", async () => {
     await runExport({
-      oldProfileProperties: { customer_id: customerId },
-      newProfileProperties: { customer_id: customerId, email, name, age },
+      oldRecordProperties: { customer_id: customerId },
+      newRecordProperties: { customer_id: customerId, email, name, age },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -145,8 +145,8 @@ describe("customer.io/exportProfile", () => {
     const createDateUnix = "1614034983";
 
     await runExport({
-      oldProfileProperties: { customer_id: customerId },
-      newProfileProperties: {
+      oldRecordProperties: { customer_id: customerId },
+      newRecordProperties: {
         customer_id: customerId,
         created_at: createDate,
       },
@@ -170,8 +170,8 @@ describe("customer.io/exportProfile", () => {
           create: true,
           delete: true,
         },
-        oldProfileProperties: { customer_id: customerId, email, name },
-        newProfileProperties: {
+        oldRecordProperties: { customer_id: customerId, email, name },
+        newRecordProperties: {
           customer_id: customerId,
           email: otherEmail,
           name,
@@ -195,8 +195,8 @@ describe("customer.io/exportProfile", () => {
     expect(oldCustomer.attributes.email).toBe(email);
 
     await runExport({
-      oldProfileProperties: { customer_id: customerId, email, name },
-      newProfileProperties: {
+      oldRecordProperties: { customer_id: customerId, email, name },
+      newRecordProperties: {
         customer_id: customerId,
         email: otherEmail,
         name,
@@ -220,8 +220,8 @@ describe("customer.io/exportProfile", () => {
     expect(oldCustomer.attributes.age).toBeTruthy();
 
     await runExport({
-      oldProfileProperties: { customer_id: customerId, email, name, age },
-      newProfileProperties: { customer_id: customerId, name },
+      oldRecordProperties: { customer_id: customerId, email, name, age },
+      newRecordProperties: { customer_id: customerId, name },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -241,8 +241,8 @@ describe("customer.io/exportProfile", () => {
     expect(oldCustomer.attributes[`In ${groupTwo}`]).toBeFalsy();
 
     await runExport({
-      oldProfileProperties: { customer_id: customerId },
-      newProfileProperties: { customer_id: customerId },
+      oldRecordProperties: { customer_id: customerId },
+      newRecordProperties: { customer_id: customerId },
       oldGroups: [],
       newGroups: [groupOne, groupTwo],
       toDelete: false,
@@ -261,8 +261,8 @@ describe("customer.io/exportProfile", () => {
     expect(oldCustomer.attributes[`In ${groupTwo}`]).toBeTruthy();
 
     await runExport({
-      oldProfileProperties: { customer_id: customerId },
-      newProfileProperties: { customer_id: customerId },
+      oldRecordProperties: { customer_id: customerId },
+      newRecordProperties: { customer_id: customerId },
       oldGroups: [groupOne, groupTwo],
       newGroups: [groupOne],
       toDelete: false,
@@ -283,8 +283,8 @@ describe("customer.io/exportProfile", () => {
     expect(newCustomer).toBe(null);
 
     await runExport({
-      oldProfileProperties: { customer_id: customerId, email },
-      newProfileProperties: { customer_id: otherCustomerId, email },
+      oldRecordProperties: { customer_id: customerId, email },
+      newRecordProperties: { customer_id: otherCustomerId, email },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -304,8 +304,8 @@ describe("customer.io/exportProfile", () => {
     // customer.io requires deleting the old customer on FK change
     await runExport({
       syncOperations: { create: true, update: true, delete: false },
-      oldProfileProperties: { customer_id: otherCustomerId, email },
-      newProfileProperties: { customer_id: anotherCustomerId, email },
+      oldRecordProperties: { customer_id: otherCustomerId, email },
+      newRecordProperties: { customer_id: anotherCustomerId, email },
       oldGroups: [groupOne, groupTwo],
       newGroups: [groupOne, groupTwo],
       toDelete: false,
@@ -336,8 +336,8 @@ describe("customer.io/exportProfile", () => {
     expect(newCustomer).toBe(null);
 
     await runExport({
-      oldProfileProperties: { customer_id: otherCustomerId, email },
-      newProfileProperties: { customer_id: customerId, email: otherEmail },
+      oldRecordProperties: { customer_id: otherCustomerId, email },
+      newRecordProperties: { customer_id: customerId, email: otherEmail },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -361,8 +361,8 @@ describe("customer.io/exportProfile", () => {
           delete: false,
           update: true,
         },
-        oldProfileProperties: { customer_id: customerId },
-        newProfileProperties: { customer_id: customerId },
+        oldRecordProperties: { customer_id: customerId },
+        newRecordProperties: { customer_id: customerId },
         oldGroups: [],
         newGroups: [],
         toDelete: true,
@@ -375,7 +375,7 @@ describe("customer.io/exportProfile", () => {
     expect(customer.attributes.email).toBe(otherEmail);
   });
 
-  test("can delete a customer passing an existing customer on oldProfile", async () => {
+  test("can delete a customer passing an existing customer on oldRecord", async () => {
     let oldCustomer = await cioClient.getCustomer(anotherCustomerId);
     expect(oldCustomer).not.toBe(null);
 
@@ -383,8 +383,8 @@ describe("customer.io/exportProfile", () => {
     expect(newCustomer).not.toBe(null);
 
     await runExport({
-      oldProfileProperties: { customer_id: anotherCustomerId },
-      newProfileProperties: { customer_id: customerId },
+      oldRecordProperties: { customer_id: anotherCustomerId },
+      newRecordProperties: { customer_id: customerId },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
@@ -404,8 +404,8 @@ describe("customer.io/exportProfile", () => {
     expect(customer).not.toBe(null);
 
     await runExport({
-      oldProfileProperties: { customer_id: anotherCustomerId },
-      newProfileProperties: { customer_id: anotherCustomerId },
+      oldRecordProperties: { customer_id: anotherCustomerId },
+      newRecordProperties: { customer_id: anotherCustomerId },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
@@ -421,8 +421,8 @@ describe("customer.io/exportProfile", () => {
     expect(oldCustomer).toBe(null);
 
     await runExport({
-      oldProfileProperties: { customer_id: anotherNonexistentCustomerId },
-      newProfileProperties: { customer_id: nonexistentCustomerId },
+      oldRecordProperties: { customer_id: anotherNonexistentCustomerId },
+      newRecordProperties: { customer_id: nonexistentCustomerId },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
@@ -434,7 +434,7 @@ describe("customer.io/exportProfile", () => {
     expect(customer).toBe(null);
   });
 
-  test("can add a customer passing a nonexistent customer_id on the oldProfileProperties", async () => {
+  test("can add a customer passing a nonexistent customer_id on the oldRecordProperties", async () => {
     let newCustomer = await cioClient.getCustomer(customerId);
     expect(newCustomer).toBe(null);
 
@@ -444,8 +444,8 @@ describe("customer.io/exportProfile", () => {
     expect(nonexistentCustomer).toBe(null);
 
     await runExport({
-      oldProfileProperties: { customer_id: nonexistentCustomerId },
-      newProfileProperties: { customer_id: customerId, email },
+      oldRecordProperties: { customer_id: nonexistentCustomerId },
+      newRecordProperties: { customer_id: customerId, email },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -465,8 +465,8 @@ describe("customer.io/exportProfile", () => {
     expect(newCustomer).toBe(null);
 
     await runExport({
-      oldProfileProperties: { customer_id: customerId },
-      newProfileProperties: { customer_id: nonexistentCustomerId },
+      oldRecordProperties: { customer_id: customerId },
+      newRecordProperties: { customer_id: nonexistentCustomerId },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
