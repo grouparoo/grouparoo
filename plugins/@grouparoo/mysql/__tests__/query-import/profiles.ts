@@ -8,7 +8,7 @@ import { beforeData, afterData, getConfig } from "../utils/data";
 import { Import, plugin, Run, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/query-import/connection";
-const profiles = getConnection().methods.profiles;
+const records = getConnection().methods.records;
 
 const { appOptions, usersTableName } = getConfig();
 let client;
@@ -32,7 +32,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     highWaterMark: nextHighWaterMark,
     importsCount,
     sourceOffset: nextSourceOffset,
-  } = await profiles({
+  } = await records({
     connection: client,
     run,
     appOptions,
@@ -60,7 +60,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
   };
 }
 
-describe("mysql/query/profiles", () => {
+describe("mysql/query/records", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
   beforeAll(async () => ({ client } = await beforeData()));
@@ -91,7 +91,7 @@ describe("mysql/query/profiles", () => {
     run = await helper.factories.run(schedule, { state: "running" });
   });
 
-  test("imports all profiles when no highWaterMark", async () => {
+  test("imports all records when no highWaterMark", async () => {
     let limit = 100;
     let highWaterMark = {};
     let sourceOffset = 0;

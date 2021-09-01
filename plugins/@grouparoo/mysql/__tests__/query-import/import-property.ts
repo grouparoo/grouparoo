@@ -5,14 +5,14 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper } from "@grouparoo/spec-helper";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
-import { plugin, Profile, Property } from "@grouparoo/core";
+import { plugin, GrouparooRecord, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/query-import/connection";
-const profileProperty = getConnection().methods.profileProperty;
+const recordProperty = getConnection().methods.recordProperty;
 
 // these used and set by test
 const { appOptions, usersTableName } = getConfig();
-let profile: Profile;
+let record: GrouparooRecord;
 
 let client;
 
@@ -20,13 +20,13 @@ async function getPropertyValue(query: string) {
   const propertyOptions = { query };
   const property = await Property.findOne();
 
-  return profileProperty({
+  return recordProperty({
     connection: client,
     appOptions,
-    profile,
+    record,
     propertyOptions,
     property,
-    profileId: null,
+    recordId: null,
     source: null,
     sourceId: null,
     app: null,
@@ -38,19 +38,19 @@ async function getPropertyValue(query: string) {
   });
 }
 
-describe("mysql/query/profileProperty", () => {
+describe("mysql/query/recordProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
   beforeAll(async () => ({ client } = await beforeData()));
 
   beforeAll(async () => {
-    profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+    record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       userId: [1],
       email: ["ejervois0@example.com"],
     });
-    expect(profile.id).toBeTruthy();
+    expect(record.id).toBeTruthy();
   });
 
   afterAll(async () => await afterData());
