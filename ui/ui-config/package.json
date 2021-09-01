@@ -54,8 +54,7 @@
     "react-moment": "1.1.1",
     "stacktrace-js": "2.0.2",
     "styled-jsx": "4.0.0",
-    "swagger-ui-dist": "3.52.0",
-    "victory": "35.10.1"
+    "swagger-ui-dist": "3.52.0"
   },
   "devDependencies": {
     "@grouparoo/core": "0.6.0-alpha.0",
@@ -66,7 +65,7 @@
     "@types/react-dom": "*",
     "actionhero": "27.0.3",
     "enzyme": "3.11.0",
-    "jest": "27.0.6",
+    "jest": "27.1.0",
     "jest-environment-webdriver": "grouparoo/jest-webdriver#jest-v27-webdriver",
     "prettier": "2.3.2",
     "prop-types": "15.7.2",

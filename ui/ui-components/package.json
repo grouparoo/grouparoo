@@ -40,7 +40,7 @@
     "bootstrap": "4.6.0",
     "date-fns": "2.23.0",
     "isomorphic-fetch": "3.0.0",
-    "jest": "27.0.6",
+    "jest": "27.1.0",
     "jest-mock-axios": "4.4.0",
     "md5": "2.3.0",
     "moment": "2.29.1",
