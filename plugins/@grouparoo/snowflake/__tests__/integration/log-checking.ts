@@ -4,7 +4,7 @@ import path from "path";
 import { connect } from "../../src/lib/connect";
 import { getConnection } from "../../src/lib/query-import/connection";
 import "../utils/mock";
-import { loadAppOptions } from "../utils/nockHelper";
+import { loadAppOptions, updater } from "../utils/nockHelper";
 
 const profileProperty = getConnection().methods.profileProperty;
 
