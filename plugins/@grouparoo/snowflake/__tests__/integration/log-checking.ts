@@ -4,18 +4,18 @@ import path from "path";
 import { connect } from "../../src/lib/connect";
 import { getConnection } from "../../src/lib/query-import/connection";
 import "../utils/mock";
-import { loadAppOptions, updater } from "../utils/nockHelper";
+import { loadAppOptions } from "../utils/nockHelper";
 
 const profileProperty = getConnection().methods.profileProperty;
 
 const nockFile = path.join(__dirname, "../", "fixtures", "log-checking.js");
 
 // these comments to use nock
-// const newNock = false;
-// require(nockFile);
+const newNock = false;
+require(nockFile);
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
@@ -76,7 +76,7 @@ describe("snowflake/integration/log-checking", () => {
 
     expect(debugLevel).toBe("debug");
     expect(snowflakeUri).toBe(
-      "https://yla47469.us-east-1.snowflakecomputing.com/session/v1/login-request"
+      "https://xyz12345.us-east-1.snowflakecomputing.com/session/v1/login-request"
     );
     const queryParams = {};
     params
