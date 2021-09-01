@@ -111,7 +111,6 @@ export const getRecordProperties: GetRecordPropertiesMethod = ({
           const propertiesFound = properties.filter(
             (p) => propertyOptions[p.id][columnNameKey] === column
           );
-          if (!propertiesFound) continue;
 
           propertiesFound.forEach((property) => {
             responsesById[recordId][property.id] =
