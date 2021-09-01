@@ -75,8 +75,10 @@ describe("snowflake/integration/log-checking", () => {
     const [snowflakeUri, params] = snowflakeUrl.split("?");
 
     expect(debugLevel).toBe("debug");
-    expect(snowflakeUri).toBe(
-      "https://xyz12345.us-east-1.snowflakecomputing.com/session/v1/login-request"
+    expect(snowflakeUri).toEqual(
+      expect.stringMatching(
+        /https:\/\/[\-\w\.]+\.snowflakecomputing\.com\/session\/v1\/login-request/
+      )
     );
     const queryParams = {};
     params
