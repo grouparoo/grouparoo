@@ -46,8 +46,12 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
 
   // Unfortunately there's no event listener for queries so we have to intercept the call.
   // https://github.com/brianc/node-postgres/issues/2580
-  const shim = pool.query.bind(pool);
-  (pool as any).query = (query, data, callback) => {
+  const shim: typeof pool.query = pool.query.bind(pool);
+  (pool as any).query = (
+    query: Parameters<typeof pool.query>[0],
+    data?: Parameters<typeof pool.query>[1],
+    callback?: Parameters<typeof pool.query>[2]
+  ) => {
     log(`[ postgres ] ${query}`, "debug", data);
     return shim(query, data, callback);
   };

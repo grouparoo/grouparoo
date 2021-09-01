@@ -15,7 +15,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   });
 
   const bqClient = client.dataset(dataset);
-  const queryShim = bqClient.query.bind(bqClient);
+  const queryShim: typeof bqClient.query = bqClient.query.bind(bqClient);
   (bqClient as any).query = (
     options: Parameters<typeof bqClient.query>[0],
     callback?: Parameters<typeof bqClient.query>[1]

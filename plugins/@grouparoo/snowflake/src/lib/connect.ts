@@ -28,7 +28,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
 
   await client.connect();
 
-  const executeShim = client.execute.bind(client);
+  const executeShim: typeof client.execute = client.execute.bind(client);
   (client as any).execute = (
     sqlText: Parameters<typeof client.execute>[0],
     binds?: Parameters<typeof client.execute>[1]
