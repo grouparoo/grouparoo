@@ -3,25 +3,24 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
-import { profileProperty } from "../../src/lib/profileProperty";
-import { api, specHelper } from "actionhero";
-
-import { GrouparooCLI, plugin, Profile, Property } from "@grouparoo/core";
+import { recordProperty } from "../../src/lib/recordProperty";
+import { api } from "actionhero";
+import { GrouparooRecord, Property } from "@grouparoo/core";
 
 // these used and set by test
-let profile: Profile;
+let record: GrouparooRecord;
 
 async function getPropertyValue(fn: string) {
   const propertyOptions = { customFunction: fn };
   const property = await Property.findOne();
 
-  return profileProperty({
+  return recordProperty({
     connection: null,
     appOptions: null,
-    profile,
+    record,
     propertyOptions,
     property,
-    profileId: null,
+    recordId: null,
     source: null,
     sourceId: null,
     app: null,
@@ -33,15 +32,15 @@ async function getPropertyValue(fn: string) {
   });
 }
 
-describe("calculated-property/profileProperty", () => {
+describe("calculated-property/recordProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => helper.disableTestPluginImport());
   beforeAll(async () => await helper.factories.properties());
   beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
   beforeAll(async () => {
-    profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+    record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       userId: [1],
       email: ["ejervois0@example.com"],
       firstName: ["Mario"],
@@ -51,7 +50,7 @@ describe("calculated-property/profileProperty", () => {
       isVIP: [true],
       purchases: [null],
     });
-    expect(profile.id).toBeTruthy();
+    expect(record.id).toBeTruthy();
   });
 
   test("it evaluates string properties as expected", async () => {
@@ -63,14 +62,14 @@ describe("calculated-property/profileProperty", () => {
   });
   test("it evaluates float properties as expected", async () => {
     const fn = `() => {
-        return {{ltv}} * 2 
+        return {{ltv}} * 2
     }`;
     const value = await getPropertyValue(fn);
     expect(value[0]).toEqual(780.84);
   });
   test("it evaluates null properties as an empty string", async () => {
-    const fn = `() => { 
-        if ("{{purchases}}" === "") return true; 
+    const fn = `() => {
+        if ("{{purchases}}" === "") return true;
         return false;}`;
     const value = await getPropertyValue(fn);
     expect(value[0]).toEqual(true);
