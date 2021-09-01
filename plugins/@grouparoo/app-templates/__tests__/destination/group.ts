@@ -1,7 +1,7 @@
-import { ExportedProfile } from "@grouparoo/core";
+import { ExportedRecord } from "@grouparoo/core";
 import { helper } from "@grouparoo/spec-helper";
 import * as uuid from "uuid";
-import { exportProfilesInGroups } from "../../src/destination/group/exportProfiles";
+import { exportRecordsInGroups } from "../../src/destination/group/exportRecords";
 import {
   GroupMethodAddToGroups,
   GroupSizeMode,
@@ -9,23 +9,23 @@ import {
 
 const noOp = async () => {};
 
-const generateExportedProfiles = async (
+const generateExportedRecords = async (
   count: number,
   oldGroups?: string[],
   newGroups?: string[]
 ) => {
-  const exportedProfiles: ExportedProfile[] = [];
+  const exportedRecords: ExportedRecord[] = [];
 
   for (let i = 0; i < count; i++) {
     const id = uuid.v4();
 
-    exportedProfiles.push({
-      profile: await helper.factories.profile(),
-      profileId: id,
-      oldProfileProperties: {
+    exportedRecords.push({
+      record: await helper.factories.record(),
+      recordId: id,
+      oldRecordProperties: {
         id,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id,
       },
       oldGroups: oldGroups || [],
@@ -34,7 +34,7 @@ const generateExportedProfiles = async (
     });
   }
 
-  return exportedProfiles;
+  return exportedRecords;
 };
 
 describe("app-templates/destination/group", () => {
@@ -43,7 +43,7 @@ describe("app-templates/destination/group", () => {
   test("can limit batch size when adding to groups", async () => {
     const batchSize = 50;
 
-    const profilesToExport = await generateExportedProfiles(
+    const recordsToExport = await generateExportedRecords(
       100,
       [],
       ["Test Group"]
@@ -51,13 +51,13 @@ describe("app-templates/destination/group", () => {
 
     const addToGroups: GroupMethodAddToGroups = jest.fn(
       async ({ groupMap }) => {
-        const profiles = groupMap["Test Group"];
-        expect(profiles.length).toBe(50);
+        const records = groupMap["Test Group"];
+        expect(records.length).toBe(50);
       }
     );
 
-    await exportProfilesInGroups(
-      profilesToExport,
+    await exportRecordsInGroups(
+      recordsToExport,
       {
         batchSize,
         groupMode: GroupSizeMode.TotalMembers,
@@ -77,7 +77,7 @@ describe("app-templates/destination/group", () => {
   test("can limit batch size when removing from groups", async () => {
     const batchSize = 50;
 
-    const profilesToExport = await generateExportedProfiles(
+    const recordsToExport = await generateExportedRecords(
       100,
       ["Test Group"],
       []
@@ -85,13 +85,13 @@ describe("app-templates/destination/group", () => {
 
     const removeFromGroups: GroupMethodAddToGroups = jest.fn(
       async ({ groupMap }) => {
-        const profiles = groupMap["Test Group"];
-        expect(profiles.length).toBe(50);
+        const records = groupMap["Test Group"];
+        expect(records.length).toBe(50);
       }
     );
 
-    await exportProfilesInGroups(
-      profilesToExport,
+    await exportRecordsInGroups(
+      recordsToExport,
       {
         batchSize,
         groupMode: GroupSizeMode.TotalMembers,

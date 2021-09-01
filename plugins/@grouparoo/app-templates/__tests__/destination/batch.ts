@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import * as uuid from "uuid";
-import { exportProfilesInBatch } from "../../src/destination/batch/exportProfiles";
+import { exportRecordsInBatch } from "../../src/destination/batch/exportRecords";
 import {
   BatchExport,
   BatchGroupMode,
@@ -30,13 +30,13 @@ const generateBatchExports = async (
     const id = uuid.v4();
 
     batchExports.push({
-      profile: await helper.factories.profile(),
-      profileId: id,
+      record: await helper.factories.record(),
+      recordId: id,
       destinationId: action != BatchTestAction.Create && id,
-      oldProfileProperties: {
+      oldRecordProperties: {
         id,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         id,
       },
       oldGroups: oldGroups || [],
@@ -70,7 +70,7 @@ describe("app-templates/destination/batch", () => {
           expect(users.length).toBe(batchSize);
         });
 
-      await exportProfilesInBatch(
+      await exportRecordsInBatch(
         batchExports,
         {
           batchSize,
@@ -108,7 +108,7 @@ describe("app-templates/destination/batch", () => {
         }
       );
 
-      await exportProfilesInBatch(
+      await exportRecordsInBatch(
         batchExports,
         {
           batchSize,
@@ -146,7 +146,7 @@ describe("app-templates/destination/batch", () => {
         }
       );
 
-      await exportProfilesInBatch(
+      await exportRecordsInBatch(
         batchExports,
         {
           batchSize,
@@ -184,7 +184,7 @@ describe("app-templates/destination/batch", () => {
         expect(users.length).toBe(batchSize);
       });
 
-      await exportProfilesInBatch(
+      await exportRecordsInBatch(
         batchExports,
         {
           batchSize,
@@ -224,7 +224,7 @@ describe("app-templates/destination/batch", () => {
         }
       );
 
-      await exportProfilesInBatch(
+      await exportRecordsInBatch(
         batchExports,
         {
           batchSize,
@@ -261,7 +261,7 @@ describe("app-templates/destination/batch", () => {
           expect(foreignKeys.length).toBe(findSize);
         });
 
-      await exportProfilesInBatch(
+      await exportRecordsInBatch(
         batchExports,
         {
           batchSize,
@@ -300,18 +300,18 @@ describe("app-templates/destination/batch", () => {
         jest.fn(async ({ users }) => {
           expect(users).toHaveLength(1);
           expect(users[0].destinationId).toBeUndefined();
-          expect(users[0].newProfileProperties.email).toBe(newForeignKeyValue);
+          expect(users[0].newRecordProperties.email).toBe(newForeignKeyValue);
         });
 
-      await exportProfilesInBatch(
+      await exportRecordsInBatch(
         [
           {
-            profile: await helper.factories.profile(),
-            profileId: oldForeignKeyValue,
-            oldProfileProperties: {
+            record: await helper.factories.record(),
+            recordId: oldForeignKeyValue,
+            oldRecordProperties: {
               email: oldForeignKeyValue,
             },
-            newProfileProperties: {
+            newRecordProperties: {
               email: newForeignKeyValue,
             },
             oldGroups: [],
@@ -362,20 +362,20 @@ describe("app-templates/destination/batch", () => {
       const updateByDestinationIds: BatchMethodUpdateByDestinationIds = jest.fn(
         async ({ users }) => {
           expect(users).toHaveLength(1);
-          expect(users[0].newProfileProperties.email).toBe(newForeignKeyValue);
+          expect(users[0].newRecordProperties.email).toBe(newForeignKeyValue);
           expect(users[0].destinationId).toBe(destinationId);
         }
       );
 
-      await exportProfilesInBatch(
+      await exportRecordsInBatch(
         [
           {
-            profile: await helper.factories.profile(),
-            profileId: foreignKeyValue,
-            oldProfileProperties: {
+            record: await helper.factories.record(),
+            recordId: foreignKeyValue,
+            oldRecordProperties: {
               email: foreignKeyValue,
             },
-            newProfileProperties: {
+            newRecordProperties: {
               email: newForeignKeyValue,
             },
             oldGroups: [],
@@ -426,20 +426,20 @@ describe("app-templates/destination/batch", () => {
       const updateByDestinationIds: BatchMethodUpdateByDestinationIds = jest.fn(
         async ({ users }) => {
           expect(users).toHaveLength(1);
-          expect(users[0].newProfileProperties.email).toBe(newForeignKeyValue);
+          expect(users[0].newRecordProperties.email).toBe(newForeignKeyValue);
           expect(users[0].destinationId).toBe(destinationId);
         }
       );
 
-      await exportProfilesInBatch(
+      await exportRecordsInBatch(
         [
           {
-            profile: await helper.factories.profile(),
-            profileId: oldForeignKeyValue,
-            oldProfileProperties: {
+            record: await helper.factories.record(),
+            recordId: oldForeignKeyValue,
+            oldRecordProperties: {
               email: oldForeignKeyValue,
             },
-            newProfileProperties: {
+            newRecordProperties: {
               email: newForeignKeyValue,
             },
             oldGroups: [],
@@ -494,20 +494,20 @@ describe("app-templates/destination/batch", () => {
       const updateByDestinationIds: BatchMethodUpdateByDestinationIds = jest.fn(
         async ({ users }) => {
           expect(users).toHaveLength(1);
-          expect(users[0].newProfileProperties.email).toBe(newForeignKeyValue);
+          expect(users[0].newRecordProperties.email).toBe(newForeignKeyValue);
           expect(users[0].destinationId).toBe(destinationId2); // new one is updated
         }
       );
 
-      await exportProfilesInBatch(
+      await exportRecordsInBatch(
         [
           {
-            profile: await helper.factories.profile(),
-            profileId: oldForeignKeyValue,
-            oldProfileProperties: {
+            record: await helper.factories.record(),
+            recordId: oldForeignKeyValue,
+            oldRecordProperties: {
               email: oldForeignKeyValue,
             },
-            newProfileProperties: {
+            newRecordProperties: {
               email: newForeignKeyValue,
             },
             oldGroups: [],
