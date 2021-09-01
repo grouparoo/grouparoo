@@ -41,7 +41,7 @@
     "@types/node": "*",
     "@types/pg": "*",
     "actionhero": "27.0.3",
-    "csv-parse": "4.16.0",
+    "csv-parse": "4.16.2",
     "fs-extra": "10.0.0",
     "jest": "27.1.0",
     "prettier": "2.3.2",
