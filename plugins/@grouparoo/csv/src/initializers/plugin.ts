@@ -9,8 +9,8 @@ import { records as fileProfiles } from "../lib/file-import/records";
 import { propertyOptions as filePropertyOptions } from "../lib/file-import/propertyOptions";
 import { sourceRunPercentComplete as fileSourceRunPercentComplete } from "../lib/file-import/sourceRunPercentComplete";
 import { uniquePropertyBootstrapOptions as fileUniquePropertyBootstrapOptions } from "../lib/file-import/uniquePropertyBootstrapOptions";
-import { profileProperty as fileRecordProperty } from "../lib/file-import/recordProperty";
-import { profileProperties as fileRecordProperties } from "../lib/file-import/recordProperties";
+import { recordProperty as fileRecordProperty } from "../lib/file-import/recordProperty";
+import { recordProperties as fileRecordProperties } from "../lib/file-import/recordProperties";
 
 import { sourceOptions as remoteSourceOptions } from "../lib/remote-import/sourceOptions";
 import { sourcePreview as remoteSourcePreview } from "../lib/remote-import/sourcePreview";
@@ -18,8 +18,8 @@ import { records as remoteProfiles } from "../lib/remote-import/records";
 import { propertyOptions as remotePropertyOptions } from "../lib/remote-import/propertyOptions";
 import { sourceRunPercentComplete as remoteSourceRunPercentComplete } from "../lib/remote-import/sourceRunPercentComplete";
 import { uniquePropertyBootstrapOptions as remoteUniquePropertyBootstrapOptions } from "../lib/remote-import/uniquePropertyBootstrapOptions";
-import { profileProperty as remoteRecordProperty } from "../lib/remote-import/recordProperty";
-import { profileProperties as remoteRecordProperties } from "../lib/remote-import/recordProperties";
+import { recordProperty as remoteRecordProperty } from "../lib/remote-import/recordProperty";
+import { recordProperties as remoteRecordProperties } from "../lib/remote-import/recordProperties";
 
 import {
   CSVAppTemplate,

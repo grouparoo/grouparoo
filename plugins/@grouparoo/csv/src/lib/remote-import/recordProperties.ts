@@ -2,7 +2,7 @@ import { RecordPropertiesPluginMethod } from "@grouparoo/core";
 import { parseProfileProperties } from "../shared/parseProfileProperties";
 import { downloadAndRefreshFile } from "./downloadAndRefreshFile";
 
-export const profileProperties: RecordPropertiesPluginMethod = async ({
+export const recordProperties: RecordPropertiesPluginMethod = async ({
   records,
   propertyOptions,
   sourceMapping,

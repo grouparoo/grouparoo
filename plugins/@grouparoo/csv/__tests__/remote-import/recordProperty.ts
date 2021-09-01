@@ -3,28 +3,32 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/csv": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
-import { Profile, Property, SimpleSourceOptions } from "@grouparoo/core";
-import { profileProperty } from "../../src/lib/remote-import/profileProperty";
+import {
+  GrouparooRecord,
+  Property,
+  SimpleSourceOptions,
+} from "@grouparoo/core";
+import { recordProperty } from "../../src/lib/remote-import/recordProperty";
 
 const sourceOptions: SimpleSourceOptions = {
-  url: "https://raw.githubusercontent.com/grouparoo/grouparoo/main/core/__tests__/data/profiles-10.csv",
+  url: "https://raw.githubusercontent.com/grouparoo/grouparoo/main/core/__tests__/data/records-10.csv",
   fileAgeHours: 1,
 };
-let profile: Profile;
+let record: GrouparooRecord;
 
 async function getPropertyValue(column: string) {
   const propertyOptions = { column };
   const property = await Property.findOne();
 
-  return profileProperty({
-    profile,
+  return recordProperty({
+    record,
     propertyOptions,
     property,
     sourceOptions,
     sourceMapping: { id: "userId" },
     appOptions: null,
     connection: null,
-    profileId: null,
+    recordId: null,
     source: null,
     sourceId: null,
     app: null,
@@ -34,19 +38,19 @@ async function getPropertyValue(column: string) {
   });
 }
 
-describe("csv/remote/profileProperty", () => {
+describe("csv/remote/recordProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
     // all of these are in in the test plugin
     await helper.factories.properties();
 
-    profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+    record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       userId: [1],
       email: ["ejervois0@example.com"],
     });
-    expect(profile.id).toBeTruthy();
+    expect(record.id).toBeTruthy();
   });
 
   test("can get a string", async () => {

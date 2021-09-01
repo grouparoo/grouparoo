@@ -3,26 +3,31 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/csv": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
-import { Profile, Property, SimpleSourceOptions, File } from "@grouparoo/core";
-import { profileProperty } from "../../src/lib/file-import/profileProperty";
+import {
+  GrouparooRecord,
+  Property,
+  SimpleSourceOptions,
+  File,
+} from "@grouparoo/core";
+import { recordProperty } from "../../src/lib/file-import/recordProperty";
 
 let sourceOptions: SimpleSourceOptions;
 let file: File;
-let profile: Profile;
+let record: GrouparooRecord;
 
 async function getPropertyValue(column: string) {
   const propertyOptions = { column };
   const property = await Property.findOne();
 
-  return profileProperty({
-    profile,
+  return recordProperty({
+    record,
     propertyOptions,
     property,
     sourceOptions,
     sourceMapping: { id: "userId" },
     appOptions: null,
     connection: null,
-    profileId: null,
+    recordId: null,
     source: null,
     sourceId: null,
     app: null,
@@ -32,7 +37,7 @@ async function getPropertyValue(column: string) {
   });
 }
 
-describe("csv/file/profileProperty", () => {
+describe("csv/file/recordProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
@@ -40,7 +45,7 @@ describe("csv/file/profileProperty", () => {
       transport: "local",
       type: "csv",
       bucket: path.join(process.cwd(), "__tests__", "data"),
-      path: "profiles-10.csv",
+      path: "records-10.csv",
       extension: ".csv",
       mime: "text/csv",
       sizeBytes: 1,
@@ -53,12 +58,12 @@ describe("csv/file/profileProperty", () => {
     // all of these are in in the test plugin
     await helper.factories.properties();
 
-    profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+    record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       userId: [1],
       email: ["ejervois0@example.com"],
     });
-    expect(profile.id).toBeTruthy();
+    expect(record.id).toBeTruthy();
   });
 
   test("can get a string", async () => {

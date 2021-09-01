@@ -1,7 +1,7 @@
 import { RecordPropertyPluginMethod } from "@grouparoo/core";
-import { profileProperties } from "./recordProperties";
+import { recordProperties } from "./recordProperties";
 
-export const profileProperty: RecordPropertyPluginMethod = async (args) => {
+export const recordProperty: RecordPropertyPluginMethod = async (args) => {
   const multiArgs = Object.assign({}, args, {
     records: [args.record],
     recordIds: [args.record.id],
@@ -11,7 +11,7 @@ export const profileProperty: RecordPropertyPluginMethod = async (args) => {
     propertyFilters: { [args.property.id]: args.propertyFilters },
   });
 
-  const profilePropertiesResponse = await profileProperties(multiArgs);
+  const profilePropertiesResponse = await recordProperties(multiArgs);
   return profilePropertiesResponse[args.record.id] &&
     profilePropertiesResponse[args.record.id][args.property.id]
     ? profilePropertiesResponse[args.record.id][args.property.id]

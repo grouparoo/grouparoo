@@ -10,7 +10,7 @@ import {
   Run,
   File,
 } from "@grouparoo/core";
-import { profiles } from "../../src/lib/file-import/profiles";
+import { records } from "../../src/lib/file-import/records";
 
 // these used and set by test
 let sourceOptions: SimpleSourceOptions;
@@ -35,7 +35,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     highWaterMark: nextHighWaterMark,
     importsCount,
     sourceOffset: nextSourceOffset,
-  } = await profiles({
+  } = await records({
     run,
     sourceMapping,
     source,
@@ -63,7 +63,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
   };
 }
 
-describe("csv/table/profiles", () => {
+describe("csv/table/records", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
@@ -71,7 +71,7 @@ describe("csv/table/profiles", () => {
       transport: "local",
       type: "csv",
       bucket: path.join(process.cwd(), "__tests__", "data"),
-      path: "profiles-10.csv",
+      path: "records-10.csv",
       extension: ".csv",
       mime: "text/csv",
       sizeBytes: 1,
@@ -104,7 +104,7 @@ describe("csv/table/profiles", () => {
     run = await helper.factories.run(schedule, { state: "running" });
   });
 
-  test("imports all profiles when no highWaterMark", async () => {
+  test("imports all records when no highWaterMark", async () => {
     let limit = 100;
     let highWaterMark = {};
     let sourceOffset = 0;
@@ -129,7 +129,7 @@ describe("csv/table/profiles", () => {
     ]);
   });
 
-  test("imports all profiles when there is a highWaterMark", async () => {
+  test("imports all records when there is a highWaterMark", async () => {
     let limit = 100;
     let highWaterMark = { row: "6" };
     let sourceOffset = 0;

@@ -1,7 +1,7 @@
 import { RecordPropertiesPluginMethod, plugin } from "@grouparoo/core";
 import { parseProfileProperties } from "../shared/parseProfileProperties";
 
-export const profileProperties: RecordPropertiesPluginMethod = async ({
+export const recordProperties: RecordPropertiesPluginMethod = async ({
   records,
   propertyOptions,
   sourceMapping,
