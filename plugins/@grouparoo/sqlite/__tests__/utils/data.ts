@@ -10,7 +10,7 @@ const workerId = process.env.JEST_WORKER_ID || 1;
 export const usersTableName = `USERS - '${workerId}'`;
 export const usersTableSlug = ConfigWriter.generateId(usersTableName);
 export const purchasesTableName = `Purchases - '${workerId}'`;
-export const profilesDestinationTableName = `OUTPUT_USERS - '${workerId}'`;
+export const recordsDestinationTableName = `OUTPUT_USERS - '${workerId}'`;
 export const groupsDestinationTableName = `output_groups - '${workerId}'`;
 
 const allTables = {
@@ -33,15 +33,15 @@ CREATE TABLE "${usersTableName}" (
   [purchasesTableName]: `
 CREATE TABLE "${purchasesTableName}" (
   "id" integer PRIMARY KEY,
-  "profile_id" integer,
+  "record_id" integer,
   "purchase" text,
   "amount" float,
   "date" date,
   "stamp" datetime
 )
 `,
-  [profilesDestinationTableName]: `
-CREATE TABLE "${profilesDestinationTableName}" (
+  [recordsDestinationTableName]: `
+CREATE TABLE "${recordsDestinationTableName}" (
   "id" integer PRIMARY KEY,
   "customer_email" text,
   "fname" text,
@@ -116,7 +116,7 @@ async function fillTable(tableName, fileName) {
 export async function populate() {
   await getClient();
   await createTables();
-  await fillTable(usersTableName, "profiles.csv");
+  await fillTable(usersTableName, "records.csv");
   await fillTable(purchasesTableName, "purchases.csv");
 }
 
@@ -126,7 +126,7 @@ export function getConfig() {
     appId,
     usersTableName,
     purchasesTableName,
-    profilesDestinationTableName,
+    recordsDestinationTableName,
     groupsDestinationTableName,
   };
 }
