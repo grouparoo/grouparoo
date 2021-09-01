@@ -47,13 +47,7 @@ describe("mongo/table/scheduleOptions", () => {
     };
     const columns = await getColumns(sourceOptions);
     const columnNames = columns.map((r) => r.key).sort();
-    expect(columnNames).toEqual([
-      "amount",
-      "date",
-      "id",
-      "profile_id",
-      "stamp",
-    ]); // leaves out
+    expect(columnNames).toEqual(["amount", "date", "id", "record_id", "stamp"]); // leaves out
     expect(columns.length).toBe(5);
   });
 

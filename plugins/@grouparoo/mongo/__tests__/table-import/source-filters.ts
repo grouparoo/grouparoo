@@ -48,8 +48,8 @@ describe("mongo/table/sourceFilters", () => {
       "amount",
       "date",
       "id",
-      "profile_id",
       "purchase",
+      "record_id",
       "stamp",
     ]); // leaves out
     expect(columns.length).toBe(7);
@@ -92,8 +92,8 @@ describe("mongo/table/sourceFilters", () => {
         "less than or equal to",
       ],
     });
-    expect(columns[4]).toMatchObject({
-      key: "profile_id",
+    expect(columns[5]).toMatchObject({
+      key: "record_id",
       ops: [
         "equals",
         "does not equal",
@@ -103,7 +103,7 @@ describe("mongo/table/sourceFilters", () => {
         "less than or equal to",
       ],
     });
-    expect(columns[5]).toMatchObject({
+    expect(columns[4]).toMatchObject({
       key: "purchase",
       ops: ["equals", "does not equal", "contains", "does not contain"],
     });

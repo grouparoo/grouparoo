@@ -99,12 +99,12 @@ const collectionsOptions = {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["profile_id"],
+        required: ["record_id"],
         properties: {
           id: {
             bsonType: "int",
           },
-          profile_id: {
+          record_id: {
             bsonType: "int",
           },
           purchase: {
@@ -128,7 +128,7 @@ const collectionsOptions = {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["profile_id"],
+        required: ["record_id"],
         properties: {
           id: {
             bsonType: "string",
@@ -237,7 +237,7 @@ async function fillTableJson(collectionName, fileName) {
 
 export async function populate() {
   await createTables();
-  await fillTable(usersCollectionName, "profiles.csv");
+  await fillTable(usersCollectionName, "records.csv");
   await fillTable(purchasesCollectionName, "purchases.csv");
   await fillTableJson(locationsCollectionName, "locations.json");
 }

@@ -56,8 +56,8 @@ describe("mongo/table/propertyOptions", () => {
       "amount",
       "date",
       "id",
-      "profile_id",
       "purchase",
+      "record_id",
       "stamp",
     ]);
     expect(response.length).toBe(6);
@@ -113,8 +113,8 @@ describe("mongo/table/propertyOptions", () => {
       "amount",
       "date",
       "id",
-      "profile_id",
       "purchase",
+      "record_id",
       "stamp",
     ]);
 

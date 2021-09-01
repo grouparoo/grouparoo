@@ -5,18 +5,18 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { Profile, Property } from "@grouparoo/core";
+import { GrouparooRecord, Property } from "@grouparoo/core";
 import { beforeData, afterData, getConfig } from "../utils/data";
 import { getConnection } from "../../src/lib/table-import/connection";
 
-const profileProperties = getConnection().methods.profileProperties;
+const recordProperties = getConnection().methods.recordProperties;
 
 // these used and set by test
 const { appOptions, usersTableName, purchasesTableName, locationsTableName } =
   getConfig();
-let profile: Profile;
-let otherProfile: Profile;
-let thirdProfile: Profile;
+let record: GrouparooRecord;
+let otherRecord: GrouparooRecord;
+let thirdRecord: GrouparooRecord;
 let client;
 let sourceOptions;
 
@@ -48,16 +48,16 @@ async function getPropertyArrays(
     ? { [property.id]: usePropertyFilters }
     : { [property.id]: [] };
 
-  const values = await profileProperties({
+  const values = await recordProperties({
     connection: client,
     appOptions,
-    profiles: [profile, otherProfile, thirdProfile],
+    records: [record, otherRecord, thirdRecord],
     sourceOptions,
     propertyOptions,
     sourceMapping,
     propertyFilters,
     properties: [property],
-    profileIds: [profile.id, otherProfile.id, thirdProfile.id],
+    recordIds: [record.id, otherRecord.id, thirdRecord.id],
     source: null,
     sourceId: null,
     app: null,
@@ -68,7 +68,7 @@ async function getPropertyArrays(
   return [values, property];
 }
 
-describe("mongo/table/profileProperties", () => {
+describe("mongo/table/recordProperties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -79,24 +79,24 @@ describe("mongo/table/profileProperties", () => {
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);
 
-    profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+    record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       userId: [1],
       email: ["ejervois0@example.com"],
       lastName: null,
     });
-    expect(profile.id).toBeTruthy();
+    expect(record.id).toBeTruthy();
 
-    otherProfile = await helper.factories.profile();
-    await otherProfile.addOrUpdateProperties({
+    otherRecord = await helper.factories.record();
+    await otherRecord.addOrUpdateProperties({
       userId: [2],
       email: ["ceate1@example.com"],
       lastName: null,
     });
 
-    //profile w no purchases for testing null/0 in aggregate properties
-    thirdProfile = await helper.factories.profile();
-    await thirdProfile.addOrUpdateProperties({
+    //record w no purchases for testing null/0 in aggregate properties
+    thirdRecord = await helper.factories.record();
+    await thirdRecord.addOrUpdateProperties({
       userId: [6],
       email: ["another@example.com"],
       lastName: null,
@@ -123,8 +123,8 @@ describe("mongo/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod,
         });
-        expect(values[profile.id][property.id]).toEqual(["Erie"]);
-        expect(values[otherProfile.id][property.id]).toEqual(["Cacilie"]);
+        expect(values[record.id][property.id]).toEqual(["Erie"]);
+        expect(values[otherRecord.id][property.id]).toEqual(["Cacilie"]);
       });
       test("to get a float", async () => {
         const column = "ltv";
@@ -133,8 +133,8 @@ describe("mongo/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod,
         });
-        expect(values[profile.id][property.id]).toEqual([259.12]);
-        expect(values[otherProfile.id][property.id]).toEqual([94.36]);
+        expect(values[record.id][property.id]).toEqual([259.12]);
+        expect(values[otherRecord.id][property.id]).toEqual([94.36]);
       });
       test("to get a boolean", async () => {
         const column = "ios_app";
@@ -143,8 +143,8 @@ describe("mongo/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod,
         });
-        expect(values[profile.id][property.id]).toEqual([true]);
-        expect(values[otherProfile.id][property.id]).toEqual([false]);
+        expect(values[record.id][property.id]).toEqual([true]);
+        expect(values[otherRecord.id][property.id]).toEqual([false]);
       });
       test("to get a date", async () => {
         const column = "date";
@@ -154,10 +154,10 @@ describe("mongo/table/profileProperties", () => {
           aggregationMethod,
         });
         expect(
-          (<Date[]>values[profile.id][property.id])[0].toISOString()
+          (<Date[]>values[record.id][property.id])[0].toISOString()
         ).toEqual(new Date("2020-02-01T00:00:00.000").toISOString());
         expect(
-          (<Date[]>values[otherProfile.id][property.id])[0].toISOString()
+          (<Date[]>values[otherRecord.id][property.id])[0].toISOString()
         ).toEqual(new Date("2020-02-02T00:00:00.000").toISOString());
       });
       test("to get a timestamp", async () => {
@@ -168,10 +168,10 @@ describe("mongo/table/profileProperties", () => {
           aggregationMethod,
         });
         expect(
-          (<Date[]>values[profile.id][property.id])[0].toISOString()
+          (<Date[]>values[record.id][property.id])[0].toISOString()
         ).toEqual(new Date("2020-02-01T12:13:14.000").toISOString());
         expect(
-          (<Date[]>values[otherProfile.id][property.id])[0].toISOString()
+          (<Date[]>values[otherRecord.id][property.id])[0].toISOString()
         ).toEqual(new Date("2020-02-02T12:13:14.000").toISOString());
       });
     });
@@ -185,8 +185,8 @@ describe("mongo/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod,
         });
-        expect(values[profile.id][property.id]).toEqual(["Erie"]);
-        expect(values[otherProfile.id][property.id]).toEqual(["Cacilie"]);
+        expect(values[record.id][property.id]).toEqual(["Erie"]);
+        expect(values[otherRecord.id][property.id]).toEqual(["Cacilie"]);
       });
       test("to get a float", async () => {
         const column = "ltv";
@@ -195,8 +195,8 @@ describe("mongo/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod,
         });
-        expect(values[profile.id][property.id]).toEqual([259.12]);
-        expect(values[otherProfile.id][property.id]).toEqual([94.36]);
+        expect(values[record.id][property.id]).toEqual([259.12]);
+        expect(values[otherRecord.id][property.id]).toEqual([94.36]);
       });
       test("to get a boolean", async () => {
         const column = "ios_app";
@@ -205,8 +205,8 @@ describe("mongo/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod,
         });
-        expect(values[profile.id][property.id]).toEqual([true]);
-        expect(values[otherProfile.id][property.id]).toEqual([false]);
+        expect(values[record.id][property.id]).toEqual([true]);
+        expect(values[otherRecord.id][property.id]).toEqual([false]);
       });
       test("to get a date", async () => {
         const column = "date";
@@ -217,11 +217,11 @@ describe("mongo/table/profileProperties", () => {
         });
 
         expect(
-          (<Date[]>values[profile.id][property.id])[0].toISOString()
+          (<Date[]>values[record.id][property.id])[0].toISOString()
         ).toEqual(new Date("2020-02-01T00:00:00.000").toISOString());
 
         expect(
-          (<Date[]>values[otherProfile.id][property.id])[0].toISOString()
+          (<Date[]>values[otherRecord.id][property.id])[0].toISOString()
         ).toEqual(new Date("2020-02-02T00:00:00.000").toISOString());
       });
       test("to get a timestamp", async () => {
@@ -232,17 +232,17 @@ describe("mongo/table/profileProperties", () => {
           aggregationMethod,
         });
         expect(
-          (<Date[]>values[profile.id][property.id])[0].toISOString()
+          (<Date[]>values[record.id][property.id])[0].toISOString()
         ).toEqual(new Date("2020-02-01T12:13:14.000").toISOString());
         expect(
-          (<Date[]>values[otherProfile.id][property.id])[0].toISOString()
+          (<Date[]>values[otherRecord.id][property.id])[0].toISOString()
         ).toEqual(new Date("2020-02-02T12:13:14.000").toISOString());
       });
     });
   });
 
   describe("secondary tables", () => {
-    const sourceMapping = { profile_id: "userId" };
+    const sourceMapping = { record_id: "userId" };
     beforeAll(() => {
       sourceOptions = {
         table: purchasesTableName,
@@ -258,13 +258,13 @@ describe("mongo/table/profileProperties", () => {
           aggregationMethod: "average",
         });
 
-        expect(fixedLengthFloat(values[profile.id][property.id][0])).toEqual(
+        expect(fixedLengthFloat(values[record.id][property.id][0])).toEqual(
           1.73
         );
         expect(
-          fixedLengthFloat(values[otherProfile.id][property.id][0])
+          fixedLengthFloat(values[otherRecord.id][property.id][0])
         ).toEqual(1.88);
-        expect(values[thirdProfile.id]).toBeUndefined();
+        expect(values[thirdRecord.id]).toBeUndefined();
       });
       test("count", async () => {
         const [values, property] = await getPropertyValues({
@@ -272,9 +272,9 @@ describe("mongo/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod: "count",
         });
-        expect(values[profile.id][property.id]).toEqual([6]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([6]);
+        expect(values[otherRecord.id][property.id]).toEqual([5]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("sum", async () => {
         const [values, property] = await getPropertyValues({
@@ -282,14 +282,14 @@ describe("mongo/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod: "sum",
         });
-        expect(fixedLengthFloat(values[profile.id][property.id][0])).toEqual(
+        expect(fixedLengthFloat(values[record.id][property.id][0])).toEqual(
           10.38
         );
         expect(
-          fixedLengthFloat(values[otherProfile.id][property.id][0])
+          fixedLengthFloat(values[otherRecord.id][property.id][0])
         ).toEqual(9.38);
         expect(
-          fixedLengthFloat(values[thirdProfile.id][property.id][0])
+          fixedLengthFloat(values[thirdRecord.id][property.id][0])
         ).toEqual(0);
       });
       test("min", async () => {
@@ -298,9 +298,9 @@ describe("mongo/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod: "min",
         });
-        expect(values[profile.id][property.id]).toEqual([1.42]);
-        expect(values[otherProfile.id][property.id]).toEqual([0.78]);
-        expect(values[thirdProfile.id]).toBeUndefined();
+        expect(values[record.id][property.id]).toEqual([1.42]);
+        expect(values[otherRecord.id][property.id]).toEqual([0.78]);
+        expect(values[thirdRecord.id]).toBeUndefined();
       });
       test("max", async () => {
         const [values, property] = await getPropertyValues({
@@ -308,9 +308,9 @@ describe("mongo/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod: "max",
         });
-        expect(values[profile.id][property.id]).toEqual([2.23]);
-        expect(values[otherProfile.id][property.id]).toEqual([3.14]);
-        expect(values[thirdProfile.id]).toBeUndefined();
+        expect(values[record.id][property.id]).toEqual([2.23]);
+        expect(values[otherRecord.id][property.id]).toEqual([3.14]);
+        expect(values[thirdRecord.id]).toBeUndefined();
       });
 
       describe("dates", () => {
@@ -321,9 +321,9 @@ describe("mongo/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod: "count",
           });
-          expect(values[profile.id][property.id]).toEqual([6]);
-          expect(values[otherProfile.id][property.id]).toEqual([5]);
-          expect(values[thirdProfile.id][property.id]).toEqual([0]);
+          expect(values[record.id][property.id]).toEqual([6]);
+          expect(values[otherRecord.id][property.id]).toEqual([5]);
+          expect(values[thirdRecord.id][property.id]).toEqual([0]);
         });
         test("min", async () => {
           const [values, property] = await getPropertyValues({
@@ -332,12 +332,12 @@ describe("mongo/table/profileProperties", () => {
             aggregationMethod: "min",
           });
           expect(
-            (<Date[]>values[profile.id][property.id])[0].toISOString()
+            (<Date[]>values[record.id][property.id])[0].toISOString()
           ).toEqual(new Date("2020-02-01T00:00:00.000").toISOString());
           expect(
-            (<Date[]>values[otherProfile.id][property.id])[0].toISOString()
+            (<Date[]>values[otherRecord.id][property.id])[0].toISOString()
           ).toEqual(new Date("2020-02-02T00:00:00.000").toISOString());
-          expect(values[thirdProfile.id]).toBeUndefined();
+          expect(values[thirdRecord.id]).toBeUndefined();
         });
         test("max", async () => {
           const [values, property] = await getPropertyValues({
@@ -346,19 +346,19 @@ describe("mongo/table/profileProperties", () => {
             aggregationMethod: "max",
           });
           expect(
-            (<Date[]>values[profile.id][property.id])[0].toISOString()
+            (<Date[]>values[record.id][property.id])[0].toISOString()
           ).toEqual(new Date("2020-02-20T00:00:00.000").toISOString());
           expect(
-            (<Date[]>values[otherProfile.id][property.id])[0].toISOString()
+            (<Date[]>values[otherRecord.id][property.id])[0].toISOString()
           ).toEqual(new Date("2020-02-19T00:00:00.000").toISOString());
-          expect(values[thirdProfile.id]).toBeUndefined();
+          expect(values[thirdRecord.id]).toBeUndefined();
         });
       });
     });
   });
 
   describe("filters", () => {
-    const sourceMapping = { profile_id: "userId" };
+    const sourceMapping = { record_id: "userId" };
     const column = "amount";
     const aggregationMethod = "count";
     beforeAll(() => {
@@ -377,9 +377,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "id", match: 15 }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([1]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("string", async () => {
         const [values, property] = await getPropertyValues(
@@ -390,9 +390,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([3]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         const [values, property] = await getPropertyValues(
@@ -403,9 +403,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([0]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([0]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("date", async () => {
         const [values, property] = await getPropertyValues(
@@ -416,9 +416,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "date", match: new Date("2020-02-15T00:00:00") }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([1]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("timestamp", async () => {
         const [values, property] = await getPropertyValues(
@@ -429,9 +429,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "stamp", match: new Date("2020-02-15 12:13:14") }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([1]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("float", async () => {
         const [values, property] = await getPropertyValues(
@@ -442,9 +442,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "amount", match: 1.54 }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([1]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([1]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
     });
 
@@ -459,9 +459,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "id", match: 15 }]
         );
-        expect(values[profile.id][property.id]).toEqual([5]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([5]);
+        expect(values[otherRecord.id][property.id]).toEqual([5]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("string", async () => {
         const [values, property] = await getPropertyValues(
@@ -472,9 +472,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([4]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([4]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         const [values, property] = await getPropertyValues(
@@ -485,9 +485,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([6]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([6]);
+        expect(values[otherRecord.id][property.id]).toEqual([5]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("date", async () => {
         const [values, property] = await getPropertyValues(
@@ -498,9 +498,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "date", match: new Date("2020-02-15 00:00") }]
         );
-        expect(values[profile.id][property.id]).toEqual([5]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([5]);
+        expect(values[otherRecord.id][property.id]).toEqual([5]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("timestamp", async () => {
         const [values, property] = await getPropertyValues(
@@ -511,9 +511,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "stamp", match: new Date("2020-02-15 12:13:14") }]
         );
-        expect(values[profile.id][property.id]).toEqual([5]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([5]);
+        expect(values[otherRecord.id][property.id]).toEqual([5]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("float", async () => {
         const [values, property] = await getPropertyValues(
@@ -524,9 +524,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "amount", match: 1.54 }]
         );
-        expect(values[profile.id][property.id]).toEqual([4]);
-        expect(values[otherProfile.id][property.id]).toEqual([4]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([4]);
+        expect(values[otherRecord.id][property.id]).toEqual([4]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
     });
 
@@ -541,9 +541,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "purchase", match: "App" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([3]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         const [values, property] = await getPropertyValues(
@@ -554,9 +554,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "purchase", match: "app" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([3]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
     });
 
@@ -571,9 +571,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "purchase", match: "Oran" }]
         );
-        expect(values[profile.id][property.id]).toEqual([4]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([4]);
+        expect(values[otherRecord.id][property.id]).toEqual([5]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         const [values, property] = await getPropertyValues(
@@ -584,9 +584,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "purchase", match: "oran" }]
         );
-        expect(values[profile.id][property.id]).toEqual([4]);
-        expect(values[otherProfile.id][property.id]).toEqual([5]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([4]);
+        expect(values[otherRecord.id][property.id]).toEqual([5]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
     });
 
@@ -601,9 +601,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "id", match: 15 }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([1]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("string", async () => {
         const [values, property] = await getPropertyValues(
@@ -614,9 +614,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([3]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         const [values, property] = await getPropertyValues(
@@ -627,9 +627,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([0]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([0]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("date", async () => {
         const [values, property] = await getPropertyValues(
@@ -640,9 +640,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "date", match: new Date("2020-02-15 00:00") }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([1]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("timestamp", async () => {
         const [values, property] = await getPropertyValues(
@@ -653,9 +653,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "stamp", match: new Date("2020-02-15 12:13:14") }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([1]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("float", async () => {
         const [values, property] = await getPropertyValues(
@@ -666,9 +666,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "amount", match: 1.54 }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([1]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([1]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
     });
 
@@ -683,9 +683,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "id", match: 15 }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("string", async () => {
         const [values, property] = await getPropertyValues(
@@ -696,9 +696,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([4]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([4]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         const [values, property] = await getPropertyValues(
@@ -710,9 +710,7 @@ describe("mongo/table/profileProperties", () => {
           [{ op, key: "purchase", match: "apple" }]
         );
         expect(
-          values[profile.id]
-            ? values[profile.id][property.id].length
-            : [].length
+          values[record.id] ? values[record.id][property.id].length : [].length
         ).toBeGreaterThanOrEqual(0); // unpredictable ascii math
       });
       test("date", async () => {
@@ -724,9 +722,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "date", match: new Date("2020-02-15 00:00") }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("timestamp", async () => {
         const [values, property] = await getPropertyValues(
@@ -737,9 +735,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "stamp", match: new Date("2020-02-15 12:13:14") }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("float", async () => {
         const [values, property] = await getPropertyValues(
@@ -750,9 +748,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "amount", match: 1.54 }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
     });
 
@@ -767,9 +765,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "id", match: 15 }]
         );
-        expect(values[profile.id][property.id]).toEqual([3]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([3]);
+        expect(values[otherRecord.id][property.id]).toEqual([3]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("string", async () => {
         const [values, property] = await getPropertyValues(
@@ -780,9 +778,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([0]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([0]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         const [values, property] = await getPropertyValues(
@@ -794,9 +792,7 @@ describe("mongo/table/profileProperties", () => {
           [{ op, key: "purchase", match: "apple" }]
         );
         expect(
-          values[profile.id]
-            ? values[profile.id][property.id].length
-            : [].length
+          values[record.id] ? values[record.id][property.id].length : [].length
         ).toBeGreaterThanOrEqual(0); // unpredictable ascii math
       });
       test("date", async () => {
@@ -808,9 +804,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "date", match: new Date("2020-02-15 00:00") }]
         );
-        expect(values[profile.id][property.id]).toEqual([3]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([3]);
+        expect(values[otherRecord.id][property.id]).toEqual([3]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("timestamp", async () => {
         const [values, property] = await getPropertyValues(
@@ -821,9 +817,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "stamp", match: new Date("2020-02-15 12:13:14") }]
         );
-        expect(values[profile.id][property.id]).toEqual([3]);
-        expect(values[otherProfile.id][property.id]).toEqual([3]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([3]);
+        expect(values[otherRecord.id][property.id]).toEqual([3]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
       test("float", async () => {
         const [values, property] = await getPropertyValues(
@@ -834,9 +830,9 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "amount", match: 1.54 }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
-        expect(values[thirdProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
+        expect(values[thirdRecord.id][property.id]).toEqual([0]);
       });
     });
   });
@@ -861,8 +857,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.gap", match: 85 }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([1]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
       });
       test("string", async () => {
         const [values, property] = await getPropertyValues(
@@ -873,8 +869,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "earthquake" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
       test("string is case sensitive", async () => {
         const [values, property] = await getPropertyValues(
@@ -885,8 +881,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "Earthquake" }]
         );
-        expect(values[profile.id][property.id]).toEqual([0]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([0]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
       });
       test("date", async () => {
         const [values, property] = await getPropertyValues(
@@ -903,8 +899,8 @@ describe("mongo/table/profileProperties", () => {
             },
           ]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([1]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
       });
       test("float", async () => {
         const [values, property] = await getPropertyValues(
@@ -915,8 +911,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.mag", match: 2.79 }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([1]);
+        expect(values[record.id][property.id]).toEqual([1]);
+        expect(values[otherRecord.id][property.id]).toEqual([1]);
       });
     });
 
@@ -931,8 +927,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "id", match: 1 }]
         );
-        expect(values[profile.id][property.id]).toEqual([0]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([0]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
       test("string", async () => {
         const [values, property] = await getPropertyValues(
@@ -943,8 +939,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
       test("string is case sensitive", async () => {
         const [values, property] = await getPropertyValues(
@@ -955,8 +951,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "Apple" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
       test("date", async () => {
         const [values, property] = await getPropertyValues(
@@ -973,8 +969,8 @@ describe("mongo/table/profileProperties", () => {
             },
           ]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([1]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
       test("float", async () => {
         const [values, property] = await getPropertyValues(
@@ -985,8 +981,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.mag", match: 2.79 }]
         );
-        expect(values[profile.id][property.id]).toEqual([1]);
-        expect(values[otherProfile.id][property.id]).toEqual([1]);
+        expect(values[record.id][property.id]).toEqual([1]);
+        expect(values[otherRecord.id][property.id]).toEqual([1]);
       });
     });
 
@@ -1001,8 +997,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "earth" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
       test("string is case sensitive", async () => {
         const [values, property] = await getPropertyValues(
@@ -1013,8 +1009,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "Earth" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
     });
 
@@ -1029,8 +1025,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "Oran" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
       test("string is case sensitive", async () => {
         const [values, property] = await getPropertyValues(
@@ -1041,8 +1037,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "oran" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
     });
 
@@ -1057,8 +1053,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "id", match: 1 }]
         );
-        expect(values[profile.id][property.id]).toEqual([0]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([0]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
       test("string", async () => {
         const [values, property] = await getPropertyValues(
@@ -1069,8 +1065,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "earthquake" }]
         );
-        expect(values[profile.id][property.id]).toEqual([0]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([0]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         const [values, property] = await getPropertyValues(
@@ -1082,9 +1078,7 @@ describe("mongo/table/profileProperties", () => {
           [{ op, key: "purchase", match: "apple" }]
         );
         expect(
-          values[profile.id]
-            ? values[profile.id][property.id].length
-            : [].length
+          values[record.id] ? values[record.id][property.id].length : [].length
         ).toBeGreaterThanOrEqual(0); // unpredictable ascii math
       });
       test("date", async () => {
@@ -1102,8 +1096,8 @@ describe("mongo/table/profileProperties", () => {
             },
           ]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
       test("float", async () => {
         const [values, property] = await getPropertyValues(
@@ -1114,8 +1108,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.mag", match: 1.54 }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
     });
 
@@ -1130,8 +1124,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "id", match: 15 }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
       test("string", async () => {
         const [values, property] = await getPropertyValues(
@@ -1142,8 +1136,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "z" }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
       test("string is case sensitive", async () => {
         const [values, property] = await getPropertyValues(
@@ -1154,8 +1148,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.type", match: "Z" }]
         );
-        expect(values[profile.id][property.id]).toEqual([0]);
-        expect(values[otherProfile.id][property.id]).toEqual([0]);
+        expect(values[record.id][property.id]).toEqual([0]);
+        expect(values[otherRecord.id][property.id]).toEqual([0]);
       });
       test("date", async () => {
         const [values, property] = await getPropertyValues(
@@ -1172,8 +1166,8 @@ describe("mongo/table/profileProperties", () => {
             },
           ]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
       test("float", async () => {
         const [values, property] = await getPropertyValues(
@@ -1184,8 +1178,8 @@ describe("mongo/table/profileProperties", () => {
           },
           [{ op, key: "properties.mag", match: 100.54 }]
         );
-        expect(values[profile.id][property.id]).toEqual([2]);
-        expect(values[otherProfile.id][property.id]).toEqual([2]);
+        expect(values[record.id][property.id]).toEqual([2]);
+        expect(values[otherRecord.id][property.id]).toEqual([2]);
       });
     });
   });
@@ -1194,25 +1188,25 @@ describe("mongo/table/profileProperties", () => {
     beforeAll(() => {
       sourceOptions = { table: usersTableName };
     });
-    test("unknown profile property", async () => {
+    test("unknown record property", async () => {
       const [values, property] = await getPropertyValues({
         column: "first_name",
         sourceMapping: { id: "badName" },
         aggregationMethod: "exact",
       });
-      expect(values[profile.id]).toBeUndefined();
-      expect(values[otherProfile.id]).toBeUndefined();
-      expect(values[thirdProfile.id]).toBeUndefined();
+      expect(values[record.id]).toBeUndefined();
+      expect(values[otherRecord.id]).toBeUndefined();
+      expect(values[thirdRecord.id]).toBeUndefined();
     });
-    test("null profile property", async () => {
+    test("null record property", async () => {
       const [values, property] = await getPropertyValues({
         column: "first_name",
         sourceMapping: { id: "lastName" }, // set to NULL
         aggregationMethod: "exact",
       });
-      expect(values[profile.id]).toBeUndefined();
-      expect(values[otherProfile.id]).toBeUndefined();
-      expect(values[thirdProfile.id]).toBeUndefined();
+      expect(values[record.id]).toBeUndefined();
+      expect(values[otherRecord.id]).toBeUndefined();
+      expect(values[thirdRecord.id]).toBeUndefined();
     });
   });
 });

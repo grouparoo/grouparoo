@@ -40,8 +40,8 @@ describe("mongo/table/sourcePreview", () => {
       "amount",
       "date",
       "id",
-      "profile_id",
       "purchase",
+      "record_id",
       "stamp",
     ]);
 
