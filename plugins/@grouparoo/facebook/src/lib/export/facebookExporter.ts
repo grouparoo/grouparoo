@@ -287,7 +287,7 @@ const normalizeGroupName: GroupMethodNormalizeGroupName = ({ groupName }) => {
   return groupName.toString().trim();
 };
 
-export const exportFacebookProfiles: ExportFacebookMethod = async ({
+export const exportFacebookRecords: ExportFacebookMethod = async ({
   appId,
   appOptions,
   model,

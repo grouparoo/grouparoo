@@ -1,4 +1,4 @@
-import { exportFacebookProfiles } from "../export/facebookExporter";
+import { exportFacebookRecords } from "../export/facebookExporter";
 import { destinationModel } from "./model";
 import { ExportRecordsPluginMethod } from "@grouparoo/core";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
@@ -11,7 +11,7 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
   destinationOptions,
   exports: recordsToExport,
 }) => {
-  return exportFacebookProfiles({
+  return exportFacebookRecords({
     appId,
     appOptions,
     syncOperations: DestinationSyncModeData.additive.operations,
