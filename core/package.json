@@ -82,7 +82,7 @@
     "@types/pluralize": "0.0.29",
     "@types/tar": "4.0.5",
     "csv-parse": "4.16.0",
-    "jest": "27.0.6",
+    "jest": "27.1.0",
     "jest-fetch-mock": "3.0.3",
     "nock": "13.1.2",
     "ts-jest": "27.0.5",

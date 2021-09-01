@@ -46,7 +46,7 @@
   "devDependencies": {
     "@grouparoo/spec-helper": "0.6.0-alpha.0",
     "@grouparoo/ui-config": "0.6.0-alpha.0",
-    "jest": "27.0.6"
+    "jest": "27.1.0"
   },
   "scripts": {
     "start": "cd node_modules/@grouparoo/core && ./bin/start",
