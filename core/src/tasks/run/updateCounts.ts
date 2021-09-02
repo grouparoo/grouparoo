@@ -1,6 +1,5 @@
-import Sequelize from "sequelize";
 import { Run } from "../../models/Run";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import Moment from "moment";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
@@ -25,7 +24,7 @@ export class UpdateRunCounts extends CLSTask {
         [Op.or]: [
           { importsCreated: 0 },
           {
-            profilesImported: {
+            recordsImported: {
               [Op.lt]: Sequelize.col("importsCreated") as unknown as string,
             },
           },
