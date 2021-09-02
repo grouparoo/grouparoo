@@ -259,7 +259,7 @@ importers:
       mime: 2.5.2
       moment: 2.29.1
       mustache: 4.2.0
-      nock: 13.1.2
+      nock: 13.1.3
       node-resque: 9.1.1
       nodemon: 2.0.12
       pacote: 11.3.1
@@ -281,7 +281,7 @@ importers:
       uuid: 8.3.2
       validator: 13.6.0
       winston: 3.3.3
-      ws: 8.2.0
+      ws: 8.2.1
     dependencies:
       '@types/fs-extra': 9.0.12
       '@types/node': 16.7.10
@@ -323,7 +323,7 @@ importers:
       uuid: 8.3.2
       validator: 13.6.0
       winston: 3.3.3
-      ws: 8.2.0
+      ws: 8.2.1
     devDependencies:
       '@grouparoo/spec-helper': link:../plugins/@grouparoo/spec-helper
       '@types/jest': 27.0.1
@@ -333,7 +333,7 @@ importers:
       csv-parse: 4.16.2
       jest: 27.1.0_ts-node@10.2.1
       jest-fetch-mock: 3.0.3
-      nock: 13.1.2
+      nock: 13.1.3
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
       type-fest: 2.1.0
       typedoc: 0.21.9_typescript@4.3.5
@@ -348,7 +348,7 @@ importers:
       '@types/uuid': '*'
       actionhero: 27.0.3
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5
       typescript: 4.3.5
@@ -361,7 +361,7 @@ importers:
       '@types/uuid': 8.3.1
       actionhero: 27.0.3
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
       typescript: 4.3.5
@@ -369,7 +369,7 @@ importers:
 
   plugins/@grouparoo/bigquery:
     specifiers:
-      '@google-cloud/bigquery': 5.7.1
+      '@google-cloud/bigquery': 5.8.0
       '@grouparoo/app-templates': 0.6.0
       '@grouparoo/core': 0.6.0
       '@grouparoo/spec-helper': 0.6.0
@@ -379,12 +379,12 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
-      '@google-cloud/bigquery': 5.7.1
+      '@google-cloud/bigquery': 5.8.0
       '@grouparoo/app-templates': link:../app-templates
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -395,7 +395,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
       typescript: 4.3.5
@@ -469,7 +469,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5
@@ -487,7 +487,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -502,7 +502,7 @@ importers:
       actionhero: 27.0.3
       jest: 27.1.0
       js-yaml: 4.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5
       typescript: 4.3.5
@@ -515,7 +515,7 @@ importers:
       '@types/node': 16.7.10
       actionhero: 27.0.3
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
       typescript: 4.3.5
@@ -532,7 +532,7 @@ importers:
       fs-extra: 10.0.0
       isomorphic-fetch: 3.0.0
       jest: 27.1.0
-      mongodb: 4.1.0
+      mongodb: 4.1.1
       pg: 8.7.1
       prettier: 2.3.2
       replace-in-files: 3.0.0
@@ -545,7 +545,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       isomorphic-fetch: 3.0.0
-      mongodb: 4.1.0
+      mongodb: 4.1.1
       pg: 8.7.1
       prettier: 2.3.2
       replace-in-files: 3.0.0
@@ -573,7 +573,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5
       typescript: 4.3.5
@@ -589,7 +589,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
       typescript: 4.3.5
@@ -609,7 +609,7 @@ importers:
       iso-3166-1-alpha-2: 1.0.0
       jest: 27.1.0
       js-sha256: 0.9.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5
@@ -629,7 +629,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -694,7 +694,7 @@ importers:
       fs-extra: 10.0.0
       google-spreadsheet: 3.1.15
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5
       type-fest: 2.1.0
@@ -710,7 +710,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
       type-fest: 2.1.0
@@ -729,7 +729,7 @@ importers:
       fs-extra: 10.0.0
       hubspot-api: 2.15.3
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5
@@ -748,7 +748,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -767,7 +767,7 @@ importers:
       fs-extra: 10.0.0
       intercom-client: 2.11.2
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5
@@ -784,7 +784,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -801,7 +801,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       node-iterable-api: 1.0.3
       prettier: 2.3.2
       sequelize: 6.6.2
@@ -819,7 +819,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -862,7 +862,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.1.0
       mailchimp-api-v3: 1.15.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5
@@ -880,7 +880,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -899,7 +899,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       node-mailjet: 3.3.4
       prettier: 2.3.2
       ts-jest: 27.0.5
@@ -918,7 +918,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
       type-fest: 2.1.0
@@ -936,7 +936,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5
@@ -953,7 +953,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -971,7 +971,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5
       typescript: 4.3.5
@@ -987,7 +987,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
       typescript: 4.3.5
@@ -1003,13 +1003,13 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      mongodb: 4.1.0
+      mongodb: 4.1.1
       prettier: 2.3.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      mongodb: 4.1.0
+      mongodb: 4.1.1
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1090,7 +1090,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       onesignal-node: 3.3.0
       prettier: 2.3.2
       sequelize: 6.6.2
@@ -1108,7 +1108,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -1128,7 +1128,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.1.0
       jsforce: 1.10.1
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5
@@ -1147,7 +1147,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -1165,7 +1165,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5
@@ -1182,7 +1182,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -1296,7 +1296,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sailthru-client: 3.0.5
       sequelize: 6.6.2
@@ -1314,7 +1314,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -1332,7 +1332,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.1.0
       jsforce: 1.10.1
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5
@@ -1349,7 +1349,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -1367,7 +1367,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5
@@ -1384,7 +1384,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -1428,7 +1428,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       snowflake-promise: 4.5.0
       snowflake-sdk: 1.6.0
@@ -1447,7 +1447,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
       typescript: 4.3.5
@@ -1463,7 +1463,7 @@ importers:
       faker: 5.5.3
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5
@@ -1472,7 +1472,7 @@ importers:
     dependencies:
       axios: 0.21.1
       faker: 5.5.3
-      nock: 13.1.2
+      nock: 13.1.3
       sequelize: 6.6.2
       uuid: 8.3.2
     devDependencies:
@@ -1537,7 +1537,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       node-zendesk: 2.1.0
       prettier: 2.3.2
       sequelize: 6.6.2
@@ -1555,7 +1555,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      nock: 13.1.2
+      nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
       ts-jest: 27.0.5_1318b7d4288f89be474291123601427f
@@ -2196,8 +2196,8 @@ packages:
   /@gar/promisify/1.1.2:
     resolution: {integrity: sha512-82cpyJyKRoQoRi+14ibCeGPu0CwypgtBAdBhq1WfvagpCZNKqwXbKwXllYSMG91DhmG4jt9gN8eP6lGOtozuaw==}
 
-  /@google-cloud/bigquery/5.7.1:
-    resolution: {integrity: sha512-YLs1sLKa2N1RzppI04ZCqUJ0WX9hMHggU/b9bYHqYlrtqXVBMmbqUJNOzKMC7GkiltMNsFav1Zyk5cJ7mfQGwQ==}
+  /@google-cloud/bigquery/5.8.0:
+    resolution: {integrity: sha512-d4hk8ZcvxAU5WEQBqnhZrIQtC3EnMnw3fMRRV+d/Jt9LADvULPZV/dvd7L2sup8ISSNaW3uWReCMLxEMuy9W7Q==}
     engines: {node: '>=10'}
     dependencies:
       '@google-cloud/common': 3.7.1
@@ -9946,20 +9946,20 @@ packages:
   /moment/2.29.1:
     resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
 
-  /mongodb-connection-string-url/1.1.2:
-    resolution: {integrity: sha512-mp5lv4guWuykOpkwNNqQ0tKKytuJUjL/aC/bu/DqoJVWL5NSh4j/u+gJ+EiOdweLujHyq6JZZqcTVipHhL5xRg==}
+  /mongodb-connection-string-url/2.0.0:
+    resolution: {integrity: sha512-M0I1vyLoq5+HQTuPSJWbt+hIXsMCfE8sS1fS5mvP9R2DOMoi2ZD32yWqgBIITyu0dFu4qtS50erxKjvUeBiyog==}
     dependencies:
       '@types/whatwg-url': 8.2.1
-      whatwg-url: 8.7.0
+      whatwg-url: 9.1.0
     dev: false
 
-  /mongodb/4.1.0:
-    resolution: {integrity: sha512-Gx9U9MsFWgJ3E0v4oHAdWvYTGBznNYPCkhmD/3i/kPTY/URnPfHD5/6VoKUFrdgQTK3icFiM9976hVbqCRBO9Q==}
+  /mongodb/4.1.1:
+    resolution: {integrity: sha512-fbACrWEyvr6yl0sSiCGV0sqEiBwTtDJ8iSojmkDjAfw9JnOZSAkUyv9seFSPYhPPKwxp1PDtyjvBNfMDz0WBLQ==}
     engines: {node: '>=12.9.0'}
     dependencies:
       bson: 4.5.1
       denque: 1.5.1
-      mongodb-connection-string-url: 1.1.2
+      mongodb-connection-string-url: 2.0.0
     optionalDependencies:
       saslprep: 1.0.3
     dev: false
@@ -10299,8 +10299,8 @@ packages:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
     dev: true
 
-  /nock/13.1.2:
-    resolution: {integrity: sha512-BDjokoeGZnBghmvwCcDJ1yM5TDRMRAJfGi1xIzX5rKTlifbyx1oRpAVl3aNhEA3kGbUSEPD7gBLmwVdnQibrIA==}
+  /nock/13.1.3:
+    resolution: {integrity: sha512-YKj0rKQWMGiiIO+Y65Ut8OEgYM3PplLU2+GAhnPmqZdBd6z5IskgdBqWmjzA6lH3RF0S2a3wiAlrMOF5Iv2Jeg==}
     engines: {node: '>= 10.13'}
     dependencies:
       debug: 4.3.2
@@ -14697,6 +14697,15 @@ packages:
       lodash: 4.17.21
       tr46: 2.1.0
       webidl-conversions: 6.1.0
+    dev: true
+
+  /whatwg-url/9.1.0:
+    resolution: {integrity: sha512-CQ0UcrPHyomtlOCot1TL77WyMIm/bCwrJ2D6AOKGwEczU9EpyoqAokfqrf/MioU9kHcMsmJZcg1egXix2KYEsA==}
+    engines: {node: '>=12'}
+    dependencies:
+      tr46: 2.1.0
+      webidl-conversions: 6.1.0
+    dev: false
 
   /when/3.7.8:
     resolution: {integrity: sha1-xxMLan6gRpPoQs3J56Hyqjmjn4I=}
@@ -14889,7 +14898,6 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
-    dev: true
 
   /xdg-basedir/4.0.0:
     resolution: {integrity: sha512-PSNhEJDejZYV7h50BohL09Er9VaIefr2LMAf3OEmpCkjOi34eYyQYAXUTjEQtZJTKcF0E2UKTh+osDLsgNim9Q==}
