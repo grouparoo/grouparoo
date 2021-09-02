@@ -1,16 +1,16 @@
 import path from "path";
 import { helper } from "@grouparoo/spec-helper";
-import { exportBatch } from "../../src/lib/export/exportProfiles";
+import { exportBatch } from "../../src/lib/export/exportRecords";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import PardotClient from "../../src/lib/client";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profiles.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-records.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profiles");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -124,10 +124,10 @@ async function deleteUsers(emails, suppressErrors: boolean) {
   }
 }
 
-function generateLongProfiles(count: number): Record<string, any>[] {
-  const profiles = [];
+function generateLongRecords(count: number): Record<string, any>[] {
+  const records = [];
   for (let i = 0; i < count; i++) {
-    profiles.push({
+    records.push({
       email: `user${i}@demo.com`,
       first_name: `User ${i}`,
       last_name: "LastName",
@@ -136,18 +136,18 @@ function generateLongProfiles(count: number): Record<string, any>[] {
     });
   }
 
-  return profiles;
+  return records;
 }
 
-function makeExports(profiles: Record<string, any>[]) {
-  return profiles.map((profile, i) => ({
-    profileId: `pro${i}`,
-    oldProfileProperties: {},
-    newProfileProperties: profile,
+function makeExports(records: Record<string, any>[]) {
+  return records.map((record, i) => ({
+    recordId: `pro${i}`,
+    oldRecordProperties: {},
+    newRecordProperties: record,
     oldGroups: [],
     newGroups: [],
     toDelete: false,
-    profile: null,
+    record: null,
   }));
 }
 
@@ -158,7 +158,7 @@ async function cleanUp(suppressErrors: boolean) {
   await deleteLists(suppressErrors);
 }
 
-describe("pardot/exportProfiles", () => {
+describe("pardot/exportRecords", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
     await cleanUp(false);
@@ -168,7 +168,7 @@ describe("pardot/exportProfiles", () => {
     await cleanUp(true);
   }, helper.setupTime);
 
-  test("will not create profile if sync mode does not allow it", async () => {
+  test("will not create record if sync mode does not allow it", async () => {
     userId1 = await findId(email1);
     expect(userId1).toBe(null);
 
@@ -178,13 +178,13 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.enrich.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {},
-          newProfileProperties: { email: email1, first_name: "John" },
+          recordId: id1,
+          oldRecordProperties: {},
+          newRecordProperties: { email: email1, first_name: "John" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -193,7 +193,7 @@ describe("pardot/exportProfiles", () => {
     expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id1);
+    expect(error.recordId).toEqual(id1);
     expect(error.message).toContain("not creating");
     expect(error.errorLevel).toEqual("info");
 
@@ -201,7 +201,7 @@ describe("pardot/exportProfiles", () => {
     expect(foundId).toBeNull();
   });
 
-  test("can create profile", async () => {
+  test("can create record", async () => {
     userId1 = await findId(email1);
     expect(userId1).toBe(null);
 
@@ -211,13 +211,13 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {},
-          newProfileProperties: { email: email1, first_name: "John" },
+          recordId: id1,
+          oldRecordProperties: {},
+          newRecordProperties: { email: email1, first_name: "John" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -241,9 +241,9 @@ describe("pardot/exportProfiles", () => {
       syncOperations: { create: true, update: false, delete: true },
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { email: email1, firstName: "John" },
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: { email: email1, firstName: "John" },
+          newRecordProperties: {
             email: email1,
             firstName: "Brian", // updated!
             lastName: "Doe", // added!
@@ -251,7 +251,7 @@ describe("pardot/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -260,7 +260,7 @@ describe("pardot/exportProfiles", () => {
     expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id1);
+    expect(error.recordId).toEqual(id1);
     expect(error.message).toContain("not updating");
     expect(error.errorLevel).toEqual("info");
 
@@ -280,9 +280,9 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { email: email1, first_name: "John" },
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: { email: email1, first_name: "John" },
+          newRecordProperties: {
             email: email1,
             first_name: "John",
             last_name: "Doe",
@@ -290,16 +290,16 @@ describe("pardot/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {},
-          newProfileProperties: { email: email2, first_name: "Pete" },
+          recordId: id2,
+          oldRecordProperties: {},
+          newRecordProperties: { email: email2, first_name: "Pete" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -328,17 +328,17 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             email: email1,
             first_name: "John",
             last_name: "Doe",
           },
-          newProfileProperties: { email: email1, first_name: "John" },
+          newRecordProperties: { email: email1, first_name: "John" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -363,13 +363,13 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { email: email1, first_name: "John" },
-          newProfileProperties: { email: email1, first_name: "John" },
+          recordId: id1,
+          oldRecordProperties: { email: email1, first_name: "John" },
+          newRecordProperties: { email: email1, first_name: "John" },
           oldGroups: [],
           newGroups: [list1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -394,22 +394,22 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { email: email1, first_name: "John" },
-          newProfileProperties: { email: email1, first_name: "John" },
+          recordId: id1,
+          oldRecordProperties: { email: email1, first_name: "John" },
+          newRecordProperties: { email: email1, first_name: "John" },
           oldGroups: [list1],
           newGroups: [list1, list2],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, first_name: "Pete" },
-          newProfileProperties: { email: email2, first_name: "Sally" },
+          recordId: id2,
+          oldRecordProperties: { email: email2, first_name: "Pete" },
+          newRecordProperties: { email: email2, first_name: "Sally" },
           oldGroups: [],
           newGroups: [list1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -441,22 +441,22 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { email: email1, first_name: "John" },
-          newProfileProperties: { email: email1, first_name: "John" },
+          recordId: id1,
+          oldRecordProperties: { email: email1, first_name: "John" },
+          newRecordProperties: { email: email1, first_name: "John" },
           oldGroups: [list1, list2],
           newGroups: [list1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, first_name: "Pete" },
-          newProfileProperties: { email: email2, first_name: "Sally" },
+          recordId: id2,
+          oldRecordProperties: { email: email2, first_name: "Pete" },
+          newRecordProperties: { email: email2, first_name: "Sally" },
           oldGroups: [list2],
           newGroups: [list1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -479,9 +479,9 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { email: email1, first_name: "John" },
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: { email: email1, first_name: "John" },
+          newRecordProperties: {
             email: newEmail1,
             first_name: "John",
             last_name: "Test",
@@ -489,16 +489,16 @@ describe("pardot/exportProfiles", () => {
           oldGroups: [list1],
           newGroups: [list1, list2],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, first_name: "Pete" },
-          newProfileProperties: { email: email2, first_name: "Evan" },
+          recordId: id2,
+          oldRecordProperties: { email: email2, first_name: "Pete" },
+          newRecordProperties: { email: email2, first_name: "Evan" },
           oldGroups: [list1],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -535,13 +535,13 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.additive.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             email: newEmail1,
             firstName: "John",
             lastName: "Test",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             email: newEmail1,
             firstName: "John",
             lastName: "Test2", // changed here
@@ -549,7 +549,7 @@ describe("pardot/exportProfiles", () => {
           oldGroups: [list1, list2],
           newGroups: [],
           toDelete: true,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -558,7 +558,7 @@ describe("pardot/exportProfiles", () => {
     expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id1);
+    expect(error.recordId).toEqual(id1);
     expect(error.message).toContain("not deleting");
     expect(error.errorLevel).toEqual("info");
 
@@ -575,13 +575,13 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             email: newEmail1,
             first_name: "John",
             last_name: "Test",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             email: email1,
             first_name: "John",
             last_name: "Test",
@@ -589,16 +589,16 @@ describe("pardot/exportProfiles", () => {
           oldGroups: [list1, list2],
           newGroups: [list1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, first_name: "Evan" },
-          newProfileProperties: { email: email2, first_name: "Evan" },
+          recordId: id2,
+          oldRecordProperties: { email: email2, first_name: "Evan" },
+          newRecordProperties: { email: email2, first_name: "Evan" },
           oldGroups: [],
           newGroups: [list1], // but he's being deleted!
           toDelete: true,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -632,9 +632,9 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {},
+          newRecordProperties: {
             email: email2,
             first_name: "Evan",
             grouparoo_custom_textarea: "text is here",
@@ -648,7 +648,7 @@ describe("pardot/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -679,8 +679,8 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {
             email: email2,
             first_name: "Evan",
             grouparoo_custom_textarea: "text is here",
@@ -691,11 +691,11 @@ describe("pardot/exportProfiles", () => {
             grouparoo_custom_dropdown: "dropdown value",
             grouparoo_custom_radio_button: "radio value",
           },
-          newProfileProperties: { email: email2, first_name: "Maria" },
+          newRecordProperties: { email: email2, first_name: "Maria" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -723,16 +723,16 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, first_name: "Maria" },
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: { email: email2, first_name: "Maria" },
+          newRecordProperties: {
             email: "notanemail",
             first_name: "Maria",
           },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -742,7 +742,7 @@ describe("pardot/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("email");
 
     user = await client.getProspectById(userId2);
@@ -764,26 +764,26 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, first_name: "Maria" },
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: { email: email2, first_name: "Maria" },
+          newRecordProperties: {
             first_name: "Maria",
           },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: "newId",
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: "newId",
+          oldRecordProperties: {},
+          newRecordProperties: {
             first_name: "Ron",
           },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -794,11 +794,11 @@ describe("pardot/exportProfiles", () => {
     expect(errors.length).toEqual(2);
 
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("required");
 
     const error2 = errors[1];
-    expect(error2.profileId).toEqual("newId");
+    expect(error2.recordId).toEqual("newId");
     expect(error2.message).toContain("required");
 
     user = await client.getProspectById(userId2);
@@ -820,9 +820,9 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, first_name: "Maria" },
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: { email: email2, first_name: "Maria" },
+          newRecordProperties: {
             email: email2,
             first_name: "Maria",
             grouparoo_custom_date: "notadate",
@@ -831,7 +831,7 @@ describe("pardot/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -862,13 +862,13 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             email: email1,
             first_name: "John",
             last_name: "Test",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             email: email1,
             first_name: "Sam",
             last_name: "Test",
@@ -876,24 +876,24 @@ describe("pardot/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, first_name: "Maria" },
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: { email: email2, first_name: "Maria" },
+          newRecordProperties: {
             email: "bademail",
             first_name: "William",
           },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id3,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id3,
+          oldRecordProperties: {},
+          newRecordProperties: {
             email: email3,
             first_name: "Liz",
             grouparoo_custom_text: "some text",
@@ -901,7 +901,7 @@ describe("pardot/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -911,7 +911,7 @@ describe("pardot/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("email");
 
     user = await client.getProspectById(userId1);
@@ -938,16 +938,16 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id4,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id4,
+          oldRecordProperties: {},
+          newRecordProperties: {
             email: email4,
             first_name: "Special",
           },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -971,13 +971,13 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id4,
-          oldProfileProperties: {
+          recordId: id4,
+          oldRecordProperties: {
             email: email4,
             first_name: "Special",
             last_name: "User",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             email: email4,
             first_name: "Special",
             last_name: "User",
@@ -985,7 +985,7 @@ describe("pardot/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -1006,13 +1006,13 @@ describe("pardot/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id4,
-          oldProfileProperties: {
+          recordId: id4,
+          oldRecordProperties: {
             email: email4,
             first_name: "Special",
             last_name: "User",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             email: email4,
             first_name: "Special",
             last_name: "User",
@@ -1020,7 +1020,7 @@ describe("pardot/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: true,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -1033,11 +1033,11 @@ describe("pardot/exportProfiles", () => {
   });
 
   test("can handle batches with lots of prospects", async () => {
-    // generate profiles
-    const profiles = generateLongProfiles(50);
+    // generate records
+    const records = generateLongRecords(50);
 
     // run batch export
-    const exports = makeExports(profiles);
+    const exports = makeExports(records);
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
@@ -1049,18 +1049,18 @@ describe("pardot/exportProfiles", () => {
     expect(errors).toBeNull();
 
     // verify all were created properly
-    for (const profile of profiles) {
-      const user = await client.getProspectByEmail(profile.email);
-      expect(user.email).toEqual(profile.email);
-      expect(user.first_name).toEqual(profile.first_name);
-      expect(user.last_name).toEqual(profile.last_name);
+    for (const record of records) {
+      const user = await client.getProspectByEmail(record.email);
+      expect(user.email).toEqual(record.email);
+      expect(user.first_name).toEqual(record.first_name);
+      expect(user.last_name).toEqual(record.last_name);
       expect(user.grouparoo_custom_textarea).toEqual(
-        profile.grouparoo_custom_textarea
+        record.grouparoo_custom_textarea
       );
     }
 
     // cleanup
-    const emails = profiles.map((p) => p.email);
+    const emails = records.map((p) => p.email);
     await deleteUsers(emails, false);
   });
 });
