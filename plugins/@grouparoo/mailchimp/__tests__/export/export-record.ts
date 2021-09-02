@@ -1,7 +1,7 @@
 import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
-import { exportProfile } from "../../src/lib/export/exportProfile";
+import { exportRecord } from "../../src/lib/export/exportRecord";
 import { connect } from "../../src/lib/connect";
 import {
   loadAppOptions,
@@ -49,10 +49,10 @@ if (fs.existsSync(emailsFile) && !newEmails) {
   generateEmails();
 }
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile");
+require("./../fixtures/export-record");
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -147,13 +147,13 @@ async function cleanUp(suppressErrors) {
 
 async function runExport({
   syncOperations = DestinationSyncModeData.sync.operations,
-  oldProfileProperties,
-  newProfileProperties,
+  oldRecordProperties,
+  newRecordProperties,
   oldGroups,
   newGroups,
   toDelete,
 }) {
-  return exportProfile({
+  return exportRecord({
     appOptions,
     appId,
     connection: null,
@@ -163,10 +163,10 @@ async function runExport({
     destinationOptions,
     syncOperations,
     export: {
-      profile: null,
-      profileId: null,
-      oldProfileProperties,
-      newProfileProperties,
+      record: null,
+      recordId: null,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       toDelete,
@@ -174,7 +174,7 @@ async function runExport({
   });
 }
 
-describe("mailchimp/exportProfile", () => {
+describe("mailchimp/exportRecord", () => {
   beforeAll(async () => {
     apiClient = await connect(appOptions);
     await cleanUp(true);
@@ -184,15 +184,15 @@ describe("mailchimp/exportProfile", () => {
     await cleanUp(true);
   }, helper.setupTime);
 
-  test("cannot create profile on Mailchimp if sync mode does not allow it", async () => {
+  test("cannot create record on Mailchimp if sync mode does not allow it", async () => {
     user = await getUser(emails["email"]);
     expect(user).toBe(null);
 
     await expect(
       runExport({
         syncOperations: { create: false, update: true, delete: true },
-        oldProfileProperties: {},
-        newProfileProperties: {
+        oldRecordProperties: {},
+        newRecordProperties: {
           email_address: emails["email"],
           FNAME: first_name,
         },
@@ -203,13 +203,13 @@ describe("mailchimp/exportProfile", () => {
     ).rejects.toThrow(/sync mode does not allow creating/);
   });
 
-  test("can create profile on Mailchimp", async () => {
+  test("can create record on Mailchimp", async () => {
     user = await getUser(emails["email"]);
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email_address: emails["email"],
         FNAME: first_name,
       },
@@ -226,11 +226,11 @@ describe("mailchimp/exportProfile", () => {
 
   test("can add user variables", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email_address: emails["email"],
         FNAME: first_name,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email_address: emails["email"],
         FNAME: first_name,
         LNAME: last_name,
@@ -258,11 +258,11 @@ describe("mailchimp/exportProfile", () => {
     expect(user["status"]).toBe("unsubscribed");
 
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email_address: emails["email"],
         FNAME: first_name,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email_address: emails["email"],
         FNAME: intermediateName,
       },
@@ -285,13 +285,13 @@ describe("mailchimp/exportProfile", () => {
   test("can change user variables", async () => {
     // Phone must be valid.
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email_address: emails["email"],
         FNAME: first_name,
         LNAME: last_name,
         PHONE: phone_number,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email_address: emails["email"],
         FNAME: alternativeName,
         LNAME: last_name,
@@ -315,14 +315,14 @@ describe("mailchimp/exportProfile", () => {
     // LTV and PHONE must be valid.
     await expect(
       runExport({
-        oldProfileProperties: {
+        oldRecordProperties: {
           email_address: emails["email"],
           FNAME: alternativeName,
           LNAME: last_name,
           PHONE: newPhoneNumber,
           LTV: numberField,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email_address: emails["email"],
           FNAME: alternativeName,
           LNAME: last_name,
@@ -338,14 +338,14 @@ describe("mailchimp/exportProfile", () => {
 
   test("can clear user variables", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email_address: emails["email"],
         FNAME: alternativeName,
         LNAME: last_name,
         PHONE: newPhoneNumber,
         LTV: numberField,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email_address: emails["email"],
       },
       oldGroups: [],
@@ -364,10 +364,10 @@ describe("mailchimp/exportProfile", () => {
 
   test("can add user to a list that doesn't exist yet", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email_address: emails["email"],
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email_address: emails["email"],
       },
       oldGroups: [],
@@ -387,10 +387,10 @@ describe("mailchimp/exportProfile", () => {
 
   test("can remove a user from a list", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email_address: emails["email"],
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email_address: emails["email"],
       },
       oldGroups: [listOne, listTwo],
@@ -410,10 +410,10 @@ describe("mailchimp/exportProfile", () => {
 
   test("it does not change already subscribed lists", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email_address: emails["email"],
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email_address: emails["email"],
       },
       oldGroups: [],
@@ -434,10 +434,10 @@ describe("mailchimp/exportProfile", () => {
 
   test("it tries to unsubscribe non subscribed list", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email_address: emails["email"],
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email_address: emails["email"],
       },
       oldGroups: [listFour],
@@ -455,10 +455,10 @@ describe("mailchimp/exportProfile", () => {
 
   test("it can change the email address", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email_address: emails["email"],
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email_address: emails["alternativeEmail"],
       },
       oldGroups: [listOne, listTwo, listThree],
@@ -481,10 +481,10 @@ describe("mailchimp/exportProfile", () => {
     await expect(
       runExport({
         syncOperations: { create: true, update: false, delete: true },
-        oldProfileProperties: {
+        oldRecordProperties: {
           email_address: emails["alternativeEmail"],
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email_address: emails["email"],
         },
         oldGroups: [listOne],
@@ -496,10 +496,10 @@ describe("mailchimp/exportProfile", () => {
 
   test("it can change the email address along other properties", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email_address: emails["alternativeEmail"],
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email_address: emails["otherEmail"],
         FNAME: alternativeName,
         PHONE: newPhoneNumber,
@@ -529,10 +529,10 @@ describe("mailchimp/exportProfile", () => {
     await expect(
       runExport({
         syncOperations: { create: true, update: true, delete: false },
-        oldProfileProperties: {
+        oldRecordProperties: {
           email_address: emails["otherEmail"],
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email_address: emails["otherEmail"],
         },
         oldGroups: [listOne, listTwo, listThree], // missing listFour to make sure that we're only removing the tags we know about;
@@ -556,10 +556,10 @@ describe("mailchimp/exportProfile", () => {
 
   test("can delete and restore a user", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email_address: emails["otherEmail"],
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email_address: emails["otherEmail"],
       },
       oldGroups: [listFour],
@@ -571,8 +571,8 @@ describe("mailchimp/exportProfile", () => {
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email_address: emails["otherEmail"],
         FNAME: first_name,
       },
@@ -596,10 +596,10 @@ describe("mailchimp/exportProfile", () => {
 
   test("can delete a user", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email_address: emails["otherEmail"],
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email_address: emails["otherEmail"],
       },
       oldGroups: [],
@@ -615,10 +615,10 @@ describe("mailchimp/exportProfile", () => {
     user = await getUser(emails["otherEmail"]);
     expect(user).toBe(null);
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email_address: emails["otherEmail"],
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email_address: emails["otherEmail"],
       },
       oldGroups: [],
@@ -634,8 +634,8 @@ describe("mailchimp/exportProfile", () => {
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email_address: emails["newEmail"],
         FNAME: newName,
       },
@@ -657,15 +657,15 @@ describe("mailchimp/exportProfile", () => {
     );
   });
 
-  test("try to delete a user passing nonexistent email on the newProfileProperties and oldProfileProperties", async () => {
+  test("try to delete a user passing nonexistent email on the newRecordProperties and oldRecordProperties", async () => {
     let brandNewUser = await getUser(emails["brandNewEmail"]);
     expect(brandNewUser).toBe(null);
     let nonexistentUser = await getUser(emails["nonexistentEmail"]);
     expect(nonexistentUser).toBe(null);
 
     await runExport({
-      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
-      newProfileProperties: {
+      oldRecordProperties: { email_address: emails["nonexistentEmail"] },
+      newRecordProperties: {
         email_address: emails["brandNewEmail"],
         FNAME: brandNewName,
       },
@@ -680,15 +680,15 @@ describe("mailchimp/exportProfile", () => {
     expect(nonexistentUser).toBe(null);
   });
 
-  test("can add a user passing a nonexistent email on the oldProfileProperties", async () => {
+  test("can add a user passing a nonexistent email on the oldRecordProperties", async () => {
     let brandNewUser = await getUser(emails["brandNewEmail"]);
     expect(brandNewUser).toBe(null);
     let nonexistentUser = await getUser(emails["nonexistentEmail"]);
     expect(nonexistentUser).toBe(null);
 
     await runExport({
-      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
-      newProfileProperties: {
+      oldRecordProperties: { email_address: emails["nonexistentEmail"] },
+      newRecordProperties: {
         email_address: emails["brandNewEmail"],
         FNAME: brandNewName,
       },
@@ -705,15 +705,15 @@ describe("mailchimp/exportProfile", () => {
     expect(nonexistentUser).toBe(null);
   });
 
-  test("can change a user email and other variables passing a existing email on the newProfileProperties and nonexistent email on the oldProfileProperties", async () => {
+  test("can change a user email and other variables passing a existing email on the newRecordProperties and nonexistent email on the oldRecordProperties", async () => {
     let brandNewUser = await getUser(emails["brandNewEmail"]);
     expect(brandNewUser).not.toBe(null);
     let nonexistentUser = await getUser(emails["nonexistentEmail"]);
     expect(nonexistentUser).toBe(null);
 
     await runExport({
-      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
-      newProfileProperties: {
+      oldRecordProperties: { email_address: emails["nonexistentEmail"] },
+      newRecordProperties: {
         email_address: emails["brandNewEmail"],
         FNAME: otherBrandNewName,
       },
@@ -730,15 +730,15 @@ describe("mailchimp/exportProfile", () => {
     expect(nonexistentUser).toBe(null);
   });
 
-  test("can change a user email and delete it passing a existing email on the newProfileProperties and nonexistent email on the oldProfileProperties", async () => {
+  test("can change a user email and delete it passing a existing email on the newRecordProperties and nonexistent email on the oldRecordProperties", async () => {
     let brandNewUser = await getUser(emails["brandNewEmail"]);
     expect(brandNewUser).not.toBe(null);
     let nonexistentUser = await getUser(emails["nonexistentEmail"]);
     expect(nonexistentUser).toBe(null);
 
     await runExport({
-      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
-      newProfileProperties: {
+      oldRecordProperties: { email_address: emails["nonexistentEmail"] },
+      newRecordProperties: {
         email_address: emails["brandNewEmail"],
         FNAME: brandNewName,
       },
@@ -756,8 +756,8 @@ describe("mailchimp/exportProfile", () => {
   test("can't add a user passing a invalid email", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {},
-        newProfileProperties: {
+        oldRecordProperties: {},
+        newRecordProperties: {
           email_address: invalidEmail,
         },
         oldGroups: [],
@@ -770,8 +770,8 @@ describe("mailchimp/exportProfile", () => {
   test("can't use an email that looks like a fake email (should return an info level error)", async () => {
     try {
       await runExport({
-        oldProfileProperties: {},
-        newProfileProperties: {
+        oldRecordProperties: {},
+        newRecordProperties: {
           email_address: otherInvalidEmail,
         },
         oldGroups: [],

@@ -18,13 +18,13 @@ import {
   SimpleDestinationOptions,
 } from "@grouparoo/core";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "import-profiles.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "import-records.js");
 
-import { profiles } from "../../src/lib/import/profiles";
+import { records } from "../../src/lib/import/records";
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/import-profiles");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -53,7 +53,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     highWaterMark: nextHighWaterMark,
     importsCount,
     sourceOffset: nextSourceOffset,
-  } = await profiles({
+  } = await records({
     connection,
     run,
     appOptions,
@@ -81,7 +81,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
   };
 }
 
-describe("mailchimp/import/profiles", () => {
+describe("mailchimp/import/records", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
@@ -110,7 +110,7 @@ describe("mailchimp/import/profiles", () => {
     run = await helper.factories.run(schedule, { state: "running" });
   });
 
-  test("imports all profiles when no highWaterMark", async () => {
+  test("imports all records when no highWaterMark", async () => {
     let limit = 100;
     let highWaterMark = {};
     let sourceOffset = 0;
@@ -124,7 +124,7 @@ describe("mailchimp/import/profiles", () => {
     expect(importedIds.sort()).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10].sort());
   });
 
-  test("imports all profiles when there is a highWaterMark", async () => {
+  test("imports all records when there is a highWaterMark", async () => {
     let limit = 100;
     let highWaterMark = { last_changed: "2020-02-07T12:13:14.000Z" };
     let sourceOffset = 0;
