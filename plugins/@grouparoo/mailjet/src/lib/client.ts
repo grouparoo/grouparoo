@@ -125,7 +125,7 @@ class MailjetClient {
     const request = await this.client
       .post("contact", { version: "v3" })
       .request({
-        IsExcludedFromCampaigns: "true",
+        IsExcludedFromCampaigns: "false",
         Email: payload.Email,
       });
     if (request?.body?.Data && Object.keys(payload).length > 1) {
