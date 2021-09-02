@@ -1,6 +1,6 @@
-import { useRouter } from "next/router";
 import Head from "next/head";
-import { Row, Col, Image, Button } from "react-bootstrap";
+import { useRouter } from "next/router";
+import { Button, Col, Image, Row } from "react-bootstrap";
 
 export default function Page(props) {
   const router = useRouter();

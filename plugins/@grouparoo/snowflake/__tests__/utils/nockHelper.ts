@@ -85,11 +85,11 @@ export const updater = {
       const zipped = zlib.gzipSync(bufferUncompressed, null);
       let newBytes = zipped.toString("hex");
 
-      // somehow, these bytes are slightly different (1 hex digit) on mac/ci
+      // somehow, these bytes are slightly different on mac/ci
       // mac: 1f8b0800000000000013558...
       //  ci: 1f8b0800000000000003558...
-      const regexBytes =
-        "/" + newBytes.slice(0, 18) + "." + newBytes.slice(19) + "/";
+
+      const regexBytes = "/" + newBytes.slice(0, 18) + ".+" + "/";
       nockCall = nockCall.replace(
         new RegExp('"' + body + '"', "g"),
         regexBytes
