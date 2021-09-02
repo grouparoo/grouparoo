@@ -1,4 +1,3 @@
-import { Sequelize } from "sequelize";
 import { Run } from "../../models/Run";
 import { Op } from "sequelize";
 import Moment from "moment";
@@ -24,11 +23,7 @@ export class UpdateRunCounts extends CLSTask {
         updatedAt: { [Op.gte]: since },
         [Op.or]: [
           { importsCreated: 0 },
-          {
-            profilesImported: {
-              [Op.lt]: Sequelize.col("importsCreated"),
-            },
-          },
+          { profilesImported: { [Op.lt]: "importsCreated" } },
         ],
       },
     });
