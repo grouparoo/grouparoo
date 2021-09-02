@@ -3,7 +3,7 @@ import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 import OneSignal from "onesignal-node";
 
-import { exportProfile } from "../../src/lib/export/exportProfile";
+import { exportRecord } from "../../src/lib/export/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexDevices } from "../utils/shared";
@@ -23,11 +23,11 @@ const weirdTagNormalized = "my_weird_tag_name";
 const weirdGroup = "=~High Value!!/=";
 const weirdGroupNormalized = "__high_value____";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -51,13 +51,13 @@ async function cleanUp(suppressErrors: boolean) {
 
 async function runExport({
   syncOperations = DestinationSyncModeData.sync.operations,
-  oldProfileProperties,
-  newProfileProperties,
+  oldRecordProperties,
+  newRecordProperties,
   oldGroups,
   newGroups,
   toDelete,
 }) {
-  return exportProfile({
+  return exportRecord({
     appOptions,
     appId: null,
     connection: null,
@@ -67,10 +67,10 @@ async function runExport({
     destinationOptions: null,
     syncOperations,
     export: {
-      profile: null,
-      profileId: null,
-      oldProfileProperties,
-      newProfileProperties,
+      record: null,
+      recordId: null,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       toDelete,
@@ -78,7 +78,7 @@ async function runExport({
   });
 }
 
-describe("OneSignal/exportProfile", () => {
+describe("OneSignal/exportRecord", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
     await cleanUp(true);
@@ -99,8 +99,8 @@ describe("OneSignal/exportProfile", () => {
   test("can not create new devices", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {},
-        newProfileProperties: { external_user_id: nonexistentExtUserId },
+        oldRecordProperties: {},
+        newRecordProperties: { external_user_id: nonexistentExtUserId },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -111,8 +111,8 @@ describe("OneSignal/exportProfile", () => {
   test("can not update without an external_user_id", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {},
-        newProfileProperties: { first_name: "Joe" },
+        oldRecordProperties: {},
+        newRecordProperties: { first_name: "Joe" },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -128,8 +128,8 @@ describe("OneSignal/exportProfile", () => {
           create: false,
           delete: false,
         },
-        oldProfileProperties: { external_user_id: extUserId1 },
-        newProfileProperties: {
+        oldRecordProperties: { external_user_id: extUserId1 },
+        newRecordProperties: {
           external_user_id: extUserId1,
           first_name: "Joe",
         },
@@ -148,8 +148,8 @@ describe("OneSignal/exportProfile", () => {
 
   test("can add tags", async () => {
     await runExport({
-      oldProfileProperties: { external_user_id: extUserId1 },
-      newProfileProperties: { external_user_id: extUserId1, first_name: "Joe" },
+      oldRecordProperties: { external_user_id: extUserId1 },
+      newRecordProperties: { external_user_id: extUserId1, first_name: "Joe" },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -164,8 +164,8 @@ describe("OneSignal/exportProfile", () => {
 
   test("can change tags and add new ones", async () => {
     await runExport({
-      oldProfileProperties: { external_user_id: extUserId1, first_name: "Joe" },
-      newProfileProperties: {
+      oldRecordProperties: { external_user_id: extUserId1, first_name: "Joe" },
+      newRecordProperties: {
         external_user_id: extUserId1,
         first_name: "John",
         last_name: "Doe",
@@ -189,14 +189,14 @@ describe("OneSignal/exportProfile", () => {
 
   test("can clear tags", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         external_user_id: extUserId1,
         first_name: "John",
         last_name: "Doe",
         last_active_at: testDate,
         play_count: 10,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         external_user_id: extUserId1,
         first_name: "John",
       },
@@ -217,11 +217,11 @@ describe("OneSignal/exportProfile", () => {
 
   test("can add groups as tags", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         external_user_id: extUserId1,
         first_name: "John",
       },
-      newProfileProperties: {
+      newRecordProperties: {
         external_user_id: extUserId1,
         first_name: "John",
       },
@@ -240,11 +240,11 @@ describe("OneSignal/exportProfile", () => {
 
   test("can remove group tag", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         external_user_id: extUserId1,
         first_name: "John",
       },
-      newProfileProperties: {
+      newRecordProperties: {
         external_user_id: extUserId1,
         first_name: "John",
       },
@@ -263,11 +263,11 @@ describe("OneSignal/exportProfile", () => {
 
   test("can normalize tags and groups", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         external_user_id: extUserId1,
         first_name: "John",
       },
-      newProfileProperties: {
+      newRecordProperties: {
         external_user_id: extUserId1,
         first_name: "John",
         [weirdTag]: "test",
@@ -293,12 +293,12 @@ describe("OneSignal/exportProfile", () => {
           create: false,
           delete: false,
         },
-        oldProfileProperties: {
+        oldRecordProperties: {
           external_user_id: extUserId1,
           first_name: "John",
           [weirdTag]: "test",
         },
-        newProfileProperties: {
+        newRecordProperties: {
           external_user_id: extUserId1,
           first_name: "John",
           [weirdTag]: "test",
