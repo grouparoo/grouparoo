@@ -28,7 +28,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "csv-parse": "4.16.0",
+    "csv-parse": "4.16.2",
     "dotenv": "10.0.0",
     "fs-extra": "10.0.0",
     "isomorphic-fetch": "3.0.0",
