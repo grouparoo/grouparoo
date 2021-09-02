@@ -5,7 +5,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import { exportProfile } from "../../src/lib/export/exportProfile";
+import { exportRecord } from "../../src/lib/export/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexUsers } from "../utils/shared";
@@ -33,11 +33,11 @@ const groupThreeField = `In Group: ${groupThree}`;
 let groupOneKey = null;
 let groupTwoKey = null;
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -90,13 +90,13 @@ async function cleanUp() {
 
 async function runExport({
   syncOperations = DestinationSyncModeData.sync.operations,
-  oldProfileProperties,
-  newProfileProperties,
+  oldRecordProperties,
+  newRecordProperties,
   oldGroups,
   newGroups,
   toDelete,
 }) {
-  return exportProfile({
+  return exportRecord({
     appOptions,
     appId,
     connection: null,
@@ -106,10 +106,10 @@ async function runExport({
     destinationOptions: null,
     syncOperations,
     export: {
-      profile: null,
-      profileId: null,
-      oldProfileProperties,
-      newProfileProperties,
+      record: null,
+      recordId: null,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       toDelete,
@@ -117,7 +117,7 @@ async function runExport({
   });
 }
 
-describe("pipedrive/exportProfile", () => {
+describe("pipedrive/exportRecord", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
     fieldMap = await getKnownPersonFieldMap(
@@ -134,8 +134,8 @@ describe("pipedrive/exportProfile", () => {
 
   test("can create Person on pipedrive", async () => {
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { Name: "John Doe", Email: email1 },
+      oldRecordProperties: {},
+      newRecordProperties: { Name: "John Doe", Email: email1 },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -155,8 +155,8 @@ describe("pipedrive/exportProfile", () => {
   test("can not create a Person without an email", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {},
-        newProfileProperties: { Name: "Bill" },
+        oldRecordProperties: {},
+        newRecordProperties: { Name: "Bill" },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -167,8 +167,8 @@ describe("pipedrive/exportProfile", () => {
   test("can not create a Person without a name", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {},
-        newProfileProperties: { Email: "bill@demo.com" },
+        oldRecordProperties: {},
+        newRecordProperties: { Email: "bill@demo.com" },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -180,8 +180,8 @@ describe("pipedrive/exportProfile", () => {
     await expect(
       runExport({
         syncOperations: DestinationSyncModeData.enrich.operations,
-        oldProfileProperties: {},
-        newProfileProperties: { Name: "Jimmy Doe", Email: email2 },
+        oldRecordProperties: {},
+        newRecordProperties: { Name: "Jimmy Doe", Email: email2 },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -191,8 +191,8 @@ describe("pipedrive/exportProfile", () => {
 
   test("can set Person fields", async () => {
     await runExport({
-      oldProfileProperties: { Name: "John Doe", Email: email1 },
-      newProfileProperties: {
+      oldRecordProperties: { Name: "John Doe", Email: email1 },
+      newRecordProperties: {
         Name: "John Doe",
         Email: email1,
         Phone: "1234567890",
@@ -220,13 +220,13 @@ describe("pipedrive/exportProfile", () => {
           create: true,
           delete: true,
         },
-        oldProfileProperties: {
+        oldRecordProperties: {
           Name: "John Doe",
           Email: email1,
           Phone: "1234567890",
           text_field: "Some text",
         },
-        newProfileProperties: {
+        newRecordProperties: {
           Name: "John Doe",
           Email: email1,
           Phone: "1234567890",
@@ -244,13 +244,13 @@ describe("pipedrive/exportProfile", () => {
 
   test("can change Person fields and add new ones", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: email1,
         Name: "John Doe",
         Phone: "1234567890",
         text_field: "Some text",
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: email1,
         Name: "Johnny Doe",
         Phone: "9876543210",
@@ -294,7 +294,7 @@ describe("pipedrive/exportProfile", () => {
 
   test("can clear Person fields", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: email1,
         Name: "Johnny Doe",
         Phone: "9876543210",
@@ -308,7 +308,7 @@ describe("pipedrive/exportProfile", () => {
         date_range_field: new Date(1598766588 * 1000),
         address_field: "Cupertino, California, United States",
       },
-      newProfileProperties: { Email: email1, Name: "Johnny Doe" },
+      newRecordProperties: { Email: email1, Name: "Johnny Doe" },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -334,8 +334,8 @@ describe("pipedrive/exportProfile", () => {
 
   test("can add groups as fields", async () => {
     await runExport({
-      oldProfileProperties: { Email: email1, Name: "Johnny Doe" },
-      newProfileProperties: { Email: email1, Name: "Johnny Doe" },
+      oldRecordProperties: { Email: email1, Name: "Johnny Doe" },
+      newRecordProperties: { Email: email1, Name: "Johnny Doe" },
       oldGroups: [],
       newGroups: [groupOne, groupTwo],
       toDelete: false,
@@ -365,8 +365,8 @@ describe("pipedrive/exportProfile", () => {
 
   test("can remove group membership", async () => {
     await runExport({
-      oldProfileProperties: { Email: email1, Name: "Johnny Doe" },
-      newProfileProperties: { Email: email1, Name: "Johnny Doe" },
+      oldRecordProperties: { Email: email1, Name: "Johnny Doe" },
+      newRecordProperties: { Email: email1, Name: "Johnny Doe" },
       oldGroups: [groupOne, groupTwo],
       newGroups: [groupOne],
       toDelete: false,
@@ -379,8 +379,8 @@ describe("pipedrive/exportProfile", () => {
 
   test("can change email", async () => {
     await runExport({
-      oldProfileProperties: { Email: email1, Name: "Johnny Doe" },
-      newProfileProperties: { Email: email2, Name: "Johnny Doe" },
+      oldRecordProperties: { Email: email1, Name: "Johnny Doe" },
+      newRecordProperties: { Email: email2, Name: "Johnny Doe" },
       oldGroups: [groupOne],
       newGroups: [groupOne],
       toDelete: false,
@@ -395,8 +395,8 @@ describe("pipedrive/exportProfile", () => {
 
   test("can remove person from group without creating it", async () => {
     await runExport({
-      oldProfileProperties: { Email: email2, Name: "Johnny Doe" },
-      newProfileProperties: { Email: email2, Name: "Johnny Doe" },
+      oldRecordProperties: { Email: email2, Name: "Johnny Doe" },
+      newRecordProperties: { Email: email2, Name: "Johnny Doe" },
       oldGroups: [groupOne, groupThree],
       newGroups: [groupOne],
       toDelete: false,
@@ -418,10 +418,10 @@ describe("pipedrive/exportProfile", () => {
     expect(groupFilter).toBeNull();
   });
 
-  test("can add a Person passing a nonexistent email on the oldProfileProperties", async () => {
+  test("can add a Person passing a nonexistent email on the oldRecordProperties", async () => {
     await runExport({
-      oldProfileProperties: { Email: nonexistentEmail, Name: "Bobby" },
-      newProfileProperties: { Email: email3, Name: "Bobby" },
+      oldRecordProperties: { Email: nonexistentEmail, Name: "Bobby" },
+      newRecordProperties: { Email: email3, Name: "Bobby" },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -440,8 +440,8 @@ describe("pipedrive/exportProfile", () => {
 
   test("can update the correct Person on email change if both emails exist", async () => {
     await runExport({
-      oldProfileProperties: { Email: email3, Name: "Bobby" },
-      newProfileProperties: { Email: email2, Name: "Bobby Jones" },
+      oldRecordProperties: { Email: email3, Name: "Bobby" },
+      newRecordProperties: { Email: email2, Name: "Bobby Jones" },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -470,11 +470,11 @@ describe("pipedrive/exportProfile", () => {
           delete: false,
           update: true,
         },
-        oldProfileProperties: {
+        oldRecordProperties: {
           Email: email2,
           Name: "Bobby Jones",
         },
-        newProfileProperties: {
+        newRecordProperties: {
           Email: email2,
           Name: "Bobby Jones",
         },
@@ -492,11 +492,11 @@ describe("pipedrive/exportProfile", () => {
 
   test("can delete a Person", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: email2,
         Name: "Bobby Jones",
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: email2,
         Name: "Bobby Jones",
       },
@@ -511,8 +511,8 @@ describe("pipedrive/exportProfile", () => {
 
   test("can delete a Person when syncing for the first time", async () => {
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { Email: email3, Name: "Bobby" },
+      oldRecordProperties: {},
+      newRecordProperties: { Email: email3, Name: "Bobby" },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
@@ -524,8 +524,8 @@ describe("pipedrive/exportProfile", () => {
 
   test("can add a Person with a new group at the same time", async () => {
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { Email: email4, Name: "Jill" },
+      oldRecordProperties: {},
+      newRecordProperties: { Email: email4, Name: "Jill" },
       oldGroups: [],
       newGroups: [groupThree],
       toDelete: false,
@@ -558,8 +558,8 @@ describe("pipedrive/exportProfile", () => {
   test("can delete the correct Person on email change if both emails exist", async () => {
     // create someone
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { Name: "John Doe", Email: email1 },
+      oldRecordProperties: {},
+      newRecordProperties: { Name: "John Doe", Email: email1 },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -572,8 +572,8 @@ describe("pipedrive/exportProfile", () => {
 
     // delete them
     await runExport({
-      oldProfileProperties: { Email: email4, Name: "Mike Doe" },
-      newProfileProperties: { Email: email1, Name: "Mike Doe" },
+      oldRecordProperties: { Email: email4, Name: "Mike Doe" },
+      newRecordProperties: { Email: email1, Name: "Mike Doe" },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
@@ -594,8 +594,8 @@ describe("pipedrive/exportProfile", () => {
 
   test("can delete a Person when changing email at the same time", async () => {
     await runExport({
-      oldProfileProperties: { Email: email4, Name: "Jill" },
-      newProfileProperties: { Email: nonexistentEmail, Name: "Jill" },
+      oldRecordProperties: { Email: email4, Name: "Jill" },
+      newRecordProperties: { Email: nonexistentEmail, Name: "Jill" },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
@@ -609,8 +609,8 @@ describe("pipedrive/exportProfile", () => {
 
   test("can delete a nonexistent Person", async () => {
     await runExport({
-      oldProfileProperties: { Email: nonexistentEmail, Name: "Nobody" },
-      newProfileProperties: { Email: nonexistentEmail, Name: "Nobody" },
+      oldRecordProperties: { Email: nonexistentEmail, Name: "Nobody" },
+      newRecordProperties: { Email: nonexistentEmail, Name: "Nobody" },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
