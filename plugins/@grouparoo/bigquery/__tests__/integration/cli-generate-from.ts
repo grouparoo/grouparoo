@@ -21,7 +21,7 @@ require(nockFile);
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
-const usersTableName = "records";
+const usersTableName = "profiles";
 
 import { api } from "actionhero";
 import { Generate } from "@grouparoo/core/src/bin/generate";

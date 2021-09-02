@@ -58,7 +58,13 @@ describe("bigquery/table/scheduleOptions", () => {
   test("gets list of columns that can handle highwatermark", async () => {
     const columns = await getColumns();
     const columnNames = columns.map((r) => r.key).sort();
-    expect(columnNames).toEqual(["amount", "date", "id", "record_id", "stamp"]); // leaves out
+    expect(columnNames).toEqual([
+      "amount",
+      "date",
+      "id",
+      "profile_id",
+      "stamp",
+    ]); // leaves out
     expect(columns.length).toBe(5);
   });
 });

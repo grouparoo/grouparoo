@@ -153,7 +153,7 @@ describe("bigquery/table/recordProperties", () => {
     let aggregationMethod = "exact";
 
     beforeAll(() => {
-      sourceOptions = { table: "records" };
+      sourceOptions = { table: "profiles" };
     });
 
     for (const { type, sourceMapping } of [
@@ -297,7 +297,7 @@ describe("bigquery/table/recordProperties", () => {
   });
 
   describe("secondary tables", () => {
-    const sourceMapping = { record_id: "userId" };
+    const sourceMapping = { profile_id: "userId" };
     beforeAll(() => {
       sourceOptions = { table: "purchases" };
     });
@@ -405,7 +405,7 @@ describe("bigquery/table/recordProperties", () => {
   });
 
   describe("filters", () => {
-    const sourceMapping = { record_id: "userId" };
+    const sourceMapping = { profile_id: "userId" };
     const columns = ["amount"];
     const aggregationMethod = "count";
     beforeAll(() => {

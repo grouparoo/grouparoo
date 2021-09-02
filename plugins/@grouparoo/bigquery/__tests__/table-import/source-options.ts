@@ -45,7 +45,7 @@ describe("bigquery/table/sourceOptions", () => {
     const tables = await getTables();
     const tableNames = tables.sort();
     expect(tableNames).toEqual(
-      expect.arrayContaining(["records", "purchases"])
+      expect.arrayContaining(["profiles", "purchases"])
     );
   });
 });

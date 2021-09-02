@@ -67,7 +67,7 @@ describe("bigquery/table/propertyOptions", () => {
       "amount",
       "date",
       "id",
-      "record_id",
+      "profile_id",
       "purchase",
       "stamp",
     ]);
@@ -119,7 +119,7 @@ describe("bigquery/table/propertyOptions", () => {
       "amount",
       "date",
       "id",
-      "record_id",
+      "profile_id",
       "purchase",
       "stamp",
     ]);

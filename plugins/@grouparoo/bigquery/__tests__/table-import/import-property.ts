@@ -20,7 +20,7 @@ const nockFile = path.join(
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/table-import-property");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -88,7 +88,7 @@ describe("bigquery/table/recordProperty", () => {
   describe("exact primary tables", () => {
     let aggregationMethod = "exact";
     beforeAll(() => {
-      sourceOptions = { table: "records" };
+      sourceOptions = { table: "profiles" };
     });
     describe("integer mapping", () => {
       const sourceMapping = { id: "userId" };
@@ -190,7 +190,7 @@ describe("bigquery/table/recordProperty", () => {
   });
 
   describe("secondary tables", () => {
-    const sourceMapping = { record_id: "userId" };
+    const sourceMapping = { profile_id: "userId" };
     beforeAll(() => {
       sourceOptions = { table: "purchases" };
     });
@@ -269,7 +269,7 @@ describe("bigquery/table/recordProperty", () => {
   });
 
   describe("filters", () => {
-    const sourceMapping = { record_id: "userId" };
+    const sourceMapping = { profile_id: "userId" };
     const column = "amount";
     const aggregationMethod = "count";
     beforeAll(() => {
@@ -787,7 +787,7 @@ describe("bigquery/table/recordProperty", () => {
 
   describe("edge cases", () => {
     beforeAll(() => {
-      sourceOptions = { table: "records" };
+      sourceOptions = { table: "profiles" };
     });
     test("unknown record property", async () => {
       const value = await getPropertyValue({
