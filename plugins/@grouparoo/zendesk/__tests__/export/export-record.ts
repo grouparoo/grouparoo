@@ -2,10 +2,7 @@ import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import {
-  exportProfile,
-  searchForUser,
-} from "../../src/lib/export/exportProfile";
+import { exportRecord, searchForUser } from "../../src/lib/export/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
@@ -38,11 +35,11 @@ const groupThree = "test_recently_added";
 const outsideGroup = "outsider";
 const exampleDate = new Date(1597870204 * 1000);
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -69,13 +66,13 @@ async function cleanUp() {
 
 async function runExport({
   syncOperations = DestinationSyncModeData.sync.operations,
-  oldProfileProperties,
-  newProfileProperties,
+  oldRecordProperties,
+  newRecordProperties,
   oldGroups,
   newGroups,
   toDelete,
 }) {
-  return exportProfile({
+  return exportRecord({
     appOptions,
     appId,
     connection: null,
@@ -85,10 +82,10 @@ async function runExport({
     destinationOptions: null,
     syncOperations,
     export: {
-      profile: null,
-      profileId: null,
-      oldProfileProperties,
-      newProfileProperties,
+      record: null,
+      recordId: null,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       toDelete,
@@ -96,7 +93,7 @@ async function runExport({
   });
 }
 
-describe("zendesk/exportProfile", () => {
+describe("zendesk/exportRecord", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
     await cleanUp();
@@ -110,8 +107,8 @@ describe("zendesk/exportProfile", () => {
     let user = await searchForUser(client, { external_id: externalId1 });
     expect(user).toBe(null);
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         name: "John Doe",
         email: email1,
         external_id: externalId1,
@@ -130,23 +127,21 @@ describe("zendesk/exportProfile", () => {
   test("cannot create a user without an external_id ", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {},
-        newProfileProperties: { name: "Bill" },
+        oldRecordProperties: {},
+        newRecordProperties: { name: "Bill" },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
       })
-    ).rejects.toThrow(
-      "newProfileProperties[external_id] is a required mapping"
-    );
+    ).rejects.toThrow("newRecordProperties[external_id] is a required mapping");
   });
 
   test("cannot create an user if sync mode does not allow it", async () => {
     await expect(
       runExport({
         syncOperations: DestinationSyncModeData.enrich.operations,
-        oldProfileProperties: {},
-        newProfileProperties: {
+        oldRecordProperties: {},
+        newRecordProperties: {
           name: "Jimmy Doe",
           email: email2,
           external_id: externalId2,
@@ -160,12 +155,12 @@ describe("zendesk/exportProfile", () => {
 
   test("can set user fields", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: email1,
         external_id: externalId1,
         name: "John Doe",
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: email1,
         external_id: externalId1,
         name: "John Doe",
@@ -195,12 +190,12 @@ describe("zendesk/exportProfile", () => {
           create: true,
           delete: true,
         },
-        oldProfileProperties: {
+        oldRecordProperties: {
           email: email1,
           external_id: externalId1,
           name: "John Doe",
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email: email1,
           external_id: externalId1,
           name: "John Denied",
@@ -218,7 +213,7 @@ describe("zendesk/exportProfile", () => {
 
   test("can change user fields and add new ones", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: email1,
         external_id: externalId1,
         name: "John Doe",
@@ -226,7 +221,7 @@ describe("zendesk/exportProfile", () => {
         text_field: "testing here",
         date_field: exampleDate,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: email1,
         external_id: externalId1,
         name: "John Connor",
@@ -251,7 +246,7 @@ describe("zendesk/exportProfile", () => {
 
   test("can clear user fields", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: email1,
         external_id: externalId1,
         name: "John Connor",
@@ -260,7 +255,7 @@ describe("zendesk/exportProfile", () => {
         date_field: exampleDate,
         numeric_field: 3039,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: email1,
         external_id: externalId1,
         name: "John Connor",
@@ -283,11 +278,11 @@ describe("zendesk/exportProfile", () => {
 
   test("can add tags", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: email1,
         external_id: externalId1,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: email1,
         external_id: externalId1,
       },
@@ -302,11 +297,11 @@ describe("zendesk/exportProfile", () => {
 
   test("can remove tags", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: email1,
         external_id: externalId1,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: email1,
         external_id: externalId1,
       },
@@ -329,11 +324,11 @@ describe("zendesk/exportProfile", () => {
       },
     });
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: email1,
         external_id: externalId1,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: email1,
         external_id: externalId1,
       },
@@ -348,11 +343,11 @@ describe("zendesk/exportProfile", () => {
 
   test("it does not change zendesk-created tags when groups are removed", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: email1,
         external_id: externalId1,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: email1,
         external_id: externalId1,
       },
@@ -367,11 +362,11 @@ describe("zendesk/exportProfile", () => {
 
   test("can change email", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: email1,
         external_id: externalId1,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: email2,
         external_id: externalId1,
       },
@@ -399,10 +394,10 @@ describe("zendesk/exportProfile", () => {
       },
     });
 
-    // then sync a profile
+    // then sync a record
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: migratedEmail,
         name: migratedName,
         external_id: migratedExternalId,
@@ -423,10 +418,10 @@ describe("zendesk/exportProfile", () => {
     expect(user.tags.sort()).toEqual([groupThree]);
   });
 
-  test("can add an user passing a nonexistent email on the oldProfileProperties", async () => {
+  test("can add an user passing a nonexistent email on the oldRecordProperties", async () => {
     await runExport({
-      oldProfileProperties: { email: nonexistentEmail, name: "Bobby" },
-      newProfileProperties: {
+      oldRecordProperties: { email: nonexistentEmail, name: "Bobby" },
+      newRecordProperties: {
         email: email3,
         external_id: externalId3,
         name: "Bobby",
@@ -449,11 +444,11 @@ describe("zendesk/exportProfile", () => {
     expect(newUser).not.toBe(null);
 
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: email2,
         external_id: externalId1,
       },
-      newProfileProperties: { email: email3, external_id: externalId3 },
+      newRecordProperties: { email: email3, external_id: externalId3 },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -481,11 +476,11 @@ describe("zendesk/exportProfile", () => {
     expect(newUser).toBe(null);
 
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: email3,
         external_id: externalId3,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: email5,
         external_id: externalId5,
       },
@@ -508,11 +503,11 @@ describe("zendesk/exportProfile", () => {
           delete: false,
           update: true,
         },
-        oldProfileProperties: {
+        oldRecordProperties: {
           email: email2,
           external_id: externalId1,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email: email2,
           external_id: externalId1,
         },
@@ -530,11 +525,11 @@ describe("zendesk/exportProfile", () => {
 
   test("can delete an user", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: email2,
         external_id: externalId1,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: email2,
         external_id: externalId1,
       },
@@ -549,8 +544,8 @@ describe("zendesk/exportProfile", () => {
 
   test("can delete an user when syncing for the first time", async () => {
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { email: email3, external_id: externalId3 },
+      oldRecordProperties: {},
+      newRecordProperties: { email: email3, external_id: externalId3 },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
@@ -562,8 +557,8 @@ describe("zendesk/exportProfile", () => {
 
   test("can add an user with a new group at the same time", async () => {
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: email4,
         external_id: externalId4,
         name: "Jill",
@@ -583,8 +578,8 @@ describe("zendesk/exportProfile", () => {
   test("can delete the correct Person on email change if both emails exist", async () => {
     // create someone
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         name: "John Doe",
         email: email1,
         external_id: externalId1,
@@ -599,8 +594,8 @@ describe("zendesk/exportProfile", () => {
 
     // delete them
     await runExport({
-      oldProfileProperties: { email: email4, external_id: externalId4 },
-      newProfileProperties: { email: email1, external_id: externalId1 },
+      oldRecordProperties: { email: email4, external_id: externalId4 },
+      newRecordProperties: { email: email1, external_id: externalId1 },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
@@ -618,8 +613,8 @@ describe("zendesk/exportProfile", () => {
 
   test("can delete an user when changing email at the same time", async () => {
     await runExport({
-      oldProfileProperties: { email: email4, external_id: externalId4 },
-      newProfileProperties: {
+      oldRecordProperties: { email: email4, external_id: externalId4 },
+      newRecordProperties: {
         email: nonexistentEmail,
         name: "Jill",
         external_id: nonexistentExternalId,
@@ -642,11 +637,11 @@ describe("zendesk/exportProfile", () => {
 
   test("can delete a nonexistent user", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: nonexistentEmail,
         external_id: nonexistentExternalId,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: nonexistentEmail,
         external_id: nonexistentExternalId,
       },
