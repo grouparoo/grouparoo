@@ -11,7 +11,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
     appOptions,
     destinationOptions,
     which: {
-      profile: true,
+      record: true,
       reference: true,
       group: true,
       membership: true,

@@ -20,37 +20,37 @@ export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMe
   async ({ appId, appOptions, model }) => {
     const conn = await connect(appOptions);
     const {
-      profileObject,
-      profileMatchField,
+      recordObject,
+      recordMatchField,
       groupObject,
-      profileReferenceField,
-      profileReferenceObject,
-      profileReferenceMatchField,
+      recordReferenceField,
+      recordReferenceObject,
+      recordReferenceMatchField,
     } = model;
     const cacheData = { appId, appOptions };
-    const profileInfo = await describeObject(
+    const recordInfo = await describeObject(
       conn,
       cacheData,
-      profileObject,
+      recordObject,
       true
     );
-    const referenceInfo = profileReferenceField
-      ? await describeObject(conn, cacheData, profileReferenceObject, true)
+    const referenceInfo = recordReferenceField
+      ? await describeObject(conn, cacheData, recordReferenceObject, true)
       : null;
     const groupInfo = await describeObject(conn, cacheData, groupObject, true);
     const { known, required } = getFields(
-      profileInfo,
-      profileMatchField,
+      recordInfo,
+      recordMatchField,
       referenceInfo,
-      profileReferenceMatchField,
-      profileReferenceObject
+      recordReferenceMatchField,
+      recordReferenceObject
     );
 
     return {
       labels: {
         property: {
-          singular: `Salesforce ${profileInfo.label || profileObject} Field`,
-          plural: `Salesforce ${profileInfo.label || profileObject} Fields`,
+          singular: `Salesforce ${recordInfo.label || recordObject} Field`,
+          plural: `Salesforce ${recordInfo.label || recordObject} Fields`,
         },
         group: {
           singular: `Salesforce ${groupInfo.label || groupObject}`,
@@ -132,15 +132,15 @@ const isFieldImportant = function (field: any): Boolean {
 };
 
 const REFERENCE_SEPARATOR = ".";
-export const parseFieldName = function ({ profileReferenceObject, key }): {
+export const parseFieldName = function ({ recordReferenceObject, key }): {
   reference: string;
   fieldName: string;
 } {
-  if (profileReferenceObject) {
-    const refName = `${profileReferenceObject}${REFERENCE_SEPARATOR}`;
+  if (recordReferenceObject) {
+    const refName = `${recordReferenceObject}${REFERENCE_SEPARATOR}`;
     if (key.startsWith(refName)) {
       const end = key.substring(refName.length);
-      return { reference: profileReferenceObject, fieldName: end };
+      return { reference: recordReferenceObject, fieldName: end };
     }
   }
   return { reference: null, fieldName: key };
@@ -208,10 +208,10 @@ const extractFields = (
 
 export const getFields = (
   objectInfo: any,
-  profileMatchField: string,
+  recordMatchField: string,
   referenceInfo: any,
-  profileReferenceMatchField: string,
-  profileReferenceObject: string
+  recordReferenceMatchField: string,
+  recordReferenceObject: string
 ): {
   required: Array<{
     key: string;
@@ -223,7 +223,7 @@ export const getFields = (
     important?: boolean;
   }>;
 } => {
-  const objectFields = extractFields(objectInfo, profileMatchField, null);
+  const objectFields = extractFields(objectInfo, recordMatchField, null);
   let required = objectFields.required;
   let known = objectFields.known;
 
@@ -231,8 +231,8 @@ export const getFields = (
     // add on these (just required)
     const refFields = extractFields(
       referenceInfo,
-      profileReferenceMatchField,
-      profileReferenceObject
+      recordReferenceMatchField,
+      recordReferenceObject
     );
     required = required.concat(refFields.required);
   }

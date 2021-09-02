@@ -36,12 +36,12 @@ async function runDestinationMappingOptions({ destinationOptions }) {
 describe("salesforce/sales-cloud/destinationMappingOptions", () => {
   test("can load destinationMappingOptions from Lead Email", async () => {
     const destinationOptions = {
-      profileObject: "Lead",
-      profileMatchField: "Email",
+      recordObject: "Lead",
+      recordMatchField: "Email",
       groupObject: "Campaign",
       groupNameField: "Name",
       membershipObject: "CampaignMembership",
-      membershipProfileField: "ContactId",
+      membershipRecordField: "ContactId",
       membershipGroupField: "CampaignId",
     };
     const options = await runDestinationMappingOptions({ destinationOptions });
@@ -83,12 +83,12 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
 
   test("can load destinationMappingOptions from Contact Id", async () => {
     const destinationOptions = {
-      profileObject: "Contact",
-      profileMatchField: "Id",
+      recordObject: "Contact",
+      recordMatchField: "Id",
       groupObject: "Topic",
       groupNameField: "Name",
       membershipObject: "TopicAssignment",
-      membershipProfileField: "EntityId",
+      membershipRecordField: "EntityId",
       membershipGroupField: "TopicId",
     };
     const options = await runDestinationMappingOptions({ destinationOptions });
@@ -128,16 +128,16 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
 
   test("can load destinationMappingOptions from Contact Custom and Reference", async () => {
     const destinationOptions = {
-      profileObject: "Contact",
-      profileMatchField: "Custom_External_ID__c",
+      recordObject: "Contact",
+      recordMatchField: "Custom_External_ID__c",
       groupObject: "Campaign",
       groupNameField: "Name",
       membershipObject: "CampaignMembership",
-      membershipProfileField: "ContactId",
+      membershipRecordField: "ContactId",
       membershipGroupField: "CampaignId",
-      profileReferenceField: "AccountId",
-      profileReferenceObject: "Account",
-      profileReferenceMatchField: "AccountNumber",
+      recordReferenceField: "AccountId",
+      recordReferenceObject: "Account",
+      recordReferenceMatchField: "AccountNumber",
     };
     const options = await runDestinationMappingOptions({ destinationOptions });
     const { properties, labels } = options;

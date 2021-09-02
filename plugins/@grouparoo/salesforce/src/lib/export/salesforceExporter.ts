@@ -40,18 +40,18 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   config,
 }) => {
   // search for these using the foreign key
-  const { profileObject, profileMatchField } = config.data;
+  const { recordObject, recordMatchField } = config.data;
   const idType = "Id";
 
-  const query = { [profileMatchField]: foreignKeys };
-  const fields = [idType, profileMatchField];
+  const query = { [recordMatchField]: foreignKeys };
+  const fields = [idType, recordMatchField];
   const records = await client
-    .sobject(profileObject)
+    .sobject(recordObject)
     .find(query, fields)
     .execute();
 
   for (const record of records) {
-    const value = record[profileMatchField];
+    const value = record[recordMatchField];
     const id = record[idType];
     const found = getByForeignKey(value);
     if (found) {
@@ -70,9 +70,9 @@ const deleteByDestinationIds: BatchMethodDeleteByDestinationIds = async ({
   users,
   config,
 }) => {
-  const { profileObject } = config.data;
+  const { recordObject } = config.data;
   const payload = users.map((user) => user.destinationId);
-  const results = await client.sobject(profileObject).del(payload);
+  const results = await client.sobject(recordObject).del(payload);
   processResults(results, users, ResultType.USER);
 };
 interface ReferenceObject {
@@ -92,7 +92,7 @@ async function buildPayload(
   users: BatchExport[],
   config: BatchConfig
 ): Promise<{ usersInPayload: BatchExport[]; payload: any[] }> {
-  const { profileReferenceMatchField } = config.data;
+  const { recordReferenceMatchField } = config.data;
   const refMap: ReferenceMap = {};
   const toUpdate: ReferenceObject[] = [];
   for (const user of users) {
@@ -103,9 +103,9 @@ async function buildPayload(
       row,
       user,
     };
-    if (profileReferenceMatchField) {
+    if (recordReferenceMatchField) {
       const foreignKeyValue = normalizeReferenceKeyValue({
-        keyValue: referenceData[profileReferenceMatchField],
+        keyValue: referenceData[recordReferenceMatchField],
         config,
       });
       refObject.refForeignKeyValue = foreignKeyValue;
@@ -136,10 +136,10 @@ function updateReferences(
   refId: string,
   config: BatchConfig
 ) {
-  const { profileReferenceField } = config.data;
+  const { recordReferenceField } = config.data;
   for (const refObject of refObjects) {
     const { row } = refObject;
-    row[profileReferenceField] = refId;
+    row[recordReferenceField] = refId;
   }
 }
 
@@ -150,13 +150,13 @@ async function createAndUpdateReferences(
   config: BatchConfig
 ) {
   const {
-    profileReferenceField,
-    profileReferenceObject,
-    profileReferenceMatchField,
+    recordReferenceField,
+    recordReferenceObject,
+    recordReferenceMatchField,
   } = config.data;
   const idType = "Id";
 
-  if (!profileReferenceField) {
+  if (!recordReferenceField) {
     return;
   }
 
@@ -182,16 +182,16 @@ async function createAndUpdateReferences(
   if (foreignKeys.size === 0) {
     return;
   }
-  const query = { [profileReferenceMatchField]: Array.from(foreignKeys) };
-  const fields = [idType, profileReferenceMatchField];
+  const query = { [recordReferenceMatchField]: Array.from(foreignKeys) };
+  const fields = [idType, recordReferenceMatchField];
   const records = await client
-    .sobject(profileReferenceObject)
+    .sobject(recordReferenceObject)
     .find(query, fields)
     .execute();
 
   for (const record of records) {
     const value = normalizeReferenceKeyValue({
-      keyValue: record[profileReferenceMatchField],
+      keyValue: record[recordReferenceMatchField],
       config,
     })
       .toString()
@@ -229,7 +229,7 @@ async function createAndUpdateReferences(
   if (payload.length === 0) {
     return; // all done
   }
-  const results = await client.sobject(profileReferenceObject).create(payload);
+  const results = await client.sobject(recordReferenceObject).create(payload);
   for (let i = 0; i < results.length; i++) {
     // I'm assuming these are in the same order. That seems like the only option.
     const refKey = createKeys[i];
@@ -260,9 +260,9 @@ function buildReferenceCreatePayload(
   config: BatchConfig
 ) {
   const {
-    profileReferenceField,
-    profileReferenceObject,
-    profileReferenceMatchField,
+    recordReferenceField,
+    recordReferenceObject,
+    recordReferenceMatchField,
   } = config.data;
 
   // we could do a lot here (most common one?) but for now we'll just take the first
@@ -270,11 +270,11 @@ function buildReferenceCreatePayload(
   const { properties, refForeignKeyValue } = refObject;
   const row: any = {};
 
-  row[profileReferenceMatchField] = refForeignKeyValue;
+  row[recordReferenceMatchField] = refForeignKeyValue;
   const allKeys = Object.keys(properties);
   for (const fieldName of allKeys) {
     const value = properties[fieldName];
-    if ([idType, profileReferenceMatchField].includes(fieldName)) {
+    if ([idType, recordReferenceMatchField].includes(fieldName)) {
       continue; // set above
     }
 
@@ -290,48 +290,48 @@ function buildReferenceCreatePayload(
 }
 
 function buildUserPayload(
-  exportedProfile: BatchExport,
+  exportedRecord: BatchExport,
   config: BatchConfig
 ): { row: any; referenceData: any } {
-  const { profileMatchField, profileReferenceObject } = config.data;
+  const { recordMatchField, recordReferenceObject } = config.data;
   const row: any = {};
   const {
     destinationId,
     oldRecordProperties,
     newRecordProperties,
     foreignKeyValue,
-  } = exportedProfile;
+  } = exportedRecord;
 
-  row[profileMatchField] = foreignKeyValue;
+  row[recordMatchField] = foreignKeyValue;
   if (destinationId) {
     row[idType] = destinationId;
   }
 
   const referenceData = {};
-  // set profile properties, including old ones
+  // set record properties, including old ones
   const newKeys = Object.keys(newRecordProperties);
   const oldKeys = Object.keys(oldRecordProperties);
   const allKeys = oldKeys.concat(newKeys);
   for (const keyName of allKeys) {
     const value = newRecordProperties[keyName]; // includes clearing out removed ones (by setting to null)
     const { reference, fieldName } = parseFieldName({
-      profileReferenceObject,
+      recordReferenceObject,
       key: keyName,
     });
     if (reference) {
       referenceData[fieldName] = value;
       continue;
     }
-    if ([idType, profileMatchField].includes(fieldName)) {
+    if ([idType, recordMatchField].includes(fieldName)) {
       continue; // set above
     }
 
-    const field = config.data.profileFields[fieldName];
+    const field = config.data.recordFields[fieldName];
     if (field) {
       row[fieldName] = formatAndDefaultValue(value, field);
     } else {
       // otherwise, it's no longer a field (got deleted from Salesforce): let it go
-      //console.log("Unknown profile field", keyName, fieldName, value);
+      //console.log("Unknown record field", keyName, fieldName, value);
     }
   }
 
@@ -454,17 +454,17 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
   users,
   config,
 }) => {
-  const { profileObject } = config.data;
+  const { recordObject } = config.data;
   const { payload, usersInPayload } = await buildPayload(client, users, config);
 
-  const results = await client.sobject(profileObject).update(payload);
+  const results = await client.sobject(recordObject).update(payload);
   processResults(results, usersInPayload, ResultType.USER);
 };
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
 const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
   async ({ client, users, config }) => {
-    const { profileObject } = config.data;
+    const { recordObject } = config.data;
     const { payload, usersInPayload } = await buildPayload(
       client,
       users,
@@ -472,7 +472,7 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
     );
 
     // upsert doesn't have a HTTP batch api (even though jsforce does and fakes it), so use create
-    const results = await client.sobject(profileObject).create(payload);
+    const results = await client.sobject(recordObject).create(payload);
     processResults(results, usersInPayload, ResultType.USER);
   };
 
@@ -482,19 +482,19 @@ const addToGroups: BatchMethodAddToGroups = async ({
   groupMap,
   config,
 }) => {
-  const { membershipObject, membershipProfileField, membershipGroupField } =
+  const { membershipObject, membershipRecordField, membershipGroupField } =
     config.data;
   const payload = [];
   const users = [];
   for (const name in groupMap) {
     const id = await getListId(client, name, config.data);
     const records = groupMap[name] || [];
-    for (const exportedProfile of records) {
+    for (const exportedRecord of records) {
       payload.push({
         [membershipGroupField]: id,
-        [membershipProfileField]: exportedProfile.destinationId,
+        [membershipRecordField]: exportedRecord.destinationId,
       });
-      users.push(exportedProfile);
+      users.push(exportedRecord);
     }
   }
 
@@ -513,7 +513,7 @@ const removeFromGroups: BatchMethodRemoveFromGroups = async ({
   destIdMap,
   config,
 }) => {
-  const { membershipObject, membershipProfileField, membershipGroupField } =
+  const { membershipObject, membershipRecordField, membershipGroupField } =
     config.data;
   let payload = []; // to delete
   const users = [];
@@ -524,15 +524,15 @@ const removeFromGroups: BatchMethodRemoveFromGroups = async ({
     if (destIds.length > 0) {
       const query = {
         [membershipGroupField]: id,
-        [membershipProfileField]: destIds,
+        [membershipRecordField]: destIds,
       };
-      const fields = [idType, membershipProfileField];
+      const fields = [idType, membershipRecordField];
       const results = await client
         .sobject(membershipObject)
         .find(query, fields);
       for (const result of results) {
         const membershipId = result[idType];
-        const destId = result[membershipProfileField];
+        const destId = result[membershipRecordField];
         if (!membershipId) {
           throw new Error(`no membership id: ${JSON.stringify(result)}`);
         }
@@ -622,8 +622,8 @@ const normalizeForeignKeyValue: BatchMethodNormalizeForeignKeyValue = ({
   keyValue,
   config,
 }) => {
-  const { profileMatchField } = config.data;
-  const field = config.data.profileFields[profileMatchField];
+  const { recordMatchField } = config.data;
+  const field = config.data.recordFields[recordMatchField];
   return normalizeValue({ keyValue, field });
 };
 // mess with the names of groups (tags with no spaces, for example)
@@ -631,8 +631,8 @@ const normalizeGroupName: BatchMethodNormalizeGroupName = ({ groupName }) => {
   return groupName.toString().trim();
 };
 const normalizeReferenceKeyValue = ({ keyValue, config }) => {
-  const { profileReferenceMatchField } = config.data;
-  const field = config.data.referenceFields[profileReferenceMatchField];
+  const { recordReferenceMatchField } = config.data;
+  const field = config.data.referenceFields[recordReferenceMatchField];
   return normalizeValue({ keyValue, field });
 };
 
@@ -657,7 +657,7 @@ function normalizeValue({ keyValue, field }) {
 }
 
 export interface SalesforceData extends SalesforceModel {
-  profileFields: any;
+  recordFields: any;
   referenceFields: any;
   cacheData: SalesforceCacheData;
 }
@@ -689,16 +689,16 @@ export const exportSalesforceBatch: ExportSalesforceMethod = async ({
     : connection.maxRequests;
   const findSize = 200;
 
-  const profileFields = await getFieldMap(
+  const recordFields = await getFieldMap(
     connection,
     cacheData,
-    model.profileObject
+    model.recordObject
   );
-  const referenceFields = model.profileReferenceObject
-    ? await getFieldMap(connection, cacheData, model.profileReferenceObject)
+  const referenceFields = model.recordReferenceObject
+    ? await getFieldMap(connection, cacheData, model.recordReferenceObject)
     : null;
   const data: SalesforceData = Object.assign({}, model, {
-    profileFields,
+    recordFields,
     referenceFields,
     cacheData,
   });
@@ -712,7 +712,7 @@ export const exportSalesforceBatch: ExportSalesforceMethod = async ({
       appOptions,
       connection,
       data,
-      foreignKey: model.profileMatchField,
+      foreignKey: model.recordMatchField,
       destinationOptions: null, // in data now
     },
     {

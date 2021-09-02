@@ -1,6 +1,6 @@
 import "@grouparoo/spec-helper";
 import path from "path";
-import { exportBatch } from "../../src/lib/export-objects/exportProfiles";
+import { exportBatch } from "../../src/lib/export-objects/exportRecords";
 import { destinationModel } from "../../src/lib/export-objects/model";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
@@ -13,12 +13,12 @@ const nockFile = path.join(
   "../",
   "fixtures",
   "export-objects",
-  "export-profiles-custom.js"
+  "export-records-custom.js"
 );
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-objects/export-profiles-custom");
+require("./../fixtures/export-objects/export-records-custom");
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -27,16 +27,16 @@ const appOptions = loadAppOptions(newNock);
 const appId = "app_e8bb07d8-0c4f-49b5-ad42-545f2e8662e8";
 const syncOperations = DestinationSyncModeData.sync.operations;
 const destinationOptions = {
-  profileObject: "Contact",
-  profileMatchField: "Custom_External_ID__c",
+  recordObject: "Contact",
+  recordMatchField: "Custom_External_ID__c",
   groupObject: "Topic",
   groupNameField: "Name",
   membershipObject: "TopicAssignment",
-  membershipProfileField: "EntityId",
+  membershipRecordField: "EntityId",
   membershipGroupField: "TopicId",
-  profileReferenceField: "",
-  profileReferenceObject: " ",
-  profileReferenceMatchField: "",
+  recordReferenceField: "",
+  recordReferenceObject: " ",
+  recordReferenceMatchField: "",
 };
 const model = destinationModel(destinationOptions);
 
@@ -58,19 +58,19 @@ let groupId1 = null;
 const group2 = "(test) Churned2";
 let groupId2 = null;
 
-const deleteProfileValues = [custom1, custom2, custom3];
+const deleteRecordValues = [custom1, custom2, custom3];
 const deleteGroupValues = [group1, group2];
 const deleteReferenceValues = [];
 const { findId, getUser, findGroupId, getGroupMemberIds, cleanUp } =
   getModelHelpers({
     appOptions,
     model,
-    deleteProfileValues,
+    deleteRecordValues,
     deleteGroupValues,
     deleteReferenceValues,
   });
 
-describe("salesforce/sales-cloud/export-profiles/custom", () => {
+describe("salesforce/sales-cloud/export-records/custom", () => {
   beforeAll(async () => {
     await cleanUp(false);
   }, helper.setupTime);
@@ -83,7 +83,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
     jest.setTimeout(helper.mediumTime);
   });
 
-  test("can create profile on Salesforce", async () => {
+  test("can create record on Salesforce", async () => {
     userId1 = await findId(custom1);
     expect(userId1).toBe(null);
 
@@ -94,16 +94,16 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {},
+          newRecordProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
           },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -129,12 +129,12 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Custom_External_ID__c: custom1,
             FirstName: "John",
             LastName: "Jones",
@@ -142,19 +142,19 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {},
+          newRecordProperties: {
             Custom_External_ID__c: custom2,
             LastName: "Jih",
           },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -184,20 +184,20 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Custom_External_ID__c: custom1,
             FirstName: "John",
             LastName: "Jones",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Simpson",
           },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -219,13 +219,13 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Custom_External_ID__c: custom1,
             FirstName: "Brian",
             LastName: "Chang",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Custom_External_ID__c: custom1,
             FirstName: "Brian",
             LastName: "Chang",
@@ -233,22 +233,22 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {
             Custom_External_ID__c: custom2,
             LastName: "Test",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Custom_External_ID__c: custom2,
             LastName: "Test",
           },
           oldGroups: [],
           newGroups: [],
           toDelete: true,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -282,20 +282,20 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Custom_External_ID__c: custom1,
             FirstName: "Brian",
             LastName: "Chang",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
           },
           oldGroups: [],
           newGroups: [group1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -319,31 +319,31 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
           },
           oldGroups: [group1],
           newGroups: [group1, group2],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {},
+          newRecordProperties: {
             Custom_External_ID__c: custom2,
             LastName: "Jones",
           },
           oldGroups: [],
           newGroups: [group1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -375,34 +375,34 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
           },
           oldGroups: [group1, group2],
           newGroups: [group1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {
             Custom_External_ID__c: custom2,
             LastName: "Jones",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Custom_External_ID__c: custom2,
             LastName: "Jones",
           },
           oldGroups: [group2],
           newGroups: [group1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -426,19 +426,19 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Custom_External_ID__c: custom1.toUpperCase(),
             LastName: "MACRON",
           },
           oldGroups: [group1],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -459,31 +459,31 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Custom_External_ID__c: custom1.toUpperCase(),
             LastName: "MACRON",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
           },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id1,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {},
+          newRecordProperties: {
             Custom_External_ID__c: custom2,
             LastName: "Jones",
           },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -507,27 +507,27 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Simpson",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Test",
           },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {
             Custom_External_ID__c: custom2,
             LastName: "Jones",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Custom_External_ID__c: custom2,
             LastName: "Simpson",
             email_field__c: "badone",
@@ -535,12 +535,12 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id3,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id3,
+          oldRecordProperties: {},
+          newRecordProperties: {
             Custom_External_ID__c: custom3,
             LastName: "King",
             email_field__c: "valid@grouparoo.com",
@@ -548,7 +548,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -558,7 +558,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("email");
 
     user = await getUser(userId1);

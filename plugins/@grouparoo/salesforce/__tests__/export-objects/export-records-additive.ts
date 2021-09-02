@@ -1,6 +1,6 @@
 import "@grouparoo/spec-helper";
 import path from "path";
-import { exportBatch } from "../../src/lib/export-objects/exportProfiles";
+import { exportBatch } from "../../src/lib/export-objects/exportRecords";
 import { destinationModel } from "../../src/lib/export-objects/model";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
@@ -13,12 +13,12 @@ const nockFile = path.join(
   "../",
   "fixtures",
   "export-objects",
-  "export-profiles-additive.js"
+  "export-records-additive.js"
 );
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-objects/export-profiles-additive");
+require("./../fixtures/export-objects/export-records-additive");
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -27,16 +27,16 @@ const appOptions = loadAppOptions(newNock);
 const appId = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8632e2";
 const syncOperations = DestinationSyncModeData.additive.operations;
 const destinationOptions = {
-  profileObject: "Contact",
-  profileMatchField: "Email",
+  recordObject: "Contact",
+  recordMatchField: "Email",
   groupObject: "Campaign",
   groupNameField: "Name",
   membershipObject: "CampaignMember",
-  membershipProfileField: "ContactId",
+  membershipRecordField: "ContactId",
   membershipGroupField: "CampaignId",
-  profileReferenceField: "AccountId",
-  profileReferenceObject: "Account",
-  profileReferenceMatchField: "Name",
+  recordReferenceField: "AccountId",
+  recordReferenceObject: "Account",
+  recordReferenceMatchField: "Name",
 };
 const model = destinationModel(destinationOptions);
 
@@ -65,7 +65,7 @@ let accountId1 = null;
 const account2 = "(test) Small Account6";
 let accountId2 = null;
 
-const deleteProfileValues = [email1, email2, email3, newEmail1];
+const deleteRecordValues = [email1, email2, email3, newEmail1];
 const deleteGroupValues = [group1, group2];
 const deleteReferenceValues = [account1, account2];
 const {
@@ -79,12 +79,12 @@ const {
 } = getModelHelpers({
   appOptions,
   model,
-  deleteProfileValues,
+  deleteRecordValues,
   deleteGroupValues,
   deleteReferenceValues,
 });
 
-describe("salesforce/sales-cloud/export-profiles/additive", () => {
+describe("salesforce/sales-cloud/export-records/additive", () => {
   beforeAll(async () => {
     await cleanUp(false);
   }, helper.setupTime);
@@ -97,7 +97,7 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
     jest.setTimeout(helper.mediumTime);
   });
 
-  test("can create profile on Salesforce", async () => {
+  test("can create record on Salesforce", async () => {
     userId1 = await findId(email1);
     expect(userId1).toBe(null);
 
@@ -111,9 +111,9 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {},
+          newRecordProperties: {
             Email: email1,
             LastName: "Smith",
             "Account.Name": account1,
@@ -121,7 +121,7 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -158,13 +158,13 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Email: email1,
             LastName: "Smith",
             "Account.Name": account1,
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email1,
             FirstName: "John",
             LastName: "Jones",
@@ -173,12 +173,12 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {},
+          newRecordProperties: {
             Email: email2,
             LastName: "Jih",
             "Account.Name": account2,
@@ -186,7 +186,7 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -228,14 +228,14 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Email: email1,
             FirstName: "John",
             LastName: "Jones",
             "Account.Name": account2,
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email1,
             LastName: "Simpson",
             "Account.Name": null,
@@ -243,7 +243,7 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -270,13 +270,13 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Email: email1,
             LastName: "Brian",
             "Account.Name": null,
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: newEmail1,
             FirstName: "Brian",
             LastName: "Chang",
@@ -285,16 +285,16 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {
             Email: email2,
             LastName: "Jih",
             "Account.Name": account2,
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email2,
             LastName: "Test",
             "Account.Name": account2,
@@ -302,7 +302,7 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -334,20 +334,20 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Email: newEmail1,
             FirstName: "Brian",
             LastName: "Chang",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email1, // change back
             LastName: "Smith",
           },
           oldGroups: [],
           newGroups: [group1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -375,22 +375,22 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { Email: email1, LastName: "Smith" },
-          newProfileProperties: { Email: email1, LastName: "Smith" },
+          recordId: id1,
+          oldRecordProperties: { Email: email1, LastName: "Smith" },
+          newRecordProperties: { Email: email1, LastName: "Smith" },
           oldGroups: [group1],
           newGroups: [group1, group2],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: { Email: email2, LastName: "Patil" },
-          newProfileProperties: { Email: email2, LastName: "Jones" },
+          recordId: id2,
+          oldRecordProperties: { Email: email2, LastName: "Patil" },
+          newRecordProperties: { Email: email2, LastName: "Jones" },
           oldGroups: [],
           newGroups: [group1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -421,22 +421,22 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { Email: email1, LastName: "Smith" },
-          newProfileProperties: { Email: email1, LastName: "Smith" },
+          recordId: id1,
+          oldRecordProperties: { Email: email1, LastName: "Smith" },
+          newRecordProperties: { Email: email1, LastName: "Smith" },
           oldGroups: [group1, group2],
           newGroups: [group1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: { Email: email2, LastName: "Jones" },
-          newProfileProperties: { Email: email2, LastName: "Jones" },
+          recordId: id2,
+          oldRecordProperties: { Email: email2, LastName: "Jones" },
+          newRecordProperties: { Email: email2, LastName: "Jones" },
           oldGroups: [group2],
           newGroups: [group1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -460,14 +460,14 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Email: newEmail1,
             FirstName: "Brian",
             LastName: "Chang",
             "Account.Name": null,
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email1, // changing back
             FirstName: "Brian",
             LastName: "Chang",
@@ -476,16 +476,16 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
           oldGroups: [group1],
           newGroups: [group1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {
             Email: email2,
             LastName: "Jones",
             "Account.Name": account2,
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email2,
             LastName: "NoEdit",
             "Account.Name": account2,
@@ -493,7 +493,7 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
           oldGroups: [group1],
           newGroups: [group1],
           toDelete: true,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -502,7 +502,7 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
     expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("not deleting");
     expect(error.errorLevel).toEqual("info");
 
@@ -529,13 +529,13 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
       syncOperations,
       exports: [
         {
-          profileId: id3,
-          oldProfileProperties: { Email: email3, LastName: "None" },
-          newProfileProperties: { Email: email3, LastName: "None" },
+          recordId: id3,
+          oldRecordProperties: { Email: email3, LastName: "None" },
+          newRecordProperties: { Email: email3, LastName: "None" },
           oldGroups: [],
           newGroups: [],
           toDelete: true,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -544,7 +544,7 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
     expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id3);
+    expect(error.recordId).toEqual(id3);
     expect(error.message).toContain("not deleting");
     expect(error.errorLevel).toEqual("info");
 
@@ -562,12 +562,12 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Email: email1,
             LastName: "Simpson",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email1,
             LastName: "Test",
             "Account.Name": account1,
@@ -575,15 +575,15 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {
             Email: email2,
             LastName: "Jones",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email2,
             LastName: "Simpson",
             email_field__c: "badone",
@@ -592,12 +592,12 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
           oldGroups: [group1],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id3,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id3,
+          oldRecordProperties: {},
+          newRecordProperties: {
             Email: email3,
             LastName: "King",
             email_field__c: "valid@grouparoo.com",
@@ -606,7 +606,7 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -616,7 +616,7 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("email");
 
     user = await getUser(userId1);

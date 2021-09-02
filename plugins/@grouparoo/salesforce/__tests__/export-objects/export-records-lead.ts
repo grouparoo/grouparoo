@@ -1,6 +1,6 @@
 import "@grouparoo/spec-helper";
 import path from "path";
-import { exportBatch } from "../../src/lib/export-objects/exportProfiles";
+import { exportBatch } from "../../src/lib/export-objects/exportRecords";
 import { destinationModel } from "../../src/lib/export-objects/model";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
@@ -13,12 +13,12 @@ const nockFile = path.join(
   "../",
   "fixtures",
   "export-objects",
-  "export-profiles-lead.js"
+  "export-records-lead.js"
 );
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-objects/export-profiles-lead");
+require("./../fixtures/export-objects/export-records-lead");
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -27,16 +27,16 @@ const appOptions = loadAppOptions(newNock);
 const appId = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8662f2";
 const syncOperations = DestinationSyncModeData.sync.operations;
 const destinationOptions = {
-  profileObject: "Lead",
-  profileMatchField: "Email",
+  recordObject: "Lead",
+  recordMatchField: "Email",
   groupObject: "Campaign",
   groupNameField: "Name",
   membershipObject: "CampaignMember",
-  membershipProfileField: "LeadId",
+  membershipRecordField: "LeadId",
   membershipGroupField: "CampaignId",
-  profileReferenceField: null,
-  profileReferenceObject: null,
-  profileReferenceMatchField: null,
+  recordReferenceField: null,
+  recordReferenceObject: null,
+  recordReferenceMatchField: null,
 };
 const model = destinationModel(destinationOptions);
 
@@ -57,14 +57,14 @@ let groupId1 = null;
 const group2 = "(test) Churned4";
 let groupId2 = null;
 
-const deleteProfileValues = [email1, email2, newEmail1];
+const deleteRecordValues = [email1, email2, newEmail1];
 const deleteGroupValues = [group1, group2];
 const deleteReferenceValues = [];
 const { findId, getUser, findGroupId, getGroupMemberIds, cleanUp } =
   getModelHelpers({
     appOptions,
     model,
-    deleteProfileValues,
+    deleteRecordValues,
     deleteGroupValues,
     deleteReferenceValues,
   });
@@ -79,23 +79,23 @@ const {
 } = getModelHelpers({
   appOptions,
   model: destinationModel({
-    profileObject: "Contact",
-    profileMatchField: "Email",
+    recordObject: "Contact",
+    recordMatchField: "Email",
     groupObject: "Campaign",
     groupNameField: "Name",
     membershipObject: "CampaignMember",
-    membershipProfileField: "ContactId",
+    membershipRecordField: "ContactId",
     membershipGroupField: "CampaignId",
-    profileReferenceField: "AccountId",
-    profileReferenceObject: "Account",
-    profileReferenceMatchField: "Name",
+    recordReferenceField: "AccountId",
+    recordReferenceObject: "Account",
+    recordReferenceMatchField: "Name",
   }),
-  deleteProfileValues,
+  deleteRecordValues,
   deleteGroupValues,
   deleteReferenceValues: [accountName1],
 });
 
-describe("salesforce/sales-cloud/export-profiles/leads", () => {
+describe("salesforce/sales-cloud/export-records/leads", () => {
   beforeAll(async () => {
     await cleanUp(false);
     await cleanUpConversion(false);
@@ -110,7 +110,7 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
     jest.setTimeout(helper.mediumTime);
   });
 
-  test("can create profile on Salesforce", async () => {
+  test("can create record on Salesforce", async () => {
     userId1 = await findId(email1);
     expect(userId1).toBe(null);
 
@@ -121,9 +121,9 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {},
+          newRecordProperties: {
             Email: email1,
             LastName: "Smith",
             Company: "SmithCorp",
@@ -131,7 +131,7 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -158,13 +158,13 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Email: email1,
             LastName: "Smith",
             Company: "SmithCorp",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email1,
             FirstName: "John",
             LastName: "Jones",
@@ -173,12 +173,12 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {},
+          newRecordProperties: {
             Email: email2,
             LastName: "Jih",
             Company: "JihCorp",
@@ -186,7 +186,7 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -218,14 +218,14 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Email: email1,
             FirstName: "John",
             LastName: "Jones",
             Company: "JonesCorp",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: newEmail1,
             FirstName: "Brian",
             LastName: "Chang",
@@ -234,16 +234,16 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {
             Email: email2,
             LastName: "Jih",
             Company: "JihCorp",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email2,
             LastName: "Test",
             Company: "TestCorp",
@@ -251,7 +251,7 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -282,14 +282,14 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Email: newEmail1,
             FirstName: "Brian",
             LastName: "Chang",
             Company: "ChangCorp",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email1, // changing back
             FirstName: "Brian",
             LastName: "Chang",
@@ -298,16 +298,16 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {
             Email: email2,
             LastName: "Test",
             Company: "TestCorp",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email2,
             LastName: "Test",
             Company: "TestCorp",
@@ -315,7 +315,7 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: true,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -347,14 +347,14 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Email: email1,
             FirstName: "Brian",
             LastName: "Chang",
             Company: "ChangCorp",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email1,
             LastName: "Smith",
             Company: accountName1,
@@ -362,7 +362,7 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           oldGroups: [],
           newGroups: [group1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -437,13 +437,13 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Email: email1,
             LastName: "Smith",
             Company: accountName1,
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email1,
             LastName: "NoEdit",
             Company: accountName1,
@@ -451,7 +451,7 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           oldGroups: [group1],
           newGroups: [group1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -484,13 +484,13 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
       syncOperations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             Email: email1,
             LastName: "NoEdit",
             Company: accountName1,
           },
-          newProfileProperties: {
+          newRecordProperties: {
             Email: email1,
             LastName: "NoEdit",
             Company: accountName1,
@@ -498,7 +498,7 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           oldGroups: [group1],
           newGroups: [group1, group2],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
