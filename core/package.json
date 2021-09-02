@@ -42,7 +42,7 @@
     "cls-hooked": "4.2.2",
     "colors": "1.4.0",
     "compare-versions": "3.6.0",
-    "csv-stringify": "5.6.2",
+    "csv-stringify": "5.6.4",
     "date-fns": "2.23.0",
     "dotenv": "10.0.0",
     "fs-extra": "10.0.0",
