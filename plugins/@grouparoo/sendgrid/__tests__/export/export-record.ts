@@ -2,7 +2,7 @@ import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import { exportProfile } from "../../src/lib/export/exportProfile";
+import { exportRecord } from "../../src/lib/export/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexContacts } from "../utils/shared";
@@ -45,11 +45,11 @@ const invalidDate = "AAAAA";
 
 let listIds = {};
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -117,13 +117,13 @@ async function cleanUp(suppressErrors) {
 
 async function runExport({
   syncOperations = DestinationSyncModeData.sync.operations,
-  oldProfileProperties,
-  newProfileProperties,
+  oldRecordProperties,
+  newRecordProperties,
   oldGroups,
   newGroups,
   toDelete,
 }) {
-  return exportProfile({
+  return exportRecord({
     appOptions,
     appId,
     connection: null,
@@ -133,10 +133,10 @@ async function runExport({
     destinationOptions: null,
     syncOperations,
     export: {
-      profile: null,
-      profileId: null,
-      oldProfileProperties,
-      newProfileProperties,
+      record: null,
+      recordId: null,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       toDelete,
@@ -144,7 +144,7 @@ async function runExport({
   });
 }
 
-describe("sendgrid/exportProfile", () => {
+describe("sendgrid/exportRecord", () => {
   beforeAll(async () => {
     apiClient = await connect(appOptions);
     await cleanUp(false);
@@ -154,14 +154,14 @@ describe("sendgrid/exportProfile", () => {
     await cleanUp(true);
   }, helper.setupTime);
 
-  test("can not create a profile if sync mode does not allow it", async () => {
+  test("can not create a record if sync mode does not allow it", async () => {
     user = await apiClient.getUser(email);
     expect(user).toBe(null);
     await expect(
       runExport({
         syncOperations: DestinationSyncModeData.enrich.operations,
-        oldProfileProperties: {},
-        newProfileProperties: { email, first_name },
+        oldRecordProperties: {},
+        newRecordProperties: { email, first_name },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -171,13 +171,13 @@ describe("sendgrid/exportProfile", () => {
     expect(user).toBe(null); // not created.
   });
 
-  test("can create profile on Sendgrid", async () => {
+  test("can create record on Sendgrid", async () => {
     user = await apiClient.getUser(email);
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { email, first_name },
+      oldRecordProperties: {},
+      newRecordProperties: { email, first_name },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -193,8 +193,8 @@ describe("sendgrid/exportProfile", () => {
 
   test("can add user variables", async () => {
     await runExport({
-      oldProfileProperties: { email, first_name },
-      newProfileProperties: {
+      oldRecordProperties: { email, first_name },
+      newRecordProperties: {
         email,
         first_name,
         last_name,
@@ -215,7 +215,7 @@ describe("sendgrid/exportProfile", () => {
     expect(user.phone_number).toBe(phone_number);
   });
 
-  test("can not update a profile if sync mode does not allow it", async () => {
+  test("can not update a record if sync mode does not allow it", async () => {
     await expect(
       runExport({
         syncOperations: {
@@ -223,12 +223,12 @@ describe("sendgrid/exportProfile", () => {
           create: true,
           delete: true,
         },
-        oldProfileProperties: {
+        oldRecordProperties: {
           email,
           first_name,
           phone_number,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email,
           first_name: alternativeName,
           phone_number: newPhoneNumber,
@@ -255,12 +255,12 @@ describe("sendgrid/exportProfile", () => {
   test("can change user variables", async () => {
     // Phone must be valid.
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         first_name,
         phone_number,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
         first_name: alternativeName,
         phone_number: newPhoneNumber,
@@ -290,7 +290,7 @@ describe("sendgrid/exportProfile", () => {
   test("can try to change user variables using invalid data", async () => {
     // Phone must be valid.
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         first_name: alternativeName,
         phone_number: newPhoneNumber,
@@ -298,7 +298,7 @@ describe("sendgrid/exportProfile", () => {
         number_field: numberField,
         date_field: dateField,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
         first_name: alternativeName,
         phone_number: invalidPhone,
@@ -321,12 +321,12 @@ describe("sendgrid/exportProfile", () => {
 
   test("can clear user variables", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         first_name: alternativeName,
         phone_number: newPhoneNumber,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
       },
       oldGroups: [],
@@ -341,10 +341,10 @@ describe("sendgrid/exportProfile", () => {
 
   test("can add user to a list that doesn't exist yet", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
       },
       oldGroups: [],
@@ -368,10 +368,10 @@ describe("sendgrid/exportProfile", () => {
 
   test("can remove a user from a list", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
       },
       oldGroups: [listOne, listTwo],
@@ -389,10 +389,10 @@ describe("sendgrid/exportProfile", () => {
 
   test("it does not change already subscribed lists", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
       },
       oldGroups: [],
@@ -415,10 +415,10 @@ describe("sendgrid/exportProfile", () => {
 
   test("it tries to unsubscribe non subscribed list", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
       },
       oldGroups: [listFour],
@@ -435,10 +435,10 @@ describe("sendgrid/exportProfile", () => {
 
   test("it can change the email address", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: alternativeEmail,
       },
       oldGroups: [],
@@ -460,10 +460,10 @@ describe("sendgrid/exportProfile", () => {
     // sendgrid requires deleting the old user on FK change
     await runExport({
       syncOperations: { create: true, update: true, delete: false },
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: alternativeEmail,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
       },
       oldGroups: [listOne, listTwo, listThree],
@@ -488,12 +488,12 @@ describe("sendgrid/exportProfile", () => {
 
   test("it can change the email address along other properties", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: alternativeEmail,
         first_name: alternativeName,
         phone_number: newPhoneNumber,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: otherEmail,
         first_name: otherName,
         phone_number: otherPhoneNumber,
@@ -521,10 +521,10 @@ describe("sendgrid/exportProfile", () => {
           delete: false,
           update: true,
         },
-        oldProfileProperties: {
+        oldRecordProperties: {
           email: otherEmail,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email: otherEmail,
         },
         oldGroups: [],
@@ -542,10 +542,10 @@ describe("sendgrid/exportProfile", () => {
 
   test("can delete a user", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: otherEmail,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: otherEmail,
       },
       oldGroups: [],
@@ -563,10 +563,10 @@ describe("sendgrid/exportProfile", () => {
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: otherEmail,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: otherEmail,
       },
       oldGroups: [],
@@ -583,8 +583,8 @@ describe("sendgrid/exportProfile", () => {
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: newEmail,
         first_name: newName,
       },
@@ -603,15 +603,15 @@ describe("sendgrid/exportProfile", () => {
     expect(user["list_ids"]).toContain(listFourId);
   });
 
-  test("can add a user passing a nonexistent email on the oldProfileProperties", async () => {
+  test("can add a user passing a nonexistent email on the oldRecordProperties", async () => {
     let brandNewUser = await apiClient.getUser(brandNewEmail);
     expect(brandNewUser).toBe(null);
     const nonexistentUser = await apiClient.getUser(nonexistentEmail);
     expect(nonexistentUser).toBe(null);
 
     await runExport({
-      oldProfileProperties: { email: nonexistentEmail },
-      newProfileProperties: {
+      oldRecordProperties: { email: nonexistentEmail },
+      newRecordProperties: {
         email: brandNewEmail,
         first_name: brandNewName,
       },
@@ -629,8 +629,8 @@ describe("sendgrid/exportProfile", () => {
   test("can add a user passing a invalid email", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {},
-        newProfileProperties: {
+        oldRecordProperties: {},
+        newRecordProperties: {
           email: invalidEmail,
         },
         oldGroups: [],
