@@ -1584,4 +1584,77 @@ describe("modules/codeConfig", () => {
       );
     });
   });
+
+  describe("names should not be unqiue against deleted entries", () => {
+    test("deleted groups should not cause conflicts on create", async () => {
+      await Group.truncate();
+      const group = await Group.create({
+        id: "asdf",
+        name: "bsdf",
+        type: "manual",
+      });
+      await group.destroy();
+      expect(await group.get()).toEqual({
+        calculatedAt: null,
+        createdAt: expect.any(Date),
+        id: "asdf",
+        locked: null,
+        matchType: "all",
+        name: "bsdf",
+        state: "draft",
+        type: "manual",
+        updatedAt: expect.any(Date),
+      });
+      const group2 = await Group.create({
+        id: "asdf",
+        name: "bsdf",
+        type: "manual",
+      });
+      expect(await group2.get()).toEqual({
+        calculatedAt: null,
+        createdAt: expect.any(Date),
+        id: "asdf",
+        locked: null,
+        matchType: "all",
+        name: "bsdf",
+        state: "draft",
+        type: "manual",
+        updatedAt: expect.any(Date),
+      });
+    });
+    test("removed configs should be deleted before creating/updating", async () => {
+      const config = await loadConfigDirectory(
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "fixtures",
+          "codeConfig",
+          "duplicate-names",
+          "config1"
+        )
+      );
+      const config2 = await loadConfigDirectory(
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "fixtures",
+          "codeConfig",
+          "duplicate-names",
+          "config2"
+        )
+      );
+      if (config.errors.length) {
+        console.error(config.errors);
+      }
+      if (config2.errors.length) {
+        console.error(config2.errors);
+      }
+      expect(config.errors.length).toBe(0);
+      expect(config2.errors.length).toBe(0);
+      expect(config).toMatchSnapshot();
+      expect(config2).toMatchSnapshot();
+    });
+  });
 });

@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modules/codeConfig names should not be unqiue against deleted entries removed configs should be deleted before creating/updating 1`] = `
+Object {
+  "deletedIds": Object {
+    "apikey": Array [
+      "website_key",
+    ],
+    "app": Array [],
+    "destination": Array [
+      "test_destination",
+    ],
+    "group": Array [],
+    "profile": Array [],
+    "property": Array [
+      "email",
+      "first_name",
+      "last_name",
+    ],
+    "schedule": Array [
+      "users_table_schedule",
+    ],
+    "source": Array [],
+    "team": Array [
+      "admin_team",
+    ],
+    "teammember": Array [
+      "demo",
+    ],
+  },
+  "errors": Array [],
+  "seenIds": Object {
+    "apikey": Array [],
+    "app": Array [
+      "data_warehouse",
+    ],
+    "destination": Array [
+      "data_warehouse_destination",
+    ],
+    "group": Array [
+      "calculate_dates",
+    ],
+    "profile": Array [],
+    "property": Array [
+      "user_id",
+    ],
+    "schedule": Array [],
+    "source": Array [
+      "users_table",
+    ],
+    "team": Array [],
+    "teammember": Array [],
+  },
+}
+`;
+
+exports[`modules/codeConfig names should not be unqiue against deleted entries removed configs should be deleted before creating/updating 2`] = `
+Object {
+  "deletedIds": Object {
+    "apikey": Array [],
+    "app": Array [
+      "data_warehouse",
+    ],
+    "destination": Array [
+      "data_warehouse_destination",
+    ],
+    "group": Array [
+      "calculate_dates",
+    ],
+    "profile": Array [],
+    "property": Array [
+      "user_id",
+    ],
+    "schedule": Array [],
+    "source": Array [
+      "users_table",
+    ],
+    "team": Array [],
+    "teammember": Array [],
+  },
+  "errors": Array [],
+  "seenIds": Object {
+    "apikey": Array [],
+    "app": Array [
+      "data_warehouse_2",
+    ],
+    "destination": Array [
+      "data_warehouse_destination_2",
+    ],
+    "group": Array [
+      "calculate_dates_2",
+    ],
+    "profile": Array [],
+    "property": Array [
+      "user_id_2",
+    ],
+    "schedule": Array [],
+    "source": Array [
+      "users_table_2",
+    ],
+    "team": Array [],
+    "teammember": Array [],
+  },
+}
+`;
