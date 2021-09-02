@@ -2,7 +2,7 @@ import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import { exportProfile } from "../../src/lib/export/exportProfile";
+import { exportRecord } from "../../src/lib/export/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { MailjetClient } from "../../src/lib/client";
@@ -40,11 +40,11 @@ const invalidDate = "asd000";
 const numberField = 3039;
 const floatField = 30.39;
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -107,13 +107,13 @@ async function cleanUp(suppressErrors) {
 
 async function runExport({
   syncOperations = DestinationSyncModeData.sync.operations,
-  oldProfileProperties,
-  newProfileProperties,
+  oldRecordProperties,
+  newRecordProperties,
   oldGroups,
   newGroups,
   toDelete,
 }) {
-  return exportProfile({
+  return exportRecord({
     appOptions,
     appId,
     connection: null,
@@ -123,10 +123,10 @@ async function runExport({
     destinationOptions: null,
     syncOperations,
     export: {
-      profile: null,
-      profileId: null,
-      oldProfileProperties,
-      newProfileProperties,
+      record: null,
+      recordId: null,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       toDelete,
@@ -134,7 +134,7 @@ async function runExport({
   });
 }
 
-describe("mailjet/exportProfile", () => {
+describe("mailjet/exportRecord", () => {
   beforeAll(async () => {
     apiClient = await connect(appOptions);
     await cleanUp(false);
@@ -144,15 +144,15 @@ describe("mailjet/exportProfile", () => {
     await cleanUp(true);
   }, helper.setupTime);
 
-  test("cannot create profile on Mailjet if sync mode does not allow it", async () => {
+  test("cannot create record on Mailjet if sync mode does not allow it", async () => {
     user = await apiClient.getContactByEmail(email);
     expect(user).toBe(null);
 
     await expect(
       runExport({
         syncOperations: { create: false, update: true, delete: true },
-        oldProfileProperties: {},
-        newProfileProperties: { Email: email, firstname: firstName },
+        oldRecordProperties: {},
+        newRecordProperties: { Email: email, firstname: firstName },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -160,13 +160,13 @@ describe("mailjet/exportProfile", () => {
     ).rejects.toThrow(/sync mode does not allow creating/);
   });
 
-  test("can create profile on Mailjet", async () => {
+  test("can create record on Mailjet", async () => {
     user = await apiClient.getContactByEmail(email);
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { Email: email, firstname: firstName },
+      oldRecordProperties: {},
+      newRecordProperties: { Email: email, firstname: firstName },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -180,8 +180,8 @@ describe("mailjet/exportProfile", () => {
 
   test("can add user variables", async () => {
     await runExport({
-      oldProfileProperties: { Email: email, firstname: firstName },
-      newProfileProperties: {
+      oldRecordProperties: { Email: email, firstname: firstName },
+      newRecordProperties: {
         Email: email,
         firstname: firstName,
         lastname: lastName,
@@ -199,17 +199,17 @@ describe("mailjet/exportProfile", () => {
     expect(getUserProp(userProps, "phone")).toBe(phoneNumber);
   });
 
-  test("cannot update existing profile if sync mode does not allow it", async () => {
+  test("cannot update existing record if sync mode does not allow it", async () => {
     await expect(
       runExport({
         syncOperations: { create: true, update: false, delete: true },
-        oldProfileProperties: {
+        oldRecordProperties: {
           Email: email,
           firstname: firstName,
           lastname: lastName,
           phone: phoneNumber,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           Email: email,
           firstname: alternativeName,
           lastname: alternativeLastName,
@@ -232,13 +232,13 @@ describe("mailjet/exportProfile", () => {
 
   test("can change user variables", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: email,
         firstname: firstName,
         lastname: lastName,
         phone: phoneNumber,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: email,
         firstname: alternativeName,
         lastname: alternativeLastName,
@@ -264,11 +264,11 @@ describe("mailjet/exportProfile", () => {
   test("can try change user variables with invalid date type", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {
+        oldRecordProperties: {
           Email: email,
           date_field: dateField,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           Email: email,
           date_field: invalidDate,
         },
@@ -281,7 +281,7 @@ describe("mailjet/exportProfile", () => {
 
   test("can clear user variables", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: email,
         firstname: alternativeName,
         lastname: alternativeLastName,
@@ -290,7 +290,7 @@ describe("mailjet/exportProfile", () => {
         number_field: numberField,
         float_field: floatField,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: email,
       },
       oldGroups: [],
@@ -310,10 +310,10 @@ describe("mailjet/exportProfile", () => {
 
   test("can add user to a list that doesn't exist yet", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: email,
       },
       oldGroups: [],
@@ -340,10 +340,10 @@ describe("mailjet/exportProfile", () => {
 
   test("can remove a user from a list", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: email,
       },
       oldGroups: [listOne, listTwo],
@@ -365,10 +365,10 @@ describe("mailjet/exportProfile", () => {
 
   test("it does not change already subscribed lists", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: email,
       },
       oldGroups: [],
@@ -399,10 +399,10 @@ describe("mailjet/exportProfile", () => {
 
   test("it tries to unsubscribe non subscribed list", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: email,
       },
       oldGroups: [listFour],
@@ -428,10 +428,10 @@ describe("mailjet/exportProfile", () => {
     await expect(
       runExport({
         syncOperations: DestinationSyncModeData.enrich.operations,
-        oldProfileProperties: {
+        oldRecordProperties: {
           Email: email,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           Email: alternativeEmail,
         },
         oldGroups: [listOne, listTwo, listThree],
@@ -456,10 +456,10 @@ describe("mailjet/exportProfile", () => {
   test("change email when only old exists (ADDITIVE mode)", async () => {
     await runExport({
       syncOperations: DestinationSyncModeData.additive.operations,
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: alternativeEmail,
       },
       oldGroups: [listOne, listTwo, listThree],
@@ -501,10 +501,10 @@ describe("mailjet/exportProfile", () => {
     // mailjet requires deleting the old user on FK change
     await runExport({
       syncOperations: DestinationSyncModeData.additive.operations,
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: alternativeEmail,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: email,
       },
       oldGroups: [listOne, listTwo, listThree],
@@ -533,10 +533,10 @@ describe("mailjet/exportProfile", () => {
     // mailjet requires deleting the old user on FK change
     await runExport({
       syncOperations: DestinationSyncModeData.sync.operations,
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: alternativeEmail,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: email,
         phone: otherPhoneNumber,
       },
@@ -561,10 +561,10 @@ describe("mailjet/exportProfile", () => {
 
   test("change email when only new exists", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: nonexistentEmail,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: email,
         firstname: firstName,
       },
@@ -589,12 +589,12 @@ describe("mailjet/exportProfile", () => {
 
   test("it can change the email address along other properties", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: email,
         firstname: alternativeName,
         phone: newPhoneNumber,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: otherEmail,
         firstname: otherName,
         phone: otherPhoneNumber,
@@ -629,10 +629,10 @@ describe("mailjet/exportProfile", () => {
     await expect(
       runExport({
         syncOperations: { create: true, update: true, delete: false },
-        oldProfileProperties: {
+        oldRecordProperties: {
           Email: otherEmail,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           Email: otherEmail,
         },
         oldGroups: [listOne],
@@ -641,7 +641,7 @@ describe("mailjet/exportProfile", () => {
       })
     ).rejects.toThrow(/sync mode does not allow removing/);
 
-    // no changes to the profile
+    // no changes to the record
     const user = await apiClient.getContactByEmail(otherEmail);
     expect(user).not.toBe(null);
     expect(user["Email"]).toBe(otherEmail);
@@ -658,10 +658,10 @@ describe("mailjet/exportProfile", () => {
     let user = await apiClient.getContactByEmail(otherEmail);
     expect(user).not.toBe(null);
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: otherEmail,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: otherEmail,
       },
       oldGroups: [],
@@ -677,10 +677,10 @@ describe("mailjet/exportProfile", () => {
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         Email: otherEmail,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         Email: otherEmail,
       },
       oldGroups: [],
@@ -697,8 +697,8 @@ describe("mailjet/exportProfile", () => {
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         Email: newEmail,
         firstname: newName,
       },
@@ -723,15 +723,15 @@ describe("mailjet/exportProfile", () => {
     );
   });
 
-  test("can add a user passing a nonexistent email on the oldProfileProperties", async () => {
+  test("can add a user passing a nonexistent email on the oldRecordProperties", async () => {
     let brandNewUser = await apiClient.getContactByEmail(brandNewEmail);
     expect(brandNewUser).toBe(null);
     const nonexistentUser = await apiClient.getContactByEmail(nonexistentEmail);
     expect(nonexistentUser).toBe(null);
 
     await runExport({
-      oldProfileProperties: { Email: nonexistentEmail },
-      newProfileProperties: {
+      oldRecordProperties: { Email: nonexistentEmail },
+      newRecordProperties: {
         Email: brandNewEmail,
         firstname: brandNewName,
       },
@@ -750,8 +750,8 @@ describe("mailjet/exportProfile", () => {
   test("can add a user passing a invalid email", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {},
-        newProfileProperties: {
+        oldRecordProperties: {},
+        newRecordProperties: {
           Email: invalidEmail,
         },
         oldGroups: [],
