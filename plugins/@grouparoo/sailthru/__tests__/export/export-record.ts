@@ -1,7 +1,7 @@
 import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
-import { exportProfile } from "../../src/lib/export/exportProfile";
+import { exportRecord } from "../../src/lib/export/exportRecord";
 import Sailthru from "../../src/lib/client";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
@@ -19,11 +19,11 @@ const group1 = "Test Group 1";
 const group2 = "Test Group 2";
 const group3 = "Test Group 3";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -83,13 +83,13 @@ async function cleanUp(suppressErrors) {
 
 async function runExport({
   syncOperations = DestinationSyncModeData.sync.operations,
-  oldProfileProperties,
-  newProfileProperties,
+  oldRecordProperties,
+  newRecordProperties,
   oldGroups,
   newGroups,
   toDelete,
 }) {
-  return exportProfile({
+  return exportRecord({
     connection: client,
     appOptions,
     app: null,
@@ -99,10 +99,10 @@ async function runExport({
     destinationOptions: null,
     syncOperations,
     export: {
-      profile: null,
-      profileId: null,
-      oldProfileProperties,
-      newProfileProperties,
+      record: null,
+      recordId: null,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       toDelete,
@@ -110,7 +110,7 @@ async function runExport({
   });
 }
 
-describe("sailthru/exportProfile", () => {
+describe("sailthru/exportRecord", () => {
   beforeAll(async () => {
     client = new Sailthru(appOptions);
     await cleanUp(false);
@@ -122,12 +122,12 @@ describe("sailthru/exportProfile", () => {
 
   afterAll(async () => {}, helper.setupTime);
 
-  test("cannot create a profile if sync mode does not allow it", async () => {
+  test("cannot create a record if sync mode does not allow it", async () => {
     await expect(
       runExport({
         syncOperations: DestinationSyncModeData.enrich.operations,
-        oldProfileProperties: {},
-        newProfileProperties: { email: email },
+        oldRecordProperties: {},
+        newRecordProperties: { email: email },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -135,10 +135,10 @@ describe("sailthru/exportProfile", () => {
     ).rejects.toThrow(/sync mode does not create/);
   });
 
-  test("can create profile on Sailthru", async () => {
+  test("can create record on Sailthru", async () => {
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { email: email },
+      oldRecordProperties: {},
+      newRecordProperties: { email: email },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -148,10 +148,10 @@ describe("sailthru/exportProfile", () => {
     expect(userSid).toBeTruthy();
   });
 
-  test("can create profile on Sailthru along with user variables", async () => {
+  test("can create record on Sailthru along with user variables", async () => {
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: ultraBrandNewEmail,
         first_name: "Sandro",
         phone_number: "+558399999999",
@@ -170,8 +170,8 @@ describe("sailthru/exportProfile", () => {
 
   test("can add user variables", async () => {
     await runExport({
-      oldProfileProperties: { email: email },
-      newProfileProperties: { email: email, first_name: "Evan" },
+      oldRecordProperties: { email: email },
+      newRecordProperties: { email: email, first_name: "Evan" },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -190,8 +190,8 @@ describe("sailthru/exportProfile", () => {
           create: true,
           delete: true,
         },
-        oldProfileProperties: { email: email, first_name: "Evan" },
-        newProfileProperties: { email: email, first_name: "Ev" },
+        oldRecordProperties: { email: email, first_name: "Evan" },
+        newRecordProperties: { email: email, first_name: "Ev" },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -206,8 +206,8 @@ describe("sailthru/exportProfile", () => {
 
   test("can change user variables", async () => {
     await runExport({
-      oldProfileProperties: { email: email, first_name: "Evan" },
-      newProfileProperties: { email: email, first_name: "Brian" },
+      oldRecordProperties: { email: email, first_name: "Evan" },
+      newRecordProperties: { email: email, first_name: "Brian" },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -220,8 +220,8 @@ describe("sailthru/exportProfile", () => {
 
   test("can clear user variables", async () => {
     await runExport({
-      oldProfileProperties: { first_name: "Brian" },
-      newProfileProperties: { email: email },
+      oldRecordProperties: { first_name: "Brian" },
+      newRecordProperties: { email: email },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -234,8 +234,8 @@ describe("sailthru/exportProfile", () => {
 
   test("can add to a list", async () => {
     await runExport({
-      oldProfileProperties: { email: email, first_name: null },
-      newProfileProperties: { email: email, first_name: "Brian" },
+      oldRecordProperties: { email: email, first_name: null },
+      newRecordProperties: { email: email, first_name: "Brian" },
       oldGroups: [],
       newGroups: [group1, group2],
       toDelete: false,
@@ -250,8 +250,8 @@ describe("sailthru/exportProfile", () => {
 
   test("can remove from a list", async () => {
     await runExport({
-      oldProfileProperties: { email: email, first_name: "Brian" },
-      newProfileProperties: { email: email, first_name: "Brian" },
+      oldRecordProperties: { email: email, first_name: "Brian" },
+      newRecordProperties: { email: email, first_name: "Brian" },
       oldGroups: [group1, group2],
       newGroups: [group1],
       toDelete: false,
@@ -272,10 +272,10 @@ describe("sailthru/exportProfile", () => {
           create: true,
           delete: true,
         },
-        oldProfileProperties: {
+        oldRecordProperties: {
           email,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email: alternativeEmail,
         },
         oldGroups: [],
@@ -294,10 +294,10 @@ describe("sailthru/exportProfile", () => {
 
   test("it can change the email address (Old FK exists in destination)", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: alternativeEmail,
       },
       oldGroups: [],
@@ -312,15 +312,15 @@ describe("sailthru/exportProfile", () => {
     expect(oldUser).toBe(null);
   });
 
-  test("can add a user passing a nonexistent email on the oldProfileProperties", async () => {
+  test("can add a user passing a nonexistent email on the oldRecordProperties", async () => {
     let brandNewUser = await getUserByEmail(brandNewEmail);
     expect(brandNewUser).toBe(null);
     const nonexistentUser = await getUserByEmail(nonexistentEmail);
     expect(nonexistentUser).toBe(null);
 
     await runExport({
-      oldProfileProperties: { email: nonexistentEmail },
-      newProfileProperties: {
+      oldRecordProperties: { email: nonexistentEmail },
+      newRecordProperties: {
         email: brandNewEmail,
         first_name: "Brand",
       },
@@ -338,10 +338,10 @@ describe("sailthru/exportProfile", () => {
     // sailthru requires deleting the old user on FK change
     await runExport({
       syncOperations: { create: true, update: true, delete: false },
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: alternativeEmail,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: brandNewEmail,
       },
       oldGroups: [group1, group2, group3],
@@ -363,11 +363,11 @@ describe("sailthru/exportProfile", () => {
 
   test("it can change the email address along other properties", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: alternativeEmail,
         first_name: "Brian",
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: email,
         first_name: "Caio",
       },
@@ -393,8 +393,8 @@ describe("sailthru/exportProfile", () => {
           delete: false,
           update: true,
         },
-        oldProfileProperties: { email: email, first_name: "Caio" },
-        newProfileProperties: { email: email, first_name: "Caio" },
+        oldRecordProperties: { email: email, first_name: "Caio" },
+        newRecordProperties: { email: email, first_name: "Caio" },
         oldGroups: [group2, group1],
         newGroups: [],
         toDelete: true,
@@ -410,8 +410,8 @@ describe("sailthru/exportProfile", () => {
 
   test("can delete a user", async () => {
     await runExport({
-      oldProfileProperties: { email: email, first_name: "Brian" },
-      newProfileProperties: { email: email, first_name: "Brian" },
+      oldRecordProperties: { email: email, first_name: "Brian" },
+      newRecordProperties: { email: email, first_name: "Brian" },
       oldGroups: [group2, group1],
       newGroups: [],
       toDelete: true,
@@ -428,8 +428,8 @@ describe("sailthru/exportProfile", () => {
     expect(newCustomer).toBe(null);
 
     await runExport({
-      oldProfileProperties: { email: brandNewEmail },
-      newProfileProperties: { email: nonexistentEmail },
+      oldRecordProperties: { email: brandNewEmail },
+      newRecordProperties: { email: nonexistentEmail },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
