@@ -35,29 +35,26 @@ import { deleteSources, loadSource } from "./source";
 import { deleteTeams, loadTeam } from "./team";
 import { deleteTeamMembers, loadTeamMember } from "./teamMember";
 
+const freshIdsByClass: () => IdsByClass = () => ({
+  app: [],
+  source: [],
+  property: [],
+  group: [],
+  schedule: [],
+  destination: [],
+  apikey: [],
+  team: [],
+  teammember: [],
+  profile: [],
+});
+
 export function getSeenIds(configObjects: AnyConfigurationObject[]) {
-  return configObjects.reduce(
-    (agg, co) => {
-      if (co.id) {
-        const className = co.class.toLowerCase();
-        agg[className] = agg[className] || [];
-        agg[className].push(co.id);
-      }
-      return agg;
-    },
-    {
-      app: [],
-      source: [],
-      property: [],
-      group: [],
-      schedule: [],
-      destination: [],
-      apikey: [],
-      team: [],
-      teammember: [],
-      profile: [],
-    } as IdsByClass
-  );
+  return configObjects.reduce((agg, co) => {
+    if (co.id && co.class) {
+      agg[co.class.toLowerCase()]?.push(co.id);
+    }
+    return agg;
+  }, freshIdsByClass());
 }
 
 export async function loadConfigDirectory(
@@ -113,7 +110,9 @@ async function loadConfigFile(file: string): Promise<AnyConfigurationObject> {
     payload = payload.default;
   }
 
-  if (typeof payload === "function") payload = await payload(config);
+  if (typeof payload === "function") {
+    payload = await payload(config);
+  }
 
   const objects = Array.isArray(payload) ? payload : [payload];
   ConfigWriter.cacheConfigFile({ absFilePath: file, objects });
@@ -149,18 +148,7 @@ export async function processConfigObjects(
   locallyValidateIds?: Set<string>,
   validate = false
 ): Promise<{ seenIds: IdsByClass; errors: string[]; deletedIds: IdsByClass }> {
-  const seenIds: IdsByClass = {
-    app: [],
-    source: [],
-    property: [],
-    group: [],
-    schedule: [],
-    destination: [],
-    apikey: [],
-    team: [],
-    teammember: [],
-    profile: [],
-  };
+  const seenIds = freshIdsByClass();
   const errors: string[] = [];
 
   const { errors: validationErrors } = validateConfigObjects(configObjects);
@@ -169,7 +157,9 @@ export async function processConfigObjects(
   );
   errors.push(...validationErrors);
 
-  if (errors.length > 0) return { seenIds, errors, deletedIds: {} };
+  if (errors.length > 0) {
+    return { seenIds, errors, deletedIds: {} };
+  }
   try {
     configObjects = await sortConfigurationObjects(configObjects);
   } catch (error) {
@@ -347,18 +337,7 @@ export async function processConfigObjects(
 }
 
 export async function deleteLockedObjects(seenIds: IdsByClass) {
-  const deletedIds: IdsByClass = {
-    app: [],
-    source: [],
-    property: [],
-    group: [],
-    schedule: [],
-    destination: [],
-    apikey: [],
-    team: [],
-    teammember: [],
-    profile: [],
-  };
+  const deletedIds = freshIdsByClass();
 
   if (seenIds.teammember) {
     deletedIds["teammember"] = await deleteTeamMembers(seenIds.teammember);
