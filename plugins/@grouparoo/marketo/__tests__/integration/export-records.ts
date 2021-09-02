@@ -4,16 +4,16 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { exportBatch } from "../../src/lib/export/exportProfiles";
+import { exportBatch } from "../../src/lib/export/exportRecords";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profiles.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-records.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profiles");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -134,7 +134,7 @@ async function deleteUsers(suppressErrors) {
   }
 }
 
-describe("marketo/exportProfiles", () => {
+describe("marketo/exportRecords", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
     await cleanUp(false);
@@ -144,7 +144,7 @@ describe("marketo/exportProfiles", () => {
     await cleanUp(true);
   }, helper.setupTime);
 
-  test("will not create profile on Marketo if sync mode does not allow it", async () => {
+  test("will not create record on Marketo if sync mode does not allow it", async () => {
     userId1 = await findId(email1);
     expect(userId1).toBe(null);
 
@@ -154,13 +154,13 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.enrich.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {},
-          newProfileProperties: { email: email1, firstName: "Brian" },
+          recordId: id1,
+          oldRecordProperties: {},
+          newRecordProperties: { email: email1, firstName: "Brian" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -169,7 +169,7 @@ describe("marketo/exportProfiles", () => {
     expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id1);
+    expect(error.recordId).toEqual(id1);
     expect(error.message).toContain("not creating");
     expect(error.errorLevel).toEqual("info");
 
@@ -177,7 +177,7 @@ describe("marketo/exportProfiles", () => {
     expect(foundId).toBeNull();
   });
 
-  test("can create profile on Marketo", async () => {
+  test("can create record on Marketo", async () => {
     userId1 = await findId(email1);
     expect(userId1).toBe(null);
 
@@ -187,13 +187,13 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {},
-          newProfileProperties: { email: email1, firstName: "Brian" },
+          recordId: id1,
+          oldRecordProperties: {},
+          newRecordProperties: { email: email1, firstName: "Brian" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -215,9 +215,9 @@ describe("marketo/exportProfiles", () => {
       syncOperations: { create: true, update: false, delete: true },
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { email: email1, firstName: "Brian" },
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: { email: email1, firstName: "Brian" },
+          newRecordProperties: {
             email: email1,
             firstName: "John", // updated!
             lastName: "Smith", // added!
@@ -225,7 +225,7 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -234,7 +234,7 @@ describe("marketo/exportProfiles", () => {
     expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id1);
+    expect(error.recordId).toEqual(id1);
     expect(error.message).toContain("not updating");
     expect(error.errorLevel).toEqual("info");
 
@@ -254,9 +254,9 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { email: email1, firstName: "Brian" },
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: { email: email1, firstName: "Brian" },
+          newRecordProperties: {
             email: email1,
             firstName: "John",
             lastName: "Smith",
@@ -264,16 +264,16 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: {},
-          newProfileProperties: { email: email2, firstName: "Andy" },
+          recordId: id2,
+          oldRecordProperties: {},
+          newRecordProperties: { email: email2, firstName: "Andy" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -302,17 +302,17 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             email: email1,
             firstName: "John",
             lastName: "Smith",
           },
-          newProfileProperties: { email: email1, firstName: "Brian" },
+          newRecordProperties: { email: email1, firstName: "Brian" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -336,13 +336,13 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { email: email1, firstName: "Brian" },
-          newProfileProperties: { email: email1, firstName: "Brian" },
+          recordId: id1,
+          oldRecordProperties: { email: email1, firstName: "Brian" },
+          newRecordProperties: { email: email1, firstName: "Brian" },
           oldGroups: [],
           newGroups: [list1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -370,22 +370,22 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { email: email1, firstName: "Brian" },
-          newProfileProperties: { email: email1, firstName: "Brian" },
+          recordId: id1,
+          oldRecordProperties: { email: email1, firstName: "Brian" },
+          newRecordProperties: { email: email1, firstName: "Brian" },
           oldGroups: [list1],
           newGroups: [list1, list2],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, firstName: "Andy" },
-          newProfileProperties: { email: email2, firstName: "Sally" },
+          recordId: id2,
+          oldRecordProperties: { email: email2, firstName: "Andy" },
+          newRecordProperties: { email: email2, firstName: "Sally" },
           oldGroups: [],
           newGroups: [list1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -416,22 +416,22 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { email: email1, firstName: "Brian" },
-          newProfileProperties: { email: email1, firstName: "Brian" },
+          recordId: id1,
+          oldRecordProperties: { email: email1, firstName: "Brian" },
+          newRecordProperties: { email: email1, firstName: "Brian" },
           oldGroups: [list1, list2],
           newGroups: [list1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, firstName: "Andy" },
-          newProfileProperties: { email: email2, firstName: "Sally" },
+          recordId: id2,
+          oldRecordProperties: { email: email2, firstName: "Andy" },
+          newRecordProperties: { email: email2, firstName: "Sally" },
           oldGroups: [list2],
           newGroups: [list1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -454,9 +454,9 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { email: email1, firstName: "Brian" },
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: { email: email1, firstName: "Brian" },
+          newRecordProperties: {
             email: newEmail1,
             firstName: "Brian",
             lastName: "Test",
@@ -464,16 +464,16 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [list1],
           newGroups: [list1, list2],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, firstName: "Andy" },
-          newProfileProperties: { email: email2, firstName: "Evan" },
+          recordId: id2,
+          oldRecordProperties: { email: email2, firstName: "Andy" },
+          newRecordProperties: { email: email2, firstName: "Evan" },
           oldGroups: [list1],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -508,13 +508,13 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.additive.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             email: newEmail1,
             firstName: "Brian",
             lastName: "Test",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             email: newEmail1,
             firstName: "Brian",
             lastName: "Test2", // changed here
@@ -522,7 +522,7 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [list1, list2],
           newGroups: [list1, list2],
           toDelete: true,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -531,7 +531,7 @@ describe("marketo/exportProfiles", () => {
     expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id1);
+    expect(error.recordId).toEqual(id1);
     expect(error.message).toContain("not deleting");
     expect(error.errorLevel).toEqual("info");
 
@@ -555,13 +555,13 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             email: newEmail1,
             firstName: "Brian",
             lastName: "Test",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             email: email1,
             firstName: "Brian",
             lastName: "Test",
@@ -569,16 +569,16 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [],
           newGroups: [list1],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, firstName: "Evan" },
-          newProfileProperties: { email: email2, firstName: "Evan" },
+          recordId: id2,
+          oldRecordProperties: { email: email2, firstName: "Evan" },
+          newRecordProperties: { email: email2, firstName: "Evan" },
           oldGroups: [],
           newGroups: [list1], // but he's being deleted!
           toDelete: true,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -613,9 +613,9 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {},
+          newRecordProperties: {
             email: email2,
             firstName: "Evan",
             textarea_field: "text is here",
@@ -631,7 +631,7 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -664,8 +664,8 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: {
             email: email2,
             firstName: "Evan",
             textarea_field: "text is here",
@@ -678,11 +678,11 @@ describe("marketo/exportProfiles", () => {
             percent_field: 99,
             currency_field: 34.66,
           },
-          newProfileProperties: { email: email2, firstName: "Maria" },
+          newRecordProperties: { email: email2, firstName: "Maria" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -712,9 +712,9 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, firstName: "Maria" },
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: { email: email2, firstName: "Maria" },
+          newRecordProperties: {
             email: email2,
             firstName: "Maria",
             boolean_field: "other",
@@ -722,7 +722,7 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -732,7 +732,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("boolean");
 
     user = await getUser(userId2);
@@ -756,9 +756,9 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, firstName: "Maria" },
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: { email: email2, firstName: "Maria" },
+          newRecordProperties: {
             email: email2,
             firstName: "Maria",
             email_field: "bademail",
@@ -766,7 +766,7 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -776,7 +776,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("email");
 
     user = await getUser(userId2);
@@ -800,9 +800,9 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, firstName: "Maria" },
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: { email: email2, firstName: "Maria" },
+          newRecordProperties: {
             email: email2,
             firstName: "Maria",
             integer_field: 14.1,
@@ -810,7 +810,7 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -820,7 +820,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("integer");
 
     user = await getUser(userId2);
@@ -844,9 +844,9 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, firstName: "Maria" },
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: { email: email2, firstName: "Maria" },
+          newRecordProperties: {
             email: email2,
             firstName: "Maria",
             float_field: "14c",
@@ -854,7 +854,7 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -864,7 +864,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("float");
 
     user = await getUser(userId2);
@@ -888,9 +888,9 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, firstName: "Maria" },
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: { email: email2, firstName: "Maria" },
+          newRecordProperties: {
             email: email2,
             firstName: "Maria",
             datetime_field: "yesterday",
@@ -898,7 +898,7 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -908,7 +908,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("datetime");
 
     user = await getUser(userId2);
@@ -932,9 +932,9 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, firstName: "Maria" },
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: { email: email2, firstName: "Maria" },
+          newRecordProperties: {
             email: email2,
             firstName: "Maria",
             percent_field: "100%", // should be integer
@@ -942,7 +942,7 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -952,7 +952,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("percent");
 
     user = await getUser(userId2);
@@ -979,13 +979,13 @@ describe("marketo/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: {
             email: email1,
             firstName: "Brian",
             lastName: "Test",
           },
-          newProfileProperties: {
+          newRecordProperties: {
             email: email1,
             firstName: "Sam",
             lastName: "Test",
@@ -993,12 +993,12 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id2,
-          oldProfileProperties: { email: email2, firstName: "Maria" },
-          newProfileProperties: {
+          recordId: id2,
+          oldRecordProperties: { email: email2, firstName: "Maria" },
+          newRecordProperties: {
             email: email2,
             firstName: "William",
             email_field: "bademail",
@@ -1006,12 +1006,12 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
         {
-          profileId: id3,
-          oldProfileProperties: {},
-          newProfileProperties: {
+          recordId: id3,
+          oldRecordProperties: {},
+          newRecordProperties: {
             email: email3,
             firstName: "Liz",
             email_field: "valid@grouparoo.com",
@@ -1019,7 +1019,7 @@ describe("marketo/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -1029,7 +1029,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id2);
+    expect(error.recordId).toEqual(id2);
     expect(error.message).toContain("email");
 
     user = await getUser(userId1);
