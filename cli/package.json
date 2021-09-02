@@ -9,7 +9,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=12.0.0 <16.0.0"
+    "node": ">=12.0.0"
   },
   "bin": {
     "grouparoo": "dist/grouparoo.js"
