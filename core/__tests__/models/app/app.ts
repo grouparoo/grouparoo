@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, App, Option, Log, PluginOptionType } from "../../../src";
 import { api, redis, utils } from "actionhero";
+import { App, Log, Option, plugin, PluginOptionType } from "../../../src";
 import { ObfuscatedPasswordString } from "../../../src/modules/optionHelper";
 
 describe("models/app", () => {
@@ -63,6 +63,44 @@ describe("models/app", () => {
 
     await appOne.destroy();
     await appTwo.destroy();
+  });
+
+  test("deleted apps can share the same name, but not with ready apps", async () => {
+    const appOne = await App.create({
+      type: "test-plugin-app",
+    });
+    const appTwo = await App.create({
+      type: "test-plugin-app",
+    });
+    const appThree = await App.create({
+      type: "test-plugin-app",
+    });
+
+    await appOne.setOptions({ fileId: "abc123" });
+    await appOne.update({ name: "1", state: "ready" });
+    await appTwo.setOptions({ fileId: "abc123" });
+    await appTwo.update({ name: "2", state: "deleted" });
+    await appThree.setOptions({ fileId: "abc123" });
+    await appThree.update({ name: "3", state: "deleted" });
+
+    expect(appOne.name).toBe("1");
+    expect(appOne.state).toBe("ready");
+    expect(appTwo.name).toBe("2");
+    expect(appTwo.state).toBe("deleted");
+    expect(appThree.name).toBe("3");
+    expect(appThree.state).toBe("deleted");
+
+    await appThree.update({ name: "2" });
+
+    await expect(appTwo.update({ name: "1" })).rejects.toThrow(
+      /name "1" is already in use/
+    );
+
+    await appOne.update({ name: "2" });
+
+    await appOne.destroy();
+    await appTwo.destroy();
+    await appThree.destroy();
   });
 
   test("deleting an app removes the appOptions", async () => {
