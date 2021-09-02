@@ -1,17 +1,16 @@
 import path from "path";
 import { helper } from "@grouparoo/spec-helper";
-import { exportBatch } from "../../src/lib/export/exportProfiles";
+import { exportBatch } from "../../src/lib/export/exportRecords";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { connect } from "../../src/lib/connect";
 import Mixpanel from "../../src/lib/client/mixpanel";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
-import { indexProfiles } from "../utils/shared";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profiles.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-records.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profiles");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -50,35 +49,35 @@ async function deleteUsers(emails: Array<string>, suppressErrors) {
   }
 }
 
-function getProfile(profiles: Array<any>, distinctId: string) {
-  const filtered = profiles.filter(
-    (profile) => profile["$distinct_id"] === distinctId
+function getRecord(records: Array<any>, distinctId: string) {
+  const filtered = records.filter(
+    (record) => record["$distinct_id"] === distinctId
   );
   return filtered.length > 0 ? filtered[0] : null;
 }
 
-function generateLongProfiles(count: number): Record<string, any>[] {
-  const profiles = [];
+function generateLongRecords(count: number): Record<string, any>[] {
+  const records = [];
   for (let i = 0; i < count; i++) {
-    profiles.push({
+    records.push({
       $distinct_id: `user${i}@demo.com`,
       $first_name: `Fist Name ${i}`,
       $last_name: `Last Name ${i}`,
     });
   }
 
-  return profiles;
+  return records;
 }
 
-function makeExports(profiles: Record<string, any>[]) {
-  return profiles.map((profile, i) => ({
-    profileId: `pro${i}`,
-    oldProfileProperties: {},
-    newProfileProperties: profile,
+function makeExports(records: Record<string, any>[]) {
+  return records.map((record, i) => ({
+    recordId: `pro${i}`,
+    oldRecordProperties: {},
+    newRecordProperties: record,
     oldGroups: [],
     newGroups: [],
     toDelete: false,
-    profile: null,
+    record: null,
   }));
 }
 
@@ -91,7 +90,7 @@ async function cleanUp(suppressErrors: boolean) {
   });
 }
 
-describe("mixpanel/exportProfiles", () => {
+describe("mixpanel/exportRecords", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
     await cleanUp(false);
@@ -101,7 +100,7 @@ describe("mixpanel/exportProfiles", () => {
     await cleanUp(true);
   }, hugeTime);
 
-  test("will not create profile if sync mode does not allow it", async () => {
+  test("will not create record if sync mode does not allow it", async () => {
     user1 = await client.query.profile.getByDistinctId(email1);
     expect(user1).toBe(null);
 
@@ -110,13 +109,13 @@ describe("mixpanel/exportProfiles", () => {
       syncOperations: DestinationSyncModeData.enrich.operations,
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: {},
-          newProfileProperties: { $distinct_id: email1, $first_name: "John" },
+          recordId: id1,
+          oldRecordProperties: {},
+          newRecordProperties: { $distinct_id: email1, $first_name: "John" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -125,7 +124,7 @@ describe("mixpanel/exportProfiles", () => {
     expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id1);
+    expect(error.recordId).toEqual(id1);
     expect(error.message).toContain("not creating");
     expect(error.errorLevel).toEqual("info");
 
@@ -134,7 +133,7 @@ describe("mixpanel/exportProfiles", () => {
   });
 
   test(
-    "can create profile",
+    "can create record",
     async () => {
       user1 = await client.query.profile.getByDistinctId(email1);
       expect(user1).toBe(null);
@@ -144,13 +143,13 @@ describe("mixpanel/exportProfiles", () => {
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
           {
-            profileId: id1,
-            oldProfileProperties: {},
-            newProfileProperties: { $distinct_id: email1, $first_name: "John" },
+            recordId: id1,
+            oldRecordProperties: {},
+            newRecordProperties: { $distinct_id: email1, $first_name: "John" },
             oldGroups: [],
             newGroups: [],
             toDelete: false,
-            profile: null,
+            record: null,
           },
         ],
       });
@@ -177,9 +176,9 @@ describe("mixpanel/exportProfiles", () => {
       syncOperations: { create: true, update: false, delete: true },
       exports: [
         {
-          profileId: id1,
-          oldProfileProperties: { $distinct_id: email1, $first_name: "John" },
-          newProfileProperties: {
+          recordId: id1,
+          oldRecordProperties: { $distinct_id: email1, $first_name: "John" },
+          newRecordProperties: {
             $distinct_id: email1,
             $first_name: "Brian", // updated!
             $last_name: "Doe", // added!
@@ -187,7 +186,7 @@ describe("mixpanel/exportProfiles", () => {
           oldGroups: [],
           newGroups: [],
           toDelete: false,
-          profile: null,
+          record: null,
         },
       ],
     });
@@ -196,7 +195,7 @@ describe("mixpanel/exportProfiles", () => {
     expect(success).toBe(false);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileId).toEqual(id1);
+    expect(error.recordId).toEqual(id1);
     expect(error.message).toContain("not updating");
     expect(error.errorLevel).toEqual("info");
 
@@ -218,9 +217,9 @@ describe("mixpanel/exportProfiles", () => {
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
           {
-            profileId: id1,
-            oldProfileProperties: { $distinct_id: email1, $first_name: "John" },
-            newProfileProperties: {
+            recordId: id1,
+            oldRecordProperties: { $distinct_id: email1, $first_name: "John" },
+            newRecordProperties: {
               $distinct_id: email1,
               $first_name: "John",
               $last_name: "Doe",
@@ -228,16 +227,16 @@ describe("mixpanel/exportProfiles", () => {
             oldGroups: [],
             newGroups: [],
             toDelete: false,
-            profile: null,
+            record: null,
           },
           {
-            profileId: id2,
-            oldProfileProperties: {},
-            newProfileProperties: { $distinct_id: email2, $first_name: "Pete" },
+            recordId: id2,
+            oldRecordProperties: {},
+            newRecordProperties: { $distinct_id: email2, $first_name: "Pete" },
             oldGroups: [],
             newGroups: [],
             toDelete: false,
-            profile: null,
+            record: null,
           },
         ],
       });
@@ -250,8 +249,8 @@ describe("mixpanel/exportProfiles", () => {
           email1,
           email2,
         ]);
-        user1 = getProfile(users, email1);
-        user2 = getProfile(users, email2);
+        user1 = getRecord(users, email1);
+        user2 = getRecord(users, email2);
         return (
           user1 &&
           user1["$properties"]["$last_name"] === "Doe" &&
@@ -282,17 +281,17 @@ describe("mixpanel/exportProfiles", () => {
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
           {
-            profileId: id1,
-            oldProfileProperties: {
+            recordId: id1,
+            oldRecordProperties: {
               $distinct_id: email1,
               $first_name: "John",
               $last_name: "Doe",
             },
-            newProfileProperties: { $distinct_id: email1, $first_name: "John" },
+            newRecordProperties: { $distinct_id: email1, $first_name: "John" },
             oldGroups: [],
             newGroups: [],
             toDelete: false,
-            profile: null,
+            record: null,
           },
         ],
       });
@@ -321,13 +320,13 @@ describe("mixpanel/exportProfiles", () => {
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
           {
-            profileId: id1,
-            oldProfileProperties: { $distinct_id: email1, $first_name: "John" },
-            newProfileProperties: { $distinct_id: email1, $first_name: "John" },
+            recordId: id1,
+            oldRecordProperties: { $distinct_id: email1, $first_name: "John" },
+            newRecordProperties: { $distinct_id: email1, $first_name: "John" },
             oldGroups: [],
             newGroups: [list1],
             toDelete: false,
-            profile: null,
+            record: null,
           },
         ],
       });
@@ -358,25 +357,25 @@ describe("mixpanel/exportProfiles", () => {
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
           {
-            profileId: id1,
-            oldProfileProperties: { $distinct_id: email1, $first_name: "John" },
-            newProfileProperties: { $distinct_id: email1, $first_name: "John" },
+            recordId: id1,
+            oldRecordProperties: { $distinct_id: email1, $first_name: "John" },
+            newRecordProperties: { $distinct_id: email1, $first_name: "John" },
             oldGroups: [list1],
             newGroups: [list1, list2],
             toDelete: false,
-            profile: null,
+            record: null,
           },
           {
-            profileId: id2,
-            oldProfileProperties: { $distinct_id: email2, $first_name: "Pete" },
-            newProfileProperties: {
+            recordId: id2,
+            oldRecordProperties: { $distinct_id: email2, $first_name: "Pete" },
+            newRecordProperties: {
               $distinct_id: email2,
               $first_name: "Sally",
             },
             oldGroups: [],
             newGroups: [list1],
             toDelete: false,
-            profile: null,
+            record: null,
           },
         ],
       });
@@ -389,8 +388,8 @@ describe("mixpanel/exportProfiles", () => {
           email1,
           email2,
         ]);
-        user1 = getProfile(users, email1);
-        user2 = getProfile(users, email2);
+        user1 = getRecord(users, email1);
+        user2 = getRecord(users, email2);
         return (
           user1 &&
           user1["$properties"]["groups"].length === 2 &&
@@ -425,28 +424,28 @@ describe("mixpanel/exportProfiles", () => {
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
           {
-            profileId: id1,
-            oldProfileProperties: { $distinct_id: email1, $first_name: "John" },
-            newProfileProperties: { $distinct_id: email1, $first_name: "John" },
+            recordId: id1,
+            oldRecordProperties: { $distinct_id: email1, $first_name: "John" },
+            newRecordProperties: { $distinct_id: email1, $first_name: "John" },
             oldGroups: [list1, list2],
             newGroups: [list1],
             toDelete: false,
-            profile: null,
+            record: null,
           },
           {
-            profileId: id2,
-            oldProfileProperties: {
+            recordId: id2,
+            oldRecordProperties: {
               $distinct_id: email2,
               $first_name: "Sally",
             },
-            newProfileProperties: {
+            newRecordProperties: {
               $distinct_id: email2,
               $first_name: "Sally",
             },
             oldGroups: [list2],
             newGroups: [list1],
             toDelete: false,
-            profile: null,
+            record: null,
           },
         ],
       });
@@ -459,8 +458,8 @@ describe("mixpanel/exportProfiles", () => {
           email1,
           email2,
         ]);
-        user1 = getProfile(users, email1);
-        user2 = getProfile(users, email2);
+        user1 = getRecord(users, email1);
+        user2 = getRecord(users, email2);
         return (
           user1 &&
           user1["$properties"]["groups"].length === 1 &&
@@ -495,9 +494,9 @@ describe("mixpanel/exportProfiles", () => {
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
           {
-            profileId: id1,
-            oldProfileProperties: { $distinct_id: email1, $first_name: "John" },
-            newProfileProperties: {
+            recordId: id1,
+            oldRecordProperties: { $distinct_id: email1, $first_name: "John" },
+            newRecordProperties: {
               $distinct_id: newEmail1,
               $first_name: "John",
               $last_name: "Test",
@@ -505,19 +504,19 @@ describe("mixpanel/exportProfiles", () => {
             oldGroups: [list1],
             newGroups: [list1, list2],
             toDelete: false,
-            profile: null,
+            record: null,
           },
           {
-            profileId: id2,
-            oldProfileProperties: {
+            recordId: id2,
+            oldRecordProperties: {
               $distinct_id: email2,
               $first_name: "Sally",
             },
-            newProfileProperties: { $distinct_id: email2, $first_name: "Evan" },
+            newRecordProperties: { $distinct_id: email2, $first_name: "Evan" },
             oldGroups: [list1],
             newGroups: [],
             toDelete: false,
-            profile: null,
+            record: null,
           },
         ],
       });
@@ -531,9 +530,9 @@ describe("mixpanel/exportProfiles", () => {
           email1,
           email2,
         ]);
-        const oldUser = getProfile(users, email1);
-        user1 = getProfile(users, newEmail1);
-        user2 = getProfile(users, email2);
+        const oldUser = getRecord(users, email1);
+        user1 = getRecord(users, newEmail1);
+        user2 = getRecord(users, email2);
         return (
           user1 &&
           user1["$properties"]["groups"].length === 2 &&
@@ -571,13 +570,13 @@ describe("mixpanel/exportProfiles", () => {
         syncOperations: DestinationSyncModeData.additive.operations,
         exports: [
           {
-            profileId: id1,
-            oldProfileProperties: {
+            recordId: id1,
+            oldRecordProperties: {
               $distinct_id: newEmail1,
               $first_name: "John",
               $last_name: "Test",
             },
-            newProfileProperties: {
+            newRecordProperties: {
               $distinct_id: newEmail1,
               $first_name: "John",
               $last_name: "Test2", // changed here
@@ -585,7 +584,7 @@ describe("mixpanel/exportProfiles", () => {
             oldGroups: [list1, list2],
             newGroups: [],
             toDelete: true,
-            profile: null,
+            record: null,
           },
         ],
       });
@@ -610,13 +609,13 @@ describe("mixpanel/exportProfiles", () => {
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
           {
-            profileId: id1,
-            oldProfileProperties: {
+            recordId: id1,
+            oldRecordProperties: {
               $distinct_id: newEmail1,
               $first_name: "John",
               $last_name: "Test",
             },
-            newProfileProperties: {
+            newRecordProperties: {
               $distinct_id: email1,
               $first_name: "John",
               $last_name: "Test",
@@ -624,16 +623,16 @@ describe("mixpanel/exportProfiles", () => {
             oldGroups: [list1, list2],
             newGroups: [list1],
             toDelete: false,
-            profile: null,
+            record: null,
           },
           {
-            profileId: id2,
-            oldProfileProperties: { $distinct_id: email2, $first_name: "Evan" },
-            newProfileProperties: { $distinct_id: email2, $first_name: "Evan" },
+            recordId: id2,
+            oldRecordProperties: { $distinct_id: email2, $first_name: "Evan" },
+            newRecordProperties: { $distinct_id: email2, $first_name: "Evan" },
             oldGroups: [],
             newGroups: [list1], // but he's being deleted!
             toDelete: true,
-            profile: null,
+            record: null,
           },
         ],
       });
@@ -647,9 +646,9 @@ describe("mixpanel/exportProfiles", () => {
           email1,
           email2,
         ]);
-        const oldUser = getProfile(users, newEmail1);
-        user1 = getProfile(users, email1);
-        user2 = getProfile(users, email2);
+        const oldUser = getRecord(users, newEmail1);
+        user1 = getRecord(users, email1);
+        user2 = getRecord(users, email2);
         return (
           user1 &&
           user1["$properties"]["groups"].length === 1 &&
@@ -684,9 +683,9 @@ describe("mixpanel/exportProfiles", () => {
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
           {
-            profileId: id2,
-            oldProfileProperties: {},
-            newProfileProperties: {
+            recordId: id2,
+            oldRecordProperties: {},
+            newRecordProperties: {
               $distinct_id: email2,
               $first_name: "Evan",
               grouparoo_custom_text: "text is also here",
@@ -695,7 +694,7 @@ describe("mixpanel/exportProfiles", () => {
             oldGroups: [],
             newGroups: [],
             toDelete: false,
-            profile: null,
+            record: null,
           },
         ],
       });
@@ -724,21 +723,21 @@ describe("mixpanel/exportProfiles", () => {
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
           {
-            profileId: id2,
-            oldProfileProperties: {
+            recordId: id2,
+            oldRecordProperties: {
               $distinct_id: email2,
               $first_name: "Evan",
               grouparoo_custom_text: "text is also here",
               grouparoo_custom_number: 5,
             },
-            newProfileProperties: {
+            newRecordProperties: {
               $distinct_id: email2,
               $first_name: "Maria",
             },
             oldGroups: [],
             newGroups: [],
             toDelete: false,
-            profile: null,
+            record: null,
           },
         ],
       });
@@ -765,29 +764,29 @@ describe("mixpanel/exportProfiles", () => {
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
           {
-            profileId: id2,
-            oldProfileProperties: {
+            recordId: id2,
+            oldRecordProperties: {
               $distinct_id: email2,
               $first_name: "Maria",
             },
-            newProfileProperties: {
+            newRecordProperties: {
               $first_name: "Maria",
             },
             oldGroups: [],
             newGroups: [],
             toDelete: false,
-            profile: null,
+            record: null,
           },
           {
-            profileId: "newId",
-            oldProfileProperties: {},
-            newProfileProperties: {
+            recordId: "newId",
+            oldRecordProperties: {},
+            newRecordProperties: {
               $first_name: "Ron",
             },
             oldGroups: [],
             newGroups: [],
             toDelete: false,
-            profile: null,
+            record: null,
           },
         ],
       });
@@ -797,11 +796,11 @@ describe("mixpanel/exportProfiles", () => {
       expect(errors.length).toEqual(2);
 
       const error = errors[0];
-      expect(error.profileId).toEqual(id2);
+      expect(error.recordId).toEqual(id2);
       expect(error.message).toContain("required");
 
       const error2 = errors[1];
-      expect(error2.profileId).toEqual("newId");
+      expect(error2.recordId).toEqual("newId");
       expect(error2.message).toContain("required");
 
       user2 = await client.query.profile.getByDistinctId(email2);
@@ -824,13 +823,13 @@ describe("mixpanel/exportProfiles", () => {
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
           {
-            profileId: id1,
-            oldProfileProperties: {
+            recordId: id1,
+            oldRecordProperties: {
               $distinct_id: email1,
               $first_name: "John",
               $last_name: "Test",
             },
-            newProfileProperties: {
+            newRecordProperties: {
               $distinct_id: email1,
               $first_name: "Sam",
               $last_name: "Test",
@@ -838,26 +837,26 @@ describe("mixpanel/exportProfiles", () => {
             oldGroups: [],
             newGroups: [],
             toDelete: false,
-            profile: null,
+            record: null,
           },
           {
-            profileId: id2,
-            oldProfileProperties: {
+            recordId: id2,
+            oldRecordProperties: {
               $distinct_id: email2,
               $first_name: "Maria",
             },
-            newProfileProperties: {
+            newRecordProperties: {
               $first_name: "William",
             },
             oldGroups: [],
             newGroups: [],
             toDelete: false,
-            profile: null,
+            record: null,
           },
           {
-            profileId: id3,
-            oldProfileProperties: {},
-            newProfileProperties: {
+            recordId: id3,
+            oldRecordProperties: {},
+            newRecordProperties: {
               $distinct_id: email3,
               $first_name: "Liz",
               grouparoo_custom_text: "some text",
@@ -865,7 +864,7 @@ describe("mixpanel/exportProfiles", () => {
             oldGroups: [],
             newGroups: [],
             toDelete: false,
-            profile: null,
+            record: null,
           },
         ],
       });
@@ -874,7 +873,7 @@ describe("mixpanel/exportProfiles", () => {
       expect(errors).not.toBeNull();
       expect(errors.length).toEqual(1);
       const error = errors[0];
-      expect(error.profileId).toEqual(id2);
+      expect(error.recordId).toEqual(id2);
       expect(error.message).toContain("required");
 
       await helper.waitUntil(newNock, async function () {
@@ -883,9 +882,9 @@ describe("mixpanel/exportProfiles", () => {
           email2,
           email3,
         ]);
-        user1 = getProfile(users, email1);
-        user2 = getProfile(users, email2);
-        user3 = getProfile(users, email3);
+        user1 = getRecord(users, email1);
+        user2 = getRecord(users, email2);
+        user3 = getRecord(users, email3);
         return (
           user1 &&
           user1["$properties"]["$first_name"] === "Sam" &&
@@ -916,13 +915,13 @@ describe("mixpanel/exportProfiles", () => {
   );
 
   test(
-    "can handle batches with lots of profiles",
+    "can handle batches with lots of records",
     async () => {
-      // generate profiles
-      const profiles = generateLongProfiles(50);
+      // generate records
+      const records = generateLongRecords(50);
 
       // run batch export
-      const exports = makeExports(profiles);
+      const exports = makeExports(records);
       const { success, errors } = await exportBatch({
         appOptions,
         syncOperations: DestinationSyncModeData.sync.operations,
@@ -932,22 +931,22 @@ describe("mixpanel/exportProfiles", () => {
       expect(success).toBe(true);
       expect(errors).toBeNull();
 
-      const distinctIds = profiles.map((p) => p["$distinct_id"]);
+      const distinctIds = records.map((p) => p["$distinct_id"]);
 
-      let exportedProfiles = [];
+      let exportedRecords = [];
       await helper.waitUntil(newNock, async function () {
-        exportedProfiles = await client.query.profile.getByDistinctIds(
+        exportedRecords = await client.query.profile.getByDistinctIds(
           distinctIds
         );
-        return exportedProfiles.length === distinctIds.length;
+        return exportedRecords.length === distinctIds.length;
       });
 
       // verify all were created properly
-      for (const profile of profiles) {
-        const user = getProfile(exportedProfiles, profile["$distinct_id"]);
-        expect(user["$distinct_id"]).toBe(profile["$distinct_id"]);
-        expect(user["$properties"]["$first_name"]).toBe(profile["$first_name"]);
-        expect(user["$properties"]["$last_name"]).toBe(profile["$last_name"]);
+      for (const record of records) {
+        const user = getRecord(exportedRecords, record["$distinct_id"]);
+        expect(user["$distinct_id"]).toBe(record["$distinct_id"]);
+        expect(user["$properties"]["$first_name"]).toBe(record["$first_name"]);
+        expect(user["$properties"]["$last_name"]).toBe(record["$last_name"]);
       }
 
       // cleanup
