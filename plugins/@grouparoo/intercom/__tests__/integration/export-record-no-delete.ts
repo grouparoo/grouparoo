@@ -10,12 +10,12 @@ const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "export-profile-no-delete.js"
+  "export-record-no-delete.js"
 );
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile-no-delete");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -42,18 +42,18 @@ const newEmail = `testother1b.${rand[9]}@demo.com`;
 const externalId2 = `testuser2.${rand[2]}`;
 const email2 = `testuser2.${rand[2]}@demo.com`;
 
-describe("intercom/contacts/exportProfile/no delete", () => {
+describe("intercom/contacts/exportRecord/no delete", () => {
   const { getUser, findEmail, getTags, idRegex, indexContacts, runExport } =
     setup(appOptions, destinationOptions, newNock);
 
-  test("can create lead profile on Intercom", async () => {
+  test("can create lead record on Intercom", async () => {
     userId = await findEmail(email);
     expect(userId).toBe(null);
 
     await runExport({
       syncOperations,
-      oldProfileProperties: {},
-      newProfileProperties: { email, name: "A Lead" },
+      oldRecordProperties: {},
+      newRecordProperties: { email, name: "A Lead" },
       oldGroups: [],
       newGroups: ["another", "Test Group X"],
       toDelete: false,
@@ -73,14 +73,14 @@ describe("intercom/contacts/exportProfile/no delete", () => {
     expect(tags).toEqual(["Test Group X", "another"]);
   });
 
-  test("can create user profile on Intercom", async () => {
+  test("can create user record on Intercom", async () => {
     userId2 = await findEmail(email2);
     expect(userId2).toBe(null);
 
     await runExport({
       syncOperations,
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: email2,
         external_id: externalId2,
         name: "A User",
@@ -109,12 +109,12 @@ describe("intercom/contacts/exportProfile/no delete", () => {
     try {
       await runExport({
         syncOperations,
-        oldProfileProperties: {
+        oldRecordProperties: {
           email: email2,
           external_id: externalId2,
           name: "A User",
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email: email2,
           external_id: externalId2,
           name: "Delete User",
@@ -149,11 +149,11 @@ describe("intercom/contacts/exportProfile/no delete", () => {
     try {
       await runExport({
         syncOperations,
-        oldProfileProperties: {
+        oldRecordProperties: {
           email: email,
           name: "A Lead",
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email: newEmail, // pick up old address!
           name: "Delete Lead",
         },
@@ -185,8 +185,8 @@ describe("intercom/contacts/exportProfile/no delete", () => {
   test("can start syncing lead again", async () => {
     await runExport({
       syncOperations,
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: email,
         name: "Back Lead",
       },
@@ -205,8 +205,8 @@ describe("intercom/contacts/exportProfile/no delete", () => {
   test("can start syncing contact again", async () => {
     await runExport({
       syncOperations,
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: email2,
         external_id: externalId2,
         name: "Back Contact",

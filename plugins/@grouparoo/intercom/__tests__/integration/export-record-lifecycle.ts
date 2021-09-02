@@ -9,12 +9,12 @@ const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "export-profile-lifecycle.js"
+  "export-record-lifecycle.js"
 );
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile-lifecycle");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -44,7 +44,7 @@ const email3 = `testuser3.${rand[3]}@demo.com`;
 const exampleEpoch = 1597870204;
 const exampleDate = new Date(exampleEpoch * 1000);
 
-describe("intercom/contacts/exportProfile/lifecycle", () => {
+describe("intercom/contacts/exportRecord/lifecycle", () => {
   const {
     getUser,
     findId,
@@ -56,13 +56,13 @@ describe("intercom/contacts/exportProfile/lifecycle", () => {
     runExport,
   } = setup(appOptions, destinationOptions, newNock);
 
-  test("can create lead profile on Intercom", async () => {
+  test("can create lead record on Intercom", async () => {
     userId = await findEmail(email);
     expect(userId).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { email, name: "Brian" },
+      oldRecordProperties: {},
+      newRecordProperties: { email, name: "Brian" },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -81,8 +81,8 @@ describe("intercom/contacts/exportProfile/lifecycle", () => {
 
   test("can add user variables and tags and upgrade", async () => {
     await runExport({
-      oldProfileProperties: { email, name: "Brian" },
-      newProfileProperties: {
+      oldRecordProperties: { email, name: "Brian" },
+      newRecordProperties: {
         email,
         external_id,
         name: "John",
@@ -120,10 +120,10 @@ describe("intercom/contacts/exportProfile/lifecycle", () => {
 
   test("it can change the external id", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         external_id,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         external_id: newExternalId,
         name: "New Ext",
       },
@@ -148,8 +148,8 @@ describe("intercom/contacts/exportProfile/lifecycle", () => {
     expect(userId2).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: email2,
         external_id: externalId2,
         name: "Sally",
@@ -188,8 +188,8 @@ describe("intercom/contacts/exportProfile/lifecycle", () => {
     await indexContacts();
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: email3,
         name: "Allison",
       },
@@ -210,10 +210,10 @@ describe("intercom/contacts/exportProfile/lifecycle", () => {
 
   test("it can change back the external id", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         external_id: newExternalId,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         external_id,
       },
       oldGroups: [],
@@ -232,10 +232,10 @@ describe("intercom/contacts/exportProfile/lifecycle", () => {
 
   test("it can't switch to only having an email and stays a user", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         external_id,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: newEmail,
         name: "No Ext",
       },
@@ -255,8 +255,8 @@ describe("intercom/contacts/exportProfile/lifecycle", () => {
 
   test("can delete a user", async () => {
     await runExport({
-      oldProfileProperties: { external_id: externalId2 },
-      newProfileProperties: { external_id: externalId2 },
+      oldRecordProperties: { external_id: externalId2 },
+      newRecordProperties: { external_id: externalId2 },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
@@ -271,8 +271,8 @@ describe("intercom/contacts/exportProfile/lifecycle", () => {
 
   test("can bring the user back / recreate (even as lead)", async () => {
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: email2,
         name: "Back!",
       },

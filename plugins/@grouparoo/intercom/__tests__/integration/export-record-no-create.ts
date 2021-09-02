@@ -5,25 +5,31 @@ import { helper } from "@grouparoo/spec-helper";
 import { getTagId } from "../../src/lib/export-contacts/listMethods";
 import { getRandomNumbers, loadAppOptions, updater } from "../utils/nockHelper";
 import { setup } from "../utils/shared";
+import { DestinationSyncOperations } from "@grouparoo/core";
 
 const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "export-profile-user.js"
+  "export-record-no-create.js"
 );
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile-user");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
 
 const appId = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
 const appOptions = loadAppOptions(newNock);
+const syncOperations: DestinationSyncOperations = {
+  create: false,
+  update: true,
+  delete: true,
+};
 const destinationOptions = {
-  creationMode: "User",
+  creationMode: "Lifecycle",
   removalMode: "Archive",
 };
 
@@ -31,12 +37,12 @@ let userId = null;
 let userId2 = null;
 let userId3 = null;
 
-const rand = getRandomNumbers(1); // has to be after requiring nock
+const rand = getRandomNumbers(3); // has to be after requiring nock
 
 const external_id = `testuser1.${rand[1]}`;
 const email = `testuser1.${rand[1]}@demo.com`;
 const newExternalId = `testuser1b.${rand[9]}`;
-const newEmail = `testother1b.${rand[9]}@demo.com`;
+// const newEmail = `testother1b.${rand[9]}@demo.com`;
 
 const externalId2 = `testuser2.${rand[2]}`;
 const email2 = `testuser2.${rand[2]}@demo.com`;
@@ -46,44 +52,56 @@ const email3 = `testuser3.${rand[3]}@demo.com`;
 const exampleEpoch = 1597870204;
 const exampleDate = new Date(exampleEpoch * 1000);
 
-describe("intercom/contacts/exportProfile/user", () => {
+describe("intercom/contacts/exportRecord/no create", () => {
   const {
     getUser,
     findId,
     findEmail,
     getTags,
+    idRegex,
     indexContacts,
     getClient,
     runExport,
   } = setup(appOptions, destinationOptions, newNock);
 
-  test("can create profile on Intercom", async () => {
-    userId = await findId(external_id);
-    expect(userId).toBe(null);
+  test("makes some existing users", async () => {
+    const client = getClient();
 
-    await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { email, external_id, name: "Brian" },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
+    const { body: user } = await client.contacts.create({
+      role: "user",
+      email,
+      external_id,
+      name: "First",
     });
 
     await indexContacts();
 
-    userId = await findId(external_id);
+    userId = user.id;
     expect(userId).toBeTruthy();
-    const user = await getUser(userId);
-    expect(user.email).toBe(email);
     expect(user.external_id).toBe(external_id);
-    expect(user.name).toBe("Brian");
+    expect(user.email).toBe(email);
+    expect(user.name).toBe("First");
     expect(user.role).toBe("user");
+
+    const { body: lead } = await client.contacts.create({
+      role: "lead",
+      email: email2,
+      name: "Leader",
+    });
+
+    userId2 = lead.id;
+    expect(userId2).toBeTruthy();
+    expect(lead.external_id).toMatch(idRegex); // auto-gen
+    expect(lead.email).toBe(email2);
+    expect(lead.name).toBe("Leader");
+    expect(lead.role).toBe("lead");
   });
 
   test("can add user variables", async () => {
     await runExport({
-      oldProfileProperties: { email, external_id, name: "Brian" },
-      newProfileProperties: {
+      syncOperations,
+      oldRecordProperties: { email, external_id, name: "Brian" },
+      newRecordProperties: {
         email,
         external_id,
         name: "John",
@@ -114,7 +132,8 @@ describe("intercom/contacts/exportProfile/user", () => {
 
   test("can change user variables", async () => {
     await runExport({
-      oldProfileProperties: {
+      syncOperations,
+      oldRecordProperties: {
         email,
         external_id,
         name: "John",
@@ -122,7 +141,7 @@ describe("intercom/contacts/exportProfile/user", () => {
         "custom_attributes.text_field": "testing here",
         "custom_attributes.date_field": exampleDate,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
         external_id,
         name: "Evan",
@@ -156,7 +175,8 @@ describe("intercom/contacts/exportProfile/user", () => {
 
   test("can clear user variables", async () => {
     await runExport({
-      oldProfileProperties: {
+      syncOperations,
+      oldRecordProperties: {
         email,
         external_id,
         name: "Evan",
@@ -166,7 +186,7 @@ describe("intercom/contacts/exportProfile/user", () => {
         "custom_attributes.decimal_field": 3.14,
         "custom_attributes.date_field": null,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         external_id, // needs either this or email
       },
       oldGroups: [],
@@ -188,10 +208,11 @@ describe("intercom/contacts/exportProfile/user", () => {
 
   test("can add tags", async () => {
     await runExport({
-      oldProfileProperties: {
+      syncOperations,
+      oldRecordProperties: {
         external_id,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         external_id,
       },
       oldGroups: [],
@@ -205,13 +226,14 @@ describe("intercom/contacts/exportProfile/user", () => {
 
   test("can remove tags", async () => {
     await runExport({
-      oldProfileProperties: {
+      syncOperations,
+      oldRecordProperties: {
         external_id,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         external_id,
       },
-      oldGroups: ["another", "Test Group X", "no exist"],
+      oldGroups: ["another", "Test Group X"],
       newGroups: ["Test Group X"],
       toDelete: false,
     });
@@ -229,10 +251,11 @@ describe("intercom/contacts/exportProfile/user", () => {
     await getClient().contacts.tag(userId, tagId);
 
     await runExport({
-      oldProfileProperties: {
+      syncOperations,
+      oldRecordProperties: {
         external_id,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         external_id,
       },
       oldGroups: ["Test Group X"],
@@ -246,10 +269,11 @@ describe("intercom/contacts/exportProfile/user", () => {
 
   test("it does not change intercom-created tags when groups are removed", async () => {
     await runExport({
-      oldProfileProperties: {
+      syncOperations,
+      oldRecordProperties: {
         external_id,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         external_id,
       },
       oldGroups: ["Test Group X", "New_one"],
@@ -263,11 +287,13 @@ describe("intercom/contacts/exportProfile/user", () => {
 
   test("it can change the external id", async () => {
     await runExport({
-      oldProfileProperties: {
+      syncOperations,
+      oldRecordProperties: {
         external_id,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         external_id: newExternalId,
+        name: "New Id",
       },
       oldGroups: [],
       newGroups: [],
@@ -284,13 +310,11 @@ describe("intercom/contacts/exportProfile/user", () => {
     expect(tags).toEqual(["outside_grouparoo"]);
   });
 
-  test("it can sync a different user with no external id", async () => {
-    userId2 = await findId(externalId2);
-    expect(userId2).toBe(null);
-
+  test("it can sync a lead with no external id", async () => {
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      syncOperations,
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: email2,
         name: "Sally",
       },
@@ -305,21 +329,22 @@ describe("intercom/contacts/exportProfile/user", () => {
     expect(userId2).toBeTruthy();
     const user = await getUser(userId2);
     expect(user.email).toBe(email2);
-    expect(user.external_id).toBe(null);
+    expect(user.external_id).toMatch(idRegex);
     expect(user.name).toBe("Sally");
-    expect(user.role).toBe("user");
+    expect(user.role).toBe("lead");
 
     const tags = await getTags(userId2);
     expect(tags).toEqual(["Test Group X"]);
   });
 
-  test("it can add an external id to the new user", async () => {
+  test("it can not add an external id to the lead", async () => {
     await runExport({
-      oldProfileProperties: {
+      syncOperations,
+      oldRecordProperties: {
         email: email2,
         name: "Sally",
       },
-      newProfileProperties: {
+      newRecordProperties: {
         external_id: externalId2,
         email: email2,
         name: "Sally",
@@ -331,189 +356,59 @@ describe("intercom/contacts/exportProfile/user", () => {
 
     await indexContacts();
 
-    userId2 = await findId(externalId2);
-    expect(userId2).toBeTruthy();
     const user = await getUser(userId2);
     expect(user.email).toBe(email2);
-    expect(user.external_id).toBe(externalId2);
+    expect(user.external_id).not.toBe(externalId2);
+    expect(user.external_id).toMatch(idRegex);
     expect(user.name).toBe("Sally");
-    expect(user.role).toBe("user");
-
-    const tags = await getTags(userId2);
-    expect(tags).toEqual(["Test Group X"]);
-  });
-
-  test("it will update a lead as well", async () => {
-    const { body } = await getClient().contacts.create({
-      role: "lead",
-      email: email3,
-      name: "Alan",
-    });
-    userId3 = body.id;
-    const assignedId = body.external_id;
-    expect(userId3).toBeTruthy();
-    expect(assignedId).toBeTruthy(); // assigned one automatically by Intercom
-
-    await indexContacts();
-
-    await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
-        email: email3,
-        name: "Allison",
-      },
-      oldGroups: [],
-      newGroups: ["Test Group X"],
-      toDelete: false,
-    });
-
-    const user = await getUser(userId3);
-    expect(user.email).toBe(email3);
-    expect(user.external_id).toBe(assignedId);
-    expect(user.name).toBe("Allison");
     expect(user.role).toBe("lead");
 
     const tags = await getTags(userId2);
     expect(tags).toEqual(["Test Group X"]);
   });
 
-  test("it can change back the external id", async () => {
-    await runExport({
-      oldProfileProperties: {
-        external_id: newExternalId,
-      },
-      newProfileProperties: {
-        external_id,
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
+  test("it will not add a new contact", async () => {
+    let error = null;
+    try {
+      await runExport({
+        syncOperations,
+        oldRecordProperties: {},
+        newRecordProperties: {
+          email: email3,
+          name: "Not Enrich",
+        },
+        oldGroups: [],
+        newGroups: ["Test Group X"],
+        toDelete: false,
+      });
+    } catch (err) {
+      error = err;
+    }
+
+    expect(error).toBeTruthy();
+    expect(error.message).toMatch(/not creating/);
+    expect(error["errorLevel"]).toBe("info");
 
     await indexContacts();
 
-    const user = await getUser(userId);
-    expect(user.id).toBe(userId);
-    expect(user.external_id).toBe(external_id);
-    expect(user.email).toBe("");
-    expect(user.role).toBe("user");
-  });
-
-  test("it can't switch to only having an email", async () => {
-    await runExport({
-      oldProfileProperties: {
-        external_id,
-      },
-      newProfileProperties: {
-        email: newEmail,
-        name: "No Ext",
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
-
-    await indexContacts();
-
-    const user = await getUser(userId);
-    expect(user.external_id).toBe(external_id);
-    expect(user.email).toBe(newEmail);
-    expect(user.name).toBe("No Ext");
-    expect(user.role).toBe("user");
-  });
-
-  test("it can change emails", async () => {
-    await runExport({
-      oldProfileProperties: {
-        email: newEmail,
-      },
-      newProfileProperties: {
-        email,
-        name: "New Email",
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
-
-    await indexContacts();
-
-    const user = await getUser(userId);
-    expect(user.id).toBe(userId);
-    expect(user.external_id).toBe(external_id);
-    expect(user.email).toBe(email);
-    expect(user.name).toBe("New Email");
-    expect(user.role).toBe("user");
-  });
-
-  test("it picks external_id when conflicting email address", async () => {
-    await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
-        external_id,
-        email: email2,
-        name: "Conflict",
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
-
-    await indexContacts();
-
-    let user = await getUser(userId2);
-    expect(user.email).toBe(email2);
-    expect(user.external_id).toBe(externalId2);
-    expect(user.name).toBe("Sally");
-    expect(user.role).toBe("user");
-
-    // this one actually updated
-    user = await getUser(userId);
-    expect(user.email).toBe(email2);
-    expect(user.external_id).toBe(external_id);
-    expect(user.name).toBe("Conflict");
-    expect(user.role).toBe("user");
+    const test = await findEmail(email3);
+    expect(test).toBe(null);
   });
 
   test("can delete a user", async () => {
     await runExport({
-      oldProfileProperties: { external_id: externalId2 },
-      newProfileProperties: { external_id: externalId2 },
+      syncOperations,
+      oldRecordProperties: { email: email2 },
+      newRecordProperties: { email: email2 },
       oldGroups: [],
-      newGroups: [],
+      newGroups: ["Test Group X"],
       toDelete: true,
     });
 
     await indexContacts();
 
     await expect(getUser(userId2)).rejects.toThrow(/User Not Found/);
-    const id = await findId(externalId2);
+    const id = await findEmail(email2);
     expect(id).toBeNull();
-  });
-
-  test("can bring the user back / recreate", async () => {
-    await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
-        email: email2,
-        external_id: externalId2,
-        name: "Back!",
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
-
-    await indexContacts();
-
-    const test = await findId(externalId2);
-    expect(test).toBeTruthy();
-    expect(test).not.toBe(userId2);
-
-    userId2 = test;
-
-    const user = await getUser(userId2);
-    expect(user.name).toBe("Back!");
-    expect(user.archived).toBeFalsy();
   });
 });

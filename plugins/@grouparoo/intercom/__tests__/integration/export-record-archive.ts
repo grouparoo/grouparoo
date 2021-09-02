@@ -9,12 +9,12 @@ const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "export-profile-archive.js"
+  "export-record-archive.js"
 );
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile-archive");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -36,7 +36,7 @@ const newEmail = `testother1b.${rand[9]}@demo.com`;
 const externalId2 = `testuser2.${rand[2]}`;
 const email2 = `testuser2.${rand[2]}@demo.com`;
 
-describe("intercom/contacts/exportProfile/archive", () => {
+describe("intercom/contacts/exportRecord/archive", () => {
   const {
     getUser,
     findEmail,
@@ -47,13 +47,13 @@ describe("intercom/contacts/exportProfile/archive", () => {
     runExport,
   } = setup(appOptions, destinationOptions, newNock);
 
-  test("can create lead profile on Intercom", async () => {
+  test("can create lead record on Intercom", async () => {
     userId = await findEmail(email);
     expect(userId).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { email, name: "A Lead" },
+      oldRecordProperties: {},
+      newRecordProperties: { email, name: "A Lead" },
       oldGroups: [],
       newGroups: ["another", "Test Group X", "extra_one"],
       toDelete: false,
@@ -73,13 +73,13 @@ describe("intercom/contacts/exportProfile/archive", () => {
     expect(tags).toEqual(["Test Group X", "another", "extra_one"]);
   });
 
-  test("can create user profile on Intercom", async () => {
+  test("can create user record on Intercom", async () => {
     userId2 = await findEmail(email2);
     expect(userId2).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: email2,
         external_id: externalId2,
         name: "A User",
@@ -105,12 +105,12 @@ describe("intercom/contacts/exportProfile/archive", () => {
 
   test("will archive a user", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: email2,
         external_id: externalId2,
         name: "A User",
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: email2,
         external_id: externalId2,
         name: "Delete User",
@@ -129,11 +129,11 @@ describe("intercom/contacts/exportProfile/archive", () => {
 
   test("will archive a lead", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: email,
         name: "A Lead",
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: newEmail, // pick up old address!
         name: "Delete Lead",
       },
@@ -151,8 +151,8 @@ describe("intercom/contacts/exportProfile/archive", () => {
 
   test("makes new lead with same email", async () => {
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: email,
         name: "Back Lead",
       },
@@ -180,8 +180,8 @@ describe("intercom/contacts/exportProfile/archive", () => {
 
   test("unarchives with same email and external_id", async () => {
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: email2,
         external_id: externalId2,
         name: "Back User",
