@@ -17,7 +17,7 @@
     "lerna": "4.0.0",
     "lerna-changelog": "2.1.0",
     "license-checker": "github:grouparoo/license-checker",
-    "npm-check-updates": "11.8.3",
+    "npm-check-updates": "11.8.4",
     "prettier": "2.3.2"
   },
   "scripts": {
