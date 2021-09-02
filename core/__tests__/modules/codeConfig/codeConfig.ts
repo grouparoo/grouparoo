@@ -1,24 +1,24 @@
 import { helper } from "@grouparoo/spec-helper";
+import { api, specHelper } from "actionhero";
 import path from "path";
 import {
-  plugin,
-  Property,
-  App,
-  Source,
-  Schedule,
-  Group,
-  Destination,
   ApiKey,
-  Team,
-  TeamMember,
-  Setting,
-  Option,
-  Profile,
-  Run,
+  App,
+  Destination,
+  Group,
   GroupMember,
   GroupRule,
+  Option,
+  plugin,
+  Profile,
+  Property,
+  Run,
+  Schedule,
+  Setting,
+  Source,
+  Team,
+  TeamMember,
 } from "../../../src";
-import { api, specHelper } from "actionhero";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
 describe("modules/codeConfig", () => {

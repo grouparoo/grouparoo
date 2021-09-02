@@ -1,46 +1,46 @@
-import {
-  Table,
-  Column,
-  AllowNull,
-  BelongsTo,
-  HasOne,
-  HasMany,
-  Length,
-  BeforeCreate,
-  BeforeSave,
-  AfterDestroy,
-  BeforeDestroy,
-  ForeignKey,
-  Default,
-  DataType,
-  DefaultScope,
-  AfterSave,
-} from "sequelize-typescript";
 import { Op } from "sequelize";
+import {
+  AfterDestroy,
+  AfterSave,
+  AllowNull,
+  BeforeCreate,
+  BeforeDestroy,
+  BeforeSave,
+  BelongsTo,
+  Column,
+  DataType,
+  Default,
+  DefaultScope,
+  ForeignKey,
+  HasMany,
+  HasOne,
+  Length,
+  Table,
+} from "sequelize-typescript";
+import {
+  ScheduleConfigurationObject,
+  SourceConfigurationObject,
+} from "../classes/codeConfig";
 import { LoggedModel } from "../classes/loggedModel";
-import { Schedule } from "./Schedule";
+import { APIData } from "../modules/apiData";
+import { LockableHelper } from "../modules/lockableHelper";
+import { SourceOps } from "../modules/ops/source";
+import { plugin } from "../modules/plugin";
+import { ConfigWriter } from "./../modules/configWriter";
+import { MappingHelper } from "./../modules/mappingHelper";
+import { OptionHelper } from "./../modules/optionHelper";
+import { StateMachine } from "./../modules/stateMachine";
+import { App } from "./App";
+import { Mapping } from "./Mapping";
+import { Option } from "./Option";
+import { Profile } from "./Profile";
 import {
   Property,
   PropertyFiltersWithKey,
   SimplePropertyOptions,
 } from "./Property";
-import { Option } from "./Option";
-import { App } from "./App";
 import { Run } from "./Run";
-import { Profile } from "./Profile";
-import { Mapping } from "./Mapping";
-import { plugin } from "../modules/plugin";
-import { OptionHelper } from "./../modules/optionHelper";
-import { MappingHelper } from "./../modules/mappingHelper";
-import { StateMachine } from "./../modules/stateMachine";
-import { ConfigWriter } from "./../modules/configWriter";
-import { SourceOps } from "../modules/ops/source";
-import { LockableHelper } from "../modules/lockableHelper";
-import { APIData } from "../modules/apiData";
-import {
-  ScheduleConfigurationObject,
-  SourceConfigurationObject,
-} from "../classes/codeConfig";
+import { Schedule } from "./Schedule";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
@@ -381,7 +381,7 @@ export class Source extends LoggedModel<Source> {
       where: {
         id: { [Op.ne]: instance.id },
         name: instance.name,
-        state: { [Op.ne]: "draft" },
+        state: { [Op.notIn]: ["draft", "deleted"] },
       },
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
