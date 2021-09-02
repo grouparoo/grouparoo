@@ -1062,12 +1062,12 @@ importers:
       '@types/node': '*'
       actionhero: 27.0.3
       jest: 27.1.0
-      newrelic: 8.1.0
+      newrelic: 8.2.0
       prettier: 2.3.2
       ts-jest: 27.0.5
       typescript: 4.3.5
     dependencies:
-      newrelic: 8.1.0
+      newrelic: 8.2.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -3246,22 +3246,22 @@ packages:
   /@napi-rs/triples/1.0.3:
     resolution: {integrity: sha512-jDJTpta+P4p1NZTFVLHJ/TLFVYVcOqv6l8xwOeBKNPMgY/zDYH/YH7SJbvrr/h1RcS9GzbPcLKGzpuK9cV56UA==}
 
-  /@newrelic/aws-sdk/4.0.1_newrelic@8.1.0:
+  /@newrelic/aws-sdk/4.0.1_newrelic@8.2.0:
     resolution: {integrity: sha512-6pjPHKODTMItaO6zHDSR3HH7ohvUP9zzQf2pKMKdU4lB/1HV2+Xf6r92X96zPmGQsAnCP9xhgbseUklHD00a1Q==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       newrelic: '>=6.11.0'
     dependencies:
-      newrelic: 8.1.0
+      newrelic: 8.2.0
     dev: false
 
-  /@newrelic/koa/6.0.1_newrelic@8.1.0:
+  /@newrelic/koa/6.0.1_newrelic@8.2.0:
     resolution: {integrity: sha512-LrM0wLBcdngkL6gfAyqlBciqncZJ/Z2DhHCvKQbYSqwG0UxUZ5EZyYqkmU28UIFAdC6ag/6QDEFwYg3PXwJbzQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       newrelic: '>=6.11.0'
     dependencies:
-      newrelic: 8.1.0
+      newrelic: 8.2.0
     dev: false
 
   /@newrelic/native-metrics/7.0.2:
@@ -3274,13 +3274,13 @@ packages:
     dev: false
     optional: true
 
-  /@newrelic/superagent/5.0.1_newrelic@8.1.0:
+  /@newrelic/superagent/5.0.1_newrelic@8.2.0:
     resolution: {integrity: sha512-Efn/G0OohcjDkNEgH/eqiie8boWYMFVT++zxHquIj7I8FdTd2ZoKzcxS2lbkbEAKKXO54o8+cShJTwpptkAdGg==}
     engines: {node: '>=12.0'}
     peerDependencies:
       newrelic: '>=6.11.0'
     dependencies:
-      newrelic: 8.1.0
+      newrelic: 8.2.0
     dev: false
 
   /@next/env/11.1.0:
@@ -10089,16 +10089,16 @@ packages:
     engines: {node: '>= 0.4.0'}
     dev: false
 
-  /newrelic/8.1.0:
-    resolution: {integrity: sha512-unBuU4zt7UtMJVwxmZQs++ZPERc7TE5Qg17T7Np7CNpj9bL0szTFTjtiJKmt7eTd3vMKf9dRS1Pqfh3tCUCp2w==}
+  /newrelic/8.2.0:
+    resolution: {integrity: sha512-jMgzCyiGg6aY3kBJVnRYMSzQCm5CFNDDEu1h5Nn1l3+r035laXRLCeWRu7hFZJVr9cGZUrvmShoNXbV/6LMqSA==}
     engines: {node: '>=12.0.0', npm: '>=6.0.0'}
     hasBin: true
     dependencies:
       '@grpc/grpc-js': 1.3.7
       '@grpc/proto-loader': 0.5.6
-      '@newrelic/aws-sdk': 4.0.1_newrelic@8.1.0
-      '@newrelic/koa': 6.0.1_newrelic@8.1.0
-      '@newrelic/superagent': 5.0.1_newrelic@8.1.0
+      '@newrelic/aws-sdk': 4.0.1_newrelic@8.2.0
+      '@newrelic/koa': 6.0.1_newrelic@8.2.0
+      '@newrelic/superagent': 5.0.1_newrelic@8.2.0
       '@tyriar/fibonacci-heap': 2.0.9
       async: 3.2.1
       concat-stream: 2.0.0
