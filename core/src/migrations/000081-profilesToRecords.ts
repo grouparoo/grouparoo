@@ -49,7 +49,7 @@ export default {
         {
           unique: true,
           fields: ["propertyId", "rawValue", "position", "unique"],
-          where: { unique: { [Op.eq]: true } },
+          where: { unique: true },
         }
       );
     }
@@ -122,7 +122,7 @@ export default {
         {
           unique: true,
           fields: ["propertyId", "rawValue", "position", "unique"],
-          where: { unique: { [Op.eq]: true } },
+          where: { unique: true },
         }
       );
 
