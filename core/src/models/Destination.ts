@@ -1,44 +1,44 @@
-import { task, api, log } from "actionhero";
+import { log } from "actionhero";
+import { Op } from "sequelize";
 import {
-  Table,
-  Column,
-  Default,
+  AfterDestroy,
   AllowNull,
+  BeforeCreate,
+  BeforeDestroy,
+  BeforeSave,
   BelongsTo,
+  Column,
+  DataType,
+  Default,
+  DefaultScope,
+  ForeignKey,
   HasMany,
   Length,
-  ForeignKey,
-  BeforeCreate,
-  BeforeSave,
-  AfterDestroy,
-  DataType,
-  DefaultScope,
-  BeforeDestroy,
   Scopes,
+  Table,
 } from "sequelize-typescript";
+import { DestinationConfigurationObject } from "../classes/codeConfig";
 import { LoggedModel } from "../classes/loggedModel";
+import { APIData } from "../modules/apiData";
+import { destinationTypeConversions } from "../modules/destinationTypeConversions";
+import { LockableHelper } from "../modules/lockableHelper";
+import { ExportOps } from "../modules/ops/export";
+import { plugin } from "../modules/plugin";
+import { ConfigWriter } from "./../modules/configWriter";
+import { MappingHelper } from "./../modules/mappingHelper";
+import { DestinationOps } from "./../modules/ops/destination";
+import { OptionHelper } from "./../modules/optionHelper";
+import { StateMachine } from "./../modules/stateMachine";
 import { App } from "./App";
+import { DestinationGroupMembership } from "./DestinationGroupMembership";
+import { Export } from "./Export";
+import { ExportProcessor } from "./ExportProcessor";
+import { Group } from "./Group";
+import { GroupRule } from "./GroupRule";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
 import { Profile } from "./Profile";
-import { Group } from "./Group";
-import { Export } from "./Export";
-import { ExportProcessor } from "./ExportProcessor";
-import { DestinationGroupMembership } from "./DestinationGroupMembership";
-import { plugin } from "../modules/plugin";
-import { Op } from "sequelize";
-import { OptionHelper } from "./../modules/optionHelper";
-import { MappingHelper } from "./../modules/mappingHelper";
-import { StateMachine } from "./../modules/stateMachine";
-import { ConfigWriter } from "./../modules/configWriter";
 import { Property } from "./Property";
-import { DestinationOps } from "./../modules/ops/destination";
-import { ExportOps } from "../modules/ops/export";
-import { destinationTypeConversions } from "../modules/destinationTypeConversions";
-import { LockableHelper } from "../modules/lockableHelper";
-import { APIData } from "../modules/apiData";
-import { GroupRule } from "./GroupRule";
-import { DestinationConfigurationObject } from "../classes/codeConfig";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -628,7 +628,7 @@ export class Destination extends LoggedModel<Destination> {
       where: {
         id: { [Op.ne]: instance.id },
         name: instance.name,
-        state: { [Op.ne]: "draft" },
+        state: { [Op.notIn]: ["draft", "deleted"] },
       },
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
