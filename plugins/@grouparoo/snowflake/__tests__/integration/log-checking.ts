@@ -1,4 +1,4 @@
-import { Profile, Property, SimpleAppOptions } from "@grouparoo/core";
+import { GrouparooRecord, Property, SimpleAppOptions } from "@grouparoo/core";
 import { helper } from "@grouparoo/spec-helper";
 import path from "path";
 import { connect } from "../../src/lib/connect";
@@ -6,7 +6,7 @@ import { getConnection } from "../../src/lib/query-import/connection";
 import "../utils/mock";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 
-const profileProperty = getConnection().methods.profileProperty;
+const recordProperty = getConnection().methods.recordProperty;
 
 const nockFile = path.join(__dirname, "../", "fixtures", "log-checking.js");
 
@@ -19,20 +19,20 @@ require(nockFile);
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
-let profile: Profile;
+let record: GrouparooRecord;
 
 async function getPropertyValue(query: string) {
   const propertyOptions = { query };
   const connection = await connect({ appOptions, app: null, appId: null });
   const property = await Property.findOne();
 
-  return profileProperty({
+  return recordProperty({
     connection,
     appOptions,
-    profile,
+    record,
     propertyOptions,
     property,
-    profileId: null,
+    recordId: null,
     source: null,
     sourceId: null,
     app: null,
@@ -54,12 +54,12 @@ describe("snowflake/integration/log-checking", () => {
     // all of these are in in the test plugin
     await helper.factories.properties();
 
-    profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+    record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       userId: [1],
       email: ["ejervois0@example.com"],
     });
-    expect(profile.id).toBeTruthy();
+    expect(record.id).toBeTruthy();
   });
 
   it("should correctly do debug logging for snowflake queries", async () => {

@@ -13,9 +13,9 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 import { SimpleAppOptions, Import, plugin, Run } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
-const profiles = getConnection().methods.profiles;
+const records = getConnection().methods.records;
 
-const nockFile = path.join(__dirname, "../", "fixtures", "table-profiles.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "table-records.js");
 
 // these comments to use nock
 const newNock = false;
@@ -47,7 +47,7 @@ async function runIt({ highWaterMark, sourceOffset, limit, scheduleFilters }) {
     highWaterMark: nextHighWaterMark,
     importsCount,
     sourceOffset: nextSourceOffset,
-  } = await profiles({
+  } = await records({
     connection,
     run,
     appOptions,
@@ -75,7 +75,7 @@ async function runIt({ highWaterMark, sourceOffset, limit, scheduleFilters }) {
   };
 }
 
-describe("snowflake/table/profiles", () => {
+describe("snowflake/table/records", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -101,7 +101,7 @@ describe("snowflake/table/profiles", () => {
     run = await helper.factories.run(schedule, { state: "running" });
   });
 
-  test("imports all profiles when no highWaterMark", async () => {
+  test("imports all records when no highWaterMark", async () => {
     let limit = 100;
     let highWaterMark = {};
     let sourceOffset = 0;
@@ -117,7 +117,7 @@ describe("snowflake/table/profiles", () => {
     expect(importedIds).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   });
 
-  test("imports all profiles when there is a highWaterMark", async () => {
+  test("imports all records when there is a highWaterMark", async () => {
     let limit = 100;
     let highWaterMark = { STAMP: "2020-02-07T12:13:14.000Z" };
     let sourceOffset = 0;

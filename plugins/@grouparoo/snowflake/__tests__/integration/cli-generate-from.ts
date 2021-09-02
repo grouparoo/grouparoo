@@ -13,19 +13,17 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 import { SimpleAppOptions } from "@grouparoo/core";
 
 // these comments to use nock
-const newNock = false;
-require(nockFile);
+// const newNock = false;
+// require(nockFile);
 // or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
+const newNock = true;
+helper.recordNock(nockFile, updater);
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const usersTableName = "PROFILES";
 
-import { api } from "actionhero";
 import { Generate } from "@grouparoo/core/src/bin/generate";
-import { Apply } from "@grouparoo/core/src/bin/apply";
 
 process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
   process.env.JEST_WORKER_ID

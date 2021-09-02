@@ -19,16 +19,16 @@ import {
 } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/query-import/connection";
-const profiles = getConnection().methods.profiles;
+const records = getConnection().methods.records;
 
-const nockFile = path.join(__dirname, "../", "fixtures", "query-profiles.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "query-records.js");
 
 // these comments to use nock
-const newNock = false;
-require(nockFile);
+// const newNock = false;
+// require(nockFile);
 // or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
+const newNock = true;
+helper.recordNock(nockFile, updater);
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
@@ -53,7 +53,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     highWaterMark: nextHighWaterMark,
     importsCount,
     sourceOffset: nextSourceOffset,
-  } = await profiles({
+  } = await records({
     connection,
     run,
     appOptions,
@@ -81,7 +81,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
   };
 }
 
-describe("snowflake/query/profiles", () => {
+describe("snowflake/query/records", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -111,7 +111,7 @@ describe("snowflake/query/profiles", () => {
     run = await helper.factories.run(schedule, { state: "running" });
   });
 
-  test("imports all profiles when no highWaterMark", async () => {
+  test("imports all records when no highWaterMark", async () => {
     let limit = 100;
     let highWaterMark = {};
     let sourceOffset = 0;
