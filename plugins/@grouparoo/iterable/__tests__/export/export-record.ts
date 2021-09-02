@@ -2,7 +2,7 @@ import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import { exportProfile } from "../../src/lib/export/exportProfile";
+import { exportRecord } from "../../src/lib/export/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexContacts } from "../utils/shared";
@@ -54,11 +54,11 @@ const nonexistentEmail = "pilo.paz@mailinator.com";
 const invalidEmail = "000";
 const invalidDate = "GGG";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -125,13 +125,13 @@ async function cleanUp(suppressErrors) {
 
 async function runExport({
   syncOperations = DestinationSyncModeData.sync.operations,
-  oldProfileProperties,
-  newProfileProperties,
+  oldRecordProperties,
+  newRecordProperties,
   oldGroups,
   newGroups,
   toDelete,
 }) {
-  return exportProfile({
+  return exportRecord({
     appOptions,
     appId,
     connection: null,
@@ -141,10 +141,10 @@ async function runExport({
     destinationOptions: null,
     syncOperations,
     export: {
-      profile: null,
-      profileId: null,
-      oldProfileProperties,
-      newProfileProperties,
+      record: null,
+      recordId: null,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       toDelete,
@@ -152,7 +152,7 @@ async function runExport({
   });
 }
 
-describe("iterable/exportProfile", () => {
+describe("iterable/exportRecord", () => {
   beforeAll(async () => {
     apiClient = await connect(appOptions);
     await cleanUp(false);
@@ -166,8 +166,8 @@ describe("iterable/exportProfile", () => {
     await expect(
       runExport({
         syncOperations: DestinationSyncModeData.enrich.operations,
-        oldProfileProperties: {},
-        newProfileProperties: { email, name },
+        oldRecordProperties: {},
+        newRecordProperties: { email, name },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -175,13 +175,13 @@ describe("iterable/exportProfile", () => {
     ).rejects.toThrow(/sync mode does not create/);
   });
 
-  test("can create profile on Iterable", async () => {
+  test("can create record on Iterable", async () => {
     user = await getUser(email);
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email,
         name,
       },
@@ -197,13 +197,13 @@ describe("iterable/exportProfile", () => {
     expect(user.dataFields.name).toBe(name);
   });
 
-  test("can create profile on Iterable along with properties", async () => {
+  test("can create record on Iterable along with properties", async () => {
     let user = await getUser(secondEmail);
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: secondEmail,
         name: secondName,
         userId: secondUserID,
@@ -224,11 +224,11 @@ describe("iterable/exportProfile", () => {
 
   test("can add user variables including nested objects", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         name,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
         name,
         userId,
@@ -264,7 +264,7 @@ describe("iterable/exportProfile", () => {
 
   test("can update user variables using dot notation to existing object data fields and leaving untracked nested properties untouched.", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         name,
         userId,
@@ -275,7 +275,7 @@ describe("iterable/exportProfile", () => {
         "defaultAddress.number": number1,
         "defaultAddress.zipcode": zipcode,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
         name,
         userId,
@@ -307,7 +307,7 @@ describe("iterable/exportProfile", () => {
 
   test("can add user variables using dot notation to existing object data fields.", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         name,
         userId,
@@ -319,7 +319,7 @@ describe("iterable/exportProfile", () => {
         "defaultAddress.zipcode": zipcode,
         "defaultAddress.city": city,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
         name,
         userId,
@@ -361,14 +361,14 @@ describe("iterable/exportProfile", () => {
           create: true,
           delete: true,
         },
-        oldProfileProperties: {
+        oldRecordProperties: {
           email,
           userId,
           name,
           phoneNumber,
           signupDate: exampleDate,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email,
           userId,
           name: alternativeName,
@@ -394,14 +394,14 @@ describe("iterable/exportProfile", () => {
     const newPhoneNumber = "+5583999999998";
 
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         userId,
         name,
         phoneNumber,
         signupDate: exampleDate,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
         userId,
         name: alternativeName,
@@ -424,7 +424,7 @@ describe("iterable/exportProfile", () => {
 
   test("can clear user variables", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         name,
         userId,
@@ -437,7 +437,7 @@ describe("iterable/exportProfile", () => {
         "defaultAddress.city": city,
         "defaultAddress.country": country,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
         userId,
         "defaultAddress.city": city,
@@ -464,11 +464,11 @@ describe("iterable/exportProfile", () => {
 
   test("can add user to a list that doesn't exist yet", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         userId,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
         userId,
       },
@@ -493,11 +493,11 @@ describe("iterable/exportProfile", () => {
 
   test("can remove a user from a list", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         userId,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
         userId,
       },
@@ -517,11 +517,11 @@ describe("iterable/exportProfile", () => {
 
   test("it does not change already subscribed lists", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         userId,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
         userId,
       },
@@ -545,11 +545,11 @@ describe("iterable/exportProfile", () => {
 
   test("it tries to unsubscribe non subscribed list", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         userId,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
         userId,
       },
@@ -576,11 +576,11 @@ describe("iterable/exportProfile", () => {
           create: true,
           delete: true,
         },
-        oldProfileProperties: {
+        oldRecordProperties: {
           email,
           userId,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email: alternativeEmail,
           userId,
         },
@@ -600,11 +600,11 @@ describe("iterable/exportProfile", () => {
 
   test("it can change the email address (Old FK exists in destination)", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         userId,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: alternativeEmail,
         userId,
       },
@@ -623,13 +623,13 @@ describe("iterable/exportProfile", () => {
 
   test("it can change the email address along other properties", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: alternativeEmail,
         userId,
         name: alternativeName,
         phoneNumber: phoneNumberTwo,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: otherEmail,
         userId,
         name: otherName,
@@ -653,11 +653,11 @@ describe("iterable/exportProfile", () => {
 
   test("it can change the user id", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: otherEmail,
         userId,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: otherEmail,
         userId: alternativeUserId,
       },
@@ -679,11 +679,11 @@ describe("iterable/exportProfile", () => {
           delete: false,
           update: true,
         },
-        oldProfileProperties: {
+        oldRecordProperties: {
           email: otherEmail,
           userId,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email: otherEmail,
           userId,
         },
@@ -703,11 +703,11 @@ describe("iterable/exportProfile", () => {
 
   test("can delete a user", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: otherEmail,
         userId,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: otherEmail,
         userId,
       },
@@ -726,11 +726,11 @@ describe("iterable/exportProfile", () => {
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: otherEmail,
         userId,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: otherEmail,
         userId,
       },
@@ -749,8 +749,8 @@ describe("iterable/exportProfile", () => {
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: emailTwo,
         userId: userIdTwo,
         name: nameTwo,
@@ -771,15 +771,15 @@ describe("iterable/exportProfile", () => {
     expect(user.dataFields.emailListIds).toContain(listFourId);
   });
 
-  test("can add a user passing a nonexistent email on the oldProfileProperties (Neither FK exist in destination)", async () => {
+  test("can add a user passing a nonexistent email on the oldRecordProperties (Neither FK exist in destination)", async () => {
     let brandNewUser = await getUser(emailThree);
     expect(brandNewUser).toBe(null);
     const nonexistentUser = await getUser(nonexistentEmail);
     expect(nonexistentUser).toBe(null);
 
     await runExport({
-      oldProfileProperties: { email: nonexistentEmail },
-      newProfileProperties: {
+      oldRecordProperties: { email: nonexistentEmail },
+      newRecordProperties: {
         email: emailThree,
         userId: userIdThree,
         name: nameThree,
@@ -799,12 +799,12 @@ describe("iterable/exportProfile", () => {
 
   test("can update the new user on email change if both emails exist (Old AND new FK exist in destination)", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: emailTwo,
         userId: userIdTwo,
         name: nameTwo,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: emailThree,
         userId: userIdThree,
         name: otherName,
@@ -829,12 +829,12 @@ describe("iterable/exportProfile", () => {
 
   test("can delete the new user on email change if both emails exist", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: emailTwo,
         userId: userIdTwo,
         name: nameTwo,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: emailThree,
         userId: userIdThree,
         name: otherName,
@@ -858,8 +858,8 @@ describe("iterable/exportProfile", () => {
 
   test("can delete an user when syncing for the first time", async () => {
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: emailTwo,
         userId: userIdTwo,
         name: nameTwo,
@@ -876,8 +876,8 @@ describe("iterable/exportProfile", () => {
   test("can add a user passing a invalid email", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {},
-        newProfileProperties: {
+        oldRecordProperties: {},
+        newRecordProperties: {
           email: invalidEmail,
         },
         oldGroups: [],
@@ -890,8 +890,8 @@ describe("iterable/exportProfile", () => {
   test("can update a user passing a invalid properties", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {},
-        newProfileProperties: {
+        oldRecordProperties: {},
+        newRecordProperties: {
           email: emailTwo,
           signupDate: invalidDate,
         },
