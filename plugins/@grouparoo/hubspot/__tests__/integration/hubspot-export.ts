@@ -6,7 +6,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import { AsyncReturnType } from "type-fest";
-import { Profile, Group, Destination, App } from "@grouparoo/core";
+import { GrouparooRecord, Group, Destination, App } from "@grouparoo/core";
 import { SessionCreate } from "@grouparoo/core/src/actions/session";
 import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
 import {
@@ -23,7 +23,7 @@ const nockFile = path.join(__dirname, "../", "fixtures", "hubspot-export.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/hubspot-export");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -88,7 +88,7 @@ describe("integration/runs/hubspot", () => {
   let session;
   let csrfToken: string;
   let app: AsyncReturnType<App["apiData"]>;
-  let profile: Profile;
+  let record: GrouparooRecord;
   let destination: AsyncReturnType<Destination["apiData"]>;
   let group: Group;
 
@@ -115,8 +115,8 @@ describe("integration/runs/hubspot", () => {
   });
 
   beforeAll(async () => {
-    profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+    record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       email: [email1],
       firstName: ["Luigi"],
       lastName: ["Plumber"],
@@ -273,12 +273,12 @@ describe("integration/runs/hubspot", () => {
     ]);
   });
 
-  test("a profile can be exported", async () => {
-    await profile.updateGroupMembership();
-    await profile.export();
+  test("a record can be exported", async () => {
+    await record.updateGroupMembership();
+    await record.export();
   });
 
-  test("hubspot has the profile data", async () => {
+  test("hubspot has the record data", async () => {
     const contact = await client.getContactByEmail(email1);
     expect(contact.properties.email.value).toBe(email1);
     expect(contact.properties.firstname.value).toBe("Luigi");

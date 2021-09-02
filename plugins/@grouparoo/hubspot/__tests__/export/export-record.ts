@@ -2,7 +2,7 @@ import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import { exportProfile } from "../../src/lib/export/exportProfile";
+import { exportRecord } from "../../src/lib/export/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { HubspotClient } from "../../src/lib/client";
@@ -46,11 +46,11 @@ const invalidDate = "asd000";
 const textField = "text_field";
 const numberField = 30.39;
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -109,13 +109,13 @@ async function cleanUp(suppressErrors) {
 
 async function runExport({
   syncOperations = DestinationSyncModeData.sync.operations,
-  oldProfileProperties,
-  newProfileProperties,
+  oldRecordProperties,
+  newRecordProperties,
   oldGroups,
   newGroups,
   toDelete,
 }) {
-  return exportProfile({
+  return exportRecord({
     appOptions,
     appId,
     connection: null,
@@ -125,10 +125,10 @@ async function runExport({
     destinationOptions: null,
     syncOperations,
     export: {
-      profile: null,
-      profileId: null,
-      oldProfileProperties,
-      newProfileProperties,
+      record: null,
+      recordId: null,
+      oldRecordProperties,
+      newRecordProperties,
       oldGroups,
       newGroups,
       toDelete,
@@ -136,7 +136,7 @@ async function runExport({
   });
 }
 
-describe("hubspot/exportProfile", () => {
+describe("hubspot/exportRecord", () => {
   beforeAll(async () => {
     apiClient = await connect(appOptions);
     await cleanUp(false);
@@ -146,15 +146,15 @@ describe("hubspot/exportProfile", () => {
     await cleanUp(true);
   }, helper.setupTime);
 
-  test("cannot create profile on Hubspot if sync mode does not allow it", async () => {
+  test("cannot create record on Hubspot if sync mode does not allow it", async () => {
     user = await apiClient.getContactByEmail(email);
     expect(user).toBe(null);
 
     await expect(
       runExport({
         syncOperations: { create: false, update: true, delete: true },
-        oldProfileProperties: {},
-        newProfileProperties: { email, firstname: firstName },
+        oldRecordProperties: {},
+        newRecordProperties: { email, firstname: firstName },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -162,13 +162,13 @@ describe("hubspot/exportProfile", () => {
     ).rejects.toThrow(/sync mode does not allow creating/);
   });
 
-  test("can create profile on Hubspot", async () => {
+  test("can create record on Hubspot", async () => {
     user = await apiClient.getContactByEmail(email);
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: { email, firstname: firstName },
+      oldRecordProperties: {},
+      newRecordProperties: { email, firstname: firstName },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -181,8 +181,8 @@ describe("hubspot/exportProfile", () => {
 
   test("can add user variables", async () => {
     await runExport({
-      oldProfileProperties: { email, firstname: firstName },
-      newProfileProperties: {
+      oldRecordProperties: { email, firstname: firstName },
+      newRecordProperties: {
         email,
         firstname: firstName,
         lastname: lastName,
@@ -199,17 +199,17 @@ describe("hubspot/exportProfile", () => {
     expect(user["properties"]["mobilephone"]["value"]).toBe(phoneNumber);
   });
 
-  test("cannot update existing profile if sync mode does not allow it", async () => {
+  test("cannot update existing record if sync mode does not allow it", async () => {
     await expect(
       runExport({
         syncOperations: { create: true, update: false, delete: true },
-        oldProfileProperties: {
+        oldRecordProperties: {
           email,
           firstname: firstName,
           lastname: lastName,
           mobilephone: phoneNumber,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email,
           firstname: alternativeName,
           lastname: alternativeLastName,
@@ -232,13 +232,13 @@ describe("hubspot/exportProfile", () => {
   test("can change user variables", async () => {
     // Phone must be valid.
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         firstname: firstName,
         lastname: lastName,
         mobilephone: phoneNumber,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
         firstname: alternativeName,
         lastname: alternativeLastName,
@@ -278,11 +278,11 @@ describe("hubspot/exportProfile", () => {
   test("can try change user variables with invalid date type", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {
+        oldRecordProperties: {
           email,
           closedate: dateField,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email,
           closedate: invalidDate,
         },
@@ -295,7 +295,7 @@ describe("hubspot/exportProfile", () => {
 
   test("can clear user variables", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         firstname: alternativeName,
         lastname: alternativeLastName,
@@ -304,7 +304,7 @@ describe("hubspot/exportProfile", () => {
         date_field: dateField,
         number_field: numberField,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
       },
       oldGroups: [],
@@ -322,10 +322,10 @@ describe("hubspot/exportProfile", () => {
 
   test("can add user to a list that doesn't exist yet", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
       },
       oldGroups: [],
@@ -350,10 +350,10 @@ describe("hubspot/exportProfile", () => {
 
   test("can remove a user from a list", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
       },
       oldGroups: [listOne, listTwo],
@@ -372,10 +372,10 @@ describe("hubspot/exportProfile", () => {
 
   test("it does not change already subscribed lists", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
       },
       oldGroups: [],
@@ -404,10 +404,10 @@ describe("hubspot/exportProfile", () => {
 
   test("it tries to unsubscribe non subscribed list", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
       },
       oldGroups: [listFour],
@@ -429,10 +429,10 @@ describe("hubspot/exportProfile", () => {
     await expect(
       runExport({
         syncOperations: { create: false, update: true, delete: false },
-        oldProfileProperties: {
+        oldRecordProperties: {
           email,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email: alternativeEmail,
         },
         oldGroups: [listOne, listTwo, listThree],
@@ -452,10 +452,10 @@ describe("hubspot/exportProfile", () => {
 
   test("it can change the email address", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: alternativeEmail,
       },
       oldGroups: [listOne, listTwo, listThree],
@@ -492,10 +492,10 @@ describe("hubspot/exportProfile", () => {
     // hubspot requires deleting the old user on FK change
     await runExport({
       syncOperations: { create: true, update: true, delete: false },
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: alternativeEmail,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email,
       },
       oldGroups: [listOne, listTwo, listThree],
@@ -518,12 +518,12 @@ describe("hubspot/exportProfile", () => {
 
   test("it can change the email address along other properties", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email,
         firstname: alternativeName,
         mobilephone: newPhoneNumber,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: otherEmail,
         firstname: otherName,
         mobilephone: otherPhoneNumber,
@@ -555,10 +555,10 @@ describe("hubspot/exportProfile", () => {
     await expect(
       runExport({
         syncOperations: { create: true, update: true, delete: false },
-        oldProfileProperties: {
+        oldRecordProperties: {
           email: otherEmail,
         },
-        newProfileProperties: {
+        newRecordProperties: {
           email: otherEmail,
         },
         oldGroups: [listOne],
@@ -567,7 +567,7 @@ describe("hubspot/exportProfile", () => {
       })
     ).rejects.toThrow(/sync mode does not allow removing/);
 
-    // no changes to the profile
+    // no changes to the record
     const user = await apiClient.getContactByEmail(otherEmail);
     expect(user["properties"]["email"]["value"]).toBe(otherEmail);
     expect(user["properties"]["firstname"]["value"]).toBe(otherName);
@@ -577,10 +577,10 @@ describe("hubspot/exportProfile", () => {
 
   test("can delete a user", async () => {
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: otherEmail,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: otherEmail,
       },
       oldGroups: [],
@@ -596,10 +596,10 @@ describe("hubspot/exportProfile", () => {
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {
+      oldRecordProperties: {
         email: otherEmail,
       },
-      newProfileProperties: {
+      newRecordProperties: {
         email: otherEmail,
       },
       oldGroups: [],
@@ -616,8 +616,8 @@ describe("hubspot/exportProfile", () => {
     expect(user).toBe(null);
 
     await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
+      oldRecordProperties: {},
+      newRecordProperties: {
         email: newEmail,
         firstname: newName,
       },
@@ -638,15 +638,15 @@ describe("hubspot/exportProfile", () => {
     );
   });
 
-  test("can add a user passing a nonexistent email on the oldProfileProperties", async () => {
+  test("can add a user passing a nonexistent email on the oldRecordProperties", async () => {
     let brandNewUser = await apiClient.getContactByEmail(brandNewEmail);
     expect(brandNewUser).toBe(null);
     const nonexistentUser = await apiClient.getContactByEmail(nonexistentEmail);
     expect(nonexistentUser).toBe(null);
 
     await runExport({
-      oldProfileProperties: { email: nonexistentEmail },
-      newProfileProperties: {
+      oldRecordProperties: { email: nonexistentEmail },
+      newRecordProperties: {
         email: brandNewEmail,
         firstname: brandNewName,
       },
@@ -663,8 +663,8 @@ describe("hubspot/exportProfile", () => {
   test("can add a user passing a invalid email", async () => {
     await expect(
       runExport({
-        oldProfileProperties: {},
-        newProfileProperties: {
+        oldRecordProperties: {},
+        newRecordProperties: {
           email: invalidEmail,
         },
         oldGroups: [],

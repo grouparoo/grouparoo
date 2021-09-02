@@ -17,7 +17,7 @@ const nockFile = path.join(
 
 // these comments to use nock
 const newNock = false;
-require("../fixtures/destination-mapping-options");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
