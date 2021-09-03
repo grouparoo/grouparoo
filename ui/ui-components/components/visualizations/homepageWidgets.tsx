@@ -375,7 +375,7 @@ export function PendingImports({
   }, []);
 
   function load() {
-    const pendingRecordCollection = statusHandler.metrics["Record"];
+    const pendingRecordCollection = statusHandler.metrics["GrouparooRecord"];
     if (!pendingRecordCollection) return;
     if (!pendingRecordCollection["pending"]) return;
 

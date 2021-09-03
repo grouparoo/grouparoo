@@ -112,7 +112,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       },
       {
         type: "link",
-        title: "GrouparooRecords",
+        title: "Records",
         href: "/records",
         icon: "user",
       },

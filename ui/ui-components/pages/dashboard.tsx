@@ -25,7 +25,7 @@ export default function Page(props) {
           <BigTotalNumber
             statusHandler={statusHandler}
             href="/records"
-            model="Record"
+            model="GrouparooRecord"
             title="Records"
           />
         </Col>
