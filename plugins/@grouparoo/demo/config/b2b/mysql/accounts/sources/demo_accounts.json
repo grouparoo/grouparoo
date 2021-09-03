@@ -1,0 +1,13 @@
+{
+  "class": "Source",
+  "id": "demo_accounts",
+  "name": "Accounts",
+  "type": "mysql-table-import",
+  "appId": "demo_db",
+  "options": {
+    "table": "accounts"
+  },
+  "mapping": {
+    "id": "account_id"
+  }
+}

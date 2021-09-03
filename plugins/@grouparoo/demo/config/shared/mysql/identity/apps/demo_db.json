@@ -1,0 +1,13 @@
+{
+  "class": "App",
+  "id": "demo_db",
+  "name": "Demo Database",
+  "type": "mysql",
+  "options": {
+    "port": "3306",
+    "database": "grouparoo_demo",
+    "host": "127.0.0.1",
+    "password": "",
+    "user": "root"
+  }
+}
