@@ -1,30 +1,30 @@
+import {
+  Table,
+  Column,
+  Default,
+  Length,
+  AllowNull,
+  BeforeSave,
+  DataType,
+  BeforeDestroy,
+  BeforeCreate,
+  AfterDestroy,
+  HasMany,
+  DefaultScope,
+} from "sequelize-typescript";
 import { api, redis } from "actionhero";
 import { Op } from "sequelize";
-import {
-  AfterDestroy,
-  AllowNull,
-  BeforeCreate,
-  BeforeDestroy,
-  BeforeSave,
-  Column,
-  DataType,
-  Default,
-  DefaultScope,
-  HasMany,
-  Length,
-  Table,
-} from "sequelize-typescript";
-import { AppConfigurationObject } from "../classes/codeConfig";
 import { LoggedModel } from "../classes/loggedModel";
-import { APIData } from "../modules/apiData";
-import { ConfigWriter } from "../modules/configWriter";
-import { LockableHelper } from "../modules/lockableHelper";
-import { AppOps } from "../modules/ops/app";
+import { Source } from "./Source";
+import { Option } from "./Option";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { Destination } from "./Destination";
-import { Option } from "./Option";
-import { Source } from "./Source";
+import { AppOps } from "../modules/ops/app";
+import { LockableHelper } from "../modules/lockableHelper";
+import { ConfigWriter } from "../modules/configWriter";
+import { APIData } from "../modules/apiData";
+import { AppConfigurationObject } from "../classes/codeConfig";
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
 

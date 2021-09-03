@@ -1,39 +1,39 @@
-import { config, env, log } from "actionhero";
+import { log, config, env } from "actionhero";
+import path from "path";
 import fs from "fs";
 import glob from "glob";
 import JSON5 from "json5";
-import path from "path";
-import Sequelize from "sequelize";
 import {
   AnyConfigurationObject,
-  ApiKeyConfigurationObject,
-  AppConfigurationObject,
-  DestinationConfigurationObject,
-  getDirectParentId,
-  GroupConfigurationObject,
-  IdsByClass,
-  PropertyConfigurationObject,
-  ScheduleConfigurationObject,
-  SettingConfigurationObject,
   sortConfigurationObjects,
+  validateConfigObjects,
+  IdsByClass,
+  getDirectParentId,
+  SettingConfigurationObject,
+  AppConfigurationObject,
   SourceConfigurationObject,
+  PropertyConfigurationObject,
+  GroupConfigurationObject,
+  ScheduleConfigurationObject,
+  DestinationConfigurationObject,
+  ApiKeyConfigurationObject,
   TeamConfigurationObject,
   TeamMemberConfigurationObject,
-  validateConfigObjects,
 } from "../../classes/codeConfig";
 import { GrouparooErrorSerializer } from "../../config/errors";
-import { ConfigWriter } from "../configWriter";
-import { deleteApiKeys, loadApiKey } from "./apiKey";
-import { deleteApps, loadApp } from "./app";
-import { deleteDestinations, loadDestination } from "./destination";
-import { deleteGroups, loadGroup } from "./group";
-import { loadProfile } from "./profile";
-import { deleteProperties, loadProperty } from "./property";
-import { deleteSchedules, loadSchedule } from "./schedule";
+import { loadApp, deleteApps } from "./app";
+import { loadSource, deleteSources } from "./source";
+import { loadProperty, deleteProperties } from "./property";
+import { loadApiKey, deleteApiKeys } from "./apiKey";
+import { loadTeam, deleteTeams } from "./team";
+import { loadTeamMember, deleteTeamMembers } from "./teamMember";
+import { loadGroup, deleteGroups } from "./group";
+import { loadSchedule, deleteSchedules } from "./schedule";
 import { loadSetting } from "./setting";
-import { deleteSources, loadSource } from "./source";
-import { deleteTeams, loadTeam } from "./team";
-import { deleteTeamMembers, loadTeamMember } from "./teamMember";
+import { loadDestination, deleteDestinations } from "./destination";
+import { ConfigWriter } from "../configWriter";
+import { loadProfile } from "./profile";
+import Sequelize from "sequelize";
 
 const freshIdsByClass: () => IdsByClass = () => ({
   app: [],
