@@ -1,14 +1,14 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import {
+  App,
+  Filter,
+  Log,
+  Option,
   plugin,
   Property,
-  Log,
-  App,
-  Source,
   Run,
-  Option,
-  Filter,
+  Source,
 } from "../../../src";
 import { FilterHelper } from "../../../src/modules/filterHelper";
 
@@ -109,6 +109,43 @@ describe("models/property", () => {
 
       await ruleOne.destroy();
       await ruleTwo.destroy();
+    });
+
+    test("deleted properties can share the same key, but not with ready rule", async () => {
+      const ruleOne = await Property.create({
+        sourceId: source.id,
+        type: "string",
+      });
+      const ruleTwo = await Property.create({
+        sourceId: source.id,
+        type: "string",
+      });
+      const ruleThree = await Property.create({
+        sourceId: source.id,
+        type: "string",
+      });
+
+      expect(ruleOne.key).toBe("");
+      expect(ruleTwo.key).toBe("");
+      expect(ruleThree.key).toBe("");
+
+      await ruleOne.setOptions({ column: "abc123" });
+      await ruleTwo.setOptions({ column: "abc123" });
+      await ruleThree.setOptions({ column: "abc123" });
+
+      await ruleOne.update({ state: "ready", key: "asdf" });
+      await ruleTwo.update({ state: "deleted", key: "asdf-deleted" });
+      await ruleThree.update({ state: "deleted", key: "asdf-deleted" });
+
+      await expect(ruleTwo.update({ key: "asdf" })).rejects.toThrow(
+        /key "asdf" is already in use/
+      );
+
+      await ruleOne.update({ key: "asdf-deleted" });
+
+      await ruleOne.destroy();
+      await ruleTwo.destroy();
+      await ruleThree.destroy();
     });
 
     test("types must be of a known type", async () => {

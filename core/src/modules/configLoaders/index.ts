@@ -1,4 +1,4 @@
-import { log, config, env, api } from "actionhero";
+import { log, config, env } from "actionhero";
 import path from "path";
 import fs from "fs";
 import glob from "glob";
@@ -19,6 +19,7 @@ import {
   ApiKeyConfigurationObject,
   TeamConfigurationObject,
   TeamMemberConfigurationObject,
+  cleanClass,
 } from "../../classes/codeConfig";
 import { GrouparooErrorSerializer } from "../../config/errors";
 import { loadApp, deleteApps } from "./app";
@@ -35,6 +36,29 @@ import { ConfigWriter } from "../configWriter";
 import { loadProfile } from "./profile";
 import Sequelize from "sequelize";
 
+const freshIdsByClass: () => IdsByClass = () => ({
+  app: [],
+  source: [],
+  property: [],
+  group: [],
+  schedule: [],
+  destination: [],
+  apikey: [],
+  team: [],
+  teammember: [],
+  profile: [],
+});
+
+export function getSeenIds(configObjects: AnyConfigurationObject[]) {
+  return configObjects.reduce((agg, co) => {
+    const klass = cleanClass(co);
+    if (co.id && klass) {
+      agg[klass]?.push(co.id);
+    }
+    return agg;
+  }, freshIdsByClass());
+}
+
 export async function loadConfigDirectory(
   configDir: string | false,
   externallyValidate: boolean = true
@@ -50,16 +74,10 @@ export async function loadConfigDirectory(
   if (configDir) {
     const configObjects = await loadConfigObjects(configDir);
 
-    const response = await processConfigObjects(
+    ({ errors, seenIds, deletedIds } = await processConfigObjects(
       configObjects,
       externallyValidate
-    );
-    seenIds = response.seenIds;
-    errors = response.errors;
-
-    if (errors.length === 0) {
-      deletedIds = await deleteLockedObjects(seenIds);
-    }
+    ));
   }
 
   return { seenIds, errors, deletedIds };
@@ -94,7 +112,9 @@ async function loadConfigFile(file: string): Promise<AnyConfigurationObject> {
     payload = payload.default;
   }
 
-  if (typeof payload === "function") payload = await payload(config);
+  if (typeof payload === "function") {
+    payload = await payload(config);
+  }
 
   const objects = Array.isArray(payload) ? payload : [payload];
   ConfigWriter.cacheConfigFile({ absFilePath: file, objects });
@@ -129,19 +149,8 @@ export async function processConfigObjects(
   canExternallyValidate: boolean,
   locallyValidateIds?: Set<string>,
   validate = false
-): Promise<{ seenIds: IdsByClass; errors: string[] }> {
-  const seenIds: IdsByClass = {
-    app: [],
-    source: [],
-    property: [],
-    group: [],
-    schedule: [],
-    destination: [],
-    apikey: [],
-    team: [],
-    teammember: [],
-    profile: [],
-  };
+): Promise<{ seenIds: IdsByClass; errors: string[]; deletedIds: IdsByClass }> {
+  const seenIds = freshIdsByClass();
   const errors: string[] = [];
 
   const { errors: validationErrors } = validateConfigObjects(configObjects);
@@ -150,8 +159,9 @@ export async function processConfigObjects(
   );
   errors.push(...validationErrors);
 
-  if (errors.length > 0) return { seenIds, errors };
-
+  if (errors.length > 0) {
+    return { seenIds, errors, deletedIds: {} };
+  }
   try {
     configObjects = await sortConfigurationObjects(configObjects);
   } catch (error) {
@@ -166,7 +176,7 @@ export async function processConfigObjects(
       errors.push(err.message);
       log(msg, "error");
     });
-    return { seenIds: {}, errors };
+    return { seenIds: {}, errors, deletedIds: {} };
   }
 
   if (locallyValidateIds) {
@@ -180,6 +190,9 @@ export async function processConfigObjects(
         )
     );
   }
+
+  // Delete unseen config objects ahead of time
+  const deletedIds = await deleteLockedObjects(getSeenIds(configObjects));
 
   for (const i in configObjects) {
     const configObject = configObjects[i];
@@ -322,33 +335,39 @@ export async function processConfigObjects(
     }
   }
 
-  return { seenIds, errors };
+  return { seenIds, errors, deletedIds };
 }
 
-export async function deleteLockedObjects(seenIds) {
-  const deletedIds: IdsByClass = {
-    app: [],
-    source: [],
-    property: [],
-    group: [],
-    schedule: [],
-    destination: [],
-    apikey: [],
-    team: [],
-    teammember: [],
-    profile: [],
-  };
+export async function deleteLockedObjects(seenIds: IdsByClass) {
+  const deletedIds = freshIdsByClass();
 
-  deletedIds["teammember"] = await deleteTeamMembers(seenIds.teammember);
-  deletedIds["team"] = await deleteTeams(seenIds.team);
-  deletedIds["apikey"] = await deleteApiKeys(seenIds.apikey);
-  deletedIds["destination"] = await deleteDestinations(seenIds.destination);
-  deletedIds["schedule"] = await deleteSchedules(seenIds.schedule);
-  deletedIds["group"] = await deleteGroups(seenIds.group);
-  deletedIds["property"] = await deleteProperties(seenIds.property);
-  deletedIds["source"] = await deleteSources(seenIds.source);
-  // back to normal
-  deletedIds["app"] = await deleteApps(seenIds.app);
+  if (seenIds.teammember) {
+    deletedIds["teammember"] = await deleteTeamMembers(seenIds.teammember);
+  }
+  if (seenIds.team) {
+    deletedIds["team"] = await deleteTeams(seenIds.team);
+  }
+  if (seenIds.apikey) {
+    deletedIds["apikey"] = await deleteApiKeys(seenIds.apikey);
+  }
+  if (seenIds.destination) {
+    deletedIds["destination"] = await deleteDestinations(seenIds.destination);
+  }
+  if (seenIds.schedule) {
+    deletedIds["schedule"] = await deleteSchedules(seenIds.schedule);
+  }
+  if (seenIds.group) {
+    deletedIds["group"] = await deleteGroups(seenIds.group);
+  }
+  if (seenIds.property) {
+    deletedIds["property"] = await deleteProperties(seenIds.property);
+  }
+  if (seenIds.source) {
+    deletedIds["source"] = await deleteSources(seenIds.source);
+  }
+  if (seenIds.app) {
+    deletedIds["app"] = await deleteApps(seenIds.app);
+  }
 
   return deletedIds;
 }

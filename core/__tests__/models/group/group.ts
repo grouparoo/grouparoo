@@ -1,12 +1,12 @@
 import { helper } from "@grouparoo/spec-helper";
 import {
+  Destination,
+  Group,
+  GroupMember,
+  Import,
   Log,
   Profile,
-  Group,
-  Import,
-  GroupMember,
   Run,
-  Destination,
 } from "../../../src";
 import { GroupOps } from "../../../src/modules/ops/group";
 
@@ -125,6 +125,43 @@ describe("models/group", () => {
 
       await groupOne.destroy();
       await groupTwo.destroy();
+    });
+
+    test("deleted groups can share the same name, but not with ready groups", async () => {
+      const groupOne = await Group.create({
+        type: "manual",
+        name: "1",
+        state: "ready",
+      });
+      const groupTwo = await Group.create({
+        type: "manual",
+        name: "2",
+        state: "deleted",
+      });
+      const groupThree = await Group.create({
+        type: "manual",
+        name: "3",
+        state: "deleted",
+      });
+
+      expect(groupOne.name).toBe("1");
+      expect(groupOne.state).toBe("ready");
+      expect(groupTwo.name).toBe("2");
+      expect(groupTwo.state).toBe("deleted");
+      expect(groupThree.name).toBe("3");
+      expect(groupThree.state).toBe("deleted");
+
+      await groupThree.update({ name: "2" });
+
+      await expect(groupTwo.update({ name: "1" })).rejects.toThrow(
+        /name "1" is already in use/
+      );
+
+      await groupOne.update({ name: "2" });
+
+      await groupOne.destroy();
+      await groupTwo.destroy();
+      await groupThree.destroy();
     });
 
     test("group state must be of a valid type", async () => {

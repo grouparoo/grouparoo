@@ -1,40 +1,40 @@
-import {
-  Table,
-  Column,
-  AllowNull,
-  DataType,
-  Length,
-  HasMany,
-  Default,
-  BelongsToMany,
-  BeforeSave,
-  BeforeDestroy,
-  AfterDestroy,
-  Is,
-  DefaultScope,
-  Scopes,
-} from "sequelize-typescript";
 import { api, config } from "actionhero";
-import Sequelize, { Op, WhereAttributeHash } from "sequelize";
 import Moment from "moment";
+import Sequelize, { Op, WhereAttributeHash } from "sequelize";
+import {
+  AfterDestroy,
+  AllowNull,
+  BeforeDestroy,
+  BeforeSave,
+  BelongsToMany,
+  Column,
+  DataType,
+  Default,
+  DefaultScope,
+  HasMany,
+  Is,
+  Length,
+  Scopes,
+  Table,
+} from "sequelize-typescript";
+import { GroupConfigurationObject } from "../classes/codeConfig";
 import { LoggedModel } from "../classes/loggedModel";
-import { GroupMember } from "./GroupMember";
-import { GroupRule } from "./GroupRule";
-import { Run } from "./Run";
-import { Profile } from "./Profile";
-import { Setting } from "./Setting";
-import { ProfileProperty } from "./ProfileProperty";
-import { Destination } from "./Destination";
-import { DestinationGroupMembership } from "./DestinationGroupMembership";
-import { Property, propertyJSToSQLType } from "./Property";
-import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
-import { StateMachine } from "./../modules/stateMachine";
-import { GroupOps } from "../modules/ops/group";
+import { APIData } from "../modules/apiData";
 import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
-import { APIData } from "../modules/apiData";
+import { GroupOps } from "../modules/ops/group";
+import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
-import { GroupConfigurationObject } from "../classes/codeConfig";
+import { StateMachine } from "./../modules/stateMachine";
+import { Destination } from "./Destination";
+import { DestinationGroupMembership } from "./DestinationGroupMembership";
+import { GroupMember } from "./GroupMember";
+import { GroupRule } from "./GroupRule";
+import { Profile } from "./Profile";
+import { ProfileProperty } from "./ProfileProperty";
+import { Property, propertyJSToSQLType } from "./Property";
+import { Run } from "./Run";
+import { Setting } from "./Setting";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -693,7 +693,7 @@ export class Group extends LoggedModel<Group> {
       where: {
         id: { [Op.ne]: instance.id },
         name: instance.name,
-        state: { [Op.ne]: "draft" },
+        state: { [Op.notIn]: ["draft", "deleted"] },
       },
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);

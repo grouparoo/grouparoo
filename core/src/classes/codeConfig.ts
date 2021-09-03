@@ -1,10 +1,10 @@
 import { log } from "actionhero";
-import { PropertyFiltersWithKey } from "../models/Property";
-import { GroupRuleWithKey } from "../models/Group";
-import { topologicalSort, Graph } from "../modules/topologicalSort";
 import { DestinationSyncMode } from "../models/Destination";
+import { GroupRuleWithKey } from "../models/Group";
+import { PropertyFiltersWithKey } from "../models/Property";
 import { MustacheUtils } from "../modules/mustacheUtils";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
+import { Graph, topologicalSort } from "../modules/topologicalSort";
 
 export interface IdsByClass {
   app?: string[];
@@ -278,7 +278,7 @@ export function validateConfigObjects(
   const idTypes: { [type: string]: string[] } = {};
 
   for (const configObject of configObjects) {
-    if (!configObject.id || configObject.id === "") {
+    if (!configObject.id) {
       errors.push(
         (configObject["name"]
           ? `"${configObject["name"]}"`
@@ -289,7 +289,9 @@ export function validateConfigObjects(
     }
 
     const _class = cleanClass(configObject);
-    if (!idTypes[_class]) idTypes[_class] = [];
+    if (!idTypes[_class]) {
+      idTypes[_class] = [];
+    }
     if (idTypes[_class].includes(configObject.id)) {
       errors.push(
         `Duplicate ID values found for ${configObject.id} of class ${_class}`
@@ -496,6 +498,6 @@ function uniqueArrayValues(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-function cleanClass(configObject: ConfigurationObject) {
+export function cleanClass(configObject: ConfigurationObject) {
   return configObject.class?.trim().toLowerCase() ?? undefined;
 }

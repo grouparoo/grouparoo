@@ -1,24 +1,24 @@
 import { helper } from "@grouparoo/spec-helper";
+import { api, specHelper } from "actionhero";
 import path from "path";
 import {
-  plugin,
-  Property,
-  App,
-  Source,
-  Schedule,
-  Group,
-  Destination,
   ApiKey,
-  Team,
-  TeamMember,
-  Setting,
-  Option,
-  Profile,
-  Run,
+  App,
+  Destination,
+  Group,
   GroupMember,
   GroupRule,
+  Option,
+  plugin,
+  Profile,
+  Property,
+  Run,
+  Schedule,
+  Setting,
+  Source,
+  Team,
+  TeamMember,
 } from "../../../src";
-import { api, specHelper } from "actionhero";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
 describe("modules/codeConfig", () => {
@@ -1582,6 +1582,84 @@ describe("modules/codeConfig", () => {
       expect(errors[0]).toMatch(
         /fileId is not an option for a app-no-options app/
       );
+    });
+  });
+
+  describe("names should not be unqiue against deleted entries", () => {
+    test("removed configs should be deleted before creating/updating", async () => {
+      const config = await loadConfigDirectory(
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "fixtures",
+          "codeConfig",
+          "duplicate-names",
+          "config1"
+        )
+      );
+      const config2 = await loadConfigDirectory(
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "fixtures",
+          "codeConfig",
+          "duplicate-names",
+          "config2"
+        )
+      );
+      expect(config.errors.length).toBe(0);
+      expect(config2.errors.length).toBe(0);
+
+      expect(config.deletedIds).toEqual({
+        apikey: ["website_key"],
+        app: [],
+        destination: ["test_destination"],
+        group: ["email_group"],
+        profile: [],
+        property: ["email", "first_name", "last_name"],
+        schedule: ["users_table_schedule"],
+        source: [],
+        team: ["admin_team"],
+        teammember: ["demo"],
+      });
+      expect(config.seenIds).toEqual({
+        apikey: [],
+        app: ["data_warehouse"],
+        destination: ["data_warehouse_destination"],
+        group: ["calculate_dates"],
+        profile: [],
+        property: ["user_id"],
+        schedule: [],
+        source: ["users_table"],
+        team: [],
+        teammember: [],
+      });
+      expect(config2.deletedIds).toEqual({
+        apikey: [],
+        app: ["data_warehouse"],
+        destination: ["data_warehouse_destination"],
+        group: ["calculate_dates"],
+        profile: [],
+        property: ["user_id"],
+        schedule: [],
+        source: ["users_table"],
+        team: [],
+        teammember: [],
+      });
+      expect(config2.seenIds).toEqual({
+        apikey: [],
+        app: ["data_warehouse_2"],
+        destination: ["data_warehouse_destination_2"],
+        group: ["calculate_dates_2"],
+        profile: [],
+        property: ["user_id_2"],
+        schedule: [],
+        source: ["users_table_2"],
+        team: [],
+        teammember: [],
+      });
     });
   });
 });

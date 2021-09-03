@@ -1,46 +1,45 @@
+import { config, env, redis } from "actionhero";
+import Sequelize, { Op, WhereOptions } from "sequelize";
 import {
-  Table,
-  Column,
-  AllowNull,
-  DataType,
-  Length,
-  Default,
-  BeforeSave,
-  BeforeDestroy,
   AfterDestroy,
-  ForeignKey,
+  AfterSave,
+  AllowNull,
+  BeforeCreate,
+  BeforeDestroy,
+  BeforeSave,
+  BeforeUpdate,
   BelongsTo,
+  Column,
+  DataType,
+  Default,
+  DefaultScope,
+  ForeignKey,
   HasMany,
   Is,
-  DefaultScope,
-  BeforeUpdate,
-  BeforeCreate,
-  AfterSave,
+  Length,
+  Table,
 } from "sequelize-typescript";
-import Sequelize, { Op, WhereOptions } from "sequelize";
-import { env, redis, config } from "actionhero";
-import { plugin } from "../modules/plugin";
+import { PropertyConfigurationObject } from "../classes/codeConfig";
 import { LoggedModel } from "../classes/loggedModel";
-import { Profile } from "./Profile";
-import { ProfileProperty } from "./ProfileProperty";
-import { App, SimpleAppOptions } from "./App";
-import { Source, SimpleSourceOptions, SourceMapping } from "./Source";
-import { Option } from "./Option";
-import { Group } from "./Group";
-import { Run } from "./Run";
-import { GroupRule } from "./GroupRule";
-import { Filter } from "./Filter";
-import { OptionHelper } from "../modules/optionHelper";
-import { ConfigWriter } from "../modules/configWriter";
-import { StateMachine } from "../modules/stateMachine";
-import { Mapping } from "./Mapping";
-import { PropertyOps } from "../modules/ops/property";
-import { LockableHelper } from "../modules/lockableHelper";
-import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
 import { APIData } from "../modules/apiData";
 import { CLS } from "../modules/cls";
+import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
-import { PropertyConfigurationObject } from "../classes/codeConfig";
+import { LockableHelper } from "../modules/lockableHelper";
+import { PropertyOps } from "../modules/ops/property";
+import { OptionHelper } from "../modules/optionHelper";
+import { plugin } from "../modules/plugin";
+import { StateMachine } from "../modules/stateMachine";
+import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
+import { Filter } from "./Filter";
+import { Group } from "./Group";
+import { GroupRule } from "./GroupRule";
+import { Mapping } from "./Mapping";
+import { Option } from "./Option";
+import { Profile } from "./Profile";
+import { ProfileProperty } from "./ProfileProperty";
+import { Run } from "./Run";
+import { Source } from "./Source";
 
 export function propertyJSToSQLType(jsType: string) {
   const map = {
@@ -380,7 +379,7 @@ export class Property extends LoggedModel<Property> {
       where: {
         id: { [Op.ne]: instance.id },
         key: instance.key,
-        state: { [Op.ne]: "draft" },
+        state: { [Op.notIn]: ["draft", "deleted"] },
       },
     });
     if (count > 0) {

@@ -294,7 +294,7 @@ export class App extends LoggedModel<App> {
       where: {
         id: { [Op.ne]: instance.id },
         name: instance.name,
-        state: { [Op.ne]: "draft" },
+        state: { [Op.notIn]: ["draft", "deleted"] },
       },
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);

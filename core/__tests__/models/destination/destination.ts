@@ -1,14 +1,14 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, specHelper, cache } from "actionhero";
+import { cache } from "actionhero";
 import {
   App,
-  Log,
   Destination,
-  Group,
+  DestinationGroupMembership,
   Export,
+  Group,
+  Log,
   Mapping,
   Option,
-  DestinationGroupMembership,
   Run,
 } from "../../../src";
 
@@ -88,6 +88,49 @@ describe("models/destination", () => {
       await destinationOne.destroy();
       await destinationTwo.destroy();
       await otherApp.destroy();
+    });
+
+    test("deleted destination can share the same name, but not with ready destination", async () => {
+      const destinationOne = await Destination.create({
+        type: "test-plugin-export",
+        syncMode: "sync",
+        appId: app.id,
+      });
+
+      const otherApp = await helper.factories.app();
+      const destinationTwo = await Destination.create({
+        type: "test-plugin-export",
+        syncMode: "sync",
+        appId: otherApp.id,
+      });
+
+      const otherOtherApp = await helper.factories.app();
+      const destinationThree = await Destination.create({
+        type: "test-plugin-export",
+        syncMode: "sync",
+        appId: otherOtherApp.id,
+      });
+
+      expect(destinationOne.name).toBe("");
+      expect(destinationTwo.name).toBe("");
+      expect(destinationThree.name).toBe("");
+
+      await destinationOne.setOptions({ table: "abc123" });
+      await destinationOne.update({ state: "ready" });
+
+      await destinationTwo.update({ state: "deleted", name: "asdf" });
+      await destinationThree.update({ state: "deleted", name: "asdf" });
+      await destinationOne.update({ name: "asdf" });
+
+      await expect(destinationTwo.update({ name: "asdf" })).rejects.toThrow(
+        /name "asdf" is already in use/
+      );
+
+      await destinationOne.destroy();
+      await destinationTwo.destroy();
+      await otherApp.destroy();
+      await destinationThree.destroy();
+      await otherOtherApp.destroy();
     });
 
     test("creating a destination creates a log entry", async () => {
