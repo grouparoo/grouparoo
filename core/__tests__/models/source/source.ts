@@ -1,18 +1,18 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
+import { Op } from "sequelize";
 import {
-  Source,
   App,
-  Property,
-  Log,
-  Profile,
-  Schedule,
-  Option,
-  ProfileProperty,
   Destination,
+  Log,
+  Option,
+  Profile,
+  ProfileProperty,
+  Property,
+  Schedule,
+  Source,
   SourceMapping,
 } from "../../../src";
-import { Op } from "sequelize";
 import { SourceOps } from "../../../src/modules/ops/source";
 
 describe("models/source", () => {
@@ -122,6 +122,50 @@ describe("models/source", () => {
 
       await sourceOne.destroy();
       await sourceTwo.destroy();
+    });
+
+    test("deleted sources can share the same name, but not with ready sources", async () => {
+      const sourceOne = await Source.create({
+        type: "test-plugin-import",
+        appId: app.id,
+      });
+      const sourceTwo = await Source.create({
+        type: "test-plugin-import",
+        appId: app.id,
+      });
+      const sourceThree = await Source.create({
+        type: "test-plugin-import",
+        appId: app.id,
+      });
+
+      expect(sourceOne.name).toBe("");
+      expect(sourceTwo.name).toBe("");
+      expect(sourceThree.name).toBe("");
+
+      await sourceTwo.update({ name: "asdf-deleted" });
+      await sourceTwo.setOptions({ table: "abc123" });
+      await sourceTwo.setMapping({ id: "userId" });
+      await sourceTwo.update({ state: "deleted" });
+
+      await sourceThree.update({ name: "asdf-deleted" });
+      await sourceThree.setOptions({ table: "abc123" });
+      await sourceThree.setMapping({ id: "userId" });
+      await sourceThree.update({ state: "deleted" });
+
+      await sourceOne.update({ name: "asdf" });
+      await sourceOne.setOptions({ table: "abc123" });
+      await sourceOne.setMapping({ id: "userId" });
+      await sourceOne.update({ state: "ready" });
+
+      await expect(sourceTwo.update({ name: "asdf" })).rejects.toThrow(
+        /name "asdf" is already in use/
+      );
+
+      await sourceOne.update({ name: "asdf-deleted" });
+
+      await sourceOne.destroy();
+      await sourceTwo.destroy();
+      await sourceThree.destroy();
     });
 
     test("a source cannot be changed to to the ready state if there are missing required options", async () => {
