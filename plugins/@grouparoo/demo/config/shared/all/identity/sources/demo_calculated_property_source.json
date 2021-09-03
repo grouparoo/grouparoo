@@ -3,6 +3,6 @@
   "id": "demo_calculated_property_source",
   "name": "Full Name",
   "type": "calculated-property-import",
-  "appId": "demo_calculated-property_app",
+  "appId": "demo_calculated_property_app",
   "options": {}
 }
