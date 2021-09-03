@@ -1,1 +1,1 @@
-const nock = require('nock');
+const nock = require("nock");

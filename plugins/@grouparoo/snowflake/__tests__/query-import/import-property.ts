@@ -16,11 +16,11 @@ const nockFile = path.join(
 );
 
 // these comments to use nock
-// const newNock = false;
-// require(nockFile);
+const newNock = false;
+require(nockFile);
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
