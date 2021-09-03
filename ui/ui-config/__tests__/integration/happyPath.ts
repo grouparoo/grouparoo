@@ -114,7 +114,7 @@ describe("integration", () => {
     helper.mediumTime
   );
 
-  test("if all the stepup steps are complete, visiting / goes to profiles", async () => {
+  test("if all the stepup steps are complete, visiting / goes to records", async () => {
     const setupSteps = await SetupStep.findAll();
     for (const step of setupSteps) {
       await step.update({ complete: true });
@@ -128,7 +128,7 @@ describe("integration", () => {
     await helper.sleep(1000);
 
     const currentUrl = await browser.getCurrentUrl();
-    expect(currentUrl).toMatch(/\/profiles/);
+    expect(currentUrl).toMatch(/\/records/);
     await browser.get(currentUrl);
   });
 });
