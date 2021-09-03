@@ -1,5 +1,6 @@
 import Postgres from "../connections/postgres";
 import Mongo from "../connections/mongo";
+import MySQL from "../connections/mysql";
 
 class Config {
   subDirs: { [type: string]: boolean };
@@ -28,6 +29,9 @@ class Config {
         break;
       case "mongo":
         this.db = new Mongo();
+        break;
+      case "mysql":
+        this.db = new MySQL();
         break;
       default:
         throw new Error(`Unknown db type: ${name}`);
@@ -65,6 +69,9 @@ class Config {
         break;
       case "postgres":
         this.setDb("postgres", type);
+        break;
+      case "mysql":
+        this.setDb("mysql", type);
         break;
       case "b2c":
       case "purchases":
