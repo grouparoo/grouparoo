@@ -1586,42 +1586,6 @@ describe("modules/codeConfig", () => {
   });
 
   describe("names should not be unqiue against deleted entries", () => {
-    test("deleted groups should not cause conflicts on create", async () => {
-      await Group.truncate();
-      const group = await Group.create({
-        id: "asdf",
-        name: "bsdf",
-        type: "manual",
-      });
-      await group.destroy();
-      expect(await group.get()).toEqual({
-        calculatedAt: null,
-        createdAt: expect.any(Date),
-        id: "asdf",
-        locked: null,
-        matchType: "all",
-        name: "bsdf",
-        state: "draft",
-        type: "manual",
-        updatedAt: expect.any(Date),
-      });
-      const group2 = await Group.create({
-        id: "asdf",
-        name: "bsdf",
-        type: "manual",
-      });
-      expect(await group2.get()).toEqual({
-        calculatedAt: null,
-        createdAt: expect.any(Date),
-        id: "asdf",
-        locked: null,
-        matchType: "all",
-        name: "bsdf",
-        state: "draft",
-        type: "manual",
-        updatedAt: expect.any(Date),
-      });
-    });
     test("removed configs should be deleted before creating/updating", async () => {
       const config = await loadConfigDirectory(
         path.join(
@@ -1645,16 +1609,57 @@ describe("modules/codeConfig", () => {
           "config2"
         )
       );
-      if (config.errors.length) {
-        console.error(config.errors);
-      }
-      if (config2.errors.length) {
-        console.error(config2.errors);
-      }
       expect(config.errors.length).toBe(0);
       expect(config2.errors.length).toBe(0);
-      expect(config).toMatchSnapshot();
-      expect(config2).toMatchSnapshot();
+
+      expect(config.deletedIds).toEqual({
+        apikey: ["website_key"],
+        app: [],
+        destination: ["test_destination"],
+        group: ["email_group"],
+        profile: [],
+        property: ["email", "first_name", "last_name"],
+        schedule: ["users_table_schedule"],
+        source: [],
+        team: ["admin_team"],
+        teammember: ["demo"],
+      });
+      expect(config.seenIds).toEqual({
+        apikey: [],
+        app: ["data_warehouse"],
+        destination: ["data_warehouse_destination"],
+        group: ["calculate_dates"],
+        profile: [],
+        property: ["user_id"],
+        schedule: [],
+        source: ["users_table"],
+        team: [],
+        teammember: [],
+      });
+      expect(config2.deletedIds).toEqual({
+        apikey: [],
+        app: ["data_warehouse"],
+        destination: ["data_warehouse_destination"],
+        group: ["calculate_dates"],
+        profile: [],
+        property: ["user_id"],
+        schedule: [],
+        source: ["users_table"],
+        team: [],
+        teammember: [],
+      });
+      expect(config2.seenIds).toEqual({
+        apikey: [],
+        app: ["data_warehouse_2"],
+        destination: ["data_warehouse_destination_2"],
+        group: ["calculate_dates_2"],
+        profile: [],
+        property: ["user_id_2"],
+        schedule: [],
+        source: ["users_table_2"],
+        team: [],
+        teammember: [],
+      });
     });
   });
 });

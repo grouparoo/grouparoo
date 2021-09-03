@@ -498,6 +498,6 @@ function uniqueArrayValues(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-function cleanClass(configObject: ConfigurationObject) {
+export function cleanClass(configObject: ConfigurationObject) {
   return configObject.class?.trim().toLowerCase() ?? undefined;
 }

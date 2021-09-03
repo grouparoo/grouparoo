@@ -19,6 +19,7 @@ import {
   ApiKeyConfigurationObject,
   TeamConfigurationObject,
   TeamMemberConfigurationObject,
+  cleanClass,
 } from "../../classes/codeConfig";
 import { GrouparooErrorSerializer } from "../../config/errors";
 import { loadApp, deleteApps } from "./app";
@@ -50,8 +51,9 @@ const freshIdsByClass: () => IdsByClass = () => ({
 
 export function getSeenIds(configObjects: AnyConfigurationObject[]) {
   return configObjects.reduce((agg, co) => {
-    if (co.id && co.class) {
-      agg[co.class.toLowerCase()]?.push(co.id);
+    const klass = cleanClass(co);
+    if (co.id && klass) {
+      agg[klass]?.push(co.id);
     }
     return agg;
   }, freshIdsByClass());
