@@ -33,6 +33,7 @@
     "fs-extra": "10.0.0",
     "isomorphic-fetch": "3.0.0",
     "mongodb": "4.1.1",
+    "mysql": "2.18.1",
     "pg": "8.7.1",
     "prettier": "2.3.2",
     "replace-in-files": "3.0.0",

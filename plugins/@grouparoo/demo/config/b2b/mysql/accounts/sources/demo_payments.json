@@ -1,0 +1,13 @@
+{
+  "class": "Source",
+  "id": "demo_payments",
+  "name": "Payments",
+  "type": "mysql-table-import",
+  "appId": "demo_db",
+  "options": {
+    "table": "payments"
+  },
+  "mapping": {
+    "account_id": "account_id"
+  }
+}
