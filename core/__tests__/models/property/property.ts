@@ -141,6 +141,8 @@ describe("models/property", () => {
         /key "asdf" is already in use/
       );
 
+      await ruleOne.update({ key: "asdf-deleted" });
+
       await ruleOne.destroy();
       await ruleTwo.destroy();
       await ruleThree.destroy();
