@@ -1,7 +1,22 @@
 export default class Connection {
-  constructor() {}
+  seed: boolean;
+  constructor() {
+    this.seed = false;
+  }
   getAppOptions(): any {
     return {};
+  }
+  seeding() {
+    this.seed = true;
+  }
+  seedOnly(): boolean {
+    return false;
+  }
+  isWriting(): boolean {
+    if (!this.seed && this.seedOnly()) {
+      return false;
+    }
+    return true;
   }
   async sessionStart(): Promise<void> {}
   async sessionEnd(): Promise<void> {}

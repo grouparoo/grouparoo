@@ -44,35 +44,34 @@ export class Demo extends CLI {
 
       log(`Using scale = ${scale}`);
 
-      if (seed) {
-        log("Generating seed files.");
-      } else if (config) {
-        log("Writing config to app.");
-      } else {
-        log("Writing config to database.");
-      }
-
       let types = params._arguments || [];
       if (types.length === 0) {
         types = ["b2c"];
       }
-      log(`Using types: ${types.join(", ")}`);
       const { db, subDirs, dataset } = getConfig(types);
 
       if (seed) {
         if (!db) {
           log("No database given for seed", "error");
         }
+        log(`Seeding: ${db.name()}`);
         await db.sessionStart();
+        db.seeding();
         await consumers(db, { scale });
         await purchases(db, { scale });
         await plans(db, {});
         await accounts(db, { scale });
         await payments(db, { scale });
-        if (db) await db.sessionEnd();
+        await db.sessionEnd();
         return;
       }
 
+      if (config) {
+        log("Writing config to app.");
+      } else {
+        log("Writing config to database.");
+      }
+      log(`Using types: ${types.join(", ")}`);
       log(`Config directories: ${subDirs.join(",")}`);
       log(`Using dataset: ${dataset}`);
       log(`Using database: ${db ? db.constructor.name : "none"}`);

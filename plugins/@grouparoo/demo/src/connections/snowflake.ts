@@ -41,6 +41,9 @@ export default class Snowflake extends Connection {
   name() {
     return "snowflake";
   }
+  seedOnly() {
+    return true;
+  }
 
   getAppOptions() {
     return this.config;

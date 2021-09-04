@@ -99,7 +99,11 @@ async function createCsvTable(
   updatedAt: boolean,
   options: DataOptions = {}
 ) {
+  if (!db.isWriting()) {
+    return;
+  }
   log(`Adding Sample Data: ${tableName}`);
+
   await db.connect();
   await loadCsvTable(
     db,
