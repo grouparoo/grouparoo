@@ -1,0 +1,13 @@
+{
+  "class": "Source",
+  "id": "demo_payments",
+  "name": "Payments",
+  "type": "snowflake-table-import",
+  "appId": "demo_db",
+  "options": {
+    "table": "PAYMENTS"
+  },
+  "mapping": {
+    "ACCOUNT_ID": "account_id"
+  }
+}
