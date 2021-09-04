@@ -3,6 +3,8 @@ export default class Connection {
   getAppOptions(): any {
     return {};
   }
+  async sessionStart(): Promise<void> {}
+  async sessionEnd(): Promise<void> {}
   async disconnect(): Promise<void> {}
   async connect(): Promise<any> {
     return null;

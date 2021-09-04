@@ -26,6 +26,7 @@ export class Demo extends CLI {
     this.inputs = {
       scale: { required: false, default: "1" },
       config: { required: false, letter: "c", flag: true },
+      seed: { required: false, letter: "s", flag: true },
       force: { required: false, letter: "f", flag: true },
     };
   }
@@ -37,12 +38,15 @@ export class Demo extends CLI {
   async run({ params }) {
     try {
       const scale = parseInt(params.scale) || 1;
+      const seed = !!params.seed;
       const config = !!params.config;
       const force = !!params.force;
 
       log(`Using scale = ${scale}`);
 
-      if (config) {
+      if (seed) {
+        log("Generating seed files.");
+      } else if (config) {
         log("Writing config to app.");
       } else {
         log("Writing config to database.");
@@ -55,6 +59,20 @@ export class Demo extends CLI {
       log(`Using types: ${types.join(", ")}`);
       const { db, subDirs, dataset } = getConfig(types);
 
+      if (seed) {
+        if (!db) {
+          log("No database given for seed", "error");
+        }
+        await db.sessionStart();
+        await consumers(db, { scale });
+        await purchases(db, { scale });
+        await plans(db, {});
+        await accounts(db, { scale });
+        await payments(db, { scale });
+        if (db) await db.sessionEnd();
+        return;
+      }
+
       log(`Config directories: ${subDirs.join(",")}`);
       log(`Using dataset: ${dataset}`);
       log(`Using database: ${db ? db.constructor.name : "none"}`);
@@ -65,6 +83,7 @@ export class Demo extends CLI {
       }
       await init({ reset: true });
 
+      if (db) await db.sessionStart();
       if (hasDir(subDirs, ["purchases"])) {
         await consumers(db, { scale });
         await purchases(db, { scale });
@@ -75,6 +94,7 @@ export class Demo extends CLI {
         await payments(db, { scale });
         await employees(db, { scale });
       }
+      if (db) await db.sessionEnd();
 
       if (config) {
         const skip = ["setup"]; // not all get config files, they load into db
