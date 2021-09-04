@@ -3,7 +3,7 @@
     "class": "Source",
     "id": "demo_users",
     "name": "Product Users",
-    "type": "mysql-table-import",
+    "type": "DBNAME-table-import",
     "appId": "demo_db",
     "options": {
       "table": "users"

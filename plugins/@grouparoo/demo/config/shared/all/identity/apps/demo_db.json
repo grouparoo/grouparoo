@@ -2,9 +2,8 @@
   "class": "App",
   "id": "demo_db",
   "name": "Demo Database",
-  "type": "mongo",
+  "type": "DBNAME",
   "options": {
-    "database": "demo",
-    "uri": "mongodb://localhost:27017"
+    "db-specific": "options_here"
   }
 }

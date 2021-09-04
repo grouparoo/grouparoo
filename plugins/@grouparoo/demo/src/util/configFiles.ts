@@ -1,6 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
 import os from "os";
+import replaceInFiles from "replace-in-files";
 import { api, log } from "actionhero";
 import { loadConfigDirectory } from "@grouparoo/core/dist/modules/configLoaders";
 import { getConfigDir } from "@grouparoo/core/dist/modules/pluginDetails";
@@ -60,7 +61,7 @@ async function generateConfig(
   for (const subDir of subDirs) {
     copyDir(configDir, dataset, db, subDir);
   }
-  updateDatabase(db, configDir);
+  await updateDatabase(db, configDir);
   await updateEnvVariables(configDir);
 }
 
@@ -97,19 +98,26 @@ function copyDirIfExists(
   }
 }
 
-function updateDatabase(db: Connection, configDir) {
-  const appPath = path.join(configDir, "apps", "demo_db.json");
-
-  if (!db || !fs.existsSync(appPath)) {
+async function updateDatabase(db: Connection, configDir) {
+  if (!db) {
     return;
   }
 
-  const appOptions = db.getAppOptions();
-  const contents = fs.readJSONSync(appPath);
-  const app = contents;
-  app.options = appOptions;
-  const out = JSON.stringify(contents);
-  fs.writeFileSync(appPath, out);
+  // update with app options
+  const appPath = path.join(configDir, "apps", "demo_db.json");
+  if (fs.existsSync(appPath)) {
+    const appOptions = db.getAppOptions();
+    const contents = fs.readJSONSync(appPath);
+    const app = contents;
+    app.options = appOptions;
+    const out = JSON.stringify(contents);
+    fs.writeFileSync(appPath, out);
+  }
+
+  // update plugin name
+  const files = path.resolve(path.join(configDir, "**", "*.json"));
+  const options = { files, from: "DBNAME", to: db.name() };
+  await replaceInFiles(options);
 }
 
 async function unlockAll() {

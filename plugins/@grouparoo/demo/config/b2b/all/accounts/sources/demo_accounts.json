@@ -2,10 +2,10 @@
   "class": "Source",
   "id": "demo_accounts",
   "name": "Accounts",
-  "type": "snowflake-table-import",
+  "type": "DBNAME-table-import",
   "appId": "demo_db",
   "options": {
-    "table": "ACCOUNTS"
+    "table": "accounts"
   },
   "mapping": {
     "id": "account_id"

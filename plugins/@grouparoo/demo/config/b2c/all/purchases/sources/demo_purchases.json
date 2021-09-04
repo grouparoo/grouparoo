@@ -2,7 +2,7 @@
   "class": "Source",
   "id": "demo_purchases",
   "name": "Product Purchases",
-  "type": "postgres-table-import",
+  "type": "DBNAME-table-import",
   "appId": "demo_db",
   "options": {
     "table": "purchases"
