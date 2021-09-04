@@ -7,7 +7,7 @@ export class TeamPermissions extends CLSInitializer {
   constructor() {
     super();
     this.name = "teamPermissions";
-    this.startPriority = 10;
+    this.startPriority = 2;
   }
 
   async updateTeamPermissions(team: Team) {
