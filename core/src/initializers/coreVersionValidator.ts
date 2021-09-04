@@ -4,7 +4,7 @@ export class CoreVersionValidator extends Initializer {
   constructor() {
     super();
     this.name = "coreVersionValidator";
-    this.startPriority = 999999;
+    this.startPriority = 2;
   }
 
   async initialize() {

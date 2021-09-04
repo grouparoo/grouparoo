@@ -17,7 +17,7 @@ export class CodeConfig extends CLSInitializer {
     super();
     this.name = "codeConfig";
     this.loadPriority = 10000;
-    this.startPriority = 1;
+    this.startPriority = 10;
   }
 
   async initializeWithinTransaction() {
