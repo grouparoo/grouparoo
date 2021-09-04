@@ -51,11 +51,6 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @AllowNull(false)
-  @Default("x") // TODO
-  @Column(DataType.STRING)
-  modelId: string;
-
   @HasMany(() => RecordProperty)
   recordProperties: RecordProperty[];
 
@@ -80,7 +75,6 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
     return {
       id: this.id,
       state: this.state,
-      modelId: this.modelId,
       properties,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),

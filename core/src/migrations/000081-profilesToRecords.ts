@@ -86,25 +86,7 @@ export default {
       fields: ["name"],
     });
 
-    // Should be in an initializer
-    //
-    // await migration.sequelize.query(
-    //   `INSERT INTO "entityTypes" ("id", "name", "type", "createdAt", "updatedAt") VALUES ('profiles', 'profiles', 'profile', NOW(), NOW()); `
-    // );
-
     await queryInterface.renameTable("profiles", "records");
-
-    await queryInterface.addColumn("records", "modelId", {
-      type: DataTypes.STRING(191),
-      allowNull: true,
-      defaultValue: "profile",
-    });
-
-    await queryInterface.changeColumn("records", "modelId", {
-      type: DataTypes.STRING(191),
-      allowNull: false,
-      defaultValue: null,
-    });
 
     for (const [table, collection] of Object.entries(renames)) {
       for (const batch of collection) {
