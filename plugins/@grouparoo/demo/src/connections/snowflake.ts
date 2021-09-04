@@ -55,6 +55,10 @@ export default class Snowflake extends Connection {
   }
 
   async sessionEnd() {
+    if (!this.isWriting()) {
+      return;
+    }
+
     const out = [].concat(this.lines);
     for (const tableName in this.data) {
       out.push(this.fillTable(tableName, this.data[tableName]));
