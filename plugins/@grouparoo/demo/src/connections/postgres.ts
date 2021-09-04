@@ -143,7 +143,7 @@ export default class Postgres extends Connection {
     const variables = keys.map((key, index) => "$" + (index + 1));
     const insertQuery = `INSERT INTO ${sqlTable} (${columnNames}) VALUES (${variables})`;
 
-    const values: Array<any> = keys.map((key) => getValue(row, key));
+    const values: Array<any> = keys.map((key) => row[key]);
     await this.query(2, insertQuery, values);
   }
 
@@ -155,15 +155,4 @@ export default class Postgres extends Connection {
     }
     return client.query(sql);
   }
-}
-
-function getValue(row, key) {
-  const value = row[key];
-  if (!value) {
-    return null;
-  }
-  if (value.length === 0) {
-    return null;
-  }
-  return value;
 }
