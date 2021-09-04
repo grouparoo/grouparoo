@@ -155,6 +155,9 @@ async function loadCsvTable(
       if (row[typeColumn] <= 0) {
         throw new Error(`no ${typeColumn} column on ${tableName}`);
       }
+      for (const key in row) {
+        row[key] = parseValue(key, row[key]);
+      }
 
       if (createdAt || updatedAt) {
         // otherwise, not handling times or pagination
@@ -256,4 +259,20 @@ function getUpdatedAt(now: Date, created_at: Date) {
   const updatedAgo = creationAgo * Math.random();
   const updatedMilli = now.getTime() - updatedAgo;
   return new Date(updatedMilli);
+}
+
+function parseValue(key: string, value: string) {
+  if (!value) {
+    return null;
+  }
+  if (key === "id" || key.indexOf("_id") >= 0) {
+    return parseInt(value);
+  }
+  if (value === "true") {
+    return true;
+  }
+  if (value === "false") {
+    return false;
+  }
+  return value;
 }
