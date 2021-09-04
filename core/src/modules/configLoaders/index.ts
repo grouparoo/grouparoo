@@ -46,7 +46,7 @@ const freshIdsByClass: () => IdsByClass = () => ({
   apikey: [],
   team: [],
   teammember: [],
-  profile: [],
+  record: [],
 });
 
 export function getSeenIds(configObjects: AnyConfigurationObject[]) {
