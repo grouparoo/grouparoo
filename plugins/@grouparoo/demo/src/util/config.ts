@@ -1,6 +1,8 @@
 import Postgres from "../connections/postgres";
 import Mongo from "../connections/mongo";
+import Snowflake from "../connections/snowflake";
 import MySQL from "../connections/mysql";
+import Connection from "./connection";
 
 class Config {
   subDirs: { [type: string]: boolean };
@@ -29,6 +31,9 @@ class Config {
         break;
       case "mongo":
         this.db = new Mongo();
+        break;
+      case "snowflake":
+        this.db = new Snowflake();
         break;
       case "mysql":
         this.db = new MySQL();
@@ -65,13 +70,10 @@ class Config {
       case "setup":
         break;
       case "mongo":
-        this.setDb("mongo", type);
-        break;
+      case "snowflake":
       case "postgres":
-        this.setDb("postgres", type);
-        break;
       case "mysql":
-        this.setDb("mysql", type);
+        this.setDb(type, type);
         break;
       case "b2c":
       case "purchases":
@@ -131,7 +133,7 @@ class Config {
 }
 
 export function getConfig(types: string[]): {
-  db: any;
+  db: Connection;
   subDirs: string[];
   dataset: string;
 } {

@@ -2,7 +2,7 @@
   "class": "Source",
   "id": "demo_accounts",
   "name": "Accounts",
-  "type": "postgres-table-import",
+  "type": "DBNAME-table-import",
   "appId": "demo_db",
   "options": {
     "table": "accounts"

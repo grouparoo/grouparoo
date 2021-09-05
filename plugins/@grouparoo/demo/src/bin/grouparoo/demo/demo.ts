@@ -16,17 +16,55 @@ import { init, finalize } from "../../../util/shared";
 import { getConfig } from "../../../util/config";
 import { log } from "actionhero";
 import { GrouparooCLI } from "@grouparoo/core";
+import Connection from "../../../util/connection";
 
 export class Demo extends CLI {
   constructor() {
     super();
     this.name = "demo [type] [type]";
-    this.description =
-      "Load eCommerce users and purchases into a source database and create properties";
+    this.description = [
+      "Load data into a source database, create properties, destinations, and other config.",
+      'A demo@grouparoo.com Team Member is created. Password: "password"',
+      "",
+      "Valid Types:",
+      "b2c            (default) loads users and purchases into source",
+      "b2b            loads users, accounts, and payment data into source",
+      "purchases      same as b2c",
+      "accounts       same as b2b",
+      "reset          only clear Grouparoo database and don't load config",
+      "setup          only create the login Team Member",
+      "postgres       (default) load source data into local Postgres database",
+      "mongo          load specified source data into local MongoDB database",
+      "mysql          load specified source data into local MySQL database",
+      "snowflake      assume Snowflake instance with data already present",
+      "mailchimp      create mailchimp destination for data",
+    ].join("\n");
     this.inputs = {
-      scale: { required: false, default: "1" },
-      config: { required: false, letter: "c", flag: true },
-      force: { required: false, letter: "f", flag: true },
+      scale: {
+        required: false,
+        default: "1",
+        description: "make the number more than 1 to multiple amount of data.",
+      },
+      config: {
+        required: false,
+        letter: "c",
+        flag: true,
+        description:
+          "add flag to write to config directory and not populate configuraiton into Grouparoo database",
+      },
+      seed: {
+        required: false,
+        letter: "s",
+        flag: true,
+        description:
+          "add flag to only write (or output) demo source data and not touch Grouparoo database",
+      },
+      force: {
+        required: false,
+        letter: "f",
+        flag: true,
+        description: "add flag to ensure deletion of config directory",
+      },
     };
   }
 
@@ -34,27 +72,62 @@ export class Demo extends CLI {
     GrouparooCLI.setGrouparooRunMode(this);
   };
 
+  async loadData(
+    db: Connection,
+    seed: boolean,
+    scale: number,
+    subDirs: string[]
+  ) {
+    let users = false;
+    if (db) await db.sessionStart();
+    if (seed && db) db.seeding();
+    if (seed || hasDir(subDirs, ["purchases"])) {
+      await consumers(db, { scale });
+      await purchases(db, { scale });
+      users = true;
+    }
+    if (seed || hasDir(subDirs, ["accounts"])) {
+      await plans(db, {});
+      await accounts(db, { scale });
+      await payments(db, { scale });
+      if (!users) {
+        // don't do users twice when seeding!
+        await employees(db, { scale });
+      }
+    }
+    if (db) await db.sessionEnd();
+  }
+
   async run({ params }) {
     try {
       const scale = parseInt(params.scale) || 1;
+      const seed = !!params.seed;
       const config = !!params.config;
       const force = !!params.force;
 
       log(`Using scale = ${scale}`);
+
+      let types = params._arguments || [];
+      if (types.length === 0) {
+        types = ["b2c"];
+      }
+      const { db, subDirs, dataset } = getConfig(types);
+
+      if (seed) {
+        if (!db) {
+          log("No database given for seed", "error");
+        }
+        log(`Seeding: ${db.name()}`);
+        await this.loadData(db, seed, scale, subDirs);
+        return;
+      }
 
       if (config) {
         log("Writing config to app.");
       } else {
         log("Writing config to database.");
       }
-
-      let types = params._arguments || [];
-      if (types.length === 0) {
-        types = ["b2c"];
-      }
       log(`Using types: ${types.join(", ")}`);
-      const { db, subDirs, dataset } = getConfig(types);
-
       log(`Config directories: ${subDirs.join(",")}`);
       log(`Using dataset: ${dataset}`);
       log(`Using database: ${db ? db.constructor.name : "none"}`);
@@ -65,16 +138,7 @@ export class Demo extends CLI {
       }
       await init({ reset: true });
 
-      if (hasDir(subDirs, ["purchases"])) {
-        await consumers(db, { scale });
-        await purchases(db, { scale });
-      }
-      if (hasDir(subDirs, ["accounts"])) {
-        await plans(db, {});
-        await accounts(db, { scale });
-        await payments(db, { scale });
-        await employees(db, { scale });
-      }
+      await this.loadData(db, seed, scale, subDirs);
 
       if (config) {
         const skip = ["setup"]; // not all get config files, they load into db

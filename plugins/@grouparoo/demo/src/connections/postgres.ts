@@ -1,59 +1,9 @@
 import { Client, ClientConfig } from "pg";
 import { api, config, log } from "actionhero";
 import Connection from "../util/connection";
+import { TYPES } from "./data";
 
 export const SCHEMA_NAME = "demo";
-
-const TYPES = {
-  users: {
-    id: "INT NOT NULL PRIMARY KEY",
-    account_id: "INT",
-    first_name: "VARCHAR(191) NOT NULL",
-    last_name: "VARCHAR(191) NOT NULL",
-    email: "VARCHAR(191) NOT NULL",
-    gender: "VARCHAR(191)",
-    ip_address: "VARCHAR(191)",
-    avatar: "VARCHAR(191)",
-    language: "VARCHAR(191)",
-    deactivated: "BOOLEAN",
-    created_at: "TIMESTAMP NOT NULL",
-    updated_at: "TIMESTAMP NOT NULL",
-  },
-
-  purchases: {
-    id: "INT NOT NULL PRIMARY KEY",
-    user_id: "INT NOT NULL",
-    item: "VARCHAR(191) NOT NULL",
-    category: "VARCHAR(191) NOT NULL",
-    price: "DECIMAL",
-    state: "VARCHAR(191)",
-    created_at: "TIMESTAMP NOT NULL",
-  },
-
-  accounts: {
-    id: "INT NOT NULL PRIMARY KEY",
-    name: "VARCHAR(191) NOT NULL",
-    domain: "VARCHAR(191) NOT NULL",
-    plan_id: "INT",
-    created_at: "TIMESTAMP NOT NULL",
-    updated_at: "TIMESTAMP NOT NULL",
-  },
-
-  plans: {
-    id: "INT NOT NULL PRIMARY KEY",
-    name: "VARCHAR(191) NOT NULL",
-    seats: "INT NOT NULL",
-    monthly_rate: "INT NOT NULL",
-  },
-
-  payments: {
-    id: "INT NOT NULL PRIMARY KEY",
-    account_id: "INT NOT NULL",
-    amount: "DECIMAL",
-    state: "VARCHAR(191)",
-    created_at: "TIMESTAMP NOT NULL",
-  },
-};
 
 function findConfig(): ClientConfig {
   const connectionURL = process.env.DEMO_DATABASE_URL;
@@ -193,7 +143,7 @@ export default class Postgres extends Connection {
     const variables = keys.map((key, index) => "$" + (index + 1));
     const insertQuery = `INSERT INTO ${sqlTable} (${columnNames}) VALUES (${variables})`;
 
-    const values: Array<any> = keys.map((key) => getValue(row, key));
+    const values: Array<any> = keys.map((key) => row[key]);
     await this.query(2, insertQuery, values);
   }
 
@@ -205,15 +155,4 @@ export default class Postgres extends Connection {
     }
     return client.query(sql);
   }
-}
-
-function getValue(row, key) {
-  const value = row[key];
-  if (!value) {
-    return null;
-  }
-  if (value.length === 0) {
-    return null;
-  }
-  return value;
 }
