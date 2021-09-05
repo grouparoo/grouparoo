@@ -21,13 +21,49 @@ export class Demo extends CLI {
   constructor() {
     super();
     this.name = "demo [type] [type]";
-    this.description =
-      "Load eCommerce users and purchases into a source database and create properties";
+    this.description = [
+      "Load data into a source database, create properties, destinations, and other config.",
+      'A demo@grouparoo.com Team Member is created. Password: "password"',
+      "",
+      "Valid Types:",
+      "b2c            (default) loads users and purchases into source",
+      "b2b            loads users, accounts, and payment data into source",
+      "purchases      same as b2c",
+      "accounts       same as b2b",
+      "reset          only clear Grouparoo database and don't load config",
+      "setup          only create the login Team Member",
+      "postgres       (default) load source data into local Postgres database",
+      "mongo          load specified source data into local MongoDB database",
+      "mysql          load specified source data into local MySQL database",
+      "snowflake      assume Snowflake instance with data already present",
+      "mailchimp      create mailchimp destination for data",
+    ].join("\n");
     this.inputs = {
-      scale: { required: false, default: "1" },
-      config: { required: false, letter: "c", flag: true },
-      seed: { required: false, letter: "s", flag: true },
-      force: { required: false, letter: "f", flag: true },
+      scale: {
+        required: false,
+        default: "1",
+        description: "make the number more than 1 to multiple amount of data.",
+      },
+      config: {
+        required: false,
+        letter: "c",
+        flag: true,
+        description:
+          "add flag to write to config directory and not populate configuraiton into Grouparoo database",
+      },
+      seed: {
+        required: false,
+        letter: "s",
+        flag: true,
+        description:
+          "add flag to only write (or output) demo source data and not touch Grouparoo database",
+      },
+      force: {
+        required: false,
+        letter: "f",
+        flag: true,
+        description: "add flag to ensure deletion of config directory",
+      },
     };
   }
 
