@@ -16,6 +16,7 @@ import { init, finalize } from "../../../util/shared";
 import { getConfig } from "../../../util/config";
 import { log } from "actionhero";
 import { GrouparooCLI } from "@grouparoo/core";
+import Connection from "../../../util/connection";
 
 export class Demo extends CLI {
   constructor() {
@@ -71,6 +72,32 @@ export class Demo extends CLI {
     GrouparooCLI.setGrouparooRunMode(this);
   };
 
+  async loadData(
+    db: Connection,
+    seed: boolean,
+    scale: number,
+    subDirs: string[]
+  ) {
+    let users = false;
+    if (db) await db.sessionStart();
+    if (seed && db) db.seeding();
+    if (seed || hasDir(subDirs, ["purchases"])) {
+      await consumers(db, { scale });
+      await purchases(db, { scale });
+      users = true;
+    }
+    if (seed || hasDir(subDirs, ["accounts"])) {
+      await plans(db, {});
+      await accounts(db, { scale });
+      await payments(db, { scale });
+      if (!users) {
+        // don't do users twice when seeding!
+        await employees(db, { scale });
+      }
+    }
+    if (db) await db.sessionEnd();
+  }
+
   async run({ params }) {
     try {
       const scale = parseInt(params.scale) || 1;
@@ -91,14 +118,7 @@ export class Demo extends CLI {
           log("No database given for seed", "error");
         }
         log(`Seeding: ${db.name()}`);
-        await db.sessionStart();
-        db.seeding();
-        await consumers(db, { scale });
-        await purchases(db, { scale });
-        await plans(db, {});
-        await accounts(db, { scale });
-        await payments(db, { scale });
-        await db.sessionEnd();
+        await this.loadData(db, seed, scale, subDirs);
         return;
       }
 
@@ -118,18 +138,7 @@ export class Demo extends CLI {
       }
       await init({ reset: true });
 
-      if (db) await db.sessionStart();
-      if (hasDir(subDirs, ["purchases"])) {
-        await consumers(db, { scale });
-        await purchases(db, { scale });
-      }
-      if (hasDir(subDirs, ["accounts"])) {
-        await plans(db, {});
-        await accounts(db, { scale });
-        await payments(db, { scale });
-        await employees(db, { scale });
-      }
-      if (db) await db.sessionEnd();
+      await this.loadData(db, seed, scale, subDirs);
 
       if (config) {
         const skip = ["setup"]; // not all get config files, they load into db

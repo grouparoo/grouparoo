@@ -2,6 +2,7 @@ import Postgres from "../connections/postgres";
 import Mongo from "../connections/mongo";
 import Snowflake from "../connections/snowflake";
 import MySQL from "../connections/mysql";
+import Connection from "./connection";
 
 class Config {
   subDirs: { [type: string]: boolean };
@@ -132,7 +133,7 @@ class Config {
 }
 
 export function getConfig(types: string[]): {
-  db: any;
+  db: Connection;
   subDirs: string[];
   dataset: string;
 } {
