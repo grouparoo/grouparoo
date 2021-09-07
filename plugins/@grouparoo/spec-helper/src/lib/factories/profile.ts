@@ -1,4 +1,4 @@
-import * as UUID from "uuid";
+import faker from "faker";
 import { loadPath } from "../loadPath";
 
 const data = async (props = {}) => {
@@ -19,7 +19,9 @@ export default async (props = {}, properties = {}) => {
   const directlyMappedProperty = allProperties.find((p) => p.directlyMapped);
 
   if (directlyMappedProperty) {
-    properties[directlyMappedProperty.key] = UUID.v4();
+    properties[directlyMappedProperty.key] = parseInt(
+      `${new Date().getTime()}${faker.unique(faker.datatype.number)}`
+    );
   }
 
   await profile.addOrUpdateProperties({
