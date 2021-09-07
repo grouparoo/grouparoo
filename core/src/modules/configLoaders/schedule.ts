@@ -9,6 +9,7 @@ import {
 } from "../../classes/codeConfig";
 import { Schedule, Source } from "../..";
 import { Op } from "sequelize";
+import { Deprecation } from "../deprecation";
 
 import { ConfigWriter } from "../configWriter";
 
@@ -19,8 +20,12 @@ export async function loadSchedule(
 ): Promise<IdsByClass> {
   let isNew = false;
 
-  // DEPRECATED
   if (configObject.hasOwnProperty("confirmProfiles")) {
+    Deprecation.warn(
+      "config",
+      "schedule.confirmProfiles",
+      "schedule.confirmRecords"
+    );
     configObject.confirmRecords = configObject["confirmProfiles"];
     delete configObject["confirmProfiles"];
   }

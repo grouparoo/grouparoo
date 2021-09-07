@@ -35,6 +35,7 @@ import { loadDestination, deleteDestinations } from "./destination";
 import { ConfigWriter } from "../configWriter";
 import { loadRecord } from "./record";
 import Sequelize from "sequelize";
+import { Deprecation } from "../deprecation";
 
 const freshIdsByClass: () => IdsByClass = () => ({
   app: [],
@@ -289,7 +290,8 @@ export async function processConfigObjects(
         case "record":
           ids = await loadRecord(configObject, externallyValidate, validate);
           break;
-        case "profile": // DEPRECIATED
+        case "profile":
+          Deprecation.warn("config", "Profile", "Record");
           ids = await loadRecord(configObject, externallyValidate, validate);
           break;
         default:
