@@ -18,6 +18,13 @@ export async function loadSchedule(
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
+
+  // DEPRECATED
+  if (configObject.hasOwnProperty("confirmProfiles")) {
+    configObject.confirmRecords = configObject["confirmProfiles"];
+    delete configObject["confirmProfiles"];
+  }
+
   validateConfigObjectKeys(Schedule, configObject);
   const source: Source = await getParentByName(Source, configObject.sourceId);
 

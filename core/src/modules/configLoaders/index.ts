@@ -289,6 +289,9 @@ export async function processConfigObjects(
         case "record":
           ids = await loadRecord(configObject, externallyValidate, validate);
           break;
+        case "profile": // DEPRECIATED
+          ids = await loadRecord(configObject, externallyValidate, validate);
+          break;
         default:
           throw new Error(`unknown config object class: ${configObject.class}`);
       }
