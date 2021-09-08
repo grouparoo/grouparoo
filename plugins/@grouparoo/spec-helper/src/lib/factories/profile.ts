@@ -19,8 +19,9 @@ export default async (props = {}, properties = {}) => {
   const directlyMappedProperty = allProperties.find((p) => p.directlyMapped);
 
   if (directlyMappedProperty) {
-    properties[directlyMappedProperty.key] = parseInt(
-      `${new Date().getTime()}${faker.unique(faker.datatype.number)}`
+    properties[directlyMappedProperty.key] = faker.unique(
+      faker.datatype.number,
+      [{ min: 1, max: 999999999999 }]
     );
   }
 
