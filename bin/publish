@@ -126,7 +126,15 @@ git checkout pnpm-lock.yaml # the other github action will take care of this, bu
 
 # Check to make sure it was built correctly
 rm -rf core/dist
-if [ ! -d "core/dist" ]; then
+if [ ! -d "core/dist" ] ||\
+   [ ! -d "cli/dist" ] ||\
+   [ ! -d "ui/ui-community/.next" ] ||\
+   [ ! -d "ui/ui-config/.next" ] ||\
+   [ ! -d "ui/ui-enterprise/.next" ] ||\
+   [ ! -d "plugins/postgres/dist" ] ||\
+   [ ! -d "plugins/mysql/dist" ] ||\
+   [ ! -d "plugins/mongo/dist" ] ||\
+   [ ! -d "plugins/bigquery/dist" ]; then
   echo "No dist folder, exiting"
   exit 1
 fi
