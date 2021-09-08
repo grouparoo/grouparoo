@@ -161,11 +161,6 @@ describe("modules/plugin", () => {
       // Stale setting is in the db.
       let updatedKeys = await getAllSettingsKeys();
       expect(updatedKeys).toContain("sample-setting");
-
-      // Stale setting gets removed when cleaning.
-      await plugin.cleanSettings(settingsKeys);
-      updatedKeys = await getAllSettingsKeys();
-      expect(updatedKeys).not.toContain("sample-setting");
     });
   });
 
