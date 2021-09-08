@@ -668,14 +668,14 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.0.3
-      aws-sdk: 2.981.0
+      aws-sdk: 2.982.0
       fs-extra: 10.0.0
       jest: 27.1.0
       prettier: 2.3.2
       ts-jest: 27.0.5
       typescript: 4.4.2
     dependencies:
-      aws-sdk: 2.981.0
+      aws-sdk: 2.982.0
       fs-extra: 10.0.0
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -4539,8 +4539,8 @@ packages:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
 
-  /aws-sdk/2.981.0:
-    resolution: {integrity: sha512-Itrj9O1zmPm/HupwUiWBhoMTuSjLQzsBcEpxHgLQmUPRv2pxud8kq5DbuKdS2tLlBFMuKx4OLcs9x5RbNOfj5A==}
+  /aws-sdk/2.982.0:
+    resolution: {integrity: sha512-5w+m8Ia35NqB4TOZHEKts5zSV+FTdc7hTYbN4N4lZ4YU3cLTMt496ojh5UI3Deo8IIlqgTf3UVuq6Y6cPpVxkg==}
     engines: {node: '>= 0.8.0'}
     requiresBuild: true
     dependencies:
