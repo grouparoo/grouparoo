@@ -1,5 +1,5 @@
+import { render, act } from "@testing-library/react";
 import ProfilePreview from "../../components/property/profilePreview";
-import { create, act } from "react-test-renderer";
 import { ErrorHandler } from "../../utils/errorHandler";
 
 jest.mock("next/router", () => {
@@ -27,6 +27,7 @@ jest.mock("../../hooks/useApi", () => ({
 describe("property / profilePreview", () => {
   afterAll(() => {
     jest.unmock("next/router");
+    jest.unmock("../../hooks/useApi");
   });
   afterEach(() => {
     execApi.mockReset();
@@ -34,7 +35,7 @@ describe("property / profilePreview", () => {
 
   it("should render with no profile preview", () => {
     expect(
-      create(
+      render(
         <ProfilePreview
           errorHandler={new ErrorHandler()}
           localFilters={{}}
@@ -45,7 +46,7 @@ describe("property / profilePreview", () => {
             options: {},
           }}
         />
-      )
+      ).container
     ).toMatchSnapshot();
   });
 
@@ -60,9 +61,9 @@ describe("property / profilePreview", () => {
         },
       });
     });
-    let profile: ReturnType<typeof create>;
+    let profile: ReturnType<typeof render>;
     await act(async () => {
-      profile = create(
+      profile = render(
         <ProfilePreview
           errorHandler={new ErrorHandler()}
           localFilters={{}}
@@ -76,7 +77,7 @@ describe("property / profilePreview", () => {
       );
       await new Promise((res) => setTimeout(res, 2000));
     });
-    expect(profile).toMatchSnapshot();
+    expect(profile.container).toMatchSnapshot();
   });
 
   it("should render with null date", async () => {
@@ -90,9 +91,9 @@ describe("property / profilePreview", () => {
         },
       });
     });
-    let profile: ReturnType<typeof create>;
+    let profile: ReturnType<typeof render>;
     await act(async () => {
-      profile = create(
+      profile = render(
         <ProfilePreview
           errorHandler={new ErrorHandler()}
           localFilters={{}}
@@ -106,6 +107,6 @@ describe("property / profilePreview", () => {
       );
       await new Promise((res) => setTimeout(res, 2000));
     });
-    expect(profile).toMatchSnapshot();
+    expect(profile.container).toMatchSnapshot();
   });
 });
