@@ -1624,6 +1624,7 @@ importers:
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
+      '@types/react-test-renderer': ^17.0.1
       axios: 0.21.1
       bootstrap: 4.6.0
       date-fns: 2.23.0
@@ -1644,6 +1645,7 @@ importers:
       react-hook-form: 6.15.5
       react-markdown: 7.0.1
       react-moment: 1.1.1
+      react-test-renderer: ^17.0.2
       recharts: 2.1.2
       sass: 1.39.0
       stacktrace-js: 2.0.2
@@ -1662,6 +1664,7 @@ importers:
       '@types/jest': 27.0.1
       '@types/react': 17.0.20
       '@types/react-dom': 17.0.9
+      '@types/react-test-renderer': 17.0.1
       axios: 0.21.1
       bootstrap: 4.6.0
       date-fns: 2.23.0
@@ -1682,6 +1685,7 @@ importers:
       react-hook-form: 6.15.5_react@17.0.2
       react-markdown: 7.0.1_6e44cfea672f844fe365824ce49901bd
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
+      react-test-renderer: 17.0.2_react@17.0.2
       recharts: 2.1.2_9bdd65c2b60ce8638444b80b396a481b
       sass: 1.39.0
       stacktrace-js: 2.0.2
@@ -3990,6 +3994,12 @@ packages:
 
   /@types/react-dom/17.0.9:
     resolution: {integrity: sha512-wIvGxLfgpVDSAMH5utdL9Ngm5Owu0VsGmldro3ORLXV8CShrL8awVj06NuEXFQ5xyaYfdca7Sgbk/50Ri1GdPg==}
+    dependencies:
+      '@types/react': 17.0.20
+    dev: true
+
+  /@types/react-test-renderer/17.0.1:
+    resolution: {integrity: sha512-3Fi2O6Zzq/f3QR9dRnlnHso9bMl7weKCviFmfF6B4LS1Uat6Hkm15k0ZAQuDz+UBq6B3+g+NM6IT2nr5QgPzCw==}
     dependencies:
       '@types/react': 17.0.20
     dev: true
@@ -12061,6 +12071,16 @@ packages:
       resize-observer-polyfill: 1.5.1
     dev: true
 
+  /react-shallow-renderer/16.14.1_react@17.0.2:
+    resolution: {integrity: sha512-rkIMcQi01/+kxiTE9D3fdS959U1g7gs+/rborw++42m1O9FAQiNI/UNRZExVUoAOprn4umcXf+pFRou8i4zuBg==}
+    peerDependencies:
+      react: ^16.0.0 || ^17.0.0
+    dependencies:
+      object-assign: 4.1.1
+      react: 17.0.2
+      react-is: 17.0.2
+    dev: true
+
   /react-smooth/2.0.0_9bdd65c2b60ce8638444b80b396a481b:
     resolution: {integrity: sha512-wK4dBBR6P21otowgMT9toZk+GngMplGS1O5gk+2WSiHEXIrQgDvhR5IIlT74Vtu//qpTcipkgo21dD7a7AUNxw==}
     peerDependencies:
@@ -12074,6 +12094,18 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-transition-group: 2.9.0_react-dom@17.0.2+react@17.0.2
+    dev: true
+
+  /react-test-renderer/17.0.2_react@17.0.2:
+    resolution: {integrity: sha512-yaQ9cB89c17PUb0x6UfWRs7kQCorVdHlutU1boVPEsB8IDZH6n9tHxMacc3y0JoXOJUsZb/t/Mb8FUWMKaM7iQ==}
+    peerDependencies:
+      react: 17.0.2
+    dependencies:
+      object-assign: 4.1.1
+      react: 17.0.2
+      react-is: 17.0.2
+      react-shallow-renderer: 16.14.1_react@17.0.2
+      scheduler: 0.20.2
     dev: true
 
   /react-transition-group/2.9.0_react-dom@17.0.2+react@17.0.2:
@@ -14012,7 +14044,7 @@ packages:
       '@types/jest': 27.0.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.1.0_ts-node@10.2.1
+      jest: 27.1.0
       jest-util: 27.1.1
       json5: 2.2.0
       lodash: 4.17.21
