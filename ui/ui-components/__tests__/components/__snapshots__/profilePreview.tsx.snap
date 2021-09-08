@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`property / profilePreview should render 1`] = `
+<div
+  className="card bg-light"
+>
+  <div
+    className="card-body"
+    style={
+      Object {
+        "color": "white",
+        "textAlign": "center",
+      }
+    }
+  >
+    <div
+      className="card-title h5"
+    >
+      Example Profile
+    </div>
+    <img
+      className="rounded"
+      src="https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=100.png"
+      style={
+        Object {
+          "maxWidth": 100,
+          "width": "100%",
+        }
+      }
+    />
+    <br />
+    <a
+      className="card-link"
+      href="/profile/asdf/edit"
+      style={
+        Object {
+          "color": "white",
+        }
+      }
+    >
+      View Profile
+    </a>
+    <br />
+    <small
+      onClick={[Function]}
+    >
+      change
+    </small>
+  </div>
+  <div
+    className="list-group list-group-flush"
+    onKeyDown={[Function]}
+  >
+    <div
+      className="list-group-item list-group-item-success"
+      data-rb-event-key={null}
+      disabled={false}
+      onClick={[Function]}
+    >
+      <strong>
+        test-key
+      </strong>
+      :
+       
+      ...
+    </div>
+    <div
+      className="list-group-item list-group-item-light"
+      data-rb-event-key={null}
+      disabled={false}
+      onClick={[Function]}
+    >
+      <strong>
+        date
+      </strong>
+      :
+       
+      9/8/2021, 2:58:38 PM
+    </div>
+  </div>
+</div>
+`;
+
+exports[`property / profilePreview should render with no profile preview 1`] = `
+<div
+  className="card bg-light"
+>
+  <div
+    className="card-body"
+    style={
+      Object {
+        "textAlign": "center",
+      }
+    }
+  >
+    Profile preview unavailable
+  </div>
+</div>
+`;
+
+exports[`property / profilePreview should render with null date 1`] = `
+<div
+  className="card bg-light"
+>
+  <div
+    className="card-body"
+    style={
+      Object {
+        "color": "white",
+        "textAlign": "center",
+      }
+    }
+  >
+    <div
+      className="card-title h5"
+    >
+      Example Profile
+    </div>
+    <img
+      className="rounded"
+      src="https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=100.png"
+      style={
+        Object {
+          "maxWidth": 100,
+          "width": "100%",
+        }
+      }
+    />
+    <br />
+    <a
+      className="card-link"
+      href="/profile/asdf/edit"
+      style={
+        Object {
+          "color": "white",
+        }
+      }
+    >
+      View Profile
+    </a>
+    <br />
+    <small
+      onClick={[Function]}
+    >
+      change
+    </small>
+  </div>
+  <div
+    className="list-group list-group-flush"
+    onKeyDown={[Function]}
+  >
+    <div
+      className="list-group-item list-group-item-success"
+      data-rb-event-key={null}
+      disabled={false}
+      onClick={[Function]}
+    >
+      <strong>
+        test-key
+      </strong>
+      :
+       
+      ...
+    </div>
+    <div
+      className="list-group-item list-group-item-light"
+      data-rb-event-key={null}
+      disabled={false}
+      onClick={[Function]}
+    >
+      <strong>
+        date
+      </strong>
+      :
+       
+    </div>
+  </div>
+</div>
+`;
