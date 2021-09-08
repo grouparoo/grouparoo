@@ -2,7 +2,6 @@ import { helper } from "@grouparoo/spec-helper";
 import { Validate } from "../../src/bin/validate";
 import { join } from "path";
 import { Setting } from "../../src";
-import exp from "constants";
 let actionhero;
 
 const filename = join(
