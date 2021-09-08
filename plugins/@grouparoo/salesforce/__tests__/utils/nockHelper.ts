@@ -22,6 +22,7 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
     username: parsed.SALESFORCE_USERNAME,
     password: parsed.SALESFORCE_PASSWORD,
     securityToken: parsed.SALESFORCE_SECURITY_TOKEN,
+    salesforceDomain: parsed.SALESFORCE_DOMAIN,
   };
 }
 
@@ -44,6 +45,10 @@ export const updater = {
     nockCall = nockCall.replace(
       new RegExp(realEnv.SALESFORCE_SECURITY_TOKEN, "gi"),
       nockEnv.SALESFORCE_SECURITY_TOKEN
+    );
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.SALESFORCE_DOMAIN, "gi"),
+      nockEnv.SALESFORCE_DOMAIN
     );
     // nockCall = nockCall.replace(
     //   new RegExp(/\"access_token\"\s*:\".+?\"/, "gi"),

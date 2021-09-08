@@ -2,10 +2,10 @@ import { SimpleAppOptions } from "@grouparoo/core";
 import jsforce from "jsforce";
 
 export async function connect(appOptions: SimpleAppOptions) {
-  const { username, password, securityToken } = appOptions;
-  var conn = new jsforce.Connection({
+  const { username, password, securityToken, salesforceDomain } = appOptions;
+  const conn = new jsforce.Connection({
     // you can change loginUrl to connect to sandbox or prerelease env.
-    // loginUrl : 'https://test.salesforce.com'
+    loginUrl: salesforceDomain?.toString(),
   });
   const fullPassword =
     (password || "").toString() + (securityToken || "").toString();

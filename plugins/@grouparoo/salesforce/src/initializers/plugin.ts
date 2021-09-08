@@ -62,6 +62,12 @@ export class Plugins extends Initializer {
               description:
                 "To get a new security token, click on 'Reset My Security Token' in `personal settings`",
             },
+            {
+              key: "salesforceDomain",
+              displayName: "Salesforce Domain",
+              defaultValue: "https://login.salesforce.com",
+              required: false,
+            },
           ],
           methods: { test, parallelism },
         },
