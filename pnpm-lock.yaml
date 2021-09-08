@@ -3337,7 +3337,6 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
-    requiresBuild: true
     optional: true
 
   /@next/swc-darwin-x64/11.1.2:
@@ -3345,7 +3344,6 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
-    requiresBuild: true
     optional: true
 
   /@next/swc-linux-x64-gnu/11.1.2:
@@ -3353,7 +3351,6 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
-    requiresBuild: true
     optional: true
 
   /@next/swc-win32-x64-msvc/11.1.2:
@@ -3361,7 +3358,6 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
-    requiresBuild: true
     optional: true
 
   /@node-rs/helper/1.2.1:
@@ -6911,7 +6907,6 @@ packages:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
-    requiresBuild: true
     optional: true
 
   /fstream/1.0.12:
@@ -10070,7 +10065,6 @@ packages:
   /mv/2.1.1:
     resolution: {integrity: sha1-rmzg1vbV4KT32JN5jQPB6pVZtqI=}
     engines: {node: '>=0.8.0'}
-    requiresBuild: true
     dependencies:
       mkdirp: 0.5.5
       ncp: 2.0.0
@@ -10391,7 +10385,6 @@ packages:
     resolution: {integrity: sha512-3g8lYefrRRzvGeSowdJKAKyks8oUpLEd/DyPV4eMhVlhJ0aNaZqIrNUIPuEWWTAoPqyFkfGrM67MC69baqn6vA==}
     engines: {node: '>= 0.8.0'}
     hasBin: true
-    requiresBuild: true
     dependencies:
       fstream: 1.0.12
       glob: 7.1.7
@@ -12665,7 +12658,6 @@ packages:
   /saslprep/1.0.3:
     resolution: {integrity: sha512-/MY/PEMbk2SuY5sScONwhUDsV2p77Znkb/q3nSVstq/yQzYJOH/Azh29p9oJLsl3LnQwSvZDKagDGBsBwSooag==}
     engines: {node: '>=6'}
-    requiresBuild: true
     dependencies:
       sparse-bitfield: 3.0.3
     dev: false
@@ -14184,7 +14176,6 @@ packages:
     resolution: {integrity: sha512-rtPMlmcO4agTUfz10CbgJ1k6UAoXM2gWb3GoMPPZB/+/Ackf8lNWk11K4rYi2D0apgoFRLtQOZhb+/iGNJq26A==}
     engines: {node: '>=0.8.0'}
     hasBin: true
-    requiresBuild: true
     dev: true
     optional: true
 
