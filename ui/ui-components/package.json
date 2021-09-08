@@ -22,7 +22,7 @@
   },
   "scripts": {
     "pretest": "npm run lint",
-    "test": "jest",
+    "test": "TZ=UTC jest",
     "lint": "prettier --check pages components classes client utils hooks __tests__"
   },
   "devDependencies": {
