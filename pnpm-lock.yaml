@@ -1631,6 +1631,7 @@ importers:
       jest: 27.1.0
       jest-mock-axios: 4.4.0
       md5: 2.3.0
+      mockdate: ^3.0.5
       moment: 2.29.1
       next: 11.1.2
       nprogress: 0.2.0
@@ -1651,6 +1652,8 @@ importers:
       ts-jest: 27.0.5
       type-fest: 2.1.0
       typescript: 4.4.2
+    dependencies:
+      mockdate: 3.0.5
     devDependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.36
       '@fortawesome/free-brands-svg-icons': 5.15.4
@@ -9970,6 +9973,10 @@ packages:
     dependencies:
       get-caller-file: 1.0.3
       normalize-path: 2.1.1
+    dev: false
+
+  /mockdate/3.0.5:
+    resolution: {integrity: sha512-iniQP4rj1FhBdBYS/+eQv7j1tadJ9lJtdzgOpvsOHng/GbcDh2Fhdeq+ZRldrPYdXvCyfFUmFeEwEGXZB5I/AQ==}
     dev: false
 
   /modify-values/1.0.1:

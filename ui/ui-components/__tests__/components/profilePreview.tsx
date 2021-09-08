@@ -1,6 +1,10 @@
 import { render, act } from "@testing-library/react";
 import ProfilePreview from "../../components/property/profilePreview";
 import { ErrorHandler } from "../../utils/errorHandler";
+import { renderAndWait } from "../__utils__/renderAndWait";
+import MockDate from "mockdate";
+
+MockDate.set(1631127518020);
 
 jest.mock("next/router", () => {
   const nextRouter = jest.requireActual("next/router");
@@ -24,6 +28,21 @@ jest.mock("../../hooks/useApi", () => ({
   }),
 }));
 
+const renderDefaultProfile = (overrideProps: any = {}) =>
+  renderAndWait(
+    <ProfilePreview
+      errorHandler={new ErrorHandler()}
+      localFilters={{}}
+      property={{
+        id: "test-id",
+        key: "test-key",
+        type: "test-type",
+        options: {},
+      }}
+      {...overrideProps}
+    />
+  );
+
 describe("property / profilePreview", () => {
   afterAll(() => {
     jest.unmock("next/router");
@@ -33,21 +52,9 @@ describe("property / profilePreview", () => {
     execApi.mockReset();
   });
 
-  it("should render with no profile preview", () => {
-    expect(
-      render(
-        <ProfilePreview
-          errorHandler={new ErrorHandler()}
-          localFilters={{}}
-          property={{
-            id: "test-id",
-            key: "test-key",
-            type: "test-type",
-            options: {},
-          }}
-        />
-      ).container
-    ).toMatchSnapshot();
+  it("should render with no profile preview", async () => {
+    const profile = await renderDefaultProfile();
+    expect(profile.container).toMatchSnapshot();
   });
 
   it("should render", async () => {
@@ -61,22 +68,8 @@ describe("property / profilePreview", () => {
         },
       });
     });
-    let profile: ReturnType<typeof render>;
-    await act(async () => {
-      profile = render(
-        <ProfilePreview
-          errorHandler={new ErrorHandler()}
-          localFilters={{}}
-          property={{
-            id: "test-id",
-            key: "test-key",
-            type: "test-type",
-            options: {},
-          }}
-        />
-      );
-      await new Promise((res) => setTimeout(res, 2000));
-    });
+
+    const profile = await renderDefaultProfile();
     expect(profile.container).toMatchSnapshot();
   });
 
@@ -91,22 +84,8 @@ describe("property / profilePreview", () => {
         },
       });
     });
-    let profile: ReturnType<typeof render>;
-    await act(async () => {
-      profile = render(
-        <ProfilePreview
-          errorHandler={new ErrorHandler()}
-          localFilters={{}}
-          property={{
-            id: "test-id",
-            key: "test-key",
-            type: "test-type",
-            options: {},
-          }}
-        />
-      );
-      await new Promise((res) => setTimeout(res, 2000));
-    });
+
+    const profile = await renderDefaultProfile();
     expect(profile.container).toMatchSnapshot();
   });
 });
