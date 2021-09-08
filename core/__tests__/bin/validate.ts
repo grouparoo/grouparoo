@@ -1,6 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Validate } from "../../src/bin/validate";
 import { join } from "path";
+import { Setting } from "../../src";
 let actionhero;
 
 const filename = join(
@@ -59,6 +60,13 @@ describe("bin/config-validate", () => {
       expect(output).toContain(
         "✅ Validation succeeded - 14 config objects OK!"
       );
+    });
+
+    test("the validate command will prepare settings", async () => {
+      await Setting.truncate();
+      const command = new Validate();
+      await command.run({ params: {} });
+      expect(await Setting.count()).toBeGreaterThan(0);
     });
 
     test("valid configurations can boot", async () => {

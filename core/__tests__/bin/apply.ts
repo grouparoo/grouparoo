@@ -15,6 +15,7 @@ import {
   TeamMember,
   Mapping,
   Option,
+  Setting,
 } from "../../src";
 
 function ensureNoSavedModels() {
@@ -102,6 +103,13 @@ describe("bin/config-apply", () => {
       expect(await TeamMember.count()).toBe(1);
       expect(await Option.count()).toBe(8);
       expect(await Mapping.count()).toBe(3);
+    });
+
+    test("the apply command will prepare settings", async () => {
+      await Setting.truncate();
+      const command = new Apply();
+      await command.run({ params: {} });
+      expect(await Setting.count()).toBeGreaterThan(0);
     });
   });
 

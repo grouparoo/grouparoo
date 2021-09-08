@@ -9,6 +9,7 @@ import {
 import { getConfigDir } from "../modules/pluginDetails";
 import pluralize from "pluralize";
 import { Migrations } from "ah-sequelize-plugin/dist/modules/migrations";
+import { SettingOps } from "../modules/ops/setting";
 
 export class Apply extends CLI {
   constructor() {
@@ -47,6 +48,8 @@ export class Apply extends CLI {
           log,
           config.sequelize.migrationLogLevel
         );
+
+        await SettingOps.prepare();
 
         GrouparooCLI.logger.log(
           `Applying ${configObjects.length} ${pluralize(

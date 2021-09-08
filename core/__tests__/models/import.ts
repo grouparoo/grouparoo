@@ -42,7 +42,7 @@ describe("models/import", () => {
     expect(_import.errorMetadata).toMatch("oh no");
   });
 
-  test.only("setting an error will update complete runs", async () => {
+  test("setting an error will update complete runs", async () => {
     const run: Run = await helper.factories.run();
     await run.afterBatch("complete");
     expect(run.error).toBeFalsy();

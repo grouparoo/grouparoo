@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { plugin, Setting, Log } from "../../src";
+import { SettingOps } from "../../src/modules/ops/setting";
 
 describe("models/setting", () => {
   helper.grouparooTestServer({
@@ -126,5 +127,45 @@ describe("models/setting", () => {
     });
 
     expect(latestLog).toBeTruthy();
+  });
+
+  describe("#SettingOps", () => {
+    beforeEach(async () => await Setting.truncate());
+
+    test("Settings can be seeded", async () => {
+      await SettingOps.prepare();
+      const settings = await Setting.findAll();
+      expect(settings.filter((s) => s.pluginName === "core").length).toEqual(
+        15
+      );
+      expect(
+        settings.filter((s) => s.pluginName === "interface").length
+      ).toEqual(1);
+      expect(
+        settings.filter((s) => s.pluginName === "telemetry").length
+      ).toEqual(2);
+    });
+
+    test("settings can be pruned", async () => {
+      const goodSetting = await Setting.create({
+        key: "goodKey",
+        pluginName: "test",
+        defaultValue: 1,
+        type: "number",
+      });
+      const badSetting = await Setting.create({
+        key: "badKey",
+        pluginName: "test",
+        defaultValue: 1,
+        type: "number",
+      });
+
+      const removed = await SettingOps.cleanSettings([goodSetting.key]);
+      expect(removed).toBe(1);
+      expect(await Setting.count()).toBe(1);
+      await expect(badSetting.reload()).rejects.toThrow(
+        /does not exist anymore/
+      );
+    });
   });
 });
