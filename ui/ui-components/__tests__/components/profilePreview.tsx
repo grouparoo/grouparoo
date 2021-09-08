@@ -2,9 +2,6 @@ import { render, act } from "@testing-library/react";
 import ProfilePreview from "../../components/property/profilePreview";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { renderAndWait } from "../__utils__/renderAndWait";
-import MockDate from "mockdate";
-
-MockDate.set(1631127518020);
 
 jest.mock("next/router", () => {
   const nextRouter = jest.requireActual("next/router");
@@ -44,9 +41,14 @@ const renderDefaultProfile = (overrideProps: any = {}) =>
   );
 
 describe("property / profilePreview", () => {
+  const dateMock = jest
+    .spyOn(Date.prototype, "toLocaleString")
+    .mockReturnValue("9/8/2021, 6:58:38 PM");
+
   afterAll(() => {
     jest.unmock("next/router");
     jest.unmock("../../hooks/useApi");
+    dateMock.mockRestore();
   });
   afterEach(() => {
     execApi.mockReset();
