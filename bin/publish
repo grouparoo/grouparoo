@@ -124,6 +124,14 @@ rm -rf ui/*/.next
 pnpm install --prefer-frozen-lockfile
 git checkout pnpm-lock.yaml # the other github action will take care of this, but we need a clean working directory to publish
 
+# Check to make sure it was built correctly
+rm -rf core/dist
+if [ ! -d "core/dist" ]; then
+  echo "No dist folder, exiting"
+  exit 1
+fi
+
+
 echo ""
 echo "-----> PUSH TO NPM"
 echo ""
