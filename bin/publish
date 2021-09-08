@@ -125,17 +125,17 @@ pnpm install --prefer-frozen-lockfile
 git checkout pnpm-lock.yaml # the other github action will take care of this, but we need a clean working directory to publish
 
 # Check to make sure it was built correctly
-rm -rf core/dist
+
+PLUGINS=`find 'plugins' -name src -and -type d | wc -l`
+BUILT_PLUGINS=`find 'plugins' -name dist -and -type d | wc -l`
+
 if [ ! -d "core/dist" ] ||\
    [ ! -d "cli/dist" ] ||\
    [ ! -d "ui/ui-community/.next" ] ||\
    [ ! -d "ui/ui-config/.next" ] ||\
    [ ! -d "ui/ui-enterprise/.next" ] ||\
-   [ ! -d "plugins/postgres/dist" ] ||\
-   [ ! -d "plugins/mysql/dist" ] ||\
-   [ ! -d "plugins/mongo/dist" ] ||\
-   [ ! -d "plugins/bigquery/dist" ]; then
-  echo "No dist folder, exiting"
+   [ "$PLUGINS" != "$BUILT_PLUGINS" ]; then
+  echo "Missing dist folder(s), exiting"
   exit 1
 fi
 
