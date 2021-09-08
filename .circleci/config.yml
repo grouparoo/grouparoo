@@ -2443,7 +2443,7 @@ jobs:
           command: cd core && ./bin/create_test_databases
       - run:
           name: install mysql client
-          command: sudo apt install -y mysql-client
+          command: sudo apt install -y mariadb-client
       - run:
           name: create mysql databases
           command: mysql -e "create database grouparoo_test" -u root -h 127.0.0.1
