@@ -69,7 +69,10 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
 
   const params = [];
   const types = [];
-  let query = `SELECT ${aggSelect}, \`${tablePrimaryKeyCol}\` as __pk FROM \`${tableName}\` WHERE`;
+  tablePrimaryKeyCol.includes(aggSelect)
+    ? (aggSelect = "")
+    : (aggSelect = aggSelect + ",");
+  let query = `SELECT ${aggSelect}\`${tablePrimaryKeyCol}\` as __pk FROM \`${tableName}\` WHERE`;
   let addAnd = false;
 
   for (const condition of matchConditions) {
