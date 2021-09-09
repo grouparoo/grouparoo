@@ -6,11 +6,13 @@ import {
   AllowNull,
   BeforeDestroy,
   BeforeSave,
+  BelongsTo,
   BelongsToMany,
   Column,
   DataType,
   Default,
   DefaultScope,
+  ForeignKey,
   HasMany,
   Is,
   Length,
@@ -35,6 +37,7 @@ import { RecordProperty } from "./RecordProperty";
 import { Property, propertyJSToSQLType } from "./Property";
 import { Run } from "./Run";
 import { Setting } from "./Setting";
+import { GrouparooModel } from "./GrouparooModel";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -133,6 +136,11 @@ export class Group extends LoggedModel<Group> {
   @Column
   calculatedAt: Date;
 
+  @AllowNull(false)
+  @ForeignKey(() => GrouparooModel)
+  @Column
+  modelId: string;
+
   @HasMany(() => GroupMember)
   groupMembers: GroupMember[];
 
@@ -144,6 +152,9 @@ export class Group extends LoggedModel<Group> {
 
   @BelongsToMany(() => GrouparooRecord, () => GroupMember)
   records: GrouparooRecord[];
+
+  @BelongsTo(() => GrouparooModel)
+  model: GrouparooModel;
 
   async recordsCount(options = {}) {
     let queryOptions = { where: { groupId: this.id } };

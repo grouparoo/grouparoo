@@ -39,6 +39,7 @@ import { GroupRule } from "./GroupRule";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
 import { Property } from "./Property";
+import { GrouparooModel } from "./GrouparooModel";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -159,6 +160,15 @@ export class Destination extends LoggedModel<Destination> {
   @ForeignKey(() => Group)
   groupId: string;
 
+  @AllowNull(true)
+  @Column(DataType.ENUM(...SYNC_MODES))
+  syncMode: DestinationSyncMode;
+
+  @AllowNull(false)
+  @ForeignKey(() => GrouparooModel)
+  @Column
+  modelId: string;
+
   @BelongsTo(() => App)
   app: App;
 
@@ -180,9 +190,8 @@ export class Destination extends LoggedModel<Destination> {
   @HasMany(() => Export)
   exports: Export[];
 
-  @AllowNull(true)
-  @Column(DataType.ENUM(...SYNC_MODES))
-  syncMode: DestinationSyncMode;
+  @BelongsTo(() => GrouparooModel)
+  model: GrouparooModel;
 
   async apiData(includeApp = true, includeGroup = true) {
     let app: App;

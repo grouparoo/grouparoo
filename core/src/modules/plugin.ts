@@ -22,6 +22,7 @@ import { Property } from "../models/Property";
 import { Filter } from "../models/Filter";
 import { RecordMultipleAssociationShim } from "../models/RecordMultipleAssociationShim";
 import { Run } from "../models/Run";
+import { GrouparooModel } from "../models/GrouparooModel";
 import { Schedule } from "../models/Schedule";
 import { Session } from "../models/Session";
 import { Setting, settingTypes } from "../models/Setting";
@@ -51,6 +52,7 @@ const models = [
   GroupRule,
   Log,
   Permission,
+  GrouparooModel,
   GrouparooRecord,
   RecordProperty,
   Property,

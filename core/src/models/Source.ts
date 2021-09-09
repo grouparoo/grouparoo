@@ -41,6 +41,7 @@ import {
   SimplePropertyOptions,
 } from "./Property";
 import { Run } from "./Run";
+import { GrouparooModel } from "./GrouparooModel";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
@@ -100,6 +101,11 @@ export class Source extends LoggedModel<Source> {
   @Column
   locked: string;
 
+  @AllowNull(false)
+  @ForeignKey(() => GrouparooModel)
+  @Column
+  modelId: string;
+
   @BelongsTo(() => App)
   app: App;
 
@@ -117,6 +123,9 @@ export class Source extends LoggedModel<Source> {
     scope: { ownerType: "source" },
   })
   __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
+
+  @BelongsTo(() => GrouparooModel)
+  model: GrouparooModel;
 
   async getOptions(sourceFromEnvironment = true) {
     return OptionHelper.getOptions(this, sourceFromEnvironment);
