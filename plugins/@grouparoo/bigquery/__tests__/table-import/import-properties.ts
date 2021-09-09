@@ -183,6 +183,7 @@ describe("bigquery/table/recordProperties", () => {
           expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
           expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
+
         test("to get multiple values from same column with a string", async () => {
           const columns = ["first_name", "first_name"];
           const [values, properties] = await getPropertyValues({

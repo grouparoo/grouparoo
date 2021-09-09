@@ -23,7 +23,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   let responses: { [key: string]: { [column: string]: DataResponse[] } } = {};
   let aggSelect = columnNames.map((col) => `\`${col}\``).join(", ");
   let orderBy = "";
-  let groupByColumns = [...new Set([tablePrimaryKeyCol])];
+  let groupByColumns = [tablePrimaryKeyCol];
   const columns = await getColumnsInternal({ connection, tableName });
 
   if (primaryKeys.length === 0) return responses;
