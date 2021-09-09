@@ -76,7 +76,7 @@ export namespace SettingOps {
       title: "Runs: Recurring Internal Run Frequency Hours",
       defaultValue: 0,
       description:
-        "Should Grouparoo periodically re-import all of your profiles, and if so, how long between runs (in hours)?",
+        "Should Grouparoo periodically re-import all of your records, and if so, how long between runs (in hours)?",
       type: "number",
     },
     {
@@ -129,19 +129,19 @@ export namespace SettingOps {
       type: "number",
     },
     {
-      key: "profiles-default-country-code",
-      title: "Profile: Default Country Code",
+      key: "records-default-country-code",
+      title: "Record: Default Country Code",
       defaultValue: "US",
       description:
         "The default country code Grouparoo will use to format phone numbers and display data",
       type: "string",
     },
     {
-      key: "confirm-profiles-days",
-      title: "Confirm Profile Existence Days",
+      key: "confirm-records-days",
+      title: "Confirm Record Existence Days",
       defaultValue: 7,
       description:
-        "How often should Grouparoo check that a Profile still exists in your Source, deleting the Profile if it has been removed? Setting to `0` will disable this check.",
+        "How often should Grouparoo check that a Record still exists in your Source, deleting the Record if it has been removed? Setting to `0` will disable this check.",
       type: "number",
     },
     {
@@ -165,7 +165,7 @@ export namespace SettingOps {
       title: "Sweeper: Delete Old Exports Days",
       defaultValue: 31,
       description:
-        "How many days should we keep Export records for on the server?  We will keep the most recent export for each Profile & Destination.",
+        "How many days should we keep Export records for on the server?  We will keep the most recent export for each Record & Destination.",
       type: "number",
     },
     {
