@@ -185,16 +185,15 @@ describe("bigquery/table/recordProperties", () => {
         });
 
         test("to get multiple values from same column with a string", async () => {
-          const columns = ["first_name", "first_name"];
+          const columns = ["last_name", "last_name"];
           const [values, properties] = await getPropertyValues({
             columns,
             sourceMapping,
             aggregationMethod,
           });
-          expect(values[profile.id][properties[0].id]).toEqual(["Erie"]);
-          expect(values[otherProfile.id][properties[0].id]).toEqual([
-            "Cacilie",
-          ]);
+          expect(values[profile.id][properties[0].id]).toEqual(["Jervois"]);
+          expect(values[otherProfile.id][properties[0].id]).toEqual(["Eate"]);
+
           expect(values[profile.id][properties[1].id]).toEqual(["Jervois"]);
           expect(values[otherProfile.id][properties[1].id]).toEqual(["Eate"]);
         });
