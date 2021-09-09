@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`property / profilePreview should render 1`] = `
+exports[`property / recordPreview should render 1`] = `
 <div>
   <div
     class="card bg-light"
@@ -12,7 +12,7 @@ exports[`property / profilePreview should render 1`] = `
       <div
         class="card-title h5"
       >
-        Example Profile
+        Example Record
       </div>
       <img
         class="rounded"
@@ -22,10 +22,10 @@ exports[`property / profilePreview should render 1`] = `
       <br />
       <a
         class="card-link"
-        href="/profile/asdf/edit"
+        href="/record/asdf/edit"
         style="color: white;"
       >
-        View Profile
+        View Record
       </a>
       <br />
       <small>
@@ -60,7 +60,7 @@ exports[`property / profilePreview should render 1`] = `
 </div>
 `;
 
-exports[`property / profilePreview should render with no profile preview 1`] = `
+exports[`property / recordPreview should render with no record preview 1`] = `
 <div>
   <div
     class="card bg-light"
@@ -69,13 +69,13 @@ exports[`property / profilePreview should render with no profile preview 1`] = `
       class="card-body"
       style="text-align: center;"
     >
-      Profile preview unavailable
+      Record preview unavailable
     </div>
   </div>
 </div>
 `;
 
-exports[`property / profilePreview should render with null date 1`] = `
+exports[`property / recordPreview should render with null date 1`] = `
 <div>
   <div
     class="card bg-light"
@@ -87,7 +87,7 @@ exports[`property / profilePreview should render with null date 1`] = `
       <div
         class="card-title h5"
       >
-        Example Profile
+        Example Record
       </div>
       <img
         class="rounded"
@@ -97,10 +97,10 @@ exports[`property / profilePreview should render with null date 1`] = `
       <br />
       <a
         class="card-link"
-        href="/profile/asdf/edit"
+        href="/record/asdf/edit"
         style="color: white;"
       >
-        View Profile
+        View Record
       </a>
       <br />
       <small>

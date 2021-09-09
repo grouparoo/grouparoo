@@ -1,5 +1,4 @@
-import { render, act } from "@testing-library/react";
-import ProfilePreview from "../../components/property/recordPreview";
+import RecordPreview from "../../components/property/recordPreview";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { renderAndWait } from "../__utils__/renderAndWait";
 
@@ -8,7 +7,7 @@ jest.mock("next/router", () => {
   nextRouter.useRouter = jest.fn(() => ({
     route: "/",
     query: {
-      profileId: "asdf",
+      recordId: "asdf",
     },
     replace: jest.fn(),
     push: jest.fn(),
@@ -25,9 +24,9 @@ jest.mock("../../hooks/useApi", () => ({
   }),
 }));
 
-const renderDefaultProfile = (overrideProps: any = {}) =>
+const renderDefaultRecord = (overrideProps: any = {}) =>
   renderAndWait(
-    <ProfilePreview
+    <RecordPreview
       errorHandler={new ErrorHandler()}
       localFilters={{}}
       property={{
@@ -40,7 +39,7 @@ const renderDefaultProfile = (overrideProps: any = {}) =>
     />
   );
 
-describe("property / profilePreview", () => {
+describe("property / recordPreview", () => {
   const dateMock = jest
     .spyOn(Date.prototype, "toLocaleString")
     .mockReturnValue("9/8/2021, 6:58:38 PM");
@@ -54,15 +53,15 @@ describe("property / profilePreview", () => {
     execApi.mockReset();
   });
 
-  it("should render with no profile preview", async () => {
-    const profile = await renderDefaultProfile();
-    expect(profile.container).toMatchSnapshot();
+  it("should render with no record preview", async () => {
+    const record = await renderDefaultRecord();
+    expect(record.container).toMatchSnapshot();
   });
 
   it("should render", async () => {
     execApi.mockImplementation(() => {
       return Promise.resolve({
-        profile: {
+        record: {
           id: "asdf",
           properties: {
             date: { type: "date", values: [1631127518020] },
@@ -71,14 +70,14 @@ describe("property / profilePreview", () => {
       });
     });
 
-    const profile = await renderDefaultProfile();
-    expect(profile.container).toMatchSnapshot();
+    const record = await renderDefaultRecord();
+    expect(record.container).toMatchSnapshot();
   });
 
   it("should render with null date", async () => {
     execApi.mockImplementation(() => {
       return Promise.resolve({
-        profile: {
+        record: {
           id: "asdf",
           properties: {
             date: { type: "date", values: [null] },
@@ -87,7 +86,7 @@ describe("property / profilePreview", () => {
       });
     });
 
-    const profile = await renderDefaultProfile();
-    expect(profile.container).toMatchSnapshot();
+    const record = await renderDefaultRecord();
+    expect(record.container).toMatchSnapshot();
   });
 });
