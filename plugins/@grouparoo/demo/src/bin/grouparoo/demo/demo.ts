@@ -37,7 +37,8 @@ export class Demo extends CLI {
       "mongo          load specified source data into local MongoDB database",
       "mysql          load specified source data into local MySQL database",
       "snowflake      assume Snowflake instance with data already present",
-      "mailchimp      create mailchimp destination for data",
+      "mailchimp      create Mailchimp destination for data",
+      "salesforce     create Salesforce destination for data",
     ].join("\n");
     this.inputs = {
       scale: {

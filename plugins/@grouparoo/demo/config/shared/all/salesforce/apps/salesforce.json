@@ -1,0 +1,12 @@
+{
+  "class": "App",
+  "id": "salesforce",
+  "name": "Salesforce",
+  "type": "salesforce",
+  "options": {
+    "salesforceDomain": "SALESFORCE_DOMAIN",
+    "password": "SALESFORCE_PASSWORD",
+    "securityToken": "SALESFORCE_SECURITY_TOKEN",
+    "username": "SALESFORCE_USERNAME"
+  }
+}

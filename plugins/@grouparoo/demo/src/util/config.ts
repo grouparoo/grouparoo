@@ -86,6 +86,7 @@ class Config {
         this.addDir("accounts");
         break;
       case "mailchimp":
+      case "salesforce":
         this.addDir(type);
         break;
       default:

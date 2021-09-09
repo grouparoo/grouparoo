@@ -6,6 +6,12 @@ import dotenv from "dotenv";
 
 const ENV_VARIABLES = {
   mailchimp: ["MAILCHIMP_DESTINATION_LIST_ID", "MAILCHIMP_API_KEY"],
+  salesforce: [
+    "SALESFORCE_DOMAIN",
+    "SALESFORCE_PASSWORD",
+    "SALESFORCE_SECURITY_TOKEN",
+    "SALESFORCE_USERNAME",
+  ],
   snowflake: [
     "SNOWFLAKE_ACCOUNT",
     "SNOWFLAKE_USERNAME",
@@ -70,9 +76,10 @@ class Replacer {
   }
 
   async replace(plugin: string, envVar: string) {
-    const value = getEnvValue(plugin, envVar);
+    let value: any = getEnvValue(plugin, envVar);
     if (!value) {
-      return;
+      // can't just be empty string: https://github.com/wj42ftns/replace-in-files/issues/29
+      value = () => "";
     }
 
     const files = path.resolve(path.join(this.configDir, "**", "*.json"));
