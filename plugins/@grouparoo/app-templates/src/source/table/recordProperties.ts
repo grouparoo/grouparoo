@@ -39,7 +39,6 @@ export const getRecordProperties: GetRecordPropertiesMethod = ({
       propertyOptions[p.id][columnNameKey]?.toString()
     );
     const columnNames = [...new Set(rawColumnNames)];
-    console.log("COLUMN NAMES = " + columnNames);
     const aggregationMethod = <AggregationMethod>(
       propertyOptions[Object.keys(propertyOptions)[0]][aggregationMethodKey]
     );

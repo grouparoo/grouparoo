@@ -191,11 +191,11 @@ describe("bigquery/table/recordProperties", () => {
             sourceMapping,
             aggregationMethod,
           });
-          expect(values[profile.id][properties[0].id]).toEqual(["Jervois"]);
-          expect(values[otherProfile.id][properties[0].id]).toEqual(["Eate"]);
+          expect(values[record.id][properties[0].id]).toEqual(["Jervois"]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual(["Eate"]);
 
-          expect(values[profile.id][properties[1].id]).toEqual(["Jervois"]);
-          expect(values[otherProfile.id][properties[1].id]).toEqual(["Eate"]);
+          expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
 
         test("to get a float", async () => {
