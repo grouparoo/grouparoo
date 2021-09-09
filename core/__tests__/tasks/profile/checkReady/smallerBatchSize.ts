@@ -13,7 +13,7 @@ describe("tasks/profile:checkReady", () => {
   beforeAll(async () => await helper.factories.properties());
 
   describe("profiles:checkReady", () => {
-    test.only("batch size can be configured with a setting", async () => {
+    test("batch size can be configured with a setting", async () => {
       const mario = await helper.factories.profile();
       await mario.import();
       await mario.update({ state: "pending" });
