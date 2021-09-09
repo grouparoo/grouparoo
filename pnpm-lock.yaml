@@ -14012,7 +14012,7 @@ packages:
       '@types/jest': 27.0.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.1.0_ts-node@10.2.1
+      jest: 27.1.0
       jest-util: 27.1.1
       json5: 2.2.0
       lodash: 4.17.21

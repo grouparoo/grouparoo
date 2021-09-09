@@ -6,6 +6,9 @@ import ProfileImageFromEmail from "../visualizations/profileImageFromEmail";
 import { useRouter } from "next/router";
 import { Actions } from "../../utils/apiData";
 
+export const generatePreviewDate = (date: number | null | undefined) =>
+  typeof date === "number" ? new Date(date).toLocaleString() : null;
+
 export default function ProfilePreview(props) {
   const { errorHandler, property, localFilters } = props;
   const router = useRouter();
@@ -123,7 +126,7 @@ export default function ProfilePreview(props) {
     if (profile.properties[i].id === property.id) {
       if (property.type === "date" && profile.properties[i].values) {
         thisPropertyValue = profile.properties[i].values[0]
-          ? new Date(profile.properties[i].values[0] as number).toLocaleString()
+          ? generatePreviewDate(otherProperties[i]?.values[0] as number)
           : null;
       } else {
         thisPropertyValue = profile.properties[i].values
@@ -178,7 +181,7 @@ export default function ProfilePreview(props) {
             <ListGroup.Item key={`profile-preview-row-${k}`} variant="light">
               <strong>{k}</strong>:{" "}
               {otherProperties[k]?.type === "date"
-                ? new Date(otherProperties[k]?.values[0]).toLocaleString()
+                ? generatePreviewDate(otherProperties[k]?.values[0] as number)
                 : otherProperties[k]?.values?.slice(0, 10).join(", ")}
             </ListGroup.Item>
           ))}

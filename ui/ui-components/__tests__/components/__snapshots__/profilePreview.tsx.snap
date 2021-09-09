@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`property / profilePreview should render 1`] = `
+<div>
+  <div
+    class="card bg-light"
+  >
+    <div
+      class="card-body"
+      style="text-align: center; color: white;"
+    >
+      <div
+        class="card-title h5"
+      >
+        Example Profile
+      </div>
+      <img
+        class="rounded"
+        src="https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=100.png"
+        style="max-width: 100px; width: 100%;"
+      />
+      <br />
+      <a
+        class="card-link"
+        href="/profile/asdf/edit"
+        style="color: white;"
+      >
+        View Profile
+      </a>
+      <br />
+      <small>
+        change
+      </small>
+    </div>
+    <div
+      class="list-group list-group-flush"
+    >
+      <div
+        class="list-group-item list-group-item-success"
+      >
+        <strong>
+          test-key
+        </strong>
+        :
+         
+        ...
+      </div>
+      <div
+        class="list-group-item list-group-item-light"
+      >
+        <strong>
+          date
+        </strong>
+        :
+         
+        9/8/2021, 6:58:38 PM
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`property / profilePreview should render with no profile preview 1`] = `
+<div>
+  <div
+    class="card bg-light"
+  >
+    <div
+      class="card-body"
+      style="text-align: center;"
+    >
+      Profile preview unavailable
+    </div>
+  </div>
+</div>
+`;
+
+exports[`property / profilePreview should render with null date 1`] = `
+<div>
+  <div
+    class="card bg-light"
+  >
+    <div
+      class="card-body"
+      style="text-align: center; color: white;"
+    >
+      <div
+        class="card-title h5"
+      >
+        Example Profile
+      </div>
+      <img
+        class="rounded"
+        src="https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=100.png"
+        style="max-width: 100px; width: 100%;"
+      />
+      <br />
+      <a
+        class="card-link"
+        href="/profile/asdf/edit"
+        style="color: white;"
+      >
+        View Profile
+      </a>
+      <br />
+      <small>
+        change
+      </small>
+    </div>
+    <div
+      class="list-group list-group-flush"
+    >
+      <div
+        class="list-group-item list-group-item-success"
+      >
+        <strong>
+          test-key
+        </strong>
+        :
+         
+        ...
+      </div>
+      <div
+        class="list-group-item list-group-item-light"
+      >
+        <strong>
+          date
+        </strong>
+        :
+         
+      </div>
+    </div>
+  </div>
+</div>
+`;
