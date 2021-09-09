@@ -57,7 +57,7 @@ describe("models/destination", () => {
           appId: app.id,
         })
       ).rejects.toThrow(
-        /cannot be created as there are no profile export methods/
+        /cannot be created as there are no record export methods/
       );
     });
   });

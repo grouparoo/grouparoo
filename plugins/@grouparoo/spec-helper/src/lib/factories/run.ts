@@ -5,7 +5,7 @@ const data = async (props = {}) => {
   const defaultProps = {
     error: null,
     state: "complete",
-    profilesCount: 0,
+    recordsCount: 0,
 
     createdAt: new Date(),
     updatedAt: new Date(),

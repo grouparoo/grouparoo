@@ -16,7 +16,7 @@ const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "table-profile-property-rule-options.js"
+  "table-record-property-rule-options.js"
 );
 
 // these comments to use nock

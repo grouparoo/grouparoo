@@ -134,17 +134,17 @@ describe("integration/runs/postgres", () => {
   });
 
   test(
-    "the property sets profile data upon import",
+    "the property sets record data upon import",
     async () => {
       let i = 1;
       while (i <= 10) {
-        const profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({ userId: [i] });
-        await profile.import();
-        await profile.reload();
+        const record = await helper.factories.record();
+        await record.addOrUpdateProperties({ userId: [i] });
+        await record.import();
+        await record.reload();
 
-        expect(profile.id).toBeTruthy();
-        const properties = await profile.getProperties();
+        expect(record.id).toBeTruthy();
+        const properties = await record.getProperties();
         expect(properties.email.values[0]).toMatch(/.*@example.com/);
         i++;
       }

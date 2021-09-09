@@ -188,7 +188,7 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
     super();
     this.name = "source:bootstrapUniqueProperty";
     this.description =
-      "bootstrap a new unique profile property for this source before the mapping is set";
+      "bootstrap a new unique record property for this source before the mapping is set";
     this.outputExample = {};
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {

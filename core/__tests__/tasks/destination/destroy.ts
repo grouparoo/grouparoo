@@ -1,6 +1,12 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper, utils } from "actionhero";
-import { Group, Destination, Export, Profile, Run } from "./../../../src";
+import {
+  Group,
+  Destination,
+  Export,
+  GrouparooRecord,
+  Run,
+} from "./../../../src";
 
 describe("tasks/destination:destroy", () => {
   helper.grouparooTestServer({
@@ -40,17 +46,17 @@ describe("tasks/destination:destroy", () => {
     (groupState) => {
       let group: Group;
       let destination: Destination;
-      let mario: Profile;
-      let luigi: Profile;
+      let mario: GrouparooRecord;
+      let luigi: GrouparooRecord;
       let run: Run;
 
       beforeAll(async () => {
         destination = await helper.factories.destination();
         group = await helper.factories.group();
-        mario = await helper.factories.profile();
-        luigi = await helper.factories.profile();
-        await group.addProfile(mario);
-        await group.addProfile(luigi);
+        mario = await helper.factories.record();
+        luigi = await helper.factories.record();
+        await group.addRecord(mario);
+        await group.addRecord(luigi);
         await destination.trackGroup(group);
 
         await group.update({ state: groupState });
@@ -113,13 +119,9 @@ describe("tasks/destination:destroy", () => {
         expect(run.state).toBe("complete");
 
         // create exports
-        const exportTasks = await specHelper.findEnqueuedTasks(
-          "profile:export"
-        );
+        const exportTasks = await specHelper.findEnqueuedTasks("record:export");
         await Promise.all(
-          exportTasks.map((t) =>
-            specHelper.runTask("profile:export", t.args[0])
-          )
+          exportTasks.map((t) => specHelper.runTask("record:export", t.args[0]))
         );
       });
 

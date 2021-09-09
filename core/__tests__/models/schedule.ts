@@ -138,7 +138,7 @@ describe("models/schedule", () => {
                 propertyOptions: async () => {
                   return null;
                 },
-                profileProperty: async () => {
+                recordProperty: async () => {
                   return [];
                 },
               },
@@ -497,14 +497,14 @@ describe("models/schedule", () => {
               sourceRunPercentComplete: async () => {
                 return 33;
               },
-              profiles: async () => {
+              records: async () => {
                 return {
                   highWaterMark: { updated_at: 200 },
                   sourceOffset: 100,
                   importsCount: 100,
                 };
               },
-              profileProperty: async () => {
+              recordProperty: async () => {
                 return [];
               },
               sourceFilters: async () => {
@@ -605,15 +605,15 @@ describe("models/schedule", () => {
       await schedule.destroy();
     });
 
-    test("a source using a plugin with no profiles method cannot have a schedule", async () => {
+    test("a source using a plugin with no records method cannot have a schedule", async () => {
       expect(await source.scheduleAvailable()).toBe(true);
 
-      // delete the profiles method
+      // delete the records method
       const plugin = api.plugins.plugins.filter(
         (p) => p.name === "test-plugin"
       )[0];
-      const originalMethod = plugin.connections[0].methods.profiles;
-      plugin.connections[0].methods.profiles = undefined;
+      const originalMethod = plugin.connections[0].methods.records;
+      plugin.connections[0].methods.records = undefined;
       expect(await source.scheduleAvailable()).toBe(false);
 
       await expect(
@@ -624,7 +624,7 @@ describe("models/schedule", () => {
       ).rejects.toThrow(/cannot have a schedule/);
 
       // replace method
-      plugin.connections[0].methods.profiles = originalMethod;
+      plugin.connections[0].methods.records = originalMethod;
     });
 
     describe("filters", () => {

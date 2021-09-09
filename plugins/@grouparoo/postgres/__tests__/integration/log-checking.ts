@@ -1,4 +1,4 @@
-import { Profile, Property } from "@grouparoo/core";
+import { GrouparooRecord, Property } from "@grouparoo/core";
 import { helper } from "@grouparoo/spec-helper";
 import path from "path";
 import { getConnection } from "../../src/lib/query-import/connection";
@@ -7,11 +7,11 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
 });
 
-const profileProperty = getConnection().methods.profileProperty;
+const recordProperty = getConnection().methods.recordProperty;
 
 // these used and set by test
 const { appOptions, usersTableName } = getConfig();
-let profile: Profile;
+let record: GrouparooRecord;
 
 let client;
 
@@ -19,13 +19,13 @@ async function getPropertyValue(query: string) {
   const propertyOptions = { query };
   const property = await Property.findOne();
 
-  return profileProperty({
+  return recordProperty({
     connection: client,
     appOptions,
-    profile,
+    record,
     propertyOptions,
     property,
-    profileId: null,
+    recordId: null,
     source: null,
     sourceId: null,
     app: null,
@@ -46,12 +46,12 @@ describe("postgres/integration/log-checking", () => {
   beforeAll(async () => {
     await helper.factories.properties();
     ({ client } = await beforeData());
-    profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+    record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       userId: [1],
       email: ["ejervois0@example.com"],
     });
-    expect(profile.id).toBeTruthy();
+    expect(record.id).toBeTruthy();
   });
 
   afterAll(async () => await afterData());

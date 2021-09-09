@@ -11,7 +11,7 @@ import Moment from "react-moment";
 import LoadingTable from "../loadingTable";
 import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
-import { ExportGroupsDiff, ExportProfilePropertiesDiff } from "./diff";
+import { ExportGroupsDiff, ExportRecordPropertiesDiff } from "./diff";
 import { capitalize } from "../../utils/languageHelper";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import StateBadge from "../badges/stateBadge";
@@ -41,12 +41,12 @@ export default function ExportsList(props) {
   const { offset, setOffset } = useOffset();
   const [state, setState] = useState(router.query.state?.toString() || "all");
 
-  let profileId: string;
+  let recordId: string;
   let exportProcessorId: string;
   let destinationId: string;
   if (router.query.id) {
-    if (router.pathname.match("/profile/")) {
-      profileId = router.query.id.toString();
+    if (router.pathname.match("/record/")) {
+      recordId = router.query.id.toString();
     } else if (router.pathname.match("/exportProcessor/")) {
       exportProcessorId = router.query.id.toString();
     } else {
@@ -65,7 +65,7 @@ export default function ExportsList(props) {
       limit,
       offset,
       state: state === "all" ? undefined : state,
-      profileId,
+      recordId,
       destinationId,
       exportProcessorId,
     });
@@ -141,7 +141,7 @@ export default function ExportsList(props) {
           <tr>
             <th>Ids</th>
             <th>Times</th>
-            <th>Profile Properties Exported</th>
+            <th>Record Properties Exported</th>
             <th>Groups Exported</th>
           </tr>
         </thead>
@@ -174,12 +174,12 @@ export default function ExportsList(props) {
                         <br />
                       </>
                     ) : null}
-                    Profile:{" "}
+                    Record:{" "}
                     <Link
-                      href="/profile/[id]/edit"
-                      as={`/profile/${_export.profileId}/edit`}
+                      href="/record/[id]/edit"
+                      as={`/record/${_export.recordId}/edit`}
                     >
-                      <a>{_export.profileId}</a>
+                      <a>{_export.recordId}</a>
                     </Link>
                     <br />
                     Destination:{" "}
@@ -235,7 +235,7 @@ export default function ExportsList(props) {
                     ) : null}
                   </td>
                   <td>
-                    <ExportProfilePropertiesDiff _export={_export} />
+                    <ExportRecordPropertiesDiff _export={_export} />
                   </td>
                   <td>
                     <ExportGroupsDiff _export={_export} groups={groups} />
@@ -264,12 +264,12 @@ ExportsList.hydrate = async (ctx) => {
   const { id, limit, offset, state } = ctx.query;
   const { groups } = await execApi("get", `/groups`);
 
-  let profileId: string;
+  let recordId: string;
   let exportProcessorId: string;
   let destinationId: string;
   if (id) {
-    if (ctx.pathname.match("/profile/")) {
-      profileId = id;
+    if (ctx.pathname.match("/record/")) {
+      recordId = id;
     } else if (ctx.pathname.match("/exportProcessor/")) {
       exportProcessorId = id;
     } else {
@@ -283,7 +283,7 @@ ExportsList.hydrate = async (ctx) => {
     state: state === "all" ? undefined : state,
     destinationId,
     exportProcessorId,
-    profileId,
+    recordId,
   });
 
   return { groups, _exports, total };

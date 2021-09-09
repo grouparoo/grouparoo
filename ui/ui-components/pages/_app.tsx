@@ -17,7 +17,7 @@ import { AppHandler } from "../utils/appHandler";
 import { DestinationHandler } from "../utils/destinationHandler";
 import { FileHandler } from "../utils/fileHandler";
 import { GroupHandler } from "../utils/groupHandler";
-import { ProfileHandler } from "../utils/profileHandler";
+import { RecordHandler } from "../utils/recordHandler";
 import { PropertiesHandler } from "../utils/propertiesHandler";
 import { RunsHandler } from "../utils/runsHandler";
 import { ScheduleHandler } from "../utils/scheduleHandler";
@@ -35,7 +35,7 @@ const appHandler = new AppHandler();
 const destinationHandler = new DestinationHandler();
 const fileHandler = new FileHandler();
 const groupHandler = new GroupHandler();
-const profileHandler = new ProfileHandler();
+const recordHandler = new RecordHandler();
 const propertiesHandler = new PropertiesHandler();
 const runsHandler = new RunsHandler();
 const scheduleHandler = new ScheduleHandler();
@@ -61,7 +61,7 @@ export default function GrouparooWebApp(props) {
     destinationHandler,
     fileHandler,
     groupHandler,
-    profileHandler,
+    recordHandler,
     propertiesHandler,
     runsHandler,
     scheduleHandler,

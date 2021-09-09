@@ -5,7 +5,7 @@ import { DestinationSyncMode, plugin } from "@grouparoo/core";
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
 
-import { exportProfiles } from "../lib/export-objects/exportProfiles";
+import { exportRecords } from "../lib/export-objects/exportRecords";
 import { destinationOptions } from "../lib/export-objects/destinationOptions";
 import { destinationMappingOptions } from "../lib/export-objects/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export-objects/exportArrayProperties";
@@ -77,23 +77,23 @@ export class Plugins extends Initializer {
           name: "salesforce-objects-export",
           direction: "export",
           description:
-            "Export Profiles and Groups to Salesforce sales cloud objects.",
+            "Export Records and Groups to Salesforce sales cloud objects.",
           app: "salesforce",
           syncModes,
           options: [
             {
-              key: "profileObject",
-              displayName: "Profile Object",
+              key: "recordObject",
+              displayName: "Record Object",
               required: true,
               description:
-                "Which object in Salesforce represents a Grouparoo profile?",
+                "Which object in Salesforce represents a Grouparoo record?",
             },
             {
-              key: "profileMatchField",
-              displayName: "Profile Match Field",
+              key: "recordMatchField",
+              displayName: "Record Match Field",
               required: true,
               description:
-                "Which field in the profile Object is used to match Grouparoo profiles?",
+                "Which field in the record Object is used to match Grouparoo records?",
             },
             {
               key: "groupObject",
@@ -114,14 +114,14 @@ export class Plugins extends Initializer {
               displayName: "Membership Object",
               required: true,
               description:
-                "Which object in Salesforce maps the profile object to the group object?",
+                "Which object in Salesforce maps the record object to the group object?",
             },
             {
-              key: "membershipProfileField",
-              displayName: "Membership Profile Field",
+              key: "membershipRecordField",
+              displayName: "Membership Record Field",
               required: true,
               description:
-                "Which field in the membership Object is the reference to the profile?",
+                "Which field in the membership Object is the reference to the record?",
             },
             {
               key: "membershipGroupField",
@@ -131,29 +131,29 @@ export class Plugins extends Initializer {
                 "Which field in the membership Object is the reference to the group?",
             },
             {
-              key: "profileReferenceField",
-              displayName: "Profile Reference Field",
+              key: "recordReferenceField",
+              displayName: "Record Reference Field",
               required: false,
               description:
-                "Is there a reference field on the profile Object to fill out?",
+                "Is there a reference field on the record Object to fill out?",
             },
             {
-              key: "profileReferenceObject",
-              displayName: "Profile Reference Object",
+              key: "recordReferenceObject",
+              displayName: "Record Reference Object",
               required: false,
               description:
-                "If there is a reference field, which Object should be created to apply to the profile?",
+                "If there is a reference field, which Object should be created to apply to the record?",
             },
             {
-              key: "profileReferenceMatchField",
-              displayName: "Profile Reference Match Field",
+              key: "recordReferenceMatchField",
+              displayName: "Record Reference Match Field",
               required: false,
               description:
-                "If there is a reference field, how should it be matched to Grouparoo profiles?",
+                "If there is a reference field, how should it be matched to Grouparoo records?",
             },
           ],
           methods: {
-            exportProfiles,
+            exportRecords,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,

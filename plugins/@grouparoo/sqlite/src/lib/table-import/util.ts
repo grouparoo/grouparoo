@@ -2,7 +2,7 @@ import {
   FilterOperation,
   MatchCondition,
 } from "@grouparoo/app-templates/dist/source/table";
-import { buildValueList } from "../export/exportProfile";
+import { buildValueList } from "../export/exportRecord";
 
 export function makeWhereClause(matchCondition: MatchCondition) {
   const { columnName, filterOperation, value, values } = matchCondition;

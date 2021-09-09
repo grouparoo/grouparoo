@@ -5,10 +5,10 @@ import { api, specHelper, task } from "actionhero";
 import {
   Group,
   Import,
-  Profile,
+  GrouparooRecord,
   GroupMember,
   Run,
-  ProfileProperty,
+  RecordProperty,
 } from "../../../src";
 
 describe("tasks/group:run", () => {
@@ -20,10 +20,10 @@ describe("tasks/group:run", () => {
 
   describe("group:run", () => {
     let group: Group;
-    let mario: Profile;
-    let luigi: Profile;
-    let peach: Profile;
-    let toad: Profile;
+    let mario: GrouparooRecord;
+    let luigi: GrouparooRecord;
+    let peach: GrouparooRecord;
+    let toad: GrouparooRecord;
 
     beforeEach(async () => {
       await api.resque.queue.connection.redis.flushdb();
@@ -40,12 +40,12 @@ describe("tasks/group:run", () => {
       });
       await group.update({ state: "ready" });
 
-      await Profile.truncate();
+      await GrouparooRecord.truncate();
 
-      mario = await Profile.create();
-      luigi = await Profile.create();
-      peach = await Profile.create();
-      toad = await Profile.create();
+      mario = await GrouparooRecord.create();
+      luigi = await GrouparooRecord.create();
+      peach = await GrouparooRecord.create();
+      toad = await GrouparooRecord.create();
 
       await mario.addOrUpdateProperties({
         userId: [1],
@@ -75,8 +75,8 @@ describe("tasks/group:run", () => {
         email: ["toad@example.com"],
       });
 
-      await ProfileProperty.update({ state: "ready" }, { where: {} });
-      await Profile.update({ state: "ready" }, { where: {} });
+      await RecordProperty.update({ state: "ready" }, { where: {} });
+      await GrouparooRecord.update({ state: "ready" }, { where: {} });
     });
 
     test("can be enqueued", async () => {
@@ -89,7 +89,7 @@ describe("tasks/group:run", () => {
       });
     });
 
-    it("can create imports for profiles which should be added", async () => {
+    it("can create imports for records which should be added", async () => {
       let imports = [];
       await group.setRules([
         { key: "email", match: "%@%", operation: { op: "like" } },
@@ -100,30 +100,30 @@ describe("tasks/group:run", () => {
         where: { state: "running", creatorId: group.id },
       });
 
-      await specHelper.runTask("group:run", { runId: run.id }); // adding profiles (some found, enqueue add again)
+      await specHelper.runTask("group:run", { runId: run.id }); // adding records (some found, enqueue add again)
 
       await run.reload();
       expect(run.groupMemberLimit).toBe(100);
       expect(run.groupMemberOffset).toBe(0);
       expect(run.groupMethod).toBe("runAddGroupMembers");
-      await specHelper.runTask("group:run", { runId: run.id }); // adding profiles (none found, enqueue remove)
+      await specHelper.runTask("group:run", { runId: run.id }); // adding records (none found, enqueue remove)
 
       await run.reload();
       expect(run.groupMemberLimit).toBe(100);
       expect(run.groupMemberOffset).toBe(0);
       expect(run.groupMethod).toBe("runRemoveGroupMembers");
-      await specHelper.runTask("group:run", { runId: run.id }); // remove profiles, (none found, enqueue removePreviousRunGroupMembers)
+      await specHelper.runTask("group:run", { runId: run.id }); // remove records, (none found, enqueue removePreviousRunGroupMembers)
 
       await run.reload();
       expect(run.groupMemberLimit).toBe(100);
       expect(run.groupMemberOffset).toBe(0);
       expect(run.groupMethod).toBe("removePreviousRunGroupMembers");
       expect(run.state).toBe("running");
-      await specHelper.runTask("group:run", { runId: run.id }); // remove profiles, (none found)
+      await specHelper.runTask("group:run", { runId: run.id }); // remove records, (none found)
 
       imports = await Import.findAll();
       expect(imports.length).toBe(4);
-      expect(imports.map((e) => e.profileId).sort()).toEqual(
+      expect(imports.map((e) => e.recordId).sort()).toEqual(
         [mario, luigi, peach, toad].map((p) => p.id).sort()
       );
 
@@ -143,12 +143,12 @@ describe("tasks/group:run", () => {
       expect(group.state).toBe("ready");
 
       const groupMembers = await group.$get("groupMembers");
-      expect(groupMembers.map((mem) => mem.profileId).sort()).toEqual(
+      expect(groupMembers.map((mem) => mem.recordId).sort()).toEqual(
         [mario, luigi, peach, toad].map((p) => p.id).sort()
       );
     });
 
-    it("can create imports for profiles which should be removed", async () => {
+    it("can create imports for records which should be removed", async () => {
       let imports = [];
       await group.setRules([
         {
@@ -164,7 +164,7 @@ describe("tasks/group:run", () => {
       });
 
       imports = await Import.findAll();
-      expect(imports.length).toBe(0); // no imports to add profiles to the group
+      expect(imports.length).toBe(0); // no imports to add records to the group
 
       await specHelper.runTask("group:run", { runId: run.id });
 
@@ -191,7 +191,7 @@ describe("tasks/group:run", () => {
 
       imports = await Import.findAll();
       expect(imports.length).toBe(2); // only the removals
-      expect(imports.map((e) => e.profileId).sort()).toEqual(
+      expect(imports.map((e) => e.recordId).sort()).toEqual(
         [peach, toad].map((p) => p.id).sort()
       );
 
@@ -209,12 +209,12 @@ describe("tasks/group:run", () => {
       expect(group.state).toBe("ready");
 
       const groupMembers = await group.$get("groupMembers");
-      expect(groupMembers.map((mem) => mem.profileId).sort()).toEqual(
+      expect(groupMembers.map((mem) => mem.recordId).sort()).toEqual(
         [mario, luigi].map((p) => p.id).sort()
       );
     });
 
-    it("can remove profiles which should be removed by a previous run that was stopped", async () => {
+    it("can remove records which should be removed by a previous run that was stopped", async () => {
       await group.setRules([
         {
           key: "lastName",
@@ -224,14 +224,14 @@ describe("tasks/group:run", () => {
       ]);
       const members = await group.$get("groupMembers");
       for (const i in members) {
-        const profile = await members[i].$get("profile");
-        await profile.updateGroupMembership();
+        const record = await members[i].$get("record");
+        await record.updateGroupMembership();
       }
 
-      const bowser = await helper.factories.profile();
+      const bowser = await helper.factories.record();
       await GroupMember.create({
         groupId: group.id,
-        profileId: bowser.id,
+        recordId: bowser.id,
         removedAt: new Date(),
       });
 

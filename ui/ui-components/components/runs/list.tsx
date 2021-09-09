@@ -171,7 +171,7 @@ export default function RunsList(props) {
             .sort((a, b) => b.updatedAt - a.updatedAt) // TODO: Why do we need to re-sort the array returned by the API?  The order changes based on getInitialProps or browser load
             .map((run) => {
               return (
-                <Fragment key={`profile-${run.id}`}>
+                <Fragment key={`record-${run.id}`}>
                   <tr>
                     <td>
                       id:{" "}
@@ -249,9 +249,9 @@ export default function RunsList(props) {
                         <a>Imports Created: {run.importsCreated}</a>
                       </Link>
                       <br />
-                      Profiles Created: {run.profilesCreated}
+                      Records Created: {run.recordsCreated}
                       <br />
-                      Profiles Imported: {run.profilesImported}
+                      Records Imported: {run.recordsImported}
                     </td>
                   </tr>
 

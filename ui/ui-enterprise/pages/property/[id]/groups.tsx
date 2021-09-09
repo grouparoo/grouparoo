@@ -38,7 +38,7 @@ export default function Page({
         <thead>
           <tr>
             <th>Name</th>
-            <th>Profiles Count</th>
+            <th>Records Count</th>
             <th>Rules</th>
           </tr>
         </thead>
@@ -63,7 +63,7 @@ export default function Page({
                     </Link>
                   )}
                 </td>
-                <td>{group.profilesCount}</td>
+                <td>{group.recordsCount}</td>
                 <td>
                   {group.rules.map((rule, idx) => (
                     <span key={`rule-${idx}`}>

@@ -6,7 +6,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 
 import { api, specHelper } from "actionhero";
-import { Profile, ProfileProperty, Run } from "@grouparoo/core";
+import { GrouparooRecord, RecordProperty, Run } from "@grouparoo/core";
 import { SessionCreate } from "@grouparoo/core/src/actions/session";
 import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
 import {
@@ -33,7 +33,7 @@ import { beforeData, afterData, getConfig } from "../utils/data";
 const {
   appOptions,
   usersTableName,
-  profilesDestinationTableName,
+  recordsDestinationTableName,
   groupsDestinationTableName,
 } = getConfig();
 
@@ -170,7 +170,7 @@ describe("integration/runs/mysql", () => {
       type: "mysql-export",
       appId: app.id,
       options: {
-        table: profilesDestinationTableName,
+        table: recordsDestinationTableName,
         primaryKey: "id",
         groupsTable: groupsDestinationTableName,
         groupForeignKey: "userId",
@@ -374,7 +374,7 @@ describe("integration/runs/mysql", () => {
   });
 
   test(
-    "a mysql schedule can run and create profiles",
+    "a mysql schedule can run and create records",
     async () => {
       // enqueue the run
       session.params = {
@@ -400,15 +400,15 @@ describe("integration/runs/mysql", () => {
       await specHelper.runTask("schedule:run", { runId: run.id });
       await specHelper.runTask("schedule:run", { runId: run.id });
 
-      // run all enqueued associateProfile tasks
+      // run all enqueued associateRecord tasks
       const foundAssociateTasks = await specHelper.findEnqueuedTasks(
-        "import:associateProfile"
+        "import:associateRecord"
       );
       expect(foundAssociateTasks.length).toEqual(11);
 
       await Promise.all(
         foundAssociateTasks.map((t) =>
-          specHelper.runTask("import:associateProfile", t.args[0])
+          specHelper.runTask("import:associateRecord", t.args[0])
         )
       );
 
@@ -416,13 +416,13 @@ describe("integration/runs/mysql", () => {
 
       // run all enqueued export tasks
       const foundExportTasks = await specHelper.findEnqueuedTasks(
-        "profile:export"
+        "record:export"
       );
       expect(foundExportTasks.length).toEqual(10);
 
       await Promise.all(
         foundExportTasks.map((t) =>
-          specHelper.runTask("profile:export", t.args[0])
+          specHelper.runTask("record:export", t.args[0])
         )
       );
 
@@ -453,14 +453,14 @@ describe("integration/runs/mysql", () => {
       );
 
       // check the results of the run
-      const profilesCount = await Profile.count();
-      expect(profilesCount).toBe(10);
+      const recordsCount = await GrouparooRecord.count();
+      expect(recordsCount).toBe(10);
 
       await run.updateTotals();
       expect(run.state).toBe("complete");
       expect(run.importsCreated).toBe(11);
-      expect(run.profilesCreated).toBe(10);
-      expect(run.profilesImported).toBe(10);
+      expect(run.recordsCreated).toBe(10);
+      expect(run.recordsImported).toBe(10);
       expect(run.highWaterMark).toEqual({ id: "10" });
       expect(run.sourceOffset).toBe("0");
       expect(run.error).toBeFalsy();
@@ -468,7 +468,7 @@ describe("integration/runs/mysql", () => {
 
       // check the destination
       const userRows = await client.asyncQuery(
-        `SELECT * FROM ${profilesDestinationTableName}`
+        `SELECT * FROM ${recordsDestinationTableName}`
       );
       expect(userRows.length).toBe(10);
       expect(userRows[0].customer_email).toBe("ejervois0@example.com");
@@ -482,20 +482,20 @@ describe("integration/runs/mysql", () => {
     helper.longTime
   );
 
-  test("profiles should be created with both the mapping data and additional profile property", async () => {
-    const profileId = (
-      await ProfileProperty.findOne({
+  test("records should be created with both the mapping data and additional record property", async () => {
+    const recordId = (
+      await RecordProperty.findOne({
         where: { rawValue: "1" },
       })
-    ).profileId;
-    const profile = await Profile.findOne({ where: { id: profileId } });
-    const properties = await profile.getProperties();
+    ).recordId;
+    const record = await GrouparooRecord.findOne({ where: { id: recordId } });
+    const properties = await record.getProperties();
     expect(properties.userId.values).toEqual([1]);
     expect(properties.email.values).toEqual(["ejervois0@example.com"]);
   });
 
   test(
-    "a mysql schedule can run and update profiles only finding updated records",
+    "a mysql schedule can run and update records only finding updated records",
     async () => {
       // enqueue the run
       session.params = {
@@ -521,15 +521,15 @@ describe("integration/runs/mysql", () => {
       await specHelper.runTask("schedule:run", { runId: run.id });
       await specHelper.runTask("schedule:run", { runId: run.id });
 
-      // run all enqueued associateProfile tasks
+      // run all enqueued associateRecord tasks
       const foundAssociateTasks = await specHelper.findEnqueuedTasks(
-        "import:associateProfile"
+        "import:associateRecord"
       );
       expect(foundAssociateTasks.length).toEqual(11 + 1);
 
       await Promise.all(
         foundAssociateTasks.map((t) =>
-          specHelper.runTask("import:associateProfile", t.args[0])
+          specHelper.runTask("import:associateRecord", t.args[0])
         )
       );
 
@@ -537,14 +537,14 @@ describe("integration/runs/mysql", () => {
 
       // run all enqueued export tasks
       const foundExportTasks = await specHelper.findEnqueuedTasks(
-        "profile:export"
+        "record:export"
       );
       // this count is de-duped from the previous run
       expect(foundExportTasks.length).toEqual(10);
 
       await Promise.all(
         foundExportTasks.map((t) =>
-          specHelper.runTask("profile:export", t.args[0])
+          specHelper.runTask("record:export", t.args[0])
         )
       );
 
@@ -575,14 +575,14 @@ describe("integration/runs/mysql", () => {
       );
 
       // check the results of the run
-      const profilesCount = await Profile.count();
-      expect(profilesCount).toBe(10);
+      const recordsCount = await GrouparooRecord.count();
+      expect(recordsCount).toBe(10);
 
       await run.updateTotals();
       expect(run.state).toBe("complete");
       expect(run.importsCreated).toBe(1);
-      expect(run.profilesCreated).toBe(0);
-      expect(run.profilesImported).toBe(1);
+      expect(run.recordsCreated).toBe(0);
+      expect(run.recordsImported).toBe(1);
       expect(run.highWaterMark).toEqual({ id: "10" });
       expect(run.sourceOffset).toBe("0");
       expect(run.error).toBeFalsy();
@@ -590,7 +590,7 @@ describe("integration/runs/mysql", () => {
 
       // check the destination
       const userRows = await client.asyncQuery(
-        `SELECT * FROM ${profilesDestinationTableName}`
+        `SELECT * FROM ${recordsDestinationTableName}`
       );
       expect(userRows.length).toBe(10);
       expect(userRows[0].customer_email).toBe("ejervois0@example.com");

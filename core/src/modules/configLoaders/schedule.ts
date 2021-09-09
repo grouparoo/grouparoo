@@ -9,6 +9,7 @@ import {
 } from "../../classes/codeConfig";
 import { Schedule, Source } from "../..";
 import { Op } from "sequelize";
+import { Deprecation } from "../deprecation";
 
 import { ConfigWriter } from "../configWriter";
 
@@ -18,6 +19,17 @@ export async function loadSchedule(
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
+
+  if (configObject.hasOwnProperty("confirmProfiles")) {
+    Deprecation.warn(
+      "config",
+      "schedule.confirmProfiles",
+      "schedule.confirmRecords"
+    );
+    configObject.confirmRecords = configObject["confirmProfiles"];
+    delete configObject["confirmProfiles"];
+  }
+
   validateConfigObjectKeys(Schedule, configObject);
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
@@ -37,7 +49,7 @@ export async function loadSchedule(
     name: configObject.name,
     recurring: configObject.recurring,
     recurringFrequency: configObject.recurringFrequency,
-    confirmProfiles: configObject.confirmProfiles,
+    confirmRecords: configObject.confirmRecords,
   });
 
   const options = extractNonNullParts(configObject, "options");

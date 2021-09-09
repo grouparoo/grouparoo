@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 
-export async function indexProfiles(
+export async function indexRecords(
   isNewNock: boolean,
   sleepTime = helper.longTime * 5
 ) {

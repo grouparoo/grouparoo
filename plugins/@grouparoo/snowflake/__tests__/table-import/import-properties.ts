@@ -12,18 +12,18 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 import {
   SimpleAppOptions,
   Property,
-  Profile,
+  GrouparooRecord,
   SourceMapping,
 } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
-const profileProperties = getConnection().methods.profileProperties;
+const recordProperties = getConnection().methods.recordProperties;
 
 const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "table-profile-properties.js"
+  "table-record-properties.js"
 );
 
 // these comments to use nock
@@ -33,9 +33,9 @@ require(nockFile);
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
 
-let profile: Profile;
-let otherProfile: Profile;
-let thirdProfile: Profile;
+let record: GrouparooRecord;
+let otherRecord: GrouparooRecord;
+let thirdRecord: GrouparooRecord;
 let emailProperty: Property;
 let firstNameProperty: Property;
 let lastNameProperty: Property;
@@ -94,16 +94,16 @@ async function getPropertyArrays(
 
   const connection = await connect({ appOptions, app: null, appId: null });
 
-  const values = await profileProperties({
+  const values = await recordProperties({
     connection,
     appOptions,
-    profiles: [profile, otherProfile, thirdProfile],
+    records: [record, otherRecord, thirdRecord],
     sourceOptions,
     propertyOptions,
     sourceMapping,
     propertyFilters,
     properties,
-    profileIds: [profile.id, otherProfile.id, thirdProfile.id],
+    recordIds: [record.id, otherRecord.id, thirdRecord.id],
     source: null,
     sourceId: null,
     app: null,
@@ -113,7 +113,7 @@ async function getPropertyArrays(
 
   return [values, properties];
 }
-describe("snowflake/table/profileProperties", () => {
+describe("snowflake/table/recordProperties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
   beforeAll(async () => {
@@ -125,24 +125,24 @@ describe("snowflake/table/profileProperties", () => {
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);
 
-    profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+    record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       userId: [1],
       email: ["ejervois0@example.com"],
       lastName: null,
     });
-    expect(profile.id).toBeTruthy();
+    expect(record.id).toBeTruthy();
 
-    otherProfile = await helper.factories.profile();
-    await otherProfile.addOrUpdateProperties({
+    otherRecord = await helper.factories.record();
+    await otherRecord.addOrUpdateProperties({
       userId: [2],
       email: ["ceate1@example.com"],
       lastName: null,
     });
 
-    //profile w no purchases for testing null/0 in aggregate properties
-    thirdProfile = await helper.factories.profile();
-    await thirdProfile.addOrUpdateProperties({
+    //record w no purchases for testing null/0 in aggregate properties
+    thirdRecord = await helper.factories.record();
+    await thirdRecord.addOrUpdateProperties({
       userId: [6],
       email: ["another@example.com"],
       lastName: null,
@@ -168,10 +168,8 @@ describe("snowflake/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           });
-          expect(values[profile.id][properties[0].id]).toEqual(["Erie"]);
-          expect(values[otherProfile.id][properties[0].id]).toEqual([
-            "Cacilie",
-          ]);
+          expect(values[record.id][properties[0].id]).toEqual(["Erie"]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual(["Cacilie"]);
         });
 
         test("to get multiple values with a string", async () => {
@@ -181,12 +179,10 @@ describe("snowflake/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           });
-          expect(values[profile.id][properties[0].id]).toEqual(["Erie"]);
-          expect(values[otherProfile.id][properties[0].id]).toEqual([
-            "Cacilie",
-          ]);
-          expect(values[profile.id][properties[1].id]).toEqual(["Jervois"]);
-          expect(values[otherProfile.id][properties[1].id]).toEqual(["Eate"]);
+          expect(values[record.id][properties[0].id]).toEqual(["Erie"]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual(["Cacilie"]);
+          expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
 
         test("to get a float", async () => {
@@ -196,8 +192,8 @@ describe("snowflake/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           });
-          expect(values[profile.id][properties[0].id]).toEqual([259.12]);
-          expect(values[otherProfile.id][properties[0].id]).toEqual([94.36]);
+          expect(values[record.id][properties[0].id]).toEqual([259.12]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual([94.36]);
         });
 
         test("to get multiple values with a float", async () => {
@@ -207,10 +203,10 @@ describe("snowflake/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           });
-          expect(values[profile.id][properties[0].id]).toEqual([259.12]);
-          expect(values[otherProfile.id][properties[0].id]).toEqual([94.36]);
-          expect(values[profile.id][properties[1].id]).toEqual(["Jervois"]);
-          expect(values[otherProfile.id][properties[1].id]).toEqual(["Eate"]);
+          expect(values[record.id][properties[0].id]).toEqual([259.12]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual([94.36]);
+          expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
 
         test("to get a boolean", async () => {
@@ -220,8 +216,8 @@ describe("snowflake/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           });
-          expect(values[profile.id][properties[0].id]).toEqual([true]);
-          expect(values[otherProfile.id][properties[0].id]).toEqual([false]);
+          expect(values[record.id][properties[0].id]).toEqual([true]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual([false]);
         });
 
         test("to get a multiple values with a boolean", async () => {
@@ -231,10 +227,10 @@ describe("snowflake/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           });
-          expect(values[profile.id][properties[0].id]).toEqual([true]);
-          expect(values[otherProfile.id][properties[0].id]).toEqual([false]);
-          expect(values[profile.id][properties[1].id]).toEqual(["Jervois"]);
-          expect(values[otherProfile.id][properties[1].id]).toEqual(["Eate"]);
+          expect(values[record.id][properties[0].id]).toEqual([true]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual([false]);
+          expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
 
         test("to get a date", async () => {
@@ -245,12 +241,12 @@ describe("snowflake/table/profileProperties", () => {
             aggregationMethod,
           });
           expect(
-            values[profile.id][properties[0].id].map((v) =>
+            values[record.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
           ).toEqual(["2020-02-01T00:00:00.000Z"]);
           expect(
-            values[otherProfile.id][properties[0].id].map((v) =>
+            values[otherRecord.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
           ).toEqual(["2020-02-02T00:00:00.000Z"]);
@@ -264,17 +260,17 @@ describe("snowflake/table/profileProperties", () => {
             aggregationMethod,
           });
           expect(
-            values[profile.id][properties[0].id].map((v) =>
+            values[record.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
           ).toEqual(["2020-02-01T00:00:00.000Z"]);
           expect(
-            values[otherProfile.id][properties[0].id].map((v) =>
+            values[otherRecord.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
           ).toEqual(["2020-02-02T00:00:00.000Z"]);
-          expect(values[profile.id][properties[1].id]).toEqual(["Jervois"]);
-          expect(values[otherProfile.id][properties[1].id]).toEqual(["Eate"]);
+          expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
 
         test("to get a timestamp", async () => {
@@ -285,12 +281,12 @@ describe("snowflake/table/profileProperties", () => {
             aggregationMethod,
           });
           expect(
-            values[profile.id][properties[0].id].map((v) =>
+            values[record.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
           ).toEqual(["2020-02-01T12:13:14.000Z"]);
           expect(
-            values[otherProfile.id][properties[0].id].map((v) =>
+            values[otherRecord.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
           ).toEqual(["2020-02-02T12:13:14.000Z"]);
@@ -304,17 +300,17 @@ describe("snowflake/table/profileProperties", () => {
             aggregationMethod,
           });
           expect(
-            values[profile.id][properties[0].id].map((v) =>
+            values[record.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
           ).toEqual(["2020-02-01T12:13:14.000Z"]);
           expect(
-            values[otherProfile.id][properties[0].id].map((v) =>
+            values[otherRecord.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
           ).toEqual(["2020-02-02T12:13:14.000Z"]);
-          expect(values[profile.id][properties[1].id]).toEqual(["Jervois"]);
-          expect(values[otherProfile.id][properties[1].id]).toEqual(["Eate"]);
+          expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
       });
     }
@@ -335,12 +331,12 @@ describe("snowflake/table/profileProperties", () => {
           aggregationMethod: "average",
         });
         expect(
-          fixedLengthFloat(values[profile.id][properties[0].id][0])
+          fixedLengthFloat(values[record.id][properties[0].id][0])
         ).toEqual(1.73);
         expect(
-          fixedLengthFloat(values[otherProfile.id][properties[0].id][0])
+          fixedLengthFloat(values[otherRecord.id][properties[0].id][0])
         ).toEqual(1.88);
-        expect(values[thirdProfile.id]).toBeUndefined();
+        expect(values[thirdRecord.id]).toBeUndefined();
       });
       test("count", async () => {
         const [values, properties] = await getPropertyValues({
@@ -349,9 +345,9 @@ describe("snowflake/table/profileProperties", () => {
           aggregationMethod: "count",
         });
 
-        expect(values[profile.id][properties[0].id]).toEqual([6]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("sum", async () => {
         const [values, properties] = await getPropertyValues({
@@ -360,13 +356,13 @@ describe("snowflake/table/profileProperties", () => {
           aggregationMethod: "sum",
         });
         expect(
-          fixedLengthFloat(values[profile.id][properties[0].id][0])
+          fixedLengthFloat(values[record.id][properties[0].id][0])
         ).toEqual(10.38);
         expect(
-          fixedLengthFloat(values[otherProfile.id][properties[0].id][0])
+          fixedLengthFloat(values[otherRecord.id][properties[0].id][0])
         ).toEqual(9.38);
         expect(
-          fixedLengthFloat(values[thirdProfile.id][properties[0].id][0])
+          fixedLengthFloat(values[thirdRecord.id][properties[0].id][0])
         ).toEqual(0);
       });
       test("min", async () => {
@@ -375,9 +371,9 @@ describe("snowflake/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod: "min",
         });
-        expect(values[profile.id][properties[0].id]).toEqual([1.42]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0.78]);
-        expect(values[thirdProfile.id]).toBeUndefined();
+        expect(values[record.id][properties[0].id]).toEqual([1.42]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0.78]);
+        expect(values[thirdRecord.id]).toBeUndefined();
       });
       test("max", async () => {
         const [values, properties] = await getPropertyValues({
@@ -385,9 +381,9 @@ describe("snowflake/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod: "max",
         });
-        expect(values[profile.id][properties[0].id]).toEqual([2.23]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([3.14]);
-        expect(values[thirdProfile.id]).toBeUndefined();
+        expect(values[record.id][properties[0].id]).toEqual([2.23]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([3.14]);
+        expect(values[thirdRecord.id]).toBeUndefined();
       });
 
       describe("dates", () => {
@@ -398,9 +394,9 @@ describe("snowflake/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod: "count",
           });
-          expect(values[profile.id][properties[0].id]).toEqual([6]);
-          expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
-          expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+          expect(values[record.id][properties[0].id]).toEqual([6]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+          expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
         });
         test("min", async () => {
           const [values, properties] = await getPropertyValues({
@@ -409,16 +405,16 @@ describe("snowflake/table/profileProperties", () => {
             aggregationMethod: "min",
           });
           expect(
-            values[profile.id][properties[0].id].map((v) =>
+            values[record.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
           ).toEqual(["2020-02-01T00:00:00.000Z"]);
           expect(
-            values[profile.id][properties[0].id].map((v) =>
+            values[record.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
           ).toEqual(["2020-02-01T00:00:00.000Z"]);
-          expect(values[thirdProfile.id]).toBeUndefined();
+          expect(values[thirdRecord.id]).toBeUndefined();
         });
 
         test("max", async () => {
@@ -428,16 +424,16 @@ describe("snowflake/table/profileProperties", () => {
             aggregationMethod: "max",
           });
           expect(
-            values[profile.id][properties[0].id].map((v) =>
+            values[record.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
           ).toEqual(["2020-02-20T00:00:00.000Z"]);
           expect(
-            values[profile.id][properties[0].id].map((v) =>
+            values[record.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
           ).toEqual(["2020-02-20T00:00:00.000Z"]);
-          expect(values[thirdProfile.id]).toBeUndefined();
+          expect(values[thirdRecord.id]).toBeUndefined();
         });
       });
     });
@@ -469,9 +465,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "ID", match: "15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([1]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([1]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
         const [values, properties] = await getPropertyValues(
@@ -482,9 +478,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "Apple" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([2]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         // TODO: is this the right behavior?
@@ -496,9 +492,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "apple" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([0]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([0]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("DATE", async () => {
         const [values, properties] = await getPropertyValues(
@@ -509,9 +505,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "DATE", match: "2020-02-15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([1]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([1]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
         const [values, properties] = await getPropertyValues(
@@ -522,9 +518,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([1]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([1]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
         const [values, properties] = await getPropertyValues(
@@ -535,9 +531,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([2]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([1]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([1]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
     });
 
@@ -552,9 +548,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "ID", match: "15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([5]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
         const [values, properties] = await getPropertyValues(
@@ -565,9 +561,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "Apple" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([4]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([4]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         // TODO: is this the right behavior?
@@ -579,9 +575,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "apple" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([6]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("DATE", async () => {
         const [values, properties] = await getPropertyValues(
@@ -592,9 +588,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "DATE", match: "2020-02-15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([5]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
         const [values, properties] = await getPropertyValues(
@@ -605,9 +601,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([5]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
         const [values, properties] = await getPropertyValues(
@@ -618,9 +614,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([4]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([4]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([4]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([4]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
     });
 
@@ -635,9 +631,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "ID", match: "15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([1]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([1]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
         const [values, properties] = await getPropertyValues(
@@ -648,9 +644,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "App" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([2]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string is not case sensitive", async () => {
         const [values, properties] = await getPropertyValues(
@@ -661,9 +657,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "app" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([2]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("DATE", async () => {
         const [values, properties] = await getPropertyValues(
@@ -674,9 +670,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "STAMP", match: "2020-02-15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([1]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([1]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
         const [values, properties] = await getPropertyValues(
@@ -687,9 +683,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([1]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([1]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
         const [values, properties] = await getPropertyValues(
@@ -700,9 +696,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([2]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([1]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([1]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
     });
 
@@ -717,9 +713,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "ID", match: "15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([5]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
         const [values, properties] = await getPropertyValues(
@@ -730,9 +726,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "Oran" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([4]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([4]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string is not case sensitive", async () => {
         const [values, properties] = await getPropertyValues(
@@ -743,9 +739,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "oran" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([4]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([4]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("DATE", async () => {
         const [values, properties] = await getPropertyValues(
@@ -756,9 +752,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "DATE", match: "2020-02-15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([5]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
         const [values, properties] = await getPropertyValues(
@@ -769,9 +765,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([5]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([5]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
         const [values, properties] = await getPropertyValues(
@@ -782,9 +778,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([4]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([4]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([4]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([4]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
     });
 
@@ -799,9 +795,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "ID", match: "15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([1]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([1]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
         const [values, properties] = await getPropertyValues(
@@ -812,9 +808,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "Apple" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([2]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         // TODO: is this the right behavior?
@@ -826,9 +822,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "apple" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([0]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([0]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("DATE", async () => {
         const [values, properties] = await getPropertyValues(
@@ -839,9 +835,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "DATE", match: "2020-02-15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([1]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([1]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
         const [values, properties] = await getPropertyValues(
@@ -852,9 +848,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([1]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([1]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
         const [values, properties] = await getPropertyValues(
@@ -865,9 +861,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([2]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([1]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([1]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
     });
 
@@ -882,9 +878,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "ID", match: "15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([2]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
         const [values, properties] = await getPropertyValues(
@@ -895,9 +891,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "Apple" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([4]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([4]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         const [values, properties] = await getPropertyValues(
@@ -908,8 +904,8 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "apple" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([0]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([0]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
       });
       test("DATE", async () => {
         const [values, properties] = await getPropertyValues(
@@ -920,9 +916,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "DATE", match: "2020-02-15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([2]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
         const [values, properties] = await getPropertyValues(
@@ -933,9 +929,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([2]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
         const [values, properties] = await getPropertyValues(
@@ -946,9 +942,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([2]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
     });
 
@@ -963,9 +959,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "ID", match: "15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([3]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([3]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
         const [values, properties] = await getPropertyValues(
@@ -976,9 +972,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "Apple" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([0]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([0]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
         const [values, properties] = await getPropertyValues(
@@ -989,8 +985,8 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "PURCHASE", match: "apple" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([6]); // weird ascii math
-        expect(values[otherProfile.id][properties[0].id]).toEqual([5]); // weird ascii math
+        expect(values[record.id][properties[0].id]).toEqual([6]); // weird ascii math
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]); // weird ascii math
       });
       test("DATE", async () => {
         const [values, properties] = await getPropertyValues(
@@ -1001,9 +997,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "DATE", match: "2020-02-15" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([3]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([3]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
         const [values, properties] = await getPropertyValues(
@@ -1014,8 +1010,8 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([3]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([3]);
+        expect(values[record.id][properties[0].id]).toEqual([3]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
       });
       test("float", async () => {
         const [values, properties] = await getPropertyValues(
@@ -1026,9 +1022,9 @@ describe("snowflake/table/profileProperties", () => {
           },
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
-        expect(values[profile.id][properties[0].id]).toEqual([2]);
-        expect(values[otherProfile.id][properties[0].id]).toEqual([2]);
-        expect(values[thirdProfile.id][properties[0].id]).toEqual([0]);
+        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
     });
   });
@@ -1065,16 +1061,16 @@ describe("snowflake/table/profileProperties", () => {
     });
 
     test("it will import properties when the dependency is ready", async () => {
-      await profile.addOrUpdateProperties({ accountId: [1] });
-      await otherProfile.addOrUpdateProperties({ accountId: [1] });
+      await record.addOrUpdateProperties({ accountId: [1] });
+      await otherRecord.addOrUpdateProperties({ accountId: [1] });
 
       const [values, properties] = await getPropertyValues({
         columns: ["NAME"],
         sourceMapping: { ID: "accountId" },
         aggregationMethod: "exact",
       });
-      expect(values[profile.id][properties[0].id]).toEqual(["super_mega_corp"]);
-      expect(values[otherProfile.id][properties[0].id]).toEqual([
+      expect(values[record.id][properties[0].id]).toEqual(["super_mega_corp"]);
+      expect(values[otherRecord.id][properties[0].id]).toEqual([
         "super_mega_corp",
       ]);
     });
@@ -1084,25 +1080,25 @@ describe("snowflake/table/profileProperties", () => {
     beforeAll(() => {
       sourceOptions = { table: "PROFILES" };
     });
-    test("unknown profile property", async () => {
+    test("unknown record property", async () => {
       const [values, properties] = await getPropertyValues({
         columns: ["first_name"],
         sourceMapping: { id: "badName" },
         aggregationMethod: "exact",
       });
-      expect(values[profile.id]).toBeUndefined();
-      expect(values[otherProfile.id]).toBeUndefined();
-      expect(values[thirdProfile.id]).toBeUndefined();
+      expect(values[record.id]).toBeUndefined();
+      expect(values[otherRecord.id]).toBeUndefined();
+      expect(values[thirdRecord.id]).toBeUndefined();
     });
-    test("null profile property", async () => {
+    test("null record property", async () => {
       const [values, properties] = await getPropertyValues({
         columns: ["first_name"],
         sourceMapping: { id: "lastName" }, // set to NULL
         aggregationMethod: "exact",
       });
-      expect(values[profile.id]).toBeUndefined();
-      expect(values[otherProfile.id]).toBeUndefined();
-      expect(values[thirdProfile.id]).toBeUndefined();
+      expect(values[record.id]).toBeUndefined();
+      expect(values[otherRecord.id]).toBeUndefined();
+      expect(values[thirdRecord.id]).toBeUndefined();
     });
   });
 });

@@ -1,7 +1,7 @@
 import { SourceRunPercentCompleteMethod } from "@grouparoo/core";
 import { getFilterOperation } from "./getFilterOperation";
 import { GetChangedRowCountMethod, MatchCondition } from "./pluginMethods";
-import { getChangeVariables } from "./profiles";
+import { getChangeVariables } from "./records";
 
 export interface GetSourceRunPercentCompleteMethod {
   (argument: {

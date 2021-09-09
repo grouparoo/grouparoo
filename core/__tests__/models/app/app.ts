@@ -377,7 +377,7 @@ describe("models/app", () => {
   describe("with plugin", () => {
     let app: App;
     let testCounter = 0;
-    let profilePropertyCount = 0;
+    let recordPropertyCount = 0;
     let parallelism = Infinity;
     let appOptionsReturnType: PluginOptionType = "list";
 
@@ -416,15 +416,15 @@ describe("models/app", () => {
             direction: "import" as "import",
             options: [],
             methods: {
-              profiles: async () => {
+              records: async () => {
                 return {
                   importsCount: 0,
                   highWaterMark: { col: "0" },
                   sourceOffset: 0,
                 };
               },
-              profileProperty: async ({ app, property, profile }) => {
-                profilePropertyCount++;
+              recordProperty: async ({ app, property, record }) => {
+                recordPropertyCount++;
                 return ["test@example.com"];
               },
             },

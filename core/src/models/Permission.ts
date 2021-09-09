@@ -25,7 +25,7 @@ export const PermissionTopics = [
   "import",
   "log",
   "notification",
-  "profile",
+  "record",
   "property",
   "resque",
   "run",

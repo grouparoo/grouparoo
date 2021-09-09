@@ -19,7 +19,7 @@
     "sourceId": "demo_users",
     "recurring": true,
     "recurringFrequency": 900000,
-    "confirmProfiles": false,
+    "confirmRecords": false,
     "options": {
       "column": "updated_at"
     },

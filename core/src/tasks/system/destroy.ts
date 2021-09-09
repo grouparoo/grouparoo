@@ -5,7 +5,7 @@ import { Source } from "../../models/Source";
 import { App } from "../../models/App";
 import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
-import { ProfileOps } from "../../modules/ops/profile";
+import { RecordOps } from "../../modules/ops/record";
 
 export class DestroySweeper extends CLSTask {
   constructor() {
@@ -52,9 +52,9 @@ export class DestroySweeper extends CLSTask {
     }
 
     // --- PROFILES ---
-    const profiles = await ProfileOps.getProfilesToDestroy();
-    for (const profile of profiles) {
-      await CLS.enqueueTask("profile:destroy", { profileId: profile.id });
+    const records = await RecordOps.getRecordsToDestroy();
+    for (const record of records) {
+      await CLS.enqueueTask("record:destroy", { recordId: record.id });
     }
   }
 }

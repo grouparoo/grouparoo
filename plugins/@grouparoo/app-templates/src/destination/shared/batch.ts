@@ -1,4 +1,4 @@
-import { ErrorWithProfileId } from "@grouparoo/core";
+import { ErrorWithRecordId } from "@grouparoo/core";
 import { log } from "actionhero";
 
 export interface MethodNormalizeGroupName {
@@ -15,16 +15,16 @@ export interface GroupNameExport {
 }
 
 export function setGroupNames(
-  exportedProfile: GroupNameExport,
+  exportedRecord: GroupNameExport,
   methods: {
     normalizeGroupName?: MethodNormalizeGroupName;
   },
   config: any
 ) {
   // build up groups situation of group names to addition and removal
-  let oldGroups = exportedProfile.oldGroups || [];
-  let newGroups = exportedProfile.newGroups || [];
-  if (exportedProfile.toDelete) {
+  let oldGroups = exportedRecord.oldGroups || [];
+  let newGroups = exportedRecord.newGroups || [];
+  if (exportedRecord.toDelete) {
     // if anyone asks, removing from all groups as part of deletion
     oldGroups = Array.from(new Set(oldGroups.concat(newGroups)));
     newGroups = [];
@@ -43,51 +43,51 @@ export function setGroupNames(
   const removed = oldGroups.filter((k) => !newGroups.includes(k));
   const added = newGroups;
 
-  exportedProfile.addedGroups = added;
-  exportedProfile.removedGroups = removed;
+  exportedRecord.addedGroups = added;
+  exportedRecord.removedGroups = removed;
 }
 
 export function setGroupNamesAll(
-  exportedProfile: GroupNameExport[],
+  exportedRecord: GroupNameExport[],
   methods: {
     normalizeGroupName?: MethodNormalizeGroupName;
   },
   config: any
 ) {
-  for (const user of exportedProfile) {
+  for (const user of exportedRecord) {
     setGroupNames(user, methods, config);
   }
 }
 
 export interface ErrorCheckExport {
-  profileId: string;
+  recordId: string;
   skippedMessage?: string;
   error?: any;
 }
 
-export function checkErrors(exportedProfiles: ErrorCheckExport[]): {
+export function checkErrors(exportedRecords: ErrorCheckExport[]): {
   success: boolean;
-  errors: ErrorWithProfileId[];
+  errors: ErrorWithRecordId[];
 } {
   // assuming semantics here of success is only true if there are zero errors
-  let errors: ErrorWithProfileId[] = null; // for ones that go wrong
+  let errors: ErrorWithRecordId[] = null; // for ones that go wrong
   let success = true;
-  for (const exportedProfile of exportedProfiles) {
-    let { error, skippedMessage } = exportedProfile;
+  for (const exportedRecord of exportedRecords) {
+    let { error, skippedMessage } = exportedRecord;
     if (error) {
       success = false;
       errors = errors || [];
       if (typeof error === "string") {
         error = new Error(error);
       }
-      error.profileId = exportedProfile.profileId;
+      error.recordId = exportedRecord.recordId;
       errors.push(error);
       log(error?.stack || error, "error");
     } else if (skippedMessage) {
       success = false;
       errors = errors || [];
-      const skip = <ErrorWithProfileId>new Error(skippedMessage);
-      skip.profileId = exportedProfile.profileId;
+      const skip = <ErrorWithRecordId>new Error(skippedMessage);
+      skip.recordId = exportedRecord.recordId;
       skip.errorLevel = "info";
       errors.push(skip);
     }

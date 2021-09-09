@@ -9,16 +9,16 @@ import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { SimpleAppOptions, Profile, Property } from "@grouparoo/core";
+import { SimpleAppOptions, GrouparooRecord, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
-const profileProperty = getConnection().methods.profileProperty;
+const recordProperty = getConnection().methods.recordProperty;
 
 const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "table-profile-property.js"
+  "table-record-property.js"
 );
 
 // these comments to use nock
@@ -30,21 +30,21 @@ require(nockFile);
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
-let profile: Profile;
+let record: GrouparooRecord;
 
 let sourceOptions;
 async function getPropertyValue(
   { column, sourceMapping, aggregationMethod },
   usePropertyFilters?,
-  useProfile?: Profile
+  useRecord?: GrouparooRecord
 ) {
   const propertyOptions = {
     column,
     aggregationMethod: aggregationMethod,
   };
 
-  if (!useProfile) {
-    useProfile = profile;
+  if (!useRecord) {
+    useRecord = record;
   }
 
   const propertyFilters = usePropertyFilters || [];
@@ -53,16 +53,16 @@ async function getPropertyValue(
     where: { key: "email" },
   });
 
-  return profileProperty({
+  return recordProperty({
     connection,
     appOptions,
-    profile: useProfile,
+    record: useRecord,
     sourceOptions,
     propertyOptions,
     sourceMapping,
     propertyFilters,
     property,
-    profileId: null,
+    recordId: null,
     source: null,
     sourceId: null,
     app: null,
@@ -71,20 +71,20 @@ async function getPropertyValue(
   });
 }
 
-describe("snowflake/table/profileProperty", () => {
+describe("snowflake/table/recordProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);
 
-    profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+    record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       userId: [1],
       email: ["ejervois0@example.com"],
       lastName: null,
     });
-    expect(profile.id).toBeTruthy();
+    expect(record.id).toBeTruthy();
   });
 
   describe("exact primary tables", () => {
@@ -795,7 +795,7 @@ describe("snowflake/table/profileProperty", () => {
     beforeAll(() => {
       sourceOptions = { table: "PROFILES" };
     });
-    test("unknown profile property", async () => {
+    test("unknown record property", async () => {
       const value = await getPropertyValue({
         column: "first_name",
         sourceMapping: { id: "badName" },
@@ -803,7 +803,7 @@ describe("snowflake/table/profileProperty", () => {
       });
       expect(value).toEqual(undefined);
     });
-    test("null profile property", async () => {
+    test("null record property", async () => {
       const value = await getPropertyValue({
         column: "first_name",
         sourceMapping: { id: "lastName" }, // set to NULL

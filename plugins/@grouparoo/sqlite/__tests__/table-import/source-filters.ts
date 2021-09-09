@@ -45,8 +45,8 @@ describe("sqlite/table/sourceFilters", () => {
       "amount",
       "date",
       "id",
-      "profile_id",
       "purchase",
+      "record_id",
       "stamp",
     ]);
     expect(columns.length).toBe(6);
@@ -67,8 +67,8 @@ describe("sqlite/table/sourceFilters", () => {
     expect(columns[0]).toMatchObject({ key: "amount", ops: allOps });
     expect(columns[1]).toMatchObject({ key: "date", ops: allOps });
     expect(columns[2]).toMatchObject({ key: "id", ops: allOps });
-    expect(columns[3]).toMatchObject({ key: "profile_id", ops: allOps });
-    expect(columns[4]).toMatchObject({ key: "purchase", ops: allOps });
+    expect(columns[3]).toMatchObject({ key: "purchase", ops: allOps });
+    expect(columns[4]).toMatchObject({ key: "record_id", ops: allOps });
     expect(columns[5]).toMatchObject({ key: "stamp", ops: allOps });
   });
 });

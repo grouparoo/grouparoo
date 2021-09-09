@@ -51,8 +51,8 @@ describe("sqlite/table/scheduleOptions", () => {
       "amount",
       "date",
       "id",
-      "profile_id",
       "purchase",
+      "record_id",
       "stamp",
     ]);
     expect(columns.length).toBe(6);

@@ -17,7 +17,7 @@ describe("csv/file/propertyOptions", () => {
       transport: "local",
       type: "csv",
       bucket: path.join(process.cwd(), "__tests__", "data"),
-      path: "profiles-10.csv",
+      path: "records-10.csv",
       extension: ".csv",
       mime: "text/csv",
       sizeBytes: 1,

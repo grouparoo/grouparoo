@@ -1,0 +1,52 @@
+test_grouparoo_record:
+  target: dev
+  outputs:
+    password:
+      type: snowflake
+      account: account id
+
+      # User/password auth
+      user: username
+      password: password
+
+      role: [user role]
+      database: database name
+      warehouse: warehouse name
+      schema: dbt schema
+      threads: [1 or more]
+      client_session_keep_alive: False
+      query_tag: [anything]
+
+    key_pair:
+      type: snowflake
+      account: [account id]
+      user: [username]
+      role: [user role]
+
+      # Keypair config
+      private_key_path: [path/to/private.key]
+      private_key_passphrase:
+        [passphrase for the private key, if key is encrypted]
+
+      database: [database name]
+      warehouse: [warehouse name]
+      schema: [dbt schema]
+      threads: [1 or more]
+      client_session_keep_alive: False
+      query_tag: [anything]
+
+    sso:
+      type: snowflake
+      account: [account id]
+      user: [username]
+      role: [user role]
+
+      # SSO config
+      authenticator: externalbrowser
+
+      database: [database name]
+      warehouse: [warehouse name]
+      schema: [dbt schema]
+      threads: [between 1 and 8]
+      client_session_keep_alive: False
+      query_tag: [anything]

@@ -13,7 +13,7 @@ export class ExportsList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "export", mode: "read" };
     this.inputs = {
-      profileId: { required: false },
+      recordId: { required: false },
       destinationId: { required: false },
       exportProcessorId: { required: false },
       limit: { required: true, default: 100, formatter: APIData.ensureNumber },
@@ -29,8 +29,8 @@ export class ExportsList extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const where = {};
-    if (params.profileId) {
-      where["profileId"] = params.profileId;
+    if (params.recordId) {
+      where["recordId"] = params.recordId;
     }
     if (params.destinationId) {
       where["destinationId"] = params.destinationId;
@@ -67,15 +67,15 @@ export class ExportsTotals extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "export", mode: "read" };
     this.inputs = {
-      profileId: { required: false },
+      recordId: { required: false },
       destinationId: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
     const where = {};
-    if (params.profileId) {
-      where["profileId"] = params.profileId;
+    if (params.recordId) {
+      where["recordId"] = params.recordId;
     }
     if (params.destinationId) {
       where["destinationId"] = params.destinationId;

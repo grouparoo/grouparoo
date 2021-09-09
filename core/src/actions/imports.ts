@@ -12,7 +12,7 @@ export class ImportsList extends AuthenticatedAction {
     this.permission = { topic: "import", mode: "read" };
     this.inputs = {
       creatorId: { required: false },
-      profileId: { required: false },
+      recordId: { required: false },
       limit: { required: true, default: 100, formatter: APIData.ensureNumber },
       offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       order: {
@@ -26,7 +26,7 @@ export class ImportsList extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const where = {};
     if (params.creatorId) where["creatorId"] = params.creatorId;
-    if (params.profileId) where["profileId"] = params.profileId;
+    if (params.recordId) where["recordId"] = params.recordId;
 
     const search = {
       where,

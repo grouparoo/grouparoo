@@ -7,7 +7,7 @@ import { test } from "../lib/test";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
-import { exportProfiles } from "../lib/export/exportProfiles";
+import { exportRecords } from "../lib/export/exportRecords";
 
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
@@ -77,13 +77,13 @@ export class Plugins extends Initializer {
         {
           name: "mixpanel-export",
           direction: "export",
-          description: "Export profiles to Mixpanel as User Profiles",
+          description: "Export records to Mixpanel as User Profiles",
           app: "mixpanel",
           syncModes,
           defaultSyncMode,
           options: [],
           methods: {
-            exportProfiles,
+            exportRecords,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,

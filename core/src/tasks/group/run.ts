@@ -18,11 +18,11 @@ export class RunGroup extends CLSTask {
   }
 
   async runWithinTransaction(params) {
-    // 1. Calculate the set of profiles that should be in this group, with a limit and offset (looping)
+    // 1. Calculate the set of records that should be in this group, with a limit and offset (looping)
     // 2. Find or create GroupMembers, touch the updatedAt for those that already exist. (group#runAddGroupMembers)
-    //    > Create imports for new profiles
+    //    > Create imports for new records
     // 3. After the loop is done, loop thought those GroupMembers who have not had their updatedAt touched.  (group#runRemoveGroupMembers)
-    //    > Create imports for those profiles whose last update is older than the run's start time to remove them
+    //    > Create imports for those records whose last update is older than the run's start time to remove them
     // 4. Delete any group members still hanging around from a pervious run that this run may have canceled
 
     const run = await Run.scope(null).findOne({ where: { id: params.runId } });

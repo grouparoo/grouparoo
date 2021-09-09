@@ -34,8 +34,8 @@ export default function LogsList(props) {
     "file",
     "group",
     "groupMember",
-    "profile",
-    "profileProperty",
+    "record",
+    "recordProperty",
     "property",
     "schedule",
     "setting",
@@ -68,9 +68,9 @@ export default function LogsList(props) {
     let ownerId = log.ownerId;
     let topic = log.topic;
 
-    if (topic === "profileProperty") {
-      topic = "profile";
-      ownerId = log.data.profileId;
+    if (topic === "recordProperty") {
+      topic = "record";
+      ownerId = log.data.recordId;
     }
 
     if (topic === "groupMember") {

@@ -17,8 +17,8 @@ import {
   Log,
   Notification,
   Permission,
-  Profile,
-  ProfileProperty,
+  GrouparooRecord,
+  RecordProperty,
   Property,
   Run,
   Setting,
@@ -55,9 +55,11 @@ export namespace Models {
     AsyncReturnType<Notification["apiData"]>
   >;
   export type PermissionType = Partial<AsyncReturnType<Permission["apiData"]>>;
-  export type ProfileType = Partial<AsyncReturnType<Profile["apiData"]>>;
-  export type ProfilePropertyType = Partial<
-    AsyncReturnType<ProfileProperty["apiData"]>
+  export type GrouparooRecordType = Partial<
+    AsyncReturnType<GrouparooRecord["apiData"]>
+  >;
+  export type RecordPropertyType = Partial<
+    AsyncReturnType<RecordProperty["apiData"]>
   >;
   export type PropertyType = Partial<AsyncReturnType<Property["apiData"]>>;
   export type SettingType = Partial<AsyncReturnType<Setting["apiData"]>>;
@@ -110,7 +112,7 @@ import {
   DestinationExport,
   DestinationExportArrayProperties,
   DestinationMappingOptions,
-  DestinationProfilePreview,
+  DestinationRecordPreview,
   DestinationView,
 } from "@grouparoo/core/src/actions/destinations";
 import {
@@ -131,7 +133,7 @@ import {
   FilesList,
 } from "@grouparoo/core/src/actions/files";
 import {
-  GroupAddProfile,
+  GroupAddRecord,
   GroupCountComponentMembers,
   GroupCountPotentialMembers,
   GroupCreate,
@@ -139,7 +141,7 @@ import {
   GroupEdit,
   GroupExport,
   GroupListDestinations,
-  GroupRemoveProfile,
+  GroupRemoveRecord,
   GroupRun,
   GroupView,
   GroupsList,
@@ -172,22 +174,22 @@ import {
   PropertyFilterOptions,
   PropertyGroups,
   PropertyPluginOptions,
-  PropertyProfilePreview,
+  PropertyRecordPreview,
   PropertyTest,
   PropertyView,
   PropertiesList,
   PropertiesOptions,
 } from "@grouparoo/core/src/actions/properties";
 import {
-  ProfileAutocompleteProfileProperty,
-  ProfileCreate,
-  ProfileDestroy,
-  ProfileEdit,
-  ProfileImportAndExport,
-  ProfileView,
-  ProfilesImportAndUpdate,
-  ProfilesList,
-} from "@grouparoo/core/src/actions/profiles";
+  RecordAutocompleteRecordProperty,
+  RecordCreate,
+  RecordDestroy,
+  RecordEdit,
+  RecordImportAndExport,
+  RecordView,
+  RecordsImportAndUpdate,
+  RecordsList,
+} from "@grouparoo/core/src/actions/records";
 import {
   ResqueDelDelayed,
   ResqueDelLock,
@@ -353,8 +355,8 @@ export namespace Actions {
   export type DestinationMappingOptions = AsyncReturnType<
     typeof DestinationMappingOptions.prototype.runWithinTransaction
   >;
-  export type DestinationProfilePreview = AsyncReturnType<
-    typeof DestinationProfilePreview.prototype.runWithinTransaction
+  export type DestinationRecordPreview = AsyncReturnType<
+    typeof DestinationRecordPreview.prototype.runWithinTransaction
   >;
   export type DestinationView = AsyncReturnType<
     typeof DestinationView.prototype.runWithinTransaction
@@ -396,8 +398,8 @@ export namespace Actions {
     typeof FilesList.prototype.runWithinTransaction
   >;
 
-  export type GroupAddProfile = AsyncReturnType<
-    typeof GroupAddProfile.prototype.runWithinTransaction
+  export type GroupAddRecord = AsyncReturnType<
+    typeof GroupAddRecord.prototype.runWithinTransaction
   >;
   export type GroupCountComponentMembers = AsyncReturnType<
     typeof GroupCountComponentMembers.prototype.runWithinTransaction
@@ -420,8 +422,8 @@ export namespace Actions {
   export type GroupListDestinations = AsyncReturnType<
     typeof GroupListDestinations.prototype.runWithinTransaction
   >;
-  export type GroupRemoveProfile = AsyncReturnType<
-    typeof GroupRemoveProfile.prototype.runWithinTransaction
+  export type GroupRemoveRecord = AsyncReturnType<
+    typeof GroupRemoveRecord.prototype.runWithinTransaction
   >;
   export type GroupRun = AsyncReturnType<
     typeof GroupRun.prototype.runWithinTransaction
@@ -505,8 +507,8 @@ export namespace Actions {
   export type PropertyPluginOptions = AsyncReturnType<
     typeof PropertyPluginOptions.prototype.runWithinTransaction
   >;
-  export type PropertyProfilePreview = AsyncReturnType<
-    typeof PropertyProfilePreview.prototype.runWithinTransaction
+  export type PropertyRecordPreview = AsyncReturnType<
+    typeof PropertyRecordPreview.prototype.runWithinTransaction
   >;
   export type PropertyTest = AsyncReturnType<
     typeof PropertyTest.prototype.runWithinTransaction
@@ -521,29 +523,29 @@ export namespace Actions {
     typeof PropertiesOptions.prototype.runWithinTransaction
   >;
 
-  export type ProfileAutocompleteProfileProperty = AsyncReturnType<
-    typeof ProfileAutocompleteProfileProperty.prototype.runWithinTransaction
+  export type RecordAutocompleteRecordProperty = AsyncReturnType<
+    typeof RecordAutocompleteRecordProperty.prototype.runWithinTransaction
   >;
-  export type ProfileCreate = AsyncReturnType<
-    typeof ProfileCreate.prototype.runWithinTransaction
+  export type RecordCreate = AsyncReturnType<
+    typeof RecordCreate.prototype.runWithinTransaction
   >;
-  export type ProfileDestroy = AsyncReturnType<
-    typeof ProfileDestroy.prototype.runWithinTransaction
+  export type RecordDestroy = AsyncReturnType<
+    typeof RecordDestroy.prototype.runWithinTransaction
   >;
-  export type ProfileEdit = AsyncReturnType<
-    typeof ProfileEdit.prototype.runWithinTransaction
+  export type RecordEdit = AsyncReturnType<
+    typeof RecordEdit.prototype.runWithinTransaction
   >;
-  export type ProfileImportAndExport = AsyncReturnType<
-    typeof ProfileImportAndExport.prototype.runWithinTransaction
+  export type RecordImportAndExport = AsyncReturnType<
+    typeof RecordImportAndExport.prototype.runWithinTransaction
   >;
-  export type ProfileView = AsyncReturnType<
-    typeof ProfileView.prototype.runWithinTransaction
+  export type RecordView = AsyncReturnType<
+    typeof RecordView.prototype.runWithinTransaction
   >;
-  export type ProfilesImportAndUpdate = AsyncReturnType<
-    typeof ProfilesImportAndUpdate.prototype.runWithinTransaction
+  export type RecordsImportAndUpdate = AsyncReturnType<
+    typeof RecordsImportAndUpdate.prototype.runWithinTransaction
   >;
-  export type ProfilesList = AsyncReturnType<
-    typeof ProfilesList.prototype.runWithinTransaction
+  export type RecordsList = AsyncReturnType<
+    typeof RecordsList.prototype.runWithinTransaction
   >;
 
   export type ResqueDelDelayed = AsyncReturnType<

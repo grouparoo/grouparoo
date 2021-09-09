@@ -23,9 +23,7 @@ require(nockFile);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const usersTableName = "PROFILES";
 
-import { api } from "actionhero";
 import { Generate } from "@grouparoo/core/src/bin/generate";
-import { Apply } from "@grouparoo/core/src/bin/apply";
 
 process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
   process.env.JEST_WORKER_ID

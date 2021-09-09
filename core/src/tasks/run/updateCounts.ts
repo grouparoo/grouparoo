@@ -1,6 +1,5 @@
-import Sequelize from "sequelize";
 import { Run } from "../../models/Run";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import Moment from "moment";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
@@ -8,7 +7,7 @@ export class UpdateRunCounts extends CLSTask {
   constructor() {
     super();
     this.name = "runs:updateCounts";
-    this.description = "Update the counts of imports and profiles for runs";
+    this.description = "Update the counts of imports and records for runs";
     this.frequency = 1000 * 15;
     this.queue = "runs";
     this.inputs = {};
@@ -25,7 +24,7 @@ export class UpdateRunCounts extends CLSTask {
         [Op.or]: [
           { importsCreated: 0 },
           {
-            profilesImported: {
+            recordsImported: {
               [Op.lt]: Sequelize.col("importsCreated") as unknown as string,
             },
           },

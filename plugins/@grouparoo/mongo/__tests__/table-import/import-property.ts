@@ -5,17 +5,17 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { Profile, Property } from "@grouparoo/core";
+import { GrouparooRecord, Property } from "@grouparoo/core";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
 
 import { getConnection } from "../../src/lib/table-import/connection";
 
-const profileProperty = getConnection().methods.profileProperty;
+const recordProperty = getConnection().methods.recordProperty;
 
 // these used and set by test
 const { appOptions, usersTableName, purchasesTableName } = getConfig();
-let profile: Profile;
+let record: GrouparooRecord;
 
 let client;
 
@@ -24,12 +24,12 @@ let sourceOptions;
 async function getPropertyValue(
   { column, sourceMapping, aggregationMethod },
   usePropertyFilters?,
-  useProfile?: Profile
+  useRecord?: GrouparooRecord
 ) {
   const array = await getPropertyArray(
     { column, sourceMapping, aggregationMethod },
     usePropertyFilters,
-    useProfile
+    useRecord
   );
   return array ? array[0] : array;
 }
@@ -37,15 +37,15 @@ async function getPropertyValue(
 async function getPropertyArray(
   { column, sourceMapping, aggregationMethod },
   usePropertyFilters?,
-  useProfile?: Profile
+  useRecord?: GrouparooRecord
 ) {
   const propertyOptions = {
     column,
     aggregationMethod: aggregationMethod,
   };
 
-  if (!useProfile) {
-    useProfile = profile;
+  if (!useRecord) {
+    useRecord = record;
   }
 
   const propertyFilters = usePropertyFilters || [];
@@ -53,16 +53,16 @@ async function getPropertyArray(
     where: { key: "email" },
   });
 
-  return profileProperty({
+  return recordProperty({
     connection: client,
     appOptions,
-    profile: useProfile,
+    record: useRecord,
     sourceOptions,
     propertyOptions,
     sourceMapping,
     propertyFilters,
     property,
-    profileId: null,
+    recordId: null,
     source: null,
     sourceId: null,
     app: null,
@@ -71,7 +71,7 @@ async function getPropertyArray(
   });
 }
 
-describe("mongo/table/profileProperty", () => {
+describe("mongo/table/recordProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -82,13 +82,13 @@ describe("mongo/table/profileProperty", () => {
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);
 
-    profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+    record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       userId: [1],
       email: ["ejervois0@example.com"],
       lastName: null,
     });
-    expect(profile.id).toBeTruthy();
+    expect(record.id).toBeTruthy();
   });
 
   afterAll(async () => await afterData());
@@ -206,7 +206,7 @@ describe("mongo/table/profileProperty", () => {
   });
 
   describe("secondary tables", () => {
-    const sourceMapping = { profile_id: "userId" };
+    const sourceMapping = { record_id: "userId" };
     beforeAll(() => {
       sourceOptions = { table: purchasesTableName };
     });
@@ -289,7 +289,7 @@ describe("mongo/table/profileProperty", () => {
   });
 
   describe("filters", () => {
-    const sourceMapping = { profile_id: "userId" };
+    const sourceMapping = { record_id: "userId" };
     const column = "amount";
     const aggregationMethod = "count";
     beforeAll(() => {
@@ -633,7 +633,7 @@ describe("mongo/table/profileProperty", () => {
     beforeAll(() => {
       sourceOptions = { table: usersTableName };
     });
-    test("unknown profile property", async () => {
+    test("unknown record property", async () => {
       const value = await getPropertyValue({
         column: "first_name",
         sourceMapping: { id: "badName" },
@@ -641,7 +641,7 @@ describe("mongo/table/profileProperty", () => {
       });
       expect(value).toEqual(undefined);
     });
-    test("null profile property", async () => {
+    test("null record property", async () => {
       const value = await getPropertyValue({
         column: "first_name",
         sourceMapping: { id: "lastName" }, // set to NULL

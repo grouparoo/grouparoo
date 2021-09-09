@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../hooks/useApi";
 import { Form, Row, Col } from "react-bootstrap";
-import ProfileImageFromEmail from "../components/visualizations/profileImageFromEmail";
+import RecordImageFromEmail from "../components/visualizations/recordImageFromEmail";
 import LoadingButton from "../components/loadingButton";
 import { Models, Actions } from "../utils/apiData";
 import { ErrorHandler } from "../utils/errorHandler";
@@ -56,7 +56,7 @@ export default function Page(props) {
       <h1>Your Account</h1>
       <Row>
         <Col md={2}>
-          <ProfileImageFromEmail loading={loading} email={teamMember.email} />
+          <RecordImageFromEmail loading={loading} email={teamMember.email} />
           <small>
             Image from{" "}
             <a href="https://gravatar.com" target="_blank">

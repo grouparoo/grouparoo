@@ -3,7 +3,13 @@ process.env.GROUPAROO_IMPORTS_BATCH_SIZE = "100";
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { internalRun } from "../../../src/modules/internalRun";
-import { Property, Run, Profile, ProfileProperty, Import } from "../../../src";
+import {
+  Property,
+  Run,
+  GrouparooRecord,
+  RecordProperty,
+  Import,
+} from "../../../src";
 
 describe("tasks/run:internalRun", () => {
   helper.grouparooTestServer({
@@ -14,29 +20,29 @@ describe("tasks/run:internalRun", () => {
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
 
-  let profile: Profile;
+  let record: GrouparooRecord;
 
   describe("run:internalRun", () => {
     beforeAll(async () => {
       await Run.truncate();
-      profile = await helper.factories.profile();
-      await profile.buildNullProperties();
+      record = await helper.factories.record();
+      await record.buildNullProperties();
     });
 
     beforeEach(async () => {
-      await ProfileProperty.update(
+      await RecordProperty.update(
         { state: "ready" },
-        { where: { profileId: profile.id } }
+        { where: { recordId: record.id } }
       );
-      await profile.reload({ include: [ProfileProperty] });
-      await profile.update({ state: "ready" });
+      await record.reload({ include: [RecordProperty] });
+      await record.update({ state: "ready" });
     });
 
     beforeEach(async () => {
       await Import.truncate();
     });
 
-    test("the task will mark every profile as pending by default", async () => {
+    test("the task will mark every record as pending by default", async () => {
       const run = await internalRun("test", "testId");
       await specHelper.runTask("run:internalRun", { runId: run.id });
 
@@ -45,16 +51,16 @@ describe("tasks/run:internalRun", () => {
       expect(run.groupMemberOffset).toBe(1);
       expect(run.groupMethod).toBe("internalRun");
 
-      await profile.reload({ include: [ProfileProperty] });
-      expect(profile.state).toBe("pending");
-      profile.profileProperties.forEach((p) => expect(p.state).toBe("pending"));
+      await record.reload({ include: [RecordProperty] });
+      expect(record.state).toBe("pending");
+      record.recordProperties.forEach((p) => expect(p.state).toBe("pending"));
 
       const imports = await Import.findAll();
       expect(imports.length).toBe(1);
-      expect(imports[0].profileId).toBe(profile.id);
+      expect(imports[0].recordId).toBe(record.id);
     });
 
-    test("if the run was created due to a property, only those profileProperties will become pending", async () => {
+    test("if the run was created due to a property, only those recordProperties will become pending", async () => {
       const property = await Property.findOne({ where: { key: "email" } });
       const run = await internalRun("property", property.id);
       await specHelper.runTask("run:internalRun", { runId: run.id });
@@ -64,22 +70,22 @@ describe("tasks/run:internalRun", () => {
       expect(run.groupMemberOffset).toBe(1);
       expect(run.groupMethod).toBe("internalRun");
 
-      await profile.reload({ include: [ProfileProperty] });
-      expect(profile.state).toBe("pending");
-      expect(new Set(profile.profileProperties.map((p) => p.state))).toEqual(
+      await record.reload({ include: [RecordProperty] });
+      expect(record.state).toBe("pending");
+      expect(new Set(record.recordProperties.map((p) => p.state))).toEqual(
         new Set(["ready", "pending"])
       );
-      for (const profileProperty of profile.profileProperties) {
-        if (profileProperty.propertyId === property.id) {
-          expect(profileProperty.state).toBe("pending");
+      for (const recordProperty of record.recordProperties) {
+        if (recordProperty.propertyId === property.id) {
+          expect(recordProperty.state).toBe("pending");
         } else {
-          expect(profileProperty.state).toBe("ready");
+          expect(recordProperty.state).toBe("ready");
         }
       }
 
       const imports = await Import.findAll();
       expect(imports.length).toBe(1);
-      expect(imports[0].profileId).toBe(profile.id);
+      expect(imports[0].recordId).toBe(record.id);
     });
 
     test("a run can be stopped outside of the task and not enqueue another task", async () => {

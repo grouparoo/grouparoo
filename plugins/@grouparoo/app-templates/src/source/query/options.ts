@@ -1,9 +1,9 @@
 export * from "./pluginMethods";
 export * from "./propertyOptions";
 export * from "./sourceOptions";
-export * from "./profileProperty";
+export * from "./recordProperty";
 export * from "./scheduleOptions";
-export * from "./profiles";
+export * from "./records";
 
 export {
   PluginConnectionPropertyOption,
@@ -11,7 +11,7 @@ export {
   SourceOptionsMethod,
   PropertyOptionsMethod,
   ScheduleOptionsMethod,
-  ProfilePropertyPluginMethod,
+  RecordPropertyPluginMethod,
   AggregationMethod,
   FilterOperation,
 } from "@grouparoo/core";

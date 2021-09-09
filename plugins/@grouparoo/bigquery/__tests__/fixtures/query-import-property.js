@@ -54,7 +54,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     configuration: {
       query: {
         useLegacySql: false,
-        query: "SELECT first_name FROM test.profiles WHERE id = 1",
+        query: "SELECT first_name FROM test.records WHERE id = 1",
         defaultDataset: { datasetId: "test" },
       },
     },
@@ -212,7 +212,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     configuration: {
       query: {
         useLegacySql: false,
-        query: "SELECT ltv FROM test.profiles WHERE id = 1",
+        query: "SELECT ltv FROM test.records WHERE id = 1",
         defaultDataset: { datasetId: "test" },
       },
     },
@@ -386,7 +386,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     configuration: {
       query: {
         useLegacySql: false,
-        query: "SELECT ios_app FROM test.profiles WHERE id = 1",
+        query: "SELECT ios_app FROM test.records WHERE id = 1",
         defaultDataset: { datasetId: "test" },
       },
     },
@@ -547,7 +547,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT first_name FROM test.profiles WHERE email = 'ejervois0@example.com'",
+          "SELECT first_name FROM test.records WHERE email = 'ejervois0@example.com'",
         defaultDataset: { datasetId: "test" },
       },
     },
@@ -717,7 +717,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT ltv FROM test.profiles WHERE email = 'ejervois0@example.com'",
+          "SELECT ltv FROM test.records WHERE email = 'ejervois0@example.com'",
         defaultDataset: { datasetId: "test" },
       },
     },
@@ -876,7 +876,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT ios_app FROM test.profiles WHERE email = 'ejervois0@example.com'",
+          "SELECT ios_app FROM test.records WHERE email = 'ejervois0@example.com'",
         defaultDataset: { datasetId: "test" },
       },
     },

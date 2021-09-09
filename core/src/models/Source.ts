@@ -33,14 +33,14 @@ import { StateMachine } from "./../modules/stateMachine";
 import { App } from "./App";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
-import { Profile } from "./Profile";
+import { Schedule } from "./Schedule";
+import { GrouparooRecord } from "./GrouparooRecord";
 import {
   Property,
   PropertyFiltersWithKey,
   SimplePropertyOptions,
 } from "./Property";
 import { Run } from "./Run";
-import { Schedule } from "./Schedule";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
@@ -216,7 +216,7 @@ export class Source extends LoggedModel<Source> {
 
   async scheduleAvailable() {
     const { pluginConnection } = await this.getPlugin();
-    if (typeof pluginConnection?.methods?.profiles !== "function") {
+    if (typeof pluginConnection?.methods?.records !== "function") {
       return false;
     }
 
@@ -241,8 +241,8 @@ export class Source extends LoggedModel<Source> {
     return false;
   }
 
-  async importProfileProperty(
-    profile: Profile,
+  async importRecordProperty(
+    record: GrouparooRecord,
     property: Property,
     propertyOptionsOverride?: OptionHelper.SimpleOptions,
     propertyFiltersOverride?: PropertyFiltersWithKey[],
@@ -252,12 +252,12 @@ export class Source extends LoggedModel<Source> {
       appOptions?: OptionHelper.SimpleOptions;
       sourceOptions?: OptionHelper.SimpleOptions;
       sourceMapping?: MappingHelper.Mappings;
-      profileProperties?: {};
+      recordProperties?: {};
     } = {}
   ) {
-    return SourceOps.importProfileProperty(
+    return SourceOps.importRecordProperty(
       this,
-      profile,
+      record,
       property,
       propertyOptionsOverride,
       propertyFiltersOverride,
@@ -265,8 +265,8 @@ export class Source extends LoggedModel<Source> {
     );
   }
 
-  async importProfileProperties(
-    profiles: Profile[],
+  async importRecordProperties(
+    records: GrouparooRecord[],
     properties: Property[],
     propertyOptionsOverride?: { [key: string]: SimplePropertyOptions },
     propertyFiltersOverride?: { [key: string]: PropertyFiltersWithKey[] },
@@ -276,12 +276,12 @@ export class Source extends LoggedModel<Source> {
       appOptions?: OptionHelper.SimpleOptions;
       sourceOptions?: OptionHelper.SimpleOptions;
       sourceMapping?: MappingHelper.Mappings;
-      profileProperties?: {};
+      recordProperties?: {};
     } = {}
   ) {
-    return SourceOps.importProfileProperties(
+    return SourceOps.importRecordProperties(
       this,
-      profiles,
+      records,
       properties,
       propertyOptionsOverride,
       propertyFiltersOverride,
@@ -289,8 +289,8 @@ export class Source extends LoggedModel<Source> {
     );
   }
 
-  async import(profile: Profile) {
-    return SourceOps._import(this, profile);
+  async import(record: GrouparooRecord) {
+    return SourceOps._import(this, record);
   }
 
   async bootstrapUniqueProperty(

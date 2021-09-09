@@ -1,7 +1,7 @@
 import { helper, relaxedSnapshot } from "@grouparoo/spec-helper";
 import { SyncCLI } from "../../src/bin/sync";
 import { api } from "actionhero";
-import { GrouparooPlugin, Profile } from "../../src";
+import { GrouparooPlugin, GrouparooRecord } from "../../src";
 
 describe("bin/sync", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -9,7 +9,7 @@ describe("bin/sync", () => {
 
   let messages = [];
   let spies = [];
-  let profile: Profile;
+  let record: GrouparooRecord;
 
   beforeAll(async () => {
     // we need to ensure that we have static results for the import to snapshot
@@ -19,7 +19,7 @@ describe("bin/sync", () => {
     const testPluginConnection = testPlugin.connections.find(
       (c) => c.name === "test-plugin-import"
     );
-    testPluginConnection.methods.profileProperty = async ({ property }) => {
+    testPluginConnection.methods.recordProperty = async ({ property }) => {
       const data = {
         userId: [100],
         isVIP: [true],
@@ -36,7 +36,7 @@ describe("bin/sync", () => {
     };
   });
 
-  beforeAll(async () => (profile = await helper.factories.profile()));
+  beforeAll(async () => (record = await helper.factories.record()));
 
   beforeEach(() => {
     messages = [];
@@ -62,42 +62,42 @@ describe("bin/sync", () => {
       instance = new SyncCLI();
     });
 
-    test("it will fail without a profile property", async () => {
+    test("it will fail without a record property", async () => {
       await instance.run({ params: {} });
       const output = messages.join(" ");
-      expect(output).toContain("No Profile Property provided");
+      expect(output).toContain("No GrouparooRecord Property provided");
     });
 
-    test("it can sync by profile id", async () => {
-      await instance.run({ params: { profileProperty: profile.id } });
+    test("it can sync by record id", async () => {
+      await instance.run({ params: { recordProperty: record.id } });
       const output = messages.join(" ");
-      expect(output).toContain(`* id: ${profile.id}`);
+      expect(output).toContain(`* id: ${record.id}`);
       expect(output).toContain(`* email: mario@example.com`);
     });
 
-    test("it can sync by profile property", async () => {
-      await instance.run({ params: { profileProperty: "mario@example.com" } });
+    test("it can sync by record property", async () => {
+      await instance.run({ params: { recordProperty: "mario@example.com" } });
       const output = messages.join(" ");
-      expect(output).toContain(`* id: ${profile.id}`);
+      expect(output).toContain(`* id: ${record.id}`);
       expect(output).toContain(`* email: mario@example.com`);
     });
 
-    test("it can sync by profile property and property", async () => {
+    test("it can sync by record property and property", async () => {
       await instance.run({
-        params: { profileProperty: "mario@example.com", property: "email" },
+        params: { recordProperty: "mario@example.com", property: "email" },
       });
       const output = messages.join(" ");
-      expect(output).toContain(`* id: ${profile.id}`);
+      expect(output).toContain(`* id: ${record.id}`);
       expect(output).toContain(`* email: mario@example.com`);
     });
 
     test("it will fail with if it cannot provide the explicit property", async () => {
       await instance.run({
-        params: { profileProperty: "mario@example.com", property: "foo" },
+        params: { recordProperty: "mario@example.com", property: "foo" },
       });
       const output = messages.join(" ");
       expect(output).toContain(
-        'Cannot find Profile where Profile Property "foo"="mario@example.com"'
+        'Cannot find GrouparooRecord where GrouparooRecord Property "foo"="mario@example.com"'
       );
     });
 
@@ -105,7 +105,7 @@ describe("bin/sync", () => {
       process.env.GROUPAROO_LOG_LEVEL = "alert"; // disable other log messages
 
       await instance.run({
-        params: { profileProperty: "mario@example.com", json: true },
+        params: { recordProperty: "mario@example.com", json: true },
       });
       const output = messages.join("");
 

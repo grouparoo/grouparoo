@@ -16,7 +16,7 @@ export async function runPercentComplete(run: Run, localFile: string) {
   });
 
   const percentComplete =
-    total > 0 ? Math.floor((run.profilesImported / total) * 100) : 100;
+    total > 0 ? Math.floor((run.recordsImported / total) * 100) : 100;
 
   return percentComplete;
 }

@@ -2,13 +2,13 @@ import {
   getPropertyOptions,
   getScheduleOptions,
   PluginConnection,
-  getProfilesMethod,
+  getRecordsMethod,
   SourceOptionsMethod,
   PropertyOptionsMethod,
   ScheduleOptionsMethod,
   getSourceOptions,
-  ProfilePropertyPluginMethod,
-  getProfileProperty,
+  RecordPropertyPluginMethod,
+  getRecordProperty,
   ExecuteQueryMethod,
   ValidateQueryMethod,
   validateGenericQuery,
@@ -44,7 +44,7 @@ export const buildConnection: BuildConnectionMethod = ({
   getTables,
 }) => {
   const sourceOptions: SourceOptionsMethod = getSourceOptions({ getTables });
-  const profileProperty: ProfilePropertyPluginMethod = getProfileProperty({
+  const recordProperty: RecordPropertyPluginMethod = getRecordProperty({
     executeQuery,
     validateQuery,
   });
@@ -55,7 +55,7 @@ export const buildConnection: BuildConnectionMethod = ({
     getScheduleOptions(args);
 
   // const scheduleOptions = getChangedRows ? getScheduleOptions() : null;
-  const profiles = getChangedRows ? getProfilesMethod(getChangedRows) : null;
+  const records = getChangedRows ? getRecordsMethod(getChangedRows) : null;
 
   const plugin: PluginConnection = {
     name,
@@ -67,8 +67,8 @@ export const buildConnection: BuildConnectionMethod = ({
     groupAggregations: [],
     methods: {
       sourceOptions,
-      profileProperty,
-      profiles,
+      recordProperty,
+      records,
       propertyOptions,
       scheduleOptions,
     },

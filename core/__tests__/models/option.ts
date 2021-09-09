@@ -233,7 +233,7 @@ describe("models/option", () => {
                 },
               ],
               methods: {
-                exportProfile: async () => ({ success: true }),
+                exportRecord: async () => ({ success: true }),
               },
             },
           ],

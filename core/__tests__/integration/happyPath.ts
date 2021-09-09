@@ -11,12 +11,12 @@ import {
   ScheduleRun,
 } from "../../src/actions/schedules";
 import {
-  ProfileCreate,
-  ProfilesList,
-  ProfileView,
-} from "../../src/actions/profiles";
+  RecordCreate,
+  RecordsList,
+  RecordView,
+} from "../../src/actions/records";
 import {
-  GroupAddProfile,
+  GroupAddRecord,
   GroupCreate,
   GroupView,
 } from "../../src/actions/groups";
@@ -26,13 +26,13 @@ import {
   SourceEdit,
 } from "../../src/actions/sources";
 
-function simpleProfileValues(complexProfileValues): { [key: string]: any } {
+function simpleRecordValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
-  const simpleProfileProperties = {};
+  const simpleRecordProperties = {};
   keys.forEach((key) => {
-    simpleProfileProperties[key] = complexProfileValues[key].values;
+    simpleRecordProperties[key] = complexProfileValues[key].values;
   });
-  return simpleProfileProperties;
+  return simpleRecordProperties;
 }
 
 describe("integration/happyPath", () => {
@@ -44,7 +44,7 @@ describe("integration/happyPath", () => {
 
   let appId: string;
   let sourceId: string;
-  let profileId: string;
+  let recordId: string;
   let scheduleId: string;
   let connection;
   let csrfToken: string;
@@ -213,7 +213,7 @@ describe("integration/happyPath", () => {
   describe("manual group", () => {
     let groupId;
 
-    test("an admin can create a profile", async () => {
+    test("an admin can create a record", async () => {
       connection.params = {
         csrfToken,
         properties: {
@@ -223,20 +223,20 @@ describe("integration/happyPath", () => {
           ltv: 100.12,
         },
       };
-      const { error, profile } = await specHelper.runAction<ProfileCreate>(
-        "profile:create",
+      const { error, record } = await specHelper.runAction<RecordCreate>(
+        "record:create",
         connection
       );
       expect(error).toBeUndefined();
-      expect(profile.id).toBeTruthy();
-      expect(simpleProfileValues(profile.properties)).toEqual({
+      expect(record.id).toBeTruthy();
+      expect(simpleRecordValues(record.properties)).toEqual({
         email: ["luigi@example.com"],
         firstName: ["Luigi"],
         lastName: ["Mario"],
         ltv: [100.12],
         userId: [null],
       });
-      profileId = profile.id;
+      recordId = record.id;
     });
 
     test("an admin can create a manual group", async () => {
@@ -259,27 +259,27 @@ describe("integration/happyPath", () => {
       groupId = group.id;
     });
 
-    test("an admin can add a profile to a manual group", async () => {
+    test("an admin can add a record to a manual group", async () => {
       connection.params = {
         csrfToken,
         id: groupId,
-        profileId,
+        recordId,
       };
-      const { error, success } = await specHelper.runAction<GroupAddProfile>(
-        "group:addProfile",
+      const { error, success } = await specHelper.runAction<GroupAddRecord>(
+        "group:addRecord",
         connection
       );
       expect(error).toBeUndefined();
       expect(success).toBeTruthy();
     });
 
-    test("the profile lists group memberships", async () => {
+    test("the record lists group memberships", async () => {
       connection.params = {
         csrfToken,
-        id: profileId,
+        id: recordId,
       };
-      const { error, groups } = await specHelper.runAction<ProfileView>(
-        "profile:view",
+      const { error, groups } = await specHelper.runAction<RecordView>(
+        "record:view",
         connection
       );
       expect(error).toBeUndefined();
@@ -288,7 +288,7 @@ describe("integration/happyPath", () => {
       expect(groups[0].name).toBe("manual group");
     });
 
-    test("the manual group lists the profile as a member", async () => {
+    test("the manual group lists the record as a member", async () => {
       connection.params = {
         csrfToken,
         id: groupId,
@@ -298,17 +298,17 @@ describe("integration/happyPath", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(group.profilesCount).toBe(1);
+      expect(group.recordsCount).toBe(1);
 
       connection.params = {
         csrfToken,
         id: groupId,
       };
-      const { error: listError, profiles } =
-        await specHelper.runAction<ProfilesList>("profiles:list", connection);
+      const { error: listError, records } =
+        await specHelper.runAction<RecordsList>("records:list", connection);
       expect(listError).toBeUndefined();
-      expect(profiles.length).toBe(1);
-      expect(simpleProfileValues(profiles[0].properties).email).toEqual([
+      expect(records.length).toBe(1);
+      expect(simpleRecordValues(records[0].properties).email).toEqual([
         "luigi@example.com",
       ]);
     });
@@ -351,7 +351,7 @@ describe("integration/happyPath", () => {
       await ImportWorkflow();
     });
 
-    test("the profile will be in the calculated group", async () => {
+    test("the record will be in the calculated group", async () => {
       connection.params = {
         csrfToken,
         id: groupId,
@@ -362,17 +362,17 @@ describe("integration/happyPath", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(group.profilesCount).toBe(1);
+      expect(group.recordsCount).toBe(1);
 
       connection.params = {
         csrfToken,
         id: groupId,
       };
-      const { error: listError, profiles } =
-        await specHelper.runAction<ProfilesList>("profiles:list", connection);
+      const { error: listError, records } =
+        await specHelper.runAction<RecordsList>("records:list", connection);
       expect(listError).toBeUndefined();
-      expect(profiles.length).toBe(1);
-      expect(simpleProfileValues(profiles[0].properties).email[0]).toMatch(
+      expect(records.length).toBe(1);
+      expect(simpleRecordValues(records[0].properties).email[0]).toMatch(
         /@example.com/
       );
     });

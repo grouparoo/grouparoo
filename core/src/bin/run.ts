@@ -12,7 +12,7 @@ export class RunCLI extends CLI {
       reset: {
         default: false,
         description:
-          "[DANGER] Empty the cluster of all Profile data before starting the run? Equivalent to `grouparoo reset data`",
+          "[DANGER] Empty the cluster of all GrouparooRecord data before starting the run? Equivalent to `grouparoo reset data`",
         letter: "r",
         flag: true,
       },
@@ -24,7 +24,7 @@ export class RunCLI extends CLI {
       },
       "no-export": {
         default: false,
-        description: "Skip exporting the profiles",
+        description: "Skip exporting the records",
         letter: "n",
         flag: true,
       },

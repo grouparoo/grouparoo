@@ -48,7 +48,7 @@ describe("models/setupStep", () => {
     process.env.GROUPAROO_RUN_MODE = "cli:config";
     const setupSteps = SetupStepOps.setupStepDescriptions();
     expect(setupSteps[0].key).toEqual("install_grouparoo");
-    expect(setupSteps[5].key).toEqual("create_a_sample_profile");
+    expect(setupSteps[5].key).toEqual("create_a_sample_record");
     expect(setupSteps[6].key).toEqual("create_a_group");
   });
 

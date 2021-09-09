@@ -10,7 +10,7 @@ describe("tasks/group:updateCalculatedGroups", () => {
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeEach(async () => await group.reload());
 
-  describe("profile:updateCalculatedGroups", () => {
+  describe("record:updateCalculatedGroups", () => {
     beforeAll(async () => {
       group = await helper.factories.group();
       group.type = "calculated";

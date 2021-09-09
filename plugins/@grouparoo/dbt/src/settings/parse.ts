@@ -6,23 +6,23 @@ import { dbtSettingsResponse } from "./types";
 import { dbtConnectionToGrouparooOptions } from "./plugins";
 
 export interface dbtProfileRequest {
-  profile?: string; // Which profile to load. Overrides setting in dbt_project.yml.
-  target?: string; // Which target to load for the given profile. Overrides default in profiles.yml
+  record?: string; // Which record to load. Overrides setting in dbt_project.yml.
+  target?: string; // Which target to load for the given record. Overrides default in records.yml
   projectDirRelativePath?: string;
-  profileDirRelativePath?: string;
+  recordDirRelativePath?: string;
   projectDirFullPath?: string;
-  profileDirFullPath?: string;
+  recordDirFullPath?: string;
 }
 
-export interface dbtProfileMethod {
+export interface dbtRecordMethod {
   (argument?: dbtProfileRequest): Promise<dbtSettingsResponse>;
 }
 
-export const dbtProfile: dbtProfileMethod = async (args = {}) => {
-  const { profile } = await parseProject(args);
+export const dbtRecord: dbtRecordMethod = async (args = {}) => {
+  const { record } = await parseProject(args);
   const profileDirPath = await getProfilePath(args);
   const { type, connection } = await parseProfile(
-    { profileDirPath, profile },
+    { profileDirPath, record },
     args
   );
   return dbtConnectionToGrouparooOptions(type, connection);
@@ -74,14 +74,14 @@ interface GetProfilePathMethod {
   (argument: dbtProfileRequest): Promise<string>;
 }
 const getProfilePath: GetProfilePathMethod = async ({
-  profileDirRelativePath,
-  profileDirFullPath,
+  recordDirRelativePath,
+  recordDirFullPath,
 }) => {
-  let profileDirPath = profileDirFullPath;
+  let profileDirPath = recordDirFullPath;
 
-  if (!profileDirPath && profileDirRelativePath) {
+  if (!profileDirPath && recordDirRelativePath) {
     profileDirPath = path.resolve(
-      path.join(process.cwd(), profileDirRelativePath)
+      path.join(process.cwd(), recordDirRelativePath)
     );
   }
 
@@ -90,9 +90,7 @@ const getProfilePath: GetProfilePathMethod = async ({
   }
 
   const defaultDir = path.resolve(path.join(os.homedir(), ".dbt"));
-  const defaultProfilePath = path.resolve(
-    path.join(defaultDir, "profiles.yml")
-  );
+  const defaultProfilePath = path.resolve(path.join(defaultDir, "records.yml"));
   if (fs.existsSync(defaultProfilePath)) {
     profileDirPath = defaultDir;
   }
@@ -101,19 +99,17 @@ const getProfilePath: GetProfilePathMethod = async ({
 };
 
 interface ParseProjectMethod {
-  (args: dbtProfileRequest): Promise<{ profile: string }>;
+  (args: dbtProfileRequest): Promise<{ record: string }>;
 }
 const parseProject: ParseProjectMethod = async (args) => {
-  let profile = args.profile;
-  if (profile) {
-    return { profile };
-  }
+  let record = args.record;
+  if (record) return { record };
 
   const projectDirPath = await getProjectPath(args);
 
-  // otherwise parse profile file
+  // otherwise parse record file
   const instructions =
-    "Pass in `profile` or `projectDirRelativePath/projectDirFullPath` to dbtProfile method.";
+    "Pass in `record` or `projectDirRelativePath/projectDirFullPath` to dbtProfile method.";
   if (!projectDirPath) {
     throw new Error(`Unknown dbt project directory. ${instructions}`);
   }
@@ -128,18 +124,18 @@ const parseProject: ParseProjectMethod = async (args) => {
   const document = yaml.load(contents);
   // console.log({ project: document });
 
-  profile = document.profile;
-  if (!profile) {
+  record = document.record;
+  if (!record) {
     throw new Error(
-      `Unknown profile value in project (${projectPath}) yaml. ${instructions}`
+      `Unknown record value in project (${projectPath}) yaml. ${instructions}`
     );
   }
-  return { profile };
+  return { record };
 };
 
 interface ParseProfileMethod {
   (
-    info: { profileDirPath: string; profile: string },
+    info: { profileDirPath: string; record: string },
     args: dbtProfileRequest
   ): Promise<{
     type: string;
@@ -147,31 +143,31 @@ interface ParseProfileMethod {
   }>;
 }
 const parseProfile: ParseProfileMethod = async (
-  { profileDirPath, profile },
+  { profileDirPath, record },
   { target }
 ) => {
   const instructions =
-    "Pass in `profileDirRelativePath/profileDirFullPath` to dbtProfile method.";
+    "Pass in `profileDirRelativePath/recordDirFullPath` to dbtProfile method.";
   if (!profileDirPath) {
-    throw new Error(`Unknown dbt profile directory. ${instructions}`);
+    throw new Error(`Unknown dbt record directory. ${instructions}`);
   }
 
-  const profilePath = path.join(profileDirPath, "profiles.yml");
+  const profilePath = path.join(profileDirPath, "records.yml");
   if (!fs.existsSync(profilePath)) {
     throw new Error(
-      `dbt profile (${profilePath}) does not exist. ${instructions}`
+      `dbt record (${profilePath}) does not exist. ${instructions}`
     );
   }
 
   const contents = fs.readFileSync(profilePath);
   const document = yaml.load(contents);
-  // console.log({ profile: document });
+  // console.log({ record: document });
 
-  const settings = document[profile];
+  const settings = document[record];
   if (!settings) {
-    let debug = `Unknown profile (${profile}) in yml (${profilePath}).`;
-    debug += " Use `profile` in dbtProfile to specify which should be used.";
-    debug += ` Valid profiles are: ${Object.keys(document).join(", ")}`;
+    let debug = `Unknown record (${record}) in yml (${profilePath}).`;
+    debug += " Use `record` in dbtProfile to specify which should be used.";
+    debug += ` Valid records are: ${Object.keys(document).join(", ")}`;
     throw new Error(debug);
   }
 
@@ -181,18 +177,18 @@ const parseProfile: ParseProfileMethod = async (
     target = settings.target;
   }
   if (!target) {
-    let debug = `Unknown target in profile (${profile}) yml (${profilePath}).`;
+    let debug = `Unknown target in record (${record}) yml (${profilePath}).`;
     debug += " Use `target` in dbtProfile to specify which should be used.";
     throw new Error(debug);
   }
   if (!settings.outputs) {
-    let debug = `No outputs in profile (${profile}) yml (${profilePath}).`;
+    let debug = `No outputs in record (${record}) yml (${profilePath}).`;
     throw new Error(debug);
   }
 
   const connection = settings.outputs[target];
   if (!connection) {
-    let debug = `Target ${target} does not exist in profile (${profile}) yml (${profilePath}).`;
+    let debug = `Target ${target} does not exist in record (${record}) yml (${profilePath}).`;
     throw new Error(debug);
   }
 

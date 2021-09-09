@@ -1,0 +1,78 @@
+test_grouparoo_record:
+  target: dev
+  outputs:
+    sqlserver:
+      type: sqlserver
+      driver: ODBC Driver 17 for SQL Server (The ODBC Driver installed on your system)
+      server: server-host-name or ip
+      port: 1433
+      user: [username]
+      password: [password]
+      database: [databasename]
+      schema: [schema]
+
+    presto:
+      type: presto
+      method: none # optional, one of {none | ldap | kerberos}
+      user: [user]
+      password: [password] # required if method is ldap or kerberos
+      database: [database name]
+      host: [hostname]
+      port: [port number]
+      schema: [your dbt schema]
+      threads: [1 or more]
+
+    spark:
+      type: spark
+      method: odbc
+      driver: [path/to/driver]
+      schema: [database/schema name]
+      host: [yourorg.sparkhost.com]
+      organization: [org id] # Azure Databricks only
+      token: [abc123]
+
+      # one of:
+      endpoint: [endpoint id]
+      cluster: [cluster id]
+
+      # optional
+      port: [port] # default 443
+      user: [user]
+
+    exasol:
+      type: exasol
+      threads: 1
+      dsn: HOST:PORT
+      user: USERNAME
+      pass: PASSWORD
+      dbname: db
+      schema: SCHEMA
+
+    oracle:
+      type: oracle
+      host: localhost
+      user: system
+      pass: oracle
+      port: 1521
+      dbname: [dbname]
+      schema: [schema]
+      threads: 4
+
+    dremio:
+      type: dremio
+      threads: 2
+      # please replace driver below with the one you gave to your dremio odbc driver installation
+      driver: Dremio ODBC Driver 64-bit
+      host: [coordinator host]
+      port: 31010
+      schema: [schema]
+      user: [user]
+      password: [password]
+
+    clickhouse:
+      type: clickhouse
+      schema: [database name]
+      host: [db.clickhouse.com]
+      port: 9000
+      user: [user]
+      password: [abc123]

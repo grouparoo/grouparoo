@@ -40,8 +40,8 @@ export default function Page(props) {
         });
       } else if (navigationMode === "config:authenticated" && !currentStep) {
         setCTAs({
-          CTAMessage: "Configure Profiles",
-          CTALink: "/profiles",
+          CTAMessage: "Configure Records",
+          CTALink: "/records",
           CTATarget: null,
         });
       }

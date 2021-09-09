@@ -1,5 +1,5 @@
 import {
-  exportProfilesInGroups,
+  exportRecordsInGroups,
   GroupConfig,
   GroupMethodAddToGroups,
   GroupMethodGetClient,
@@ -15,20 +15,20 @@ import { connect, Client } from "../connect";
 import { getAudienceId, FacebookCacheData } from "./audienceMethods";
 import { userData } from "./data";
 
-import { ErrorWithProfileId, ExportedProfile } from "@grouparoo/core";
+import { ErrorWithRecordId, ExportedRecord } from "@grouparoo/core";
 import { FacebookModel } from "./model";
 
 export interface ExportFacebookMethod {
   (argument: {
     appId: string;
     appOptions: SimpleAppOptions;
-    exports: ExportedProfile[];
+    exports: ExportedRecord[];
     syncOperations: DestinationSyncOperations;
     model: FacebookModel;
   }): Promise<{
     success: boolean;
     retryDelay?: number;
-    errors?: ErrorWithProfileId[];
+    errors?: ErrorWithRecordId[];
   }>;
 }
 
@@ -75,10 +75,10 @@ function updatePayload(
 ) {
   const fields = {}; // the fields in play
   for (const user of users) {
-    for (const field in user.oldProfileProperties) {
+    for (const field in user.oldRecordProperties) {
       fields[field] = true;
     }
-    for (const field in user.newProfileProperties) {
+    for (const field in user.newRecordProperties) {
       fields[field] = true;
     }
   }
@@ -87,7 +87,7 @@ function updatePayload(
 
   for (const user of users) {
     try {
-      const me = userData(schema, user.newProfileProperties);
+      const me = userData(schema, user.newRecordProperties);
       const key = makeSampleKey(me);
       dataMap[key] = user;
       data.push(me);
@@ -178,7 +178,7 @@ async function updateAudience(
     if (user) {
       const message = invalid_entry_samples[data];
       user.error = new Error(`Facebook data invalid: ${message}`);
-      mapped[data] = user.profileId;
+      mapped[data] = user.recordId;
     }
   }
 
@@ -287,19 +287,19 @@ const normalizeGroupName: GroupMethodNormalizeGroupName = ({ groupName }) => {
   return groupName.toString().trim();
 };
 
-export const exportFacebookProfiles: ExportFacebookMethod = async ({
+export const exportFacebookRecords: ExportFacebookMethod = async ({
   appId,
   appOptions,
   model,
   syncOperations,
-  exports: profilesToExport,
+  exports: recordsToExport,
 }) => {
   const cacheData = { appId, appOptions };
   const batchSize = 10000;
   const data: FacebookData = { cacheData, model };
 
-  return exportProfilesInGroups(
-    profilesToExport,
+  return exportRecordsInGroups(
+    recordsToExport,
     {
       batchSize,
       groupMode: GroupSizeMode.WithinGroup,

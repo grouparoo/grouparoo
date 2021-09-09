@@ -152,12 +152,12 @@ export default function Page(props) {
         <fieldset disabled={schedule.locked !== null}>
           <Row>
             <Col>
-              <Form.Group controlId="confirmProfiles">
+              <Form.Group controlId="confirmRecords">
                 <Form.Check
                   type="checkbox"
-                  label="Confirm that profiles exist when running schedule?"
+                  label="Confirm that records exist when running schedule?"
                   disabled={loading}
-                  checked={schedule.confirmProfiles}
+                  checked={schedule.confirmRecords}
                   onChange={(e) => update(e)}
                 />
               </Form.Group>
@@ -201,11 +201,9 @@ export default function Page(props) {
                                 Started {formatTimestamp(run.createdAt)}
                                 <ul>
                                   <li>Imports Created: {run.importsCreated}</li>
+                                  <li>Records Created: {run.recordsCreated}</li>
                                   <li>
-                                    Profiles Created: {run.profilesCreated}
-                                  </li>
-                                  <li>
-                                    Profiles Imported: {run.profilesImported}
+                                    Records Imported: {run.recordsImported}
                                   </li>
                                 </ul>
                               </>

@@ -700,7 +700,7 @@ nock("https://secure.p04.eloqua.com:443", { encodedQueryParams: true })
           updatedAt: "2010-02-24T16:11:00.0000000Z",
         },
         {
-          name: "Lead Rating - Profile (Explicit)",
+          name: "Lead Rating - Record (Explicit)",
           internalName: "C_Lead_Rating___Explicit1",
           dataType: "string",
           hasReadOnlyConstraint: false,
@@ -724,7 +724,7 @@ nock("https://secure.p04.eloqua.com:443", { encodedQueryParams: true })
           updatedAt: "2010-03-22T16:47:47.9130000Z",
         },
         {
-          name: "Lead Score - Profile (Explicit)",
+          name: "Lead Score - Record (Explicit)",
           internalName: "C_Lead_Score___Explicit1",
           dataType: "number",
           hasReadOnlyConstraint: false,
@@ -748,14 +748,14 @@ nock("https://secure.p04.eloqua.com:443", { encodedQueryParams: true })
           updatedAt: "2010-03-04T22:19:18.9770000Z",
         },
         {
-          name: "Lead Score Date - Profile - Most Recent",
-          internalName: "C_Lead_Score_Date___Profile___Most_Recent1",
+          name: "Lead Score Date - Record - Most Recent",
+          internalName: "C_Lead_Score_Date___Record___Most_Recent1",
           dataType: "date",
           hasReadOnlyConstraint: false,
           hasNotNullConstraint: false,
           hasUniquenessConstraint: false,
           statement:
-            "{{Contact.Field(C_Lead_Score_Date___Profile___Most_Recent1)}}",
+            "{{Contact.Field(C_Lead_Score_Date___Record___Most_Recent1)}}",
           uri: "/contacts/fields/100180",
           createdAt: "2010-03-12T23:46:00.0000000Z",
           updatedAt: "2010-03-12T23:47:19.1900000Z",
@@ -2825,7 +2825,7 @@ nock("https://secure.p04.eloqua.com:443", { encodedQueryParams: true })
           updatedAt: "2010-02-24T16:11:00.0000000Z",
         },
         {
-          name: "Lead Rating - Profile (Explicit)",
+          name: "Lead Rating - Record (Explicit)",
           internalName: "C_Lead_Rating___Explicit1",
           dataType: "string",
           hasReadOnlyConstraint: false,
@@ -2849,7 +2849,7 @@ nock("https://secure.p04.eloqua.com:443", { encodedQueryParams: true })
           updatedAt: "2010-03-22T16:47:47.9130000Z",
         },
         {
-          name: "Lead Score - Profile (Explicit)",
+          name: "Lead Score - Record (Explicit)",
           internalName: "C_Lead_Score___Explicit1",
           dataType: "number",
           hasReadOnlyConstraint: false,
@@ -2873,14 +2873,14 @@ nock("https://secure.p04.eloqua.com:443", { encodedQueryParams: true })
           updatedAt: "2010-03-04T22:19:18.9770000Z",
         },
         {
-          name: "Lead Score Date - Profile - Most Recent",
-          internalName: "C_Lead_Score_Date___Profile___Most_Recent1",
+          name: "Lead Score Date - Record - Most Recent",
+          internalName: "C_Lead_Score_Date___Record___Most_Recent1",
           dataType: "date",
           hasReadOnlyConstraint: false,
           hasNotNullConstraint: false,
           hasUniquenessConstraint: false,
           statement:
-            "{{Contact.Field(C_Lead_Score_Date___Profile___Most_Recent1)}}",
+            "{{Contact.Field(C_Lead_Score_Date___Record___Most_Recent1)}}",
           uri: "/contacts/fields/100180",
           createdAt: "2010-03-12T23:46:00.0000000Z",
           updatedAt: "2010-03-12T23:47:19.1900000Z",

@@ -8,8 +8,8 @@ import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import {
   plugin,
-  Profile,
-  ProfileProperty,
+  GrouparooRecord,
+  RecordProperty,
   Property,
   Run,
   SimpleAppOptions,
@@ -37,7 +37,7 @@ const nockFile = path.join(__dirname, "../", "fixtures", "mailchimp-import.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/mailchimp-import");
+require(nockFile);
 //  or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -252,7 +252,7 @@ describe("integration/runs/mailchimp-import", () => {
     });
 
     test(
-      "schedule can run and create profiles",
+      "schedule can run and create records",
       async () => {
         // enqueue the run
         session.params = {
@@ -278,15 +278,15 @@ describe("integration/runs/mailchimp-import", () => {
         await specHelper.runTask("schedule:run", { runId: run.id });
         await specHelper.runTask("schedule:run", { runId: run.id });
 
-        // run all enqueued associateProfile tasks
+        // run all enqueued associateRecord tasks
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
-          "import:associateProfile"
+          "import:associateRecord"
         );
         expect(foundAssociateTasks.length).toEqual(20); // 2x because all timestamps are the same
 
         await Promise.all(
           foundAssociateTasks.map((t) =>
-            specHelper.runTask("import:associateProfile", t.args[0])
+            specHelper.runTask("import:associateRecord", t.args[0])
           )
         );
 
@@ -294,13 +294,13 @@ describe("integration/runs/mailchimp-import", () => {
 
         // run all enqueued export tasks
         const foundExportTasks = await specHelper.findEnqueuedTasks(
-          "profile:export"
+          "record:export"
         );
         expect(foundExportTasks.length).toEqual(10);
 
         await Promise.all(
           foundExportTasks.map((t) =>
-            specHelper.runTask("profile:export", t.args[0])
+            specHelper.runTask("record:export", t.args[0])
           )
         );
 
@@ -320,33 +320,35 @@ describe("integration/runs/mailchimp-import", () => {
         );
 
         // check the results of the run
-        const profilesCount = await Profile.count();
-        expect(profilesCount).toBe(10);
+        const recordsCount = await GrouparooRecord.count();
+        expect(recordsCount).toBe(10);
 
         await run.updateTotals();
         expect(run.state).toBe("complete");
         expect(run.importsCreated).toBe(20);
-        expect(run.profilesCreated).toBe(10);
-        expect(run.profilesImported).toBe(10);
+        expect(run.recordsCreated).toBe(10);
+        expect(run.recordsImported).toBe(10);
         expect(run.percentComplete).toBe(100);
       },
       helper.longTime
     );
 
-    test("profiles should be created with both the mapping data and additional profile property", async () => {
-      const profileId = (
-        await ProfileProperty.findOne({
+    test("records should be created with both the mapping data and additional record property", async () => {
+      const recordId = (
+        await RecordProperty.findOne({
           where: { rawValue: "1" },
         })
-      ).profileId;
-      const profile = await Profile.findOne({ where: { id: profileId } });
-      const properties = await profile.getProperties();
+      ).recordId;
+      const record = await GrouparooRecord.findOne({
+        where: { id: recordId },
+      });
+      const properties = await record.getProperties();
       expect(properties.userId.values).toEqual([1]);
       expect(properties.email.values).toEqual(["xejervois0@grouparoo.com"]);
     });
 
     test(
-      "schedule can run and update profiles",
+      "schedule can run and update records",
       async () => {
         // NOTE: this assumes all timestamps are the same in Mailchimp last_changed
         // enqueue the run
@@ -373,15 +375,15 @@ describe("integration/runs/mailchimp-import", () => {
         await specHelper.runTask("schedule:run", { runId: run.id });
         await specHelper.runTask("schedule:run", { runId: run.id });
 
-        // run all enqueued associateProfile tasks
+        // run all enqueued associateRecord tasks
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
-          "import:associateProfile"
+          "import:associateRecord"
         );
-        expect(foundAssociateTasks.length).toEqual(20 + 10); // imports + profiles
+        expect(foundAssociateTasks.length).toEqual(20 + 10); // imports + records
 
         await Promise.all(
           foundAssociateTasks.map((t) =>
-            specHelper.runTask("import:associateProfile", t.args[0])
+            specHelper.runTask("import:associateRecord", t.args[0])
           )
         );
 
@@ -389,14 +391,14 @@ describe("integration/runs/mailchimp-import", () => {
 
         // run all enqueued export tasks
         const foundExportTasks = await specHelper.findEnqueuedTasks(
-          "profile:export"
+          "record:export"
         );
         // this count is de-duped from the previous run
         expect(foundExportTasks.length).toEqual(10);
 
         await Promise.all(
           foundExportTasks.map((t) =>
-            specHelper.runTask("profile:export", t.args[0])
+            specHelper.runTask("record:export", t.args[0])
           )
         );
 
@@ -415,14 +417,14 @@ describe("integration/runs/mailchimp-import", () => {
         );
 
         // check the results of the run
-        const profilesCount = await Profile.count();
-        expect(profilesCount).toBe(10);
+        const recordsCount = await GrouparooRecord.count();
+        expect(recordsCount).toBe(10);
 
         await run.updateTotals();
         expect(run.state).toBe("complete");
         expect(run.importsCreated).toBe(10);
-        expect(run.profilesCreated).toBe(0);
-        expect(run.profilesImported).toBe(10);
+        expect(run.recordsCreated).toBe(0);
+        expect(run.recordsImported).toBe(10);
         expect(run.percentComplete).toBe(100);
       },
       helper.longTime

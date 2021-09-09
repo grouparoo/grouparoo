@@ -1,16 +1,16 @@
 import { SimpleDestinationOptions } from "@grouparoo/core";
 
 export interface SalesforceModel {
-  profileObject: string;
-  profileMatchField: string;
+  recordObject: string;
+  recordMatchField: string;
   groupObject: string;
   groupNameField: string;
   membershipObject: string;
-  membershipProfileField: string;
+  membershipRecordField: string;
   membershipGroupField: string;
-  profileReferenceField: string;
-  profileReferenceObject: string;
-  profileReferenceMatchField: string;
+  recordReferenceField: string;
+  recordReferenceObject: string;
+  recordReferenceMatchField: string;
 }
 
 export function getSalesforceModel(
@@ -18,16 +18,16 @@ export function getSalesforceModel(
   defaults: { [key: string]: string } = {}
 ): SalesforceModel {
   const model: SalesforceModel = {
-    profileObject: null,
-    profileMatchField: null,
+    recordObject: null,
+    recordMatchField: null,
     groupObject: null,
     groupNameField: null,
     membershipObject: null,
-    membershipProfileField: null,
+    membershipRecordField: null,
     membershipGroupField: null,
-    profileReferenceField: null,
-    profileReferenceObject: null,
-    profileReferenceMatchField: null,
+    recordReferenceField: null,
+    recordReferenceObject: null,
+    recordReferenceMatchField: null,
   };
 
   const modelKeys = Object.keys(model);

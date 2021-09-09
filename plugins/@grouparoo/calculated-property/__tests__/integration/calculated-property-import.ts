@@ -120,20 +120,20 @@ describe("integration/runs/calculated-property", () => {
     expect(editError).toBeUndefined();
   });
 
-  test("the property sets profile data upon import", async () => {
+  test("the property sets record data upon import", async () => {
     let i = 1;
     while (i <= 10) {
-      const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({
+      const record = await helper.factories.record();
+      await record.addOrUpdateProperties({
         userId: [i],
         firstName: ["mario"],
         lastName: [Math.random()],
       });
-      await profile.import();
-      await profile.reload();
+      await record.import();
+      await record.reload();
 
-      expect(profile.id).toBeTruthy();
-      const properties = await profile.getProperties();
+      expect(record.id).toBeTruthy();
+      const properties = await record.getProperties();
       expect(properties.fullName.values[0]).toMatch(
         `${properties.firstName.values[0]} ${properties.lastName.values[0]}`
       );

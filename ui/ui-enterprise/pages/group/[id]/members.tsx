@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "react-bootstrap";
 import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
 import GroupTabs from "@grouparoo/ui-components/components/tabs/group";
-import ProfilesList from "@grouparoo/ui-components/components/profile/list";
+import RecordsList from "@grouparoo/ui-components/components/record/list";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
@@ -86,7 +86,7 @@ export default function Page(props) {
       </Button>
       <br />
       <hr />
-      <ProfilesList {...props} />
+      <RecordsList {...props} />
     </>
   );
 }
@@ -95,7 +95,7 @@ Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
   const { execApi } = useApi(ctx);
   const { group } = await execApi("get", `/group/${id}`);
-  const profileListInitialProps = await ProfilesList.hydrate(ctx);
+  const recordListInitialProps = await RecordsList.hydrate(ctx);
 
-  return { group, ...profileListInitialProps };
+  return { group, ...recordListInitialProps };
 };

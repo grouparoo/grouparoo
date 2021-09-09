@@ -7,7 +7,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { AsyncReturnType } from "type-fest";
 import { api, specHelper } from "actionhero";
 import {
-  Profile,
+  GrouparooRecord,
   Group,
   SimpleDestinationOptions,
   SimpleAppOptions,
@@ -39,7 +39,7 @@ const nockFile = path.join(
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/mailchimp-export-id");
+require(nockFile);
 // // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -91,7 +91,7 @@ describe("integration/runs/mailchimp-export-id", () => {
   let session;
   let csrfToken: string;
   let app: AsyncReturnType<App["apiData"]>;
-  let profile: Profile;
+  let record: GrouparooRecord;
   let destination: AsyncReturnType<Destination["apiData"]>;
   let group: Group;
 
@@ -122,8 +122,8 @@ describe("integration/runs/mailchimp-export-id", () => {
   });
 
   beforeAll(async () => {
-    profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({
+    record = await helper.factories.record();
+    await record.addOrUpdateProperties({
       email: [email1],
       firstName: ["Luigi"],
       lastName: [mailchimpId1], // using this existing string field to hold id
@@ -305,12 +305,12 @@ describe("integration/runs/mailchimp-export-id", () => {
     ]);
   });
 
-  test("a profile can be created", async () => {
-    await profile.updateGroupMembership();
-    await profile.export();
+  test("a record can be created", async () => {
+    await record.updateGroupMembership();
+    await record.export();
   });
 
-  test("mailchimp has the new profile data", async () => {
+  test("mailchimp has the new record data", async () => {
     const user = await getUser(email1);
     expect(user.email_address).toBe(email1);
     expect(user.status).toBe("subscribed");
@@ -324,16 +324,16 @@ describe("integration/runs/mailchimp-export-id", () => {
     expect(user.tags.map((t) => t.name)).toEqual(["mailchimp people"]);
   });
 
-  test("a profile can be updated", async () => {
-    await profile.addOrUpdateProperties({
+  test("a record can be updated", async () => {
+    await record.addOrUpdateProperties({
       firstName: ["Test2"],
     });
 
-    await profile.updateGroupMembership();
-    await profile.export();
+    await record.updateGroupMembership();
+    await record.export();
   });
 
-  test("mailchimp has the updated profile data", async () => {
+  test("mailchimp has the updated record data", async () => {
     const user = await getUser(email1);
     expect(user.email_address).toBe(email1);
     expect(user.status).toBe("subscribed");

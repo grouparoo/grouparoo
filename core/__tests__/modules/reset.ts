@@ -4,7 +4,7 @@ import { Reset } from "../../src/modules/reset";
 import {
   App,
   Property,
-  Profile,
+  GrouparooRecord,
   SetupStep,
   Team,
   TeamMember,
@@ -62,7 +62,7 @@ describe("modules/reset", () => {
     });
 
     test("periodic tasks will be re-enqueued", async () => {
-      const found = await specHelper.findEnqueuedTasks("profiles:checkReady");
+      const found = await specHelper.findEnqueuedTasks("records:checkReady");
       expect(found.length).toBe(1);
     });
   }
@@ -77,7 +77,7 @@ describe("modules/reset", () => {
       await populateResque();
       await cache.save("testKey", { k: "v" });
       await helper.factories.properties();
-      await helper.factories.profile();
+      await helper.factories.record();
       const team = await helper.factories.team();
       await helper.factories.teamMember(team);
 
@@ -95,9 +95,9 @@ describe("modules/reset", () => {
       expect(await Property.scope(null).count()).toBe(0);
     });
 
-    test("there are no profiles", async () => {
-      const profiles = await Profile.scope(null).findAll();
-      expect(profiles.length).toBe(0);
+    test("there are no records", async () => {
+      const records = await GrouparooRecord.scope(null).findAll();
+      expect(records.length).toBe(0);
     });
 
     test("all the SetupSteps will be set to incomplete", async () => {
@@ -132,7 +132,7 @@ describe("modules/reset", () => {
       await populateResque();
       await cache.save("testKey", { k: "v" });
       await helper.factories.properties();
-      await helper.factories.profile();
+      await helper.factories.record();
       await helper.factories.import();
       const team = await helper.factories.team();
       await helper.factories.teamMember(team);
@@ -146,14 +146,14 @@ describe("modules/reset", () => {
       expect(await Property.scope(null).count()).toBeGreaterThan(0);
     });
 
-    test("there are no profiles", async () => {
-      const profiles = await Profile.scope(null).findAll();
-      expect(profiles.length).toBe(0);
+    test("there are no records", async () => {
+      const records = await GrouparooRecord.scope(null).findAll();
+      expect(records.length).toBe(0);
     });
 
     test("there are no imports", async () => {
-      const profiles = await Profile.scope(null).findAll();
-      expect(profiles.length).toBe(0);
+      const records = await GrouparooRecord.scope(null).findAll();
+      expect(records.length).toBe(0);
     });
 
     test("teams and teamMembers remain", async () => {

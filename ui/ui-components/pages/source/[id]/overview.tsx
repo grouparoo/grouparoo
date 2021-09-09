@@ -174,10 +174,8 @@ export default function Page({
                               Started {formatTimestamp(run.createdAt)}
                               <ul>
                                 <li>Imports Created: {run.importsCreated}</li>
-                                <li>Profiles Created: {run.profilesCreated}</li>
-                                <li>
-                                  Profiles Imported: {run.profilesImported}
-                                </li>
+                                <li>Records Created: {run.recordsCreated}</li>
+                                <li>Records Imported: {run.recordsImported}</li>
                               </ul>
                             </>
                           ) : (
@@ -257,7 +255,7 @@ export default function Page({
             </Alert>
           )}
           <hr />
-          <h2>Profile Identification</h2>
+          <h2>Record Identification</h2>
           {source.previewAvailable && !source.connection.skipSourceMapping ? (
             Object.keys(source.mapping).length === 1 ? (
               <Row>
@@ -266,7 +264,7 @@ export default function Page({
                 </Col>
                 <Col>▶</Col>
                 <Col>
-                  Profile Property:{" "}
+                  Record Property:{" "}
                   <code>{source.mapping[Object.keys(source.mapping)[0]]}</code>
                 </Col>
               </Row>

@@ -6,7 +6,7 @@ import {
   Export,
   App,
   Source,
-  Profile,
+  GrouparooRecord,
   Property,
   Team,
 } from "../../src";
@@ -82,7 +82,7 @@ describe("bin/reset", () => {
   });
 
   test("reset data", async () => {
-    await helper.factories.profile();
+    await helper.factories.record();
     await helper.factories.import();
     await helper.factories.export();
 
@@ -93,7 +93,7 @@ describe("bin/reset", () => {
     expect(output).toContain("Success!");
 
     // removed data models
-    expect(await Profile.count()).toBe(0);
+    expect(await GrouparooRecord.count()).toBe(0);
     expect(await Import.count()).toBe(0);
     expect(await Export.count()).toBe(0);
 
@@ -103,7 +103,7 @@ describe("bin/reset", () => {
   });
 
   test("reset cluster", async () => {
-    await helper.factories.profile();
+    await helper.factories.record();
     await helper.factories.team();
 
     const command = new ResetCLI();
@@ -113,7 +113,7 @@ describe("bin/reset", () => {
     expect(output).toContain("Success!");
 
     // removed most models
-    expect(await Profile.count()).toBe(0);
+    expect(await GrouparooRecord.count()).toBe(0);
     expect(await Source.count()).toBe(0);
     expect(await Property.count()).toBe(0);
     expect(await App.count()).toBe(0);

@@ -33,8 +33,9 @@ import { loadSchedule, deleteSchedules } from "./schedule";
 import { loadSetting } from "./setting";
 import { loadDestination, deleteDestinations } from "./destination";
 import { ConfigWriter } from "../configWriter";
-import { loadProfile } from "./profile";
+import { loadRecord } from "./record";
 import Sequelize from "sequelize";
+import { Deprecation } from "../deprecation";
 
 const freshIdsByClass: () => IdsByClass = () => ({
   app: [],
@@ -46,7 +47,7 @@ const freshIdsByClass: () => IdsByClass = () => ({
   apikey: [],
   team: [],
   teammember: [],
-  profile: [],
+  record: [],
 });
 
 export function getSeenIds(configObjects: AnyConfigurationObject[]) {
@@ -286,8 +287,12 @@ export async function processConfigObjects(
             validate
           );
           break;
+        case "record":
+          ids = await loadRecord(configObject, externallyValidate, validate);
+          break;
         case "profile":
-          ids = await loadProfile(configObject, externallyValidate, validate);
+          Deprecation.warn("config", "Profile", "Record");
+          ids = await loadRecord(configObject, externallyValidate, validate);
           break;
         default:
           throw new Error(`unknown config object class: ${configObject.class}`);

@@ -11,7 +11,7 @@ export default function PropertyTabs({
   let tabs = ["edit"];
 
   if (process.env.GROUPAROO_UI_EDITION === "enterprise") {
-    tabs.push("profiles", "groups", "runs", "logs");
+    tabs.push("records", "groups", "runs", "logs");
   }
 
   return (

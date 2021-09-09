@@ -1,0 +1,13 @@
+test_grouparoo_record:
+  outputs:
+    custom_target:
+      type: postgres
+      threads: 1
+      host: 127.0.0.1
+      port: 5432
+      user: myuser
+      pass: mypass
+      dbname: dbt_db
+      schema: dbt_schema
+
+  target: dev

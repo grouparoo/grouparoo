@@ -56,7 +56,7 @@ describe("actions/schedules", () => {
         type: "test-plugin-import",
         sourceId: source.id,
         recurring: false,
-        confirmProfiles: true,
+        confirmRecords: true,
       };
       const { error, schedule } = await specHelper.runAction<ScheduleCreate>(
         "schedule:create",
@@ -65,7 +65,7 @@ describe("actions/schedules", () => {
       expect(error).toBeUndefined();
       expect(schedule.id).toBeTruthy();
       expect(schedule.name).toBe("test schedule");
-      expect(schedule.confirmProfiles).toBe(true);
+      expect(schedule.confirmRecords).toBe(true);
 
       id = schedule.id;
     });
@@ -91,7 +91,7 @@ describe("actions/schedules", () => {
           csrfToken,
           id,
           name: "new schedule name",
-          confirmProfiles: false,
+          confirmRecords: false,
         };
         const { error, schedule } = await specHelper.runAction<ScheduleEdit>(
           "schedule:edit",
@@ -101,7 +101,7 @@ describe("actions/schedules", () => {
         expect(schedule.id).toBeTruthy();
         expect(schedule.name).toBe("new schedule name");
         expect(schedule.state).toBe("draft");
-        expect(schedule.confirmProfiles).toBe(false);
+        expect(schedule.confirmRecords).toBe(false);
       });
 
       test("an administrator can view a schedule", async () => {

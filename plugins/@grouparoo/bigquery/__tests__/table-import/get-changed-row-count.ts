@@ -52,7 +52,7 @@ describe("bigquery/table/scheduleOptions", () => {
       name: "Importer",
       type: "bigquery-table-import",
     });
-    await source.setOptions({ table: "profiles" });
+    await source.setOptions({ table: "records" });
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
 
@@ -66,7 +66,7 @@ describe("bigquery/table/scheduleOptions", () => {
       connection,
       appOptions,
       appId: app.id,
-      tableName: "profiles",
+      tableName: "records",
       matchConditions: [],
       highWaterMarkCondition: {
         columnName: "stamp",
@@ -83,7 +83,7 @@ describe("bigquery/table/scheduleOptions", () => {
       connection,
       appOptions,
       appId: app.id,
-      tableName: "profiles",
+      tableName: "records",
       matchConditions: [
         {
           columnName: "id",

@@ -120,21 +120,21 @@ export default function Page(props) {
     setLoading(false);
   }
 
-  async function autocompleteProfilePropertySearch(localRule, match) {
+  async function autocompleteRecordPropertySearch(localRule, match) {
     const propertyId = properties.filter((r) => r.key === localRule.key)[0]?.id;
 
     // we are dealing with a topLevelGroupRule
     if (!propertyId) return;
 
     setLoading(true);
-    const response: Actions.ProfileAutocompleteProfileProperty = await execApi(
+    const response: Actions.RecordAutocompleteRecordProperty = await execApi(
       "get",
-      `/profiles/autocompleteProfileProperty`,
+      `/records/autocompleteRecordProperty`,
       { propertyId, match }
     );
-    if (response.profileProperties) {
+    if (response.recordProperties) {
       const _autocompleteResults = Object.assign({}, autocompleteResults);
-      _autocompleteResults[localRule.key] = response.profileProperties;
+      _autocompleteResults[localRule.key] = response.recordProperties;
       setAutoCompleteResults(_autocompleteResults);
     }
     setLoading(false);
@@ -161,14 +161,14 @@ export default function Page(props) {
       <StateBadge state={group.state} /> <LockedBadge object={group} />
       {process.env.GROUPAROO_UI_EDITION !== "config" && (
         <p>
-          Total Profiles in this group: &nbsp;
+          Total Records in this group: &nbsp;
           <Badge style={{ fontSize: 16 }} variant="info">
             {countPotentialMembers}
           </Badge>
         </p>
       )}
       <p>
-        Define the profile properties that you want to segment by. Profiles in
+        Define the record properties that you want to segment by. Records in
         this Group will match <Badge variant="success">{group.matchType}</Badge>{" "}
         of these rules.
       </p>
@@ -179,14 +179,14 @@ export default function Page(props) {
               <tr>
                 <th />
                 <th>
-                  <strong>Profile Property</strong>
+                  <strong>Record Property</strong>
                 </th>
                 <th>
                   <strong>Operation</strong>
                 </th>
                 {process.env.GROUPAROO_UI_EDITION !== "config" && (
                   <th>
-                    <strong># of Profiles</strong>
+                    <strong># of Records</strong>
                   </th>
                 )}
                 <th>&nbsp;</th>
@@ -242,7 +242,7 @@ export default function Page(props) {
                               .includes(rule.key);
                             _rules[idx] = rule;
                             setLocalRules(_rules);
-                            autocompleteProfilePropertySearch(
+                            autocompleteRecordPropertySearch(
                               { key: e.target.value },
                               "%"
                             );
@@ -252,13 +252,11 @@ export default function Page(props) {
                             <Fragment key={`ruleKeyOpt-${rule.key}-${idx}`}>
                               {idx === 0 ? (
                                 <option disabled>
-                                  --- profile properties ---
+                                  --- record properties ---
                                 </option>
                               ) : null}
                               {idx === properties.length ? (
-                                <option disabled>
-                                  --- profile columns ---
-                                </option>
+                                <option disabled>--- record columns ---</option>
                               ) : null}
                               <option>{rule.key}</option>
                             </Fragment>
@@ -431,7 +429,7 @@ export default function Page(props) {
                                 ) || []
                               }
                               onSearch={(_match) => {
-                                autocompleteProfilePropertySearch(rule, _match);
+                                autocompleteRecordPropertySearch(rule, _match);
                               }}
                               placeholder={`match (% is wildcard)`}
                               defaultSelected={

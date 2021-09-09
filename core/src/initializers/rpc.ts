@@ -1,4 +1,4 @@
-import { Initializer, api, utils } from "actionhero";
+import { Initializer, api, utils, log } from "actionhero";
 import { App } from "../models/App";
 import { Property } from "../models/Property";
 
@@ -31,7 +31,7 @@ export class GrouparooRPC extends Initializer {
       try {
         await App.disconnect(appId);
       } catch (error) {
-        console.error("Error disconnecting apps", error.message ?? error);
+        log("Error disconnecting apps: " + error.message ?? error);
       }
     };
 

@@ -6,7 +6,7 @@ import { test } from "@grouparoo/postgres/dist/lib/test";
 import { connect } from "@grouparoo/postgres/dist/lib/connect";
 import { disconnect } from "@grouparoo/postgres/dist/lib/disconnect";
 
-import { exportProfile } from "@grouparoo/postgres/dist/lib/export/exportProfile";
+import { exportRecord } from "@grouparoo/postgres/dist/lib/export/exportRecord";
 import { exportArrayProperties } from "@grouparoo/postgres/dist/lib/export/exportArrayProperties";
 
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
@@ -148,7 +148,7 @@ export class Plugins extends Initializer {
               key: "table",
               displayName: "Table",
               required: true,
-              description: "The table to write profiles to.",
+              description: "The table to write records to.",
             },
             {
               key: "primaryKey",
@@ -178,7 +178,7 @@ export class Plugins extends Initializer {
             },
           ],
           methods: {
-            exportProfile,
+            exportRecord,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,

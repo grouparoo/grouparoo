@@ -53,7 +53,7 @@ export class Log extends Model {
   @Column
   @ForeignKey(() => {
     // need to load this dynamically to prevent cyclic load errors
-    return require("./Profile").Profile;
+    return require("./GrouparooRecord").GrouparooRecord;
   })
   ownerId: string;
 
@@ -103,8 +103,8 @@ export class Log extends Model {
     if (!instance.ownerId) {
       if (instance.data.id) {
         instance.ownerId = instance.data.id;
-      } else if (instance.data.profileId) {
-        instance.ownerId = instance.data.profileId;
+      } else if (instance.data.recordId) {
+        instance.ownerId = instance.data.recordId;
       }
     }
   }

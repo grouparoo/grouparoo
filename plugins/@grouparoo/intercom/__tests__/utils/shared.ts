@@ -1,7 +1,7 @@
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
-import { exportProfile } from "../../src/lib/export-contacts/exportProfile";
+import { exportRecord } from "../../src/lib/export-contacts/exportRecord";
 
 const veryLongTime = 5 * 60 * 1000;
 const indexTime = 2 * 60 * 1000;
@@ -75,14 +75,14 @@ export function setup(appOptions, destinationOptions, newNock) {
   }
 
   async function runExport({
-    oldProfileProperties,
-    newProfileProperties,
+    oldRecordProperties,
+    newRecordProperties,
     oldGroups,
     newGroups,
     toDelete,
     syncOperations = DestinationSyncModeData.sync.operations,
   }) {
-    return exportProfile({
+    return exportRecord({
       appId,
       appOptions,
       destinationOptions,
@@ -92,10 +92,10 @@ export function setup(appOptions, destinationOptions, newNock) {
       destinationId: null,
       syncOperations,
       export: {
-        profile: null,
-        profileId: null,
-        oldProfileProperties,
-        newProfileProperties,
+        record: null,
+        recordId: null,
+        oldRecordProperties,
+        newRecordProperties,
         oldGroups,
         newGroups,
         toDelete,

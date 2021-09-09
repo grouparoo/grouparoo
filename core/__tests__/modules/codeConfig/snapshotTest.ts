@@ -23,7 +23,7 @@ describe("modules/codeConfig", () => {
       const testPluginConnection = testPlugin.connections.find(
         (c) => c.name === "test-plugin-import"
       );
-      testPluginConnection.methods.profileProperty = async ({ property }) => {
+      testPluginConnection.methods.recordProperty = async ({ property }) => {
         const data = {
           userId: [100],
           isVIP: [true],
@@ -40,9 +40,9 @@ describe("modules/codeConfig", () => {
       };
     });
 
-    test("getProfile will throw an error when not using a bootstrapped property", async () => {
+    test("getRecord will throw an error when not using a bootstrapped property", async () => {
       await expect(
-        helper.getProfile({
+        helper.getRecord({
           email: "example@example.com",
         })
       ).rejects.toThrow(
@@ -50,8 +50,8 @@ describe("modules/codeConfig", () => {
       );
     });
 
-    test("a profile snapshot can be tested with a bootstrapped property", async () => {
-      const { profile, snapshot } = await helper.getProfile({
+    test("a record snapshot can be tested with a bootstrapped property", async () => {
+      const { record, snapshot } = await helper.getRecord({
         userId: 100,
       });
 
@@ -63,11 +63,11 @@ describe("modules/codeConfig", () => {
       expect(snapshot.properties.userId.values).toEqual([100]);
       expect(snapshot.groups.length).toBe(1);
       expect(snapshot.groups[0].name).toBe("People with Email Addresses");
-      expect(profile.state).toBe("ready");
+      expect(record.state).toBe("ready");
     });
 
-    test("a profile snapshot can be tested with multiple unique properties", async () => {
-      const { profile, snapshot } = await helper.getProfile({
+    test("a record snapshot can be tested with multiple unique properties", async () => {
+      const { record, snapshot } = await helper.getRecord({
         email: "example@example.com",
         userId: 100,
       });
@@ -80,7 +80,7 @@ describe("modules/codeConfig", () => {
       expect(snapshot.properties.userId.values).toEqual([100]);
       expect(snapshot.groups.length).toBe(1);
       expect(snapshot.groups[0].name).toBe("People with Email Addresses");
-      expect(profile.state).toBe("ready");
+      expect(record.state).toBe("ready");
     });
   });
 });

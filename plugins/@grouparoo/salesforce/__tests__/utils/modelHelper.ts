@@ -17,7 +17,7 @@ export interface ModelHelperMethod {
   (argument: {
     appOptions: SimpleAppOptions;
     model: SalesforceModel;
-    deleteProfileValues: any[];
+    deleteRecordValues: any[];
     deleteGroupValues: any[];
     deleteReferenceValues: any[];
   }): ModelHelperFunctions;
@@ -28,21 +28,21 @@ const idType = "Id";
 export const getModelHelpers: ModelHelperMethod = function ({
   appOptions,
   model,
-  deleteProfileValues,
+  deleteRecordValues,
   deleteGroupValues,
   deleteReferenceValues,
 }) {
   const {
-    profileObject,
-    profileMatchField,
+    recordObject,
+    recordMatchField,
     groupObject,
     groupNameField,
     membershipObject,
-    membershipProfileField,
+    membershipRecordField,
     membershipGroupField,
-    profileReferenceField,
-    profileReferenceObject,
-    profileReferenceMatchField,
+    recordReferenceField,
+    recordReferenceObject,
+    recordReferenceMatchField,
   } = model;
 
   let savedClient = null;
@@ -56,20 +56,20 @@ export const getModelHelpers: ModelHelperMethod = function ({
 
   const findId: ModelHelperFunctions["findId"] = async function (value) {
     const client = await getClient();
-    const query = { [profileMatchField]: value };
+    const query = { [recordMatchField]: value };
     const fields = [idType];
-    const results = await client.sobject(profileObject).find(query, fields);
+    const results = await client.sobject(recordObject).find(query, fields);
     if (results.length === 0) {
       return null;
     } else if (results.length > 1) {
-      throw new Error(`more than one result! ${profileMatchField} == ${value}`);
+      throw new Error(`more than one result! ${recordMatchField} == ${value}`);
     }
     return results[0][idType];
   };
   const getUser: ModelHelperFunctions["getUser"] = async function (id) {
     const client = await getClient();
     try {
-      const row = await client.sobject(profileObject).retrieve(id);
+      const row = await client.sobject(recordObject).retrieve(id);
       return row;
     } catch (err) {
       if (err.errorCode === "NOT_FOUND") {
@@ -97,26 +97,26 @@ export const getModelHelpers: ModelHelperMethod = function ({
     async function (groupId) {
       const client = await getClient();
       const query = { [membershipGroupField]: groupId };
-      const fields = [membershipProfileField];
+      const fields = [membershipRecordField];
       const results = await client
         .sobject(membershipObject)
         .find(query, fields);
-      return results.map((result) => result[membershipProfileField]);
+      return results.map((result) => result[membershipRecordField]);
     };
 
   const findReferenceId: ModelHelperFunctions["findReferenceId"] =
     async function (value) {
       const client = await getClient();
-      const query = { [profileReferenceMatchField]: value };
+      const query = { [recordReferenceMatchField]: value };
       const fields = [idType];
       const results = await client
-        .sobject(profileReferenceObject)
+        .sobject(recordReferenceObject)
         .find(query, fields);
       if (results.length === 0) {
         return null;
       } else if (results.length > 1) {
         throw new Error(
-          `more than one result! ${profileReferenceMatchField} == ${value}`
+          `more than one result! ${recordReferenceMatchField} == ${value}`
         );
       }
       return results[0][idType];
@@ -126,7 +126,7 @@ export const getModelHelpers: ModelHelperMethod = function ({
   ) {
     const client = await getClient();
     try {
-      const row = await client.sobject(profileReferenceObject).retrieve(id);
+      const row = await client.sobject(recordReferenceObject).retrieve(id);
       return row;
     } catch (err) {
       if (err.errorCode === "NOT_FOUND") {
@@ -138,9 +138,9 @@ export const getModelHelpers: ModelHelperMethod = function ({
   const getReferencedUserIds: ModelHelperFunctions["getReferencedUserIds"] =
     async function (referenceId) {
       const client = await getClient();
-      const query = { [profileReferenceField]: referenceId };
+      const query = { [recordReferenceField]: referenceId };
       const fields = [idType];
-      const results = await client.sobject(profileObject).find(query, fields);
+      const results = await client.sobject(recordObject).find(query, fields);
       return results.map((result) => result[idType]);
     };
 
@@ -168,7 +168,7 @@ export const getModelHelpers: ModelHelperMethod = function ({
   };
   const deleteUsers = async function (suppressErrors) {
     const client = await getClient();
-    const values = deleteProfileValues;
+    const values = deleteRecordValues;
     const ids = [];
     for (const value of values) {
       const id = await findId(value);
@@ -181,7 +181,7 @@ export const getModelHelpers: ModelHelperMethod = function ({
     }
     try {
       const allOrNone = true;
-      await client.sobject(profileObject).del(ids, { allOrNone });
+      await client.sobject(recordObject).del(ids, { allOrNone });
     } catch (error) {
       if (!suppressErrors) {
         throw error;
@@ -203,7 +203,7 @@ export const getModelHelpers: ModelHelperMethod = function ({
     }
     try {
       const allOrNone = true;
-      await client.sobject(profileReferenceObject).del(ids, { allOrNone });
+      await client.sobject(recordReferenceObject).del(ids, { allOrNone });
     } catch (error) {
       if (!suppressErrors) {
         throw error;

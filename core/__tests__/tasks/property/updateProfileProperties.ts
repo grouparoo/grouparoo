@@ -1,8 +1,13 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Profile, ProfileProperty, Property, Source } from "./../../../src";
+import {
+  GrouparooRecord,
+  RecordProperty,
+  Property,
+  Source,
+} from "./../../../src";
 
-describe("tasks/property:updateProfileProperties", () => {
+describe("tasks/property:updateRecordProperties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let source: Source;
 
@@ -20,17 +25,17 @@ describe("tasks/property:updateProfileProperties", () => {
   });
 
   test("can be enqueued", async () => {
-    await task.enqueue("property:updateProfileProperties", {
+    await task.enqueue("property:updateRecordProperties", {
       propertyId: "abc123",
     });
     const found = await specHelper.findEnqueuedTasks(
-      "property:updateProfileProperties"
+      "property:updateRecordProperties"
     );
     expect(found.length).toEqual(1);
     expect(found[0].args[0].propertyId).toBe("abc123");
   });
 
-  test("will update the uniqueness of profileProperties", async () => {
+  test("will update the uniqueness of recordProperties", async () => {
     const property = await Property.create({
       sourceId: source.id,
       key: "test_property",
@@ -40,26 +45,26 @@ describe("tasks/property:updateProfileProperties", () => {
     await property.setOptions({ column: "col" });
     await property.update({ state: "ready" });
 
-    const profile: Profile = await helper.factories.profile();
-    await profile.buildNullProperties();
-    const profileProperty = await ProfileProperty.findOne({
-      where: { profileId: profile.id, propertyId: property.id },
+    const record: GrouparooRecord = await helper.factories.record();
+    await record.buildNullProperties();
+    const recordProperty = await RecordProperty.findOne({
+      where: { recordId: record.id, propertyId: property.id },
     });
-    expect(profileProperty.unique).toBe(false);
+    expect(recordProperty.unique).toBe(false);
 
     await property.update({ unique: true });
     let foundTasks = await specHelper.findEnqueuedTasks(
-      "property:updateProfileProperties"
+      "property:updateRecordProperties"
     );
     expect(foundTasks.length).toBe(1);
     expect(foundTasks[0].args[0].propertyId).toBe(property.id);
 
     await specHelper.runTask(
-      "property:updateProfileProperties",
+      "property:updateRecordProperties",
       foundTasks[0].args[0]
     );
 
-    await profileProperty.reload();
-    expect(profileProperty.unique).toBe(true);
+    await recordProperty.reload();
+    expect(recordProperty.unique).toBe(true);
   });
 });

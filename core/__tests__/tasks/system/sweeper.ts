@@ -75,7 +75,7 @@ describe("tasks/sweeper", () => {
       expect(count).toBe(0);
     });
 
-    test("it will delete old exports that have no complete export for the profile", async () => {
+    test("it will delete old exports that have no complete export for the record", async () => {
       await Export.truncate();
       const oldExport = await helper.factories.export();
       const newExport = await helper.factories.export();
@@ -102,15 +102,15 @@ describe("tasks/sweeper", () => {
       expect(exports[0].id).toBe(newExport.id);
     });
 
-    test("it will delete old exports but not the newest one for each profile", async () => {
+    test("it will delete old exports but not the newest one for each record", async () => {
       await Export.truncate();
-      const profileA = await helper.factories.profile();
-      const oldExportA = await helper.factories.export(profileA);
-      const newerExportA = await helper.factories.export(profileA);
-      const profileB = await helper.factories.profile();
-      const newerExportB = await helper.factories.export(profileB);
-      const profileC = await helper.factories.profile();
-      const oldExportC = await helper.factories.export(profileC);
+      const recordA = await helper.factories.record();
+      const oldExportA = await helper.factories.export(recordA);
+      const newerExportA = await helper.factories.export(recordA);
+      const recordB = await helper.factories.record();
+      const newerExportB = await helper.factories.export(recordB);
+      const recordC = await helper.factories.record();
+      const oldExportC = await helper.factories.export(recordC);
 
       oldExportA.set({ createdAt: new Date(0) }, { raw: true });
       oldExportA.changed("createdAt", true);

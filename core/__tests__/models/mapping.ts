@@ -53,7 +53,7 @@ describe("models/mapping", () => {
       ).rejects.toThrow(/There is already a Mapping for/);
     });
 
-    test("a source cannot have 2 mappings with the same profileId", async () => {
+    test("a source cannot have 2 mappings with the same recordId", async () => {
       const userId = await Property.findOne({ where: { key: "userId" } });
 
       await source.setMapping({ foo: "userId" });

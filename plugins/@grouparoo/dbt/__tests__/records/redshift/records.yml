@@ -1,0 +1,45 @@
+test_grouparoo_record:
+  target: dev
+  outputs:
+    password:
+      type: redshift
+      host: hostname.region.redshift.amazonaws.com
+      user: username
+      pass: password1
+      port: 5439
+      dbname: analytics
+      schema: analytics
+      threads: 4
+      keepalives_idle: 0 # default 0, indicating the system default
+      # search_path: public # optional, not recommended
+      sslmode:
+        [
+          optional,
+          set the sslmode used to connect to the database (in case this parameter is set,
+          will look for ca in ~/.postgresql/root.crt),
+        ]
+
+    iam:
+      type: redshift
+      method: iam
+      cluster_id: [cluster_id]
+      host: hostname.region.redshift.amazonaws.com
+      user: alice
+      iam_record: data_engineer # optional
+      iam_duration_seconds: 900 # optional
+      autocreate: true # optional
+      db_groups: ["analysts"] # optional
+
+      # Other Redshift configs:
+      port: 5439
+      dbname: analytics
+      schema: analytics
+      threads: 4
+      keepalives_idle: 0 # default 0, indicating the system default
+      # search_path: public # optional, but not recommended
+      sslmode:
+        [
+          optional,
+          set the sslmode used to connect to the database (in case this parameter is set,
+          will look for ca in ~/.postgresql/root.crt),
+        ]

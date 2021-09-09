@@ -6,7 +6,7 @@ export function getConnection() {
   return buildConnection({
     app: "bigquery",
     name: "bigquery-query-import",
-    description: "Import or update profiles via a custom Bigquery query.",
+    description: "Import or update records via a custom Bigquery query.",
     executeQuery,
     getChangedRows,
   });

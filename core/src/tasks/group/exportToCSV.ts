@@ -19,7 +19,6 @@ export class GroupExportToCSV extends CLSTask {
 
   async runWithinTransaction(params) {
     const limit: number = params.limit || config.batchSize.imports;
-
     const group = await Group.findById(params.groupId);
 
     // TODO: this is going to take a long time...

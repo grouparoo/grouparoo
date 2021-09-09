@@ -100,9 +100,9 @@ export default function Page(props) {
                 <a>Imports Created: {run.importsCreated}</a>
               </Link>
               <br />
-              Profiles Created: {run.profilesCreated}
+              Records Created: {run.recordsCreated}
               <br />
-              Profiles Imported: {run.profilesImported}
+              Records Imported: {run.recordsImported}
             </Col>
             <Col>
               Group Member Limit: {run.groupMemberLimit}

@@ -8,7 +8,7 @@ import { beforeData, afterData, getConfig } from "../utils/data";
 import { Import, plugin, Run } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
-const profiles = getConnection().methods.profiles;
+const records = getConnection().methods.records;
 
 const { appOptions, usersTableName } = getConfig();
 let client;
@@ -32,7 +32,7 @@ async function runIt({ highWaterMark, sourceOffset, limit, scheduleFilters }) {
     highWaterMark: nextHighWaterMark,
     importsCount,
     sourceOffset: nextSourceOffset,
-  } = await profiles({
+  } = await records({
     connection: client,
     run,
     appOptions,
@@ -60,7 +60,7 @@ async function runIt({ highWaterMark, sourceOffset, limit, scheduleFilters }) {
   };
 }
 
-describe("sqlite/table/profiles", () => {
+describe("sqlite/table/records", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -92,7 +92,7 @@ describe("sqlite/table/profiles", () => {
     run = await helper.factories.run(schedule, { state: "running" });
   });
 
-  test("imports all profiles when no highWaterMark", async () => {
+  test("imports all records when no highWaterMark", async () => {
     let limit = 100;
     let highWaterMark = {};
     let sourceOffset = 0;
@@ -108,7 +108,7 @@ describe("sqlite/table/profiles", () => {
     expect(importedIds).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   });
 
-  test("imports all profiles when there is a highWaterMark", async () => {
+  test("imports all records when there is a highWaterMark", async () => {
     let limit = 100;
     let highWaterMark = { stamp: "2020/02/07 12:13:14" };
     let sourceOffset = 0;

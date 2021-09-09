@@ -21,28 +21,28 @@ require("./../fixtures/export-objects/destination-options");
 const appOptions = loadAppOptions(newNock);
 const appId = "app_d2bb07d8-0c4f-49b5-ad42-545f2e8662e8";
 
-// profileObject
-// profileMatchField
+// recordObject
+// recordMatchField
 // groupObject
 // groupNameField
 // membershipObject
-// membershipProfileField
+// membershipRecordField
 // membershipGroupField
-// profileReferenceField
-// profileReferenceObject
-// profileReferenceMatchField
+// recordReferenceField
+// recordReferenceObject
+// recordReferenceMatchField
 
 function expectPendingResult(result) {
   let option, options;
 
-  option = result.profileObject;
+  option = result.recordObject;
   options = option.options;
   expect(option.type).toEqual("typeahead");
   expect(options.length).toBeGreaterThan(10);
   expect(options.indexOf("Contact")).toEqual(0);
   expect(options.indexOf("Lead")).toEqual(1);
 
-  option = result.profileMatchField;
+  option = result.recordMatchField;
   expect(option.type).toEqual("pending");
   expect(option.options).toEqual([]);
 
@@ -64,7 +64,7 @@ function expectPendingResult(result) {
   expect(options.indexOf("CampaignMember")).toEqual(0);
   expect(options.indexOf("TopicAssignment")).toEqual(1);
 
-  option = result.membershipProfileField;
+  option = result.membershipRecordField;
   expect(option.type).toEqual("pending");
   expect(option.options).toEqual([]);
 
@@ -72,15 +72,15 @@ function expectPendingResult(result) {
   expect(option.type).toEqual("pending");
   expect(option.options).toEqual([]);
 
-  option = result.profileReferenceField;
+  option = result.recordReferenceField;
   expect(option.type).toEqual("pending");
   expect(option.options).toEqual([]);
 
-  option = result.profileReferenceObject;
+  option = result.recordReferenceObject;
   expect(option.type).toEqual("pending");
   expect(option.options).toEqual([]);
 
-  option = result.profileReferenceMatchField;
+  option = result.recordReferenceMatchField;
   expect(option.type).toEqual("pending");
   expect(option.options).toEqual([]);
 }
@@ -88,12 +88,12 @@ function expectPendingResult(result) {
 function expectFullResult(result) {
   let option, options;
 
-  option = result.profileObject;
+  option = result.recordObject;
   options = option.options;
   expect(option.type).toEqual("typeahead");
   expect(options.length).toBeGreaterThan(10);
 
-  option = result.profileMatchField;
+  option = result.recordMatchField;
   expect(option.type).toEqual("typeahead");
   expect(option.options).toEqual(expect.arrayContaining(["Email", "LastName"]));
 
@@ -114,7 +114,7 @@ function expectFullResult(result) {
 
 function expectContactCampaignResult(result, referenceStage = 0) {
   let option, options;
-  option = result.membershipProfileField;
+  option = result.membershipRecordField;
   expect(option.type).toEqual("typeahead");
   expect(option.options).toEqual(
     expect.arrayContaining(["ContactId", "LeadId", "ContactId"])
@@ -126,28 +126,28 @@ function expectContactCampaignResult(result, referenceStage = 0) {
     expect.arrayContaining(["ContactId", "LeadId", "ContactId"])
   );
 
-  option = result.profileReferenceField;
+  option = result.recordReferenceField;
   expect(option.type).toEqual("typeahead");
   expect(option.options).toEqual(
     expect.arrayContaining(["AccountId", "IndividualId"])
   );
 
   if (referenceStage < 1) {
-    option = result.profileReferenceObject;
+    option = result.recordReferenceObject;
     expect(option.type).toEqual("pending");
     expect(option.options).toEqual([]);
   } else {
-    option = result.profileReferenceObject;
+    option = result.recordReferenceObject;
     expect(option.type).toEqual("typeahead");
     expect(option.options).toEqual(expect.arrayContaining(["Account"]));
   }
 
   if (referenceStage < 2) {
-    option = result.profileReferenceMatchField;
+    option = result.recordReferenceMatchField;
     expect(option.type).toEqual("pending");
     expect(option.options).toEqual([]);
   } else {
-    option = result.profileReferenceMatchField;
+    option = result.recordReferenceMatchField;
     expect(option.type).toEqual("typeahead");
     options = option.options;
     expect(options.length).toBeGreaterThan(10);
@@ -158,7 +158,7 @@ function expectContactCampaignResult(result, referenceStage = 0) {
 
 function expectLeadTopicResult(result, referenceStage = 0) {
   let option;
-  option = result.membershipProfileField;
+  option = result.membershipRecordField;
   expect(option.type).toEqual("typeahead");
   expect(option.options).toEqual(
     expect.arrayContaining(["EntityId", "TopicId"])
@@ -170,28 +170,28 @@ function expectLeadTopicResult(result, referenceStage = 0) {
     expect.arrayContaining(["EntityId", "TopicId"])
   );
 
-  option = result.profileReferenceField;
+  option = result.recordReferenceField;
   expect(option.type).toEqual("typeahead");
   expect(option.options).toEqual(
     expect.arrayContaining(["IndividualId", "DandbCompanyId"])
   );
 
   if (referenceStage < 1) {
-    option = result.profileReferenceObject;
+    option = result.recordReferenceObject;
     expect(option.type).toEqual("pending");
     expect(option.options).toEqual([]);
   } else {
-    option = result.profileReferenceObject;
+    option = result.recordReferenceObject;
     expect(option.type).toEqual("typeahead");
     expect(option.options).toEqual(expect.arrayContaining(["Individual"]));
   }
 
   if (referenceStage < 2) {
-    option = result.profileReferenceMatchField;
+    option = result.recordReferenceMatchField;
     expect(option.type).toEqual("pending");
     expect(option.options).toEqual([]);
   } else {
-    option = result.profileReferenceMatchField;
+    option = result.recordReferenceMatchField;
     expect(option.type).toEqual("typeahead");
     expect(option.options).toEqual(
       expect.arrayContaining(["FirstName", "LastName"])
@@ -219,7 +219,7 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
 
   test("gives original list if bad value", async () => {
     const destinationOptions = {
-      profileObject: "Junk",
+      recordObject: "Junk",
       groupObject: "Bad",
       membershipObject: "False",
     };
@@ -230,7 +230,7 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
 
   test("can look up key fields", async () => {
     const destinationOptions = {
-      profileObject: "Lead",
+      recordObject: "Lead",
       groupObject: "Topic",
       membershipObject: "TopicAssignment",
     };
@@ -242,12 +242,12 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
 
   test("get same back when sent everything", async () => {
     const destinationOptions = {
-      profileObject: "Contact",
-      profileMatchField: "Email",
+      recordObject: "Contact",
+      recordMatchField: "Email",
       groupObject: "Campaign",
       groupNameField: "Name",
       membershipObject: "CampaignMember",
-      membershipProfileField: "ContactId",
+      membershipRecordField: "ContactId",
       membershipGroupField: "CampaignId",
     };
 
@@ -258,12 +258,12 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
 
   test("get same back when sends bad fields", async () => {
     const destinationOptions = {
-      profileObject: "Lead",
-      profileMatchField: "xEmail",
+      recordObject: "Lead",
+      recordMatchField: "xEmail",
       groupObject: "Topic",
       groupNameField: "xName",
       membershipObject: "TopicAssignment",
-      membershipProfileField: "xEntityId",
+      membershipRecordField: "xEntityId",
       membershipGroupField: "xTopicId",
     };
 
@@ -274,14 +274,14 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
 
   test("gets types of the reference when a field is chosen", async () => {
     const destinationOptions = {
-      profileObject: "Lead",
-      profileMatchField: "Email",
+      recordObject: "Lead",
+      recordMatchField: "Email",
       groupObject: "Topic",
       groupNameField: "Name",
       membershipObject: "TopicAssignment",
-      membershipProfileField: "EntityId",
+      membershipRecordField: "EntityId",
       membershipGroupField: "TopicId",
-      profileReferenceField: "IndividualId",
+      recordReferenceField: "IndividualId",
     };
 
     const result = await runDestinationOptions({ destinationOptions });
@@ -291,15 +291,15 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
 
   test("gets all reference data when object is chosen", async () => {
     const destinationOptions = {
-      profileObject: "Contact",
-      profileMatchField: "Email",
+      recordObject: "Contact",
+      recordMatchField: "Email",
       groupObject: "Campaign",
       groupNameField: "Name",
       membershipObject: "CampaignMember",
-      membershipProfileField: "ContactId",
+      membershipRecordField: "ContactId",
       membershipGroupField: "CampaignId",
-      profileReferenceField: "AccountId",
-      profileReferenceObject: "Account",
+      recordReferenceField: "AccountId",
+      recordReferenceObject: "Account",
     };
 
     const result = await runDestinationOptions({ destinationOptions });
@@ -309,15 +309,15 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
 
   test("gets all reference data when everything is chosen", async () => {
     const destinationOptions = {
-      profileObject: "Lead",
-      profileMatchField: "Email",
+      recordObject: "Lead",
+      recordMatchField: "Email",
       groupObject: "Topic",
       groupNameField: "Name",
       membershipObject: "TopicAssignment",
-      membershipProfileField: "EntityId",
+      membershipRecordField: "EntityId",
       membershipGroupField: "TopicId",
-      profileReferenceField: "IndividualId",
-      profileReferenceObject: "Individual",
+      recordReferenceField: "IndividualId",
+      recordReferenceObject: "Individual",
     };
 
     const result = await runDestinationOptions({ destinationOptions });

@@ -1,11 +1,11 @@
 import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
-import { Profile, Group, Property } from "../../../../src";
+import { GrouparooRecord, Group, Property } from "../../../../src";
 import { helper } from "@grouparoo/spec-helper";
 
 describe("model/group", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let group: Group;
-  let luigi: Profile;
+  let luigi: GrouparooRecord;
   let emailProperty: Property;
 
   beforeAll(async () => {

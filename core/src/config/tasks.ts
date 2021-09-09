@@ -16,8 +16,8 @@ export const DEFAULT = {
             .filter((plugin) => plugin.apps?.length > 0)
             .map((plugin) => plugin.apps.map((app) => `exports:${app.name}`)),
           [
-            "profiles",
-            "profileProperties",
+            "records",
+            "recordProperties",
             "destinations",
             "properties",
             "sources",
@@ -86,7 +86,7 @@ export const test = {
     return {
       queues: [
         "imports",
-        "profiles",
+        "records",
         "exports",
         "runs",
         "groups",
