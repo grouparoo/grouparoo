@@ -8,7 +8,7 @@ import { records } from "../../src/lib/remote-import/records";
 
 // these used and set by test
 const sourceOptions: SimpleSourceOptions = {
-  url: "https://raw.githubusercontent.com/grouparoo/grouparoo/main/core/__tests__/data/profiles-10.csv",
+  url: "https://raw.githubusercontent.com/grouparoo/grouparoo/main/core/__tests__/data/records-10.csv",
   fileAgeHours: 1,
 };
 

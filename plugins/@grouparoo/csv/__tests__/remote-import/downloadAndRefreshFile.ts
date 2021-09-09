@@ -3,7 +3,7 @@ import { downloadAndRefreshFile } from "../../src/lib/remote-import/downloadAndR
 
 describe("downloadAndRefreshFile", () => {
   const url =
-    "https://raw.githubusercontent.com/grouparoo/grouparoo/main/core/__tests__/data/profiles-10.csv";
+    "https://raw.githubusercontent.com/grouparoo/grouparoo/main/core/__tests__/data/records-10.csv";
   const fileAgeHours = 1;
   const sourceOptions = { url, fileAgeHours };
   const sourceId = "test";
