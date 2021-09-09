@@ -1,5 +1,5 @@
 import { render, act } from "@testing-library/react";
-import ProfilePreview from "../../components/property/profilePreview";
+import ProfilePreview from "../../components/property/recordPreview";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { renderAndWait } from "../__utils__/renderAndWait";
 
