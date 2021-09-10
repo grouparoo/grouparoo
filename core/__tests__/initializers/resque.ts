@@ -1,6 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper, api } from "actionhero";
+import { specHelper, api, task } from "actionhero";
+import { Redis } from "ioredis";
 import { ResqueInitializer } from "../../src/initializers/resque";
+import { getCoreVersion } from "../../src/modules/pluginDetails";
 
 jest.mock("../../src/config/tasks.ts", () => ({
   __esModule: true,
@@ -60,5 +62,39 @@ describe("initializers/resque", () => {
 
     found = await specHelper.findEnqueuedTasks("status");
     expect(found.length).toBe(0);
+  });
+
+  describe("version changes", () => {
+    let client: Redis;
+    let grouparooVersion: string;
+
+    beforeAll(async () => {
+      client = api.redis.clients.client;
+      grouparooVersion = getCoreVersion();
+    });
+
+    test("it will clear resque if the grouparoo version changes", async () => {
+      await client.set("grouparoo:version", "x");
+      await task.enqueue("record:export", { recordId: "foo" });
+
+      const instance = new ResqueInitializer();
+      await instance.start();
+
+      const foundTasks = await specHelper.findEnqueuedTasks("record:export");
+      expect(foundTasks.length).toBe(0);
+      expect(await client.get("grouparoo:version")).toEqual(grouparooVersion);
+    });
+
+    test("it will not clear resque if the grouparoo version is the same", async () => {
+      await client.set("grouparoo:version", grouparooVersion);
+      await task.enqueue("record:export", { recordId: "foo" });
+
+      const instance = new ResqueInitializer();
+      await instance.start();
+
+      const foundTasks = await specHelper.findEnqueuedTasks("record:export");
+      expect(foundTasks.length).toBe(1);
+      expect(await client.get("grouparoo:version")).toEqual(grouparooVersion);
+    });
   });
 });
