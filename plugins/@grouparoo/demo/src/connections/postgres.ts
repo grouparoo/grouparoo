@@ -1,7 +1,7 @@
 import { Client, ClientConfig } from "pg";
 import { api, config, log } from "actionhero";
 import Connection from "../util/connection";
-import { TYPES } from "./data";
+import { TYPES } from "../util/data";
 
 export const SCHEMA_NAME = "demo";
 

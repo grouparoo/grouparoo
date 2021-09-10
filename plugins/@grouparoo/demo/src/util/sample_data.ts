@@ -9,6 +9,7 @@ import parse from "csv-parse/lib/sync";
 import fs from "fs";
 import path from "path";
 import { log } from "actionhero";
+import { TYPES } from "./data";
 
 interface DataOptions {
   scale?: number;
@@ -160,7 +161,7 @@ async function loadCsvTable(
         throw new Error(`no ${typeColumn} column on ${tableName}`);
       }
       for (const key in row) {
-        row[key] = parseValue(key, row[key]);
+        row[key] = parseValue(tableName, key, row[key]);
       }
 
       if (createdAt || updatedAt) {
@@ -265,13 +266,21 @@ function getUpdatedAt(now: Date, created_at: Date) {
   return new Date(updatedMilli);
 }
 
-function parseValue(key: string, value: string) {
+function parseValue(tableName: string, key: string, value: string) {
+  const type = TYPES[tableName][key];
   if (!value) {
     return null;
   }
   if (key === "id" || key.indexOf("_id") >= 0) {
     return parseInt(value);
   }
+  if (type.indexOf("INT") === 0) {
+    return parseInt(value);
+  }
+  if (type.indexOf("DECIMAL") === 0) {
+    return Math.round(parseFloat(value) * 100) / 100;
+  }
+
   if (value === "true") {
     return true;
   }

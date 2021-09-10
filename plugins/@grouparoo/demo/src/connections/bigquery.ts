@@ -1,7 +1,7 @@
 import { log } from "actionhero";
 import Connection from "../util/connection";
 import { getEnvValue } from "../util/env";
-import { TYPES } from "./data";
+import { TYPES } from "../util/data";
 import path from "path";
 import fs from "fs";
 
