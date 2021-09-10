@@ -20,7 +20,7 @@ import { GroupRule } from "../../models/GroupRule";
 import { Import } from "../../models/Import";
 import { Mapping } from "../../models/Mapping";
 import { SourceOps } from "./source";
-import { GrouparooModel } from "../..";
+import { GrouparooModel } from "../../models/GrouparooModel";
 
 export interface RecordPropertyType {
   [key: string]: {
