@@ -54,7 +54,7 @@ describe("actions/sources", () => {
         name: "test source",
         type: "test-plugin-import",
         appId: app.id,
-        modelId: "mod_profile",
+        modelId: "mod_profiles",
         options: { table: "users" },
       };
       const { error, source } = await specHelper.runAction<SourceCreate>(

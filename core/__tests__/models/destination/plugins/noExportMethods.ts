@@ -55,6 +55,7 @@ describe("models/destination", () => {
           name: "test plugin destination app missing methods",
           type: "import-from-test-template-app",
           appId: app.id,
+          modelId: "mod_profiles",
         })
       ).rejects.toThrow(
         /cannot be created as there are no record export methods/

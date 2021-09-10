@@ -63,7 +63,7 @@ describe("actions/destinations", () => {
         name: "test destination",
         type: "test-plugin-export",
         appId: app.id,
-        modelId: "mod_profile",
+        modelId: "mod_profiles",
         syncMode: "sync",
       };
       const { error, destination } =
@@ -86,7 +86,7 @@ describe("actions/destinations", () => {
         name: "test destination again",
         type: "test-plugin-export",
         appId: app.id,
-        modelId: "mod_profile",
+        modelId: "mod_profiles",
         syncMode: "sync",
       };
       const { error } = await specHelper.runAction(

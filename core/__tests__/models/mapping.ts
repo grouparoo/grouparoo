@@ -15,6 +15,7 @@ describe("models/mapping", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
+        modelId: "mod_profiles",
       });
       await source.setOptions({ table: "test table" });
     });

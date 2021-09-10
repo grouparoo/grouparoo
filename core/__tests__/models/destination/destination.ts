@@ -36,6 +36,7 @@ describe("models/destination", () => {
         type: "test-plugin-export",
         syncMode: "sync",
         appId: app.id,
+        modelId: "mod_profiles",
       });
 
       expect(destination.id.length).toBe(40);
@@ -53,6 +54,7 @@ describe("models/destination", () => {
       destination = await Destination.create({
         type: "test-plugin-export",
         appId: app.id,
+        modelId: "mod_profiles",
       });
 
       expect(destination.name).toBe("");
@@ -65,6 +67,7 @@ describe("models/destination", () => {
         type: "test-plugin-export",
         syncMode: "sync",
         appId: app.id,
+        modelId: "mod_profiles",
       });
 
       const otherApp = await helper.factories.app();
@@ -72,6 +75,7 @@ describe("models/destination", () => {
         type: "test-plugin-export",
         syncMode: "sync",
         appId: otherApp.id,
+        modelId: "mod_profiles",
       });
 
       expect(destinationOne.name).toBe("");
@@ -95,6 +99,7 @@ describe("models/destination", () => {
         type: "test-plugin-export",
         syncMode: "sync",
         appId: app.id,
+        modelId: "mod_profiles",
       });
 
       const otherApp = await helper.factories.app();
@@ -102,6 +107,7 @@ describe("models/destination", () => {
         type: "test-plugin-export",
         syncMode: "sync",
         appId: otherApp.id,
+        modelId: "mod_profiles",
       });
 
       const otherOtherApp = await helper.factories.app();
@@ -109,6 +115,7 @@ describe("models/destination", () => {
         type: "test-plugin-export",
         syncMode: "sync",
         appId: otherOtherApp.id,
+        modelId: "mod_profiles",
       });
 
       expect(destinationOne.name).toBe("");
@@ -149,6 +156,7 @@ describe("models/destination", () => {
         name: "bye destination",
         type: "test-plugin-export",
         appId: app.id,
+        modelId: "mod_profiles",
       });
       await destination.trackGroup(group);
       await expect(destination.destroy()).rejects.toThrow(
@@ -164,6 +172,7 @@ describe("models/destination", () => {
         name: "bye destination",
         type: "test-plugin-export",
         appId: app.id,
+        modelId: "mod_profiles",
       });
 
       await destination.setOptions({ table: "table" });
@@ -199,6 +208,7 @@ describe("models/destination", () => {
         name: "some destination",
         type: "test-plugin-export",
         appId: app.id,
+        modelId: "mod_profiles",
       });
 
       await destination.setOptions({ table: "table" });
@@ -232,6 +242,7 @@ describe("models/destination", () => {
         name: "bye destination",
         type: "test-plugin-export",
         appId: app.id,
+        modelId: "mod_profiles",
       });
 
       const record = await helper.factories.record();
@@ -292,6 +303,7 @@ describe("models/destination", () => {
           name: "incoming destination",
           type: "test-plugin-export",
           appId: app.id,
+          modelId: "mod_profiles",
         });
 
         group = await helper.factories.group();
@@ -338,6 +350,7 @@ describe("models/destination", () => {
           name: "incoming destination",
           type: "test-plugin-export",
           appId: app.id,
+          modelId: "mod_profiles",
         });
 
         await destination.setOptions({ table: "TEST_OPTION" });
@@ -364,6 +377,7 @@ describe("models/destination", () => {
             type: "missing-destination",
             name: "test destination",
             appId: app.id,
+            modelId: "mod_profiles",
           })
         ).rejects.toThrow(
           /Cannot find a \"missing-destination\" connection available within the installed plugins. Current connections installed are:/
@@ -376,6 +390,7 @@ describe("models/destination", () => {
           type: "test-plugin-export",
           name: "test property",
           appId: app.id,
+          modelId: "mod_profiles",
         });
 
         await Option.create({
@@ -407,6 +422,7 @@ describe("models/destination", () => {
           name: "incoming destination - too many options",
           type: "test-plugin-export",
           appId: app.id,
+          modelId: "mod_profiles",
         });
         await destination.save();
         expect(destination.id).toBeTruthy();
@@ -486,6 +502,7 @@ describe("models/destination", () => {
           type: "test-plugin-export",
           syncMode: "sync",
           state: "ready",
+          modelId: "mod_profiles",
         });
 
         await expect(destination.save()).rejects.toThrow(/table is required/);
@@ -514,6 +531,7 @@ describe("models/destination", () => {
         destination = await Destination.create({
           name: "first destination",
           appId: app.id,
+          modelId: "mod_profiles",
           type: "test-plugin-export",
           groupId: "abc123",
         });
@@ -522,6 +540,7 @@ describe("models/destination", () => {
           Destination.create({
             name: "second destination",
             appId: app.id,
+            modelId: "mod_profiles",
             type: "test-plugin-export",
             groupId: "abc123",
           })
@@ -533,6 +552,7 @@ describe("models/destination", () => {
         const differentGroupDestination = await Destination.create({
           name: "different group destination",
           appId: app.id,
+          modelId: "mod_profiles",
           type: "test-plugin-export", // same
           groupId: "def456", // different
         });
@@ -542,6 +562,7 @@ describe("models/destination", () => {
         const ok = await Destination.create({
           name: "ok destination",
           appId: app.id,
+          modelId: "mod_profiles",
           type: "test-plugin-export-batch", // different
           groupId: "abc123", // same group
         });
@@ -552,6 +573,7 @@ describe("models/destination", () => {
         const otherDestination = await Destination.create({
           name: "second destination",
           appId: app.id,
+          modelId: "mod_profiles",
           type: "test-plugin-export", // same
           groupId: "abc123", // same
         }); // does not throw, as first destination now has new options
@@ -575,6 +597,7 @@ describe("models/destination", () => {
       test("a destination cannot be created in the ready state with missing syncMode", async () => {
         const destination = Destination.build({
           appId: app.id,
+          modelId: "mod_profiles",
           type: "test-plugin-export",
           state: "ready",
         });
@@ -587,6 +610,7 @@ describe("models/destination", () => {
       test("a destination can be ready without syncMode if a default has been defined", async () => {
         const destination = await Destination.create({
           appId: app.id,
+          modelId: "mod_profiles",
           type: "test-plugin-export-batch", //has default mode "additive"
         });
 
@@ -602,6 +626,7 @@ describe("models/destination", () => {
       test("destination syncMode must be set on ready", async () => {
         const destination = await Destination.create({
           appId: app.id,
+          modelId: "mod_profiles",
           type: "test-plugin-export",
         });
 
@@ -617,6 +642,7 @@ describe("models/destination", () => {
       test("a destination cannot set an unsupported sync mode", async () => {
         const destination = await Destination.create({
           appId: app.id,
+          modelId: "mod_profiles",
           type: "test-plugin-export",
           syncMode: "RandomSyncMode",
         });
@@ -639,6 +665,7 @@ describe("models/destination", () => {
         destination = await Destination.create({
           name: "test destination",
           appId: app.id,
+          modelId: "mod_profiles",
           syncMode: "sync",
           type: "test-plugin-export",
         });
@@ -831,6 +858,7 @@ describe("models/destination", () => {
           name: "outgoing pg destination",
           type: "test-plugin-export",
           appId: app.id,
+          modelId: "mod_profiles",
         });
         await destination.save();
 

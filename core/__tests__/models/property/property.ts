@@ -316,6 +316,7 @@ describe("models/property", () => {
     const source = await Source.create({
       appId: app.id,
       type: "source-no-options",
+      modelId: "mod_profiles",
     });
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
@@ -740,6 +741,7 @@ describe("models/property", () => {
         name: "test source",
         type: "import-from-test-app",
         appId: app.id,
+        modelId: "mod_profiles",
       });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });

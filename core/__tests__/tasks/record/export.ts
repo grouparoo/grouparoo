@@ -53,7 +53,6 @@ describe("tasks/record:export", () => {
       let destination: Destination;
 
       beforeAll(async () => {
-        await helper.truncate();
         await helper.factories.properties();
         helper.disableTestPluginImport();
 
@@ -128,6 +127,7 @@ describe("tasks/record:export", () => {
           type: "export-from-test-template-app",
           syncMode: "sync",
           appId: app.id,
+          modelId: "mod_profiles",
         });
         await destination.setMapping({
           email: "email",

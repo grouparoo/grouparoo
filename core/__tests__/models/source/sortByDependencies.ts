@@ -20,6 +20,7 @@ describe("models/source/sortByDependencies", () => {
       type: "test-plugin-import",
       name: "users table",
       appId: app.id,
+      modelId: "mod_profiles",
     });
     await usersTable.setOptions({ table: "users" });
     await usersTable.bootstrapUniqueProperty("userId", "integer", "id");
@@ -36,6 +37,7 @@ describe("models/source/sortByDependencies", () => {
       type: "test-plugin-import",
       name: "purchases table",
       appId: app.id,
+      modelId: "mod_profiles",
     });
     await purchasesTable.setOptions({ table: "purchases" });
     await purchasesTable.setMapping({ user_id: "userId" });
@@ -51,6 +53,7 @@ describe("models/source/sortByDependencies", () => {
       type: "test-plugin-import",
       name: "products table",
       appId: app.id,
+      modelId: "mod_profiles",
     });
     await productsTable.setOptions({ table: "products" });
     await productsTable.setMapping({ id: "product_id" });

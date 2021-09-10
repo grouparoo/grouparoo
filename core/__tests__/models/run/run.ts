@@ -663,6 +663,7 @@ describe("models/run", () => {
         name: "bad source",
         type: "test-error-connection",
         appId: app.id,
+        modelId: "mod_profiles",
       });
       await source.setOptions({ query: "test table" });
       await source.setMapping({ id: "userId" });

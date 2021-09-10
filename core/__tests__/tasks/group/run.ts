@@ -37,15 +37,16 @@ describe("tasks/group:run", () => {
       group = await Group.create({
         name: "test calculated group",
         type: "calculated",
+        modelId: "mod_profiles",
       });
       await group.update({ state: "ready" });
 
       await GrouparooRecord.truncate();
 
-      mario = await GrouparooRecord.create();
-      luigi = await GrouparooRecord.create();
-      peach = await GrouparooRecord.create();
-      toad = await GrouparooRecord.create();
+      mario = await GrouparooRecord.create({ modelId: "mod_profiles" });
+      luigi = await GrouparooRecord.create({ modelId: "mod_profiles" });
+      peach = await GrouparooRecord.create({ modelId: "mod_profiles" });
+      toad = await GrouparooRecord.create({ modelId: "mod_profiles" });
 
       await mario.addOrUpdateProperties({
         userId: [1],

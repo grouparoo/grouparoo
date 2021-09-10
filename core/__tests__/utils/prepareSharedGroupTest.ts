@@ -3,7 +3,6 @@ import { GrouparooRecord, Group, Run, Import, RecordProperty } from "../../src";
 import { specHelper } from "actionhero";
 
 export namespace SharedGroupTests {
-  let actionhero;
   let run: Run;
   let group: Group;
   let mario: GrouparooRecord;
@@ -16,10 +15,10 @@ export namespace SharedGroupTests {
     await helper.factories.properties();
     helper.disableTestPluginImport();
 
-    mario = await GrouparooRecord.create();
-    luigi = await GrouparooRecord.create();
-    peach = await GrouparooRecord.create();
-    toad = await GrouparooRecord.create();
+    mario = await GrouparooRecord.create({ modelId: "mod_profiles" });
+    luigi = await GrouparooRecord.create({ modelId: "mod_profiles" });
+    peach = await GrouparooRecord.create({ modelId: "mod_profiles" });
+    toad = await GrouparooRecord.create({ modelId: "mod_profiles" });
 
     await mario.addOrUpdateProperties({
       userId: [1],
@@ -81,6 +80,7 @@ export namespace SharedGroupTests {
     group = await Group.create({
       name: "test calculated group",
       type: "calculated",
+      modelId: "mod_profiles",
       rules: {},
     });
 

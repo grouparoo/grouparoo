@@ -68,7 +68,7 @@ describe("actions/records", () => {
     test("a writer can create a new record and properties", async () => {
       connection.params = {
         csrfToken,
-        modelId: "mod_profile",
+        modelId: "mod_profiles",
         properties: {
           userId: 123,
           email: "luigi@example.com",
@@ -107,7 +107,7 @@ describe("actions/records", () => {
 
       connection.params = {
         csrfToken,
-        modelId: "mod_profile",
+        modelId: "mod_profiles",
         properties: {
           userId: 12,
           email: "wario@example.com",
@@ -306,14 +306,14 @@ describe("actions/records", () => {
         group = new Group({
           name: "new group",
           type: "manual",
-          modelId: "mod_profile",
+          modelId: "mod_profiles",
         });
         await group.save();
         await group.update({ state: "ready" });
       });
 
       beforeAll(async () => {
-        record = new GrouparooRecord({ modelId: "mod_profile" });
+        record = new GrouparooRecord({ modelId: "mod_profiles" });
         await record.save();
       });
 
@@ -340,7 +340,7 @@ describe("actions/records", () => {
         const calculatedGroup = new Group({
           name: "robot group",
           type: "calculated",
-          modelId: "mod_profile",
+          modelId: "mod_profiles",
         });
         await calculatedGroup.save();
 
@@ -423,7 +423,7 @@ describe("actions/records", () => {
         group = new Group({
           name: "VIP people",
           type: "manual",
-          modelId: "mod_profile",
+          modelId: "mod_profiles",
         });
         await group.save();
       });
@@ -433,7 +433,7 @@ describe("actions/records", () => {
 
         connection.params = {
           csrfToken,
-          modelId: "mod_profile",
+          modelId: "mod_profiles",
           properties: { email: "mario@example.com", userId: 1 },
         };
         let response = await specHelper.runAction<RecordCreate>(
@@ -444,7 +444,7 @@ describe("actions/records", () => {
 
         connection.params = {
           csrfToken,
-          modelId: "mod_profile",
+          modelId: "mod_profiles",
           properties: { email: "luigi@example.com", userId: 2 },
         };
         response = await specHelper.runAction<RecordCreate>(
@@ -455,7 +455,7 @@ describe("actions/records", () => {
 
         connection.params = {
           csrfToken,
-          modelId: "mod_profile",
+          modelId: "mod_profiles",
           properties: { email: "toad@mushroom-kingdom.gov", userId: 3 },
         };
         response = await specHelper.runAction<RecordCreate>(
@@ -466,7 +466,7 @@ describe("actions/records", () => {
 
         connection.params = {
           csrfToken,
-          modelId: "mod_profile",
+          modelId: "mod_profiles",
           properties: { email: "peach@mushroom-kingdom.gov", userId: 4 },
         };
         response = await specHelper.runAction<RecordCreate>(
@@ -750,7 +750,7 @@ describe("actions/records", () => {
     let csrfToken;
 
     beforeAll(async () => {
-      const record = new GrouparooRecord({ modelId: "mod_profile" });
+      const record = new GrouparooRecord({ modelId: "mod_profiles" });
       await record.save();
       await record.addOrUpdateProperties({
         firstName: ["Toad"],

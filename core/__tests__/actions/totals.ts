@@ -20,7 +20,7 @@ describe("actions/totals", () => {
     const group = new Group({
       type: "manual",
       name: "test group",
-      modelId: "mod_profile",
+      modelId: "mod_profiles",
     });
     await group.save();
 

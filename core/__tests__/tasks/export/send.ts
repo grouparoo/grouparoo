@@ -190,6 +190,7 @@ describe("tasks/export:send", () => {
           name: "test plugin destination",
           type: "export-from-test-app",
           appId: app.id,
+          modelId: "mod_profiles",
         });
         await destination.update({ state: "ready" });
         await destination.trackGroup(group);

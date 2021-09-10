@@ -33,8 +33,8 @@ describe("tasks/group:destroy", () => {
 
       await GrouparooRecord.truncate();
 
-      mario = await GrouparooRecord.create();
-      luigi = await GrouparooRecord.create();
+      mario = await GrouparooRecord.create({ modelId: "mod_profiles" });
+      luigi = await GrouparooRecord.create({ modelId: "mod_profiles" });
 
       await mario.addOrUpdateProperties({
         userId: [1],
@@ -62,6 +62,7 @@ describe("tasks/group:destroy", () => {
         name: "test group 0",
         type: "manual",
         state: "ready",
+        modelId: "mod_profiles",
       });
 
       let run: Run = await specHelper.runTask("group:destroy", {
@@ -78,6 +79,7 @@ describe("tasks/group:destroy", () => {
         name: "test group",
         type: "manual",
         state: "ready",
+        modelId: "mod_profiles",
       });
 
       await group.update({ state: "deleted" }); // mark group as deleted
@@ -95,6 +97,7 @@ describe("tasks/group:destroy", () => {
         name: "test group 2",
         type: "manual",
         state: "ready",
+        modelId: "mod_profiles",
       });
 
       await group.addRecord(mario);
@@ -124,6 +127,7 @@ describe("tasks/group:destroy", () => {
         name: "test group",
         type: "manual",
         state: "ready",
+        modelId: "mod_profiles",
       });
 
       await group.addRecord(mario);
@@ -177,6 +181,7 @@ describe("tasks/group:destroy", () => {
         name: "test group 3",
         type: "calculated",
         state: "ready",
+        modelId: "mod_profiles",
       });
 
       await group.setRules([
@@ -239,6 +244,7 @@ describe("tasks/group:destroy", () => {
           name: "test group 4",
           type: "manual",
           state: "ready",
+          modelId: "mod_profiles",
         });
 
         const destination: Destination = await helper.factories.destination();
