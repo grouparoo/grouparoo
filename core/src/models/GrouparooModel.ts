@@ -1,5 +1,4 @@
 import {
-  Model,
   Table,
   Column,
   CreatedAt,
@@ -19,7 +18,7 @@ export const ModelTypes = ["profile"] as const;
 export type ModelType = typeof ModelTypes[number];
 
 @Table({ tableName: "models", paranoid: false })
-export class GrouparooModel extends LoggedModel<Model> {
+export class GrouparooModel extends LoggedModel<GrouparooModel> {
   idPrefix() {
     return "mod";
   }

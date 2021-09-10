@@ -5,6 +5,7 @@ export * from "./classes/configTemplate";
 export { AuthenticatedAction } from "./classes/actions/authenticatedAction";
 export { OptionallyAuthenticatedAction } from "./classes/actions/optionallyAuthenticatedAction";
 
+// export { GrouparooModel } from "./models/GrouparooModel";
 export { App, SimpleAppOptions } from "./models/App";
 export { ApiKey } from "./models/ApiKey";
 export {
@@ -26,7 +27,6 @@ export { Mapping } from "./models/Mapping";
 export { Option } from "./models/Option";
 export { Permission } from "./models/Permission";
 export { GrouparooRecord } from "./models/GrouparooRecord";
-export { GrouparooModel } from "./models/GrouparooModel";
 export { RecordProperty } from "./models/RecordProperty";
 export {
   Property,
