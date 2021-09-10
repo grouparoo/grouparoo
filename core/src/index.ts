@@ -5,7 +5,7 @@ export * from "./classes/configTemplate";
 export { AuthenticatedAction } from "./classes/actions/authenticatedAction";
 export { OptionallyAuthenticatedAction } from "./classes/actions/optionallyAuthenticatedAction";
 
-// export { GrouparooModel } from "./models/GrouparooModel";
+export { GrouparooModel } from "./models/GrouparooModel";
 export { App, SimpleAppOptions } from "./models/App";
 export { ApiKey } from "./models/ApiKey";
 export {
