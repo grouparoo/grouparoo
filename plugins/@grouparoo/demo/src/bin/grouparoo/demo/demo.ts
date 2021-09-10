@@ -36,7 +36,8 @@ export class Demo extends CLI {
       "postgres       (default) load source data into local Postgres database",
       "mongo          load specified source data into local MongoDB database",
       "mysql          load specified source data into local MySQL database",
-      "snowflake      assume Snowflake instance with data already present",
+      "snowflake      assumes a Snowflake instance with data already present",
+      "bigquery       assumes a BigQuery instance with data already present",
       "mailchimp      create Mailchimp destination for data",
       "salesforce     create Salesforce destination for data",
     ].join("\n");
