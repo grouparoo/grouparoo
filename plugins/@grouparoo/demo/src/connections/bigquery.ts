@@ -52,9 +52,9 @@ export default class BigQuery extends Connection {
       return;
     }
 
-    const out = [].concat(this.lines);
+    let out = [].concat(this.lines);
     for (const tableName in this.data) {
-      out.push(this.fillTable(tableName, this.data[tableName]));
+      out = out.concat(this.fillTable(tableName, this.data[tableName]));
     }
     const fileKey = this.name();
     const filePath = path.resolve(
@@ -66,12 +66,16 @@ export default class BigQuery extends Connection {
   fillTable(
     tableName: string,
     rows: { [key: string]: string | number | Date }[]
-  ) {
+  ): string[] {
     const sqlTable = `\`${this.config.dataset}\`.\`${tableName}\``;
+
+    const out = [];
+    const maxRows = 250; // it doesn't like too many at a time.
 
     const typeData = TYPES[tableName];
     const keys = Object.keys(typeData);
-    const values = [];
+
+    let values = [];
     for (const row of rows) {
       const rowVals = keys.map((key) => row[key]);
       const encoded = JSON.stringify(rowVals)
@@ -79,11 +83,27 @@ export default class BigQuery extends Connection {
         .replace(/'/g, "\\'")
         .replace(/"/g, "'");
       values.push("(" + encoded + ")");
+
+      if (values.length > maxRows) {
+        out.push(
+          `INSERT INTO ${sqlTable} (${keys.join(", ")}) VALUES \n${values.join(
+            ",\n"
+          )};`
+        );
+        values = [];
+      }
     }
 
-    return `INSERT INTO ${sqlTable} (${keys.join(", ")}) VALUES \n${values.join(
-      ",\n"
-    )};`;
+    if (values.length > 0) {
+      out.push(
+        `INSERT INTO ${sqlTable} (${keys.join(", ")}) VALUES \n${values.join(
+          ",\n"
+        )};`
+      );
+      values = [];
+    }
+
+    return out;
   }
 
   async createTable(tableName: string, typeColumn: string, keys: string[]) {
