@@ -67,8 +67,6 @@ export const PropertyTypes = [
   "url",
 ] as const;
 
-const CACHE_TTL = env === "test" ? -1 : 1000 * 30;
-
 export interface SimplePropertyOptions extends OptionHelper.SimpleOptions {}
 
 const STATES = ["draft", "ready", "deleted"] as const;
@@ -88,6 +86,8 @@ const STATE_TRANSITIONS = [
 ];
 
 export interface PropertyFiltersWithKey extends FilterHelper.FiltersWithKey {}
+
+const CACHE_TTL = env === "test" ? -1 : 1000 * 30;
 
 export const CachedProperties: { expires: number; properties: Property[] } = {
   expires: 0,

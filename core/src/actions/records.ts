@@ -116,6 +116,7 @@ export class RecordCreate extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "record", mode: "write" };
     this.inputs = {
+      modelId: { required: true },
       properties: {
         required: false,
         default: {},
@@ -125,8 +126,9 @@ export class RecordCreate extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const record = new GrouparooRecord(params);
+    const record = new GrouparooRecord({ modelId: params.modelId });
     await record.save();
+
     if (params.properties) {
       await record.addOrUpdateProperties(params.properties);
     }

@@ -109,6 +109,7 @@ export class SourceCreate extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       appId: { required: true },
+      modelId: { required: true },
       name: { required: false },
       type: { required: true },
       state: { required: false },
@@ -120,6 +121,7 @@ export class SourceCreate extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const source = await Source.create({
       appId: params.appId,
+      modelId: params.modelId,
       name: params.name,
       type: params.type,
     });
