@@ -19,7 +19,7 @@ const execApi = jest.fn(() => {
   return Promise.resolve({});
 });
 jest.mock("../../hooks/useApi", () => ({
-  useApi: () => ({
+  UseApi: () => ({
     execApi,
   }),
 }));
