@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Form, Alert, Button } from "react-bootstrap";
 import AppSelectorList from "../../../components/appSelectorList";
 import Link from "next/link";
@@ -64,7 +64,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { connectionApps } = await execApi(
     "get",
     `/destinations/connectionApps`

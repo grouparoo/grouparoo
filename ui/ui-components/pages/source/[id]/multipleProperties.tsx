@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Alert, Row, Col, Table, Form, Button } from "react-bootstrap";
 import PageHeader from "../../../components/pageHeader";
 import StateBadge from "../../../components/badges/stateBadge";
@@ -32,7 +32,7 @@ export default function Page(props) {
     types: Actions.PropertiesOptions["types"];
     defaultPropertyOptions: Actions.SourceDefaultPropertyOptions["defaultPropertyOptions"];
   } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [properties, setProperties] = useState<Models.PropertyType[]>(
     props.properties
   );
@@ -343,7 +343,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { source } = await execApi("get", `/source/${id}`);
   const { preview, columnSpeculation } = await execApi(
     "get",

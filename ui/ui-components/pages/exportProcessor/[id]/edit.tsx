@@ -1,4 +1,4 @@
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Alert, Card } from "react-bootstrap";
 import Link from "next/link";
 import EnterpriseLink from "../../../components/enterpriseLink";
@@ -138,7 +138,7 @@ export default function Page({
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { exportProcessor } = await execApi("get", `/exportProcessor/${id}`);
   return { exportProcessor };
 };

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { useRealtimeStream } from "../../hooks/useRealtimeStream";
 import { Models } from "../../utils/apiData";
 
@@ -64,7 +64,7 @@ export default function LogsList(props) {
 }
 
 LogsList.hydrate = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { logs } = await execApi("get", `/logs`, { limit });
   return { logs: logs.reverse() };
 };

@@ -1,4 +1,4 @@
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Alert, Card, Badge } from "react-bootstrap";
 import Link from "next/link";
 import EnterpriseLink from "../../../components/enterpriseLink";
@@ -193,7 +193,7 @@ export default function Page({
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { export: _export } = await execApi("get", `/export/${id}`);
   const { groups } = await execApi("get", `/groups`);
   return { _export, groups };

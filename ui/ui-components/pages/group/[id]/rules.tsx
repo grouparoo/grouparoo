@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Form, Table, Badge, Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
 import Head from "next/head";
@@ -30,7 +30,7 @@ export default function Page(props) {
     topLevelGroupRules: Actions.GroupsRuleOptions["topLevelGroupRules"];
   } = props;
   const [group, setGroup] = useState<Models.GroupType>(props.group);
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [localRules, setLocalRules] = useState(makeLocal(props.group.rules));
   const [countPotentialMembers, setCountPotentialMembers] = useState(0);
@@ -509,7 +509,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { group } = await execApi("get", `/group/${id}`);
   const { properties } = await execApi("get", `/properties`, {
     state: "ready",

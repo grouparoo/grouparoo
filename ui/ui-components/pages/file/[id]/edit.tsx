@@ -2,7 +2,7 @@ import FileTabs from "../../../components/tabs/file";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Button } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import { Models, Actions } from "../../../utils/apiData";
@@ -21,7 +21,7 @@ export default function Page(props) {
     file: Models.FileType;
   } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   const fileNameParts = file.path.split("/");
@@ -101,7 +101,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { file } = await execApi("get", `/file/${id}/details`);
   return { file };
 };

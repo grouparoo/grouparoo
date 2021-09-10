@@ -1,4 +1,4 @@
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useOffset } from "@grouparoo/ui-components/hooks/URLParams";
 import { useSecondaryEffect } from "@grouparoo/ui-components/hooks/useSecondaryEffect";
 import Head from "next/head";
@@ -19,7 +19,7 @@ export default function Page(props) {
     errorHandler: ErrorHandler;
     group: Models.GroupType;
   } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [destinations, setDestinations] = useState<Models.DestinationType[]>(
     props.destinations
@@ -106,7 +106,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id, limit, offset } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { group } = await execApi("get", `/group/${id}`);
   const { destinations, total } = await execApi(
     "get",

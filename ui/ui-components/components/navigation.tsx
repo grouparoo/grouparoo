@@ -6,7 +6,7 @@ import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 import SetupStepsNavProgressBar from "./navigation/setupStepsNavProgressBar";
 import RunningRunsBadge from "./navigation/runningRunsBadge";
 import ResqueFailedCountBadge from "./navigation/resqueFailedBadgeCount";
@@ -55,7 +55,7 @@ export default function Navigation(props) {
     sessionHandler: SessionHandler;
     statusHandler: StatusHandler;
   } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const router = useRouter();
   const [teamMember, setTeamMember] = useState(props.currentTeamMember);
   const [hasBeenCollapsed, setHasBeenCollapsed] = useState(!navExpanded);

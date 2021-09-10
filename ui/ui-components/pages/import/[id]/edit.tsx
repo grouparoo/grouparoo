@@ -1,6 +1,6 @@
 import ImportTabs from "../../../components/tabs/import";
 import Head from "next/head";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Alert, Card } from "react-bootstrap";
 import Link from "next/link";
 import Moment from "react-moment";
@@ -171,7 +171,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { import: _import } = await execApi("get", `/import/${id}`);
   const { groups } = await execApi("get", `/groups`);
   return { _import, groups };

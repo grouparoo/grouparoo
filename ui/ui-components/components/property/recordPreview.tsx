@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { Card, ListGroup } from "react-bootstrap";
 import Loader from "../loader";
 import RecordImageFromEmail from "../visualizations/recordImageFromEmail";
@@ -21,7 +21,7 @@ export default function RecordPreview(props) {
   const [sleeping, setSleeping] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [debounceCounter, setDebounceCounter] = useState(0);
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
 
   const sleep = debounceCounter === 0 ? 0 : 1000; // we only want to make one request every ~second, so wait for more input
 

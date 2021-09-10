@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
 import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
@@ -26,7 +26,7 @@ export default function Page(props) {
   } = props;
   const router = useRouter();
   const [group, setGroup] = useState<Models.GroupType>(props.group);
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -208,7 +208,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { group } = await execApi("get", `/group/${id}`);
   return { group };
 };

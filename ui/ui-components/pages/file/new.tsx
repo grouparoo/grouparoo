@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { Form, ProgressBar } from "react-bootstrap";
 import { useRouter } from "next/router";
@@ -20,7 +20,7 @@ export default function Page(props) {
     types: Actions.AppOptions["types"];
   } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler, uploadHandler);
+  const { execApi } = UseApi(props, errorHandler, uploadHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
   const [uploadPercentage, setUploadPercentage] = useState(0);
@@ -116,7 +116,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { options } = await execApi("get", `/files/options`);
   return { types: options.types };
 };

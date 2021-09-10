@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Loader from "../loader";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { disconnectWebsocket } from "../../hooks/useRealtimeStream";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { SuccessHandler } from "../../utils/successHandler";
@@ -17,7 +17,7 @@ export default function SignOutForm(props) {
     successHandler: SuccessHandler;
     sessionHandler: SessionHandler;
   } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const router = useRouter();
 
   useEffect(() => {

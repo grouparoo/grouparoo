@@ -1,4 +1,4 @@
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import Head from "next/head";
@@ -17,7 +17,7 @@ export default function Page(props) {
     successHandler,
   }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [apiKey, setApiKey] = useState<Models.ApiKeyType>(props.apiKey);
   const { id } = router.query;
@@ -161,7 +161,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { id } = ctx.query;
   const { apiKey }: Actions.ApiKeyView = await execApi("get", `/apiKey/${id}`);
   return { apiKey };

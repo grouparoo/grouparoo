@@ -1,4 +1,4 @@
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import LoadingButton from "../loadingButton";
@@ -10,7 +10,7 @@ export default function AddScheduleForm(props) {
     errorHandler,
     source,
   }: { errorHandler: ErrorHandler; source: Models.SourceType } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 

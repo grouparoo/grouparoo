@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { ButtonToolbar, Button, Table, Modal, Row, Col } from "react-bootstrap";
 import Pagination from "../../components/pagination";
@@ -16,7 +16,7 @@ export default function ResqueFailedList(props) {
     successHandler,
   }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState([]);
   const [focusedException, setFocusedException] = useState({

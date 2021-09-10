@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import ExportsList from "../../../components/export/list";
 import ExportProcessorTabs from "../../../components/tabs/exportProcessor";
 import PageHeader from "../../../components/pageHeader";
@@ -26,7 +26,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { id } = ctx.query;
   const { exportProcessor } = await execApi("get", `/exportProcessor/${id}`);
   const exportListInitialProps = await ExportsList.hydrate(ctx);

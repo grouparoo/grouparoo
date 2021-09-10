@@ -9,7 +9,7 @@ import LoadingTable from "../components/loadingTable";
 import Pagination from "../components/pagination";
 import EnterpriseLink from "../components/enterpriseLink";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { Models, Actions } from "../utils/apiData";
 import { ErrorHandler } from "../utils/errorHandler";
@@ -23,7 +23,7 @@ export default function Page(props) {
     errorHandler,
   }: { errorHandler: ErrorHandler; groups: Models.GroupType[] } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [exportProcessors, setExportProcessors] = useState<
     Models.ExportProcessorType[]
@@ -209,7 +209,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { limit, offset, state } = ctx.query;
 
   const { exportProcessors, total } = await execApi(

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { Card } from "react-bootstrap";
 import LoadingButton from "../loadingButton";
 import { Actions } from "../../utils/apiData";
@@ -11,7 +11,7 @@ export default function ResetData(props) {
     errorHandler,
     successHandler,
   }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   async function reset() {

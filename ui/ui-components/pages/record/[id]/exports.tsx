@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import ExportsList from "../../../components/export/list";
 import {
   getRecordDisplayName,
@@ -32,7 +32,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { id } = ctx.query;
   const { record } = await execApi("get", `/record/${id}`);
   const exportListInitialProps = await ExportsList.hydrate(ctx);

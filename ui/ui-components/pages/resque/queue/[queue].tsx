@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { Table, Row, Col } from "react-bootstrap";
 import Pagination from "../../../components/pagination";
@@ -12,7 +12,7 @@ import { ErrorHandler } from "../../../utils/errorHandler";
 export default function ResqueQueue(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [queue, setQueue] = useState(router.query.queue || "");
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false);

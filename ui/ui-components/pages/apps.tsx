@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Head from "next/head";
@@ -17,7 +17,7 @@ import { ErrorHandler } from "../utils/errorHandler";
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [apps, setApps] = useState<Models.AppType[]>(props.apps);
   const [total, setTotal] = useState<number>(props.total);
   const [loading, setLoading] = useState(false);
@@ -132,7 +132,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { limit, offset } = ctx.query;
   const { apps, total } = await execApi("get", `/apps`, { limit, offset });
   return { apps, total };

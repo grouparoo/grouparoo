@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Button } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useState } from "react";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
@@ -15,7 +15,7 @@ import { ErrorHandler } from "../utils/errorHandler";
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [apiKeys, setApiKeys] = useState<Models.ApiKeyType[]>(props.apiKeys);
   const [total, setTotal] = useState(props.total);
   const [loading, setLoading] = useState(false);
@@ -113,7 +113,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { limit, offset } = ctx.query;
   const { apiKeys, total }: Actions.ApiKeysList = await execApi(
     "get",

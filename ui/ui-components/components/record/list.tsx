@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
@@ -20,7 +20,7 @@ export default function RecordsList(props) {
     errorHandler,
     properties,
   }: { errorHandler: ErrorHandler; properties: Models.PropertyType[] } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -362,7 +362,7 @@ RecordsList.hydrate = async (
   _searchKey?: string,
   _searchValue?: string
 ) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { id, limit, offset, state, searchKey, searchValue, caseSensitive } =
     ctx.query;
 

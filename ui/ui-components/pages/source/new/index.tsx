@@ -4,7 +4,7 @@ import { Form, Alert, Button } from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import AppSelectorList from "../../../components/appSelectorList";
 import { Actions } from "../../../utils/apiData";
 
@@ -63,7 +63,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { connectionApps } = await execApi("get", `/sources/connectionApps`);
   return { connectionApps };
 };

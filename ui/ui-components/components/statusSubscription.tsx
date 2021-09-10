@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRealtimeStream } from "../hooks/useRealtimeStream";
 import { StatusHandler } from "../utils/statusHandler";
 import { ErrorHandler } from "../utils/errorHandler";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 import { useRouter } from "next/router";
 
 export default function StatusSubscription(props) {
@@ -15,7 +15,7 @@ export default function StatusSubscription(props) {
     statusHandler: StatusHandler;
     errorHandler: ErrorHandler;
   } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const subscriptionKey = "status-subscription";
 
   useEffect(() => {

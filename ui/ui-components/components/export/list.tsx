@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
@@ -31,7 +31,7 @@ export default function ExportsList(props) {
     groups,
   }: { errorHandler: ErrorHandler; groups: Models.GroupType[] } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [_exports, setExports] = useState<Models.ExportType[]>(props._exports);
   const [total, setTotal] = useState<number>(props.total);
@@ -260,7 +260,7 @@ export default function ExportsList(props) {
 }
 
 ExportsList.hydrate = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { id, limit, offset, state } = ctx.query;
   const { groups } = await execApi("get", `/groups`);
 

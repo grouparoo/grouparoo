@@ -1,6 +1,6 @@
 import Head from "next/head";
 import RunsList from "@grouparoo/ui-components/components/runs/list";
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import GroupTabs from "@grouparoo/ui-components/components/tabs/group";
 
 export default function Page(props) {
@@ -21,7 +21,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { group } = await execApi("get", `/group/${id}`);
   const runsListInitialProps = await RunsList.hydrate(ctx);
   return { group, ...runsListInitialProps };

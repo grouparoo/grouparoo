@@ -1,4 +1,4 @@
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { useState, Fragment } from "react";
 import { Row, Col, Badge, Alert, Card } from "react-bootstrap";
 import Moment from "react-moment";
@@ -22,7 +22,7 @@ export default function Page(props) {
     successHandler: SuccessHandler;
     errorHandler: ErrorHandler;
   } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [run, setRun] = useState<Models.RunType>(props.run);
   const { chartData, chartKeys } = buildChartData(quantizedTimeline);
   const [loading, setLoading] = useState(false);
@@ -156,7 +156,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { run, quantizedTimeline } = await execApi("get", `/run/${id}`);
   return { run, quantizedTimeline };
 };

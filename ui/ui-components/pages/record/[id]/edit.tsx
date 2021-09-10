@@ -2,7 +2,7 @@ import Head from "next/head";
 import EnterpriseLink from "../../../components/enterpriseLink";
 import RecordTabs from "../../../components/tabs/record";
 import { useState, useEffect } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form, ListGroup, Alert, Button } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import { useRouter } from "next/router";
@@ -34,7 +34,7 @@ export default function Page(props) {
     recordHandler: RecordHandler;
   } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [record, setRecord] = useState<Models.GrouparooRecordType>(
     props.record
@@ -387,7 +387,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { record, groups } = await execApi("get", `/record/${id}`);
   const { properties } = await execApi("get", `/properties`);
   const { groups: allGroups } = await execApi("get", `/groups`);

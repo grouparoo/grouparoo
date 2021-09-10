@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { Fragment, useState } from "react";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useRouter } from "next/router";
@@ -23,7 +23,7 @@ export default function Page(props) {
     sources: Models.SourceType[];
   } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [newRuleLoading, setNewRuleLoading] = useState(false);
   const [examples, setExamples] = useState(props.examples);
@@ -251,7 +251,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { limit, offset } = ctx.query;
   const { properties, total, examples } = await execApi("get", `/properties`, {
     includeExamples: true,

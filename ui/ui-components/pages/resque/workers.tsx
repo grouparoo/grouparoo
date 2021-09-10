@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { Table, Row, Col } from "react-bootstrap";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/resque";
@@ -12,7 +12,7 @@ export default function ResqueWorkersList(props) {
     errorHandler,
     successHandler,
   }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [workers, setWorkers] = useState({});
   const [workerQueues, setWorkerQueues] = useState([]);
   const [loading, setLoading] = useState(false);

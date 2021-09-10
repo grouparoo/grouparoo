@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { Table, Row, Col } from "react-bootstrap";
 import Pagination from "../../components/pagination";
@@ -16,7 +16,7 @@ export default function ResqueLocksList(props) {
     successHandler,
   }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const router = useRouter();
-  const { execApi } = useApi(props);
+  const { execApi } = UseApi(props);
   const [locks, setLocks] = useState([]);
   const [loading, setLoading] = useState(false);
 

@@ -3,7 +3,7 @@ import { Button, Image } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useState } from "react";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Pagination from "../components/pagination";
@@ -23,7 +23,7 @@ export default function Page(props) {
     successHandler,
   }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState<number>(props.total);
   const [files, setFiles] = useState<Models.FileType[]>(props.files);
@@ -171,7 +171,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { limit, offset } = ctx.query;
   const { files, total } = await execApi("get", `/files`, { limit, offset });
   return { files, total };

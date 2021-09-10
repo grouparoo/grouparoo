@@ -4,7 +4,7 @@ import { UploadHandler } from "../utils/uploadHandler";
 
 export const client = new Client();
 
-export function useApi(
+export function UseApi(
   ctx: {
     req?: { headers?: { cookie: string } };
     res?: any;

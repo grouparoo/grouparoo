@@ -1,4 +1,4 @@
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
 import { useState } from "react";
@@ -28,7 +28,7 @@ export default function Page(props) {
     hydrationError: Error;
   } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [newMappingKey, setNewMappingKey] = useState(
     Object.keys(props.source.mapping)[0]
@@ -389,7 +389,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { source } = await execApi("get", `/source/${id}`);
 
   const { properties, examples: propertyExamples } = await execApi(
