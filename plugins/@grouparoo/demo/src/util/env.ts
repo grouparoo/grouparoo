@@ -5,6 +5,12 @@ import os from "os";
 import dotenv from "dotenv";
 
 const ENV_VARIABLES = {
+  bigquery: [
+    "GOOGLE_SERVICE_PROJECT_ID",
+    "GOOGLE_SERVICE_DATASET",
+    "GOOGLE_SERVICE_CLIENT_EMAIL",
+    "GOOGLE_SERVICE_PRIVATE_KEY",
+  ],
   mailchimp: ["MAILCHIMP_DESTINATION_LIST_ID", "MAILCHIMP_API_KEY"],
   salesforce: [
     "SALESFORCE_DOMAIN",

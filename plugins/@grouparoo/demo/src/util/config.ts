@@ -1,5 +1,6 @@
 import Postgres from "../connections/postgres";
 import Mongo from "../connections/mongo";
+import BigQuery from "../connections/bigquery";
 import Snowflake from "../connections/snowflake";
 import MySQL from "../connections/mysql";
 import Connection from "./connection";
@@ -31,6 +32,9 @@ class Config {
         break;
       case "mongo":
         this.db = new Mongo();
+        break;
+      case "bigquery":
+        this.db = new BigQuery();
         break;
       case "snowflake":
         this.db = new Snowflake();
@@ -70,6 +74,7 @@ class Config {
       case "setup":
         break;
       case "mongo":
+      case "bigquery":
       case "snowflake":
       case "postgres":
       case "mysql":

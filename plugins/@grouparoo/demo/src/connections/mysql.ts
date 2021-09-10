@@ -2,7 +2,7 @@ import mysql from "mysql";
 import { log } from "actionhero";
 import Connection from "../util/connection";
 import { promisify } from "util";
-import { TYPES } from "./data";
+import { TYPES } from "../util/data";
 
 function findConfig(): any {
   let connectionURL = process.env.DEMO_MYSQL_URL;

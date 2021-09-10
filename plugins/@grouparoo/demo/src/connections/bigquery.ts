@@ -6,28 +6,21 @@ import path from "path";
 import fs from "fs";
 
 function findConfig(): { [key: string]: string } {
-  const keys = [
-    "account",
-    "username",
-    "password",
-    "warehouse",
-    "database",
-    "schema",
-  ];
+  const keys = ["project_id", "dataset", "client_email", "private_key"];
 
   const options: any = {};
   for (const key of keys) {
-    options[key] = getEnvValue("snowflake", `SNOWFLAKE_${key.toUpperCase()}`);
+    options[key] = getEnvValue(
+      "bigquery",
+      `GOOGLE_SERVICE_${key.toUpperCase()}`
+    );
   }
 
-  if (options.schema) {
-    options.schema = "PUBLIC";
-  }
-  log(`Snowflake config: ${JSON.stringify(options)}`, "debug");
+  log(`BigQuery config: ${JSON.stringify(options)}`, "debug");
   return options;
 }
 
-export default class Snowflake extends Connection {
+export default class BigQuery extends Connection {
   config: { [key: string]: string };
   lines: string[];
   data: { [tableName: string]: { [key: string]: string | number | Date }[] };
@@ -39,7 +32,7 @@ export default class Snowflake extends Connection {
   }
 
   name() {
-    return "snowflake";
+    return "bigquery";
   }
   seedOnly() {
     return true;
@@ -59,9 +52,9 @@ export default class Snowflake extends Connection {
       return;
     }
 
-    const out = [].concat(this.lines);
+    let out = [].concat(this.lines);
     for (const tableName in this.data) {
-      out.push(this.fillTable(tableName, this.data[tableName]));
+      out = out.concat(this.fillTable(tableName, this.data[tableName]));
     }
     const fileKey = this.name();
     const filePath = path.resolve(
@@ -73,14 +66,16 @@ export default class Snowflake extends Connection {
   fillTable(
     tableName: string,
     rows: { [key: string]: string | number | Date }[]
-  ) {
-    const sqlTable = `"${this.config.database}"."${
-      this.config.schema
-    }"."${tableName.toUpperCase()}"`;
+  ): string[] {
+    const sqlTable = `\`${this.config.dataset}\`.\`${tableName}\``;
+
+    const out = [];
+    const maxRows = 250; // it doesn't like too many at a time.
 
     const typeData = TYPES[tableName];
     const keys = Object.keys(typeData);
-    const values = [];
+
+    let values = [];
     for (const row of rows) {
       const rowVals = keys.map((key) => row[key]);
       const encoded = JSON.stringify(rowVals)
@@ -88,17 +83,31 @@ export default class Snowflake extends Connection {
         .replace(/'/g, "\\'")
         .replace(/"/g, "'");
       values.push("(" + encoded + ")");
+
+      if (values.length > maxRows) {
+        out.push(
+          `INSERT INTO ${sqlTable} (${keys.join(", ")}) VALUES \n${values.join(
+            ",\n"
+          )};`
+        );
+        values = [];
+      }
     }
 
-    return `INSERT INTO ${sqlTable} (${keys.join(", ")}) VALUES \n${values.join(
-      ",\n"
-    )};`;
+    if (values.length > 0) {
+      out.push(
+        `INSERT INTO ${sqlTable} (${keys.join(", ")}) VALUES \n${values.join(
+          ",\n"
+        )};`
+      );
+      values = [];
+    }
+
+    return out;
   }
 
   async createTable(tableName: string, typeColumn: string, keys: string[]) {
-    const sqlTable = `"${this.config.database}"."${
-      this.config.schema
-    }"."${tableName.toUpperCase()}"`;
+    const sqlTable = `\`${this.config.dataset}\`.\`${tableName}\``;
 
     const typeData = TYPES[tableName];
     if (!typeData) {
@@ -106,7 +115,9 @@ export default class Snowflake extends Connection {
     }
     const columnTypes = [];
     for (const key of keys) {
-      const type = typeData[key];
+      let type = typeData[key];
+      type = type.replace(/VARCHAR\(\d*\)/, "STRING");
+      type = type.replace("PRIMARY KEY", "");
       if (!type) {
         throw new Error(`Unknown column for ${tableName}: ${key}`);
       }
