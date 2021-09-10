@@ -84,9 +84,9 @@ describe("bin/config-apply", () => {
       expect(toStop).toBe(true);
 
       const output = messages.join(" ");
-      expect(output).toContain("Applying 14 objects...");
+      expect(output).toContain("Applying 15 objects...");
       expect(output).toContain(
-        "✅ Config applied - 14 config objects up-to-date!"
+        "✅ Config applied - 15 config objects up-to-date!"
       );
     });
 

@@ -94,6 +94,7 @@ describe("integration/happyPath", () => {
       name: "test source",
       type: "test-plugin-import",
       appId,
+      modelId: "mod_profiles",
       options: { table: "users" },
     };
     const createResponse = await specHelper.runAction<SourceCreate>(
@@ -216,6 +217,7 @@ describe("integration/happyPath", () => {
     test("an admin can create a record", async () => {
       connection.params = {
         csrfToken,
+        modelId: "mod_profiles",
         properties: {
           email: "luigi@example.com",
           firstName: "Luigi",
@@ -244,6 +246,7 @@ describe("integration/happyPath", () => {
         csrfToken,
         name: "manual group",
         type: "manual",
+        modelId: "mod_profiles",
         state: "ready",
       };
 
@@ -322,6 +325,7 @@ describe("integration/happyPath", () => {
         csrfToken,
         name: "calculated group",
         type: "calculated",
+        modelId: "mod_profiles",
         rules: [
           { key: "lastName", operation: { op: "iLike" }, match: "mario" },
         ],

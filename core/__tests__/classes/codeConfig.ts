@@ -44,7 +44,10 @@ describe("classes/codeConfig", () => {
         source,
         configObjects.filter((c) => c.id !== source.id)
       );
-      expect(prerequisiteIds).toEqual(["app:data_warehouse"]);
+      expect(prerequisiteIds).toEqual([
+        "app:data_warehouse",
+        "model:mod_profiles",
+      ]);
       expect(providedIds).toEqual(["source:users_table"]);
     });
 
@@ -72,6 +75,7 @@ describe("classes/codeConfig", () => {
         );
         expect(prerequisiteIds).toEqual([
           "app:data_warehouse",
+          "model:mod_profiles",
           "property:user_id",
         ]);
         expect(providedIds).toEqual(["source:users_table", "property:user_id"]);
@@ -158,6 +162,7 @@ describe("classes/codeConfig", () => {
       expect(destination.prerequisiteIds.sort()).toEqual([
         "app:data_warehouse",
         "group:email_group",
+        "model:mod_profiles",
         "property:email",
         "property:user_id",
       ]);
