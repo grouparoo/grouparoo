@@ -1,6 +1,7 @@
 import RecordPreview from "../../components/property/recordPreview";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { renderAndWait } from "../__utils__/renderAndWait";
+import testProfile from "./test-profile.json";
 
 jest.mock("next/router", () => {
   const nextRouter = jest.requireActual("next/router");
@@ -53,12 +54,12 @@ describe("property / recordPreview", () => {
     execApi.mockReset();
   });
 
-  it("should render with no record preview", async () => {
+  it("should render successfully with no record preview", async () => {
     const record = await renderDefaultRecord();
     expect(record.container).toMatchSnapshot();
   });
 
-  it("should render", async () => {
+  it("should render with a number date", async () => {
     execApi.mockImplementation(() => {
       return Promise.resolve({
         record: {
@@ -74,7 +75,7 @@ describe("property / recordPreview", () => {
     expect(record.container).toMatchSnapshot();
   });
 
-  it("should render with null date", async () => {
+  it("should not render with a null date", async () => {
     execApi.mockImplementation(() => {
       return Promise.resolve({
         record: {
@@ -87,6 +88,72 @@ describe("property / recordPreview", () => {
     });
 
     const record = await renderDefaultRecord();
+    expect(record.container).toMatchSnapshot();
+  });
+
+  it("should not render with a boolean date", async () => {
+    execApi.mockImplementation(() => {
+      return Promise.resolve({
+        record: {
+          id: "asdf",
+          properties: {
+            date: { type: "date", values: [true] },
+          },
+        },
+      });
+    });
+
+    const record = await renderDefaultRecord();
+    expect(record.container).toMatchSnapshot();
+  });
+
+  it("should render with a string date", async () => {
+    execApi.mockImplementation(() => {
+      return Promise.resolve({
+        record: {
+          id: "asdf",
+          properties: {
+            date: { type: "date", values: ["6/18/2021, 6:07:22 AM"] },
+          },
+        },
+      });
+    });
+
+    const record = await renderDefaultRecord();
+    expect(record.container).toMatchSnapshot();
+  });
+
+  it("should render with a Date date", async () => {
+    execApi.mockImplementation(() => {
+      return Promise.resolve({
+        record: {
+          id: "asdf",
+          properties: {
+            date: { type: "date", values: [new Date("2/5/2019, 4:22:21 AM")] },
+          },
+        },
+      });
+    });
+
+    const record = await renderDefaultRecord();
+    expect(record.container).toMatchSnapshot();
+  });
+
+  it("should render a whole user profile including the date", async () => {
+    execApi.mockImplementation(() => {
+      return Promise.resolve({
+        record: testProfile,
+      });
+    });
+
+    const record = await renderDefaultRecord({
+      property: {
+        id: "last_purchase_date",
+        key: "",
+        type: "date",
+        options: {},
+      },
+    });
     expect(record.container).toMatchSnapshot();
   });
 });

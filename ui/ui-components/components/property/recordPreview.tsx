@@ -6,8 +6,15 @@ import RecordImageFromEmail from "../visualizations/recordImageFromEmail";
 import { useRouter } from "next/router";
 import { Actions } from "../../utils/apiData";
 
-export const generatePreviewDate = (date: number | null | undefined) =>
-  typeof date === "number" ? new Date(date).toLocaleString() : null;
+function canBeDate(
+  date: number | string | Date | boolean | null | undefined
+): date is number | string | Date {
+  return ["number", "string"].includes(typeof date) || date instanceof Date;
+}
+
+export const generatePreviewDate = (
+  date: number | string | Date | boolean | null | undefined
+) => (canBeDate(date) ? new Date(date).toLocaleString() : null);
 
 export default function RecordPreview(props) {
   const { errorHandler, property, localFilters } = props;
@@ -121,9 +128,7 @@ export default function RecordPreview(props) {
   for (const i in record.properties) {
     if (record.properties[i].id === property.id) {
       if (property.type === "date" && record.properties[i].values) {
-        thisPropertyValue = record.properties[i].values[0]
-          ? generatePreviewDate(otherProperties[i]?.values[0] as number)
-          : null;
+        thisPropertyValue = generatePreviewDate(record.properties[i].values[0]);
       } else {
         thisPropertyValue = record.properties[i].values
           ? record.properties[i]?.values.slice(0, 10).join(", ")
@@ -177,7 +182,7 @@ export default function RecordPreview(props) {
             <ListGroup.Item key={`record-preview-row-${k}`} variant="light">
               <strong>{k}</strong>:{" "}
               {otherProperties[k]?.type === "date"
-                ? generatePreviewDate(otherProperties[k]?.values[0] as number)
+                ? generatePreviewDate(otherProperties[k]?.values[0])
                 : otherProperties[k]?.values?.slice(0, 10).join(", ")}
             </ListGroup.Item>
           ))}
