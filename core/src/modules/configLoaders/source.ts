@@ -44,10 +44,15 @@ export async function loadSource(
       name: configObject.name,
       type: configObject.type,
       appId: app.id,
+      modelId: configObject.modelId,
     });
   }
 
-  await source.update({ type: configObject.type, name: configObject.name });
+  await source.update({
+    type: configObject.type,
+    name: configObject.name,
+    modelId: configObject.modelId,
+  });
 
   await source.setOptions(extractNonNullParts(configObject, "options"));
 

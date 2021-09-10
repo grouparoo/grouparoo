@@ -7,7 +7,10 @@ export default {
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
-    // TODO: Determine the default model's id
+    await queryInterface.addColumn("models", "locked", {
+      type: DataTypes.STRING(191),
+      allowNull: true,
+    });
 
     await queryInterface.addColumn("records", "modelId", {
       type: DataTypes.STRING(191),

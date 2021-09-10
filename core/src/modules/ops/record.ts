@@ -20,6 +20,7 @@ import { GroupRule } from "../../models/GroupRule";
 import { Import } from "../../models/Import";
 import { Mapping } from "../../models/Mapping";
 import { SourceOps } from "./source";
+import { GrouparooModel } from "../..";
 
 export interface RecordPropertyType {
   [key: string]: {
@@ -675,7 +676,16 @@ export namespace RecordOps {
           );
         }
 
-        record = await GrouparooRecord.create();
+        let modelId: string;
+        if (source instanceof Source) {
+          modelId = source.modelId;
+        } else {
+          const models = await GrouparooModel.findAll();
+          if (models.length > 1) throw new Error(`indeterminate model`);
+          modelId = models[0].id;
+        }
+
+        record = await GrouparooRecord.create({ modelId });
         record = await record.reload();
         const { releaseLock } = await waitForLock(`record:${record.id}`);
         lockReleases.push(releaseLock);

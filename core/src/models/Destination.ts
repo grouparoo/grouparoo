@@ -577,6 +577,7 @@ export class Destination extends LoggedModel<Destination> {
     return {
       class: "Destination",
       id: this.getConfigId(),
+      modelId: this.modelId,
       name,
       type,
       appId,
@@ -594,6 +595,17 @@ export class Destination extends LoggedModel<Destination> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  @BeforeCreate
+  @BeforeSave
+  static async ensureModel(instance: Destination) {
+    const model = await GrouparooModel.findOne({
+      where: { id: instance.modelId },
+    });
+    if (!model) {
+      throw new Error(`cannot find model with id ${instance.modelId}`);
+    }
   }
 
   @BeforeCreate

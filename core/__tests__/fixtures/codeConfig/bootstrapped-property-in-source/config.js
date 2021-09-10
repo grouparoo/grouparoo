@@ -19,11 +19,19 @@ module.exports = async function getConfig() {
     },
 
     {
+      id: "mod_profiles",
+      class: "Model",
+      name: "Profiles",
+      type: "profile",
+    },
+
+    {
       id: "users_table", // id -> `data_warehouse`
       name: "Users Table",
       class: "Source",
       type: "test-plugin-import",
       appId: "data_warehouse", // appId -> `data_warehouse`
+      modelId: "mod_profiles",
       options: {
         table: "users",
       },
@@ -99,6 +107,7 @@ module.exports = async function getConfig() {
       id: "email_group", // id -> `marketing_team`
       name: "People with Email Addresses",
       class: "Group",
+      modelId: "mod_profiles",
       type: "calculated",
       rules: [
         {
@@ -117,6 +126,7 @@ module.exports = async function getConfig() {
       id: "high_value", // id -> `high_value`
       name: "High Value Individuals",
       class: "Group",
+      modelId: "mod_profiles",
       type: "calculated",
       rules: [
         {
@@ -134,6 +144,7 @@ module.exports = async function getConfig() {
       type: "test-plugin-export",
       appId: "data_warehouse", // id -> data_warehouse
       groupId: "email_group", // id -> email_group
+      modelId: "mod_profiles",
       syncMode: "additive",
       options: {
         table: "output",

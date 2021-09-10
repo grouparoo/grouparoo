@@ -76,6 +76,7 @@ describe("modules/codeConfig", () => {
 
           expect(errors).toEqual([]);
           expect(seenIds).toEqual({
+            model: ["mod_profiles"],
             apikey: ["website_key"],
             app: expect.arrayContaining(["data_warehouse"]),
             destination: ["test_destination"],

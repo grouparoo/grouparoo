@@ -7,6 +7,7 @@ import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
 import { Graph, topologicalSort } from "../modules/topologicalSort";
 
 export interface IdsByClass {
+  model?: string[];
   app?: string[];
   source?: string[];
   property?: string[];
@@ -31,6 +32,12 @@ export interface ApiKeyConfigurationObject extends ConfigurationObject {
   permissions?: Array<{ topic: string; read: boolean; write: boolean }>;
   options?: { permissionAllRead: boolean; permissionAllWrite: boolean };
 }
+
+export interface ModelConfigurationObject extends ConfigurationObject {
+  name: string;
+  type: string;
+}
+
 export interface AppConfigurationObject extends ConfigurationObject {
   name: string;
   type: string;
@@ -41,6 +48,7 @@ export interface DestinationConfigurationObject extends ConfigurationObject {
   name: string;
   type: string;
   appId: string;
+  modelId: string;
   syncMode: DestinationSyncMode;
   groupId?: string;
   options?: { [key: string]: any };
@@ -51,10 +59,12 @@ export interface DestinationConfigurationObject extends ConfigurationObject {
 export interface GroupConfigurationObject extends ConfigurationObject {
   name: string;
   type: string;
+  modelId: string;
   rules?: GroupRuleWithKey[];
 }
 
 export interface RecordConfigurationObject extends ConfigurationObject {
+  modelId: string;
   properties?: { [key: string]: Array<string | boolean | number | Date> };
 }
 
@@ -88,6 +98,7 @@ export interface SettingConfigurationObject extends ConfigurationObject {
 export interface SourceConfigurationObject extends ConfigurationObject {
   appId: string;
   name: string;
+  modelId: string;
   type: string;
   options?: { [key: string]: any };
   mapping?: { [key: string]: any };
@@ -113,6 +124,7 @@ export interface TeamMemberConfigurationObject extends ConfigurationObject {
 }
 
 export type AnyConfigurationObject =
+  | ModelConfigurationObject
   | ApiKeyConfigurationObject
   | AppConfigurationObject
   | DestinationConfigurationObject
@@ -126,7 +138,7 @@ export type AnyConfigurationObject =
   | TeamMemberConfigurationObject;
 
 interface ConfigObjectWithReferenceIDs {
-  configObject: ConfigurationObject;
+  configObject: AnyConfigurationObject;
   providedIds: string[];
   prerequisiteIds: string[];
 }
@@ -255,8 +267,8 @@ export function getAutoBootstrappedProperty(
 }
 
 export async function sortConfigurationObjects(
-  configObjects: ConfigurationObject[]
-): Promise<ConfigurationObject[]> {
+  configObjects: AnyConfigurationObject[]
+): Promise<AnyConfigurationObject[]> {
   const configObjectsWithIds = await getConfigObjectsWithIds(configObjects);
   const sortedConfigObjectsWithIds =
     sortConfigObjectsWithIds(configObjectsWithIds);
@@ -305,7 +317,7 @@ export function validateConfigObjects(
 }
 
 export async function getConfigObjectsWithIds(
-  configObjects: ConfigurationObject[]
+  configObjects: AnyConfigurationObject[]
 ) {
   const configObjectsWithIds: ConfigObjectWithReferenceIDs[] = [];
 

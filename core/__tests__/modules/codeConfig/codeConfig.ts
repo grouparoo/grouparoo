@@ -18,6 +18,7 @@ import {
   Source,
   Team,
   TeamMember,
+  GrouparooModel,
 } from "../../../src";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
@@ -43,6 +44,7 @@ describe("modules/codeConfig", () => {
         );
         expect(errors).toEqual([]);
         expect(seenIds).toEqual({
+          model: ["mod_profiles"],
           apikey: ["website_key"],
           app: expect.arrayContaining(["data_warehouse"]),
           destination: ["test_destination"],
@@ -60,6 +62,7 @@ describe("modules/codeConfig", () => {
           record: [],
         });
         expect(deletedIds).toEqual({
+          model: [],
           apikey: [],
           app: [],
           destination: [],
@@ -77,6 +80,12 @@ describe("modules/codeConfig", () => {
         const setting = await plugin.readSetting("core", "cluster-name");
         expect(setting.value).toBe("Test Cluster");
         expect(setting.locked).toBe("config:code");
+      });
+
+      test("models are created", async () => {
+        const models = await GrouparooModel.findAll();
+        expect(models.length).toBe(1);
+        expect(models[0].id).toEqual("mod_profiles");
       });
 
       test("apps are created", async () => {
@@ -271,6 +280,7 @@ describe("modules/codeConfig", () => {
       );
       expect(errors).toEqual([]);
       expect(seenIds).toEqual({
+        model: ["mod_profiles"],
         apikey: ["website_key"],
         app: expect.arrayContaining(["data_warehouse"]),
         destination: [],
@@ -288,6 +298,7 @@ describe("modules/codeConfig", () => {
         record: [],
       });
       expect(deletedIds).toEqual({
+        model: [],
         apikey: [],
         app: [],
         destination: ["test_destination"],
@@ -355,7 +366,7 @@ describe("modules/codeConfig", () => {
     });
 
     test("property options will be updated before validating", async () => {
-      const record = await GrouparooRecord.create(); // validations only happen if there's a record
+      const record = await GrouparooRecord.create({ modelId: "mod_profiles" }); // validations only happen if there's a record
 
       const nameProperty = await Property.findById("first_name");
       let options = await nameProperty.getOptions();
@@ -475,6 +486,7 @@ describe("modules/codeConfig", () => {
       );
       expect(errors).toEqual([]);
       expect(seenIds).toEqual({
+        model: ["mod_profiles"],
         apikey: [],
         app: ["data_warehouse"],
         destination: [],
@@ -487,6 +499,7 @@ describe("modules/codeConfig", () => {
         record: [],
       });
       expect(deletedIds).toEqual({
+        model: [],
         apikey: ["website_key"],
         app: [],
         destination: [],
@@ -501,6 +514,7 @@ describe("modules/codeConfig", () => {
     });
 
     test("most objects will be deleted with a partially empty config file", async () => {
+      expect(await GrouparooModel.count()).toBe(1);
       expect(await App.count()).toBe(1);
       expect(await Source.count()).toBe(1);
       expect(await Schedule.count()).toBe(0);
@@ -558,6 +572,7 @@ describe("modules/codeConfig", () => {
       );
       expect(errors).toEqual([]);
       expect(seenIds).toEqual({
+        model: [],
         apikey: [],
         app: [],
         destination: [],
@@ -570,6 +585,7 @@ describe("modules/codeConfig", () => {
         record: [],
       });
       expect(deletedIds).toEqual({
+        model: ["mod_profiles"],
         apikey: [],
         app: ["data_warehouse"],
         destination: [],
@@ -590,6 +606,7 @@ describe("modules/codeConfig", () => {
     });
 
     test("all objects will be deleted with an empty config file", async () => {
+      expect(await GrouparooModel.count()).toBe(0);
       expect(await App.count()).toBe(0);
       expect(await Source.count()).toBe(0);
       expect(await Schedule.count()).toBe(0);
@@ -649,6 +666,11 @@ describe("modules/codeConfig", () => {
 
       await highValue.stopPreviousRuns();
 
+      await GrouparooModel.create({
+        type: "profile",
+        name: "Profiles",
+        id: "mod_profiles",
+      });
       const record: GrouparooRecord = await helper.factories.record();
       await GroupMember.create({
         recordId: record.id,
@@ -698,6 +720,7 @@ describe("modules/codeConfig", () => {
       );
       expect(errors).toEqual([]);
       expect(seenIds).toEqual({
+        model: ["mod_profiles"],
         apikey: ["website_key"],
         app: expect.arrayContaining(["data_warehouse"]),
         destination: ["test_destination"],
@@ -715,6 +738,7 @@ describe("modules/codeConfig", () => {
         record: [],
       });
       expect(deletedIds).toEqual({
+        model: [],
         apikey: [],
         app: [],
         destination: [],
@@ -926,6 +950,7 @@ describe("modules/codeConfig", () => {
       );
       expect(errors).toEqual([]);
       expect(seenIds).toEqual({
+        model: ["mod_profiles"],
         apikey: [],
         app: [],
         destination: [],
@@ -1035,6 +1060,7 @@ describe("modules/codeConfig", () => {
         );
         expect(errors).toEqual([]);
         expect(seenIds).toEqual({
+          model: ["mod_profiles"],
           apikey: [],
           app: ["data_warehouse"],
           destination: [],
@@ -1047,6 +1073,7 @@ describe("modules/codeConfig", () => {
           record: [],
         });
         expect(deletedIds).toEqual({
+          model: [],
           apikey: [],
           app: [],
           destination: [],
@@ -1070,6 +1097,7 @@ describe("modules/codeConfig", () => {
         );
         expect(errors).toEqual([]);
         expect(seenIds).toEqual({
+          model: ["mod_profiles"],
           apikey: [],
           app: ["data_warehouse"],
           destination: [],
@@ -1082,6 +1110,7 @@ describe("modules/codeConfig", () => {
           record: ["record_john", "record_matthew"],
         });
         expect(deletedIds).toEqual({
+          model: [],
           apikey: [],
           app: [],
           destination: [],
@@ -1139,6 +1168,7 @@ describe("modules/codeConfig", () => {
         );
         expect(errors).toEqual([]);
         expect(seenIds).toEqual({
+          model: ["mod_profiles"],
           apikey: ["website_key"],
           app: expect.arrayContaining(["data_warehouse"]),
           destination: ["test_destination"],
@@ -1156,6 +1186,7 @@ describe("modules/codeConfig", () => {
           record: [],
         });
         expect(deletedIds).toEqual({
+          model: [],
           apikey: [],
           app: [],
           destination: [],
@@ -1178,6 +1209,12 @@ describe("modules/codeConfig", () => {
         const setting = await plugin.readSetting("core", "cluster-name");
         expect(setting.value).toBe("Test Cluster");
         expect(setting.locked).toBe("config:code");
+      });
+
+      test('models are locked with "config:writer"', async () => {
+        const models = await GrouparooModel.findAll({});
+        expect(models.length).toBe(1);
+        expect(models.map((r) => r.locked)).toEqual(["config:writer"]);
       });
 
       test('apps are locked with "config:writer"', async () => {
@@ -1615,6 +1652,7 @@ describe("modules/codeConfig", () => {
       expect(config2.errors.length).toBe(0);
 
       expect(config.deletedIds).toEqual({
+        model: [],
         apikey: ["website_key"],
         app: [],
         destination: ["test_destination"],
@@ -1627,6 +1665,7 @@ describe("modules/codeConfig", () => {
         teammember: ["demo"],
       });
       expect(config.seenIds).toEqual({
+        model: ["mod_profiles"],
         apikey: [],
         app: ["data_warehouse"],
         destination: ["data_warehouse_destination"],
@@ -1639,6 +1678,7 @@ describe("modules/codeConfig", () => {
         teammember: [],
       });
       expect(config2.deletedIds).toEqual({
+        model: [],
         apikey: [],
         app: ["data_warehouse"],
         destination: ["data_warehouse_destination"],
@@ -1651,6 +1691,7 @@ describe("modules/codeConfig", () => {
         teammember: [],
       });
       expect(config2.seenIds).toEqual({
+        model: ["mod_profiles"],
         apikey: [],
         app: ["data_warehouse_2"],
         destination: ["data_warehouse_destination_2"],

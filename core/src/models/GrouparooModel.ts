@@ -6,11 +6,17 @@ import {
   UpdatedAt,
   AllowNull,
   BeforeCreate,
+  DataType,
+  BeforeSave,
+  BeforeDestroy,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { LoggedModel } from "../classes/loggedModel";
-
 import { APIData } from "../modules/apiData";
+import { LockableHelper } from "../modules/lockableHelper";
+
+export const ModelTypes = ["profile"] as const;
+export type ModelType = typeof ModelTypes[number];
 
 @Table({ tableName: "models", paranoid: false })
 export class GrouparooModel extends LoggedModel<Model> {
@@ -32,14 +38,19 @@ export class GrouparooModel extends LoggedModel<Model> {
   name: string;
 
   @AllowNull(false)
+  @Column(DataType.ENUM(...ModelTypes))
+  type: ModelType;
+
+  @AllowNull(true)
   @Column
-  type: string;
+  locked: string;
 
   async apiData() {
     return {
       id: this.id,
       name: this.name,
       type: this.type,
+      locked: this.locked,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
     };
@@ -58,5 +69,25 @@ export class GrouparooModel extends LoggedModel<Model> {
     if (!instance.id) {
       instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }
+  }
+
+  @BeforeCreate
+  @BeforeSave
+  static async ensureValidType(instance: GrouparooModel) {
+    if (!ModelTypes.includes(instance.type)) {
+      throw new Error(
+        `${instance.type} is not a valid model type (${ModelTypes.join(", ")})`
+      );
+    }
+  }
+
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    await LockableHelper.beforeSave(instance);
+  }
+
+  @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
   }
 }

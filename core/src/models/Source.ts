@@ -374,6 +374,17 @@ export class Source extends LoggedModel<Source> {
   }
 
   @BeforeCreate
+  @BeforeSave
+  static async ensureModel(instance: Source) {
+    const model = await GrouparooModel.findOne({
+      where: { id: instance.modelId },
+    });
+    if (!model) {
+      throw new Error(`cannot find model with id ${instance.modelId}`);
+    }
+  }
+
+  @BeforeCreate
   static async ensurePluginConnection(instance: Source) {
     await instance.getPlugin(); // will throw if not found
   }

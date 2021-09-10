@@ -4,6 +4,7 @@ import Sequelize, { Op, WhereAttributeHash } from "sequelize";
 import {
   AfterDestroy,
   AllowNull,
+  BeforeCreate,
   BeforeDestroy,
   BeforeSave,
   BelongsTo,
@@ -683,11 +684,13 @@ export class Group extends LoggedModel<Group> {
       class: string;
       type: string;
       name: string;
+      modelId: string;
       rules?: any[];
     } = {
       id: this.getConfigId(),
       class: "Group",
       type,
+      modelId: this.modelId,
       name,
     };
 
@@ -704,6 +707,17 @@ export class Group extends LoggedModel<Group> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  @BeforeCreate
+  @BeforeSave
+  static async ensureModel(instance: Destination) {
+    const model = await GrouparooModel.findOne({
+      where: { id: instance.modelId },
+    });
+    if (!model) {
+      throw new Error(`cannot find model with id ${instance.modelId}`);
+    }
   }
 
   @BeforeSave

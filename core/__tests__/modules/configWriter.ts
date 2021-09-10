@@ -824,6 +824,7 @@ describe("modules/configWriter", () => {
       expect(config).toEqual({
         class: "Group",
         id: group.getConfigId(),
+        modelId: "mod_profiles",
         type,
         name,
         rules: [
@@ -850,6 +851,7 @@ describe("modules/configWriter", () => {
       expect(config).toEqual({
         class: "Group",
         id: group.getConfigId(),
+        modelId: "mod_profiles",
         type,
         name,
       });
@@ -927,6 +929,7 @@ describe("modules/configWriter", () => {
         syncMode,
         options: Object.fromEntries(options.map((o) => [o.key, o.value])),
         mapping: { "primary-id": mappingProperty.getConfigId() },
+        modelId: "mod_profiles",
         destinationGroupMemberships: {
           "My Dest Tag": group.getConfigId(),
         },
@@ -973,6 +976,7 @@ describe("modules/configWriter", () => {
       expect(config).toEqual({
         class: "GrouparooRecord",
         id: record.id,
+        modelId: "mod_profiles",
         properties: {
           [bootstrapProperty.getConfigId()]: [12],
         },

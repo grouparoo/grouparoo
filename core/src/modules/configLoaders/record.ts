@@ -25,7 +25,10 @@ export async function loadRecord(
     isNew = true;
     record = await GrouparooRecord.create({
       id: configObject.id,
+      modelId: configObject.modelId,
     });
+  } else {
+    await record.update({ modelId: configObject.modelId });
   }
 
   const nonNullProperties = extractNonNullParts(configObject, "properties");

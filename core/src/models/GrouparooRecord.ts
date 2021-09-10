@@ -11,6 +11,7 @@ import {
   AfterCreate,
   BelongsTo,
   ForeignKey,
+  BeforeCreate,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
@@ -219,6 +220,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
     return {
       id: this.id,
       class: "GrouparooRecord",
+      modelId: this.modelId,
       properties: directlyMappedProps,
     };
   }
@@ -238,6 +240,17 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
     source?: boolean | Source
   ) {
     return RecordOps.findOrCreateByUniqueRecordProperties(hash, source);
+  }
+
+  @BeforeCreate
+  @BeforeSave
+  static async ensureModel(instance: GrouparooRecord) {
+    const model = await GrouparooModel.findOne({
+      where: { id: instance.modelId },
+    });
+    if (!model) {
+      throw new Error(`cannot find model with id ${instance.modelId}`);
+    }
   }
 
   @BeforeSave

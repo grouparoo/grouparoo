@@ -41,6 +41,7 @@ export async function loadDestination(
       type: configObject.type,
       syncMode: configObject.syncMode,
       appId: app.id,
+      modelId: configObject.modelId,
     });
   }
 
@@ -53,6 +54,7 @@ export async function loadDestination(
     name: configObject.name,
     type: configObject.type,
     syncMode: configObject.syncMode,
+    modelId: configObject.modelId,
     locked: ConfigWriter.getLockKey(configObject),
   });
 
