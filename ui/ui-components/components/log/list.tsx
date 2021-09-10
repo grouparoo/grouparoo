@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { updateURLParams, useOffset } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useRealtimeStream } from "../../hooks/useRealtimeStream";
@@ -14,7 +14,7 @@ import { ErrorHandler } from "../../utils/errorHandler";
 export default function LogsList(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState<Models.LogType[]>(props.logs);
   const [total, setTotal] = useState(props.total);
@@ -213,7 +213,7 @@ export default function LogsList(props) {
 }
 
 LogsList.hydrate = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { id, limit, offset, topic } = ctx.query;
   const { logs, total } = await execApi("get", `/logs`, {
     ownerId: id,

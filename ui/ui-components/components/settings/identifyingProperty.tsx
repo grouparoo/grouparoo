@@ -1,4 +1,4 @@
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { Card, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { Models } from "../../utils/apiData";
@@ -11,7 +11,7 @@ export default function IdentifyingProperty(props) {
     errorHandler,
     successHandler,
   }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [properties, setProperties] = useState<Models.PropertyType[]>([]);
   const [identifyingRecordPropertyId, setIdentifyingRecordPropertyId] =

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import GroupTabs from "@grouparoo/ui-components/components/tabs/group";
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 
 export default function PluginPage(props) {
   const { group, query } = props;
@@ -22,7 +22,7 @@ export default function PluginPage(props) {
 
 PluginPage.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { group } = await execApi("get", `/group/${id}`);
   return { group };
 };

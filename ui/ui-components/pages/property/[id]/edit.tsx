@@ -1,5 +1,5 @@
 import { useState, useEffect, Fragment } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Table, Badge, Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -41,7 +41,7 @@ export default function Page(props) {
     hydrationError: Error;
   } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [pluginOptions, setPluginOptions] = useState<
     Actions.PropertyPluginOptions["pluginOptions"]
   >(props.pluginOptions);
@@ -696,7 +696,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
 
   const { properties } = await execApi("get", `/properties`, {
     state: "ready",

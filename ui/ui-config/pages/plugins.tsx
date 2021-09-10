@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import { Table, Alert, Button } from "react-bootstrap";
 import { CLIStream } from "../components/cliStream";
@@ -18,7 +18,7 @@ export default function PluginsPage(props) {
   >(props.installedPlugins);
   const availablePlugins: Actions.PluginsAvailableList["plugins"] =
     props.availablePlugins;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   async function installPlugin(name: string) {
@@ -86,7 +86,11 @@ export default function PluginsPage(props) {
                       <br />
                     </>
                   )}
-                  <a href={plugin.docsUrl || plugin.npmUrl} target="_blank">
+                  <a
+                    href={plugin.docsUrl || plugin.npmUrl}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
                     Learn More
                   </a>
                 </td>
@@ -118,7 +122,7 @@ export default function PluginsPage(props) {
 }
 
 PluginsPage.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { plugins: installedPlugins } = await execApi(
     "get",
     `/plugins/installed`

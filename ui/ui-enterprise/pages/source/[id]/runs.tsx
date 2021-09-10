@@ -1,6 +1,6 @@
 import Head from "next/head";
 import RunsList from "@grouparoo/ui-components/components/runs/list";
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState } from "react";
 import SourceTabs from "@grouparoo/ui-components/components/tabs/source";
 import PageHeader from "@grouparoo/ui-components/components/pageHeader";
@@ -24,7 +24,7 @@ export default function Page(props) {
     runsHandler: RunsHandler;
     source: Models.SourceType;
   } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   async function enqueueScheduleRun() {
@@ -56,8 +56,8 @@ export default function Page(props) {
               icon={source.app.icon}
               title={`${source.name} - Runs`}
               badges={[
-                <LockedBadge object={source} />,
-                <StateBadge state={source.state} />,
+                <LockedBadge key="badge-1" object={source} />,
+                <StateBadge key="badge-2" state={source.state} />,
               ]}
             />
 
@@ -87,7 +87,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { source } = await execApi("get", `/source/${id}`);
   const runsListInitialProps = await RunsList.hydrate(ctx, {
     topic: "source",

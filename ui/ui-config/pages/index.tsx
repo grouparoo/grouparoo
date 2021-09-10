@@ -1,10 +1,9 @@
 import { useRouter } from "next/router";
-import { useApi } from "../../ui-components/hooks/useApi";
+import { UseApi } from "../../ui-components/hooks/useApi";
 import Head from "next/head";
 import { Row, Col, Image, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import Loader from "../../ui-components/components/loader";
-import { Models } from "../../ui-components/utils/apiData";
 
 export default function Page(props) {
   const router = useRouter();
@@ -15,7 +14,6 @@ export default function Page(props) {
     CTAMessage: "Register",
     CTATarget: null,
   });
-  let currentStep = null;
 
   useEffect(() => {
     if (navigationMode === "config:authenticated") {
@@ -25,12 +23,11 @@ export default function Page(props) {
     }
 
     async function checkSetupSteps(props) {
-      const { execApi } = useApi(props);
+      const { execApi } = UseApi(props);
       const { setupSteps } = await execApi("get", `/setupSteps`);
-      const foundStep = await setupSteps.find(
+      const currentStep = await setupSteps.find(
         (step) => !step.complete && !step.skipped
       );
-      currentStep = foundStep;
 
       if (navigationMode === "config:authenticated" && currentStep) {
         setCTAs({
@@ -47,7 +44,7 @@ export default function Page(props) {
       }
       setShouldRender(true);
     }
-  }, []);
+  }, [navigationMode, props]);
 
   if (shouldRender === false) {
     return <Loader />;
@@ -63,6 +60,7 @@ export default function Page(props) {
         <Row>
           <Col style={{ textAlign: "center" }}>
             <Image
+              alt="Grouparoo logo"
               style={{ maxHeight: 50, margin: 40 }}
               src="/public/images/logo/logo-and-wordmark-black-words.svg"
             />
@@ -74,7 +72,11 @@ export default function Page(props) {
             </p>
             <p>
               Learn more at{" "}
-              <a target="_blank" href="https://www.grouparoo.com">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://www.grouparoo.com"
+              >
                 www.grouparoo.com
               </a>
             </p>

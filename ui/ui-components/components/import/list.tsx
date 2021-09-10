@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
@@ -18,7 +18,7 @@ export default function ImportList(props) {
     groups,
   }: { errorHandler: ErrorHandler; groups: Models.GroupType[] } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [imports, setImports] = useState<Models.ImportType[]>(props.imports);
   const [total, setTotal] = useState(props.total);
@@ -186,7 +186,7 @@ export default function ImportList(props) {
 }
 
 ImportList.hydrate = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { id, limit, offset } = ctx.query;
 
   let recordId: string;

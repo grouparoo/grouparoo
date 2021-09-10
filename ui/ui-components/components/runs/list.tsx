@@ -1,4 +1,4 @@
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { Fragment, useState } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
@@ -18,7 +18,7 @@ export default function RunsList(props) {
   const { errorHandler, topic }: { errorHandler: ErrorHandler; topic: string } =
     props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState<number>(props.total);
   const [runs, setRuns] = useState<Models.RunType[]>(props.runs);
@@ -286,7 +286,7 @@ export default function RunsList(props) {
 
 RunsList.hydrate = async (ctx, options: { topic?: string } = {}) => {
   const { id, limit, offset, stateFilter, error } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { runs, total } = await execApi("get", `/runs`, {
     id,
     topic: options.topic,

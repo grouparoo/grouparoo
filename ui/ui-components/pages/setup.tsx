@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 import { Models } from "../utils/apiData";
 import { Row, Col, ProgressBar, Alert } from "react-bootstrap";
 import SetupStepCard from "../components/setupSteps/setupStepCard";
@@ -12,7 +12,7 @@ export default function Page(props) {
     errorHandler,
     setupStepHandler,
   }: { errorHandler: ErrorHandler; setupStepHandler: SetupStepHandler } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [setupSteps, setSetupSteps] = useState<Models.SetupStepType[]>(
     props.setupSteps
   );
@@ -94,7 +94,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { setupSteps } = await execApi("get", `/setupSteps`);
   return { setupSteps };
 };

@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
 import RecordPreview from "../../../components/destination/recordPreview";
@@ -34,7 +34,7 @@ export default function Page(props) {
     destinationTypeConversions: Actions.DestinationMappingOptions["destinationTypeConversions"];
     exportArrayProperties: Actions.DestinationExportArrayProperties["exportArrayProperties"];
   } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [trackedGroupId, settrackedGroupId] = useState(
@@ -799,7 +799,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { id } = ctx.query;
   const { destination } = await execApi("get", `/destination/${id}`);
   const { groups } = await execApi("get", `/groups`);

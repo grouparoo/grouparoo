@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { client } from "../hooks/useApi";
 import { Table, Badge, Alert, Button } from "react-bootstrap";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 import { Actions } from "../utils/apiData";
 
 const upgradeHelpPage =
@@ -107,7 +107,7 @@ export default function Page({
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { plugins } = await execApi("get", `/plugins/installed`);
   return { plugins };
 };

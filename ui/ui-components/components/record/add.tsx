@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { useRouter } from "next/router";
 import LoadingButton from "../loadingButton";
 import { Actions } from "../../utils/apiData";
 
 export default function AddRecord(props) {
-  const { execApi } = useApi(props);
+  const { execApi } = UseApi(props);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 

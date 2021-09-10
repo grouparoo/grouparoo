@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { Tabs, Tab, Row, Col } from "react-bootstrap";
 import { capitalize } from "../../utils/languageHelper";
 import { useRouter } from "next/router";
@@ -25,7 +25,7 @@ export default function Page(props) {
     tab: string;
   } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [settings, setSettings] = useState<Models.SettingType[]>(
     props.settings
@@ -126,7 +126,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { tab } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { settings }: Actions.SettingsList = await execApi("get", `/settings`);
   return { settings, tab };
 };

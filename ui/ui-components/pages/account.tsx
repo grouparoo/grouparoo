@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 import { Form, Row, Col } from "react-bootstrap";
 import RecordImageFromEmail from "../components/visualizations/recordImageFromEmail";
 import LoadingButton from "../components/loadingButton";
@@ -19,7 +19,7 @@ export default function Page(props) {
     successHandler: SuccessHandler;
     sessionHandler: SessionHandler;
   } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [teamMember, setTeamMember] = useState<Models.TeamMemberType>(
     props.teamMember
@@ -123,7 +123,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { teamMember }: Actions.AccountView = await execApi("get", `/account`);
   return { teamMember };
 };

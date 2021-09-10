@@ -1,4 +1,4 @@
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import Head from "next/head";
 import PropertyTabs from "@grouparoo/ui-components/components/tabs/property";
 import RecordsList from "@grouparoo/ui-components/components/record/list";
@@ -31,8 +31,8 @@ export default function Page(props) {
             icon={source.app.icon}
             title={`${property.key} - Records`}
             badges={[
-              <LockedBadge object={property} />,
-              <StateBadge state={property.state} />,
+              <LockedBadge key="badge-1" object={property} />,
+              <StateBadge key="badge-2" state={property.state} />,
             ]}
           />
         }
@@ -45,7 +45,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { property } = await execApi("get", `/property/${id}`);
   const { source } = await execApi("get", `/source/${property.sourceId}`);
   const recordListInitialProps = await RecordsList.hydrate(

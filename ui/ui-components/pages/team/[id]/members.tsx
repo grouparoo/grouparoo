@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import LoadingButton from "../../../components/loadingButton";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -22,7 +22,7 @@ export default function Page(props) {
     team: Models.TeamType;
   } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [teamMembers, setTeamMembers] = useState<Models.TeamMemberType[]>(
     props.teamMembers
@@ -123,7 +123,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { id } = ctx.query;
   const { team } = await execApi("get", `/team/${id}`);
   const { teamMembers } = await execApi("get", `/team/${id}/members`);

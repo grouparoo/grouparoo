@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import PermissionsList from "../../../components/permissions";
@@ -22,7 +22,7 @@ export default function Page(props) {
     teamHandler: TeamHandler;
   } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [team, setTeam] = useState<Models.TeamType>(props.team);
 
@@ -158,7 +158,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { id } = ctx.query;
   const { team } = await execApi("get", `/team/${id}`);
   return { team };

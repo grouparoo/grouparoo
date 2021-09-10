@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useRouter } from "next/router";
@@ -29,7 +29,7 @@ export default function Page(props) {
     environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
   } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [destination, setDestination] = useState<Models.DestinationType>(
     props.destination
   );
@@ -416,7 +416,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { id } = ctx.query;
   const { destination } = await execApi("get", `/destination/${id}`);
   const { environmentVariableOptions } = await execApi(

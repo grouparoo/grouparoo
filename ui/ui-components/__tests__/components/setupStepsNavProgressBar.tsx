@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import Component from "../../components/navigation/setupStepsNavProgressBar";
 import mockAxios from "jest-mock-axios";
 import { Actions } from "../../utils/apiData";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { EventDispatcher } from "../../utils/eventDispatcher";
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
@@ -32,7 +32,7 @@ describe("setupStepsNavProgressBar", () => {
   });
 
   describe("on a logged in page", () => {
-    const { execApi } = useApi({});
+    const { execApi } = UseApi({});
 
     beforeEach(() => {
       useRouter.mockImplementation(() => ({

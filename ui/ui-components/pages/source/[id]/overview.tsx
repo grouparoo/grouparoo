@@ -1,4 +1,4 @@
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Badge, Alert, Button } from "react-bootstrap";
 import PageHeader from "../../../components/pageHeader";
 import StateBadge from "../../../components/badges/stateBadge";
@@ -286,7 +286,7 @@ export default function Page({
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { source } = await execApi("get", `/source/${id}`);
   const { properties } = await execApi("get", `/properties`, {
     sourceId: id,

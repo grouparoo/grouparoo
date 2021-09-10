@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Actions } from "../../utils/apiData";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import Link from "next/link";
 import { Row, Col, Card, Table, Alert } from "react-bootstrap";
 import {
@@ -14,7 +14,7 @@ const maxSampleLength = 30;
 const DELAY = 1000 * 3;
 
 export default function ResqueOverview(props) {
-  const { execApi } = useApi(props, props.errorHandler);
+  const { execApi } = UseApi(props, props.errorHandler);
   const {
     resqueDetails,
     failedCount: _failedCount,
@@ -241,7 +241,7 @@ export default function ResqueOverview(props) {
 }
 
 ResqueOverview.getInitialProps = async function (ctx) {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { resqueDetails, failedCount }: Actions.ResqueResqueDetails =
     await execApi("get", "/resque/resqueDetails");
 

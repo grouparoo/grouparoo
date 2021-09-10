@@ -3,7 +3,7 @@ import { Row, Col, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 import { ErrorHandler } from "../../../ui-components/utils/errorHandler";
@@ -13,7 +13,7 @@ export default function SignInPage(props) {
     clusterName,
     errorHandler,
   }: { clusterName: any; errorHandler: ErrorHandler } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
   const router = useRouter();

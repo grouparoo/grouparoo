@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Button, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 import Link from "next/link";
 import EnterpriseLink from "../components/enterpriseLink";
 import { Form } from "react-bootstrap";
@@ -149,7 +149,7 @@ export default function Page({
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { teams } = await execApi("get", `/teams`);
   const { teamMembers } = await execApi("get", `/teamMembers`);
   return { teams, teamMembers };

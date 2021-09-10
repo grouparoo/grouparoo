@@ -1,4 +1,4 @@
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import Head from "next/head";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
@@ -20,7 +20,7 @@ export default function Page(props) {
     group: Models.GroupType;
   } = props;
 
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   async function handleExport(type = "csv") {
@@ -93,7 +93,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { group } = await execApi("get", `/group/${id}`);
   const recordListInitialProps = await RecordsList.hydrate(ctx);
 

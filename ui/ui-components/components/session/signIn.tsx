@@ -25,8 +25,8 @@ export const createSession = async (
 };
 
 export default function SignInForm(props) {
-  const { errorHandler, successHandler, sessionHandler, useApi } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { errorHandler, successHandler, sessionHandler, UseApi } = props;
+  const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const router = useRouter();
   const [loading, setLoading] = useState(false);

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
@@ -11,7 +11,7 @@ import { ErrorHandler } from "../../../ui-components/utils/errorHandler";
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
 

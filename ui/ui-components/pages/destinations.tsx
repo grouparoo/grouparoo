@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Button, Badge } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useState } from "react";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
@@ -18,7 +18,7 @@ import { ErrorHandler } from "../utils/errorHandler";
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [destinations, setDestinations] = useState<Models.DestinationType[]>(
     props.destinations
@@ -181,7 +181,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { limit, offset } = ctx.query;
   const { destinations, total } = await execApi("get", `/destinations`, {
     limit,

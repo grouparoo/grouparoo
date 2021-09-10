@@ -1,5 +1,5 @@
 import App from "next/app";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 
 import Injection from "../components/componentInjection";
 import Layout from "../components/layouts/main";
@@ -90,7 +90,7 @@ export default function GrouparooWebApp(props) {
 }
 
 GrouparooWebApp.getInitialProps = async (appContext) => {
-  const { execApi } = useApi(appContext.ctx);
+  const { execApi } = UseApi(appContext.ctx);
   let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
     firstName: "",
     id: null,

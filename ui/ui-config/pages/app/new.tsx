@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState, useEffect } from "react";
 import { Form, Modal, Spinner, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
@@ -44,7 +44,7 @@ export default function Page(props) {
   } = props;
 
   const router = useRouter();
-  const { execApi } = useApi(props, new CustomErrorHandler(errorHandler));
+  const { execApi } = UseApi(props, new CustomErrorHandler(errorHandler));
   const [app, setApp] = useState<Models.AppType>({ type: "" });
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -89,7 +89,7 @@ export default function Page(props) {
 
   useEffect(() => {
     prepareCards(apps, plugins);
-  }, []);
+  }, [apps, plugins]);
 
   async function handleClick(card) {
     if (loading) return;
@@ -225,7 +225,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { types }: Actions.AppOptions = await execApi("get", `/appOptions`);
   const { plugins } = await execApi("get", `/plugins/available`);
   return { plugins, apps: types.filter((app) => app.addible !== false) };

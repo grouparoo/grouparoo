@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import LogsList from "../../../components/log/list";
 import RecordTabs from "../../../components/tabs/record";
 import {
@@ -33,7 +33,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { record } = await execApi("get", `/record/${id}`);
   const logListInitialProps = await LogsList.hydrate(ctx);
   return { record, ...logListInitialProps };

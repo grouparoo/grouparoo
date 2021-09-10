@@ -1,6 +1,6 @@
 import NotificationTabs from "../../../components/tabs/notification";
 import Head from "next/head";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Button } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import Markdown from "react-markdown";
@@ -42,7 +42,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { notification } = await execApi("get", `/notification/${id}`);
   return { notification };
 };

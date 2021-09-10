@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form, Button, Alert } from "react-bootstrap";
@@ -17,7 +17,7 @@ export default function NewRecord(props) {
     properties: Actions.PropertiesList["properties"];
   } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
 
@@ -100,7 +100,7 @@ export default function NewRecord(props) {
 }
 
 NewRecord.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { properties }: Actions.PropertiesList = await execApi(
     "get",
     `/properties`

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
@@ -14,7 +14,7 @@ export default function Page(props) {
     types,
   }: { errorHandler: ErrorHandler; types: Actions.AppOptions["types"] } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [app, setApp] = useState<Models.AppType>({ type: "" });
   const [loading, setLoading] = useState(false);
 
@@ -49,7 +49,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { types }: Actions.AppOptions = await execApi("get", `/appOptions`);
   return { types: types.filter((app) => app.addible !== false) };
 };

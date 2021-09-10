@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useState } from "react";
 import { Row, Col, Button } from "react-bootstrap";
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import { CLIStream } from "../components/cliStream";
 import { SuccessHandler } from "../../ui-components/utils/successHandler";
@@ -13,7 +13,7 @@ export default function ValidatePage(props) {
     errorHandler,
   }: { successHandler: SuccessHandler; errorHandler: ErrorHandler } = props;
   const [loading, setLoading] = useState(false);
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
 
   async function validate() {
     setLoading(true);

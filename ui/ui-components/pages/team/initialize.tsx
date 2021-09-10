@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form, Card } from "react-bootstrap";
@@ -22,7 +22,7 @@ export default function TeamInitializePage(props) {
     sessionHandler: SessionHandler;
   } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
   const setting: Actions.SettingCoreClusterName["setting"] = props.setting;
@@ -185,7 +185,7 @@ export default function TeamInitializePage(props) {
 }
 
 TeamInitializePage.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { setting } = await execApi("get", `/setting/core/cluster-name`);
   return { setting };
 };

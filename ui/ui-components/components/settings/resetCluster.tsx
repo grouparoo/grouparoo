@@ -1,4 +1,4 @@
-import { useApi } from "../../hooks/useApi";
+import { UseApi } from "../../hooks/useApi";
 import { useState } from "react";
 import { Card } from "react-bootstrap";
 import LoadingButton from "../loadingButton";
@@ -12,7 +12,7 @@ export default function ResetCluster(props) {
     successHandler,
   }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const [loading, setLoading] = useState(false);
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
 
   async function reset() {
     if (!window.confirm("Are you sure?")) return;

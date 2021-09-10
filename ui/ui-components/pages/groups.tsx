@@ -2,7 +2,7 @@ import Head from "next/head";
 import { Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useApi } from "../hooks/useApi";
+import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Link from "../components/enterpriseLink";
@@ -16,7 +16,7 @@ import { ErrorHandler } from "../utils/errorHandler";
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);
   const [total, setTotal] = useState<number>(props.total);
   const [loading, setLoading] = useState(false);
@@ -139,7 +139,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { limit, offset } = ctx.query;
   const { groups, total } = await execApi("get", `/groups`, { limit, offset });
   return { groups, total };

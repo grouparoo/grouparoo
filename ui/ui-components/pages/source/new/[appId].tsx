@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState, Fragment } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Card } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import AppIcon from "../../../components/appIcon";
@@ -18,7 +18,7 @@ export default function Page(props) {
     connectionApps: Actions.SourceConnectionApps["connectionApps"];
   } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const { appId } = router.query;
 
@@ -82,7 +82,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { connectionApps } = await execApi("get", `/sources/connectionApps`);
   return { connectionApps };
 };

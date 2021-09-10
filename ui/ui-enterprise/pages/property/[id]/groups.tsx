@@ -1,4 +1,4 @@
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import Head from "next/head";
 import Link from "next/link";
 import LoadingTable from "@grouparoo/ui-components/components/loadingTable";
@@ -29,8 +29,8 @@ export default function Page({
         icon={source.app.icon}
         title={`${property.key} - Groups`}
         badges={[
-          <LockedBadge object={property} />,
-          <StateBadge state={property.state} />,
+          <LockedBadge key="badge-1" object={property} />,
+          <StateBadge key="badge-2" state={property.state} />,
         ]}
       />
 
@@ -88,7 +88,7 @@ export default function Page({
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = useApi(ctx);
+  const { execApi } = UseApi(ctx);
   const { property } = await execApi("get", `/property/${id}`);
   const { source } = await execApi("get", `/source/${property.sourceId}`);
   const { groups } = await execApi("get", `/property/${id}/groups`);
