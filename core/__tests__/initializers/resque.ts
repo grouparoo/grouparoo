@@ -29,12 +29,15 @@ jest.mock("../../src/config/tasks.ts", () => ({
 
 describe("initializers/resque", () => {
   helper.grouparooTestServer({ truncate: true });
+  let instance: ResqueInitializer;
 
   beforeEach(async () => {
     await helper.sleep(1000);
     await api.resque.queue.connection.redis.flushdb();
     await helper.sleep(1000);
   });
+
+  afterEach(async () => await instance.stop());
 
   test("it will check for missing periodic tasks if the resque leader", async () => {
     api.resque.scheduler.leader = true;
@@ -43,7 +46,7 @@ describe("initializers/resque", () => {
     let found = await specHelper.findEnqueuedTasks("status");
     expect(found.length).toBe(0);
 
-    const instance = new ResqueInitializer();
+    instance = new ResqueInitializer();
     await instance.recheckPeriodicTasks();
 
     found = await specHelper.findEnqueuedTasks("status");
@@ -57,7 +60,7 @@ describe("initializers/resque", () => {
     let found = await specHelper.findEnqueuedTasks("status");
     expect(found.length).toBe(0);
 
-    const instance = new ResqueInitializer();
+    instance = new ResqueInitializer();
     await instance.recheckPeriodicTasks();
 
     found = await specHelper.findEnqueuedTasks("status");
@@ -77,7 +80,7 @@ describe("initializers/resque", () => {
       await client.set("grouparoo:version", "x");
       await task.enqueue("record:export", { recordId: "foo" });
 
-      const instance = new ResqueInitializer();
+      instance = new ResqueInitializer();
       await instance.start();
 
       const foundTasks = await specHelper.findEnqueuedTasks("record:export");
@@ -89,7 +92,7 @@ describe("initializers/resque", () => {
       await client.set("grouparoo:version", grouparooVersion);
       await task.enqueue("record:export", { recordId: "foo" });
 
-      const instance = new ResqueInitializer();
+      instance = new ResqueInitializer();
       await instance.start();
 
       const foundTasks = await specHelper.findEnqueuedTasks("record:export");
