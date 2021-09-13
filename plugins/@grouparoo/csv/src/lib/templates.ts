@@ -29,7 +29,7 @@ export class CSVSourceTemplate extends ConfigTemplate {
   constructor() {
     super();
     this.name = `csv:source`;
-    this.description = `Config for a CSV File Source`;
+    this.description = `Config for a CSV Source`;
     this.inputs = {
       id: {
         required: true,

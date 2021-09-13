@@ -81,7 +81,7 @@ describe("integration/runs/csv/remote", () => {
       // create the source
       session.params = {
         csrfToken,
-        type: "csv-remote-import",
+        type: "csv-import",
         name: "csv source",
         appId: app.id,
         options: {

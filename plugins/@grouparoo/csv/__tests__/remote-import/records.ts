@@ -75,7 +75,7 @@ describe("csv/table/records", () => {
 
     source = await helper.factories.source(app, {
       name: "CSV-SOURCE",
-      type: "csv-remote-import",
+      type: "csv-import",
     });
     sourceMapping = { id: "userId" };
     await source.setOptions(sourceOptions);
