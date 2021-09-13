@@ -203,6 +203,17 @@ describe("models/destination", () => {
       await group.destroy();
     });
 
+    test("destinations require a valid modelId", async () => {
+      expect(
+        Destination.create({
+          name: "bye destination",
+          type: "test-plugin-export",
+          appId: app.id,
+          modelId: "foo",
+        })
+      ).rejects.toThrow(/cannot find model with id foo/);
+    });
+
     test("deleting a destination does not delete options for other models with the same id", async () => {
       destination = await Destination.create({
         name: "some destination",

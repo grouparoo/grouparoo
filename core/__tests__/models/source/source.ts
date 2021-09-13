@@ -90,6 +90,17 @@ describe("models/source", () => {
       );
     });
 
+    test("sources require a valid modelId", async () => {
+      expect(
+        Source.create({
+          type: "test-plugin-import",
+          name: "test source",
+          appId: app.id,
+          modelId: "foo",
+        })
+      ).rejects.toThrow(/cannot find model with id foo/);
+    });
+
     test("a new source will have a '' name", async () => {
       const source = await Source.create({
         type: "test-plugin-import",

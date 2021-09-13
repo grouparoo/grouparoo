@@ -69,6 +69,16 @@ describe("models/group", () => {
     expect(log.message).toBe('group "doomed group" destroyed');
   });
 
+  test("groups require a valid modelId", async () => {
+    expect(
+      Group.create({
+        name: "doomed group",
+        type: "manual",
+        modelId: "foo",
+      })
+    ).rejects.toThrow(/cannot find model with id foo/);
+  });
+
   describe("run()", () => {
     const getRuns = async (group) => {
       const runs = await Run.findAll({
