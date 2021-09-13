@@ -166,6 +166,12 @@ export class NavigationList extends OptionallyAuthenticatedAction {
 
       platformItems.push({
         type: "link",
+        title: "Models",
+        href: "/models",
+      });
+
+      platformItems.push({
+        type: "link",
         title: "Teams and Members",
         href: "/teams",
       });

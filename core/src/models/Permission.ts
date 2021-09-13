@@ -24,6 +24,7 @@ export const PermissionTopics = [
   "group",
   "import",
   "log",
+  "model",
   "notification",
   "record",
   "property",

@@ -1,15 +1,17 @@
 import { Fragment } from "react";
-import { Row, Col } from "react-bootstrap";
 import AppIcon from "./appIcon";
+import ModelIcon from "./modelIcon";
 
 export default function PageHeader({
   title,
   icon,
   badges,
+  model,
 }: {
   title: string;
   icon?: string;
   badges?: any[];
+  model?: string;
 }) {
   return (
     <>
@@ -17,7 +19,11 @@ export default function PageHeader({
         <tbody>
           <tr>
             <td valign="top" style={{ textAlign: "center", paddingRight: 20 }}>
-              <AppIcon src={icon} size={100} />
+              {model === "grouparooModel" ? (
+                <ModelIcon model={{ icon }} size="7x" />
+              ) : (
+                <AppIcon src={icon} size={100} />
+              )}
             </td>
             <td valign="top">
               <h1>{title ? title : <em>Draft</em>}</h1>

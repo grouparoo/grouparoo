@@ -4,21 +4,22 @@ import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Link from "../components/enterpriseLink";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
-import AppIcon from "../components/appIcon";
-import StateBadge from "../components/badges/stateBadge";
+import ModelIcon from "../components/modelIcon";
 import { Button } from "react-bootstrap";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { ErrorHandler } from "../utils/errorHandler";
+import EnterpriseLink from "../components/enterpriseLink";
 
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
-  const [apps, setApps] = useState<Models.AppType[]>(props.apps);
+  const [models, setModels] = useState<Models.GrouparooModelType[]>(
+    props.models
+  );
   const [total, setTotal] = useState<number>(props.total);
   const [loading, setLoading] = useState(false);
 
@@ -33,29 +34,25 @@ export default function Page(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response: Actions.AppsList = await execApi("get", `/apps`, {
+    const response: Actions.ModelsList = await execApi("get", `/models`, {
       limit,
       offset,
     });
     setLoading(false);
-    if (response?.apps) {
-      setApps(response.apps);
+    if (response?.models) {
+      setModels(response.models);
       setTotal(response.total);
-
-      if (response.total === 0) {
-        router.push("/app/new");
-      }
     }
   }
 
   return (
     <>
       <Head>
-        <title>Grouparoo: Apps</title>
+        <title>Grouparoo: Models</title>
       </Head>
 
-      <h1>Apps</h1>
-      <p>{total} apps</p>
+      <h1>Models</h1>
+      <p>{total} models</p>
 
       <Pagination
         total={total}
@@ -70,38 +67,30 @@ export default function Page(props) {
             <th></th>
             <th>Name</th>
             <th>Type</th>
-            <th>State</th>
             <th>Created At</th>
             <th>Updated At</th>
           </tr>
         </thead>
         <tbody>
-          {apps.map((app) => {
+          {models.map((model) => {
             return (
-              <tr key={`model-${app.id}`}>
+              <tr key={`model-${model.id}`}>
                 <td>
-                  <AppIcon src={app.icon} />
+                  <ModelIcon model={model} />
                 </td>
                 <td>
-                  <Link href="/app/[id]/edit" as={`/app/${app.id}/edit`}>
+                  <EnterpriseLink
+                    href="/model/[id]/edit"
+                    as={`/model/${model.id}/edit`}
+                  >
                     <a>
-                      <strong>
-                        {app.name ||
-                          `${app.state} created ${
-                            new Date(app.createdAt)
-                              .toLocaleString()
-                              .split(",")[0]
-                          }`}
-                      </strong>
+                      <strong>{model.name}</strong>
                     </a>
-                  </Link>
+                  </EnterpriseLink>
                 </td>
-                <td>{app.type}</td>
-                <td>
-                  <StateBadge state={app.state} />
-                </td>
-                <td>{formatTimestamp(app.createdAt)}</td>
-                <td>{formatTimestamp(app.updatedAt)}</td>
+                <td>{model.type}</td>
+                <td>{formatTimestamp(model.createdAt)}</td>
+                <td>{formatTimestamp(model.updatedAt)}</td>
               </tr>
             );
           })}
@@ -121,10 +110,10 @@ export default function Page(props) {
         <Button
           variant="primary"
           onClick={() => {
-            router.push("/app/new");
+            router.push("/model/new");
           }}
         >
-          Add App
+          Add Model
         </Button>
       ) : null}
     </>
@@ -134,6 +123,6 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
   const { limit, offset } = ctx.query;
-  const { apps, total } = await execApi("get", `/apps`, { limit, offset });
-  return { apps, total };
+  const { models, total } = await execApi("get", `/models`, { limit, offset });
+  return { models, total };
 };
