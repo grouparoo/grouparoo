@@ -1,5 +1,5 @@
 import { CLSInitializer } from "../classes/initializers/clsInitializer";
-import { GrouparooModel } from "../models/GrouparooModel";
+import { ModelOps } from "../modules/ops/model";
 
 export class GrouparooModelsInitializer extends CLSInitializer {
   constructor() {
@@ -11,14 +11,7 @@ export class GrouparooModelsInitializer extends CLSInitializer {
   async initializeWithinTransaction() {}
 
   async startWithinTransaction() {
-    const modelsCount = await GrouparooModel.count();
-    if (modelsCount > 0) return;
-
-    await GrouparooModel.create({
-      id: "mod_profiles",
-      name: "Profiles",
-      type: "profile",
-    });
+    await ModelOps.prepare();
   }
 
   async stopWithinTransaction() {}

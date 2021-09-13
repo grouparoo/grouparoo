@@ -1,7 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Validate } from "../../src/bin/validate";
 import { join } from "path";
-import { Setting } from "../../src";
+import { GrouparooModel, Setting } from "../../src";
 let actionhero;
 
 const filename = join(
@@ -67,6 +67,13 @@ describe("bin/config-validate", () => {
       const command = new Validate();
       await command.run({ params: {} });
       expect(await Setting.count()).toBeGreaterThan(0);
+    });
+
+    test("the validate command will prepare models", async () => {
+      await GrouparooModel.truncate();
+      const command = new Validate();
+      await command.run({ params: {} });
+      expect(await GrouparooModel.count()).toBeGreaterThan(0);
     });
 
     test("valid configurations can boot", async () => {

@@ -16,6 +16,7 @@ import {
   Mapping,
   Option,
   Setting,
+  GrouparooModel,
 } from "../../src";
 
 function ensureNoSavedModels() {
@@ -110,6 +111,13 @@ describe("bin/config-apply", () => {
       const command = new Apply();
       await command.run({ params: {} });
       expect(await Setting.count()).toBeGreaterThan(0);
+    });
+
+    test("the apply command will prepare models", async () => {
+      await GrouparooModel.truncate();
+      const command = new Apply();
+      await command.run({ params: {} });
+      expect(await GrouparooModel.count()).toBeGreaterThan(0);
     });
   });
 
