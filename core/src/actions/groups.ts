@@ -1,4 +1,3 @@
-import { CLS } from "../modules/cls";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Group, GROUP_RULE_LIMIT } from "../models/Group";
 import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
