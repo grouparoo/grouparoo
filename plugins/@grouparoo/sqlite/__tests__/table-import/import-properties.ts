@@ -177,14 +177,10 @@ describe("sqlite/table/recordProperties", () => {
             sourceMapping,
             aggregationMethod,
           });
-          expect(values[profile.id][properties[0].id]).toEqual(["Erie"]);
-          expect(values[otherProfile.id][properties[0].id]).toEqual([
-            "Cacilie",
-          ]);
-          expect(values[profile.id][properties[1].id]).toEqual(["Erie"]);
-          expect(values[otherProfile.id][properties[1].id]).toEqual([
-            "Cacilie",
-          ]);
+          expect(values[record.id][properties[0].id]).toEqual(["Erie"]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual(["Cacilie"]);
+          expect(values[record.id][properties[1].id]).toEqual(["Erie"]);
+          expect(values[otherRecord.id][properties[1].id]).toEqual(["Cacilie"]);
         });
 
         test("to get a float", async () => {
