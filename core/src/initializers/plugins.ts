@@ -9,6 +9,7 @@ import {
   ManualGroupTemplate,
 } from "../templates/group";
 import { ApiKeyTemplate } from "../templates/apiKey";
+import { ModelTemplate } from "../templates/model";
 import { TeamTemplate } from "../templates/team";
 import { TeamMemberTemplate } from "../templates/teamMember";
 import { SettingTemplate } from "../templates/setting";
@@ -57,6 +58,7 @@ export class Plugins extends Initializer {
       icon: "/public/@grouparoo/logo.png",
       templates: [
         SettingTemplate,
+        ModelTemplate,
         CalculatedGroupTemplate,
         ManualGroupTemplate,
         ApiKeyTemplate,
