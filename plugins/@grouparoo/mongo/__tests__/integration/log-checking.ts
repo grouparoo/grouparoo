@@ -97,8 +97,8 @@ describe("mongo/integration/log-checking", () => {
     expect(mongoCallData).toEqual({
       address: "127.0.0.1:27017",
       connectionId: 1,
-      requestId: 10,
-      databaseName: `test_db_${process.env.JEST_WORKER_ID}`,
+      requestId: expect.any(Number),
+      databaseName: "test_db_1",
       commandName: "insert",
       command: {
         insert: `users_${process.env.JEST_WORKER_ID}`,
