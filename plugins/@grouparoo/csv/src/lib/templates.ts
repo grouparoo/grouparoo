@@ -25,10 +25,10 @@ export class CSVAppTemplate extends ConfigTemplate {
   }
 }
 
-export class CSVFileSourceTemplate extends ConfigTemplate {
+export class CSVSourceTemplate extends ConfigTemplate {
   constructor() {
     super();
-    this.name = `csv:source:file`;
+    this.name = `csv:source`;
     this.description = `Config for a CSV File Source`;
     this.inputs = {
       id: {
@@ -41,35 +41,7 @@ export class CSVFileSourceTemplate extends ConfigTemplate {
         description: `The id of the App to use for this Source, e.g: \`--parent csv_app\``,
       },
     };
-    this.files = [path.join(templateRoot, "source", "file", "*.template")];
-    this.destinationDir = "sources";
-    this.parentId = "appId";
-  }
-
-  async run({ params }) {
-    params["__pluginName"] = this.name.split(":")[0];
-    params["schedule_id"] = this.extendId("schedule");
-    return this.mustacheAllFiles(params);
-  }
-}
-
-export class CSVRemoteSourceTemplate extends ConfigTemplate {
-  constructor() {
-    super();
-    this.name = `csv:source:remote`;
-    this.description = `Config for a CSV File Source`;
-    this.inputs = {
-      id: {
-        required: true,
-        description: `The id of this new Source`,
-        formatter: (p) => this.formatId(p),
-      },
-      parent: {
-        required: true,
-        description: `The id of the App to use for this Source, e.g: \`--parent csv_app\``,
-      },
-    };
-    this.files = [path.join(templateRoot, "source", "remote", "*.template")];
+    this.files = [path.join(templateRoot, "source", "*.template")];
     this.destinationDir = "sources";
     this.parentId = "appId";
   }

@@ -4,7 +4,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 import { helper } from "@grouparoo/spec-helper";
 import { SimpleSourceOptions, Import, plugin, Run } from "@grouparoo/core";
-import { records } from "../../src/lib/remote-import/records";
+import { records } from "../../src/lib/records";
 
 // these used and set by test
 const sourceOptions: SimpleSourceOptions = {

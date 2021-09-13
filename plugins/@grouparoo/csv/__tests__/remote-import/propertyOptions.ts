@@ -4,7 +4,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 import { helper } from "@grouparoo/spec-helper";
 import { SimpleSourceOptions } from "@grouparoo/core";
-import { propertyOptions } from "../../src/lib/remote-import/propertyOptions";
+import { propertyOptions } from "../../src/lib/propertyOptions";
 
 const sourceOptions: SimpleSourceOptions = {
   url: "https://raw.githubusercontent.com/grouparoo/grouparoo/main/core/__tests__/data/records-10.csv",

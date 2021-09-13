@@ -1,6 +1,6 @@
 import { RecordsPluginMethod } from "@grouparoo/core";
 import { downloadAndRefreshFile } from "./downloadAndRefreshFile";
-import { parseProfiles } from "../shared/parseProfiles";
+import { parseProfiles } from "./shared/parseProfiles";
 
 export const records: RecordsPluginMethod = async ({
   source,

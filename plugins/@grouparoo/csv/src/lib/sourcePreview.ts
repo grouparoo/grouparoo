@@ -1,5 +1,5 @@
 import { SourcePreviewMethod, SimpleSourceOptions } from "@grouparoo/core";
-import { previewCSV } from "../shared/previewCSV";
+import { previewCSV } from "./shared/previewCSV";
 import { downloadAndRefreshFile } from "./downloadAndRefreshFile";
 
 export const sourcePreview: SourcePreviewMethod = async ({
