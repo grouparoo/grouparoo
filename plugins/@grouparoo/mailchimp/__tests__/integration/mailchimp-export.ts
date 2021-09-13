@@ -166,6 +166,7 @@ describe("integration/runs/mailchimp-export", () => {
       type: "mailchimp-export",
       appId: app.id,
       options: destinationOptions,
+      modelId: "mod_profiles",
       mapping: {
         email_address: "email",
         USERID: "userId",

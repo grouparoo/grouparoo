@@ -107,6 +107,7 @@ describe("integration/runs/mailchimp-import", () => {
           type: "mailchimp-import",
           name: "source",
           appId: app.id,
+          modelId: "mod_profiles",
           options: sourceOptions,
           mapping: sourceMapping,
           state: "ready",

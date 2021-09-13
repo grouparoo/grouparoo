@@ -72,6 +72,7 @@ describe("integration/runs/mysql", () => {
       name: "mysql source",
       type: "mysql-query-import",
       appId: app.id,
+      modelId: "mod_profiles",
       state: "ready",
     };
     const sourceResponse = await specHelper.runAction<SourceCreate>(

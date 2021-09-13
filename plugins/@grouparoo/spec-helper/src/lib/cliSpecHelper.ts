@@ -277,6 +277,13 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     fs.writeFileSync(file, updatedLines.join(os.EOL));
   }
 
+  export async function generateModel(
+    runCliCommand: Function,
+    modelName = "mod_profiles"
+  ) {
+    await runCliCommand(`generate model ${modelName} --overwrite`);
+  }
+
   export async function generateUserSourceToPropertyProperty(
     projectPath: string,
     runCliCommand: Function,
@@ -394,6 +401,8 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
       name.match(/:destination/)
     );
 
+    let modelCreated = false;
+
     apps.forEach((app) => {
       const appPrefix = buildPrefix(app);
       const appMatcher = new RegExp(appPrefix);
@@ -414,6 +423,11 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
 
           if (source.match(appMatcher)) {
             test(`generate source ${source}`, async () => {
+              if (!modelCreated) {
+                await CLISpecHelper.generateModel(runCliCommand);
+                modelCreated = true;
+              }
+
               const sourceId = `source_${buildId(sourcePrefix)}`;
               const { exitCode, stdout, stderr } = await runCliCommand(
                 `generate ${source} ${sourceId} --parent app_${buildId(
@@ -467,6 +481,11 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
 
           if (destination.match(appMatcher)) {
             test(`generate destination ${destination}`, async () => {
+              if (!modelCreated) {
+                await CLISpecHelper.generateModel(runCliCommand);
+                modelCreated = true;
+              }
+
               if (idx === 0) await generateGroup(runCliCommand); // make a group to send to the destination
               if (idx === 0 && properties.length === 0) {
                 await generateUserSourceToPropertyProperty(

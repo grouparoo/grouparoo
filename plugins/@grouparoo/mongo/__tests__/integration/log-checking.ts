@@ -97,11 +97,11 @@ describe("mongo/integration/log-checking", () => {
     expect(mongoCallData).toEqual({
       address: "127.0.0.1:27017",
       connectionId: 1,
-      requestId: 9,
-      databaseName: "test_db_1",
+      requestId: 10,
+      databaseName: `test_db_${process.env.JEST_WORKER_ID}`,
       commandName: "insert",
       command: {
-        insert: "users_1",
+        insert: `users_${process.env.JEST_WORKER_ID}`,
         documents: [
           {
             _id: expect.any(String),
@@ -121,7 +121,7 @@ describe("mongo/integration/log-checking", () => {
         ],
         ordered: true,
         lsid: { id: expect.any(String) },
-        $db: "test_db_1",
+        $db: `test_db_${process.env.JEST_WORKER_ID}`,
       },
     });
   });

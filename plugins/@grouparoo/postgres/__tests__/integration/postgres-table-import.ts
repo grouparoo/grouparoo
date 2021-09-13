@@ -93,6 +93,7 @@ describe("integration/runs/postgres", () => {
       name: "pg import source",
       type: "postgres-table-import",
       appId: app.id,
+      modelId: "mod_profiles",
       options: { table: usersTableName },
       // mapping: { id: "userId" },
       // state: "ready",
@@ -161,6 +162,7 @@ describe("integration/runs/postgres", () => {
       name: "test destination",
       type: "postgres-export",
       appId: app.id,
+      modelId: "mod_profiles",
       options: {
         table: recordsDestinationTableName,
         primaryKey: "id",

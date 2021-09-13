@@ -6,6 +6,7 @@ exports.default = async function buildConfig() {
       class: "destination",
       type: "{{{__pluginName}}}-export",
       appId: {{{appId}}}, // The ID of the App this Destination uses - e.g. `appId: "data_warehouse"`
+      modelId: "mod_profiles", // The ID of the Grouparoo Model that this Destination will send
       groupId: "...", // The ID of the group whose members you want to export - e.g. `appId: "high_value_customers"`
       syncMode: {{{syncMode}}}, // How should Grouparoo sync with this destination? Options: "sync", "additive", "enrich"
 

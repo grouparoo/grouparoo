@@ -105,6 +105,7 @@ describe("integration/runs/sqlite", () => {
       name: "sqlite import source",
       type: "sqlite-table-import",
       appId: app.id,
+      modelId: "mod_profiles",
       options: { table: usersTableName },
     };
     const sourceResponse = await specHelper.runAction<SourceCreate>(
@@ -171,6 +172,7 @@ describe("integration/runs/sqlite", () => {
       name: "test destination",
       type: "sqlite-export",
       appId: app.id,
+      modelId: "mod_profiles",
       options: {
         table: recordsDestinationTableName,
         primaryKey: "id",

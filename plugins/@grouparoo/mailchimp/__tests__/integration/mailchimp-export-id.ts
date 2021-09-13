@@ -185,6 +185,7 @@ describe("integration/runs/mailchimp-export-id", () => {
       name: "test destination",
       type: "mailchimp-export-id",
       appId: app.id,
+      modelId: "mod_profiles",
       options: destinationOptions,
       mapping: {
         // doesn't have email

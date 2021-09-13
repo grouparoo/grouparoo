@@ -11,6 +11,7 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "{{{__pluginName}}}-query-import",
       appId: {{{appId}}}, // The ID of the App this Source uses - e.g. `appId: "data_warehouse"`
+      modelId: "mod_profiles", // The ID of the Grouparoo Model that this Source will contribute to
 
       options: {
         table: "..." // The Mongo collection in use.
