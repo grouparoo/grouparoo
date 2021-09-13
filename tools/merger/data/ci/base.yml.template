@@ -18,7 +18,7 @@ jobs:
   build:
     resource_class: "medium+"
     docker:
-      - image: circleci/node:16.8.0
+      - image: {{{docker_image}}}
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -38,7 +38,7 @@ jobs:
 
   complete:
     docker:
-      - image: circleci/node:16.8.0
+      - image: {{{docker_image}}}
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD

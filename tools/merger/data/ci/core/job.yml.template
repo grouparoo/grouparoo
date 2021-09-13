@@ -1,6 +1,6 @@
   test-{{{type}}}-{{{test_section}}}:
     docker:
-      - image: circleci/node:16.8.0
+      - image: {{{docker_image}}}
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
