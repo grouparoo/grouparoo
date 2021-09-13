@@ -117,9 +117,8 @@ export class Demo extends CLI {
       log(`Using scale = ${scale}, junkPercent = ${junkPercent}`);
 
       let types = params._arguments || [];
-      if (types.length === 0) {
-        types = ["b2c"];
-      }
+      if (types.length === 0) types = ["b2c"];
+
       const { db, subDirs, dataset } = getConfig(types);
 
       if (seed) {

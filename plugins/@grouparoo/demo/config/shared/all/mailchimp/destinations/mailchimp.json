@@ -4,6 +4,7 @@
   "name": "Mailchimp",
   "type": "mailchimp-export",
   "appId": "mailchimpapp",
+  "modelId": "mod_profiles",
   "groupId": "nobody",
   "syncMode": "sync",
   "options": {
