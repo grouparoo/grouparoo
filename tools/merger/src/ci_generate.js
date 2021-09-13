@@ -5,6 +5,8 @@ const Mustache = require("mustache");
 const { allPackagePaths, allPluginPaths } = require("../../shared/packages");
 const execSync = require("../../shared/exec");
 
+const docker_image = "circleci/node:16.8.0";
+
 module.exports.cmd = async function (vargs) {
   const instance = new Generator(vargs);
   await instance.generate();
@@ -367,6 +369,7 @@ class Generator {
 
   renderJob(job, name) {
     const template = readTemplate(name, job.type);
+    job.docker_image = docker_image;
     return Mustache.render(template, job);
   }
 
@@ -394,6 +397,7 @@ class Generator {
     // these get passed through
     view[".Branch"] = "{{ .Branch }}";
     view[".Revision"] = "{{ .Revision }}";
+    view.docker_image = docker_image;
 
     const methods = [
       "jobs",
