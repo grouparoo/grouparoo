@@ -10,8 +10,10 @@ import {
   BeforeDestroy,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
+import { ModelConfigurationObject } from "../classes/codeConfig";
 import { LoggedModel } from "../classes/loggedModel";
 import { APIData } from "../modules/apiData";
+import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
 
 export const ModelTypes = ["profile"] as const;
@@ -44,14 +46,39 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
   @Column
   locked: string;
 
+  getIcon() {
+    switch (this.type) {
+      case "profile":
+        return "user";
+      default:
+        throw new Error(`no icon for ${this.type} model`);
+    }
+  }
+
   async apiData() {
     return {
       id: this.id,
       name: this.name,
       type: this.type,
       locked: this.locked,
+      icon: this.getIcon(),
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
+    };
+  }
+
+  getConfigId() {
+    return this.idIsDefault() ? ConfigWriter.generateId(this.name) : this.id;
+  }
+
+  async getConfigObject(): Promise<ModelConfigurationObject> {
+    if (!this.name) return;
+
+    return {
+      class: "Model",
+      id: this.getConfigId(),
+      name: this.name,
+      type: this.type,
     };
   }
 

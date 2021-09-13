@@ -12,6 +12,7 @@ import { Property } from "../../src/models/Property";
 import { Schedule } from "../../src/models/Schedule";
 import { Setting } from "../../src/models/Setting";
 import { Source } from "../../src/models/Source";
+import { GrouparooModel } from "../../src/models/GrouparooModel";
 import { GrouparooRecord } from "../../src/models/GrouparooRecord";
 
 import { ConfigWriter } from "../../src/modules/configWriter";
@@ -126,6 +127,7 @@ describe("modules/configWriter", () => {
 
   describe("run()", () => {
     afterEach(async () => {
+      await GrouparooModel.destroy({ truncate: true });
       await App.destroy({ truncate: true });
       await Source.destroy({ truncate: true });
       await Property.destroy({ truncate: true });
@@ -151,10 +153,15 @@ describe("modules/configWriter", () => {
       process.env.GROUPAROO_RUN_MODE = "cli:config";
       await ConfigWriter.run();
       files = glob.sync(configFilePattern);
-      expect(files).toEqual([appFilePath]);
+      expect(files).toContain(appFilePath);
     });
 
     test("writes a file for each object", async () => {
+      const model: GrouparooModel = await GrouparooModel.create({
+        type: "profile",
+        name: "Profiles",
+        id: "mod_profiles",
+      });
       const app: App = await helper.factories.app();
       const source: Source = await helper.factories.source(app);
       await source.setOptions({ table: "test-table-04" });
@@ -167,6 +174,7 @@ describe("modules/configWriter", () => {
 
       const files = glob.sync(configFilePattern);
       const expConfigFiles = [
+        `models/${model.getConfigId()}.json`,
         `apps/${app.getConfigId()}.json`,
         `sources/${source.getConfigId()}.json`,
         `properties/${property.getConfigId()}.json`,
@@ -354,6 +362,7 @@ describe("modules/configWriter", () => {
 
   describe("getConfigObjects()", () => {
     afterEach(async () => {
+      await GrouparooModel.destroy({ truncate: true });
       await App.destroy({ truncate: true });
       await Source.destroy({ truncate: true });
       await Property.destroy({ truncate: true });
@@ -378,6 +387,10 @@ describe("modules/configWriter", () => {
       expect(configObjects).toEqual([]);
     });
     test("lists the formatted config objects, ready to be written", async () => {
+      const model: GrouparooModel = await GrouparooModel.create({
+        type: "profile",
+        name: "Profiles",
+      });
       const app: App = await helper.factories.app();
       const source: Source = await helper.factories.source(app);
       await source.setOptions({ table: "test-table-03" });
@@ -392,6 +405,10 @@ describe("modules/configWriter", () => {
       const configObjects = await ConfigWriter.getConfigObjects();
 
       expect(configObjects).toEqual([
+        {
+          filePath: `models/${model.getConfigId()}.json`,
+          object: await model.getConfigObject(),
+        },
         {
           filePath: `apps/${app.getConfigId()}.json`,
           object: await app.getConfigObject(),
@@ -422,6 +439,7 @@ describe("modules/configWriter", () => {
   // ---------------------------------------- | Model Config Builders
 
   describe("Model Config Providers", () => {
+    let model: GrouparooModel;
     let source: Source;
     let property: Property;
     let group: Group;
@@ -434,6 +452,11 @@ describe("modules/configWriter", () => {
     let propertyCol: string = faker.database.column();
 
     beforeEach(async () => {
+      model = await GrouparooModel.create({
+        type: "profile",
+        name: "Profiles",
+        id: "mod_profiles",
+      });
       source = await helper.factories.source();
       await source.setOptions(sourceOptions);
       await source.bootstrapUniqueProperty(
@@ -458,12 +481,38 @@ describe("modules/configWriter", () => {
     });
 
     afterEach(async () => {
+      await GrouparooModel.destroy({ truncate: true });
       await App.destroy({ truncate: true });
       await Source.destroy({ truncate: true });
       await Schedule.destroy({ truncate: true });
       await Property.destroy({ truncate: true });
       await Destination.destroy({ truncate: true });
       await Group.destroy({ truncate: true });
+    });
+
+    // --- Model ---
+
+    test("models should only humanize their ID if it matches default pattern", async () => {
+      let newModel: GrouparooModel = await GrouparooModel.create({
+        type: "profile",
+        name: "People",
+      });
+
+      expect(newModel.getConfigId()).toEqual(
+        ConfigWriter.generateId(newModel.name)
+      );
+      expect(newModel.getConfigId()).not.toEqual(newModel.id);
+
+      newModel = await GrouparooModel.create({
+        type: "profile",
+        name: "People Again",
+        id: "id-with-hyphen",
+      });
+      expect(newModel.id).toEqual("id-with-hyphen");
+      expect(newModel.getConfigId()).not.toEqual(
+        ConfigWriter.generateId(newModel.name)
+      );
+      expect(newModel.getConfigId()).toEqual(newModel.id);
     });
 
     // --- App ---
