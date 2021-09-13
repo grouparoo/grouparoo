@@ -309,32 +309,6 @@ export class GroupListDestinations extends AuthenticatedAction {
   }
 }
 
-export class GroupExport extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "group:export";
-    this.description = "export the records in this group";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      type: { required: true },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const group = await Group.findById(params.id);
-
-    if (params.type === "csv") {
-      await CLS.enqueueTask("group:exportToCSV", { groupId: group.id });
-    } else {
-      throw new Error(`${params.type} is not a type of group export`);
-    }
-
-    return { success: true };
-  }
-}
-
 export class GroupDestroy extends AuthenticatedAction {
   constructor() {
     super();

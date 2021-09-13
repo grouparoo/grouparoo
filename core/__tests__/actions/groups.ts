@@ -134,26 +134,6 @@ describe("actions/groups", () => {
       await destination.destroy();
     });
 
-    test("an administrator can enqueue a group export to CSV", async () => {
-      connection.params = {
-        csrfToken,
-        id,
-        type: "csv",
-      };
-      const { error, success } = await specHelper.runAction<GroupExport>(
-        "group:export",
-        connection
-      );
-      expect(error).toBeUndefined();
-      expect(success).toBe(true);
-
-      const foundTasks = await specHelper.findEnqueuedTasks(
-        "group:exportToCSV"
-      );
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0]).toEqual({ groupId: id });
-    });
-
     test("an administrator cannot destroy a group used by a destination", async () => {
       const destination = await helper.factories.destination();
       const group = await Group.findById(id);
