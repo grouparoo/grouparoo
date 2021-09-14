@@ -114,7 +114,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         type: "link",
         title: "Records",
         href: "/records",
-        icon: "user",
+        icon: "list",
       },
       {
         type: "link",
@@ -272,7 +272,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         type: "link",
         title: "Records",
         href: "/records",
-        icon: "user",
+        icon: "list",
       },
       {
         type: "link",
