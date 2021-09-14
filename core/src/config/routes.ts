@@ -113,7 +113,6 @@ export const DEFAULT = {
         { path: "/v:apiVersion/group/:id", action: "group:edit" },
         { path: "/v:apiVersion/group/:id/add", action: "group:addRecord" },
         { path: "/v:apiVersion/group/:id/run", action: "group:run" },
-        { path: "/v:apiVersion/group/:id/export", action: "group:export" },
         { path: "/v:apiVersion/group/:id/remove", action: "group:removeRecord" },
         { path: "/v:apiVersion/record/:id", action: "record:edit" },
         { path: "/v:apiVersion/records/importAndUpdate", action: "records:importAndUpdate" },
