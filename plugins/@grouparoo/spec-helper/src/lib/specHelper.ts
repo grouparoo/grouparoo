@@ -90,6 +90,7 @@ const models = [
   Destination,
   Option,
   Filter,
+  Import,
   Group,
   GroupMember,
   GroupRule,
