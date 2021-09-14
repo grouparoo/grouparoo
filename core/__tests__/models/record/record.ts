@@ -54,6 +54,13 @@ describe("models/record", () => {
     expect(logs[1].message).toBe("record destroyed");
   });
 
+  test("records require a valid modelId", async () => {
+    expect(GrouparooRecord.create()).rejects.toThrow(/modelId cannot be null/);
+    expect(GrouparooRecord.create({ modelId: "foo" })).rejects.toThrow(
+      /cannot find model with id foo/
+    );
+  });
+
   describe("findOrCreateByUniqueRecordProperties", () => {
     let source: Source;
     let toad: GrouparooRecord;
