@@ -34,6 +34,14 @@ describe("tasks/record:destroy", () => {
     expect(found[0].args[0].recordId).toBe("john-doe");
   });
 
+  test("wont throw if record no longer exists", async () => {
+    expect(
+      specHelper.runTask("record:destroy", {
+        recordId: "someRecordThatDoesNotExist",
+      })
+    ).resolves.toBe(undefined);
+  });
+
   test("does not delete records that aren't ready", async () => {
     const record: GrouparooRecord = await helper.factories.record();
     await record.update({ state: "pending" });
