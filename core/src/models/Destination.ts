@@ -202,6 +202,7 @@ export class Destination extends LoggedModel<Destination> {
       group = await this.$get("group", { scope: null, include: [GroupRule] });
     }
 
+    const model = await this.$get("model");
     const mapping = await this.getMapping();
     const options = await this.getOptions(null);
     const destinationGroupMemberships =
@@ -224,6 +225,8 @@ export class Destination extends LoggedModel<Destination> {
       syncMode,
       syncModes: syncModeData,
       app: app ? await app.apiData() : null,
+      modelId: this.modelId,
+      modelName: model.name,
       mapping,
       options,
       connection: pluginConnection,

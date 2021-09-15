@@ -82,11 +82,14 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   exports: Export[];
 
   async apiData() {
+    const model = await this.$get("model");
     const properties = await this.getProperties();
 
     return {
       id: this.id,
       state: this.state,
+      modelId: this.modelId,
+      modelName: model.name,
       properties,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),

@@ -282,6 +282,7 @@ export class Group extends LoggedModel<Group> {
   }
 
   async apiData() {
+    const model = await this.$get("model");
     const recordsCount = await this.recordsCount(null);
     const rules = await this.getRules();
     const nextCalculatedAt = await this.nextCalculatedAt();
@@ -290,6 +291,8 @@ export class Group extends LoggedModel<Group> {
       id: this.id,
       name: this.name,
       type: this.type,
+      modelId: this.modelId,
+      modelName: model.name,
       rules,
       matchType: this.matchType,
       state: this.state,

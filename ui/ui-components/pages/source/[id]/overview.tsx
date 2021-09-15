@@ -56,7 +56,12 @@ export default function Page({
               <a>{source.app.name}</a>
             </Link>
             <br />
-            <strong>Connection</strong>: {source.connection.name}:{" "}
+            <strong>Model</strong>:{" "}
+            <Link href="/model/[id]/edit" as={`/model/${source.modelId}/edit`}>
+              <a>{source.modelName}</a>
+            </Link>
+            <br />
+            <strong>Connection</strong>: <code>{source.connection.name}</code>:{" "}
             {source.connection.description}
           </p>
           <p>

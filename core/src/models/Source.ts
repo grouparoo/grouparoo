@@ -195,6 +195,7 @@ export class Source extends LoggedModel<Source> {
   }
 
   async apiData() {
+    const model = await this.$get("model");
     const app = await this.$get("app", { scope: null, include: [Option] });
     const schedule = await this.$get("schedule", { scope: null });
 
@@ -212,6 +213,8 @@ export class Source extends LoggedModel<Source> {
       mapping,
       app: app ? await app.apiData() : undefined,
       appId: this.appId,
+      modelName: model.name,
+      modelId: this.modelId,
       scheduleAvailable,
       schedule: schedule ? await schedule.apiData() : undefined,
       previewAvailable,

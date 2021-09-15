@@ -6,12 +6,12 @@ export default function PageHeader({
   title,
   icon,
   badges,
-  model,
+  iconType,
 }: {
   title: string;
   icon?: string;
   badges?: any[];
-  model?: string;
+  iconType?: string;
 }) {
   return (
     <>
@@ -19,7 +19,7 @@ export default function PageHeader({
         <tbody>
           <tr>
             <td valign="top" style={{ textAlign: "center", paddingRight: 20 }}>
-              {model === "grouparooModel" ? (
+              {iconType === "grouparooModel" ? (
                 <ModelIcon model={{ icon }} size="7x" />
               ) : (
                 <AppIcon src={icon} size={100} />

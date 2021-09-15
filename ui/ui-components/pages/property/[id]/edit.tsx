@@ -222,6 +222,14 @@ export default function Page(props) {
                   >
                     <a>{source.name}</a>
                   </Link>
+                  <br />
+                  <strong>Model</strong>:{" "}
+                  <Link
+                    href="/model/[id]/edit"
+                    as={`/model/${source.modelId}/edit`}
+                  >
+                    <a>{source.modelName}</a>
+                  </Link>
                 </p>
 
                 <hr />

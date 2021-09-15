@@ -5,10 +5,16 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
-import { Actions } from "../../utils/apiData";
+import { Actions, Models } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 
 export default function NewGroup(props) {
+  const {
+    models,
+  }: {
+    models: Models.GrouparooModelType[];
+  } = props;
+
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
@@ -69,6 +75,26 @@ export default function NewGroup(props) {
           </Form.Control>
         </Form.Group>
 
+        <Form.Group>
+          <Form.Label>Grouparoo Model</Form.Label>
+          <Form.Control
+            as="select"
+            defaultValue=""
+            name="modelId"
+            ref={register}
+            disabled={loading}
+          >
+            {models.map((model) => (
+              <option key={`model-${model.id}`} value={model.id}>
+                {model.name}
+              </option>
+            ))}
+          </Form.Control>
+          <Form.Text className="text-muted">
+            This source will only contribute to the chosen Grouparoo Model
+          </Form.Text>
+        </Form.Group>
+
         <LoadingButton variant="primary" type="submit" disabled={loading}>
           Submit
         </LoadingButton>
@@ -76,3 +102,9 @@ export default function NewGroup(props) {
     </>
   );
 }
+
+NewGroup.getInitialProps = async (ctx) => {
+  const { execApi } = UseApi(ctx);
+  const { models } = await execApi("get", `/models`);
+  return { models };
+};

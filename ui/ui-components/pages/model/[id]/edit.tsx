@@ -75,7 +75,11 @@ export default function Page(props) {
 
       <ModelTabs model={model} />
 
-      <PageHeader model="grouparooModel" icon={model.icon} title={model.name} />
+      <PageHeader
+        iconType="grouparooModel"
+        icon={model.icon}
+        title={model.name}
+      />
 
       <Row>
         <Col>

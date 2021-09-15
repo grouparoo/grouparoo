@@ -110,6 +110,7 @@ export default function Page(props) {
             <th>Name</th>
             <th>Type</th>
             <th>App</th>
+            <th>Model</th>
             <th>State</th>
             <th>Created At</th>
             <th>Schedule</th>
@@ -154,6 +155,16 @@ export default function Page(props) {
                     >
                       <a>
                         <strong>{source.app.name}</strong>
+                      </a>
+                    </Link>
+                  </td>
+                  <td>
+                    <Link
+                      href="/model/[id]/edit"
+                      as={`/model/${source.modelId}/edit`}
+                    >
+                      <a>
+                        <strong>{source.modelName}</strong>
                       </a>
                     </Link>
                   </td>
