@@ -9,7 +9,6 @@ import { Source } from "../models/Source";
 import { Schedule } from "../models/Schedule";
 import { Destination } from "../models/Destination";
 import { Import } from "../models/Import";
-import { File } from "../models/File";
 import { Group } from "../models/Group";
 import { GroupRule } from "../models/GroupRule";
 import { Export } from "../models/Export";
@@ -147,7 +146,6 @@ export namespace StatusReporters {
         Schedule,
         Destination,
         Import,
-        File,
         Group,
         GroupRule,
         Export,

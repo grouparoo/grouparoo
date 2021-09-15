@@ -74,10 +74,6 @@ export const DEFAULT = {
         { path: "/v:apiVersion/destination/:id/mappingOptions", action: "destination:mappingOptions" },
         { path: "/v:apiVersion/destination/:id/recordPreview", action: "destination:recordPreview" },
         { path: "/v:apiVersion/destination/:id/exportArrayProperties", action: "destination:exportArrayProperties" },
-        { path: "/v:apiVersion/files", action: "files:list" },
-        { path: "/v:apiVersion/files/options", action: "files:options" },
-        { path: "/v:apiVersion/file/:id/details", action: "file:details" },
-        { path: "/v:apiVersion/file/:id", action: "file:view" },
         { path: "/v:apiVersion/notifications", action: "notifications:list" },
         { path: "/v:apiVersion/notification/:id", action: "notification:view" },
         { path: "/v:apiVersion/object/:id", action: "object:find" }
@@ -107,7 +103,6 @@ export const DEFAULT = {
         { path: "/v:apiVersion/schedule/:id/run", action: "schedule:run" },
         { path: "/v:apiVersion/destination", action: "destination:create" },
         { path: "/v:apiVersion/destination/:id/export", action: "destination:export" },
-        { path: "/v:apiVersion/file", action: "file:create" },
       ],
 
       put: [
@@ -118,7 +113,6 @@ export const DEFAULT = {
         { path: "/v:apiVersion/group/:id", action: "group:edit" },
         { path: "/v:apiVersion/group/:id/add", action: "group:addRecord" },
         { path: "/v:apiVersion/group/:id/run", action: "group:run" },
-        { path: "/v:apiVersion/group/:id/export", action: "group:export" },
         { path: "/v:apiVersion/group/:id/remove", action: "group:removeRecord" },
         { path: "/v:apiVersion/record/:id", action: "record:edit" },
         { path: "/v:apiVersion/records/importAndUpdate", action: "records:importAndUpdate" },
@@ -147,7 +141,6 @@ export const DEFAULT = {
         { path: "/v:apiVersion/source/:id", action: "source:destroy" },
         { path: "/v:apiVersion/schedule/:id", action: "schedule:destroy" },
         { path: "/v:apiVersion/destination/:id", action: "destination:destroy" },
-        { path: "/v:apiVersion/file/:id", action: "file:destroy" },
         { path: "/v:apiVersion/reset/cluster", action: "reset:cluster" },
         { path: "/v:apiVersion/reset/data", action: "reset:data" },
         { path: "/v:apiVersion/reset/cache", action: "reset:cache" }

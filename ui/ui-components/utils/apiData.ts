@@ -9,7 +9,6 @@ import {
   DestinationGroupMembership,
   Export,
   ExportProcessor,
-  File,
   Group,
   GroupMember,
   GroupRule,
@@ -39,7 +38,6 @@ export namespace Models {
   export type DestinationGroupMembershipType = Partial<
     AsyncReturnType<DestinationGroupMembership["apiData"]>
   >;
-  export type FileType = Partial<AsyncReturnType<File["apiData"]>>;
   export type ExportType = Partial<AsyncReturnType<Export["apiData"]>>;
   export type ExportProcessorType = Partial<
     AsyncReturnType<ExportProcessor["apiData"]>
@@ -125,21 +123,12 @@ import {
   ExportProcessorsList,
 } from "@grouparoo/core/src/actions/exportProcessors";
 import {
-  FileCreate,
-  FileDestroy,
-  FileDetails,
-  FileOptions,
-  FileView,
-  FilesList,
-} from "@grouparoo/core/src/actions/files";
-import {
   GroupAddRecord,
   GroupCountComponentMembers,
   GroupCountPotentialMembers,
   GroupCreate,
   GroupDestroy,
   GroupEdit,
-  GroupExport,
   GroupListDestinations,
   GroupRemoveRecord,
   GroupRun,
@@ -379,25 +368,6 @@ export namespace Actions {
     typeof ExportProcessorsList.prototype.runWithinTransaction
   >;
 
-  export type FileCreate = AsyncReturnType<
-    typeof FileCreate.prototype.runWithinTransaction
-  >;
-  export type FileDestroy = AsyncReturnType<
-    typeof FileDestroy.prototype.runWithinTransaction
-  >;
-  export type FileDetails = AsyncReturnType<
-    typeof FileDetails.prototype.runWithinTransaction
-  >;
-  export type FileOptions = AsyncReturnType<
-    typeof FileOptions.prototype.runWithinTransaction
-  >;
-  export type FileView = AsyncReturnType<
-    typeof FileView.prototype.runWithinTransaction
-  >;
-  export type FilesList = AsyncReturnType<
-    typeof FilesList.prototype.runWithinTransaction
-  >;
-
   export type GroupAddRecord = AsyncReturnType<
     typeof GroupAddRecord.prototype.runWithinTransaction
   >;
@@ -415,9 +385,6 @@ export namespace Actions {
   >;
   export type GroupEdit = AsyncReturnType<
     typeof GroupEdit.prototype.runWithinTransaction
-  >;
-  export type GroupExport = AsyncReturnType<
-    typeof GroupExport.prototype.runWithinTransaction
   >;
   export type GroupListDestinations = AsyncReturnType<
     typeof GroupListDestinations.prototype.runWithinTransaction

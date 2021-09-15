@@ -7,7 +7,6 @@ import { App } from "../models/App";
 import { ApiKey } from "../models/ApiKey";
 import { Destination } from "../models/Destination";
 import { DestinationGroupMembership } from "../models/DestinationGroupMembership";
-import { File } from "../models/File";
 import { Export } from "../models/Export";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
@@ -47,7 +46,6 @@ const models = [
   Run,
   Export,
   ExportProcessor,
-  File,
   GroupMember,
   Group,
   GroupRule,
@@ -226,18 +224,6 @@ export namespace plugin {
       bulkParams.length > 0 ? await Import.bulkCreate(bulkParams) : [];
 
     return _imports;
-  }
-
-  /**
-   * Given a fileId, download the file to this server and return the readable local path
-   */
-  export async function getLocalFilePath(fileId: string): Promise<string> {
-    const file = await File.findOne({ where: { id: fileId } });
-
-    if (!file) throw new Error(`cannot find a file with id ${fileId}`);
-
-    const { localPath } = await api.files.downloadToServer(file);
-    return localPath;
   }
 
   /**

@@ -23,35 +23,15 @@ export default function Page(props) {
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
-  async function handleExport(type = "csv") {
+  async function run() {
     setLoading(true);
-    const response: Actions.GroupExport = await execApi(
+    const response: Actions.GroupRun = await execApi(
       "put",
-      `/group/${group.id}/export`,
-      {
-        type,
-      }
+      `/group/${group.id}/run`
     );
     setLoading(false);
     if (response?.success) {
-      successHandler.set({
-        message:
-          "Started Group Export.  It will be available in Files when complete...",
-      });
-    }
-  }
-
-  async function run() {
-    if (window.confirm("are you sure? this could take a while")) {
-      setLoading(true);
-      const response: Actions.GroupRun = await execApi(
-        "put",
-        `/group/${group.id}/run`
-      );
-      setLoading(false);
-      if (response?.success) {
-        successHandler.set({ message: "Update Run Enqueued" });
-      }
+      successHandler.set({ message: "Update Run Enqueued" });
     }
   }
 
@@ -64,16 +44,6 @@ export default function Page(props) {
       <h1>{group.name} - Members</h1>
       <StateBadge state={group.state} />
       <br />
-      <Button
-        disabled={group.state !== "ready"}
-        variant="outline-secondary"
-        size="sm"
-        onClick={() => {
-          handleExport("csv");
-        }}
-      >
-        Export all Group Members to CSV
-      </Button>
       &nbsp;
       <Button
         variant="outline-secondary"

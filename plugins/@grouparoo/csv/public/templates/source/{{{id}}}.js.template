@@ -9,7 +9,7 @@ exports.default = async function buildConfig() {
       class: "source",
       id: {{{id}}},
       name: {{{id}}},
-      type: "csv-remote-import",
+      type: "csv-import",
       appId: {{{appId}}}, // Set this value to the ID of the App this Source uses - e.g. `appId: "csv_app"`
       options: {
         url: "...", // The URL of a publicly available CSV file - e.g. `url: "https://example.com/data.csv"`

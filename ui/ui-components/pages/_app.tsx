@@ -15,7 +15,6 @@ import { ErrorHandler } from "../utils/errorHandler";
 import { SuccessHandler } from "../utils/successHandler";
 import { AppHandler } from "../utils/appHandler";
 import { DestinationHandler } from "../utils/destinationHandler";
-import { FileHandler } from "../utils/fileHandler";
 import { GroupHandler } from "../utils/groupHandler";
 import { RecordHandler } from "../utils/recordHandler";
 import { PropertiesHandler } from "../utils/propertiesHandler";
@@ -33,7 +32,6 @@ const successHandler = new SuccessHandler();
 const errorHandler = new ErrorHandler();
 const appHandler = new AppHandler();
 const destinationHandler = new DestinationHandler();
-const fileHandler = new FileHandler();
 const groupHandler = new GroupHandler();
 const recordHandler = new RecordHandler();
 const propertiesHandler = new PropertiesHandler();
@@ -59,7 +57,6 @@ export default function GrouparooWebApp(props) {
     errorHandler,
     appHandler,
     destinationHandler,
-    fileHandler,
     groupHandler,
     recordHandler,
     propertiesHandler,

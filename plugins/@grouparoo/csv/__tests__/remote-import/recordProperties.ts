@@ -8,7 +8,7 @@ import {
   Property,
   SimpleSourceOptions,
 } from "@grouparoo/core";
-import { recordProperties } from "../../src/lib/remote-import/recordProperties";
+import { recordProperties } from "../../src/lib/recordProperties";
 
 const sourceOptions: SimpleSourceOptions = {
   url: "https://raw.githubusercontent.com/grouparoo/grouparoo/main/core/__tests__/data/records-10.csv",

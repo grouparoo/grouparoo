@@ -28,7 +28,6 @@ importers:
       '@grouparoo/demo': 0.7.0-alpha.1
       '@grouparoo/eloqua': 0.7.0-alpha.1
       '@grouparoo/facebook': 0.7.0-alpha.1
-      '@grouparoo/files-s3': 0.7.0-alpha.1
       '@grouparoo/google-sheets': 0.7.0-alpha.1
       '@grouparoo/hubspot': 0.7.0-alpha.1
       '@grouparoo/intercom': 0.7.0-alpha.1
@@ -66,7 +65,6 @@ importers:
       '@grouparoo/demo': link:../../plugins/@grouparoo/demo
       '@grouparoo/eloqua': link:../../plugins/@grouparoo/eloqua
       '@grouparoo/facebook': link:../../plugins/@grouparoo/facebook
-      '@grouparoo/files-s3': link:../../plugins/@grouparoo/files-s3
       '@grouparoo/google-sheets': link:../../plugins/@grouparoo/google-sheets
       '@grouparoo/hubspot': link:../../plugins/@grouparoo/hubspot
       '@grouparoo/intercom': link:../../plugins/@grouparoo/intercom
@@ -128,7 +126,6 @@ importers:
       '@grouparoo/demo': 0.7.0-alpha.1
       '@grouparoo/eloqua': 0.7.0-alpha.1
       '@grouparoo/facebook': 0.7.0-alpha.1
-      '@grouparoo/files-s3': 0.7.0-alpha.1
       '@grouparoo/google-sheets': 0.7.0-alpha.1
       '@grouparoo/hubspot': 0.7.0-alpha.1
       '@grouparoo/intercom': 0.7.0-alpha.1
@@ -165,7 +162,6 @@ importers:
       '@grouparoo/demo': link:../../plugins/@grouparoo/demo
       '@grouparoo/eloqua': link:../../plugins/@grouparoo/eloqua
       '@grouparoo/facebook': link:../../plugins/@grouparoo/facebook
-      '@grouparoo/files-s3': link:../../plugins/@grouparoo/files-s3
       '@grouparoo/google-sheets': link:../../plugins/@grouparoo/google-sheets
       '@grouparoo/hubspot': link:../../plugins/@grouparoo/hubspot
       '@grouparoo/intercom': link:../../plugins/@grouparoo/intercom
@@ -636,54 +632,6 @@ importers:
       nock: 13.1.3
       prettier: 2.3.2
       sequelize: 6.6.2
-      ts-jest: 27.0.5_d6279bcaf6e2c6aa91a58343d133ee67
-      typescript: 4.4.2
-
-  plugins/@grouparoo/files-local:
-    specifiers:
-      '@grouparoo/core': 0.7.0-alpha.1
-      '@types/jest': '*'
-      '@types/node': '*'
-      actionhero: 27.0.3
-      fs-extra: 10.0.0
-      jest: 27.1.0
-      prettier: 2.3.2
-      ts-jest: 27.0.5
-      typescript: 4.4.2
-    dependencies:
-      fs-extra: 10.0.0
-    devDependencies:
-      '@grouparoo/core': link:../../../core
-      '@types/jest': 27.0.1
-      '@types/node': 16.9.1
-      actionhero: 27.0.3
-      jest: 27.1.0
-      prettier: 2.3.2
-      ts-jest: 27.0.5_d6279bcaf6e2c6aa91a58343d133ee67
-      typescript: 4.4.2
-
-  plugins/@grouparoo/files-s3:
-    specifiers:
-      '@grouparoo/core': 0.7.0-alpha.1
-      '@types/jest': '*'
-      '@types/node': '*'
-      actionhero: 27.0.3
-      aws-sdk: 2.982.0
-      fs-extra: 10.0.0
-      jest: 27.1.0
-      prettier: 2.3.2
-      ts-jest: 27.0.5
-      typescript: 4.4.2
-    dependencies:
-      aws-sdk: 2.982.0
-      fs-extra: 10.0.0
-    devDependencies:
-      '@grouparoo/core': link:../../../core
-      '@types/jest': 27.0.1
-      '@types/node': 16.9.1
-      actionhero: 27.0.3
-      jest: 27.1.0
-      prettier: 2.3.2
       ts-jest: 27.0.5_d6279bcaf6e2c6aa91a58343d133ee67
       typescript: 4.4.2
 
@@ -4710,22 +4658,6 @@ packages:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
 
-  /aws-sdk/2.982.0:
-    resolution: {integrity: sha512-5w+m8Ia35NqB4TOZHEKts5zSV+FTdc7hTYbN4N4lZ4YU3cLTMt496ojh5UI3Deo8IIlqgTf3UVuq6Y6cPpVxkg==}
-    engines: {node: '>= 0.8.0'}
-    requiresBuild: true
-    dependencies:
-      buffer: 4.9.2
-      events: 1.1.1
-      ieee754: 1.1.13
-      jmespath: 0.15.0
-      querystring: 0.2.0
-      sax: 1.2.1
-      url: 0.10.3
-      uuid: 3.3.2
-      xml2js: 0.4.19
-    dev: false
-
   /aws-sign2/0.7.0:
     resolution: {integrity: sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg=}
 
@@ -5117,7 +5049,7 @@ packages:
     resolution: {integrity: sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==}
     dependencies:
       base64-js: 1.5.1
-      ieee754: 1.1.13
+      ieee754: 1.2.1
       isarray: 1.0.0
 
   /buffer/5.6.0:
@@ -6926,11 +6858,6 @@ packages:
   /eventemitter3/4.0.7:
     resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
 
-  /events/1.1.1:
-    resolution: {integrity: sha1-nr23Y1rQmccNzEwqH1AEKI6L2SQ=}
-    engines: {node: '>=0.4.x'}
-    dev: false
-
   /events/3.3.0:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
     engines: {node: '>=0.8.x'}
@@ -8097,9 +8024,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
-
-  /ieee754/1.1.13:
-    resolution: {integrity: sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==}
 
   /ieee754/1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -9311,11 +9235,6 @@ packages:
 
   /jju/1.4.0:
     resolution: {integrity: sha1-o6vicYryQaKykE+EpiWXDzia4yo=}
-
-  /jmespath/0.15.0:
-    resolution: {integrity: sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc=}
-    engines: {node: '>= 0.6.0'}
-    dev: false
 
   /js-sha256/0.9.0:
     resolution: {integrity: sha512-sga3MHh9sgQN2+pJ9VYZ+1LPwXOxuBJBA5nrR5/ofPfuiJBE2hnjsaN8se8JznOmGLN2p49Pe5U/ttafcs/apA==}
@@ -13256,10 +13175,6 @@ packages:
       chokidar: 3.5.2
     dev: true
 
-  /sax/1.2.1:
-    resolution: {integrity: sha1-e45lYZCyKOgaZq6nSEgNgozS03o=}
-    dev: false
-
   /sax/1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
     dev: false
@@ -14635,7 +14550,7 @@ packages:
       '@types/jest': 27.0.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.1.0
+      jest: 27.1.0_ts-node@10.2.1
       jest-util: 27.1.1
       json5: 2.2.0
       lodash: 4.17.21
@@ -15036,13 +14951,6 @@ packages:
     dependencies:
       prepend-http: 2.0.0
 
-  /url/0.10.3:
-    resolution: {integrity: sha1-Ah5NnHcF8hu/N9A861h2dAJ3TGQ=}
-    dependencies:
-      punycode: 1.3.2
-      querystring: 0.2.0
-    dev: false
-
   /url/0.11.0:
     resolution: {integrity: sha1-ODjpfPxgUh63PFJajlW/3Z4uKPE=}
     dependencies:
@@ -15089,12 +14997,6 @@ packages:
       is-typed-array: 1.1.8
       safe-buffer: 5.2.1
       which-typed-array: 1.1.7
-
-  /uuid/3.3.2:
-    resolution: {integrity: sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==}
-    deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
-    hasBin: true
-    dev: false
 
   /uuid/3.4.0:
     resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
@@ -15477,7 +15379,7 @@ packages:
   /xml2js/0.4.19:
     resolution: {integrity: sha512-esZnJZJOiJR9wWKMyuvSE1y6Dq5LCuJanqhxslH2bxM6duahNZ+HMpCLhBQGZkbX6xRf8x1Y2eJlgt2q3qo49Q==}
     dependencies:
-      sax: 1.2.1
+      sax: 1.2.4
       xmlbuilder: 9.0.7
     dev: false
 
