@@ -16,9 +16,10 @@ export class ProfileDestroy extends CLSTask {
   }
 
   async runWithinTransaction({ profileId }: { profileId: string }) {
-    const profile = await Profile.findById(profileId);
+    const profile = await Profile.findOne({
+      where: { id: profileId, state: "ready" },
+    });
     if (!profile) return;
-    if (profile.state !== "ready") return;
 
     const pendingExports = await Export.count({
       where: {

@@ -34,6 +34,14 @@ describe("tasks/profile:destroy", () => {
     expect(found[0].args[0].profileId).toBe("john-doe");
   });
 
+  test("wont throw if profile no longer exists", async () => {
+    expect(
+      specHelper.runTask("profile:destroy", {
+        profileId: "someProfileThatNoLongerExists",
+      })
+    ).resolves.toBe(undefined);
+  });
+
   test("does not delete profiles that aren't ready", async () => {
     const profile: Profile = await helper.factories.profile();
     await profile.update({ state: "pending" });
