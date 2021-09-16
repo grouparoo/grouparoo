@@ -398,7 +398,7 @@ export function PendingImports({
       if (!_pendingImportKeys.includes(metric.value)) {
         _pendingImportKeys.push(metric.value);
       }
-      const idx = _pendingImportKeys.indexOf(metric.value);
+      const idx = _pendingImportKeys.sort().indexOf(metric.value);
 
       if (!_chartData[idx]) _chartData[idx] = [];
       _chartData[idx].push({
@@ -420,7 +420,7 @@ export function PendingImports({
     }
 
     if (_sources) setSources(_sources);
-    if (_pendingImportKeys) setPendingImportKeys(_pendingImportKeys);
+    if (_pendingImportKeys) setPendingImportKeys(_pendingImportKeys.sort());
     if (_chartData) setChartData(_chartData);
   }
 
@@ -496,7 +496,7 @@ export function PendingExports({
           _pendingExportKeys.push(metric.value);
         }
 
-        const idx = _pendingExportKeys.indexOf(metric.value);
+        const idx = _pendingExportKeys.sort().indexOf(metric.value);
         if (!_chartData[idx]) _chartData[idx] = [];
 
         _chartData[idx].push({
@@ -519,7 +519,7 @@ export function PendingExports({
       }
 
       setDestinations(_destinations);
-      setPendingExportKeys(_pendingExportKeys);
+      setPendingExportKeys(_pendingExportKeys.sort());
       setChartData(_chartData);
     }
 
