@@ -6,6 +6,7 @@ import ExportProcessorTabs from "../../../components/tabs/exportProcessor";
 import { Models } from "../../../utils/apiData";
 import StateBadge from "../../../components/badges/stateBadge";
 import { DurationTime } from "../../../components/durationTime";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page({
   exportProcessor,
@@ -73,15 +74,15 @@ export default function Page({
             <tbody>
               <tr>
                 <td>Created</td>
-                <td>{new Date(exportProcessor.createdAt).toLocaleString()}</td>
+                <td>{formatTimestamp(exportProcessor.createdAt)}</td>
                 <td>⇣</td>
               </tr>
               <tr>
                 <td>Process</td>
                 <td>
                   {exportProcessor.processAt
-                    ? new Date(exportProcessor.processAt).toLocaleString()
-                    : null}
+                    ? formatTimestamp(exportProcessor.processAt)
+                    : "pending"}
                 </td>
                 <td>
                   ⇣
@@ -95,8 +96,8 @@ export default function Page({
                 <td>Started</td>
                 <td>
                   {exportProcessor.startedAt
-                    ? new Date(exportProcessor.startedAt).toLocaleString()
-                    : null}
+                    ? formatTimestamp(exportProcessor.startedAt)
+                    : "pending"}
                 </td>
                 <td>
                   ⇣
@@ -110,8 +111,8 @@ export default function Page({
                 <td>Completed</td>
                 <td>
                   {exportProcessor.completedAt
-                    ? new Date(exportProcessor.completedAt).toLocaleString()
-                    : null}
+                    ? formatTimestamp(exportProcessor.completedAt)
+                    : "pending"}
                 </td>
                 <td>
                   ⇣

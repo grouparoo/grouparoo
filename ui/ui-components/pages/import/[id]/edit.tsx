@@ -9,6 +9,7 @@ import {
   ImportGroupsDiff,
 } from "../../../components/import/diff";
 import { DurationTime } from "../../../components/durationTime";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page(props) {
   const {
@@ -125,12 +126,20 @@ export default function Page(props) {
             <tbody>
               <tr>
                 <td>Created</td>
-                <td>{new Date(_import.createdAt).toLocaleString()}</td>
+                <td>
+                  {_import.createdAt
+                    ? formatTimestamp(_import.createdAt)
+                    : "pending"}
+                </td>
                 <td>⇣</td>
               </tr>
               <tr>
                 <td>Associated</td>
-                <td>{new Date(_import.recordAssociatedAt).toLocaleString()}</td>
+                <td>
+                  {_import.recordAssociatedAt
+                    ? formatTimestamp(_import.recordAssociatedAt)
+                    : "pending"}
+                </td>
                 <td>
                   ⇣
                   <DurationTime
@@ -141,7 +150,11 @@ export default function Page(props) {
               </tr>
               <tr>
                 <td>Record Updated</td>
-                <td>{new Date(_import.recordUpdatedAt).toLocaleString()}</td>
+                <td>
+                  {_import.recordUpdatedAt
+                    ? formatTimestamp(_import.recordUpdatedAt)
+                    : "pending"}
+                </td>
                 <td>
                   ⇣
                   <DurationTime
@@ -152,7 +165,11 @@ export default function Page(props) {
               </tr>
               <tr>
                 <td>Groups Updated</td>
-                <td>{new Date(_import.groupsUpdatedAt).toLocaleString()}</td>
+                <td>
+                  {_import.groupsUpdatedAt
+                    ? formatTimestamp(_import.groupsUpdatedAt)
+                    : "pending"}
+                </td>
                 <td>
                   ⇣
                   <DurationTime

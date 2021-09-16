@@ -11,6 +11,7 @@ import {
 } from "../../../components/export/diff";
 import StateBadge from "../../../components/badges/stateBadge";
 import { DurationTime } from "../../../components/durationTime";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page({
   _export,
@@ -132,15 +133,17 @@ export default function Page({
             <tbody>
               <tr>
                 <td>Created</td>
-                <td>{new Date(_export.createdAt).toLocaleString()}</td>
+                <td>
+                  {_export.createdAt
+                    ? formatTimestamp(_export.createdAt)
+                    : "pending"}
+                </td>
                 <td>⇣</td>
               </tr>
               <tr>
                 <td>Send</td>
                 <td>
-                  {_export.sendAt
-                    ? new Date(_export.sendAt).toLocaleString()
-                    : null}
+                  {_export.sendAt ? formatTimestamp(_export.sendAt) : "pending"}
                 </td>
                 <td>
                   ⇣
@@ -154,8 +157,8 @@ export default function Page({
                 <td>Started</td>
                 <td>
                   {_export.startedAt
-                    ? new Date(_export.startedAt).toLocaleString()
-                    : null}
+                    ? formatTimestamp(_export.startedAt)
+                    : "pending"}
                 </td>
                 <td>
                   ⇣
@@ -169,8 +172,8 @@ export default function Page({
                 <td>Completed</td>
                 <td>
                   {_export.completedAt
-                    ? new Date(_export.completedAt).toLocaleString()
-                    : null}
+                    ? formatTimestamp(_export.completedAt)
+                    : "pending"}
                 </td>
                 <td>
                   ⇣

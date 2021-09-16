@@ -157,30 +157,28 @@ export default function Page(props) {
                     Created:{" "}
                     {exportProcessor.createdAt
                       ? formatTimestamp(exportProcessor.createdAt)
-                      : null}
+                      : "pending"}
                     <br />
                     Process:{" "}
                     {exportProcessor.processAt
                       ? formatTimestamp(exportProcessor.processAt)
-                      : null}
+                      : "pending"}
                     <br />
                     Start:{" "}
                     {exportProcessor.startedAt
                       ? formatTimestamp(exportProcessor.startedAt)
-                      : null}
+                      : "pending"}
                     <br />
                     End:{" "}
                     {exportProcessor.completedAt
                       ? formatTimestamp(exportProcessor.completedAt)
-                      : null}
+                      : "pending"}
                     <br />
                     Duration:{" "}
-                    {exportProcessor.completedAt ? (
-                      <DurationTime
-                        start={exportProcessor.createdAt}
-                        end={exportProcessor.completedAt}
-                      />
-                    ) : null}
+                    <DurationTime
+                      start={exportProcessor.createdAt}
+                      end={exportProcessor.completedAt}
+                    />
                   </td>
                   <td>{exportProcessor.exportsCount}</td>
                   <td>

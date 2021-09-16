@@ -211,28 +211,28 @@ export default function ExportsList(props) {
                     Created:{" "}
                     {_export.createdAt
                       ? formatTimestamp(_export.createdAt)
-                      : null}
+                      : "pending"}
                     <br />
                     Send:{" "}
-                    {_export.startedAt ? formatTimestamp(_export.sendAt) : null}
+                    {_export.startedAt
+                      ? formatTimestamp(_export.sendAt)
+                      : "pending"}
                     <br />
                     Start:{" "}
                     {_export.startedAt
                       ? formatTimestamp(_export.startedAt)
-                      : null}
+                      : "pending"}
                     <br />
                     End:{" "}
                     {_export.completedAt
                       ? formatTimestamp(_export.completedAt)
-                      : null}
+                      : "pending"}
                     <br />
                     Duration:{" "}
-                    {_export.completedAt ? (
-                      <DurationTime
-                        start={_export.createdAt}
-                        end={_export.completedAt}
-                      />
-                    ) : null}
+                    <DurationTime
+                      start={_export.createdAt}
+                      end={_export.completedAt}
+                    />
                   </td>
                   <td>
                     <ExportRecordPropertiesDiff _export={_export} />
