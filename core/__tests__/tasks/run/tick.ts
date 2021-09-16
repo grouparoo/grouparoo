@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { task, api, specHelper } from "actionhero";
-import { Run } from "../../../src";
+import { Run, Group, StatusMetric, Status } from "../../../src";
 import { internalRun } from "../../../src/modules/internalRun";
 
 describe("tasks/run:tick", () => {
@@ -8,6 +8,11 @@ describe("tasks/run:tick", () => {
   beforeAll(async () => await helper.factories.properties());
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeEach(async () => await Run.truncate());
+
+  let group: Group;
+  beforeAll(async () => {
+    group = await helper.factories.group();
+  });
 
   test("complete runs will not be run", async () => {
     const run = await helper.factories.run(null, { state: "complete" });
@@ -41,7 +46,6 @@ describe("tasks/run:tick", () => {
   });
 
   test("running group runs will be enqueued", async () => {
-    const group = await helper.factories.group();
     const run = await helper.factories.run(group, { state: "running" });
     await helper.changeTimestamps(run);
 
@@ -76,5 +80,77 @@ describe("tasks/run:tick", () => {
     const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
     expect(foundTasks.length).toBe(1);
     expect(foundTasks[0].args[0].runId).toBe(run.id);
+  });
+
+  describe("circutbreaker disabled", () => {
+    beforeEach(async () => {
+      const metrics: StatusMetric[] = [
+        {
+          topic: "Import",
+          collection: "pending",
+          aggregation: "count",
+          value: "0",
+        },
+        {
+          topic: "Export",
+          collection: "pending",
+          aggregation: "count",
+          value: "10",
+        },
+        {
+          topic: "GrouparooRecord",
+          collection: "pending",
+          aggregation: "count",
+          value: "100",
+        },
+      ];
+
+      await Status.set(metrics);
+    });
+
+    ["Import", "Export", "GrouparooRecord"].map((topic) =>
+      test(`if there are not many pending ${topic}s, runs will be ticked`, async () => {
+        const run = await helper.factories.run(group, { state: "running" });
+        await helper.changeTimestamps(run);
+        const enqueued = await specHelper.runTask("run:tick", {});
+        expect(enqueued).toBe(1);
+      })
+    );
+  });
+
+  describe("circutbreaker active", () => {
+    beforeEach(async () => {
+      const metrics: StatusMetric[] = [
+        {
+          topic: "Import",
+          collection: "pending",
+          aggregation: "count",
+          value: "99999999",
+        },
+        {
+          topic: "Export",
+          collection: "pending",
+          aggregation: "count",
+          value: "99999999",
+        },
+        {
+          topic: "GrouparooRecord",
+          collection: "pending",
+          aggregation: "count",
+          value: "99999999",
+        },
+      ];
+
+      await Status.set(metrics);
+    });
+
+    ["Import", "Export", "GrouparooRecord"].map((topic) =>
+      test(`if there are too many pending ${topic}s, runs will not be ticked`, async () => {
+        const run = await helper.factories.run(group, { state: "running" });
+        await helper.changeTimestamps(run);
+        const enqueued = await specHelper.runTask("run:tick", {});
+        expect(enqueued).toBe(0);
+      })
+    );
   });
 });

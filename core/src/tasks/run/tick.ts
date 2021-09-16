@@ -1,9 +1,10 @@
 import { Run } from "../../models/Run";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { config } from "actionhero";
+import { config, log } from "actionhero";
 import { CLS } from "../../modules/cls";
 import { Op } from "sequelize";
 import { RunOps } from "../../modules/ops/runs";
+import { Status } from "../../modules/status";
 
 export class RunsTick extends CLSTask {
   constructor() {
@@ -14,7 +15,31 @@ export class RunsTick extends CLSTask {
     this.queue = "runs";
   }
 
+  async shouldWaitForPending(topic: string, limit: number) {
+    const metrics = await Status.getCurrent();
+    if (!metrics[topic]) return false;
+
+    const value = metrics[topic]?.pending[0]?.metric?.value;
+
+    if (value) {
+      if (parseInt(value) > limit) {
+        log(
+          `pausing runs as there are too many pending ${topic.toLowerCase()}s (${value})`,
+          "warning"
+        );
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   async runWithinTransaction() {
+    const circuitBreakerLimit = config.batchSize.profileProperties * 10;
+    for (const topic of ["Import", "Export", "GrouparooRecord"]) {
+      if (await this.shouldWaitForPending(topic, circuitBreakerLimit)) return 0;
+    }
+
     const lastCheck = new Date().getTime() - Math.max(this.frequency, 1000);
     const runs = await Run.findAll({
       where: { state: "running", updatedAt: { [Op.lt]: lastCheck } },
