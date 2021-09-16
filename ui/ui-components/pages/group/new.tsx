@@ -83,7 +83,11 @@ export default function NewGroup(props) {
             name="modelId"
             ref={register}
             disabled={loading}
+            required
           >
+            <option value="" disabled>
+              Choose Grouparoo Model...
+            </option>
             {models.map((model) => (
               <option key={`model-${model.id}`} value={model.id}>
                 {model.name}

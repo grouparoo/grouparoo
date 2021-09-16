@@ -67,6 +67,7 @@ export default function Page(props) {
               as="select"
               onChange={(e) => setModelId(e.target.value)}
               defaultValue=""
+              required
             >
               <option value="" disabled>
                 Choose Grouparoo Model...

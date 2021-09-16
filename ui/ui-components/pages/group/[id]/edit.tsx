@@ -94,17 +94,18 @@ export default function Page(props) {
         <Row>
           <Col>
             <p>
+              <strong>Model</strong>: {group.modelName}
+              <br />
+              <strong>Last Member Calculation</strong>:{" "}
               {group.calculatedAt ? (
-                <span>
-                  Last Member Calculation: {formatTimestamp(group.calculatedAt)}
-                </span>
+                <span>{formatTimestamp(group.calculatedAt)}</span>
               ) : (
                 "Never Calculated"
               )}
               <br />
               {group.nextCalculatedAt ? (
                 <span>
-                  Next Member Calculation:{" "}
+                  <strong>Next Member Calculation</strong>:{" "}
                   {formatTimestamp(group.nextCalculatedAt)}
                 </span>
               ) : null}
