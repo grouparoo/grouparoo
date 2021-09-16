@@ -3,12 +3,12 @@ import Head from "next/head";
 import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Alert, Card } from "react-bootstrap";
 import Link from "next/link";
-import Moment from "react-moment";
 import { Models } from "../../../utils/apiData";
 import {
   ImportRecordPropertiesDiff,
   ImportGroupsDiff,
 } from "../../../components/import/diff";
+import { DurationTime } from "../../../components/durationTime";
 
 export default function Page(props) {
   const {
@@ -108,9 +108,9 @@ export default function Page(props) {
           <p>
             Total duration:{" "}
             <strong>
-              <Moment
-                duration={_import.createdAt}
-                date={_import.groupsUpdatedAt}
+              <DurationTime
+                start={_import.createdAt}
+                end={_import.groupsUpdatedAt}
               />
             </strong>
           </p>
@@ -133,9 +133,9 @@ export default function Page(props) {
                 <td>{new Date(_import.recordAssociatedAt).toLocaleString()}</td>
                 <td>
                   ⇣
-                  <Moment
-                    duration={_import.recordAssociatedAt || 0}
-                    date={_import.createdAt}
+                  <DurationTime
+                    start={_import.createdAt}
+                    end={_import.recordAssociatedAt}
                   />
                 </td>
               </tr>
@@ -144,9 +144,9 @@ export default function Page(props) {
                 <td>{new Date(_import.recordUpdatedAt).toLocaleString()}</td>
                 <td>
                   ⇣
-                  <Moment
-                    duration={_import.recordAssociatedAt || 0}
-                    date={_import.recordUpdatedAt}
+                  <DurationTime
+                    start={_import.recordAssociatedAt}
+                    end={_import.recordUpdatedAt}
                   />
                 </td>
               </tr>
@@ -155,9 +155,9 @@ export default function Page(props) {
                 <td>{new Date(_import.groupsUpdatedAt).toLocaleString()}</td>
                 <td>
                   ⇣
-                  <Moment
-                    duration={_import.groupsUpdatedAt}
-                    date={_import.recordUpdatedAt}
+                  <DurationTime
+                    start={_import.recordUpdatedAt}
+                    end={_import.groupsUpdatedAt}
                   />
                 </td>
               </tr>

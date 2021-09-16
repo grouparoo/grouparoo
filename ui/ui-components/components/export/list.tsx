@@ -7,7 +7,6 @@ import EnterpriseLink from "../enterpriseLink";
 import { useRouter } from "next/router";
 import { Row, Col, ButtonGroup, Button, Badge, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
-import Moment from "react-moment";
 import LoadingTable from "../loadingTable";
 import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
@@ -15,6 +14,7 @@ import { ExportGroupsDiff, ExportRecordPropertiesDiff } from "./diff";
 import { capitalize } from "../../utils/languageHelper";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import StateBadge from "../badges/stateBadge";
+import { DurationTime } from "../durationTime";
 
 const states = [
   "all",
@@ -228,9 +228,9 @@ export default function ExportsList(props) {
                     <br />
                     Duration:{" "}
                     {_export.completedAt ? (
-                      <Moment
-                        duration={_export.createdAt}
-                        date={_export.completedAt}
+                      <DurationTime
+                        start={_export.createdAt}
+                        end={_export.completedAt}
                       />
                     ) : null}
                   </td>

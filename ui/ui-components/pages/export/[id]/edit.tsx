@@ -3,7 +3,6 @@ import { Row, Col, Table, Alert, Card, Badge } from "react-bootstrap";
 import Link from "next/link";
 import EnterpriseLink from "../../../components/enterpriseLink";
 import Head from "next/head";
-import Moment from "react-moment";
 import ExportTabs from "../../../components/tabs/export";
 import { Models } from "../../../utils/apiData";
 import {
@@ -11,6 +10,7 @@ import {
   ExportRecordPropertiesDiff,
 } from "../../../components/export/diff";
 import StateBadge from "../../../components/badges/stateBadge";
+import { DurationTime } from "../../../components/durationTime";
 
 export default function Page({
   _export,
@@ -115,7 +115,10 @@ export default function Page({
           <p>
             Total duration:{" "}
             <strong>
-              <Moment duration={_export.createdAt} date={_export.completedAt} />
+              <DurationTime
+                start={_export.createdAt}
+                end={_export.completedAt}
+              />
             </strong>
           </p>
           <Table size="sm">
@@ -141,12 +144,10 @@ export default function Page({
                 </td>
                 <td>
                   ⇣
-                  {_export.sendAt ? (
-                    <Moment
-                      duration={_export.createdAt}
-                      date={_export.sendAt + 1} // +1 needed as the times may be exactly the same
-                    />
-                  ) : null}
+                  <DurationTime
+                    start={_export.createdAt}
+                    end={_export.sendAt}
+                  />
                 </td>
               </tr>
               <tr>
@@ -158,12 +159,10 @@ export default function Page({
                 </td>
                 <td>
                   ⇣
-                  {_export.startedAt ? (
-                    <Moment
-                      duration={_export.sendAt}
-                      date={_export.startedAt}
-                    />
-                  ) : null}
+                  <DurationTime
+                    start={_export.sendAt}
+                    end={_export.startedAt}
+                  />
                 </td>
               </tr>
               <tr>
@@ -175,12 +174,10 @@ export default function Page({
                 </td>
                 <td>
                   ⇣
-                  {_export.completedAt ? (
-                    <Moment
-                      duration={_export.startedAt}
-                      date={_export.completedAt}
-                    />
-                  ) : null}
+                  <DurationTime
+                    start={_export.startedAt}
+                    end={_export.completedAt}
+                  />
                 </td>
               </tr>
             </tbody>

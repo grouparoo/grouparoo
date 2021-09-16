@@ -1,9 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { Fragment, useState } from "react";
+import { Fragment, useState } from "react";
 import { Alert, Button, ButtonGroup, Col, Row } from "react-bootstrap";
-import Moment from "react-moment";
 import StateBadge from "../components/badges/stateBadge";
 import LoadingTable from "../components/loadingTable";
 import Pagination from "../components/pagination";
@@ -15,6 +14,7 @@ import { Models, Actions } from "../utils/apiData";
 import { ErrorHandler } from "../utils/errorHandler";
 import { capitalize } from "../utils/languageHelper";
 import { formatTimestamp } from "../utils/formatTimestamp";
+import { DurationTime } from "../components/durationTime";
 
 const states = ["all", "pending", "failed", "complete"];
 
@@ -176,9 +176,9 @@ export default function Page(props) {
                     <br />
                     Duration:{" "}
                     {exportProcessor.completedAt ? (
-                      <Moment
-                        duration={exportProcessor.createdAt}
-                        date={exportProcessor.completedAt}
+                      <DurationTime
+                        start={exportProcessor.createdAt}
+                        end={exportProcessor.completedAt}
                       />
                     ) : null}
                   </td>

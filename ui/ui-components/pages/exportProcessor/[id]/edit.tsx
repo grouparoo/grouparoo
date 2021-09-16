@@ -1,12 +1,11 @@
 import { UseApi } from "../../../hooks/useApi";
-import { Row, Col, Table, Alert, Card } from "react-bootstrap";
-import Link from "next/link";
+import { Table, Alert, Card } from "react-bootstrap";
 import EnterpriseLink from "../../../components/enterpriseLink";
 import Head from "next/head";
-import Moment from "react-moment";
 import ExportProcessorTabs from "../../../components/tabs/exportProcessor";
 import { Models } from "../../../utils/apiData";
 import StateBadge from "../../../components/badges/stateBadge";
+import { DurationTime } from "../../../components/durationTime";
 
 export default function Page({
   exportProcessor,
@@ -57,9 +56,9 @@ export default function Page({
           <p>
             Total duration:{" "}
             <strong>
-              <Moment
-                duration={exportProcessor.createdAt}
-                date={exportProcessor.completedAt}
+              <DurationTime
+                start={exportProcessor.createdAt}
+                end={exportProcessor.completedAt}
               />
             </strong>
           </p>
@@ -86,12 +85,10 @@ export default function Page({
                 </td>
                 <td>
                   ⇣
-                  {exportProcessor.processAt ? (
-                    <Moment
-                      duration={exportProcessor.createdAt}
-                      date={exportProcessor.processAt + 1} // +1 needed as the times may be exactly the same
-                    />
-                  ) : null}
+                  <DurationTime
+                    start={exportProcessor.createdAt}
+                    end={exportProcessor.processAt}
+                  />
                 </td>
               </tr>
               <tr>
@@ -103,12 +100,10 @@ export default function Page({
                 </td>
                 <td>
                   ⇣
-                  {exportProcessor.startedAt ? (
-                    <Moment
-                      duration={exportProcessor.processAt}
-                      date={exportProcessor.startedAt}
-                    />
-                  ) : null}
+                  <DurationTime
+                    start={exportProcessor.processAt}
+                    end={exportProcessor.startedAt}
+                  />
                 </td>
               </tr>
               <tr>
@@ -120,12 +115,10 @@ export default function Page({
                 </td>
                 <td>
                   ⇣
-                  {exportProcessor.completedAt ? (
-                    <Moment
-                      duration={exportProcessor.startedAt}
-                      date={exportProcessor.completedAt}
-                    />
-                  ) : null}
+                  <DurationTime
+                    start={exportProcessor.startedAt}
+                    end={exportProcessor.completedAt}
+                  />
                 </td>
               </tr>
             </tbody>
