@@ -292,18 +292,44 @@ describe("models/group", () => {
       expect(group.calculatedAt).toBeTruthy();
     });
 
-    test("groups can calculate when they will next be calculated based on the setting", async () => {
-      expect(group.calculatedAt).toBeFalsy();
-      expect((await group.nextCalculatedAt()).getTime() / 1000).toBeCloseTo(
-        new Date().getTime() / 1000
-      );
-      await group.setRules([
-        { key: "firstName", match: "Mario", operation: { op: "eq" } },
-      ]);
-      await group.runAddGroupMembers(run);
-      expect((await group.nextCalculatedAt()).getTime()).toBeGreaterThan(
-        new Date().getTime()
-      );
+    describe("group#nextCalculatedAt", () => {
+      test("returns for a group with relative rules ", async () => {
+        await group.setRules([
+          {
+            key: "lastLoginAt",
+            operation: { op: "gt" },
+            relativeMatchDirection: "subtract",
+            relativeMatchNumber: 1,
+            relativeMatchUnit: "days",
+          },
+        ]);
+
+        expect(group.calculatedAt).toBeFalsy();
+        expect((await group.nextCalculatedAt()).getTime() / 1000).toBeCloseTo(
+          new Date().getTime() / 1000
+        );
+        await group.runAddGroupMembers(run);
+        expect((await group.nextCalculatedAt()).getTime()).toBeGreaterThan(
+          new Date().getTime()
+        );
+      });
+
+      test("does not return for calculated groups without relative rules", async () => {
+        await group.setRules([
+          {
+            key: "ltv",
+            operation: { op: "gt" },
+            match: "3",
+          },
+        ]);
+        expect(await group.nextCalculatedAt()).toBeNull();
+      });
+
+      test("does not return for manual groups", async () => {
+        await group.setRules([]);
+        await group.update({ type: "manual" });
+        expect(await group.nextCalculatedAt()).toBeNull();
+      });
     });
 
     test("group#run will create imports for every group member when force=true", async () => {

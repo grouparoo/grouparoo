@@ -39,7 +39,7 @@ Object {
       "locked": "config:code",
       "matchType": "all",
       "name": "People with Email Addresses",
-      "nextCalculatedAt": Any<Number>,
+      "nextCalculatedAt": null,
       "recordsCount": 1,
       "rules": Array [
         Object {
@@ -194,7 +194,7 @@ Object {
       "locked": "config:code",
       "matchType": "all",
       "name": "People with Email Addresses",
-      "nextCalculatedAt": Any<Number>,
+      "nextCalculatedAt": null,
       "recordsCount": 1,
       "rules": Array [
         Object {

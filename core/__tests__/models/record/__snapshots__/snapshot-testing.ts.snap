@@ -8,7 +8,7 @@ Object {
   "locked": null,
   "matchType": "all",
   "name": "test group",
-  "nextCalculatedAt": Any<Number>,
+  "nextCalculatedAt": null,
   "recordsCount": 1,
   "rules": Array [
     Object {
@@ -152,7 +152,7 @@ Object {
       "locked": null,
       "matchType": "all",
       "name": "test group",
-      "nextCalculatedAt": Any<Number>,
+      "nextCalculatedAt": null,
       "recordsCount": 1,
       "rules": Array [
         Object {

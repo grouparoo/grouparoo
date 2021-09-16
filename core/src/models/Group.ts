@@ -348,8 +348,16 @@ export class Group extends LoggedModel<Group> {
   }
 
   async nextCalculatedAt() {
-    if (!this.calculatedAt) return Moment().toDate();
+    if (this.type === "manual") return null;
 
+    let hasRelativeRule = false;
+    const rules = await this.getRules();
+    for (const rule of rules) {
+      if (rule.relativeMatchDirection) hasRelativeRule = true;
+    }
+    if (!hasRelativeRule) return null;
+
+    if (!this.calculatedAt) return Moment().toDate();
     const setting = await Setting.findOne({
       where: { pluginName: "core", key: "groups-calculation-delay-minutes" },
     });

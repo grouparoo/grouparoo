@@ -99,7 +99,7 @@ describe("test grouparoo records", () => {
         id: expect.stringMatching(/^grp_/),
         createdAt: expect.any(Number),
         updatedAt: expect.any(Number),
-        nextCalculatedAt: expect.any(Number),
+        nextCalculatedAt: null,
       });
     });
 
