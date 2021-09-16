@@ -29,9 +29,15 @@ export class GroupsUpdateCalculatedGroups extends CLSTask {
     });
 
     for (const group of calculatedGroups) {
-      const calculatedAt = group.calculatedAt?.getTime() || 0;
+      const calculatedAt = group.calculatedAt?.getTime() ?? 0;
 
-      if (calculatedAt < lastCheckTime.getTime()) {
+      let hasRelativeRule = false;
+      const rules = await group.getRules();
+      for (const rule of rules) {
+        if (rule.relativeMatchDirection) hasRelativeRule = true;
+      }
+
+      if (hasRelativeRule && calculatedAt < lastCheckTime.getTime()) {
         if (group.state === "ready") {
           groupsToRun.push(group);
         } else if (group.state === "updating") {
