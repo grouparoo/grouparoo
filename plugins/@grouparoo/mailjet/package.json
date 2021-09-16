@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/mailjet",
   "description": "The Grouparoo mailjet Plugin",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,13 +28,13 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.6.2",
+    "@grouparoo/app-templates": "0.6.3",
     "axios": "0.21.1",
     "node-mailjet": "3.3.4"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.6.2",
-    "@grouparoo/spec-helper": "0.6.2",
+    "@grouparoo/core": "0.6.3",
+    "@grouparoo/spec-helper": "0.6.3",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "27.0.3",
