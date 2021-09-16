@@ -124,23 +124,17 @@ export default function ImportList(props) {
                   <td>
                     Created: {formatTimestamp(_import.createdAt)}
                     <br /> Record Associated:{" "}
-                    {_import.recordAssociatedAt ? (
-                      formatTimestamp(_import.recordAssociatedAt)
-                    ) : (
-                      <span>x</span>
-                    )}
+                    {_import.recordAssociatedAt
+                      ? formatTimestamp(_import.recordAssociatedAt)
+                      : "pending"}
                     <br /> Record Updated:{" "}
-                    {_import.recordUpdatedAt ? (
-                      formatTimestamp(_import.recordUpdatedAt)
-                    ) : (
-                      <span>x</span>
-                    )}
+                    {_import.recordUpdatedAt
+                      ? formatTimestamp(_import.recordUpdatedAt)
+                      : "pending"}
                     <br /> Groups Updated:{" "}
-                    {_import.groupsUpdatedAt ? (
-                      formatTimestamp(_import.groupsUpdatedAt)
-                    ) : (
-                      <span>x</span>
-                    )}
+                    {_import.groupsUpdatedAt
+                      ? formatTimestamp(_import.groupsUpdatedAt)
+                      : "pending"}
                   </td>
                   <td>
                     <ImportRecordPropertiesDiff _import={_import} />

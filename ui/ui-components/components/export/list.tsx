@@ -7,7 +7,6 @@ import EnterpriseLink from "../enterpriseLink";
 import { useRouter } from "next/router";
 import { Row, Col, ButtonGroup, Button, Badge, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
-import Moment from "react-moment";
 import LoadingTable from "../loadingTable";
 import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
@@ -15,6 +14,7 @@ import { ExportGroupsDiff, ExportRecordPropertiesDiff } from "./diff";
 import { capitalize } from "../../utils/languageHelper";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import StateBadge from "../badges/stateBadge";
+import { DurationTime } from "../durationTime";
 
 const states = [
   "all",
@@ -211,28 +211,28 @@ export default function ExportsList(props) {
                     Created:{" "}
                     {_export.createdAt
                       ? formatTimestamp(_export.createdAt)
-                      : null}
+                      : "pending"}
                     <br />
                     Send:{" "}
-                    {_export.startedAt ? formatTimestamp(_export.sendAt) : null}
+                    {_export.startedAt
+                      ? formatTimestamp(_export.sendAt)
+                      : "pending"}
                     <br />
                     Start:{" "}
                     {_export.startedAt
                       ? formatTimestamp(_export.startedAt)
-                      : null}
+                      : "pending"}
                     <br />
                     End:{" "}
                     {_export.completedAt
                       ? formatTimestamp(_export.completedAt)
-                      : null}
+                      : "pending"}
                     <br />
                     Duration:{" "}
-                    {_export.completedAt ? (
-                      <Moment
-                        duration={_export.createdAt}
-                        date={_export.completedAt}
-                      />
-                    ) : null}
+                    <DurationTime
+                      start={_export.createdAt}
+                      end={_export.completedAt}
+                    />
                   </td>
                   <td>
                     <ExportRecordPropertiesDiff _export={_export} />
