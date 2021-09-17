@@ -14,6 +14,7 @@ import { Button } from "react-bootstrap";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { SuccessHandler } from "../utils/successHandler";
 import { ErrorHandler } from "../utils/errorHandler";
+import ModelBadge from "../components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -159,14 +160,10 @@ export default function Page(props) {
                     </Link>
                   </td>
                   <td>
-                    <Link
-                      href="/model/[id]/edit"
-                      as={`/model/${source.modelId}/edit`}
-                    >
-                      <a>
-                        <strong>{source.modelName}</strong>
-                      </a>
-                    </Link>
+                    <ModelBadge
+                      modelName={source.modelName}
+                      modelId={source.modelId}
+                    />
                   </td>
                   <td>
                     <StateBadge state={source.state} />

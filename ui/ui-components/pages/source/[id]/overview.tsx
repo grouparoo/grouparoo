@@ -13,6 +13,7 @@ import { Models } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page({
   errorHandler,
@@ -45,6 +46,7 @@ export default function Page({
         badges={[
           <LockedBadge object={source} />,
           <StateBadge state={source.state} />,
+          <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
         ]}
       />
 
@@ -54,11 +56,6 @@ export default function Page({
             <strong>App</strong>:{" "}
             <Link href="/app/[id]/edit" as={`/app/${source.app.id}/edit`}>
               <a>{source.app.name}</a>
-            </Link>
-            <br />
-            <strong>Model</strong>:{" "}
-            <Link href="/model/[id]/edit" as={`/model/${source.modelId}/edit`}>
-              <a>{source.modelName}</a>
             </Link>
             <br />
             <strong>Connection</strong>: <code>{source.connection.name}</code>:{" "}

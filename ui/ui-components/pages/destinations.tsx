@@ -14,6 +14,7 @@ import StateBadge from "../components/badges/stateBadge";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { ErrorHandler } from "../utils/errorHandler";
+import ModelBadge from "../components/badges/modelBadge";
 
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
@@ -80,6 +81,7 @@ export default function Page(props) {
             <th>Group Tracked</th>
             <th>App</th>
             <th>State</th>
+            <th>Model</th>
             <th>Pending Exports</th>
             <th>Created At</th>
           </tr>
@@ -144,6 +146,12 @@ export default function Page(props) {
                 </td>
                 <td>
                   <StateBadge state={destination.state} />
+                </td>
+                <td>
+                  <ModelBadge
+                    modelName={destination.modelName}
+                    modelId={destination.modelId}
+                  />
                 </td>
                 <td>
                   <Badge variant={pendingExports > 0 ? "warning" : "info"}>

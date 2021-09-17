@@ -6,9 +6,29 @@ import {
   getRecordDisplayName,
   getRecordPageTitle,
 } from "../../../components/record/getRecordDisplayName";
+import { Models } from "../../../utils/apiData";
+import PageHeader from "../../../components/pageHeader";
+import StateBadge from "../../../components/badges/stateBadge";
+import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page(props) {
-  const { record } = props;
+  const {
+    record,
+    properties,
+  }: { record: Models.GrouparooRecordType; properties: Models.PropertyType[] } =
+    props;
+
+  const uniqueRecordProperties = [];
+  let email: string;
+  properties.forEach((rule) => {
+    if (rule.unique) {
+      uniqueRecordProperties.push(rule.key);
+    }
+
+    if (rule.type === "email" && record.properties[rule.key]) {
+      email = record.properties[rule.key].values.join(", ");
+    }
+  });
 
   return (
     <>
@@ -20,10 +40,18 @@ export default function Page(props) {
 
       <LogsList
         header={
-          <>
-            <h1>{getRecordDisplayName(record)} - Logs</h1>
-            <br />
-          </>
+          <PageHeader
+            title={`${getRecordDisplayName(record)} - Logs`}
+            iconType="grouparooRecord"
+            email={email}
+            badges={[
+              <StateBadge state={record.state} />,
+              <ModelBadge
+                modelName={record.modelName}
+                modelId={record.modelId}
+              />,
+            ]}
+          />
         }
         {...props}
       />
@@ -35,6 +63,7 @@ Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { record } = await execApi("get", `/record/${id}`);
+  const { properties } = await execApi("get", `/properties`);
   const logListInitialProps = await LogsList.hydrate(ctx);
-  return { record, ...logListInitialProps };
+  return { record, properties, ...logListInitialProps };
 };

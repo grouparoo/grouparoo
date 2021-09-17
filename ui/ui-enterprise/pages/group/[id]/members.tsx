@@ -8,6 +8,9 @@ import RecordsList from "@grouparoo/ui-components/components/record/list";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
+import PageHeader from "@grouparoo/ui-components/components/pageHeader";
+import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
+import ModelBadge from "@grouparoo/ui-components/components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -40,11 +43,19 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: {group.name}</title>
       </Head>
+
       <GroupTabs group={group} />
-      <h1>{group.name} - Members</h1>
-      <StateBadge state={group.state} />
-      <br />
-      &nbsp;
+
+      <PageHeader
+        title={`${group.name} - Members`}
+        iconType="group"
+        badges={[
+          <LockedBadge object={group} />,
+          <StateBadge state={group.state} />,
+          <ModelBadge modelName={group.modelName} modelId={group.modelId} />,
+        ]}
+      />
+
       <Button
         variant="outline-secondary"
         size="sm"

@@ -13,6 +13,7 @@ import PageHeader from "../../../components/pageHeader";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
+import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -272,6 +273,10 @@ export default function Page(props) {
         badges={[
           <LockedBadge object={destination} />,
           <StateBadge state={destination.state} />,
+          <ModelBadge
+            modelName={destination.modelName}
+            modelId={destination.modelId}
+          />,
         ]}
       />
 

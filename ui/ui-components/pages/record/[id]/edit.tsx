@@ -6,7 +6,6 @@ import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form, ListGroup, Alert, Button } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import { useRouter } from "next/router";
-import RecordImageFromEmail from "../../../components/visualizations/recordImageFromEmail";
 import LoadingTable from "../../../components/loadingTable";
 import { getRecordPageTitle } from "../../../components/record/getRecordDisplayName";
 import ArrayRecordPropertyList from "../../../components/record/arrayRecordPropertyList";
@@ -16,6 +15,8 @@ import { SuccessHandler } from "../../../utils/successHandler";
 import { RecordHandler } from "../../../utils/recordHandler";
 import StateBadge from "../../../components/badges/stateBadge";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import ModelBadge from "../../../components/badges/modelBadge";
+import PageHeader from "../../../components/pageHeader";
 
 export default function Page(props) {
   const {
@@ -138,18 +139,6 @@ export default function Page(props) {
 
   const groupMembershipIds = groups.map((g) => g.id);
 
-  const uniqueRecordProperties = [];
-  let email: string;
-  properties.forEach((rule) => {
-    if (rule.unique) {
-      uniqueRecordProperties.push(rule.key);
-    }
-
-    if (rule.type === "email" && record.properties[rule.key]) {
-      email = record.properties[rule.key].values.join(", ");
-    }
-  });
-
   if (properties.length === 0) {
     return (
       <>
@@ -165,6 +154,18 @@ export default function Page(props) {
     );
   }
 
+  const uniqueRecordProperties = [];
+  let email: string;
+  properties.forEach((rule) => {
+    if (rule.unique) {
+      uniqueRecordProperties.push(rule.key);
+    }
+
+    if (rule.type === "email" && record.properties[rule.key]) {
+      email = record.properties[rule.key].values.join(", ");
+    }
+  });
+
   return (
     <>
       <Head>
@@ -173,37 +174,25 @@ export default function Page(props) {
 
       <RecordTabs record={record} />
 
-      <table>
-        <tbody>
-          <tr>
-            <td valign="top" style={{ textAlign: "center", paddingRight: 20 }}>
-              <RecordImageFromEmail
-                width={100}
-                loading={loading}
-                email={email}
-              />
-            </td>
-            <td valign="top">
-              {uniqueRecordProperties.map((key) => {
-                return (
-                  <h3 key={`recordHeader-${key}`}>
-                    <span className="text-muted">{key}: </span>
-                    {record.properties[key]
-                      ? record.properties[key].values.join(", ")
-                      : null}
-                  </h3>
-                );
-              })}
-              <span className="text-muted">Created: </span>
-              {formatTimestamp(record.createdAt)}/{" "}
-              <span className="text-muted">Updated: </span>
-              {formatTimestamp(record.updatedAt)}
-              <br />
-              <StateBadge state={record.state} />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <PageHeader
+        title={uniqueRecordProperties.map((key) => {
+          return (
+            <>
+              <span className="text-muted">{key}: </span>
+              {record.properties[key]
+                ? record.properties[key].values.join(", ")
+                : null}
+            </>
+          );
+        })}
+        iconType="grouparooRecord"
+        loading={loading}
+        email={email}
+        badges={[
+          <StateBadge state={record.state} />,
+          <ModelBadge modelName={record.modelName} modelId={record.modelId} />,
+        ]}
+      />
 
       <Row>
         <Col>
@@ -238,8 +227,16 @@ export default function Page(props) {
         </Col>
       </Row>
 
-      <br />
-      <br />
+      <Row>
+        <Col>
+          <span className="text-muted">Created: </span>
+          {formatTimestamp(record.createdAt)} /{" "}
+          <span className="text-muted">Updated: </span>
+          {formatTimestamp(record.updatedAt)}
+          <br />
+          <br />
+        </Col>
+      </Row>
 
       <Row>
         <Col>
@@ -298,7 +295,6 @@ export default function Page(props) {
           </LoadingTable>
         </Col>
       </Row>
-
       <Row>
         <Col>
           <h3>Groups</h3>

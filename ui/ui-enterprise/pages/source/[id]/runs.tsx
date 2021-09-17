@@ -6,6 +6,7 @@ import SourceTabs from "@grouparoo/ui-components/components/tabs/source";
 import PageHeader from "@grouparoo/ui-components/components/pageHeader";
 import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
 import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
+import ModelBadge from "@grouparoo/ui-components/components/badges/modelBadge";
 import { Button, Row, Col } from "react-bootstrap";
 import { ErrorHandler } from "../../../../ui-components/utils/errorHandler";
 import { SuccessHandler } from "../../../../ui-components/utils/successHandler";
@@ -58,6 +59,10 @@ export default function Page(props) {
               badges={[
                 <LockedBadge key="badge-1" object={source} />,
                 <StateBadge key="badge-2" state={source.state} />,
+                <ModelBadge
+                  modelName={source.modelName}
+                  modelId={source.modelId}
+                />,
               ]}
             />
 

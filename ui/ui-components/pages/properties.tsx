@@ -13,6 +13,7 @@ import StateBadge from "../components/badges/stateBadge";
 import { Models, Actions } from "../utils/apiData";
 import { ErrorHandler } from "../utils/errorHandler";
 import { formatTimestamp } from "../utils/formatTimestamp";
+import ModelBadge from "../components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -142,6 +143,7 @@ export default function Page(props) {
             <th>Unique</th>
             <th>Is Array</th>
             <th>Source</th>
+            <th>Model</th>
             <th>State</th>
             <th>Example Values</th>
             <th>Updated At</th>
@@ -179,6 +181,12 @@ export default function Page(props) {
                   >
                     <a>{source.name}</a>
                   </Link>
+                </td>
+                <td>
+                  <ModelBadge
+                    modelName={source.modelName}
+                    modelId={source.modelId}
+                  />
                 </td>
                 <td>
                   <StateBadge state={rule.state} />

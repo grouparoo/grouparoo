@@ -13,6 +13,8 @@ import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { GroupHandler } from "../../../utils/groupHandler";
+import PageHeader from "../../../components/pageHeader";
+import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -86,30 +88,38 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: {group.name}</title>
       </Head>
+
       <GroupTabs group={group} />
-      <h1>{group.name}</h1>
-      <StateBadge state={group.state} /> <LockedBadge object={group} />
+
+      <PageHeader
+        title={group.name}
+        iconType="group"
+        badges={[
+          <LockedBadge object={group} />,
+          <StateBadge state={group.state} />,
+          <ModelBadge modelName={group.modelName} modelId={group.modelId} />,
+        ]}
+      />
+
       {group.type === "calculated" &&
       process.env.GROUPAROO_UI_EDITION !== "config" ? (
         <Row>
           <Col>
-            <p>
-              <strong>Model</strong>: {group.modelName}
-              <br />
-              <strong>Last Member Calculation</strong>:{" "}
-              {group.calculatedAt ? (
-                <span>{formatTimestamp(group.calculatedAt)}</span>
-              ) : (
-                "Never Calculated"
-              )}
-              <br />
-              {group.nextCalculatedAt ? (
-                <span>
-                  <strong>Next Member Calculation</strong>:{" "}
-                  {formatTimestamp(group.nextCalculatedAt)}
-                </span>
-              ) : null}
-            </p>
+            <strong>Last Member Calculation</strong>:{" "}
+            {group.calculatedAt ? (
+              <span>{formatTimestamp(group.calculatedAt)}</span>
+            ) : (
+              "Never Calculated"
+            )}
+            <br />
+            {group.nextCalculatedAt ? (
+              <span>
+                <strong>Next Member Calculation</strong>:{" "}
+                {formatTimestamp(group.nextCalculatedAt)}
+              </span>
+            ) : null}
+            <br />
+            <br />
           </Col>
         </Row>
       ) : null}

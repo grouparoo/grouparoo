@@ -12,6 +12,8 @@ import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { makeLocal } from "../../../utils/makeLocal";
+import PageHeader from "../../../components/pageHeader";
+import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -157,8 +159,17 @@ export default function Page(props) {
         <title>Grouparoo: {group.name}</title>
       </Head>
       <GroupTabs group={group} />
-      <h1>{group.name} - Rules</h1>
-      <StateBadge state={group.state} /> <LockedBadge object={group} />
+
+      <PageHeader
+        title={`${group.name} - Rules`}
+        iconType="group"
+        badges={[
+          <LockedBadge object={group} />,
+          <StateBadge state={group.state} />,
+          <ModelBadge modelName={group.modelName} modelId={group.modelId} />,
+        ]}
+      />
+
       {process.env.GROUPAROO_UI_EDITION !== "config" && (
         <p>
           Total Records in this group: &nbsp;

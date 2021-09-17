@@ -17,6 +17,7 @@ import { SuccessHandler } from "../../../utils/successHandler";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { filtersAreEqual } from "../../../utils/filtersAreEqual";
 import { makeLocal } from "../../../utils/makeLocal";
+import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -139,6 +140,7 @@ export default function Page(props) {
         title={`${source.name} - Schedule`}
         badges={[
           <LockedBadge object={source} />,
+          <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
           <>
             Source: <StateBadge state={source.state} />
           </>,

@@ -10,6 +10,10 @@ import AppIcon from "@grouparoo/ui-components/components/appIcon";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 import { formatTimestamp } from "../../../../ui-components/utils/formatTimestamp";
+import PageHeader from "@grouparoo/ui-components/components/pageHeader";
+import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
+import ModelBadge from "@grouparoo/ui-components/components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -59,7 +63,16 @@ export default function Page(props) {
 
       <GroupTabs group={group} />
 
-      <h1>{group.name} - Destinations</h1>
+      <PageHeader
+        title={`${group.name} - Destinations`}
+        iconType="group"
+        badges={[
+          <LockedBadge object={group} />,
+          <StateBadge state={group.state} />,
+          <ModelBadge modelName={group.modelName} modelId={group.modelId} />,
+        ]}
+      />
+
       <p>{destinations.length} destinations interested in this group</p>
 
       <LoadingTable loading={loading}>
