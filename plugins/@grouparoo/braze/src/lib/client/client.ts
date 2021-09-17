@@ -1,19 +1,16 @@
 import axios, { AxiosRequestConfig } from "axios";
 import User from "./user";
-import Group from "./group";
 import Template from "./template";
 
 export class BrazeClient {
   apiKey: any;
   restEndpoint: any;
-  groups: Group;
   users: User;
   templates: Template;
 
   constructor(apiKey: string, restEndpoint: string) {
     this.apiKey = apiKey;
     this.restEndpoint = restEndpoint;
-    this.groups = new Group(this);
     this.users = new User(this);
     this.templates = new Template(this);
   }
@@ -34,6 +31,7 @@ export class BrazeClient {
       const { data = {} } = response;
       return data;
     } catch (err) {
+      console.log(err);
       throw new Error(err);
     }
   }

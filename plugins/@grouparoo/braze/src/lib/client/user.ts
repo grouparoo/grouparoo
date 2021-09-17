@@ -7,15 +7,30 @@ export default class User {
     this.client = client;
   }
 
-  updateExternalIds(externalIdRenames: Array<any>) {
-    return this.client._request({
-      data: JSON.stringify({ external_id_renames: externalIdRenames }),
+  async getOne(externalId: string) {
+    const response = await this.client._request({
+      data: JSON.stringify({ external_ids: [externalId] }),
       method: "POST",
-      url: `/users/external_ids/rename`,
+      url: `/users/export/ids`,
     });
+    const { users = [] } = response;
+    const filtered = users.filter(
+      (record) => record["external_id"] === externalId
+    );
+    return filtered.length > 0 ? filtered[0] : null;
   }
 
-  update(payload: Array<any>) {
+  async get(externalIds: Array<string>) {
+    const response = await this.client._request({
+      data: JSON.stringify({ external_ids: externalIds }),
+      method: "POST",
+      url: `/users/export/ids`,
+    });
+    const { users = [] } = response;
+    return users;
+  }
+
+  updateOrCreate(payload: Array<any>) {
     return this.client._request({
       data: JSON.stringify({ attributes: payload }),
       method: "POST",

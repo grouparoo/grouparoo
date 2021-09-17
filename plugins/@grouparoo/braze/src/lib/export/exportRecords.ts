@@ -25,12 +25,18 @@ const getClient: BatchMethodGetClient = async ({ config }) => {
 // fetch using the keys to set destinationId and result on BatchExports
 // use the getByForeignKey to lookup results
 const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
+  client,
   foreignKeys,
   getByForeignKey,
 }) => {
+  const users = await client.users.get(foreignKeys);
   for (const foreignKey of foreignKeys) {
-    const user = getByForeignKey(foreignKey);
-    user.destinationId = foreignKey;
+    const filtered = users.filter((user) => user["external_id"] === foreignKey);
+    if (filtered.length > 0) {
+      const user = getByForeignKey(foreignKey);
+      user.destinationId = foreignKey;
+      user.result = filtered[0];
+    }
   }
 };
 
@@ -39,14 +45,10 @@ const deleteByDestinationIds: BatchMethodDeleteByDestinationIds = async ({
   client,
   users,
 }) => {
-  try {
-    const response = await client.user.delete(
-      users.map((user) => user.destinationId)
-    );
-    console.log(response);
-  } catch (error) {
-    console.log(error);
-  }
+  const response = await client.users.delete(
+    users.map((user) => user.destinationId)
+  );
+  // TODO: treat the errors
 };
 
 // update these users by destinationId
@@ -54,61 +56,71 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
   client,
   users,
 }) => {
-  const externalIdRenames = [];
+  const userToDelete = [];
   for (const user of users) {
     const { newRecordProperties, oldRecordProperties } = user;
     const externalId = newRecordProperties["external_id"];
     const oldExternalId = oldRecordProperties["external_id"];
     if (oldExternalId && oldExternalId !== externalId) {
-      externalIdRenames.push({
-        current_external_id: oldExternalId,
-        new_external_id: externalId,
-      });
+      userToDelete.push(oldExternalId);
     }
   }
-  if (externalIdRenames.length > 0) {
-    try {
-      const response = await client.users.updateExternalIds(externalIdRenames);
-      console.log(response);
-    } catch (e) {
-      console.log(e);
-    }
+  const payload = getUsersPayload(users);
+  if (payload.length > 0) {
+    const response = await client.users.updateOrCreate(payload);
+    // TODO: treat the errors
   }
-  try {
-    const payload = getUsersPayload(users);
-    if (payload.length > 0) {
-      const response = await client.users.update(payload);
-      console.log(response);
-    }
-  } catch (e) {
-    console.log(e);
+  if (userToDelete.length > 0) {
+    const response = await client.users.delete(userToDelete);
+    // TODO: treat the errors
   }
 };
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
 const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
-  async () => {
-    // We're handling the existing and new users inside the updateByDestinationIds.
-    // To do so, we're setting the fk as destinationId.
+  async ({ client, users }) => {
+    const payload = getUsersPayload(users);
+    if (payload.length > 0) {
+      const response = await client.users.updateOrCreate(payload);
+      // TODO: treat the errors
+      for (let user of users) {
+        // We're not using destinationIds for created prospects, but app-templates/batch requires it to be set
+        // and the batch upsert does not return IDs, so we'll just set it to the foreignKey
+        if (!user.destinationId) {
+          user.destinationId = user.foreignKeyValue;
+        }
+      }
+    }
   };
 
-const addToGroups: BatchMethodAddToGroups = async ({ client, groupMap }) => {
-  for (const audienceName in groupMap) {
-    const users = groupMap[audienceName];
-    const response = await client.groups.add(audienceName, users);
-    console.log(response);
+function getGroupsListToExport(profile) {
+  const { oldGroups, newGroups } = profile;
+  const groups = newGroups;
+  if (profile.destinationId && profile.result) {
+    const removedGroups = [];
+    for (const group of oldGroups) {
+      if (!groups.includes(group)) {
+        removedGroups.push(group);
+      }
+    }
+
+    for (const group of profile.result["custom_attributes"]["groups"]) {
+      if (!groups.includes(group) && !removedGroups.includes(group)) {
+        groups.push(group);
+      }
+    }
   }
+  return groups;
+}
+
+const addToGroups: BatchMethodAddToGroups = async () => {
+  // We're adding to groups by setting properties in the upsert payload
+  // No need to add to groups separately
 };
 
-const removeFromGroups: BatchMethodRemoveFromGroups = async ({
-  client,
-  groupMap,
-}) => {
-  for (const audienceName in groupMap) {
-    const users = groupMap[audienceName];
-    const response = await client.groups.remove(audienceName, users);
-    console.log(response);
-  }
+const removeFromGroups: BatchMethodRemoveFromGroups = async () => {
+  // We're removing from groups by setting properties in the upsert payload
+  // No need to remove from groups separately
 };
 
 // mess with the keys (lowercase emails, for example)
@@ -127,7 +139,7 @@ const normalizeGroupName: BatchMethodNormalizeGroupName = ({ groupName }) => {
 
 export async function exportBatch({ appOptions, syncOperations, exports }) {
   const batchSize = 50; // users updates accepts up to 75 and groups up to 50, then batchSize should be the lower one.
-  const findSize = 1000;
+  const findSize = 50;
 
   return exportRecordsInBatch(
     exports,
@@ -170,7 +182,7 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
 function getUsersPayload(users: Array<BatchExport>) {
   const payload = [];
   for (const user of users) {
-    const { oldRecordProperties, newRecordProperties, foreignKeyValue } = user;
+    const { oldRecordProperties, newRecordProperties } = user;
     const deletePropertiesPayload = {};
     const newPropertyKeys = Object.keys(newRecordProperties);
     Object.keys(oldRecordProperties)
@@ -183,11 +195,9 @@ function getUsersPayload(users: Array<BatchExport>) {
     );
     const formattedDataFields = {};
     for (const key of Object.keys(userPayload)) {
-      if (key === "external_id") {
-        continue;
-      }
       formattedDataFields[key] = formatVar(userPayload[key]);
     }
+    formattedDataFields["groups"] = getGroupsListToExport(user);
     payload.push(formattedDataFields);
   }
   return payload;
