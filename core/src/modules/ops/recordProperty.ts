@@ -274,7 +274,9 @@ async function formatString(v: string) {
 async function formatDate(v: any) {
   // try to parse with new Date()
   if (v instanceof Date) return v.getTime().toString();
-  return new Date(v).getTime().toString();
+  const dateString = new Date(v).getTime().toString();
+  if (dateString === "NaN") throw new Error(`date "${v}" is not valid`);
+  return dateString;
 }
 
 function formatURL(v: string) {
