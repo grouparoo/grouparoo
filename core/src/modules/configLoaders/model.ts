@@ -47,7 +47,7 @@ export async function loadModel(
 export async function deleteModels(ids: string[]) {
   const models = await GrouparooModel.scope(null).findAll({
     where: {
-      locked: { [Op.or]: [getCodeConfigLockKey(), null] },
+      locked: getCodeConfigLockKey(),
       id: { [Op.notIn]: ids },
     },
   });
