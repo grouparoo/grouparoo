@@ -57,9 +57,10 @@ export default function Page(props) {
               icon={source.app.icon}
               title={`${source.name} - Runs`}
               badges={[
-                <LockedBadge key="badge-1" object={source} />,
-                <StateBadge key="badge-2" state={source.state} />,
+                <LockedBadge key="header-badge-1" object={source} />,
+                <StateBadge key="header-badge-2" state={source.state} />,
                 <ModelBadge
+                  key="header-badge-3"
                   modelName={source.modelName}
                   modelId={source.modelId}
                 />,

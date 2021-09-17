@@ -50,9 +50,13 @@ export default function Page(props) {
         title={`${group.name} - Members`}
         iconType="group"
         badges={[
-          <LockedBadge object={group} />,
-          <StateBadge state={group.state} />,
-          <ModelBadge modelName={group.modelName} modelId={group.modelId} />,
+          <LockedBadge key="header-badge-1" object={group} />,
+          <StateBadge key="header-badge-2" state={group.state} />,
+          <ModelBadge
+            key="header-badge-3"
+            modelName={group.modelName}
+            modelId={group.modelId}
+          />,
         ]}
       />
 
