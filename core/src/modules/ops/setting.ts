@@ -129,14 +129,6 @@ export namespace SettingOps {
       type: "number",
     },
     {
-      key: "records-default-country-code",
-      title: "Record: Default Country Code",
-      defaultValue: "US",
-      description:
-        "The default country code Grouparoo will use to format phone numbers and display data",
-      type: "string",
-    },
-    {
       key: "confirm-records-days",
       title: "Confirm Record Existence Days",
       defaultValue: 7,

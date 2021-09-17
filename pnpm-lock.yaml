@@ -251,7 +251,6 @@ importers:
       jest: 27.1.0
       jest-fetch-mock: 3.0.3
       json5: 2.2.0
-      libphonenumber-js: 1.9.25
       mime: 2.5.2
       moment: 2.29.1
       mustache: 4.2.0
@@ -298,7 +297,6 @@ importers:
       ioredis-mock: 5.6.0_ioredis@4.27.9
       isomorphic-fetch: 3.0.0
       json5: 2.2.0
-      libphonenumber-js: 1.9.25
       mime: 2.5.2
       moment: 2.29.1
       mustache: 4.2.0
@@ -9608,10 +9606,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /libphonenumber-js/1.9.25:
-    resolution: {integrity: sha512-LsSjcmXXGujESsrOsF2rrLdmuABj3OluCzPJKVNslJ2qc7xF5KdKXN8y0OcxHVurqosVf1/r4itrVrKSrlbVHA==}
-    dev: false
 
   /lie/3.3.0:
     resolution: {integrity: sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==}

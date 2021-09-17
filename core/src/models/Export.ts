@@ -25,6 +25,7 @@ import { StateMachine } from "../modules/stateMachine";
 import { api, config } from "actionhero";
 import { ExportProcessor } from "./ExportProcessor";
 import { Errors } from "../modules/errors";
+import { PropertyTypes } from "./Property";
 
 /**
  * The GrouparooRecord Properties in their normal data types (string, boolean, date, etc)
@@ -37,7 +38,10 @@ export interface ExportRecordProperties {
  * The GrouparooRecord Properties as stringified rawValues + types
  */
 export interface ExportRecordPropertiesWithType {
-  [key: string]: { type: string; rawValue: string | string[] };
+  [key: string]: {
+    type: typeof PropertyTypes[number];
+    rawValue: string | string[];
+  };
 }
 
 export const ExportStates = [

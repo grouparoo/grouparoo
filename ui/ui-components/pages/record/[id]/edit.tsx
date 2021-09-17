@@ -266,14 +266,11 @@ export default function Page(props) {
                         <span style={{ fontWeight: "bold" }}>{key}</span>
                       </td>
                       <td>
-                        <span>
-                          <strong>
-                            <ArrayRecordPropertyList
-                              type={recordProperty.type}
-                              values={recordProperty.values}
-                            />
-                          </strong>
-                        </span>
+                        <ArrayRecordPropertyList
+                          type={recordProperty.type}
+                          values={recordProperty.values}
+                          invalidValue={recordProperty.invalidValue}
+                        />
                       </td>
                       <td>
                         <code>

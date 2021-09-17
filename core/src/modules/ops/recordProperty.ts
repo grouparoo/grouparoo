@@ -1,68 +1,83 @@
-import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js/max";
-import { plugin } from "../plugin";
 import isEmail from "../validators/isEmail";
 import isURL from "validator/lib/isURL";
 import { RecordProperty } from "../../models/RecordProperty";
 import { Option } from "../../models/Option";
-import { Property } from "../../models/Property";
+import { Property, PropertyTypes } from "../../models/Property";
 import { CLS } from "../cls";
 import { Op } from "sequelize";
 import { Source } from "../../models/Source";
 import { AggregationMethod, PluginConnection } from "../../classes/plugin";
 import { Filter } from "../../models/Filter";
+import { log } from "actionhero";
 
 export namespace RecordPropertyOps {
   const defaultRecordPropertyProcessingDelay = 1000 * 60 * 5;
 
   export async function buildRawValue(
     value: any,
-    type: string
-  ): Promise<string> {
+    type: typeof PropertyTypes[number]
+  ) {
+    let rawValue: string = null;
+    let invalidValue: string = null;
+
     if (value === null || value === undefined || value === "") {
-      return null;
+      return { rawValue, invalidValue };
     }
 
-    switch (type) {
-      case "float":
-        return value.toString();
-      case "integer":
-        return value.toString();
-      case "date":
-        if (value instanceof Date) {
-          return value.getTime().toString();
-        } else {
-          return new Date(value).getTime().toString();
-        }
-      case "string":
-        return value.toString();
-      case "email":
-        return formatEmail(value.toString());
-      case "phoneNumber":
-        return formatPhoneNumber(value.toString());
-      case "url":
-        return formatURL(value.toString());
-      case "boolean":
-        const check = value.toString().toLowerCase();
-        if (["1", "true"].includes(check)) {
-          return "true";
-        }
-        if (["0", "false"].includes(check)) {
-          return "false";
-        }
-        throw new Error(`${value} is not a valid boolean value`);
-      default:
-        throw new Error(`cannot coerce recordProperty type ${type}`);
+    const stringifiedValue =
+      value instanceof Date ? `${value.getTime()}` : `${value}`.trim();
+
+    try {
+      switch (type) {
+        case "float":
+          rawValue = await formatFloat(stringifiedValue);
+          break;
+        case "integer":
+          rawValue = await formatInteger(stringifiedValue);
+          break;
+        case "date":
+          rawValue = await formatDate(stringifiedValue);
+          break;
+        case "string":
+          rawValue = await formatString(stringifiedValue);
+          break;
+        case "email":
+          rawValue = await formatEmail(stringifiedValue);
+          break;
+        case "phoneNumber":
+          rawValue = await formatPhoneNumber(stringifiedValue);
+          break;
+        case "url":
+          rawValue = await formatURL(stringifiedValue);
+          break;
+        case "boolean":
+          rawValue = await formatBoolean(stringifiedValue);
+          break;
+        default:
+          throw new Error(
+            `cannot coerce recordProperty ${stringifiedValue} to type ${type}`
+          );
+      }
+    } catch (error) {
+      rawValue = null;
+      invalidValue = stringifiedValue;
+      log(error, "error");
     }
+
+    return { rawValue, invalidValue };
   }
 
-  export function getValue(rawValue: string, type: string) {
+  export function getValue(
+    rawValue: string,
+    type: typeof PropertyTypes[number]
+  ) {
     if (rawValue === null || rawValue === undefined) return null;
 
     switch (type) {
       case "float":
         return parseFloat(rawValue);
       case "integer":
-        return parseInt(rawValue);
+        return parseInt(rawValue, 10);
       case "date":
         return new Date(parseInt(rawValue));
       case "string":
@@ -80,7 +95,9 @@ export namespace RecordPropertyOps {
           return false;
         }
       default:
-        throw new Error(`cannot coerce recordProperty type ${type}`);
+        throw new Error(
+          `cannot coerce recordProperty ${rawValue} into type ${type}`
+        );
     }
   }
 
@@ -232,37 +249,62 @@ async function preparePropertyImports(
   }
 }
 
-// formatters and validators (private)
+// formatters and validators
 
-function formatURL(url: string) {
-  if (!isURL(url)) {
-    throw new Error(`url "${url}" is not valid`);
-  }
-
-  return url.toLocaleLowerCase();
+async function formatFloat(v: string) {
+  // try to parse
+  const parsed = parseFloat(v);
+  if (isNaN(parsed)) throw new Error(`float "${v}" is not valid`);
+  return parsed.toString();
 }
 
-function formatEmail(email: string) {
-  if (!isEmail(email)) {
-    throw new Error(`email "${email}" is not valid`);
-  }
-
-  return email.toLocaleLowerCase();
+async function formatInteger(v: string) {
+  // try to parse
+  const parsed = parseInt(v, 10);
+  if (isNaN(parsed)) throw new Error(`integer "${v}" is not valid`);
+  return parsed.toString();
 }
 
-async function formatPhoneNumber(number: string) {
-  const defaultCountryCode = (
-    await plugin.readSetting("core", "records-default-country-code")
-  ).value as CountryCode;
+async function formatString(v: string) {
+  // Any string is valid
+  return v;
+}
 
-  const formattedPhoneNumber = parsePhoneNumberFromString(
-    number,
-    defaultCountryCode
-  );
-
-  if (!formattedPhoneNumber || !formattedPhoneNumber.isValid()) {
-    throw new Error(`phone number "${number}" is not valid`);
+async function formatDate(v: string) {
+  // try to parse with new Date()
+  let dateString: string;
+  const parsed = parseInt(v);
+  if (!isNaN(parsed)) {
+    dateString = new Date(parsed).getTime().toString();
+  } else {
+    dateString = new Date(v).getTime().toString();
   }
 
-  return formattedPhoneNumber.formatInternational();
+  if (dateString === "NaN") throw new Error(`date "${v}" is not valid`);
+  return dateString;
+}
+
+function formatURL(v: string) {
+  // We do strong validation on the URL
+  if (!isURL(v)) throw new Error(`url "${v}" is not valid`);
+  return v.toLocaleLowerCase();
+}
+
+function formatEmail(v: string) {
+  // We do light validation on the email to ensure that it has an "@" and a "."
+  if (!isEmail(v)) throw new Error(`email "${v}" is not valid`);
+  return v.toLocaleLowerCase();
+}
+
+async function formatPhoneNumber(v: string) {
+  // Any string is valid
+  return v.toLocaleLowerCase();
+}
+
+async function formatBoolean(v: string) {
+  // 1,0 or true,false are valid
+  const check = v.toLocaleLowerCase();
+  if (["1", "true"].includes(check)) return "true";
+  if (["0", "false"].includes(check)) return "false";
+  throw new Error(`${v} is not a valid boolean value`);
 }

@@ -33,10 +33,10 @@ describe("model/group", () => {
     await phoneNumberProperty.setOptions({ column: "phoneNumber" });
     await phoneNumberProperty.update({ state: "ready" });
 
-    await mario.addOrUpdateProperties({ phoneNumber: ["412 888 0001"] });
-    await luigi.addOrUpdateProperties({ phoneNumber: ["412 888 0002"] });
+    await mario.addOrUpdateProperties({ phoneNumber: ["+1 412 888 0001"] });
+    await luigi.addOrUpdateProperties({ phoneNumber: ["+1 412 888 0002"] });
     await peach.addOrUpdateProperties({
-      phoneNumber: ["412 888 0003", "415 644 0001"],
+      phoneNumber: ["+1 412 888 0003", "+1 415 644 0001"],
     });
     await toad.buildNullProperties();
   }, helper.setupTime);

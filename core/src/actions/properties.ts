@@ -339,6 +339,7 @@ export class PropertyRecordPreview extends AuthenticatedAction {
       id: property.id,
       state: null,
       values: newPropertyValues,
+      invalidValue: null,
       configId: property.getConfigId(),
       type: property.type,
       unique: property.unique,

@@ -136,7 +136,7 @@ describe("models/setting", () => {
       await SettingOps.prepare();
       const settings = await Setting.findAll();
       expect(settings.filter((s) => s.pluginName === "core").length).toEqual(
-        15
+        14
       );
       expect(
         settings.filter((s) => s.pluginName === "interface").length
