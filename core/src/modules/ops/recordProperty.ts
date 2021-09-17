@@ -26,8 +26,7 @@ export namespace RecordPropertyOps {
       return { rawValue, invalidValue };
     }
 
-    const stringifiedValue =
-      value instanceof Date ? `${value.getTime()}` : `${value}`.trim();
+    const stringifiedValue = `${value}`.trim();
 
     try {
       switch (type) {
@@ -38,7 +37,7 @@ export namespace RecordPropertyOps {
           rawValue = await formatInteger(stringifiedValue);
           break;
         case "date":
-          rawValue = await formatDate(stringifiedValue);
+          rawValue = await formatDate(value);
           break;
         case "string":
           rawValue = await formatString(stringifiedValue);
@@ -272,18 +271,10 @@ async function formatString(v: string) {
   return v;
 }
 
-async function formatDate(v: string) {
+async function formatDate(v: any) {
   // try to parse with new Date()
-  let dateString: string;
-  const parsed = parseInt(v);
-  if (!isNaN(parsed)) {
-    dateString = new Date(parsed).getTime().toString();
-  } else {
-    dateString = new Date(v).getTime().toString();
-  }
-
-  if (dateString === "NaN") throw new Error(`date "${v}" is not valid`);
-  return dateString;
+  if (v instanceof Date) return v.getTime().toString();
+  return new Date(v).getTime().toString();
 }
 
 function formatURL(v: string) {
