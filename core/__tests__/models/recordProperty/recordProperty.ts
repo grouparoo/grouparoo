@@ -283,7 +283,18 @@ describe("models/recordProperty", () => {
         });
         await recordProperty.setValue("4128889999");
         const response = await recordProperty.getValue();
-        expect(response).toBe("4128889999");
+        expect(response).toBe("+1 412 888 9999");
+      });
+
+      test("invalid numbers are stored", async () => {
+        const recordProperty = new RecordProperty({
+          recordId: record.id,
+          propertyId: phoneNumberProperty.id,
+        });
+        await recordProperty.setValue("5");
+        const response = await recordProperty.getValue();
+        expect(response).toBe(null);
+        expect(recordProperty.invalidValue).toBe("5");
       });
     });
 

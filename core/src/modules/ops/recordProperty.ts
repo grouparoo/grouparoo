@@ -1,3 +1,5 @@
+import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js/max";
+import { plugin } from "../plugin";
 import isEmail from "../validators/isEmail";
 import isURL from "validator/lib/isURL";
 import { RecordProperty } from "../../models/RecordProperty";
@@ -297,8 +299,21 @@ function formatEmail(v: string) {
 }
 
 async function formatPhoneNumber(v: string) {
-  // Any string is valid
-  return v.toLocaleLowerCase();
+  // Use Google's phone number validator and formatter
+  const defaultCountryCode = (
+    await plugin.readSetting("core", "records-default-country-code")
+  ).value as CountryCode;
+
+  const formattedPhoneNumber = parsePhoneNumberFromString(
+    v,
+    defaultCountryCode
+  );
+
+  if (!formattedPhoneNumber || !formattedPhoneNumber.isValid()) {
+    throw new Error(`phone number "${v}" is not valid`);
+  }
+
+  return formattedPhoneNumber.formatInternational();
 }
 
 async function formatBoolean(v: string) {
