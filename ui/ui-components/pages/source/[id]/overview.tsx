@@ -116,7 +116,8 @@ export default function Page({
             successHandler={successHandler}
             source={source}
           />
-          {process.env.GROUPAROO_UI_EDITION !== "community" && (
+          {process.env.GROUPAROO_UI_EDITION !== "community" &&
+          source.previewAvailable === true ? (
             <>
               &nbsp;
               <Button
@@ -127,7 +128,7 @@ export default function Page({
                 Add Multiple Properties
               </Button>
             </>
-          )}
+          ) : null}
           <hr />
           <h2>Schedule</h2>
           <br />
