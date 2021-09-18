@@ -309,6 +309,9 @@ export default function RecordsList(props) {
                             <ArrayRecordPropertyList
                               type={record.properties[searchKey].type}
                               values={record.properties[searchKey].values}
+                              invalidValue={
+                                record.properties[searchKey].invalidValue
+                              }
                             />
                           </Badge>
                         ) : null}
@@ -329,6 +332,7 @@ export default function RecordsList(props) {
                           <ArrayRecordPropertyList
                             type={record.properties[key].type}
                             values={record.properties[key].values}
+                            invalidValue={record.properties[key].invalidValue}
                           />
                         </span>
                         <br />

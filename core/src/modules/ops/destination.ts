@@ -353,9 +353,13 @@ export namespace DestinationOps {
           type,
           rawValue: newRecordProperties[mapping[k]]
             ? await Promise.all(
-                newRecordProperties[mapping[k]].values.map((v) =>
-                  RecordPropertyOps.buildRawValue(v, type)
-                )
+                newRecordProperties[mapping[k]].values.map(async (v) => {
+                  const response = await RecordPropertyOps.buildRawValue(
+                    v,
+                    type
+                  );
+                  return response.rawValue;
+                })
               )
             : null,
         };

@@ -232,6 +232,68 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       spy.mockRestore();
     });
 
+    test("will not crash with invalidValues and they will be set on the recordProperties", async () => {
+      const spy = jest
+        .spyOn(testPluginConnection.methods, "recordProperties")
+        //@ts-ignore // partial mock
+        .mockImplementation(({ records, properties }) => {
+          const response = {};
+
+          for (const i in records) {
+            const record = records[i];
+            const data = { email: `not-an-email` };
+
+            response[record.id] = {};
+            for (const property of properties) {
+              response[record.id][property.id] = data[property.key];
+            }
+          }
+
+          return response;
+        });
+
+      const recordA: GrouparooRecord = await helper.factories.record();
+      await recordA.addOrUpdateProperties({
+        userId: [101],
+        email: ["a@example.com"], // this old value will be replaced
+      });
+
+      const recordB: GrouparooRecord = await helper.factories.record();
+      await recordB.addOrUpdateProperties({
+        userId: [102],
+        email: ["b@example.com"], // this old value will be replaced
+      });
+
+      const recordPropertyA = await RecordProperty.findOne({
+        where: { rawValue: "a@example.com" },
+      });
+      await recordPropertyA.update({ state: "pending" });
+      const recordPropertyB = await RecordProperty.findOne({
+        where: { rawValue: "b@example.com" },
+      });
+      await recordPropertyB.update({ state: "pending" });
+
+      await specHelper.runTask("recordProperty:importRecordProperties", {
+        recordIds: [recordA.id, recordB.id],
+        propertyIds: [recordPropertyA.propertyId, recordPropertyB.propertyId],
+      });
+
+      await recordPropertyA.reload();
+      expect(recordPropertyA.state).toBe("ready");
+      expect(recordPropertyA.rawValue).toBe(null);
+      expect(recordPropertyA.invalidValue).toBe("not-an-email");
+
+      await recordPropertyB.reload();
+      expect(recordPropertyB.state).toBe("ready");
+      expect(recordPropertyB.rawValue).toBe(null);
+      expect(recordPropertyB.invalidValue).toBe("not-an-email");
+
+      await recordA.destroy();
+      await recordB.destroy();
+
+      spy.mockRestore();
+    });
+
     describe("with records", () => {
       let recordA: GrouparooRecord;
       let recordB: GrouparooRecord;

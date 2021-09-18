@@ -1,4 +1,3 @@
-import { Op } from "sequelize";
 import {
   Table,
   Column,
@@ -49,6 +48,9 @@ export class RecordProperty extends LoggedModel<RecordProperty> {
   @Column
   rawValue: string;
 
+  @Column
+  invalidValue: string;
+
   @AllowNull(false)
   @Default(0)
   @Column
@@ -97,6 +99,7 @@ export class RecordProperty extends LoggedModel<RecordProperty> {
       unique: this.unique,
       key: property.key,
       value: await this.getValue(),
+      invalidValue: this.invalidValue,
     };
   }
 
@@ -107,7 +110,13 @@ export class RecordProperty extends LoggedModel<RecordProperty> {
 
   async setValue(value: any) {
     const property = await this.ensureProperty();
-    this.rawValue = await RecordPropertyOps.buildRawValue(value, property.type);
+    const { rawValue, invalidValue } = await RecordPropertyOps.buildRawValue(
+      value,
+      property.type
+    );
+
+    this.rawValue = rawValue;
+    this.invalidValue = invalidValue;
   }
 
   async ensureProperty() {

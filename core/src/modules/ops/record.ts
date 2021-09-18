@@ -26,6 +26,7 @@ export interface RecordPropertyType {
     id: RecordProperty["id"];
     state: RecordProperty["state"];
     values: Array<string | number | boolean | Date>;
+    invalidValue: RecordProperty["invalidValue"];
     configId: ReturnType<Property["getConfigId"]>;
     type: Property["type"];
     unique: Property["unique"];
@@ -72,6 +73,7 @@ export namespace RecordOps {
           id: recordProperties[i].propertyId,
           state: recordProperties[i].state,
           values: [],
+          invalidValue: recordProperties[i].invalidValue,
           configId: property.getConfigId(),
           type: property.type,
           unique: property.unique,
@@ -292,10 +294,8 @@ export namespace RecordOps {
                 p.propertyId === property.id &&
                 p.position === position
             );
-            const rawValue = await RecordPropertyOps.buildRawValue(
-              value,
-              property.type
-            );
+            const { rawValue, invalidValue } =
+              await RecordPropertyOps.buildRawValue(value, property.type);
 
             bulkCreates.push({
               id: existingRecordProperty
@@ -305,6 +305,7 @@ export namespace RecordOps {
               propertyId: property.id,
               position,
               rawValue,
+              invalidValue,
               state: "ready",
               stateChangedAt: now,
               confirmedAt: now,
@@ -341,6 +342,7 @@ export namespace RecordOps {
             "confirmedAt",
             "valueChangedAt",
             "rawValue",
+            "invalidValue",
             "updatedAt",
           ],
         });

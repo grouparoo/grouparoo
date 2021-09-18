@@ -68,6 +68,47 @@ describe("tasks/recordProperty:importRecordProperty", () => {
       expect(recordProperty.rawValue).toBe(`${record.id}@example.com`);
     });
 
+    test("will not crash with invalidValues and they will be set on the recordProperties", async () => {
+      const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
+        (a) => a.name === "@grouparoo/test-plugin"
+      );
+      const testPluginConnection = testPlugin.connections.find(
+        (c) => c.name === "test-plugin-import"
+      );
+
+      const spy = jest
+        .spyOn(testPluginConnection.methods, "recordProperty")
+        //@ts-ignore // partial mock
+        .mockImplementation(() => {
+          return "not-an-email";
+        });
+
+      const record: GrouparooRecord = await helper.factories.record();
+      await record.addOrUpdateProperties({
+        userId: [101],
+        email: ["a@example.com"], // this old value will be replaced
+      });
+
+      const recordProperty = await RecordProperty.findOne({
+        where: { rawValue: "a@example.com" },
+      });
+      await recordProperty.update({ state: "pending" });
+
+      await specHelper.runTask("recordProperty:importRecordProperty", {
+        recordId: record.id,
+        propertyId: recordProperty.propertyId,
+      });
+
+      await recordProperty.reload();
+      expect(recordProperty.state).toBe("ready");
+      expect(recordProperty.rawValue).toBe(null);
+      expect(recordProperty.invalidValue).toBe("not-an-email");
+
+      await record.destroy();
+
+      spy.mockRestore();
+    });
+
     test("will set value to null if the record property no longer exists", async () => {
       const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
         (a) => a.name === "@grouparoo/test-plugin"
