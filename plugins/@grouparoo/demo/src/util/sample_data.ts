@@ -332,6 +332,14 @@ function junkRow(column: string, v: string) {
   if (v.includes(".") && !isNaN(parseFloat(v))) {
     v = Math.random() < 0.5 ? `-${v}` : "";
     v = v;
+  }
+  if (v.includes("@")) {
+    v =
+      Math.random() < 0.5
+        ? ` ${v} `
+        : Math.random() < 0.5
+        ? v.replace("@", "-")
+        : "";
   } else {
     v = Math.random() < 0.5 ? ` ${v} ` : "";
   }
