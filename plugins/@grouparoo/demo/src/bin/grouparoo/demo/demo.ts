@@ -47,6 +47,11 @@ export class Demo extends CLI {
         default: "1",
         description: "make the number more than 1 to multiple amount of data.",
       },
+      junkPercent: {
+        required: false,
+        default: "0",
+        description: "what percent of the data should have problems?",
+      },
       config: {
         required: false,
         letter: "c",
@@ -78,23 +83,24 @@ export class Demo extends CLI {
     db: Connection,
     seed: boolean,
     scale: number,
+    junkPercent: number,
     subDirs: string[]
   ) {
     let users = false;
     if (db) await db.sessionStart();
     if (seed && db) db.seeding();
     if (seed || hasDir(subDirs, ["purchases"])) {
-      await consumers(db, { scale });
-      await purchases(db, { scale });
+      await consumers(db, { scale, junkPercent });
+      await purchases(db, { scale, junkPercent });
       users = true;
     }
     if (seed || hasDir(subDirs, ["accounts"])) {
       await plans(db, {});
-      await accounts(db, { scale });
-      await payments(db, { scale });
+      await accounts(db, { scale, junkPercent });
+      await payments(db, { scale, junkPercent });
       if (!users) {
         // don't do users twice when seeding!
-        await employees(db, { scale });
+        await employees(db, { scale, junkPercent });
       }
     }
     if (db) await db.sessionEnd();
@@ -103,11 +109,12 @@ export class Demo extends CLI {
   async run({ params }) {
     try {
       const scale = parseInt(params.scale) || 1;
+      const junkPercent = parseInt(params.junkPercent) || 0;
       const seed = !!params.seed;
       const config = !!params.config;
       const force = !!params.force;
 
-      log(`Using scale = ${scale}`);
+      log(`Using scale = ${scale}, junkPercent = ${junkPercent}`);
 
       let types = params._arguments || [];
       if (types.length === 0) {
@@ -120,7 +127,7 @@ export class Demo extends CLI {
           log("No database given for seed", "error");
         }
         log(`Seeding: ${db.name()}`);
-        await this.loadData(db, seed, scale, subDirs);
+        await this.loadData(db, seed, scale, junkPercent, subDirs);
         return;
       }
 
@@ -140,7 +147,7 @@ export class Demo extends CLI {
       }
       await init({ reset: true });
 
-      await this.loadData(db, seed, scale, subDirs);
+      await this.loadData(db, seed, scale, junkPercent, subDirs);
 
       if (config) {
         const skip = ["setup"]; // not all get config files, they load into db
