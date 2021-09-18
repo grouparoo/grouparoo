@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { task, api, specHelper } from "actionhero";
-import { Run } from "../../../src";
+import { Run, Group } from "../../../src";
 import { internalRun } from "../../../src/modules/internalRun";
 
 describe("tasks/run:tick", () => {
@@ -8,6 +8,11 @@ describe("tasks/run:tick", () => {
   beforeAll(async () => await helper.factories.properties());
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeEach(async () => await Run.truncate());
+
+  let group: Group;
+  beforeAll(async () => {
+    group = await helper.factories.group();
+  });
 
   test("complete runs will not be run", async () => {
     const run = await helper.factories.run(null, { state: "complete" });
@@ -41,7 +46,6 @@ describe("tasks/run:tick", () => {
   });
 
   test("running group runs will be enqueued", async () => {
-    const group = await helper.factories.group();
     const run = await helper.factories.run(group, { state: "running" });
     await helper.changeTimestamps(run);
 
