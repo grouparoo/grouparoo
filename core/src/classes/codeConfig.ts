@@ -1,4 +1,4 @@
-import { log } from "actionhero";
+import { ActionheroLogLevel, log } from "actionhero";
 import { DestinationSyncMode } from "../models/Destination";
 import { GroupRuleWithKey } from "../models/Group";
 import { PropertyFiltersWithKey } from "../models/Property";
@@ -187,7 +187,7 @@ export function logModel(
   mode: "created" | "updated" | "deleted" | "validated",
   name?: string
 ) {
-  let logLevel = "info";
+  let logLevel: ActionheroLogLevel = "info";
   if (mode === "created") logLevel = "notice";
   if (mode === "deleted") logLevel = "warning";
 
