@@ -110,9 +110,10 @@ export const DEFAULT = {
     /** Run migrations */
     let autoMigrate = false;
     if (
-      process.env.WORKERS
+      (process.env.WORKERS
         ? parseInt(process.env.WORKERS)
-        : 0 > 0 && process.env.GROUPAROO_RUN_MODE !== "cli:apply"
+        : 0 > 0 && process.env.GROUPAROO_RUN_MODE !== "cli:apply") ||
+      process.env.NODE_ENV === "test"
     ) {
       autoMigrate = true;
     }
