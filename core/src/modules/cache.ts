@@ -1,4 +1,4 @@
-import { api, cache } from "actionhero";
+import { api, cache, env } from "actionhero";
 import { waitForLock } from "./locks";
 import crypto from "crypto";
 
@@ -100,9 +100,8 @@ export function makeBaseCacheKey({ objectId, cacheKey }): string {
 
 function useRedis() {
   const running = !!api?.redis?.clients;
-  if (!running && process.env.NODE_ENV === "test") {
-    return false;
-  }
+  if (!running && env === "test") return false;
+
   return true;
 }
 

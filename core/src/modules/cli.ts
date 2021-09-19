@@ -1,4 +1,4 @@
-import { CLI, api } from "actionhero";
+import { CLI, api, env } from "actionhero";
 import Colors from "colors/safe";
 import { FinalSummary } from "./status";
 import { FinalSummaryReporters } from "../../../core/src/modules/statusReporters";
@@ -112,7 +112,7 @@ export namespace GrouparooCLI {
 
     export function fatal(message: string) {
       logger.error("❌ " + message);
-      if (process.env.NODE_ENV !== "test") process.exit(1);
+      if (env !== "test") process.exit(1);
       return true;
     }
 

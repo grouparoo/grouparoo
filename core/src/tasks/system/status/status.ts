@@ -1,4 +1,4 @@
-import { api, log, task } from "actionhero";
+import { api, log, task, env } from "actionhero";
 import { GrouparooCLI } from "../../../modules/cli";
 import { APM } from "../../../modules/apm";
 import { Status, FinalSummary } from "../../../modules/status";
@@ -47,7 +47,7 @@ export class StatusTask extends CLSTask {
   }
 
   async logFinalSummary() {
-    if (process.env.NODE_ENV === "test") return;
+    if (env === "test") return;
 
     const finalSummaryLog = await FinalSummary.getFinalSummary();
     GrouparooCLI.logger.finalSummary(finalSummaryLog);
@@ -93,7 +93,7 @@ export class StatusTask extends CLSTask {
   }
 
   logSamples(samples: Status.StatusGetResponse) {
-    if (process.env.NODE_ENV === "test") return;
+    if (env === "test") return;
 
     const totalItems = [];
     const pendingItems = [];

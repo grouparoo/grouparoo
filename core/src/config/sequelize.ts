@@ -107,12 +107,22 @@ export const DEFAULT = {
       }
     }
 
+    /** Run migrations */
+    let autoMigrate = false;
+    if (
+      (process.env.WORKERS
+        ? parseInt(process.env.WORKERS)
+        : 0 > 0 && process.env.GROUPAROO_RUN_MODE !== "cli:apply") ||
+      process.env.NODE_ENV === "test"
+    ) {
+      autoMigrate = true;
+    }
+
     return {
       _toExpand: false,
       logging,
       benchmark: true,
-      autoMigrate:
-        process.env.GROUPAROO_RUN_MODE === "cli:apply" ? false : true,
+      autoMigrate,
       dialect: dialect,
       port: parseInt(port),
       database: database,

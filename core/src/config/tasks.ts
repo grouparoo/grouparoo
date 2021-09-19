@@ -1,7 +1,7 @@
 import { api } from "actionhero";
 
 export const DEFAULT = {
-  tasks: (config) => {
+  tasks: () => {
     return {
       _toExpand: false,
 
