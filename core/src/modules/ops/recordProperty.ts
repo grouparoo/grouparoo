@@ -17,7 +17,8 @@ export namespace RecordPropertyOps {
 
   export async function buildRawValue(
     value: any,
-    type: typeof PropertyTypes[number]
+    type: typeof PropertyTypes[number],
+    recordProperty?: RecordProperty
   ) {
     let rawValue: string = null;
     let invalidValue: string = null;
@@ -62,6 +63,9 @@ export namespace RecordPropertyOps {
     } catch (error) {
       rawValue = null;
       invalidValue = stringifiedValue;
+      if (recordProperty && error instanceof Error) {
+        error.message += ` for record ${recordProperty.recordId}`;
+      }
       log(error, "error");
     }
 
