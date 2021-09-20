@@ -20,18 +20,16 @@ export class BrazeClient {
     params["baseURL"] = this.restEndpoint.startsWith("http")
       ? this.restEndpoint
       : `https://${this.restEndpoint}`;
-
-    params["headers"] = {
+    params["headers"] = Object.assign({}, params["headers"], {
       "Content-Type": "application/json",
       Authorization: `Bearer ${this.apiKey}`,
-    };
+    });
 
     try {
       const response = await axios(params);
       const { data = {} } = response;
       return data;
     } catch (err) {
-      console.log(err);
       throw new Error(err);
     }
   }

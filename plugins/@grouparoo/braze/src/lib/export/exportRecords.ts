@@ -48,7 +48,7 @@ const deleteByDestinationIds: BatchMethodDeleteByDestinationIds = async ({
   const response = await client.users.delete(
     users.map((user) => user.destinationId)
   );
-  // TODO: treat the errors
+  treatErrors({ response, users });
 };
 
 // update these users by destinationId
@@ -68,11 +68,11 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
   const payload = getUsersPayload(users);
   if (payload.length > 0) {
     const response = await client.users.updateOrCreate(payload);
-    // TODO: treat the errors
+    treatErrors({ response, users });
   }
   if (userToDelete.length > 0) {
     const response = await client.users.delete(userToDelete);
-    // TODO: treat the errors
+    treatErrors({ response, users });
   }
 };
 
@@ -80,9 +80,10 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
 const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
   async ({ client, users }) => {
     const payload = getUsersPayload(users);
+
     if (payload.length > 0) {
       const response = await client.users.updateOrCreate(payload);
-      // TODO: treat the errors
+      treatErrors({ response, users });
       for (let user of users) {
         // We're not using destinationIds for created prospects, but app-templates/batch requires it to be set
         // and the batch upsert does not return IDs, so we'll just set it to the foreignKey
@@ -111,6 +112,15 @@ function getGroupsListToExport(profile) {
     }
   }
   return groups;
+}
+
+function treatErrors({ response, users }) {
+  const errors = response.errors || [];
+  for (const error of errors) {
+    const resultIdx = parseInt(error.index);
+    const user = users[resultIdx];
+    user.error = new Error(error.type);
+  }
 }
 
 const addToGroups: BatchMethodAddToGroups = async () => {

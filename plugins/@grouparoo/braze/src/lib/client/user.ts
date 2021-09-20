@@ -35,6 +35,7 @@ export default class User {
       data: JSON.stringify({ attributes: payload }),
       method: "POST",
       url: `/users/track?=`,
+      headers: { "X-Braze-Bulk": true },
     });
   }
 
