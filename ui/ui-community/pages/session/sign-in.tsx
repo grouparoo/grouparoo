@@ -13,7 +13,7 @@ export default function SignInPage(props) {
       <div style={{ width: "100%", height: "100%" }}>
         <Row className="border-between-columns">
           <Col>
-            <SignIn {...props} useApi={UseApi} />
+            <SignIn {...props} UseApi={UseApi} />
           </Col>
         </Row>
       </div>
