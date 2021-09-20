@@ -38,6 +38,7 @@
     "@types/validator": "*",
     "actionhero": "27.1.4",
     "ah-sequelize-plugin": "3.2.0",
+    "axios": "0.21.4",
     "bcryptjs": "2.4.3",
     "cls-hooked": "4.2.2",
     "colors": "1.4.0",
@@ -45,6 +46,7 @@
     "csv-stringify": "5.6.4",
     "date-fns": "2.23.0",
     "dotenv": "10.0.0",
+    "form-data": "4.0.0",
     "fs-extra": "10.0.0",
     "glob": "7.1.7",
     "grouparoo": "0.7.0-alpha.5",
@@ -77,6 +79,7 @@
   },
   "devDependencies": {
     "@grouparoo/spec-helper": "0.7.0-alpha.5",
+    "@types/isomorphic-fetch": "0.0.35",
     "@types/jest": "*",
     "@types/pacote": "11.1.1",
     "@types/pluralize": "0.0.29",
