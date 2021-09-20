@@ -12,6 +12,7 @@ import {
   App,
   AggregationMethod,
 } from "../../../src";
+import { RecordOps } from "../../../src/modules/ops/record";
 
 describe("tasks/recordProperty:importRecordProperties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -292,6 +293,91 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       await recordB.destroy();
 
       spy.mockRestore();
+    });
+
+    test("import errors will be retried one at a time with importRecordProperty", async () => {
+      const spy = jest
+        .spyOn(testPluginConnection.methods, "recordProperties")
+        .mockImplementation(() => {
+          throw new Error("Oh no!");
+        });
+
+      const recordA: GrouparooRecord = await helper.factories.record();
+      await recordA.addOrUpdateProperties({ userId: [201] });
+
+      const recordB: GrouparooRecord = await helper.factories.record();
+      await recordB.addOrUpdateProperties({ userId: [202] });
+
+      const recordPropertyA = await RecordProperty.findOne({
+        where: { rawValue: "201" },
+      });
+      await recordPropertyA.update({ state: "pending" });
+      const recordPropertyB = await RecordProperty.findOne({
+        where: { rawValue: "202" },
+      });
+      await recordPropertyB.update({ state: "pending" });
+
+      await specHelper.runTask("recordProperty:importRecordProperties", {
+        recordIds: [recordA.id, recordB.id],
+        propertyIds: [recordPropertyA.propertyId, recordPropertyB.propertyId],
+      });
+
+      await recordPropertyA.reload();
+      await recordPropertyB.reload();
+      expect(recordPropertyA.state).toBe("pending");
+      expect(recordPropertyB.state).toBe("pending");
+
+      const foundTasks = await specHelper.findEnqueuedTasks(
+        "recordProperty:importRecordProperty"
+      );
+      expect(foundTasks.length).toBe(2);
+      expect(foundTasks.map((t) => t.args[0].recordId).sort()).toEqual(
+        [recordA.id, recordB.id].sort()
+      );
+      expect(foundTasks.map((t) => t.args[0].propertyId).sort()).toEqual(
+        [recordPropertyA.propertyId, recordPropertyB.propertyId].sort()
+      );
+
+      await recordA.destroy();
+      await recordB.destroy();
+
+      spy.mockRestore();
+    });
+
+    test("update errors will be retried one at a time with importRecordProperty", async () => {
+      const record: GrouparooRecord = await helper.factories.record();
+      await record.addOrUpdateProperties({ userId: [301] });
+
+      const recordProperty = await RecordProperty.findOne({
+        where: { rawValue: "301" },
+      });
+      await recordProperty.update({ state: "pending" });
+
+      const updateSpy = jest
+        .spyOn(RecordOps, "addOrUpdateProperties")
+        .mockImplementation(() => {
+          throw new Error("nope!");
+        });
+
+      await specHelper.runTask("recordProperty:importRecordProperties", {
+        recordIds: [record.id],
+        propertyIds: [recordProperty.propertyId],
+      });
+
+      await recordProperty.reload();
+      expect(recordProperty.state).toBe("pending");
+
+      const foundTasks = await specHelper.findEnqueuedTasks(
+        "recordProperty:importRecordProperty"
+      );
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0].recordId).toEqual(record.id);
+      expect(foundTasks[0].args[0].propertyId).toEqual(
+        recordProperty.propertyId
+      );
+
+      await record.destroy();
+      updateSpy.mockRestore();
     });
 
     describe("with records", () => {
