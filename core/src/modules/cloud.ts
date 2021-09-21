@@ -3,7 +3,7 @@ import path from "path";
 import tar from "tar";
 import fs from "fs";
 import FormData from "form-data";
-import { mkdtemp, copy, remove, readFile } from "fs-extra";
+import { mkdtemp, copy, remove } from "fs-extra";
 import axios, { AxiosError, AxiosInstance } from "axios";
 
 export class CloudError extends Error {

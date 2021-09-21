@@ -1,8 +1,6 @@
-import path from "path";
 import { CLI } from "actionhero";
 import { GrouparooCLI } from "../modules/cli";
-import { Pack } from "./pack";
-import { Push } from "./push";
+import { CloudCLI } from "../modules/cloudCli";
 
 export class Deploy extends CLI {
   constructor() {
@@ -40,20 +38,7 @@ export class Deploy extends CLI {
     };
   }) {
     GrouparooCLI.logCLI(this.name);
-
-    const pack = new Pack();
-    await pack.run({ params: { output: "./auto-grouparoo.tar.gz" } });
-
-    const push = new Push();
-    await push.run({
-      params: {
-        token: params.token,
-        projectId: params.projectId,
-        archivePath: "./auto-grouparoo.tar.gz",
-        apply: true,
-      },
-    });
-
+    await CloudCLI.packAndPush({ ...params, apply: true });
     return true;
   }
 }

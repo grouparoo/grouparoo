@@ -1,8 +1,6 @@
-import path from "path";
 import { CLI } from "actionhero";
 import { GrouparooCLI } from "../modules/cli";
-import { getConfigDir, getParentPath } from "../modules/pluginDetails";
-import { packageConfig } from "../modules/cloud";
+import { CloudCLI } from "../modules/cloudCli";
 
 export class Pack extends CLI {
   constructor() {
@@ -28,25 +26,7 @@ export class Pack extends CLI {
 
   async run({ params }: { params: { output: string } }) {
     GrouparooCLI.logCLI(this.name);
-
-    const configDir = await getConfigDir(true);
-    const projectPath = getParentPath();
-
-    const tarballPath = path.isAbsolute(params.output)
-      ? params.output
-      : path.join(projectPath, params.output);
-
-    GrouparooCLI.logger.log(`Project directory: ${projectPath}`);
-    GrouparooCLI.logger.log(`Config directory: ${configDir}`);
-
-    const configArchive = await packageConfig(
-      projectPath,
-      configDir,
-      tarballPath
-    );
-
-    GrouparooCLI.logger.log(`✅ Saved config archive to ${configArchive}`);
-
+    await CloudCLI.pack(params.output);
     return true;
   }
 }
