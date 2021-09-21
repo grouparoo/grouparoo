@@ -11,6 +11,7 @@ describe("tasks/status", () => {
   describe("status", () => {
     beforeAll(async () => {
       await helper.factories.properties();
+      await Run.truncate(); // there will be pending runs from `factories.properties()`
     });
 
     beforeEach(() => {
@@ -25,8 +26,6 @@ describe("tasks/status", () => {
     });
 
     test("will be complete with no pending items", async () => {
-      await Run.truncate(); // there will be pending runs from `factories.properties()`
-
       await Status.setAll();
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
@@ -56,7 +55,7 @@ describe("tasks/status", () => {
         { where: { recordId: record.id } }
       );
       await record.update({ state: "ready" });
-      await helper.factories.import(null, { recordId: record.id });
+      await helper.factories.import(null, null, record.id);
 
       await Status.setAll();
 
@@ -64,6 +63,48 @@ describe("tasks/status", () => {
       const instance = new StatusTask();
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(false);
+      await record.destroy();
+    });
+
+    test("will be complete with an exported import", async () => {
+      const record = await helper.factories.record();
+      await RecordProperty.update(
+        { state: "ready" },
+        { where: { recordId: record.id } }
+      );
+      await record.update({ state: "ready" });
+      const _import = await helper.factories.import(null, null, record.id);
+      await _import.update({ exportedAt: new Date() });
+
+      await Status.setAll();
+
+      process.env.GROUPAROO_RUN_MODE = "cli:run";
+      const instance = new StatusTask();
+      const samples = await instance.getSamples();
+      expect(await instance.checkForComplete(samples)).toBe(true);
+      await record.destroy();
+    });
+
+    test("will be complete with an errored import", async () => {
+      const record = await helper.factories.record();
+      await RecordProperty.update(
+        { state: "ready" },
+        { where: { recordId: record.id } }
+      );
+      await record.update({ state: "ready" });
+      const _import = await helper.factories.import(null, null, record.id);
+      await _import.update({
+        exportedAt: null,
+        errorMessage: "oh no!",
+        errorMetadata: "errored",
+      });
+
+      await Status.setAll();
+
+      process.env.GROUPAROO_RUN_MODE = "cli:run";
+      const instance = new StatusTask();
+      const samples = await instance.getSamples();
+      expect(await instance.checkForComplete(samples)).toBe(true);
       await record.destroy();
     });
 
