@@ -68,6 +68,10 @@ export default function LogsList(props) {
     let ownerId = log.ownerId;
     let topic = log.topic;
 
+    if (topic === "grouparooRecord") {
+      topic = "record";
+    }
+
     if (topic === "recordProperty") {
       topic = "record";
       ownerId = log.data.recordId;
@@ -108,6 +112,8 @@ export default function LogsList(props) {
     <>
       {props.header ? props.header : <h1>Logs</h1>}
 
+      <strong>Topics:</strong>
+      <br />
       <ButtonGroup id="log-types">
         <Button
           size="sm"
