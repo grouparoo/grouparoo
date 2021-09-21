@@ -39,7 +39,7 @@
     "@grouparoo/spec-helper": "0.7.0-alpha.4",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "27.1.2",
+    "actionhero": "27.1.4",
     "dotenv": "10.0.0",
     "fs-extra": "10.0.0",
     "jest": "27.1.0",
