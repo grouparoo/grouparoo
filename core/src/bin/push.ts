@@ -50,7 +50,7 @@ export class Push extends CLI {
       const job = await cloud.getJob(jobId);
       GrouparooCLI.logger.log(
         GrouparooCLI.logger.cyanBold(
-          `\nLogging output for ${job.type} job ${jobId}\n`
+          `\nLogging output for ${job.type} job (${jobId})\n`
         )
       );
       GrouparooCLI.logger.log(job.logs);
@@ -114,7 +114,8 @@ export class Push extends CLI {
               toApply ? "applied" : "validated"
             }!`
           );
-          process.exit(0);
+
+          break;
         }
 
         lastState = config.state;

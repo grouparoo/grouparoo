@@ -43,9 +43,7 @@ export async function packageConfig(
     ["."]
   );
 
-  //   console.log("tmp", tempDir);
   await remove(tempDir);
-
   return tarballPath;
 }
 
