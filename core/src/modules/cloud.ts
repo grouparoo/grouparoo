@@ -79,18 +79,14 @@ export interface JobApiData {
 
 export class CloudClient {
   request: AxiosInstance;
-  token: string;
   projectId: string;
 
-  constructor(
-    projectId: string,
-    token: string,
-    apiBase: string = "https://cloud.grouparoo.com"
-  ) {
+  constructor(projectId: string, token: string) {
+    const apiUrl =
+      process.env.GROUPAROO_CLOUD_API_URL ?? "https://cloud.grouparoo.com";
     this.projectId = projectId;
-    this.token = token;
     this.request = axios.create({
-      baseURL: `${apiBase}/api/v1`,
+      baseURL: `${apiUrl}/api/v1`,
       params: {
         apiKey: token,
       },

@@ -1,13 +1,12 @@
-import path from "path";
 import { CLI } from "actionhero";
 import { GrouparooCLI } from "../modules/cli";
 import { Pack } from "./pack";
 import { Push } from "./push";
 
-export class Deploy extends CLI {
+export class CI extends CLI {
   constructor() {
     super();
-    this.name = "deploy";
+    this.name = "ci";
     this.description = "Packages and applies config";
     this.inputs = {
       projectId: {
@@ -50,7 +49,7 @@ export class Deploy extends CLI {
         token: params.token,
         projectId: params.projectId,
         archivePath: "./auto-grouparoo.tar.gz",
-        apply: true,
+        apply: false,
       },
     });
 
