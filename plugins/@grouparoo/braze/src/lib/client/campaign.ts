@@ -1,6 +1,6 @@
 import { BrazeClient } from "./client";
 
-export default class Template {
+export default class Campaign {
   client: BrazeClient;
 
   constructor(client: BrazeClient) {
@@ -10,7 +10,7 @@ export default class Template {
   get() {
     return this.client._request({
       method: "GET",
-      url: `/templates/email/list`,
+      url: `/campaigns/list`,
     });
   }
 }

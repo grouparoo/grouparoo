@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/braze",
   "description": "The Grouparoo braze Plugin",
-  "version": "0.7.0-alpha.4",
+  "version": "0.7.0-alpha.5",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,15 +28,15 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.7.0-alpha.4",
+    "@grouparoo/app-templates": "0.7.0-alpha.5",
     "axios": "0.21.1"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.0-alpha.4",
-    "@grouparoo/spec-helper": "0.7.0-alpha.4",
+    "@grouparoo/core": "0.7.0-alpha.5",
+    "@grouparoo/spec-helper": "0.7.0-alpha.5",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "27.1.2",
+    "actionhero": "27.1.4",
     "dotenv": "10.0.0",
     "fs-extra": "10.0.0",
     "jest": "27.1.0",

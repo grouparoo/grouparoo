@@ -4,10 +4,8 @@ import { BrazeClient } from "./client/client";
 
 export const test: TestPluginMethod = async ({ appOptions }) => {
   const client: BrazeClient = await connect(appOptions);
-  const templates = await client.templates.get();
-  const success = !!templates;
-  const message = success
-    ? `${templates.length} Braze email templates available`
-    : null;
+  const { campaigns = [] } = await client.campaigns.get();
+  const success = !!campaigns;
+  const message = success ? `${campaigns.length} Braze campaigns found.` : null;
   return { success, message };
 };
