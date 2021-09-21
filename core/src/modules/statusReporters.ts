@@ -271,7 +271,9 @@ export namespace StatusReporters {
         collection: "pending",
         topic: "Import",
         aggregation: "count",
-        count: await Import.count({ where: { exportedAt: null } }),
+        count: await Import.count({
+          where: { exportedAt: null, errorMessage: null },
+        }),
       };
     }
 
