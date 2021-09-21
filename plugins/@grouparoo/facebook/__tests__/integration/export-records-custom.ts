@@ -294,7 +294,7 @@ describe("facebook/audiences-custom/exportRecords", () => {
     expect(data).toContainEqual([sha(email2), sha("andy"), sha("jones")]);
   });
 
-  test("has issues deleting from small group", async () => {
+  test("can delete a user", async () => {
     const { success, errors } = await exportRecords({
       appId,
       appOptions,
@@ -325,15 +325,8 @@ describe("facebook/audiences-custom/exportRecords", () => {
         },
       ],
     });
-    expect(success).toBe(false);
-    expect(errors.length).toBe(1);
-    let error;
-    error = errors.find((e) => e.recordId === id1);
-    expect(error.message).toContain(
-      "cannot remove users from this audience because it will result in a low audience size"
-    );
-    expect(error.message).toContain(listId1);
-    expect(error.message).toContain(listId2);
+    expect(success).toBe(true);
+    expect(errors).toBeNull();
 
     let audience;
     audience = await getAudience(listId1);
@@ -379,7 +372,7 @@ describe("facebook/audiences-custom/exportRecords", () => {
     expect(data).toContainEqual([sha(email1)]);
   });
 
-  test("removes user (low issue) when no longer in group", async () => {
+  test("removes user when no longer in group", async () => {
     const { success, errors } = await exportRecords({
       appId,
       appOptions,
@@ -401,14 +394,8 @@ describe("facebook/audiences-custom/exportRecords", () => {
         },
       ],
     });
-    expect(success).toBe(false);
-    expect(errors.length).toBe(1);
-    let error;
-    error = errors.find((e) => e.recordId === id1);
-    expect(error.message).toContain(
-      "cannot remove users from this audience because it will result in a low audience size"
-    );
-    expect(error.message).toContain(listId2);
+    expect(success).toBe(true);
+    expect(errors).toBeNull();
 
     const sent = getSentValues();
     expect(sent.length).toEqual(2);
@@ -518,14 +505,8 @@ describe("facebook/audiences-custom/exportRecords", () => {
         },
       ],
     });
-    expect(success).toBe(false);
-    expect(errors.length).toBe(1);
-    let error;
-    error = errors.find((e) => e.recordId === id1);
-    expect(error.message).toContain(
-      "cannot remove users from this audience because it will result in a low audience size"
-    );
-    expect(error.message).toContain(listId1);
+    expect(success).toBe(true);
+    expect(errors).toBeNull();
 
     const sent = getSentValues();
     expect(sent.length).toEqual(2);
