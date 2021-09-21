@@ -36,7 +36,12 @@ export class LogsList extends AuthenticatedAction {
       where: {},
     };
 
-    if (params.topic) search.where["topic"] = params.topic;
+    let topic = params.topic;
+    if (topic) {
+      if (topic === "record") topic = "grouparooRecord";
+      search.where["topic"] = topic;
+    }
+
     if (params.verb) search.where["verb"] = params.verb;
     if (params.ownerId) {
       const ownerIds = [params.ownerId];
