@@ -100,14 +100,13 @@ export namespace GrouparooCLI {
     }
 
     export function deCamel(s: string) {
-      return s.replace(/([a-z])([A-Z])/g, "$1 $2");
+      return s
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace("Grouparoo Record", "Record"); // special replacement for logging "record"
     }
 
     export function deCamelAndCapitalize(s: string) {
-      return (
-        s.charAt(0).toUpperCase() +
-        s.slice(1).replace(/([a-z])([A-Z])/g, "$1 $2")
-      );
+      return s.charAt(0).toUpperCase() + deCamel(s.slice(1));
     }
 
     export function fatal(message: string) {
@@ -185,7 +184,6 @@ export namespace GrouparooCLI {
             }
           } else {
             for (const property in category) {
-              // GrouparooCLI.logger.log(logBlock);
               if (property !== "name") {
                 GrouparooCLI.logger.log(
                   category[property] === null
