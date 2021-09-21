@@ -81,11 +81,11 @@ export namespace SetupStepOps {
     },
     create_a_unique_record_property: {
       key: "create_a_unique_record_property",
-      title: "Create a Unique GrouparooRecord Property",
+      title: "Create a Unique Record Property",
       description:
-        "Create your first unique Property.  Grouparoo needs at least one unique Property to identify your GrouparooRecords (email, userId, etc).  You can have more than one!",
+        "Create your first unique Property.  Grouparoo needs at least one unique Property to identify your Records (email, userId, etc).  You can have more than one!",
       href: "/properties",
-      cta: "Add a GrouparooRecord Property",
+      cta: "Add a Record Property",
       helpLink: `${configURL}/properties`,
       check: async () => {
         const count = await Property.count({
@@ -95,7 +95,7 @@ export namespace SetupStepOps {
       },
       outcome: async () => {
         const count = await GrouparooRecord.count();
-        return `${count} GrouparooRecords created`;
+        return `${count} Records created`;
       },
     },
     create_a_schedule: {
@@ -117,11 +117,11 @@ export namespace SetupStepOps {
     },
     create_a_sample_record: {
       key: "create_a_sample_record",
-      title: "Create a Sample GrouparooRecord",
+      title: "Create a Sample Record",
       description:
-        "Create a Sample GrouparooRecord so you can validate your configuration is importing the correct data. These GrouparooRecords will allow you to test Group building and your Destination settings and mappings.",
+        "Create a Sample Record so you can validate your configuration is importing the correct data. These Records will allow you to test Group building and your Destination settings and mappings.",
       href: "/record/new",
-      cta: "Add a Sample GrouparooRecord",
+      cta: "Add a Sample Record",
       helpLink: `${configURL}/records`,
       check: async () => {
         const count = await GrouparooRecord.count();
@@ -132,7 +132,7 @@ export namespace SetupStepOps {
       key: "create_a_group",
       title: "Create a Group",
       description:
-        "Create a Group based on the Properties of your GrouparooRecords.  Groups will be kept up-to-date with changes to your GrouparooRecord's Properties.",
+        "Create a Group based on the Properties of your Records.  Groups will be kept up-to-date with changes to your Record's Properties.",
       href: "/groups",
       cta: "Add a Group",
       helpLink: `${configURL}/groups`,
@@ -149,7 +149,7 @@ export namespace SetupStepOps {
       key: "create_a_destination",
       title: "Create a Destination",
       description:
-        "Create a Destination to sync your GrouparooRecords and Group Memberships.  Grouparoo will automatically send all new information to the Destinations relevant to each GrouparooRecord.",
+        "Create a Destination to sync your Records and Group Memberships.  Grouparoo will automatically send all new information to the Destinations relevant to each Record.",
       href: "/destinations",
       cta: "Add a Destination",
       helpLink: `${configURL}/destinations`,
@@ -159,7 +159,7 @@ export namespace SetupStepOps {
       },
       outcome: async () => {
         const count = await Export.count();
-        return `${count} GrouparooRecords exported to a Destination`;
+        return `${count} Records exported to a Destination`;
       },
     },
   };

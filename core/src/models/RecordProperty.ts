@@ -112,7 +112,8 @@ export class RecordProperty extends LoggedModel<RecordProperty> {
     const property = await this.ensureProperty();
     const { rawValue, invalidValue } = await RecordPropertyOps.buildRawValue(
       value,
-      property.type
+      property.type,
+      this
     );
 
     this.rawValue = rawValue;

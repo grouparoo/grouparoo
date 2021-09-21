@@ -295,7 +295,11 @@ export namespace RecordOps {
                 p.position === position
             );
             const { rawValue, invalidValue } =
-              await RecordPropertyOps.buildRawValue(value, property.type);
+              await RecordPropertyOps.buildRawValue(
+                value,
+                property.type,
+                existingRecordProperty
+              );
 
             bulkCreates.push({
               id: existingRecordProperty

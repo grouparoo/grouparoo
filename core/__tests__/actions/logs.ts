@@ -2,6 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { SessionCreate } from "../../src/actions/session";
 import { LogsList } from "../../src/actions/logs";
+import { GrouparooRecord } from "../../src/models/GrouparooRecord";
 
 describe("actions/logs", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -61,6 +62,21 @@ describe("actions/logs", () => {
       );
       expect(error).toBeUndefined();
       expect(logs.length).toBeGreaterThanOrEqual(3);
+    });
+
+    test("searching for records returns GrouparooRecords", async () => {
+      const record: GrouparooRecord = await helper.factories.record();
+      connection.params = {
+        csrfToken,
+        topic: "record",
+      };
+      const { error, logs } = await specHelper.runAction<LogsList>(
+        "logs:list",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(logs.length).toEqual(1);
+      await record.destroy();
     });
 
     test("a reader can ask for logs about a record and also see logs about properties", async () => {
