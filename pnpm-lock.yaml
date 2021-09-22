@@ -235,7 +235,6 @@ importers:
       '@types/validator': '*'
       actionhero: 27.1.4
       ah-sequelize-plugin: 3.2.0
-      axios: 0.21.4
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
@@ -287,7 +286,6 @@ importers:
       '@types/validator': 13.6.3
       actionhero: 27.1.4
       ah-sequelize-plugin: 3.2.0_a871b01706fb480c03a1aa51348e041e
-      axios: 0.21.4
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0

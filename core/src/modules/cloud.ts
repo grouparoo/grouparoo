@@ -3,8 +3,8 @@ import path from "path";
 import tar from "tar";
 import fs from "fs";
 import FormData from "form-data";
+import fetch from "isomorphic-fetch";
 import { mkdtemp, copy, remove } from "fs-extra";
-import axios, { AxiosError, AxiosInstance } from "axios";
 
 export class CloudError extends Error {
   code: string;
@@ -76,19 +76,30 @@ export interface JobApiData {
 }
 
 export class CloudClient {
-  request: AxiosInstance;
+  baseUrl: string;
+  token: string;
   projectId: string;
 
   constructor(projectId: string, token: string) {
-    const apiUrl =
-      process.env.GROUPAROO_CLOUD_API_URL ?? "https://cloud.grouparoo.com";
     this.projectId = projectId;
-    this.request = axios.create({
-      baseURL: `${apiUrl}/api/v1`,
-      params: {
-        apiKey: token,
-      },
-    });
+    this.token = token;
+    this.baseUrl =
+      process.env.GROUPAROO_CLOUD_API_URL ?? "https://cloud.grouparoo.com";
+  }
+
+  async request(url: string, options?: RequestInit) {
+    const fetchUrl = new URL(url, this.baseUrl);
+    fetchUrl.searchParams.append("apiKey", this.token);
+
+    const res = await fetch(fetchUrl.toString(), options);
+    const data = await res.json();
+
+    if (res.status !== 200) {
+      if (data.error) throw new CloudError(data.error);
+      throw new Error(await res.text());
+    }
+
+    return data;
   }
 
   async createConfiguration(tarballPath: string, toApply: boolean) {
@@ -97,53 +108,29 @@ export class CloudClient {
     formData.append("projectId", this.projectId);
     formData.append("toApply", toApply.toString());
 
-    try {
-      const res = await this.request.post("/configuration", formData, {
+    const data: { configuration: ConfigurationApiData } = await this.request(
+      "/api/v1/configuration",
+      {
+        method: "POST",
+        //@ts-ignore typings are incorrectly not allowing FormData to be set as body
+        body: formData,
         headers: formData.getHeaders(),
-      });
-
-      const data: {
-        configuration: ConfigurationApiData;
-        requesterInformation: any;
-      } = res.data;
-      return data.configuration;
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        const axiosErr = err as AxiosError;
-        const cloudError = axiosErr.response?.data?.error;
-        if (cloudError) throw new CloudError(cloudError);
       }
-      throw err;
-    }
+    );
+    return data.configuration;
   }
 
   async getConfiguration(configurationId: string) {
-    try {
-      const res = await this.request.get(`/configuration/${configurationId}`);
-      const data: { configuration: ConfigurationApiData } = res.data;
-      return data.configuration;
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        const axiosErr = err as AxiosError;
-        const cloudError = axiosErr.response?.data?.error;
-        if (cloudError) throw new CloudError(cloudError);
-      }
-      throw err;
-    }
+    const data: { configuration: ConfigurationApiData } = await this.request(
+      `/api/v1/configuration/${configurationId}`
+    );
+    return data.configuration;
   }
 
   async getJob(jobId: string) {
-    try {
-      const res = await this.request.get(`/job/${jobId}`);
-      const data: { job: JobApiData } = res.data;
-      return data.job;
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        const axiosErr = err as AxiosError;
-        const cloudError = axiosErr.response?.data?.error;
-        if (cloudError) throw new CloudError(cloudError);
-      }
-      throw err;
-    }
+    const data: { job: JobApiData } = await this.request(
+      `/api/v1/job/${jobId}`
+    );
+    return data.job;
   }
 }
