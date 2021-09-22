@@ -8,6 +8,7 @@ import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
 import { CLS } from "../../modules/cls";
 import { UniqueConstraintError } from "sequelize";
+import { api } from "actionhero";
 
 export class ImportRecordProperty extends RetryableTask {
   constructor() {
@@ -78,21 +79,24 @@ export class ImportRecordProperty extends RetryableTask {
       } catch (error) {
         if (property.unique && error instanceof UniqueConstraintError) {
           await CLS.afterCommit(() =>
-            RecordProperty.update(
-              {
-                state: "ready",
-                rawValue: null,
-                invalidValue: hash[property.id].join(", "),
-                stateChangedAt: new Date(),
-                confirmedAt: new Date(),
-              },
-              {
-                where: {
-                  propertyId: property.id,
-                  recordId: record.id,
-                  state: "pending",
+            api.sequelize.transaction((transaction) =>
+              RecordProperty.update(
+                {
+                  state: "ready",
+                  rawValue: null,
+                  invalidValue: hash[property.id].join(", "),
+                  stateChangedAt: new Date(),
+                  confirmedAt: new Date(),
                 },
-              }
+                {
+                  transaction,
+                  where: {
+                    propertyId: property.id,
+                    recordId: record.id,
+                    state: "pending",
+                  },
+                }
+              )
             )
           );
         } else {
