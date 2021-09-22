@@ -3,7 +3,7 @@ import path from "path";
 import { utils } from "actionhero";
 import { GrouparooCLI } from "./cli";
 import { getConfigDir, getParentPath } from "./pluginDetails";
-import { CloudClient, packageConfig } from "./cloud";
+import { CloudClient, CloudError, packageConfig } from "./cloud";
 import { mkdtemp, remove } from "fs-extra";
 
 export namespace CloudCLI {
@@ -99,7 +99,9 @@ export namespace CloudCLI {
         await utils.sleep(1000);
       }
     } catch (err) {
-      GrouparooCLI.logger.fatal(err.message);
+      let prefix = "";
+      if (err instanceof CloudError) prefix = "Grouparoo Cloud error: ";
+      GrouparooCLI.logger.fatal(prefix + err.message);
     }
   }
 

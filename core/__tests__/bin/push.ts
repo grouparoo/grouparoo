@@ -177,7 +177,9 @@ describe("bin/push", () => {
     expect(toStop).toBe(true);
 
     const output = messages.join(" ");
-    expect(output).toContain("❌ something weird happened here");
+    expect(output).toContain(
+      "❌ Grouparoo Cloud error: something weird happened here"
+    );
   });
 
   test("logs error if an error was attached to the configuration", async () => {
