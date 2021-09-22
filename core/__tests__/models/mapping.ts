@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Mapping, App, Source, Property } from "../../src";
+import { Mapping, App, Source, Property, GrouparooModel } from "../../src";
 
 describe("models/mapping", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -66,6 +66,19 @@ describe("models/mapping", () => {
           remoteKey: "bar",
         })
       ).rejects.toThrow(/There is already a Mapping for/);
+    });
+
+    test("a source cannot be mapped to a property of another model", async () => {
+      const model = await GrouparooModel.create({
+        name: "admin_users",
+        type: "profile",
+      });
+      const otherSource = await helper.factories.source(null, {
+        modelId: model.id,
+      });
+      await expect(otherSource.setMapping({ id: "userId" })).rejects.toThrow(
+        /cannot map/
+      );
     });
   });
 });
