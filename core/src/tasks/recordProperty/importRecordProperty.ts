@@ -6,6 +6,9 @@ import { Mapping } from "../../models/Mapping";
 import { Option } from "../../models/Option";
 import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
+import { CLS } from "../../modules/cls";
+import { UniqueConstraintError } from "sequelize";
+import { api } from "actionhero";
 
 export class ImportRecordProperty extends RetryableTask {
   constructor() {
@@ -70,7 +73,36 @@ export class ImportRecordProperty extends RetryableTask {
       hash[property.id] = Array.isArray(propertyValues)
         ? propertyValues
         : [propertyValues];
-      await record.addOrUpdateProperties(hash);
+
+      try {
+        await record.addOrUpdateProperties(hash);
+      } catch (error) {
+        if (property.unique && error instanceof UniqueConstraintError) {
+          await CLS.afterCommit(() =>
+            api.sequelize.transaction((transaction) =>
+              RecordProperty.update(
+                {
+                  state: "ready",
+                  rawValue: null,
+                  invalidValue: hash[property.id].join(", "),
+                  stateChangedAt: new Date(),
+                  confirmedAt: new Date(),
+                },
+                {
+                  transaction,
+                  where: {
+                    propertyId: property.id,
+                    recordId: record.id,
+                    state: "pending",
+                  },
+                }
+              )
+            )
+          );
+        } else {
+          throw error;
+        }
+      }
     } else {
       // got no data back, clear value
       await RecordProperty.update(

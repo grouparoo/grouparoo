@@ -5,12 +5,24 @@ import {
   GrouparooRecord,
   RecordProperty,
   Property,
+  PluginConnection,
 } from "../../../src";
 
 describe("tasks/recordProperty:importRecordProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
+
+  let testPluginConnection: PluginConnection;
+
+  beforeAll(() => {
+    const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
+      (a) => a.name === "@grouparoo/test-plugin"
+    );
+    testPluginConnection = testPlugin.connections.find(
+      (c) => c.name === "test-plugin-import"
+    );
+  });
 
   describe("recordProperty:importRecordProperty", () => {
     test("can be enqueued", async () => {
@@ -69,13 +81,6 @@ describe("tasks/recordProperty:importRecordProperty", () => {
     });
 
     test("will not crash with invalidValues and they will be set on the recordProperties", async () => {
-      const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
-        (a) => a.name === "@grouparoo/test-plugin"
-      );
-      const testPluginConnection = testPlugin.connections.find(
-        (c) => c.name === "test-plugin-import"
-      );
-
       const spy = jest
         .spyOn(testPluginConnection.methods, "recordProperty")
         //@ts-ignore // partial mock
@@ -109,15 +114,70 @@ describe("tasks/recordProperty:importRecordProperty", () => {
       spy.mockRestore();
     });
 
+    test("will set null on propertyValues when there is an duplicate unique value", async () => {
+      const spy = jest
+        .spyOn(testPluginConnection.methods, "recordProperty")
+        //@ts-ignore // partial mock
+        .mockImplementation(() => {
+          return "mario@example.com";
+        });
+
+      const recordA: GrouparooRecord = await helper.factories.record();
+      await recordA.addOrUpdateProperties({ email: ["mario@example.com"] });
+
+      const recordB: GrouparooRecord = await helper.factories.record();
+      const recordPropertyB = await RecordProperty.findOne({
+        where: { propertyId: "email", recordId: recordB.id },
+      });
+      await recordPropertyB.update({ state: "pending" });
+
+      await specHelper.runTask("recordProperty:importRecordProperty", {
+        recordId: recordB.id,
+        propertyId: recordPropertyB.propertyId,
+      });
+
+      await recordPropertyB.reload();
+      expect(recordPropertyB.state).toBe("ready");
+      expect(recordPropertyB.rawValue).toBe(null);
+      expect(recordPropertyB.invalidValue).toBe("mario@example.com");
+
+      await recordA.destroy();
+      await recordB.destroy();
+
+      spy.mockRestore();
+    });
+
+    test("throwing an error other than UniqueConstraintError will raise a resque error", async () => {
+      const spy = jest
+        .spyOn(testPluginConnection.methods, "recordProperty")
+        .mockImplementation(() => {
+          throw new Error("oh no!");
+        });
+
+      const record: GrouparooRecord = await helper.factories.record();
+      const recordProperty = await RecordProperty.findOne({
+        where: { propertyId: "email", recordId: record.id },
+      });
+      await recordProperty.update({ state: "pending" });
+
+      await expect(
+        specHelper.runTask("recordProperty:importRecordProperty", {
+          recordId: record.id,
+          propertyId: recordProperty.propertyId,
+        })
+      ).rejects.toThrow(/oh no!/);
+
+      await recordProperty.reload();
+      expect(recordProperty.state).toBe("pending");
+      expect(recordProperty.rawValue).toBe(null);
+      expect(recordProperty.invalidValue).toBe(null);
+
+      await record.destroy();
+
+      spy.mockRestore();
+    });
+
     test("will set value to null if the record property no longer exists", async () => {
-      const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
-        (a) => a.name === "@grouparoo/test-plugin"
-      );
-
-      let testPluginConnection = testPlugin.connections.find(
-        (c) => c.name === "test-plugin-import"
-      );
-
       const spy = jest
         .spyOn(testPluginConnection.methods, "recordProperty")
         .mockImplementation(() => undefined);
