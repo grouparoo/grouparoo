@@ -182,7 +182,10 @@ export class Group extends LoggedModel<Group> {
 
     for (const i in rules) {
       const rule: GroupRule = rules[i];
-      const property = await Property.findOneWithCache(rule.propertyId);
+      const property = await Property.findOneWithCache(
+        rule.propertyId,
+        this.modelId
+      );
       const type = property
         ? property.type
         : TopLevelGroupRules.find((tlgr) => tlgr.key === rule.recordColumn)
@@ -669,7 +672,11 @@ export class Group extends LoggedModel<Group> {
     const convenientRules = this.toConvenientRules(groupRules);
 
     for (const rule of convenientRules) {
-      const property = await Property.findOneWithCache(rule.key, "key");
+      const property = await Property.findOneWithCache(
+        rule.key,
+        this.modelId,
+        "key"
+      );
       rules.push({
         propertyId: rule.topLevel ? rule.key : property.getConfigId(),
         operation: { op: rule.operation.op },

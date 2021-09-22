@@ -85,7 +85,7 @@ export class RecordProperty extends LoggedModel<RecordProperty> {
   property: Property;
 
   async apiData() {
-    const property = await Property.findOneWithCache(this.propertyId);
+    const property = await this.ensureProperty();
 
     return {
       recordId: this.recordId,

@@ -38,7 +38,10 @@ export class ImportRecordProperty extends RetryableTask {
       });
     }
 
-    const property = await Property.findOneWithCache(params.propertyId);
+    const property = await Property.findOneWithCache(
+      params.propertyId,
+      record.modelId
+    );
     if (!property) return;
     const recordProperties = await record.getProperties();
     const source = await property.$get("source", {

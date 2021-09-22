@@ -33,7 +33,9 @@ export async function loadRecord(
 
   const nonNullProperties = extractNonNullParts(configObject, "properties");
 
-  const directlyMappedProperties = (await Property.findAllWithCache())
+  const directlyMappedProperties = (
+    await Property.findAllWithCache(record.modelId)
+  )
     .filter((p) => p.directlyMapped === true)
     .map((p) => p.id);
 

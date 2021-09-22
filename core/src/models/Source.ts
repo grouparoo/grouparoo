@@ -237,9 +237,10 @@ export class Source extends LoggedModel<Source> {
       return true;
     } else {
       const propertyMappingKey = Object.values(mapping)[0];
-      const property = (await Property.findAllWithCache()).find(
+      const property = (await Property.findAllWithCache(this.modelId)).find(
         (p) => p.key === propertyMappingKey
       );
+      if (!property) return false;
       if (!property.unique) return false;
       return true;
     }
