@@ -118,6 +118,7 @@ export namespace RecordOps {
     offset,
     state,
     groupId,
+    modelId,
     searchKey,
     searchValue,
     order,
@@ -127,6 +128,7 @@ export namespace RecordOps {
     offset?: number;
     state?: string;
     groupId?: string;
+    modelId?: string;
     searchKey?: string | number;
     searchValue?: string;
     order?: OrderItem[];
@@ -195,6 +197,11 @@ export namespace RecordOps {
       ands.push(
         Sequelize.where(Sequelize.col("groupMembers.groupId"), groupId)
       );
+    }
+
+    // Are we limiting to a certain modelId?
+    if (modelId) {
+      ands.push({ modelId });
     }
 
     // Load the records in full now that we know the relevant records

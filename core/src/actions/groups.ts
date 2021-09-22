@@ -18,6 +18,7 @@ export class GroupsList extends AuthenticatedAction {
       limit: { required: true, default: 100, formatter: APIData.ensureNumber },
       offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       state: { required: false },
+      modelId: { required: false },
       order: {
         required: false,
         formatter: APIData.ensureObject,
@@ -33,6 +34,7 @@ export class GroupsList extends AuthenticatedAction {
     const where = {};
 
     if (params.state) where["state"] = params.state;
+    if (params.modelId) where["modelId"] = params.modelId;
 
     const groups = await Group.scope(null).findAll({
       where,

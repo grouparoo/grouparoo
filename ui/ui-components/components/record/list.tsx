@@ -20,7 +20,12 @@ export default function RecordsList(props) {
   const {
     errorHandler,
     properties,
-  }: { errorHandler: ErrorHandler; properties: Models.PropertyType[] } = props;
+    models,
+  }: {
+    errorHandler: ErrorHandler;
+    properties: Models.PropertyType[];
+    models: Models.GrouparooModelType[];
+  } = props;
   const { execApi } = UseApi(props, errorHandler);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -41,6 +46,9 @@ export default function RecordsList(props) {
     router.query.searchValue || props.searchValue || ""
   );
   const [state, setState] = useState(router.query.state?.toString() || null);
+  const [modelId, setModelId] = useState(
+    router.query.modelId?.toString() || null
+  );
   const [caseSensitive, setCaseSensitive] = useState(
     router.query.caseSensitive ? router.query.caseSensitive === "true" : true
   );
@@ -48,7 +56,7 @@ export default function RecordsList(props) {
 
   useSecondaryEffect(() => {
     load();
-  }, [offset, limit, state, caseSensitive]);
+  }, [offset, limit, state, modelId, caseSensitive]);
 
   let groupId: string;
   if (router.query.id) {
@@ -58,9 +66,7 @@ export default function RecordsList(props) {
   }
 
   async function load(event?) {
-    if (event) {
-      event.preventDefault();
-    }
+    if (event) event.preventDefault();
 
     setLoading(true);
     const response: Actions.RecordsList = await execApi("get", `/records`, {
@@ -69,6 +75,7 @@ export default function RecordsList(props) {
       limit,
       offset,
       state,
+      modelId,
       groupId,
       caseSensitive,
     });
@@ -86,6 +93,7 @@ export default function RecordsList(props) {
       searchKey,
       searchValue,
       state,
+      modelId,
       caseSensitive: caseSensitive.toString(),
     });
   }
@@ -94,9 +102,7 @@ export default function RecordsList(props) {
     match,
     _searchKey = searchKey
   ) {
-    if (!_searchKey) {
-      return;
-    }
+    if (!_searchKey) return;
 
     const propertyId = properties.filter((r) => r.key === _searchKey)[0].id;
 
@@ -216,34 +222,70 @@ export default function RecordsList(props) {
         </Form>
       )}
 
-      <ButtonGroup id="record-states">
-        <Button
-          size="sm"
-          variant={state ? "info" : "secondary"}
-          onClick={() => {
-            setState(null);
-            setOffset(0);
-          }}
-        >
-          All
-        </Button>
-        {states.map((t) => {
-          const variant = t === state ? "secondary" : "info";
-          return (
+      <Row>
+        <Col>
+          States:{" "}
+          <ButtonGroup id="record-states">
             <Button
-              key={`state-${t}`}
               size="sm"
-              variant={variant}
+              variant={state ? "info" : "secondary"}
               onClick={() => {
-                setState(t);
+                setState(null);
                 setOffset(0);
               }}
             >
-              {t}
+              All
             </Button>
-          );
-        })}
-      </ButtonGroup>
+            {states.map((t) => {
+              const variant = t === state ? "secondary" : "info";
+              return (
+                <Button
+                  key={`state-${t}`}
+                  size="sm"
+                  variant={variant}
+                  onClick={() => {
+                    setState(t);
+                    setOffset(0);
+                  }}
+                >
+                  {t}
+                </Button>
+              );
+            })}
+          </ButtonGroup>
+        </Col>
+        <Col>
+          Models:{" "}
+          <ButtonGroup id="record-models">
+            <Button
+              size="sm"
+              variant={modelId ? "info" : "secondary"}
+              onClick={() => {
+                setModelId(null);
+                setOffset(0);
+              }}
+            >
+              All
+            </Button>
+            {models.map((m) => {
+              const variant = m.id === modelId ? "secondary" : "info";
+              return (
+                <Button
+                  key={`model-${m}`}
+                  size="sm"
+                  variant={variant}
+                  onClick={() => {
+                    setModelId(m.id);
+                    setOffset(0);
+                  }}
+                >
+                  {m.name}
+                </Button>
+              );
+            })}
+          </ButtonGroup>
+        </Col>
+      </Row>
 
       <br />
       <br />
@@ -394,5 +436,6 @@ RecordsList.hydrate = async (
     caseSensitive,
   });
   const { properties } = await execApi("get", `/properties`);
-  return { records, total, properties };
+  const { models } = await execApi("get", `/models`);
+  return { records, total, properties, models };
 };

@@ -47,14 +47,14 @@ export default function Page(props) {
   const [preview, setPreview] = useState<Actions.SourcePreview["preview"]>(
     props.preview || []
   );
-  const [propertyExamples, setPropertyExamples] = useState(
-    props.propertyExamples
-  );
+  const [propertyExamples, setPropertyExamples] = useState<
+    Actions.PropertiesList["examples"]
+  >(props.propertyExamples);
   const [newProperty, setNewProperty] = useState({
     key: "",
     type: "",
   });
-  const [source, setSource] = useState(props.source);
+  const [source, setSource] = useState<Models.SourceType>(props.source);
 
   if (hydrationError) errorHandler.set({ error: hydrationError });
 
@@ -75,7 +75,12 @@ export default function Page(props) {
       const prrResponse: Actions.PropertiesList = await execApi(
         "get",
         `/properties`,
-        { includeExamples: true, unique: true, state: "ready" }
+        {
+          includeExamples: true,
+          unique: true,
+          state: "ready",
+          modelId: source.modelId,
+        }
       );
       if (prrResponse?.properties) {
         setProperties(prrResponse.properties);
@@ -319,7 +324,10 @@ export default function Page(props) {
                 <>
                   <hr />
                   <p>
-                    <strong>Create a new Unique Property</strong>
+                    <strong>
+                      Create a new Unique Property for{" "}
+                      <code>{source.modelName}</code> Records
+                    </strong>
                   </p>
                   <p>
                     This record property should be unique, meaning only one
@@ -397,7 +405,7 @@ Page.getInitialProps = async (ctx) => {
   const { properties, examples: propertyExamples } = await execApi(
     "get",
     `/properties`,
-    { includeExamples: true, state: "ready" }
+    { includeExamples: true, state: "ready", modelId: source?.modelId }
   );
   const { types } = await execApi("get", `/propertyOptions`);
   const { total: scheduleCount } = await execApi("get", `/schedules`);
