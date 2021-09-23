@@ -17,7 +17,7 @@ export class RecordPropertiesEnqueue extends CLSTask {
 
   async runWithinTransaction(worker) {
     let count = 0;
-    const limit: number = config.batchSize.profileProperties;
+    const limit: number = config.batchSize.recordProperties;
 
     const sources = await Source.findAll();
 

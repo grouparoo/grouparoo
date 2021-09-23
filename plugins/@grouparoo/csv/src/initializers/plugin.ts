@@ -42,7 +42,7 @@ export class Plugins extends Initializer {
         {
           name: "csv-import",
           direction: "import",
-          description: "Import or update Profiles from a remote CSV.",
+          description: "Import or update Records from a remote CSV.",
           app: "csv",
           groupAggregations: [AggregationMethod.Exact],
           options: [

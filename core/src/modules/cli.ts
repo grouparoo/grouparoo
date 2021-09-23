@@ -210,7 +210,7 @@ export namespace GrouparooCLI {
 
       GrouparooCLI.logger.log("");
       GrouparooCLI.logger.log(cyanBold(formattedTitle));
-      const headings = ["PROFILES", "SOURCES", "DESTINATIONS"];
+      const headings = ["RECORDS", "SOURCES", "DESTINATIONS"];
       if (finalSummaryLogs[3].length > 0) headings.push("WARNINGS");
 
       finalSummaryLogs.forEach((log, idx) => {

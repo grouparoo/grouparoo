@@ -57,7 +57,7 @@ export class Plugins extends Initializer {
         {
           name: "intercom-export-contacts",
           direction: "export",
-          description: "Export Profiles to contacts in an Intercom account.",
+          description: "Export Records to contacts in an Intercom account.",
           app: "intercom",
           syncModes,
           options: [

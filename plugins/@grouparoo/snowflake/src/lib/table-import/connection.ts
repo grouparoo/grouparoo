@@ -11,7 +11,7 @@ export function getConnection() {
   return buildConnection({
     app: "snowflake",
     name: "snowflake-table-import",
-    description: "Import or update Profiles from a Snowflake database table.",
+    description: "Import or update Records from a Snowflake database table.",
     tableOptionDescription: "The table to scan",
     getSampleRows,
     getColumns,

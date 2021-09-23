@@ -12,7 +12,7 @@ exports.default = async function buildConfig() {
        For a full list of options, see https://www.grouparoo.com/docs/config/groups
 
         rules: [
-          // a Property exists on the Profile
+          // a Property exists on the Record
           {
             propertyId: "email",
             operation: { op: "exists" },

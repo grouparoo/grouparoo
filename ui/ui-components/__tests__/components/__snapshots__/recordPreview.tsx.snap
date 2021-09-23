@@ -118,7 +118,7 @@ exports[`property / recordPreview should not render with a null date 1`] = `
 </div>
 `;
 
-exports[`property / recordPreview should render a whole user profile including the date 1`] = `
+exports[`property / recordPreview should render a whole user record including the date 1`] = `
 <div>
   <div
     class="card bg-light"

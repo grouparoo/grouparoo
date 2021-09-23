@@ -1,7 +1,7 @@
 {
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/logger",
-  "description": "@grouparoo/logger is a Destination plugin that writes the Profiles it receives to a file of your choosing (ie: profiles.log in JSON format ) and/or stdout",
+  "description": "@grouparoo/logger is a Destination plugin that writes the Records it receives to a file of your choosing (ie: records.log in JSON format ) and/or stdout",
   "version": "0.7.0-alpha.5",
   "license": "MPL-2.0",
   "private": false,

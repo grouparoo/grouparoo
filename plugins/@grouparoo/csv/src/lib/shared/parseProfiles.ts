@@ -23,7 +23,7 @@ export async function parseProfiles({
   limit: number;
   highWaterMark: HighWaterMark;
 }) {
-  // unlike a normal source in which we could fetch Profile Properties as needed, we need to be sure we get them all in one go
+  // unlike a normal source in which we could fetch Record Properties as needed, we need to be sure we get them all in one go
   let combinedMapping = Object.assign({}, sourceMapping);
   const properties = await source.$get("properties");
   for (const i in properties) {

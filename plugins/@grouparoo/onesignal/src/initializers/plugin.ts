@@ -66,7 +66,7 @@ export class Plugins extends Initializer {
           name: "onesignal-export",
           direction: "export",
           description:
-            "Enrich OneSignal devices with profile and group information as tags",
+            "Enrich OneSignal devices with record and group information as tags",
           app: "onesignal",
           syncModes,
           defaultSyncMode,

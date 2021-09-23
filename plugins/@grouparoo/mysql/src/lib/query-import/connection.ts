@@ -6,7 +6,7 @@ export function getConnection() {
   return buildConnection({
     app: "mysql",
     name: "mysql-query-import",
-    description: "Import or update Profiles via a custom MySQL query.",
+    description: "Import or update Records via a custom MySQL query.",
     executeQuery,
     getChangedRows,
   });

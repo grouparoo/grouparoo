@@ -11,7 +11,7 @@ export function getConnection() {
   return buildConnection({
     app: "redshift",
     name: "redshift-table-import",
-    description: "Import or update Profiles from a Redshift database table.",
+    description: "Import or update Records from a Redshift database table.",
     tableOptionDescription: "The table to scan",
     getSampleRows,
     getColumns,

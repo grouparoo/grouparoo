@@ -51,7 +51,7 @@ export class DestroySweeper extends CLSTask {
       await CLS.enqueueTask("app:destroy", { appId: app.id });
     }
 
-    // --- PROFILES ---
+    // --- RECORDS ---
     const records = await RecordOps.getRecordsToDestroy();
     for (const record of records) {
       await CLS.enqueueTask("record:destroy", { recordId: record.id });

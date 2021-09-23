@@ -10,7 +10,7 @@ exports.default = async function buildConfig() {
       groupId: "...", // The ID of the group whose members you want to export - e.g. `groupId: "high_value_customers"`
 
       options: {
-        table: 'users_export', // The table to write profiles to
+        table: 'users_export', // The table to write Records to
         primaryKey: 'id', // The primaryKey of table
         groupsTable: 'groups_export', // The table to write groups to
         groupForeignKey: 'user_id', // The foreign key that the groups table uses to reference table
