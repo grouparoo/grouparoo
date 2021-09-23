@@ -39,10 +39,10 @@ import {
   Property,
   PropertyFiltersWithKey,
   SimplePropertyOptions,
+  PropertyTypes,
 } from "./Property";
 import { Run } from "./Run";
 import { GrouparooModel } from "./GrouparooModel";
-import { PropertyTypes } from "..";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}

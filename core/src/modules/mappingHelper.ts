@@ -26,7 +26,6 @@ export namespace MappingHelper {
 
     for (const i in mappings) {
       const mapping = mappings[i];
-      // const property = await Property.findOneWithCache(mapping.propertyId);
       const property = await Property.findOneWithCache(
         mapping.propertyId,
         instance.modelId
