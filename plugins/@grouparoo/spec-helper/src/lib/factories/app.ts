@@ -1,5 +1,6 @@
 import { loadPath } from "../loadPath";
 import faker from "faker";
+import { App } from "@grouparoo/core";
 
 const data = async (props = {}) => {
   const defaultProps = {
@@ -17,7 +18,7 @@ const data = async (props = {}) => {
 export default async (props = {}) => {
   const { App } = await import(`@grouparoo/core/${loadPath}`);
   const mergedProps = await data(props);
-  const instance = await App.create(mergedProps);
+  const instance = (await App.create(mergedProps)) as App;
 
   if (Object.keys(mergedProps.options).length > 0) {
     await instance.setOptions(mergedProps.options);

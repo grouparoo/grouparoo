@@ -1,6 +1,7 @@
 import { loadPath } from "../loadPath";
 import DestinationFactory from "./destination";
 import RecordFactory from "./record";
+import { Export } from "@grouparoo/core";
 
 const data = async (props = {}) => {
   const defaultProps = {
@@ -30,7 +31,7 @@ export default async (
   props.destinationId = destination.id;
 
   const mergedProps = await data(props);
-  const instance = new Export(mergedProps);
+  const instance = new Export(mergedProps) as Export;
   await instance.save();
 
   return instance;
