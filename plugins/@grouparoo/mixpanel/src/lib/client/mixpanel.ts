@@ -27,6 +27,9 @@ export default class MixpanelClient {
       username: this.username,
       password: this.secret,
     };
+    params["headers"] = Object.assign({}, params["headers"], {
+      "X-Mixpanel-Integration-ID": "grouparoo",
+    });
     try {
       const response = await axios(params);
       const { data = {} } = response;
