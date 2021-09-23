@@ -728,6 +728,38 @@ describe("models/record", () => {
           ).toBeGreaterThan(firstUpdate.getTime());
         });
 
+        test("array property length can grow and shrink", async () => {
+          await record.addOrUpdateProperties({
+            email: ["luigi@example.com"],
+            purchases: ["star", "mushroom", "mushroom", "go kart"],
+          });
+          const firstProperties = await record.getProperties();
+          expect(firstProperties.purchases.values).toEqual([
+            "star",
+            "mushroom",
+            "mushroom",
+            "go kart",
+          ]);
+
+          await record.addOrUpdateProperties({
+            email: ["luigi@example.com"],
+            purchases: ["star"],
+          });
+          const secondProperties = await record.getProperties();
+          expect(secondProperties.purchases.values).toEqual(["star"]);
+
+          await record.addOrUpdateProperties({
+            email: ["luigi@example.com"],
+            purchases: ["star", "mushroom", "mushroom"],
+          });
+          const thirdProperties = await record.getProperties();
+          expect(thirdProperties.purchases.values).toEqual([
+            "star",
+            "mushroom",
+            "mushroom",
+          ]);
+        });
+
         test("other record properties do not accept array values", async () => {
           await expect(
             record.addOrUpdateProperties({
