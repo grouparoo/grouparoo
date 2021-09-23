@@ -3,7 +3,7 @@ const actionhero = require("actionhero");
 const { log } = require("actionhero");
 const open = require("open");
 
-class Apply extends actionhero.CLI {
+class Config extends actionhero.CLI {
   constructor() {
     super();
     this.preInitialize = () => {
@@ -39,4 +39,4 @@ class Apply extends actionhero.CLI {
   }
 }
 
-exports.Apply = Apply;
+exports.Config = Config;
