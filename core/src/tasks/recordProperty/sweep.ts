@@ -17,7 +17,7 @@ export class RecordPropertySweep extends CLSTask {
 
   async runWithinTransaction() {
     let count = 0;
-    const limit: number = config.batchSize.profileProperties;
+    const limit: number = config.batchSize.recordProperties;
 
     // delete those record properties who have no record
     const recordPropertiesMissingRecord = await RecordProperty.findAll({
