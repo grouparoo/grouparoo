@@ -534,7 +534,7 @@ export namespace Actions {
     typeof RecordEdit.prototype.runWithinTransaction
   >;
   export type RecordImportAndExport = AsyncReturnType<
-    typeof RecordImportAndExport.prototype.runWithinTransaction
+    typeof RecordImportAndExport.prototype.run
   >;
   export type RecordView = AsyncReturnType<
     typeof RecordView.prototype.runWithinTransaction
