@@ -113,7 +113,7 @@ export const DEFAULT = {
       (process.env.WORKERS
         ? parseInt(process.env.WORKERS)
         : 0 > 0 && process.env.GROUPAROO_RUN_MODE !== "cli:apply") ||
-      process.env.NODE_ENV === "test" || 
+      process.env.NODE_ENV === "test" ||
       process.env.GROUPAROO_RUN_MODE === "cli:config"
     ) {
       autoMigrate = true;
