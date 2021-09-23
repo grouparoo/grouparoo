@@ -393,7 +393,7 @@ export namespace RecordOps {
                   {
                     state: "ready",
                     rawValue: null,
-                    invalidValue: `${attemptedRecordProperty.rawValue} (duplicate)`,
+                    invalidValue: `${attemptedRecordProperty.rawValue}`,
                     stateChangedAt: new Date(),
                     confirmedAt: new Date(),
                   },

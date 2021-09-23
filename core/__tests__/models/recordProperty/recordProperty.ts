@@ -492,7 +492,7 @@ describe("models/recordProperty", () => {
   });
 
   describe("uniqueness and cascade destruction", () => {
-    let secondRecord;
+    let secondRecord: GrouparooRecord;
     beforeAll(async () => {
       emailProperty.unique = true;
       await emailProperty.save();
@@ -508,19 +508,27 @@ describe("models/recordProperty", () => {
     });
 
     test("allows the addition of another unique, non-conflicting property", async () => {
+      await record.markPending();
+      await secondRecord.markPending();
+
       await record.addOrUpdateProperties({ email: ["mario@example.com"] });
       await secondRecord.addOrUpdateProperties({
         email: ["luigi@example.com"],
       });
     });
 
-    test("blocks the addition of another unique property", async () => {
+    test("recordProperties that violate the uniqueness rule will noted", async () => {
+      await record.markPending();
+      await secondRecord.markPending();
+
       await record.addOrUpdateProperties({ email: ["mario@example.com"] });
-      await expect(
-        secondRecord.addOrUpdateProperties({
-          email: ["mario@example.com"],
-        })
-      ).rejects.toThrow(/Validation error/);
+      await secondRecord.addOrUpdateProperties({
+        email: ["mario@example.com"],
+      }); // does not throw
+
+      const properties = await secondRecord.getProperties();
+      expect(properties.email.values).toEqual([null]);
+      expect(properties.email.invalidValue).toEqual("mario@example.com");
     });
 
     test("editing the key of a property renames all the record properties that have that key", async () => {
