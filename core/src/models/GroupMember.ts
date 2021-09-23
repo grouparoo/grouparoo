@@ -103,8 +103,8 @@ export class GroupMember extends Model {
 
   @BeforeCreate
   static async ensureModelMatch(instance: GroupMember) {
-    const group = await instance.$get("group");
-    const record = await instance.$get("record");
+    const group = await instance.$get("group", { scope: null });
+    const record = await instance.$get("record", { scope: null });
     if (record.modelId !== group.modelId) {
       throw new Error(
         `models ${group.modelId} and ${record.modelId} do not match`

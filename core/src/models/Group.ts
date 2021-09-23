@@ -258,7 +258,7 @@ export class Group extends LoggedModel<Group> {
         );
       }
 
-      if (this.modelId !== property.source.modelId) {
+      if (property && this.modelId !== property.source.modelId) {
         throw new Error(
           `${property.key} does not belong to the ${this.modelId} model`
         );

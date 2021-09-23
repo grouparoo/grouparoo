@@ -60,7 +60,6 @@ export class PropertiesList extends AuthenticatedAction {
         offset: params.offset,
         order: params.order,
         where,
-        logging: true,
       })
     ).filter((p) =>
       params.modelId ? p.source?.modelId === params.modelId : true
