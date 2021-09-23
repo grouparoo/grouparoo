@@ -69,8 +69,8 @@ export default class PrometheusInitializer extends Initializer {
 
     api.prometheus.gauges.push(
       new Gauge({
-        name: "grouparoo_Profile_pending_count",
-        help: "Number of pending Profiles in the cluster",
+        name: "grouparoo_Record_pending_count",
+        help: "Number of pending Records in the cluster",
       })
     );
 
@@ -83,8 +83,8 @@ export default class PrometheusInitializer extends Initializer {
 
     api.prometheus.gauges.push(
       new Gauge({
-        name: "grouparoo_Profile_totals_count",
-        help: "Number of Profiles in the cluster",
+        name: "grouparoo_Record_totals_count",
+        help: "Number of Records in the cluster",
       })
     );
 

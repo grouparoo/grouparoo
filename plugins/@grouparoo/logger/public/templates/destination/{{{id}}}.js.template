@@ -12,8 +12,8 @@ exports.default = async function buildConfig() {
       // Mappings are how you choose which properties to export to this destination.
       // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
       mapping: {
-        "primary id": "user_id", // The main way to identify Profiles in the logs.
-        "secondary id": "email", // An optional secondary ID for the Profiles logged.
+        "primary id": "user_id", // The main way to identify Records in the logs.
+        "secondary id": "email", // An optional secondary ID for the Records logged.
       },
 
       // You can export group memberships.

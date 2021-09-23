@@ -77,7 +77,7 @@ export class Plugins extends Initializer {
         {
           name: "mixpanel-export",
           direction: "export",
-          description: "Export records to Mixpanel as User Profiles",
+          description: "Export Records to Mixpanel as User Profiles",
           app: "mixpanel",
           syncModes,
           defaultSyncMode,

@@ -11,7 +11,7 @@ exports.default = async function buildConfig() {
       syncMode: {{{syncMode}}}, // How should Grouparoo sync with this destination? Options: "sync", "additive", "enrich"
 
       options: {
-        table: 'users_export', // The table to write profiles to
+        table: 'users_export', // The table to write Records to
         primaryKey: 'id', // The primaryKey of table
         groupsTable: 'groups_export', // The table to write groups to
         groupForeignKey: 'user_id', // The foreign key that the groups table uses to reference table

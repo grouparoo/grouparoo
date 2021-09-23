@@ -94,7 +94,7 @@ describe("multiple models", () => {
     await adminRecord.import();
   });
 
-  test("group members only collect profiles of matching modelIds", async () => {
+  test("group members only collect records of matching modelIds", async () => {
     profileGroup = await Group.create({
       type: "calculated",
       name: "profileGroup",

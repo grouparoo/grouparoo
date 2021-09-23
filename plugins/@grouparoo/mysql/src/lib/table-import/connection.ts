@@ -11,7 +11,7 @@ export function getConnection() {
   return buildConnection({
     app: "mysql",
     name: "mysql-table-import",
-    description: "Import or update Profiles from a MySQL database table.",
+    description: "Import or update Records from a MySQL database table.",
     tableOptionDescription: "The table to scan",
     getSampleRows,
     getColumns,

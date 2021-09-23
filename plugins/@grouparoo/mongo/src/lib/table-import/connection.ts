@@ -12,7 +12,7 @@ export function getConnection() {
     app: "mongo",
     name: "mongo-table-import",
     description:
-      "Import or update Profiles from a Mongo DB database collection.",
+      "Import or update Records from a Mongo DB database collection.",
     tableOptionDescription: "The collection to scan",
     tableOptionDisplayName: "Collection",
     getSampleRows,

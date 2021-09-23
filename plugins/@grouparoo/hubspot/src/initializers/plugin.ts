@@ -59,7 +59,7 @@ export class Plugins extends Initializer {
           name: "hubspot-export",
           direction: "export",
           description:
-            "Export Profiles to Hubspot and add them to Contact Lists.",
+            "Export Records to Hubspot and add them to Contact Lists.",
           app: "hubspot",
           syncModes,
           defaultSyncMode,
