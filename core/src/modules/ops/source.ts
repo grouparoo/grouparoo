@@ -20,7 +20,10 @@ import { LoggedModel } from "../../classes/loggedModel";
 import { FilterHelper } from "../filterHelper";
 import { topologicalSort } from "../topologicalSort";
 import { ConfigWriter } from "../configWriter";
-import { RecordPropertiesPluginMethodResponse } from "../../classes/plugin";
+import {
+  RecordPropertiesPluginMethodResponse,
+  RecordPropertyPluginMethodResponse,
+} from "../../classes/plugin";
 
 export namespace SourceOps {
   /**
@@ -342,7 +345,7 @@ export namespace SourceOps {
    * Import all record properties from a Source for a GrouparooRecord
    */
   export async function _import(source: Source, record: GrouparooRecord) {
-    const hash = {};
+    const hash: Record<string, RecordPropertyPluginMethodResponse> = {};
     const properties = await source.$get("properties", {
       where: { state: "ready" },
     });

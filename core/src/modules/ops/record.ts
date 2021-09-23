@@ -13,6 +13,8 @@ import Sequelize, {
   OrderItem,
   WhereAttributeHash,
   QueryTypes,
+  UniqueConstraintError,
+  Transaction,
 } from "sequelize";
 import { waitForLock } from "../locks";
 import { RecordPropertyOps } from "./recordProperty";
@@ -21,6 +23,7 @@ import { Import } from "../../models/Import";
 import { Mapping } from "../../models/Mapping";
 import { SourceOps } from "./source";
 import { GrouparooModel } from "../../models/GrouparooModel";
+import { CLS } from "../cls";
 
 export interface RecordPropertyType {
   [key: string]: {
@@ -251,7 +254,19 @@ export namespace RecordOps {
     }
 
     const releaseLocks: Function[] = [];
-    const bulkCreates = [];
+    const bulkCreates: Array<{
+      id?: string;
+      propertyId: string;
+      recordId: string;
+      position: number;
+      rawValue: string;
+      invalidValue?: string;
+      state: string;
+      unique: boolean;
+      stateChangedAt: Date;
+      confirmedAt: Date;
+      valueChangedAt: Date;
+    }> = [];
     const bulkDeletes = { where: { [Op.or]: [] } };
     const now = new Date();
 
@@ -351,18 +366,52 @@ export namespace RecordOps {
       }
 
       if (bulkCreates.length > 0) {
-        await RecordProperty.bulkCreate(bulkCreates, {
-          updateOnDuplicate: [
-            "state",
-            "unique",
-            "stateChangedAt",
-            "confirmedAt",
-            "valueChangedAt",
-            "rawValue",
-            "invalidValue",
-            "updatedAt",
-          ],
-        });
+        try {
+          await RecordProperty.bulkCreate(bulkCreates, {
+            updateOnDuplicate: [
+              "state",
+              "unique",
+              "stateChangedAt",
+              "confirmedAt",
+              "valueChangedAt",
+              "rawValue",
+              "invalidValue",
+              "updatedAt",
+            ],
+          });
+        } catch (error) {
+          // we can resque an attempted single-write due to uniqueConstraint problems
+          const attemptedRecordProperty = bulkCreates[0];
+          if (
+            bulkCreates.length === 1 &&
+            attemptedRecordProperty.unique &&
+            error instanceof UniqueConstraintError
+          ) {
+            return CLS.afterCommit(() =>
+              api.sequelize.transaction((transaction: Transaction) =>
+                RecordProperty.update(
+                  {
+                    state: "ready",
+                    rawValue: null,
+                    invalidValue: `${attemptedRecordProperty.rawValue} (duplicate)`,
+                    stateChangedAt: new Date(),
+                    confirmedAt: new Date(),
+                  },
+                  {
+                    transaction,
+                    where: {
+                      propertyId: attemptedRecordProperty.propertyId,
+                      recordId: attemptedRecordProperty.recordId,
+                      state: "pending",
+                    },
+                  }
+                )
+              )
+            );
+          } else {
+            throw error;
+          }
+        }
       }
       if (bulkDeletes.where[Op.or].length > 0) {
         await RecordProperty.destroy(bulkDeletes);
@@ -502,8 +551,11 @@ export namespace RecordOps {
         const { canImport, properties } = await source.import(record);
 
         // We need to save each property as it is loaded so it can be used as a mapping for the next source
+        // We also don't want to save more than one recordProperty at a time so we can isolate any problem values
         if (canImport && toSave) {
-          await addOrUpdateProperties([record], [properties], false);
+          for (const [k, property] of Object.entries(properties)) {
+            await addOrUpdateProperties([record], [{ [k]: property }], false);
+          }
           await resolvePendingProperties(record, source.id);
         }
       }

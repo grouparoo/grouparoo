@@ -1,4 +1,4 @@
-import { config } from "actionhero";
+import { Action, config } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
@@ -8,6 +8,10 @@ import { ConfigWriter } from "../modules/configWriter";
 import { RecordOps } from "../modules/ops/record";
 import Sequelize from "sequelize";
 import { APIData } from "../modules/apiData";
+import {
+  ActionPermissionMode,
+  ActionPermissionTopic,
+} from "../models/Permission";
 
 export class RecordsList extends AuthenticatedAction {
   constructor() {
@@ -144,19 +148,26 @@ export class RecordCreate extends AuthenticatedAction {
   }
 }
 
-export class RecordImportAndExport extends AuthenticatedAction {
+// Note that this is not a CLS Action
+export class RecordImportAndExport extends Action {
+  permission: {
+    topic: ActionPermissionTopic;
+    mode: ActionPermissionMode;
+  };
+
   constructor() {
     super();
     this.name = "record:importAndExport";
     this.description = "fully import a record from all apps and update groups";
     this.outputExample = {};
     this.permission = { topic: "record", mode: "write" };
+    this.middleware = ["authenticated-action"];
     this.inputs = {
       id: { required: true },
     };
   }
 
-  async runWithinTransaction({ params }) {
+  async run({ params }) {
     const record = await GrouparooRecord.findById(params.id);
     await record.sync();
     const groups = await record.$get("groups");
