@@ -493,7 +493,7 @@ export namespace RecordOps {
 
     try {
       const sources = await Source.findAll({
-        where: { state: "ready" },
+        where: { state: "ready", modelId: record.modelId },
         include: [Mapping, Property],
       });
       const sortedSources = SourceOps.sortByDependencies(sources);

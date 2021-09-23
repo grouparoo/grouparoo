@@ -39,6 +39,7 @@ import { Property, propertyJSToSQLType } from "./Property";
 import { Run } from "./Run";
 import { Setting } from "./Setting";
 import { GrouparooModel } from "./GrouparooModel";
+import { Source } from "..";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -234,6 +235,7 @@ export class Group extends LoggedModel<Group> {
       const key = rule.key;
       const property = await Property.findOne({
         where: { key },
+        include: [Source],
       });
 
       if (!property && !topLevelRuleKeys.includes(key)) {
@@ -253,6 +255,12 @@ export class Group extends LoggedModel<Group> {
       if (!dictionaryEntries || dictionaryEntries.length === 0) {
         throw new Error(
           `invalid group rule operation "${rule.operation.op}" for property of type ${property.type}`
+        );
+      }
+
+      if (this.modelId !== property.source.modelId) {
+        throw new Error(
+          `${property.key} does not belong to the ${this.modelId} model`
         );
       }
 

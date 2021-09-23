@@ -42,6 +42,7 @@ import {
 } from "./Property";
 import { Run } from "./Run";
 import { GrouparooModel } from "./GrouparooModel";
+import { PropertyTypes } from "..";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
@@ -308,7 +309,7 @@ export class Source extends LoggedModel<Source> {
 
   async bootstrapUniqueProperty(
     key: string,
-    type: string,
+    type: typeof PropertyTypes[number],
     mappedColumn: string,
     id?: string,
     local = false,
