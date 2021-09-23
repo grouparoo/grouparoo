@@ -18,9 +18,9 @@ exports.default = async function buildConfig() {
       // You can optionally filter the results of this Property.
       // For example, if you were collecting SUM(purchases.value) and wanted to exclude those refunded purchases, you could:
       //   filters: [{ key: "state", op: "equals", match: "successful" }],
-      // You can also combine filters.  To get a count of each profile's active, paid subscriptions you might use:
+      // You can also combine filters.  To get a count of each records's active, paid subscriptions you might use:
       // filters: [{ key: "status", op: "equals", match: "active", }, { key: "subscription_type", op: "does not equal", match: "trial" }]
-      // and set the aggregationMethod to "count" 
+      // and set the aggregationMethod to "count"
       // Options for `op` are: {{{__filterOptions}}}
       filters: [],
     },

@@ -1,7 +1,7 @@
 import RecordPreview from "../../components/property/recordPreview";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { renderAndWait } from "../__utils__/renderAndWait";
-import testProfile from "./test-profile.json";
+import testRecord from "./test-record.json";
 
 jest.mock("next/router", () => {
   const nextRouter = jest.requireActual("next/router");
@@ -139,10 +139,10 @@ describe("property / recordPreview", () => {
     expect(record.container).toMatchSnapshot();
   });
 
-  it("should render a whole user profile including the date", async () => {
+  it("should render a whole user record including the date", async () => {
     execApi.mockImplementation(() => {
       return Promise.resolve({
-        record: testProfile,
+        record: testRecord,
       });
     });
 

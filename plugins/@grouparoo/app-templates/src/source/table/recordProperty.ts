@@ -75,7 +75,7 @@ export const getRecordProperty: GetRecordPropertyMethod = ({
     };
 
     const matchConditions: MatchCondition[] = [];
-    matchConditions.push(foreignKeyMatch); // this narrows it to the correct profile
+    matchConditions.push(foreignKeyMatch); // this narrows it to the correct record
 
     for (const filter of propertyFilters) {
       let { key, op, match } = filter;

@@ -117,7 +117,7 @@ async function makePayload(
 ) {
   const payload: any = {};
 
-  // set profile properties, including old ones
+  // set record properties, including old ones
   const newFields = Object.keys(newRecordProperties);
   const oldFields = Object.keys(oldRecordProperties);
   const allFields = new Set([...newFields, ...oldFields]);

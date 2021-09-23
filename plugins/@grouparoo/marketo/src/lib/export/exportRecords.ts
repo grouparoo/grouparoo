@@ -145,7 +145,7 @@ function buildPayload(exportedProfile: BatchExport): any {
     user.id = destinationId;
   }
 
-  // set profile properties, including old ones
+  // set record properties, including old ones
   const newKeys = Object.keys(newRecordProperties);
   const oldKeys = Object.keys(oldRecordProperties);
   const allKeys = oldKeys.concat(newKeys);
