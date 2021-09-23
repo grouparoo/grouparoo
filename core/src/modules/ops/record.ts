@@ -267,7 +267,7 @@ export namespace RecordOps {
       confirmedAt: Date;
       valueChangedAt: Date;
     }> = [];
-    const bulkDeletes = { where: { [Op.or]: [] } };
+    const bulkDeletes = { where: { id: [] as string[] } };
     const now = new Date();
 
     // load existing record properties
@@ -355,11 +355,14 @@ export namespace RecordOps {
           }
 
           // delete old properties we didn't update
-          bulkDeletes.where[Op.or].push({
-            recordId: record.id,
-            propertyId: property.id,
-            position: { [Op.gte]: position },
-          });
+          existingRecordProperties
+            .filter(
+              (p) =>
+                p.recordId === record.id &&
+                p.propertyId === property.id &&
+                p.position >= position
+            )
+            .map((p) => bulkDeletes.where.id.push(p.id));
         }
 
         recordOffset++;
@@ -413,7 +416,7 @@ export namespace RecordOps {
           }
         }
       }
-      if (bulkDeletes.where[Op.or].length > 0) {
+      if (bulkDeletes.where.id.length > 0) {
         await RecordProperty.destroy(bulkDeletes);
       }
     } finally {
