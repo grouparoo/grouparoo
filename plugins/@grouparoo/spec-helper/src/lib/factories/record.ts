@@ -1,3 +1,4 @@
+import { GrouparooRecord } from "@grouparoo/core";
 import faker from "faker";
 import { loadPath } from "../loadPath";
 
@@ -12,7 +13,9 @@ const data = async (props = {}) => {
 
 export default async (props = {}, properties = {}) => {
   const { GrouparooRecord } = await import(`@grouparoo/core/${loadPath}`);
-  const record = await GrouparooRecord.create(await data(props));
+  const record = (await GrouparooRecord.create(
+    await data(props)
+  )) as GrouparooRecord;
 
   const { Property } = await import(`@grouparoo/core/${loadPath}`);
   const allProperties = await Property.findAllWithCache();

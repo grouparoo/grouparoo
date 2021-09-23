@@ -1,5 +1,6 @@
 import SourceFactory from "./source";
 import PropertyFactory from "./property";
+import { Property, Source } from "@grouparoo/core";
 
 export default async (
   props = {
@@ -14,11 +15,13 @@ export default async (
     purchaseAmounts: "float",
   }
 ) => {
-  const source = await SourceFactory();
+  const source = (await SourceFactory()) as Source;
   await source.setOptions({ table: "__test_table" });
   await source.bootstrapUniqueProperty("userId", "integer", "id");
   await source.setMapping({ userId: "userId" });
   await source.update({ state: "ready" });
+
+  const properties: Property[] = [];
 
   for (const key in props) {
     const type = props[key];
@@ -41,6 +44,8 @@ export default async (
       isArray,
     };
     const options = { column: key };
-    await PropertyFactory(source, ruleProps, options);
+    properties.push(await PropertyFactory(source, ruleProps, options));
   }
+
+  return { properties, source };
 };

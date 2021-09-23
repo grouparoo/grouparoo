@@ -1,3 +1,4 @@
+import { Notification } from "@grouparoo/core";
 import { loadPath } from "../loadPath";
 
 const data = async (props = {}) => {
@@ -19,5 +20,5 @@ Another Line.
 
 export default async (props = {}) => {
   const { Notification } = await import(`@grouparoo/core/${loadPath}`);
-  return Notification.create(await data(props));
+  return Notification.create(await data(props)) as Notification;
 };

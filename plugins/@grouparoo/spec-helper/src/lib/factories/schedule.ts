@@ -1,6 +1,7 @@
 import { loadPath } from "../loadPath";
 import faker from "faker";
 import SourceFactory from "./source";
+import { Schedule } from "@grouparoo/core";
 
 const data = async (props = {}) => {
   const defaultProps = {
@@ -29,7 +30,7 @@ export default async (source?, props: { [key: string]: any } = {}) => {
 
   props.sourceId = source.id;
   const mergedProps = await data(props);
-  const instance = new Schedule(mergedProps);
+  const instance = new Schedule(mergedProps) as Schedule;
   await instance.save();
 
   if (Object.keys(mergedProps.options).length > 0) {

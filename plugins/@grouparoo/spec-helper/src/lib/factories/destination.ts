@@ -1,6 +1,7 @@
 import { loadPath } from "../loadPath";
 import faker from "faker";
 import AppFactory from "./app";
+import { Destination } from "@grouparoo/core";
 
 const data = async (props = {}) => {
   const defaultProps = {
@@ -23,7 +24,7 @@ export default async (app?, props: { [key: string]: any } = {}) => {
 
   props.appId = app.id;
   const mergedProps = await data(props);
-  const instance = new Destination(mergedProps);
+  const instance = new Destination(mergedProps) as Destination;
   await instance.save();
 
   if (Object.keys(mergedProps.options).length > 0) {
