@@ -382,7 +382,9 @@ Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { record, groups } = await execApi("get", `/record/${id}`);
-  const { properties } = await execApi("get", `/properties`);
+  const { properties } = await execApi("get", `/properties`, {
+    modelId: record?.modelId,
+  });
   const { groups: allGroups } = await execApi("get", `/groups`);
   const { apps } = await execApi("get", `/apps`);
   const { sources } = await execApi("get", `/sources`);

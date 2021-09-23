@@ -186,10 +186,13 @@ export class Property extends LoggedModel<Property> {
 
   async getOptions(sourceFromEnvironment = true) {
     const options = await OptionHelper.getOptions(this, sourceFromEnvironment);
+    const source = await this.$get("source", { scope: null });
+
     for (const i in options) {
       options[i] =
         await plugin.replaceTemplateRecordPropertyIdsWithRecordPropertyKeys(
-          options[i].toString()
+          options[i].toString(),
+          source.modelId
         );
     }
 
@@ -198,11 +201,13 @@ export class Property extends LoggedModel<Property> {
 
   async setOptions(options: SimplePropertyOptions, test = true) {
     if (test) await this.test(options);
+    const source = await this.$get("source", { scope: null });
 
     for (const i in options) {
       options[i] =
         await plugin.replaceTemplateRecordPropertyKeysWithRecordPropertyId(
-          options[i].toString()
+          options[i].toString(),
+          source.modelId
         );
     }
 
@@ -314,27 +319,39 @@ export class Property extends LoggedModel<Property> {
 
   // --- Cache Methods --- //
 
-  static async findAllWithCache(): Promise<Property[]> {
+  static async findAllWithCache(modelId?: string): Promise<Property[]> {
     const now = new Date().getTime();
     if (
       CachedProperties.expires > now &&
       CachedProperties.properties.length > 0
     ) {
-      return CachedProperties.properties;
+      return modelId
+        ? CachedProperties.properties.filter(
+            (p) => p?.source?.modelId === modelId
+          )
+        : CachedProperties.properties;
     }
 
-    CachedProperties.properties = await Property.findAll();
+    CachedProperties.properties = await Property.findAll({
+      include: [{ model: Source, required: false }],
+    });
     CachedProperties.expires = now + CACHE_TTL;
-    return CachedProperties.properties;
+    return modelId
+      ? CachedProperties.properties.filter(
+          (p) => p?.source?.modelId === modelId
+        )
+      : CachedProperties.properties;
   }
 
-  static async findOneWithCache(value: string, key = "id") {
-    const properties = await Property.findAllWithCache();
+  static async findOneWithCache(value: string, modelId?: string, key = "id") {
+    const properties = await Property.findAllWithCache(modelId);
     let property = properties.find((p) => p[key] === value);
 
     if (!property) {
-      // fallback if not found
-      property = await Property.findOne({ where: { [key]: value } });
+      property = await Property.findOne({
+        where: { [key]: value },
+        include: [{ model: Source, required: false }],
+      });
       if (!property) await Property.invalidateCache();
     }
 

@@ -39,6 +39,7 @@ import { Property, propertyJSToSQLType } from "./Property";
 import { Run } from "./Run";
 import { Setting } from "./Setting";
 import { GrouparooModel } from "./GrouparooModel";
+import { Source } from "./Source";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -182,7 +183,10 @@ export class Group extends LoggedModel<Group> {
 
     for (const i in rules) {
       const rule: GroupRule = rules[i];
-      const property = await Property.findOneWithCache(rule.propertyId);
+      const property = await Property.findOneWithCache(
+        rule.propertyId,
+        this.modelId
+      );
       const type = property
         ? property.type
         : TopLevelGroupRules.find((tlgr) => tlgr.key === rule.recordColumn)
@@ -231,6 +235,7 @@ export class Group extends LoggedModel<Group> {
       const key = rule.key;
       const property = await Property.findOne({
         where: { key },
+        include: [Source],
       });
 
       if (!property && !topLevelRuleKeys.includes(key)) {
@@ -250,6 +255,12 @@ export class Group extends LoggedModel<Group> {
       if (!dictionaryEntries || dictionaryEntries.length === 0) {
         throw new Error(
           `invalid group rule operation "${rule.operation.op}" for property of type ${property.type}`
+        );
+      }
+
+      if (property && this.modelId !== property.source.modelId) {
+        throw new Error(
+          `${property.key} does not belong to the ${this.modelId} model`
         );
       }
 
@@ -669,7 +680,11 @@ export class Group extends LoggedModel<Group> {
     const convenientRules = this.toConvenientRules(groupRules);
 
     for (const rule of convenientRules) {
-      const property = await Property.findOneWithCache(rule.key, "key");
+      const property = await Property.findOneWithCache(
+        rule.key,
+        this.modelId,
+        "key"
+      );
       rules.push({
         propertyId: rule.topLevel ? rule.key : property.getConfigId(),
         operation: { op: rule.operation.op },

@@ -654,8 +654,8 @@ describe("modules/codeConfig", () => {
   });
 
   describe("bring it all back", () => {
-    let previousGroupRun;
-    let previousDestinationRun;
+    let previousGroupRun: Run;
+    let previousDestinationRun: Run;
 
     beforeAll(async () => {
       // fake that runs are still being executed for deleted group

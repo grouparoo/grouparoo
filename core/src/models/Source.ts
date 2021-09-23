@@ -39,6 +39,7 @@ import {
   Property,
   PropertyFiltersWithKey,
   SimplePropertyOptions,
+  PropertyTypes,
 } from "./Property";
 import { Run } from "./Run";
 import { GrouparooModel } from "./GrouparooModel";
@@ -237,9 +238,10 @@ export class Source extends LoggedModel<Source> {
       return true;
     } else {
       const propertyMappingKey = Object.values(mapping)[0];
-      const property = (await Property.findAllWithCache()).find(
+      const property = (await Property.findAllWithCache(this.modelId)).find(
         (p) => p.key === propertyMappingKey
       );
+      if (!property) return false;
       if (!property.unique) return false;
       return true;
     }
@@ -307,7 +309,7 @@ export class Source extends LoggedModel<Source> {
 
   async bootstrapUniqueProperty(
     key: string,
-    type: string,
+    type: typeof PropertyTypes[number],
     mappedColumn: string,
     id?: string,
     local = false,

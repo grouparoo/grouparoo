@@ -21,6 +21,7 @@ export class RecordsList extends AuthenticatedAction {
       searchKey: { required: false },
       searchValue: { required: false },
       state: { required: false },
+      modelId: { required: false },
       caseSensitive: {
         required: false,
         formatter: APIData.ensureBoolean,

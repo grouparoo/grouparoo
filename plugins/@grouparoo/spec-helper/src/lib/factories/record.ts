@@ -21,7 +21,7 @@ export default async (props?: { [key: string]: any }, properties = {}) => {
   )) as GrouparooRecord;
 
   const { Property } = await import(`@grouparoo/core/${loadPath}`);
-  const allProperties = await Property.findAllWithCache();
+  const allProperties = await Property.findAllWithCache(record.modelId);
   const directlyMappedProperty = allProperties.find((p) => p.directlyMapped);
 
   if (directlyMappedProperty) {

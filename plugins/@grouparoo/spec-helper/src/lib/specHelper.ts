@@ -27,6 +27,7 @@ import nock from "nock";
 
 import LogFactory from "./factories/log";
 import GroupFactory from "./factories/group";
+import ModelFactory from "./factories/model";
 import ImportFactory from "./factories/import";
 import TeamFactory from "./factories/team";
 import TeamMemberFactory from "./factories/teamMember";
@@ -121,6 +122,7 @@ export namespace helper {
 
   export const factories = {
     apiKey: ApiKeyFactory,
+    model: ModelFactory,
     app: AppFactory,
     destination: DestinationFactory,
     export: ExportFactory,
@@ -233,6 +235,7 @@ export namespace helper {
   export function recordResponseData(record, key) {
     const data = {
       userId: new Date().getTime(),
+      adminUserId: new Date().getTime(),
       isVIP: true,
       email: `${record.id}@example.com`,
       firstName: "Mario",

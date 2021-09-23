@@ -258,10 +258,12 @@ describe("modules/plugin", () => {
         const property = await Property.findOne({
           where: { key: "userId" },
         });
+        const source = await property.$get("source");
         const initialString = "select * from users where id = {{ userId }}";
         const replacedWithId =
           await plugin.replaceTemplateRecordPropertyKeysWithRecordPropertyId(
-            initialString
+            initialString,
+            source.modelId
           );
         expect(replacedWithId).toEqual(
           `select * from users where id = {{ ${property.id} }}`
@@ -269,7 +271,8 @@ describe("modules/plugin", () => {
 
         expect(
           await plugin.replaceTemplateRecordPropertyIdsWithRecordPropertyKeys(
-            replacedWithId
+            replacedWithId,
+            source.modelId
           )
         ).toEqual(initialString);
       });

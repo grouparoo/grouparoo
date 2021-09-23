@@ -101,6 +101,37 @@ export class GroupMember extends Model {
     }
   }
 
+  @BeforeCreate
+  static async ensureModelMatch(instance: GroupMember) {
+    const group = await instance.$get("group", { scope: null });
+    const record = await instance.$get("record", { scope: null });
+    if (record.modelId !== group.modelId) {
+      throw new Error(
+        `models ${group.modelId} and ${record.modelId} do not match`
+      );
+    }
+  }
+
+  @BeforeBulkCreate
+  static async ensureModelsMatch(instances: GroupMember[]) {
+    const groups = await Group.findAll({
+      where: { id: instances.map((i) => i.groupId) },
+    });
+    const records = await GrouparooRecord.findAll({
+      where: { id: instances.map((i) => i.recordId) },
+    });
+
+    for (const i of instances) {
+      const group = groups.find((g) => g.id === i.groupId);
+      const record = records.find((r) => r.id === i.recordId);
+      if (record.modelId !== group.modelId) {
+        throw new Error(
+          `models ${group.modelId} and ${record.modelId} do not match`
+        );
+      }
+    }
+  }
+
   @AfterCreate
   static async logCreate(instance: GroupMember) {
     const group = await instance.$get("group");

@@ -524,6 +524,7 @@ Page.getInitialProps = async (ctx) => {
   const { group } = await execApi("get", `/group/${id}`);
   const { properties } = await execApi("get", `/properties`, {
     state: "ready",
+    modelId: group?.modelId,
   });
   const { ruleLimit, ops, topLevelGroupRules } = await execApi(
     "get",

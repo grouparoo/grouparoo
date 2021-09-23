@@ -807,9 +807,12 @@ Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
   const { id } = ctx.query;
   const { destination } = await execApi("get", `/destination/${id}`);
-  const { groups } = await execApi("get", `/groups`);
+  const { groups } = await execApi("get", `/groups`, {
+    modelId: destination?.modelId,
+  });
   const { properties } = await execApi("get", `/properties`, {
     state: "ready",
+    modelId: destination?.modelId,
   });
 
   let mappingOptions = {};

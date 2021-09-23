@@ -26,10 +26,14 @@ export namespace MappingHelper {
 
     for (const i in mappings) {
       const mapping = mappings[i];
-      const property = await Property.findOneWithCache(mapping.propertyId);
+      const property = await Property.findOneWithCache(
+        mapping.propertyId,
+        instance.modelId
+      );
+
       if (!property) {
         throw new Error(
-          `cannot find property or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
+          `cannot find property or this source/destination not ready (remoteKey: ${mapping.remoteKey}, propertyId: ${mapping.propertyId})`
         );
       }
       MappingObject[mapping.remoteKey] = property[propertyColumn || "key"];
@@ -83,6 +87,13 @@ export namespace MappingHelper {
       if (instance instanceof Source && property.isArray) {
         throw new Error(
           `Sources cannot map to an array Property ${property.key} (${property.id})`
+        );
+      }
+
+      const source = await property.$get("source", { scope: null });
+      if (source.modelId !== instance.modelId) {
+        throw new Error(
+          `cannot map a ${instance.modelId} model to a ${source.modelId} property (${source.name})`
         );
       }
 
