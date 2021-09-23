@@ -478,6 +478,7 @@ describe("actions/properties", () => {
         source = await Source.create({
           appId: app.id,
           type: "dynamic-property-options-source",
+          modelId: "mod_profiles",
         });
         await source.update({ state: "ready" });
         property = await Property.create({

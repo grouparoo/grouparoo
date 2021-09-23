@@ -6,9 +6,29 @@ import {
   getRecordPageTitle,
 } from "../../../components/record/getRecordDisplayName";
 import RecordTabs from "../../../components/tabs/record";
+import { Models } from "../../../utils/apiData";
+import PageHeader from "../../../components/pageHeader";
+import ModelBadge from "../../../components/badges/modelBadge";
+import StateBadge from "../../../components/badges/stateBadge";
 
 export default function Page(props) {
-  const { record } = props;
+  const {
+    record,
+    properties,
+  }: { record: Models.GrouparooRecordType; properties: Models.PropertyType[] } =
+    props;
+
+  const uniqueRecordProperties = [];
+  let email: string;
+  properties.forEach((rule) => {
+    if (rule.unique) {
+      uniqueRecordProperties.push(rule.key);
+    }
+
+    if (rule.type === "email" && record.properties[rule.key]) {
+      email = record.properties[rule.key].values.join(", ");
+    }
+  });
 
   return (
     <>
@@ -20,10 +40,18 @@ export default function Page(props) {
 
       <ExportsList
         header={
-          <>
-            <h1>{getRecordDisplayName(record)} - Exports</h1>
-            <br />
-          </>
+          <PageHeader
+            title={`${getRecordDisplayName(record)} - Exports`}
+            iconType="grouparooRecord"
+            email={email}
+            badges={[
+              <StateBadge state={record.state} />,
+              <ModelBadge
+                modelName={record.modelName}
+                modelId={record.modelId}
+              />,
+            ]}
+          />
         }
         {...props}
       />
@@ -35,6 +63,7 @@ Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
   const { id } = ctx.query;
   const { record } = await execApi("get", `/record/${id}`);
+  const { properties } = await execApi("get", `/properties`);
   const exportListInitialProps = await ExportsList.hydrate(ctx);
-  return { record, ...exportListInitialProps };
+  return { record, properties, ...exportListInitialProps };
 };

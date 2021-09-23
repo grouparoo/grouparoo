@@ -110,6 +110,7 @@ describe("integration/runs/google-sheets", () => {
         type: "google-sheet-import",
         name: "sheet source",
         appId: app.id,
+        modelId: "mod_profiles",
         options: {
           sheet_url: SHEET_URL,
         },

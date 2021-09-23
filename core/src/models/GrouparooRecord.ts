@@ -9,6 +9,9 @@ import {
   AllowNull,
   Default,
   AfterCreate,
+  BelongsTo,
+  ForeignKey,
+  BeforeCreate,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
@@ -23,6 +26,7 @@ import { APIData } from "../modules/apiData";
 import { GroupRule } from "./GroupRule";
 import { RecordConfigurationObject } from "../classes/codeConfig";
 import { Source } from "./Source";
+import { GrouparooModel } from "./GrouparooModel";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -51,6 +55,11 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
+  @AllowNull(false)
+  @ForeignKey(() => GrouparooModel)
+  @Column
+  modelId: string;
+
   @HasMany(() => RecordProperty)
   recordProperties: RecordProperty[];
 
@@ -63,6 +72,9 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   @BelongsToMany(() => Group, () => GroupMember)
   groups: Group[];
 
+  @BelongsTo(() => GrouparooModel)
+  model: GrouparooModel;
+
   @HasMany(() => Import)
   imports: Import[];
 
@@ -70,11 +82,14 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   exports: Export[];
 
   async apiData() {
+    const model = await this.$get("model");
     const properties = await this.getProperties();
 
     return {
       id: this.id,
       state: this.state,
+      modelId: this.modelId,
+      modelName: model.name,
       properties,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
@@ -208,6 +223,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
     return {
       id: this.id,
       class: "GrouparooRecord",
+      modelId: this.modelId,
       properties: directlyMappedProps,
     };
   }
@@ -227,6 +243,17 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
     source?: boolean | Source
   ) {
     return RecordOps.findOrCreateByUniqueRecordProperties(hash, source);
+  }
+
+  @BeforeCreate
+  @BeforeSave
+  static async ensureModel(instance: GrouparooRecord) {
+    const model = await GrouparooModel.findOne({
+      where: { id: instance.modelId },
+    });
+    if (!model) {
+      throw new Error(`cannot find model with id ${instance.modelId}`);
+    }
   }
 
   @BeforeSave

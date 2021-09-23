@@ -1,0 +1,10 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "model",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: {{{type}}}
+    },
+  ];
+};

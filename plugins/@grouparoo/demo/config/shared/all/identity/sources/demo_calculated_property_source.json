@@ -4,5 +4,6 @@
   "name": "Full Name",
   "type": "calculated-property-import",
   "appId": "demo_calculated_property_app",
+  "modelId": "mod_profiles",
   "options": {}
 }

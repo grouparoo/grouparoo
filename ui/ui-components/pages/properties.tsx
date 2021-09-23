@@ -5,14 +5,14 @@ import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useRouter } from "next/router";
 import Link from "../components/enterpriseLink";
-import { Button, Form, Alert } from "react-bootstrap";
-import LoadingButton from "../components/loadingButton";
+import { Button, Alert } from "react-bootstrap";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import StateBadge from "../components/badges/stateBadge";
 import { Models, Actions } from "../utils/apiData";
 import { ErrorHandler } from "../utils/errorHandler";
 import { formatTimestamp } from "../utils/formatTimestamp";
+import ModelBadge from "../components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -25,11 +25,7 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [newRuleLoading, setNewRuleLoading] = useState(false);
   const [examples, setExamples] = useState(props.examples);
-  const [newRuleSourceId, setNewRuleSourceId] = useState(
-    props.sources[0]?.id || ""
-  );
 
   const [properties, setProperties] = useState<Models.PropertyType[]>(
     props.properties
@@ -80,26 +76,6 @@ export default function Page(props) {
     }
   }
 
-  async function createNewProperty(event) {
-    event.preventDefault();
-    setNewRuleLoading(true);
-    const response: Actions.PropertyCreate = await execApi(
-      "post",
-      `/property`,
-      {
-        sourceId: newRuleSourceId,
-        type: "string",
-      }
-    );
-    if (response?.property?.id) {
-      router.push(
-        `/property/${response.property.id}/edit?nextPage=/properties`
-      );
-    } else {
-      setNewRuleLoading(false);
-    }
-  }
-
   if (sources.length === 0) {
     return (
       <>
@@ -114,8 +90,6 @@ export default function Page(props) {
       </>
     );
   }
-
-  const readySources = sources.filter((s) => s.state === "ready");
 
   return (
     <>
@@ -142,6 +116,7 @@ export default function Page(props) {
             <th>Unique</th>
             <th>Is Array</th>
             <th>Source</th>
+            <th>Model</th>
             <th>State</th>
             <th>Example Values</th>
             <th>Updated At</th>
@@ -181,6 +156,12 @@ export default function Page(props) {
                   </Link>
                 </td>
                 <td>
+                  <ModelBadge
+                    modelName={source.modelName}
+                    modelId={source.modelId}
+                  />
+                </td>
+                <td>
                   <StateBadge state={rule.state} />
                 </td>
                 <td>
@@ -211,41 +192,6 @@ export default function Page(props) {
         offset={offset}
         onPress={setOffset}
       />
-
-      {readySources.length > 0 &&
-      process.env.GROUPAROO_UI_EDITION !== "community" ? (
-        <>
-          <hr />
-          <Form inline onSubmit={createNewProperty}>
-            <p>
-              Add new Property for source{" "}
-              <Form.Control
-                as="select"
-                size="sm"
-                value={newRuleSourceId}
-                disabled={loading}
-                onChange={(e) => {
-                  setNewRuleSourceId(e.target.value);
-                }}
-              >
-                {readySources.map((source) => (
-                  <option key={`opt-source-${source.id}`} value={source.id}>
-                    {source.name}
-                  </option>
-                ))}
-              </Form.Control>{" "}
-              <LoadingButton
-                type="submit"
-                size="sm"
-                disabled={newRuleLoading}
-                variant="primary"
-              >
-                Create
-              </LoadingButton>
-            </p>
-          </Form>
-        </>
-      ) : null}
     </>
   );
 }

@@ -115,6 +115,7 @@ export class DestinationCreate extends AuthenticatedAction {
     this.inputs = {
       name: { required: false },
       type: { required: true },
+      modelId: { required: true },
       state: { required: false },
       appId: { required: true },
       options: { required: false, formatter: APIData.ensureObject },
@@ -132,6 +133,7 @@ export class DestinationCreate extends AuthenticatedAction {
     const destination = await Destination.create({
       name: params.name,
       type: params.type,
+      modelId: params.modelId,
       appId: params.appId,
       syncMode: params.syncMode,
     });

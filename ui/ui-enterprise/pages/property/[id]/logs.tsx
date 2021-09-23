@@ -6,6 +6,7 @@ import PageHeader from "@grouparoo/ui-components/components/pageHeader";
 import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
 import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
 import { Models } from "@grouparoo/ui-components/utils/apiData";
+import ModelBadge from "@grouparoo/ui-components/components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -30,8 +31,13 @@ export default function Page(props) {
             icon={source.app.icon}
             title={`${property.key} - Logs`}
             badges={[
-              <LockedBadge key="badge-1" object={property} />,
-              <StateBadge key="badge-2" state={property.state} />,
+              <LockedBadge key="header-badge-1" object={property} />,
+              <StateBadge key="header-badge-2" state={property.state} />,
+              <ModelBadge
+                key="header-badge-3"
+                modelName={source.modelName}
+                modelId={source.modelId}
+              />,
             ]}
           />
         }

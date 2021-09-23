@@ -22,6 +22,7 @@ import { Property } from "../models/Property";
 import { Filter } from "../models/Filter";
 import { RecordMultipleAssociationShim } from "../models/RecordMultipleAssociationShim";
 import { Run } from "../models/Run";
+import { GrouparooModel } from "../models/GrouparooModel";
 import { Schedule } from "../models/Schedule";
 import { Session } from "../models/Session";
 import { Setting, settingTypes } from "../models/Setting";
@@ -51,6 +52,7 @@ const models = [
   GroupRule,
   Log,
   Permission,
+  GrouparooModel,
   GrouparooRecord,
   RecordProperty,
   Property,
@@ -342,11 +344,12 @@ export namespace plugin {
    * ie: `select * where id = {{ userId }}` => `select * where id = {{ ppr_abc123 }}`
    */
   export async function replaceTemplateRecordPropertyKeysWithRecordPropertyId(
-    string: string
+    string: string,
+    modelId: string
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
 
-    const properties = (await Property.findAllWithCache()).filter(
+    const properties = (await Property.findAllWithCache(modelId)).filter(
       (p) => p.isArray === false
     );
 
@@ -363,11 +366,12 @@ export namespace plugin {
    * ie: `select * where id = {{ ppr_abc123 }}` => `select * where id = {{ userId }}`
    */
   export async function replaceTemplateRecordPropertyIdsWithRecordPropertyKeys(
-    string: string
+    string: string,
+    modelId: string
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
 
-    const properties = await Property.findAllWithCache();
+    const properties = await Property.findAllWithCache(modelId);
 
     const data = {};
     properties.forEach((rule) => {

@@ -70,6 +70,7 @@ describe("integration/runs/postgres", () => {
       name: "pg import source",
       type: "postgres-query-import",
       appId: app.id,
+      modelId: "mod_profiles",
       state: "ready",
     };
     const sourceResponse = await specHelper.runAction<SourceCreate>(

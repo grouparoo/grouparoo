@@ -59,6 +59,11 @@ export namespace DestinationOps {
     if (group.state === "deleted") {
       throw new Error(`Cannot track deleted Group "${group.name}"`);
     }
+    if (destination.modelId !== group.modelId) {
+      throw new Error(
+        `destination ${destination.id} and group ${group.id} do not share the same modelId`
+      );
+    }
 
     const oldGroupId = destination.groupId;
     await destination.update({ groupId: group.id });
@@ -284,13 +289,19 @@ export namespace DestinationOps {
     force = false,
     saveExports = true
   ) {
+    if (destination.modelId !== record.modelId) {
+      throw new Error(
+        `destination ${destination.id} and record ${record.id} do not share the same modelId`
+      );
+    }
+
     const app = await destination.$get("app", {
       scope: null,
       include: [Option],
     });
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
-    const properties = await Property.findAllWithCache();
+    const properties = await Property.findAllWithCache(record.modelId);
     const destinationGroupMemberships =
       await destination.getDestinationGroupMemberships();
     const mapping = await destination.getMapping();

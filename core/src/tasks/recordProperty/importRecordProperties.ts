@@ -7,7 +7,6 @@ import { Option } from "../../models/Option";
 import { Op } from "sequelize";
 import { log } from "actionhero";
 import { CLS } from "../../modules/cls";
-import { RecordPropertiesPluginMethodResponse } from "../../classes/plugin";
 import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
 import { RecordOps } from "../../modules/ops/record";

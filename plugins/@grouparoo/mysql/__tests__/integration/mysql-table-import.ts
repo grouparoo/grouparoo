@@ -101,6 +101,7 @@ describe("integration/runs/mysql", () => {
       name: "mysql source",
       type: "mysql-table-import",
       appId: app.id,
+      modelId: "mod_profiles",
       options: { table: usersTableName },
       // mapping: { id: "userId" },
       // state: "ready",
@@ -169,6 +170,7 @@ describe("integration/runs/mysql", () => {
       name: "test destination",
       type: "mysql-export",
       appId: app.id,
+      modelId: "mod_profiles",
       options: {
         table: recordsDestinationTableName,
         primaryKey: "id",

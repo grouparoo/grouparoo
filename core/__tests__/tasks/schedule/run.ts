@@ -120,6 +120,7 @@ describe("tasks/schedule:run", () => {
         name: "test source from plugin",
         type: "import-from-test-template-app",
         appId: app.id,
+        modelId: "mod_profiles",
       });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });

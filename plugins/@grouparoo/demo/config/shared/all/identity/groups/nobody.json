@@ -3,6 +3,7 @@
   "class": "Group",
   "type": "calculated",
   "name": "Nobody",
+  "modelId": "mod_profiles",
   "rules": [
     {
       "propertyId": "user_id",

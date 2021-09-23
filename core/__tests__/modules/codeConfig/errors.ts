@@ -77,6 +77,7 @@ describe("modules/codeConfig", () => {
         },
       ];
 
+      // @ts-ignore
       response = validateConfigObjects(objsNothing);
       expect(response.errors).toContain("A config object is missing an ID");
     });

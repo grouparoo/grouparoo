@@ -28,7 +28,7 @@ describe("models/recordProperty", () => {
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
 
-    record = new GrouparooRecord();
+    record = new GrouparooRecord({ modelId: "mod_profiles" });
     await record.save();
 
     userIdProperty = await Property.findOne({
@@ -492,14 +492,14 @@ describe("models/recordProperty", () => {
   });
 
   describe("uniqueness and cascade destruction", () => {
-    let secondProfile;
+    let secondRecord;
     beforeAll(async () => {
       emailProperty.unique = true;
       await emailProperty.save();
 
       await record.buildNullProperties();
-      secondProfile = new GrouparooRecord();
-      await secondProfile.save();
+      secondRecord = new GrouparooRecord({ modelId: "mod_profiles" });
+      await secondRecord.save();
     });
 
     afterAll(async () => {
@@ -509,7 +509,7 @@ describe("models/recordProperty", () => {
 
     test("allows the addition of another unique, non-conflicting property", async () => {
       await record.addOrUpdateProperties({ email: ["mario@example.com"] });
-      await secondProfile.addOrUpdateProperties({
+      await secondRecord.addOrUpdateProperties({
         email: ["luigi@example.com"],
       });
     });
@@ -517,7 +517,7 @@ describe("models/recordProperty", () => {
     test("blocks the addition of another unique property", async () => {
       await record.addOrUpdateProperties({ email: ["mario@example.com"] });
       await expect(
-        secondProfile.addOrUpdateProperties({
+        secondRecord.addOrUpdateProperties({
           email: ["mario@example.com"],
         })
       ).rejects.toThrow(/Validation error/);
@@ -525,7 +525,7 @@ describe("models/recordProperty", () => {
 
     test("editing the key of a property renames all the record properties that have that key", async () => {
       await record.addOrUpdateProperties({ email: ["mario@example.com"] });
-      await secondProfile.addOrUpdateProperties({
+      await secondRecord.addOrUpdateProperties({
         email: ["luigi@example.com"],
       });
 
@@ -554,7 +554,7 @@ describe("models/recordProperty", () => {
 
     test("deleting a property deletes all the record properties that have that key", async () => {
       await record.addOrUpdateProperties({ email: ["mario@example.com"] });
-      await secondProfile.addOrUpdateProperties({
+      await secondRecord.addOrUpdateProperties({
         email: ["luigi@example.com"],
       });
 

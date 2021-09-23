@@ -10,11 +10,18 @@ module.exports = async function getConfig() {
       },
     },
     {
+      id: "mod_profiles",
+      class: "Model",
+      name: "Profiles",
+      type: "profile",
+    },
+    {
       id: "users_table",
       name: "Users Table",
       class: "Source",
       type: "test-plugin-import",
       appId: "data_warehouse",
+      modelId: "mod_profiles",
       options: {
         table: "users",
       },
@@ -41,6 +48,7 @@ module.exports = async function getConfig() {
       name: "Calculated date group",
       class: "Group",
       type: "calculated",
+      modelId: "mod_profiles",
     },
 
     {
@@ -49,6 +57,7 @@ module.exports = async function getConfig() {
       class: "Destination",
       type: "test-plugin-export",
       appId: "data_warehouse",
+      modelId: "mod_profiles",
       syncMode: "additive",
       options: {
         table: "test-file-path.db",

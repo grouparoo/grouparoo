@@ -9,6 +9,13 @@ module.exports = async function getConfig() {
     },
 
     {
+      id: "mod_profiles",
+      class: "Model",
+      name: "Profiles",
+      type: "profile",
+    },
+
+    {
       id: "data_warehouse", // id -> `data_warehouse`
       name: "Data Warehouse",
       class: "App",
@@ -24,6 +31,7 @@ module.exports = async function getConfig() {
       class: "Source",
       type: "test-plugin-import",
       appId: "data_warehouse", // appId -> `data_warehouse`
+      modelId: "mod_profiles",
       options: {
         table: "users",
       },
@@ -78,6 +86,7 @@ module.exports = async function getConfig() {
     {
       id: "record_john",
       class: "record",
+      modelId: "mod_profiles",
       properties: {
         first_name: ["John"],
       },

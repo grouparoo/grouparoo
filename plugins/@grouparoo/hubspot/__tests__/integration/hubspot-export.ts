@@ -161,6 +161,7 @@ describe("integration/runs/hubspot", () => {
       type: "hubspot-export",
       syncMode: "sync",
       appId: app.id,
+      modelId: "mod_profiles",
       mapping: {
         email: "email",
         firstname: "firstName",

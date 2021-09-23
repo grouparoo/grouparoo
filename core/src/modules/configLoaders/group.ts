@@ -35,12 +35,14 @@ export async function loadGroup(
       id: configObject.id,
       name: configObject.name,
       type: configObject.type,
+      modelId: configObject.modelId,
     });
   }
 
   await group.update({
     type: configObject.type,
     name: configObject.name,
+    modelId: configObject.modelId,
     locked: ConfigWriter.getLockKey(configObject),
   });
 

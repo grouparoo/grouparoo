@@ -16,6 +16,7 @@ import {
   Log,
   Notification,
   Permission,
+  GrouparooModel,
   GrouparooRecord,
   RecordProperty,
   Property,
@@ -56,6 +57,9 @@ export namespace Models {
   export type GrouparooRecordType = Partial<
     AsyncReturnType<GrouparooRecord["apiData"]>
   >;
+  export type GrouparooModelType = Partial<
+    AsyncReturnType<GrouparooModel["apiData"]>
+  >;
   export type RecordPropertyType = Partial<
     AsyncReturnType<RecordProperty["apiData"]>
   >;
@@ -77,6 +81,14 @@ export namespace Misc {
 
 // -----------------------------------------
 
+import {
+  ModelCreate,
+  ModelDestroy,
+  ModelEdit,
+  ModelView,
+  ModelsList,
+  ModelOptions,
+} from "@grouparoo/core/src/actions/models";
 import {
   ApiKeyCreate,
   ApiKeyDestroy,
@@ -259,6 +271,25 @@ import { TotalsAction } from "@grouparoo/core/src/actions/totals";
 import { ObjectFind } from "@grouparoo/core/src/actions/object";
 
 export namespace Actions {
+  export type ModelCreate = AsyncReturnType<
+    typeof ModelCreate.prototype.runWithinTransaction
+  >;
+  export type ModelDestroy = AsyncReturnType<
+    typeof ModelDestroy.prototype.runWithinTransaction
+  >;
+  export type ModelEdit = AsyncReturnType<
+    typeof ModelEdit.prototype.runWithinTransaction
+  >;
+  export type ModelView = AsyncReturnType<
+    typeof ModelView.prototype.runWithinTransaction
+  >;
+  export type ModelsList = AsyncReturnType<
+    typeof ModelsList.prototype.runWithinTransaction
+  >;
+  export type ModelOptions = AsyncReturnType<
+    typeof ModelOptions.prototype.runWithinTransaction
+  >;
+
   export type ApiKeyCreate = AsyncReturnType<
     typeof ApiKeyCreate.prototype.runWithinTransaction
   >;

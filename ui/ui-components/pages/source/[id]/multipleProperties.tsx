@@ -13,6 +13,7 @@ import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { generateId } from "../../../utils/generateId";
 import PropertyAddButton from "../../../components/property/add";
+import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -288,6 +289,7 @@ export default function Page(props) {
         badges={[
           <LockedBadge object={source} />,
           <StateBadge state={source.state} />,
+          <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
         ]}
       />
 

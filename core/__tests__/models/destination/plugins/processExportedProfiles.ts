@@ -174,6 +174,7 @@ describe("models/destination", () => {
           type: "export-from-test-template-app",
           syncMode: "sync",
           appId: app.id,
+          modelId: "mod_profiles",
         });
         await destination.update({ state: "ready" });
 

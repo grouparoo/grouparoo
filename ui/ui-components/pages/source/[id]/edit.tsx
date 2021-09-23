@@ -16,6 +16,7 @@ import Loader from "../../../components/loader";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { SourceHandler } from "../../../utils/sourceHandler";
+import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -171,6 +172,7 @@ export default function Page(props) {
         badges={[
           <LockedBadge object={source} />,
           <StateBadge state={source.state} />,
+          <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
         ]}
       />
 

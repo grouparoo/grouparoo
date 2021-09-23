@@ -9,7 +9,7 @@ import {
   getAutoBootstrappedProperty,
   AnyConfigurationObject,
 } from "../../classes/codeConfig";
-import { App, Source, Property } from "../..";
+import { App, Source, Property, PropertyTypes } from "../..";
 import { Op } from "sequelize";
 import { log } from "actionhero";
 
@@ -44,10 +44,15 @@ export async function loadSource(
       name: configObject.name,
       type: configObject.type,
       appId: app.id,
+      modelId: configObject.modelId,
     });
   }
 
-  await source.update({ type: configObject.type, name: configObject.name });
+  await source.update({
+    type: configObject.type,
+    name: configObject.name,
+    modelId: configObject.modelId,
+  });
 
   await source.setOptions(extractNonNullParts(configObject, "options"));
 
@@ -98,7 +103,7 @@ export async function loadSource(
       const mappedColumn = Object.values(property.options)[0];
       bootstrappedProperty = await source.bootstrapUniqueProperty(
         property.key || property["name"],
-        property.type,
+        property.type as typeof PropertyTypes[number],
         mappedColumn,
         property.id,
         validate,

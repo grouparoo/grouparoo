@@ -20,6 +20,7 @@ import { GroupRule } from "../../models/GroupRule";
 import { Import } from "../../models/Import";
 import { Mapping } from "../../models/Mapping";
 import { SourceOps } from "./source";
+import { GrouparooModel } from "../../models/GrouparooModel";
 
 export interface RecordPropertyType {
   [key: string]: {
@@ -54,7 +55,7 @@ export namespace RecordOps {
         order: [["position", "ASC"]],
       }));
 
-    const properties = await Property.findAllWithCache();
+    const properties = await Property.findAllWithCache(record.modelId);
 
     const hash: RecordPropertyType = {};
 
@@ -117,6 +118,7 @@ export namespace RecordOps {
     offset,
     state,
     groupId,
+    modelId,
     searchKey,
     searchValue,
     order,
@@ -126,6 +128,7 @@ export namespace RecordOps {
     offset?: number;
     state?: string;
     groupId?: string;
+    modelId?: string;
     searchKey?: string | number;
     searchValue?: string;
     order?: OrderItem[];
@@ -150,7 +153,11 @@ export namespace RecordOps {
       include.push(RecordProperty);
       countRequiresIncludes = true;
 
-      const property = await Property.findOneWithCache(`${searchKey}`, "key");
+      const property = await Property.findOneWithCache(
+        `${searchKey}`,
+        undefined,
+        "key"
+      );
       if (!property) throw new Error(`cannot find a property for ${searchKey}`);
 
       ands.push(
@@ -190,6 +197,11 @@ export namespace RecordOps {
       ands.push(
         Sequelize.where(Sequelize.col("groupMembers.groupId"), groupId)
       );
+    }
+
+    // Are we limiting to a certain modelId?
+    if (modelId) {
+      ands.push({ modelId });
     }
 
     // Load the records in full now that we know the relevant records
@@ -241,7 +253,6 @@ export namespace RecordOps {
     const releaseLocks: Function[] = [];
     const bulkCreates = [];
     const bulkDeletes = { where: { [Op.or]: [] } };
-    const properties = await Property.findAllWithCache();
     const now = new Date();
 
     // load existing record properties
@@ -252,6 +263,8 @@ export namespace RecordOps {
     try {
       let recordOffset = 0;
       for (const record of records) {
+        const properties = await Property.findAllWithCache(record.modelId);
+
         if (toLock) {
           const response = await waitForLock(`record:${record.id}`);
           releaseLocks.push(response.releaseLock);
@@ -370,7 +383,8 @@ export namespace RecordOps {
     const clearRecordPropertyIds = [];
     for (let recordProperty of pendingProperties) {
       const property = await Property.findOneWithCache(
-        recordProperty.propertyId
+        recordProperty.propertyId,
+        record.modelId
       );
       if (!sourceId || property.sourceId === sourceId) {
         clearRecordPropertyIds.push(recordProperty.id);
@@ -417,12 +431,11 @@ export namespace RecordOps {
     records: GrouparooRecord[],
     state = "pending"
   ) {
-    const properties = await Property.findAllWithCache();
-
     const bulkArgs = [];
     const now = new Date();
 
     for (const record of records) {
+      const properties = await Property.findAllWithCache(record.modelId);
       const recordProperties = await record.getProperties();
 
       for (const key in properties) {
@@ -480,7 +493,7 @@ export namespace RecordOps {
 
     try {
       const sources = await Source.findAll({
-        where: { state: "ready" },
+        where: { state: "ready", modelId: record.modelId },
         include: [Mapping, Property],
       });
       const sortedSources = SourceOps.sortByDependencies(sources);
@@ -604,9 +617,11 @@ export namespace RecordOps {
     let record: GrouparooRecord;
     let isNew = false;
     let recordProperty: RecordProperty;
-    const uniqueProperties = (await Property.findAllWithCache()).filter(
-      (p) => p.unique === true
-    );
+    const uniqueProperties = (
+      await Property.findAllWithCache(
+        source instanceof Source ? source.modelId : undefined
+      )
+    ).filter((p) => p.unique === true);
     const uniquePropertiesHash = {};
 
     uniqueProperties.forEach((property) => {
@@ -661,7 +676,7 @@ export namespace RecordOps {
           typeof source === "boolean"
             ? source
             : source instanceof Source
-            ? (await Property.findAllWithCache())
+            ? (await Property.findAllWithCache(source.modelId))
                 .filter((p) => p.unique === true && p.sourceId === source.id)
                 .map((p) => p.key)
                 .filter((key) => !!hash[key]).length > 0
@@ -675,7 +690,16 @@ export namespace RecordOps {
           );
         }
 
-        record = await GrouparooRecord.create();
+        let modelId: string;
+        if (source instanceof Source) {
+          modelId = source.modelId;
+        } else {
+          const models = await GrouparooModel.findAll();
+          if (models.length > 1) throw new Error(`indeterminate model`);
+          modelId = models[0].id;
+        }
+
+        record = await GrouparooRecord.create({ modelId });
         record = await record.reload();
         const { releaseLock } = await waitForLock(`record:${record.id}`);
         lockReleases.push(releaseLock);
@@ -719,11 +743,11 @@ export namespace RecordOps {
     const limit: number = config.batchSize.imports;
     let records: GrouparooRecord[] = [];
 
-    const directlyMappedProperties = (await Property.findAllWithCache()).filter(
-      (p) => p.directlyMapped
-    );
+    const directlyMapped = await Property.findAll({
+      where: { directlyMapped: true },
+    });
 
-    if (directlyMappedProperties.length === 0) {
+    if (directlyMapped.length === 0) {
       // We have no directly mapped Property and every record should be removed
       // It's safe to assume that if there are no Properties, we aren't exporting
       records = await GrouparooRecord.findAll({
@@ -763,10 +787,13 @@ export namespace RecordOps {
     fromDate: Date,
     sourceId?: string
   ) {
-    const properties = await Property.findAllWithCache();
-    const directlyMapped = properties.filter(
-      (p) => p.directlyMapped && (!sourceId || sourceId === p.sourceId)
-    );
+    const directlyMapped = sourceId
+      ? await Property.findAll({
+          where: { directlyMapped: true, sourceId },
+        })
+      : await Property.findAll({
+          where: { directlyMapped: true },
+        });
 
     const recordProperties = await RecordProperty.findAll({
       where: {

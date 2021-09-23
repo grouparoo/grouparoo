@@ -47,6 +47,7 @@ describe("actions/groups", () => {
         csrfToken,
         name: "new group",
         type: "manual",
+        modelId: "mod_profiles",
       };
       const { error, group } = await specHelper.runAction<GroupCreate>(
         "group:create",
@@ -201,6 +202,7 @@ describe("actions/groups", () => {
         group = await Group.create({
           name: "test calculated group",
           type: "calculated",
+          modelId: "mod_profiles",
           rules: {},
         });
       });
@@ -212,8 +214,8 @@ describe("actions/groups", () => {
       beforeAll(async () => {
         await GrouparooRecord.truncate();
 
-        mario = await GrouparooRecord.create();
-        luigi = await GrouparooRecord.create();
+        mario = await GrouparooRecord.create({ modelId: "mod_profiles" });
+        luigi = await GrouparooRecord.create({ modelId: "mod_profiles" });
 
         await mario.addOrUpdateProperties({
           firstName: ["Mario"],
@@ -355,6 +357,7 @@ describe("actions/groups", () => {
       group = new Group({
         type: "manual",
         name: "test group",
+        modelId: "mod_profiles",
       });
       await group.save();
       id = group.id;

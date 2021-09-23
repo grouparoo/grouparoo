@@ -1,25 +1,28 @@
 import Head from "next/head";
 import { useState, Fragment } from "react";
 import { UseApi } from "../../../hooks/useApi";
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card, Form } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import AppIcon from "../../../components/appIcon";
 import { useRouter } from "next/router";
 import { humanizePluginName } from "../../../utils/languageHelper";
-import { Actions } from "../../../utils/apiData";
+import { Actions, Models } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 
 export default function Page(props) {
   const {
     errorHandler,
     connectionApps,
+    models,
   }: {
     errorHandler: ErrorHandler;
     connectionApps: Actions.SourceConnectionApps["connectionApps"];
+    models: Models.GrouparooModelType[];
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
+  const [modelId, setModelId] = useState<string>(null);
   const { appId } = router.query;
 
   const relevantConnectionApps = connectionApps.filter(
@@ -30,6 +33,7 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.SourceCreate = await execApi("post", `/source`, {
       appId,
+      modelId,
       type: connection.name,
     });
     if (response?.source) {
@@ -57,6 +61,28 @@ export default function Page(props) {
           <AppIcon src={relevantConnectionApps[0].app.icon} fluid size={100} />
         </Col>
         <Col>
+          <Form.Group>
+            <Form.Label>Grouparoo Model</Form.Label>
+            <Form.Control
+              as="select"
+              onChange={(e) => setModelId(e.target.value)}
+              defaultValue=""
+              required
+            >
+              <option value="" disabled>
+                Choose Grouparoo Model...
+              </option>
+              {models.map((model) => (
+                <option key={`model-${model.id}`} value={model.id}>
+                  {model.name}
+                </option>
+              ))}
+            </Form.Control>
+            <Form.Text className="text-muted">
+              This source will only contribute to the chosen Grouparoo Model
+            </Form.Text>
+          </Form.Group>
+
           {relevantConnectionApps.map(({ app, connection }) => (
             <Fragment key={`connectionApp-${connection.name}`}>
               <Card>
@@ -84,5 +110,6 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
   const { connectionApps } = await execApi("get", `/sources/connectionApps`);
-  return { connectionApps };
+  const { models } = await execApi("get", `/models`);
+  return { connectionApps, models };
 };

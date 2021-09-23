@@ -39,6 +39,7 @@ import { GroupRule } from "./GroupRule";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
 import { Property } from "./Property";
+import { GrouparooModel } from "./GrouparooModel";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -159,6 +160,15 @@ export class Destination extends LoggedModel<Destination> {
   @ForeignKey(() => Group)
   groupId: string;
 
+  @AllowNull(true)
+  @Column(DataType.ENUM(...SYNC_MODES))
+  syncMode: DestinationSyncMode;
+
+  @AllowNull(false)
+  @ForeignKey(() => GrouparooModel)
+  @Column
+  modelId: string;
+
   @BelongsTo(() => App)
   app: App;
 
@@ -180,9 +190,8 @@ export class Destination extends LoggedModel<Destination> {
   @HasMany(() => Export)
   exports: Export[];
 
-  @AllowNull(true)
-  @Column(DataType.ENUM(...SYNC_MODES))
-  syncMode: DestinationSyncMode;
+  @BelongsTo(() => GrouparooModel)
+  model: GrouparooModel;
 
   async apiData(includeApp = true, includeGroup = true) {
     let app: App;
@@ -193,6 +202,7 @@ export class Destination extends LoggedModel<Destination> {
       group = await this.$get("group", { scope: null, include: [GroupRule] });
     }
 
+    const model = await this.$get("model");
     const mapping = await this.getMapping();
     const options = await this.getOptions(null);
     const destinationGroupMemberships =
@@ -215,6 +225,8 @@ export class Destination extends LoggedModel<Destination> {
       syncMode,
       syncModes: syncModeData,
       app: app ? await app.apiData() : null,
+      modelId: this.modelId,
+      modelName: model.name,
       mapping,
       options,
       connection: pluginConnection,
@@ -379,7 +391,7 @@ export class Destination extends LoggedModel<Destination> {
       false,
       saveCache
     );
-    const properties = await Property.findAllWithCache();
+    const properties = await Property.findAllWithCache(this.modelId);
     const exportArrayProperties = await this.getExportArrayProperties();
 
     // check for array properties
@@ -568,6 +580,7 @@ export class Destination extends LoggedModel<Destination> {
     return {
       class: "Destination",
       id: this.getConfigId(),
+      modelId: this.modelId,
       name,
       type,
       appId,
@@ -585,6 +598,17 @@ export class Destination extends LoggedModel<Destination> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  @BeforeCreate
+  @BeforeSave
+  static async ensureModel(instance: Destination) {
+    const model = await GrouparooModel.findOne({
+      where: { id: instance.modelId },
+    });
+    if (!model) {
+      throw new Error(`cannot find model with id ${instance.modelId}`);
+    }
   }
 
   @BeforeCreate

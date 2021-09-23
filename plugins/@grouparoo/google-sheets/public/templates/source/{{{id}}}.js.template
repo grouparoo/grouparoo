@@ -11,6 +11,7 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "google-sheet-import",
       appId: {{{appId}}}, // Set this value to the ID of the App this Source uses - e.g. `appId: "google_sheet_app"`
+      modelId: "mod_profiles", // The ID of the Grouparoo Model that this Source will contribute to
       options: {
         sheet_url: "https://sheets.google.com/...", // The URL of your sheet.
       },

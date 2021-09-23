@@ -11,6 +11,7 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "csv-import",
       appId: {{{appId}}}, // Set this value to the ID of the App this Source uses - e.g. `appId: "csv_app"`
+      modelId: "mod_profiles", // The ID of the Grouparoo Model that this Source will contribute to
       options: {
         url: "...", // The URL of a publicly available CSV file - e.g. `url: "https://example.com/data.csv"`
         fileAgeHours: 1 // The number of hours to cache a download of the remote CSV file before downloading it again and checking for changes.

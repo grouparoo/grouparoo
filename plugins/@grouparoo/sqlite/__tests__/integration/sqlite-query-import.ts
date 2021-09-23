@@ -73,6 +73,7 @@ describe("integration/runs/sqlite", () => {
       name: "sqlite import source",
       type: "sqlite-query-import",
       appId: app.id,
+      modelId: "mod_profiles",
       state: "ready",
     };
     const sourceResponse = await specHelper.runAction<SourceCreate>(

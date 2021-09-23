@@ -1,7 +1,7 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Op } from "sequelize";
 import { GrouparooRecord } from "../models/GrouparooRecord";
-import { Property, SimplePropertyOptions } from "../models/Property";
+import { Property } from "../models/Property";
 import { RecordProperty } from "../models/RecordProperty";
 import { Group } from "../models/Group";
 import { GroupRule } from "../models/GroupRule";
@@ -9,6 +9,7 @@ import { AsyncReturnType } from "type-fest";
 import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
 import { APIData } from "../modules/apiData";
+import { Source } from "../models/Source";
 
 export class PropertiesList extends AuthenticatedAction {
   constructor() {
@@ -22,6 +23,7 @@ export class PropertiesList extends AuthenticatedAction {
       offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       unique: { required: false },
       state: { required: false },
+      modelId: { required: false },
       sourceId: { required: false },
       includeExamples: { required: true, default: "false" },
       order: {
@@ -42,15 +44,26 @@ export class PropertiesList extends AuthenticatedAction {
     const where = {};
     if (params.state) where["state"] = params.state;
     if (params.sourceId) where["sourceId"] = params.sourceId;
-    if (params?.unique?.toString().toLowerCase() === "true")
+    if (params?.unique?.toString().toLowerCase() === "true") {
       where["unique"] = true;
+    }
 
-    const properties = await Property.scope(null).findAll({
-      limit: params.limit,
-      offset: params.offset,
-      order: params.order,
-      where,
-    });
+    const properties = (
+      await Property.scope(null).findAll({
+        include: [
+          {
+            model: Source,
+            where: { state: ["draft", "ready"] },
+          },
+        ],
+        limit: params.limit,
+        offset: params.offset,
+        order: params.order,
+        where,
+      })
+    ).filter((p) =>
+      params.modelId ? p.source?.modelId === params.modelId : true
+    );
 
     const responseProperties: Array<AsyncReturnType<Property["apiData"]>> = [];
     const responseExamples: { [id: string]: string[] } = {};

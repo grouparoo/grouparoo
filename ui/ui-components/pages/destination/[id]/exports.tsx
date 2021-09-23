@@ -5,6 +5,7 @@ import DestinationTabs from "../../../components/tabs/destination";
 import PageHeader from "../../../components/pageHeader";
 import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
+import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page(props) {
   const { destination } = props;
@@ -25,6 +26,10 @@ export default function Page(props) {
             badges={[
               <LockedBadge object={destination} />,
               <StateBadge state={destination.state} />,
+              <ModelBadge
+                modelName={destination.modelName}
+                modelId={destination.modelId}
+              />,
             ]}
           />
         }

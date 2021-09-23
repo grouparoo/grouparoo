@@ -327,6 +327,7 @@ describe("models/option", () => {
             type: "export-from-test-template-app",
             syncMode: "sync",
             appId: appWithOptions.id,
+            modelId: "mod_profiles",
           });
         });
 

@@ -25,12 +25,17 @@ export async function loadRecord(
     isNew = true;
     record = await GrouparooRecord.create({
       id: configObject.id,
+      modelId: configObject.modelId,
     });
+  } else {
+    await record.update({ modelId: configObject.modelId });
   }
 
   const nonNullProperties = extractNonNullParts(configObject, "properties");
 
-  const directlyMappedProperties = (await Property.findAllWithCache())
+  const directlyMappedProperties = (
+    await Property.findAllWithCache(record.modelId)
+  )
     .filter((p) => p.directlyMapped === true)
     .map((p) => p.id);
 

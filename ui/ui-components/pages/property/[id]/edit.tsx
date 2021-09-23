@@ -19,6 +19,7 @@ import { makeLocal } from "../../../utils/makeLocal";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { PropertiesHandler } from "../../../utils/propertiesHandler";
+import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -206,6 +207,7 @@ export default function Page(props) {
         badges={[
           <LockedBadge object={property} />,
           <StateBadge state={property.state} />,
+          <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
         ]}
       />
 

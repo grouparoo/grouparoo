@@ -5,6 +5,7 @@
   "type": "salesforce-objects-export",
   "appId": "salesforce",
   "groupId": "nobody",
+  "modelId": "mod_profiles",
   "syncMode": "sync",
   "options": {
     "groupNameField": "Name",

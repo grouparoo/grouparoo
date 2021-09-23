@@ -9,6 +9,13 @@ module.exports = async function getConfig() {
     },
 
     {
+      id: "mod_profiles",
+      class: "Model",
+      name: "Profiles",
+      type: "profile",
+    },
+
+    {
       id: "data_warehouse", // id -> `data_warehouse`
       name: "Data Warehouse",
       class: "App",
@@ -25,6 +32,7 @@ module.exports = async function getConfig() {
       class: "Destination",
       type: "test-plugin-export",
       appId: "data_warehouse", // appId -> `data_warehouse`
+      modelId: "mod_profiles",
       syncMode: "additive",
       options: {
         table: "someTable",

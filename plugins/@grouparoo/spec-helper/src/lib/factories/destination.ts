@@ -4,9 +4,12 @@ import AppFactory from "./app";
 import { Destination } from "@grouparoo/core";
 
 const data = async (props = {}) => {
+  const { GrouparooModel } = await import(`@grouparoo/core/${loadPath}`);
+
   const defaultProps = {
     name: `destination ${faker.company.companyName()} - ${Math.random()}`,
     type: "test-plugin-export",
+    modelId: (await GrouparooModel.findOne()).id,
     options: { table: "out table" },
     syncMode: "sync",
     mapping: {},
@@ -20,9 +23,10 @@ const data = async (props = {}) => {
 
 export default async (app?, props: { [key: string]: any } = {}) => {
   const { Destination } = await import(`@grouparoo/core/${loadPath}`);
-  if (!app) app = await AppFactory();
 
+  if (!app) app = await AppFactory();
   props.appId = app.id;
+
   const mergedProps = await data(props);
   const instance = new Destination(mergedProps) as Destination;
   await instance.save();

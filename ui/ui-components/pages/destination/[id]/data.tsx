@@ -13,6 +13,7 @@ import PageHeader from "../../../components/pageHeader";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
+import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -272,6 +273,10 @@ export default function Page(props) {
         badges={[
           <LockedBadge object={destination} />,
           <StateBadge state={destination.state} />,
+          <ModelBadge
+            modelName={destination.modelName}
+            modelId={destination.modelId}
+          />,
         ]}
       />
 
@@ -802,9 +807,12 @@ Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
   const { id } = ctx.query;
   const { destination } = await execApi("get", `/destination/${id}`);
-  const { groups } = await execApi("get", `/groups`);
+  const { groups } = await execApi("get", `/groups`, {
+    modelId: destination?.modelId,
+  });
   const { properties } = await execApi("get", `/properties`, {
     state: "ready",
+    modelId: destination?.modelId,
   });
 
   let mappingOptions = {};

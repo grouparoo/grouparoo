@@ -84,6 +84,7 @@ describe("integration/runs/csv/remote", () => {
         type: "csv-import",
         name: "csv source",
         appId: app.id,
+        modelId: "mod_profiles",
         options: {
           url: "https://raw.githubusercontent.com/grouparoo/grouparoo/main/core/__tests__/data/records-10.csv",
           fileAgeHours: 1,

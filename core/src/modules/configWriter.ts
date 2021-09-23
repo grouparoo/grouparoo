@@ -4,6 +4,7 @@ import path from "path";
 import prettier from "prettier";
 
 import { App } from "../models/App";
+import { GrouparooModel } from "../models/GrouparooModel";
 import { Destination } from "../models/Destination";
 import { Group } from "../models/Group";
 import { Property } from "../models/Property";
@@ -102,6 +103,7 @@ export namespace ConfigWriter {
 
     const queryParams = { where: { locked: null } };
     let queries = {
+      models: await GrouparooModel.findAll(queryParams),
       apps: await App.findAll(queryParams),
       sources: await Source.findAll(queryParams),
       properties: await Property.findAll(queryParams),

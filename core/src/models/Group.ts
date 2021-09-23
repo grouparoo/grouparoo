@@ -4,13 +4,16 @@ import Sequelize, { Op, WhereAttributeHash } from "sequelize";
 import {
   AfterDestroy,
   AllowNull,
+  BeforeCreate,
   BeforeDestroy,
   BeforeSave,
+  BelongsTo,
   BelongsToMany,
   Column,
   DataType,
   Default,
   DefaultScope,
+  ForeignKey,
   HasMany,
   Is,
   Length,
@@ -35,6 +38,8 @@ import { RecordProperty } from "./RecordProperty";
 import { Property, propertyJSToSQLType } from "./Property";
 import { Run } from "./Run";
 import { Setting } from "./Setting";
+import { GrouparooModel } from "./GrouparooModel";
+import { Source } from "./Source";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -133,6 +138,11 @@ export class Group extends LoggedModel<Group> {
   @Column
   calculatedAt: Date;
 
+  @AllowNull(false)
+  @ForeignKey(() => GrouparooModel)
+  @Column
+  modelId: string;
+
   @HasMany(() => GroupMember)
   groupMembers: GroupMember[];
 
@@ -144,6 +154,9 @@ export class Group extends LoggedModel<Group> {
 
   @BelongsToMany(() => GrouparooRecord, () => GroupMember)
   records: GrouparooRecord[];
+
+  @BelongsTo(() => GrouparooModel)
+  model: GrouparooModel;
 
   async recordsCount(options = {}) {
     let queryOptions = { where: { groupId: this.id } };
@@ -170,7 +183,10 @@ export class Group extends LoggedModel<Group> {
 
     for (const i in rules) {
       const rule: GroupRule = rules[i];
-      const property = await Property.findOneWithCache(rule.propertyId);
+      const property = await Property.findOneWithCache(
+        rule.propertyId,
+        this.modelId
+      );
       const type = property
         ? property.type
         : TopLevelGroupRules.find((tlgr) => tlgr.key === rule.recordColumn)
@@ -219,6 +235,7 @@ export class Group extends LoggedModel<Group> {
       const key = rule.key;
       const property = await Property.findOne({
         where: { key },
+        include: [Source],
       });
 
       if (!property && !topLevelRuleKeys.includes(key)) {
@@ -238,6 +255,12 @@ export class Group extends LoggedModel<Group> {
       if (!dictionaryEntries || dictionaryEntries.length === 0) {
         throw new Error(
           `invalid group rule operation "${rule.operation.op}" for property of type ${property.type}`
+        );
+      }
+
+      if (property && this.modelId !== property.source.modelId) {
+        throw new Error(
+          `${property.key} does not belong to the ${this.modelId} model`
         );
       }
 
@@ -270,6 +293,7 @@ export class Group extends LoggedModel<Group> {
   }
 
   async apiData() {
+    const model = await this.$get("model");
     const recordsCount = await this.recordsCount(null);
     const rules = await this.getRules();
     const nextCalculatedAt = await this.nextCalculatedAt();
@@ -278,6 +302,8 @@ export class Group extends LoggedModel<Group> {
       id: this.id,
       name: this.name,
       type: this.type,
+      modelId: this.modelId,
+      modelName: model.name,
       rules,
       matchType: this.matchType,
       state: this.state,
@@ -654,7 +680,11 @@ export class Group extends LoggedModel<Group> {
     const convenientRules = this.toConvenientRules(groupRules);
 
     for (const rule of convenientRules) {
-      const property = await Property.findOneWithCache(rule.key, "key");
+      const property = await Property.findOneWithCache(
+        rule.key,
+        this.modelId,
+        "key"
+      );
       rules.push({
         propertyId: rule.topLevel ? rule.key : property.getConfigId(),
         operation: { op: rule.operation.op },
@@ -672,11 +702,13 @@ export class Group extends LoggedModel<Group> {
       class: string;
       type: string;
       name: string;
+      modelId: string;
       rules?: any[];
     } = {
       id: this.getConfigId(),
       class: "Group",
       type,
+      modelId: this.modelId,
       name,
     };
 
@@ -693,6 +725,17 @@ export class Group extends LoggedModel<Group> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  @BeforeCreate
+  @BeforeSave
+  static async ensureModel(instance: Destination) {
+    const model = await GrouparooModel.findOne({
+      where: { id: instance.modelId },
+    });
+    if (!model) {
+      throw new Error(`cannot find model with id ${instance.modelId}`);
+    }
   }
 
   @BeforeSave

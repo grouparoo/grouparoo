@@ -158,6 +158,7 @@ describe("models/destination", () => {
           type: "export-from-test-app",
           syncMode: "sync",
           appId: app.id,
+          modelId: "mod_profiles",
         });
         await destination.update({ state: "ready" });
         await api.resque.queue.connection.redis.flushdb();
