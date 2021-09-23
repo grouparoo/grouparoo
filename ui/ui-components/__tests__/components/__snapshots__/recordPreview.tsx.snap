@@ -42,7 +42,7 @@ exports[`property / recordPreview should not render with a boolean date 1`] = `
           test-key
         </strong>
         :
-
+         
         ...
       </div>
       <div
@@ -52,7 +52,7 @@ exports[`property / recordPreview should not render with a boolean date 1`] = `
           date
         </strong>
         :
-
+         
       </div>
     </div>
   </div>
@@ -101,7 +101,7 @@ exports[`property / recordPreview should not render with a null date 1`] = `
           test-key
         </strong>
         :
-
+         
         ...
       </div>
       <div
@@ -111,7 +111,7 @@ exports[`property / recordPreview should not render with a null date 1`] = `
           date
         </strong>
         :
-
+         
       </div>
     </div>
   </div>
@@ -160,7 +160,7 @@ exports[`property / recordPreview should render a whole user record including th
           Draft Record Property
         </strong>
         :
-
+         
         9/8/2021, 6:58:38 PM
       </div>
       <div
@@ -170,7 +170,7 @@ exports[`property / recordPreview should render a whole user record including th
           userId
         </strong>
         :
-
+         
         50
       </div>
       <div
@@ -180,7 +180,7 @@ exports[`property / recordPreview should render a whole user record including th
           email
         </strong>
         :
-
+         
         spenburton1d@demo.com
       </div>
       <div
@@ -190,7 +190,7 @@ exports[`property / recordPreview should render a whole user record including th
           Deactivated
         </strong>
         :
-
+         
         false
       </div>
       <div
@@ -200,7 +200,7 @@ exports[`property / recordPreview should render a whole user record including th
           firstName
         </strong>
         :
-
+         
         Sibeal
       </div>
       <div
@@ -210,7 +210,7 @@ exports[`property / recordPreview should render a whole user record including th
           lastName
         </strong>
         :
-
+         
         Penburton
       </div>
       <div
@@ -220,7 +220,7 @@ exports[`property / recordPreview should render a whole user record including th
           LTV
         </strong>
         :
-
+         
         341.66
       </div>
       <div
@@ -230,7 +230,7 @@ exports[`property / recordPreview should render a whole user record including th
           lastPurchaseCategory
         </strong>
         :
-
+         
         Toys
       </div>
       <div
@@ -240,7 +240,7 @@ exports[`property / recordPreview should render a whole user record including th
           purchaseCount
         </strong>
         :
-
+         
         6
       </div>
       <div
@@ -250,7 +250,7 @@ exports[`property / recordPreview should render a whole user record including th
           fullName
         </strong>
         :
-
+         
         Sibeal Penburton
       </div>
       <div
@@ -260,7 +260,7 @@ exports[`property / recordPreview should render a whole user record including th
           Language
         </strong>
         :
-
+         
         French
       </div>
       <div
@@ -270,7 +270,7 @@ exports[`property / recordPreview should render a whole user record including th
           test_updated_at
         </strong>
         :
-
+         
         9/8/2021, 6:58:38 PM
       </div>
     </div>
@@ -335,7 +335,7 @@ exports[`property / recordPreview should render with a Date date 1`] = `
           test-key
         </strong>
         :
-
+         
         ...
       </div>
       <div
@@ -345,7 +345,7 @@ exports[`property / recordPreview should render with a Date date 1`] = `
           date
         </strong>
         :
-
+         
         9/8/2021, 6:58:38 PM
       </div>
     </div>
@@ -395,7 +395,7 @@ exports[`property / recordPreview should render with a number date 1`] = `
           test-key
         </strong>
         :
-
+         
         ...
       </div>
       <div
@@ -405,7 +405,7 @@ exports[`property / recordPreview should render with a number date 1`] = `
           date
         </strong>
         :
-
+         
         9/8/2021, 6:58:38 PM
       </div>
     </div>
@@ -455,7 +455,7 @@ exports[`property / recordPreview should render with a string date 1`] = `
           test-key
         </strong>
         :
-
+         
         ...
       </div>
       <div
@@ -465,7 +465,7 @@ exports[`property / recordPreview should render with a string date 1`] = `
           date
         </strong>
         :
-
+         
         9/8/2021, 6:58:38 PM
       </div>
     </div>
