@@ -208,8 +208,8 @@ export namespace ScheduleOps {
     schedule: Schedule,
     options: { ignoreDeltas?: boolean; runIfNotRecurring?: boolean } = {}
   ) {
-    const ignoreDeltas = options.ignoreDeltas || false;
-    const runIfNotRecurring = options.runIfNotRecurring || false;
+    const ignoreDeltas = options.ignoreDeltas ?? false;
+    const runIfNotRecurring = options.runIfNotRecurring ?? false;
 
     if (schedule.state !== "ready") return false;
     if (!runIfNotRecurring && schedule.recurring === false) return false;
@@ -232,12 +232,9 @@ export namespace ScheduleOps {
       order: [["completedAt", "desc"]],
     });
 
-    let delta = 0;
-    if (lastCompleteRun) {
-      delta = new Date().getTime() - lastCompleteRun.completedAt.getTime();
-      return ignoreDeltas ? true : delta > schedule.recurringFrequency;
-    } else {
-      return true;
-    }
+    if (!lastCompleteRun) return true;
+
+    const delta = new Date().getTime() - lastCompleteRun.completedAt.getTime();
+    return ignoreDeltas ? true : delta > schedule.recurringFrequency;
   }
 }
