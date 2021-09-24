@@ -1,5 +1,4 @@
 import { Schedule } from "../../models/Schedule";
-import { Run } from "../../models/Run";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class ScheduleEnqueueRuns extends CLSTask {
@@ -27,49 +26,11 @@ export class ScheduleEnqueueRuns extends CLSTask {
     });
 
     for (const schedule of schedules) {
-      if (
-        !schedule.recurring ||
-        !schedule.recurringFrequency ||
-        schedule.recurringFrequency < 1
-      ) {
-        if (!runIfNotRecurring) continue;
-      }
-
-      const runningRuns = await Run.count({
-        where: {
-          creatorId: schedule.id,
-          creatorType: "schedule",
-          state: "running",
-        },
+      const shouldRun = await schedule.shouldRun({
+        ignoreDeltas,
+        runIfNotRecurring,
       });
-
-      if (runningRuns > 0) continue;
-
-      const lastCompleteRun = await Run.scope(null).findOne({
-        where: {
-          creatorId: schedule.id,
-          creatorType: "schedule",
-          state: "complete",
-        },
-        order: [["completedAt", "desc"]],
-      });
-
-      let delta = 0;
-      if (lastCompleteRun) {
-        delta = new Date().getTime() - lastCompleteRun.completedAt.getTime();
-      }
-
-      if (
-        !lastCompleteRun ||
-        ignoreDeltas ||
-        delta > schedule.recurringFrequency
-      ) {
-        const run = await Run.create({
-          creatorId: schedule.id,
-          creatorType: "schedule",
-          state: "running",
-        });
-      }
+      if (shouldRun) await schedule.enqueueRun();
     }
   }
 }

@@ -339,15 +339,11 @@ export class Run extends Model {
     // properties are ok to enqueue if they are in draft at the time.  Options update before state
     if (instance.creatorType === "group") {
       let creator = await Group.findById(instance.creatorId);
-      if (creator.state === "draft") {
-        ready = false;
-      }
+      if (creator.state === "draft") ready = false;
     }
     if (instance.creatorType === "schedule") {
       let creator = await Schedule.findById(instance.creatorId);
-      if (creator.state === "draft") {
-        ready = false;
-      }
+      if (creator.state === "draft") ready = false;
     }
 
     if (!ready) throw new Error(`creator ${instance.creatorType} is not ready`);

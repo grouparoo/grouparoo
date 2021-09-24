@@ -16,6 +16,7 @@ import {
   DataType,
   DefaultScope,
   BeforeDestroy,
+  AfterSave,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -187,6 +188,12 @@ export class Schedule extends LoggedModel<Schedule> {
     await this.enqueueRun();
   }
 
+  async shouldRun(
+    options: { ignoreDeltas?: boolean; runIfNotRecurring?: boolean } = {}
+  ) {
+    return ScheduleOps.shouldRun(this, options);
+  }
+
   async runPercentComplete(run: Run) {
     return ScheduleOps.runPercentComplete(this, run);
   }
@@ -352,7 +359,6 @@ export class Schedule extends LoggedModel<Schedule> {
   @BeforeCreate
   static async ensureSourceCanUseSchedule(instance: Schedule) {
     const source = await Source.findById(instance.sourceId);
-
     if (source.state !== "ready") throw new Error("source is not ready");
 
     const scheduleAvailable = await source.scheduleAvailable();
@@ -380,6 +386,12 @@ export class Schedule extends LoggedModel<Schedule> {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
+  @AfterSave
+  static async runAfterSave(instance: Schedule) {
+    const shouldRun = await instance.shouldRun();
+    if (shouldRun) await instance.enqueueRun();
+  }
+
   @BeforeDestroy
   static async noDestroyIfLocked(instance) {
     await LockableHelper.beforeDestroy(instance);
@@ -405,8 +417,6 @@ export class Schedule extends LoggedModel<Schedule> {
       where: { creatorId: instance.id },
     });
 
-    for (const i in runs) {
-      await runs[i].destroy();
-    }
+    for (const i in runs) await runs[i].destroy();
   }
 }

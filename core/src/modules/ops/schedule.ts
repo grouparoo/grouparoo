@@ -200,4 +200,41 @@ export namespace ScheduleOps {
       runId: run.id,
     });
   }
+
+  /**
+   * Determine if it is time to run
+   */
+  export async function shouldRun(
+    schedule: Schedule,
+    options: { ignoreDeltas?: boolean; runIfNotRecurring?: boolean } = {}
+  ) {
+    const ignoreDeltas = options.ignoreDeltas ?? false;
+    const runIfNotRecurring = options.runIfNotRecurring ?? false;
+
+    if (schedule.state !== "ready") return false;
+    if (!runIfNotRecurring && schedule.recurring === false) return false;
+
+    const runningRuns = await Run.count({
+      where: {
+        creatorId: schedule.id,
+        creatorType: "schedule",
+        state: "running",
+      },
+    });
+    if (runningRuns > 0) return false;
+
+    const lastCompleteRun = await Run.scope(null).findOne({
+      where: {
+        creatorId: schedule.id,
+        creatorType: "schedule",
+        state: "complete",
+      },
+      order: [["completedAt", "desc"]],
+    });
+
+    if (!lastCompleteRun) return true;
+
+    const delta = new Date().getTime() - lastCompleteRun.completedAt.getTime();
+    return ignoreDeltas ? true : delta > schedule.recurringFrequency;
+  }
 }

@@ -80,8 +80,8 @@ export default function Page(props) {
             <th>Destination Name</th>
             <th>Group Tracked</th>
             <th>App</th>
-            <th>State</th>
             <th>Model</th>
+            <th>State</th>
             <th>Pending Exports</th>
             <th>Created At</th>
           </tr>
@@ -145,13 +145,13 @@ export default function Page(props) {
                   </EnterpriseLink>
                 </td>
                 <td>
-                  <StateBadge state={destination.state} />
-                </td>
-                <td>
                   <ModelBadge
                     modelName={destination.modelName}
                     modelId={destination.modelId}
                   />
+                </td>
+                <td>
+                  <StateBadge state={destination.state} />
                 </td>
                 <td>
                   <Badge variant={pendingExports > 0 ? "warning" : "info"}>
