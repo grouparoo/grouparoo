@@ -503,6 +503,148 @@ describe("models/schedule", () => {
         await schedule.destroy();
       });
     });
+
+    describe("shouldRun", () => {
+      let schedule: Schedule;
+
+      beforeEach(async () => {
+        schedule = await Schedule.create({
+          name: "schedule",
+          type: "test-plugin-import",
+          sourceId: source.id,
+        });
+        await schedule.setOptions({ maxColumn: "foo" });
+        await schedule.update({ state: "ready" });
+      });
+
+      afterEach(async () => {
+        await schedule.destroy();
+      });
+
+      describe("default behavior", () => {
+        test("it will not enqueue a run for a non-recurring schedule", async () => {
+          await schedule.update({
+            recurring: false,
+            recurringFrequency: 0,
+          });
+
+          await Run.truncate();
+          expect(await schedule.shouldRun()).toBe(false);
+        });
+
+        test("it will not enqueue a run for a recurring schedule that has never run but is a draft", async () => {
+          const source = await helper.factories.source();
+          await source.setOptions({ table: "users" });
+          await source.setMapping({ id: "userId" });
+          await source.update({ state: "ready" });
+
+          const localSchedule = await Schedule.create({
+            sourceId: source.id,
+            name: "tmp",
+            recurring: true,
+            recurringFrequency: 60 * 1000,
+          });
+          expect(localSchedule.state).toBe("draft");
+
+          await Run.truncate();
+          expect(await localSchedule.shouldRun()).toBe(false);
+
+          await localSchedule.destroy();
+          await source.destroy();
+        });
+
+        test("it will enqueue a run for a recurring schedule that has never run and is ready", async () => {
+          await schedule.update({
+            recurring: true,
+            recurringFrequency: 60 * 1000,
+            state: "ready",
+          });
+
+          await Run.truncate();
+          expect(await schedule.shouldRun()).toBe(true);
+        });
+
+        test("it will enqueue a run for a recurring schedule that ran in the past", async () => {
+          await schedule.update({
+            recurring: true,
+            recurringFrequency: 60 * 1000,
+          });
+          await Run.truncate();
+
+          await Run.create({
+            creatorId: schedule.id,
+            creatorType: "schedule",
+            state: "complete",
+            completedAt: new Date(0),
+          });
+
+          expect(await schedule.shouldRun()).toBe(true);
+        });
+
+        test("it will not enqueue a run for a recurring schedule that ran too recently", async () => {
+          await schedule.update({
+            recurring: true,
+            recurringFrequency: 60 * 1000,
+          });
+          await Run.truncate();
+
+          await Run.create({
+            creatorId: schedule.id,
+            creatorType: "schedule",
+            state: "complete",
+            completedAt: new Date(),
+          });
+
+          expect(await schedule.shouldRun()).toBe(false);
+        });
+
+        test("it will not enqueue a run for a recurring schedule that is running", async () => {
+          await schedule.update({
+            recurring: true,
+            recurringFrequency: 60 * 1000,
+          });
+          await Run.truncate();
+
+          await Run.create({
+            creatorId: schedule.id,
+            creatorType: "schedule",
+            state: "running",
+          });
+          expect(await schedule.shouldRun()).toBe(false);
+        });
+      });
+
+      describe("custom inputs", () => {
+        test("it can enqueue a run for a non-recurring schedule (runIfNotRecurring)", async () => {
+          await schedule.update({
+            recurring: false,
+            recurringFrequency: 0,
+          });
+          await Run.truncate();
+
+          expect(await schedule.shouldRun({ runIfNotRecurring: true })).toBe(
+            true
+          );
+        });
+
+        test("it will not enqueue a run for a recurring schedule that ran too recently (ignoreDeltas)", async () => {
+          await schedule.update({
+            recurring: true,
+            recurringFrequency: 60 * 1000,
+          });
+          await Run.truncate();
+
+          const run = await Run.create({
+            creatorId: schedule.id,
+            creatorType: "schedule",
+            state: "complete",
+            completedAt: new Date(),
+          });
+
+          expect(await schedule.shouldRun({ ignoreDeltas: true })).toBe(true);
+        });
+      });
+    });
   });
 
   describe("with custom plugin", () => {

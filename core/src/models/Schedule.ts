@@ -188,6 +188,12 @@ export class Schedule extends LoggedModel<Schedule> {
     await this.enqueueRun();
   }
 
+  async shouldRun(
+    options: { ignoreDeltas?: boolean; runIfNotRecurring?: boolean } = {}
+  ) {
+    return ScheduleOps.shouldRun(this, options);
+  }
+
   async runPercentComplete(run: Run) {
     return ScheduleOps.runPercentComplete(this, run);
   }
@@ -382,12 +388,8 @@ export class Schedule extends LoggedModel<Schedule> {
 
   @AfterSave
   static async runAfterSave(instance: Schedule) {
-    if (instance.state === "ready" && instance.recurring) {
-      const runningCount = await instance.$count("runs", {
-        where: { state: "running" },
-      });
-      if (runningCount === 0) await instance.enqueueRun();
-    }
+    const shouldRun = await instance.shouldRun();
+    if (shouldRun) await instance.enqueueRun();
   }
 
   @BeforeDestroy
@@ -415,8 +417,6 @@ export class Schedule extends LoggedModel<Schedule> {
       where: { creatorId: instance.id },
     });
 
-    for (const i in runs) {
-      await runs[i].destroy();
-    }
+    for (const i in runs) await runs[i].destroy();
   }
 }
