@@ -691,9 +691,7 @@ export namespace Actions {
     typeof SourcePreview.prototype.runWithinTransaction
   >;
 
-  export type PublicStatus = AsyncReturnType<
-    typeof PublicStatus.prototype.runWithinTransaction
-  >;
+  export type PublicStatus = AsyncReturnType<typeof PublicStatus.prototype.run>;
   export type PrivateStatus = AsyncReturnType<
     typeof PrivateStatus.prototype.runWithinTransaction
   >;
