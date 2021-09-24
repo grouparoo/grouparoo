@@ -1,22 +1,20 @@
-import { api, id, actionheroVersion } from "actionhero";
+import { api, id, actionheroVersion, Action } from "actionhero";
 import path from "path";
 import { Setting } from "../models/Setting";
-import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Status } from "../modules/status";
 
 const packageJSON = require(path.join(__dirname, "..", "..", "package.json"));
 
-export class PublicStatus extends OptionallyAuthenticatedAction {
+export class PublicStatus extends Action {
   constructor() {
     super();
     this.name = "status:public";
     this.description = "A basic status endpoint";
-    this.permission = { topic: "system", mode: "read" };
     this.outputExample = {};
   }
 
-  async runWithinTransaction() {
+  async run() {
     return { status: "ok" };
   }
 }
