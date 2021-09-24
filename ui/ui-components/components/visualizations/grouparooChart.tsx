@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import Loader from "../loader";
 
 export type ChartLinData = { x: number; y: number }[][];
 
@@ -48,10 +49,13 @@ export function GrouparooChart({
     | "monotone"
     | "step";
 }) {
+  if (keys.length === 0) return <Loader />;
+
   const formattedData: {
     [key: string]: number | string;
     time: number;
   }[] = [];
+
   let lineId = 0;
   for (const line of data) {
     let title = keys[lineId];
