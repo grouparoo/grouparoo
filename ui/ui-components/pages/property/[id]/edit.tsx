@@ -43,18 +43,18 @@ export default function Page(props) {
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
+  const [property, setProperty] = useState<Models.PropertyType>(props.property);
   const [pluginOptions, setPluginOptions] = useState<
     Actions.PropertyPluginOptions["pluginOptions"]
   >(props.pluginOptions);
   const [loading, setLoading] = useState(false);
   const [nextPage] = useState(router.query.nextPage?.toString()); // we want to store this when the page was initially loaded because we'll be updating the route for the recordPreview
-  const [property, setProperty] = useState<Models.PropertyType>(props.property);
   const [localFilters, setLocalFilters] = useState<
     Actions.PropertyView["property"]["filters"]
   >(makeLocal(props.property.filters));
 
   const [debounceCounter, setDebounceCounter] = useState(0);
-  const sleep = debounceCounter === 0 ? 0 : 1000; // we only want to make one request every ~second, so wait for more input
+  const sleep = debounceCounter === 0 ? 0 : 500; // we only want to make one request every 1/2 second, so wait for more input
   let timer;
 
   const { id } = router.query;
@@ -131,7 +131,16 @@ export default function Page(props) {
         JSON.stringify(pluginOptionsResponse.pluginOptions) !==
           JSON.stringify(pluginOptions)
       ) {
+        const pluginOptionKeys = pluginOptionsResponse.pluginOptions.map(
+          (p) => p.key
+        );
+        const _property = Object.assign({}, property);
+        for (const k of Object.keys(_property.options)) {
+          if (!pluginOptionKeys.includes(k)) delete _property.options[k];
+        }
+
         setPluginOptions(pluginOptionsResponse.pluginOptions);
+        setProperty(_property);
       }
     }, sleep);
   }
