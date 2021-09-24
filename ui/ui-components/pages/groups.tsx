@@ -102,13 +102,13 @@ export default function Page(props) {
                   <td>{group.recordsCount}</td>
                 )}
                 <td>
-                  <StateBadge state={group.state} />
-                </td>
-                <td>
                   <ModelBadge
                     modelName={group.modelName}
                     modelId={group.modelId}
                   />
+                </td>
+                <td>
+                  <StateBadge state={group.state} />
                 </td>
                 {process.env.GROUPAROO_UI_EDITION !== "config" && (
                   <td>
