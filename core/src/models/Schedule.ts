@@ -16,6 +16,7 @@ import {
   DataType,
   DefaultScope,
   BeforeDestroy,
+  AfterSave,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -352,7 +353,6 @@ export class Schedule extends LoggedModel<Schedule> {
   @BeforeCreate
   static async ensureSourceCanUseSchedule(instance: Schedule) {
     const source = await Source.findById(instance.sourceId);
-
     if (source.state !== "ready") throw new Error("source is not ready");
 
     const scheduleAvailable = await source.scheduleAvailable();
@@ -378,6 +378,16 @@ export class Schedule extends LoggedModel<Schedule> {
   @BeforeSave
   static async updateState(instance: Schedule) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
+  @AfterSave
+  static async runAfterSave(instance: Schedule) {
+    if (instance.state === "ready" && instance.recurring) {
+      const runningCount = await instance.$count("runs", {
+        where: { state: "running" },
+      });
+      if (runningCount === 0) await instance.enqueueRun();
+    }
   }
 
   @BeforeDestroy

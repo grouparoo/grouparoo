@@ -113,217 +113,6 @@ describe("models/schedule", () => {
       ).rejects.toThrow(/table is required/);
     });
 
-    describe("with plugin that does not support schedules", () => {
-      beforeAll(() => {
-        plugin.registerPlugin({
-          name: "test-plugin-no-schedule",
-          apps: [
-            {
-              name: "test-plugin-app-no-schedule",
-              options: [],
-              methods: {
-                test: async () => {
-                  return { success: true };
-                },
-              },
-            },
-          ],
-          connections: [
-            {
-              name: "test-plugin-source-no-schedule",
-              description: "a test connection",
-              app: "test-plugin-app-no-schedule",
-              direction: "import",
-              options: [],
-              methods: {
-                propertyOptions: async () => {
-                  return null;
-                },
-                recordProperty: async () => {
-                  return [];
-                },
-              },
-            },
-          ],
-        });
-      });
-
-      test("a schedule cannot be created if the source does not support schedules", async () => {
-        const app = await App.create({
-          type: "test-plugin-app-no-schedule",
-          name: "test app",
-        });
-        await app.update({ state: "ready" });
-        const source = await Source.create({
-          type: "test-plugin-source-no-schedule",
-          appId: app.id,
-          modelId: "mod_profiles",
-        });
-        await source.update({ state: "ready" });
-
-        await expect(
-          Schedule.create({
-            name: "test schedule",
-            type: "test-plugin-import",
-            sourceId: source.id,
-          })
-        ).rejects.toThrow(/cannot have a schedule/);
-
-        await source.destroy();
-        await app.destroy();
-      });
-    });
-
-    describe("validations", () => {
-      test("options must match the app options (extra options needed by app)", async () => {
-        const schedule = new Schedule({
-          name: "incoming schedule - too many options",
-          type: "test-plugin-import",
-          sourceId: source.id,
-        });
-
-        await schedule.save();
-        expect(schedule.id).toBeTruthy();
-
-        await expect(
-          schedule.setOptions({ maxColumn: "abc", something: "abc123" })
-        ).rejects.toThrow(
-          /something is not an option for a test-plugin-import schedule/
-        );
-
-        await schedule.destroy();
-      });
-
-      test("__options only includes options for schedules", async () => {
-        const schedule = await Schedule.create({
-          id: "myScheduleId",
-          type: "test-plugin-import",
-          name: "test schedule",
-          sourceId: source.id,
-        });
-
-        await Option.create({
-          ownerId: schedule.id,
-          ownerType: "schedule",
-          key: "maxColumn",
-          value: "abc",
-          type: "string",
-        });
-
-        await Option.create({
-          ownerId: schedule.id,
-          ownerType: "source",
-          key: "someOtherProperty",
-          value: "someValue",
-          type: "string",
-        });
-
-        const options = await schedule.$get("__options");
-        expect(options.length).toBe(1);
-        expect(options[0].ownerType).toBe("schedule");
-        expect(options[0].key).toBe("maxColumn");
-
-        await schedule.destroy();
-      });
-
-      test("recurring schedules require a recurring frequency > 1 minute", async () => {
-        const schedule = await helper.factories.schedule();
-        await expect(
-          schedule.update({ recurring: true, recurringFrequency: 0 })
-        ).rejects.toThrow(
-          /recurring frequency is required to be one minute or greater/
-        );
-
-        await expect(
-          schedule.update({ recurring: true, recurringFrequency: null })
-        ).rejects.toThrow(
-          /recurring frequency is required to be one minute or greater/
-        );
-
-        schedule.update({ recurring: true, recurringFrequency: 1000 * 60 }); // OK
-        await schedule.destroy();
-      });
-
-      test("a schedule cannot be changed to to the ready state if there are missing required options", async () => {
-        const schedule = await Schedule.create({
-          sourceId: source.id,
-          name: "no opts",
-        });
-
-        await expect(schedule.update({ state: "ready" })).rejects.toThrow(
-          /maxColumn is required/
-        );
-        await schedule.destroy();
-      });
-
-      test("a schedule cannot be created in the ready state with missing required options", async () => {
-        const schedule = Schedule.build({
-          sourceId: source.id,
-          name: "no opts",
-          state: "ready",
-        });
-
-        await expect(schedule.save()).rejects.toThrow(/maxColumn is required/);
-      });
-
-      test("a schedule that is ready cannot move back to draft", async () => {
-        const schedule = await helper.factories.schedule();
-        await schedule.update({ state: "ready" });
-        await expect(schedule.update({ state: "draft" })).rejects.toThrow(
-          /cannot transition schedule state from ready to draft/
-        );
-        await schedule.destroy();
-      });
-
-      test("changing a schedule's options will reset previous highWaterMarks and start a run", async () => {
-        const schedule: Schedule = await helper.factories.schedule();
-        const opts = await schedule.getOptions();
-        expect(opts).toEqual({ maxColumn: "updated_at" });
-
-        const run = await Run.create({
-          creatorId: schedule.id,
-          creatorType: "schedule",
-          state: "complete",
-          highWaterMark: { updated_at: 12345 },
-        });
-        expect((await schedule.$get("runs")).length).toBe(1);
-        expect(run.highWaterMark).toEqual({ updated_at: 12345 });
-
-        await schedule.setOptions({ maxColumn: "createdAt" });
-
-        await run.reload();
-        expect(run.highWaterMark).toEqual({}); // the getter formats to an empty array
-        expect((await schedule.$get("runs")).length).toBe(2);
-
-        await schedule.destroy();
-      });
-
-      test("changing a schedule's filters will reset previous highWaterMarks and start a run", async () => {
-        const schedule: Schedule = await helper.factories.schedule();
-        const filters = await schedule.getFilters();
-        expect(filters).toEqual([]);
-
-        const run = await Run.create({
-          creatorId: schedule.id,
-          creatorType: "schedule",
-          state: "complete",
-          highWaterMark: { updated_at: 12345 },
-        });
-        expect((await schedule.$get("runs")).length).toBe(1);
-        expect(run.highWaterMark).toEqual({ updated_at: 12345 });
-
-        await schedule.setFilters([
-          { key: "id", match: "0", op: "greater than" },
-        ]);
-
-        await run.reload();
-        expect(run.highWaterMark).toEqual({}); // the getter formats to an empty array
-        expect((await schedule.$get("runs")).length).toBe(2);
-
-        await schedule.destroy();
-      });
-    });
-
     test("creating 2 schedules for the same source will throw an error", async () => {
       const scheduleA = new Schedule({
         name: "incoming schedule A",
@@ -453,6 +242,266 @@ describe("models/schedule", () => {
       );
 
       await schedule.destroy();
+    });
+
+    describe("running after save", () => {
+      let schedule: Schedule;
+
+      beforeEach(async () => {
+        schedule = await Schedule.create({
+          name: "schedule",
+          type: "test-plugin-import",
+          sourceId: source.id,
+        });
+        await schedule.setOptions({ maxColumn: "foo" });
+        await schedule.update({ state: "ready" });
+      });
+
+      afterEach(async () => {
+        await schedule.destroy();
+      });
+
+      test("creating a new non-recurring schedule will not run now", async () => {
+        const runs = await schedule.$get("runs");
+        expect(runs.length).toBe(0);
+      });
+
+      test("creating a new recurring schedule will run now", async () => {
+        await schedule.update({
+          recurring: true,
+          recurringFrequency: 1000 * 60 * 60,
+        });
+        const runs = await schedule.$get("runs");
+        expect(runs.length).toBe(1);
+        expect(runs[0].state).toBe("running");
+      });
+
+      test("saving a recurring schedule will run not now if there is already a run in progress", async () => {
+        const firstRun = await schedule.enqueueRun();
+
+        await schedule.update({
+          recurring: true,
+          recurringFrequency: 1000 * 60 * 60,
+        });
+        const runs = await schedule.$get("runs");
+        expect(runs.length).toBe(1);
+        expect(runs[0].id).toBe(firstRun.id);
+      });
+    });
+
+    describe("with plugin that does not support schedules", () => {
+      beforeAll(() => {
+        plugin.registerPlugin({
+          name: "test-plugin-no-schedule",
+          apps: [
+            {
+              name: "test-plugin-app-no-schedule",
+              options: [],
+              methods: {
+                test: async () => {
+                  return { success: true };
+                },
+              },
+            },
+          ],
+          connections: [
+            {
+              name: "test-plugin-source-no-schedule",
+              description: "a test connection",
+              app: "test-plugin-app-no-schedule",
+              direction: "import",
+              options: [],
+              methods: {
+                propertyOptions: async () => {
+                  return null;
+                },
+                recordProperty: async () => {
+                  return [];
+                },
+              },
+            },
+          ],
+        });
+      });
+
+      test("a schedule cannot be created if the source does not support schedules", async () => {
+        const app = await App.create({
+          type: "test-plugin-app-no-schedule",
+          name: "test app",
+        });
+        await app.update({ state: "ready" });
+        const source = await Source.create({
+          type: "test-plugin-source-no-schedule",
+          appId: app.id,
+          modelId: "mod_profiles",
+        });
+        await source.update({ state: "ready" });
+
+        await expect(
+          Schedule.create({
+            name: "test schedule",
+            type: "test-plugin-import",
+            sourceId: source.id,
+          })
+        ).rejects.toThrow(/cannot have a schedule/);
+
+        await source.destroy();
+        await app.destroy();
+      });
+    });
+
+    describe("validations", () => {
+      test("options must match the app options (extra options needed by app)", async () => {
+        const schedule = new Schedule({
+          name: "incoming schedule - too many options",
+          type: "test-plugin-import",
+          sourceId: source.id,
+        });
+
+        await schedule.save();
+        expect(schedule.id).toBeTruthy();
+
+        await expect(
+          schedule.setOptions({ maxColumn: "abc", something: "abc123" })
+        ).rejects.toThrow(
+          /something is not an option for a test-plugin-import schedule/
+        );
+
+        await schedule.destroy();
+      });
+
+      test("__options only includes options for schedules", async () => {
+        const schedule = await Schedule.create({
+          id: "myScheduleId",
+          type: "test-plugin-import",
+          name: "test schedule",
+          sourceId: source.id,
+        });
+
+        await Option.create({
+          ownerId: schedule.id,
+          ownerType: "schedule",
+          key: "maxColumn",
+          value: "abc",
+          type: "string",
+        });
+
+        await Option.create({
+          ownerId: schedule.id,
+          ownerType: "source",
+          key: "someOtherProperty",
+          value: "someValue",
+          type: "string",
+        });
+
+        const options = await schedule.$get("__options");
+        expect(options.length).toBe(1);
+        expect(options[0].ownerType).toBe("schedule");
+        expect(options[0].key).toBe("maxColumn");
+
+        await schedule.destroy();
+      });
+
+      test("recurring schedules require a recurring frequency > 1 minute", async () => {
+        const schedule = await helper.factories.schedule();
+        await expect(
+          schedule.update({ recurring: true, recurringFrequency: 0 })
+        ).rejects.toThrow(
+          /recurring frequency is required to be one minute or greater/
+        );
+
+        await expect(
+          schedule.update({ recurring: true, recurringFrequency: null })
+        ).rejects.toThrow(
+          /recurring frequency is required to be one minute or greater/
+        );
+
+        await schedule.update({
+          recurring: true,
+          recurringFrequency: 1000 * 60,
+        }); // OK
+
+        await schedule.destroy();
+      });
+
+      test("a schedule cannot be changed to to the ready state if there are missing required options", async () => {
+        const schedule = await Schedule.create({
+          sourceId: source.id,
+          name: "no opts",
+        });
+
+        await expect(schedule.update({ state: "ready" })).rejects.toThrow(
+          /maxColumn is required/
+        );
+        await schedule.destroy();
+      });
+
+      test("a schedule cannot be created in the ready state with missing required options", async () => {
+        const schedule = Schedule.build({
+          sourceId: source.id,
+          name: "no opts",
+          state: "ready",
+        });
+
+        await expect(schedule.save()).rejects.toThrow(/maxColumn is required/);
+      });
+
+      test("a schedule that is ready cannot move back to draft", async () => {
+        const schedule = await helper.factories.schedule();
+        await schedule.update({ state: "ready" });
+        await expect(schedule.update({ state: "draft" })).rejects.toThrow(
+          /cannot transition schedule state from ready to draft/
+        );
+        await schedule.destroy();
+      });
+
+      test("changing a schedule's options will reset previous highWaterMarks and start a run", async () => {
+        const schedule: Schedule = await helper.factories.schedule();
+        const opts = await schedule.getOptions();
+        expect(opts).toEqual({ maxColumn: "updated_at" });
+
+        const run = await Run.create({
+          creatorId: schedule.id,
+          creatorType: "schedule",
+          state: "complete",
+          highWaterMark: { updated_at: 12345 },
+        });
+        expect((await schedule.$get("runs")).length).toBe(1);
+        expect(run.highWaterMark).toEqual({ updated_at: 12345 });
+
+        await schedule.setOptions({ maxColumn: "createdAt" });
+
+        await run.reload();
+        expect(run.highWaterMark).toEqual({}); // the getter formats to an empty array
+        expect((await schedule.$get("runs")).length).toBe(2);
+
+        await schedule.destroy();
+      });
+
+      test("changing a schedule's filters will reset previous highWaterMarks and start a run", async () => {
+        const schedule: Schedule = await helper.factories.schedule();
+        const filters = await schedule.getFilters();
+        expect(filters).toEqual([]);
+
+        const run = await Run.create({
+          creatorId: schedule.id,
+          creatorType: "schedule",
+          state: "complete",
+          highWaterMark: { updated_at: 12345 },
+        });
+        expect((await schedule.$get("runs")).length).toBe(1);
+        expect(run.highWaterMark).toEqual({ updated_at: 12345 });
+
+        await schedule.setFilters([
+          { key: "id", match: "0", op: "greater than" },
+        ]);
+
+        await run.reload();
+        expect(run.highWaterMark).toEqual({}); // the getter formats to an empty array
+        expect((await schedule.$get("runs")).length).toBe(2);
+
+        await schedule.destroy();
+      });
     });
   });
 
