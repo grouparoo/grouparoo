@@ -27,6 +27,7 @@ const host = function (url) {
   return new URL(url).host;
 };
 export const updater = {
+  recordRequestHeaders: true,
   rewrite: function (nockCall) {
     const realEnv = readEnv(realPath);
     const nockEnv = readEnv(nockPath);
