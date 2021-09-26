@@ -3,7 +3,7 @@
   "class": "Group",
   "type": "calculated",
   "name": "High Value with Recent Automotive Purchase",
-  "modelId": "mod_profiles",
+  "modelId": "profiles",
   "rules": [
     {
       "propertyId": "ltv",

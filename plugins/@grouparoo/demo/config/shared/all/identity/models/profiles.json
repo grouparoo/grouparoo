@@ -1,6 +1,6 @@
 {
   "class": "Model",
-  "id": "mod_profiles",
+  "id": "profiles",
   "name": "Profiles",
   "type": "profile"
 }

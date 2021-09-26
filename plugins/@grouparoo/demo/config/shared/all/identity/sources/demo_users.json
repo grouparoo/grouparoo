@@ -5,7 +5,7 @@
     "name": "Product Users",
     "type": "DBNAME-table-import",
     "appId": "demo_db",
-    "modelId": "mod_profiles",
+    "modelId": "profiles",
     "options": {
       "table": "users"
     },
