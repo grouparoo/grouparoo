@@ -1,12 +1,5 @@
 import { CLI } from "actionhero";
-import {
-  consumers,
-  employees,
-  purchases,
-  accounts,
-  plans,
-  payments,
-} from "../../../util/sample_data";
+import { writeAll } from "../../../util/sample_data";
 import {
   deleteConfigDir,
   loadConfigFiles,
@@ -86,22 +79,15 @@ export class Demo extends CLI {
     junkPercent: number,
     subDirs: string[]
   ) {
-    let users = false;
     if (db) await db.sessionStart();
     if (seed && db) db.seeding();
-    if (seed || hasDir(subDirs, ["purchases"])) {
-      await consumers(db, { scale, junkPercent });
-      await purchases(db, { scale, junkPercent });
-      users = true;
-    }
-    if (seed || hasDir(subDirs, ["accounts"])) {
-      await plans(db, {});
-      await accounts(db, { scale, junkPercent });
-      await payments(db, { scale, junkPercent });
-      if (!users) {
-        // don't do users twice when seeding!
-        await employees(db, { scale, junkPercent });
-      }
+
+    if (
+      seed ||
+      hasDir(subDirs, ["purchases"]) ||
+      hasDir(subDirs, ["accounts"])
+    ) {
+      writeAll(db, { scale, junkPercent });
     }
     if (db) await db.sessionEnd();
   }
