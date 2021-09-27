@@ -16,15 +16,16 @@ export namespace RecordPropertyOps {
   const defaultRecordPropertyProcessingDelay = 1000 * 60 * 5;
 
   export async function buildRawValue(
-    value: any,
+    value: unknown,
     type: typeof PropertyTypes[number],
     recordProperty?: RecordProperty
   ) {
     let rawValue: string = null;
     let invalidValue: string = null;
+    let invalidReason: string | null = null;
 
     if (value === null || value === undefined || value === "") {
-      return { rawValue, invalidValue };
+      return { rawValue, invalidValue, invalidReason };
     }
 
     const stringifiedValue = `${value}`.trim();
@@ -66,10 +67,11 @@ export namespace RecordPropertyOps {
       if (recordProperty && error instanceof Error) {
         error.message += ` for record ${recordProperty.recordId}`;
       }
+      invalidReason = error.message;
       log(error, "error");
     }
 
-    return { rawValue, invalidValue };
+    return { rawValue, invalidValue, invalidReason };
   }
 
   export function getValue(

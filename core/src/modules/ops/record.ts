@@ -260,7 +260,8 @@ export namespace RecordOps {
       recordId: string;
       position: number;
       rawValue: string;
-      invalidValue?: string;
+      invalidValue?: string | null;
+      invalidReason?: string | null;
       state: string;
       unique: boolean;
       stateChangedAt: Date;
@@ -323,7 +324,7 @@ export namespace RecordOps {
                 p.propertyId === property.id &&
                 p.position === position
             );
-            const { rawValue, invalidValue } =
+            const { rawValue, invalidValue, invalidReason } =
               await RecordPropertyOps.buildRawValue(
                 value,
                 property.type,
@@ -339,6 +340,7 @@ export namespace RecordOps {
               position,
               rawValue,
               invalidValue,
+              invalidReason,
               state: "ready",
               stateChangedAt: now,
               confirmedAt: now,

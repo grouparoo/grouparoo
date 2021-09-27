@@ -51,6 +51,9 @@ export class RecordProperty extends CommonModel<RecordProperty> {
   @Column
   invalidValue: string;
 
+  @Column
+  invalidReason: string;
+
   @AllowNull(false)
   @Default(0)
   @Column
@@ -110,14 +113,12 @@ export class RecordProperty extends CommonModel<RecordProperty> {
 
   async setValue(value: any) {
     const property = await this.ensureProperty();
-    const { rawValue, invalidValue } = await RecordPropertyOps.buildRawValue(
-      value,
-      property.type,
-      this
-    );
+    const { rawValue, invalidValue, invalidReason } =
+      await RecordPropertyOps.buildRawValue(value, property.type, this);
 
     this.rawValue = rawValue;
     this.invalidValue = invalidValue;
+    this.invalidReason = invalidReason;
   }
 
   async ensureProperty() {
