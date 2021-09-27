@@ -76,10 +76,15 @@ export default function Page(props) {
       `/record/${record.id}/importAndExport`
     );
     if (response?.record) {
+      recordHandler.set(response.record);
+      setRecord(response.record);
+      setRecordProperties(response.record.properties);
+      setGroups(response.groups);
+      setLoading(false);
       successHandler.set({ message: "Import and Export Complete!" });
-      load();
+    } else {
+      load(); // reload regardless of success, we have done a partial import
     }
-    setLoading(false);
   }
 
   async function handleDelete() {
