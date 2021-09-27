@@ -27,7 +27,7 @@ export default class CloudwatchInitializer extends Initializer {
 
     const cloudwatchLogger = new WinstonCloudWatch({
       name,
-      level: process.env.GROUPAROO_CLOUDWATCH_LOG_LEVEL ?? "notice",
+      level: process.env.GROUPAROO_LOG_LEVEL ?? "notice",
       logGroupName: name,
       logStreamName: () => {
         let date = new Date().toISOString().split("T")[0];
