@@ -1,5 +1,5 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
-import { Op } from "sequelize";
+import { Op, Order } from "sequelize";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { Property } from "../models/Property";
 import { RecordProperty } from "../models/RecordProperty";
@@ -25,6 +25,7 @@ export class PropertiesList extends AuthenticatedAction {
       state: { required: false },
       modelId: { required: false },
       sourceId: { required: false },
+      invalid: { required: false },
       includeExamples: { required: true, default: "false" },
       order: {
         required: false,
@@ -37,15 +38,35 @@ export class PropertiesList extends AuthenticatedAction {
     };
   }
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: Record<string, string | boolean | number>;
+  }) {
     const includeExamples =
       params.includeExamples === "true" || params.includeExamples === true;
+    // TODO: Verify params can be anything but a string
 
     const where = {};
     if (params.state) where["state"] = params.state;
     if (params.sourceId) where["sourceId"] = params.sourceId;
     if (params?.unique?.toString().toLowerCase() === "true") {
       where["unique"] = true;
+    }
+    if (params.invalid) {
+      where[Op.or] = where[Op.or] || [];
+      where[Op.or].push(
+        {
+          invalidReason: {
+            [Op.not]: null,
+          },
+        },
+        {
+          invalidValue: {
+            [Op.not]: null,
+          },
+        }
+      );
     }
 
     const properties = (
@@ -56,9 +77,9 @@ export class PropertiesList extends AuthenticatedAction {
             where: { state: ["draft", "ready"] },
           },
         ],
-        limit: params.limit,
-        offset: params.offset,
-        order: params.order,
+        limit: Number(params.limit),
+        offset: Number(params.offset),
+        order: params.order as unknown as Order,
         where,
       })
     ).filter((p) =>
