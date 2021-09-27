@@ -574,8 +574,6 @@ export namespace RecordOps {
       }
 
       return record;
-    } catch (error) {
-      throw error;
     } finally {
       if (toLock) await releaseLock();
     }

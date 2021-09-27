@@ -59,13 +59,7 @@ export default function Page(props) {
       "get",
       `/record/${record.id}`
     );
-    if (response?.record) {
-      recordHandler.set(response.record);
-      setRecord(response.record);
-      setRecordProperties(response.record.properties);
-      setGroups(response.groups);
-    }
-    setLoading(false);
+    updateRecordState(response);
   }
 
   async function importAndExport() {
@@ -76,8 +70,21 @@ export default function Page(props) {
       `/record/${record.id}/importAndExport`
     );
     if (response?.record) {
+      updateRecordState(response);
       successHandler.set({ message: "Import and Export Complete!" });
-      load();
+    } else {
+      load(); // we may have done a partial import
+    }
+  }
+
+  function updateRecordState(
+    response: Actions.RecordView | Actions.RecordImportAndExport
+  ) {
+    if (response?.record) {
+      recordHandler.set(response.record);
+      setRecord(response.record);
+      setRecordProperties(response.record.properties);
+      setGroups(response.groups);
     }
     setLoading(false);
   }
