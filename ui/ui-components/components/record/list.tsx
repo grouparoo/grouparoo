@@ -356,6 +356,9 @@ export default function RecordsList(props) {
                               invalidValue={
                                 record.properties[searchKey].invalidValue
                               }
+                              invalidReason={
+                                record.properties[searchKey].invalidReason
+                              }
                             />
                           </Badge>
                         ) : null}
@@ -377,6 +380,7 @@ export default function RecordsList(props) {
                             type={record.properties[key].type}
                             values={record.properties[key].values}
                             invalidValue={record.properties[key].invalidValue}
+                            invalidReason={record.properties[key].invalidReason}
                           />
                         </span>
                         <br />

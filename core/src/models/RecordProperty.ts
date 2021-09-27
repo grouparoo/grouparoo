@@ -103,6 +103,7 @@ export class RecordProperty extends CommonModel<RecordProperty> {
       key: property.key,
       value: await this.getValue(),
       invalidValue: this.invalidValue,
+      invalidReason: this.invalidReason,
     };
   }
 

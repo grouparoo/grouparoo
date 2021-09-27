@@ -31,6 +31,7 @@ export interface RecordPropertyType {
     state: RecordProperty["state"];
     values: Array<string | number | boolean | Date>;
     invalidValue: RecordProperty["invalidValue"];
+    invalidReason: RecordProperty["invalidReason"];
     configId: ReturnType<Property["getConfigId"]>;
     type: Property["type"];
     unique: Property["unique"];
@@ -78,6 +79,7 @@ export namespace RecordOps {
           state: recordProperties[i].state,
           values: [],
           invalidValue: recordProperties[i].invalidValue,
+          invalidReason: recordProperties[i].invalidReason,
           configId: property.getConfigId(),
           type: property.type,
           unique: property.unique,
