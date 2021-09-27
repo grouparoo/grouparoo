@@ -1,0 +1,57 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/cloudwatch",
+  "description": "The Grouparoo Cloudwatch Plugin",
+  "version": "0.7.0-alpha.7",
+  "license": "MPL-2.0",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "homepage": "https://www.grouparoo.com",
+  "bugs": {
+    "url": "https://github.com/grouparoo/grouparoo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grouparoo/grouparoo.git",
+    "directory": "plugins/@grouparoo/cloudwatch"
+  },
+  "scripts": {
+    "prepare": "rm -rf dist && tsc --declaration",
+    "test": "echo 'no tests'",
+    "pretest": "npm run lint && npm run prepare",
+    "lint": "prettier --check src",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "aws-sdk": "2.995.0",
+    "winston": "3.3.3",
+    "winston-cloudwatch": "3.0.2"
+  },
+  "devDependencies": {
+    "@grouparoo/core": "0.7.0-alpha.7",
+    "@grouparoo/spec-helper": "0.7.0-alpha.7",
+    "@types/jest": "*",
+    "@types/node": "*",
+    "actionhero": "27.1.4",
+    "jest": "27.1.0",
+    "prettier": "2.3.2",
+    "ts-jest": "27.0.5",
+    "type-fest": "2.1.0",
+    "typescript": "4.4.2"
+  },
+  "grouparoo": {
+    "env": {
+      "api": [
+        "S3_ACCESS_KEY",
+        "S3_SECRET_ACCESS_KEY",
+        "S3_REGION"
+      ]
+    }
+  },
+  "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
+}
