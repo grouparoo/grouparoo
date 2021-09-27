@@ -1,4 +1,4 @@
-import { Initializer, loggers, env, ActionheroLogLevel } from "actionhero";
+import { Initializer, loggers, id, env } from "actionhero";
 import { URL } from "url";
 import * as winston from "winston";
 import WinstonCloudWatch from "winston-cloudwatch";
@@ -22,16 +22,16 @@ export default class CloudwatchInitializer extends Initializer {
     let name = `grouparoo-${env}`;
     if (process.env.WEB_URL) {
       const parsed = new URL(process.env.WEB_URL);
-      name = parsed.host.split(":")[0].replace(/\./g, "-");
+      name = parsed.host.split(":")[0].replace(/\./g, "-") + `-${env}`;
     }
 
     const cloudwatchLogger = new WinstonCloudWatch({
       name,
-      level: "notice" as ActionheroLogLevel,
+      level: process.env.GROUPAROO_CLOUDWATCH_LOG_LEVEL ?? "notice",
       logGroupName: name,
       logStreamName: () => {
         let date = new Date().toISOString().split("T")[0];
-        return `${name}-${date}`;
+        return `${name}-${id}-${date}`;
       },
       jsonMessage: true,
       retentionInDays: 7, // store the logs for 7 days
