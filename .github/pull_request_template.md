@@ -17,17 +17,20 @@ Does this PR fix a Github Issue?
 
 ### Development
 
-- [ ] Application changes have been tested thoroughly
+- [ ] Application changes have been tested appropriately
 
-### Security
+### Impact
 
 - [ ] Code follows company security practices and guidelines
 - [ ] Security impact of change has been considered
-  > Potential security impact (if any):
+- [ ] Performance impact of change has been considered
+- [ ] Possible migration needs considered (model migrations, config migrations, etc.)
+
+Please explain any security, performance, migration, or other impacts if relevant:
+
+>
 
 ### Code review
 
 - [ ] Pull request has a descriptive title and context useful to a reviewer. Screenshots or screencasts are attached where applicable.
-- [ ] "Ready for review" label attached and reviewers assigned
-- [ ] Changes have been reviewed by at least one other contributor
-- [ ] Pull request linked to task tracker where applicable
+- [ ] Relevant tags have been added to the PR (bug, enhancement, internal, etc.)
