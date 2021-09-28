@@ -10,7 +10,7 @@ import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
 import { APIData } from "../modules/apiData";
 import { Source } from "../models/Source";
-import { ModelType, WhereOptions } from "sequelize/types";
+import { Includeable } from "sequelize/types";
 
 export class PropertiesList extends AuthenticatedAction {
   constructor() {
@@ -54,10 +54,7 @@ export class PropertiesList extends AuthenticatedAction {
       where["unique"] = true;
     }
 
-    const include: {
-      model: ModelType<any, any>;
-      where: WhereOptions<any>;
-    }[] = [
+    const include: Includeable[] = [
       {
         model: Source,
         where: { state: ["draft", "ready"] },
