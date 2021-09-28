@@ -26,7 +26,12 @@ describe("demo accounts", () => {
     expect(members).toEqual(["demo"]);
 
     const sources = (await Source.findAll()).map((o) => o.id).sort();
-    expect(sources).toEqual(["demo_accounts", "demo_payments", "demo_users"]);
+    expect(sources).toEqual([
+      "demo_accounts",
+      "demo_calculated_property_source",
+      "demo_payments",
+      "demo_users",
+    ]);
 
     const properties = (await Property.findAll()).map((o) => o.id).sort();
     expect(properties).toEqual([
@@ -36,6 +41,7 @@ describe("demo accounts", () => {
       "deactivated",
       "email",
       "first_name",
+      "full_name",
       "language",
       "last_name",
       "user_id",

@@ -27,19 +27,18 @@ describe("demo purchases", () => {
     expect(members).toEqual(["demo"]);
 
     const sources = (await Source.findAll()).map((o) => o.id).sort();
-    const test = await Source.scope().findAll({
-      where: { id: "demo_purchases" },
-    });
-    console.log(test);
-    test[0].state = "ready";
-    await test[0].save();
-    expect(sources).toEqual(["demo_purchases", "demo_users"]);
+    expect(sources).toEqual([
+      "demo_calculated_property_source",
+      "demo_purchases",
+      "demo_users",
+    ]);
 
     const properties = (await Property.findAll()).map((o) => o.id).sort();
     expect(properties).toEqual([
       "deactivated",
       "email",
       "first_name",
+      "full_name",
       "language",
       "last_name",
       "last_purchase_category",
