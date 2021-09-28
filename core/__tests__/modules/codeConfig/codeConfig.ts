@@ -1576,6 +1576,7 @@ describe("modules/codeConfig", () => {
         apps: [
           {
             name: "app-no-options",
+            displayName: "app-no-options",
             options: [],
             methods: {
               test: async () => {
@@ -1587,6 +1588,7 @@ describe("modules/codeConfig", () => {
         connections: [
           {
             name: "source-no-options",
+            displayName: "source-no-options",
             description: "a test source",
             app: "app-no-options",
             direction: "import",

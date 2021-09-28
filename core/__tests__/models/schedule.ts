@@ -296,6 +296,7 @@ describe("models/schedule", () => {
           apps: [
             {
               name: "test-plugin-app-no-schedule",
+              displayName: "test-plugin-app-no-schedule",
               options: [],
               methods: {
                 test: async () => {
@@ -307,6 +308,7 @@ describe("models/schedule", () => {
           connections: [
             {
               name: "test-plugin-source-no-schedule",
+              displayName: "test-plugin-source-no-schedule",
               description: "a test connection",
               app: "test-plugin-app-no-schedule",
               direction: "import",
@@ -657,6 +659,7 @@ describe("models/schedule", () => {
         apps: [
           {
             name: "test-template-app",
+            displayName: "test-template-app",
             options: [],
             methods: {
               test: async () => {
@@ -668,6 +671,7 @@ describe("models/schedule", () => {
         connections: [
           {
             name: "import-from-test-template-app",
+            displayName: "import-from-test-template-app",
             description: "a test app connection",
             app: "test-template-app",
             direction: "import" as "import",

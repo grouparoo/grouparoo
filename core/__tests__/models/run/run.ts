@@ -610,6 +610,7 @@ describe("models/run", () => {
         apps: [
           {
             name: "test-error-app",
+            displayName: "test-error-app",
             options: [],
             methods: {
               test: async () => {
@@ -621,6 +622,7 @@ describe("models/run", () => {
         connections: [
           {
             name: "test-error-connection",
+            displayName: "test-error-connection",
             description: "a test app",
             app: "test-error-app",
             direction: "import",

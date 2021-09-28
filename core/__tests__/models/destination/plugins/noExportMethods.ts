@@ -15,6 +15,7 @@ describe("models/destination", () => {
           apps: [
             {
               name: "test-template-app",
+              displayName: "test-template-app",
               options: [],
               methods: {
                 test: async () => {
@@ -26,6 +27,7 @@ describe("models/destination", () => {
           connections: [
             {
               name: "import-from-test-template-app",
+              displayName: "import-from-test-template-app",
               description: "a test app connection",
               app: "test-template-app",
               direction: "export",

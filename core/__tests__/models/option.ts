@@ -204,6 +204,7 @@ describe("models/option", () => {
           apps: [
             {
               name: "test-template-app",
+              displayName: "test-template-app",
               options: [
                 {
                   key: "test_default_key",
@@ -221,6 +222,7 @@ describe("models/option", () => {
           connections: [
             {
               name: "export-from-test-template-app",
+              displayName: "export-from-test-template-app",
               description: "a test app connection",
               app: "test-template-app",
               direction: "export",

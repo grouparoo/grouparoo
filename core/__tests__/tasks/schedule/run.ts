@@ -68,6 +68,7 @@ describe("tasks/schedule:run", () => {
         apps: [
           {
             name: "test-template-app",
+            displayName: "test-template-app",
             options: [],
             methods: {
               test: async () => {
@@ -79,6 +80,7 @@ describe("tasks/schedule:run", () => {
         connections: [
           {
             name: "import-from-test-template-app",
+            displayName: "import-from-test-template-app",
             description: "a test app connection",
             app: "test-template-app",
             direction: "import" as "import",
