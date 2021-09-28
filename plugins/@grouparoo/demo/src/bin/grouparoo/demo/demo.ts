@@ -70,19 +70,11 @@ export class Demo extends CLI {
     db: Connection,
     seed: boolean,
     scale: number,
-    junkPercent: number,
-    subDirs: string[]
+    junkPercent: number
   ) {
     if (db) await db.sessionStart();
     if (seed && db) db.seeding();
-
-    if (
-      seed ||
-      hasDir(subDirs, ["purchases"]) ||
-      hasDir(subDirs, ["accounts"])
-    ) {
-      await writeAll(db, { scale, junkPercent });
-    }
+    await writeAll(db, { scale, junkPercent });
     if (db) await db.sessionEnd();
   }
 
@@ -105,7 +97,7 @@ export class Demo extends CLI {
           log("No database given for seed", "error");
         }
         log(`Seeding: ${db.name()}`);
-        await this.loadData(db, seed, scale, junkPercent, subDirs);
+        await this.loadData(db, seed, scale, junkPercent);
         return;
       }
 
@@ -124,7 +116,11 @@ export class Demo extends CLI {
 
       await init({ reset: true });
 
-      await this.loadData(db, seed, scale, junkPercent, subDirs);
+      if (subDirs.length === 0) {
+        return;
+      }
+
+      await this.loadData(db, seed, scale, junkPercent);
 
       if (config) {
         const skip = ["setup"]; // not all get config files, they load into db
