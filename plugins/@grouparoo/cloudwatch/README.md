@@ -10,7 +10,7 @@ In your Grouparoo project, run `grouparoo install @grouparoo/cloudwatch`.
 
 The following environment variables are required:
 
-- `AWS_ACCESS_KEY`
+- `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 - `AWS_REGION`
 

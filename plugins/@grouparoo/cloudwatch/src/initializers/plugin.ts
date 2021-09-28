@@ -13,7 +13,7 @@ export default class CloudwatchInitializer extends Initializer {
   }
 
   async initialize() {
-    if (!process.env.AWS_ACCESS_KEY) return;
+    if (!process.env.AWS_ACCESS_KEY_ID) return;
     if (!process.env.AWS_SECRET_ACCESS_KEY) return;
     if (!process.env.AWS_REGION) return;
 
@@ -35,7 +35,7 @@ export default class CloudwatchInitializer extends Initializer {
       },
       jsonMessage: true,
       retentionInDays: 7, // store the logs for 7 days
-      awsAccessKeyId: process.env.AWS_ACCESS_KEY,
+      awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
       awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY,
       awsRegion: process.env.AWS_REGION,
     });
