@@ -43,7 +43,10 @@ export async function loadConfigFiles(
   const locked = api.codeConfig.allowLockedModelChanges;
   api.codeConfig.allowLockedModelChanges = true;
 
-  await loadConfigDirectory(configDir);
+  const { errors } = await loadConfigDirectory(configDir);
+  if (errors && errors.length) {
+    throw new Error(errors.join(", "));
+  }
 
   api.codeConfig.allowLockedModelChanges = locked;
 
