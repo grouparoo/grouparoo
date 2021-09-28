@@ -146,8 +146,7 @@ export namespace RecordOps {
       caseSensitive = true;
 
     const ands: (Sequelize.Utils.Where | WhereAttributeHash)[] = [];
-    const ors: (Sequelize.Utils.Where | WhereAttributeHash)[] = [];
-    const include: Array<any> = [];
+    const include: Sequelize.Includeable[] = [];
     let countRequiresIncludes = false;
 
     // Are we searching for GrouparooRecords in a specific state?
