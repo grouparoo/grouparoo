@@ -12,5 +12,6 @@ module.exports = {
     "<rootDir>/src",
     "<rootDir>/dist",
     "<rootDir>/__tests__/fixtures",
+    "<rootDir>/__tests__/utils",
   ],
 };

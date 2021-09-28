@@ -4,9 +4,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
     path: path.join(__dirname, "..", "..", "..", "postgres"),
   },
 });
-
-import { helper } from "@grouparoo/spec-helper";
-import { api } from "actionhero";
+import { hooks } from "../utils/shared";
 import { Demo } from "../../src/bin/grouparoo/demo/demo";
 import {
   Source,
@@ -19,9 +17,7 @@ import {
 } from "@grouparoo/core";
 
 describe("demo accounts", () => {
-  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
-
+  hooks();
   test("runs without crash", async () => {
     const command = new Demo();
     const toStop = await command.run({ params: { _arguments: ["accounts"] } });
