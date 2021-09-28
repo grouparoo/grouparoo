@@ -59,12 +59,6 @@ export class Demo extends CLI {
         description:
           "add flag to only write (or output) demo source data and not touch Grouparoo database",
       },
-      force: {
-        required: false,
-        letter: "f",
-        flag: true,
-        description: "add flag to ensure deletion of config directory",
-      },
     };
   }
 
@@ -98,7 +92,6 @@ export class Demo extends CLI {
       const junkPercent = parseInt(params.junkPercent) || 0;
       const seed = !!params.seed;
       const config = !!params.config;
-      const force = !!params.force;
 
       log(`Using scale = ${scale}, junkPercent = ${junkPercent}`);
 
@@ -126,10 +119,9 @@ export class Demo extends CLI {
       log(`Using dataset: ${dataset}`);
       log(`Using database: ${db ? db.constructor.name : "none"}`);
 
-      if (force || config) {
-        log("Deleting current config directory.", "notice");
-        await deleteConfigDir();
-      }
+      log("Deleting current config directory.", "notice");
+      await deleteConfigDir();
+
       await init({ reset: true });
 
       await this.loadData(db, seed, scale, junkPercent, subDirs);
