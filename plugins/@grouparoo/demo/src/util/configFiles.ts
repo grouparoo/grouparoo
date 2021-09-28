@@ -16,29 +16,25 @@ export async function deleteConfigDir() {
 }
 
 export async function writeConfigFiles(
-  dataset: string,
   db: Connection,
-  subDirs: string[]
+  sources: string[],
+  destinatons: string[]
 ) {
   const configDir = await getConfigDir(true);
-  await generateConfig(dataset, db, configDir, subDirs);
-  if (subDirs.length > 0) {
-    await prettier(configDir);
-  }
+  await generateConfig(db, configDir, sources, destinatons);
+  await prettier(configDir);
 }
 
 export async function loadConfigFiles(
-  dataset: string,
   db: Connection,
-  subDirs: string[]
+  sources: string[],
+  destinations: string[]
 ) {
-  subDirs = [...new Set(subDirs)]; // unique
-
   const demoDir = process.env.JEST_WORKER_ID
     ? `demo-${process.env.JEST_WORKER_ID}`
     : "demo";
   const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", demoDir));
-  await generateConfig(dataset, db, configDir, subDirs);
+  await generateConfig(db, configDir, sources, destinations);
 
   const locked = api.codeConfig.allowLockedModelChanges;
   api.codeConfig.allowLockedModelChanges = true;
@@ -54,17 +50,24 @@ export async function loadConfigFiles(
 }
 
 async function generateConfig(
-  dataset: string,
   db: Connection,
   configDir,
-  subDirs: string[]
+  sources: string[],
+  destinations: string[]
 ) {
   log(`Config Directory: ${configDir}`, "debug");
   deleteDir(configDir);
 
-  for (const subDir of subDirs) {
-    copyDir(configDir, dataset, db, subDir);
+  copyDir(configDir, db, "setup");
+
+  for (const x of sources) {
+    copyDir(configDir, db, x);
   }
+
+  for (const x of destinations) {
+    copyDir(configDir, db, x);
+  }
+
   await updateDatabase(db, configDir);
   await updateEnvVariables(configDir);
 }
@@ -75,28 +78,35 @@ function deleteDir(configDir) {
   }
 }
 
-function copyDir(configDir, dataset: string, db: any, subDir: string) {
+const MODEL_TYPES = {
+  purchases: "b2c",
+  accounts: "b2b",
+};
+
+function copyDir(configDir, db: any, subDir: string) {
   const rootPath = path.resolve(path.join(__dirname, "..", "..", "config"));
   fs.mkdirpSync(configDir);
 
+  const modelType = MODEL_TYPES[subDir] || "none";
   copyDirIfExists(configDir, rootPath, "shared", "all", subDir);
   copyDirIfExists(configDir, rootPath, "shared", db, subDir);
-  copyDirIfExists(configDir, rootPath, dataset, "all", subDir);
-  copyDirIfExists(configDir, rootPath, dataset, db, subDir);
+  copyDirIfExists(configDir, rootPath, modelType, "all", subDir);
+  copyDirIfExists(configDir, rootPath, modelType, db, subDir);
 }
 
 function copyDirIfExists(
   toConfigDir: string,
   rootPath: string,
-  dataset: string,
+  modelType: string,
   db: any,
   subDir: string
 ) {
-  if (!dataset || !db) {
+  console.log(arguments);
+  if (!modelType || !db) {
     return;
   }
   const dbName = typeof db === "string" ? db : db.name();
-  const from = path.join(rootPath, dataset, dbName, subDir);
+  const from = path.join(rootPath, modelType, dbName, subDir);
   if (fs.existsSync(from)) {
     fs.copySync(from, toConfigDir);
   }

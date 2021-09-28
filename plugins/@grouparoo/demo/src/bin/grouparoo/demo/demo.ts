@@ -72,10 +72,10 @@ export class Demo extends CLI {
     scale: number,
     junkPercent: number
   ) {
-    if (db) await db.sessionStart();
-    if (seed && db) db.seeding();
+    await db.sessionStart();
+    if (seed) db.seeding();
     await writeAll(db, { scale, junkPercent });
-    if (db) await db.sessionEnd();
+    await db.sessionEnd();
   }
 
   async run({ params }) {
@@ -90,7 +90,7 @@ export class Demo extends CLI {
       let types = params._arguments || [];
       if (types.length === 0) types = ["b2c"];
 
-      const { db, subDirs, dataset } = getConfig(types);
+      const { db, resetOnly, sources, destinations } = getConfig(types);
 
       if (seed) {
         if (!db) {
@@ -107,8 +107,8 @@ export class Demo extends CLI {
         log("Writing config to database.");
       }
       log(`Using types: ${types.join(", ")}`);
-      log(`Config directories: ${subDirs.join(",")}`);
-      log(`Using dataset: ${dataset}`);
+      log(`Using sources: ${sources.join(",")}`);
+      log(`Using destinations: ${destinations.join(",")}`);
       log(`Using database: ${db ? db.constructor.name : "none"}`);
 
       log("Deleting current config directory.", "notice");
@@ -116,23 +116,20 @@ export class Demo extends CLI {
 
       await init({ reset: true });
 
-      if (subDirs.length === 0) {
+      if (resetOnly) {
         return;
       }
 
-      await this.loadData(db, seed, scale, junkPercent);
+      if (db) {
+        await this.loadData(db, seed, scale, junkPercent);
+      }
 
       if (config) {
-        const skip = ["setup"]; // not all get config files, they load into db
-
-        const load = subDirs.filter((item) => skip.includes(item));
-        await loadConfigFiles(dataset, db, load);
+        await loadConfigFiles(db, [], []); // just setup
         await finalize();
-
-        const files = subDirs.filter((item) => !skip.includes(item));
-        await writeConfigFiles(dataset, db, files);
+        await writeConfigFiles(db, sources, destinations);
       } else {
-        await loadConfigFiles(dataset, db, subDirs);
+        await loadConfigFiles(db, sources, destinations);
         await finalize();
       }
 
@@ -142,13 +139,4 @@ export class Demo extends CLI {
       process.exit(1);
     }
   }
-}
-
-function hasDir(given: string[], subDirs: string[]) {
-  for (const subDir of subDirs) {
-    if (given.includes(subDir)) {
-      return true;
-    }
-  }
-  return false;
 }
