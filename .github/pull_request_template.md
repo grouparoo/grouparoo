@@ -2,11 +2,6 @@
 
 > Description here
 
-## Type of change
-
-- [ ] Bug fix (fixes an issue)
-- [ ] New feature (adds functionality)
-
 ## Related issues
 
 Does this PR fix a Github Issue?
