@@ -126,7 +126,7 @@ describe("actions/records", () => {
       const record = await GrouparooRecord.findOne({
         where: { id: recordData.id },
       });
-      await record.destroy();
+      await record?.destroy();
     });
 
     test("a writer can list all the records", async () => {
@@ -195,7 +195,7 @@ describe("actions/records", () => {
 
       connection.params = {
         csrfToken,
-        propertyId: emailProperty.id,
+        propertyId: emailProperty?.id,
         match: "@example.com",
       };
       const { error, recordProperties } =
