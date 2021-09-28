@@ -10,6 +10,7 @@ import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
 import { APIData } from "../modules/apiData";
 import { Source } from "../models/Source";
+import { ModelType, WhereOptions } from "sequelize/types";
 
 export class PropertiesList extends AuthenticatedAction {
   constructor() {
@@ -25,7 +26,6 @@ export class PropertiesList extends AuthenticatedAction {
       state: { required: false },
       modelId: { required: false },
       sourceId: { required: false },
-      invalid: { required: false },
       includeExamples: { required: true, default: "false" },
       order: {
         required: false,
@@ -53,30 +53,20 @@ export class PropertiesList extends AuthenticatedAction {
     if (params?.unique?.toString().toLowerCase() === "true") {
       where["unique"] = true;
     }
-    if (params.invalid) {
-      where[Op.or] = where[Op.or] || [];
-      where[Op.or].push(
-        {
-          invalidReason: {
-            [Op.not]: null,
-          },
-        },
-        {
-          invalidValue: {
-            [Op.not]: null,
-          },
-        }
-      );
-    }
+
+    const include: {
+      model: ModelType<any, any>;
+      where: WhereOptions<any>;
+    }[] = [
+      {
+        model: Source,
+        where: { state: ["draft", "ready"] },
+      },
+    ];
 
     const properties = (
       await Property.scope(null).findAll({
-        include: [
-          {
-            model: Source,
-            where: { state: ["draft", "ready"] },
-          },
-        ],
+        include,
         limit: Number(params.limit),
         offset: Number(params.offset),
         order: params.order as unknown as Order,

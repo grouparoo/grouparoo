@@ -146,16 +146,41 @@ export namespace RecordOps {
       caseSensitive = true;
 
     const ands: (Sequelize.Utils.Where | WhereAttributeHash)[] = [];
+    const ors: (Sequelize.Utils.Where | WhereAttributeHash)[] = [];
     const include: Array<any> = [];
     let countRequiresIncludes = false;
 
     // Are we searching for GrouparooRecords in a specific state?
-    if (state) ands.push({ state });
+    if (state) {
+      if (state !== "invalid") {
+        ands.push({ state });
+      } else {
+        include.push({
+          model: RecordProperty,
+          where: {
+            [Op.or]: [
+              {
+                invalidReason: {
+                  [Op.not]: null,
+                },
+              },
+              {
+                invalidValue: {
+                  [Op.not]: null,
+                },
+              },
+            ],
+          },
+        });
+      }
+    }
 
     // Are we searching for a specific RecordProperty?
     if (searchKey && searchValue) {
       countRequiresIncludes = true;
-      include.push(RecordProperty);
+      if (state !== "invalid") {
+        include.push(RecordProperty);
+      }
       countRequiresIncludes = true;
 
       const property = await Property.findOneWithCache(

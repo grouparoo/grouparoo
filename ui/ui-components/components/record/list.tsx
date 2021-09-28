@@ -52,7 +52,7 @@ export default function RecordsList(props) {
   const [caseSensitive, setCaseSensitive] = useState(
     router.query.caseSensitive ? router.query.caseSensitive === "true" : true
   );
-  const states = ["pending", "ready"];
+  const states = ["pending", "ready", "invalid"];
 
   useSecondaryEffect(() => {
     load();
