@@ -1,11 +1,4 @@
-import path from "path";
-process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/postgres": {
-    path: path.join(__dirname, "..", "..", "..", "postgres"),
-  },
-});
-
-import { hooks } from "../utils/shared";
+import { hooks } from "../utils/helper";
 import { Demo } from "../../src/bin/grouparoo/demo/demo";
 import {
   Source,
@@ -34,6 +27,12 @@ describe("demo purchases", () => {
     expect(members).toEqual(["demo"]);
 
     const sources = (await Source.findAll()).map((o) => o.id).sort();
+    const test = await Source.scope().findAll({
+      where: { id: "demo_purchases" },
+    });
+    console.log(test);
+    test[0].state = "ready";
+    await test[0].save();
     expect(sources).toEqual(["demo_purchases", "demo_users"]);
 
     const properties = (await Property.findAll()).map((o) => o.id).sort();

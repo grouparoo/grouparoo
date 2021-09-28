@@ -1,3 +1,14 @@
+import path from "path";
+
+process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
+  "@grouparoo/postgres": {
+    path: path.join(__dirname, "..", "..", "..", "postgres"),
+  },
+  "@grouparoo/calculated-property": {
+    path: path.join(__dirname, "..", "..", "..", "calculated-property"),
+  },
+});
+
 import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
 
