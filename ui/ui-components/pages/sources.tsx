@@ -148,7 +148,7 @@ export default function Page(props) {
                       </a>
                     </Link>
                   </td>
-                  <td>{source.type}</td>
+                  <td>{source.connection.displayName}</td>
                   <td>
                     <Link
                       href="/app/[id]/edit"

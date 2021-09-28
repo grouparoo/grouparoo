@@ -292,7 +292,10 @@ export default function Page(props) {
               </Form.Group>
               <hr />
               <p>
-                <strong>Options for a {source.type} Property</strong>
+                <strong>
+                  Options for a <code>{source.connection.displayName}</code>{" "}
+                  Property
+                </strong>
               </p>
               {pluginOptions.map((opt, idx) => (
                 <div key={`opt-${idx}`}>
