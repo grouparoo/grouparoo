@@ -28,7 +28,7 @@ export async function users(db: Connection, options: DataOptions = {}) {
   await createCsvTable(db, "users", "id", "user", true, true, options);
 }
 
-export async function purchases(db: Connection, options: DataOptions = {}) {
+async function purchases(db: Connection, options: DataOptions = {}) {
   await createCsvTable(
     db,
     "purchases",
@@ -40,10 +40,11 @@ export async function purchases(db: Connection, options: DataOptions = {}) {
   );
 }
 
-export async function accounts(db: Connection, options: DataOptions = {}) {
+async function accounts(db: Connection, options: DataOptions = {}) {
   await createCsvTable(db, "accounts", "id", "account", true, true, options);
 }
-export async function payments(db: Connection, options: DataOptions = {}) {
+
+async function payments(db: Connection, options: DataOptions = {}) {
   await createCsvTable(
     db,
     "payments",
@@ -54,7 +55,7 @@ export async function payments(db: Connection, options: DataOptions = {}) {
     options
   );
 }
-export async function plans(db: Connection, options: DataOptions = {}) {
+async function plans(db: Connection, options: DataOptions = {}) {
   await createCsvTable(db, "plans", "id", null, false, false, options);
 }
 

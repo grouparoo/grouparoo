@@ -87,7 +87,7 @@ export class Demo extends CLI {
       hasDir(subDirs, ["purchases"]) ||
       hasDir(subDirs, ["accounts"])
     ) {
-      writeAll(db, { scale, junkPercent });
+      await writeAll(db, { scale, junkPercent });
     }
     if (db) await db.sessionEnd();
   }
