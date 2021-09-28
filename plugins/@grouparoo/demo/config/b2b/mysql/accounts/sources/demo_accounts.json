@@ -4,7 +4,7 @@
   "name": "Accounts",
   "type": "mysql-table-import",
   "appId": "demo_db",
-  "modelId": "profiles",
+  "modelId": "users",
   "options": {
     "table": "accounts"
   },

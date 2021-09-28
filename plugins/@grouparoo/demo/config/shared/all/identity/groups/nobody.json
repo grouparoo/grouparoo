@@ -3,7 +3,7 @@
   "class": "Group",
   "type": "calculated",
   "name": "Nobody",
-  "modelId": "profiles",
+  "modelId": "users",
   "rules": [
     {
       "propertyId": "user_id",

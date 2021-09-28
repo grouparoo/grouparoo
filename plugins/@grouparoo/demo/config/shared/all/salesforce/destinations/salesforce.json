@@ -5,7 +5,7 @@
   "type": "salesforce-objects-export",
   "appId": "salesforce",
   "groupId": "nobody",
-  "modelId": "profiles",
+  "modelId": "users",
   "syncMode": "sync",
   "options": {
     "groupNameField": "Name",

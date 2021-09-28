@@ -1,6 +1,6 @@
 {
   "class": "Model",
-  "id": "profiles",
-  "name": "Profiles",
+  "id": "users",
+  "name": "Users",
   "type": "profile"
 }

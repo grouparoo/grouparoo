@@ -3,7 +3,7 @@
   "class": "Group",
   "type": "calculated",
   "name": "High Value",
-  "modelId": "profiles",
+  "modelId": "users",
   "rules": [
     {
       "propertyId": "ltv",

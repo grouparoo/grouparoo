@@ -4,7 +4,7 @@
   "name": "Product Purchases",
   "type": "DBNAME-table-import",
   "appId": "demo_db",
-  "modelId": "profiles",
+  "modelId": "users",
   "options": {
     "table": "purchases"
   },
