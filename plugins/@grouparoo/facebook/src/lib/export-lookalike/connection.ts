@@ -7,7 +7,8 @@ import { PluginConnection } from "@grouparoo/core";
 // Note: This is currently not being used.
 export function buildConnection(): PluginConnection {
   return {
-    name: "facebook-audiences-lookalike",
+    name: "facebook-export-audiences-lookalike",
+    displayName: "Facebook Export Audiences Lookalike",
     direction: "export",
     description: "Adds users to Facebook Lookalike Audiences.",
     app: "facebook",

@@ -35,6 +35,7 @@ import {
 export interface BuildConnectionMethod {
   (argument: {
     name: string;
+    displayName: string;
     description: string;
     app: string;
     tableOptionDescription?: string;
@@ -52,6 +53,7 @@ export interface BuildConnectionMethod {
 
 export const buildConnection: BuildConnectionMethod = ({
   name,
+  displayName,
   description,
   app,
   tableOptionDescription = null,
@@ -115,6 +117,7 @@ export const buildConnection: BuildConnectionMethod = ({
 
   const plugin: PluginConnection = {
     name,
+    displayName,
     direction: "import",
     description,
     app,

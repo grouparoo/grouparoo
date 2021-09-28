@@ -6,6 +6,7 @@ export function getConnection() {
   return buildConnection({
     app: "sqlite",
     name: "sqlite-query-import",
+    displayName: "SQLite Query Import",
     description: "Import or update Records via a custom SQLite query.",
     executeQuery,
     getChangedRows,

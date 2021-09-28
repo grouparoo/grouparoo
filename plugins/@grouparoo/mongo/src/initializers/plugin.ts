@@ -50,6 +50,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "mongo",
+          displayName: "MongoDB",
           options: [
             {
               key: "uri",

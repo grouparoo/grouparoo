@@ -11,6 +11,7 @@ export function getConnection() {
   return buildConnection({
     app: "bigquery",
     name: "bigquery-table-import",
+    displayName: "BigQuery Table Import",
     description: "Import or update Records from a Bigquery database table.",
     tableOptionDescription: "The table to scan for new and changed Records.",
     getSampleRows,

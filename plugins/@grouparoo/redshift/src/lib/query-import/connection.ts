@@ -5,6 +5,7 @@ export function getConnection() {
   return buildConnection({
     app: "redshift",
     name: "redshift-query-import",
+    displayName: "Redshift Query Import",
     description: "Import or update Records via a custom Redshift query.",
     executeQuery,
   });

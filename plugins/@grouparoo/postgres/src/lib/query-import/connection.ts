@@ -6,6 +6,7 @@ export function getConnection() {
   return buildConnection({
     app: "postgres",
     name: "postgres-query-import",
+    displayName: "Postgres Query Import",
     description: "Import or update Records via a custom Postgres query.",
     executeQuery,
     getChangedRows,

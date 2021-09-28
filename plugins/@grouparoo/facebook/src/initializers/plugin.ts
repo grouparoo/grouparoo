@@ -37,6 +37,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "facebook",
+          displayName: "Facebook",
           options: [
             {
               key: "adAccountId",

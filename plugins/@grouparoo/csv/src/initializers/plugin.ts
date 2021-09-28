@@ -34,6 +34,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "csv",
+          displayName: "CSV",
           options: [],
           methods: { test },
         },
@@ -41,6 +42,7 @@ export class Plugins extends Initializer {
       connections: [
         {
           name: "csv-import",
+          displayName: "CSV Import",
           direction: "import",
           description: "Import or update Records from a remote CSV.",
           app: "csv",

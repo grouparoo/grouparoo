@@ -42,6 +42,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "braze",
+          displayName: "Braze",
           options: [
             {
               key: "apiKey",
@@ -64,7 +65,8 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "braze-export",
+          name: "braze-export-users",
+          displayName: "Braze Export Users",
           direction: "export",
           description:
             "Export Users to Braze and add them to Subscription Groups.",

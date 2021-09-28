@@ -43,6 +43,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "mixpanel",
+          displayName: "Mixpanel",
           options: [
             {
               key: "token",
@@ -75,7 +76,8 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "mixpanel-export",
+          name: "mixpanel-export-profiles",
+          displayName: "Mixpanel Export Profiles",
           direction: "export",
           description: "Export Records to Mixpanel as User Profiles",
           app: "mixpanel",

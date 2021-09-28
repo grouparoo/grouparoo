@@ -11,6 +11,7 @@ export function getConnection() {
   return buildConnection({
     app: "postgres",
     name: "postgres-table-import",
+    displayName: "Postgres Table Import",
     description: "Import or update Records from a Postgres database table.",
     tableOptionDescription: "The table to scan",
     getSampleRows,

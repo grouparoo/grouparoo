@@ -41,6 +41,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "sendgrid",
+          displayName: "SendGrid",
           options: [
             {
               key: "apiKey",
@@ -56,7 +57,8 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "sendgrid-export-marketing",
+          name: "sendgrid-export-marketing-contacts",
+          displayName: "SendGrid Export Marketing Contacts",
           direction: "export",
           description:
             "Export records to Sendgrid marketing as Contacts and put them in static Lists.",

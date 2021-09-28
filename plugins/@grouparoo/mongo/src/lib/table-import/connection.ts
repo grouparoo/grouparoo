@@ -11,6 +11,7 @@ export function getConnection() {
   return buildConnection({
     app: "mongo",
     name: "mongo-table-import",
+    displayName: "MongoDB Table Import",
     description:
       "Import or update Records from a Mongo DB database collection.",
     tableOptionDescription: "The collection to scan",
