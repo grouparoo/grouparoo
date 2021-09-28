@@ -13,9 +13,9 @@ export default class CloudwatchInitializer extends Initializer {
   }
 
   async initialize() {
-    if (!process.env.S3_ACCESS_KEY) return;
-    if (!process.env.S3_SECRET_ACCESS_KEY) return;
-    if (!process.env.S3_REGION) return;
+    if (!process.env.AWS_ACCESS_KEY) return;
+    if (!process.env.AWS_SECRET_ACCESS_KEY) return;
+    if (!process.env.AWS_REGION) return;
 
     // try to extract the name of the instance from the URL we are using
     // we could alternatively use the ClusterName setting
@@ -35,9 +35,9 @@ export default class CloudwatchInitializer extends Initializer {
       },
       jsonMessage: true,
       retentionInDays: 7, // store the logs for 7 days
-      awsAccessKeyId: process.env.S3_ACCESS_KEY,
-      awsSecretKey: process.env.S3_SECRET_ACCESS_KEY,
-      awsRegion: process.env.S3_REGION,
+      awsAccessKeyId: process.env.AWS_ACCESS_KEY,
+      awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY,
+      awsRegion: process.env.AWS_REGION,
     });
 
     // stop method from https://github.com/lazywithclass/winston-cloudwatch#programmatically-flush-logs-and-exit

@@ -10,8 +10,8 @@ In your Grouparoo project, run `grouparoo install @grouparoo/cloudwatch`.
 
 The following environment variables are required:
 
-- `S3_ACCESS_KEY`
-- `S3_SECRET_ACCESS_KEY`
-- `S3_REGION`
+- `AWS_ACCESS_KEY`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_REGION`
 
 Note that, `GROUPAROO_LOG_LEVEL` also effects this logger. By default, the log-level of this logger is is "notice" NOT "info".
