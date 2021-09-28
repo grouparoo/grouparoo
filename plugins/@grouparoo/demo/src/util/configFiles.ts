@@ -3,7 +3,7 @@ import fs from "fs-extra";
 import os from "os";
 import replaceInFiles from "replace-in-files";
 import glob from "glob";
-import { api, log } from "actionhero";
+import { api, config, log } from "actionhero";
 import { loadConfigDirectory } from "@grouparoo/core/dist/modules/configLoaders";
 import { getConfigDir } from "@grouparoo/core/dist/modules/pluginDetails";
 import { prettier } from "./shared";
@@ -17,16 +17,18 @@ export async function deleteConfigDir() {
 
 export async function writeConfigFiles(
   db: Connection,
+  setup: boolean,
   sources: string[],
   destinatons: string[]
 ) {
   const configDir = await getConfigDir(true);
-  await generateConfig(db, configDir, sources, destinatons);
+  await generateConfig(db, configDir, setup, sources, destinatons);
   await prettier(configDir);
 }
 
 export async function loadConfigFiles(
   db: Connection,
+  setup: boolean,
   sources: string[],
   destinations: string[]
 ) {
@@ -34,7 +36,7 @@ export async function loadConfigFiles(
     ? `demo-${process.env.JEST_WORKER_ID}`
     : "demo";
   const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", demoDir));
-  await generateConfig(db, configDir, sources, destinations);
+  await generateConfig(db, configDir, setup, sources, destinations);
 
   const locked = api.codeConfig.allowLockedModelChanges;
   api.codeConfig.allowLockedModelChanges = true;
@@ -52,20 +54,27 @@ export async function loadConfigFiles(
 async function generateConfig(
   db: Connection,
   configDir,
+  setup: boolean,
   sources: string[],
   destinations: string[]
 ) {
   log(`Config Directory: ${configDir}`, "debug");
   deleteDir(configDir);
 
-  copyDir(configDir, db, "setup");
-
-  for (const x of sources) {
-    copyDir(configDir, db, x);
+  if (setup) {
+    copyDir(configDir, "setup");
   }
 
-  for (const x of destinations) {
-    copyDir(configDir, db, x);
+  if (sources.length > 0) {
+    copyDir(configDir, "shared");
+  }
+
+  for (const sourceName of sources) {
+    copySource(configDir, sourceName);
+  }
+
+  for (const destinationName of destinations) {
+    copyDestination(configDir, destinationName, sources);
   }
 
   await updateDatabase(db, configDir);
@@ -78,37 +87,33 @@ function deleteDir(configDir) {
   }
 }
 
-const MODEL_TYPES = {
-  purchases: "b2c",
-  accounts: "b2b",
-};
+function copySource(configDir, sourceName: string) {
+  copyDir(configDir, sourceName);
+}
 
-function copyDir(configDir, db: any, subDir: string) {
+function copyDestination(
+  configDir,
+  destinationName: string,
+  sources: string[]
+) {
+  copyDir(configDir, destinationName, "all");
+  for (const sourceName of sources) {
+    copyDir(configDir, destinationName, sourceName);
+  }
+}
+
+function copyDir(configDir, one: string, two?: string) {
   const rootPath = path.resolve(path.join(__dirname, "..", "..", "config"));
   fs.mkdirpSync(configDir);
 
-  const modelType = MODEL_TYPES[subDir] || "none";
-  copyDirIfExists(configDir, rootPath, "shared", "all", subDir);
-  copyDirIfExists(configDir, rootPath, "shared", db, subDir);
-  copyDirIfExists(configDir, rootPath, modelType, "all", subDir);
-  copyDirIfExists(configDir, rootPath, modelType, db, subDir);
-}
-
-function copyDirIfExists(
-  toConfigDir: string,
-  rootPath: string,
-  modelType: string,
-  db: any,
-  subDir: string
-) {
-  console.log(arguments);
-  if (!modelType || !db) {
-    return;
+  let from;
+  if (two) {
+    from = path.join(rootPath, one, two);
+  } else {
+    from = path.join(rootPath, one);
   }
-  const dbName = typeof db === "string" ? db : db.name();
-  const from = path.join(rootPath, modelType, dbName, subDir);
   if (fs.existsSync(from)) {
-    fs.copySync(from, toConfigDir);
+    fs.copySync(from, configDir);
   }
 }
 

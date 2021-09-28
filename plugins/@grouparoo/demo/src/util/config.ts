@@ -74,7 +74,8 @@ class Config {
         break;
       case "b2c":
       case "purchases":
-        this.addSource("purchases");
+      case "users":
+        this.addSource("users");
         break;
       case "b2b":
       case "accounts":
@@ -120,7 +121,7 @@ class Config {
       db = new Postgres();
     }
     if (this.sources.length === 0) {
-      this.addSource("purchases");
+      this.addSource("users");
     }
 
     return {

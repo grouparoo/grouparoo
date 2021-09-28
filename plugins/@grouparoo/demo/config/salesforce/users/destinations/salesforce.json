@@ -12,12 +12,12 @@
     "groupObject": "Campaign",
     "membershipGroupField": "CampaignId",
     "membershipObject": "CampaignMember",
-    "membershipProfileField": "ContactId",
-    "profileMatchField": "Email",
-    "profileObject": "Contact",
-    "profileReferenceField": "AccountId",
-    "profileReferenceMatchField": "Name",
-    "profileReferenceObject": "Account"
+    "membershipRecordField": "ContactId",
+    "recordMatchField": "Email",
+    "recordObject": "Contact",
+    "recordReferenceField": "AccountId",
+    "recordReferenceMatchField": "Name",
+    "recordReferenceObject": "Account"
   },
   "mapping": {
     "Account.Name": "language",

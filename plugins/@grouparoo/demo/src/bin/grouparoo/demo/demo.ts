@@ -22,7 +22,7 @@ export class Demo extends CLI {
       "Valid Types:",
       "b2c            (default) loads users and purchases into source",
       "b2b            loads users, accounts, and payment data into source",
-      "purchases      same as b2c",
+      "users          same as b2c",
       "accounts       same as b2b",
       "reset          only clear Grouparoo database and don't load config",
       "setup          only create the login Team Member",
@@ -125,11 +125,11 @@ export class Demo extends CLI {
       }
 
       if (config) {
-        await loadConfigFiles(db, [], []); // just setup
+        await loadConfigFiles(db, true, [], []); // just setup
         await finalize();
-        await writeConfigFiles(db, sources, destinations);
+        await writeConfigFiles(db, false, sources, destinations);
       } else {
-        await loadConfigFiles(db, sources, destinations);
+        await loadConfigFiles(db, true, sources, destinations);
         await finalize();
       }
 
