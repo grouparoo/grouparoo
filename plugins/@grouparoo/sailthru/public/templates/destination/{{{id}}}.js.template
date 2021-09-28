@@ -4,7 +4,7 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       class: "destination",
-      type: "{{{__pluginName}}}-export",
+      type: "sailthru-export-users",
       appId: {{{appId}}}, // The ID of the App this Destination uses - e.g. `appId: "sailthru_app"`
       modelId: "mod_profiles", // The ID of the Grouparoo Model that this Destination will send
       groupId: "...", // The ID of the group whose members you want to export - e.g. `groupId: "high_value_customers"`

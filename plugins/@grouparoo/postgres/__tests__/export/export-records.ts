@@ -110,7 +110,7 @@ describe("postgres/exportRecord", () => {
     });
 
     destination = await helper.factories.destination(app, {
-      type: "postgres-export",
+      type: "postgres-record-export",
       options: {
         table: usersTableName,
         primaryKey: "id",
