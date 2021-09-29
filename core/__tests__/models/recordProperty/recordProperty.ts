@@ -210,7 +210,7 @@ describe("models/recordProperty", () => {
           const response = await recordProperty.getValue();
           expect(response).toBe(null);
           expect(recordProperty.invalidValue).toBe(e);
-          expect(recordProperty.invalidReason).toBe("Invalid email Value");
+          expect(recordProperty.invalidReason).toBe("Invalid email value");
         }
       });
 
@@ -248,7 +248,7 @@ describe("models/recordProperty", () => {
         const response = await recordProperty.getValue();
         expect(response).toBe(null);
         expect(recordProperty.invalidValue).toBe("not a url");
-        expect(recordProperty.invalidReason).toBe("Invalid url Value");
+        expect(recordProperty.invalidReason).toBe("Invalid url value");
       });
     });
 
@@ -272,7 +272,7 @@ describe("models/recordProperty", () => {
         const response = await recordProperty.getValue();
         expect(response).toBe(null);
         expect(recordProperty.invalidValue).toBe("5");
-        expect(recordProperty.invalidReason).toBe("Invalid phoneNumber Value");
+        expect(recordProperty.invalidReason).toBe("Invalid phoneNumber value");
       });
     });
 
@@ -296,7 +296,7 @@ describe("models/recordProperty", () => {
         const response = await recordProperty.getValue();
         expect(response).toBe(null);
         expect(recordProperty.invalidValue).toBe("fish");
-        expect(recordProperty.invalidReason).toBe("Invalid integer Value");
+        expect(recordProperty.invalidReason).toBe("Invalid integer value");
       });
     });
 
@@ -320,7 +320,7 @@ describe("models/recordProperty", () => {
         const response = await recordProperty.getValue();
         expect(response).toBe(null);
         expect(recordProperty.invalidValue).toBe("foo");
-        expect(recordProperty.invalidReason).toBe("Invalid float Value");
+        expect(recordProperty.invalidReason).toBe("Invalid float value");
       });
     });
 
@@ -356,7 +356,7 @@ describe("models/recordProperty", () => {
         const response = (await recordProperty.getValue()) as Date;
         expect(response).toEqual(null);
         expect(recordProperty.invalidValue).toBe("mushroom");
-        expect(recordProperty.invalidReason).toBe("Invalid date Value");
+        expect(recordProperty.invalidReason).toBe("Invalid date value");
       });
     });
 
@@ -400,7 +400,7 @@ describe("models/recordProperty", () => {
         const response = await recordProperty.getValue();
         expect(response).toBe(null);
         expect(recordProperty.invalidValue).toBe("hat");
-        expect(recordProperty.invalidReason).toBe("Invalid boolean Value");
+        expect(recordProperty.invalidReason).toBe("Invalid boolean value");
       });
     });
 

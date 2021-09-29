@@ -67,7 +67,7 @@ export namespace RecordPropertyOps {
       if (recordProperty && error instanceof Error) {
         error.message += ` for record ${recordProperty.recordId}`;
       }
-      invalidReason = `Invalid ${type} Value`;
+      invalidReason = `Invalid ${type} value`;
       log(error, "error");
     }
 
