@@ -168,7 +168,7 @@ describe("integration/runs/mysql", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "mysql-record-export",
+      type: "mysql-export-records",
       appId: app.id,
       modelId: "mod_profiles",
       options: {

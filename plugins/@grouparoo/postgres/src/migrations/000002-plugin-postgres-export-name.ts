@@ -5,7 +5,7 @@ export default {
     // Update Plugin Names
     await queryInterface.bulkUpdate(
       "destinations",
-      { type: "postgres-record-export" },
+      { type: "postgres-export-records" },
       { type: "postgres-export" }
     );
   },
@@ -14,7 +14,7 @@ export default {
     await queryInterface.bulkUpdate(
       "destinations",
       { type: "postgres-export" },
-      { type: "postgres-record-export" }
+      { type: "postgres-export-records" }
     );
   },
 };

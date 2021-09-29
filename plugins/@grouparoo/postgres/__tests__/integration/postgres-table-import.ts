@@ -160,7 +160,7 @@ describe("integration/runs/postgres", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "postgres-record-export",
+      type: "postgres-export-records",
       appId: app.id,
       modelId: "mod_profiles",
       options: {

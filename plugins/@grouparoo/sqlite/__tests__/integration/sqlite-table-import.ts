@@ -170,7 +170,7 @@ describe("integration/runs/sqlite", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "sqlite-record-export",
+      type: "sqlite-export-records",
       appId: app.id,
       modelId: "mod_profiles",
       options: {

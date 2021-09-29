@@ -99,8 +99,8 @@ export class Plugins extends Initializer {
         getTableConnection(),
         getQueryConnection(),
         {
-          name: "mysql-record-export",
-          displayName: "MySQL Record Export",
+          name: "mysql-export-records",
+          displayName: "MySQL Export Record",
           direction: "export",
           description:
             "Export Records to a MySQL table.  Groups will be exported to a secondary table linked by a foreign key.",

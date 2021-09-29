@@ -5,7 +5,7 @@ export default {
     // Update Plugin Names
     await queryInterface.bulkUpdate(
       "destinations",
-      { type: "mysql-record-export" },
+      { type: "mysql-export-records" },
       { type: "mysql-export" }
     );
   },
@@ -14,7 +14,7 @@ export default {
     await queryInterface.bulkUpdate(
       "destinations",
       { type: "mysql-export" },
-      { type: "mysql-record-export" }
+      { type: "mysql-export-records" }
     );
   },
 };

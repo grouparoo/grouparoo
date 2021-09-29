@@ -5,7 +5,7 @@ export default {
     // Update Plugin Names
     await queryInterface.bulkUpdate(
       "destinations",
-      { type: "sqlite-record-export" },
+      { type: "sqlite-export-records" },
       { type: "sqlite-export" }
     );
   },
@@ -14,7 +14,7 @@ export default {
     await queryInterface.bulkUpdate(
       "destinations",
       { type: "sqlite-export" },
-      { type: "sqlite-record-export" }
+      { type: "sqlite-export-records" }
     );
   },
 };

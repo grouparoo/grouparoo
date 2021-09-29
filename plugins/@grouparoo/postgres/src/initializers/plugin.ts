@@ -137,8 +137,8 @@ export class Plugins extends Initializer {
         getTableConnection(),
         getQueryConnection(),
         {
-          name: "postgres-record-export",
-          displayName: "Postgres Record Export",
+          name: "postgres-export-records",
+          displayName: "Postgres Export Record",
           direction: "export",
           description:
             "Export Records to a Postgres table.  Groups will be exported to a secondary table linked by a foreign key.",

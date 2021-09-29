@@ -78,8 +78,8 @@ export class Plugins extends Initializer {
         getTableConnection(),
         getQueryConnection(),
         {
-          name: "sqlite-record-export",
-          displayName: "SQLite Record Export",
+          name: "sqlite-export-records",
+          displayName: "SQLite Export Record",
           direction: "export",
           description:
             "Export Records to a SQLite table. Groups will be exported to a secondary table linked by a foreign key.",

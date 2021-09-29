@@ -5,7 +5,7 @@ export default {
     // Update Plugin Names
     await queryInterface.bulkUpdate(
       "destinations",
-      { type: "redshift-record-export" },
+      { type: "redshift-export-records" },
       { type: "redshift-export" }
     );
   },
@@ -14,7 +14,7 @@ export default {
     await queryInterface.bulkUpdate(
       "destinations",
       { type: "redshift-export" },
-      { type: "redshift-record-export" }
+      { type: "redshift-export-records" }
     );
   },
 };
