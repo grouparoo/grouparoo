@@ -41,8 +41,8 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "csv-import",
-          displayName: "CSV Import",
+          name: "csv-table-import",
+          displayName: "CSV Table Import",
           direction: "import",
           description: "Import or update Records from a remote CSV.",
           app: "csv",
