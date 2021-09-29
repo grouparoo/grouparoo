@@ -327,10 +327,8 @@ export class Run extends Model {
   }
 
   @BeforeCreate
-  static generateId(instance) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
+  static generateId(instance: Run) {
+    if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
   }
 
   @BeforeCreate

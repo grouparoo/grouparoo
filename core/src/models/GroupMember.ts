@@ -75,9 +75,7 @@ export class GroupMember extends Model {
 
   @BeforeCreate
   static generateId(instance: GroupMember) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
+    if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
   }
 
   @BeforeBulkCreate

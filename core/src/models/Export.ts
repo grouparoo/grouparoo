@@ -293,10 +293,8 @@ export class Export extends Model {
   }
 
   @BeforeCreate
-  static generateId(instance) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
+  static generateId(instance: Export) {
+    if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
   }
 
   @BeforeSave

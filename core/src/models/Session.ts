@@ -62,10 +62,8 @@ export class Session extends Model {
   }
 
   @BeforeCreate
-  static generateId(instance) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
+  static generateId(instance: Session) {
+    if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
   }
 
   static async sweep() {

@@ -96,10 +96,8 @@ export class GroupRule extends Model {
   }
 
   @BeforeCreate
-  static generateId(instance) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
+  static generateId(instance: GroupRule) {
+    if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
   }
 
   @BeforeSave

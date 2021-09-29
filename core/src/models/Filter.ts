@@ -89,9 +89,7 @@ export class Filter extends Model {
   // --- Class Methods --- //
 
   @BeforeCreate
-  static generateId(instance) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
+  static generateId(instance: Filter) {
+    if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
   }
 }

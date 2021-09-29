@@ -230,9 +230,7 @@ export class Import extends Model {
 
   @BeforeCreate
   static generateId(instance: Import) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
+    if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
   }
 
   @BeforeBulkCreate
