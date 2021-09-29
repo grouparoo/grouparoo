@@ -187,11 +187,11 @@ export namespace SetupStepOps {
               position: 1,
             },
             {
-              ...allSetupStepDescriptions.add_a_model,
+              ...allSetupStepDescriptions.add_an_app,
               position: 2,
             },
             {
-              ...allSetupStepDescriptions.add_an_app,
+              ...allSetupStepDescriptions.add_a_model,
               position: 3,
             },
             {
@@ -226,11 +226,11 @@ export namespace SetupStepOps {
               position: 1,
             },
             {
-              ...allSetupStepDescriptions.add_a_model,
+              ...allSetupStepDescriptions.add_an_app,
               position: 2,
             },
             {
-              ...allSetupStepDescriptions.add_an_app,
+              ...allSetupStepDescriptions.add_a_model,
               position: 3,
             },
             {
