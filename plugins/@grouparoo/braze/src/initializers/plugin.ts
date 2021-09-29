@@ -48,13 +48,15 @@ export class Plugins extends Initializer {
               type: "password",
               displayName: "Braze API Key",
               required: true,
-              description: "Braze apiKey.",
+              description:
+                "Braze REST API key. It can be found under the Developer Console (bottom of the left side menu) on the Braze dashboard. Users and Campaigns permissions are needed.",
             },
             {
               key: "restEndpoint",
               displayName: "Braze REST Endpoint",
               required: true,
-              description: "Braze REST Endpoint.",
+              description:
+                "Braze REST Endpoint. It uses the same instance number as the dashboard (i.e. if the dashboard URL is dashboard-01.braze.com the REST endpoint will be rest.iad-01.braze.com)",
             },
           ],
           methods: { test },
