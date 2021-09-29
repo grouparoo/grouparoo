@@ -7,18 +7,13 @@ import {
   BelongsTo,
   BeforeSave,
   DataType,
-  Model,
-  BeforeCreate,
-  BeforeBulkCreate,
-  CreatedAt,
-  UpdatedAt,
 } from "sequelize-typescript";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Property } from "./Property";
 import { RecordPropertyOps } from "../modules/ops/recordProperty";
 import { StateMachine } from "../modules/stateMachine";
 import { APIData } from "../modules/apiData";
-import * as uuid from "uuid";
+import { CommonModel } from "../classes/commonModel";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -30,10 +25,7 @@ const STATE_TRANSITIONS = [
 ];
 
 @Table({ tableName: "recordProperties", paranoid: false })
-export class RecordProperty extends Model {
-  @Column({ primaryKey: true })
-  id: string;
-
+export class RecordProperty extends CommonModel<RecordProperty> {
   idPrefix() {
     return "rpr";
   }
@@ -85,12 +77,6 @@ export class RecordProperty extends Model {
   @AllowNull(true)
   @Column
   startedAt: Date;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @BelongsTo(() => GrouparooRecord)
   record: GrouparooRecord;
@@ -148,16 +134,6 @@ export class RecordProperty extends Model {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
-  }
-
-  @BeforeCreate
-  static generateId(instance: RecordProperty) {
-    if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-  }
-
-  @BeforeBulkCreate
-  static generateIds(instances: RecordProperty[]) {
-    instances.forEach((instance) => this.generateId(instance));
   }
 
   @BeforeSave

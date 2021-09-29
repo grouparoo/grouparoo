@@ -1,9 +1,6 @@
 import {
-  Model,
   Table,
   Column,
-  CreatedAt,
-  UpdatedAt,
   AllowNull,
   BeforeCreate,
   BeforeBulkCreate,
@@ -14,27 +11,18 @@ import {
   AfterBulkCreate,
   AfterDestroy,
 } from "sequelize-typescript";
-import * as uuid from "uuid";
 import { Op, WhereAttributeHash } from "sequelize";
 import { Group } from "./Group";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Log } from "./Log";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "groupMembers", paranoid: false })
-export class GroupMember extends Model {
+export class GroupMember extends CommonModel<GroupMember> {
   idPrefix() {
     return "mem";
   }
-
-  @Column({ primaryKey: true })
-  id: string;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @AllowNull(false)
   @ForeignKey(() => GrouparooRecord)
@@ -71,16 +59,6 @@ export class GroupMember extends Model {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
-  }
-
-  @BeforeCreate
-  static generateId(instance: GroupMember) {
-    if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-  }
-
-  @BeforeBulkCreate
-  static generateIds(instances: GroupMember[]) {
-    instances.forEach((instance) => this.generateId(instance));
   }
 
   @BeforeSave

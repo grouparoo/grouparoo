@@ -2,29 +2,22 @@ import {
   Table,
   Column,
   AllowNull,
-  Model,
-  CreatedAt,
-  UpdatedAt,
   ForeignKey,
   BeforeCreate,
   AfterCreate,
-  BeforeBulkCreate,
 } from "sequelize-typescript";
 import { DataTypes } from "sequelize";
-import * as uuid from "uuid";
 import Moment from "moment";
 import { Op } from "sequelize";
 import { chatRoom } from "actionhero";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "logs", paranoid: false })
-export class Log extends Model {
+export class Log extends CommonModel<Log> {
   idPrefix() {
     return "log";
   }
-
-  @Column({ primaryKey: true })
-  id: string;
 
   @AllowNull(false)
   @Column
@@ -61,12 +54,6 @@ export class Log extends Model {
   @Column
   message: string;
 
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
-
   async apiData() {
     return {
       id: this.id,
@@ -86,16 +73,6 @@ export class Log extends Model {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
-  }
-
-  @BeforeCreate
-  static generateId(instance: Log) {
-    if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-  }
-
-  @BeforeBulkCreate
-  static generateIds(instances: Log[]) {
-    instances.forEach((instance) => this.generateId(instance));
   }
 
   @BeforeCreate
