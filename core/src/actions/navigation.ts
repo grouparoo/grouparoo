@@ -258,6 +258,12 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       },
       {
         type: "link",
+        title: "Models",
+        href: "/models",
+        icon: "clipboard-list",
+      },
+      {
+        type: "link",
         title: "Sources",
         href: "/sources",
         icon: "file-import",

@@ -5,6 +5,7 @@ import {
   faAddressCard,
   faCaretSquareLeft,
   faCaretSquareRight,
+  faClipboardList,
   faExchangeAlt,
   faFileExport,
   faFileImport,
@@ -22,6 +23,7 @@ import { faSlack } from "@fortawesome/free-brands-svg-icons";
 
 library.add(
   faAddressCard,
+  faClipboardList,
   faCaretSquareLeft,
   faCaretSquareRight,
   faExchangeAlt,
