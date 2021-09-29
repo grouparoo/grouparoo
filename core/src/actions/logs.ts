@@ -45,13 +45,6 @@ export class LogsList extends AuthenticatedAction {
     if (params.verb) search.where["verb"] = params.verb;
     if (params.ownerId) {
       const ownerIds = [params.ownerId];
-
-      // in the case we are dealing with a record
-      const recordProperties = await RecordProperty.findAll({
-        where: { recordId: params.ownerId },
-      });
-      recordProperties.forEach((prop) => ownerIds.push(prop.id));
-
       search.where["ownerId"] = { [Op.in]: ownerIds };
     }
 

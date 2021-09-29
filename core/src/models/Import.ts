@@ -1,20 +1,14 @@
 import {
-  Model,
   Table,
   Column,
-  CreatedAt,
-  UpdatedAt,
-  BeforeCreate,
   AllowNull,
   ForeignKey,
   BelongsTo,
   DataType,
   AfterCreate,
   Default,
-  BeforeBulkCreate,
   AfterBulkCreate,
 } from "sequelize-typescript";
-import * as uuid from "uuid";
 import { config } from "actionhero";
 import { CLS } from "../modules/cls";
 import { GrouparooRecord } from "./GrouparooRecord";
@@ -24,6 +18,7 @@ import Moment from "moment";
 import { Op } from "sequelize";
 import { ImportOps } from "../modules/ops/import";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 export interface ImportData {
   [key: string]: any;
@@ -36,20 +31,10 @@ export interface ImportRecordProperties {
 const IMPORT_CREATORS = ["run"] as const;
 
 @Table({ tableName: "imports", paranoid: false })
-export class Import extends Model {
+export class Import extends CommonModel<Import> {
   idPrefix() {
     return "imp";
   }
-
-  @Column({ primaryKey: true })
-  id: string;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
-
   @AllowNull(false)
   @Column(DataType.ENUM(...IMPORT_CREATORS))
   creatorType: typeof IMPORT_CREATORS[number];
@@ -226,18 +211,6 @@ export class Import extends Model {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
-  }
-
-  @BeforeCreate
-  static generateId(instance: Import) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
-  }
-
-  @BeforeBulkCreate
-  static generateIds(instances: Import[]) {
-    instances.forEach((instance) => this.generateId(instance));
   }
 
   @AfterCreate

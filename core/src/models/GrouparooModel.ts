@@ -91,13 +91,6 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
   }
 
   @BeforeCreate
-  static generateId(instance: GrouparooModel) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
-  }
-
-  @BeforeCreate
   @BeforeSave
   static async ensureValidType(instance: GrouparooModel) {
     if (!ModelTypes.includes(instance.type)) {

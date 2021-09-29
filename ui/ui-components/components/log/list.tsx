@@ -35,7 +35,6 @@ export default function LogsList(props) {
     "group",
     "groupMember",
     "record",
-    "recordProperty",
     "property",
     "schedule",
     "setting",
@@ -70,11 +69,6 @@ export default function LogsList(props) {
 
     if (topic === "grouparooRecord") {
       topic = "record";
-    }
-
-    if (topic === "recordProperty") {
-      topic = "record";
-      ownerId = log.data.recordId;
     }
 
     if (topic === "groupMember") {

@@ -1,21 +1,14 @@
 import {
-  Column,
-  Model,
-  CreatedAt,
-  UpdatedAt,
-  BeforeCreate,
   AfterCreate,
   AfterUpdate,
   AfterDestroy,
   AfterBulkCreate,
-  Length,
-  BeforeBulkCreate,
 } from "sequelize-typescript";
-import validator from "validator";
-import * as uuid from "uuid";
+
 import { Log } from "../models/Log";
 import { config, chatRoom } from "actionhero";
 import { modelName } from "../modules/modelName";
+import { CommonModel } from "./commonModel";
 
 function filteredParams() {
   let filteredParams: string[] = [];
@@ -27,58 +20,7 @@ function filteredParams() {
   return filteredParams;
 }
 
-export abstract class LoggedModel<T> extends Model {
-  /**
-   * return the prefix for this type of class' id
-   */
-  abstract idPrefix(): string;
-
-  @Length({ min: 1, max: 191 })
-  @Column({ primaryKey: true })
-  id: string;
-
-  @BeforeCreate
-  static generateId(instance) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
-  }
-
-  @BeforeBulkCreate
-  static generateIds(instances) {
-    instances.forEach((instance) => this.generateId(instance));
-  }
-
-  @BeforeCreate
-  static validateId(instance) {
-    const id: string = instance.id;
-    let failing = false;
-    if (id.length > 191) failing = true;
-    if (!/^[A-Za-z0-9-_]+$/.test(id)) failing = true; // only allow letters, numbers, hyphen and underscore
-
-    if (failing) {
-      throw new Error(
-        `invalid id: \`${id}\` - ids must be less than 191 characters and not contain spaces or special characters`
-      );
-    }
-  }
-
-  @BeforeBulkCreate
-  static validateIds(instances) {
-    instances.forEach((instance) => this.validateId(instance));
-  }
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
-
-  async touch() {
-    this.changed("updatedAt", true);
-    return this.save({ hooks: false });
-  }
-
+export abstract class LoggedModel<T> extends CommonModel<T> {
   async filteredDataForLogging() {
     let apiData = {};
     try {
@@ -134,13 +76,6 @@ export abstract class LoggedModel<T> extends Model {
 
     return message;
   }
-
-  idIsDefault(): boolean {
-    const uuid = this.id.split("_").pop();
-    return this.id.startsWith(`${this.idPrefix()}_`) && validator.isUUID(uuid);
-  }
-
-  abstract apiData(): Promise<{ [key: string]: any }>;
 
   // --- Class Methods --- //
 

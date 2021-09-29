@@ -1,11 +1,8 @@
 import Sequelize, { Op } from "sequelize";
 import { GrouparooRecord } from "./GrouparooRecord";
 import {
-  Model,
   Table,
   Column,
-  CreatedAt,
-  UpdatedAt,
   AllowNull,
   DataType,
   BeforeSave,
@@ -18,7 +15,6 @@ import {
   BeforeUpdate,
 } from "sequelize-typescript";
 import { chatRoom, log } from "actionhero";
-import * as uuid from "uuid";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
 import { Group } from "./Group";
@@ -29,6 +25,7 @@ import { RunOps } from "../modules/ops/runs";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
@@ -53,19 +50,10 @@ const STATE_TRANSITIONS = [
 ];
 
 @Table({ tableName: "runs", paranoid: false })
-export class Run extends Model {
+export class Run extends CommonModel<Run> {
   idPrefix() {
     return "run";
   }
-
-  @Column({ primaryKey: true })
-  id: string;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @AllowNull(false)
   @ForeignKey(() => Schedule)
@@ -324,13 +312,6 @@ export class Run extends Model {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
-  }
-
-  @BeforeCreate
-  static generateId(instance) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
   }
 
   @BeforeCreate

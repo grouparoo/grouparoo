@@ -13,21 +13,13 @@ import * as uuid from "uuid";
 import { Property } from "./Property";
 import { Schedule } from "./Schedule";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "filters", paranoid: false })
-export class Filter extends Model {
+export class Filter extends CommonModel<Filter> {
   idPrefix() {
     return "flt";
   }
-
-  @Column({ primaryKey: true })
-  id: string;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @AllowNull(false)
   @ForeignKey(() => Property)
@@ -87,11 +79,4 @@ export class Filter extends Model {
   }
 
   // --- Class Methods --- //
-
-  @BeforeCreate
-  static generateId(instance) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
-  }
 }
