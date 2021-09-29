@@ -2,44 +2,58 @@ import Sequelize from "sequelize";
 
 export default {
   up: async (queryInterface: Sequelize.QueryInterface) => {
-    await queryInterface.sequelize.query(
-      `UPDATE "config" SET "key"='membershipRecordField' WHERE "key"='membershipProfileField'`
+    const [options] = await queryInterface.sequelize.query(
+      `SELECT o."id" as id, "key" FROM "options" o JOIN "destinations" d ON o."ownerId"=d."id" WHERE d."type"='salesforce-objects-export'`
     );
-    await queryInterface.sequelize.query(
-      `UPDATE "config" SET "key"='recordMatchField' WHERE "key"='profileMatchField'`
-    );
-    await queryInterface.sequelize.query(
-      `UPDATE "config" SET "key"='recordObject' WHERE "key"='profileObject'`
-    );
-    await queryInterface.sequelize.query(
-      `UPDATE "config" SET "key"='recordReferenceField' WHERE "key"='profileReferenceField'`
-    );
-    await queryInterface.sequelize.query(
-      `UPDATE "config" SET "key"='recordReferenceMatchField' WHERE "key"='profileReferenceMatchField'`
-    );
-    await queryInterface.sequelize.query(
-      `UPDATE "config" SET "key"='recordReferenceObject' WHERE "key"='profileReferenceObject'`
-    );
+    const legacyOptionsKeys = [
+      "profileObject",
+      "profileMatchField",
+      "membershipProfileField",
+      "profileReferenceField",
+      "profileReferenceObject",
+      "profileReferenceMatchField",
+    ];
+    for (const opt of options) {
+      let newKey: string;
+      if (legacyOptionsKeys.includes(opt["key"])) {
+        newKey = opt["key"]
+          .replace("profile", "record")
+          .replace("Profile", "Record");
+        await queryInterface.sequelize.query(
+          `UPDATE "options" SET "key"=? WHERE "id"=?`,
+          {
+            replacements: [newKey, opt["id"]],
+          }
+        );
+      }
+    }
   },
 
   down: async (queryInterface: Sequelize.QueryInterface) => {
-    await queryInterface.sequelize.query(
-      `UPDATE "config" SET "key"='membershipProfileField' WHERE "key"='membershipRecordField'`
+    const [options] = await queryInterface.sequelize.query(
+      `SELECT o."id" as id, "key" FROM "options" o JOIN "destinations" d ON o."ownerId"=d."id" WHERE d."type"='salesforce-objects-export'`
     );
-    await queryInterface.sequelize.query(
-      `UPDATE "config" SET "key"='profileMatchField' WHERE "key"='recordMatchField'`
-    );
-    await queryInterface.sequelize.query(
-      `UPDATE "config" SET "key"='profileObject' WHERE "key"='recordObject'`
-    );
-    await queryInterface.sequelize.query(
-      `UPDATE "config" SET "key"='profileReferenceField' WHERE "key"='recordReferenceField'`
-    );
-    await queryInterface.sequelize.query(
-      `UPDATE "config" SET "key"='profileReferenceMatchField' WHERE "key"='recordReferenceMatchField'`
-    );
-    await queryInterface.sequelize.query(
-      `UPDATE "config" SET "key"='profileReferenceObject' WHERE "key"='recordReferenceObject'`
-    );
+    const newOptionsKeys = [
+      "recordObject",
+      "recordMatchField",
+      "membershipRecordField",
+      "recordReferenceField",
+      "recordReferenceObject",
+      "recordReferenceMatchField",
+    ];
+    for (const opt of options) {
+      let newKey: string;
+      if (newOptionsKeys.includes(opt["key"])) {
+        newKey = opt["key"]
+          .replace("record", "profile")
+          .replace("Record", "Profile");
+        await queryInterface.sequelize.query(
+          `UPDATE "options" SET "key"=? WHERE "id"=?`,
+          {
+            replacements: [newKey, opt["id"]],
+          }
+        );
+      }
+    }
   },
 };
