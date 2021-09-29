@@ -58,7 +58,7 @@ export namespace SetupStepOps {
       key: "add_a_model",
       title: "Add a Model",
       description:
-        "Models define the shape of your Records.  Grouparoo uses a Profile Model by default.  Add more Models to customize your Records' schema.",
+        "Models define the shape of your Records.  Grouparoo uses a Profile Model by default.  You can add new Models and customize them when you begin adding Sources and Properties.",
       href: "/models",
       cta: "Add a Model",
       helpLink: null,
