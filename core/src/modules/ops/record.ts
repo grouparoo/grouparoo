@@ -1,5 +1,5 @@
 import { GrouparooRecord } from "../../models/GrouparooRecord";
-import { RecordProperty } from "../../models/RecordProperty";
+import { InvalidReasons, RecordProperty } from "../../models/RecordProperty";
 import { Property } from "../../models/Property";
 import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
@@ -150,36 +150,14 @@ export namespace RecordOps {
     let countRequiresIncludes = false;
 
     // Are we searching for GrouparooRecords in a specific state?
-    if (state) {
-      if (state !== "invalid") {
-        ands.push({ state });
-      } else {
-        include.push({
-          model: RecordProperty,
-          where: {
-            [Op.or]: [
-              {
-                invalidReason: {
-                  [Op.not]: null,
-                },
-              },
-              {
-                invalidValue: {
-                  [Op.not]: null,
-                },
-              },
-            ],
-          },
-        });
-      }
+    if (state && state !== "invalid") {
+      ands.push({ state });
     }
 
     // Are we searching for a specific RecordProperty?
     if (searchKey && searchValue) {
       countRequiresIncludes = true;
-      if (state !== "invalid") {
-        include.push(RecordProperty);
-      }
+      include.push(RecordProperty);
       countRequiresIncludes = true;
 
       const property = await Property.findOneWithCache(
@@ -231,6 +209,20 @@ export namespace RecordOps {
     // Are we limiting to a certain modelId?
     if (modelId) {
       ands.push({ modelId });
+    }
+
+    // are we looking for invalid records
+    if (state === "invalid") {
+      ands.push({
+        id: {
+          [Op.in]: Sequelize.literal(`(
+            SELECT DISTINCT "GrouparooRecord"."id"
+            FROM "records" AS "GrouparooRecord"
+            LEFT OUTER JOIN "recordProperties" AS "recordProperties" ON "GrouparooRecord"."id" = "recordProperties"."recordId"
+            WHERE "recordProperties"."invalidReason" IS NOT NULL
+          )`),
+        },
+      });
     }
 
     // Load the records in full now that we know the relevant records
@@ -410,6 +402,7 @@ export namespace RecordOps {
               "startedAt",
               "rawValue",
               "invalidValue",
+              "invalidReason",
               "updatedAt",
             ],
           });
@@ -428,6 +421,7 @@ export namespace RecordOps {
                     state: "ready",
                     rawValue: null,
                     invalidValue: `${attemptedRecordProperty.rawValue}`,
+                    invalidReason: InvalidReasons.Duplicate,
                     stateChangedAt: new Date(),
                     confirmedAt: new Date(),
                     startedAt: null,

@@ -26,7 +26,11 @@ export class PropertiesList extends AuthenticatedAction {
       state: { required: false },
       modelId: { required: false },
       sourceId: { required: false },
-      includeExamples: { required: true, default: "false" },
+      includeExamples: {
+        required: true,
+        default: "false",
+        formatter: APIData.ensureBoolean,
+      },
       order: {
         required: false,
         formatter: APIData.ensureObject,
@@ -43,9 +47,7 @@ export class PropertiesList extends AuthenticatedAction {
   }: {
     params: Record<string, string | boolean | number>;
   }) {
-    const includeExamples =
-      params.includeExamples === "true" || params.includeExamples === true;
-    // TODO: Verify params can be anything but a string
+    const includeExamples = params.includeExamples;
 
     const where = {};
     if (params.state) where["state"] = params.state;

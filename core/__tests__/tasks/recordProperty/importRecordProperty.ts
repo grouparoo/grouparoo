@@ -7,6 +7,7 @@ import {
   Property,
   PluginConnection,
 } from "../../../src";
+import { InvalidReasons } from "../../../src/models/RecordProperty";
 
 describe("tasks/recordProperty:importRecordProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -89,7 +90,7 @@ describe("tasks/recordProperty:importRecordProperty", () => {
           return "not-an-email";
         });
 
-      const record: GrouparooRecord = await helper.factories.record();
+      const record = await helper.factories.record();
       await record.addOrUpdateProperties({
         userId: [101],
         email: ["a@example.com"], // this old value will be replaced
@@ -110,6 +111,7 @@ describe("tasks/recordProperty:importRecordProperty", () => {
       expect(recordProperty.rawValue).toBe(null);
       expect(recordProperty.invalidValue).toBe("not-an-email");
       expect(recordProperty.startedAt).toBe(null);
+      expect(recordProperty.invalidReason).toBe("Invalid email Value");
 
       await record.destroy();
 
@@ -124,10 +126,10 @@ describe("tasks/recordProperty:importRecordProperty", () => {
           return "mario@example.com";
         });
 
-      const recordA: GrouparooRecord = await helper.factories.record();
+      const recordA = await helper.factories.record();
       await recordA.addOrUpdateProperties({ email: ["mario@example.com"] });
 
-      const recordB: GrouparooRecord = await helper.factories.record();
+      const recordB = await helper.factories.record();
       const recordPropertyB = await RecordProperty.findOne({
         where: { propertyId: "email", recordId: recordB.id },
       });
@@ -143,6 +145,8 @@ describe("tasks/recordProperty:importRecordProperty", () => {
       expect(recordPropertyB.rawValue).toBe(null);
       expect(recordPropertyB.invalidValue).toBe("mario@example.com");
       expect(recordPropertyB.startedAt).toBe(null);
+      expect(recordPropertyB.invalidReason).toBe(InvalidReasons.Duplicate);
+      expect(recordPropertyB.invalidReason).toBe("Duplicate Value");
 
       await recordA.destroy();
       await recordB.destroy();
@@ -157,7 +161,7 @@ describe("tasks/recordProperty:importRecordProperty", () => {
           throw new Error("oh no!");
         });
 
-      const record: GrouparooRecord = await helper.factories.record();
+      const record = await helper.factories.record();
       const recordProperty = await RecordProperty.findOne({
         where: { propertyId: "email", recordId: record.id },
       });
@@ -175,6 +179,7 @@ describe("tasks/recordProperty:importRecordProperty", () => {
       expect(recordProperty.rawValue).toBe(null);
       expect(recordProperty.invalidValue).toBe(null);
       expect(recordProperty.startedAt).not.toBe(null);
+      expect(recordProperty.invalidReason).toBe(null);
 
       await record.destroy();
 
@@ -186,7 +191,7 @@ describe("tasks/recordProperty:importRecordProperty", () => {
         .spyOn(testPluginConnection.methods, "recordProperty")
         .mockImplementation(() => undefined);
 
-      const record: GrouparooRecord = await helper.factories.record();
+      const record = await helper.factories.record();
       await record.addOrUpdateProperties({
         userId: [99],
         email: ["someoldemail@example.com"],

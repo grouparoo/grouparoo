@@ -21,7 +21,7 @@ export namespace RecordPropertyOps {
     recordProperty?: RecordProperty
   ) {
     let rawValue: string = null;
-    let invalidValue: string = null;
+    let invalidValue: string | null = null;
     let invalidReason: string | null = null;
 
     if (value === null || value === undefined || value === "") {
@@ -67,7 +67,7 @@ export namespace RecordPropertyOps {
       if (recordProperty && error instanceof Error) {
         error.message += ` for record ${recordProperty.recordId}`;
       }
-      invalidReason = error.message;
+      invalidReason = `Invalid ${type} Value`;
       log(error, "error");
     }
 

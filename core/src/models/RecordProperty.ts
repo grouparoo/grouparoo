@@ -24,6 +24,10 @@ const STATE_TRANSITIONS = [
   { from: "ready", to: "pending", checks: [] },
 ];
 
+export enum InvalidReasons {
+  Duplicate = "Duplicate Value",
+}
+
 @Table({ tableName: "recordProperties", paranoid: false })
 export class RecordProperty extends CommonModel<RecordProperty> {
   idPrefix() {

@@ -186,6 +186,50 @@ describe("actions/records", () => {
         await specHelper.runAction<RecordsList>("records:list", connection);
       expect(readyProfilesB.length).toBe(1);
       expect(readyTotalB).toBe(1);
+
+      await RecordProperty.update(
+        {
+          invalidValue: "email",
+          invalidReason: "Bad Email",
+        },
+        {
+          where: {
+            recordId: readyProfilesB[0].id,
+          },
+        }
+      );
+
+      connection.params = {
+        csrfToken,
+        state: "invalid",
+      };
+      const { records: invalidRecords, total: invalidTotal } =
+        await specHelper.runAction<RecordsList>("records:list", connection);
+      expect(invalidRecords.length).toBe(1);
+      expect(invalidTotal).toBe(1);
+    });
+
+    test("a writer can find a record with an invalid state, even if the queried record is not invalid", async () => {
+      connection.params = {
+        csrfToken,
+        state: "invalid",
+      };
+      const { records: invalidRecords } =
+        await specHelper.runAction<RecordsList>("records:list", connection);
+      expect(invalidRecords?.[0]).toBeDefined();
+
+      const [invalidRecord] = invalidRecords;
+      const [userId] = invalidRecord.properties.userId.values;
+      connection.params = {
+        csrfToken,
+        state: "invalid",
+        searchKey: "userId",
+        searchValue: String(userId),
+      };
+
+      const { records: filteredInvalidRecords } =
+        await specHelper.runAction<RecordsList>("records:list", connection);
+      expect(filteredInvalidRecords.length).toBe(1);
     });
 
     test("a writer can get autocomplete results from properties", async () => {
@@ -697,6 +741,19 @@ describe("actions/records", () => {
         expect(error).toBeUndefined();
         expect(records.length).toBe(0);
         expect(total).toBe(0);
+      });
+
+      test("returns matching records when null is the searchValue", async () => {
+        connection.params = {
+          csrfToken,
+          searchKey: "ltv",
+          searchValue: "null",
+        };
+        const { error, records, total } =
+          await specHelper.runAction<RecordsList>("records:list", connection);
+        expect(error).toBeUndefined();
+        expect(records.length).toBe(4);
+        expect(total).toBe(4);
       });
     });
   });

@@ -6,6 +6,7 @@ import {
   RecordProperty,
   Property,
 } from "../../../src";
+import { InvalidReasons } from "../../../src/models/RecordProperty";
 
 describe("models/recordProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -209,9 +210,7 @@ describe("models/recordProperty", () => {
           const response = await recordProperty.getValue();
           expect(response).toBe(null);
           expect(recordProperty.invalidValue).toBe(e);
-          expect(recordProperty.invalidReason).toMatch(
-            /email "someone.*" is not valid for record/
-          );
+          expect(recordProperty.invalidReason).toBe("Invalid email Value");
         }
       });
 
@@ -249,9 +248,7 @@ describe("models/recordProperty", () => {
         const response = await recordProperty.getValue();
         expect(response).toBe(null);
         expect(recordProperty.invalidValue).toBe("not a url");
-        expect(recordProperty.invalidReason).toMatch(
-          /url "not a url" is not valid for record/
-        );
+        expect(recordProperty.invalidReason).toBe("Invalid url Value");
       });
     });
 
@@ -275,9 +272,7 @@ describe("models/recordProperty", () => {
         const response = await recordProperty.getValue();
         expect(response).toBe(null);
         expect(recordProperty.invalidValue).toBe("5");
-        expect(recordProperty.invalidReason).toMatch(
-          /phone number "5" is not valid for record/
-        );
+        expect(recordProperty.invalidReason).toBe("Invalid phoneNumber Value");
       });
     });
 
@@ -301,9 +296,7 @@ describe("models/recordProperty", () => {
         const response = await recordProperty.getValue();
         expect(response).toBe(null);
         expect(recordProperty.invalidValue).toBe("fish");
-        expect(recordProperty.invalidReason).toMatch(
-          /integer "fish" is not valid for record/
-        );
+        expect(recordProperty.invalidReason).toBe("Invalid integer Value");
       });
     });
 
@@ -327,9 +320,7 @@ describe("models/recordProperty", () => {
         const response = await recordProperty.getValue();
         expect(response).toBe(null);
         expect(recordProperty.invalidValue).toBe("foo");
-        expect(recordProperty.invalidReason).toMatch(
-          /float "foo" is not valid for record/
-        );
+        expect(recordProperty.invalidReason).toBe("Invalid float Value");
       });
     });
 
@@ -365,9 +356,7 @@ describe("models/recordProperty", () => {
         const response = (await recordProperty.getValue()) as Date;
         expect(response).toEqual(null);
         expect(recordProperty.invalidValue).toBe("mushroom");
-        expect(recordProperty.invalidReason).toMatch(
-          /date "mushroom" is not valid for record/
-        );
+        expect(recordProperty.invalidReason).toBe("Invalid date Value");
       });
     });
 
@@ -411,9 +400,7 @@ describe("models/recordProperty", () => {
         const response = await recordProperty.getValue();
         expect(response).toBe(null);
         expect(recordProperty.invalidValue).toBe("hat");
-        expect(recordProperty.invalidReason).toMatch(
-          /hat is not a valid boolean value for record/
-        );
+        expect(recordProperty.invalidReason).toBe("Invalid boolean Value");
       });
     });
 
@@ -524,7 +511,8 @@ describe("models/recordProperty", () => {
       const properties = await secondRecord.getProperties();
       expect(properties.email.values).toEqual([null]);
       expect(properties.email.invalidValue).toEqual("mario@example.com");
-      expect(properties.email.invalidReason).toEqual("mario@example.com");
+      expect(properties.email.invalidReason).toEqual(InvalidReasons.Duplicate);
+      expect(properties.email.invalidReason).toEqual("Duplicate Value");
     });
 
     test("editing the key of a property renames all the record properties that have that key", async () => {
