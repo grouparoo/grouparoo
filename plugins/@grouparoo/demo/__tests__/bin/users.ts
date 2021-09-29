@@ -10,12 +10,12 @@ import {
   TeamMember,
 } from "@grouparoo/core";
 
-describe("demo purchases", () => {
+describe("demo users", () => {
   hooks();
 
   test("runs without crash", async () => {
     const command = new Demo();
-    const toStop = await command.run({ params: { _arguments: ["purchases"] } });
+    const toStop = await command.run({ params: { _arguments: ["users"] } });
     expect(toStop).toBe(true);
   });
 

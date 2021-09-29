@@ -98,7 +98,7 @@ export class Demo extends CLI {
         }
         log(`Seeding: ${db.name()}`);
         await this.loadData(db, seed, scale, junkPercent);
-        return;
+        return true;
       }
 
       if (config) {
@@ -117,7 +117,7 @@ export class Demo extends CLI {
       await init({ reset: true });
 
       if (resetOnly) {
-        return;
+        return true;
       }
 
       if (db) {

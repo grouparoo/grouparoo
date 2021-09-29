@@ -26,38 +26,16 @@ describe("demo accounts", () => {
     expect(members).toEqual(["demo"]);
 
     const sources = (await Source.findAll()).map((o) => o.id).sort();
-    expect(sources).toEqual([
-      "demo_accounts",
-      "demo_calculated_property_source",
-      "demo_payments",
-      "demo_users",
-    ]);
+    expect(sources).toEqual(["demo_accounts", "demo_payments"]);
 
     const properties = (await Property.findAll()).map((o) => o.id).sort();
-    expect(properties).toEqual([
-      "account_id",
-      "account_name",
-      "account_value",
-      "deactivated",
-      "email",
-      "first_name",
-      "full_name",
-      "language",
-      "last_name",
-      "user_id",
-    ]);
+    expect(properties).toEqual(["account_id", "account_name", "account_value"]);
 
     const schedules = (await Schedule.findAll()).map((o) => o.id).sort();
-    expect(schedules).toEqual(["demo_users_schedule"]);
+    expect(schedules).toEqual(["demo_accounts_schedule"]);
 
     const groups = (await Group.findAll()).map((o) => o.id).sort();
-    expect(groups).toEqual([
-      "all_emails",
-      "have_accounts",
-      "high_value",
-      "nobody",
-      "spanish_speakers",
-    ]);
+    expect(groups).toEqual(["high_value_accounts"]);
 
     const destinations = (await Destination.findAll()).map((o) => o.id).sort();
     expect(destinations).toEqual([]);
