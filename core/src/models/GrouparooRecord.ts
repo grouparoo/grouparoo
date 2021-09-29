@@ -133,7 +133,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
     return RecordOps.removeProperties(this, properties);
   }
 
-  async buildNullProperties(state = "pending") {
+  async buildNullProperties(state: GrouparooRecord["state"] = "pending") {
     return RecordOps.buildNullProperties([this], state);
   }
 

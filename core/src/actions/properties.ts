@@ -22,7 +22,7 @@ export class PropertiesList extends AuthenticatedAction {
     this.inputs = {
       limit: { required: true, default: 100, formatter: APIData.ensureNumber },
       offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-      unique: { required: false },
+      unique: { required: false, formatter: APIData.ensureBoolean },
       state: { required: false },
       modelId: { required: false },
       sourceId: { required: false },
@@ -45,14 +45,27 @@ export class PropertiesList extends AuthenticatedAction {
   async runWithinTransaction({
     params,
   }: {
-    params: Record<string, string | boolean | number>;
+    params: {
+      state: GrouparooRecord["state"];
+      sourceId: string;
+      includeExamples: boolean;
+      unique: boolean;
+      limit: number;
+      offset: number;
+      order: Order;
+      modelId: string;
+    };
   }) {
     const includeExamples = params.includeExamples;
 
     const where = {};
-    if (params.state) where["state"] = params.state;
-    if (params.sourceId) where["sourceId"] = params.sourceId;
-    if (params?.unique?.toString().toLowerCase() === "true") {
+    if (params.state) {
+      where["state"] = params.state;
+    }
+    if (params.sourceId) {
+      where["sourceId"] = params.sourceId;
+    }
+    if (params.unique) {
       where["unique"] = true;
     }
 
@@ -66,9 +79,9 @@ export class PropertiesList extends AuthenticatedAction {
     const properties = (
       await Property.scope(null).findAll({
         include,
-        limit: Number(params.limit),
-        offset: Number(params.offset),
-        order: params.order as unknown as Order,
+        limit: params.limit,
+        offset: params.offset,
+        order: params.order,
         where,
       })
     ).filter((p) =>

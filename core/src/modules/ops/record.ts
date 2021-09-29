@@ -278,9 +278,9 @@ export namespace RecordOps {
       recordId: string;
       position: number;
       rawValue: string;
-      invalidValue?: string | null;
-      invalidReason?: string | null;
-      state: string;
+      invalidValue?: string;
+      invalidReason?: string;
+      state: RecordProperty["state"];
       unique: boolean;
       stateChangedAt: Date;
       confirmedAt: Date;
@@ -507,7 +507,7 @@ export namespace RecordOps {
 
   export async function buildNullProperties(
     records: GrouparooRecord[],
-    state = "pending"
+    state: RecordProperty["state"] = "pending"
   ) {
     const bulkArgs = [];
     const now = new Date();

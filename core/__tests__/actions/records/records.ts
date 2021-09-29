@@ -126,7 +126,7 @@ describe("actions/records", () => {
       const record = await GrouparooRecord.findOne({
         where: { id: recordData.id },
       });
-      await record?.destroy();
+      await record.destroy();
     });
 
     test("a writer can list all the records", async () => {
@@ -216,7 +216,7 @@ describe("actions/records", () => {
       };
       const { records: invalidRecords } =
         await specHelper.runAction<RecordsList>("records:list", connection);
-      expect(invalidRecords?.[0]).toBeDefined();
+      expect(invalidRecords[0]).toBeDefined();
 
       const [invalidRecord] = invalidRecords;
       const [userId] = invalidRecord.properties.userId.values;
@@ -239,7 +239,7 @@ describe("actions/records", () => {
 
       connection.params = {
         csrfToken,
-        propertyId: emailProperty?.id,
+        propertyId: emailProperty.id,
         match: "@example.com",
       };
       const { error, recordProperties } =
