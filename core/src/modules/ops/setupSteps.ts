@@ -1,5 +1,6 @@
 import { Team } from "./../../models/Team";
 import { plugin } from "../plugin";
+import { GrouparooModel } from "../../models/GrouparooModel";
 import { App } from "../../models/App";
 import { Source } from "../../models/Source";
 import { Property } from "../../models/Property";
@@ -51,6 +52,19 @@ export namespace SetupStepOps {
       check: async () => {
         const setting = await plugin.readSetting("core", "cluster-name");
         return setting.value !== setting.defaultValue;
+      },
+    },
+    add_a_model: {
+      key: "add_a_model",
+      title: "Add a Model",
+      description:
+        "Models define the shape of your Records.  Grouparoo uses a Profile Model by default.  Add more Models to customize your Record's schema.",
+      href: "/models",
+      cta: "Add a Model",
+      helpLink: null,
+      check: async () => {
+        const count = await GrouparooModel.count();
+        return count > 1;
       },
     },
     add_an_app: {
@@ -173,23 +187,62 @@ export namespace SetupStepOps {
               position: 1,
             },
             {
-              ...allSetupStepDescriptions.add_an_app,
+              ...allSetupStepDescriptions.add_a_model,
               position: 2,
             },
             {
-              ...allSetupStepDescriptions.create_a_source,
+              ...allSetupStepDescriptions.add_an_app,
               position: 3,
             },
             {
-              ...allSetupStepDescriptions.create_a_unique_record_property,
+              ...allSetupStepDescriptions.create_a_source,
               position: 4,
             },
             {
-              ...allSetupStepDescriptions.create_a_schedule,
+              ...allSetupStepDescriptions.create_a_unique_record_property,
               position: 5,
             },
             {
+              ...allSetupStepDescriptions.create_a_schedule,
+              position: 6,
+            },
+            {
               ...allSetupStepDescriptions.create_a_sample_record,
+              position: 7,
+            },
+
+            {
+              ...allSetupStepDescriptions.create_a_group,
+              position: 8,
+            },
+            {
+              ...allSetupStepDescriptions.create_a_destination,
+              position: 9,
+            },
+          ]
+        : [
+            {
+              ...allSetupStepDescriptions.name_your_grouparoo_instance,
+              position: 1,
+            },
+            {
+              ...allSetupStepDescriptions.add_a_model,
+              position: 2,
+            },
+            {
+              ...allSetupStepDescriptions.add_an_app,
+              position: 3,
+            },
+            {
+              ...allSetupStepDescriptions.create_a_source,
+              position: 4,
+            },
+            {
+              ...allSetupStepDescriptions.create_a_unique_record_property,
+              position: 5,
+            },
+            {
+              ...allSetupStepDescriptions.create_a_schedule,
               position: 6,
             },
 
@@ -200,37 +253,6 @@ export namespace SetupStepOps {
             {
               ...allSetupStepDescriptions.create_a_destination,
               position: 8,
-            },
-          ]
-        : [
-            {
-              ...allSetupStepDescriptions.name_your_grouparoo_instance,
-              position: 1,
-            },
-            {
-              ...allSetupStepDescriptions.add_an_app,
-              position: 2,
-            },
-            {
-              ...allSetupStepDescriptions.create_a_source,
-              position: 3,
-            },
-            {
-              ...allSetupStepDescriptions.create_a_unique_record_property,
-              position: 4,
-            },
-            {
-              ...allSetupStepDescriptions.create_a_schedule,
-              position: 5,
-            },
-
-            {
-              ...allSetupStepDescriptions.create_a_group,
-              position: 6,
-            },
-            {
-              ...allSetupStepDescriptions.create_a_destination,
-              position: 7,
             },
           ];
 

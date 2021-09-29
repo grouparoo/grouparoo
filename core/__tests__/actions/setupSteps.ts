@@ -50,7 +50,7 @@ describe("actions/setupSteps", () => {
 
       expect(error).toBeFalsy();
 
-      expect(setupSteps.length).toBe(7);
+      expect(setupSteps.length).toBe(8);
       expect(setupSteps[0].position).toBe(1);
       expect(setupSteps[0].key).toBe("name_your_grouparoo_instance");
       expect(setupSteps[0].title).toBe("Name your Grouparoo Instance");
@@ -81,7 +81,7 @@ describe("actions/setupSteps", () => {
         "setupSteps:list",
         connection
       );
-      expect(setupSteps.length).toBe(7);
+      expect(setupSteps.length).toBe(8);
       expect(setupSteps[0].key).toBe("name_your_grouparoo_instance");
       expect(setupSteps[0].complete).toBe(true);
     });
