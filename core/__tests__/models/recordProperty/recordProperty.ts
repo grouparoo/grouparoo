@@ -92,32 +92,6 @@ describe("models/recordProperty", () => {
     await vipProperty.update({ state: "ready" });
   });
 
-  test("creating, editing, and deleting a record property creates a relevant log message", async () => {
-    const property = await RecordProperty.create({
-      recordId: record.id,
-      propertyId: ltvProperty.id,
-      rawValue: "123.0",
-    });
-
-    let log = await Log.findOne({
-      where: { topic: "recordProperty", verb: "create" },
-    });
-    expect(log.message).toMatch(/recordProperty .* created/);
-
-    property.rawValue = "100";
-    await property.save();
-    log = await Log.findOne({
-      where: { topic: "recordProperty", verb: "update" },
-    });
-    expect(log.message).toBe('recordProperty "ltv" updated: rawValue -> 100');
-
-    await property.destroy();
-    log = await Log.findOne({
-      where: { topic: "recordProperty", verb: "destroy" },
-    });
-    expect(log.message).toBe('recordProperty "ltv" destroyed');
-  });
-
   describe("array properties", () => {
     let purchasesProperty: Property;
 

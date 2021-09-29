@@ -20,42 +20,42 @@ importers:
 
   apps/staging-community:
     specifiers:
-      '@grouparoo/bigquery': 0.7.0-alpha.7
-      '@grouparoo/braze': 0.7.0-alpha.7
-      '@grouparoo/calculated-property': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/csv': 0.7.0-alpha.7
-      '@grouparoo/customerio': 0.7.0-alpha.7
-      '@grouparoo/demo': 0.7.0-alpha.7
-      '@grouparoo/eloqua': 0.7.0-alpha.7
-      '@grouparoo/facebook': 0.7.0-alpha.7
-      '@grouparoo/google-sheets': 0.7.0-alpha.7
-      '@grouparoo/hubspot': 0.7.0-alpha.7
-      '@grouparoo/intercom': 0.7.0-alpha.7
-      '@grouparoo/iterable': 0.7.0-alpha.7
-      '@grouparoo/logger': 0.7.0-alpha.7
-      '@grouparoo/mailchimp': 0.7.0-alpha.7
-      '@grouparoo/mailjet': 0.7.0-alpha.7
-      '@grouparoo/marketo': 0.7.0-alpha.7
-      '@grouparoo/mixpanel': 0.7.0-alpha.7
-      '@grouparoo/mongo': 0.7.0-alpha.7
-      '@grouparoo/mysql': 0.7.0-alpha.7
-      '@grouparoo/onesignal': 0.7.0-alpha.7
-      '@grouparoo/pardot': 0.7.0-alpha.7
-      '@grouparoo/pipedrive': 0.7.0-alpha.7
-      '@grouparoo/postgres': 0.7.0-alpha.7
-      '@grouparoo/prometheus': 0.7.0-alpha.7
-      '@grouparoo/redshift': 0.7.0-alpha.7
-      '@grouparoo/sailthru': 0.7.0-alpha.7
-      '@grouparoo/salesforce': 0.7.0-alpha.7
-      '@grouparoo/sendgrid': 0.7.0-alpha.7
-      '@grouparoo/sentry': 0.7.0-alpha.7
-      '@grouparoo/snowflake': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
-      '@grouparoo/sqlite': 0.7.0-alpha.7
-      '@grouparoo/ui-community': 0.7.0-alpha.7
-      '@grouparoo/ui-config': 0.7.0-alpha.7
-      '@grouparoo/zendesk': 0.7.0-alpha.7
+      '@grouparoo/bigquery': 0.7.0-alpha.9
+      '@grouparoo/braze': 0.7.0-alpha.9
+      '@grouparoo/calculated-property': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/csv': 0.7.0-alpha.9
+      '@grouparoo/customerio': 0.7.0-alpha.9
+      '@grouparoo/demo': 0.7.0-alpha.9
+      '@grouparoo/eloqua': 0.7.0-alpha.9
+      '@grouparoo/facebook': 0.7.0-alpha.9
+      '@grouparoo/google-sheets': 0.7.0-alpha.9
+      '@grouparoo/hubspot': 0.7.0-alpha.9
+      '@grouparoo/intercom': 0.7.0-alpha.9
+      '@grouparoo/iterable': 0.7.0-alpha.9
+      '@grouparoo/logger': 0.7.0-alpha.9
+      '@grouparoo/mailchimp': 0.7.0-alpha.9
+      '@grouparoo/mailjet': 0.7.0-alpha.9
+      '@grouparoo/marketo': 0.7.0-alpha.9
+      '@grouparoo/mixpanel': 0.7.0-alpha.9
+      '@grouparoo/mongo': 0.7.0-alpha.9
+      '@grouparoo/mysql': 0.7.0-alpha.9
+      '@grouparoo/onesignal': 0.7.0-alpha.9
+      '@grouparoo/pardot': 0.7.0-alpha.9
+      '@grouparoo/pipedrive': 0.7.0-alpha.9
+      '@grouparoo/postgres': 0.7.0-alpha.9
+      '@grouparoo/prometheus': 0.7.0-alpha.9
+      '@grouparoo/redshift': 0.7.0-alpha.9
+      '@grouparoo/sailthru': 0.7.0-alpha.9
+      '@grouparoo/salesforce': 0.7.0-alpha.9
+      '@grouparoo/sendgrid': 0.7.0-alpha.9
+      '@grouparoo/sentry': 0.7.0-alpha.9
+      '@grouparoo/snowflake': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
+      '@grouparoo/sqlite': 0.7.0-alpha.9
+      '@grouparoo/ui-community': 0.7.0-alpha.9
+      '@grouparoo/ui-config': 0.7.0-alpha.9
+      '@grouparoo/zendesk': 0.7.0-alpha.9
       jest: 27.1.0
     dependencies:
       '@grouparoo/bigquery': link:../../plugins/@grouparoo/bigquery
@@ -99,13 +99,13 @@ importers:
 
   apps/staging-config:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/demo': 0.7.0-alpha.7
-      '@grouparoo/postgres': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
-      '@grouparoo/sqlite': 0.7.0-alpha.7
-      '@grouparoo/ui-config': 0.7.0-alpha.7
-      grouparoo: 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/demo': 0.7.0-alpha.9
+      '@grouparoo/postgres': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
+      '@grouparoo/sqlite': 0.7.0-alpha.9
+      '@grouparoo/ui-config': 0.7.0-alpha.9
+      grouparoo: 0.7.0-alpha.9
       jest: 27.1.0
     dependencies:
       '@grouparoo/core': link:../../core
@@ -120,41 +120,41 @@ importers:
 
   apps/staging-enterprise:
     specifiers:
-      '@grouparoo/bigquery': 0.7.0-alpha.7
-      '@grouparoo/braze': 0.7.0-alpha.7
-      '@grouparoo/calculated-property': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/csv': 0.7.0-alpha.7
-      '@grouparoo/customerio': 0.7.0-alpha.7
-      '@grouparoo/demo': 0.7.0-alpha.7
-      '@grouparoo/eloqua': 0.7.0-alpha.7
-      '@grouparoo/facebook': 0.7.0-alpha.7
-      '@grouparoo/google-sheets': 0.7.0-alpha.7
-      '@grouparoo/hubspot': 0.7.0-alpha.7
-      '@grouparoo/intercom': 0.7.0-alpha.7
-      '@grouparoo/iterable': 0.7.0-alpha.7
-      '@grouparoo/logger': 0.7.0-alpha.7
-      '@grouparoo/mailchimp': 0.7.0-alpha.7
-      '@grouparoo/mailjet': 0.7.0-alpha.7
-      '@grouparoo/marketo': 0.7.0-alpha.7
-      '@grouparoo/mixpanel': 0.7.0-alpha.7
-      '@grouparoo/mongo': 0.7.0-alpha.7
-      '@grouparoo/mysql': 0.7.0-alpha.7
-      '@grouparoo/onesignal': 0.7.0-alpha.7
-      '@grouparoo/pardot': 0.7.0-alpha.7
-      '@grouparoo/pipedrive': 0.7.0-alpha.7
-      '@grouparoo/postgres': 0.7.0-alpha.7
-      '@grouparoo/redshift': 0.7.0-alpha.7
-      '@grouparoo/sailthru': 0.7.0-alpha.7
-      '@grouparoo/salesforce': 0.7.0-alpha.7
-      '@grouparoo/sendgrid': 0.7.0-alpha.7
-      '@grouparoo/sentry': 0.7.0-alpha.7
-      '@grouparoo/snowflake': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
-      '@grouparoo/sqlite': 0.7.0-alpha.7
-      '@grouparoo/ui-config': 0.7.0-alpha.7
-      '@grouparoo/ui-enterprise': 0.7.0-alpha.7
-      '@grouparoo/zendesk': 0.7.0-alpha.7
+      '@grouparoo/bigquery': 0.7.0-alpha.9
+      '@grouparoo/braze': 0.7.0-alpha.9
+      '@grouparoo/calculated-property': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/csv': 0.7.0-alpha.9
+      '@grouparoo/customerio': 0.7.0-alpha.9
+      '@grouparoo/demo': 0.7.0-alpha.9
+      '@grouparoo/eloqua': 0.7.0-alpha.9
+      '@grouparoo/facebook': 0.7.0-alpha.9
+      '@grouparoo/google-sheets': 0.7.0-alpha.9
+      '@grouparoo/hubspot': 0.7.0-alpha.9
+      '@grouparoo/intercom': 0.7.0-alpha.9
+      '@grouparoo/iterable': 0.7.0-alpha.9
+      '@grouparoo/logger': 0.7.0-alpha.9
+      '@grouparoo/mailchimp': 0.7.0-alpha.9
+      '@grouparoo/mailjet': 0.7.0-alpha.9
+      '@grouparoo/marketo': 0.7.0-alpha.9
+      '@grouparoo/mixpanel': 0.7.0-alpha.9
+      '@grouparoo/mongo': 0.7.0-alpha.9
+      '@grouparoo/mysql': 0.7.0-alpha.9
+      '@grouparoo/onesignal': 0.7.0-alpha.9
+      '@grouparoo/pardot': 0.7.0-alpha.9
+      '@grouparoo/pipedrive': 0.7.0-alpha.9
+      '@grouparoo/postgres': 0.7.0-alpha.9
+      '@grouparoo/redshift': 0.7.0-alpha.9
+      '@grouparoo/sailthru': 0.7.0-alpha.9
+      '@grouparoo/salesforce': 0.7.0-alpha.9
+      '@grouparoo/sendgrid': 0.7.0-alpha.9
+      '@grouparoo/sentry': 0.7.0-alpha.9
+      '@grouparoo/snowflake': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
+      '@grouparoo/sqlite': 0.7.0-alpha.9
+      '@grouparoo/ui-config': 0.7.0-alpha.9
+      '@grouparoo/ui-enterprise': 0.7.0-alpha.9
+      '@grouparoo/zendesk': 0.7.0-alpha.9
       jest: 27.1.0
     dependencies:
       '@grouparoo/bigquery': link:../../plugins/@grouparoo/bigquery
@@ -228,7 +228,7 @@ importers:
 
   core:
     specifiers:
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/fs-extra': '*'
       '@types/isomorphic-fetch': 0.0.35
       '@types/jest': '*'
@@ -250,7 +250,7 @@ importers:
       form-data: 4.0.0
       fs-extra: 10.0.0
       glob: 7.1.7
-      grouparoo: 0.7.0-alpha.7
+      grouparoo: 0.7.0-alpha.9
       ioredis: 4.27.9
       ioredis-mock: 5.6.0
       isomorphic-fetch: 3.0.0
@@ -345,8 +345,8 @@ importers:
 
   plugins/@grouparoo/app-templates:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       '@types/uuid': '*'
@@ -374,9 +374,9 @@ importers:
   plugins/@grouparoo/bigquery:
     specifiers:
       '@google-cloud/bigquery': 5.8.0
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -406,13 +406,13 @@ importers:
 
   plugins/@grouparoo/braze:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      axios: 0.21.1
+      axios: 0.21.4
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -423,7 +423,7 @@ importers:
       typescript: 4.4.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.21.1
+      axios: 0.21.4
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -441,8 +441,8 @@ importers:
 
   plugins/@grouparoo/calculated-property:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -464,14 +464,45 @@ importers:
       ts-jest: 27.0.4_d6279bcaf6e2c6aa91a58343d133ee67
       typescript: 4.4.2
 
-  plugins/@grouparoo/csv:
+  plugins/@grouparoo/cloudwatch:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      axios: 0.21.1
+      aws-sdk: 2.995.0
+      jest: 27.1.0
+      prettier: 2.3.2
+      ts-jest: 27.0.5
+      type-fest: 2.1.0
+      typescript: 4.4.2
+      winston: 3.3.3
+      winston-cloudwatch: 3.0.2
+    dependencies:
+      aws-sdk: 2.995.0
+      winston: 3.3.3
+      winston-cloudwatch: 3.0.2_winston@3.3.3
+    devDependencies:
+      '@grouparoo/core': link:../../../core
+      '@grouparoo/spec-helper': link:../spec-helper
+      '@types/jest': 27.0.1
+      '@types/node': 16.9.1
+      actionhero: 27.1.4
+      jest: 27.1.0
+      prettier: 2.3.2
+      ts-jest: 27.0.5_d6279bcaf6e2c6aa91a58343d133ee67
+      type-fest: 2.1.0
+      typescript: 4.4.2
+
+  plugins/@grouparoo/csv:
+    specifiers:
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
+      '@types/jest': '*'
+      '@types/node': '*'
+      actionhero: 27.1.4
+      axios: 0.21.4
       csv-parser: 3.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -480,7 +511,7 @@ importers:
       type-fest: 2.1.0
       typescript: 4.4.2
     dependencies:
-      axios: 0.21.1
+      axios: 0.21.4
       csv-parser: 3.0.0
       fs-extra: 10.0.0
     devDependencies:
@@ -497,13 +528,13 @@ importers:
 
   plugins/@grouparoo/customerio:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      axios: 0.21.1
+      axios: 0.21.4
       customerio-node: 3.0.3
       dotenv: 10.0.0
       fs-extra: 10.0.0
@@ -522,7 +553,7 @@ importers:
       '@types/jest': 27.0.1
       '@types/node': 16.9.1
       actionhero: 27.1.4
-      axios: 0.21.1
+      axios: 0.21.4
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -534,8 +565,8 @@ importers:
 
   plugins/@grouparoo/dbt:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -561,8 +592,8 @@ importers:
 
   plugins/@grouparoo/demo:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -606,13 +637,13 @@ importers:
 
   plugins/@grouparoo/eloqua:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      axios: 0.21.1
+      axios: 0.21.4
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -622,7 +653,7 @@ importers:
       typescript: 4.4.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.21.1
+      axios: 0.21.4
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -639,9 +670,9 @@ importers:
 
   plugins/@grouparoo/facebook:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -680,8 +711,8 @@ importers:
 
   plugins/@grouparoo/google-sheets:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -713,13 +744,13 @@ importers:
 
   plugins/@grouparoo/hubspot:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      axios: 0.21.1
+      axios: 0.21.4
       dotenv: 10.0.0
       fs-extra: 10.0.0
       hubspot-api: 2.15.3
@@ -732,7 +763,7 @@ importers:
       typescript: 4.4.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.21.1
+      axios: 0.21.4
       hubspot-api: 2.15.3
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -752,9 +783,9 @@ importers:
 
   plugins/@grouparoo/intercom:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -787,9 +818,9 @@ importers:
 
   plugins/@grouparoo/iterable:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -822,9 +853,9 @@ importers:
 
   plugins/@grouparoo/logger:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -847,9 +878,9 @@ importers:
 
   plugins/@grouparoo/mailchimp:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -884,13 +915,13 @@ importers:
 
   plugins/@grouparoo/mailjet:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      axios: 0.21.1
+      axios: 0.21.4
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -902,7 +933,7 @@ importers:
       typescript: 4.4.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.21.1
+      axios: 0.21.4
       node-mailjet: 3.3.4
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -921,10 +952,10 @@ importers:
 
   plugins/@grouparoo/marketo:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
       '@grouparoo/node-marketo-rest': 0.7.10
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -956,13 +987,13 @@ importers:
 
   plugins/@grouparoo/mixpanel:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      axios: 0.21.1
+      axios: 0.21.4
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -972,7 +1003,7 @@ importers:
       typescript: 4.4.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.21.1
+      axios: 0.21.4
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -989,9 +1020,9 @@ importers:
 
   plugins/@grouparoo/mongo:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -1020,9 +1051,9 @@ importers:
 
   plugins/@grouparoo/mysql:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/mysql': '*'
       '@types/node': '*'
@@ -1051,8 +1082,8 @@ importers:
 
   plugins/@grouparoo/newrelic:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -1076,9 +1107,9 @@ importers:
 
   plugins/@grouparoo/onesignal:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -1111,13 +1142,13 @@ importers:
 
   plugins/@grouparoo/pardot:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      axios: 0.21.1
+      axios: 0.21.4
       dotenv: 10.0.0
       form-data: 4.0.0
       fs-extra: 10.0.0
@@ -1130,7 +1161,7 @@ importers:
       typescript: 4.4.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.21.1
+      axios: 0.21.4
       form-data: 4.0.0
       jsforce: 1.10.1
     devDependencies:
@@ -1150,13 +1181,13 @@ importers:
 
   plugins/@grouparoo/pipedrive:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      axios: 0.21.1
+      axios: 0.21.4
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -1167,7 +1198,7 @@ importers:
       typescript: 4.4.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.21.1
+      axios: 0.21.4
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1185,9 +1216,9 @@ importers:
 
   plugins/@grouparoo/postgres:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       '@types/pg': '*'
@@ -1226,12 +1257,12 @@ importers:
 
   plugins/@grouparoo/prometheus:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      axios: 0.21.1
+      axios: 0.21.4
       jest: 27.1.0
       prom-client: 13.2.0
       ts-jest: 27.0.5
@@ -1244,17 +1275,17 @@ importers:
       '@types/jest': 27.0.1
       '@types/node': 16.9.1
       actionhero: 27.1.4
-      axios: 0.21.1
+      axios: 0.21.4
       jest: 27.1.0
       ts-jest: 27.0.5_d6279bcaf6e2c6aa91a58343d133ee67
       typescript: 4.4.2
 
   plugins/@grouparoo/redshift:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/postgres': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/postgres': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       '@types/pg': '*'
@@ -1282,9 +1313,9 @@ importers:
 
   plugins/@grouparoo/sailthru:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -1317,9 +1348,9 @@ importers:
 
   plugins/@grouparoo/salesforce:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -1352,9 +1383,9 @@ importers:
 
   plugins/@grouparoo/sendgrid:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@sendgrid/client': 7.4.6
       '@types/jest': '*'
       '@types/node': '*'
@@ -1387,8 +1418,8 @@ importers:
 
   plugins/@grouparoo/sentry:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@sentry/node': 6.12.0
       '@sentry/tracing': 6.12.0
       '@types/jest': '*'
@@ -1414,9 +1445,9 @@ importers:
 
   plugins/@grouparoo/snowflake:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -1449,12 +1480,12 @@ importers:
 
   plugins/@grouparoo/spec-helper:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
       '@types/faker': '*'
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      axios: 0.21.1
+      axios: 0.21.4
       faker: 5.5.3
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -1465,7 +1496,7 @@ importers:
       typescript: 4.4.2
       uuid: 8.3.2
     dependencies:
-      axios: 0.21.1
+      axios: 0.21.4
       faker: 5.5.3
       nock: 13.1.3
       sequelize: 6.6.2
@@ -1484,9 +1515,9 @@ importers:
 
   plugins/@grouparoo/sqlite:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       '@types/pg': '*'
@@ -1523,9 +1554,9 @@ importers:
 
   plugins/@grouparoo/zendesk:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0-alpha.7
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
+      '@grouparoo/app-templates': 0.7.0-alpha.9
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -1558,9 +1589,9 @@ importers:
 
   ui/ui-community:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
-      '@grouparoo/ui-components': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
+      '@grouparoo/ui-components': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -1613,13 +1644,13 @@ importers:
       '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
       '@fortawesome/react-fontawesome': 0.1.15
-      '@grouparoo/core': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.0.0
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
-      axios: 0.21.1
+      axios: 0.21.4
       bootstrap: 4.6.0
       date-fns: 2.23.0
       isomorphic-fetch: 3.0.0
@@ -1657,7 +1688,7 @@ importers:
       '@types/jest': 27.0.1
       '@types/react': 17.0.20
       '@types/react-dom': 17.0.9
-      axios: 0.21.1
+      axios: 0.21.4
       bootstrap: 4.6.0
       date-fns: 2.23.0
       isomorphic-fetch: 3.0.0
@@ -1687,9 +1718,9 @@ importers:
 
   ui/ui-config:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
-      '@grouparoo/ui-components': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
+      '@grouparoo/ui-components': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -1742,9 +1773,9 @@ importers:
 
   ui/ui-enterprise:
     specifiers:
-      '@grouparoo/core': 0.7.0-alpha.7
-      '@grouparoo/spec-helper': 0.7.0-alpha.7
-      '@grouparoo/ui-components': 0.7.0-alpha.7
+      '@grouparoo/core': 0.7.0-alpha.9
+      '@grouparoo/spec-helper': 0.7.0-alpha.9
+      '@grouparoo/ui-components': 0.7.0-alpha.9
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -4703,6 +4734,22 @@ packages:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
 
+  /aws-sdk/2.995.0:
+    resolution: {integrity: sha512-2tZv0GLI7SAhV6hGIhZArCvF2OcQNPrGNmtPtOhBWmovYJ5qIaibtFFtSee3O8jWX87KGDkBA5fgBMXrcG7i/w==}
+    engines: {node: '>= 0.8.0'}
+    requiresBuild: true
+    dependencies:
+      buffer: 4.9.2
+      events: 1.1.1
+      ieee754: 1.1.13
+      jmespath: 0.15.0
+      querystring: 0.2.0
+      sax: 1.2.1
+      url: 0.10.3
+      uuid: 3.3.2
+      xml2js: 0.4.19
+    dev: false
+
   /aws-sign2/0.7.0:
     resolution: {integrity: sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg=}
 
@@ -4721,20 +4768,12 @@ packages:
       follow-redirects: 1.5.10
     dev: false
 
-  /axios/0.21.1:
-    resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
-    dependencies:
-      follow-redirects: 1.14.3
-    transitivePeerDependencies:
-      - debug
-
   /axios/0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
       follow-redirects: 1.14.4
     transitivePeerDependencies:
       - debug
-    dev: false
 
   /axios/0.21.4_debug@3.2.7:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
@@ -6903,6 +6942,11 @@ packages:
   /eventemitter3/4.0.7:
     resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
 
+  /events/1.1.1:
+    resolution: {integrity: sha1-nr23Y1rQmccNzEwqH1AEKI6L2SQ=}
+    engines: {node: '>=0.4.x'}
+    dev: false
+
   /events/3.3.0:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
     engines: {node: '>=0.8.x'}
@@ -7198,15 +7242,6 @@ packages:
   /fn.name/1.1.0:
     resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
 
-  /follow-redirects/1.14.3:
-    resolution: {integrity: sha512-3MkHxknWMUtb23apkgz/83fDoe+y+qr0TdgacGIA7bew+QLBo3vdgEN2xEsuXNivpFy4CyDhBBZnNZOtalmenw==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-
   /follow-redirects/1.14.4:
     resolution: {integrity: sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==}
     engines: {node: '>=4.0'}
@@ -7215,7 +7250,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dev: false
 
   /follow-redirects/1.14.4_debug@3.2.7:
     resolution: {integrity: sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==}
@@ -8081,6 +8115,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
+
+  /ieee754/1.1.13:
+    resolution: {integrity: sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==}
+    dev: false
 
   /ieee754/1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -9294,6 +9332,11 @@ packages:
   /jju/1.4.0:
     resolution: {integrity: sha1-o6vicYryQaKykE+EpiWXDzia4yo=}
 
+  /jmespath/0.15.0:
+    resolution: {integrity: sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc=}
+    engines: {node: '>= 0.6.0'}
+    dev: false
+
   /js-sha256/0.9.0:
     resolution: {integrity: sha512-sga3MHh9sgQN2+pJ9VYZ+1LPwXOxuBJBA5nrR5/ofPfuiJBE2hnjsaN8se8JznOmGLN2p49Pe5U/ttafcs/apA==}
     dev: false
@@ -9754,6 +9797,10 @@ packages:
     resolution: {integrity: sha1-DM8tiRZq8Ds2Y8eWU4t1rG4RTZ0=}
     dev: true
 
+  /lodash.assign/4.2.0:
+    resolution: {integrity: sha1-DZnzzNem0mHRm9rrkkUAXShYCOc=}
+    dev: false
+
   /lodash.camelcase/4.3.0:
     resolution: {integrity: sha1-soqmKIorn8ZRA1x3EfZathkDMaY=}
     dev: false
@@ -9772,6 +9819,10 @@ packages:
   /lodash.escape/4.0.1:
     resolution: {integrity: sha1-yQRGkMIeBClL6qUXcS/e0fqI3pg=}
     dev: true
+
+  /lodash.find/4.6.0:
+    resolution: {integrity: sha1-ywcE1Hq3F4n/oN6Ll92Sb7iLE7E=}
+    dev: false
 
   /lodash.flatten/4.4.0:
     resolution: {integrity: sha1-8xwiIlqWMtK7+OSt2+8kCqdlph8=}
@@ -9795,9 +9846,17 @@ packages:
     resolution: {integrity: sha1-bC4XHbKiV82WgC/UOwGyDV9YcPY=}
     dev: false
 
+  /lodash.isempty/4.4.0:
+    resolution: {integrity: sha1-b4bL7di+TsmHvpqvM8loTbGzHn4=}
+    dev: false
+
   /lodash.isequal/4.5.0:
     resolution: {integrity: sha1-QVxEePK8wwEgwizhDtMib30+GOA=}
     dev: true
+
+  /lodash.iserror/3.1.1:
+    resolution: {integrity: sha1-KXuaBfq2cUvCRE18wZ0dfES17Ow=}
+    dev: false
 
   /lodash.isinteger/4.0.4:
     resolution: {integrity: sha1-YZwK89A/iwTDH1iChAt3sRzWg0M=}
@@ -13234,6 +13293,10 @@ packages:
       chokidar: 3.5.2
     dev: true
 
+  /sax/1.2.1:
+    resolution: {integrity: sha1-e45lYZCyKOgaZq6nSEgNgozS03o=}
+    dev: false
+
   /sax/1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
     dev: false
@@ -15011,6 +15074,13 @@ packages:
     dependencies:
       prepend-http: 2.0.0
 
+  /url/0.10.3:
+    resolution: {integrity: sha1-Ah5NnHcF8hu/N9A861h2dAJ3TGQ=}
+    dependencies:
+      punycode: 1.3.2
+      querystring: 0.2.0
+    dev: false
+
   /url/0.11.0:
     resolution: {integrity: sha1-ODjpfPxgUh63PFJajlW/3Z4uKPE=}
     dependencies:
@@ -15057,6 +15127,12 @@ packages:
       is-typed-array: 1.1.8
       safe-buffer: 5.2.1
       which-typed-array: 1.1.7
+
+  /uuid/3.3.2:
+    resolution: {integrity: sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==}
+    deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
+    hasBin: true
+    dev: false
 
   /uuid/3.4.0:
     resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
@@ -15295,6 +15371,24 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       string-width: 4.2.2
+
+  /winston-cloudwatch/3.0.2_winston@3.3.3:
+    resolution: {integrity: sha512-/fm8Fp3xVV2rtrC0fgRBiCpYZ1GTO36x9cp2W0T3Utco4anxautXNFLantzmbpGmIGYfK9xnjwV97Eq+TXtm8g==}
+    peerDependencies:
+      winston: ^3.0.0
+    dependencies:
+      async: 3.2.1
+      chalk: 4.1.2
+      fast-safe-stringify: 2.1.1
+      lodash.assign: 4.2.0
+      lodash.find: 4.6.0
+      lodash.isempty: 4.4.0
+      lodash.iserror: 3.1.1
+      proxy-agent: 4.0.1
+      winston: 3.3.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /winston-transport/4.4.0:
     resolution: {integrity: sha512-Lc7/p3GtqtqPBYYtS6KCN3c77/2QCev51DvcJKbkFPQNoj1sinkGwLGFDxkXY9J6p9+EPnYs+D90uwbnaiURTw==}

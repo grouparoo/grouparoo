@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/csv",
   "description": "The Grouparoo CSV Plugin",
-  "version": "0.7.0-alpha.7",
+  "version": "0.7.0-alpha.9",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,13 +28,13 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "axios": "0.21.1",
+    "axios": "0.21.4",
     "csv-parser": "3.0.0",
     "fs-extra": "10.0.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.0-alpha.7",
-    "@grouparoo/spec-helper": "0.7.0-alpha.7",
+    "@grouparoo/core": "0.7.0-alpha.9",
+    "@grouparoo/spec-helper": "0.7.0-alpha.9",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "27.1.4",

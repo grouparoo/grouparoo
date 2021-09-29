@@ -8,12 +8,12 @@ import {
   BeforeSave,
   DataType,
 } from "sequelize-typescript";
-import { LoggedModel } from "../classes/loggedModel";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Property } from "./Property";
 import { RecordPropertyOps } from "../modules/ops/recordProperty";
 import { StateMachine } from "../modules/stateMachine";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -25,7 +25,7 @@ const STATE_TRANSITIONS = [
 ];
 
 @Table({ tableName: "recordProperties", paranoid: false })
-export class RecordProperty extends LoggedModel<RecordProperty> {
+export class RecordProperty extends CommonModel<RecordProperty> {
   idPrefix() {
     return "rpr";
   }
@@ -126,33 +126,6 @@ export class RecordProperty extends LoggedModel<RecordProperty> {
       throw new Error(`property not found for propertyId ${this.propertyId}`);
     }
     return property;
-  }
-
-  async logMessage(verb: "create" | "update" | "destroy") {
-    let message = "";
-    const property = await this.ensureProperty();
-
-    switch (verb) {
-      case "create":
-        message = `recordProperty "${property.key}" created`;
-        break;
-      case "update":
-        const changedValueStrings = [];
-        const changedKeys = this.changed() as Array<string>;
-        changedKeys.forEach((k) => {
-          changedValueStrings.push(`${k} -> ${this[k]}`);
-        });
-
-        message = `recordProperty "${
-          property.key
-        }" updated: ${changedValueStrings.join(", ")}`;
-        break;
-      case "destroy":
-        message = `recordProperty "${property.key}" destroyed`;
-        break;
-    }
-
-    return message;
   }
 
   // --- Class Methods --- //

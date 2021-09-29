@@ -78,28 +78,5 @@ describe("actions/logs", () => {
       expect(logs.length).toEqual(1);
       await record.destroy();
     });
-
-    test("a reader can ask for logs about a record and also see logs about properties", async () => {
-      const record = await helper.factories.record();
-      await record.buildNullProperties();
-
-      connection.params = {
-        csrfToken,
-        ownerId: record.id,
-      };
-
-      const { error, logs } = await specHelper.runAction<LogsList>(
-        "logs:list",
-        connection
-      );
-
-      expect(error).toBeUndefined();
-
-      expect(logs.length).toBeGreaterThan(1);
-      expect(logs.reverse()[0].topic).toBe("grouparooRecord");
-      expect(logs.reverse()[0].verb).toBe("create");
-      expect(logs.reverse()[1].topic).toBe("recordProperty");
-      expect(logs.reverse()[1].verb).toBe("create");
-    });
   });
 });
