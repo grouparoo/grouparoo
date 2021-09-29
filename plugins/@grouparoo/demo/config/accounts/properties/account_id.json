@@ -3,13 +3,13 @@
   "id": "account_id",
   "type": "integer",
   "key": "accountId",
-  "sourceId": "demo_users",
-  "unique": false,
+  "sourceId": "demo_accounts",
+  "unique": true,
   "identifying": false,
   "isArray": false,
   "options": {
     "aggregationMethod": "exact",
-    "column": "account_id"
+    "column": "id"
   },
   "filters": []
 }

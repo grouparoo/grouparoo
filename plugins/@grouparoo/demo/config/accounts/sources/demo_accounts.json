@@ -1,0 +1,29 @@
+[
+  {
+    "class": "Source",
+    "id": "demo_accounts",
+    "name": "Accounts",
+    "type": "DBNAME-table-import",
+    "appId": "demo_db",
+    "modelId": "accounts",
+    "options": {
+      "table": "accounts"
+    },
+    "mapping": {
+      "id": "account_id"
+    }
+  },
+  {
+    "class": "Schedule",
+    "id": "demo_accounts_schedule",
+    "name": "Accounts Schedule",
+    "sourceId": "demo_accounts",
+    "recurring": true,
+    "recurringFrequency": 900000,
+    "confirmRecords": false,
+    "options": {
+      "column": "updated_at"
+    },
+    "filters": []
+  }
+]
