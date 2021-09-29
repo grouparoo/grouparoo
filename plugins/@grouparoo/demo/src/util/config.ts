@@ -73,7 +73,6 @@ class Config {
         this.setDb(type);
         break;
       case "b2c":
-      case "purchases":
       case "users":
         this.addSource("users");
         break;
