@@ -51,6 +51,39 @@ const TYPES = {
     },
   },
 
+  admins: {
+    validationLevel: "off",
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["id"],
+        properties: {
+          id: {
+            bsonType: "int",
+          },
+          first_name: {
+            bsonType: "string",
+          },
+          last_name: {
+            bsonType: "string",
+          },
+          email: {
+            bsonType: "string",
+          },
+          permission: {
+            bsonType: "string",
+          },
+          created_at: {
+            bsonType: "date",
+          },
+          updated_at: {
+            bsonType: "date",
+          },
+        },
+      },
+    },
+  },
+
   purchases: {
     validationLevel: "off",
     validator: {

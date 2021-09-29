@@ -1,0 +1,29 @@
+[
+  {
+    "class": "Source",
+    "id": "demo_admins",
+    "name": "Demo Admins",
+    "type": "DBNAME-table-import",
+    "modelId": "admins",
+    "appId": "demo_db",
+    "options": {
+      "table": "admins"
+    },
+    "mapping": {
+      "id": "admin_id"
+    }
+  },
+  {
+    "class": "Schedule",
+    "id": "demo_admins_schedule",
+    "name": "Demo Admins schedule",
+    "sourceId": "demo_admins",
+    "recurring": true,
+    "recurringFrequency": 900000,
+    "confirmRecords": true,
+    "options": {
+      "column": "updated_at"
+    },
+    "filters": []
+  }
+]

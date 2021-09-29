@@ -18,14 +18,19 @@ interface DataOptions {
 
 export async function writeAll(db: Connection, options: DataOptions = {}) {
   await users(db, options);
+  await admins(db, options);
   await purchases(db, options);
   await plans(db, {});
   await accounts(db, options);
   await payments(db, options);
 }
 
-export async function users(db: Connection, options: DataOptions = {}) {
+async function users(db: Connection, options: DataOptions = {}) {
   await createCsvTable(db, "users", "id", "user", true, true, options);
+}
+
+async function admins(db: Connection, options: DataOptions = {}) {
+  await createCsvTable(db, "admins", "id", "admin", true, true, options);
 }
 
 async function purchases(db: Connection, options: DataOptions = {}) {
@@ -195,8 +200,9 @@ function getRowData(
   const now = new Date();
   switch (typeName) {
     case "user":
+    case "admin":
       rootCreatedAt = userCreatedAt(typeId);
-      isRoot = tableName === "users";
+      isRoot = ["users", "admins"].includes(tableName);
       numOfRoot = numberOfUsers;
       break;
     case "account":

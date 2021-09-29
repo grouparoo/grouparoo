@@ -1,0 +1,15 @@
+{
+  "class": "Property",
+  "id": "admin_permission",
+  "type": "string",
+  "key": "admin_permission",
+  "sourceId": "demo_admins",
+  "unique": false,
+  "identifying": false,
+  "isArray": false,
+  "options": {
+    "aggregationMethod": "exact",
+    "column": "permission"
+  },
+  "filters": []
+}

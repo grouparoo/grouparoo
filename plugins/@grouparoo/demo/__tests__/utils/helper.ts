@@ -13,7 +13,14 @@ import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
 
 async function truncate() {
-  const tables = ["users", "purchases", "accounts", "plans", "payments"];
+  const tables = [
+    "users",
+    "admins",
+    "purchases",
+    "accounts",
+    "plans",
+    "payments",
+  ];
   for (const table of tables) {
     await api.sequelize.query(`DROP TABLE IF EXISTS demo.${table}`);
   }
