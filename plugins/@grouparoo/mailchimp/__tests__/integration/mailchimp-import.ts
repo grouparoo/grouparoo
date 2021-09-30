@@ -104,7 +104,7 @@ describe("integration/runs/mailchimp-import", () => {
         // create the source
         session.params = {
           csrfToken,
-          type: "mailchimp-import",
+          type: "mailchimp-import-contacts",
           name: "source",
           appId: app.id,
           modelId: "mod_profiles",

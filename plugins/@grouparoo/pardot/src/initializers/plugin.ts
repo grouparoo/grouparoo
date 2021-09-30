@@ -43,6 +43,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "pardot",
+          displayName: "Pardot",
           options: [
             {
               key: "businessUnitId",
@@ -91,7 +92,8 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "pardot-export",
+          name: "pardot-export-prospects",
+          displayName: "Pardot Export Prospects",
           direction: "export",
           description:
             "Export Records and Groups to Pardot as Prospects and Lists",

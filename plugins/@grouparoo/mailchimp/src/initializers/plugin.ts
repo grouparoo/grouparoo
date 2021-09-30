@@ -55,6 +55,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "mailchimp",
+          displayName: "Mailchimp",
           options: [
             {
               key: "apiKey",

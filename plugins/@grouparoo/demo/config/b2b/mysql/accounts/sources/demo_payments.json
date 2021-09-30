@@ -2,7 +2,7 @@
   "class": "Source",
   "id": "demo_payments",
   "name": "Payments",
-  "type": "mysql-table-import",
+  "type": "mysql-import-table",
   "appId": "demo_db",
   "modelId": "mod_profiles",
   "options": {

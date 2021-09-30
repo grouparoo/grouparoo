@@ -62,6 +62,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "postgres",
+          displayName: "Postgres",
           options: [
             {
               key: "host",
@@ -136,7 +137,8 @@ export class Plugins extends Initializer {
         getTableConnection(),
         getQueryConnection(),
         {
-          name: "postgres-export",
+          name: "postgres-export-records",
+          displayName: "Postgres Export Record",
           direction: "export",
           description:
             "Export Records to a Postgres table.  Groups will be exported to a secondary table linked by a foreign key.",

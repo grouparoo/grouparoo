@@ -411,6 +411,7 @@ describe("actions/properties", () => {
           apps: [
             {
               name: "test-dynamic-app",
+              displayName: "test-dynamic-app",
               options: [],
               methods: {
                 test: async () => {
@@ -422,6 +423,7 @@ describe("actions/properties", () => {
           connections: [
             {
               name: "dynamic-property-options-source",
+              displayName: "dynamic-property-options-source",
               description: "a test app connection",
               app: "test-dynamic-app",
               direction: "import",

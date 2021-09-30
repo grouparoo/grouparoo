@@ -76,7 +76,7 @@ describe("mysql/query/records", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "mysql-query-import",
+      type: "mysql-import-query",
     });
     await source.update({ state: "ready" });
 

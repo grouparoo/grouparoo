@@ -196,7 +196,10 @@ export default function Page(props) {
               </Form.Group>
 
               <hr />
-              <p>Options for a {source.type} source:</p>
+              <p>
+                Options for a <code>{source.connection.displayName}</code>{" "}
+                source:
+              </p>
 
               {loadingOptions ? (
                 <Alert variant="warning">

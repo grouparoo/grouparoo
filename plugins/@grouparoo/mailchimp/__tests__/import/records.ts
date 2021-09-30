@@ -97,7 +97,7 @@ describe("mailchimp/import/records", () => {
 
     source = await helper.factories.source(app, {
       name: "Source",
-      type: "mailchimp-import",
+      type: "mailchimp-import-contacts",
       state: "draft",
     });
     sourceMapping = { "merge_fields.USERID": "userId" };

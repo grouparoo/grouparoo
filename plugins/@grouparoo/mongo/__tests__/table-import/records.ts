@@ -80,7 +80,7 @@ describe("mongo/table/records", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "mongo-table-import",
+      type: "mongo-import-table",
     });
 
     sourceMapping = { id: "userId" };

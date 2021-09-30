@@ -36,7 +36,7 @@ describe("mysql/table/scheduleOptions", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "mysql-table-import",
+      type: "mysql-import-table",
     });
     await source.setOptions({ table: usersTableName });
     await source.setMapping({ id: "userId" });

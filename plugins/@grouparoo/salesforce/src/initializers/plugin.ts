@@ -40,6 +40,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "salesforce",
+          displayName: "Salesforce",
           options: [
             {
               key: "username",
@@ -74,7 +75,8 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "salesforce-objects-export",
+          name: "salesforce-export-objects",
+          displayName: "Salesforce Export Objects",
           direction: "export",
           description:
             "Export Records and Groups to Salesforce sales cloud objects.",

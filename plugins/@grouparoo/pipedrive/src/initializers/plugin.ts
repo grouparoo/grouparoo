@@ -42,6 +42,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "pipedrive",
+          displayName: "Pipedrive",
           options: [
             {
               key: "apiToken",
@@ -56,7 +57,8 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "pipedrive-export",
+          name: "pipedrive-export-persons",
+          displayName: "Pipedrive Export Persons",
           direction: "export",
           description: "Export records to Pipedrive as Person contacts",
           app: "pipedrive",

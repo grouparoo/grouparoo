@@ -22,8 +22,8 @@ import {
   DestinationEdit,
   DestinationMappingOptions,
 } from "@grouparoo/core/src/actions/destinations";
-import { generateMailchimpId } from "./../../src/lib/shared/generateMailchimpId";
-import { connect } from "./../../src/lib/connect";
+import { generateMailchimpId } from "../../src/lib/shared/generateMailchimpId";
+import { connect } from "../../src/lib/connect";
 import {
   loadAppOptions,
   loadDestinationOptions,
@@ -80,7 +80,7 @@ async function cleanUp() {
   await deleteUsers();
 }
 
-describe("integration/runs/mailchimp-export", () => {
+describe("integration/runs/mailchimp-export-contacts", () => {
   let session;
   let csrfToken: string;
   let app: AsyncReturnType<App["apiData"]>;
@@ -163,7 +163,7 @@ describe("integration/runs/mailchimp-export", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "mailchimp-export",
+      type: "mailchimp-export-contacts",
       appId: app.id,
       options: destinationOptions,
       modelId: "mod_profiles",

@@ -89,7 +89,7 @@ describe("snowflake/table/records", () => {
 
     source = await helper.factories.source(app, {
       name: "SFS",
-      type: "snowflake-table-import",
+      type: "snowflake-import-table",
     });
     sourceMapping = { ID: "userId" };
     await source.setOptions({ table: "PROFILES" });

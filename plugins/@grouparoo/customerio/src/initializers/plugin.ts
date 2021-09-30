@@ -41,6 +41,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "customerio",
+          displayName: "Customer.io",
           options: [
             {
               key: "siteId",
@@ -68,7 +69,8 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "customerio-export",
+          name: "customerio-export-customers",
+          displayName: "Customer.io Export Customers",
           direction: "export",
           description: "Export records to customer.io as Customers",
           app: "customerio",

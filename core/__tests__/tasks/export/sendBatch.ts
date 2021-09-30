@@ -146,6 +146,7 @@ describe("tasks/export:sendBatch", () => {
           apps: [
             {
               name: "test-template-app",
+              displayName: "test-template-app",
               options: [{ key: "test_key", required: true }],
               methods: {
                 test: async () => {
@@ -157,6 +158,7 @@ describe("tasks/export:sendBatch", () => {
           connections: [
             {
               name: "export-from-test-app",
+              displayName: "export-from-test-app",
               description: "a test app connection",
               app: "test-template-app",
               direction: "export",

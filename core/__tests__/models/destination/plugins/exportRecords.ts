@@ -44,6 +44,7 @@ describe("models/destination", () => {
           apps: [
             {
               name: "test-template-app",
+              displayName: "test-template-app",
               options: [{ key: "test_key", required: true }],
               methods: {
                 test: async () => {
@@ -58,6 +59,7 @@ describe("models/destination", () => {
           connections: [
             {
               name: "export-from-test-template-app",
+              displayName: "export-from-test-template-app",
               description: "a test app connection",
               app: "test-template-app",
               direction: "export",

@@ -62,6 +62,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "redshift",
+          displayName: "Redshift",
           options: [
             {
               key: "host",
@@ -136,7 +137,8 @@ export class Plugins extends Initializer {
         getTableConnection(),
         getQueryConnection(),
         {
-          name: "redshift-export",
+          name: "redshift-export-records",
+          displayName: "Redshift Export Record",
           direction: "export",
           description:
             "Export Records to a Redshift table.  Groups will be exported to a secondary table linked by a foreign key.",

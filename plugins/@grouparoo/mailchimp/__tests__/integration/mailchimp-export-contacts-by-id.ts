@@ -183,7 +183,7 @@ describe("integration/runs/mailchimp-export-id", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "mailchimp-export-id",
+      type: "mailchimp-export-contacts-by-id",
       appId: app.id,
       modelId: "mod_profiles",
       options: destinationOptions,

@@ -95,7 +95,7 @@ describe("snowflake/query/records", () => {
 
     source = await helper.factories.source(app, {
       name: "SFS",
-      type: "snowflake-query-import",
+      type: "snowflake-import-query",
     });
     sourceMapping = { ID: "userId" };
     await source.update({ state: "ready" });

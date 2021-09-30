@@ -176,7 +176,10 @@ export default function Page(props) {
                   <div className="mb-3">
                     <hr />
                     <p className="mb-3">
-                      <strong>Options for a {app.type} app</strong>
+                      <strong>
+                        Options for a <code>{app.pluginApp.displayName}</code>{" "}
+                        app
+                      </strong>
                     </p>
 
                     {environmentVariableOptions.length > 0 && (

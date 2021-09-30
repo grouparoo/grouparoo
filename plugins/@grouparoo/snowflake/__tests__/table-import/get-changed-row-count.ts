@@ -50,7 +50,7 @@ describe("snowflake/table/scheduleOptions", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "snowflake-table-import",
+      type: "snowflake-import-table",
     });
     await source.setOptions({ table: "PROFILES" });
     await source.setMapping({ id: "userId" });

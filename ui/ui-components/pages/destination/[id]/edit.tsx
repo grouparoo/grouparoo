@@ -202,12 +202,16 @@ export default function Page(props) {
                   <a>{destination.app.name}</a>
                 </Link>
                 <br />
-                <strong>Connection</strong>: {destination.connection.name}:{" "}
+                <strong>Connection</strong>:{" "}
+                <code>{destination.connection.displayName}</code>.{" "}
                 {destination.connection.description}
               </p>
 
               <hr />
-              <strong>Options for a {destination.type} destination</strong>
+              <strong>
+                Options for a <code>{destination.connection.displayName}</code>{" "}
+                destination
+              </strong>
               <br />
               <br />
 

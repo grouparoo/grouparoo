@@ -9,7 +9,7 @@ exports.default = async function buildConfig() {
       class: "source",
       id: {{{id}}},
       name: {{{id}}},
-      type: "{{{__pluginName}}}-import",
+      type: "mailchimp-import-contacts",
       appId: {{{appId}}}, // Set this value to the ID of the App this Source uses - e.g. `appId: "mailchimp_app"`
       modelId: "mod_profiles", // The ID of the Grouparoo Model that this Destination will send
       options: {

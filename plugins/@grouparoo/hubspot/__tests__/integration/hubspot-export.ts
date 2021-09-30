@@ -158,7 +158,7 @@ describe("integration/runs/hubspot", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "hubspot-export",
+      type: "hubspot-export-contacts",
       syncMode: "sync",
       appId: app.id,
       modelId: "mod_profiles",
