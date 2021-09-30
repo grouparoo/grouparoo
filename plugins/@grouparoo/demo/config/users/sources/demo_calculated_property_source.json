@@ -1,7 +1,7 @@
 {
   "class": "Source",
   "id": "demo_calculated_property_source",
-  "name": "Full Name",
+  "name": "Calculated Properties",
   "type": "calculated-property-import",
   "appId": "demo_calculated_property_app",
   "modelId": "users",

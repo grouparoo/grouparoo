@@ -87,7 +87,7 @@ describe("bigquery/table/records", () => {
 
     source = await helper.factories.source(app, {
       name: "BQS",
-      type: "bigquery-table-import",
+      type: "bigquery-import-table",
     });
     sourceMapping = { id: "userId" };
     await source.setOptions({ table: "records" });

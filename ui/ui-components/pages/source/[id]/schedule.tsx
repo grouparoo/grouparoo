@@ -278,7 +278,10 @@ export default function Page(props) {
               <>
                 <hr />
                 <p>
-                  <strong>Options for a {source.type} Schedule</strong>
+                  <strong>
+                    Options for a <code>{source.connection.displayName}</code>{" "}
+                    Schedule
+                  </strong>
                 </p>
                 {pluginOptions.map((opt, idx) => (
                   <div key={`opt-${idx}`}>

@@ -99,7 +99,7 @@ describe("integration/runs/mysql", () => {
     session.params = {
       csrfToken,
       name: "mysql source",
-      type: "mysql-table-import",
+      type: "mysql-import-table",
       appId: app.id,
       modelId: "mod_profiles",
       options: { table: usersTableName },
@@ -168,7 +168,7 @@ describe("integration/runs/mysql", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "mysql-export",
+      type: "mysql-export-records",
       appId: app.id,
       modelId: "mod_profiles",
       options: {

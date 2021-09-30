@@ -79,7 +79,7 @@ describe("postgres/query/records", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "postgres-query-import",
+      type: "postgres-import-query",
     });
     await source.update({ state: "ready" });
 

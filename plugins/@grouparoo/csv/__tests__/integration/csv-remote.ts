@@ -81,7 +81,7 @@ describe("integration/runs/csv/remote", () => {
       // create the source
       session.params = {
         csrfToken,
-        type: "csv-import",
+        type: "csv-import-table",
         name: "csv source",
         appId: app.id,
         modelId: "mod_profiles",
@@ -103,7 +103,7 @@ describe("integration/runs/csv/remote", () => {
       session.params = {
         csrfToken,
         name: "test import schedule",
-        type: "csv-import",
+        type: "csv-import-table",
         sourceId: source.id,
         recurring: false,
         state: "ready",

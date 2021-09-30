@@ -4,7 +4,7 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       class: "destination",
-      type: "facebook-audiences-custom",
+      type: "facebook-export-audiences-custom",
       appId: {{{appId}}}, // The ID of the App this Destination uses - e.g. `appId: "facebookApp"`
       modelId: "mod_profiles", // The ID of the Grouparoo Model that this Destination will send
       syncMode: {{{syncMode}}}, // How should Grouparoo updateFacebook audiences? Options: "sync", "additive"

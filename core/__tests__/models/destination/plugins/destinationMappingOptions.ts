@@ -348,6 +348,7 @@ describe("models/destination", () => {
         apps: [
           {
             name: "test-destinationMapping-app",
+            displayName: "test-destinationMapping-app",
             options: [],
             methods: {
               test: async () => {
@@ -359,6 +360,7 @@ describe("models/destination", () => {
         connections: [
           {
             name: "destinationMapping-test-connection",
+            displayName: "destinationMapping-test-connection",
             description: "a test app connection",
             app: "test-destinationMapping-app",
             direction: "export",

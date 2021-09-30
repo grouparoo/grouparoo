@@ -388,6 +388,7 @@ describe("models/app", () => {
         apps: [
           {
             name: "test-template-app",
+            displayName: "test-template-app",
             options: [
               { key: "test_key", type: "list", required: true },
               { key: "password", type: "password", required: false },
@@ -411,6 +412,7 @@ describe("models/app", () => {
         connections: [
           {
             name: "import-from-test-template-app",
+            displayName: "import-from-test-template-app",
             description: "a test app connection",
             app: "test-template-app",
             direction: "import" as "import",

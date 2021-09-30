@@ -103,7 +103,7 @@ describe("integration/runs/sqlite", () => {
     session.params = {
       csrfToken,
       name: "sqlite import source",
-      type: "sqlite-table-import",
+      type: "sqlite-import-table",
       appId: app.id,
       modelId: "mod_profiles",
       options: { table: usersTableName },
@@ -170,7 +170,7 @@ describe("integration/runs/sqlite", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "sqlite-export",
+      type: "sqlite-export-records",
       appId: app.id,
       modelId: "mod_profiles",
       options: {

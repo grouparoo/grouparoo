@@ -12,7 +12,8 @@ export const emailSupportedSyncModes: DestinationSyncMode[] = [
 ];
 
 export const emailDestinationConnection: PluginConnection = {
-  name: "mailchimp-export",
+  name: "mailchimp-export-contacts",
+  displayName: "Mailchimp Export Contacts",
   direction: "export",
   description: "Export Records to a Mailchimp list with MergeVars and Tags.",
   app: "mailchimp",

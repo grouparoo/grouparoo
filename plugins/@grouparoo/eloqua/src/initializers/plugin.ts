@@ -43,6 +43,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "eloqua",
+          displayName: "Eloqua",
           options: [
             {
               key: "siteName",
@@ -69,7 +70,8 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "eloqua-export",
+          name: "eloqua-export-contacts",
+          displayName: "Eloqua Export Contacts",
           direction: "export",
           description: "Export records to Eloqua as Contacts",
           app: "eloqua",

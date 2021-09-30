@@ -41,6 +41,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "iterable",
+          displayName: "Iterable",
           options: [
             {
               key: "apiKey",
@@ -56,7 +57,8 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "iterable-export",
+          name: "iterable-export-users",
+          displayName: "Iterable Export USers",
           direction: "export",
           description:
             "Export records to Iterable as Users and put them in static Lists.",

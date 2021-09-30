@@ -414,6 +414,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
           apps: [
             {
               name: "test-non-unique-app",
+              displayName: "test-non-unique-app",
               options: [],
               methods: {
                 test: async () => {
@@ -425,6 +426,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
           connections: [
             {
               name: "test-non-unique-connection",
+              displayName: "test-non-unique-connection",
               description: "a test app",
               app: "test-non-unique-app",
               direction: "import",

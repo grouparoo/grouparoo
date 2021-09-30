@@ -91,7 +91,7 @@ describe("integration/runs/postgres", () => {
     session.params = {
       csrfToken,
       name: "pg import source",
-      type: "postgres-table-import",
+      type: "postgres-import-table",
       appId: app.id,
       modelId: "mod_profiles",
       options: { table: usersTableName },
@@ -160,7 +160,7 @@ describe("integration/runs/postgres", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "postgres-export",
+      type: "postgres-export-records",
       appId: app.id,
       modelId: "mod_profiles",
       options: {

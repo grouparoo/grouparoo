@@ -31,6 +31,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "calculated-property",
+          displayName: "Calculated Property",
           options: [],
           methods: { test },
         },
@@ -38,6 +39,7 @@ export class Plugins extends Initializer {
       connections: [
         {
           name: "calculated-property-import",
+          displayName: "Calculated Property Import",
           direction: "import",
           description:
             "Import and calculate Calculated Properties from other sources",

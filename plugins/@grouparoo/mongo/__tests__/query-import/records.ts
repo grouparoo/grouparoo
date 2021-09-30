@@ -81,7 +81,7 @@ describe("mongo/query/records", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "mongo-query-import",
+      type: "mongo-import-query",
     });
 
     await source.setOptions({

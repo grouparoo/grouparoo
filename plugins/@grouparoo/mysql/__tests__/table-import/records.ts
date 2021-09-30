@@ -77,7 +77,7 @@ describe("mysql/table/records", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "mysql-table-import",
+      type: "mysql-import-table",
     });
     sourceMapping = { id: "userId" };
     await source.setOptions({ table: usersTableName });

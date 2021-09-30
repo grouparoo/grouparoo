@@ -218,6 +218,8 @@ describe("actions/apps", () => {
       expect(app.id).toBeTruthy();
       expect(app.name).toBe("new app name");
       expect(app.options.fileId).toBe("zzz");
+      expect(app.pluginApp.displayName).toBe("test-plugin-app");
+      expect(app.pluginApp.name).toBe("test-plugin-app");
       expect(app.options.password).toBe(ObfuscatedPasswordString);
     });
 

@@ -16,6 +16,7 @@ describe("modules/plugin", () => {
         apps: [
           {
             name: "sample-plugin-app",
+            displayName: "sample-plugin-app",
             options: [],
             methods: {
               test: async () => {
@@ -30,6 +31,7 @@ describe("modules/plugin", () => {
         connections: [
           {
             name: "sample-plugin-import",
+            displayName: "sample-plugin-import",
             direction: "import",
             description: "import or update records from an uploaded file",
             app: "sample-plugin-app",
@@ -87,6 +89,7 @@ describe("modules/plugin", () => {
           connections: [
             {
               name: "sample-plugin-export",
+              displayName: "sample-plugin-export",
               direction: "export",
               description: "export stuff",
               app: "sample-plugin-app",

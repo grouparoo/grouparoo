@@ -80,7 +80,7 @@ describe("sqlite/table/records", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "sqlite-table-import",
+      type: "sqlite-import-table",
     });
     sourceMapping = { id: "userId" };
     await source.setOptions({ table: usersTableName });

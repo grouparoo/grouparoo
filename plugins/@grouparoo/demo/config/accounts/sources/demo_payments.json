@@ -2,7 +2,7 @@
   "class": "Source",
   "id": "demo_payments",
   "name": "Payments",
-  "type": "DBNAME-table-import",
+  "type": "DBNAME-import-table",
   "appId": "demo_db",
   "modelId": "accounts",
   "options": {

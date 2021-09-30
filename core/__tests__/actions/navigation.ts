@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
+import { ConfigUserCreate } from "../../src/actions/config";
 import { NavigationList } from "../../src/actions/navigation";
 import { SessionCreate } from "../../src/actions/session";
 
@@ -67,6 +68,70 @@ describe("actions/navigation", () => {
         connection
       );
       expect(teamMember.email).toBe("peach@example.com");
+    });
+  });
+
+  describe("in config mode", () => {
+    beforeAll(async () => {
+      await specHelper.runAction("team:initialize", {
+        firstName: "Peach",
+        lastName: "Toadstool",
+        password: "P@ssw0rd!",
+        email: "peach@example.com",
+      });
+      process.env.GROUPAROO_RUN_MODE = "cli:config";
+    });
+
+    test("the navigation includes Models and Apps if authenticated in config mode", async () => {
+      const connection = await specHelper.buildConnection();
+      connection.params = {
+        email: "peach@example.com",
+        password: "P@ssw0rd!",
+      };
+
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
+        "session:create",
+        connection
+      );
+      const csrfToken = sessionResponse.csrfToken;
+      connection.params = { csrfToken };
+
+      const { error, user } = await specHelper.runAction<ConfigUserCreate>(
+        "config:user:create",
+        { email: "true", company: "company" }
+      );
+      let { navigation } = await specHelper.runAction<NavigationList>(
+        "navigation:list",
+        connection
+      );
+
+      expect(navigation.navigationItems[0].title).toEqual("Apps");
+      expect(navigation.navigationItems[1].title).toEqual("Models");
+    });
+    test("the navigation does not include Platform items if in config mode", async () => {
+      const connection = await specHelper.buildConnection();
+      connection.params = {
+        email: "peach@example.com",
+        password: "P@ssw0rd!",
+      };
+
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
+        "session:create",
+        connection
+      );
+      const csrfToken = sessionResponse.csrfToken;
+      connection.params = { csrfToken };
+
+      const { error, user } = await specHelper.runAction<ConfigUserCreate>(
+        "config:user:create",
+        { email: "true", company: "company" }
+      );
+      let { navigation } = await specHelper.runAction<NavigationList>(
+        "navigation:list",
+        connection
+      );
+
+      expect(navigation.platformItems.length).toEqual(0);
     });
   });
 });

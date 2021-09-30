@@ -47,6 +47,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "bigquery",
+          displayName: "BigQuery",
           options: [
             {
               key: "project_id",

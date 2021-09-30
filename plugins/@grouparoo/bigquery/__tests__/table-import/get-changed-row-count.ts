@@ -50,7 +50,7 @@ describe("bigquery/table/scheduleOptions", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "bigquery-table-import",
+      type: "bigquery-import-table",
     });
     await source.setOptions({ table: "records" });
     await source.setMapping({ id: "userId" });

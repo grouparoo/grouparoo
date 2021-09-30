@@ -93,7 +93,7 @@ describe("bigquery/query/records", () => {
 
     source = await helper.factories.source(app, {
       name: "BQS",
-      type: "bigquery-query-import",
+      type: "bigquery-import-query",
     });
     await source.update({ state: "ready" });
 

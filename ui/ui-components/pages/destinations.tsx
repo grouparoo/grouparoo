@@ -78,6 +78,7 @@ export default function Page(props) {
           <tr>
             <th></th>
             <th>Destination Name</th>
+            <th>Type</th>
             <th>Group Tracked</th>
             <th>App</th>
             <th>Model</th>
@@ -122,6 +123,7 @@ export default function Page(props) {
                     </Link>
                   )}
                 </td>
+                <td>{destination.connection.displayName}</td>
                 <td>
                   {destination.destinationGroup?.id ? (
                     <EnterpriseLink

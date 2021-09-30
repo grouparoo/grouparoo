@@ -255,6 +255,7 @@ export namespace helper {
       apps: [
         {
           name: "test-plugin-app",
+          displayName: "test-plugin-app",
           options: [
             {
               key: "fileId",
@@ -289,6 +290,7 @@ export namespace helper {
       connections: [
         {
           name: "test-plugin-import",
+          displayName: "test-plugin-import",
           direction: "import",
           description: "import or update records from a table",
           app: "test-plugin-app",
@@ -399,6 +401,7 @@ export namespace helper {
         },
         {
           name: "test-plugin-export",
+          displayName: "test-plugin-export",
           direction: "export",
           description: "export records to nowhere",
           app: "test-plugin-app",
@@ -454,6 +457,7 @@ export namespace helper {
         },
         {
           name: "test-plugin-export-batch",
+          displayName: "test-plugin-export-batch",
           direction: "export",
           description: "export records to nowhere",
           app: "test-plugin-app",

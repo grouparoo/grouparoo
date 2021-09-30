@@ -39,6 +39,7 @@ export interface GrouparooPlugin {
  */
 export interface PluginApp {
   name: string;
+  displayName: string;
   options: AppOptionsOption[];
   minInstances?: number;
   maxInstances?: number;
@@ -68,6 +69,7 @@ export interface ConnectionOptionsOption extends AppOptionsOption {}
  */
 export interface PluginConnection {
   name: string;
+  displayName: string;
   description: string;
   direction: "import" | "export";
   skipSourceMapping?: boolean;

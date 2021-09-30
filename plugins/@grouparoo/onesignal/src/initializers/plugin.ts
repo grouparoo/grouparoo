@@ -41,6 +41,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "onesignal",
+          displayName: "OneSignal",
           options: [
             {
               key: "appId",
@@ -63,7 +64,8 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "onesignal-export",
+          name: "onesignal-export-users",
+          displayName: "OneSignal Export Users",
           direction: "export",
           description:
             "Enrich OneSignal devices with record and group information as tags",

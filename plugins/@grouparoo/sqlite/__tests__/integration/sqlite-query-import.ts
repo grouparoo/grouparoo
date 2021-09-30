@@ -71,7 +71,7 @@ describe("integration/runs/sqlite", () => {
     session.params = {
       csrfToken,
       name: "sqlite import source",
-      type: "sqlite-query-import",
+      type: "sqlite-import-query",
       appId: app.id,
       modelId: "mod_profiles",
       state: "ready",

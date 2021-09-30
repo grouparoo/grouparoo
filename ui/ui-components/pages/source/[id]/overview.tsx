@@ -58,7 +58,8 @@ export default function Page({
               <a>{source.app.name}</a>
             </Link>
             <br />
-            <strong>Connection</strong>: <code>{source.connection.name}</code>:{" "}
+            <strong>Connection</strong>:{" "}
+            <code>{source.connection.displayName}</code>.{" "}
             {source.connection.description}
           </p>
           <p>

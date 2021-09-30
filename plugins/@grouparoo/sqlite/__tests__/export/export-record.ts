@@ -110,7 +110,7 @@ describe("sqlite/exportRecord", () => {
     });
 
     destination = await helper.factories.destination(app, {
-      type: "sqlite-export",
+      type: "sqlite-export-records",
       options: {
         table: usersTableName,
         primaryKey: "id",

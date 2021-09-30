@@ -287,6 +287,7 @@ describe("models/property", () => {
       apps: [
         {
           name: "app-no-options",
+          displayName: "app-no-options",
           options: [],
           methods: {
             test: async () => {
@@ -298,6 +299,7 @@ describe("models/property", () => {
       connections: [
         {
           name: "source-no-options",
+          displayName: "source-no-options",
           description: "a test source",
           app: "app-no-options",
           direction: "import",
@@ -656,6 +658,7 @@ describe("models/property", () => {
         apps: [
           {
             name: "test-template-app",
+            displayName: "test-template-app",
             options: [],
             methods: {
               test: async () => {
@@ -667,6 +670,7 @@ describe("models/property", () => {
         connections: [
           {
             name: "import-from-test-app",
+            displayName: "import-from-test-app",
             description: "a test app",
             app: "test-template-app",
             direction: "import",
