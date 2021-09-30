@@ -213,14 +213,8 @@ export namespace RecordOps {
     // are we looking for invalid records
     if (state === "invalid") {
       countRequiresIncludes = true;
-      include.push({
-        model: RecordProperty,
-        as: "recordProperties_1",
-        where: {
-          invalidReason: {
-            [Op.not]: null,
-          },
-        },
+      ands.push({
+        invalid: true,
       });
     }
 

@@ -21,6 +21,7 @@ import {
 } from "../../../src/actions/records";
 import { GroupAddRecord, GroupRemoveRecord } from "../../../src/actions/groups";
 import { ConfigWriter } from "../../../src/modules/configWriter";
+import { RecordOps } from "../../../src/modules/ops/record";
 
 function simpleRecordValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -187,6 +188,7 @@ describe("actions/records", () => {
       expect(readyProfilesB.length).toBe(1);
       expect(readyTotalB).toBe(1);
 
+      // Put a recordProperty into an invalid state
       await RecordProperty.update(
         {
           invalidValue: "email",
@@ -199,6 +201,9 @@ describe("actions/records", () => {
           },
         }
       );
+
+      // Run the import task
+      await RecordOps.makeReadyAndCompleteImports();
 
       connection.params = {
         csrfToken,
