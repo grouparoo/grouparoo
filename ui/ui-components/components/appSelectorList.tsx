@@ -1,6 +1,34 @@
 import Selector, { BadgeProp } from "./selector";
 import { CardDeck } from "react-bootstrap";
 import { useRouter } from "next/router";
+import { Actions } from "../utils/apiData";
+
+type SelectableApp = Actions.AppOptions["types"][number];
+type SelectablePackage = Actions.PluginsAvailableList["plugins"][number];
+type SelectableSource =
+  Actions.SourceConnectionApps["connectionApps"][number]["app"];
+type SelectableDestination =
+  Actions.DestinationConnectionApps["connectionApps"][number]["app"];
+
+function isSelectableApp(
+  item:
+    | SelectableApp
+    | SelectablePackage
+    | SelectableSource
+    | SelectableDestination
+): item is SelectableApp {
+  return (item as SelectableApp).plugin !== undefined;
+}
+
+function isSelectablePackage(
+  item:
+    | SelectableApp
+    | SelectablePackage
+    | SelectableSource
+    | SelectableDestination
+): item is SelectablePackage {
+  return (item as SelectablePackage).npmUrl !== undefined;
+}
 
 export default function AppSelectorList({
   onClick,
@@ -9,7 +37,11 @@ export default function AppSelectorList({
   displayAddAppButton = false,
 }: {
   onClick: Function;
-  items: Array<any>;
+  items:
+    | SelectableApp[]
+    | SelectablePackage[]
+    | SelectableSource[]
+    | SelectableDestination[];
   selectedItem: any;
   displayAddAppButton?: boolean;
 }) {
@@ -17,67 +49,95 @@ export default function AppSelectorList({
 
   return (
     <CardDeck>
-      {items.map((item, idx) => {
-        let src: string;
-        let title: string;
-        let subheading: string;
-        let description: string;
-        let className: string;
-        let metaBadge: BadgeProp;
-        let badges: BadgeProp[] = [];
+      {items.map(
+        (
+          item:
+            | SelectableApp
+            | SelectablePackage
+            | SelectableSource
+            | SelectableDestination,
+          idx: number
+        ) => {
+          let src: string;
+          let title: string;
+          let subheading: string;
+          let description: string;
+          let className: string;
+          let metaBadge: BadgeProp;
+          let badges: BadgeProp[] = [];
 
-        if (item?.plugin) {
-          // these items are apps themselves
-          src = item.plugin.icon;
-          title = item.name;
-          className =
-            item.name === selectedItem.type
-              ? "selector-list-selected"
-              : "selector-list";
+          if (isSelectableApp(item)) {
+            // these items are apps themselves
+            src = item.plugin.icon;
+            title = item.displayName ?? item.name;
+            className =
+              item.name === selectedItem.type
+                ? "selector-list-selected"
+                : "selector-list";
 
-          if (item.provides.source) {
-            badges.push({ message: "source", variant: "primary" });
+            if (item.provides.source) {
+              badges.push({ message: "source", variant: "primary" });
+            } else {
+              badges.push({});
+            }
+
+            if (item.provides.destination) {
+              badges.push({ message: "destination", variant: "info" });
+            } else {
+              badges.push({});
+            }
+
+            if (item.plugin["installed"]) {
+              metaBadge = { message: "installed", variant: "warning" };
+            }
+          } else if (isSelectablePackage(item)) {
+            // these items are from the plugin manifest on www.grouparoo.com
+            src = item.imageUrl;
+            title = item.name;
+            className =
+              item.name === selectedItem.type
+                ? "selector-list-selected"
+                : "selector-list";
+
+            if (item.source) {
+              badges.push({ message: "source", variant: "primary" });
+            } else {
+              badges.push({});
+            }
+
+            if (item.destination) {
+              badges.push({ message: "destination", variant: "info" });
+            } else {
+              badges.push({});
+            }
           } else {
-            badges.push({});
+            // these are apps extracted from connectionApps
+            src = item.icon;
+            title = item.typeDisplayName;
+            subheading = item.type;
+            className =
+              item.id === selectedItem.id
+                ? "selector-list-selected"
+                : "selector-list";
           }
 
-          if (item.provides.destination) {
-            badges.push({ message: "destination", variant: "info" });
-          } else {
-            badges.push({});
-          }
-
-          if (item.plugin.installed) {
-            metaBadge = { message: "installed", variant: "warning" };
-          }
-        } else {
-          // these are apps extracted from connectionApps
-          src = item.icon;
-          title = item.name;
-          subheading = item.type;
-          // description = item.connection.description;
-          className =
-            item.id === selectedItem.id
-              ? "selector-list-selected"
-              : "selector-list";
+          return (
+            <Selector
+              src={src}
+              title={title}
+              subheading={subheading}
+              description={description}
+              size={120}
+              className={className}
+              iconClassName="card-img"
+              badges={badges}
+              metaBadge={metaBadge}
+              onClick={() => onClick(item)}
+              key={`card-${idx}`}
+            />
+          );
         }
-
-        return (
-          <Selector
-            src={src}
-            title={title}
-            subheading={subheading}
-            description={description}
-            size={120}
-            className={className}
-            iconClassName="card-img"
-            badges={badges}
-            metaBadge={metaBadge}
-            onClick={() => onClick(item)}
-            key={`card-${idx}`}
-          />
-        );
-      })}
+      )}
 
       {displayAddAppButton ? (
         <div

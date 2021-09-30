@@ -72,6 +72,8 @@ describe("actions/apps", () => {
       expect(types.length).toBeGreaterThanOrEqual(1);
       const names = types.map((t) => t.name);
       expect(names).toContain("test-plugin-app");
+      const displayNames = types.map((t) => t.displayName);
+      expect(displayNames).toContain("test-plugin-app");
 
       const pluginTestAppType = types.find((t) => t.name === "test-plugin-app");
       expect(pluginTestAppType.options).toEqual([

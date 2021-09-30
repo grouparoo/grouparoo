@@ -61,6 +61,7 @@ export class AppOptions extends AuthenticatedAction {
   async runWithinTransaction() {
     const types: Array<{
       name: string;
+      displayName: string;
       maxInstances: number;
       minInstances: number;
       addible: boolean;
@@ -98,6 +99,7 @@ export class AppOptions extends AuthenticatedAction {
 
           types.push({
             name: app.name,
+            displayName: app.displayName,
             maxInstances: app.maxInstances,
             minInstances: app.minInstances,
             addible,
