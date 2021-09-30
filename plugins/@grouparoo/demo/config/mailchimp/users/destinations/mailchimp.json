@@ -2,7 +2,7 @@
   "class": "Destination",
   "id": "mailchimp",
   "name": "Mailchimp",
-  "type": "mailchimp-export",
+  "type": "mailchimp-export-contacts",
   "appId": "mailchimpapp",
   "modelId": "users",
   "groupId": "nobody",

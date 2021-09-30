@@ -2,7 +2,7 @@
   "class": "Destination",
   "id": "salesforce",
   "name": "Salesforce",
-  "type": "salesforce-objects-export",
+  "type": "salesforce-export-objects",
   "appId": "salesforce",
   "groupId": "nobody",
   "modelId": "users",
