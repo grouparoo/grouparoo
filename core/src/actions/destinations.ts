@@ -196,6 +196,7 @@ export class DestinationEdit extends AuthenticatedAction {
       type: params.type,
       modelId: params.modelId,
       appId: params.appId,
+      state: params.state,
       syncMode: params.syncMode,
       recordCollection: params.recordCollection,
     });
