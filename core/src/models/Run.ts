@@ -26,7 +26,7 @@ import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
-import { GrouparooModel } from "..";
+import { GrouparooModel } from "./GrouparooModel";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
