@@ -89,7 +89,7 @@ export async function loadDestination(
 
   if (destination.state === "deleted") {
     // when bringing back deleted destinations, we need to be sure to trigger a new export even though options may be the same
-    await destination.exportGroupMembers(true);
+    await destination.exportMembers(true);
   }
 
   await destination.update({ state: "ready" });

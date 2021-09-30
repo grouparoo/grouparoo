@@ -52,6 +52,9 @@ export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 const SYNC_MODES = ["sync", "additive", "enrich"] as const;
 export type DestinationSyncMode = typeof SYNC_MODES[number];
 
+const RECORD_COLLECTIONS = ["group", "model"] as const;
+export type DestinationRecordCollection = typeof RECORD_COLLECTIONS[number];
+
 export interface DestinationSyncOperations {
   create: boolean;
   update: boolean;
@@ -164,6 +167,10 @@ export class Destination extends LoggedModel<Destination> {
   @Column(DataType.ENUM(...SYNC_MODES))
   syncMode: DestinationSyncMode;
 
+  @AllowNull(true)
+  @Column(DataType.ENUM(...RECORD_COLLECTIONS))
+  recordCollection: DestinationRecordCollection;
+
   @AllowNull(false)
   @ForeignKey(() => GrouparooModel)
   @Column
@@ -224,6 +231,7 @@ export class Destination extends LoggedModel<Destination> {
       locked: this.locked,
       syncMode,
       syncModes: syncModeData,
+      recordCollection: this.recordCollection,
       app: app ? await app.apiData() : null,
       modelId: this.modelId,
       modelName: model.name,
@@ -265,7 +273,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) return this.exportGroupMembers(true);
+    if (hasChanges) return this.exportMembers(true);
   }
 
   async getExportArrayProperties() {
@@ -326,8 +334,8 @@ export class Destination extends LoggedModel<Destination> {
     return OptionHelper.getPlugin(this);
   }
 
-  async exportGroupMembers(force = false) {
-    return DestinationOps.exportGroupMembers(this, force);
+  async exportMembers(force = false) {
+    return DestinationOps.exportMembers(this, force);
   }
 
   async trackGroup(group: Group, force = true) {
@@ -638,6 +646,27 @@ export class Destination extends LoggedModel<Destination> {
   static async validateSyncMode(instance: Destination) {
     if (instance.state !== "ready") return;
     await instance.validateSyncMode();
+  }
+
+  @BeforeSave
+  static async validateRecordCollectionMode(instance: Destination) {
+    if (
+      instance.recordCollection &&
+      !RECORD_COLLECTIONS.includes(instance.recordCollection)
+    ) {
+      throw new Error(
+        `${instance.recordCollection} is not a valid record collection`
+      );
+    }
+    if (instance.recordCollection !== "group" && instance.groupId) {
+      throw new Error(
+        `cannot track group when destination recordCollection is not group`
+      );
+    }
+
+    if (instance.recordCollection !== "group" && instance.groupId) {
+      instance.groupId = null;
+    }
   }
 
   @BeforeSave

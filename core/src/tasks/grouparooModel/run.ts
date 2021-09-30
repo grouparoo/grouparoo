@@ -1,18 +1,19 @@
 import { config } from "actionhero";
 import { Run } from "../../models/Run";
+import { GrouparooModel } from "../../models/GrouparooModel";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { RecordProperty } from "../../models/RecordProperty";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Op } from "sequelize";
-import { RecordOps } from "../../modules/ops/record";
 import { Import } from "../../models/Import";
 import { GroupMember } from "../../models/GroupMember";
 
 export class RunInternalRun extends CLSTask {
   constructor() {
     super();
-    this.name = "run:internalRun";
-    this.description = "build imports that will check and sync all records";
+    this.name = "grouparooModel:run";
+    this.description =
+      "build imports that will check and sync all records of this model";
     this.frequency = 0;
     this.queue = "runs";
     this.inputs = {
@@ -31,7 +32,13 @@ export class RunInternalRun extends CLSTask {
     const offset: number = run.groupMemberOffset || 0;
     const limit: number = run.groupMemberLimit || config.batchSize.imports;
 
+    const model = await GrouparooModel.findOne({
+      where: { id: run.creatorId },
+    });
+    if (!model) return;
+
     const records = await GrouparooRecord.findAll({
+      where: { modelId: model.id },
       order: [["createdAt", "asc"]],
       include: [RecordProperty, GroupMember],
       limit,
@@ -39,28 +46,11 @@ export class RunInternalRun extends CLSTask {
     });
 
     if (records.length > 0) {
-      if (run.creatorType === "property") {
-        // ensure the property exists and set this property to pending for these records
-        await RecordOps.buildNullProperties(records);
+      await RecordProperty.update(
+        { state: "pending" },
+        { where: { recordId: { [Op.in]: records.map((p) => p.id) } } }
+      );
 
-        await RecordProperty.update(
-          { state: "pending" },
-          {
-            where: {
-              recordId: { [Op.in]: records.map((p) => p.id) },
-              propertyId: run.creatorId,
-            },
-          }
-        );
-      } else {
-        // set all properties to pending for these records
-        await RecordProperty.update(
-          { state: "pending" },
-          { where: { recordId: { [Op.in]: records.map((p) => p.id) } } }
-        );
-      }
-
-      // always mark the record as pending
       await GrouparooRecord.update(
         { state: "pending" },
         { where: { id: { [Op.in]: records.map((p) => p.id) } } }

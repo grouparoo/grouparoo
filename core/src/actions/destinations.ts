@@ -127,6 +127,7 @@ export class DestinationCreate extends AuthenticatedAction {
         default: {},
       },
       syncMode: { required: false },
+      recordCollection: { required: false },
       destinationGroupMemberships: { required: false },
     };
   }
@@ -138,6 +139,7 @@ export class DestinationCreate extends AuthenticatedAction {
       modelId: params.modelId,
       appId: params.appId,
       syncMode: params.syncMode,
+      recordCollection: params.recordCollection,
     });
     if (params.options) await destination.setOptions(params.options);
     if (params.mapping) {
@@ -170,8 +172,9 @@ export class DestinationEdit extends AuthenticatedAction {
       mapping: { required: false, formatter: APIData.ensureObject },
       syncMode: { required: false },
       destinationGroupMemberships: { required: false },
-      trackedGroupId: { required: false },
-      triggerExport: { required: false },
+      groupId: { required: false },
+      recordCollection: { required: false },
+      triggerExport: { required: false, formatter: APIData.ensureBoolean },
     };
   }
 
@@ -187,24 +190,39 @@ export class DestinationEdit extends AuthenticatedAction {
       );
     }
 
-    await destination.update(params);
+    // do not set groupId here, that's handled within the track/unTrack methods
+    await destination.update({
+      name: params.name,
+      type: params.type,
+      modelId: params.modelId,
+      appId: params.appId,
+      syncMode: params.syncMode,
+      recordCollection: params.recordCollection,
+    });
 
     let run: Run;
 
     if (
-      params.trackedGroupId &&
-      params.trackedGroupId !== "_none" &&
-      params.trackedGroupId !== destination.groupId
+      destination.recordCollection === "group" &&
+      params.groupId &&
+      params.groupId !== "_none" &&
+      params.groupId !== destination.groupId
     ) {
-      const group = await Group.findById(params.trackedGroupId);
+      const group = await Group.findById(params.groupId);
       run = await destination.trackGroup(group);
     } else if (
-      (params.trackedGroupId === "_none" || params.trackedGroupId === null) &&
+      destination.recordCollection === "group" &&
+      (params.groupId === "_none" || params.groupId === null) &&
       destination.groupId
     ) {
       run = await destination.unTrackGroup();
+    } else if (
+      destination.recordCollection === "model" &&
+      params.recordCollection !== destination.recordCollection
+    ) {
+      run = await destination.exportMembers(true);
     } else if (params.triggerExport) {
-      run = await destination.exportGroupMembers(true);
+      run = await destination.exportMembers(true);
     }
 
     await ConfigWriter.run();
@@ -321,7 +339,7 @@ export class DestinationExport extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const destination = await Destination.findById(params.id);
-    await destination.exportGroupMembers(params.force);
+    await destination.exportMembers(params.force);
     return { success: true };
   }
 }
@@ -337,6 +355,7 @@ export class DestinationRecordPreview extends AuthenticatedAction {
     this.inputs = {
       id: { required: true },
       groupId: { required: false },
+      modelId: { required: false },
       recordId: { required: false },
       mapping: { required: false, formatter: APIData.ensureObject },
       destinationGroupMemberships: {
@@ -352,7 +371,7 @@ export class DestinationRecordPreview extends AuthenticatedAction {
     let record: GrouparooRecord;
     if (params.recordId) {
       record = await GrouparooRecord.findById(params.recordId);
-    } else {
+    } else if (params.groupId && params.groupId !== "_none") {
       const group = await Group.findById(params.groupId);
       const groupMember = await GroupMember.findOne({
         where: { groupId: group.id },
@@ -360,6 +379,10 @@ export class DestinationRecordPreview extends AuthenticatedAction {
       if (groupMember) {
         record = await GrouparooRecord.findById(groupMember.recordId);
       }
+    } else if (params.modelId) {
+      record = await GrouparooRecord.findOne({
+        where: { modelId: params.modelId },
+      });
     }
 
     if (!record) return;

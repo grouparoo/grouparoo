@@ -10,50 +10,6 @@ import { RecordOps } from "./record";
 
 export namespace GroupOps {
   /**
-   * Create a Run for this Group
-   */
-  export async function run(
-    group: Group,
-    force = false,
-    destinationId?: string
-  ) {
-    if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
-    if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
-
-    await group.stopPreviousRuns();
-
-    if (group.state !== "deleted") {
-      await group.update({ state: "updating" });
-    }
-
-    const run = await Run.create({
-      creatorId: group.id,
-      creatorType: "group",
-      state: "running",
-      destinationId,
-      force,
-    });
-
-    return run;
-  }
-
-  /**
-   * Stop previous Runs for this Group
-   */
-  export async function stopPreviousRuns(group: Group) {
-    const previousRuns = await Run.findAll({
-      where: {
-        creatorId: group.id,
-        state: "running",
-      },
-    });
-
-    for (const i in previousRuns) {
-      await previousRuns[i].stop();
-    }
-  }
-
-  /**
    * Given a GrouparooRecord, create an import to recalculate its Group Membership.  Optionally re-import all GrouparooRecord Properties with `force`
    */
   export async function updateRecords(

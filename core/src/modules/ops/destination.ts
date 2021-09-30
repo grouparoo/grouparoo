@@ -40,12 +40,18 @@ export namespace DestinationOps {
   /**
    * Export all the Group Members of the Groups that this Destination is Tracking
    */
-  export async function exportGroupMembers(
-    destination: Destination,
-    force = false
-  ) {
-    const group = await destination.$get("group");
-    if (group) return group.run(force, destination.id);
+  export async function exportMembers(destination: Destination, force = false) {
+    if (destination.recordCollection === "group") {
+      const group = await destination.$get("group");
+      if (group) return group.run(force, destination.id);
+    } else if (destination.recordCollection === "model") {
+      const model = await destination.$get("model");
+      if (model) return model.run(force, destination.id);
+    } else {
+      throw new Error(
+        `cannot export members for a ${destination.recordCollection}`
+      );
+    }
   }
 
   /**

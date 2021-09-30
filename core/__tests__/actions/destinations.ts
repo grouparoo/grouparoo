@@ -331,7 +331,7 @@ describe("actions/destinations", () => {
         connection.params = {
           csrfToken,
           id,
-          trackedGroupId: group.id,
+          groupId: group.id,
         };
 
         const { destination, run, error } =
@@ -505,7 +505,7 @@ describe("actions/destinations", () => {
         connection.params = {
           csrfToken,
           id,
-          trackedGroupId: null,
+          groupId: null,
         };
         const {
           destination: updatedDestination,
@@ -526,7 +526,7 @@ describe("actions/destinations", () => {
         connection.params = {
           csrfToken,
           id,
-          trackedGroupId: group.id,
+          groupId: group.id,
         };
         const { destination: _destination } =
           await specHelper.runAction<DestinationEdit>(
@@ -645,7 +645,7 @@ describe("actions/destinations", () => {
       connection.params = {
         csrfToken,
         id,
-        trackedGroupId: "_none",
+        groupId: "_none",
       };
       const { destination } = await specHelper.runAction<DestinationEdit>(
         "destination:edit",

@@ -26,6 +26,7 @@ import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
+import { GrouparooModel } from "..";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
@@ -35,6 +36,7 @@ const RUN_CREATORS = [
   "schedule",
   "property",
   "group",
+  "grouparooModel",
   "task",
   "teamMember",
 ] as const;
@@ -289,6 +291,9 @@ export class Run extends CommonModel<Run> {
       } else if (this.creatorType === "property") {
         const property = await Property.findById(this.creatorId);
         name = property.key;
+      } else if (this.creatorType === "grouparooModel") {
+        const model = await GrouparooModel.findById(this.creatorId);
+        name = model.name;
       } else if (this.creatorType === "schedule") {
         const schedule = await Schedule.findById(this.creatorId);
         const source = await schedule.$get("source", { scope: null });

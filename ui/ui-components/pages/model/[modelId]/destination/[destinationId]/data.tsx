@@ -40,12 +40,16 @@ export default function Page(props) {
   const { execApi } = UseApi(props, errorHandler);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [trackedGroupId, settrackedGroupId] = useState(
-    props.trackedGroupId || "_none"
-  );
   const [destination, setDestination] = useState<Models.DestinationType>(
     props.destination
   );
+  const [groupId, setGroupId] = useState<string>(
+    destination.destinationGroup?.id ?? "_none"
+  );
+  const [recordCollection, setRecordCollection] = useState<
+    Models.DestinationType["recordCollection"]
+  >(destination.recordCollection);
+
   const [displayedDestinationProperties, setDisplayedDestinationProperties] =
     useState<string[]>([]);
   const displayedDestinationPropertiesAutocomleteRef = useRef(null);
@@ -74,7 +78,8 @@ export default function Page(props) {
 
     await execApi("put", `/destination/${destinationId}`, {
       mapping: filteredMapping,
-      trackedGroupId: trackedGroupId || "_none",
+      groupId: groupId || "_none",
+      recordCollection,
       destinationGroupMemberships: destinationGroupMembershipsObject,
       triggerExport: true,
     });
@@ -248,7 +253,7 @@ export default function Page(props) {
       return 0;
     })
     .sort((a, b) => {
-      if (a.id === trackedGroupId) return -1;
+      if (a.id === groupId) return -1;
       return 1;
     });
 
@@ -295,12 +300,23 @@ export default function Page(props) {
                   <Form.Control
                     as="select"
                     required={true}
-                    value={trackedGroupId}
+                    value={recordCollection === "model" ? "__model" : groupId}
                     disabled={loading}
-                    onChange={(e) => settrackedGroupId(e.target["value"])}
+                    onChange={(e) => {
+                      e.target.value === "__model"
+                        ? setGroupId("_none")
+                        : setGroupId(e.target.value);
+                      e.target.value === "__model"
+                        ? setRecordCollection("model")
+                        : setRecordCollection("group");
+                    }}
                   >
-                    <option value={"_none"}>No Group</option>
-                    <option disabled>---</option>
+                    <option value={"_none"}>No Group or Model</option>
+                    <option disabled>--- Models ---</option>
+                    <option value="__model">
+                      All Records in the {destination.modelName} Model
+                    </option>
+                    <option disabled>--- Groups ---</option>
                     {groups
                       .sort((a, b) => {
                         if (a.name >= b.name) {
@@ -796,8 +812,10 @@ export default function Page(props) {
             {...props}
             mappingOptions={mappingOptions}
             destination={destination}
+            recordCollection={recordCollection}
             groups={groups}
-            trackedGroupId={trackedGroupId}
+            groupId={groupId}
+            modelId={destination.modelId}
           />
         </Col>
       </Row>
@@ -847,7 +865,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     mappingOptions,
     destinationTypeConversions,
     exportArrayProperties,
-    trackedGroupId: destination.destinationGroup?.id,
     groups: groups
       .filter((group) => group.state !== "draft")
       .filter((group) => group.state !== "deleted"),

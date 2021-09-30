@@ -3,12 +3,69 @@ import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { Group } from "../../models/Group";
 import { Schedule } from "../../models/Schedule";
 import { GroupMember } from "../../models/GroupMember";
+import { GrouparooModel } from "../../models/GrouparooModel";
+import { Property } from "../../models/Property";
 import { Import } from "../../models/Import";
 import { Op } from "sequelize";
 import { log, api, task } from "actionhero";
 import { Log } from "../../models/Log";
 
 export namespace RunOps {
+  /**
+   * Create a Run for this Group
+   */
+  export async function run(
+    creator: Group | GrouparooModel,
+    force = false,
+    destinationId?: string
+  ) {
+    if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
+    if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
+
+    await stopPreviousRuns(creator);
+
+    if (creator instanceof Group) {
+      if (creator.state !== "deleted") {
+        await creator.update({ state: "updating" });
+      }
+    }
+
+    const run = await Run.create({
+      creatorId: creator.id,
+      creatorType: getCreatorTypeString(creator),
+      state: "running",
+      destinationId,
+      force,
+    });
+
+    return run;
+  }
+
+  /**
+   * Stop previous Runs for this Group
+   */
+  export async function stopPreviousRuns(creator: Group | GrouparooModel) {
+    const previousRuns = await Run.findAll({
+      where: {
+        creatorId: creator.id,
+        creatorType: getCreatorTypeString(creator),
+        state: "running",
+      },
+    });
+
+    for (const run of previousRuns) await run.stop();
+  }
+
+  export function getCreatorTypeString(
+    creator: Schedule | Property | Group | GrouparooModel
+  ) {
+    if (creator instanceof Schedule) return "schedule";
+    if (creator instanceof Property) return "property";
+    if (creator instanceof Group) return "group";
+    if (creator instanceof GrouparooModel) return "grouparooModel";
+    throw new Error(`cannot determine creator type of ${creator}`);
+  }
+
   /**
    * Return counts of the states of each import in N chunks over the lifetime of the run
    * Great for drawing charts!
