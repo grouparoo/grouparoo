@@ -13,6 +13,11 @@ export default {
     await queryInterface.sequelize.query(
       `UPDATE "destinations" SET "recordCollection"='group' WHERE "groupId" IS NOT NULL`
     );
+
+    await queryInterface.changeColumn("destinations", "recordCollection", {
+      type: DataTypes.STRING(191),
+      allowNull: false,
+    });
   },
 
   down: async (queryInterface: Sequelize.QueryInterface) => {

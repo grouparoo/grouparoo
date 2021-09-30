@@ -168,6 +168,7 @@ export class Destination extends LoggedModel<Destination> {
   syncMode: DestinationSyncMode;
 
   @AllowNull(true)
+  @Default("group")
   @Column(DataType.ENUM(...RECORD_COLLECTIONS))
   recordCollection: DestinationRecordCollection;
 
