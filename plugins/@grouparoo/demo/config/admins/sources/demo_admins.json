@@ -3,7 +3,7 @@
     "class": "Source",
     "id": "demo_admins",
     "name": "Demo Admins",
-    "type": "DBNAME-table-import",
+    "type": "DBNAME-import-table",
     "modelId": "admins",
     "appId": "demo_db",
     "options": {
