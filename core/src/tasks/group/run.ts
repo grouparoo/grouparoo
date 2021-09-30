@@ -67,7 +67,7 @@ export class RunGroup extends CLSTask {
     } else if (method === "complete") {
       // waiting for imports...
     } else {
-      throw new Error(`${method} is not now a known method`);
+      throw new Error(`${method} is not a known method`);
     }
 
     let nextMethod = method;
