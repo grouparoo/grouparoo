@@ -127,7 +127,7 @@ class Config {
       db = new Postgres();
     }
     if (this.sources.length === 0) {
-      this.addSource("users");
+      this.add("b2c");
     }
 
     return {

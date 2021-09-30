@@ -1,10 +1,10 @@
 {
   "class": "Destination",
   "id": "mailchimp",
+  "modelId": "users",
   "name": "Mailchimp",
   "type": "mailchimp-export-contacts",
   "appId": "mailchimpapp",
-  "modelId": "users",
   "groupId": "nobody",
   "syncMode": "sync",
   "options": {
