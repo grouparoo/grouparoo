@@ -51,7 +51,7 @@ export class Demo extends CLI {
         letter: "c",
         flag: true,
         description:
-          "add flag to write to config directory and not populate configuraiton into Grouparoo database",
+          "add flag to write to config directory and not populate configuration into Grouparoo database",
       },
       seed: {
         required: false,
