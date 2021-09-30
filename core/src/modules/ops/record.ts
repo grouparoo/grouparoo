@@ -984,7 +984,7 @@ export namespace RecordOps {
       }
     );
 
-    const updateResponse = await GrouparooRecord.update(
+    const [, updateResponse] = await GrouparooRecord.update(
       { state: "ready" },
       {
         where: {
@@ -994,11 +994,46 @@ export namespace RecordOps {
       }
     );
 
+    const invalidRecords = await api.sequelize.query(
+      `
+      SELECT DISTINCT
+        "GrouparooRecord"."id"
+      FROM
+        "records" AS "GrouparooRecord"
+        INNER JOIN "recordProperties" AS "recordProperties" ON "GrouparooRecord"."id" = "recordProperties"."recordId"
+      WHERE
+        "GrouparooRecord"."invalid" = FALSE
+        AND "recordProperties"."invalidReason" IS NOT NULL
+    `,
+      {
+        type: QueryTypes.SELECT,
+        model: GrouparooRecord,
+      }
+    );
+
+    const [, invalidUpdateResponse] = await GrouparooRecord.update(
+      { invalid: true },
+      {
+        where: {
+          id: { [Op.in]: invalidRecords.map((record) => record.id) },
+          invalid: false,
+        },
+      }
+    );
+
     // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer state=pending
     // in SQLite this isn't possible, but contention is far less likely
-    if (updateResponse[1]) records = updateResponse[1];
+    if (updateResponse && invalidUpdateResponse) {
+      records.push(...updateResponse, ...invalidUpdateResponse);
+    } else if (updateResponse) {
+      records = updateResponse;
+    } else if (invalidUpdateResponse) {
+      records = invalidUpdateResponse;
+    }
 
-    if (records.length === 0) return [];
+    if (records.length === 0) {
+      return [];
+    }
 
     await completeRecordImports(
       records.map((p) => p.id),

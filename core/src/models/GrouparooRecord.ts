@@ -56,6 +56,11 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   state: typeof STATES[number];
 
   @AllowNull(false)
+  @Default(false)
+  @Column(DataType.BOOLEAN)
+  invalid: boolean;
+
+  @AllowNull(false)
   @ForeignKey(() => GrouparooModel)
   @Column
   modelId: string;
