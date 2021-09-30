@@ -14,6 +14,16 @@ export const TYPES = {
     updated_at: "TIMESTAMP NOT NULL",
   },
 
+  admins: {
+    id: "INT NOT NULL PRIMARY KEY",
+    first_name: "VARCHAR(191)",
+    last_name: "VARCHAR(191)",
+    email: "VARCHAR(191)",
+    permission: "VARCHAR(191)",
+    created_at: "TIMESTAMP NOT NULL",
+    updated_at: "TIMESTAMP NOT NULL",
+  },
+
   purchases: {
     id: "INT NOT NULL PRIMARY KEY",
     user_id: "INT NOT NULL",

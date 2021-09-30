@@ -1,0 +1,16 @@
+{
+  "id": "nobody",
+  "class": "Group",
+  "type": "calculated",
+  "name": "Nobody",
+  "modelId": "users",
+  "rules": [
+    {
+      "propertyId": "user_id",
+      "operation": {
+        "op": "lt"
+      },
+      "match": "0"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "class": "Source",
+  "id": "demo_purchases",
+  "name": "Product Purchases",
+  "type": "DBNAME-import-table",
+  "appId": "demo_db",
+  "modelId": "users",
+  "options": {
+    "table": "purchases"
+  },
+  "mapping": {
+    "user_id": "user_id"
+  }
+}

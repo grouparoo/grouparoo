@@ -1,0 +1,32 @@
+{
+  "class": "Destination",
+  "id": "salesforce",
+  "name": "Salesforce",
+  "type": "salesforce-export-objects",
+  "appId": "salesforce",
+  "groupId": "nobody",
+  "modelId": "users",
+  "syncMode": "sync",
+  "options": {
+    "groupNameField": "Name",
+    "groupObject": "Campaign",
+    "membershipGroupField": "CampaignId",
+    "membershipObject": "CampaignMember",
+    "membershipRecordField": "ContactId",
+    "recordMatchField": "Email",
+    "recordObject": "Contact",
+    "recordReferenceField": "AccountId",
+    "recordReferenceMatchField": "Name",
+    "recordReferenceObject": "Account"
+  },
+  "mapping": {
+    "Account.Name": "language",
+    "Email": "email",
+    "FirstName": "first_name",
+    "LastName": "last_name"
+  },
+  "destinationGroupMemberships": {
+    "High Value": "high_value",
+    "Spanish Speakers": "spanish_speakers"
+  }
+}

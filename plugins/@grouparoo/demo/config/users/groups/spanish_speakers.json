@@ -1,0 +1,16 @@
+{
+  "id": "spanish_speakers",
+  "class": "Group",
+  "type": "calculated",
+  "name": "Spanish Speakers",
+  "modelId": "users",
+  "rules": [
+    {
+      "propertyId": "language",
+      "operation": {
+        "op": "eq"
+      },
+      "match": "Spanish"
+    }
+  ]
+}

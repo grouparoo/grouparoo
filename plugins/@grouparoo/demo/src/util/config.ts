@@ -6,23 +6,23 @@ import MySQL from "../connections/mysql";
 import Connection from "./connection";
 
 class Config {
-  subDirs: { [type: string]: boolean };
-  types: { [type: string]: boolean };
   db: any;
   dbName: string;
-  dataset: string;
+  sources: string[];
+  destinations: string[];
+  others: string[];
   constructor() {
     this.db = null;
-    this.dataset = null;
+    this.sources = [];
+    this.destinations = [];
+    this.others = [];
     this.dbName = null;
-    this.subDirs = {};
-    this.types = {};
   }
 
-  setDb(name: string, type: string) {
+  setDb(name: string) {
     if (this.dbName && this.dbName !== name) {
       throw new Error(
-        `There should only be one source database. ${this.dbName} is already set. Cannot use ${type}.`
+        `There should only be one source database. ${this.dbName} is already set. Cannot use ${name}.`
       );
     }
 
@@ -49,50 +49,47 @@ class Config {
     this.dbName = name;
   }
 
-  setDataset(name, type) {
-    if (this.dataset && this.dataset !== name) {
-      throw new Error(
-        `There should only be one category of data for b2b or b2c. ${this.dataset} is already set. Cannot use ${type}.`
-      );
-    }
-    this.dataset = name;
+  addSource(name) {
+    if (!this.sources.includes(name)) this.sources.push(name);
   }
-
-  addDir(subDir: string) {
-    this.subDirs[subDir] = true;
+  addDestination(name) {
+    if (!this.destinations.includes(name)) this.destinations.push(name);
+  }
+  addOther(name) {
+    if (!this.others.includes(name)) this.others.push(name);
   }
 
   add(type: string) {
-    if (this.types[type]) {
-      // already have it
-      return;
-    }
-    this.types[type] = true;
-
     switch (type) {
       case "reset":
       case "setup":
+        this.addOther(type);
         break;
       case "mongo":
       case "bigquery":
       case "snowflake":
       case "postgres":
       case "mysql":
-        this.setDb(type, type);
+        this.setDb(type);
         break;
       case "b2c":
-      case "purchases":
-        this.setDataset("b2c", type);
-        this.addDir("purchases");
+        this.addSource("users");
+        this.addSource("admins");
         break;
       case "b2b":
+        this.addSource("accounts");
+      case "users":
+        this.addSource("users");
+        break;
+      case "admins":
+        this.addSource("admins");
+        break;
       case "accounts":
-        this.setDataset("b2b", type);
-        this.addDir("accounts");
+        this.addSource("accounts");
         break;
       case "mailchimp":
       case "salesforce":
-        this.addDir(type);
+        this.addDestination(type);
         break;
       default:
         throw new Error(`Unknown type: ${type}`);
@@ -100,48 +97,53 @@ class Config {
   }
 
   data() {
-    const types = Object.assign({}, this.types);
-    if (types["reset"]) {
-      if (Object.keys(types).length === 1) {
-        return { db: null, dataset: null, subDirs: [] };
+    const hasData = this.sources.length > 0 || this.destinations.length > 0;
+    if (this.others.includes("reset")) {
+      if (!hasData && this.others.length === 1) {
+        return {
+          db: null,
+          resetOnly: true,
+          sources: [],
+          destinations: [],
+        };
       }
-      delete types["reset"];
       // otherwise resetting anyway
     }
 
-    if (types["setup"]) {
-      if (Object.keys(types).length === 1) {
-        return { db: null, dataset: null, subDirs: ["setup"] };
+    if (this.others.includes("setup")) {
+      if (!hasData) {
+        return {
+          db: null,
+          resetOnly: false,
+          sources: [],
+          destinations: [],
+        };
       }
       // otherwise setting up anyway
     }
 
     let db = this.db;
-    let dataset = this.dataset;
-    const subDirs = Object.assign({}, this.subDirs);
-    subDirs["setup"] = true;
-    subDirs["identity"] = true;
-
     if (!db) {
       db = new Postgres();
     }
-    if (!dataset) {
-      subDirs["purchases"] = true;
-      dataset = "b2c";
+    if (this.sources.length === 0) {
+      this.addSource("users");
     }
 
     return {
       db,
-      dataset,
-      subDirs: Object.keys(subDirs),
+      resetOnly: false,
+      sources: this.sources,
+      destinations: this.destinations,
     };
   }
 }
 
 export function getConfig(types: string[]): {
   db: Connection;
-  subDirs: string[];
-  dataset: string;
+  resetOnly: boolean;
+  sources: string[];
+  destinations: string[];
 } {
   const config = new Config();
   for (const type of types) {

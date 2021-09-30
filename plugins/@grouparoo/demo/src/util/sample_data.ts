@@ -16,36 +16,26 @@ interface DataOptions {
   junkPercent?: number;
 }
 
-export async function employees(db: Connection, options: DataOptions = {}) {
-  await createCsvTable(
-    db,
-    "shared",
-    "users",
-    "account_id",
-    "account",
-    true,
-    true,
-    options
-  );
+export async function writeAll(db: Connection, options: DataOptions = {}) {
+  await users(db, options);
+  await admins(db, options);
+  await purchases(db, options);
+  await plans(db, {});
+  await accounts(db, options);
+  await payments(db, options);
 }
 
-export async function consumers(db: Connection, options: DataOptions = {}) {
-  await createCsvTable(
-    db,
-    "shared",
-    "users",
-    "id",
-    "user",
-    true,
-    true,
-    options
-  );
+async function users(db: Connection, options: DataOptions = {}) {
+  await createCsvTable(db, "users", "id", "user", true, true, options);
 }
 
-export async function purchases(db: Connection, options: DataOptions = {}) {
+async function admins(db: Connection, options: DataOptions = {}) {
+  await createCsvTable(db, "admins", "id", "admin", true, true, options);
+}
+
+async function purchases(db: Connection, options: DataOptions = {}) {
   await createCsvTable(
     db,
-    "b2c",
     "purchases",
     "user_id",
     "user",
@@ -55,22 +45,13 @@ export async function purchases(db: Connection, options: DataOptions = {}) {
   );
 }
 
-export async function accounts(db: Connection, options: DataOptions = {}) {
-  await createCsvTable(
-    db,
-    "b2b",
-    "accounts",
-    "id",
-    "account",
-    true,
-    true,
-    options
-  );
+async function accounts(db: Connection, options: DataOptions = {}) {
+  await createCsvTable(db, "accounts", "id", "account", true, true, options);
 }
-export async function payments(db: Connection, options: DataOptions = {}) {
+
+async function payments(db: Connection, options: DataOptions = {}) {
   await createCsvTable(
     db,
-    "b2b",
     "payments",
     "account_id",
     "account",
@@ -79,20 +60,16 @@ export async function payments(db: Connection, options: DataOptions = {}) {
     options
   );
 }
-export async function plans(db: Connection, options: DataOptions = {}) {
-  await createCsvTable(db, "b2b", "plans", "id", null, false, false, options);
+async function plans(db: Connection, options: DataOptions = {}) {
+  await createCsvTable(db, "plans", "id", null, false, false, options);
 }
 
-export function readCsvTable(
-  dataset: string,
-  tableName: string,
-  junkPercent: number
-) {
+export function readCsvTable(tableName: string, junkPercent: number) {
   const filePath = path.resolve(
-    path.join(__dirname, "..", "..", "data", dataset, `${tableName}.csv`)
+    path.join(__dirname, "..", "..", "data", "rows", `${tableName}.csv`)
   );
   const rows = junkifyData(
-    dataset,
+    tableName,
     parse(fs.readFileSync(filePath), { columns: true }),
     junkPercent
   );
@@ -101,7 +78,6 @@ export function readCsvTable(
 
 async function createCsvTable(
   db: Connection,
-  dataset: string,
   tableName: string,
   typeColumn: string,
   typeName: string,
@@ -117,7 +93,6 @@ async function createCsvTable(
   await db.connect();
   await loadCsvTable(
     db,
-    dataset,
     tableName,
     typeColumn,
     typeName,
@@ -131,7 +106,6 @@ async function createCsvTable(
 
 async function loadCsvTable(
   db: Connection,
-  dataset: string,
   tableName: string,
   typeColumn: string,
   typeName: string,
@@ -143,9 +117,8 @@ async function loadCsvTable(
   if (!scale || scale < 1) scale = 1;
   if (!junkPercent || junkPercent < 1) junkPercent = 0;
 
-  log(`Adding ${tableName}`);
   // read from data file
-  const rows = readCsvTable(dataset, tableName, junkPercent);
+  const rows = readCsvTable(tableName, junkPercent);
   const keys = Object.keys(rows[0]);
 
   if (createdAt) {
@@ -227,8 +200,9 @@ function getRowData(
   const now = new Date();
   switch (typeName) {
     case "user":
+    case "admin":
       rootCreatedAt = userCreatedAt(typeId);
-      isRoot = tableName === "users";
+      isRoot = ["users", "admins"].includes(tableName);
       numOfRoot = numberOfUsers;
       break;
     case "account":
@@ -302,7 +276,7 @@ function parseValue(tableName: string, key: string, value: string) {
 }
 
 function junkifyData(
-  dataset: string,
+  tableName: string,
   rows: Record<string, any>[],
   junkPercent: number
 ) {
@@ -319,7 +293,7 @@ function junkifyData(
   }
 
   if (junkCounter > 0) {
-    log(`    created junk data on ${junkCounter} ${dataset} records`);
+    log(`    created junk data on ${junkCounter} ${tableName} records`);
   }
 
   return rows;

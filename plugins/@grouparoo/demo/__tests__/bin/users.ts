@@ -10,12 +10,12 @@ import {
   TeamMember,
 } from "@grouparoo/core";
 
-describe("demo setup", () => {
+describe("demo users", () => {
   hooks();
 
   test("runs without crash", async () => {
     const command = new Demo();
-    const toStop = await command.run({ params: { _arguments: ["setup"] } });
+    const toStop = await command.run({ params: { _arguments: ["users"] } });
     expect(toStop).toBe(true);
   });
 
@@ -27,16 +27,38 @@ describe("demo setup", () => {
     expect(members).toEqual(["demo"]);
 
     const sources = (await Source.findAll()).map((o) => o.id).sort();
-    expect(sources).toEqual([]);
+    expect(sources).toEqual([
+      "demo_calculated_property_source",
+      "demo_purchases",
+      "demo_users",
+    ]);
 
     const properties = (await Property.findAll()).map((o) => o.id).sort();
-    expect(properties).toEqual([]);
+    expect(properties).toEqual([
+      "deactivated",
+      "email",
+      "first_name",
+      "full_name",
+      "language",
+      "last_name",
+      "last_purchase_category",
+      "last_purchase_date",
+      "ltv",
+      "purchase_count",
+      "user_id",
+    ]);
 
     const schedules = (await Schedule.findAll()).map((o) => o.id).sort();
-    expect(schedules).toEqual([]);
+    expect(schedules).toEqual(["demo_users_schedule"]);
 
     const groups = (await Group.findAll()).map((o) => o.id).sort();
-    expect(groups).toEqual([]);
+    expect(groups).toEqual([
+      "all_emails",
+      "high_value",
+      "high_value_automotive",
+      "nobody",
+      "spanish_speakers",
+    ]);
 
     const destinations = (await Destination.findAll()).map((o) => o.id).sort();
     expect(destinations).toEqual([]);

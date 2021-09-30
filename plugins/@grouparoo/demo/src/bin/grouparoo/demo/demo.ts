@@ -1,12 +1,5 @@
 import { CLI } from "actionhero";
-import {
-  consumers,
-  employees,
-  purchases,
-  accounts,
-  plans,
-  payments,
-} from "../../../util/sample_data";
+import { writeAll } from "../../../util/sample_data";
 import {
   deleteConfigDir,
   loadConfigFiles,
@@ -27,10 +20,11 @@ export class Demo extends CLI {
       'A demo@grouparoo.com Team Member is created. Password: "password"',
       "",
       "Valid Types:",
-      "b2c            (default) loads users and purchases into source",
-      "b2b            loads users, accounts, and payment data into source",
-      "purchases      same as b2c",
-      "accounts       same as b2b",
+      "b2c            (default) loads users and admins models",
+      "b2b            loads account model",
+      "users          includes users model with purchases",
+      "accounts       includes accounts model with with payments",
+      "admins         includes admins model",
       "reset          only clear Grouparoo database and don't load config",
       "setup          only create the login Team Member",
       "postgres       (default) load source data into local Postgres database",
@@ -57,7 +51,7 @@ export class Demo extends CLI {
         letter: "c",
         flag: true,
         description:
-          "add flag to write to config directory and not populate configuraiton into Grouparoo database",
+          "add flag to write to config directory and not populate configuration into Grouparoo database",
       },
       seed: {
         required: false,
@@ -65,12 +59,6 @@ export class Demo extends CLI {
         flag: true,
         description:
           "add flag to only write (or output) demo source data and not touch Grouparoo database",
-      },
-      force: {
-        required: false,
-        letter: "f",
-        flag: true,
-        description: "add flag to ensure deletion of config directory",
       },
     };
   }
@@ -83,27 +71,12 @@ export class Demo extends CLI {
     db: Connection,
     seed: boolean,
     scale: number,
-    junkPercent: number,
-    subDirs: string[]
+    junkPercent: number
   ) {
-    let users = false;
-    if (db) await db.sessionStart();
-    if (seed && db) db.seeding();
-    if (seed || hasDir(subDirs, ["purchases"])) {
-      await consumers(db, { scale, junkPercent });
-      await purchases(db, { scale, junkPercent });
-      users = true;
-    }
-    if (seed || hasDir(subDirs, ["accounts"])) {
-      await plans(db, {});
-      await accounts(db, { scale, junkPercent });
-      await payments(db, { scale, junkPercent });
-      if (!users) {
-        // don't do users twice when seeding!
-        await employees(db, { scale, junkPercent });
-      }
-    }
-    if (db) await db.sessionEnd();
+    await db.sessionStart();
+    if (seed) db.seeding();
+    await writeAll(db, { scale, junkPercent });
+    await db.sessionEnd();
   }
 
   async run({ params }) {
@@ -112,22 +85,21 @@ export class Demo extends CLI {
       const junkPercent = parseInt(params.junkPercent) || 0;
       const seed = !!params.seed;
       const config = !!params.config;
-      const force = !!params.force;
 
       log(`Using scale = ${scale}, junkPercent = ${junkPercent}`);
 
       let types = params._arguments || [];
       if (types.length === 0) types = ["b2c"];
 
-      const { db, subDirs, dataset } = getConfig(types);
+      const { db, resetOnly, sources, destinations } = getConfig(types);
 
       if (seed) {
         if (!db) {
           log("No database given for seed", "error");
         }
         log(`Seeding: ${db.name()}`);
-        await this.loadData(db, seed, scale, junkPercent, subDirs);
-        return;
+        await this.loadData(db, seed, scale, junkPercent);
+        return true;
       }
 
       if (config) {
@@ -136,29 +108,29 @@ export class Demo extends CLI {
         log("Writing config to database.");
       }
       log(`Using types: ${types.join(", ")}`);
-      log(`Config directories: ${subDirs.join(",")}`);
-      log(`Using dataset: ${dataset}`);
+      log(`Using sources: ${sources.join(",")}`);
+      log(`Using destinations: ${destinations.join(",")}`);
       log(`Using database: ${db ? db.constructor.name : "none"}`);
 
-      if (force || config) {
-        log("Deleting current config directory.", "notice");
-        await deleteConfigDir();
-      }
+      log("Deleting current config directory.", "notice");
+      await deleteConfigDir();
+
       await init({ reset: true });
 
-      await this.loadData(db, seed, scale, junkPercent, subDirs);
+      if (resetOnly) {
+        return true;
+      }
+
+      if (db) {
+        await this.loadData(db, seed, scale, junkPercent);
+      }
 
       if (config) {
-        const skip = ["setup"]; // not all get config files, they load into db
-
-        const load = subDirs.filter((item) => skip.includes(item));
-        await loadConfigFiles(dataset, db, load);
+        await loadConfigFiles(db, true, [], []); // just setup
         await finalize();
-
-        const files = subDirs.filter((item) => !skip.includes(item));
-        await writeConfigFiles(dataset, db, files);
+        await writeConfigFiles(db, false, sources, destinations);
       } else {
-        await loadConfigFiles(dataset, db, subDirs);
+        await loadConfigFiles(db, true, sources, destinations);
         await finalize();
       }
 
@@ -168,13 +140,4 @@ export class Demo extends CLI {
       process.exit(1);
     }
   }
-}
-
-function hasDir(given: string[], subDirs: string[]) {
-  for (const subDir of subDirs) {
-    if (given.includes(subDir)) {
-      return true;
-    }
-  }
-  return false;
 }
