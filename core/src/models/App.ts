@@ -198,7 +198,6 @@ export class App extends LoggedModel<App> {
       name: this.name,
       icon,
       type: this.type,
-      typeDisplayName: pluginApp.displayName,
       state: this.state,
       locked: this.locked,
       options,
