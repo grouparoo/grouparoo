@@ -9,7 +9,7 @@ exports.default = async function buildConfig() {
       class: "source",
       id: {{{id}}},
       name: {{{id}}},
-      type: "{{{__pluginName}}}-table-import",
+      type: "{{{__pluginName}}}-import-table",
       appId: {{{appId}}}, // Set this value to the ID of the App this Source uses - e.g. `appId: "data_warehouse"`
       modelId: "mod_profiles", // The ID of the Grouparoo Model that this Source will contribute to
       options: {

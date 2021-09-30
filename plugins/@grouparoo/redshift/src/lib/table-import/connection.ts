@@ -10,7 +10,7 @@ import { getChangedRowCount } from "@grouparoo/postgres/dist/lib/table-import/ge
 export function getConnection() {
   return buildConnection({
     app: "redshift",
-    name: "redshift-table-import",
+    name: "redshift-import-table",
     displayName: "Redshift Table Import",
     description: "Import or update Records from a Redshift database table.",
     tableOptionDescription: "The table to scan",

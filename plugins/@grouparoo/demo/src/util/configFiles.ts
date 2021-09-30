@@ -129,13 +129,13 @@ async function updateDatabase(db: Connection, configDir) {
 }
 
 async function uppercaseDatabase(configDir: string, name: string) {
-  // type: snowflake-table-import
+  // type: snowflake-import-table
   // options.table, mapping.keys
 
-  // schedule with sourceId with type: snowflake-table-import
+  // schedule with sourceId with type: snowflake-import-table
   // options.column, filters(all).key
 
-  // property with sourceId with type: snowflake-table-import
+  // property with sourceId with type: snowflake-import-table
   // options.column, options.sortColumn, filters(all).key,
 
   const sourcesPath = path.resolve(path.join(configDir, "sources", "*.json"));
@@ -163,7 +163,7 @@ async function uppercaseDatabase(configDir: string, name: string) {
       );
     }
     // find the source
-    if (source && source.type === `${name}-table-import`) {
+    if (source && source.type === `${name}-import-table`) {
       write = true;
       sourceIds.push(source.id);
       if (source.options?.table) {

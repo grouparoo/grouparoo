@@ -103,7 +103,7 @@ describe("integration/runs/sqlite", () => {
     session.params = {
       csrfToken,
       name: "sqlite import source",
-      type: "sqlite-table-import",
+      type: "sqlite-import-table",
       appId: app.id,
       modelId: "mod_profiles",
       options: { table: usersTableName },

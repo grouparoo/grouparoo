@@ -99,7 +99,7 @@ describe("integration/runs/mysql", () => {
     session.params = {
       csrfToken,
       name: "mysql source",
-      type: "mysql-table-import",
+      type: "mysql-import-table",
       appId: app.id,
       modelId: "mod_profiles",
       options: { table: usersTableName },

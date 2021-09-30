@@ -34,7 +34,7 @@ describe("sqlite/table/scheduleOptions", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "sqlite-table-import",
+      type: "sqlite-import-table",
     });
     await source.setOptions({ table: usersTableName });
     await source.setMapping({ id: "userId" });

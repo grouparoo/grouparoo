@@ -87,7 +87,7 @@ describe("classes/codeConfig", () => {
         class: "source",
         id: "query_source",
         name: "query_source",
-        type: "postgres-query-import",
+        type: "postgres-import-query",
         appId: "data_warehouse",
       };
       const property = {

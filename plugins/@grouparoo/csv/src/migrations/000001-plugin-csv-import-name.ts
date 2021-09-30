@@ -5,7 +5,7 @@ export default {
     // Update Plugin Names
     await queryInterface.bulkUpdate(
       "sources",
-      { type: "csv-table-import" },
+      { type: "csv-import-table" },
       { type: "csv-import" }
     );
   },
@@ -14,7 +14,7 @@ export default {
     await queryInterface.bulkUpdate(
       "sources",
       { type: "csv-import" },
-      { type: "csv-table-import" }
+      { type: "csv-import-table" }
     );
   },
 };
