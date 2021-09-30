@@ -345,6 +345,7 @@ export class Source extends LoggedModel<Source> {
     let configObject: any = {
       class: "Source",
       id: this.getConfigId(),
+      modelId: this.modelId,
       name,
       type,
       appId,

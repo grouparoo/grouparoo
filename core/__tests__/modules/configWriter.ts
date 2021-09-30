@@ -595,6 +595,7 @@ describe("modules/configWriter", () => {
       expect(config).toEqual({
         class: "Source",
         id: source.getConfigId(),
+        modelId: "mod_profiles",
         name,
         type,
         appId: app.getConfigId(),
@@ -635,6 +636,7 @@ describe("modules/configWriter", () => {
       expect(config[0]).toEqual({
         class: "Source",
         id: source.getConfigId(),
+        modelId: "mod_profiles",
         name,
         type,
         appId: app.getConfigId(),
@@ -741,6 +743,7 @@ describe("modules/configWriter", () => {
       expect(config).toEqual({
         class: "Source",
         id: source.getConfigId(),
+        modelId: "mod_profiles",
         name,
         type,
         appId: app.getConfigId(),
