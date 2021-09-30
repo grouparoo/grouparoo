@@ -156,7 +156,7 @@ export namespace RecordOps {
 
     // Are we searching for a specific RecordProperty?
     if (searchKey && searchValue) {
-      include.push({ model: RecordProperty, as: "recordProperties" });
+      include.push(RecordProperty);
       countRequiresIncludes = true;
 
       const property = await Property.findOneWithCache(
@@ -234,7 +234,7 @@ export namespace RecordOps {
     const records = await GrouparooRecord.findAll({
       where: { id: recordIds },
       order,
-      include: [{ model: RecordProperty, as: "recordProperties" }],
+      include: RecordProperty,
     });
 
     const total = await GrouparooRecord.count({
@@ -1043,7 +1043,7 @@ export namespace RecordOps {
         id: { [Op.in]: recordIds },
       },
       include: [
-        { model: RecordProperty, as: "recordProperties", required: true },
+        { model: RecordProperty, required: true },
         { model: Import, required: false, where: { recordUpdatedAt: null } },
       ],
     });

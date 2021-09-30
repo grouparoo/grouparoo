@@ -37,7 +37,6 @@ export class GrouparooRecordsEnqueueExports extends CLSTask {
         },
         {
           model: RecordProperty,
-          as: "recordProperties",
           attributes: ["state"],
           required: true,
         },

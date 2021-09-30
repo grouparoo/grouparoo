@@ -65,14 +65,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   @Column
   modelId: string;
 
-  @HasMany(() => RecordProperty, {
-    as: "recordProperties",
-    foreignKey: "recordId",
-  })
-  @HasMany(() => RecordProperty, {
-    as: "recordProperties_1",
-    foreignKey: "recordId",
-  })
+  @HasMany(() => RecordProperty)
   recordProperties: RecordProperty[];
 
   @HasMany(() => GroupMember)
