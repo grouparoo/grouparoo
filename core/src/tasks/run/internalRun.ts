@@ -33,7 +33,7 @@ export class RunInternalRun extends CLSTask {
 
     const records = await GrouparooRecord.findAll({
       order: [["createdAt", "asc"]],
-      include: [RecordProperty, GroupMember],
+      include: [{ model: RecordProperty, as: "recordProperties" }, GroupMember],
       limit,
       offset,
     });

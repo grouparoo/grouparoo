@@ -195,6 +195,7 @@ describe("actions/records", () => {
         {
           where: {
             recordId: readyProfilesB[0].id,
+            propertyId: "email",
           },
         }
       );

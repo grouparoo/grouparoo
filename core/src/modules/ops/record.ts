@@ -156,8 +156,7 @@ export namespace RecordOps {
 
     // Are we searching for a specific RecordProperty?
     if (searchKey && searchValue) {
-      countRequiresIncludes = true;
-      include.push(RecordProperty);
+      include.push({ model: RecordProperty, as: "recordProperties" });
       countRequiresIncludes = true;
 
       const property = await Property.findOneWithCache(
@@ -213,14 +212,14 @@ export namespace RecordOps {
 
     // are we looking for invalid records
     if (state === "invalid") {
-      ands.push({
-        id: {
-          [Op.in]: Sequelize.literal(`(
-            SELECT DISTINCT "GrouparooRecord"."id"
-            FROM "records" AS "GrouparooRecord"
-            LEFT OUTER JOIN "recordProperties" AS "recordProperties" ON "GrouparooRecord"."id" = "recordProperties"."recordId"
-            WHERE "recordProperties"."invalidReason" IS NOT NULL
-          )`),
+      countRequiresIncludes = true;
+      include.push({
+        model: RecordProperty,
+        as: "recordProperties_1",
+        where: {
+          invalidReason: {
+            [Op.not]: null,
+          },
         },
       });
     }
@@ -241,7 +240,7 @@ export namespace RecordOps {
     const records = await GrouparooRecord.findAll({
       where: { id: recordIds },
       order,
-      include: [RecordProperty],
+      include: [{ model: RecordProperty, as: "recordProperties" }],
     });
 
     const total = await GrouparooRecord.count({
@@ -1015,7 +1014,7 @@ export namespace RecordOps {
         id: { [Op.in]: recordIds },
       },
       include: [
-        { model: RecordProperty, required: true },
+        { model: RecordProperty, as: "recordProperties", required: true },
         { model: Import, required: false, where: { recordUpdatedAt: null } },
       ],
     });
