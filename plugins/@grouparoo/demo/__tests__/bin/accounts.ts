@@ -14,7 +14,7 @@ describe("demo accounts", () => {
   hooks();
   test("runs without crash", async () => {
     const command = new Demo();
-    const toStop = await command.run({ params: { _arguments: ["accounts"] } });
+    const toStop = await command.run({ params: { accounts: true } });
     expect(toStop).toBe(true);
   });
 

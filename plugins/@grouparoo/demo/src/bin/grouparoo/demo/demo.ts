@@ -11,56 +11,78 @@ import { log } from "actionhero";
 import { GrouparooCLI } from "@grouparoo/core";
 import Connection from "../../../util/connection";
 
+const TYPES = {
+  reset: "only clear Grouparoo database and don't load config",
+  setup: "only create the login Team Member",
+  b2c: "(default) loads users and admins models",
+  b2b: "loads account model",
+  users: "includes users model with purchases",
+  accounts: "includes accounts model with with payments",
+  admins: "includes admins model",
+  postgres: "(default) load source data into local Postgres database",
+  mongo: "load specified source data into local MongoDB database",
+  mysql: "load specified source data into local MySQL database",
+  snowflake: "assumes a Snowflake instance with data already present",
+  bigquery: "assumes a BigQuery instance with data already present",
+  mailchimp: "create Mailchimp destination for data",
+  salesforce: "create Salesforce destination for data",
+};
+
+const LETTERS = {
+  accounts: "a",
+  b2b: "b",
+  config: "c",
+  mailchimp: "m",
+  salesforce: "s",
+  users: "u",
+};
+
 export class Demo extends CLI {
   constructor() {
     super();
-    this.name = "demo [type] [type]";
+    this.name = "demo";
     this.description = [
       "Load data into a source database, create properties, destinations, and other config.",
       'A demo@grouparoo.com Team Member is created. Password: "password"',
-      "",
-      "Valid Types:",
-      "b2c            (default) loads users and admins models",
-      "b2b            loads account model",
-      "users          includes users model with purchases",
-      "accounts       includes accounts model with with payments",
-      "admins         includes admins model",
-      "reset          only clear Grouparoo database and don't load config",
-      "setup          only create the login Team Member",
-      "postgres       (default) load source data into local Postgres database",
-      "mongo          load specified source data into local MongoDB database",
-      "mysql          load specified source data into local MySQL database",
-      "snowflake      assumes a Snowflake instance with data already present",
-      "bigquery       assumes a BigQuery instance with data already present",
-      "mailchimp      create Mailchimp destination for data",
-      "salesforce     create Salesforce destination for data",
     ].join("\n");
-    this.inputs = {
-      scale: {
-        required: false,
-        default: "1",
-        description: "make the number more than 1 to multiple amount of data.",
+    this.inputs = Object.assign(
+      {
+        scale: {
+          required: false,
+          default: "1",
+          description:
+            "make the number more than 1 to multiple amount of data.",
+        },
+        junkPercent: {
+          required: false,
+          default: "0",
+          description: "what percent of the data should have problems?",
+        },
+        config: {
+          required: false,
+          letter: LETTERS["config"],
+          flag: true,
+          description:
+            "add flag to write to config directory and not populate configuration into Grouparoo database",
+        },
+        seed: {
+          required: false,
+          letter: LETTERS["seed"],
+          flag: true,
+          description:
+            "add flag to only write (or output) demo source data and not touch Grouparoo database",
+        },
       },
-      junkPercent: {
-        required: false,
-        default: "0",
-        description: "what percent of the data should have problems?",
-      },
-      config: {
-        required: false,
-        letter: "c",
-        flag: true,
-        description:
-          "add flag to write to config directory and not populate configuration into Grouparoo database",
-      },
-      seed: {
-        required: false,
-        letter: "s",
-        flag: true,
-        description:
-          "add flag to only write (or output) demo source data and not touch Grouparoo database",
-      },
-    };
+      Object.keys(TYPES).reduce((map, key) => {
+        map[key] = {
+          required: false,
+          flag: true,
+          description: TYPES[key],
+          letter: LETTERS[key],
+        };
+        return map;
+      }, {})
+    );
   }
 
   preInitialize = () => {
@@ -81,6 +103,7 @@ export class Demo extends CLI {
 
   async run({ params }) {
     try {
+      const passed = Object.keys(params).map((k) => k.toLowerCase());
       const scale = parseInt(params.scale) || 1;
       const junkPercent = parseInt(params.junkPercent) || 0;
       const seed = !!params.seed;
@@ -88,7 +111,8 @@ export class Demo extends CLI {
 
       log(`Using scale = ${scale}, junkPercent = ${junkPercent}`);
 
-      let types = params._arguments || [];
+      const validTypes = Object.keys(TYPES);
+      let types = passed.filter((k) => validTypes.includes(k));
       if (types.length === 0) types = ["b2c"];
 
       const { db, resetOnly, sources, destinations } = getConfig(types);

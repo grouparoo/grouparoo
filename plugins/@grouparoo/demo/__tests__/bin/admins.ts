@@ -15,7 +15,7 @@ describe("demo admins", () => {
 
   test("runs without crash", async () => {
     const command = new Demo();
-    const toStop = await command.run({ params: { _arguments: ["admins"] } });
+    const toStop = await command.run({ params: { admins: true } });
     expect(toStop).toBe(true);
   });
 
