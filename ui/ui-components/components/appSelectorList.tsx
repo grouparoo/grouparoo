@@ -10,24 +10,12 @@ type SelectableSource =
 type SelectableDestination =
   Actions.DestinationConnectionApps["connectionApps"][number]["app"];
 
-function isSelectableApp(
-  item:
-    | SelectableApp
-    | SelectablePackage
-    | SelectableSource
-    | SelectableDestination
-): item is SelectableApp {
-  return (item as SelectableApp).plugin !== undefined;
+function isSelectableApp(item: any): item is SelectableApp {
+  return item.plugin !== undefined;
 }
 
-function isSelectablePackage(
-  item:
-    | SelectableApp
-    | SelectablePackage
-    | SelectableSource
-    | SelectableDestination
-): item is SelectablePackage {
-  return (item as SelectablePackage).npmUrl !== undefined;
+function isSelectablePackage(item: any): item is SelectablePackage {
+  return item.npmUrl !== undefined;
 }
 
 export default function AppSelectorList({
