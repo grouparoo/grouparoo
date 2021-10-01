@@ -185,7 +185,6 @@ import {
   RecordAutocompleteRecordProperty,
   RecordCreate,
   RecordDestroy,
-  RecordEdit,
   RecordImportAndExport,
   RecordView,
   RecordsImportAndUpdate,
@@ -529,9 +528,6 @@ export namespace Actions {
   >;
   export type RecordDestroy = AsyncReturnType<
     typeof RecordDestroy.prototype.runWithinTransaction
-  >;
-  export type RecordEdit = AsyncReturnType<
-    typeof RecordEdit.prototype.runWithinTransaction
   >;
   export type RecordImportAndExport = AsyncReturnType<
     typeof RecordImportAndExport.prototype.run

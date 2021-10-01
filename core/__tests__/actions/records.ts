@@ -14,7 +14,6 @@ import {
   RecordAutocompleteRecordProperty,
   RecordCreate,
   RecordDestroy,
-  RecordEdit,
   RecordsImportAndUpdate,
   RecordsList,
   RecordView,
@@ -127,74 +126,6 @@ describe("actions/records", () => {
         where: { id: recordData.id },
       });
       await record.destroy();
-    });
-
-    test("a writer can edit a property of a record", async () => {
-      connection.params = {
-        csrfToken,
-        id,
-        properties: { userId: 999 },
-      };
-      const { error, record } = await specHelper.runAction<RecordEdit>(
-        "record:edit",
-        connection
-      );
-      expect(error).toBeUndefined();
-      expect(simpleRecordValues(record.properties).userId).toEqual([999]);
-    });
-
-    test("a writer can add a new property to a record", async () => {
-      connection.params = {
-        csrfToken,
-        id,
-        properties: {
-          ltv: 123.45,
-        },
-      };
-      const { error, record } = await specHelper.runAction<RecordEdit>(
-        "record:edit",
-        connection
-      );
-      expect(error).toBeUndefined();
-      expect(record.id).toBeTruthy();
-      expect(record.state).toBe("ready");
-      expect(simpleRecordValues(record.properties)).toEqual({
-        userId: [999],
-        email: ["luigi@example.com"],
-        firstName: ["Luigi"],
-        lastName: ["Mario"],
-        ltv: [123.45],
-        isVIP: [null],
-        lastLoginAt: [null],
-        purchaseAmounts: [null],
-        purchases: [null],
-      });
-    });
-
-    test("a writer can remove a new property from a record", async () => {
-      connection.params = {
-        csrfToken,
-        id,
-        removedProperties: ["ltv"],
-      };
-      const { error, record } = await specHelper.runAction<RecordEdit>(
-        "record:edit",
-        connection
-      );
-      expect(error).toBeUndefined();
-      expect(record.id).toBeTruthy();
-      expect(record.state).toBe("ready");
-      expect(simpleRecordValues(record.properties)).toEqual({
-        userId: [999],
-        email: ["luigi@example.com"],
-        firstName: ["Luigi"],
-        lastName: ["Mario"],
-        isVIP: [null],
-        ltv: [null],
-        lastLoginAt: [null],
-        purchaseAmounts: [null],
-        purchases: [null],
-      });
     });
 
     test("a writer can list all the records", async () => {
@@ -800,18 +731,6 @@ describe("actions/records", () => {
       );
       expect(error).toBeUndefined();
       expect(records.length).toBe(1);
-    });
-
-    test("a reader cannot edit a group", async () => {
-      connection.params = {
-        csrfToken,
-        id,
-      };
-      const { error } = await specHelper.runAction<RecordEdit>(
-        "record:edit",
-        connection
-      );
-      expect(error.code).toBe("AUTHORIZATION_ERROR");
     });
 
     test("a reader can view a record", async () => {

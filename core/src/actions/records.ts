@@ -180,50 +180,6 @@ export class RecordImportAndExport extends Action {
   }
 }
 
-export class RecordEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "record:edit";
-    this.description = "edit a record";
-    this.outputExample = {};
-    this.permission = { topic: "record", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      properties: {
-        required: false,
-        default: {},
-        formatter: APIData.ensureObject,
-      },
-      removedProperties: {
-        required: false,
-        default: [],
-        formatter: APIData.ensureObject,
-      },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const record = await GrouparooRecord.findById(params.id);
-
-    await record.update(params);
-    if (params.properties) {
-      await record.addOrUpdateProperties(params.properties);
-    }
-    if (params.removedProperties) {
-      await record.removeProperties(params.removedProperties);
-    }
-
-    await record.sync(false);
-
-    const groups = await record.$get("groups");
-
-    return {
-      record: await record.apiData(),
-      groups: await Promise.all(groups.map((group) => group.apiData())),
-    };
-  }
-}
-
 export class RecordView extends AuthenticatedAction {
   constructor() {
     super();
