@@ -83,9 +83,10 @@ export async function loadDestination(
   }
   await destination.setDestinationGroupMemberships(destinationGroupMemberships);
 
-  if (group && destination.groupId !== group.id) {
-    await destination.trackGroup(group);
-  }
+  await destination.updateTracking(
+    configObject.collection,
+    configObject.groupId
+  );
 
   if (destination.state === "deleted") {
     // when bringing back deleted destinations, we need to be sure to trigger a new export even though options may be the same

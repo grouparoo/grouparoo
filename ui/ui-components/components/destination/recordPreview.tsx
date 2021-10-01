@@ -10,14 +10,14 @@ export default function RecordPreview(props) {
   const {
     errorHandler,
     destination,
-    recordCollection,
+    collection,
     groupId,
     modelId,
     mappingOptions,
   }: {
     errorHandler: ErrorHandler;
     destination: Models.DestinationType;
-    recordCollection: Models.DestinationType["recordCollection"];
+    collection: Models.DestinationType["collection"] | "_none";
     groupId: string;
     modelId: string;
     mappingOptions: Actions.DestinationMappingOptions["options"];
@@ -49,6 +49,7 @@ export default function RecordPreview(props) {
   }, [
     destination.id,
     groupId,
+    collection,
     JSON.stringify(destination.destinationGroup),
     JSON.stringify(destination.mapping),
     JSON.stringify(destination.destinationGroupMemberships),
@@ -72,7 +73,11 @@ export default function RecordPreview(props) {
     setToHide(false);
     storeRecordPropertyId(_recordId);
 
-    if (groupId === "_none" && recordCollection === "group") {
+    if (
+      !collection ||
+      collection === "_none" ||
+      (collection === "group" && groupId === "_none")
+    ) {
       setToHide(true);
       return;
     }

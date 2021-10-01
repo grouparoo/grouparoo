@@ -127,7 +127,6 @@ export class DestinationCreate extends AuthenticatedAction {
         default: {},
       },
       syncMode: { required: false },
-      recordCollection: { required: false },
       destinationGroupMemberships: { required: false },
     };
   }
@@ -139,7 +138,6 @@ export class DestinationCreate extends AuthenticatedAction {
       modelId: params.modelId,
       appId: params.appId,
       syncMode: params.syncMode,
-      recordCollection: params.recordCollection,
     });
     if (params.options) await destination.setOptions(params.options);
     if (params.mapping) {
@@ -173,7 +171,7 @@ export class DestinationEdit extends AuthenticatedAction {
       syncMode: { required: false },
       destinationGroupMemberships: { required: false },
       groupId: { required: false },
-      recordCollection: { required: false },
+      collection: { required: false },
       triggerExport: { required: false, formatter: APIData.ensureBoolean },
     };
   }
@@ -190,7 +188,7 @@ export class DestinationEdit extends AuthenticatedAction {
       );
     }
 
-    // do not set groupId here, that's handled within the track/unTrack methods
+    // do not set groupId or collection here, that's handled within the track/unTrack methods
     await destination.update({
       name: params.name,
       type: params.type,
@@ -198,39 +196,19 @@ export class DestinationEdit extends AuthenticatedAction {
       appId: params.appId,
       state: params.state,
       syncMode: params.syncMode,
-      recordCollection: params.recordCollection,
     });
 
-    let run: Run;
-
-    if (
-      destination.recordCollection === "group" &&
-      params.groupId &&
-      params.groupId !== "_none" &&
-      params.groupId !== destination.groupId
-    ) {
-      const group = await Group.findById(params.groupId);
-      run = await destination.trackGroup(group);
-    } else if (
-      destination.recordCollection === "group" &&
-      (params.groupId === "_none" || params.groupId === null) &&
-      destination.groupId
-    ) {
-      run = await destination.unTrackGroup();
-    } else if (
-      destination.recordCollection === "model" &&
-      params.recordCollection !== destination.recordCollection
-    ) {
-      run = await destination.exportMembers(true);
-    } else if (params.triggerExport) {
-      run = await destination.exportMembers(true);
-    }
+    const { oldRun, newRun } = await destination.updateTracking(
+      params.collection,
+      params.groupId
+    );
 
     await ConfigWriter.run();
 
     return {
       destination: await destination.apiData(),
-      run: run ? await run.apiData() : undefined,
+      oldRun: oldRun ? await oldRun.apiData() : undefined,
+      newRun: newRun ? await newRun.apiData() : undefined,
     };
   }
 }

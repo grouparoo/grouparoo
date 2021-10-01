@@ -1,5 +1,8 @@
 import { ActionheroLogLevel, log } from "actionhero";
-import { DestinationSyncMode } from "../models/Destination";
+import {
+  DestinationCollection,
+  DestinationSyncMode,
+} from "../models/Destination";
 import { GroupRuleWithKey } from "../models/Group";
 import { PropertyFiltersWithKey } from "../models/Property";
 import { MustacheUtils } from "../modules/mustacheUtils";
@@ -50,6 +53,7 @@ export interface DestinationConfigurationObject extends ConfigurationObject {
   appId: string;
   modelId: string;
   syncMode: DestinationSyncMode;
+  collection: DestinationCollection;
   groupId?: string;
   options?: { [key: string]: any };
   mapping?: { [key: string]: any };

@@ -26,6 +26,8 @@ import { destinationTypeConversions } from "../destinationTypeConversions";
 import { GroupMember } from "../../models/GroupMember";
 import { ExportProcessor } from "../../models/ExportProcessor";
 import { Option } from "../../models/Option";
+import { RunOps } from "./runs";
+import { GrouparooModel, Run } from "../..";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -41,58 +43,61 @@ export namespace DestinationOps {
    * Export all the Group Members of the Groups that this Destination is Tracking
    */
   export async function exportMembers(destination: Destination, force = false) {
-    if (destination.recordCollection === "group") {
+    if (destination.collection === "group") {
       const group = await destination.$get("group");
       if (group) return group.run(force, destination.id);
-    } else if (destination.recordCollection === "model") {
+    } else if (destination.collection === "model") {
       const model = await destination.$get("model");
       if (model) return model.run(force, destination.id);
     } else {
-      throw new Error(
-        `cannot export members for a ${destination.recordCollection}`
-      );
+      throw new Error(`cannot export members for a ${destination.collection}`);
     }
   }
 
-  /**
-   * Track a Group
-   */
-  export async function trackGroup(
+  const nullKey = "_none" as const;
+
+  export async function updateTracking(
     destination: Destination,
-    group: Group,
-    force = true
+    collection: Destination["collection"] | typeof nullKey,
+    groupId: string
   ) {
-    if (group.state === "deleted") {
-      throw new Error(`Cannot track deleted Group "${group.name}"`);
-    }
-    if (destination.modelId !== group.modelId) {
-      throw new Error(
-        `destination ${destination.id} and group ${group.id} do not share the same modelId`
-      );
+    let oldRun: Run;
+    let newRun: Run;
+
+    if (
+      destination.collection === collection &&
+      destination.groupId === groupId
+    ) {
+      return { oldRun, newRun }; // no changes
     }
 
-    const oldGroupId = destination.groupId;
-    await destination.update({ groupId: group.id });
+    oldRun = await runDestinationCollection(destination, false); // old collection
+    await destination.update({
+      collection: collection === nullKey ? null : collection,
+      groupId: groupId === nullKey || collection !== "group" ? null : groupId,
+    });
+    newRun = await runDestinationCollection(destination, true); // new collection
 
-    if (oldGroupId !== group.id) {
-      if (oldGroupId) {
-        const oldGroup = await Group.findById(oldGroupId);
-        await oldGroup.run(false, destination.id);
-      }
-      return group.run(force, destination.id);
-    }
+    return { oldRun, newRun };
   }
 
-  /**
-   * Un-track a Group
-   */
-  export async function unTrackGroup(destination: Destination, force = false) {
-    const oldGroupId = destination.groupId;
-    await destination.update({ groupId: null });
-
-    if (oldGroupId) {
-      const oldGroup = await Group.findById(oldGroupId);
-      return oldGroup.run(force, destination.id);
+  async function runDestinationCollection(
+    destination: Destination,
+    force: boolean
+  ) {
+    if (destination.collection === "group" && destination.groupId) {
+      const group = await Group.findById(destination.groupId);
+      if (group) {
+        if (group.state === "deleted") {
+          throw new Error(
+            `Cannot track deleted Group "${group.name} (${group.id})"`
+          );
+        }
+        return RunOps.run(group, force, destination.id);
+      }
+    } else if (destination.collection === "model") {
+      const model = await GrouparooModel.findById(destination.modelId);
+      if (model) return RunOps.run(model, force, destination.id);
     }
   }
 

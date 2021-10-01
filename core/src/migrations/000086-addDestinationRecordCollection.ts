@@ -5,18 +5,18 @@ export default {
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
-    await queryInterface.addColumn("destinations", "recordCollection", {
+    await queryInterface.addColumn("destinations", "collection", {
       type: DataTypes.STRING(191),
       allowNull: true,
     });
 
     await queryInterface.sequelize.query(
-      `UPDATE "destinations" SET "recordCollection"='group' WHERE "groupId" IS NOT NULL`
+      `UPDATE "destinations" SET "collection"='group' WHERE "groupId" IS NOT NULL AND state='ready'`
     );
 
-    await queryInterface.changeColumn("destinations", "recordCollection", {
+    await queryInterface.addColumn("runs", "collection", {
       type: DataTypes.STRING(191),
-      allowNull: false,
+      allowNull: true,
     });
   },
 

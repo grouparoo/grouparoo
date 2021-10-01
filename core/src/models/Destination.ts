@@ -52,8 +52,8 @@ export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 const SYNC_MODES = ["sync", "additive", "enrich"] as const;
 export type DestinationSyncMode = typeof SYNC_MODES[number];
 
-const RECORD_COLLECTIONS = ["group", "model"] as const;
-export type DestinationRecordCollection = typeof RECORD_COLLECTIONS[number];
+const DESTINATION_COLLECTIONS = ["group", "model"] as const;
+export type DestinationCollection = typeof DESTINATION_COLLECTIONS[number];
 
 export interface DestinationSyncOperations {
   create: boolean;
@@ -169,8 +169,8 @@ export class Destination extends LoggedModel<Destination> {
 
   @AllowNull(true)
   @Default("group")
-  @Column(DataType.ENUM(...RECORD_COLLECTIONS))
-  recordCollection: DestinationRecordCollection;
+  @Column(DataType.ENUM(...DESTINATION_COLLECTIONS))
+  collection: DestinationCollection;
 
   @AllowNull(false)
   @ForeignKey(() => GrouparooModel)
@@ -232,7 +232,7 @@ export class Destination extends LoggedModel<Destination> {
       locked: this.locked,
       syncMode,
       syncModes: syncModeData,
-      recordCollection: this.recordCollection,
+      collection: this.collection,
       app: app ? await app.apiData() : null,
       modelId: this.modelId,
       modelName: model.name,
@@ -339,12 +339,8 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.exportMembers(this, force);
   }
 
-  async trackGroup(group: Group, force = true) {
-    return DestinationOps.trackGroup(this, group, force);
-  }
-
-  async unTrackGroup(force = false) {
-    return DestinationOps.unTrackGroup(this, force);
+  async updateTracking(collection: Destination["collection"], groupId: string) {
+    return DestinationOps.updateTracking(this, collection, groupId);
   }
 
   async getSupportedSyncModes() {
@@ -593,6 +589,7 @@ export class Destination extends LoggedModel<Destination> {
       name,
       type,
       appId,
+      collection: this.collection,
       groupId,
       syncMode,
       options,
@@ -652,20 +649,15 @@ export class Destination extends LoggedModel<Destination> {
   @BeforeSave
   static async validateRecordCollectionMode(instance: Destination) {
     if (
-      instance.recordCollection &&
-      !RECORD_COLLECTIONS.includes(instance.recordCollection)
+      instance.collection &&
+      !DESTINATION_COLLECTIONS.includes(instance.collection)
     ) {
       throw new Error(
-        `${instance.recordCollection} is not a valid record collection`
-      );
-    }
-    if (instance.recordCollection !== "group" && instance.groupId) {
-      throw new Error(
-        `cannot track group when destination recordCollection is not group`
+        `${instance.collection} is not a valid destination collection`
       );
     }
 
-    if (instance.recordCollection !== "group" && instance.groupId) {
+    if (instance.collection !== "group" && instance.groupId) {
       instance.groupId = null;
     }
   }

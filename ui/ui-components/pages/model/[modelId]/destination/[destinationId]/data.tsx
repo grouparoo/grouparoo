@@ -46,9 +46,9 @@ export default function Page(props) {
   const [groupId, setGroupId] = useState<string>(
     destination.destinationGroup?.id ?? "_none"
   );
-  const [recordCollection, setRecordCollection] = useState<
-    Models.DestinationType["recordCollection"]
-  >(destination.recordCollection);
+  const [collection, setCollection] = useState<
+    Models.DestinationType["collection"]
+  >(destination.collection);
 
   const [displayedDestinationProperties, setDisplayedDestinationProperties] =
     useState<string[]>([]);
@@ -79,7 +79,7 @@ export default function Page(props) {
     await execApi("put", `/destination/${destinationId}`, {
       mapping: filteredMapping,
       groupId: groupId || "_none",
-      recordCollection,
+      collection,
       destinationGroupMemberships: destinationGroupMembershipsObject,
       triggerExport: true,
     });
@@ -300,15 +300,15 @@ export default function Page(props) {
                   <Form.Control
                     as="select"
                     required={true}
-                    value={recordCollection === "model" ? "__model" : groupId}
+                    value={collection === "model" ? "__model" : groupId}
                     disabled={loading}
                     onChange={(e) => {
                       e.target.value === "__model"
                         ? setGroupId("_none")
                         : setGroupId(e.target.value);
                       e.target.value === "__model"
-                        ? setRecordCollection("model")
-                        : setRecordCollection("group");
+                        ? setCollection("model")
+                        : setCollection("group");
                     }}
                   >
                     <option value={"_none"}>No Group or Model</option>
@@ -812,7 +812,7 @@ export default function Page(props) {
             {...props}
             mappingOptions={mappingOptions}
             destination={destination}
-            recordCollection={recordCollection}
+            collection={collection}
             groups={groups}
             groupId={groupId}
             modelId={destination.modelId}
