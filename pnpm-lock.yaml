@@ -200,7 +200,7 @@ importers:
       '@types/fs-extra': '*'
       '@types/node': '*'
       chalk: 4.1.2
-      commander: 7.2.0
+      commander: 8.2.0
       fs-extra: 10.0.0
       glob: 7.1.7
       isomorphic-fetch: 3.0.0
@@ -212,7 +212,7 @@ importers:
       typescript: 4.4.3
     dependencies:
       chalk: 4.1.2
-      commander: 7.2.0
+      commander: 8.2.0
       fs-extra: 10.0.0
       glob: 7.1.7
       isomorphic-fetch: 3.0.0
@@ -5665,11 +5665,6 @@ packages:
   /commander/6.2.1:
     resolution: {integrity: sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==}
     engines: {node: '>= 6'}
-
-  /commander/7.2.0:
-    resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
-    engines: {node: '>= 10'}
-    dev: false
 
   /commander/8.2.0:
     resolution: {integrity: sha512-LLKxDvHeL91/8MIyTAD5BFMNtoIwztGPMiM/7Bl8rIPmHCZXRxmSWr91h57dpOpnQ6jIUqEWdXE/uBYMfiVZDA==}
