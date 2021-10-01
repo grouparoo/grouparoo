@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.7.0-alpha.10",
-    "@sendgrid/client": "7.4.6"
+    "@sendgrid/client": "7.4.7"
   },
   "devDependencies": {
     "@grouparoo/core": "0.7.0-alpha.10",
