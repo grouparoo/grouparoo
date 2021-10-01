@@ -164,7 +164,6 @@ async function uppercaseDatabase(configDir: string, name: string) {
   const sourceIds = [];
   const sourceFiles = glob.sync(sourcesPath);
   for (const file of sourceFiles) {
-    console.log(file);
     const contents = fs.readJSONSync(file);
     let source = null;
     let schedule = null;
@@ -212,7 +211,6 @@ async function uppercaseDatabase(configDir: string, name: string) {
 
   const propertyFiles = glob.sync(propertiesPath);
   for (const file of propertyFiles) {
-    console.log(file);
     let write = false;
     const contents = fs.readJSONSync(file);
     const property = contents;
