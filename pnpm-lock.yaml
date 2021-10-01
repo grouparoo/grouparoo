@@ -283,7 +283,7 @@ importers:
       uuid: 8.3.2
       validator: 13.6.0
       winston: 3.3.3
-      ws: 8.2.1
+      ws: 8.2.2
     dependencies:
       '@types/fs-extra': 9.0.12
       '@types/node': 16.9.1
@@ -326,7 +326,7 @@ importers:
       uuid: 8.3.2
       validator: 13.6.0
       winston: 3.3.3
-      ws: 8.2.1
+      ws: 8.2.2
     devDependencies:
       '@grouparoo/spec-helper': link:../plugins/@grouparoo/spec-helper
       '@types/isomorphic-fetch': 0.0.35
@@ -475,7 +475,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      aws-sdk: 2.995.0
+      aws-sdk: 2.998.0
       jest: 27.1.0
       prettier: 2.3.2
       ts-jest: 27.0.5
@@ -484,7 +484,7 @@ importers:
       winston: 3.3.3
       winston-cloudwatch: 3.0.2
     dependencies:
-      aws-sdk: 2.995.0
+      aws-sdk: 2.998.0
       winston: 3.3.3
       winston-cloudwatch: 3.0.2_winston@3.3.3
     devDependencies:
@@ -1439,7 +1439,7 @@ importers:
       '@grouparoo/core': 0.7.0-alpha.10
       '@grouparoo/spec-helper': 0.7.0-alpha.10
       '@sentry/node': 6.12.0
-      '@sentry/tracing': 6.12.0
+      '@sentry/tracing': 6.13.2
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -1449,7 +1449,7 @@ importers:
       typescript: 4.4.2
     dependencies:
       '@sentry/node': 6.12.0
-      '@sentry/tracing': 6.12.0
+      '@sentry/tracing': 6.13.2
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1666,7 +1666,7 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.15
       '@grouparoo/core': 0.7.0-alpha.10
       '@testing-library/jest-dom': 5.14.1
-      '@testing-library/react': 12.0.0
+      '@testing-library/react': 12.1.1
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -1704,7 +1704,7 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.15_f515edce028694561ceb456e3dba224c
       '@grouparoo/core': link:../../core
       '@testing-library/jest-dom': 5.14.1
-      '@testing-library/react': 12.0.0_react-dom@17.0.2+react@17.0.2
+      '@testing-library/react': 12.1.1_react-dom@17.0.2+react@17.0.2
       '@types/jest': 27.0.1
       '@types/react': 17.0.20
       '@types/react-dom': 17.0.9
@@ -3745,12 +3745,30 @@ packages:
       tslib: 1.14.1
     dev: false
 
+  /@sentry/hub/6.13.2:
+    resolution: {integrity: sha512-sppSuJdNMiMC/vFm/dQowCBh11uTrmvks00fc190YWgxHshodJwXMdpc+pN61VSOmy2QA4MbQ5aMAgHzPzel3A==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/types': 6.13.2
+      '@sentry/utils': 6.13.2
+      tslib: 1.14.1
+    dev: false
+
   /@sentry/minimal/6.12.0:
     resolution: {integrity: sha512-r3C54Q1KN+xIqUvcgX9DlcoWE7ezWvFk2pSu1Ojx9De81hVqR9u5T3sdSAP2Xma+um0zr6coOtDJG4WtYlOtsw==}
     engines: {node: '>=6'}
     dependencies:
       '@sentry/hub': 6.12.0
       '@sentry/types': 6.12.0
+      tslib: 1.14.1
+    dev: false
+
+  /@sentry/minimal/6.13.2:
+    resolution: {integrity: sha512-6iJfEvHzzpGBHDfLxSHcGObh73XU1OSQKWjuhDOe7UQDyI4BQmTfcXAC+Fr8sm8C/tIsmpVi/XJhs8cubFdSMw==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/hub': 6.13.2
+      '@sentry/types': 6.13.2
       tslib: 1.14.1
     dev: false
 
@@ -3782,8 +3800,24 @@ packages:
       tslib: 1.14.1
     dev: false
 
+  /@sentry/tracing/6.13.2:
+    resolution: {integrity: sha512-bHJz+C/nd6biWTNcYAu91JeRilsvVgaye4POkdzWSmD0XoLWHVMrpCQobGpXe7onkp2noU3YQjhqgtBqPHtnpw==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/hub': 6.13.2
+      '@sentry/minimal': 6.13.2
+      '@sentry/types': 6.13.2
+      '@sentry/utils': 6.13.2
+      tslib: 1.14.1
+    dev: false
+
   /@sentry/types/6.12.0:
     resolution: {integrity: sha512-urtgLzE4EDMAYQHYdkgC0Ei9QvLajodK1ntg71bGn0Pm84QUpaqpPDfHRU+i6jLeteyC7kWwa5O5W1m/jrjGXA==}
+    engines: {node: '>=6'}
+    dev: false
+
+  /@sentry/types/6.13.2:
+    resolution: {integrity: sha512-6WjGj/VjjN8LZDtqJH5ikeB1o39rO1gYS6anBxiS3d0sXNBb3Ux0pNNDFoBxQpOhmdDHXYS57MEptX9EV82gmg==}
     engines: {node: '>=6'}
     dev: false
 
@@ -3792,6 +3826,14 @@ packages:
     engines: {node: '>=6'}
     dependencies:
       '@sentry/types': 6.12.0
+      tslib: 1.14.1
+    dev: false
+
+  /@sentry/utils/6.13.2:
+    resolution: {integrity: sha512-foF4PbxqPMWNbuqdXkdoOmKm3quu3PP7Q7j/0pXkri4DtCuvF/lKY92mbY0V9rHS/phCoj+3/Se5JvM2ymh2/w==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/types': 6.13.2
       tslib: 1.14.1
     dev: false
 
@@ -3846,8 +3888,8 @@ packages:
       redent: 3.0.0
     dev: true
 
-  /@testing-library/react/12.0.0_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-sh3jhFgEshFyJ/0IxGltRhwZv2kFKfJ3fN1vTZ6hhMXzz9ZbbcTgmDYM4e+zJv+oiVKKEWZPyqPAh4MQBI65gA==}
+  /@testing-library/react/12.1.1_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-JDyWbvMuedEpP6SPL4Cvbhk59TVxQ3pwuR6ZfJHdRsHuxDd/ziSMA3nVM3fViaSbsQhuQFE/mvFrPrvQbL5kRQ==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '*'
@@ -4754,8 +4796,8 @@ packages:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
 
-  /aws-sdk/2.995.0:
-    resolution: {integrity: sha512-2tZv0GLI7SAhV6hGIhZArCvF2OcQNPrGNmtPtOhBWmovYJ5qIaibtFFtSee3O8jWX87KGDkBA5fgBMXrcG7i/w==}
+  /aws-sdk/2.998.0:
+    resolution: {integrity: sha512-jenbMcGxOg9AeH6p1m0vbsJYNaeJXBnOM58GXsaKecPgRnCm/IykTPlB6aQKfNDk0WQnw5BHDcy7iQPnEjEkUQ==}
     engines: {node: '>= 0.8.0'}
     requiresBuild: true
     dependencies:
@@ -15512,19 +15554,6 @@ packages:
       utf-8-validate:
         optional: true
     dev: true
-
-  /ws/8.2.1:
-    resolution: {integrity: sha512-XkgWpJU3sHU7gX8f13NqTn6KQ85bd1WU7noBHTT8fSohx7OS1TPY8k+cyRPCzFkia7C4mM229yeHr1qK9sM4JQ==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: ^5.0.2
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-    dev: false
 
   /ws/8.2.2:
     resolution: {integrity: sha512-Q6B6H2oc8QY3llc3cB8kVmQ6pnJWVQbP7Q5algTcIxx7YEpc0oU4NBVHlztA7Ekzfhw2r0rPducMUiCGWKQRzw==}
