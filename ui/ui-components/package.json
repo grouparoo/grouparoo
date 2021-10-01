@@ -41,7 +41,7 @@
     "date-fns": "2.23.0",
     "isomorphic-fetch": "3.0.0",
     "jest": "27.1.0",
-    "jest-mock-axios": "4.4.0",
+    "jest-mock-axios": "4.4.1",
     "md5": "2.3.0",
     "moment": "2.29.1",
     "next": "11.1.2",
