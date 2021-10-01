@@ -7,6 +7,7 @@ import { CLS } from "../../modules/cls";
 export abstract class CLSTask extends Task {
   constructor() {
     super();
+    this.plugins = ["QueueLock"];
   }
 
   async run(
