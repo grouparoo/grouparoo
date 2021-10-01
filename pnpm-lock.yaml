@@ -243,7 +243,7 @@ importers:
       cls-hooked: 4.2.2
       colors: 1.4.0
       compare-versions: 3.6.0
-      csv-parse: 4.16.2
+      csv-parse: 4.16.3
       csv-stringify: 5.6.4
       date-fns: 2.23.0
       dotenv: 10.0.0
@@ -334,7 +334,7 @@ importers:
       '@types/pacote': 11.1.1
       '@types/pluralize': 0.0.29
       '@types/tar': 4.0.5
-      csv-parse: 4.16.2
+      csv-parse: 4.16.3
       jest: 27.1.0_ts-node@10.2.1
       jest-fetch-mock: 3.0.3
       nock: 13.1.3
@@ -603,7 +603,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      csv-parse: 4.16.2
+      csv-parse: 4.16.3
       dotenv: 10.0.0
       fs-extra: 10.0.0
       glob: 7.1.7
@@ -619,7 +619,7 @@ importers:
       typescript: 4.4.2
       uuid: 8.3.2
     dependencies:
-      csv-parse: 4.16.2
+      csv-parse: 4.16.3
       dotenv: 10.0.0
       fs-extra: 10.0.0
       glob: 7.1.7
@@ -1074,7 +1074,7 @@ importers:
       '@types/mysql': '*'
       '@types/node': '*'
       actionhero: 27.1.4
-      csv-parse: 4.16.2
+      csv-parse: 4.16.3
       jest: 27.1.0
       mysql: 2.18.1
       prettier: 2.3.2
@@ -1091,7 +1091,7 @@ importers:
       '@types/mysql': 2.15.19
       '@types/node': 16.9.1
       actionhero: 27.1.4
-      csv-parse: 4.16.2
+      csv-parse: 4.16.3
       jest: 27.1.0
       prettier: 2.3.2
       sequelize: 6.6.2
@@ -1241,7 +1241,7 @@ importers:
       '@types/node': '*'
       '@types/pg': '*'
       actionhero: 27.1.4
-      csv-parse: 4.16.2
+      csv-parse: 4.16.3
       fs-extra: 10.0.0
       jest: 27.1.0
       pg: 8.7.1
@@ -1265,7 +1265,7 @@ importers:
       '@types/node': 16.9.1
       '@types/pg': 8.6.1
       actionhero: 27.1.4
-      csv-parse: 4.16.2
+      csv-parse: 4.16.3
       fs-extra: 10.0.0
       jest: 27.1.0
       prettier: 2.3.2
@@ -1543,7 +1543,7 @@ importers:
       '@types/pg': '*'
       '@types/sqlite3': 3.1.7
       actionhero: 27.1.4
-      csv-parse: 4.16.2
+      csv-parse: 4.16.3
       fs-extra: 10.0.0
       jest: 27.1.0
       prettier: 2.3.2
@@ -1563,7 +1563,7 @@ importers:
       '@types/node': 16.9.1
       '@types/pg': 8.6.1
       actionhero: 27.1.4
-      csv-parse: 4.16.2
+      csv-parse: 4.16.3
       fs-extra: 10.0.0
       jest: 27.1.0
       prettier: 2.3.2
@@ -5975,12 +5975,8 @@ packages:
   /csstype/3.0.8:
     resolution: {integrity: sha512-jXKhWqXPmlUeoQnF/EhTtTl4C9SnrxSH/jZUih3jmO6lBKr99rP3/+FmrMj4EFpOXzMtXHAZkd3x0E6h6Fgflw==}
 
-  /csv-parse/4.16.2:
-    resolution: {integrity: sha512-eq2BhB6JiIJaNv61pH5EC+o/iyCBxT+g6ukLu2UoNyS5daCN8YlzhOsLHGt/t9sGraMYt/aizaXPLQoNvxlIMw==}
-
   /csv-parse/4.16.3:
     resolution: {integrity: sha512-cO1I/zmz4w2dcKHVvpCr7JVRu8/FymG5OEpmvsZYlccYolPBLoVGKUHgNoc4ZGkFeFlWGEDmMyBM+TTqRdW/wg==}
-    dev: false
 
   /csv-parser/3.0.0:
     resolution: {integrity: sha512-s6OYSXAK3IdKqYO33y09jhypG/bSDHPuyCme/IdEHfWpLf/jKcpitVFyOC6UemgGk8v7Q5u2XE0vvwmanxhGlQ==}
