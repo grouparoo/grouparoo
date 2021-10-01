@@ -10,7 +10,6 @@ export class RunGroup extends CLSTask {
     this.description =
       "calculate the groups members and create imports to update them all";
     this.frequency = 0;
-    this.plugins = ["QueueLock"];
     this.queue = "groups";
     this.inputs = {
       runId: { required: true },
