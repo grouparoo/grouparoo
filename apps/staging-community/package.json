@@ -51,7 +51,8 @@
   },
   "scripts": {
     "start": "cd node_modules/@grouparoo/core && ./bin/start",
-    "dev": "cd node_modules/@grouparoo/core && ./bin/dev"
+    "dev": "cd node_modules/@grouparoo/core && ./bin/dev",
+    "debug": "cd node_modules/@grouparoo/core && ./bin/debug"
   },
   "grouparoo": {
     "grouparoo_monorepo_app": "staging-community",

@@ -238,6 +238,40 @@ describe("actions/records", () => {
       expect(filteredInvalidRecords.length).toBe(1);
     });
 
+    test("a writer can remove records that are no longer invalid", async () => {
+      connection.params = {
+        csrfToken,
+        state: "invalid",
+      };
+      let { records: invalidRecords, total: invalidTotal } =
+        await specHelper.runAction<RecordsList>("records:list", connection);
+      expect(invalidRecords.length).toBe(1);
+      expect(invalidTotal).toBe(1);
+
+      const [invalidRecord] = invalidRecords;
+
+      await RecordProperty.update(
+        {
+          invalidValue: null,
+          invalidReason: null,
+        },
+        {
+          where: {
+            recordId: invalidRecord.id,
+            propertyId: "email",
+          },
+        }
+      );
+
+      await RecordOps.makeReadyAndCompleteImports();
+
+      ({ records: invalidRecords, total: invalidTotal } =
+        await specHelper.runAction<RecordsList>("records:list", connection));
+      console.log(invalidRecords[0]);
+      expect(invalidRecords.length).toBe(0);
+      expect(invalidTotal).toBe(0);
+    });
+
     test("a writer can get autocomplete results from properties", async () => {
       const emailProperty = await Property.findOne({
         where: { key: "email" },

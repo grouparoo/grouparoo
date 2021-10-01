@@ -46,7 +46,7 @@ export class PropertiesList extends AuthenticatedAction {
     params,
   }: {
     params: {
-      state: GrouparooRecord["state"];
+      state: GrouparooRecord["state"] | "invalid";
       sourceId: string;
       includeExamples: boolean;
       unique: boolean;
@@ -59,7 +59,7 @@ export class PropertiesList extends AuthenticatedAction {
     const includeExamples = params.includeExamples;
 
     const where = {};
-    if (params.state) {
+    if (params.state && params.state !== "invalid") {
       where["state"] = params.state;
     }
     if (params.sourceId) {
@@ -100,6 +100,13 @@ export class PropertiesList extends AuthenticatedAction {
           where: {
             propertyId: property.id,
             rawValue: { [Op.not]: null },
+            ...(params.state === "invalid"
+              ? {
+                  invalidReason: {
+                    [Op.not]: null,
+                  },
+                }
+              : {}),
           },
           order: [["id", "asc"]],
           limit: 5,

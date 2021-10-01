@@ -95,6 +95,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
       state: this.state,
       modelId: this.modelId,
       modelName: model.name,
+      invalid: this.invalid,
       properties,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),

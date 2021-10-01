@@ -966,89 +966,101 @@ export namespace RecordOps {
   ) {
     const records: GrouparooRecord[] = await api.sequelize.query(
       `
-    SELECT "id" from "records" where "state" = 'pending'
-    EXCEPT
-    SELECT DISTINCT("recordId") FROM "recordProperties" WHERE "state" = 'pending'
-    LIMIT ${limit}
-    ;
+      SELECT "id" from "records" where "state" = 'pending'
+      EXCEPT
+      SELECT DISTINCT("recordId") FROM "recordProperties" WHERE "state" = 'pending'
+      LIMIT ${limit};
     `,
       {
         type: QueryTypes.SELECT,
         model: GrouparooRecord,
+        include: RecordProperty,
       }
     );
 
-    const [, updateResponse] = await GrouparooRecord.update(
-      { state: "ready" },
-      {
+    if (!records.length) {
+      return [];
+    }
+
+    // const [, updateResponse] = await GrouparooRecord.update(
+    //   { state: "ready" },
+    //   {
+    //     where: {
+    //       id: { [Op.in]: records.map((p) => p.id) },
+    //       state: "pending",
+    //     },
+    //   }
+    // );
+
+    const invalidRecords = await GrouparooRecord.findAll({
+      where: {
+        id: { [Op.in]: records.map((p) => p.id) },
+        invalid: false,
+      },
+      include: {
+        model: RecordProperty,
         where: {
-          id: { [Op.in]: records.map((p) => p.id) },
-          state: "pending",
+          invalidReason: {
+            [Op.not]: null,
+          },
         },
-      }
-    );
-
-    const invalidRecords = await api.sequelize.query(
-      `
-      SELECT DISTINCT
-        "GrouparooRecord"."id"
-      FROM
-        "records" AS "GrouparooRecord"
-        INNER JOIN "recordProperties" AS "recordProperties" ON "GrouparooRecord"."id" = "recordProperties"."recordId"
-      WHERE
-        "GrouparooRecord"."invalid" = FALSE
-        AND "recordProperties"."invalidReason" IS NOT NULL
-    `,
-      {
-        type: QueryTypes.SELECT,
-        model: GrouparooRecord,
-      }
-    );
-
+      },
+    });
     const [, invalidUpdateResponse] = await GrouparooRecord.update(
       { invalid: true },
       {
         where: {
-          id: { [Op.in]: invalidRecords.map((record) => record.id) },
-          invalid: false,
+          id: {
+            [Op.in]: invalidRecords.map((record) => record.id),
+          },
         },
       }
     );
 
-    const fixedRecords = await api.sequelize.query(
-      `
-      SELECT DISTINCT
-        "GrouparooRecord"."id"
-      FROM
-        "records" AS "GrouparooRecord"
-        INNER JOIN "recordProperties" AS "recordProperties" ON "GrouparooRecord"."id" = "recordProperties"."recordId"
-      WHERE
-        "GrouparooRecord"."invalid" = TRUE
-        AND "recordProperties"."invalidReason" IS NULL
-    `,
-      {
-        type: QueryTypes.SELECT,
-        model: GrouparooRecord,
-      }
-    );
-
-    const [, fixedUpdateResponse] = await GrouparooRecord.update(
-      { invalid: false },
-      {
+    // TODO: Need to find all records where _all_ associated
+    // recordProperties.invalidReason are null
+    const fixedRecords = await GrouparooRecord.findAll({
+      where: {
+        id: { [Op.in]: records.map((p) => p.id) },
+        invalid: true,
+        recordProperties: {
+          invalidReason: {
+            [Op.not]: null,
+          },
+        },
+      },
+      logging: console.log,
+      include: {
+        model: RecordProperty,
         where: {
-          id: { [Op.in]: fixedRecords.map((record) => record.id) },
-          invalid: false,
+          invalidReason: {
+            [Op.eq]: null,
+          },
         },
-      }
-    );
+      },
+    });
+    // const [, fixedUpdateResponse] = await GrouparooRecord.update(
+    //   { invalid: false },
+    //   {
+    //     where: {
+    //       id: { [Op.in]: fixedRecords.map((record) => record.id) },
+    //     },
+    //   }
+    // );
+    console.log({
+      invalidRecords,
+      invalidUpdateResponse,
+      // fixedRecords,
+      // fixedUpdateResponse,
+    });
 
     // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer state=pending
     // in SQLite this isn't possible, but contention is far less likely
     const updatedRecords = Array.from(
       new Set<GrouparooRecord>([
-        ...updateResponse,
-        ...invalidUpdateResponse,
-        ...fixedUpdateResponse,
+        // ...(updateResponse ?? []),
+        ...(invalidUpdateResponse ?? []),
+        // ...(fixedUpdateResponse ?? []),
       ])
     );
 

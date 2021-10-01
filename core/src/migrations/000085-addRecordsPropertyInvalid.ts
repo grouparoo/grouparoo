@@ -8,7 +8,6 @@ export default {
     await queryInterface.addColumn("records", "invalid", {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false,
     });
   },
 
