@@ -60,20 +60,17 @@ export class Demo extends CLI {
         config: {
           required: false,
           letter: LETTERS["config"],
-          flag: true,
           description:
             "add flag to write to config directory and not populate configuration into Grouparoo database",
         },
         reset: {
           required: false,
           letter: LETTERS["seed"],
-          flag: true,
           description: "only clear Grouparoo database and don't load config",
         },
         seed: {
           required: false,
           letter: LETTERS["seed"],
-          flag: true,
           description:
             "add flag to only write (or output) demo source data and not touch Grouparoo database",
         },
@@ -81,7 +78,6 @@ export class Demo extends CLI {
       Object.keys(TYPES).reduce((map, key) => {
         map[key] = {
           required: false,
-          flag: true,
           description: TYPES[key],
           letter: LETTERS[key],
         };
