@@ -51,6 +51,16 @@ describe("tasks/recordProperties:enqueue", () => {
         await App.truncate();
       });
 
+      // this test is really testing CLSTask in general
+      it("cannot be enqueued more than once due to the QueueLock middleware", async () => {
+        await task.enqueue("recordProperties:enqueue", {});
+        await task.enqueue("recordProperties:enqueue", {});
+        const foundTasks = await specHelper.findEnqueuedTasks(
+          "recordProperties:enqueue"
+        );
+        expect(foundTasks.length).toEqual(1);
+      });
+
       it("will not crash when there is a property without a ready source", async () => {
         const source = await helper.factories.source();
         const property = await source.bootstrapUniqueProperty(
