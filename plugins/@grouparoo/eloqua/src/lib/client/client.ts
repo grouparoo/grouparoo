@@ -55,11 +55,11 @@ export default class EloquaClient {
       auth: this.auth,
     };
     const response = await axios(params);
-    const { data = {} } = response;
+    const { data = {} as Record<string, any> } = response;
     const { urls = {} } = data;
     if (urls["base"]) {
       return urls["base"];
-    } else if (data === "Not authenticated.") {
+    } else if (data.toString() === "Not authenticated.") {
       throw new Error(
         "Invalid credentials, please verify your Site Name, User Name and Password."
       );

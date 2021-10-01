@@ -32,7 +32,7 @@ export async function downloadAndRefreshFile(
     log(`downloading csv from \`${url}\` to \`${localPath}\``);
     fs.rmSync(localPath, { force: true });
     const writer = fs.createWriteStream(localPath);
-    const response = await Axios({
+    const response: { data: NodeJS.ReadStream } = await Axios({
       url,
       method: "GET",
       responseType: "stream",
