@@ -609,7 +609,7 @@ importers:
       glob: 7.1.7
       isomorphic-fetch: 3.0.0
       jest: 27.1.0
-      mongodb: 4.1.1
+      mongodb: 4.1.2
       mysql: 2.18.1
       pg: 8.7.1
       prettier: 2.4.1
@@ -624,7 +624,7 @@ importers:
       fs-extra: 10.0.0
       glob: 7.1.7
       isomorphic-fetch: 3.0.0
-      mongodb: 4.1.1
+      mongodb: 4.1.2
       mysql: 2.18.1
       pg: 8.7.1
       prettier: 2.4.1
@@ -1043,14 +1043,14 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      mongodb: 4.1.1
+      mongodb: 4.1.2
       prettier: 2.4.1
       sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      mongodb: 4.1.1
+      mongodb: 4.1.2
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1404,7 +1404,7 @@ importers:
       '@grouparoo/app-templates': 0.7.0-alpha.10
       '@grouparoo/core': 0.7.0-alpha.10
       '@grouparoo/spec-helper': 0.7.0-alpha.10
-      '@sendgrid/client': 7.4.6
+      '@sendgrid/client': 7.4.7
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.4
@@ -1418,7 +1418,7 @@ importers:
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      '@sendgrid/client': 7.4.6
+      '@sendgrid/client': 7.4.7
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -3708,8 +3708,8 @@ packages:
     resolution: {integrity: sha512-Myxw//kzromB9yWgS8qYGuGVf91oBUUJpNvy5eM50sqvmKLbKjwLxohJnkWGTeeI9v9IBMtPLxz5Gc60FIfvCA==}
     dev: true
 
-  /@sendgrid/client/7.4.6:
-    resolution: {integrity: sha512-g3vjDyN1hDTKwPe9THGNuf4HKkx+cC3dSOM7SM88Pg6Q9SRI+GDGzsdnGRfFFpsdHBVVrHCSk0n2f4YZVCv4zA==}
+  /@sendgrid/client/7.4.7:
+    resolution: {integrity: sha512-Zh3H/nCyI2+MaAZW9KJpyk6JXfxE27W+mR636Hju/GX95SR7+uymeuLLJ3GtLvtapLTl8l6/0YoHjzlg65xtqg==}
     engines: {node: 6.* || 8.* || >=10.*}
     dependencies:
       '@sendgrid/helpers': 7.4.6
@@ -5169,8 +5169,8 @@ packages:
       node-int64: 0.4.0
     dev: true
 
-  /bson/4.5.1:
-    resolution: {integrity: sha512-XqFP74pbTVLyLy5KFxVfTUyRrC1mgOlmu/iXHfXqfCKT59jyP9lwbotGfbN59cHBRbJSamZNkrSopjv+N0SqAA==}
+  /bson/4.5.2:
+    resolution: {integrity: sha512-8CEMJpwc7qlQtrn2rney38jQSEeMar847lz0LyitwRmVknAW8iHXrzW4fTjHfyWm0E3sukyD/zppdH+QU1QefA==}
     engines: {node: '>=6.9.0'}
     dependencies:
       buffer: 5.7.1
@@ -6283,6 +6283,11 @@ packages:
   /denque/1.5.1:
     resolution: {integrity: sha512-XwE+iZ4D6ZUB7mfYRMb5wByE8L74HCn30FBN7sWnXksWc1LO1bPDl67pBR9o/kC4z/xSNAwkMYcGgqDV3BE3Hw==}
     engines: {node: '>=0.10'}
+
+  /denque/2.0.1:
+    resolution: {integrity: sha512-tfiWc6BQLXNLpNiR5iGd0Ocu3P3VpxfzFiqubLgMfhfOw9WyvgJBd46CClNn9k3qfbjvT//0cf7AlYRX/OslMQ==}
+    engines: {node: '>=0.10'}
+    dev: false
 
   /depd/1.1.2:
     resolution: {integrity: sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=}
@@ -10623,12 +10628,12 @@ packages:
       whatwg-url: 9.1.0
     dev: false
 
-  /mongodb/4.1.1:
-    resolution: {integrity: sha512-fbACrWEyvr6yl0sSiCGV0sqEiBwTtDJ8iSojmkDjAfw9JnOZSAkUyv9seFSPYhPPKwxp1PDtyjvBNfMDz0WBLQ==}
+  /mongodb/4.1.2:
+    resolution: {integrity: sha512-pHCKDoOy1h6mVurziJmXmTMPatYWOx8pbnyFgSgshja9Y36Q+caHUzTDY6rrIy9HCSrjnbXmx3pCtvNZHmR8xg==}
     engines: {node: '>=12.9.0'}
     dependencies:
-      bson: 4.5.1
-      denque: 1.5.1
+      bson: 4.5.2
+      denque: 2.0.1
       mongodb-connection-string-url: 2.0.0
     optionalDependencies:
       saslprep: 1.0.3
