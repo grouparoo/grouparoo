@@ -39,7 +39,7 @@ echo ""
 echo "-----> REBUILDING CONFIG FROM DEMO"
 echo ""
 
-$ROO demo purchases -c --scale $SCALE
+$ROO demo -c --scale $SCALE
 
 echo ""
 echo "-----> STARTING TEST"
