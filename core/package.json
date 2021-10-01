@@ -63,7 +63,7 @@
     "pg": "8.7.1",
     "pg-hstore": "2.3.4",
     "pluralize": "8.0.0",
-    "prettier": "2.3.2",
+    "prettier": "2.4.1",
     "reflect-metadata": "0.1.13",
     "sequelize": "6.6.2",
     "sequelize-typescript": "2.1.0",
