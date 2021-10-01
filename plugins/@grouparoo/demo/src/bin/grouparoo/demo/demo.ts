@@ -12,7 +12,6 @@ import { GrouparooCLI } from "@grouparoo/core";
 import Connection from "../../../util/connection";
 
 const TYPES = {
-  reset: "only clear Grouparoo database and don't load config",
   setup: "only create the login Team Member",
   b2c: "(default) loads users and admins models",
   b2b: "loads account model",
@@ -65,6 +64,12 @@ export class Demo extends CLI {
           description:
             "add flag to write to config directory and not populate configuration into Grouparoo database",
         },
+        reset: {
+          required: false,
+          letter: LETTERS["seed"],
+          flag: true,
+          description: "only clear Grouparoo database and don't load config",
+        },
         seed: {
           required: false,
           letter: LETTERS["seed"],
@@ -106,8 +111,9 @@ export class Demo extends CLI {
       const passed = Object.keys(params).map((k) => k.toLowerCase());
       const scale = parseInt(params.scale) || 1;
       const junkPercent = parseInt(params.junkPercent) || 0;
-      const seed = !!params.seed;
-      const config = !!params.config;
+      const seed = passed.includes("seed");
+      const config = passed.includes("config");
+      const reset = passed.includes("reset");
 
       log(`Using scale = ${scale}, junkPercent = ${junkPercent}`);
 
@@ -115,7 +121,7 @@ export class Demo extends CLI {
       let types = passed.filter((k) => validTypes.includes(k));
       if (types.length === 0) types = ["b2c"];
 
-      const { db, resetOnly, sources, destinations } = getConfig(types);
+      const { db, sources, destinations } = getConfig(types);
 
       if (seed) {
         if (!db) {
@@ -141,7 +147,7 @@ export class Demo extends CLI {
 
       await init({ reset: true });
 
-      if (resetOnly) {
+      if (reset) {
         return true;
       }
 
