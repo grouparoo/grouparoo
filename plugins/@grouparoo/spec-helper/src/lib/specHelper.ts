@@ -586,12 +586,14 @@ export namespace helper {
       require(nockFile);
     }
     afterAll(() => {
-      try {
-        const contents = fs.readFileSync(nockFile).toString();
-        const formatted = prettier.format(contents, { parser: "babel" });
-        fs.writeFileSync(nockFile, formatted);
-      } catch (err) {
-        console.log(`Nock formatting error`, err);
+      if (newNock) {
+        try {
+          const contents = fs.readFileSync(nockFile).toString();
+          const formatted = prettier.format(contents, { parser: "babel" });
+          fs.writeFileSync(nockFile, formatted);
+        } catch (err) {
+          console.log(`Nock formatting error`, err);
+        }
       }
     });
     return { newNock };
