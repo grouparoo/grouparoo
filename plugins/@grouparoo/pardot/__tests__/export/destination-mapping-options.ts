@@ -1,4 +1,3 @@
-import path from "path";
 import { helper } from "@grouparoo/spec-helper";
 import {
   destinationMappingOptions,
@@ -7,20 +6,7 @@ import {
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 
-const nockFile = path.join(
-  __dirname,
-  "../",
-  "fixtures",
-  "destination-mapping-options.js"
-);
-
-// these comments to use nock
-const newNock = false;
-require("./../fixtures/destination-mapping-options");
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 
 async function runDestinationMappingOptions({}) {
