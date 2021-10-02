@@ -1,4 +1,3 @@
-import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
 import {

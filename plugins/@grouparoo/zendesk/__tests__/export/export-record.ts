@@ -1,15 +1,9 @@
-import path from "path";
-import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
 import { exportRecord, searchForUser } from "../../src/lib/export/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
-
-process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/zendesk": { path: path.join(__dirname, "..", "..") },
-});
 
 let client: any;
 
