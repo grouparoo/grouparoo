@@ -247,8 +247,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -256,8 +255,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -265,8 +263,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -274,8 +271,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -283,8 +279,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -292,14 +287,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -347,8 +340,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -356,8 +348,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -365,8 +356,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -374,8 +364,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -383,8 +372,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -392,14 +380,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -447,8 +433,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -456,8 +441,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -465,8 +449,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -474,8 +457,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -483,8 +465,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -492,14 +473,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -547,8 +526,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -556,8 +534,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -565,8 +542,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -574,8 +550,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -583,8 +558,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -592,14 +566,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -953,8 +925,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:36:49Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -1028,8 +999,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:36:49Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -1155,8 +1125,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:37:21Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -1230,8 +1199,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:37:21Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -1284,8 +1252,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -1293,8 +1260,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -1302,8 +1268,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -1427,8 +1392,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -1436,8 +1400,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -1445,8 +1408,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -1570,8 +1532,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -1579,8 +1540,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -1588,8 +1548,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -1713,8 +1672,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -1722,8 +1680,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -1731,8 +1688,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -1856,8 +1812,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -1865,8 +1820,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -1874,8 +1828,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -2020,8 +1973,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:37:21Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -2095,8 +2047,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:37:21Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -2149,8 +2100,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -2158,8 +2108,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -2167,8 +2116,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -2292,8 +2240,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -2301,8 +2248,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -2310,8 +2256,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -2435,8 +2380,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -2444,8 +2388,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -2453,8 +2396,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -2578,8 +2520,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -2587,8 +2528,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -2596,8 +2536,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -2721,8 +2660,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -2730,8 +2668,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -2739,8 +2676,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -2944,8 +2880,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:38:00Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -3023,8 +2958,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:38:00Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -3077,8 +3011,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -3086,8 +3019,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -3095,8 +3027,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -3220,8 +3151,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -3229,8 +3159,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -3238,8 +3167,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -3363,8 +3291,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -3372,8 +3299,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -3381,8 +3307,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -3582,8 +3507,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:38:00Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -3661,8 +3585,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:38:00Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -3791,8 +3714,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:39:06Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -3870,8 +3792,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:39:06Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -3924,8 +3845,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -3933,8 +3853,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -3942,8 +3861,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -3951,8 +3869,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -3960,8 +3877,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -3969,14 +3885,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -4024,8 +3938,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -4033,8 +3946,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -4042,8 +3954,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -4051,8 +3962,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -4060,8 +3970,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -4069,14 +3978,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -4122,8 +4029,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
       contact_count: 0,
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+        self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
       },
     },
     [
@@ -4171,8 +4077,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -4180,8 +4085,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -4189,8 +4093,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -4198,8 +4101,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -4207,8 +4109,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -4216,8 +4117,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -4225,14 +4125,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -4280,8 +4178,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -4289,8 +4186,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -4298,8 +4194,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -4307,8 +4202,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -4316,8 +4210,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -4325,8 +4218,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -4334,14 +4226,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -4387,8 +4277,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       id: "632f6427-3d80-4319-99d3-f90766888351",
       contact_count: 0,
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+        self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
       },
     },
     [
@@ -4511,8 +4400,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:39:43Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -4565,8 +4453,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -4574,8 +4461,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -4583,8 +4469,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -4592,8 +4477,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -4601,8 +4485,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -4610,8 +4493,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -4619,8 +4501,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -4628,14 +4509,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -4683,8 +4562,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -4692,8 +4570,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -4701,8 +4578,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -4710,8 +4586,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -4719,8 +4594,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -4728,8 +4602,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -4737,8 +4610,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -4746,14 +4618,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -4829,8 +4699,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:39:43Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -4883,8 +4752,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -4892,8 +4760,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -4901,8 +4768,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -4910,8 +4776,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -4919,8 +4784,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -4928,8 +4792,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -4937,8 +4800,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -4946,14 +4808,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -5045,8 +4905,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -5054,8 +4913,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -5063,8 +4921,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -5072,8 +4929,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -5081,8 +4937,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -5090,8 +4945,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -5099,8 +4953,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -5108,14 +4961,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -5230,8 +5081,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:40:18Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -5309,8 +5159,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:40:18Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -5363,8 +5212,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -5372,8 +5220,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -5381,8 +5228,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -5390,8 +5236,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -5399,8 +5244,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -5408,8 +5252,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -5417,8 +5260,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -5426,14 +5268,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -5481,8 +5321,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -5490,8 +5329,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -5499,8 +5337,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -5508,8 +5345,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -5517,8 +5353,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -5526,8 +5361,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -5535,8 +5369,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -5544,14 +5377,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -5599,8 +5430,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -5608,8 +5438,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -5617,8 +5446,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -5626,8 +5454,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -5635,8 +5462,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -5644,8 +5470,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -5653,8 +5478,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -5662,14 +5486,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -5715,8 +5537,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
       contact_count: 0,
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+        self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
       },
     },
     [
@@ -5840,8 +5661,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:40:53Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -5894,8 +5714,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -5903,8 +5722,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -5912,8 +5730,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
@@ -5921,8 +5738,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -5930,8 +5746,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -5939,8 +5754,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -5948,8 +5762,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -5957,8 +5770,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -5966,14 +5778,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -6050,8 +5860,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:40:53Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -6148,8 +5957,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -6157,8 +5965,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -6166,8 +5973,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
@@ -6175,8 +5981,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -6184,8 +5989,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -6193,8 +5997,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -6202,8 +6005,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -6211,8 +6013,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -6220,14 +6021,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -6275,8 +6074,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -6284,8 +6082,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -6293,8 +6090,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
@@ -6302,8 +6098,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -6311,8 +6106,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -6320,8 +6114,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -6329,8 +6122,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -6338,8 +6130,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -6347,14 +6138,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -6400,8 +6189,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
       contact_count: 0,
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+        self: "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
       },
     },
     [
@@ -6478,8 +6266,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:40:53Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -6532,8 +6319,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -6541,8 +6327,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -6550,8 +6335,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
@@ -6559,8 +6343,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -6568,8 +6351,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -6577,8 +6359,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -6586,8 +6367,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -6595,8 +6375,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
           },
         },
         {
@@ -6604,8 +6383,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -6613,14 +6391,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -6744,8 +6520,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:36:19Z",
           updated_at: "2021-05-10T23:40:53Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -6840,8 +6615,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -6849,8 +6623,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -6858,8 +6631,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
@@ -6867,8 +6639,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -6876,8 +6647,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -6885,8 +6655,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -6894,8 +6663,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -6903,8 +6671,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
           },
         },
         {
@@ -6912,8 +6679,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -6921,14 +6687,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -6976,8 +6740,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -6985,8 +6748,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -6994,8 +6756,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
@@ -7003,8 +6764,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -7012,8 +6772,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -7021,8 +6780,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -7030,8 +6788,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -7039,8 +6796,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
           },
         },
         {
@@ -7048,8 +6804,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -7057,14 +6812,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -7183,8 +6936,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:41:33Z",
           updated_at: "2021-05-10T23:42:03Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/745843ab-7ed3-486d-8ff5-79bfae418772",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/745843ab-7ed3-486d-8ff5-79bfae418772",
           },
         },
       ],
@@ -7355,8 +7107,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:41:33Z",
           updated_at: "2021-05-10T23:42:03Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/745843ab-7ed3-486d-8ff5-79bfae418772",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/745843ab-7ed3-486d-8ff5-79bfae418772",
           },
         },
       ],
@@ -7409,8 +7160,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -7418,8 +7168,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -7427,8 +7176,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
@@ -7436,8 +7184,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -7445,8 +7192,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -7454,8 +7200,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -7463,8 +7208,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -7472,8 +7216,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
           },
         },
         {
@@ -7481,8 +7224,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -7490,14 +7232,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -7587,8 +7327,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -7596,8 +7335,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -7605,8 +7343,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
@@ -7614,8 +7351,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -7623,8 +7359,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -7632,8 +7367,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -7641,8 +7375,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -7650,8 +7383,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
           },
         },
         {
@@ -7659,8 +7391,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -7668,14 +7399,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -7765,8 +7494,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -7774,8 +7502,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -7783,8 +7510,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
@@ -7792,8 +7518,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -7801,8 +7526,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -7810,8 +7534,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -7819,8 +7542,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -7828,8 +7550,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
           },
         },
         {
@@ -7837,8 +7558,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -7846,14 +7566,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -7901,8 +7619,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -7910,8 +7627,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -7919,8 +7635,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
@@ -7928,8 +7643,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -7937,8 +7651,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -7946,8 +7659,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -7955,8 +7667,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -7964,8 +7675,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
           },
         },
         {
@@ -7973,8 +7683,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -7982,14 +7691,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -8037,8 +7744,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -8046,8 +7752,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -8055,8 +7760,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
@@ -8064,8 +7768,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -8073,8 +7776,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -8082,8 +7784,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -8091,8 +7792,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -8100,8 +7800,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
           },
         },
         {
@@ -8109,8 +7808,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -8118,14 +7816,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -8173,8 +7869,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -8182,8 +7877,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -8191,8 +7885,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
@@ -8200,8 +7893,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -8209,8 +7901,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -8218,8 +7909,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -8227,8 +7917,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -8236,8 +7925,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
           },
         },
         {
@@ -8245,8 +7933,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -8254,14 +7941,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -8378,8 +8063,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:41:33Z",
           updated_at: "2021-05-10T23:42:39Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/745843ab-7ed3-486d-8ff5-79bfae418772",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/745843ab-7ed3-486d-8ff5-79bfae418772",
           },
         },
       ],
@@ -8457,8 +8141,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:42:12Z",
           updated_at: "2021-05-10T23:42:42Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/9d8ea1ae-8a57-4f91-86c1-1b2ed22b23e7",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/9d8ea1ae-8a57-4f91-86c1-1b2ed22b23e7",
           },
         },
       ],
@@ -8579,8 +8262,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:41:33Z",
           updated_at: "2021-05-10T23:42:39Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/745843ab-7ed3-486d-8ff5-79bfae418772",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/745843ab-7ed3-486d-8ff5-79bfae418772",
           },
         },
       ],
@@ -8747,8 +8429,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:42:47Z",
           updated_at: "2021-05-10T23:43:17Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/91121cae-3d76-4fee-9c5a-4021860f9a20",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/91121cae-3d76-4fee-9c5a-4021860f9a20",
           },
         },
       ],
@@ -8869,8 +8550,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:42:47Z",
           updated_at: "2021-05-10T23:43:17Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/91121cae-3d76-4fee-9c5a-4021860f9a20",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/91121cae-3d76-4fee-9c5a-4021860f9a20",
           },
         },
       ],
@@ -8944,8 +8624,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:42:47Z",
           updated_at: "2021-05-10T23:43:17Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/91121cae-3d76-4fee-9c5a-4021860f9a20",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/91121cae-3d76-4fee-9c5a-4021860f9a20",
           },
         },
       ],
@@ -9019,8 +8698,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:42:47Z",
           updated_at: "2021-05-10T23:43:17Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/91121cae-3d76-4fee-9c5a-4021860f9a20",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/91121cae-3d76-4fee-9c5a-4021860f9a20",
           },
         },
       ],
@@ -9397,8 +9075,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+            self: "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
@@ -9406,8 +9083,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+            self: "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
@@ -9415,8 +9091,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            self: "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
@@ -9424,8 +9099,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+            self: "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
@@ -9433,8 +9107,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+            self: "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
           },
         },
         {
@@ -9442,8 +9115,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+            self: "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
           },
         },
         {
@@ -9451,8 +9123,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
@@ -9460,8 +9131,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+            self: "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
           },
         },
         {
@@ -9469,8 +9139,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           contact_count: 1,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            self: "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
@@ -9478,14 +9147,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
           contact_count: 0,
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+            self: "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
           },
         },
       ],
       _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+        self: "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
       },
     },
     [
@@ -9604,8 +9271,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:43:56Z",
           updated_at: "2021-05-10T23:44:26Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/c42cc844-ecee-440f-8272-137feb259f46",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/c42cc844-ecee-440f-8272-137feb259f46",
           },
         },
       ],
@@ -9917,8 +9583,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:44:30Z",
           updated_at: "2021-05-10T23:45:00Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/1af00abd-733e-483a-96be-7bf1f685cdb7",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/1af00abd-733e-483a-96be-7bf1f685cdb7",
           },
         },
       ],
@@ -10093,8 +9758,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:42:12Z",
           updated_at: "2021-05-10T23:42:42Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/9d8ea1ae-8a57-4f91-86c1-1b2ed22b23e7",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/9d8ea1ae-8a57-4f91-86c1-1b2ed22b23e7",
           },
         },
       ],
@@ -10262,8 +9926,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:43:56Z",
           updated_at: "2021-05-10T23:44:26Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/c42cc844-ecee-440f-8272-137feb259f46",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/c42cc844-ecee-440f-8272-137feb259f46",
           },
         },
       ],
@@ -10337,8 +10000,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           created_at: "2021-05-10T23:44:30Z",
           updated_at: "2021-05-10T23:45:00Z",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/1af00abd-733e-483a-96be-7bf1f685cdb7",
+            self: "https://api.sendgrid.com/v3/marketing/contacts/1af00abd-733e-483a-96be-7bf1f685cdb7",
           },
         },
       ],
@@ -10382,8 +10044,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .delete("/v3/marketing/contacts")
   .query({
-    ids:
-      "9d8ea1ae-8a57-4f91-86c1-1b2ed22b23e7%2Cc42cc844-ecee-440f-8272-137feb259f46%2C1af00abd-733e-483a-96be-7bf1f685cdb7",
+    ids: "9d8ea1ae-8a57-4f91-86c1-1b2ed22b23e7%2Cc42cc844-ecee-440f-8272-137feb259f46%2C1af00abd-733e-483a-96be-7bf1f685cdb7",
   })
   .once()
   .reply(202, { job_id: "eb97cb9d-323e-4f07-acfe-f2e9b2e43211" }, [
