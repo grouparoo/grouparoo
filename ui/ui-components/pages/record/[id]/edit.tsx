@@ -228,44 +228,45 @@ export default function Page(props) {
         <Col>
           <Row>
             <Col>
-              <ButtonGroup>
-                <LoadingButton
-                  disabled={loading}
-                  onClick={() => {
-                    importRecord();
-                  }}
-                >
-                  Import
-                </LoadingButton>
-                <LoadingButton
-                  disabled={loading}
-                  onClick={() => {
-                    exportRecord();
-                  }}
-                >
-                  Export
-                </LoadingButton>
-              </ButtonGroup>
-
-              <br />
-              <br />
-
+              <LoadingButton
+                variant="outline-primary"
+                disabled={loading}
+                onClick={() => {
+                  importRecord();
+                }}
+              >
+                Import
+              </LoadingButton>{" "}
+              <LoadingButton
+                variant="outline-primary"
+                disabled={loading}
+                onClick={() => {
+                  exportRecord();
+                }}
+              >
+                Export
+              </LoadingButton>
               {process.env.GROUPAROO_UI_EDITION === "config" ? (
-                <LoadingButton
-                  disabled={loading}
-                  variant="danger"
-                  size="sm"
-                  onClick={() => {
-                    handleDelete();
-                  }}
-                >
-                  Delete
-                </LoadingButton>
+                <>
+                  {" "}
+                  <LoadingButton
+                    disabled={loading}
+                    variant="outline-danger"
+                    size="sm"
+                    onClick={() => {
+                      handleDelete();
+                    }}
+                  >
+                    Delete
+                  </LoadingButton>
+                </>
               ) : null}
             </Col>
           </Row>
         </Col>
       </Row>
+
+      <br />
 
       <Row>
         <Col>
