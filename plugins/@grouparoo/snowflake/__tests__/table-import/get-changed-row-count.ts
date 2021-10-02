@@ -11,21 +11,7 @@ import { getChangedRowCount } from "../../src/lib/table-import/getChangedRowCoun
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { connect } from "../../src/lib/connect";
 
-const nockFile = path.join(
-  __dirname,
-  "../",
-  "fixtures",
-  "table-get-changed-row-count.js"
-);
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
-// these used and set by test
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
 let connection;

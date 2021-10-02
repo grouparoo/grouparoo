@@ -6,20 +6,11 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/snowflake": { path: path.join(__dirname, "..", "..") },
 });
 
-const nockFile = path.join(__dirname, "../", "fixtures", "cli.js");
-
 import { helper } from "@grouparoo/spec-helper";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { SimpleAppOptions } from "@grouparoo/core";
 
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
-// these used and set by test
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const usersTableName = "PROFILES";
 
