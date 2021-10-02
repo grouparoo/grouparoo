@@ -561,7 +561,7 @@ export namespace helper {
     return { record, snapshot };
   }
 
-  export function useNock(testFilePath, updater: any = {}): boolean {
+  export function useNock(testFilePath, updater: any = {}) {
     const pieces = testFilePath.split("/__tests__/");
     if (pieces.length !== 2) {
       throw new Error("invalid __tests__ path for nock: " + testFilePath);
@@ -578,13 +578,13 @@ export namespace helper {
       fs.mkdirpSync(dirname);
     }
 
-    const newNock = !!process.env.NOCK;
+    const newNock: boolean = !!process.env.NOCK;
     if (newNock) {
       recordNock(nockFile, updater);
     } else {
       require(nockFile);
     }
-    return true; // new credentials
+    return { newNock };
   }
 
   export function recordNock(nockFile, updater: any = {}) {
