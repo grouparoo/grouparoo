@@ -8,8 +8,8 @@ import {
   TeamMember,
   Property,
   Run,
-} from "../../src";
-import { SessionCreate } from "../../src/actions/session";
+} from "../../../src";
+import { SessionCreate } from "../../../src/actions/session";
 import {
   RecordAutocompleteRecordProperty,
   RecordCreate,
@@ -17,9 +17,10 @@ import {
   RecordsImportAndUpdate,
   RecordsList,
   RecordView,
-} from "../../src/actions/records";
-import { GroupAddRecord, GroupRemoveRecord } from "../../src/actions/groups";
-import { ConfigWriter } from "../../src/modules/configWriter";
+} from "../../../src/actions/records";
+import { GroupAddRecord, GroupRemoveRecord } from "../../../src/actions/groups";
+import { ConfigWriter } from "../../../src/modules/configWriter";
+import { RecordProperty } from "../../../dist";
 
 function simpleRecordValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -138,7 +139,7 @@ describe("actions/records", () => {
       );
       expect(error).toBeUndefined();
       expect(records.length).toBe(1);
-      expect(simpleRecordValues(records[0].properties).userId).toEqual([999]);
+      expect(simpleRecordValues(records[0].properties).userId).toEqual([123]);
       expect(total).toBe(1);
     });
 
@@ -147,19 +148,44 @@ describe("actions/records", () => {
         csrfToken,
         state: "pending",
       };
-      const { records: pendingProfiles, total: pendingTotal } =
+      const { records: pendingProfilesA, total: pendingTotalA } =
         await specHelper.runAction<RecordsList>("records:list", connection);
-      expect(pendingProfiles.length).toBe(0);
-      expect(pendingTotal).toBe(0);
+      expect(pendingProfilesA.length).toBe(1);
+      expect(pendingTotalA).toBe(1);
 
       connection.params = {
         csrfToken,
         state: "ready",
       };
-      const { records: readyProfiles, total: readyTotal } =
+      const { records: readyProfilesA, total: readyTotalA } =
         await specHelper.runAction<RecordsList>("records:list", connection);
-      expect(readyProfiles.length).toBe(1);
-      expect(readyTotal).toBe(1);
+      expect(readyProfilesA.length).toBe(0);
+      expect(readyTotalA).toBe(0);
+
+      const luigi = await GrouparooRecord.findOne();
+      await RecordProperty.update(
+        { state: "ready" },
+        { where: { recordId: luigi.id } }
+      );
+      await luigi.update({ state: "ready" });
+
+      connection.params = {
+        csrfToken,
+        state: "pending",
+      };
+      const { records: pendingProfilesB, total: pendingTotalB } =
+        await specHelper.runAction<RecordsList>("records:list", connection);
+      expect(pendingProfilesB.length).toBe(0);
+      expect(pendingTotalB).toBe(0);
+
+      connection.params = {
+        csrfToken,
+        state: "ready",
+      };
+      const { records: readyProfilesB, total: readyTotalB } =
+        await specHelper.runAction<RecordsList>("records:list", connection);
+      expect(readyProfilesB.length).toBe(1);
+      expect(readyTotalB).toBe(1);
     });
 
     test("a writer can get autocomplete results from properties", async () => {

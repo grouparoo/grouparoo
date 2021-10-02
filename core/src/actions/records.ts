@@ -170,11 +170,12 @@ export class RecordImport extends CLSAction {
   async runWithinTransaction({ params }) {
     const record = await GrouparooRecord.findById(params.id);
 
+    await record.buildNullProperties();
     await record.markPending();
     await record.import();
-    await record.updateGroupMembership();
+    await record.reload({ include: [RecordProperty] });
     await record.update({ state: "ready" });
-
+    await record.updateGroupMembership();
     const groups = await record.$get("groups");
 
     return {
