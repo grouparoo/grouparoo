@@ -21,7 +21,7 @@ if (
 }
 
 // normal pathway
-import fs from "fs";
+import fs from "fs-extra";
 import path from "path";
 import nock from "nock";
 
@@ -561,7 +561,23 @@ export namespace helper {
     return { record, snapshot };
   }
 
-  export function useNock(nockFile, updater: any = {}): boolean {
+  export function useNock(testFilePath, updater: any = {}): boolean {
+    const pieces = testFilePath.split("/__tests__/");
+    if (pieces.length !== 2) {
+      throw new Error("invalid __tests__ path for nock: " + testFilePath);
+    }
+
+    const extname = path.extname(pieces[1]);
+    const filename = path.basename(pieces[1], extname);
+    const dirname = path.resolve(
+      path.join(pieces[0], "__tests__", "fixtures", path.dirname(pieces[1]))
+    );
+
+    const nockFile = path.join(dirname, filename + ".js");
+    if (!fs.existsSync(dirname)) {
+      fs.mkdirpSync(dirname);
+    }
+
     const newNock = !!process.env.NOCK;
     if (newNock) {
       recordNock(nockFile, updater);
