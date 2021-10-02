@@ -561,6 +561,16 @@ export namespace helper {
     return { record, snapshot };
   }
 
+  export function useNock(nockFile, updater: any = {}): boolean {
+    const newNock = !!process.env.NOCK;
+    if (newNock) {
+      recordNock(nockFile, updater);
+    } else {
+      require(nockFile);
+    }
+    return true; // new credentials
+  }
+
   export function recordNock(nockFile, updater: any = {}) {
     nockFile = path.resolve(nockFile);
     if (fs.existsSync(nockFile)) {

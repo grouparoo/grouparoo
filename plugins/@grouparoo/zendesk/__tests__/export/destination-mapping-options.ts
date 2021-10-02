@@ -14,14 +14,7 @@ const nockFile = path.join(
   "fixtures",
   "destination-mapping-options.js"
 );
-
-// these comments to use nock
-const newNock = false;
-require("../fixtures/destination-mapping-options");
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const newNock = helper.useNock(nockFile, updater);
 const appOptions = loadAppOptions(newNock);
 
 async function runDestinationMappingOptions({}) {
