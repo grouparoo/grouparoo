@@ -24,6 +24,7 @@ if (
 import fs from "fs-extra";
 import path from "path";
 import nock from "nock";
+import prettier from "prettier";
 
 import LogFactory from "./factories/log";
 import GroupFactory from "./factories/group";
@@ -584,6 +585,15 @@ export namespace helper {
     } else {
       require(nockFile);
     }
+    afterAll(() => {
+      try {
+        const contents = fs.readFileSync(nockFile).toString();
+        const formatted = prettier.format(contents, { parser: "babel" });
+        fs.writeFileSync(nockFile, formatted);
+      } catch (err) {
+        console.log(`Nock formatting error`, err);
+      }
+    });
     return { newNock };
   }
 
