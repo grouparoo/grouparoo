@@ -3,7 +3,15 @@ import EnterpriseLink from "../../../components/enterpriseLink";
 import RecordTabs from "../../../components/tabs/record";
 import { useState, useEffect } from "react";
 import { UseApi } from "../../../hooks/useApi";
-import { Row, Col, Form, ListGroup, Alert, Button } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Form,
+  ListGroup,
+  Alert,
+  Button,
+  ButtonGroup,
+} from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import { useRouter } from "next/router";
 import LoadingTable from "../../../components/loadingTable";
@@ -62,29 +70,44 @@ export default function Page(props) {
     updateRecordState(response);
   }
 
-  async function importAndExport() {
+  async function importRecord() {
     setLoading(true);
     successHandler.set({ message: "enqueued for import..." });
-    const response: Actions.RecordImportAndExport = await execApi(
+    const response: Actions.RecordImport = await execApi(
       "post",
-      `/record/${record.id}/importAndExport`
+      `/record/${record.id}/import`
     );
     if (response?.record) {
       updateRecordState(response);
-      successHandler.set({ message: "Import and Export Complete!" });
+      successHandler.set({ message: "Import Complete!" });
     } else {
       load(); // we may have done a partial import
     }
   }
 
+  async function exportRecord() {
+    setLoading(true);
+    successHandler.set({ message: "enqueued for export..." });
+    const response: Actions.RecordImport = await execApi(
+      "post",
+      `/record/${record.id}/export`
+    );
+    if (response?.record) {
+      updateRecordState(response);
+      successHandler.set({ message: "Export Complete!" });
+    } else {
+      load(); // we may have done a partial export
+    }
+  }
+
   function updateRecordState(
-    response: Actions.RecordView | Actions.RecordImportAndExport
+    response: Actions.RecordView | Actions.RecordImport | Actions.RecordExport
   ) {
     if (response?.record) {
       recordHandler.set(response.record);
       setRecord(response.record);
       setRecordProperties(response.record.properties);
-      setGroups(response.groups);
+      if (response["groups"]) setGroups(response["groups"]);
     }
     setLoading(false);
   }
@@ -205,14 +228,24 @@ export default function Page(props) {
         <Col>
           <Row>
             <Col>
-              <LoadingButton
-                disabled={loading}
-                onClick={() => {
-                  importAndExport();
-                }}
-              >
-                Import and Export
-              </LoadingButton>
+              <ButtonGroup>
+                <LoadingButton
+                  disabled={loading}
+                  onClick={() => {
+                    importRecord();
+                  }}
+                >
+                  Import
+                </LoadingButton>
+                <LoadingButton
+                  disabled={loading}
+                  onClick={() => {
+                    exportRecord();
+                  }}
+                >
+                  Export
+                </LoadingButton>
+              </ButtonGroup>
 
               <br />
               <br />
