@@ -1,14 +1,8 @@
-import "@grouparoo/spec-helper";
+import { helper } from "@grouparoo/spec-helper";
 import { destinationMappingOptions } from "../../src/lib/export/destinationMappingOptions";
-import { loadAppOptions } from "../utils/nockHelper";
+import { loadAppOptions, updater } from "../utils/nockHelper";
 
-// these comments to use nock
-const newNock = false;
-// require("./../fixtures/destination-mapping-options");
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 
 async function runDestinationMappingOptions({}) {
