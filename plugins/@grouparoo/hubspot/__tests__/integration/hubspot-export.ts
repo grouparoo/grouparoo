@@ -19,15 +19,7 @@ import { connect } from "./../../src/lib/connect";
 import Axios from "axios";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "hubspot-export.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 
 const email1 = "luigi@example.com";
