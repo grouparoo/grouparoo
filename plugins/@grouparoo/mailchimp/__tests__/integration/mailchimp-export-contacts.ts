@@ -30,19 +30,10 @@ import {
   updater,
 } from "../utils/nockHelper";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "mailchimp-export.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// // or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
 // change this when recording if you really want it to be a new user (recommended)
 const email1 = "test3039@grouparoo.com";
 
-// these used and set by test
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const destinationOptions: SimpleDestinationOptions =
   loadDestinationOptions(newNock);

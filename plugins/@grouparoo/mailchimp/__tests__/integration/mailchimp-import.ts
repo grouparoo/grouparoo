@@ -33,16 +33,7 @@ import {
   updater,
 } from "../utils/nockHelper";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "mailchimp-import.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-//  or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
-// these used and set by test
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const sourceOptions: SimpleDestinationOptions = loadSourceOptions(newNock);
 const sourceMapping = { "merge_fields.USERID": "userId" };

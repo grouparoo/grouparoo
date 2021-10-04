@@ -1,5 +1,4 @@
 import path from "path";
-import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 import { exportRecord } from "../../src/lib/export/exportRecord";
 import { connect } from "../../src/lib/connect";
@@ -49,14 +48,7 @@ if (fs.existsSync(emailsFile) && !newEmails) {
   generateEmails();
 }
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
-// these comments to use nock
-const newNock = false;
-require("./../fixtures/export-record");
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const destinationOptions = loadDestinationOptions(newNock);
 
