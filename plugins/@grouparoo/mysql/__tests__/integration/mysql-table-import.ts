@@ -377,6 +377,7 @@ describe("integration/runs/mysql", () => {
     session.params = {
       csrfToken,
       id: destination.id,
+      syncMode: "sync",
       mapping: {
         id: "userId",
         customer_email: "email",
