@@ -204,6 +204,7 @@ export default function Navigation(props) {
                   <Fragment key={nav.href}>
                     <HighlightingNavLink
                       href={nav.href}
+                      mainPathSectionIdx={nav.mainPathSectionIdx ?? 1}
                       text={
                         <>
                           {nav.title}

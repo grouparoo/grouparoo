@@ -16,6 +16,7 @@ type NavigationItem = {
   title?: string;
   icon?: string;
   href?: string;
+  mainPathSectionIdx?: number;
 };
 
 export class NavigationList extends OptionallyAuthenticatedAction {
@@ -146,30 +147,35 @@ export class NavigationList extends OptionallyAuthenticatedAction {
           type: "link",
           title: "Records",
           href: `/model/${modelId}/records`,
+          mainPathSectionIdx: 3,
           icon: "list",
         },
         {
           type: "link",
           title: "Properties",
           href: `/model/${modelId}/properties`,
+          mainPathSectionIdx: 3,
           icon: "address-card",
         },
         {
           type: "link",
           title: "Groups",
           href: `/model/${modelId}/groups`,
+          mainPathSectionIdx: 3,
           icon: "users",
         },
         {
           type: "link",
           title: "Sources",
           href: `/model/${modelId}/sources`,
+          mainPathSectionIdx: 3,
           icon: "file-import",
         },
         {
           type: "link",
           title: "Destinations",
           href: `/model/${modelId}/destinations`,
+          mainPathSectionIdx: 3,
           icon: "file-export",
         }
       );
@@ -312,30 +318,35 @@ export class NavigationList extends OptionallyAuthenticatedAction {
           type: "link",
           title: "Sources",
           href: `/model/${modelId}/sources`,
+          mainPathSectionIdx: 3,
           icon: "file-import",
         },
         {
           type: "link",
           title: "Properties",
           href: `/model/${modelId}/properties`,
+          mainPathSectionIdx: 3,
           icon: "address-card",
         },
         {
           type: "link",
           title: "Records",
           href: `/model/${modelId}/records`,
+          mainPathSectionIdx: 3,
           icon: "list",
         },
         {
           type: "link",
           title: "Groups",
           href: `/model/${modelId}/groups`,
+          mainPathSectionIdx: 3,
           icon: "users",
         },
         {
           type: "link",
           title: "Destinations",
           href: `/model/${modelId}/destinations`,
+          mainPathSectionIdx: 3,
           icon: "file-export",
         }
       );

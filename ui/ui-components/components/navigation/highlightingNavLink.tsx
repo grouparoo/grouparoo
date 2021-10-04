@@ -4,13 +4,20 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { navIconStyle, navLiStyle, iconConstrainedStyle } from "../navigation";
 
-export default function HighlightingNavLink({ href, text, icon, idx }) {
+export default function HighlightingNavLink({
+  href,
+  text,
+  icon,
+  mainPathSectionIdx,
+  idx,
+}) {
   const router = useRouter();
   const [active, setActive] = useState(false);
 
   useEffect(() => {
-    const mainPathSection = router?.asPath.split("/")[1] || "";
-    const mainHrefSection = href.split("/")[1];
+    const mainPathSection = router?.asPath.split("/")[mainPathSectionIdx] || "";
+    const mainHrefSection = href.split("/")[mainPathSectionIdx];
+    console.log(router.asPath, mainPathSection, href, mainHrefSection);
     const active =
       mainPathSection === mainHrefSection ||
       `${mainPathSection}s` === mainHrefSection;
