@@ -2,7 +2,7 @@ import fs from "fs";
 import { URL } from "url";
 import { join, isAbsolute } from "path";
 import { getParentPath, getPluginManifest } from "../modules/pluginDetails";
-import { log } from "actionhero";
+import { log, env } from "actionhero";
 
 import cls from "cls-hooked";
 import Sequelize from "sequelize";
@@ -75,11 +75,7 @@ export const DEFAULT = {
         storage = `${parsed.hostname}${parsed.pathname}`;
       }
 
-      if (
-        process.env.NODE_ENV === "test" &&
-        !parsed.hostname &&
-        !parsed.pathname
-      ) {
+      if (env === "test" && !parsed.hostname && !parsed.pathname) {
         storage = join(getParentPath(), `${database}.sqlite`);
       }
 
@@ -97,6 +93,30 @@ export const DEFAULT = {
       log(message, "debug", { time });
     }
 
+    /** Migration */
+    function shouldAutoMigrate() {
+      const runMode = process.env.GROUPAROO_RUN_MODE;
+      const workers = parseInt(process.env.WORKERS || "0");
+
+      if (["cli:apply"].includes(runMode)) {
+        // doing it in the same transaction elsewhere
+        return false;
+      }
+      if (["test", "development"].includes(env)) {
+        // working locally, make sure to migrate
+        return true;
+      }
+      if (["cli:config"].includes(runMode)) {
+        // always migrate because don't have other workers
+        return true;
+      }
+      if (workers > 0) {
+        // in production, background servers do the migration
+        return true;
+      }
+      return false;
+    }
+
     /** Load plugin migrations */
     const { plugins } = getPluginManifest();
     const pluginMigrations = [];
@@ -107,23 +127,11 @@ export const DEFAULT = {
       }
     }
 
-    /** Run migrations */
-    let autoMigrate = false;
-    if (
-      (process.env.WORKERS
-        ? parseInt(process.env.WORKERS)
-        : 0 > 0 && process.env.GROUPAROO_RUN_MODE !== "cli:apply") ||
-      process.env.NODE_ENV === "test" ||
-      process.env.GROUPAROO_RUN_MODE === "cli:config"
-    ) {
-      autoMigrate = true;
-    }
-
     return {
       _toExpand: false,
       logging,
       benchmark: true,
-      autoMigrate,
+      autoMigrate: shouldAutoMigrate(),
       dialect: dialect,
       port: parseInt(port),
       database: database,
