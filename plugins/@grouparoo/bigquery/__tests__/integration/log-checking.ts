@@ -11,16 +11,7 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 
 const recordProperty = getConnection().methods.recordProperty;
 
-const nockFile = path.join(__dirname, "../", "fixtures", "log-checking.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
-// these used and set by test
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 let record: GrouparooRecord;
 
