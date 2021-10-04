@@ -15,16 +15,15 @@ import StateBadge from "../badges/stateBadge";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
 import ModelBadge from "../badges/modelBadge";
+import { NextPageContext } from "next";
 
 export default function RecordsList(props) {
   const {
     errorHandler,
     properties,
-    models,
   }: {
     errorHandler: ErrorHandler;
     properties: Models.PropertyType[];
-    models: Models.GrouparooModelType[];
   } = props;
   const { execApi } = UseApi(props, errorHandler);
   const router = useRouter();
@@ -46,24 +45,24 @@ export default function RecordsList(props) {
     router.query.searchValue || props.searchValue || ""
   );
   const [state, setState] = useState(router.query.state?.toString() || null);
-  const [modelId, setModelId] = useState(
-    router.query.modelId?.toString() || null
-  );
   const [caseSensitive, setCaseSensitive] = useState(
     router.query.caseSensitive ? router.query.caseSensitive === "true" : true
   );
   const states = ["pending", "ready", "invalid"];
 
-  useSecondaryEffect(() => {
-    load();
-  }, [offset, limit, state, modelId, caseSensitive]);
-
   let groupId: string;
+  let modelId: string;
   if (router.query.id) {
     if (router.pathname.match("/group/")) {
       groupId = router.query.id.toString();
+    } else if (router.pathname.match("/model/")) {
+      modelId = router.query.id.toString();
     }
   }
+
+  useSecondaryEffect(() => {
+    load();
+  }, [offset, limit, state, caseSensitive, modelId]);
 
   async function load(event?) {
     if (event) event.preventDefault();
@@ -93,7 +92,6 @@ export default function RecordsList(props) {
       searchKey,
       searchValue,
       state,
-      modelId,
       caseSensitive: caseSensitive.toString(),
     });
   }
@@ -254,37 +252,7 @@ export default function RecordsList(props) {
             })}
           </ButtonGroup>
         </Col>
-        <Col>
-          Models:{" "}
-          <ButtonGroup id="record-models">
-            <Button
-              size="sm"
-              variant={modelId ? "info" : "secondary"}
-              onClick={() => {
-                setModelId(null);
-                setOffset(0);
-              }}
-            >
-              All
-            </Button>
-            {models.map((m) => {
-              const variant = m.id === modelId ? "secondary" : "info";
-              return (
-                <Button
-                  key={`model-${m}`}
-                  size="sm"
-                  variant={variant}
-                  onClick={() => {
-                    setModelId(m.id);
-                    setOffset(0);
-                  }}
-                >
-                  {m.name}
-                </Button>
-              );
-            })}
-          </ButtonGroup>
-        </Col>
+        <Col>Model:{modelId}</Col>
       </Row>
 
       <br />
@@ -416,7 +384,7 @@ export default function RecordsList(props) {
 }
 
 RecordsList.hydrate = async (
-  ctx,
+  ctx: NextPageContext,
   _searchKey?: string,
   _searchValue?: string
 ) => {
@@ -425,9 +393,12 @@ RecordsList.hydrate = async (
     ctx.query;
 
   let groupId: string;
+  let modelId: string;
   if (id) {
     if (ctx.pathname.match("/group/")) {
-      groupId = id;
+      groupId = id as string;
+    } else if (ctx.pathname.match("/model/")) {
+      modelId = id as string;
     }
   }
   const { records, total } = await execApi("get", `/records`, {
@@ -436,10 +407,10 @@ RecordsList.hydrate = async (
     searchKey: searchKey || _searchKey,
     searchValue: searchValue || _searchValue,
     groupId,
+    modelId,
     state,
     caseSensitive,
   });
   const { properties } = await execApi("get", `/properties`);
-  const { models } = await execApi("get", `/models`);
-  return { records, total, properties, models };
+  return { records, total, properties };
 };

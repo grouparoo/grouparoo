@@ -1,18 +1,19 @@
 import Head from "next/head";
 import { Fragment, useState } from "react";
-import { UseApi } from "../hooks/useApi";
-import { useOffset, updateURLParams } from "../hooks/URLParams";
-import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
+import { UseApi } from "../../../hooks/useApi";
+import { useOffset, updateURLParams } from "../../../hooks/URLParams";
+import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
 import { useRouter } from "next/router";
-import Link from "../components/enterpriseLink";
+import Link from "../../../components/enterpriseLink";
 import { Button, Alert } from "react-bootstrap";
-import Pagination from "../components/pagination";
-import LoadingTable from "../components/loadingTable";
-import StateBadge from "../components/badges/stateBadge";
-import { Models, Actions } from "../utils/apiData";
-import { ErrorHandler } from "../utils/errorHandler";
-import { formatTimestamp } from "../utils/formatTimestamp";
-import ModelBadge from "../components/badges/modelBadge";
+import Pagination from "../../../components/pagination";
+import LoadingTable from "../../../components/loadingTable";
+import StateBadge from "../../../components/badges/stateBadge";
+import { Models, Actions } from "../../../utils/apiData";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
+import ModelBadge from "../../../components/badges/modelBadge";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -36,11 +37,18 @@ export default function Page(props) {
   const { offset, setOffset } = useOffset();
   const [total, setTotal] = useState(props.total);
 
+  let modelId: string;
+  if (router.query.id) {
+    if (router.pathname.match("/model/")) {
+      modelId = router.query.id.toString();
+    }
+  }
+
   useSecondaryEffect(() => {
     updateURLParams(router, { offset });
     loadSources();
     loadProperties();
-  }, [offset, limit]);
+  }, [offset, limit, modelId]);
 
   async function loadProperties() {
     setLoading(true);
@@ -51,6 +59,7 @@ export default function Page(props) {
         includeExamples: true,
         limit: limit * (total === 0 ? 1 : total),
         offset: 0,
+        modelId,
       }
     );
     setLoading(false);
@@ -67,6 +76,7 @@ export default function Page(props) {
       {
         limit,
         offset,
+        modelId,
       }
     );
     setLoading(false);
@@ -196,13 +206,22 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
-  const { limit, offset } = ctx.query;
+  const { limit, offset, id } = ctx.query;
+
+  let modelId: string;
+  if (id) {
+    if (ctx.pathname.match("/model/")) {
+      modelId = id as string;
+    }
+  }
+
   const { properties, total, examples } = await execApi("get", `/properties`, {
     includeExamples: true,
     limit,
     offset,
+    modelId,
   });
   const { sources } = await execApi("get", "/sources", {
     state: ["ready", "deleted"],

@@ -2,17 +2,18 @@ import Head from "next/head";
 import { Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { UseApi } from "../hooks/useApi";
-import { useOffset, updateURLParams } from "../hooks/URLParams";
-import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import Link from "../components/enterpriseLink";
-import Pagination from "../components/pagination";
-import LoadingTable from "../components/loadingTable";
-import StateBadge from "../components/badges/stateBadge";
-import { Models, Actions } from "../utils/apiData";
-import { formatTimestamp } from "../utils/formatTimestamp";
-import { ErrorHandler } from "../utils/errorHandler";
-import ModelBadge from "../components/badges/modelBadge";
+import { UseApi } from "../../../hooks/useApi";
+import { useOffset, updateURLParams } from "../../../hooks/URLParams";
+import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
+import Link from "../../../components/enterpriseLink";
+import Pagination from "../../../components/pagination";
+import LoadingTable from "../../../components/loadingTable";
+import StateBadge from "../../../components/badges/stateBadge";
+import { Models, Actions } from "../../../utils/apiData";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import ModelBadge from "../../../components/badges/modelBadge";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
@@ -26,9 +27,16 @@ export default function Page(props) {
   const limit = 100;
   const { offset, setOffset } = useOffset();
 
+  let modelId: string;
+  if (router.query.id) {
+    if (router.pathname.match("/model/")) {
+      modelId = router.query.id.toString();
+    }
+  }
+
   useSecondaryEffect(() => {
     load();
-  }, [limit, offset]);
+  }, [limit, offset, modelId]);
 
   async function load() {
     updateURLParams(router, { offset });
@@ -36,6 +44,7 @@ export default function Page(props) {
     const response: Actions.GroupsList = await execApi("get", `/groups`, {
       limit,
       offset,
+      modelId,
     });
     setLoading(false);
     if (response?.groups) {
@@ -146,9 +155,19 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
-  const { limit, offset } = ctx.query;
-  const { groups, total } = await execApi("get", `/groups`, { limit, offset });
+  const { id, limit, offset } = ctx.query;
+  let modelId: string;
+  if (id) {
+    if (ctx.pathname.match("/model/")) {
+      modelId = id as string;
+    }
+  }
+  const { groups, total } = await execApi("get", `/groups`, {
+    limit,
+    offset,
+    modelId,
+  });
   return { groups, total };
 };

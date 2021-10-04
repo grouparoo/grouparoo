@@ -1,5 +1,5 @@
 import Head from "next/head";
-import RecordsList from "../components/record/list";
+import RecordsList from "../../../components/record/list";
 
 export default function Page(props) {
   return (

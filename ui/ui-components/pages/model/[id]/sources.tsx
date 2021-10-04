@@ -1,20 +1,20 @@
 import Head from "next/head";
 import { useState, Fragment } from "react";
-import { UseApi } from "../hooks/useApi";
-import { useOffset, updateURLParams } from "../hooks/URLParams";
-import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import Link from "../components/enterpriseLink";
+import { UseApi } from "../../../hooks/useApi";
+import { useOffset, updateURLParams } from "../../../hooks/URLParams";
+import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
+import Link from "../../../components/enterpriseLink";
 import { useRouter } from "next/router";
-import Pagination from "../components/pagination";
-import LoadingTable from "../components/loadingTable";
-import AppIcon from "../components/appIcon";
-import StateBadge from "../components/badges/stateBadge";
-import { Models, Actions } from "../utils/apiData";
+import Pagination from "../../../components/pagination";
+import LoadingTable from "../../../components/loadingTable";
+import AppIcon from "../../../components/appIcon";
+import StateBadge from "../../../components/badges/stateBadge";
+import { Models, Actions } from "../../../utils/apiData";
 import { Button } from "react-bootstrap";
-import { formatTimestamp } from "../utils/formatTimestamp";
-import { SuccessHandler } from "../utils/successHandler";
-import { ErrorHandler } from "../utils/errorHandler";
-import ModelBadge from "../components/badges/modelBadge";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
+import { SuccessHandler } from "../../../utils/successHandler";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -34,9 +34,16 @@ export default function Page(props) {
   const limit = 100;
   const { offset, setOffset } = useOffset();
 
+  let modelId: string;
+  if (router.query.id) {
+    if (router.pathname.match("/model/")) {
+      modelId = router.query.id.toString();
+    }
+  }
+
   useSecondaryEffect(() => {
     load();
-  }, [offset, limit]);
+  }, [offset, limit, modelId]);
 
   async function load() {
     updateURLParams(router, { offset });
@@ -44,6 +51,7 @@ export default function Page(props) {
     const response: Actions.SourcesList = await execApi("get", `/sources`, {
       limit,
       offset,
+      modelId,
     });
 
     const _runs = {};
@@ -235,10 +243,17 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { limit, offset } = ctx.query;
+  const { id, limit, offset } = ctx.query;
+  let modelId: string;
+  if (id) {
+    if (ctx.pathname.match("/model/")) {
+      modelId = id as string;
+    }
+  }
   const { sources, total } = await execApi("get", `/sources`, {
     limit,
     offset,
+    modelId,
   });
 
   const runs = {};

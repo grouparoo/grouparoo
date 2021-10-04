@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Image, Accordion, Button, Badge } from "react-bootstrap";
+import { Image, Accordion, Button, Badge, Form, Col } from "react-bootstrap";
 import Link from "next/link";
 import {
   FontAwesomeIcon,
@@ -35,6 +35,8 @@ export const iconConstrainedStyle = { width: 20 };
 
 export default function Navigation(props) {
   const {
+    navModel,
+    onChangeModelId,
     navigationMode,
     navigation,
     clusterName,
@@ -48,6 +50,8 @@ export default function Navigation(props) {
     navigationMode: Actions.NavigationList["navigationMode"];
     navigation: Actions.NavigationList["navigation"];
     clusterName: { value: string; default: boolean };
+    navModel: Actions.NavigationList["navModel"];
+    onChangeModelId: (id: string) => Promise<void>;
     navExpanded: boolean;
     toggleNavExpanded: () => {};
     errorHandler: ErrorHandler;
@@ -188,6 +192,39 @@ export default function Navigation(props) {
             setupStepHandler={setupStepHandler}
           />
         )}
+
+        <div style={{ paddingLeft: 20, paddingRight: 20, paddingTop: 20 }}>
+          <Form
+            id="modelSelect"
+            onSubmit={() => {
+              console.log("HIO");
+            }}
+          >
+            <Form.Group>
+              <Form.Control
+                name="selectedModel"
+                as="select"
+                value={navModel.value}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  console.log("CHANGED");
+                  onChangeModelId(event.target.value);
+
+                  // grab it from the url on init
+                  // on update:
+                  //   if current page is scoped by model, swap it in the url and refresh
+                  //   if not, pass to nav (?) and fetch nav again
+                  // updating it should update current page and link
+                }}
+              >
+                {navModel.options.map((m) => (
+                  <option value={m.id} key={`model-${m.id}`}>
+                    {m.name}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+          </Form>
+        </div>
 
         <div
           id="navBottomSection"
