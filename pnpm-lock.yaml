@@ -686,7 +686,7 @@ importers:
       actionhero: 27.1.5
       currency-codes: 2.1.0
       dotenv: 10.0.0
-      facebook-nodejs-business-sdk: 11.0.0
+      facebook-nodejs-business-sdk: 12.0.0
       fs-extra: 10.0.0
       iso-3166-1-alpha-2: 1.0.0
       jest: 27.1.0
@@ -699,7 +699,7 @@ importers:
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
       currency-codes: 2.1.0
-      facebook-nodejs-business-sdk: 11.0.0
+      facebook-nodejs-business-sdk: 12.0.0
       iso-3166-1-alpha-2: 1.0.0
       js-sha256: 0.9.0
     devDependencies:
@@ -7101,8 +7101,8 @@ packages:
     resolution: {integrity: sha1-lpGEQOMEGnpBT4xS48V06zw+HgU=}
     engines: {'0': node >=0.6.0}
 
-  /facebook-nodejs-business-sdk/11.0.0:
-    resolution: {integrity: sha512-ZEJlCPS5zAugLpdfdFQup5AV+pumhJqFxwvkAtJ8i+DtMO8cH6DjW2gNs3XRKIyvPMvGAerEdYhtcZUMRIrBNg==}
+  /facebook-nodejs-business-sdk/12.0.0:
+    resolution: {integrity: sha512-yiNK7DeVNo09ZgymwnRb0Q11Ft3rLMLZBIs4ZJsPXjhFyR021BSziKUxn7tw0G8JaxCGPlnB0W7qmDgPR9W1tw==}
     dependencies:
       currency-codes: 1.5.1
       iso-3166-1-alpha-2: 1.0.0

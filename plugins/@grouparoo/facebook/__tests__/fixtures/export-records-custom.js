@@ -1,7 +1,7 @@
 const nock = require("nock");
 
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname",
     access_token:
@@ -16,13 +16,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "x-business-use-case-usage",
-    '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+    '{"542676646349772":[{"type":"custom_audience","call_count":0,"total_cputime":0,"total_time":0,"estimated_time_to_regain_access":0}]}',
     "x-fb-rlafr",
     "0",
     "Access-Control-Allow-Origin",
     "*",
     "facebook-api-version",
-    "v11.0",
+    "v12.0",
     "Strict-Transport-Security",
     "max-age=15552000; preload",
     "Pragma",
@@ -32,15 +32,63 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Expires",
     "Sat, 01 Jan 2000 00:00:00 GMT",
     "x-fb-request-id",
-    "AR6kvZe1TVe3Fh1bCBhq1xk",
+    "AApr9nGZUf0G5Czax1_V_i9",
     "x-fb-trace-id",
-    "EM3LMfIZ49e",
+    "DwfPpxFCoN+",
     "x-fb-rev",
-    "1004423949",
+    "1004496597",
     "X-FB-Debug",
-    "Ypq1iabg2hNZMcZ/+69CBZl9DixdKv+zw2asVpCKCzREMbm421MRBVM+rDMPF0zBvCxGbqMX+OqwXrcaEZdsQA==",
+    "CeWIIvMUe/0/rhUKiRbfm/xFKz8rU/LjH/Byar29RZFWG7g+t/CHNGHc1g/5E3WwfJjeIgZPc0b5l9IPs0nY4g==",
     "Date",
-    "Tue, 21 Sep 2021 00:08:40 GMT",
+    "Sat, 02 Oct 2021 20:58:24 GMT",
+    "Alt-Svc",
+    'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
+    "Connection",
+    "close",
+    "Content-Length",
+    "11",
+  ]);
+nock("https://graph.facebook.com:443", { encodedQueryParams: true })
+  .get("/v12.0/act_542676646349772/customaudiences", {})
+  .query({
+    fields: "id%2Cname",
+    access_token:
+      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
+  })
+  .once()
+  .reply(200, { data: [] }, [
+    "ETag",
+    '"1050253aec7b29caff644806927dabfa81406eee"',
+    "Content-Type",
+    "application/json",
+    "Vary",
+    "Origin",
+    "x-business-use-case-usage",
+    '{"542676646349772":[{"type":"custom_audience","call_count":0,"total_cputime":0,"total_time":0,"estimated_time_to_regain_access":0}]}',
+    "x-fb-rlafr",
+    "0",
+    "Access-Control-Allow-Origin",
+    "*",
+    "facebook-api-version",
+    "v12.0",
+    "Strict-Transport-Security",
+    "max-age=15552000; preload",
+    "Pragma",
+    "no-cache",
+    "Cache-Control",
+    "private, no-cache, no-store, must-revalidate",
+    "Expires",
+    "Sat, 01 Jan 2000 00:00:00 GMT",
+    "x-fb-request-id",
+    "AcZBj8aufBwCDYV5x7Ur6pO",
+    "x-fb-trace-id",
+    "G8blUyk6wQE",
+    "x-fb-rev",
+    "1004496597",
+    "X-FB-Debug",
+    "4rsLo14REd363TfOSXfv/2QYWCAlKOs1jhcoZDHhoaGqC966thi2jD9whez/ovP38FYu5g34pdHA/UJwJ9e/Yg==",
+    "Date",
+    "Sat, 02 Oct 2021 20:58:24 GMT",
     "Priority",
     "u=3,i",
     "Alt-Svc",
@@ -51,7 +99,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "11",
   ]);
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname",
     access_token:
@@ -66,13 +114,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "x-business-use-case-usage",
-    '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+    '{"542676646349772":[{"type":"custom_audience","call_count":0,"total_cputime":0,"total_time":0,"estimated_time_to_regain_access":0}]}',
     "x-fb-rlafr",
     "0",
     "Access-Control-Allow-Origin",
     "*",
     "facebook-api-version",
-    "v11.0",
+    "v12.0",
     "Strict-Transport-Security",
     "max-age=15552000; preload",
     "Pragma",
@@ -82,15 +130,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Expires",
     "Sat, 01 Jan 2000 00:00:00 GMT",
     "x-fb-request-id",
-    "AealZUryf_SeuqATlwBNUYz",
+    "A_upczZ8IPcak1g4YrMygsd",
     "x-fb-trace-id",
-    "DekePdRbUkj",
+    "DsGiT7uGcLn",
     "x-fb-rev",
-    "1004423793",
+    "1004496597",
     "X-FB-Debug",
-    "klDrmgL1fAvYj2T0I2knvxVcybq9Ldvhp7IwVZTq3opu/PFiRn7TpgHShZ71HJHL4kjbtcrua7SvUHm5ZiSXVA==",
+    "7UliFHJaj8L9aqI87jDqUqy4SbYI4tn7kQ/CPNoZ9ph++bk3IYWwGVJ7qxGoS4+I9nheeoRUvs7rtmBAsAq92w==",
     "Date",
-    "Tue, 21 Sep 2021 00:08:41 GMT",
+    "Sat, 02 Oct 2021 20:58:24 GMT",
     "Priority",
     "u=3,i",
     "Alt-Svc",
@@ -101,7 +149,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "11",
   ]);
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname",
     access_token:
@@ -116,13 +164,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "x-business-use-case-usage",
-    '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+    '{"542676646349772":[{"type":"custom_audience","call_count":0,"total_cputime":0,"total_time":0,"estimated_time_to_regain_access":0}]}',
     "x-fb-rlafr",
     "0",
     "Access-Control-Allow-Origin",
     "*",
     "facebook-api-version",
-    "v11.0",
+    "v12.0",
     "Strict-Transport-Security",
     "max-age=15552000; preload",
     "Pragma",
@@ -132,15 +180,63 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Expires",
     "Sat, 01 Jan 2000 00:00:00 GMT",
     "x-fb-request-id",
-    "AaCCuF6uOKUF8AP18h2ULSt",
+    "AfqjmAarhBgpacQZxwUqApN",
     "x-fb-trace-id",
-    "Ds4+IRDzo11",
+    "D1LQ9ce5kC7",
     "x-fb-rev",
-    "1004423793",
+    "1004496597",
     "X-FB-Debug",
-    "kaqRl6PrbDu+SYhWH2XdDysZtCK0YnAbFgjUIdnYqVlgwoBH1m13+IOPSq42lnwSaO+16HJyszMxllTKIHnEAA==",
+    "CpEKoyw3GV7hcehsQoDjVAKiDQfWlzC2+VIZXLqSEBIt2jjl5EvwaqsvxRiApfWh30pP4AaViFABHw2stPpB3g==",
     "Date",
-    "Tue, 21 Sep 2021 00:08:41 GMT",
+    "Sat, 02 Oct 2021 20:58:24 GMT",
+    "Alt-Svc",
+    'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
+    "Connection",
+    "close",
+    "Content-Length",
+    "11",
+  ]);
+nock("https://graph.facebook.com:443", { encodedQueryParams: true })
+  .get("/v12.0/act_542676646349772/customaudiences", {})
+  .query({
+    fields: "id%2Cname",
+    access_token:
+      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
+  })
+  .once()
+  .reply(200, { data: [] }, [
+    "ETag",
+    '"1050253aec7b29caff644806927dabfa81406eee"',
+    "Content-Type",
+    "application/json",
+    "Vary",
+    "Origin",
+    "x-business-use-case-usage",
+    '{"542676646349772":[{"type":"custom_audience","call_count":0,"total_cputime":0,"total_time":0,"estimated_time_to_regain_access":0}]}',
+    "x-fb-rlafr",
+    "0",
+    "Access-Control-Allow-Origin",
+    "*",
+    "facebook-api-version",
+    "v12.0",
+    "Strict-Transport-Security",
+    "max-age=15552000; preload",
+    "Pragma",
+    "no-cache",
+    "Cache-Control",
+    "private, no-cache, no-store, must-revalidate",
+    "Expires",
+    "Sat, 01 Jan 2000 00:00:00 GMT",
+    "x-fb-request-id",
+    "AxSH2ADRMDKv8FdSXl16qlY",
+    "x-fb-trace-id",
+    "EaMsWrM4gnm",
+    "x-fb-rev",
+    "1004496561",
+    "X-FB-Debug",
+    "H6PqQj1yzsX1E2elz2Mfb4ATA1RupcaCrUGLZLb50W6pZLx+J0GHv20RWm9GDuyJ3QOWSE34kkK4dNydMMOXww==",
+    "Date",
+    "Sat, 02 Oct 2021 20:58:25 GMT",
     "Priority",
     "u=3,i",
     "Alt-Svc",
@@ -151,7 +247,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "11",
   ]);
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname",
     access_token:
@@ -166,13 +262,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "x-business-use-case-usage",
-    '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+    '{"542676646349772":[{"type":"custom_audience","call_count":0,"total_cputime":0,"total_time":0,"estimated_time_to_regain_access":0}]}',
     "x-fb-rlafr",
     "0",
     "Access-Control-Allow-Origin",
     "*",
     "facebook-api-version",
-    "v11.0",
+    "v12.0",
     "Strict-Transport-Security",
     "max-age=15552000; preload",
     "Pragma",
@@ -182,17 +278,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Expires",
     "Sat, 01 Jan 2000 00:00:00 GMT",
     "x-fb-request-id",
-    "A5v7hOaDisHLf-J0xB9VzI3",
+    "AmKIIAuqFyNTcP0wIexf2Dj",
     "x-fb-trace-id",
-    "Gcp/9DKZw/q",
+    "GnoRndpHFus",
     "x-fb-rev",
-    "1004423793",
+    "1004496597",
     "X-FB-Debug",
-    "aCGkxuTsWPMfkPJW+lr6hKh+VUGFI7DB1KP/Uqm/Hhw2s3us1gsB01dPw0twjqGKKaFP+fKKR8AJgIlUZv9bqA==",
+    "HzxziGLLNhbRi7+/miQm+2MXa7TveoAAR2y8UBga6oVvwC5lXot5PArWVMkAPkEBwuucdTv+AF7dUxPug2iolQ==",
     "Date",
-    "Tue, 21 Sep 2021 00:08:41 GMT",
-    "Priority",
-    "u=3,i",
+    "Sat, 02 Oct 2021 20:58:25 GMT",
     "Alt-Svc",
     'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
     "Connection",
@@ -201,103 +295,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "11",
   ]);
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
-  .query({
-    fields: "id%2Cname",
-    access_token:
-      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
-  })
-  .once()
-  .reply(200, { data: [] }, [
-    "ETag",
-    '"1050253aec7b29caff644806927dabfa81406eee"',
-    "Content-Type",
-    "application/json",
-    "Vary",
-    "Origin",
-    "x-business-use-case-usage",
-    '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
-    "x-fb-rlafr",
-    "0",
-    "Access-Control-Allow-Origin",
-    "*",
-    "facebook-api-version",
-    "v11.0",
-    "Strict-Transport-Security",
-    "max-age=15552000; preload",
-    "Pragma",
-    "no-cache",
-    "Cache-Control",
-    "private, no-cache, no-store, must-revalidate",
-    "Expires",
-    "Sat, 01 Jan 2000 00:00:00 GMT",
-    "x-fb-request-id",
-    "AAr7dR1NtQqouITjfSswMG2",
-    "x-fb-trace-id",
-    "HF+uvfQgdO+",
-    "x-fb-rev",
-    "1004423793",
-    "X-FB-Debug",
-    "dNiZe5VnAbsw/q2mqqW+zyEMYH2u/CH5YPLgwymYL74oqN0G1gQ/h/bEy/LbXJqskfRYJtfwEZUv3HLdwGjrbA==",
-    "Date",
-    "Tue, 21 Sep 2021 00:08:41 GMT",
-    "Alt-Svc",
-    'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
-    "Connection",
-    "close",
-    "Content-Length",
-    "11",
-  ]);
-nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
-  .query({
-    fields: "id%2Cname",
-    access_token:
-      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
-  })
-  .once()
-  .reply(200, { data: [] }, [
-    "ETag",
-    '"1050253aec7b29caff644806927dabfa81406eee"',
-    "Content-Type",
-    "application/json",
-    "Vary",
-    "Origin",
-    "x-business-use-case-usage",
-    '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
-    "x-fb-rlafr",
-    "0",
-    "Access-Control-Allow-Origin",
-    "*",
-    "facebook-api-version",
-    "v11.0",
-    "Strict-Transport-Security",
-    "max-age=15552000; preload",
-    "Pragma",
-    "no-cache",
-    "Cache-Control",
-    "private, no-cache, no-store, must-revalidate",
-    "Expires",
-    "Sat, 01 Jan 2000 00:00:00 GMT",
-    "x-fb-request-id",
-    "AdY7CMMKHuSR9vF0tF8qS3m",
-    "x-fb-trace-id",
-    "GcE4UrTyEWz",
-    "x-fb-rev",
-    "1004423793",
-    "X-FB-Debug",
-    "v2f9Pj9TBWrsbBuzOvvz18wPaqTyH0aioIpcZLSYqaXcPaJIsgkVsrcCNKRff6wjsYRjnHAKSLkrSoorPI/Z0Q==",
-    "Date",
-    "Tue, 21 Sep 2021 00:08:41 GMT",
-    "Alt-Svc",
-    'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
-    "Connection",
-    "close",
-    "Content-Length",
-    "11",
-  ]);
-nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -312,13 +310,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "x-business-use-case-usage",
-    '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+    '{"542676646349772":[{"type":"custom_audience","call_count":0,"total_cputime":0,"total_time":1,"estimated_time_to_regain_access":0}]}',
     "x-fb-rlafr",
     "0",
     "Access-Control-Allow-Origin",
     "*",
     "facebook-api-version",
-    "v11.0",
+    "v12.0",
     "Strict-Transport-Security",
     "max-age=15552000; preload",
     "Pragma",
@@ -328,17 +326,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Expires",
     "Sat, 01 Jan 2000 00:00:00 GMT",
     "x-fb-request-id",
-    "AvcWMSsv4Jo5O3JE7cSWWRg",
+    "A3VQ7HXrFPQLrMbuiFi3_hK",
     "x-fb-trace-id",
-    "CVUP1SkLaQ4",
+    "HjcS3mJ5Bv/",
     "x-fb-rev",
-    "1004423793",
+    "1004496561",
     "X-FB-Debug",
-    "Amn9lvWvURoM6jJWqmbec8bftFi6LG+pA9z9RGOKYZqTswHeq+C3UdR5izJwY0c0MODyRVpti9fdOmT7dlmPUA==",
+    "9g1hYgbQNoqtIIS6/5ci1weqrX4gu/jZD+ep4wBSRhDfBuVhxdrFPJ9yC4HSyOQ4uwVGS1VOCurIueD4y1oyAQ==",
     "Date",
-    "Tue, 21 Sep 2021 00:08:41 GMT",
-    "Priority",
-    "u=3,i",
+    "Sat, 02 Oct 2021 20:58:25 GMT",
     "Alt-Svc",
     'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
     "Connection",
@@ -347,7 +343,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "11",
   ]);
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/act_542676646349772/customaudiences", {
+  .post("/v12.0/act_542676646349772/customaudiences", {
     name: "(test) Group 1",
     subtype: "CUSTOM",
     description: "Created from Grouparoo",
@@ -359,7 +355,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
   })
   .once()
-  .reply(200, { id: "23848581113410582" }, [
+  .reply(200, { id: "23848672402580582" }, [
     "Content-Type",
     "application/json",
     "Vary",
@@ -367,13 +363,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Vary",
     "Accept-Encoding",
     "x-business-use-case-usage",
-    '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+    '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
     "x-fb-rlafr",
     "0",
     "Access-Control-Allow-Origin",
     "*",
     "facebook-api-version",
-    "v11.0",
+    "v12.0",
     "Strict-Transport-Security",
     "max-age=15552000; preload",
     "Pragma",
@@ -383,22 +379,22 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Expires",
     "Sat, 01 Jan 2000 00:00:00 GMT",
     "x-fb-request-id",
-    "APOXBwr8KtdN2Zn0-c718NF",
+    "Az1aFt-noaWWZ77oo13Ihih",
     "x-fb-trace-id",
-    "Gqdd8BW8mvz",
+    "F+TNU8YKoe6",
     "x-fb-rev",
-    "1004423793",
+    "1004496597",
     "X-FB-Debug",
-    "1Q7dxebtwYdj+M8DlsLv03rtmzsL2JnO1h6k7H4CYOe6QkS0YgILr3cjGfkWt8Sijk2Kl7m0sOGy192IPe2WeQ==",
+    "W1CXaCVLGFTt7twCDwOPZ8suEbaFy5vWDcaeLw4I4Pz68oZPtwekyyVYJMNmr+uCNI093Bu0ecEOuglpiWXKcw==",
     "Date",
-    "Tue, 21 Sep 2021 00:08:42 GMT",
+    "Sat, 02 Oct 2021 20:58:26 GMT",
     "Connection",
     "close",
     "Content-Length",
     "26",
   ]);
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581113410582/users", {
+  .post("/v12.0/23848672402580582/users", {
     payload: {
       schema: ["EMAIL", "FN"],
       data: [
@@ -408,7 +404,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
         ],
       ],
     },
-    id: "23848581113410582",
+    id: "23848672402580582",
   })
   .query({
     access_token:
@@ -418,8 +414,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113410582",
-      session_id: "3072446828550405529",
+      audience_id: "23848672402580582",
+      session_id: "3067661753945377346",
       num_received: 1,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -430,7 +426,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
+      '{"acc_id_util_pct":6.67}',
+      "cross-origin-resource-policy",
+      "cross-origin",
       "x-app-usage",
       '{"call_count":1,"total_cputime":0,"total_time":0}',
       "x-fb-rlafr",
@@ -438,7 +436,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -448,15 +446,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "A32MNDKJ2vraiAeGlQbbhFr",
+      "AlcccmPRugXqNY-FxfZ-zSJ",
       "x-fb-trace-id",
-      "HMes9+J1nYB",
+      "FmfDo2wTHul",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "S9NgPkZknZUDYgTFJy7qNEGDJvnPvGicJHQK5Q2568BIDKfzPKOiQCmBQ2q9Gxfo+4ynmn4IxBZnTIWmgEudbQ==",
+      "KPdRDGFsGjjRJZSWpD2bLPM63Arg6BMybtnha18kHcz6/ia2erwP2goz7x2rVidR0s8mlsPerxiaWIR/zi7lbA==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:42 GMT",
+      "Sat, 02 Oct 2021 20:58:26 GMT",
       "Alt-Svc",
       'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
       "Connection",
@@ -466,7 +464,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname",
     access_token:
@@ -476,19 +474,19 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      data: [{ id: "23848581113410582", name: "(test) Group 1" }],
+      data: [{ id: "23848672402580582", name: "(test) Group 1" }],
       paging: {
         cursors: {
           before:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"1c77499456ec2911c42f5955dab12944894ce423"',
+      '"7adf43a8bf1c27fa7026ae6ee1ba3ef908b784f8"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -496,13 +494,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -512,17 +510,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AX0Gw-8-Kl0sl-0dTTX7Q6H",
+      "ATSZAlUBvJs_HaXgq2WLUNw",
       "x-fb-trace-id",
-      "EYy2yAVXleg",
+      "Fqb4nEt+np+",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "NaoOUM87kiU7kz+wNIsIftxFf0hnaNspn9MVrhQCiXD04d41B7AfgwGvV2SABLageVWQI7qr2DYKQxLeVCb4TQ==",
+      "iOtAKXUqO4nBO2+EbRW7BZ7guq/YL7jdNfkd5Z5bAXGKAGndxQ81g+PKEQupoQvdEFZTS9wYPY51yAB0F5O9cA==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:43 GMT",
-      "Priority",
-      "u=3,i",
+      "Sat, 02 Oct 2021 20:58:27 GMT",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -532,7 +528,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/23848581113410582", {})
+  .get("/v12.0/23848672402580582", {})
   .query({
     fields: "id%2Cname%2Csubtype%2Capproximate_count",
     access_token:
@@ -542,26 +538,26 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      id: "23848581113410582",
+      id: "23848672402580582",
       name: "(test) Group 1",
       subtype: "CUSTOM",
       approximate_count: -1,
     },
     [
       "ETag",
-      '"b280d8ac8b3fb4e64712f568b1e74f758eaf92dc"',
+      '"15df18ecbb7cfbf4ceeb3a743eff9aef18d5be16"',
       "Content-Type",
       "application/json",
       "Vary",
       "Origin",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -571,15 +567,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "A82VgcInK0sMoNSq0VW69es",
+      "AwWHgF1Owt9fWBTq9o6r8my",
       "x-fb-trace-id",
-      "CGT5neYLeLO",
+      "H/YU/Nnal/6",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "kAzBTnT1Tb2dBl3w/3ARtHEimNL0WXrEcyeCbMJA+mxI1XReYfrmOk2dzP918E98tQwl5jx4Vn0WMy+BwmFqmQ==",
+      "QnTqaDT+sfhX/oo8g8VZzFy3RH7uppX98u2+2OFMSzxvcumzD++BFQ1VDgmJjb6io4n1vrYfDxVhTBrzXTttJg==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:43 GMT",
+      "Sat, 02 Oct 2021 20:58:27 GMT",
       "Alt-Svc",
       'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
       "Connection",
@@ -589,7 +585,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname",
     access_token:
@@ -599,19 +595,19 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      data: [{ id: "23848581113410582", name: "(test) Group 1" }],
+      data: [{ id: "23848672402580582", name: "(test) Group 1" }],
       paging: {
         cursors: {
           before:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"1c77499456ec2911c42f5955dab12944894ce423"',
+      '"7adf43a8bf1c27fa7026ae6ee1ba3ef908b784f8"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -619,13 +615,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -635,15 +631,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AzNttXLndBxXSvKOvn5ZA5-",
+      "AsqABu_xO3uk5y-YxHBG54q",
       "x-fb-trace-id",
-      "Hq/wa616AMi",
+      "HNK8/tGonW0",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "PRUKHPf9qymu9AGvIrWwfB0IBmviD9U39jdCPMTxqoGCv1DHeO9W7CI4aV5RigV/WqkZmiZ/lpZO5I3nXd03+A==",
+      "e1/qBM6MB87DH3vJwq2bIQgXcQ9p1Q26qKU8agXsT7EKnC+sWEl2AbsvWu/sC5BQmWuw2tv5yF+UOAzwnTw60A==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:43 GMT",
+      "Sat, 02 Oct 2021 20:58:27 GMT",
       "Priority",
       "u=3,i",
       "Transfer-Encoding",
@@ -655,7 +651,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -666,20 +662,20 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"f5e3693db6ed597e2053429eafe76339b1c3d1db"',
+      '"8ef75acefef7d037ad3403da6fe814bdcb098b2a"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -687,13 +683,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -703,15 +699,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AppFb7ecx3LBWZ3scDpFmOW",
+      "AChPu7CXeEulGDz8VIpuNui",
       "x-fb-trace-id",
-      "GOkDhvlRL51",
+      "HJjXjrRXNtF",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "Q5nEabw2ce2dwTQ/PnGGsMMfllnLEzJZS0xdixjsNq2Aj0FW7SBpVWLiIAvkojg5SV4vCqW4zwaCUnLWKcxHkw==",
+      "IV7jndy8ukH98Igi1BiiVBiOrSolTopArXB2SX+tFG0U5loR1go3/lQdlAupj901U2CptlgXp4VNiMYz4+Ezkw==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:43 GMT",
+      "Sat, 02 Oct 2021 20:58:27 GMT",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -721,7 +717,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581113410582/users", {
+  .post("/v12.0/23848672402580582/users", {
     payload: {
       schema: ["EMAIL", "FN", "LN"],
       data: [
@@ -732,7 +728,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
         ],
       ],
     },
-    id: "23848581113410582",
+    id: "23848672402580582",
   })
   .query({
     access_token:
@@ -742,8 +738,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113410582",
-      session_id: "7144961233130455944",
+      audience_id: "23848672402580582",
+      session_id: "7142137687269777831",
       num_received: 1,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -754,7 +750,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
+      '{"acc_id_util_pct":16}',
+      "cross-origin-resource-policy",
+      "cross-origin",
       "x-app-usage",
       '{"call_count":1,"total_cputime":0,"total_time":0}',
       "x-fb-rlafr",
@@ -762,7 +760,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -772,15 +770,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AbuYChAu4w4zerCxI_sqy2Y",
+      "AccRKvrir0BThSG4crAbni5",
       "x-fb-trace-id",
-      "DQMe/tYgrFj",
+      "BKquNgf8+JR",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "HwDBjLQQJQysO6bLZxqwXP5/BQi8qkHeu/kEF6EHkPCu/de0RKck67EX9rjZ5K9daawSWA2zy1URlXbgxhzNGw==",
+      "Olb6cS5Mo0LfAAO9Lt0gprUKzrCRbf/lt0C/AaHEK8qk3bb6HZXVEX7zfZ9bvpFFNVw7sOEJXrZF6DHjf9Kuaw==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:43 GMT",
+      "Sat, 02 Oct 2021 20:58:28 GMT",
       "Priority",
       "u=3,i",
       "Alt-Svc",
@@ -792,7 +790,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -803,20 +801,20 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"f5e3693db6ed597e2053429eafe76339b1c3d1db"',
+      '"8ef75acefef7d037ad3403da6fe814bdcb098b2a"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -824,13 +822,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -840,17 +838,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "A1CjcJN7ZwqDZme4JE0Y0Sh",
+      "AdYVh-hdWJoNmAjg1XFlObB",
       "x-fb-trace-id",
-      "At0VJhLBkul",
+      "GCgL8stMvAI",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "NRVBS1XrAEJIKnUY+fBO1MRBYLoDGzU/FjPWHPHmNPzETLzIucSlrf+3NdK2NKNQPnIZjyibOkTQcJyFdoWANg==",
+      "Ja7QxzVN1baTiQ9l4OaM2GHmXY+hslPiq0PT2b0hFZ64OxPBFdRJO2Grni1X8XbCXIWJc/l2CBpw3ZzwD2W5qQ==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:44 GMT",
-      "Priority",
-      "u=3,i",
+      "Sat, 02 Oct 2021 20:58:28 GMT",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -860,7 +856,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/act_542676646349772/customaudiences", {
+  .post("/v12.0/act_542676646349772/customaudiences", {
     name: "(test) Group 2",
     subtype: "CUSTOM",
     description: "Created from Grouparoo",
@@ -872,7 +868,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
   })
   .once()
-  .reply(200, { id: "23848581113850582" }, [
+  .reply(200, { id: "23848672402650582" }, [
     "Content-Type",
     "application/json",
     "Vary",
@@ -880,13 +876,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Vary",
     "Accept-Encoding",
     "x-business-use-case-usage",
-    '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+    '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
     "x-fb-rlafr",
     "0",
     "Access-Control-Allow-Origin",
     "*",
     "facebook-api-version",
-    "v11.0",
+    "v12.0",
     "Strict-Transport-Security",
     "max-age=15552000; preload",
     "Pragma",
@@ -896,22 +892,22 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Expires",
     "Sat, 01 Jan 2000 00:00:00 GMT",
     "x-fb-request-id",
-    "Alq_MASXamEIbDfcgUX01Ls",
+    "Aa-OqwR6m_i4f-QJt1XqpYu",
     "x-fb-trace-id",
-    "Ckt5WHuB+yb",
+    "FStXlM+01GS",
     "x-fb-rev",
-    "1004423793",
+    "1004496597",
     "X-FB-Debug",
-    "Per9U4rfWFNdbXRfii9f7ZdX91lkcVeribmUKwQpUoj47UsSoWTkMskcntFXj92DSSjVCycis7/5K9TORWEZtw==",
+    "0DrUAf7c+iV2p36YUIMdmc7E8I7GSMnV1yzbKflzHKFHJyeYSTiKLmRSN6u3QHUf1cKPp2xo9sewD2LVDtzf8Q==",
     "Date",
-    "Tue, 21 Sep 2021 00:08:44 GMT",
+    "Sat, 02 Oct 2021 20:58:28 GMT",
     "Connection",
     "close",
     "Content-Length",
     "26",
   ]);
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581113850582/users", {
+  .post("/v12.0/23848672402650582/users", {
     payload: {
       schema: ["EMAIL", "FN", "LN"],
       data: [
@@ -927,7 +923,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
         ],
       ],
     },
-    id: "23848581113850582",
+    id: "23848672402650582",
   })
   .query({
     access_token:
@@ -937,8 +933,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113850582",
-      session_id: "7144961233130455944",
+      audience_id: "23848672402650582",
+      session_id: "7142137687269777831",
       num_received: 2,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -949,7 +945,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
+      '{"acc_id_util_pct":22.33}',
+      "cross-origin-resource-policy",
+      "cross-origin",
       "x-app-usage",
       '{"call_count":1,"total_cputime":0,"total_time":0}',
       "x-fb-rlafr",
@@ -957,7 +955,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -967,15 +965,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AwuwpKTcyY0-P3RzRE9dsOt",
+      "AFT-MFq8JAavvarmNDi4X8V",
       "x-fb-trace-id",
-      "Hm+i91Hufnz",
+      "EiC8R+huzuZ",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "iKweo3ym276TxyP5l3iq2erNbGOcTFZd5xKi0LLd8u4X30o8kxhU0qLnvu9mQlSjFklEFCMQxTzEus/PxE1weg==",
+      "nKK8cIv6UU6jmcvZXdNN3KFu86aRu669cpMZp3crJW7bAwV+h0XQz1I/0ws1ldv+MCVXI4a3X8NauWW6ec/r9g==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:45 GMT",
+      "Sat, 02 Oct 2021 20:58:29 GMT",
       "Alt-Svc",
       'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
       "Connection",
@@ -985,7 +983,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname",
     access_token:
@@ -996,21 +994,21 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581113850582", name: "(test) Group 2" },
-        { id: "23848581113410582", name: "(test) Group 1" },
+        { id: "23848672402650582", name: "(test) Group 2" },
+        { id: "23848672402580582", name: "(test) Group 1" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUnZAhNFRNOTRjNWo3cXlYLWU1ZAmo2N1pCV2FzMTYwMVJnSTVHdjVwcmxnTEZAzOVFmTWl1RWlMbG4wSWxQVnJBVklwVExmeXhTb3QweEd3cTdtN2ZArNEtB",
+            "QVFIUnlvVzRFZAzBENWwtSThKd2lhRFhsQzlJbHpNVi1ValV3WFFJRDY5NDVYYXRCOWdnaXhGZAEZADX01lWFQ4MDV1aGJFOGdwVDFzTDRmbk1FT043WkJ6NWh3",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"cb6b7c869fd7471eb0da5c425fd9c90dff620c91"',
+      '"7bdb5e133e44311b3c582afd738a2633f1351538"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -1018,13 +1016,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1034,15 +1032,17 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AeJrnQSFRzRYuFecBJvivq_",
+      "ADsiuVa5hllsJ4o8ZRGEz2D",
       "x-fb-trace-id",
-      "GD38lBpSxxT",
+      "FK5u5PqSUEz",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "XJqCBEGx+PxYJ5tICKITbe5trMjRmKIkmo8H/5wIJvT/P9xSz37qYMuPBQcke+jDmgJeVON6fzbvt3ye5gMmOw==",
+      "R/W0r+4pmMe9pmfbTY/qpt4kQQR441RjkjmOQiXVAMBn9ffEuqoYiKQ9WEwSW2+u2n/tvTvXlgA1XIKAa7c61g==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:45 GMT",
+      "Sat, 02 Oct 2021 20:58:29 GMT",
+      "Priority",
+      "u=3,i",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -1052,7 +1052,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/23848581113410582", {})
+  .get("/v12.0/23848672402580582", {})
   .query({
     fields: "id%2Cname%2Csubtype%2Capproximate_count",
     access_token:
@@ -1062,26 +1062,26 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      id: "23848581113410582",
+      id: "23848672402580582",
       name: "(test) Group 1",
       subtype: "CUSTOM",
       approximate_count: -1,
     },
     [
       "ETag",
-      '"b280d8ac8b3fb4e64712f568b1e74f758eaf92dc"',
+      '"15df18ecbb7cfbf4ceeb3a743eff9aef18d5be16"',
       "Content-Type",
       "application/json",
       "Vary",
       "Origin",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1091,15 +1091,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AbDXdJu-GHHMY3OdT9AYjeD",
+      "AISac94yYeKpH9uchQeo2rA",
       "x-fb-trace-id",
-      "AtRggtMsoDu",
+      "BE5dFDviiyK",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "sXegyMmCdHnqQ4BdJmLjruLiD6AHqhk1tIuxpO49au5swBeFdbj2bjW9TEpFtYX5PcBxouxs/HH/4UHpPNC5jg==",
+      "4J1s4FPnauSh17pThaPItlaNaMvuVHCJuqCj94lCOkbfzLkzduq0JpxMUqA6HZmI+CVSVYMXEk04Jy4+JvObFA==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:45 GMT",
+      "Sat, 02 Oct 2021 20:58:29 GMT",
       "Priority",
       "u=3,i",
       "Alt-Svc",
@@ -1111,7 +1111,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/23848581113850582", {})
+  .get("/v12.0/23848672402650582", {})
   .query({
     fields: "id%2Cname%2Csubtype%2Capproximate_count",
     access_token:
@@ -1121,26 +1121,26 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      id: "23848581113850582",
+      id: "23848672402650582",
       name: "(test) Group 2",
       subtype: "CUSTOM",
       approximate_count: -1,
     },
     [
       "ETag",
-      '"c177e68af944ccb5e6a72c0954c75632eb841bb2"',
+      '"4e59b1a251977b8f0c90e11c83014c1d82e62810"',
       "Content-Type",
       "application/json",
       "Vary",
       "Origin",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1150,17 +1150,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AsXraZha4bH1L7Msei4j_Ij",
+      "A3SbY-EKvRxCoCe2zbyvQ86",
       "x-fb-trace-id",
-      "B6qkiChSAT0",
+      "CSDlsbVNaiP",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "Jgnj5W1hsneKxaPBqTFHsq3QfzX+g8H2YNnZivpUkccZ0e2U0effisCentXb2J0XFe+cpntL7T/gTUIINX0lrQ==",
+      "Wa0Ab3NwI8Owzp1oyKIByWgLPFe5doWj2C+xvvJRo7+hDfj04/AeIcPpfTuayVTAajY7hZDCaC7otRtLwRJMrw==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:45 GMT",
-      "Priority",
-      "u=3,i",
+      "Sat, 02 Oct 2021 20:58:30 GMT",
       "Alt-Svc",
       'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
       "Connection",
@@ -1170,7 +1168,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -1181,21 +1179,21 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUnZAhNFRNOTRjNWo3cXlYLWU1ZAmo2N1pCV2FzMTYwMVJnSTVHdjVwcmxnTEZAzOVFmTWl1RWlMbG4wSWxQVnJBVklwVExmeXhTb3QweEd3cTdtN2ZArNEtB",
+            "QVFIUnlvVzRFZAzBENWwtSThKd2lhRFhsQzlJbHpNVi1ValV3WFFJRDY5NDVYYXRCOWdnaXhGZAEZADX01lWFQ4MDV1aGJFOGdwVDFzTDRmbk1FT043WkJ6NWh3",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"ae0781acaff263e5f07dfdfeb40542d033d9105f"',
+      '"8296f448fd5969e740055865eceefa57debc3f14"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -1203,13 +1201,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1219,17 +1217,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AbWcd7zN5RINBKK7uT6bpQG",
+      "AeHrQgd7BOtV6uAmUf-JT2Z",
       "x-fb-trace-id",
-      "EY2m17AhvWE",
+      "AE5TcI8mPxf",
       "x-fb-rev",
-      "1004423793",
+      "1004496561",
       "X-FB-Debug",
-      "WreIXbxy/bFtEDgx+ixyGbmLtUfe+iFOrdQBHchMNdpASq7EN3Jj4E2Oh9FMV69Lp82f0brVk/h/sLu6JRgdHQ==",
+      "DTRVZd1ZbWgahQQKcr0u8qX+JildmMp/RMN+76tbdwRlPoecuzYGKtNPLXSvTToL0L96vqLQe+PLfXwg3gMq0Q==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:45 GMT",
-      "Priority",
-      "u=3,i",
+      "Sat, 02 Oct 2021 20:58:30 GMT",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -1239,11 +1235,11 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .delete("/v11.0/23848581113410582/users", {})
+  .delete("/v12.0/23848672402580582/users", {})
   .query({
     payload:
       "%7B%22schema%22%3A%5B%22EMAIL%22%5D%2C%22data%22%3A%5B%5B%222e5b5d0a3c2f708e9cfc1eb6396c60814862229246a84697da56931761b8e6e7%22%5D%5D%7D",
-    id: "23848581113410582",
+    id: "23848672402580582",
     access_token:
       "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
   })
@@ -1251,8 +1247,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113410582",
-      session_id: "16666929761965516",
+      audience_id: "23848672402580582",
+      session_id: "11881855156937461",
       num_received: 1,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -1263,13 +1259,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1279,15 +1275,140 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AneSlel8HCLGJY-qyP2_Iaz",
+      "AyZdWcAujqKoSP_7hN8Qixm",
       "x-fb-trace-id",
-      "Hc8a/JAxtDf",
+      "ASHeX5AO4gU",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "LKAYkRn0XfGK1PwmfgqYMs+vmHfStQNy2lmpqxrmJs9n9KC5YH3RLmROlrUsr9Arnrad4muUGfKLkH7M9M9SPw==",
+      "o/czm8ydF/XysBdha51Ilgb8AWAsSCqpHjWAfg7lH16Epbcl6Z7mlMgawDgqm9Iz/q9Tt9SE9IsmAYyktPBPbg==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:46 GMT",
+      "Sat, 02 Oct 2021 20:58:30 GMT",
+      "Alt-Svc",
+      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
+      "Connection",
+      "close",
+      "Content-Length",
+      "136",
+    ]
+  );
+nock("https://graph.facebook.com:443", { encodedQueryParams: true })
+  .get("/v12.0/act_542676646349772/customaudiences", {})
+  .query({
+    fields: "id%2Cname%2Csubtype",
+    access_token:
+      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      data: [
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
+      ],
+      paging: {
+        cursors: {
+          before:
+            "QVFIUnlvVzRFZAzBENWwtSThKd2lhRFhsQzlJbHpNVi1ValV3WFFJRDY5NDVYYXRCOWdnaXhGZAEZADX01lWFQ4MDV1aGJFOGdwVDFzTDRmbk1FT043WkJ6NWh3",
+          after:
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
+        },
+      },
+    },
+    [
+      "ETag",
+      '"8296f448fd5969e740055865eceefa57debc3f14"',
+      "Content-Type",
+      "application/json",
+      "Vary",
+      "Origin",
+      "Vary",
+      "Accept-Encoding",
+      "x-business-use-case-usage",
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
+      "x-fb-rlafr",
+      "0",
+      "Access-Control-Allow-Origin",
+      "*",
+      "facebook-api-version",
+      "v12.0",
+      "Strict-Transport-Security",
+      "max-age=15552000; preload",
+      "Pragma",
+      "no-cache",
+      "Cache-Control",
+      "private, no-cache, no-store, must-revalidate",
+      "Expires",
+      "Sat, 01 Jan 2000 00:00:00 GMT",
+      "x-fb-request-id",
+      "A0v1XLEtFpAem8GOs67sw_-",
+      "x-fb-trace-id",
+      "GSWexoA2ZUY",
+      "x-fb-rev",
+      "1004496597",
+      "X-FB-Debug",
+      "YFmxCl7LlnDNKVAwJzKD/gl33HvktZyWrdKFZzssCYGUY143qfoDc6eqMbyRD0SfWdXX/qPXTVJaMxMez0S3zQ==",
+      "Date",
+      "Sat, 02 Oct 2021 20:58:30 GMT",
+      "Transfer-Encoding",
+      "chunked",
+      "Alt-Svc",
+      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://graph.facebook.com:443", { encodedQueryParams: true })
+  .delete("/v12.0/23848672402650582/users", {})
+  .query({
+    payload:
+      "%7B%22schema%22%3A%5B%22EMAIL%22%5D%2C%22data%22%3A%5B%5B%222e5b5d0a3c2f708e9cfc1eb6396c60814862229246a84697da56931761b8e6e7%22%5D%5D%7D",
+    id: "23848672402650582",
+    access_token:
+      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      audience_id: "23848672402650582",
+      session_id: "11881855156937461",
+      num_received: 1,
+      num_invalid_entries: 0,
+      invalid_entry_samples: {},
+    },
+    [
+      "Content-Type",
+      "application/json",
+      "Vary",
+      "Origin",
+      "x-business-use-case-usage",
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
+      "x-fb-rlafr",
+      "0",
+      "Access-Control-Allow-Origin",
+      "*",
+      "facebook-api-version",
+      "v12.0",
+      "Strict-Transport-Security",
+      "max-age=15552000; preload",
+      "Pragma",
+      "no-cache",
+      "Cache-Control",
+      "private, no-cache, no-store, must-revalidate",
+      "Expires",
+      "Sat, 01 Jan 2000 00:00:00 GMT",
+      "x-fb-request-id",
+      "AalI3F4MX6xHrkgOA0_mLfz",
+      "x-fb-trace-id",
+      "EaVrV2Uz+Yt",
+      "x-fb-rev",
+      "1004496597",
+      "X-FB-Debug",
+      "DJdgqm2Nzzk3tI5bD7iBxYRIjaBqS7sdMI+EtJA+7vcVp1QQEPZvmKhUlazb+SC/HZIjCAo1tl6JtOuX+HEV/w==",
+      "Date",
+      "Sat, 02 Oct 2021 20:58:31 GMT",
       "Priority",
       "u=3,i",
       "Alt-Svc",
@@ -1299,7 +1420,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -1310,21 +1431,21 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUnZAhNFRNOTRjNWo3cXlYLWU1ZAmo2N1pCV2FzMTYwMVJnSTVHdjVwcmxnTEZAzOVFmTWl1RWlMbG4wSWxQVnJBVklwVExmeXhTb3QweEd3cTdtN2ZArNEtB",
+            "QVFIUnlvVzRFZAzBENWwtSThKd2lhRFhsQzlJbHpNVi1ValV3WFFJRDY5NDVYYXRCOWdnaXhGZAEZADX01lWFQ4MDV1aGJFOGdwVDFzTDRmbk1FT043WkJ6NWh3",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"ae0781acaff263e5f07dfdfeb40542d033d9105f"',
+      '"8296f448fd5969e740055865eceefa57debc3f14"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -1332,13 +1453,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1348,17 +1469,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AFCxzMR_pYSNmgODEOjMqmg",
+      "AmltfUho0yEzjZW9XO4DBRe",
       "x-fb-trace-id",
-      "Hx2gWywTvHP",
+      "Hv03De41z2F",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "6DIVDfxrDq6gSapuLIS30WQg5KNXtdziIp/c074WIuPog5i67y/sVZlWsu5AjhNa/z/mv7Eg9PtR1YPztXPwUw==",
+      "NZHwa/C5QzP5TJwh/X/XkJijYPnTNGCAwQBzEBmUQyYENOCJZHhcUJS8ooLA5L5oRoMK8oJ23byUSNlxz0+oIA==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:46 GMT",
-      "Priority",
-      "u=3,i",
+      "Sat, 02 Oct 2021 20:58:31 GMT",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -1368,132 +1487,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .delete("/v11.0/23848581113850582/users", {})
-  .query({
-    payload:
-      "%7B%22schema%22%3A%5B%22EMAIL%22%5D%2C%22data%22%3A%5B%5B%222e5b5d0a3c2f708e9cfc1eb6396c60814862229246a84697da56931761b8e6e7%22%5D%5D%7D",
-    id: "23848581113850582",
-    access_token:
-      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      audience_id: "23848581113850582",
-      session_id: "16666929761965516",
-      num_received: 1,
-      num_invalid_entries: 0,
-      invalid_entry_samples: {},
-    },
-    [
-      "Content-Type",
-      "application/json",
-      "Vary",
-      "Origin",
-      "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
-      "x-fb-rlafr",
-      "0",
-      "Access-Control-Allow-Origin",
-      "*",
-      "facebook-api-version",
-      "v11.0",
-      "Strict-Transport-Security",
-      "max-age=15552000; preload",
-      "Pragma",
-      "no-cache",
-      "Cache-Control",
-      "private, no-cache, no-store, must-revalidate",
-      "Expires",
-      "Sat, 01 Jan 2000 00:00:00 GMT",
-      "x-fb-request-id",
-      "Ajs1QNhWwoBjOtFfSGuOB7I",
-      "x-fb-trace-id",
-      "DdF3xiZ32VG",
-      "x-fb-rev",
-      "1004423793",
-      "X-FB-Debug",
-      "Wzde0mGB2BcMkyj1dZoTsFQpt+C6bJvB89cSCJ5mYUuGKasLl3fvVOsV6c87a4LI1KoxDJ7N+EQwbzcE5RB+iw==",
-      "Date",
-      "Tue, 21 Sep 2021 00:08:47 GMT",
-      "Alt-Svc",
-      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
-      "Connection",
-      "close",
-      "Content-Length",
-      "136",
-    ]
-  );
-nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
-  .query({
-    fields: "id%2Cname%2Csubtype",
-    access_token:
-      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      data: [
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
-      ],
-      paging: {
-        cursors: {
-          before:
-            "QVFIUnZAhNFRNOTRjNWo3cXlYLWU1ZAmo2N1pCV2FzMTYwMVJnSTVHdjVwcmxnTEZAzOVFmTWl1RWlMbG4wSWxQVnJBVklwVExmeXhTb3QweEd3cTdtN2ZArNEtB",
-          after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
-        },
-      },
-    },
-    [
-      "ETag",
-      '"ae0781acaff263e5f07dfdfeb40542d033d9105f"',
-      "Content-Type",
-      "application/json",
-      "Vary",
-      "Origin",
-      "Vary",
-      "Accept-Encoding",
-      "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
-      "x-fb-rlafr",
-      "0",
-      "Access-Control-Allow-Origin",
-      "*",
-      "facebook-api-version",
-      "v11.0",
-      "Strict-Transport-Security",
-      "max-age=15552000; preload",
-      "Pragma",
-      "no-cache",
-      "Cache-Control",
-      "private, no-cache, no-store, must-revalidate",
-      "Expires",
-      "Sat, 01 Jan 2000 00:00:00 GMT",
-      "x-fb-request-id",
-      "AWqVnZNUSnZi8ZyVQwR_GQP",
-      "x-fb-trace-id",
-      "EJmFRQUK204",
-      "x-fb-rev",
-      "1004423793",
-      "X-FB-Debug",
-      "gHbe8BWHSnFxH9RAt7AdIb4WmPAARixWqZOR0axj0eyXePFAKJDkw9S2/vxwAGJLSZBA2g1hBX2ezjltsVlJRw==",
-      "Date",
-      "Tue, 21 Sep 2021 00:08:47 GMT",
-      "Transfer-Encoding",
-      "chunked",
-      "Alt-Svc",
-      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581113410582/users", {
+  .post("/v12.0/23848672402580582/users", {
     payload: {
       schema: ["EMAIL", "FN", "LN"],
       data: [
@@ -1504,7 +1498,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
         ],
       ],
     },
-    id: "23848581113410582",
+    id: "23848672402580582",
   })
   .query({
     access_token:
@@ -1514,8 +1508,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113410582",
-      session_id: "7144961233130455944",
+      audience_id: "23848672402580582",
+      session_id: "7142137687269777831",
       num_received: 1,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -1526,7 +1520,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
+      '{"acc_id_util_pct":31.67}',
+      "cross-origin-resource-policy",
+      "cross-origin",
       "x-app-usage",
       '{"call_count":1,"total_cputime":0,"total_time":0}',
       "x-fb-rlafr",
@@ -1534,7 +1530,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1544,15 +1540,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AxhZy99gPlOR9XIpGUL-YW4",
+      "AwOpJmk3H8F2KVbTfQuXKMt",
       "x-fb-trace-id",
-      "GYLfClUjUZi",
+      "A2QCyPfnuxa",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "mPt3mOnB6zSE4txb+nHkslE3QxOO4FpbdLJ82DLUb0MtyODSyfPNVGj2GQrWmZQI66xJyPaDk10DHjDK73Swmw==",
+      "f12P1xt3Lg5HQZs7igb9RDXVJgYiisVyEg3A/kuzWPqlXrXwxCbL9a6CGBaquAko1Cf4KFt82HGmhipQ4hu7zg==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:47 GMT",
+      "Sat, 02 Oct 2021 20:58:31 GMT",
       "Priority",
       "u=3,i",
       "Alt-Svc",
@@ -1564,7 +1560,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -1575,21 +1571,21 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUnZAhNFRNOTRjNWo3cXlYLWU1ZAmo2N1pCV2FzMTYwMVJnSTVHdjVwcmxnTEZAzOVFmTWl1RWlMbG4wSWxQVnJBVklwVExmeXhTb3QweEd3cTdtN2ZArNEtB",
+            "QVFIUnlvVzRFZAzBENWwtSThKd2lhRFhsQzlJbHpNVi1ValV3WFFJRDY5NDVYYXRCOWdnaXhGZAEZADX01lWFQ4MDV1aGJFOGdwVDFzTDRmbk1FT043WkJ6NWh3",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"ae0781acaff263e5f07dfdfeb40542d033d9105f"',
+      '"8296f448fd5969e740055865eceefa57debc3f14"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -1597,13 +1593,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1613,17 +1609,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AAr7WreSf3EDAJMZcga57QK",
+      "AffUIRxXxMtKn0VBVSYDCN1",
       "x-fb-trace-id",
-      "GJWZzc+43YQ",
+      "AMLSTMvGNXq",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "/JdeEuHxG/P43NVcW00N2Ut51rdgF1oBP0Zf2j0lMnfwUIF8yzcE/To5PV1Uv+I7mBqzgDgZ9aNsTL38GsqK+g==",
+      "ns0lVm1gZiYJ9QR/ge2ETxhJ7JFMApi9pH0607tH0EemOeO51T/Un2V6pAMvDPmRXOfppH/LD2aTfQ/Vb9/Brw==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:47 GMT",
-      "Priority",
-      "u=3,i",
+      "Sat, 02 Oct 2021 20:58:32 GMT",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -1633,7 +1627,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581113850582/users", {
+  .post("/v12.0/23848672402650582/users", {
     payload: {
       schema: ["EMAIL", "FN", "LN"],
       data: [
@@ -1644,7 +1638,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
         ],
       ],
     },
-    id: "23848581113850582",
+    id: "23848672402650582",
   })
   .query({
     access_token:
@@ -1654,8 +1648,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113850582",
-      session_id: "7144961233130455944",
+      audience_id: "23848672402650582",
+      session_id: "7142137687269777831",
       num_received: 1,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -1666,7 +1660,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
+      '{"acc_id_util_pct":38}',
+      "cross-origin-resource-policy",
+      "cross-origin",
       "x-app-usage",
       '{"call_count":1,"total_cputime":0,"total_time":0}',
       "x-fb-rlafr",
@@ -1674,7 +1670,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1684,15 +1680,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "A1BH0UJo0oY8NkSCLfJr-lq",
+      "AbBUoY2PLIrOhf1E64h_Va6",
       "x-fb-trace-id",
-      "Gn27kiJUcXA",
+      "Cs4JEALBCY+",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "O+WRUBXjzUOrwN19KBGJkKQEK+zOlaylV/V1PxT1X1rdbH3APU6dS23XwYyL7LB1dSV/qt1491tXCPs2BZYVLw==",
+      "Jo6g0HbbaXHciqIi3Z1wFv3zL9hER6M+pVvRTgBJFrS6TCglgEpjV9NF3gGxvAPALoR/tV4gRh5FwXRhf+SP7w==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:48 GMT",
+      "Sat, 02 Oct 2021 20:58:32 GMT",
       "Priority",
       "u=3,i",
       "Alt-Svc",
@@ -1704,7 +1700,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/23848581113410582", {})
+  .get("/v12.0/23848672402580582", {})
   .query({
     fields: "id%2Cname%2Csubtype%2Capproximate_count",
     access_token:
@@ -1714,26 +1710,26 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      id: "23848581113410582",
+      id: "23848672402580582",
       name: "(test) Group 1",
       subtype: "CUSTOM",
       approximate_count: -1,
     },
     [
       "ETag",
-      '"b280d8ac8b3fb4e64712f568b1e74f758eaf92dc"',
+      '"15df18ecbb7cfbf4ceeb3a743eff9aef18d5be16"',
       "Content-Type",
       "application/json",
       "Vary",
       "Origin",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1743,15 +1739,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "A-8bmzKEchzo40Amgjhn7Z2",
+      "AOrRbzKCVxyOlPrm8FLEkcX",
       "x-fb-trace-id",
-      "GkaHJt+/w64",
+      "CM5kONOjpkQ",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "R/MNkeAL3UG6ta/pViC5uGC3X8Q6UHAIrbUUZe6+swWqmG90JnAA9r78PwDF6P/il5Spauj/9l+1tqQv8NXfTg==",
+      "0zPkBAgOwEsCWAtYYNTxALa6u2UfuW0nmJzdgim8f94jONnwFvgDPCVAgctwaQl4lMnGLVyce/sKsCBmTg7vHw==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:48 GMT",
+      "Sat, 02 Oct 2021 20:58:32 GMT",
       "Priority",
       "u=3,i",
       "Alt-Svc",
@@ -1763,7 +1759,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/23848581113850582", {})
+  .get("/v12.0/23848672402650582", {})
   .query({
     fields: "id%2Cname%2Csubtype%2Capproximate_count",
     access_token:
@@ -1773,26 +1769,26 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      id: "23848581113850582",
+      id: "23848672402650582",
       name: "(test) Group 2",
       subtype: "CUSTOM",
       approximate_count: -1,
     },
     [
       "ETag",
-      '"c177e68af944ccb5e6a72c0954c75632eb841bb2"',
+      '"4e59b1a251977b8f0c90e11c83014c1d82e62810"',
       "Content-Type",
       "application/json",
       "Vary",
       "Origin",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1802,15 +1798,17 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "ABLnF3V3idX5g4cmMWzppPM",
+      "ACpHLF1mNT-XdYcTp0xRF3U",
       "x-fb-trace-id",
-      "D9+VrXOrq/V",
+      "HPLxQJDcBqJ",
       "x-fb-rev",
-      "1004423793",
+      "1004496561",
       "X-FB-Debug",
-      "9+ZvI+6/plr0T5bDoot75I6wF71CJNPL4ovJ6V4kicWDa1Y6IB7b1ksBB9WkxTvwZSssK9ncmv9luLfc5WpShg==",
+      "yFNWmZWrC09lMX5qQyWdnFor6oVNzB4RlerGL/HYREHMMK5jVRBdi060rpF86Pktk5uNFZ5RwqSnjyD8v4+rOw==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:48 GMT",
+      "Sat, 02 Oct 2021 20:58:32 GMT",
+      "Priority",
+      "u=3,i",
       "Alt-Svc",
       'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
       "Connection",
@@ -1820,7 +1818,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -1831,21 +1829,21 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUnZAhNFRNOTRjNWo3cXlYLWU1ZAmo2N1pCV2FzMTYwMVJnSTVHdjVwcmxnTEZAzOVFmTWl1RWlMbG4wSWxQVnJBVklwVExmeXhTb3QweEd3cTdtN2ZArNEtB",
+            "QVFIUnlvVzRFZAzBENWwtSThKd2lhRFhsQzlJbHpNVi1ValV3WFFJRDY5NDVYYXRCOWdnaXhGZAEZADX01lWFQ4MDV1aGJFOGdwVDFzTDRmbk1FT043WkJ6NWh3",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"ae0781acaff263e5f07dfdfeb40542d033d9105f"',
+      '"8296f448fd5969e740055865eceefa57debc3f14"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -1853,13 +1851,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1869,15 +1867,17 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "ACwJ8JqfLy_CDMbQgY4heOp",
+      "Aj2dz5Br95sNGjEobx43pZv",
       "x-fb-trace-id",
-      "FfcseGaz7MN",
+      "CRRWtRqbqmH",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "3WPtoySu1uznbnQDlPox1SvO665mwypDFQ8H2kbZgy27DGVTy71qQgNFb/vMvKBEr1OhtirxOIHZCHS0u0scYw==",
+      "bE3RUhO7+UAvbw2Prmwth4nROPIRUzFMIlcaUc4AF9YwhYou2WTMHyLukXBMBsyhGeTgCYiB/grnEaMKAj9RHQ==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:48 GMT",
+      "Sat, 02 Oct 2021 20:58:33 GMT",
+      "Priority",
+      "u=3,i",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -1887,11 +1887,11 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .delete("/v11.0/23848581113850582/users", {})
+  .delete("/v12.0/23848672402650582/users", {})
   .query({
     payload:
       "%7B%22schema%22%3A%5B%22EMAIL%22%5D%2C%22data%22%3A%5B%5B%222e5b5d0a3c2f708e9cfc1eb6396c60814862229246a84697da56931761b8e6e7%22%5D%5D%7D",
-    id: "23848581113850582",
+    id: "23848672402650582",
     access_token:
       "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
   })
@@ -1899,8 +1899,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113850582",
-      session_id: "16666929761965516",
+      audience_id: "23848672402650582",
+      session_id: "11881855156937461",
       num_received: 1,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -1911,13 +1911,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":7,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1927,15 +1927,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "Al1OhVVX6MSV2umL_rgHK9Y",
+      "AGZxtaq5XCZZPVzk3F5hJIo",
       "x-fb-trace-id",
-      "FKHZBxzGV72",
+      "Fmf67PnXUNZ",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "M9x9+nr7lO40VO/Eb6It9q5ZcXZEXiG6w7h1QXOd83CSxIf3yjOCTb/U0wHMdSJVyRItseJ6hW6xitkYwH2VCA==",
+      "J5B2lfjHMtvIZrkZQOtOXBcdjymhKQak/G50roUC8YBSA4QmQSUvPXPhBQMk3l6F55MpQBPy26cZEXlMnq7N0w==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:49 GMT",
+      "Sat, 02 Oct 2021 20:58:33 GMT",
       "Priority",
       "u=3,i",
       "Alt-Svc",
@@ -1947,7 +1947,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -1958,21 +1958,21 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUnZAhNFRNOTRjNWo3cXlYLWU1ZAmo2N1pCV2FzMTYwMVJnSTVHdjVwcmxnTEZAzOVFmTWl1RWlMbG4wSWxQVnJBVklwVExmeXhTb3QweEd3cTdtN2ZArNEtB",
+            "QVFIUnlvVzRFZAzBENWwtSThKd2lhRFhsQzlJbHpNVi1ValV3WFFJRDY5NDVYYXRCOWdnaXhGZAEZADX01lWFQ4MDV1aGJFOGdwVDFzTDRmbk1FT043WkJ6NWh3",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"ae0781acaff263e5f07dfdfeb40542d033d9105f"',
+      '"8296f448fd5969e740055865eceefa57debc3f14"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -1980,13 +1980,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -1996,15 +1996,17 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AY-vinVay1RX6_X40A8o4nS",
+      "A441s5NkxxQhUneqFDXlVPS",
       "x-fb-trace-id",
-      "HLn0XpCVFd0",
+      "H//u1N4qd/5",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "vT2TthNqcXFEsVbrtD4Edmc4Y7hJbb3gb9OCAjn7jqz2FvSvt5TI3s6p3A2sPc15RixJS06s4eQzuG/BH8TRJQ==",
+      "xP0TxwsBFeEH/25VB+31tu7ZTNb1U1TqwSExuJBOxMbEG5wvUtyBKWr9UvsEiC8DPD+zocTRkVkyap8cLP2HlA==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:50 GMT",
+      "Sat, 02 Oct 2021 20:58:33 GMT",
+      "Priority",
+      "u=3,i",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -2014,7 +2016,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581113410582/users", {
+  .post("/v12.0/23848672402580582/users", {
     payload: {
       schema: ["EMAIL", "FN", "LN"],
       data: [
@@ -2025,7 +2027,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
         ],
       ],
     },
-    id: "23848581113410582",
+    id: "23848672402580582",
   })
   .query({
     access_token:
@@ -2035,8 +2037,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113410582",
-      session_id: "7144961233130455944",
+      audience_id: "23848672402580582",
+      session_id: "7142137687269777831",
       num_received: 1,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -2047,7 +2049,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
+      '{"acc_id_util_pct":45.67}',
+      "cross-origin-resource-policy",
+      "cross-origin",
       "x-app-usage",
       '{"call_count":1,"total_cputime":0,"total_time":0}',
       "x-fb-rlafr",
@@ -2055,7 +2059,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -2065,17 +2069,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "Abo8qycG2sT5Hu2m6Op-51w",
+      "ATK20GnGT5NvRYpaXv2iVds",
       "x-fb-trace-id",
-      "CeW7KeVRjIj",
+      "Acdal+gwDbZ",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "3upReGA3T33rfooTzQH8tau3g8yP1fB+jrsZz+jpa9ITMNZfI8Upoi45ujb6tpt2RMeYx/EW1ifm6BShKxMHGw==",
+      "xurEia2pkNxtuB6MtxNKhW4ivsN5rdMpxKKH7kgc8BblWYfD1qC481YptCpuy3C1jJLSULwgrTqmkvMRwj42tQ==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:50 GMT",
-      "Priority",
-      "u=3,i",
+      "Sat, 02 Oct 2021 20:58:34 GMT",
       "Alt-Svc",
       'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
       "Connection",
@@ -2085,7 +2087,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname",
     access_token:
@@ -2096,21 +2098,21 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581113850582", name: "(test) Group 2" },
-        { id: "23848581113410582", name: "(test) Group 1" },
+        { id: "23848672402650582", name: "(test) Group 2" },
+        { id: "23848672402580582", name: "(test) Group 1" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUnZAhNFRNOTRjNWo3cXlYLWU1ZAmo2N1pCV2FzMTYwMVJnSTVHdjVwcmxnTEZAzOVFmTWl1RWlMbG4wSWxQVnJBVklwVExmeXhTb3QweEd3cTdtN2ZArNEtB",
+            "QVFIUnlvVzRFZAzBENWwtSThKd2lhRFhsQzlJbHpNVi1ValV3WFFJRDY5NDVYYXRCOWdnaXhGZAEZADX01lWFQ4MDV1aGJFOGdwVDFzTDRmbk1FT043WkJ6NWh3",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"cb6b7c869fd7471eb0da5c425fd9c90dff620c91"',
+      '"7bdb5e133e44311b3c582afd738a2633f1351538"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -2118,13 +2120,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -2134,15 +2136,82 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "A1JysuPbEnv0b4x2gsIFMYK",
+      "ACGW6KykFqfZliexy7q2EAY",
       "x-fb-trace-id",
-      "A68d9TzAMH9",
+      "EizsWHhf6os",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "t3hZQJehvAX24jHOlIAWGGCXAMfpUhrwJ1zqmcxqXGuCCm9ob3tU4C2DCSPgMHZIQnte9fYS45Qf0KCbOo+kMA==",
+      "sMgN1I44EwT3x0pvNkhBJYl4WqrViLqk7A0qoSBHBtWbm+kG90EUUyuF2jqC5/wbhsvtf3RRj3A0/05SpTy0og==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:51 GMT",
+      "Sat, 02 Oct 2021 20:58:34 GMT",
+      "Transfer-Encoding",
+      "chunked",
+      "Alt-Svc",
+      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://graph.facebook.com:443", { encodedQueryParams: true })
+  .get("/v12.0/act_542676646349772/customaudiences", {})
+  .query({
+    fields: "id%2Cname%2Csubtype",
+    access_token:
+      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      data: [
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
+      ],
+      paging: {
+        cursors: {
+          before:
+            "QVFIUnlvVzRFZAzBENWwtSThKd2lhRFhsQzlJbHpNVi1ValV3WFFJRDY5NDVYYXRCOWdnaXhGZAEZADX01lWFQ4MDV1aGJFOGdwVDFzTDRmbk1FT043WkJ6NWh3",
+          after:
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
+        },
+      },
+    },
+    [
+      "ETag",
+      '"8296f448fd5969e740055865eceefa57debc3f14"',
+      "Content-Type",
+      "application/json",
+      "Vary",
+      "Origin",
+      "Vary",
+      "Accept-Encoding",
+      "x-business-use-case-usage",
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
+      "x-fb-rlafr",
+      "0",
+      "Access-Control-Allow-Origin",
+      "*",
+      "facebook-api-version",
+      "v12.0",
+      "Strict-Transport-Security",
+      "max-age=15552000; preload",
+      "Pragma",
+      "no-cache",
+      "Cache-Control",
+      "private, no-cache, no-store, must-revalidate",
+      "Expires",
+      "Sat, 01 Jan 2000 00:00:00 GMT",
+      "x-fb-request-id",
+      "Ay0qDaPYnU0w7i7Myn5twNN",
+      "x-fb-trace-id",
+      "A8kKfsH4F+o",
+      "x-fb-rev",
+      "1004496597",
+      "X-FB-Debug",
+      "YMWxzRmfBoOYkQx0qpEf+ufpa6NmEl9ZKHeaWMTHto7rrJWMjuNnFg56CLq8lo7+OmgLz4wrBDVFrqiQBO5hJg==",
+      "Date",
+      "Sat, 02 Oct 2021 20:58:34 GMT",
       "Priority",
       "u=3,i",
       "Transfer-Encoding",
@@ -2154,74 +2223,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
-  .query({
-    fields: "id%2Cname%2Csubtype",
-    access_token:
-      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      data: [
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
-      ],
-      paging: {
-        cursors: {
-          before:
-            "QVFIUnZAhNFRNOTRjNWo3cXlYLWU1ZAmo2N1pCV2FzMTYwMVJnSTVHdjVwcmxnTEZAzOVFmTWl1RWlMbG4wSWxQVnJBVklwVExmeXhTb3QweEd3cTdtN2ZArNEtB",
-          after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
-        },
-      },
-    },
-    [
-      "ETag",
-      '"ae0781acaff263e5f07dfdfeb40542d033d9105f"',
-      "Content-Type",
-      "application/json",
-      "Vary",
-      "Origin",
-      "Vary",
-      "Accept-Encoding",
-      "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
-      "x-fb-rlafr",
-      "0",
-      "Access-Control-Allow-Origin",
-      "*",
-      "facebook-api-version",
-      "v11.0",
-      "Strict-Transport-Security",
-      "max-age=15552000; preload",
-      "Pragma",
-      "no-cache",
-      "Cache-Control",
-      "private, no-cache, no-store, must-revalidate",
-      "Expires",
-      "Sat, 01 Jan 2000 00:00:00 GMT",
-      "x-fb-request-id",
-      "ADOX2VO5aeCoM9z3naFn6B1",
-      "x-fb-trace-id",
-      "DS5l5OpsqjD",
-      "x-fb-rev",
-      "1004423793",
-      "X-FB-Debug",
-      "gadLRXM3Ici5kyY3tXQgz3cDUtagtpAenx0moKJVwctOaLlgsFKuK0wzJMun3nVvCSi3eFi6UrLMGd83zK6cQA==",
-      "Date",
-      "Tue, 21 Sep 2021 00:08:51 GMT",
-      "Transfer-Encoding",
-      "chunked",
-      "Alt-Svc",
-      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/act_542676646349772/customaudiences", {
+  .post("/v12.0/act_542676646349772/customaudiences", {
     name: "(test) Group 3",
     subtype: "CUSTOM",
     description: "Created from Grouparoo",
@@ -2233,7 +2235,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
   })
   .once()
-  .reply(200, { id: "23848581114090582" }, [
+  .reply(200, { id: "23848672402780582" }, [
     "Content-Type",
     "application/json",
     "Vary",
@@ -2241,13 +2243,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Vary",
     "Accept-Encoding",
     "x-business-use-case-usage",
-    '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+    '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
     "x-fb-rlafr",
     "0",
     "Access-Control-Allow-Origin",
     "*",
     "facebook-api-version",
-    "v11.0",
+    "v12.0",
     "Strict-Transport-Security",
     "max-age=15552000; preload",
     "Pragma",
@@ -2257,22 +2259,22 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Expires",
     "Sat, 01 Jan 2000 00:00:00 GMT",
     "x-fb-request-id",
-    "AEmO3NssUAq-75XzUCDVWDQ",
+    "AiiZeDEmrqbQEK4pNdMTRBA",
     "x-fb-trace-id",
-    "DX1AyYOy3Ml",
+    "B87wdZ6tbNl",
     "x-fb-rev",
-    "1004423793",
+    "1004496561",
     "X-FB-Debug",
-    "uGsl9Ofl8DoKKHQU2E1AN914MIszGodpwEGkb6KxiK35jZhAGVGp4XPGFWX1iG6CbyuO3gDguZkWwKdu78n4FA==",
+    "1a5MElVy6ySPeZtWICqATe+trfvoxx8iCXLkSFQU9auuDKrwho2mrKvABaysksE0zBQEpoO8eNUomVblyr8yJg==",
     "Date",
-    "Tue, 21 Sep 2021 00:08:51 GMT",
+    "Sat, 02 Oct 2021 20:58:35 GMT",
     "Connection",
     "close",
     "Content-Length",
     "26",
   ]);
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581114090582/users", {
+  .post("/v12.0/23848672402780582/users", {
     payload: {
       schema: ["EMAIL"],
       data: [
@@ -2429,7 +2431,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
         ["2e5b5d0a3c2f708e9cfc1eb6396c60814862229246a84697da56931761b8e6e7"],
       ],
     },
-    id: "23848581114090582",
+    id: "23848672402780582",
   })
   .query({
     access_token:
@@ -2439,8 +2441,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581114090582",
-      session_id: "2833229905291980331",
+      audience_id: "23848672402780582",
+      session_id: "2830406359431302202",
       num_received: 151,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -2451,7 +2453,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
+      '{"acc_id_util_pct":50.33}',
+      "cross-origin-resource-policy",
+      "cross-origin",
       "x-app-usage",
       '{"call_count":1,"total_cputime":0,"total_time":0}',
       "x-fb-rlafr",
@@ -2459,7 +2463,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -2469,15 +2473,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AedOupel0vRnPjepVlC99FJ",
+      "AFlzadC11jcUuTjYFsObWij",
       "x-fb-trace-id",
-      "H3GCYf8ktIy",
+      "GJx4bG7ne//",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "G8e7v/NGTca5FFDUqJhdmh5wdsH96NucwxtOG9HUMbfqfx19/cKEzP2ii81eanrYWYiCvi2p+zEU5hzpd+7VXA==",
+      "w8LUrlOO+jHYtYP57u+kM88q3747tZmP2FdRlDywoK6EggCm4warRgaoOkdH+pGmru4FbCn95pK7fMTuupoS2Q==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:52 GMT",
+      "Sat, 02 Oct 2021 20:58:35 GMT",
       "Alt-Svc",
       'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
       "Connection",
@@ -2487,7 +2491,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname",
     access_token:
@@ -2498,22 +2502,22 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581114090582", name: "(test) Group 3" },
-        { id: "23848581113850582", name: "(test) Group 2" },
-        { id: "23848581113410582", name: "(test) Group 1" },
+        { id: "23848672402780582", name: "(test) Group 3" },
+        { id: "23848672402650582", name: "(test) Group 2" },
+        { id: "23848672402580582", name: "(test) Group 1" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"451c64bc3fca7856fc797f245d74f4f2c8b202ca"',
+      '"c792e89e8b38bcd40e1030464e5dc094cac930ef"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -2521,13 +2525,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -2537,15 +2541,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AiQ-62nutz8Uz59FKNSr7mZ",
+      "ATNmoJ6kChpfx7XxqShzZca",
       "x-fb-trace-id",
-      "CgWYla5vp3l",
+      "D13tpLikFg9",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "UvjoLLk5Xzp/hq50DnwY2H0Y71301hIbC6TbXVkuN214pPgOIdAtJA9smSnwU5BHk2ARorT4sVN8IhjKumQn1w==",
+      "KZMe4O5DesaHz/YkBFxVYul4lGLPiBRz3y69k+QP7Sm6U86SIo+xK5ysaGki9oJKgKASoYUN3BJHu303Dj3pfg==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:52 GMT",
+      "Sat, 02 Oct 2021 20:58:36 GMT",
       "Priority",
       "u=3,i",
       "Transfer-Encoding",
@@ -2557,7 +2561,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/23848581114090582", {})
+  .get("/v12.0/23848672402780582", {})
   .query({
     fields: "id%2Cname%2Csubtype%2Capproximate_count",
     access_token:
@@ -2567,26 +2571,26 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      id: "23848581114090582",
+      id: "23848672402780582",
       name: "(test) Group 3",
       subtype: "CUSTOM",
       approximate_count: 1000,
     },
     [
       "ETag",
-      '"8a999ea7ad1fe62de7d87b52a9698ec510ada77b"',
+      '"2c85ecf8266fcdea28247b3c9c4b13014e985064"',
       "Content-Type",
       "application/json",
       "Vary",
       "Origin",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -2596,15 +2600,17 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AxDzj4b3sXjg0kDiBZWTGQi",
+      "ARUTnmpCUQOpCk_3Z31Ch5p",
       "x-fb-trace-id",
-      "HpJh+d37f/u",
+      "AQvql12Qw1h",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "mB9vEFl0sK0pmscHMN1OrFNwXcudaOIkUEqeHwO1XUyHHqhTYpNC8ZBy+qdi1D2PpeVCL6Ix+9vWy3KkOJBi1g==",
+      "9wmzrRAwOKXo9FOcbGWspz3NnNqlhImN78I+rLRvRNSZAa88dqaDk2GJFdscRPG12/9V1f4XS3jgDCCT4EgEQw==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:52 GMT",
+      "Sat, 02 Oct 2021 20:58:36 GMT",
+      "Priority",
+      "u=3,i",
       "Alt-Svc",
       'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
       "Connection",
@@ -2614,7 +2620,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -2625,22 +2631,22 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581114090582", name: "(test) Group 3", subtype: "CUSTOM" },
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402780582", name: "(test) Group 3", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"aeba8aac03bec0aaac6c3be3e26a03fd98adf039"',
+      '"0794cc0720cf1b0d36c63faaed7d61a7e0259f6a"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -2648,13 +2654,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -2664,15 +2670,17 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AlFJli9eK_SXgk5tepN_inr",
+      "A3T1L_HpFtPZQVnOo-A48ot",
       "x-fb-trace-id",
-      "D8RZlXXZosN",
+      "B9lN7VYS5mg",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "P0savVfmenNL3yC6iUxDBWm4+JaRGL1GjpGtuPqFKGc+665hITeNtHqF9TI6vgD4uI+4eSpM2BEa7cqGhDyjqA==",
+      "dLgTEJ2FjWL6HlXDTtyXZNAjjf8x1hJgpOB+05IRyuPvROcJ80q4pQnJovXvid941SI6mi9pxYtakS3Gyr4a8g==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:52 GMT",
+      "Sat, 02 Oct 2021 20:58:36 GMT",
+      "Priority",
+      "u=3,i",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -2682,11 +2690,11 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .delete("/v11.0/23848581113410582/users", {})
+  .delete("/v12.0/23848672402580582/users", {})
   .query({
     payload:
       "%7B%22schema%22%3A%5B%22EMAIL%22%5D%2C%22data%22%3A%5B%5B%222e5b5d0a3c2f708e9cfc1eb6396c60814862229246a84697da56931761b8e6e7%22%5D%5D%7D",
-    id: "23848581113410582",
+    id: "23848672402580582",
     access_token:
       "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
   })
@@ -2694,8 +2702,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113410582",
-      session_id: "16666929761965516",
+      audience_id: "23848672402580582",
+      session_id: "11881855156937461",
       num_received: 1,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -2706,13 +2714,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -2722,15 +2730,17 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AQT8qr1Eul3TwR-kOCCnlGJ",
+      "Ac5_RU4BcBZfGu_IGrNXVxi",
       "x-fb-trace-id",
-      "EpSjM/CuHUm",
+      "G4qN2Ms5CWZ",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "btkm2dE+FFVnnRDdl9xL1OWICTyMBfOiT75v17pB0XDFZ6I1DILf+yH4YAWz1WyT/sH7D1nR7kAphYq37WpTlw==",
+      "8E8vrHJjWoMAXstcJvPFVeBYZgh15zZYapMFMNBnez9uhjVoyi3HI1ALA5GMdTQxN9vvHwX0VaD+MuVBwev8mg==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:53 GMT",
+      "Sat, 02 Oct 2021 20:58:36 GMT",
+      "Priority",
+      "u=3,i",
       "Alt-Svc",
       'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
       "Connection",
@@ -2740,7 +2750,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -2751,22 +2761,22 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581114090582", name: "(test) Group 3", subtype: "CUSTOM" },
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402780582", name: "(test) Group 3", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"aeba8aac03bec0aaac6c3be3e26a03fd98adf039"',
+      '"0794cc0720cf1b0d36c63faaed7d61a7e0259f6a"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -2774,13 +2784,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -2790,17 +2800,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "Alxr3ekdXZ1Aqwau3okcdL7",
+      "Azv5iNdl4B6upJiHxaurZ3x",
       "x-fb-trace-id",
-      "CHmp8gBSm/2",
+      "BuVWmctSzzN",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "RXRZcX7Z38qa9qsnfpEK/lbowZ9eKCsIwzVmNca+2jXYWHnAP0ssIS1v58Qebme43KW5YnT1XcJOKG9bvwvPug==",
+      "1FNGYAHRTBak6jbOESaT0Y29oNJnKGTWi7DX1ZLDTYppgXVzjzgHfITZHhDdYqdgX3HXPKkfSFJeWs8Pj9rZlQ==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:53 GMT",
-      "Priority",
-      "u=3,i",
+      "Sat, 02 Oct 2021 20:58:37 GMT",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -2810,7 +2818,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581113410582/users", {
+  .post("/v12.0/23848672402580582/users", {
     payload: {
       schema: ["EMAIL", "FN", "LN"],
       data: [
@@ -2821,7 +2829,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
         ],
       ],
     },
-    id: "23848581113410582",
+    id: "23848672402580582",
   })
   .query({
     access_token:
@@ -2831,8 +2839,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113410582",
-      session_id: "7144961233130455944",
+      audience_id: "23848672402580582",
+      session_id: "7142137687269777831",
       num_received: 1,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -2843,7 +2851,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
+      '{"acc_id_util_pct":58}',
+      "cross-origin-resource-policy",
+      "cross-origin",
       "x-app-usage",
       '{"call_count":1,"total_cputime":0,"total_time":0}',
       "x-fb-rlafr",
@@ -2851,7 +2861,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -2861,15 +2871,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AH2InsZVELCuAvZYeQGxRvg",
+      "A8wf-Q9Vi7Ff4t6qHQ3fhMQ",
       "x-fb-trace-id",
-      "AFxtVkkE59e",
+      "Bc3AWhzgwko",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "N3CxLTZzcWiSNi6ZKCovuKDMqfRiqrmuTsFSVl8GWKtRuPuK7FLHXGayNec/hrFOroaY5aYUxC4lwkv5pVkfHw==",
+      "EADlUkZiUNljMqb7kz76uiuaMcxqPih/pZfd+zCM89DGDHbhb/oAuq3ImEM2xfqYXotdUQm2nDSP3euh5KsM/A==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:53 GMT",
+      "Sat, 02 Oct 2021 20:58:37 GMT",
       "Alt-Svc",
       'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
       "Connection",
@@ -2879,7 +2889,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -2890,22 +2900,22 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581114090582", name: "(test) Group 3", subtype: "CUSTOM" },
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402780582", name: "(test) Group 3", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"aeba8aac03bec0aaac6c3be3e26a03fd98adf039"',
+      '"0794cc0720cf1b0d36c63faaed7d61a7e0259f6a"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -2913,13 +2923,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -2929,15 +2939,83 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AZ1w_dwokiJqAOAVPd8R5Jh",
+      "ApNzkiJbZW3DYNzdY-kuRPo",
       "x-fb-trace-id",
-      "HvpALnvkJYZ",
+      "F2BwqGhddN9",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "DkrySkm66UMvvKIriVp8p2fHJCo2Cfa1cE+9SzFKQISRXt4sDZyd0GxIl73C/Caz2ccwh0SBwsjB9zvZHWgOBw==",
+      "PD7YJBS2dHlPqR07/zs+m3druUxYnCWepJv+TjUXcmJcwfq2+tzgGn6Hw8QXbiHlQd27+oxb7G+wUTb5Jo4mXg==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:53 GMT",
+      "Sat, 02 Oct 2021 20:58:37 GMT",
+      "Transfer-Encoding",
+      "chunked",
+      "Alt-Svc",
+      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://graph.facebook.com:443", { encodedQueryParams: true })
+  .get("/v12.0/act_542676646349772/customaudiences", {})
+  .query({
+    fields: "id%2Cname%2Csubtype",
+    access_token:
+      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      data: [
+        { id: "23848672402780582", name: "(test) Group 3", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
+      ],
+      paging: {
+        cursors: {
+          before:
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
+          after:
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
+        },
+      },
+    },
+    [
+      "ETag",
+      '"0794cc0720cf1b0d36c63faaed7d61a7e0259f6a"',
+      "Content-Type",
+      "application/json",
+      "Vary",
+      "Origin",
+      "Vary",
+      "Accept-Encoding",
+      "x-business-use-case-usage",
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
+      "x-fb-rlafr",
+      "0",
+      "Access-Control-Allow-Origin",
+      "*",
+      "facebook-api-version",
+      "v12.0",
+      "Strict-Transport-Security",
+      "max-age=15552000; preload",
+      "Pragma",
+      "no-cache",
+      "Cache-Control",
+      "private, no-cache, no-store, must-revalidate",
+      "Expires",
+      "Sat, 01 Jan 2000 00:00:00 GMT",
+      "x-fb-request-id",
+      "AcLdVUiX7BC7t4Pg9wQPVC0",
+      "x-fb-trace-id",
+      "A/ute7mZqjl",
+      "x-fb-rev",
+      "1004496597",
+      "X-FB-Debug",
+      "HXhddGMomDtYw23m8hgbb+Dcer63p5TL75f+4mgH90NI9W9rHlfSf4vkAmSSt+k8scnImTFaS48y8eo4klOx+g==",
+      "Date",
+      "Sat, 02 Oct 2021 20:58:37 GMT",
       "Priority",
       "u=3,i",
       "Transfer-Encoding",
@@ -2949,77 +3027,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
-  .query({
-    fields: "id%2Cname%2Csubtype",
-    access_token:
-      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      data: [
-        { id: "23848581114090582", name: "(test) Group 3", subtype: "CUSTOM" },
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
-      ],
-      paging: {
-        cursors: {
-          before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
-          after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
-        },
-      },
-    },
-    [
-      "ETag",
-      '"aeba8aac03bec0aaac6c3be3e26a03fd98adf039"',
-      "Content-Type",
-      "application/json",
-      "Vary",
-      "Origin",
-      "Vary",
-      "Accept-Encoding",
-      "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
-      "x-fb-rlafr",
-      "0",
-      "Access-Control-Allow-Origin",
-      "*",
-      "facebook-api-version",
-      "v11.0",
-      "Strict-Transport-Security",
-      "max-age=15552000; preload",
-      "Pragma",
-      "no-cache",
-      "Cache-Control",
-      "private, no-cache, no-store, must-revalidate",
-      "Expires",
-      "Sat, 01 Jan 2000 00:00:00 GMT",
-      "x-fb-request-id",
-      "AlMXFPFcv00uMTvd3qfolvy",
-      "x-fb-trace-id",
-      "Dc1fjcirXI1",
-      "x-fb-rev",
-      "1004423793",
-      "X-FB-Debug",
-      "YAjlC7PlpguEqAyZsaEbuLsCaOJ0yQk9hRgVvTzVyu7ZG5sOJDx86NRrQYeyGdXZbGUMA418mOy1p4z9NzdDWw==",
-      "Date",
-      "Tue, 21 Sep 2021 00:08:53 GMT",
-      "Priority",
-      "u=3,i",
-      "Transfer-Encoding",
-      "chunked",
-      "Alt-Svc",
-      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581113410582/users", {
+  .post("/v12.0/23848672402580582/users", {
     payload: {
       schema: ["EMAIL", "FN", "LN"],
       data: [
@@ -3030,7 +3038,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
         ],
       ],
     },
-    id: "23848581113410582",
+    id: "23848672402580582",
   })
   .query({
     access_token:
@@ -3040,8 +3048,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113410582",
-      session_id: "7144961233130455944",
+      audience_id: "23848672402580582",
+      session_id: "7142137687269777831",
       num_received: 1,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -3052,7 +3060,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
+      '{"acc_id_util_pct":64.33}',
+      "cross-origin-resource-policy",
+      "cross-origin",
       "x-app-usage",
       '{"call_count":1,"total_cputime":0,"total_time":0}',
       "x-fb-rlafr",
@@ -3060,7 +3070,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -3070,17 +3080,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "At1oumXwvQb8-SHcXGEgy2i",
+      "A27mdIBKZtgH8Vm47p4l-QJ",
       "x-fb-trace-id",
-      "H3hDKczJ81u",
+      "GaUlR6t0Xbq",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "yZT1347XH5iCBntov9hDZH46fnpAELA4+oAGwMxG5KU+Jl2riZQ+DWxdV9J+a3jJELnZzi0z1Z3wT34XflqzXA==",
+      "ikepYkHdPjLiL2ALEKXIksCAVMn8dHAu+jamLPYWsZQjQNloT1jaAbtXsKJtC0MBE2tIv1uuNlvSLs4YLwrE9A==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:54 GMT",
-      "Priority",
-      "u=3,i",
+      "Sat, 02 Oct 2021 20:58:38 GMT",
       "Alt-Svc",
       'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
       "Connection",
@@ -3090,7 +3098,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -3101,22 +3109,22 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581114090582", name: "(test) Group 3", subtype: "CUSTOM" },
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402780582", name: "(test) Group 3", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"aeba8aac03bec0aaac6c3be3e26a03fd98adf039"',
+      '"0794cc0720cf1b0d36c63faaed7d61a7e0259f6a"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -3124,13 +3132,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -3140,15 +3148,17 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "ALvy5u1EpkTRZnVPUHCbowH",
+      "AbKQXu2nhQDumhd3tB94PfF",
       "x-fb-trace-id",
-      "DNxOzA5uBa5",
+      "CSKjoIuHhvi",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "r6jWHwllRaYp7gWlnBGLbPKv89bAZfCMz6cUf84tzCaQInMKcSDlGYR7KZ5jpisS3HBFKtHpvc7Q/lyIeroO4A==",
+      "YqOVSOWyarWWO+naDex7G/kHstuBNlwPrT7vMwoYlj4g+EtdQ7Kv1vzUNLlWO9W82LDhKfADRYjTUVuQlLlZoA==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:54 GMT",
+      "Sat, 02 Oct 2021 20:58:38 GMT",
+      "Priority",
+      "u=3,i",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -3158,7 +3168,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -3169,22 +3179,22 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581114090582", name: "(test) Group 3", subtype: "CUSTOM" },
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402780582", name: "(test) Group 3", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"aeba8aac03bec0aaac6c3be3e26a03fd98adf039"',
+      '"0794cc0720cf1b0d36c63faaed7d61a7e0259f6a"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -3192,13 +3202,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -3208,15 +3218,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "ApDszzY7bdKaMbqOlwLwbmx",
+      "AigS0c5DHQksFRCDXBeGxk7",
       "x-fb-trace-id",
-      "GgeBQEBBoYe",
+      "FNqNCV40JNS",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "W6vW0YK/XAeAP+gBUECtVeYnPT47yAvqz/XcFnGcPwhRIAD0A1+XhYN0Ue6wulc/L3xd3j07yzxEs34R4LKhcQ==",
+      "oISoeSwE9gZQBIFPZMlkZioufhvOzju6a9pz/ks662k/U72bHqqU2UwCYKhUTNCXw0WGO8Q/4ZOZ0D4Ppqi+HQ==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:54 GMT",
+      "Sat, 02 Oct 2021 20:58:38 GMT",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -3226,7 +3236,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581113410582/users", {
+  .post("/v12.0/23848672402580582/users", {
     payload: {
       schema: ["EMAIL", "EXTERN_ID", "FN", "LN", "ZIP"],
       data: [
@@ -3246,7 +3256,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
         ],
       ],
     },
-    id: "23848581113410582",
+    id: "23848672402580582",
   })
   .query({
     access_token:
@@ -3256,8 +3266,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113410582",
-      session_id: "5538673331948196679",
+      audience_id: "23848672402580582",
+      session_id: "5543458406553224862",
       num_received: 2,
       num_invalid_entries: 1,
       invalid_entry_samples: {
@@ -3273,7 +3283,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
+      '{"acc_id_util_pct":69}',
+      "cross-origin-resource-policy",
+      "cross-origin",
       "x-app-usage",
       '{"call_count":1,"total_cputime":0,"total_time":0}',
       "x-fb-rlafr",
@@ -3281,7 +3293,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -3291,15 +3303,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "Asqc5oYXCeSsE2m-hLYnZhC",
+      "A5m5vML2riL1-SCeB2ML_CX",
       "x-fb-trace-id",
-      "ECBn79CjJBS",
+      "BQ9Vw6IiDfi",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "agtc2cR2aIJFzPMxHv24mNlCMyFJXRPta3hQVvedTSupHrwpHQSM3f+heBOh3DfzbRJmrWCr7927WzOyWQUsrQ==",
+      "rRLjiZGi+r+e0bqKZV8BZZE2q8U/IvaoiemEjL6H2uAKKWlcG2pN4HJ3Ku5taTXwVstm05kkIa+ec2Gh/DW0zQ==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:55 GMT",
+      "Sat, 02 Oct 2021 20:58:39 GMT",
       "Priority",
       "u=3,i",
       "Transfer-Encoding",
@@ -3311,7 +3323,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -3322,22 +3334,22 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581114090582", name: "(test) Group 3", subtype: "CUSTOM" },
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402780582", name: "(test) Group 3", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"aeba8aac03bec0aaac6c3be3e26a03fd98adf039"',
+      '"0794cc0720cf1b0d36c63faaed7d61a7e0259f6a"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -3345,13 +3357,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -3361,15 +3373,154 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AUhTB5zIB3q-gMNkc0ONcdb",
+      "ALtoIq4etvtKKOjf_6Zt8dd",
       "x-fb-trace-id",
-      "FROUpDMZcSG",
+      "CpqoLM40gEp",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "UWXO8YGX+fhU7pFQEktbuLlk20Q3j2Kv2DFnme56MgZ0FGeKnmXfqQab8YiCEN2pBixO1HFBXK7oFQ123O7VlA==",
+      "dRFixRZHwXUJ95FMHqLucxUnyfCrtONkTH9+mSH0r8qvqlLHx0a8f0t39XHLBBP+M3LZmc1yMjtMtuMBTjzm3g==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:55 GMT",
+      "Sat, 02 Oct 2021 20:58:39 GMT",
+      "Transfer-Encoding",
+      "chunked",
+      "Alt-Svc",
+      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://graph.facebook.com:443", { encodedQueryParams: true })
+  .post("/v12.0/23848672402580582/users", {
+    payload: {
+      schema: ["EMAIL", "FN", "LN"],
+      data: [
+        [
+          "e9e666e3ad98fc467a60cd86e41d21cac316e4e878ea3e247537e7777d34a556",
+          "6177321eac992341d1ad0823a07e76bfc4ee6909db120e377ea303fdc216756c",
+          "2689367b205c16ce32ed4200942b8b8b1e262dfc70d9bc9fbc77c49699a4f1df",
+        ],
+      ],
+    },
+    id: "23848672402580582",
+  })
+  .query({
+    access_token:
+      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      audience_id: "23848672402580582",
+      session_id: "7142137687269777831",
+      num_received: 1,
+      num_invalid_entries: 0,
+      invalid_entry_samples: {},
+    },
+    [
+      "Content-Type",
+      "application/json",
+      "Vary",
+      "Origin",
+      "x-ad-account-usage",
+      '{"acc_id_util_pct":72}',
+      "cross-origin-resource-policy",
+      "cross-origin",
+      "x-app-usage",
+      '{"call_count":1,"total_cputime":0,"total_time":0}',
+      "x-fb-rlafr",
+      "0",
+      "Access-Control-Allow-Origin",
+      "*",
+      "facebook-api-version",
+      "v12.0",
+      "Strict-Transport-Security",
+      "max-age=15552000; preload",
+      "Pragma",
+      "no-cache",
+      "Cache-Control",
+      "private, no-cache, no-store, must-revalidate",
+      "Expires",
+      "Sat, 01 Jan 2000 00:00:00 GMT",
+      "x-fb-request-id",
+      "AQa2N0Itro0EYTlARqWKOYk",
+      "x-fb-trace-id",
+      "H4oSC9+qwUl",
+      "x-fb-rev",
+      "1004496597",
+      "X-FB-Debug",
+      "D/iVPCQVm0FLPuQnGyo5F4Rl46CX/RAQGfKy6PxEb7Q/7AzxaM69wLERzV2RHKXX47xNcF5pyUqK9QKcA65qFw==",
+      "Date",
+      "Sat, 02 Oct 2021 20:58:40 GMT",
+      "Alt-Svc",
+      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
+      "Connection",
+      "close",
+      "Content-Length",
+      "138",
+    ]
+  );
+nock("https://graph.facebook.com:443", { encodedQueryParams: true })
+  .get("/v12.0/act_542676646349772/customaudiences", {})
+  .query({
+    fields: "id%2Cname%2Csubtype",
+    access_token:
+      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      data: [
+        { id: "23848672402780582", name: "(test) Group 3", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
+      ],
+      paging: {
+        cursors: {
+          before:
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
+          after:
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
+        },
+      },
+    },
+    [
+      "ETag",
+      '"0794cc0720cf1b0d36c63faaed7d61a7e0259f6a"',
+      "Content-Type",
+      "application/json",
+      "Vary",
+      "Origin",
+      "Vary",
+      "Accept-Encoding",
+      "x-business-use-case-usage",
+      '{"542676646349772":[{"type":"custom_audience","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
+      "x-fb-rlafr",
+      "0",
+      "Access-Control-Allow-Origin",
+      "*",
+      "facebook-api-version",
+      "v12.0",
+      "Strict-Transport-Security",
+      "max-age=15552000; preload",
+      "Pragma",
+      "no-cache",
+      "Cache-Control",
+      "private, no-cache, no-store, must-revalidate",
+      "Expires",
+      "Sat, 01 Jan 2000 00:00:00 GMT",
+      "x-fb-request-id",
+      "AiGWdWBw5p2f_wSv4B0kPDM",
+      "x-fb-trace-id",
+      "Ebxi948yIHy",
+      "x-fb-rev",
+      "1004496597",
+      "X-FB-Debug",
+      "lHFyCl4JAWobuXcDV1x/KV5nKzVIN2/shavxlsQCzhSOJrp15eA7q0gK5A/IT5A9tAnrikkkFtjRlnvMa9Ro4A==",
+      "Date",
+      "Sat, 02 Oct 2021 20:58:40 GMT",
       "Priority",
       "u=3,i",
       "Transfer-Encoding",
@@ -3381,7 +3532,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581113410582/users", {
+  .post("/v12.0/23848672402650582/users", {
     payload: {
       schema: ["EMAIL", "FN", "LN"],
       data: [
@@ -3392,7 +3543,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
         ],
       ],
     },
-    id: "23848581113410582",
+    id: "23848672402650582",
   })
   .query({
     access_token:
@@ -3402,8 +3553,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113410582",
-      session_id: "7144961233130455944",
+      audience_id: "23848672402650582",
+      session_id: "7142137687269777831",
       num_received: 1,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -3414,7 +3565,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
+      '{"acc_id_util_pct":72}',
+      "cross-origin-resource-policy",
+      "cross-origin",
       "x-app-usage",
       '{"call_count":1,"total_cputime":0,"total_time":0}',
       "x-fb-rlafr",
@@ -3422,7 +3575,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -3432,15 +3585,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AenedKg9NJZQprlfwjQu-iw",
+      "A0B3jSc5VeLLuQneuD3wjH6",
       "x-fb-trace-id",
-      "DZzOKILRHsF",
+      "GhGZxbYLdTC",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "xZaRspUyZwl0IEXUUPrYFgxZM/jVwIW40IJz4p0bqv9nBjIeWvFALIzskBPaIFFEcIn+VTmkb0APRynX0dEVBA==",
+      "qg3GNRuOeaYIGbzLN5rmPaooZVZ4uN1LgH/QAyUiiBUqQX9owTyUsSRhfNp4pwyHH2bAN2CbstU8AG9otFJc9g==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:55 GMT",
+      "Sat, 02 Oct 2021 20:58:40 GMT",
       "Priority",
       "u=3,i",
       "Alt-Svc",
@@ -3452,7 +3605,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -3463,22 +3616,22 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581114090582", name: "(test) Group 3", subtype: "CUSTOM" },
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402780582", name: "(test) Group 3", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"aeba8aac03bec0aaac6c3be3e26a03fd98adf039"',
+      '"0794cc0720cf1b0d36c63faaed7d61a7e0259f6a"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -3486,13 +3639,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":2,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -3502,15 +3655,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AzCnvnrfJ8XowChNxcnU6HE",
+      "ANUoEnLElJn1Q-LJoMvvUZk",
       "x-fb-trace-id",
-      "GeI0Bg92N0T",
+      "HBTIWVAwoQl",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "7QWXPPEr5yFEqFGiLPUxmoAEjhUORKKd3sDvDcKlxeqoiPaJ/UH2/RTH4c9n2K3Ia6Sp5wxvIihnX0GUph96wg==",
+      "7+K4PFyPRgVWVagxN5dtYsl7piqiTZnEodoSEhfSQDpm4oga7WqvyY5SLIvi54tQYOiJG5IysrBpZYvTm6O57g==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:55 GMT",
+      "Sat, 02 Oct 2021 20:58:40 GMT",
       "Priority",
       "u=3,i",
       "Transfer-Encoding",
@@ -3522,144 +3675,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581113850582/users", {
-    payload: {
-      schema: ["EMAIL", "FN", "LN"],
-      data: [
-        [
-          "e9e666e3ad98fc467a60cd86e41d21cac316e4e878ea3e247537e7777d34a556",
-          "6177321eac992341d1ad0823a07e76bfc4ee6909db120e377ea303fdc216756c",
-          "2689367b205c16ce32ed4200942b8b8b1e262dfc70d9bc9fbc77c49699a4f1df",
-        ],
-      ],
-    },
-    id: "23848581113850582",
-  })
-  .query({
-    access_token:
-      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      audience_id: "23848581113850582",
-      session_id: "7144961233130455944",
-      num_received: 1,
-      num_invalid_entries: 0,
-      invalid_entry_samples: {},
-    },
-    [
-      "Content-Type",
-      "application/json",
-      "Vary",
-      "Origin",
-      "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
-      "x-app-usage",
-      '{"call_count":1,"total_cputime":0,"total_time":0}',
-      "x-fb-rlafr",
-      "0",
-      "Access-Control-Allow-Origin",
-      "*",
-      "facebook-api-version",
-      "v11.0",
-      "Strict-Transport-Security",
-      "max-age=15552000; preload",
-      "Pragma",
-      "no-cache",
-      "Cache-Control",
-      "private, no-cache, no-store, must-revalidate",
-      "Expires",
-      "Sat, 01 Jan 2000 00:00:00 GMT",
-      "x-fb-request-id",
-      "AHPZtvwn4uUbv2LwQYBqkhs",
-      "x-fb-trace-id",
-      "Hl/x66vrKsC",
-      "x-fb-rev",
-      "1004423793",
-      "X-FB-Debug",
-      "7khSlscGeSwb5j+mzb9vj0rmH+N8DulxyllIcA8qzw/HRKAHQt81dzC9kb8Elc1I9j7Zfq3Sj7NhcjqgJi9Jmg==",
-      "Date",
-      "Tue, 21 Sep 2021 00:08:56 GMT",
-      "Alt-Svc",
-      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
-      "Connection",
-      "close",
-      "Content-Length",
-      "138",
-    ]
-  );
-nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
-  .query({
-    fields: "id%2Cname%2Csubtype",
-    access_token:
-      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      data: [
-        { id: "23848581114090582", name: "(test) Group 3", subtype: "CUSTOM" },
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
-      ],
-      paging: {
-        cursors: {
-          before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
-          after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
-        },
-      },
-    },
-    [
-      "ETag",
-      '"aeba8aac03bec0aaac6c3be3e26a03fd98adf039"',
-      "Content-Type",
-      "application/json",
-      "Vary",
-      "Origin",
-      "Vary",
-      "Accept-Encoding",
-      "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
-      "x-fb-rlafr",
-      "0",
-      "Access-Control-Allow-Origin",
-      "*",
-      "facebook-api-version",
-      "v11.0",
-      "Strict-Transport-Security",
-      "max-age=15552000; preload",
-      "Pragma",
-      "no-cache",
-      "Cache-Control",
-      "private, no-cache, no-store, must-revalidate",
-      "Expires",
-      "Sat, 01 Jan 2000 00:00:00 GMT",
-      "x-fb-request-id",
-      "AyOJW3Q-6B5eJ-dGEtxFnHV",
-      "x-fb-trace-id",
-      "H+jCy/N+PKr",
-      "x-fb-rev",
-      "1004423793",
-      "X-FB-Debug",
-      "cg+TdBBDnPu1mle4U9S+sfMFMlAMnbVTkPUnl9HyiKjSCPE0EFnNxwok8S33KhYWqBnPStHRGNTTK8/9hArV0w==",
-      "Date",
-      "Tue, 21 Sep 2021 00:08:56 GMT",
-      "Transfer-Encoding",
-      "chunked",
-      "Alt-Svc",
-      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581113410582/users", {
+  .post("/v12.0/23848672402580582/users", {
     payload: {
       schema: ["EMAIL", "FN", "LN"],
       data: [
@@ -3670,7 +3686,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
         ],
       ],
     },
-    id: "23848581113410582",
+    id: "23848672402580582",
   })
   .query({
     access_token:
@@ -3680,8 +3696,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113410582",
-      session_id: "7144961233130455944",
+      audience_id: "23848672402580582",
+      session_id: "7142137687269777831",
       num_received: 1,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -3692,7 +3708,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
+      '{"acc_id_util_pct":73.33}',
+      "cross-origin-resource-policy",
+      "cross-origin",
       "x-app-usage",
       '{"call_count":1,"total_cputime":0,"total_time":0}',
       "x-fb-rlafr",
@@ -3700,7 +3718,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -3710,15 +3728,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AYnroBvEzkjRQGHfXcK_jHR",
+      "A4in4Z0MuWEd_y0aC932eIn",
       "x-fb-trace-id",
-      "Agmc+P6+viz",
+      "EyC/SUMJLYx",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "GD0ibYV9aO29dO3Lx28SUid2tjKLeh5XGW0UObUbPdZxyoG7jBm4Qo2XbiNNNJTu0flkrlvBSBxOcBl5cMd/Ug==",
+      "43BOa1+VCN4QO4eF3ItdZ8ow5Ln1v2ttJNXpuhXeGEDEPa+eZugbbAKA4z4zfDoIlS5SiLtV3MDPRE6FdWuEhw==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:56 GMT",
+      "Sat, 02 Oct 2021 20:58:41 GMT",
       "Alt-Svc",
       'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
       "Connection",
@@ -3728,7 +3746,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname%2Csubtype",
     access_token:
@@ -3739,22 +3757,22 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581114090582", name: "(test) Group 3", subtype: "CUSTOM" },
-        { id: "23848581113850582", name: "(test) Group 2", subtype: "CUSTOM" },
-        { id: "23848581113410582", name: "(test) Group 1", subtype: "CUSTOM" },
+        { id: "23848672402780582", name: "(test) Group 3", subtype: "CUSTOM" },
+        { id: "23848672402650582", name: "(test) Group 2", subtype: "CUSTOM" },
+        { id: "23848672402580582", name: "(test) Group 1", subtype: "CUSTOM" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"aeba8aac03bec0aaac6c3be3e26a03fd98adf039"',
+      '"0794cc0720cf1b0d36c63faaed7d61a7e0259f6a"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -3762,13 +3780,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":2,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -3778,15 +3796,17 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "Am7U6dRUkTi97KQRcGEqxDT",
+      "AwOSOhS93MSkZiGM8WD4DPv",
       "x-fb-trace-id",
-      "AAAg6GzZ3GQ",
+      "D3LB+ND07Qh",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "6iMcEvs/Ch5w8Dvh2OKYmsP3orlQFAKCl+jiXXuTHVv9VbVWOPdhXs8rc7HR0oMNV/JuUpHIbwZoua7SvI5+zg==",
+      "5YVxJ1BFk6B8phC3hptI9bTZ8aAte7FZRUlmL8aaEgCrhQdklYvU7/Slrgll3eERZyNNE1fAPy76h20ePurtqw==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:57 GMT",
+      "Sat, 02 Oct 2021 20:58:41 GMT",
+      "Priority",
+      "u=3,i",
       "Transfer-Encoding",
       "chunked",
       "Alt-Svc",
@@ -3796,7 +3816,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .post("/v11.0/23848581113410582/users", {
+  .post("/v12.0/23848672402580582/users", {
     payload: {
       schema: ["EMAIL", "FN", "LN"],
       data: [
@@ -3807,7 +3827,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
         ],
       ],
     },
-    id: "23848581113410582",
+    id: "23848672402580582",
   })
   .query({
     access_token:
@@ -3817,8 +3837,8 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      audience_id: "23848581113410582",
-      session_id: "7144961233130455944",
+      audience_id: "23848672402580582",
+      session_id: "7142137687269777831",
       num_received: 1,
       num_invalid_entries: 0,
       invalid_entry_samples: {},
@@ -3829,7 +3849,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "x-ad-account-usage",
-      '{"acc_id_util_pct":100}',
+      '{"acc_id_util_pct":73.33}',
+      "cross-origin-resource-policy",
+      "cross-origin",
       "x-app-usage",
       '{"call_count":1,"total_cputime":0,"total_time":0}',
       "x-fb-rlafr",
@@ -3837,7 +3859,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -3847,17 +3869,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AwE4_M_r_kK9s1-BpnEh2mR",
+      "Akj7WtzgDNpGRcWVZsSF_BV",
       "x-fb-trace-id",
-      "EvCxatvkvRZ",
+      "Fvk5RrtGEkD",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "S1CckOMdfDIbdCbCDLGA5ueYtlcvtEA4KwkTOwD6THHFN1LC2AuEJIKQcuiNiCI5j+vsVE9yUTUJuRSb112XgQ==",
+      "vRkJNl970xVHlmCHNzqs1iRa+IKSIHtTVuHmLMSPTrD4Y5cbB0m0HidD91z4GVy4mqMFJyEqTaAsL3/9fETeHw==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:57 GMT",
-      "Priority",
-      "u=3,i",
+      "Sat, 02 Oct 2021 20:58:41 GMT",
       "Alt-Svc",
       'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
       "Connection",
@@ -3867,7 +3887,7 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
+  .get("/v12.0/act_542676646349772/customaudiences", {})
   .query({
     fields: "id%2Cname",
     access_token:
@@ -3878,22 +3898,22 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     200,
     {
       data: [
-        { id: "23848581114090582", name: "(test) Group 3" },
-        { id: "23848581113850582", name: "(test) Group 2" },
-        { id: "23848581113410582", name: "(test) Group 1" },
+        { id: "23848672402780582", name: "(test) Group 3" },
+        { id: "23848672402650582", name: "(test) Group 2" },
+        { id: "23848672402580582", name: "(test) Group 1" },
       ],
       paging: {
         cursors: {
           before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
           after:
-            "QVFIUll3VDdqeFdhcFRPRy1FbTg5ZAmJnNHgxQWw0Uk1uOXFjRFBETFY1eEhTajJ1bnBzQlRvR3lIRGc3WU5HOEFBcjVQaXpHZAFJuQlI0U3FrOV9TeUdMSklR",
+            "QVFIUjdUNUItbHY4MU1LNEtTNFJzRjV5VzJ2Um9rUE9TUFY0TEFfRXpvWFBlVnA1NTdsRXMxU3ZADVkdpYU5IYXZAIeEFkb2pnR2tWcjVBeGZA0bFU2OEh2WUFn",
         },
       },
     },
     [
       "ETag",
-      '"451c64bc3fca7856fc797f245d74f4f2c8b202ca"',
+      '"c792e89e8b38bcd40e1030464e5dc094cac930ef"',
       "Content-Type",
       "application/json",
       "Vary",
@@ -3901,13 +3921,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+      '{"542676646349772":[{"type":"custom_audience","call_count":2,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
       "x-fb-rlafr",
       "0",
       "Access-Control-Allow-Origin",
       "*",
       "facebook-api-version",
-      "v11.0",
+      "v12.0",
       "Strict-Transport-Security",
       "max-age=15552000; preload",
       "Pragma",
@@ -3917,242 +3937,15 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
       "Expires",
       "Sat, 01 Jan 2000 00:00:00 GMT",
       "x-fb-request-id",
-      "AcQTaV5BzYznjT07rnVxBca",
+      "A96nb1rNBkPEkAf4g3hoV0U",
       "x-fb-trace-id",
-      "CPpbDpsUj65",
+      "Gf3dU2xbxYU",
       "x-fb-rev",
-      "1004423793",
+      "1004496597",
       "X-FB-Debug",
-      "tCUIOX7klUbzGNCyfDjiBUlTtLebXxGlDfi5i+jbJqYvTd4HWfxs24ORaKCYEC3KszXqDSSVR7CQ04U3aYLDeg==",
+      "NuXlz3nffOameq5wlVMBP8BMAhByn+tyTimONNVwY8jf6AYkZCrIwKnxJY5ftBxw6GXJugZWcJG3avQMRr1txw==",
       "Date",
-      "Tue, 21 Sep 2021 00:08:57 GMT",
-      "Transfer-Encoding",
-      "chunked",
-      "Alt-Svc",
-      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .delete("/v11.0/23848581113410582", {})
-  .query({
-    id: "23848581113410582",
-    access_token:
-      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
-  })
-  .once()
-  .reply(200, { success: true }, [
-    "Content-Type",
-    "application/json",
-    "Vary",
-    "Origin",
-    "x-business-use-case-usage",
-    '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
-    "x-fb-rlafr",
-    "0",
-    "Access-Control-Allow-Origin",
-    "*",
-    "facebook-api-version",
-    "v11.0",
-    "Strict-Transport-Security",
-    "max-age=15552000; preload",
-    "Pragma",
-    "no-cache",
-    "Cache-Control",
-    "private, no-cache, no-store, must-revalidate",
-    "Expires",
-    "Sat, 01 Jan 2000 00:00:00 GMT",
-    "x-fb-request-id",
-    "AlfODuIKtqImC7AzyRIg4VQ",
-    "x-fb-trace-id",
-    "Fs5obsT9Ojl",
-    "x-fb-rev",
-    "1004423793",
-    "X-FB-Debug",
-    "upwixe8Zss40rj/kdBxe+3oZyOjS1ff3wUHuNLgaiTh7YtrH0lZAEzY5PtiGzmlN2L2PfKbGDqIRk0P0fb4DcQ==",
-    "Date",
-    "Tue, 21 Sep 2021 00:08:59 GMT",
-    "Priority",
-    "u=3,i",
-    "Alt-Svc",
-    'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
-    "Connection",
-    "close",
-    "Content-Length",
-    "16",
-  ]);
-nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
-  .query({
-    fields: "id%2Cname",
-    access_token:
-      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      data: [
-        { id: "23848581114090582", name: "(test) Group 3" },
-        { id: "23848581113850582", name: "(test) Group 2" },
-      ],
-      paging: {
-        cursors: {
-          before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
-          after:
-            "QVFIUnZAhNFRNOTRjNWo3cXlYLWU1ZAmo2N1pCV2FzMTYwMVJnSTVHdjVwcmxnTEZAzOVFmTWl1RWlMbG4wSWxQVnJBVklwVExmeXhTb3QweEd3cTdtN2ZArNEtB",
-        },
-      },
-    },
-    [
-      "ETag",
-      '"f663b5767a35418d5c2f410f6cc6a39c511b63f8"',
-      "Content-Type",
-      "application/json",
-      "Vary",
-      "Origin",
-      "Vary",
-      "Accept-Encoding",
-      "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
-      "x-fb-rlafr",
-      "0",
-      "Access-Control-Allow-Origin",
-      "*",
-      "facebook-api-version",
-      "v11.0",
-      "Strict-Transport-Security",
-      "max-age=15552000; preload",
-      "Pragma",
-      "no-cache",
-      "Cache-Control",
-      "private, no-cache, no-store, must-revalidate",
-      "Expires",
-      "Sat, 01 Jan 2000 00:00:00 GMT",
-      "x-fb-request-id",
-      "Aj5zrkCYmXExF4W5bVYcKS2",
-      "x-fb-trace-id",
-      "C7B3EbyLaM+",
-      "x-fb-rev",
-      "1004423793",
-      "X-FB-Debug",
-      "9ny3H+rmkLwBhZ/0h6gH9gBcIs47SBXt35Ffzy2q80rBL3b56VIlFK8v40a4xtY1axijf1R0C92qXJw/ToI3Bg==",
-      "Date",
-      "Tue, 21 Sep 2021 00:08:59 GMT",
-      "Transfer-Encoding",
-      "chunked",
-      "Alt-Svc",
-      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .delete("/v11.0/23848581113850582", {})
-  .query({
-    id: "23848581113850582",
-    access_token:
-      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
-  })
-  .once()
-  .reply(200, { success: true }, [
-    "Content-Type",
-    "application/json",
-    "Vary",
-    "Origin",
-    "x-business-use-case-usage",
-    '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
-    "x-fb-rlafr",
-    "0",
-    "Access-Control-Allow-Origin",
-    "*",
-    "facebook-api-version",
-    "v11.0",
-    "Strict-Transport-Security",
-    "max-age=15552000; preload",
-    "Pragma",
-    "no-cache",
-    "Cache-Control",
-    "private, no-cache, no-store, must-revalidate",
-    "Expires",
-    "Sat, 01 Jan 2000 00:00:00 GMT",
-    "x-fb-request-id",
-    "Ay63ESPP7TRqTqn10M798y2",
-    "x-fb-trace-id",
-    "EwHBBMGwImH",
-    "x-fb-rev",
-    "1004423793",
-    "X-FB-Debug",
-    "OGM0QytyA0Jn9MRfs8if7WrKnOnaHJKhjQ4KmfXrOE5s6lPJF96LRMrzKJ5lPjg9lKYMvDinbMVBhbE6608F3A==",
-    "Date",
-    "Tue, 21 Sep 2021 00:09:00 GMT",
-    "Priority",
-    "u=3,i",
-    "Alt-Svc",
-    'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
-    "Connection",
-    "close",
-    "Content-Length",
-    "16",
-  ]);
-nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .get("/v11.0/act_542676646349772/customaudiences", {})
-  .query({
-    fields: "id%2Cname",
-    access_token:
-      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      data: [{ id: "23848581114090582", name: "(test) Group 3" }],
-      paging: {
-        cursors: {
-          before:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
-          after:
-            "QVFIUlZAKQU1vdkFXcUZAqYmh2RHlXY3BUR0pBXzJ4R0tGVzIzREVvbXhHQXl1dHc2V2wwRWZATa0RJWlFBMl9CVTA3M1ZAEVEEzd1k0OENjQlB6U2t2SjBOaVp3",
-        },
-      },
-    },
-    [
-      "ETag",
-      '"a85060aa3c3882b75b8a87cd86a2a307cb369c3c"',
-      "Content-Type",
-      "application/json",
-      "Vary",
-      "Origin",
-      "Vary",
-      "Accept-Encoding",
-      "x-business-use-case-usage",
-      '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
-      "x-fb-rlafr",
-      "0",
-      "Access-Control-Allow-Origin",
-      "*",
-      "facebook-api-version",
-      "v11.0",
-      "Strict-Transport-Security",
-      "max-age=15552000; preload",
-      "Pragma",
-      "no-cache",
-      "Cache-Control",
-      "private, no-cache, no-store, must-revalidate",
-      "Expires",
-      "Sat, 01 Jan 2000 00:00:00 GMT",
-      "x-fb-request-id",
-      "ASL73futJlMs5jSiuuREgyc",
-      "x-fb-trace-id",
-      "Gn9n2aviI8j",
-      "x-fb-rev",
-      "1004423793",
-      "X-FB-Debug",
-      "R+x+uiad9KavnAcnygECvdyGb+wvv7uDUChPZCRw3OfPdESOrphtRAkHeIv4qaLoFz7MsEdBtWxn7c8zl/OJUw==",
-      "Date",
-      "Tue, 21 Sep 2021 00:09:00 GMT",
+      "Sat, 02 Oct 2021 20:58:42 GMT",
       "Priority",
       "u=3,i",
       "Transfer-Encoding",
@@ -4164,9 +3957,9 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://graph.facebook.com:443", { encodedQueryParams: true })
-  .delete("/v11.0/23848581114090582", {})
+  .delete("/v12.0/23848672402580582", {})
   .query({
-    id: "23848581114090582",
+    id: "23848672402580582",
     access_token:
       "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
   })
@@ -4177,13 +3970,13 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "x-business-use-case-usage",
-    '{"542676646349772":[{"type":"custom_audience","call_count":8,"total_cputime":1,"total_time":2,"estimated_time_to_regain_access":0}]}',
+    '{"542676646349772":[{"type":"custom_audience","call_count":2,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
     "x-fb-rlafr",
     "0",
     "Access-Control-Allow-Origin",
     "*",
     "facebook-api-version",
-    "v11.0",
+    "v12.0",
     "Strict-Transport-Security",
     "max-age=15552000; preload",
     "Pragma",
@@ -4193,15 +3986,242 @@ nock("https://graph.facebook.com:443", { encodedQueryParams: true })
     "Expires",
     "Sat, 01 Jan 2000 00:00:00 GMT",
     "x-fb-request-id",
-    "AOl_tSp3dQAe2m0YRlJwn-A",
+    "AJ2aPB7BAoquzIA1szCcDE9",
     "x-fb-trace-id",
-    "CAA2P7KoG+c",
+    "HHLvCIQWYy7",
     "x-fb-rev",
-    "1004423793",
+    "1004496597",
     "X-FB-Debug",
-    "52qqIYDnLu9wPFoEIh9BGTetUY4UX3+1kKTn+9yKoiWrNvKlCwdXXMUYE9hRoRatvfFcvP+8MWndnIWrbF0llw==",
+    "JCNrh03XA/60B3voz4O6rQRF6wMmtxubP413oRE4lrcjlJtduYhqZINPk1yTP1OSR/91yCNDqcT1UkrtRuxPyw==",
     "Date",
-    "Tue, 21 Sep 2021 00:09:02 GMT",
+    "Sat, 02 Oct 2021 20:58:44 GMT",
+    "Alt-Svc",
+    'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
+    "Connection",
+    "close",
+    "Content-Length",
+    "16",
+  ]);
+nock("https://graph.facebook.com:443", { encodedQueryParams: true })
+  .get("/v12.0/act_542676646349772/customaudiences", {})
+  .query({
+    fields: "id%2Cname",
+    access_token:
+      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      data: [
+        { id: "23848672402780582", name: "(test) Group 3" },
+        { id: "23848672402650582", name: "(test) Group 2" },
+      ],
+      paging: {
+        cursors: {
+          before:
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
+          after:
+            "QVFIUnlvVzRFZAzBENWwtSThKd2lhRFhsQzlJbHpNVi1ValV3WFFJRDY5NDVYYXRCOWdnaXhGZAEZADX01lWFQ4MDV1aGJFOGdwVDFzTDRmbk1FT043WkJ6NWh3",
+        },
+      },
+    },
+    [
+      "ETag",
+      '"5fa7c019471c4e5de57480c1e3e7a5be48dac496"',
+      "Content-Type",
+      "application/json",
+      "Vary",
+      "Origin",
+      "Vary",
+      "Accept-Encoding",
+      "x-business-use-case-usage",
+      '{"542676646349772":[{"type":"custom_audience","call_count":2,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
+      "x-fb-rlafr",
+      "0",
+      "Access-Control-Allow-Origin",
+      "*",
+      "facebook-api-version",
+      "v12.0",
+      "Strict-Transport-Security",
+      "max-age=15552000; preload",
+      "Pragma",
+      "no-cache",
+      "Cache-Control",
+      "private, no-cache, no-store, must-revalidate",
+      "Expires",
+      "Sat, 01 Jan 2000 00:00:00 GMT",
+      "x-fb-request-id",
+      "Ac-Je_RDJ15U4bbuKfKreCS",
+      "x-fb-trace-id",
+      "EIWq/2bnmmB",
+      "x-fb-rev",
+      "1004496597",
+      "X-FB-Debug",
+      "KBitHNNUErCXWfGXUGh7KRtOxzGPpHFP40EBwUuY/J9FBzR0sIqT2PB6mfmUdarw5yCL3cl0Jt3MN/d857CChQ==",
+      "Date",
+      "Sat, 02 Oct 2021 20:58:44 GMT",
+      "Priority",
+      "u=3,i",
+      "Transfer-Encoding",
+      "chunked",
+      "Alt-Svc",
+      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://graph.facebook.com:443", { encodedQueryParams: true })
+  .delete("/v12.0/23848672402650582", {})
+  .query({
+    id: "23848672402650582",
+    access_token:
+      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
+  })
+  .once()
+  .reply(200, { success: true }, [
+    "Content-Type",
+    "application/json",
+    "Vary",
+    "Origin",
+    "x-business-use-case-usage",
+    '{"542676646349772":[{"type":"custom_audience","call_count":2,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
+    "x-fb-rlafr",
+    "0",
+    "Access-Control-Allow-Origin",
+    "*",
+    "facebook-api-version",
+    "v12.0",
+    "Strict-Transport-Security",
+    "max-age=15552000; preload",
+    "Pragma",
+    "no-cache",
+    "Cache-Control",
+    "private, no-cache, no-store, must-revalidate",
+    "Expires",
+    "Sat, 01 Jan 2000 00:00:00 GMT",
+    "x-fb-request-id",
+    "ALpVbXlHqtvlPAQCUj-PuIe",
+    "x-fb-trace-id",
+    "DyJLqKd3qPe",
+    "x-fb-rev",
+    "1004496597",
+    "X-FB-Debug",
+    "lfd43md0tiTz6SpVUvP/ahYJO/Ut3JNLg2TMY351ywmK+JBb2Bv/YFSNNyAvVKU19AdOxVZleJ6440ikeBQxPw==",
+    "Date",
+    "Sat, 02 Oct 2021 20:58:45 GMT",
+    "Priority",
+    "u=3,i",
+    "Alt-Svc",
+    'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
+    "Connection",
+    "close",
+    "Content-Length",
+    "16",
+  ]);
+nock("https://graph.facebook.com:443", { encodedQueryParams: true })
+  .get("/v12.0/act_542676646349772/customaudiences", {})
+  .query({
+    fields: "id%2Cname",
+    access_token:
+      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      data: [{ id: "23848672402780582", name: "(test) Group 3" }],
+      paging: {
+        cursors: {
+          before:
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
+          after:
+            "QVFIUkMyMFdJbEJtNGN2eGJieERuYlp5X2JCZA1BCcXY2MmJhMzBaUGFXRi1WUlZAySE5qNG5SVk1lUUhlUk14NDQ5VW1SNWFTeEJld3ZAHLVkxNHdWNVRJUkVR",
+        },
+      },
+    },
+    [
+      "ETag",
+      '"9b1e54fd071e5021293a84329db58bcfd462e84b"',
+      "Content-Type",
+      "application/json",
+      "Vary",
+      "Origin",
+      "Vary",
+      "Accept-Encoding",
+      "x-business-use-case-usage",
+      '{"542676646349772":[{"type":"custom_audience","call_count":2,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
+      "x-fb-rlafr",
+      "0",
+      "Access-Control-Allow-Origin",
+      "*",
+      "facebook-api-version",
+      "v12.0",
+      "Strict-Transport-Security",
+      "max-age=15552000; preload",
+      "Pragma",
+      "no-cache",
+      "Cache-Control",
+      "private, no-cache, no-store, must-revalidate",
+      "Expires",
+      "Sat, 01 Jan 2000 00:00:00 GMT",
+      "x-fb-request-id",
+      "ApVIMJjJSh3FUHI7QqqMcGY",
+      "x-fb-trace-id",
+      "HSUxCjLPXIU",
+      "x-fb-rev",
+      "1004496597",
+      "X-FB-Debug",
+      "ioirTVEqAneM3BGZvsz/QrS92bxmd7lI/k5Q+GrUAUi+n5wclMMjAS1NXptQJ8Ta/YJjyOqq54zOWSpJ2evurw==",
+      "Date",
+      "Sat, 02 Oct 2021 20:58:45 GMT",
+      "Transfer-Encoding",
+      "chunked",
+      "Alt-Svc",
+      'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://graph.facebook.com:443", { encodedQueryParams: true })
+  .delete("/v12.0/23848672402780582", {})
+  .query({
+    id: "23848672402780582",
+    access_token:
+      "EAAKJ4ZBf45t4BAEgazqCLrZBRFZC0EgyZCpgkqhlqJ9RifPnhXky7WTeyHXA6oJhkj3zSrMqrSUnPmfiSyVEZB6RFua0xAkqwWoRA7zipl6yT5aAOijtKrzPmXUB9H7peJuLScCt9xQSiIMYYIcmIynFE5hCCugRruVZAqIJBMnigGapQTdgrAtFufPw3lA4CWgQpSlwbPzkuRZAcftFxMEQ26ndGpVlWxDcgYPzS3y7gZDZD",
+  })
+  .once()
+  .reply(200, { success: true }, [
+    "Content-Type",
+    "application/json",
+    "Vary",
+    "Origin",
+    "x-business-use-case-usage",
+    '{"542676646349772":[{"type":"custom_audience","call_count":2,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}',
+    "x-fb-rlafr",
+    "0",
+    "Access-Control-Allow-Origin",
+    "*",
+    "facebook-api-version",
+    "v12.0",
+    "Strict-Transport-Security",
+    "max-age=15552000; preload",
+    "Pragma",
+    "no-cache",
+    "Cache-Control",
+    "private, no-cache, no-store, must-revalidate",
+    "Expires",
+    "Sat, 01 Jan 2000 00:00:00 GMT",
+    "x-fb-request-id",
+    "AeBiMt6f359xJlAaxPZqLUL",
+    "x-fb-trace-id",
+    "AhKM7RgJT81",
+    "x-fb-rev",
+    "1004496561",
+    "X-FB-Debug",
+    "rYJ4EVJTSOwBeEEijBsy7wNl0frLL0yvO35q1Y4KI+UZdMZlV2pxDGkRJVGuSX9eux/QIErOOAyWotKezyMbQg==",
+    "Date",
+    "Sat, 02 Oct 2021 20:58:47 GMT",
     "Alt-Svc",
     'h3=":443"; ma=3600, h3-29=":443"; ma=3600,h3-27=":443"; ma=3600',
     "Connection",
