@@ -1,8 +1,3 @@
-import path from "path";
-process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/facebook": { path: path.join(__dirname, "..", "..") },
-});
-
 import { helper } from "@grouparoo/spec-helper";
 import {
   exportRecords,
@@ -13,20 +8,7 @@ import { Client, connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
-const nockFile = path.join(
-  __dirname,
-  "../",
-  "fixtures",
-  "export-records-custom.js"
-);
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const appId = "app_a0bb05e8-0a4e-49b5-ad42-545f2e8662e6";
 
