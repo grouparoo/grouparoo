@@ -46,18 +46,18 @@ describe("actions/schedules", () => {
       csrfToken = sessionResponse.csrfToken;
 
       model = await helper.factories.model();
-      //default model
+      //source using default model
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
-      //new model
+
+      //source using new model
       source2 = await helper.factories.source(null, {
         modelId: model.id,
       });
 
       await source2.setOptions({ table: "test table2" });
-
       const newProperty = await helper.factories.property(
         source2,
         {
@@ -67,7 +67,6 @@ describe("actions/schedules", () => {
         { column: "email" }
       );
       newProperty.update({ state: "ready" });
-
       await source2.setMapping({ id: newProperty.key });
       await source2.update({ state: "ready" });
     });
@@ -96,20 +95,7 @@ describe("actions/schedules", () => {
 
     describe("with schedule", () => {
       beforeAll(async () => {
-        connection.params = {
-          csrfToken,
-          name: "test schedule",
-          type: "test-plugin-import",
-          sourceId: source.id,
-          recurring: false,
-          confirmRecords: true,
-        };
-
-        const { error, schedule } = await specHelper.runAction<ScheduleCreate>(
-          "schedule:create",
-          connection
-        );
-
+        //schedule with created model's source
         connection.params = {
           csrfToken,
           name: "test schedule 2",
@@ -150,6 +136,8 @@ describe("actions/schedules", () => {
             "schedules:list",
             connection
           );
+
+        console.log(JSON.stringify(error));
 
         expect(error).toBeUndefined();
         expect(schedules.length).toBe(1);
