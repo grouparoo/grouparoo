@@ -29,6 +29,7 @@ import { GrouparooModel } from "../../models/GrouparooModel";
 import { Run } from "../../models/Run";
 import { Option } from "../../models/Option";
 import { RunOps } from "./runs";
+import { APIData } from "../apiData";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -55,25 +56,27 @@ export namespace DestinationOps {
     }
   }
 
-  const nullKey = "_none" as const;
-
   export async function updateTracking(
     destination: Destination,
-    collection: Destination["collection"] | typeof nullKey,
-    groupId: string
+    collection: Destination["collection"] | typeof APIData.nullKey,
+    collectionId?: string
   ) {
     let oldRun: Run;
     let newRun: Run;
 
     if (
       destination.collection === collection &&
-      destination.groupId === groupId
+      destination.groupId === collectionId
     ) {
       return { oldRun, newRun }; // no changes
     }
 
-    if (groupId && groupId !== nullKey) {
-      const group = await Group.findById(groupId);
+    if (
+      collection === "group" &&
+      collectionId &&
+      collectionId !== APIData.nullKey
+    ) {
+      const group = await Group.findById(collectionId);
       if (group.state === "deleted") {
         throw new Error(`cannot track deleted Group "${group.name}"`);
       }
@@ -82,12 +85,24 @@ export namespace DestinationOps {
           `destination ${destination.id} and group ${group.id} do not share the same modelId`
         );
       }
+    } else if (collection === "model") {
+      const model = await GrouparooModel.findById(
+        collectionId ?? destination.modelId
+      );
+      if (model.id !== destination.modelId) {
+        throw new Error(
+          `a destination for model ${destination.modelId} cannot track another model`
+        );
+      }
     }
 
     oldRun = await runDestinationCollection(destination, false); // old collection
     await destination.update({
-      collection: collection === nullKey ? null : collection,
-      groupId: groupId === nullKey || collection !== "group" ? null : groupId,
+      collection: collection === APIData.nullKey ? null : collection,
+      groupId:
+        collectionId === APIData.nullKey || collection !== "group"
+          ? null
+          : collectionId,
     });
     newRun = await runDestinationCollection(destination, true); // new collection
 

@@ -24,6 +24,7 @@ import {
   DestinationView,
 } from "../../src/actions/destinations";
 import { SessionCreate } from "../../src/actions/session";
+import { APIData } from "../../src/modules/apiData";
 
 describe("actions/destinations", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -492,7 +493,7 @@ describe("actions/destinations", () => {
         await colorProperty.destroy();
       });
 
-      test("an administrator can list and remove a tracked group", async () => {
+      test("an administrator can view a destination", async () => {
         connection.params = {
           csrfToken,
           id,
@@ -501,12 +502,37 @@ describe("actions/destinations", () => {
           "destination:view",
           connection
         );
+        expect(destination.id).toBe(id);
         expect(destination.group.id).toBe(group.id);
+      });
 
+      test("an administrator can track a model", async () => {
         connection.params = {
           csrfToken,
           id,
-          groupId: null,
+          collection: "model",
+        };
+        const { destination, oldRun, newRun, error } =
+          await specHelper.runAction<DestinationEdit>(
+            "destination:edit",
+            connection
+          );
+        expect(error).toBeFalsy();
+
+        expect(oldRun.creatorId).toBe(group.id);
+        expect(oldRun.force).toBe(false);
+        expect(oldRun.state).toBe("running");
+
+        expect(newRun.creatorId).toBe("mod_profiles");
+
+        expect(destination.collection).toBe("model");
+        expect(destination.group).toBe(null);
+      });
+
+      test("an administrator can remove a tracked model", async () => {
+        connection.params = {
+          csrfToken,
+          id,
           collection: null,
         };
         const {
@@ -520,10 +546,12 @@ describe("actions/destinations", () => {
         );
         expect(error).toBeFalsy();
         expect(newRun).toBeUndefined();
-        expect(oldRun.creatorId).toBe(group.id);
+        expect(oldRun.creatorId).toBe("mod_profiles");
         expect(oldRun.force).toBe(false);
         expect(oldRun.state).toBe("running");
+
         expect(updatedDestination.group).toBe(null);
+        expect(updatedDestination.collection).toBe(null);
       });
 
       test("update the tracked group", async () => {
@@ -597,7 +625,7 @@ describe("actions/destinations", () => {
         await runningRuns[0].stop();
       });
 
-      test("an administator will not trigger an export by default when updating a destination", async () => {
+      test("an administrator will not trigger an export by default when updating a destination", async () => {
         connection.params = {
           csrfToken,
           id,
@@ -656,7 +684,7 @@ describe("actions/destinations", () => {
       connection.params = {
         csrfToken,
         id,
-        groupId: "_none",
+        groupId: APIData.nullKey,
       };
       const { destination, error } =
         await specHelper.runAction<DestinationEdit>(

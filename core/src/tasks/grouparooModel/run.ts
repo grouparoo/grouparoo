@@ -82,7 +82,12 @@ export class RunInternalRun extends CLSTask {
       groupMemberOffset: offset + records.length,
     });
 
-    if (records.length === 0) {
+    const pendingImports = await run.$count("imports", {
+      where: { groupsUpdatedAt: null },
+    });
+
+    // we don't want to denote the group as ready until all the imports are imported
+    if (records.length === 0 && pendingImports === 0) {
       await run.afterBatch("complete");
     } else {
       await run.afterBatch();

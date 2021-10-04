@@ -739,3 +739,5 @@ export namespace Actions {
     typeof ObjectFind.prototype.runWithinTransaction
   >;
 }
+
+export const nullKey = "_none" as const;

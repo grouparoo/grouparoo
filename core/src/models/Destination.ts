@@ -339,8 +339,11 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.exportMembers(this, force);
   }
 
-  async updateTracking(collection: Destination["collection"], groupId: string) {
-    return DestinationOps.updateTracking(this, collection, groupId);
+  async updateTracking(
+    collection: Destination["collection"],
+    collectionId?: string
+  ) {
+    return DestinationOps.updateTracking(this, collection, collectionId);
   }
 
   async getSupportedSyncModes() {

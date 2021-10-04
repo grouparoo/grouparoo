@@ -10,7 +10,7 @@ import LoadingButton from "../../../../../components/loadingButton";
 import StateBadge from "../../../../../components/badges/stateBadge";
 import LockedBadge from "../../../../../components/badges/lockedBadge";
 import PageHeader from "../../../../../components/pageHeader";
-import { Models, Actions } from "../../../../../utils/apiData";
+import { Models, Actions, nullKey } from "../../../../../utils/apiData";
 import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { SuccessHandler } from "../../../../../utils/successHandler";
 import ModelBadge from "../../../../../components/badges/modelBadge";
@@ -44,7 +44,7 @@ export default function Page(props) {
     props.destination
   );
   const [groupId, setGroupId] = useState<string>(
-    destination.group?.id ?? "_none"
+    destination.group?.id ?? nullKey
   );
   const [collection, setCollection] = useState<
     Models.DestinationType["collection"]
@@ -78,7 +78,7 @@ export default function Page(props) {
 
     await execApi("put", `/destination/${destinationId}`, {
       mapping: filteredMapping,
-      groupId: groupId || "_none",
+      groupId: groupId || nullKey,
       collection,
       destinationGroupMemberships: destinationGroupMembershipsObject,
       triggerExport: true,
@@ -304,14 +304,14 @@ export default function Page(props) {
                     disabled={loading}
                     onChange={(e) => {
                       e.target.value === "__model"
-                        ? setGroupId("_none")
+                        ? setGroupId(nullKey)
                         : setGroupId(e.target.value);
                       e.target.value === "__model"
                         ? setCollection("model")
                         : setCollection("group");
                     }}
                   >
-                    <option value={"_none"}>No Group or Model</option>
+                    <option value={nullKey}>No Group or Model</option>
                     <option disabled>--- Models ---</option>
                     <option value="__model">
                       All Records in the {destination.modelName} Model

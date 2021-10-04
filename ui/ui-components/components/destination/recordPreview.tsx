@@ -4,7 +4,7 @@ import { Card, ListGroup } from "react-bootstrap";
 import Loader from "../loader";
 import { useRouter } from "next/router";
 import { ErrorHandler } from "../../utils/errorHandler";
-import { Models, Actions } from "../../utils/apiData";
+import { Models, Actions, nullKey } from "../../utils/apiData";
 
 export default function RecordPreview(props) {
   const {
@@ -17,7 +17,7 @@ export default function RecordPreview(props) {
   }: {
     errorHandler: ErrorHandler;
     destination: Models.DestinationType;
-    collection: Models.DestinationType["collection"] | "_none";
+    collection: Models.DestinationType["collection"] | typeof nullKey;
     groupId: string;
     modelId: string;
     mappingOptions: Actions.DestinationMappingOptions["options"];
@@ -75,8 +75,8 @@ export default function RecordPreview(props) {
 
     if (
       !collection ||
-      collection === "_none" ||
-      (collection === "group" && groupId === "_none")
+      collection === nullKey ||
+      (collection === "group" && groupId === nullKey)
     ) {
       setToHide(true);
       return;

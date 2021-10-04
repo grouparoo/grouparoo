@@ -100,9 +100,7 @@ export class RunGroup extends CLSTask {
       groupMembersCount === 0
     ) {
       await run.afterBatch("complete");
-      if (group.state !== "deleted") {
-        await group.update({ state: "ready" });
-      }
+      if (group.state !== "deleted") await group.update({ state: "ready" });
     } else {
       await run.afterBatch();
     }

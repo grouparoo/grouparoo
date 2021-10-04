@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { cache } from "actionhero";
+import { GrouparooModel } from "../../..";
 import {
   App,
   Destination,
@@ -670,6 +671,109 @@ describe("models/destination", () => {
       });
     });
 
+    describe("tracking a model", () => {
+      let destination: Destination;
+      let model: GrouparooModel;
+
+      beforeEach(async () => {
+        model = await GrouparooModel.findOne();
+
+        destination = await Destination.create({
+          name: "test destination",
+          appId: app.id,
+          modelId: "mod_profiles",
+          syncMode: "sync",
+          type: "test-plugin-export",
+        });
+      });
+
+      afterEach(async () => {
+        await destination.destroy();
+      });
+
+      test("a model can be tracked", async () => {
+        await destination.updateTracking("model");
+        expect(destination.collection).toBe("model");
+        expect(destination.modelId).toBe(model.id);
+      });
+
+      test("tracking a model will not enqueue a run", async () => {
+        await destination.updateTracking("model");
+
+        const runs = await Run.findAll({
+          where: { creatorId: destination.id },
+        });
+        expect(runs.length).toBe(0);
+      });
+
+      test("a destination cannot track an unrelated model", async () => {
+        const otherModel = await helper.factories.model();
+
+        await expect(
+          destination.updateTracking("model", otherModel.id)
+        ).rejects.toThrow(/cannot track another model/);
+        await otherModel.destroy();
+      });
+
+      test("a model can be unTracked", async () => {
+        await destination.updateTracking("model");
+        await destination.updateTracking(null);
+        expect(destination.collection).toBe(null);
+        expect(destination.groupId).toBe(null);
+      });
+
+      test("recordPreview - without updates - with model", async () => {
+        const record = await helper.factories.record();
+        await record.addOrUpdateProperties({
+          userId: [1],
+          email: ["yoshi@example.com"],
+        });
+        await destination.updateTracking("model");
+
+        const mapping = {
+          "primary-id": "userId",
+          email: "email",
+        };
+
+        const destinationGroupMemberships = {};
+
+        const _record = await destination.recordPreview(
+          record,
+          mapping,
+          destinationGroupMemberships
+        );
+        expect(_record.properties["primary-id"].values[0]).toBe(1);
+        expect(_record.properties["email"].values[0]).toBe("yoshi@example.com");
+
+        await record.destroy();
+      });
+
+      test("destination record previews will convert the type of the property to match the destination", async () => {
+        const record = await helper.factories.record();
+        await record.addOrUpdateProperties({
+          userId: [1],
+          email: ["yoshi@example.com"],
+          ltv: [123],
+        });
+        await destination.updateTracking("model");
+
+        const mapping = {
+          "primary-id": "userId",
+          "string-property": "ltv",
+        };
+
+        const _record = await destination.recordPreview(record, mapping, {});
+
+        expect(_record.properties["primary-id"].values[0]).toBe(1);
+        expect(_record.properties["primary-id"].type).toBe("integer");
+
+        expect(_record.properties["string-property"].values[0]).toBe("123");
+        expect(_record.properties["string-property"].type).toBe("string");
+
+        await record.destroy();
+      });
+    });
+
     describe("with groups", () => {
       let destination: Destination;
       let group: Group;
@@ -698,6 +802,8 @@ describe("models/destination", () => {
       });
 
       test("tracking a group will not enqueue a run", async () => {
+        await destination.updateTracking("group", group.id);
+
         const runs = await Run.findAll({
           where: { creatorId: destination.id },
         });
