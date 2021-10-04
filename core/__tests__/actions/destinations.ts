@@ -332,18 +332,19 @@ describe("actions/destinations", () => {
           csrfToken,
           id,
           groupId: group.id,
+          collection: "group",
         };
 
-        const { destination, run, error } =
+        const { destination, newRun, error } =
           await specHelper.runAction<DestinationEdit>(
             "destination:edit",
             connection
           );
         expect(error).toBeFalsy();
-        expect(destination.destinationGroup.id).toBe(group.id);
-        expect(run.creatorId).toBe(group.id);
-        expect(run.force).toBe(true);
-        expect(run.state).toBe("running");
+        expect(destination.group.id).toBe(group.id);
+        expect(newRun.creatorId).toBe(group.id);
+        expect(newRun.force).toBe(true);
+        expect(newRun.state).toBe("running");
       });
 
       test("an administrator can set the destination group memberships", async () => {
@@ -361,7 +362,7 @@ describe("actions/destinations", () => {
             connection
           );
         expect(error).toBeFalsy();
-        expect(destination.destinationGroup.id).toBe(group.id);
+        expect(destination.group.id).toBe(group.id);
         expect(destination.destinationGroupMemberships).toEqual([
           {
             groupId: group.id,
@@ -500,26 +501,29 @@ describe("actions/destinations", () => {
           "destination:view",
           connection
         );
-        expect(destination.destinationGroup.id).toBe(group.id);
+        expect(destination.group.id).toBe(group.id);
 
         connection.params = {
           csrfToken,
           id,
           groupId: null,
+          collection: null,
         };
         const {
           destination: updatedDestination,
-          run,
+          oldRun,
+          newRun,
           error,
         } = await specHelper.runAction<DestinationEdit>(
           "destination:edit",
           connection
         );
         expect(error).toBeFalsy();
-        expect(run.creatorId).toBe(group.id);
-        expect(run.force).toBe(false);
-        expect(run.state).toBe("running");
-        expect(updatedDestination.destinationGroup).toBe(null);
+        expect(newRun).toBeUndefined();
+        expect(oldRun.creatorId).toBe(group.id);
+        expect(oldRun.force).toBe(false);
+        expect(oldRun.state).toBe("running");
+        expect(updatedDestination.group).toBe(null);
       });
 
       test("update the tracked group", async () => {
@@ -527,13 +531,14 @@ describe("actions/destinations", () => {
           csrfToken,
           id,
           groupId: group.id,
+          collection: "group",
         };
         const { destination: _destination } =
           await specHelper.runAction<DestinationEdit>(
             "destination:edit",
             connection
           );
-        expect(_destination.destinationGroup.id).toBe(group.id);
+        expect(_destination.group.id).toBe(group.id);
 
         const runningRuns = await Run.findAll({
           where: { state: "running", creatorType: "group" },
@@ -562,11 +567,15 @@ describe("actions/destinations", () => {
           name: "the test destination",
           triggerExport: true,
         };
-        const { error, destination: destination } =
-          await specHelper.runAction<DestinationEdit>(
-            "destination:edit",
-            connection
-          );
+        const {
+          error,
+          newRun,
+          oldRun,
+          destination: destination,
+        } = await specHelper.runAction<DestinationEdit>(
+          "destination:edit",
+          connection
+        );
         expect(error).toBeFalsy();
         expect(destination.name).toBe("the test destination");
 
@@ -578,10 +587,12 @@ describe("actions/destinations", () => {
         expect(runningRuns[0]).toEqual(
           expect.objectContaining({
             destinationId: id,
-            creatorId: destination.destinationGroup.id,
+            creatorId: destination.group.id,
             force: true,
           })
         );
+        expect(newRun.id).toEqual(runningRuns[0].id);
+        expect(oldRun).toBeUndefined();
 
         await runningRuns[0].stop();
       });
@@ -634,7 +645,7 @@ describe("actions/destinations", () => {
         expect(runningRuns[0]).toEqual(
           expect.objectContaining({
             destinationId: id,
-            creatorId: destination.destinationGroup.id,
+            creatorId: destination.group.id,
             force: true,
           })
         );
@@ -651,7 +662,7 @@ describe("actions/destinations", () => {
         "destination:edit",
         connection
       );
-      expect(destination.destinationGroup).toBe(null);
+      expect(destination.group).toBe(null);
     });
 
     test("an administrator can destroy a destination (soft)", async () => {

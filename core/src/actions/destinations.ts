@@ -198,10 +198,20 @@ export class DestinationEdit extends AuthenticatedAction {
       syncMode: params.syncMode,
     });
 
-    const { oldRun, newRun } = await destination.updateTracking(
-      params.collection,
-      params.groupId
-    );
+    let oldRun: Run;
+    let newRun: Run;
+    if (params.collection !== undefined || params.groupId !== undefined) {
+      const updateResponse = await destination.updateTracking(
+        params.collection,
+        params.groupId
+      );
+      oldRun = updateResponse.oldRun;
+      newRun = updateResponse.newRun;
+    }
+
+    if (params.triggerExport && !newRun && !oldRun) {
+      newRun = await destination.exportMembers(true);
+    }
 
     await ConfigWriter.run();
 

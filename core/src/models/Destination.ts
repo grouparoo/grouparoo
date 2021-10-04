@@ -239,7 +239,7 @@ export class Destination extends LoggedModel<Destination> {
       mapping,
       options,
       connection: pluginConnection,
-      destinationGroup: group ? await group.apiData() : null,
+      group: group ? await group.apiData() : null,
       destinationGroupMemberships,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),

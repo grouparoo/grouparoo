@@ -124,7 +124,7 @@ describe("actions/groups", () => {
     test("an administrator can view the destinations tracking a group", async () => {
       const destination = await helper.factories.destination();
       const group = await Group.findById(id);
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
 
       connection.params = {
         csrfToken,
@@ -139,14 +139,14 @@ describe("actions/groups", () => {
       expect(destinations.length).toBe(1);
       expect(destinations[0].id).toEqual(destination.id);
 
-      await destination.unTrackGroup();
+      await destination.updateTracking(null, null);
       await destination.destroy();
     });
 
     test("an administrator cannot destroy a group used by a destination", async () => {
       const destination = await helper.factories.destination();
       const group = await Group.findById(id);
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
 
       connection.params = {
         csrfToken,
@@ -160,7 +160,7 @@ describe("actions/groups", () => {
         /this group still in use by 1 destinations, cannot delete/
       );
 
-      await destination.unTrackGroup();
+      await destination.updateTracking(null, null);
       await destination.destroy();
     });
 
