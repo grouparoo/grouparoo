@@ -42,6 +42,17 @@ export namespace Plugins {
     };
   }
 
+  export type GrouparooManifestPackage = {
+    name: string;
+    description: string;
+    imageUrl: string;
+    packageName: string;
+    source: boolean;
+    destination: boolean;
+    npmUrl?: string;
+    docsUrl?: string;
+  };
+
   export async function installedPluginVersions() {
     const pluginManifest = getPluginManifest();
     const coreVersion = getCoreVersion();
@@ -87,7 +98,9 @@ export namespace Plugins {
 
   export async function availableGrouparooPlugins() {
     const pluginManifestUrl = config.pluginManifestUrl;
-    const pluginManifest = await fetch(pluginManifestUrl).then((r) => r.json());
+    const pluginManifest: GrouparooManifestPackage[] = await fetch(
+      pluginManifestUrl
+    ).then((r) => r.json());
     return pluginManifest;
   }
 
