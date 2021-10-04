@@ -87,14 +87,21 @@ export default function Navigation(props) {
     let onAccountPage = false;
 
     if (router.pathname && router.pathname !== "/") {
-      const firstPathPart = "/" + router.pathname.split("/")[1];
+      const pathParts = router.pathname.split("/");
+      const firstPathPart = "/" + pathParts[1];
 
       navigation?.platformItems
         .filter((i) => i.type === "link")
         .map((i) => i.href)
         .forEach((route) => {
           if (route.indexOf(firstPathPart) === 0) {
-            onPlatformPage = true;
+            const verb = pathParts[3];
+            if (route === "/models" && verb && verb !== "edit") {
+              // special case: don't open Platform menu for model-scoped pages
+              onPlatformPage = false;
+            } else {
+              onPlatformPage = true;
+            }
           }
         });
 
