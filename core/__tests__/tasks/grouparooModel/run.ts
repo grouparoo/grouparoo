@@ -2,8 +2,13 @@ process.env.GROUPAROO_IMPORTS_BATCH_SIZE = "100";
 
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper, task } from "actionhero";
-import { GrouparooModel } from "../../../dist";
-import { Import, GrouparooRecord, Run, RecordProperty } from "../../../src";
+import {
+  Import,
+  GrouparooRecord,
+  Run,
+  GrouparooModel,
+  RecordProperty,
+} from "../../..";
 
 describe("tasks/grouparooModel:run", () => {
   helper.grouparooTestServer({
