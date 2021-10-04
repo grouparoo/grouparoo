@@ -62,7 +62,7 @@ export default function RecordsList(props) {
 
   useSecondaryEffect(() => {
     load();
-  }, [offset, limit, state, caseSensitive, modelId]);
+  }, [offset, limit, state, modelId, caseSensitive]);
 
   async function load(event?) {
     if (event) event.preventDefault();
@@ -252,7 +252,6 @@ export default function RecordsList(props) {
             })}
           </ButtonGroup>
         </Col>
-        <Col>Model:{modelId}</Col>
       </Row>
 
       <br />
