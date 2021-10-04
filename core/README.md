@@ -49,7 +49,7 @@ Use the Grouparoo CLI to initialize a new Grouparoo Project:
 # Assuming you have node.js (https://nodejs.org) v12+ installed
 npm install -g grouparoo
 grouparoo init .
-grouparoo start
+grouparoo config
 ```
 
 This will generate a `package.json`, `config` directory, and `.env` file for configuration.
