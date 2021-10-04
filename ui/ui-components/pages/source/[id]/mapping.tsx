@@ -408,11 +408,12 @@ Page.getInitialProps = async (ctx) => {
     { includeExamples: true, state: "ready", modelId: source?.modelId }
   );
   const { types } = await execApi("get", `/propertyOptions`);
-  const { total: scheduleCount } = await execApi("get", `/schedules`);
 
+  const { total: scheduleCount } = await execApi("get", `/schedules`, {
+    modelId: source?.modelId,
+  });
   let preview;
   let hydrationError: Error;
-
   try {
     if (source.previewAvailable) {
       const previewResponse = await execApi("get", `/source/${id}/preview`);
