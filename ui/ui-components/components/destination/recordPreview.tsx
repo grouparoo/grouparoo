@@ -50,7 +50,7 @@ export default function RecordPreview(props) {
     destination.id,
     groupId,
     collection,
-    JSON.stringify(destination.destinationGroup),
+    JSON.stringify(destination.group),
     JSON.stringify(destination.mapping),
     JSON.stringify(destination.destinationGroupMemberships),
   ]);

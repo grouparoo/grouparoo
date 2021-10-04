@@ -139,7 +139,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
     });
 
     afterEach(async () => {
-      await destination.unTrackGroup();
+      await destination.updateTracking(null);
       await destination.destroy();
     });
 
@@ -152,7 +152,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       const groupA = await helper.factories.group();
       const groupB = await helper.factories.group();
 
-      await destination.trackGroup(groupA);
+      await destination.updateTracking("group", groupA.id);
 
       const destinationGroupMemberships = {};
       // modify the membership name
@@ -249,8 +249,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       });
 
       const groupA = await helper.factories.group();
-
-      await destination.trackGroup(groupA);
+      await destination.updateTracking("group", groupA.id);
 
       const record = await helper.factories.record();
       await record.addOrUpdateProperties({
@@ -309,7 +308,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       });
 
       const groupA = await helper.factories.group();
-      await destination.trackGroup(groupA);
+      await destination.updateTracking("group", groupA.id);
 
       const record = await helper.factories.record();
       await record.addOrUpdateProperties({
@@ -459,7 +458,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
         id: oldExport.id,
       });
 
-      await destination.trackGroup(groupC);
+      await destination.updateTracking("group", groupC.id);
       await destination.exportRecord(record);
 
       // there should be no export:send tasks
@@ -524,7 +523,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
           id: oldExport.id,
         });
 
-        await destination.trackGroup(groupC);
+        await destination.updateTracking("group", groupC.id);
         await destination.exportRecord(record);
 
         // there should be no export:send tasks
@@ -558,7 +557,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       const record = await helper.factories.record();
       const group = await helper.factories.group();
       await group.addRecord(record);
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
 
       const oldExport = await Export.create({
         destinationId: destination.id,
@@ -600,7 +599,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       const record = await helper.factories.record();
       const group = await helper.factories.group();
       await group.addRecord(record);
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
 
       const oldExport = await Export.create({
         destinationId: destination.id,
@@ -645,7 +644,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       });
       const group = await helper.factories.group();
       await group.addRecord(record);
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
 
       await destination.setMapping({
         customer_email: "email",

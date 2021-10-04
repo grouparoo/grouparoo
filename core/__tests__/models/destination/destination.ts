@@ -160,7 +160,7 @@ describe("models/destination", () => {
         appId: app.id,
         modelId: model.id,
       });
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
       await expect(destination.destroy()).rejects.toThrow(
         /cannot delete a destination that is tracking a group/
       );
@@ -179,14 +179,14 @@ describe("models/destination", () => {
 
       await destination.setOptions({ table: "table" });
       await destination.setMapping({ "primary-id": "userId" });
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.id] = "remote-tag";
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
 
-      await destination.unTrackGroup();
+      await destination.updateTracking(null, null);
       await destination.destroy();
 
       let count = await DestinationGroupMembership.count({
@@ -320,11 +320,11 @@ describe("models/destination", () => {
         });
 
         group = await helper.factories.group();
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
       });
 
       afterAll(async () => {
-        await destination.unTrackGroup();
+        await destination.updateTracking(null, null);
         await destination.destroy();
         await group.destroy();
       });
@@ -692,7 +692,7 @@ describe("models/destination", () => {
       });
 
       test("a group can be tracked", async () => {
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
         const _group = await destination.$get("group");
         expect(_group.id).toBe(group.id);
       });
@@ -707,8 +707,8 @@ describe("models/destination", () => {
       test("a destination can only track a single group", async () => {
         const newGroup = await helper.factories.group();
 
-        await destination.trackGroup(group);
-        await destination.trackGroup(newGroup);
+        await destination.updateTracking("group", group.id);
+        await destination.updateTracking("group", newGroup.id);
         const _group = await destination.$get("group");
         expect(_group.id).toBe(newGroup.id);
         await newGroup.destroy();
@@ -717,19 +717,19 @@ describe("models/destination", () => {
       test("a destination cannot track a deleted group", async () => {
         await group.update({ state: "deleted" });
 
-        expect(destination.trackGroup(group)).rejects.toThrow(
-          /Cannot track deleted Group/
-        );
+        await expect(
+          destination.updateTracking("group", group.id)
+        ).rejects.toThrow(/cannot track deleted Group/);
         const _group = await destination.$get("group");
         expect(_group).toBe(null);
       });
 
       test("a group can be unTracked", async () => {
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
         let _group = await destination.$get("group");
         expect(_group.id).toBe(group.id);
 
-        await destination.unTrackGroup();
+        await destination.updateTracking(null, null);
         _group = await destination.$get("group");
         expect(_group).toBe(null);
       });
@@ -741,7 +741,7 @@ describe("models/destination", () => {
           email: ["yoshi@example.com"],
         });
         await group.addRecord(record);
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
 
         const mapping = {
           "primary-id": "userId",
@@ -771,7 +771,7 @@ describe("models/destination", () => {
           ltv: [123],
         });
         await group.addRecord(record);
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
 
         const mapping = {
           "primary-id": "userId",
@@ -796,7 +796,7 @@ describe("models/destination", () => {
           await group.addRecord(record);
 
           // before the destinations are ready
-          await destination.trackGroup(group);
+          await destination.updateTracking("group", group.id);
           let destinations = await Destination.destinationsForGroups(
             await record.$get("groups")
           );
@@ -806,8 +806,7 @@ describe("models/destination", () => {
           await destination.setOptions({ table: "some table" });
           await destination.update({ state: "ready" });
           await otherDestination.setOptions({ table: "some table" });
-          await otherDestination.update({ state: "ready" });
-          await otherDestination.trackGroup(group);
+          await otherDestination.updateTracking("group", group.id);
 
           destinations = await Destination.destinationsForGroups(
             await record.$get("groups")
@@ -817,28 +816,20 @@ describe("models/destination", () => {
             [destination.id, otherDestination.id].sort()
           );
 
-          await destination.unTrackGroup();
+          await destination.updateTracking(null, null);
           await group.removeRecord(record);
-          await otherDestination.unTrackGroup();
+          await otherDestination.updateTracking(null, null);
           await otherDestination.destroy();
         });
 
-        test("force (reimporting) can be toggled when tracking and un-tracking groups", async () => {
-          const trackRunA = await destination.trackGroup(group, false);
-          expect(trackRunA.force).toBe(false);
-          const unTrackRunA = await destination.unTrackGroup(false);
-          expect(unTrackRunA.force).toBe(false);
-
-          const trackRunB = await destination.trackGroup(group, true);
-          expect(trackRunB.force).toBe(true);
-          const unTrackRunB = await destination.unTrackGroup(true);
-          expect(unTrackRunB.force).toBe(true);
-        });
-
         test("when the group being tracked is removed, the previous group should be exported one last time", async () => {
-          const runA = await destination.trackGroup(group);
-          const runB = await destination.unTrackGroup();
+          const { newRun: runA } = await destination.updateTracking(
+            "group",
+            group.id
+          );
+          const { oldRun: runB } = await destination.updateTracking(null, null);
           await runA.reload();
+          await runB.reload();
 
           expect(runA.creatorId).toEqual(runB.creatorId);
           expect(runA.state).toBe("stopped");
@@ -850,8 +841,14 @@ describe("models/destination", () => {
         test("when the group being tracked is changed, the previous group should be exported one last time", async () => {
           const otherGroup = await helper.factories.group();
           await otherGroup.update({ state: "ready" });
-          const runA = await destination.trackGroup(group);
-          const runB = await destination.trackGroup(otherGroup);
+          const { newRun: runA } = await destination.updateTracking(
+            "group",
+            group.id
+          );
+          const { newRun: runB } = await destination.updateTracking(
+            "group",
+            otherGroup.id
+          );
 
           expect(runA.creatorId).toEqual(group.id);
           expect(runB.creatorId).toEqual(otherGroup.id);

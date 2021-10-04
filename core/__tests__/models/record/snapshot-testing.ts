@@ -65,7 +65,7 @@ describe("test grouparoo records", () => {
       await destination.setDestinationGroupMemberships({
         [group.id]: "remote_group_name",
       });
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
 
       // make ready
       await group.update({ state: "ready" });

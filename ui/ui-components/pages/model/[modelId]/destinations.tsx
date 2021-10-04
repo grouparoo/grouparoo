@@ -129,12 +129,12 @@ export default function Page(props) {
                 </td>
                 <td>{destination.connection.displayName}</td>
                 <td>
-                  {destination.destinationGroup?.id ? (
+                  {destination.group?.id ? (
                     <EnterpriseLink
                       href="/model/[modelId]/group/[groupId]/edit"
-                      as={`/model/${destination.destinationGroup.modelId}/group/${destination.destinationGroup.id}/edit`}
+                      as={`/model/${destination.group.modelId}/group/${destination.group.id}/edit`}
                     >
-                      <a>{destination.destinationGroup.name}</a>
+                      <a>{destination.group.name}</a>
                     </EnterpriseLink>
                   ) : (
                     "None"

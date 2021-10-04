@@ -658,10 +658,13 @@ describe("actions/destinations", () => {
         id,
         groupId: "_none",
       };
-      const { destination } = await specHelper.runAction<DestinationEdit>(
-        "destination:edit",
-        connection
-      );
+      const { destination, error } =
+        await specHelper.runAction<DestinationEdit>(
+          "destination:edit",
+          connection
+        );
+
+      expect(error).toBeUndefined();
       expect(destination.group).toBe(null);
     });
 

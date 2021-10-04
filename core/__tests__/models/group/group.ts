@@ -262,14 +262,14 @@ describe("models/group", () => {
         });
 
         const destination = await helper.factories.destination();
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
         await destination.update({ state: "ready" });
 
         await expect(group.destroy()).rejects.toThrow(
           /this group still in use by 1 destinations, cannot delete/
         );
 
-        await destination.unTrackGroup();
+        await destination.updateTracking(null, null);
         await group.destroy(); // does not throw
       });
 
@@ -281,14 +281,14 @@ describe("models/group", () => {
         });
 
         const destination = await helper.factories.destination();
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
         await destination.update({ state: "deleted" });
 
         await expect(group.destroy()).rejects.toThrow(
           /this group still in use by 1 destinations, cannot delete/
         );
 
-        await destination.unTrackGroup();
+        await destination.updateTracking(null, null);
         await group.destroy(); // does not throw
       });
 
@@ -331,7 +331,10 @@ describe("models/group", () => {
         });
 
         const destination: Destination = await helper.factories.destination();
-        const run = await destination.trackGroup(trackedGroup);
+        const { newRun } = await destination.updateTracking(
+          "group",
+          trackedGroup.id
+        );
         const destinationGroupMemberships = {};
         destinationGroupMemberships[taggedGroup.id] = "remote-tagged-group";
         await destination.setDestinationGroupMemberships(
@@ -349,9 +352,9 @@ describe("models/group", () => {
         expect(runningRuns.length).toBe(1);
         expect(runningRuns[0].destinationId).toBe(destination.id);
         expect(runningRuns[0].force).toBe(false);
-        expect(runningRuns[0].id).not.toBe(run.id);
+        expect(runningRuns[0].id).not.toBe(newRun.id);
 
-        await destination.unTrackGroup();
+        await destination.updateTracking(null, null);
         await trackedGroup.destroy();
         await taggedGroup.destroy();
       });
@@ -372,7 +375,7 @@ describe("models/group", () => {
         });
 
         const destination = await helper.factories.destination();
-        const run = await destination.trackGroup(trackedGroup);
+        await destination.updateTracking("group", trackedGroup.id);
         const destinationGroupMemberships = {};
         destinationGroupMemberships[taggedGroup.id] = "remote-tagged-group";
         await destination.setDestinationGroupMemberships(

@@ -44,7 +44,7 @@ export default function Page(props) {
     props.destination
   );
   const [groupId, setGroupId] = useState<string>(
-    destination.destinationGroup?.id ?? "_none"
+    destination.group?.id ?? "_none"
   );
   const [collection, setCollection] = useState<
     Models.DestinationType["collection"]

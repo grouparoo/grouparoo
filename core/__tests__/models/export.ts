@@ -250,7 +250,7 @@ describe("models/export", () => {
     await group.addRecord(record);
 
     const destination = await helper.factories.destination();
-    await destination.trackGroup(group);
+    await destination.updateTracking("group", group.id);
     await destination.setMapping({
       "primary-id": "userId",
       email: "email",
@@ -297,7 +297,7 @@ describe("models/export", () => {
 
     // cleanup
     await record.destroy();
-    await destination.unTrackGroup();
+    await destination.updateTracking(null, null);
     await group.destroy();
     await destination.destroy();
   });
@@ -321,7 +321,7 @@ describe("models/export", () => {
     await group.addRecord(record);
 
     const destination = await helper.factories.destination();
-    await destination.trackGroup(group);
+    await destination.updateTracking("group", group.id);
     await destination.setMapping({
       "primary-id": "userId",
       email: "email",
@@ -352,7 +352,7 @@ describe("models/export", () => {
 
     // cleanup
     await record.destroy();
-    await destination.unTrackGroup();
+    await destination.updateTracking(null, null);
     await group.destroy();
     await destination.destroy();
   });
@@ -361,7 +361,7 @@ describe("models/export", () => {
     await Export.destroy({ where: { destinationId: destination.id } });
     const group = await helper.factories.group();
     await group.addRecord(record);
-    await destination.trackGroup(group);
+    await destination.updateTracking("group", group.id);
 
     const oldExport = await Export.create({
       destinationId: destination.id,

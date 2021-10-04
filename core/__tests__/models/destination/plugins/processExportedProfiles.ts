@@ -191,7 +191,7 @@ describe("models/destination - with custom processExportedRecords", () => {
 
     afterEach(async () => {
       await Export.truncate();
-      await destination.unTrackGroup();
+      await destination.updateTracking(null);
       await destination.destroy();
     });
 
@@ -202,7 +202,7 @@ describe("models/destination - with custom processExportedRecords", () => {
       });
 
       const groupA = await helper.factories.group();
-      await destination.trackGroup(groupA);
+      await destination.updateTracking("group", groupA.id);
 
       const record = await helper.factories.record();
       await record.addOrUpdateProperties({

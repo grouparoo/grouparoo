@@ -978,6 +978,7 @@ describe("modules/configWriter", () => {
         type,
         appId: app.getConfigId(),
         groupId: group.getConfigId(),
+        collection: "group",
         syncMode,
         options: Object.fromEntries(options.map((o) => [o.key, o.value])),
         mapping: { "primary-id": mappingProperty.getConfigId() },

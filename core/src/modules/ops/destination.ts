@@ -14,7 +14,7 @@ import {
   ExportedRecord,
   ExportRecordsPluginMethod,
   ErrorWithRecordId,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
   DestinationMappingOptionsMethodResponse,
   ProcessExportsForRecordIds,
   ExportRecordsPluginMethodResponse,
@@ -72,6 +72,18 @@ export namespace DestinationOps {
       return { oldRun, newRun }; // no changes
     }
 
+    if (groupId && groupId !== nullKey) {
+      const group = await Group.findById(groupId);
+      if (group.state === "deleted") {
+        throw new Error(`cannot track deleted Group "${group.name}"`);
+      }
+      if (destination.modelId !== group.modelId) {
+        throw new Error(
+          `destination ${destination.id} and group ${group.id} do not share the same modelId`
+        );
+      }
+    }
+
     oldRun = await runDestinationCollection(destination, false); // old collection
     await destination.update({
       collection: collection === nullKey ? null : collection,
@@ -118,7 +130,7 @@ export namespace DestinationOps {
 
       mappedRecordProperties[k] = collection;
 
-      let destinationType: DestinationMappingOptionsResponseTypes = "any";
+      let destinationType: DestinationMappingOptionsResponseType = "any";
       for (const j in destinationMappingOptions.properties.required) {
         const destinationProperty =
           destinationMappingOptions.properties.required[j];
@@ -952,7 +964,7 @@ export namespace DestinationOps {
     for (const k in rawProperties) {
       const type: string = rawProperties[k].type;
       const value = _export[key][k];
-      let destinationType: DestinationMappingOptionsResponseTypes = "any";
+      let destinationType: DestinationMappingOptionsResponseType = "any";
 
       for (const j in destinationMappingOptions.properties.required) {
         const destinationProperty =
@@ -991,7 +1003,7 @@ export namespace DestinationOps {
   export function formatOutgoingRecordProperties(
     value: any,
     grouparooType: string,
-    destinationType: DestinationMappingOptionsResponseTypes
+    destinationType: DestinationMappingOptionsResponseType
   ) {
     if (!grouparooType) return null;
     if (value === null || value === undefined) return value;

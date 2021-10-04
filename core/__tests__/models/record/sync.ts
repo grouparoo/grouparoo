@@ -90,7 +90,7 @@ describe("record sync", () => {
         { key: "firstName", match: "Mario", operation: { op: "eq" } },
       ]);
       await group.update({ state: "ready" });
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
     });
 
     test("syncing will create exports", async () => {
@@ -135,8 +135,10 @@ describe("record sync", () => {
         await otherGroup.setRules([
           { key: "grouparooId", match: "rec%", operation: { op: "like" } },
         ]);
+        await otherGroup.update({ state: "ready" });
         otherDestination = await helper.factories.destination();
-        await otherDestination.trackGroup(otherGroup);
+        await otherDestination.updateTracking("group", otherGroup.id);
+        await otherDestination.update({ state: "ready" });
       });
 
       test("record sync will create a toDelete export if the group's rules remove it from the group", async () => {
@@ -230,7 +232,7 @@ describe("record sync", () => {
         expect(groups.length).toBe(2);
 
         // change the destination
-        await destination.unTrackGroup();
+        await destination.updateTracking(null, null);
 
         // test
         let exports = await record.sync();
@@ -250,7 +252,7 @@ describe("record sync", () => {
         expect(exports[0].destinationId).toBe(otherDestination.id);
 
         // reset
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
       });
     });
   });

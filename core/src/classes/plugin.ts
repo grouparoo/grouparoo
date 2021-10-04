@@ -573,7 +573,7 @@ export interface DestinationMappingOptionsMethod {
   }): Promise<DestinationMappingOptionsMethodResponse>;
 }
 
-export type DestinationMappingOptionsResponseTypes =
+export type DestinationMappingOptionsResponseType =
   | "any"
   | "boolean"
   | "date"
@@ -586,7 +586,7 @@ export type DestinationMappingOptionsResponseTypes =
   | "url";
 export interface DestinationMappingOptionsResponseProperty {
   key: string;
-  type: DestinationMappingOptionsResponseTypes;
+  type: DestinationMappingOptionsResponseType;
   important?: boolean;
 }
 export interface DestinationMappingOptionsResponseProperties {

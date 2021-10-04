@@ -161,11 +161,11 @@ describe("multiple models", () => {
   });
 
   test("destinations can only track groups of the same model", async () => {
-    await expect(adminDestination.trackGroup(profileGroup)).rejects.toThrow(
-      /do not share the same modelId/
-    );
+    await expect(
+      adminDestination.updateTracking("group", profileGroup.id)
+    ).rejects.toThrow(/do not share the same modelId/);
 
-    await adminDestination.trackGroup(adminGroup);
+    await adminDestination.updateTracking("group", adminGroup.id);
   });
 
   test("destination options only use properties of the same model", async () => {

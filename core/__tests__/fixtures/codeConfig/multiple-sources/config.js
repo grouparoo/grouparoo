@@ -178,6 +178,7 @@ module.exports = async function getConfig() {
       type: "test-plugin-export",
       appId: "data_warehouse", // id -> data_warehouse
       groupId: "email_group", // id -> email_group
+      collection: "group",
       syncMode: "additive",
       modelId: "mod_profiles",
       options: {
