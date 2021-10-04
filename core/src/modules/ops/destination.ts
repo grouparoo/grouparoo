@@ -25,9 +25,10 @@ import { RecordPropertyOps } from "./recordProperty";
 import { destinationTypeConversions } from "../destinationTypeConversions";
 import { GroupMember } from "../../models/GroupMember";
 import { ExportProcessor } from "../../models/ExportProcessor";
+import { GrouparooModel } from "../../models/GrouparooModel";
+import { Run } from "../../models/Run";
 import { Option } from "../../models/Option";
 import { RunOps } from "./runs";
-import { GrouparooModel, Run } from "../..";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
