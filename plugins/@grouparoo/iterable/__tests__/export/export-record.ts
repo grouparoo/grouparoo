@@ -1,5 +1,3 @@
-import path from "path";
-import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
 import { exportRecord } from "../../src/lib/export/exportRecord";
@@ -7,7 +5,6 @@ import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexContacts } from "../utils/shared";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
-import { indexUsers } from "../../../pipedrive/__tests__/utils/shared";
 
 const appId = "app_7815696ecbf1c96e6894b779456d330e";
 
@@ -54,15 +51,7 @@ const nonexistentEmail = "pilo.paz@mailinator.com";
 const invalidEmail = "000";
 const invalidDate = "GGG";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 
 async function getUser(email): Promise<any> {
