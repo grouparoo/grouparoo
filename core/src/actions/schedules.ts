@@ -46,7 +46,7 @@ export class SchedulesList extends AuthenticatedAction {
         sourceIds.push(source.id);
       }
 
-      where["sourceId"] = `[Op.in]: ${sourceIds}`;
+      where["sourceId"] = { [Op.in]: sourceIds };
     }
     const schedules = await Schedule.scope(null).findAll({
       where,

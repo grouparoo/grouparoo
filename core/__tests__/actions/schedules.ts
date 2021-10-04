@@ -62,12 +62,13 @@ describe("actions/schedules", () => {
         source2,
         {
           unique: true,
-          key: "prp_9a8c4ac0-c3d8-443e-b0a7-017c4fa3bc26",
+          key: "newProperty",
         },
         { column: "email" }
       );
       newProperty.update({ state: "ready" });
-      await source2.setMapping({ id: newProperty.id });
+
+      await source2.setMapping({ id: newProperty.key });
       await source2.update({ state: "ready" });
     });
 
@@ -95,6 +96,20 @@ describe("actions/schedules", () => {
 
     describe("with schedule", () => {
       beforeAll(async () => {
+        connection.params = {
+          csrfToken,
+          name: "test schedule",
+          type: "test-plugin-import",
+          sourceId: source.id,
+          recurring: false,
+          confirmRecords: true,
+        };
+
+        const { error, schedule } = await specHelper.runAction<ScheduleCreate>(
+          "schedule:create",
+          connection
+        );
+
         connection.params = {
           csrfToken,
           name: "test schedule 2",
