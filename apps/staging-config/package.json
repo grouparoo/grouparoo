@@ -22,7 +22,7 @@
   },
   "scripts": {
     "dev": "rm -f grouparoo_config.sqlite && cd node_modules/@grouparoo/core && DATABASE_URL=\"sqlite://grouparoo_config.sqlite\" NEXT_DEVELOPMENT_MODE=true GROUPAROO_RUN_MODE=\"cli:config\" WORKERS=0 ./bin/dev",
-    "demo": "./node_modules/.bin/grouparoo demo purchases --config"
+    "demo": "./node_modules/.bin/grouparoo demo --config"
   },
   "grouparoo": {
     "grouparoo_monorepo_app": "staging-config",

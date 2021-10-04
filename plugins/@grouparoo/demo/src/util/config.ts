@@ -61,7 +61,6 @@ class Config {
 
   add(type: string) {
     switch (type) {
-      case "reset":
       case "setup":
         this.addOther(type);
         break;
@@ -98,23 +97,10 @@ class Config {
 
   data() {
     const hasData = this.sources.length > 0 || this.destinations.length > 0;
-    if (this.others.includes("reset")) {
-      if (!hasData && this.others.length === 1) {
-        return {
-          db: null,
-          resetOnly: true,
-          sources: [],
-          destinations: [],
-        };
-      }
-      // otherwise resetting anyway
-    }
-
     if (this.others.includes("setup")) {
       if (!hasData) {
         return {
           db: null,
-          resetOnly: false,
           sources: [],
           destinations: [],
         };
@@ -127,12 +113,11 @@ class Config {
       db = new Postgres();
     }
     if (this.sources.length === 0) {
-      this.addSource("users");
+      this.add("b2c");
     }
 
     return {
       db,
-      resetOnly: false,
       sources: this.sources,
       destinations: this.destinations,
     };
@@ -141,7 +126,6 @@ class Config {
 
 export function getConfig(types: string[]): {
   db: Connection;
-  resetOnly: boolean;
   sources: string[];
   destinations: string[];
 } {

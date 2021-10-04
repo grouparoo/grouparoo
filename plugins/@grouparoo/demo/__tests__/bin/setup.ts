@@ -15,7 +15,7 @@ describe("demo setup", () => {
 
   test("runs without crash", async () => {
     const command = new Demo();
-    const toStop = await command.run({ params: { _arguments: ["setup"] } });
+    const toStop = await command.run({ params: { Setup: true } });
     expect(toStop).toBe(true);
   });
 
