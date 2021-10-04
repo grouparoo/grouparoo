@@ -18,7 +18,7 @@ describe("models/setupStep", () => {
       order: [["position", "asc"]],
     });
 
-    expect(setupSteps.length).toBe(7);
+    expect(setupSteps.length).toBe(8);
     expect(setupSteps[0].position).toBe(1);
     expect(setupSteps[0].key).toBe("name_your_grouparoo_instance");
   });
@@ -40,16 +40,16 @@ describe("models/setupStep", () => {
   test("setupSteps ops returns standard versions when not in config mode", async () => {
     const setupSteps = SetupStepOps.setupStepDescriptions();
     expect(setupSteps[0].key).toEqual("name_your_grouparoo_instance");
-    expect(setupSteps[5].key).toEqual("create_a_group");
-    expect(setupSteps[6].key).toEqual("create_a_destination");
+    expect(setupSteps[6].key).toEqual("create_a_group");
+    expect(setupSteps[7].key).toEqual("create_a_destination");
   });
 
   test("setupSteps ops returns config versions when in config mode", async () => {
     process.env.GROUPAROO_RUN_MODE = "cli:config";
     const setupSteps = SetupStepOps.setupStepDescriptions();
     expect(setupSteps[0].key).toEqual("install_grouparoo");
-    expect(setupSteps[5].key).toEqual("create_a_sample_record");
-    expect(setupSteps[6].key).toEqual("create_a_group");
+    expect(setupSteps[6].key).toEqual("create_a_sample_record");
+    expect(setupSteps[7].key).toEqual("create_a_group");
   });
 
   test("setup steps have unique keys", async () => {
