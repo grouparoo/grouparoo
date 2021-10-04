@@ -1,6 +1,6 @@
 import {
   DestinationMappingOptionsMethod,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
 } from "@grouparoo/core";
 import format from "pg-format";
 
@@ -17,7 +17,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
 
     const columns: Array<{
       key: string;
-      type: DestinationMappingOptionsResponseTypes;
+      type: DestinationMappingOptionsResponseType;
       important: boolean;
     }> = [];
     for (const i in rows) {

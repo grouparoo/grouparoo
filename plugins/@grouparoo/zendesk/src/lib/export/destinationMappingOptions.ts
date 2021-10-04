@@ -1,6 +1,6 @@
 import {
   DestinationMappingOptionsMethod,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
 } from "@grouparoo/core";
 import { connect } from "./../connect";
 
@@ -50,13 +50,13 @@ const mapTypesFromZendeskToGrouparoo = (zendeskType) => {
 
 export const getRequiredFields = (): Array<{
   key: string;
-  type: DestinationMappingOptionsResponseTypes;
+  type: DestinationMappingOptionsResponseType;
 }> => {
   return [{ key: "external_id", type: "string" }];
 };
 export const getBuiltInFields = (): Array<{
   key: string;
-  type: DestinationMappingOptionsResponseTypes;
+  type: DestinationMappingOptionsResponseType;
   important?: boolean;
 }> => {
   return [
@@ -80,14 +80,14 @@ export const getUserFields = async (
 ): Promise<
   Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
     important?: boolean;
   }>
 > => {
   const list = await client.userfields.list();
   const out = [];
   for (const field of list) {
-    const type: DestinationMappingOptionsResponseTypes =
+    const type: DestinationMappingOptionsResponseType =
       mapTypesFromZendeskToGrouparoo(field.type);
     const key = field.key;
     out.push({ key, type, important: true });

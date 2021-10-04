@@ -1,5 +1,5 @@
 import {
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
   DestinationOptionsMethodResponse,
 } from "@grouparoo/core";
 import { log } from "actionhero";
@@ -81,11 +81,11 @@ export const getMappingFields = (
 ): {
   required: Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
   }>;
   known: Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
     important?: boolean;
   }>;
 } => {

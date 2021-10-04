@@ -1,6 +1,6 @@
 import {
   DestinationMappingOptionsMethod,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
   objectCache,
   SimpleDestinationOptions,
 } from "@grouparoo/core";
@@ -59,7 +59,7 @@ const getRequiredFields = (
   destinationOptions: SimpleDestinationOptions
 ): Array<{
   key: string;
-  type: DestinationMappingOptionsResponseTypes;
+  type: DestinationMappingOptionsResponseType;
 }> => {
   const { creationMode } = destinationOptions;
   const required = [];
@@ -89,7 +89,7 @@ const getKnownAttributes = async (
 ): Promise<
   Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
     important?: boolean;
   }>
 > => {
@@ -110,7 +110,7 @@ export const fetchKnownAttributes = async (
 ): Promise<
   Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
     important?: boolean;
   }>
 > => {
@@ -134,7 +134,7 @@ export const fetchKnownAttributes = async (
       continue;
     }
     const important = field.custom || importantKeys.includes(key);
-    const type: DestinationMappingOptionsResponseTypes =
+    const type: DestinationMappingOptionsResponseType =
       mapTypesFromIntercomToGrouparoo(key, field.data_type);
     if (type) {
       out.push({ key, type, important });

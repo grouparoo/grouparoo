@@ -348,12 +348,13 @@ describe("integration/runs/postgres", () => {
       csrfToken,
       id: destination.id,
       destinationGroupMemberships,
-      trackedGroupId: group.id,
+      groupId: group.id,
+      collection: "group",
     };
     const { error, destination: _destination } =
       await specHelper.runAction<DestinationEdit>("destination:edit", session);
     expect(error).toBeUndefined();
-    expect(_destination.destinationGroup.id).toBe(group.id);
+    expect(_destination.group.id).toBe(group.id);
     expect(_destination.destinationGroupMemberships).toEqual([
       {
         groupId: group.id,

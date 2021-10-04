@@ -1,6 +1,6 @@
 import {
   DestinationMappingOptionsMethod,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
   SimpleAppOptions,
 } from "@grouparoo/core";
 import { getFields } from "./fieldsMethods";
@@ -72,7 +72,7 @@ export const isReadOnlyField = (key): boolean => {
 
 export const getRequiredFields = (): Array<{
   key: string;
-  type: DestinationMappingOptionsResponseTypes;
+  type: DestinationMappingOptionsResponseType;
 }> => {
   return [{ key: "email", type: "email" }];
 };
@@ -105,7 +105,7 @@ export const getUserFields = async (
 ): Promise<
   Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
     important?: boolean;
   }>
 > => {
@@ -114,7 +114,7 @@ export const getUserFields = async (
 
   for (const field of fields) {
     if (field["name"] !== "email" && !field["read_only"]) {
-      const type: DestinationMappingOptionsResponseTypes =
+      const type: DestinationMappingOptionsResponseType =
         mapTypesFromSendgridToGrouparoo(field["name"], field["field_type"]);
       if (type) {
         out.push({
