@@ -974,7 +974,6 @@ export namespace RecordOps {
       {
         type: QueryTypes.SELECT,
         model: GrouparooRecord,
-        include: RecordProperty,
       }
     );
 
@@ -982,94 +981,47 @@ export namespace RecordOps {
       return [];
     }
 
-    // const [, updateResponse] = await GrouparooRecord.update(
-    //   { state: "ready" },
-    //   {
-    //     where: {
-    //       id: { [Op.in]: records.map((p) => p.id) },
-    //       state: "pending",
-    //     },
-    //   }
-    // );
-
-    const invalidRecords = await GrouparooRecord.findAll({
-      where: {
-        id: { [Op.in]: records.map((p) => p.id) },
-        invalid: false,
-      },
-      include: {
-        model: RecordProperty,
-        where: {
-          invalidReason: {
-            [Op.not]: null,
-          },
-        },
-      },
-    });
-    const [, invalidUpdateResponse] = await GrouparooRecord.update(
-      { invalid: true },
+    await GrouparooRecord.update(
+      { state: "ready" },
       {
         where: {
-          id: {
-            [Op.in]: invalidRecords.map((record) => record.id),
-          },
+          id: { [Op.in]: records.map((p) => p.id) },
+          state: "pending",
         },
       }
     );
 
-    // TODO: Need to find all records where _all_ associated
-    // recordProperties.invalidReason are null
-    const fixedRecords = await GrouparooRecord.findAll({
-      where: {
-        id: { [Op.in]: records.map((p) => p.id) },
-        invalid: true,
-        recordProperties: {
-          invalidReason: {
-            [Op.not]: null,
-          },
-        },
-      },
-      logging: console.log,
-      include: {
-        model: RecordProperty,
-        where: {
-          invalidReason: {
-            [Op.eq]: null,
-          },
-        },
-      },
-    });
-    // const [, fixedUpdateResponse] = await GrouparooRecord.update(
-    //   { invalid: false },
-    //   {
-    //     where: {
-    //       id: { [Op.in]: fixedRecords.map((record) => record.id) },
-    //     },
-    //   }
-    // );
-    console.log({
-      invalidRecords,
-      invalidUpdateResponse,
-      // fixedRecords,
-      // fixedUpdateResponse,
-    });
+    // Update records to invalid if any assocaited properties are invalid.
+    await api.sequelize.query(`
+        UPDATE "records"
+        SET "invalid" = TRUE
+        FROM "recordProperties"
+        WHERE "records"."id" IN (${records.map((r) => `'${r.id}'`)})
+        AND "recordProperties"."invalidReason" IS NOT NULL
+        AND "records"."invalid" = FALSE;
+      `);
 
-    // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer state=pending
-    // in SQLite this isn't possible, but contention is far less likely
-    const updatedRecords = Array.from(
-      new Set<GrouparooRecord>([
-        // ...(updateResponse ?? []),
-        ...(invalidUpdateResponse ?? []),
-        // ...(fixedUpdateResponse ?? []),
-      ])
-    );
-
-    if (updatedRecords.length === 0) {
-      return [];
-    }
+    // Update records to valid if all assocaited properties are valid.
+    await api.sequelize.query(`
+      UPDATE
+        "records"
+      SET
+        "invalid" = FALSE
+      WHERE
+        "records"."id" IN( SELECT DISTINCT
+            "recordProperties"."recordId" FROM "recordProperties"
+            INNER JOIN "records" AS "invalidRecords" ON "invalidRecords"."id" = "recordProperties"."recordId"
+              AND "invalidRecords"."id" IN(${records.map((r) => `'${r.id}'`)})
+              AND "invalidRecords"."invalid" = TRUE
+              AND "invalidRecords"."id" NOT IN(
+                SELECT
+                  "recordId" FROM "recordProperties"
+              WHERE
+                "invalidReason" IS NOT NULL));
+    `);
 
     await completeRecordImports(
-      updatedRecords.map((p) => p.id),
+      records.map((p) => p.id),
       toExport
     );
 
