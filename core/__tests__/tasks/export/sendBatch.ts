@@ -58,7 +58,7 @@ describe("tasks/export:sendBatch", () => {
       destination = await helper.factories.destination(null, {
         type: "test-plugin-export-batch",
       });
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
 
       await api.resque.queue.connection.redis.flushdb();
       await Run.truncate();
@@ -70,7 +70,7 @@ describe("tasks/export:sendBatch", () => {
       );
       await destination.update({ state: "ready" });
 
-      await destination.exportGroupMembers(true);
+      await destination.exportMembers(true);
 
       run = await Run.findOne({
         where: { creatorId: group.id },
@@ -210,7 +210,7 @@ describe("tasks/export:sendBatch", () => {
           modelId: model.id,
         });
         await destination.update({ state: "ready" });
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
       });
 
       beforeEach(async () => {

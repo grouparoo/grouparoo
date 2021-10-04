@@ -250,7 +250,7 @@ describe("tasks/group:destroy", () => {
         });
 
         const destination: Destination = await helper.factories.destination();
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
         await group.stopPreviousRuns();
 
         await destination.update({ state: destinationState });
@@ -266,7 +266,7 @@ describe("tasks/group:destroy", () => {
         let reloadedGroup = await Group.findById(group.id);
         expect(reloadedGroup.state).toBe("deleted"); // still waiting
 
-        await destination.unTrackGroup(true);
+        await destination.updateTracking(null, null);
         await group.stopPreviousRuns();
 
         // try to delete again

@@ -138,7 +138,7 @@ describe("tasks/record:export", () => {
           firstName: "firstName",
           lastName: "lastName",
         });
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
         const destinationGroupMemberships = {};
         destinationGroupMemberships[group.id] = group.name;
         await destination.setDestinationGroupMemberships(

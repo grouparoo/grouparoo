@@ -88,14 +88,7 @@ export namespace DestinationOps {
   ) {
     if (destination.collection === "group" && destination.groupId) {
       const group = await Group.findById(destination.groupId);
-      if (group) {
-        if (group.state === "deleted") {
-          throw new Error(
-            `Cannot track deleted Group "${group.name} (${group.id})"`
-          );
-        }
-        return RunOps.run(group, force, destination.id);
-      }
+      if (group) return RunOps.run(group, force, destination.id);
     } else if (destination.collection === "model") {
       const model = await GrouparooModel.findById(destination.modelId);
       if (model) return RunOps.run(model, force, destination.id);
