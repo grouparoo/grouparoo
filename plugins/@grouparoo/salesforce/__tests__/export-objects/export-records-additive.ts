@@ -1,5 +1,4 @@
 import "@grouparoo/spec-helper";
-import path from "path";
 import { exportBatch } from "../../src/lib/export-objects/exportRecords";
 import { destinationModel } from "../../src/lib/export-objects/model";
 
@@ -8,21 +7,7 @@ import { getModelHelpers } from "../utils/modelHelper";
 import { helper } from "@grouparoo/spec-helper";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
-const nockFile = path.join(
-  __dirname,
-  "../",
-  "fixtures",
-  "export-objects",
-  "export-records-additive.js"
-);
-
-// these comments to use nock
-const newNock = false;
-require("./../fixtures/export-objects/export-records-additive");
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const appId = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8632e2";
 const syncOperations = DestinationSyncModeData.additive.operations;

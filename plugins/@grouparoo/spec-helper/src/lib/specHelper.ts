@@ -21,9 +21,10 @@ if (
 }
 
 // normal pathway
-import fs from "fs";
+import fs from "fs-extra";
 import path from "path";
 import nock from "nock";
+import prettier from "prettier";
 
 import LogFactory from "./factories/log";
 import GroupFactory from "./factories/group";
@@ -559,6 +560,43 @@ export namespace helper {
     await record.reload();
 
     return { record, snapshot };
+  }
+
+  export function useNock(testFilePath, updater: any = {}) {
+    const pieces = testFilePath.split("/__tests__/");
+    if (pieces.length !== 2) {
+      throw new Error("invalid __tests__ path for nock: " + testFilePath);
+    }
+
+    const extname = path.extname(pieces[1]);
+    const filename = path.basename(pieces[1], extname);
+    const dirname = path.resolve(
+      path.join(pieces[0], "__tests__", "fixtures", path.dirname(pieces[1]))
+    );
+
+    const nockFile = path.join(dirname, filename + ".js");
+    if (!fs.existsSync(dirname)) {
+      fs.mkdirpSync(dirname);
+    }
+
+    const newNock: boolean = !!process.env.NOCK;
+    if (newNock) {
+      recordNock(nockFile, updater);
+    } else {
+      require(nockFile);
+    }
+    afterAll(() => {
+      if (newNock) {
+        try {
+          const contents = fs.readFileSync(nockFile).toString();
+          const formatted = prettier.format(contents, { parser: "babel" });
+          fs.writeFileSync(nockFile, formatted);
+        } catch (err) {
+          console.log(`Nock formatting error`, err);
+        }
+      }
+    });
+    return { newNock };
   }
 
   export function recordNock(nockFile, updater: any = {}) {

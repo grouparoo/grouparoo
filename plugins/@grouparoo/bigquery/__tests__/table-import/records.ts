@@ -4,23 +4,13 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
-
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { SimpleAppOptions, Import, plugin, Run } from "@grouparoo/core";
-
-const nockFile = path.join(__dirname, "../", "fixtures", "table-records.js");
-
 import { getConnection } from "../../src/lib/table-import/connection";
+
 const records = getConnection().methods.records;
 
-// these comments to use nock
-const newNock = false;
-require("./../fixtures/table-records");
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
-// these used and set by test
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
 let source;

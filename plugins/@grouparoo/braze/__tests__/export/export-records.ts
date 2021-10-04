@@ -1,4 +1,3 @@
-import path from "path";
 import { helper } from "@grouparoo/spec-helper";
 import { exportBatch } from "../../src/lib/export/exportRecords";
 import { loadAppOptions, updater } from "../utils/nockHelper";
@@ -6,15 +5,7 @@ import { connect } from "../../src/lib/connect";
 import { BrazeClient } from "../../src/lib/client/client";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-records.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const appId = "ASDA#PLKJHG=87467NRsdfuiy+ijp4aAUA3039==";
 const hugeTime = helper.longTime * 6;

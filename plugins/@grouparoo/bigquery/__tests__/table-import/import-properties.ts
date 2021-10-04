@@ -16,21 +16,7 @@ import {
 import { getConnection } from "../../src/lib/table-import/connection";
 const recordProperties = getConnection().methods.recordProperties;
 
-const nockFile = path.join(
-  __dirname,
-  "../",
-  "fixtures",
-  "table-import-properties.js"
-);
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
-// these used and set by test
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 let record: GrouparooRecord;
 let otherRecord: GrouparooRecord;

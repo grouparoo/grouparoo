@@ -1,30 +1,12 @@
-import "@grouparoo/spec-helper";
-
 import { helper } from "@grouparoo/spec-helper";
-import path from "path";
 import { connect } from "../../src/lib/connect";
-
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { SimpleAppOptions } from "@grouparoo/core";
-
 import { getConnection } from "../../src/lib/table-import/connection";
+
 const sourcePreview = getConnection().methods.sourcePreview;
 
-const nockFile = path.join(
-  __dirname,
-  "../",
-  "fixtures",
-  "table-source-preview.js"
-);
-
-// these comments to use nock
-const newNock = false;
-require("./../fixtures/table-source-preview");
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
-// these used and set by test
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const sourceOptions = { table: "purchases" };
 

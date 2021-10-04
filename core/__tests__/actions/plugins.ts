@@ -1,5 +1,4 @@
 import { helper } from "@grouparoo/spec-helper";
-import path from "path";
 import { specHelper } from "actionhero";
 import {
   PluginsAvailableList,
@@ -9,18 +8,7 @@ import {
 import { getCoreVersion } from "./../../src/modules/pluginDetails";
 const coreVersion = getCoreVersion();
 
-const nockFile = path.join(
-  __dirname,
-  "..",
-  "fixtures",
-  "actions",
-  "plugins.js"
-);
-
-// these comments to use nock
-require("./../fixtures/actions/plugins");
-// or these to make it record a new one
-//helper.recordNock(nockFile);
+helper.useNock(__filename, {});
 
 describe("actions/plugins", () => {
   helper.grouparooTestServer({ truncate: true });

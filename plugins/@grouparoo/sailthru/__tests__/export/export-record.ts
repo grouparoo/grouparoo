@@ -1,11 +1,9 @@
-import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 import { exportRecord } from "../../src/lib/export/exportRecord";
 import Sailthru from "../../src/lib/client";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
-import { indexContacts } from "../../../iterable/__tests__/utils/shared";
 
 let client: Sailthru;
 const email = "brian@mailinator.com";
@@ -19,15 +17,7 @@ const group1 = "Test Group 1";
 const group2 = "Test Group 2";
 const group3 = "Test Group 3";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 
 async function getUser(userId): Promise<any> {

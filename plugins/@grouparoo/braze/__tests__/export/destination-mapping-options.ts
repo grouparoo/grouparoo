@@ -2,12 +2,7 @@ import "@grouparoo/spec-helper";
 import { loadAppOptions } from "../utils/nockHelper";
 import { destinationMappingOptions } from "../../src/lib/export/destinationMappingOptions";
 
-// these comments to use nock
-const newNock = false;
-// or these to make it true
-// const newNock = true;
-
-const appOptions = loadAppOptions(newNock);
+const appOptions = loadAppOptions(false);
 const appId = "app_mix-panel-09012378476890123-123903547";
 
 async function runDestinationMappingOptions({}) {

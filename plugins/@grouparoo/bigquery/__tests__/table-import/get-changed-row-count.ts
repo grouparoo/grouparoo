@@ -10,20 +10,7 @@ import { FilterOperation } from "@grouparoo/app-templates/dist/source/table";
 import { getChangedRowCount } from "../../src/lib/table-import/getChangedRowCount";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 
-const nockFile = path.join(
-  __dirname,
-  "../",
-  "fixtures",
-  "table-get-changed-row-count.js"
-);
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
 let connection;

@@ -1,5 +1,3 @@
-import path from "path";
-import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
 import { connect } from "../../src/lib/connect";
@@ -40,15 +38,7 @@ let listId2 = null;
 
 let batchEmails = [];
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-records.js");
-
-// these comments to use nock
-const newNock = false;
-require("./../fixtures/export-records");
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 
 async function findListId(name: string): Promise<number> {

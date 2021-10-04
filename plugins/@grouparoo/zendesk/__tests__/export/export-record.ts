@@ -1,15 +1,9 @@
-import path from "path";
-import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
 import { exportRecord, searchForUser } from "../../src/lib/export/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
-
-process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/zendesk": { path: path.join(__dirname, "..", "..") },
-});
 
 let client: any;
 
@@ -35,15 +29,7 @@ const groupThree = "test_recently_added";
 const outsideGroup = "outsider";
 const exampleDate = new Date(1597870204 * 1000);
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const appId = "app_5090-0a4e-3039-ad42-545fasd324f16";
 

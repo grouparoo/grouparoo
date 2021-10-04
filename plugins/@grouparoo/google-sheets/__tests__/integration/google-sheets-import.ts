@@ -42,13 +42,8 @@ const GOOGLE_SERVICE_PRIVATE_KEY = process.env.GOOGLE_SERVICE_PRIVATE_KEY;
 const SHEET_URL =
   "https://docs.google.com/spreadsheets/d/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/edit#gid=0";
 
-const nockFile = path.resolve(
-  path.join(__dirname, "../", "fixtures", "nock.js")
-);
-
-// switch comments to record new nock file: have to change "assertion" afterwards for google auth
-// helper.recordNock(nockFile, updater);
-require(nockFile);
+// NOCK=true on cmd line to record new nock file: have to change "assertion" afterwards for google auth
+helper.useNock(__filename, updater);
 
 describe("integration/runs/google-sheets", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
