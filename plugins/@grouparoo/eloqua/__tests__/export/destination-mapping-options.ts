@@ -1,5 +1,4 @@
 import path from "path";
-import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
 import {
@@ -13,20 +12,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/eloqua": { path: path.join(__dirname, "..", "..") },
 });
 
-const nockFile = path.join(
-  __dirname,
-  "../",
-  "fixtures",
-  "destination-mapping-options.js"
-);
-
-// these comments to use nock
-const newNock = false;
-require("./../fixtures/destination-mapping-options");
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const appId = "app_789-po09-EOEP-HKp8-3039";
 
