@@ -5,7 +5,7 @@ import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
 import { APIData } from "../modules/apiData";
 import { Op } from "sequelize";
-import { Source } from "..";
+import { Source } from "../models/Source";
 
 export class SchedulesList extends AuthenticatedAction {
   constructor() {
