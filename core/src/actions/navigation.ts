@@ -12,7 +12,7 @@ type NavigationMode =
   | "config:unauthenticated";
 
 type NavigationItem = {
-  type: string;
+  type: "link" | "divider" | "subNavMenu" | "modelMenu";
   title?: string;
   icon?: string;
   href?: string;
@@ -51,6 +51,10 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         : teamMember
         ? "authenticated"
         : "unauthenticated";
+
+    const isAuthenticated =
+      navigationMode === "authenticated" ||
+      navigationMode === "config:authenticated";
 
     const models = await GrouparooModel.findAll();
     const currentModel = models.find((m) => m.id === params.modelId);
@@ -98,10 +102,12 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         value: clusterNameSetting?.value || "",
       },
       teamMember: teamMember ? await teamMember.apiData() : undefined,
-      navModel: {
-        value: currentModelId,
-        options: await Promise.all(models.map((m) => m.apiData())),
-      },
+      navModel: isAuthenticated
+        ? {
+            value: currentModelId,
+            options: await Promise.all(models.map((m) => m.apiData())),
+          }
+        : { value: null, options: [] },
     };
   }
 
@@ -125,6 +131,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     const showSystemLinks = systemPermissionsCount > 0;
 
     const navigationItems: NavigationItem[] = [
+      { type: "modelMenu" },
       {
         type: "link",
         title: "Dashboard",
@@ -284,6 +291,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     modelId?: string
   ) {
     const navigationItems: NavigationItem[] = [
+      { type: "modelMenu" },
       {
         type: "link",
         title: "Apps",

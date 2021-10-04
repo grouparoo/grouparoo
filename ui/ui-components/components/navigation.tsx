@@ -193,39 +193,6 @@ export default function Navigation(props) {
           />
         )}
 
-        <div style={{ paddingLeft: 20, paddingRight: 20, paddingTop: 20 }}>
-          <Form
-            id="modelSelect"
-            onSubmit={() => {
-              console.log("HIO");
-            }}
-          >
-            <Form.Group>
-              <Form.Control
-                name="selectedModel"
-                as="select"
-                value={navModel.value}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  console.log("CHANGED");
-                  onChangeModelId(event.target.value);
-
-                  // grab it from the url on init
-                  // on update:
-                  //   if current page is scoped by model, swap it in the url and refresh
-                  //   if not, pass to nav (?) and fetch nav again
-                  // updating it should update current page and link
-                }}
-              >
-                {navModel.options.map((m) => (
-                  <option value={m.id} key={`model-${m.id}`}>
-                    {m.name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-          </Form>
-        </div>
-
         <div
           id="navBottomSection"
           style={{ paddingLeft: 20, paddingRight: 20 }}
@@ -251,6 +218,28 @@ export default function Navigation(props) {
                       icon={nav.icon}
                       idx={idx}
                     />
+                  </Fragment>
+                );
+              } else if (nav.type === "modelMenu") {
+                return (
+                  <Fragment key={idx}>
+                    <Form.Control
+                      name="selectedModel"
+                      as="select"
+                      value={navModel.value}
+                      style={{ marginTop: 20 }}
+                      onChange={(
+                        event: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        onChangeModelId(event.target.value);
+                      }}
+                    >
+                      {navModel.options.map((m) => (
+                        <option value={m.id} key={`model-${m.id}`}>
+                          {m.name}
+                        </option>
+                      ))}
+                    </Form.Control>
                   </Fragment>
                 );
               } else if (nav.type === "divider") {
