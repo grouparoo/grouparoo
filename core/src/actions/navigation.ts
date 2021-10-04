@@ -1,4 +1,5 @@
 import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
+import { GrouparooModel } from "../models/GrouparooModel";
 import { Setting } from "../models/Setting";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
@@ -25,12 +26,17 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       "returns a list of pages for the UI navigation for this user";
     this.permission = { topic: "*", mode: "read" };
     this.outputExample = {};
+    this.inputs = {
+      modelId: { required: false },
+    };
   }
 
   async runWithinTransaction({
     session: { teamMember },
+    params,
   }: {
     session: { teamMember: TeamMember };
+    params: { modelId: string };
   }) {
     let configUser: ConfigUser.ConfigUserType;
     if (process.env.GROUPAROO_RUN_MODE === "cli:config") {
@@ -46,6 +52,14 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         ? "authenticated"
         : "unauthenticated";
 
+    const models = await GrouparooModel.findAll();
+    const currentModel = models.find((m) => m.id === params.modelId);
+    const currentModelId = currentModel
+      ? currentModel.id
+      : models.length > 0
+      ? models[0].id
+      : null;
+
     let navResponse: {
       navigationItems: NavigationItem[];
       platformItems: NavigationItem[];
@@ -54,13 +68,16 @@ export class NavigationList extends OptionallyAuthenticatedAction {
 
     switch (navigationMode) {
       case "authenticated":
-        navResponse = await this.authenticatedNav(teamMember);
+        navResponse = await this.authenticatedNav(teamMember, currentModelId);
         break;
       case "unauthenticated":
         navResponse = await this.unauthenticatedNav(teamMember);
         break;
       case "config:authenticated":
-        navResponse = await this.authenticatedConfigNav(configUser);
+        navResponse = await this.authenticatedConfigNav(
+          configUser,
+          currentModelId
+        );
         break;
       case "config:unauthenticated":
         navResponse = await this.unauthenticatedConfigNav(configUser);
@@ -81,10 +98,14 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         value: clusterNameSetting?.value || "",
       },
       teamMember: teamMember ? await teamMember.apiData() : undefined,
+      navModel: {
+        value: currentModelId,
+        options: await Promise.all(models.map((m) => m.apiData())),
+      },
     };
   }
 
-  async authenticatedNav(teamMember: TeamMember) {
+  async authenticatedNav(teamMember: TeamMember, modelId?: string) {
     const systemPermissionsCount = await teamMember.team.$count("permissions", {
       where: {
         read: true,
@@ -110,44 +131,54 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         href: "/dashboard",
         icon: "home",
       },
-      {
-        type: "link",
-        title: "Records",
-        href: "/records",
-        icon: "list",
-      },
-      {
-        type: "link",
-        title: "Properties",
-        href: "/properties",
-        icon: "address-card",
-      },
-      { type: "link", title: "Groups", href: "/groups", icon: "users" },
-      {
-        type: "link",
-        title: "Sources",
-        href: "/sources",
-        icon: "file-import",
-      },
-      {
-        type: "link",
-        title: "Destinations",
-        href: "/destinations",
-        icon: "file-export",
-      },
-      {
-        type: "link",
-        title: "Runs",
-        href: "/runs",
-        icon: "exchange-alt",
-      },
-      { type: "subNavMenu", title: "Platform", icon: "terminal" },
     ];
+
+    if (modelId) {
+      navigationItems.push(
+        {
+          type: "link",
+          title: "Records",
+          href: `/model/${modelId}/records`,
+          icon: "list",
+        },
+        {
+          type: "link",
+          title: "Properties",
+          href: `/model/${modelId}/properties`,
+          icon: "address-card",
+        },
+        {
+          type: "link",
+          title: "Groups",
+          href: `/model/${modelId}/groups`,
+          icon: "users",
+        },
+        {
+          type: "link",
+          title: "Sources",
+          href: `/model/${modelId}/sources`,
+          icon: "file-import",
+        },
+        {
+          type: "link",
+          title: "Destinations",
+          href: `/model/${modelId}/destinations`,
+          icon: "file-export",
+        }
+      );
+    }
+
+    navigationItems.push({
+      type: "subNavMenu",
+      title: "Platform",
+      icon: "terminal",
+    });
 
     const platformItems: NavigationItem[] = [
       { type: "link", title: "Apps", href: "/apps" },
       { type: "link", title: "Imports", href: "/imports" },
       { type: "link", title: "Exports", href: "/exports" },
+      { type: "link", title: "Runs", href: "/runs" },
       { type: "link", title: "Export Processors", href: "/exportProcessors" },
     ];
 
@@ -248,7 +279,10 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     return { navigationItems, platformItems, bottomMenuItems };
   }
 
-  async authenticatedConfigNav(configUser: ConfigUser.ConfigUserType) {
+  async authenticatedConfigNav(
+    configUser: ConfigUser.ConfigUserType,
+    modelId?: string
+  ) {
     const navigationItems: NavigationItem[] = [
       {
         type: "link",
@@ -262,37 +296,43 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         href: "/models",
         icon: "clipboard-list",
       },
-      {
-        type: "link",
-        title: "Sources",
-        href: "/sources",
-        icon: "file-import",
-      },
-      {
-        type: "link",
-        title: "Properties",
-        href: "/properties",
-        icon: "address-card",
-      },
-      {
-        type: "link",
-        title: "Records",
-        href: "/records",
-        icon: "list",
-      },
-      {
-        type: "link",
-        title: "Groups",
-        href: "/groups",
-        icon: "users",
-      },
-      {
-        type: "link",
-        title: "Destinations",
-        href: "/destinations",
-        icon: "file-export",
-      },
     ];
+
+    if (modelId) {
+      navigationItems.push(
+        {
+          type: "link",
+          title: "Sources",
+          href: `/model/${modelId}/sources`,
+          icon: "file-import",
+        },
+        {
+          type: "link",
+          title: "Properties",
+          href: `/model/${modelId}/properties`,
+          icon: "address-card",
+        },
+        {
+          type: "link",
+          title: "Records",
+          href: `/model/${modelId}/records`,
+          icon: "list",
+        },
+        {
+          type: "link",
+          title: "Groups",
+          href: `/model/${modelId}/groups`,
+          icon: "users",
+        },
+        {
+          type: "link",
+          title: "Destinations",
+          href: `/model/${modelId}/destinations`,
+          icon: "file-export",
+        }
+      );
+    }
+
     const platformItems: NavigationItem[] = [];
     const bottomMenuItems: NavigationItem[] = [];
 
