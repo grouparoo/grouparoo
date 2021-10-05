@@ -8,6 +8,7 @@ import {
   TeamMember,
   Property,
   Run,
+  RecordProperty,
 } from "../../../src";
 import { SessionCreate } from "../../../src/actions/session";
 import {
@@ -20,7 +21,6 @@ import {
 } from "../../../src/actions/records";
 import { GroupAddRecord, GroupRemoveRecord } from "../../../src/actions/groups";
 import { ConfigWriter } from "../../../src/modules/configWriter";
-import { RecordProperty } from "../../../dist";
 
 function simpleRecordValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
