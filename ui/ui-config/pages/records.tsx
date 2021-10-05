@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { useRouter } from "next/router";
-import RecordsPage from "@grouparoo/ui-components/pages/model/[id]/records";
+import RecordsPage from "@grouparoo/ui-components/pages/model/[modelId]/records";
 
 export default function Page(props) {
   const router = useRouter();

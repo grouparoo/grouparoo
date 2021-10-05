@@ -9,7 +9,9 @@ export default function Page(props: { record: Actions.RecordView["record"] }) {
   const router = useRouter();
 
   useEffect(() => {
-    const verb = router.query.verb;
+    const verb = Array.isArray(router.query.verb)
+      ? router.query.verb.join("/")
+      : router.query.verb;
     router.replace(
       `/model/[modelId]/record/[recordId]/${verb}`,
       `/model/${record.modelId}/record/${record.id}/${verb}`
