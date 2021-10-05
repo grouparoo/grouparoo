@@ -1,4 +1,4 @@
-import { Action, config } from "actionhero";
+import { config } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
@@ -12,6 +12,7 @@ import {
   ActionPermissionMode,
   ActionPermissionTopic,
 } from "../models/Permission";
+import { CLSAction } from "../classes/actions/clsAction";
 
 export class RecordsList extends AuthenticatedAction {
   constructor() {
@@ -148,8 +149,7 @@ export class RecordCreate extends AuthenticatedAction {
   }
 }
 
-// Note that this is not a CLS Action
-export class RecordImportAndExport extends Action {
+export class RecordImport extends CLSAction {
   permission: {
     topic: ActionPermissionTopic;
     mode: ActionPermissionMode;
@@ -157,8 +157,8 @@ export class RecordImportAndExport extends Action {
 
   constructor() {
     super();
-    this.name = "record:importAndExport";
-    this.description = "fully import a record from all apps and update groups";
+    this.name = "record:import";
+    this.description = "fully import a record";
     this.outputExample = {};
     this.permission = { topic: "record", mode: "write" };
     this.middleware = ["authenticated-action"];
@@ -167,9 +167,15 @@ export class RecordImportAndExport extends Action {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const record = await GrouparooRecord.findById(params.id);
-    await record.sync();
+
+    await record.buildNullProperties();
+    await record.markPending();
+    await record.import();
+    await record.reload({ include: [RecordProperty] });
+    await record.update({ state: "ready" });
+    await record.updateGroupMembership();
     const groups = await record.$get("groups");
 
     return {
@@ -180,46 +186,32 @@ export class RecordImportAndExport extends Action {
   }
 }
 
-export class RecordEdit extends AuthenticatedAction {
+export class RecordExport extends CLSAction {
+  permission: {
+    topic: ActionPermissionTopic;
+    mode: ActionPermissionMode;
+  };
+
   constructor() {
     super();
-    this.name = "record:edit";
-    this.description = "edit a record";
+    this.name = "record:export";
+    this.description = "fully export a record";
     this.outputExample = {};
     this.permission = { topic: "record", mode: "write" };
+    this.middleware = ["authenticated-action"];
     this.inputs = {
       id: { required: true },
-      properties: {
-        required: false,
-        default: {},
-        formatter: APIData.ensureObject,
-      },
-      removedProperties: {
-        required: false,
-        default: [],
-        formatter: APIData.ensureObject,
-      },
     };
   }
 
   async runWithinTransaction({ params }) {
     const record = await GrouparooRecord.findById(params.id);
-
-    await record.update(params);
-    if (params.properties) {
-      await record.addOrUpdateProperties(params.properties);
-    }
-    if (params.removedProperties) {
-      await record.removeProperties(params.removedProperties);
-    }
-
-    await record.sync(false);
-
-    const groups = await record.$get("groups");
+    const exports = await record.export(true);
 
     return {
+      success: true,
       record: await record.apiData(),
-      groups: await Promise.all(groups.map((group) => group.apiData())),
+      exports: await Promise.all(exports.map((e) => e.apiData())),
     };
   }
 }
