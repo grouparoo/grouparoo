@@ -54,7 +54,7 @@ export default function LogsList(props) {
       limit,
       offset,
       topic,
-      ownerId: router.query.id,
+      ownerId: router.query.id ?? router.query.recordId,
     });
     setLoading(false);
     if (response?.logs) {
@@ -214,9 +214,9 @@ export default function LogsList(props) {
 
 LogsList.hydrate = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { id, limit, offset, topic } = ctx.query;
+  const { id, recordId, limit, offset, topic } = ctx.query;
   const { logs, total } = await execApi("get", `/logs`, {
-    ownerId: id,
+    ownerId: id ?? recordId,
     limit,
     offset,
     topic,
