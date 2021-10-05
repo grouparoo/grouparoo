@@ -201,6 +201,17 @@ describe("actions/records", () => {
           },
         }
       );
+      // Set the profile to pending so it's picked up
+      await GrouparooRecord.update(
+        {
+          state: "pending",
+        },
+        {
+          where: {
+            id: readyProfiles[0].id,
+          },
+        }
+      );
 
       // Run the import task
       await RecordOps.makeReadyAndCompleteImports();
@@ -262,12 +273,21 @@ describe("actions/records", () => {
           },
         }
       );
+      await GrouparooRecord.update(
+        {
+          state: "pending",
+        },
+        {
+          where: {
+            id: invalidRecord.id,
+          },
+        }
+      );
 
       await RecordOps.makeReadyAndCompleteImports();
 
       ({ records: invalidRecords, total: invalidTotal } =
         await specHelper.runAction<RecordsList>("records:list", connection));
-      console.log(invalidRecords[0]);
       expect(invalidRecords.length).toBe(0);
       expect(invalidTotal).toBe(0);
     });
