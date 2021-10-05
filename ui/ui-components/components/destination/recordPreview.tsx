@@ -4,7 +4,8 @@ import { Card, ListGroup } from "react-bootstrap";
 import Loader from "../loader";
 import { useRouter } from "next/router";
 import { ErrorHandler } from "../../utils/errorHandler";
-import { Models, Actions, NullKey } from "../../utils/apiData";
+import { Models, Actions } from "../../utils/apiData";
+import { NullKey } from "../../utils/nullKey";
 
 export default function RecordPreview(props) {
   const {
