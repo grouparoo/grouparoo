@@ -265,6 +265,7 @@ export namespace RecordOps {
       unique: boolean;
       stateChangedAt: Date;
       confirmedAt: Date;
+      startedAt: Date;
       valueChangedAt: Date;
     }> = [];
     const bulkDeletes = { where: { id: [] as string[] } };
@@ -341,6 +342,7 @@ export namespace RecordOps {
               state: "ready",
               stateChangedAt: now,
               confirmedAt: now,
+              startedAt: null,
               valueChangedAt:
                 !existingRecordProperty ||
                 !existingRecordProperty.valueChangedAt ||
@@ -377,6 +379,7 @@ export namespace RecordOps {
               "stateChangedAt",
               "confirmedAt",
               "valueChangedAt",
+              "startedAt",
               "rawValue",
               "invalidValue",
               "updatedAt",
@@ -399,6 +402,7 @@ export namespace RecordOps {
                     invalidValue: `${attemptedRecordProperty.rawValue}`,
                     stateChangedAt: new Date(),
                     confirmedAt: new Date(),
+                    startedAt: null,
                   },
                   {
                     transaction,
