@@ -9,9 +9,16 @@ import {
   PendingExports,
 } from "../components/visualizations/homepageWidgets";
 import { StatusHandler } from "../utils/statusHandler";
+import { Actions } from "../utils/apiData";
 
 export default function Page(props) {
-  const { statusHandler }: { statusHandler: StatusHandler } = props;
+  const {
+    statusHandler,
+    navModel,
+  }: {
+    statusHandler: StatusHandler;
+    navModel: Actions.NavigationList["navModel"];
+  } = props;
 
   return (
     <>
@@ -24,7 +31,6 @@ export default function Page(props) {
         <Col>
           <BigTotalNumber
             statusHandler={statusHandler}
-            href="/records"
             model="GrouparooRecord"
             title="Records"
           />
@@ -33,7 +39,6 @@ export default function Page(props) {
         <Col>
           <BigTotalNumber
             statusHandler={statusHandler}
-            href="/groups"
             model="Group"
             title="Groups"
           />
