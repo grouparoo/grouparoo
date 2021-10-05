@@ -1,4 +1,6 @@
 import Moment from "moment";
+import { config, cache } from "actionhero";
+import { deepStrictEqual } from "assert";
 import {
   Destination,
   DestinationSyncModeData,
@@ -9,7 +11,6 @@ import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { Export, ExportRecordPropertiesWithType } from "../../models/Export";
 import { Group } from "../../models/Group";
 import { Property } from "../../models/Property";
-import { MappingHelper } from "../mappingHelper";
 import {
   ExportedRecord,
   ExportRecordsPluginMethod,
@@ -19,17 +20,16 @@ import {
   ProcessExportsForRecordIds,
   ExportRecordsPluginMethodResponse,
 } from "../../classes/plugin";
-import { config, cache } from "actionhero";
-import { deepStrictEqual } from "assert";
-import { RecordPropertyOps } from "./recordProperty";
 import { destinationTypeConversions } from "../destinationTypeConversions";
 import { GroupMember } from "../../models/GroupMember";
 import { ExportProcessor } from "../../models/ExportProcessor";
 import { GrouparooModel } from "../../models/GrouparooModel";
 import { Run } from "../../models/Run";
+import { MappingHelper } from "../mappingHelper";
+import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { RunOps } from "./runs";
-import { APIData } from "../apiData";
+import { NullKey } from "../nullKey";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -58,7 +58,7 @@ export namespace DestinationOps {
 
   export async function updateTracking(
     destination: Destination,
-    collection: Destination["collection"] | typeof APIData.NullKey,
+    collection: Destination["collection"] | typeof NullKey,
     collectionId?: string
   ) {
     let oldRun: Run;
@@ -71,11 +71,7 @@ export namespace DestinationOps {
       return { oldRun, newRun }; // no changes
     }
 
-    if (
-      collection === "group" &&
-      collectionId &&
-      collectionId !== APIData.NullKey
-    ) {
+    if (collection === "group" && collectionId && collectionId !== NullKey) {
       const group = await Group.findById(collectionId);
       if (group.state === "deleted") {
         throw new Error(`cannot track deleted Group "${group.name}"`);
@@ -98,9 +94,9 @@ export namespace DestinationOps {
 
     oldRun = await runDestinationCollection(destination, false); // old collection
     await destination.update({
-      collection: collection === APIData.NullKey ? null : collection,
+      collection: collection === NullKey ? null : collection,
       groupId:
-        collectionId === APIData.NullKey || collection !== "group"
+        collectionId === NullKey || collection !== "group"
           ? null
           : collectionId,
     });

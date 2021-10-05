@@ -54,6 +54,4 @@ export namespace APIData {
     else if (typeof date === "string") return new Date(date).getTime();
     else throw new Error(`${date} is not a date`);
   }
-
-  export const NullKey = "_none" as const;
 }
