@@ -8,6 +8,7 @@ import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge"
 import PropertyTabs from "@grouparoo/ui-components/components/tabs/property";
 import { Models } from "@grouparoo/ui-components/utils/apiData";
 import ModelBadge from "@grouparoo/ui-components/components/badges/modelBadge";
+import { NextPageContext } from "next";
 
 export default function Page({
   property,
@@ -92,12 +93,12 @@ export default function Page({
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { id } = ctx.query;
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const { propertyId } = ctx.query;
   const { execApi } = UseApi(ctx);
-  const { property } = await execApi("get", `/property/${id}`);
+  const { property } = await execApi("get", `/property/${propertyId}`);
   const { source } = await execApi("get", `/source/${property.sourceId}`);
-  const { groups } = await execApi("get", `/property/${id}/groups`);
+  const { groups } = await execApi("get", `/property/${propertyId}/groups`);
 
   return { property, source, groups };
 };

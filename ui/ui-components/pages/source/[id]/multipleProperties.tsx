@@ -221,8 +221,8 @@ export default function Page(props) {
         <td>
           {existingProperty && existingProperty.sourceId === source.id ? (
             <Link
-              href={`/property/[id]/edit`}
-              as={`/property/${existingProperty.id}/edit`}
+              href={`/model/[modelId]/property/[propertyId]/edit`}
+              as={`/model/${source.modelId}/property/${existingProperty.id}/edit`}
             >
               <a>
                 <Button variant="outline-info" size="sm">

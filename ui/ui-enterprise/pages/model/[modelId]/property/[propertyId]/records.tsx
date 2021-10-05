@@ -1,12 +1,13 @@
-import Head from "next/head";
-import RunsList from "@grouparoo/ui-components/components/runs/list";
 import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
+import Head from "next/head";
+import PropertyTabs from "@grouparoo/ui-components/components/tabs/property";
+import RecordsList from "@grouparoo/ui-components/components/record/list";
 import PageHeader from "@grouparoo/ui-components/components/pageHeader";
 import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
 import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
-import PropertyTabs from "@grouparoo/ui-components/components/tabs/property";
 import { Models } from "@grouparoo/ui-components/utils/apiData";
 import ModelBadge from "@grouparoo/ui-components/components/badges/modelBadge";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -20,16 +21,17 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: {property.key} Runs</title>
+        <title>Grouparoo: {property.key} Records</title>
       </Head>
 
       <PropertyTabs property={property} source={source} />
 
-      <RunsList
+      <RecordsList
+        {...props}
         header={
           <PageHeader
             icon={source.app.icon}
-            title={`${property.key} - Runs`}
+            title={`${property.key} - Records`}
             badges={[
               <LockedBadge key="header-badge-1" object={property} />,
               <StateBadge key="header-badge-2" state={property.state} />,
@@ -41,17 +43,23 @@ export default function Page(props) {
             ]}
           />
         }
-        {...props}
+        searchKey={property.key}
+        searchValue="%"
       />
     </>
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { id } = ctx.query;
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const { propertyId } = ctx.query;
   const { execApi } = UseApi(ctx);
-  const { property } = await execApi("get", `/property/${id}`);
+  const { property } = await execApi("get", `/property/${propertyId}`);
   const { source } = await execApi("get", `/source/${property.sourceId}`);
-  const runsListInitialProps = await RunsList.hydrate(ctx);
-  return { property, source, ...runsListInitialProps };
+  const recordListInitialProps = await RecordsList.hydrate(
+    ctx,
+    property.key,
+    "%"
+  );
+
+  return { property, source, ...recordListInitialProps };
 };

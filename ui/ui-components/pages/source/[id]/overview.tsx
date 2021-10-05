@@ -88,8 +88,8 @@ export default function Page({
                 <tr key={`rule-${rule.id}`}>
                   <td>
                     <Link
-                      href="/property/[id]/edit"
-                      as={`/property/${rule.id}/edit`}
+                      href="/model/[modelId]/property/[propertyId]/edit"
+                      as={`/model/${source.modelId}/property/${rule.id}/edit`}
                     >
                       <a>
                         <strong>

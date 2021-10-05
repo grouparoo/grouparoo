@@ -1,25 +1,26 @@
 import { useState, useEffect, Fragment } from "react";
-import { UseApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../../../hooks/useApi";
 import { Row, Col, Form, Table, Badge, Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Loader from "../../../components/loader";
-import PageHeader from "../../../components/pageHeader";
-import StateBadge from "../../../components/badges/stateBadge";
-import LockedBadge from "../../../components/badges/lockedBadge";
-import RecordPreview from "../../../components/property/recordPreview";
+import Loader from "../../../../../components/loader";
+import PageHeader from "../../../../../components/pageHeader";
+import StateBadge from "../../../../../components/badges/stateBadge";
+import LockedBadge from "../../../../../components/badges/lockedBadge";
+import RecordPreview from "../../../../../components/property/recordPreview";
 import { Typeahead } from "react-bootstrap-typeahead";
-import DatePicker from "../../../components/datePicker";
-import LoadingButton from "../../../components/loadingButton";
+import DatePicker from "../../../../../components/datePicker";
+import LoadingButton from "../../../../../components/loadingButton";
 import Head from "next/head";
-import PropertyTabs from "../../../components/tabs/property";
-import { Models, Actions } from "../../../utils/apiData";
-import { filtersAreEqual } from "../../../utils/filtersAreEqual";
-import { makeLocal } from "../../../utils/makeLocal";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
-import { PropertiesHandler } from "../../../utils/propertiesHandler";
-import ModelBadge from "../../../components/badges/modelBadge";
+import PropertyTabs from "../../../../../components/tabs/property";
+import { Models, Actions } from "../../../../../utils/apiData";
+import { filtersAreEqual } from "../../../../../utils/filtersAreEqual";
+import { makeLocal } from "../../../../../utils/makeLocal";
+import { ErrorHandler } from "../../../../../utils/errorHandler";
+import { SuccessHandler } from "../../../../../utils/successHandler";
+import { PropertiesHandler } from "../../../../../utils/propertiesHandler";
+import ModelBadge from "../../../../../components/badges/modelBadge";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -57,7 +58,7 @@ export default function Page(props) {
   const sleep = debounceCounter === 0 ? 0 : 500; // we only want to make one request every 1/2 second, so wait for more input
   let timer;
 
-  const { id } = router.query;
+  const { propertyId } = router.query;
   const source = sources.find((s) => s.id === property.sourceId);
 
   if (hydrationError) errorHandler.set({ error: hydrationError });
@@ -79,7 +80,7 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.PropertyEdit = await execApi(
       "put",
-      `/property/${id}`,
+      `/property/${propertyId}`,
       Object.assign({}, property, { filters: localFilters, state: "ready" })
     );
     if (response?.property) {
@@ -106,7 +107,7 @@ export default function Page(props) {
       setLoading(true);
       const { success }: Actions.PropertyDestroy = await execApi(
         "delete",
-        `/property/${id}`
+        `/property/${propertyId}`
       );
       setLoading(false);
       if (success) {
@@ -122,7 +123,7 @@ export default function Page(props) {
 
     timer = setTimeout(async () => {
       const pluginOptionsResponse: Actions.PropertyPluginOptions =
-        await execApi("get", `/property/${id}/pluginOptions`, {
+        await execApi("get", `/property/${propertyId}/pluginOptions`, {
           options: property.options,
         });
       // setLoading(false);
@@ -708,8 +709,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { id } = ctx.query;
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const { propertyId } = ctx.query;
   const { execApi } = UseApi(ctx);
 
   const { properties } = await execApi("get", `/properties`, {
@@ -724,18 +725,18 @@ Page.getInitialProps = async (ctx) => {
   let hydrationError: Error;
 
   try {
-    const getResponse = await execApi("get", `/property/${id}`);
+    const getResponse = await execApi("get", `/property/${propertyId}`);
     property = getResponse.property;
 
     const pluginOptionsResponse = await execApi(
       "get",
-      `/property/${id}/pluginOptions`
+      `/property/${propertyId}/pluginOptions`
     );
     pluginOptions = pluginOptionsResponse.pluginOptions;
 
     const filterResponse = await execApi(
       "get",
-      `/property/${id}/filterOptions`
+      `/property/${propertyId}/filterOptions`
     );
     filterOptions = filterResponse.options;
   } catch (error) {
