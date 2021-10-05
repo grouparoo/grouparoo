@@ -107,6 +107,11 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       });
       await recordProperty.update({ state: "pending" });
 
+      await RecordProperty.update(
+        { startedAt: null },
+        { where: { recordId: record.id } }
+      );
+
       await specHelper.runTask("recordProperty:importRecordProperties", {
         recordIds: [record.id],
         propertyIds: [recordProperty.propertyId],
@@ -116,6 +121,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       await recordProperty.reload();
       expect(recordProperty.state).toBe("ready");
       expect(recordProperty.rawValue).toBe(`1`);
+      expect(recordProperty.startedAt).toBe(null);
       await record.destroy();
     });
 
@@ -132,7 +138,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       const recordProperty = await RecordProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
-      await recordProperty.update({ state: "pending" });
+      await recordProperty.update({ state: "pending", startedAt: new Date() });
 
       const userIdRecordProperty = await RecordProperty.findOne({
         where: {
@@ -151,6 +157,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       await recordProperty.reload();
       expect(recordProperty.state).toBe("pending");
       expect(recordProperty.rawValue).toBe(`old@example.com`);
+      expect(recordProperty.startedAt).not.toBe(null);
 
       // sendAt is slightly in the future from (now - 5 minutes) to try again soon
       expect(recordProperty.startedAt.getTime()).toBeGreaterThan(
@@ -175,7 +182,10 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       const emailRecordProperty = await RecordProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
-      await emailRecordProperty.update({ state: "pending" });
+      await emailRecordProperty.update({
+        state: "pending",
+        startedAt: new Date(),
+      });
 
       const userIdRecordProperty = await RecordProperty.findOne({
         where: {
@@ -197,10 +207,13 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       await emailRecordProperty.reload();
       expect(emailRecordProperty.state).toBe("ready");
       expect(emailRecordProperty.rawValue).toBe(`${record.id}@example.com`);
+      expect(emailRecordProperty.startedAt).toBe(null);
 
       await userIdRecordProperty.reload();
       expect(userIdRecordProperty.state).toBe("ready");
       expect(userIdRecordProperty.rawValue).toBe(`2`);
+      expect(emailRecordProperty.startedAt).toBe(null);
+
       await record.destroy();
     });
 
@@ -217,7 +230,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       const recordProperty = await RecordProperty.findOne({
         where: { rawValue: "99" },
       });
-      await recordProperty.update({ state: "pending" });
+      await recordProperty.update({ state: "pending", startedAt: new Date() });
 
       await specHelper.runTask("recordProperty:importRecordProperties", {
         recordIds: [record.id],
@@ -228,6 +241,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       await recordProperty.reload();
       expect(recordProperty.state).toBe("ready");
       expect(recordProperty.rawValue).toBe(null);
+      expect(recordProperty.startedAt).toBe(null);
       await record.destroy();
 
       spy.mockRestore();
@@ -268,11 +282,11 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       const recordPropertyA = await RecordProperty.findOne({
         where: { rawValue: "a@example.com" },
       });
-      await recordPropertyA.update({ state: "pending" });
+      await recordPropertyA.update({ state: "pending", startedAt: new Date() });
       const recordPropertyB = await RecordProperty.findOne({
         where: { rawValue: "b@example.com" },
       });
-      await recordPropertyB.update({ state: "pending" });
+      await recordPropertyB.update({ state: "pending", startedAt: new Date() });
 
       await specHelper.runTask("recordProperty:importRecordProperties", {
         recordIds: [recordA.id, recordB.id],
@@ -283,11 +297,13 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       expect(recordPropertyA.state).toBe("ready");
       expect(recordPropertyA.rawValue).toBe(null);
       expect(recordPropertyA.invalidValue).toBe("not-an-email");
+      expect(recordPropertyA.startedAt).toBe(null);
 
       await recordPropertyB.reload();
       expect(recordPropertyB.state).toBe("ready");
       expect(recordPropertyB.rawValue).toBe(null);
       expect(recordPropertyB.invalidValue).toBe("not-an-email");
+      expect(recordPropertyB.startedAt).toBe(null);
 
       await recordA.destroy();
       await recordB.destroy();
@@ -311,11 +327,11 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       const recordPropertyA = await RecordProperty.findOne({
         where: { rawValue: "201" },
       });
-      await recordPropertyA.update({ state: "pending" });
+      await recordPropertyA.update({ state: "pending", startedAt: new Date() });
       const recordPropertyB = await RecordProperty.findOne({
         where: { rawValue: "202" },
       });
-      await recordPropertyB.update({ state: "pending" });
+      await recordPropertyB.update({ state: "pending", startedAt: new Date() });
 
       await specHelper.runTask("recordProperty:importRecordProperties", {
         recordIds: [recordA.id, recordB.id],
@@ -325,7 +341,9 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       await recordPropertyA.reload();
       await recordPropertyB.reload();
       expect(recordPropertyA.state).toBe("pending");
+      expect(recordPropertyA.startedAt).not.toBe(null);
       expect(recordPropertyB.state).toBe("pending");
+      expect(recordPropertyB.startedAt).not.toBe(null);
 
       const foundTasks = await specHelper.findEnqueuedTasks(
         "recordProperty:importRecordProperty"
