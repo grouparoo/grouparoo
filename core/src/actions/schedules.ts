@@ -32,7 +32,7 @@ export class SchedulesList extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const where = {};
-    const sourceIds = [];
+    const sourceIds: string[] = [];
     if (params.state) where["state"] = params.state;
 
     if (params.modelId) {

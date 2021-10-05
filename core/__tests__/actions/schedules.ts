@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper, api } from "actionhero";
-import { GrouparooModel, Run, Schedule, Source } from "../../src";
+import { GrouparooModel, Run, Source } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   ScheduleCreate,
@@ -136,8 +136,6 @@ describe("actions/schedules", () => {
             "schedules:list",
             connection
           );
-
-        console.log(JSON.stringify(error));
 
         expect(error).toBeUndefined();
         expect(schedules.length).toBe(1);
