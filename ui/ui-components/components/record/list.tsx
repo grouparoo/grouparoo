@@ -51,12 +51,10 @@ export default function RecordsList(props) {
   const states = ["pending", "ready", "invalid"];
 
   let groupId: string;
-  let modelId: string;
+  let modelId = router.query.modelId;
   if (router.query.id) {
     if (router.pathname.match("/group/")) {
       groupId = router.query.id.toString();
-    } else if (router.pathname.match("/model/")) {
-      modelId = router.query.id.toString();
     }
   }
 
@@ -388,16 +386,21 @@ RecordsList.hydrate = async (
   _searchValue?: string
 ) => {
   const { execApi } = UseApi(ctx);
-  const { id, limit, offset, state, searchKey, searchValue, caseSensitive } =
-    ctx.query;
+  const {
+    id,
+    modelId,
+    limit,
+    offset,
+    state,
+    searchKey,
+    searchValue,
+    caseSensitive,
+  } = ctx.query;
 
   let groupId: string;
-  let modelId: string;
   if (id) {
     if (ctx.pathname.match("/group/")) {
       groupId = id as string;
-    } else if (ctx.pathname.match("/model/")) {
-      modelId = id as string;
     }
   }
   const { records, total } = await execApi("get", `/records`, {
