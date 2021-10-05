@@ -83,7 +83,9 @@ export namespace DestinationOps {
       }
     } else if (collection === "model") {
       const model = await GrouparooModel.findById(
-        collectionId ?? destination.modelId
+        !collectionId || collectionId === NullKey
+          ? destination.modelId
+          : collectionId
       );
       if (model.id !== destination.modelId) {
         throw new Error(
