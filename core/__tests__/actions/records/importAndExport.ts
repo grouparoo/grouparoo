@@ -64,7 +64,7 @@ describe("actions/records", () => {
       await group.update({ state: "ready" });
 
       destination = await helper.factories.destination();
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
       await destination.update({ state: "ready" });
     });
 
