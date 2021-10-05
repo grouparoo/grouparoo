@@ -18,7 +18,7 @@ require("pg").defaults.parseInt8 = true;
 
 export const DEFAULT = {
   sequelize: (config) => {
-    const env = process.env.NODE_ENV;
+    const env = process.env.NODE_ENV ?? "development";
     let storage: string; //only for sqlite
     let dialect = process.env.DB_DIALECT;
     let host = process.env.DB_HOST;
