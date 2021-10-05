@@ -1,3 +1,4 @@
+import os from "os";
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { ConfigUserCreate } from "../../src/actions/config";
@@ -79,7 +80,11 @@ describe("actions/navigation", () => {
         password: "P@ssw0rd!",
         email: "peach@example.com",
       });
+
       process.env.GROUPAROO_RUN_MODE = "cli:config";
+      process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
+        process.env.JEST_WORKER_ID
+      }/config/navigation`;
     });
 
     test("the navigation includes Models and Apps if authenticated in config mode", async () => {
@@ -108,6 +113,7 @@ describe("actions/navigation", () => {
       expect(navigation.navigationItems[0].title).toEqual("Apps");
       expect(navigation.navigationItems[1].title).toEqual("Models");
     });
+
     test("the navigation does not include Platform items if in config mode", async () => {
       const connection = await specHelper.buildConnection();
       connection.params = {
