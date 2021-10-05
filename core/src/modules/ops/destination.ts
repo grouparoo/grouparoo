@@ -58,7 +58,7 @@ export namespace DestinationOps {
 
   export async function updateTracking(
     destination: Destination,
-    collection: Destination["collection"] | typeof APIData.nullKey,
+    collection: Destination["collection"] | typeof APIData.NullKey,
     collectionId?: string
   ) {
     let oldRun: Run;
@@ -74,7 +74,7 @@ export namespace DestinationOps {
     if (
       collection === "group" &&
       collectionId &&
-      collectionId !== APIData.nullKey
+      collectionId !== APIData.NullKey
     ) {
       const group = await Group.findById(collectionId);
       if (group.state === "deleted") {
@@ -98,9 +98,9 @@ export namespace DestinationOps {
 
     oldRun = await runDestinationCollection(destination, false); // old collection
     await destination.update({
-      collection: collection === APIData.nullKey ? null : collection,
+      collection: collection === APIData.NullKey ? null : collection,
       groupId:
-        collectionId === APIData.nullKey || collection !== "group"
+        collectionId === APIData.NullKey || collection !== "group"
           ? null
           : collectionId,
     });

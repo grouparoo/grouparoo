@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
 import { cache } from "actionhero";
-import { GrouparooModel } from "../../..";
 import {
   App,
   Destination,
@@ -9,6 +8,7 @@ import {
   Group,
   GrouparooModel,
   Log,
+  GrouparooModel,
   Mapping,
   Option,
   Run,

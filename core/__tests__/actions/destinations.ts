@@ -24,7 +24,6 @@ import {
   DestinationView,
 } from "../../src/actions/destinations";
 import { SessionCreate } from "../../src/actions/session";
-import { APIData } from "../../src/modules/apiData";
 
 describe("actions/destinations", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -684,7 +683,7 @@ describe("actions/destinations", () => {
       connection.params = {
         csrfToken,
         id,
-        groupId: APIData.nullKey,
+        groupId: "_none",
       };
       const { destination, error } =
         await specHelper.runAction<DestinationEdit>(

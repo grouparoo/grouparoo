@@ -740,4 +740,4 @@ export namespace Actions {
   >;
 }
 
-export const nullKey = "_none" as const;
+export const NullKey = "_none" as const;

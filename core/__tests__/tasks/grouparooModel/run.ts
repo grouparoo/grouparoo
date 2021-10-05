@@ -8,7 +8,7 @@ import {
   Run,
   GrouparooModel,
   RecordProperty,
-} from "../../..";
+} from "../../../src";
 
 describe("tasks/grouparooModel:run", () => {
   helper.grouparooTestServer({

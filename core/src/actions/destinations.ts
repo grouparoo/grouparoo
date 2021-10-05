@@ -360,7 +360,7 @@ export class DestinationRecordPreview extends AuthenticatedAction {
     let record: GrouparooRecord;
     if (params.recordId) {
       record = await GrouparooRecord.findById(params.recordId);
-    } else if (params.groupId && params.groupId !== APIData.nullKey) {
+    } else if (params.groupId && params.groupId !== APIData.NullKey) {
       const group = await Group.findById(params.groupId);
       const groupMember = await GroupMember.findOne({
         where: { groupId: group.id },

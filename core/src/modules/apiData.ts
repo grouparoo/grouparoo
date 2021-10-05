@@ -55,5 +55,5 @@ export namespace APIData {
     else throw new Error(`${date} is not a date`);
   }
 
-  export const nullKey = "_none" as const;
+  export const NullKey = "_none" as const;
 }
