@@ -8,9 +8,13 @@ import {
   DataType,
   BeforeSave,
   BeforeDestroy,
+  DefaultScope,
+  Default,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
+import { Source } from "./Source";
 import { ModelConfigurationObject } from "../classes/codeConfig";
+import { StateMachine } from "./../modules/stateMachine";
 import { LoggedModel } from "../classes/loggedModel";
 import { APIData } from "../modules/apiData";
 import { ConfigWriter } from "../modules/configWriter";
@@ -19,6 +23,25 @@ import { LockableHelper } from "../modules/lockableHelper";
 export const ModelTypes = ["profile"] as const;
 export type ModelType = typeof ModelTypes[number];
 
+const STATES = ["draft", "ready", "deleted"] as const;
+const STATE_TRANSITIONS = [
+  {
+    from: "draft",
+    to: "ready",
+    checks: [],
+  },
+  { from: "draft", to: "deleted", checks: [] },
+  { from: "ready", to: "deleted", checks: [] },
+  {
+    from: "deleted",
+    to: "ready",
+    checks: [],
+  },
+];
+
+@DefaultScope(() => ({
+  where: { state: "ready" },
+}))
 @Table({ tableName: "models", paranoid: false })
 export class GrouparooModel extends LoggedModel<GrouparooModel> {
   idPrefix() {
@@ -46,6 +69,11 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
   @Column
   locked: string;
 
+  @AllowNull(false)
+  @Default("ready")
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
+
   getIcon() {
     switch (this.type) {
       case "profile":
@@ -60,6 +88,7 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
       id: this.id,
       name: this.name,
       type: this.type,
+      state: this.state,
       locked: this.locked,
       icon: this.getIcon(),
       createdAt: APIData.formatDate(this.createdAt),
@@ -99,7 +128,10 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
       );
     }
   }
-
+  @BeforeSave
+  static async updateState(instance: GrouparooModel) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
   @BeforeSave
   static async noUpdateIfLocked(instance) {
     await LockableHelper.beforeSave(instance);
@@ -108,5 +140,17 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
   @BeforeDestroy
   static async noDestroyIfLocked(instance) {
     await LockableHelper.beforeDestroy(instance);
+  }
+
+  @BeforeDestroy
+  static async ensureNotInUse(instance: GrouparooModel) {
+    const sources = await Source.scope(null).findAll({
+      where: { modelId: instance.id },
+    });
+    if (sources.length > 0) {
+      throw new Error(
+        `cannot delete this model, source ${sources[0].id} relies on it`
+      );
+    }
   }
 }
