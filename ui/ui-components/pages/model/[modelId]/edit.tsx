@@ -26,7 +26,7 @@ export default function Page(props) {
   const { execApi } = UseApi(props, errorHandler);
   const [model, setModel] = useState<Models.GrouparooModelType>(props.model);
   const [loading, setLoading] = useState(false);
-  const { id } = router.query;
+  const { modelId } = router.query;
 
   async function edit(event) {
     event.preventDefault();
@@ -34,7 +34,7 @@ export default function Page(props) {
 
     const response: Actions.ModelEdit = await execApi(
       "put",
-      `/model/${id}`,
+      `/model/${modelId}`,
       Object.assign({}, model)
     );
     if (response?.model) {
@@ -51,7 +51,7 @@ export default function Page(props) {
       setLoading(true);
       const response: Actions.ModelDestroy = await execApi(
         "delete",
-        `/model/${id}`
+        `/model/${modelId}`
       );
       if (response?.success) {
         successHandler.set({ message: "Model Deleted" });
@@ -141,9 +141,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { id } = ctx.query;
+  const { modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
-  const { model } = await execApi("get", `/model/${id}`);
+  const { model } = await execApi("get", `/model/${modelId}`);
   const { types } = await execApi("get", `/modelOptions`);
   return { model, types };
 };

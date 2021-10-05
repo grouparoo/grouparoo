@@ -142,7 +142,7 @@ export default function RecordPreview(props) {
         ) : (
           <>
             <Card.Link
-              href={`/record/${record.id}/edit`}
+              href={`/model/${record.modelId}/record/${record.id}/edit`}
               style={{ color: "white" }}
             >
               View Record

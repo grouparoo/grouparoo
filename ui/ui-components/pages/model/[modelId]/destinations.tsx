@@ -30,12 +30,7 @@ export default function Page(props) {
   const limit = 100;
   const { offset, setOffset } = useOffset();
 
-  let modelId: string;
-  if (router.query.id) {
-    if (router.pathname.match("/model/")) {
-      modelId = router.query.id.toString();
-    }
-  }
+  const { modelId } = router.query;
 
   useSecondaryEffect(() => {
     load();
@@ -200,13 +195,8 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { id, limit, offset } = ctx.query;
-  let modelId: string;
-  if (id) {
-    if (ctx.pathname.match("/model/")) {
-      modelId = id as string;
-    }
-  }
+  const { modelId, limit, offset } = ctx.query;
+
   const { destinations, total } = await execApi("get", `/destinations`, {
     limit,
     offset,

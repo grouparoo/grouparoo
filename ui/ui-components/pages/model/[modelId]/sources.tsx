@@ -29,17 +29,11 @@ export default function Page(props) {
     props.runs
   );
   const [total, setTotal] = useState(props.total);
+  const { modelId } = router.query;
 
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
-
-  let modelId: string;
-  if (router.query.id) {
-    if (router.pathname.match("/model/")) {
-      modelId = router.query.id.toString();
-    }
-  }
 
   useSecondaryEffect(() => {
     load();
@@ -243,13 +237,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { id, limit, offset } = ctx.query;
-  let modelId: string;
-  if (id) {
-    if (ctx.pathname.match("/model/")) {
-      modelId = id as string;
-    }
-  }
+  const { modelId, limit, offset } = ctx.query;
   const { sources, total } = await execApi("get", `/sources`, {
     limit,
     offset,

@@ -27,6 +27,7 @@ export default function Page(props) {
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [examples, setExamples] = useState(props.examples);
+  const { modelId } = router.query;
 
   const [properties, setProperties] = useState<Models.PropertyType[]>(
     props.properties
@@ -36,13 +37,6 @@ export default function Page(props) {
   const limit = 1000;
   const { offset, setOffset } = useOffset();
   const [total, setTotal] = useState(props.total);
-
-  let modelId: string;
-  if (router.query.id) {
-    if (router.pathname.match("/model/")) {
-      modelId = router.query.id.toString();
-    }
-  }
 
   useSecondaryEffect(() => {
     updateURLParams(router, { offset });
@@ -208,14 +202,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
-  const { limit, offset, id } = ctx.query;
-
-  let modelId: string;
-  if (id) {
-    if (ctx.pathname.match("/model/")) {
-      modelId = id as string;
-    }
-  }
+  const { limit, offset, modelId } = ctx.query;
 
   const { properties, total, examples } = await execApi("get", `/properties`, {
     includeExamples: true,

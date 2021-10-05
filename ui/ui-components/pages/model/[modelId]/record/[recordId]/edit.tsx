@@ -1,30 +1,23 @@
 import Head from "next/head";
-import EnterpriseLink from "../../../components/enterpriseLink";
-import RecordTabs from "../../../components/tabs/record";
+import EnterpriseLink from "../../../../../components/enterpriseLink";
+import RecordTabs from "../../../../../components/tabs/record";
 import { useState, useEffect } from "react";
-import { UseApi } from "../../../hooks/useApi";
-import {
-  Row,
-  Col,
-  Form,
-  ListGroup,
-  Alert,
-  Button,
-  ButtonGroup,
-} from "react-bootstrap";
-import LoadingButton from "../../../components/loadingButton";
+import { UseApi } from "../../../../../hooks/useApi";
+import { Row, Col, Form, ListGroup, Alert, Button } from "react-bootstrap";
+import LoadingButton from "../../../../../components/loadingButton";
 import { useRouter } from "next/router";
-import LoadingTable from "../../../components/loadingTable";
-import { getRecordPageTitle } from "../../../components/record/getRecordDisplayName";
-import ArrayRecordPropertyList from "../../../components/record/arrayRecordPropertyList";
-import { Models, Actions } from "../../../utils/apiData";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
-import { RecordHandler } from "../../../utils/recordHandler";
-import StateBadge from "../../../components/badges/stateBadge";
-import { formatTimestamp } from "../../../utils/formatTimestamp";
-import ModelBadge from "../../../components/badges/modelBadge";
-import PageHeader from "../../../components/pageHeader";
+import LoadingTable from "../../../../../components/loadingTable";
+import { getRecordPageTitle } from "../../../../../components/record/getRecordDisplayName";
+import ArrayRecordPropertyList from "../../../../../components/record/arrayRecordPropertyList";
+import { Models, Actions } from "../../../../../utils/apiData";
+import { ErrorHandler } from "../../../../../utils/errorHandler";
+import { SuccessHandler } from "../../../../../utils/successHandler";
+import { RecordHandler } from "../../../../../utils/recordHandler";
+import StateBadge from "../../../../../components/badges/stateBadge";
+import { formatTimestamp } from "../../../../../utils/formatTimestamp";
+import ModelBadge from "../../../../../components/badges/modelBadge";
+import PageHeader from "../../../../../components/pageHeader";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -420,10 +413,10 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { id } = ctx.query;
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const { recordId } = ctx.query;
   const { execApi } = UseApi(ctx);
-  const { record, groups } = await execApi("get", `/record/${id}`);
+  const { record, groups } = await execApi("get", `/record/${recordId}`);
   const { properties } = await execApi("get", `/properties`, {
     modelId: record?.modelId,
   });

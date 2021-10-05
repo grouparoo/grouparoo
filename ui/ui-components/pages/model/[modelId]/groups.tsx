@@ -22,17 +22,11 @@ export default function Page(props) {
   const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);
   const [total, setTotal] = useState<number>(props.total);
   const [loading, setLoading] = useState(false);
+  const { modelId } = router.query;
 
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
-
-  let modelId: string;
-  if (router.query.id) {
-    if (router.pathname.match("/model/")) {
-      modelId = router.query.id.toString();
-    }
-  }
 
   useSecondaryEffect(() => {
     load();
@@ -157,13 +151,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
-  const { id, limit, offset } = ctx.query;
-  let modelId: string;
-  if (id) {
-    if (ctx.pathname.match("/model/")) {
-      modelId = id as string;
-    }
-  }
+  const { modelId, limit, offset } = ctx.query;
   const { groups, total } = await execApi("get", `/groups`, {
     limit,
     offset,

@@ -19,9 +19,16 @@ export default function GrouparooTabs({
   if (!router.pathname) return null;
 
   const parts = router.asPath.split("/");
-  const topic = parts[1];
-  const id = parts[2];
-  const verb = parts[3].split("?")[0];
+  const scope = parts.slice(0, parts.length - 3).join("/");
+  const topic = parts[parts.length - 3];
+  const id = parts[parts.length - 2];
+  const verb = parts[parts.length - 1].split("?")[0];
+
+  const pathnameParts = router.pathname.split("/");
+  const pathnameScope = pathnameParts
+    .slice(0, pathnameParts.length - 3)
+    .join("/");
+  const pathnameId = pathnameParts[pathnameParts.length - 2];
 
   if (!defaultTab) defaultTab = tabs[0];
 
@@ -29,14 +36,14 @@ export default function GrouparooTabs({
     <>
       <Breadcrumb>
         <li className="breadcrumb-item">
-          <Link href={`/${plural(topic)}`}>
+          <Link href={`${scope}/${plural(topic)}`}>
             <a>{capitalize(plural(topic))}</a>
           </Link>
         </li>
         <li className="breadcrumb-item">
           <Link
-            href={`/${topic}/[id]/${defaultTab}`}
-            as={`/${topic}/${id}/${defaultTab}`}
+            href={`${pathnameScope}/${topic}/${pathnameId}/${defaultTab}`}
+            as={`${scope}/${topic}/${id}/${defaultTab}`}
           >
             <a>
               {name !== ""
@@ -56,7 +63,10 @@ export default function GrouparooTabs({
         activeKey={verb}
         onSelect={(k) => {
           if (k !== verb) {
-            router.push(`/${topic}/[id]/${k}`, `/${topic}/${id}/${k}`);
+            router.push(
+              `${pathnameScope}/${topic}/${pathnameId}/${k}`,
+              `${scope}/${topic}/${id}/${k}`
+            );
           }
         }}
       >

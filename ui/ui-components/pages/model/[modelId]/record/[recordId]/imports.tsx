@@ -1,15 +1,16 @@
 import Head from "next/head";
-import { UseApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../../../hooks/useApi";
 import {
   getRecordDisplayName,
   getRecordPageTitle,
-} from "../../../components/record/getRecordDisplayName";
-import RecordTabs from "../../../components/tabs/record";
-import ImportList from "../../../components/import/list";
-import PageHeader from "../../../components/pageHeader";
-import StateBadge from "../../../components/badges/stateBadge";
-import ModelBadge from "../../../components/badges/modelBadge";
-import { Models } from "../../../utils/apiData";
+} from "../../../../../components/record/getRecordDisplayName";
+import RecordTabs from "../../../../../components/tabs/record";
+import ImportList from "../../../../../components/import/list";
+import PageHeader from "../../../../../components/pageHeader";
+import StateBadge from "../../../../../components/badges/stateBadge";
+import ModelBadge from "../../../../../components/badges/modelBadge";
+import { Models } from "../../../../../utils/apiData";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -59,10 +60,10 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
-  const { id } = ctx.query;
-  const { record } = await execApi("get", `/record/${id}`);
+  const { recordId } = ctx.query;
+  const { record } = await execApi("get", `/record/${recordId}`);
   const { properties } = await execApi("get", `/properties`);
   const importListInitialProps = await ImportList.hydrate(ctx);
   return { record, properties, ...importListInitialProps };

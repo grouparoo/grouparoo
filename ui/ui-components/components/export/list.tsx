@@ -41,13 +41,11 @@ export default function ExportsList(props) {
   const { offset, setOffset } = useOffset();
   const [state, setState] = useState(router.query.state?.toString() || "all");
 
-  let recordId: string;
+  const recordId = router.query.recordId;
   let exportProcessorId: string;
   let destinationId: string;
   if (router.query.id) {
-    if (router.pathname.match("/record/")) {
-      recordId = router.query.id.toString();
-    } else if (router.pathname.match("/exportProcessor/")) {
+    if (router.pathname.match("/exportProcessor/")) {
       exportProcessorId = router.query.id.toString();
     } else {
       destinationId = router.query.id.toString();
@@ -176,7 +174,7 @@ export default function ExportsList(props) {
                     ) : null}
                     Record:{" "}
                     <Link
-                      href="/record/[id]/edit"
+                      href="/record/[id]/[...verb]"
                       as={`/record/${_export.recordId}/edit`}
                     >
                       <a>{_export.recordId}</a>
@@ -261,16 +259,13 @@ export default function ExportsList(props) {
 
 ExportsList.hydrate = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { id, limit, offset, state } = ctx.query;
+  const { id, limit, offset, state, recordId } = ctx.query;
   const { groups } = await execApi("get", `/groups`);
 
-  let recordId: string;
   let exportProcessorId: string;
   let destinationId: string;
   if (id) {
-    if (ctx.pathname.match("/record/")) {
-      recordId = id;
-    } else if (ctx.pathname.match("/exportProcessor/")) {
+    if (ctx.pathname.match("/exportProcessor/")) {
       exportProcessorId = id;
     } else {
       destinationId = id;

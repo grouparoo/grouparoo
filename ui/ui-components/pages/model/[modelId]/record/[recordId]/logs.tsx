@@ -1,15 +1,16 @@
 import Head from "next/head";
-import { UseApi } from "../../../hooks/useApi";
-import ExportsList from "../../../components/export/list";
+import { UseApi } from "../../../../../hooks/useApi";
+import LogsList from "../../../../../components/log/list";
+import RecordTabs from "../../../../../components/tabs/record";
 import {
   getRecordDisplayName,
   getRecordPageTitle,
-} from "../../../components/record/getRecordDisplayName";
-import RecordTabs from "../../../components/tabs/record";
-import { Models } from "../../../utils/apiData";
-import PageHeader from "../../../components/pageHeader";
-import ModelBadge from "../../../components/badges/modelBadge";
-import StateBadge from "../../../components/badges/stateBadge";
+} from "../../../../../components/record/getRecordDisplayName";
+import { Models } from "../../../../../utils/apiData";
+import PageHeader from "../../../../../components/pageHeader";
+import StateBadge from "../../../../../components/badges/stateBadge";
+import ModelBadge from "../../../../../components/badges/modelBadge";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -38,10 +39,10 @@ export default function Page(props) {
 
       <RecordTabs record={record} />
 
-      <ExportsList
+      <LogsList
         header={
           <PageHeader
-            title={`${getRecordDisplayName(record)} - Exports`}
+            title={`${getRecordDisplayName(record)} - Logs`}
             iconType="grouparooRecord"
             email={email}
             badges={[
@@ -59,11 +60,11 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const { recordId } = ctx.query;
   const { execApi } = UseApi(ctx);
-  const { id } = ctx.query;
-  const { record } = await execApi("get", `/record/${id}`);
+  const { record } = await execApi("get", `/record/${recordId}`);
   const { properties } = await execApi("get", `/properties`);
-  const exportListInitialProps = await ExportsList.hydrate(ctx);
-  return { record, properties, ...exportListInitialProps };
+  const logListInitialProps = await LogsList.hydrate(ctx);
+  return { record, properties, ...logListInitialProps };
 };

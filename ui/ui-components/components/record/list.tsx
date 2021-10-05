@@ -292,8 +292,8 @@ export default function RecordsList(props) {
               <tr key={`record-${record.id}`}>
                 <td>
                   <Link
-                    href="/record/[id]/edit"
-                    as={`/record/${record.id}/edit`}
+                    href="/model/[modelId]/record/[recordId]/edit"
+                    as={`/model/${record.modelId}/record/${record.id}/edit`}
                   >
                     <a className="text-muted">
                       {identifyingRecordProperty?.key &&

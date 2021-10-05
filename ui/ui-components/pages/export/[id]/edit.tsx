@@ -58,7 +58,7 @@ export default function Page({
             ) : null}
             Record:{" "}
             <Link
-              href="/record/[id]/edit"
+              href="/record/[id]/[...verb]"
               as={`/record/${_export.recordId}/edit`}
             >
               <a>{_export.recordId}</a>

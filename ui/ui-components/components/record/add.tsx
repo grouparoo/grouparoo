@@ -11,8 +11,12 @@ export default function AddRecord(props) {
 
   async function create() {
     setLoading(true);
-    const response: Actions.RecordCreate = await execApi("post", `/record`);
-    router.push("/record/[id]/edit", `/record/${response.record.id}/edit`);
+
+    const { record }: Actions.RecordCreate = await execApi("post", `/record`);
+    router.push(
+      "/model/[modelId]/record/[recordId]/edit",
+      `/model/${record.modelId}/record/${record.id}/edit`
+    );
   }
 
   return (
