@@ -7,6 +7,12 @@ export default {
   ) => {
     await queryInterface.addColumn("records", "invalid", {
       type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    });
+
+    await queryInterface.changeColumn("records", "invalid", {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     });
   },

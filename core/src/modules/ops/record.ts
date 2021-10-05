@@ -982,7 +982,7 @@ export namespace RecordOps {
     }
 
     await GrouparooRecord.update(
-      { state: "ready" },
+      { state: "ready", invalid: false },
       {
         where: {
           id: { [Op.in]: records.map((p) => p.id) },
@@ -993,31 +993,18 @@ export namespace RecordOps {
 
     // Update records to invalid if any assocaited properties are invalid.
     await api.sequelize.query(`
-        UPDATE "records"
-        SET "invalid" = TRUE
-        FROM "recordProperties"
-        WHERE "records"."id" IN (${records.map((r) => `'${r.id}'`)})
-        AND "recordProperties"."invalidReason" IS NOT NULL
-        AND "records"."invalid" = FALSE;
-      `);
-
-    // Update records to valid if all assocaited properties are valid.
-    await api.sequelize.query(`
       UPDATE
         "records"
       SET
-        "invalid" = FALSE
+        "invalid" = TRUE
       WHERE
-        "records"."id" IN( SELECT DISTINCT
+        "records"."id" IN(
+          SELECT
             "recordProperties"."recordId" FROM "recordProperties"
-            INNER JOIN "records" AS "invalidRecords" ON "invalidRecords"."id" = "recordProperties"."recordId"
-              AND "invalidRecords"."id" IN(${records.map((r) => `'${r.id}'`)})
-              AND "invalidRecords"."invalid" = TRUE
-              AND "invalidRecords"."id" NOT IN(
-                SELECT
-                  "recordId" FROM "recordProperties"
-              WHERE
-                "invalidReason" IS NOT NULL));
+          WHERE
+            "recordProperties"."recordId" IN(${records.map((p) => `'${p.id}'`)})
+            AND "recordProperties"."invalidReason" IS NOT NULL)
+        AND "records"."invalid" = FALSE;
     `);
 
     await completeRecordImports(
