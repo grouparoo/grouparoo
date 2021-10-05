@@ -1003,8 +1003,7 @@ export namespace RecordOps {
             "recordProperties"."recordId" FROM "recordProperties"
           WHERE
             "recordProperties"."recordId" IN(${records.map((p) => `'${p.id}'`)})
-            AND "recordProperties"."invalidReason" IS NOT NULL)
-        AND "records"."invalid" = FALSE;
+            AND "recordProperties"."invalidReason" IS NOT NULL);
     `);
 
     await completeRecordImports(
