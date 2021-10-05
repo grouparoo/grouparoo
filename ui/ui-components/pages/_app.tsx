@@ -61,7 +61,7 @@ export default function GrouparooWebApp(props) {
         pathname: router.pathname,
         query: {
           ...router.query,
-          id: newModelId,
+          modelId: newModelId,
         },
       });
     } else {
@@ -118,7 +118,7 @@ GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
 
   let modelId: string;
   if (appContext.ctx.pathname.match("/model/")) {
-    modelId = appContext.ctx.query.id as string;
+    modelId = appContext.ctx.query.modelId as string;
   } else {
     const cookies = new Cookies(appContext.ctx.req?.headers.cookie);
     modelId = cookies.get("grouparooModelId");
