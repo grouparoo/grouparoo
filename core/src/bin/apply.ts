@@ -10,7 +10,6 @@ import { getConfigDir } from "../modules/pluginDetails";
 import pluralize from "pluralize";
 import { Migrations } from "ah-sequelize-plugin/dist/modules/migrations";
 import { SettingOps } from "../modules/ops/setting";
-import { ModelOps } from "../modules/ops/model";
 
 export class Apply extends CLI {
   constructor() {
@@ -51,7 +50,6 @@ export class Apply extends CLI {
         );
 
         await SettingOps.prepare();
-        await ModelOps.prepare();
 
         GrouparooCLI.logger.log(
           `Applying ${configObjects.length} ${pluralize(

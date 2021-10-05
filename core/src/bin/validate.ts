@@ -8,7 +8,6 @@ import {
 import { getConfigDir } from "../modules/pluginDetails";
 import pluralize from "pluralize";
 import { SettingOps } from "../modules/ops/setting";
-import { ModelOps } from "../modules/ops/model";
 
 export class Validate extends CLI {
   constructor() {
@@ -37,7 +36,6 @@ export class Validate extends CLI {
     GrouparooCLI.logCLI(this.name);
 
     await SettingOps.prepare();
-    await ModelOps.prepare();
 
     const configDir = await getConfigDir(true);
     let configObjects: AnyConfigurationObject[];
