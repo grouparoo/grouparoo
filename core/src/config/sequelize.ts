@@ -2,7 +2,7 @@ import fs from "fs";
 import { URL } from "url";
 import { join, isAbsolute } from "path";
 import { getParentPath, getPluginManifest } from "../modules/pluginDetails";
-import { log, env } from "actionhero";
+import { log } from "actionhero";
 
 import cls from "cls-hooked";
 import Sequelize from "sequelize";
@@ -18,6 +18,7 @@ require("pg").defaults.parseInt8 = true;
 
 export const DEFAULT = {
   sequelize: (config) => {
+    const env = process.env.NODE_ENV;
     let storage: string; //only for sqlite
     let dialect = process.env.DB_DIALECT;
     let host = process.env.DB_HOST;
