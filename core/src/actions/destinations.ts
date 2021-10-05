@@ -189,7 +189,7 @@ export class DestinationEdit extends AuthenticatedAction {
       );
     }
 
-    // do not set groupId or collection here, that's handled within the track/unTrack methods
+    // do not set groupId or collection here, that's handled within the updateTracking method
     await destination.update({
       name: params.name,
       type: params.type,

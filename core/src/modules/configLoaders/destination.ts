@@ -50,6 +50,7 @@ export async function loadDestination(
     group = await getParentByName(Group, configObject.groupId);
   }
 
+  // do not set groupId or collection here, that's handled within the updateTracking method
   await destination.update({
     name: configObject.name,
     type: configObject.type,
