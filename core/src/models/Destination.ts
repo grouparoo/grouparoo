@@ -755,14 +755,25 @@ export class Destination extends LoggedModel<Destination> {
   /**
    * Determine which destinations are interested in this record due to the groups they are tracking
    */
-  static async destinationsForGroups(
+  static async relevantFor(
+    record: GrouparooRecord,
     oldGroups: Group[] = [],
     newGroups: Group[] = []
   ) {
     const combinedGroupIds = [...oldGroups, ...newGroups].map((g) => g.id);
-    const relevantDestinations = await Destination.findAll({
-      where: { groupId: { [Op.in]: combinedGroupIds } },
-    });
+    const relevantDestinations =
+      combinedGroupIds.length > 0
+        ? await Destination.findAll({
+            where: {
+              [Op.or]: [
+                { collection: "model", modelId: record.modelId },
+                { collection: "group", groupId: { [Op.in]: combinedGroupIds } },
+              ],
+            },
+          })
+        : await Destination.findAll({
+            where: { collection: "model", modelId: record.modelId },
+          });
 
     return relevantDestinations;
   }

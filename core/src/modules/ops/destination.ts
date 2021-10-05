@@ -346,8 +346,15 @@ export namespace DestinationOps {
       include: [{ model: GroupMember, where: { recordId: record.id } }],
     });
 
-    if (!newGroups.map((g) => g.id).includes(destination.groupId)) {
-      toDelete = true;
+    // do we need to delete this record from the destination?
+    if (destination.collection === "group") {
+      if (!destination.groupId) {
+        toDelete = true;
+      } else if (!newGroups.map((g) => g.id).includes(destination.groupId)) {
+        toDelete = true;
+      }
+    } else {
+      if (!destination.collection) toDelete = true;
     }
 
     let newRecordProperties = await record.getProperties();

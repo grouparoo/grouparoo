@@ -610,10 +610,11 @@ export namespace RecordOps {
   ) {
     const groups = await record.$get("groups");
 
-    const destinations = await Destination.destinationsForGroups([
-      ...oldGroups,
-      ...groups,
-    ]);
+    const destinations = await Destination.relevantFor(
+      record,
+      oldGroups,
+      groups
+    );
 
     // We want to find destinations which aren't in the above set and already have an Export for this GrouparooRecord.
     // That's a sign that the GrouparooRecord is about to get a toDelete export

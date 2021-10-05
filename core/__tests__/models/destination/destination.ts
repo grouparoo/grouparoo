@@ -895,15 +895,21 @@ describe("models/destination", () => {
         await record.destroy();
       });
 
-      describe("destinationsForGroups", () => {
+      describe("relevantFor", () => {
         it("determined relevant destinations for a record", async () => {
-          const otherDestination = await helper.factories.destination();
+          const otherGroupDestination = await helper.factories.destination();
+          const modelDestination = await helper.factories.destination();
+          const otherGroup = await helper.factories.group();
+          const irrelevantDestination = await helper.factories.destination();
+          await irrelevantDestination.updateTracking("group", otherGroup.id);
+
           const record = await helper.factories.record();
           await group.addRecord(record);
 
           // before the destinations are ready
           await destination.updateTracking("group", group.id);
-          let destinations = await Destination.destinationsForGroups(
+          let destinations = await Destination.relevantFor(
+            record,
             await record.$get("groups")
           );
           expect(destinations.length).toBe(0);
@@ -911,21 +917,35 @@ describe("models/destination", () => {
           // after the destinations are ready
           await destination.setOptions({ table: "some table" });
           await destination.update({ state: "ready" });
-          await otherDestination.setOptions({ table: "some table" });
-          await otherDestination.updateTracking("group", group.id);
+          await otherGroupDestination.setOptions({ table: "some table" });
+          await otherGroupDestination.updateTracking("group", group.id);
+          await modelDestination.updateTracking("model");
 
-          destinations = await Destination.destinationsForGroups(
+          destinations = await Destination.relevantFor(
+            record,
             await record.$get("groups")
           );
-          expect(destinations.length).toBe(2);
+          expect(destinations.length).toBe(3);
           expect(destinations.map((d) => d.id).sort()).toEqual(
-            [destination.id, otherDestination.id].sort()
+            [
+              destination.id,
+              otherGroupDestination.id,
+              modelDestination.id,
+            ].sort()
+          );
+          expect(destinations.map((d) => d.id).sort()).not.toContain(
+            irrelevantDestination.id
           );
 
           await destination.updateTracking(null, null);
           await group.removeRecord(record);
-          await otherDestination.updateTracking(null, null);
-          await otherDestination.destroy();
+          await otherGroupDestination.updateTracking(null, null);
+          await otherGroupDestination.destroy();
+          await modelDestination.updateTracking(null, null);
+          await modelDestination.destroy();
+          await irrelevantDestination.updateTracking(null, null);
+          await irrelevantDestination.destroy();
+          await otherGroup.destroy();
         });
 
         test("when the group being tracked is removed, the previous group should be exported one last time", async () => {
@@ -933,6 +953,7 @@ describe("models/destination", () => {
             "group",
             group.id
           );
+
           const { oldRun: runB } = await destination.updateTracking(null, null);
           await runA.reload();
           await runB.reload();
@@ -940,7 +961,24 @@ describe("models/destination", () => {
           expect(runA.creatorId).toEqual(runB.creatorId);
           expect(runA.state).toBe("stopped");
           expect(runB.state).toBe("running");
+          expect(runA.destinationId).toBe(destination.id);
           expect(runB.destinationId).toBe(destination.id);
+          expect(runA.force).toBe(true);
+          expect(runB.force).toBe(false);
+        });
+
+        test("when the model being tracked is removed, the previous records should be exported one last time", async () => {
+          const { newRun: runA } = await destination.updateTracking("model");
+          const { oldRun: runB } = await destination.updateTracking(null, null);
+          await runA.reload();
+          await runB.reload();
+
+          expect(runA.creatorId).toEqual(runB.creatorId);
+          expect(runA.state).toBe("stopped");
+          expect(runB.state).toBe("running");
+          expect(runA.destinationId).toBe(destination.id);
+          expect(runB.destinationId).toBe(destination.id);
+          expect(runA.force).toBe(true);
           expect(runB.force).toBe(false);
         });
 
@@ -961,6 +999,7 @@ describe("models/destination", () => {
           expect(runA.state).toBe("running");
           expect(runB.state).toBe("running");
           expect(runB.destinationId).toBe(destination.id);
+          expect(runA.force).toBe(true);
           expect(runB.force).toBe(true);
 
           await otherGroup.destroy();
