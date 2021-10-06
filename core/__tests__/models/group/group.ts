@@ -7,17 +7,23 @@ import {
   Import,
   Log,
   Run,
+  GrouparooModel,
 } from "../../../src";
 import { GroupOps } from "../../../src/modules/ops/group";
 
 describe("models/group", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let model: GrouparooModel;
+
+  beforeAll(async () => {
+    model = await helper.factories.model();
+  });
 
   test("a group can be created", async () => {
     const group = new Group({
       name: "test group",
       type: "manual",
-      modelId: "mod_profiles",
+      modelId: model.id,
     });
 
     await group.save();
@@ -34,7 +40,7 @@ describe("models/group", () => {
       name: "test group ready",
       type: "manual",
       state: "ready",
-      modelId: "mod_profiles",
+      modelId: model.id,
     });
     await group.save();
     expect(group.state).toBe("ready");
@@ -55,7 +61,7 @@ describe("models/group", () => {
     const group = await Group.create({
       name: "doomed group",
       type: "manual",
-      modelId: "mod_profiles",
+      modelId: model.id,
     });
     await group.destroy();
 
@@ -94,7 +100,7 @@ describe("models/group", () => {
       const group = await Group.create({
         name: "group that will create a run",
         type: "manual",
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       let runs = await getRuns(group);
       expect(runs.length).toEqual(0);
@@ -109,7 +115,7 @@ describe("models/group", () => {
       const group = await Group.create({
         name: "group that will not create a run",
         type: "manual",
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       let runs = await getRuns(group);
       expect(runs.length).toEqual(0);
@@ -123,7 +129,7 @@ describe("models/group", () => {
     test("a new group will have a '' name", async () => {
       const group = await Group.create({
         type: "manual",
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       expect(group.name).toBe("");
@@ -134,11 +140,11 @@ describe("models/group", () => {
     test("draft groups can share the same name, but not with ready groups", async () => {
       const groupOne = await Group.create({
         type: "manual",
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       const groupTwo = await Group.create({
         type: "manual",
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       expect(groupOne.name).toBe("");
@@ -158,19 +164,19 @@ describe("models/group", () => {
     test("deleted groups can share the same name, but not with ready groups", async () => {
       const groupOne = await Group.create({
         type: "manual",
-        modelId: "mod_profiles",
+        modelId: model.id,
         name: "1",
         state: "ready",
       });
       const groupTwo = await Group.create({
         type: "manual",
-        modelId: "mod_profiles",
+        modelId: model.id,
         name: "2",
         state: "deleted",
       });
       const groupThree = await Group.create({
         type: "manual",
-        modelId: "mod_profiles",
+        modelId: model.id,
         name: "3",
         state: "deleted",
       });
@@ -197,7 +203,7 @@ describe("models/group", () => {
 
     test("group state must be of a valid type", async () => {
       const group = new Group({
-        modelId: "mod_profiles",
+        modelId: model.id,
         name: "calc-group",
         type: "calculated",
         state: "bla",
@@ -211,7 +217,7 @@ describe("models/group", () => {
       const group = new Group({
         name: "a new group",
         type: "mysterious",
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await expect(group.save()).rejects.toThrow(
         /type must be one of: manual, calculated/
@@ -222,7 +228,7 @@ describe("models/group", () => {
       const group = new Group({
         name: "a manual group with rules",
         type: "manual",
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await group.save();
       await expect(group.setRules([])).rejects.toThrow(
@@ -234,7 +240,7 @@ describe("models/group", () => {
       const group = await Group.create({
         name: "bye group",
         type: "manual",
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await group.destroy();
 
@@ -252,7 +258,7 @@ describe("models/group", () => {
         const group = await Group.create({
           name: "tracked group",
           type: "manual",
-          modelId: "mod_profiles",
+          modelId: model.id,
         });
 
         const destination = await helper.factories.destination();
@@ -271,7 +277,7 @@ describe("models/group", () => {
         const group = await Group.create({
           name: "tracked group",
           type: "manual",
-          modelId: "mod_profiles",
+          modelId: model.id,
         });
 
         const destination = await helper.factories.destination();
@@ -292,7 +298,7 @@ describe("models/group", () => {
           const group = await Group.create({
             name: "tracked group",
             type: "manual",
-            modelId: "mod_profiles",
+            modelId: model.id,
             state: "ready",
           });
 
@@ -312,14 +318,14 @@ describe("models/group", () => {
       test("deleting a group that a destination had as a membership will enqueue a run for that destinations group", async () => {
         const trackedGroup = await Group.create({
           name: "tracked group",
-          modelId: "mod_profiles",
+          modelId: model.id,
           type: "manual",
           state: "ready",
         });
 
         const taggedGroup = await Group.create({
           name: "taged group",
-          modelId: "mod_profiles",
+          modelId: model.id,
           type: "manual",
           state: "ready",
         });
@@ -353,14 +359,14 @@ describe("models/group", () => {
       test("deleting a group that a deleted destination had as a membership will not enqueue a run", async () => {
         const trackedGroup = await Group.create({
           name: "tracked group",
-          modelId: "mod_profiles",
+          modelId: model.id,
           type: "manual",
           state: "ready",
         });
 
         const taggedGroup = await Group.create({
           name: "taged group",
-          modelId: "mod_profiles",
+          modelId: model.id,
           type: "manual",
           state: "ready",
         });
@@ -472,12 +478,12 @@ describe("models/group", () => {
       group = new Group({
         name: "the group",
         type: "manual",
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await group.save();
-      record = new GrouparooRecord({ modelId: "mod_profiles" });
+      record = new GrouparooRecord({ modelId: model.id });
       await record.save();
-      anotherProfile = new GrouparooRecord({ modelId: "mod_profiles" });
+      anotherProfile = new GrouparooRecord({ modelId: model.id });
       await anotherProfile.save();
     });
 

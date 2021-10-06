@@ -3,19 +3,20 @@ import { Mapping, App, Source, Property, GrouparooModel } from "../../src";
 
 describe("models/mapping", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let model: GrouparooModel;
   let app: App;
   let source: Source;
 
   describe("mappingHelper", () => {
     beforeAll(async () => {
       app = await helper.factories.app();
-      await helper.factories.properties();
+      ({ model } = await helper.factories.properties());
 
       source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await source.setOptions({ table: "test table" });
     });

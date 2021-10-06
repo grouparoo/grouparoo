@@ -26,6 +26,7 @@ describe("actions/exports", () => {
     let id;
 
     beforeAll(async () => {
+      await helper.factories.model();
       destination = await helper.factories.destination();
       const otherDestination = await helper.factories.destination();
 

@@ -5,10 +5,16 @@ import {
   GrouparooRecord,
   RecordProperty,
   Property,
+  GrouparooModel,
 } from "../../../src";
 
 describe("models/recordProperty", () => {
+  let model: GrouparooModel;
+
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => {
+    model = await helper.factories.model();
+  });
 
   let source: Source;
   let record: GrouparooRecord;
@@ -28,7 +34,7 @@ describe("models/recordProperty", () => {
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
 
-    record = new GrouparooRecord({ modelId: "mod_profiles" });
+    record = new GrouparooRecord({ modelId: model.id });
     await record.save();
 
     userIdProperty = await Property.findOne({
@@ -472,7 +478,7 @@ describe("models/recordProperty", () => {
       await emailProperty.save();
 
       await record.buildNullProperties();
-      secondRecord = new GrouparooRecord({ modelId: "mod_profiles" });
+      secondRecord = new GrouparooRecord({ modelId: model.id });
       await secondRecord.save();
     });
 

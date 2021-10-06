@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Connection, specHelper } from "actionhero";
-import { Group, Team, TeamMember } from "../../src";
+import { Group, GrouparooModel, Team, TeamMember } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import { TotalsAction } from "../../src/actions/totals";
 
@@ -8,8 +8,11 @@ describe("actions/totals", () => {
   helper.grouparooTestServer({ truncate: true });
   let connection: Connection;
   let csrfToken: string;
+  let model: GrouparooModel;
 
   beforeAll(async () => {
+    model = await helper.factories.model();
+
     await specHelper.runAction("team:initialize", {
       firstName: "Mario",
       lastName: "Mario",
@@ -20,7 +23,7 @@ describe("actions/totals", () => {
     const group = new Group({
       type: "manual",
       name: "test group",
-      modelId: "mod_profiles",
+      modelId: model.id,
     });
     await group.save();
 

@@ -9,6 +9,7 @@ import {
   Property,
   Run,
   RecordProperty,
+  GrouparooModel,
 } from "../../../src";
 import { SessionCreate } from "../../../src/actions/session";
 import {
@@ -36,9 +37,10 @@ describe("actions/records", () => {
 
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let id: string;
+  let model: GrouparooModel;
 
   beforeAll(async () => {
-    await helper.factories.properties();
+    ({ model } = await helper.factories.properties());
     helper.disableTestPluginImport();
 
     await specHelper.runAction("team:initialize", {
@@ -68,7 +70,7 @@ describe("actions/records", () => {
     test("a writer can create a new record and properties", async () => {
       connection.params = {
         csrfToken,
-        modelId: "mod_profiles",
+        modelId: model.id,
         properties: {
           userId: 123,
           email: "luigi@example.com",
@@ -107,7 +109,7 @@ describe("actions/records", () => {
 
       connection.params = {
         csrfToken,
-        modelId: "mod_profiles",
+        modelId: model.id,
         properties: {
           userId: 12,
           email: "wario@example.com",
@@ -263,14 +265,14 @@ describe("actions/records", () => {
         group = new Group({
           name: "new group",
           type: "manual",
-          modelId: "mod_profiles",
+          modelId: model.id,
         });
         await group.save();
         await group.update({ state: "ready" });
       });
 
       beforeAll(async () => {
-        record = new GrouparooRecord({ modelId: "mod_profiles" });
+        record = new GrouparooRecord({ modelId: model.id });
         await record.save();
       });
 
@@ -297,7 +299,7 @@ describe("actions/records", () => {
         const calculatedGroup = new Group({
           name: "robot group",
           type: "calculated",
-          modelId: "mod_profiles",
+          modelId: model.id,
         });
         await calculatedGroup.save();
 
@@ -380,7 +382,7 @@ describe("actions/records", () => {
         group = new Group({
           name: "VIP people",
           type: "manual",
-          modelId: "mod_profiles",
+          modelId: model.id,
         });
         await group.save();
       });
@@ -390,7 +392,7 @@ describe("actions/records", () => {
 
         connection.params = {
           csrfToken,
-          modelId: "mod_profiles",
+          modelId: model.id,
           properties: { email: "mario@example.com", userId: 1 },
         };
         let response = await specHelper.runAction<RecordCreate>(
@@ -401,7 +403,7 @@ describe("actions/records", () => {
 
         connection.params = {
           csrfToken,
-          modelId: "mod_profiles",
+          modelId: model.id,
           properties: { email: "luigi@example.com", userId: 2 },
         };
         response = await specHelper.runAction<RecordCreate>(
@@ -412,7 +414,7 @@ describe("actions/records", () => {
 
         connection.params = {
           csrfToken,
-          modelId: "mod_profiles",
+          modelId: model.id,
           properties: { email: "toad@mushroom-kingdom.gov", userId: 3 },
         };
         response = await specHelper.runAction<RecordCreate>(
@@ -423,7 +425,7 @@ describe("actions/records", () => {
 
         connection.params = {
           csrfToken,
-          modelId: "mod_profiles",
+          modelId: model.id,
           properties: { email: "peach@mushroom-kingdom.gov", userId: 4 },
         };
         response = await specHelper.runAction<RecordCreate>(
@@ -707,7 +709,7 @@ describe("actions/records", () => {
     let csrfToken;
 
     beforeAll(async () => {
-      const record = new GrouparooRecord({ modelId: "mod_profiles" });
+      const record = new GrouparooRecord({ modelId: model.id });
       await record.save();
       await record.addOrUpdateProperties({
         firstName: ["Toad"],

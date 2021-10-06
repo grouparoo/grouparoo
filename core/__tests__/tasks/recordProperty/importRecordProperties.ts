@@ -11,13 +11,17 @@ import {
   plugin,
   App,
   AggregationMethod,
+  GrouparooModel,
 } from "../../../src";
 import { RecordOps } from "../../../src/modules/ops/record";
 
 describe("tasks/recordProperty:importRecordProperties", () => {
+  let model: GrouparooModel;
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
-  beforeAll(async () => await helper.factories.properties());
+  beforeAll(async () => {
+    ({ model } = await helper.factories.properties());
+  });
 
   let userIdCounter = 1;
   describe("recordProperty:importRecordProperties", () => {
@@ -477,7 +481,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
           type: "test-non-unique-connection",
           name: "translations source",
           appId: app.id,
-          modelId: "mod_profiles",
+          modelId: model.id,
         });
         await otherSource.setMapping({ word: "lastName" });
         await otherSource.update({ state: "ready" });

@@ -2,6 +2,7 @@ import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Run } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
+import { ModelCreate } from "../../src/actions/models";
 import { AppCreate } from "../../src/actions/apps";
 import { PropertyCreate } from "../../src/actions/properties";
 import { RunsList } from "../../src/actions/runs";
@@ -42,6 +43,7 @@ describe("integration/happyPath", () => {
     disableTestPluginImport: true,
   });
 
+  let modelId: string;
   let appId: string;
   let sourceId: string;
   let recordId: string;
@@ -66,6 +68,22 @@ describe("integration/happyPath", () => {
     csrfToken = sessionResponse.csrfToken;
 
     expect(csrfToken).toBeTruthy();
+  });
+
+  test("an admin can create the first model", async () => {
+    connection.params = {
+      csrfToken,
+      name: "Profiles",
+      type: "profile",
+    };
+    const { error, model } = await specHelper.runAction<ModelCreate>(
+      "model:create",
+      connection
+    );
+
+    expect(error).toBeUndefined();
+    expect(model.id).toBeTruthy();
+    modelId = model.id;
   });
 
   test("an admin can create the first app", async () => {
@@ -94,7 +112,7 @@ describe("integration/happyPath", () => {
       name: "test source",
       type: "test-plugin-import",
       appId,
-      modelId: "mod_profiles",
+      modelId: modelId,
       options: { table: "users" },
     };
     const createResponse = await specHelper.runAction<SourceCreate>(
@@ -217,7 +235,7 @@ describe("integration/happyPath", () => {
     test("an admin can create a record", async () => {
       connection.params = {
         csrfToken,
-        modelId: "mod_profiles",
+        modelId: modelId,
         properties: {
           email: "luigi@example.com",
           firstName: "Luigi",
@@ -246,7 +264,7 @@ describe("integration/happyPath", () => {
         csrfToken,
         name: "manual group",
         type: "manual",
-        modelId: "mod_profiles",
+        modelId: modelId,
         state: "ready",
       };
 
@@ -325,7 +343,7 @@ describe("integration/happyPath", () => {
         csrfToken,
         name: "calculated group",
         type: "calculated",
-        modelId: "mod_profiles",
+        modelId: modelId,
         rules: [
           { key: "lastName", operation: { op: "iLike" }, match: "mario" },
         ],

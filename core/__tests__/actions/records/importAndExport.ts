@@ -11,6 +11,7 @@ import {
   GrouparooRecord,
   RecordProperty,
   Group,
+  GrouparooModel,
 } from "../../../src";
 import { Op } from "sequelize";
 
@@ -25,10 +26,11 @@ function simpleRecordValues(complexProfileValues): { [key: string]: any } {
 
 describe("actions/records", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let model: GrouparooModel;
   let id: string;
 
   beforeAll(async () => {
-    await helper.factories.properties();
+    ({ model } = await helper.factories.properties());
 
     await specHelper.runAction("team:initialize", {
       firstName: "Mario",
@@ -69,7 +71,7 @@ describe("actions/records", () => {
     test("a writer can create a new record and properties", async () => {
       connection.params = {
         csrfToken,
-        modelId: "mod_profiles",
+        modelId: model.id,
         properties: { userId: 123 },
       };
       const { error, record } = await specHelper.runAction<RecordCreate>(

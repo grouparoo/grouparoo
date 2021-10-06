@@ -3,6 +3,7 @@ import { api, specHelper } from "actionhero";
 import {
   App,
   Filter,
+  GrouparooModel,
   Log,
   Option,
   plugin,
@@ -13,10 +14,11 @@ import {
 import { FilterHelper } from "../../../src/modules/filterHelper";
 
 describe("models/property", () => {
+  let model: GrouparooModel;
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
-    await helper.factories.properties();
+    ({ model } = await helper.factories.properties());
   });
 
   test("creating a property with options enqueued an internalRun", async () => {
@@ -318,7 +320,7 @@ describe("models/property", () => {
     const source = await Source.create({
       appId: app.id,
       type: "source-no-options",
-      modelId: "mod_profiles",
+      modelId: model.id,
     });
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
@@ -745,7 +747,7 @@ describe("models/property", () => {
         name: "test source",
         type: "import-from-test-app",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });

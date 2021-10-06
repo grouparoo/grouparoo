@@ -2,6 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import {
   PluginConnection,
+  GrouparooModel,
   RecordPropertyPluginMethod,
   RecordPropertiesPluginMethod,
   Property,
@@ -49,6 +50,7 @@ describe("tasks/recordProperties:enqueue", () => {
         await Property.truncate();
         await Source.truncate();
         await App.truncate();
+        await GrouparooModel.truncate();
       });
 
       // this test is really testing CLSTask in general

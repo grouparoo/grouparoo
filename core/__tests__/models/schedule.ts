@@ -9,25 +9,27 @@ import {
   Option,
   Run,
   Filter,
+  GrouparooModel,
 } from "../../src";
 import { FilterHelper } from "../../src/modules/filterHelper";
 
 describe("models/schedule", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let model: GrouparooModel;
 
   describe("with source", () => {
     let app: App;
     let source: Source;
 
     beforeAll(async () => {
-      await helper.factories.properties();
+      ({ model } = await helper.factories.properties());
       app = await helper.factories.app();
 
       source = await Source.create({
         name: "test source",
         type: "test-plugin-import",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
@@ -335,7 +337,7 @@ describe("models/schedule", () => {
         const source = await Source.create({
           type: "test-plugin-source-no-schedule",
           appId: app.id,
-          modelId: "mod_profiles",
+          modelId: model.id,
         });
         await source.update({ state: "ready" });
 
@@ -728,7 +730,7 @@ describe("models/schedule", () => {
         name: "test source from plugin",
         type: "import-from-test-template-app",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });

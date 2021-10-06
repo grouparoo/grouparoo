@@ -6,13 +6,18 @@ import {
   GrouparooRecord,
   Group,
   DestinationMappingOptionsResponseTypes,
+  GrouparooModel,
 } from "../../../../src";
 import { DestinationOps } from "../../../../src/modules/ops/destination";
 import { api } from "actionhero";
 
 describe("models/destination", () => {
+  let model: GrouparooModel;
+
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  beforeAll(async () => await helper.factories.properties());
+  beforeAll(async () => {
+    ({ model } = await helper.factories.properties());
+  });
 
   describe("destination typecasting", () => {
     function testValues(
@@ -410,7 +415,7 @@ describe("models/destination", () => {
         type: "destinationMapping-test-connection",
         syncMode: "sync",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await destination.update({ state: "ready" });
       await api.resque.queue.connection.redis.flushdb();

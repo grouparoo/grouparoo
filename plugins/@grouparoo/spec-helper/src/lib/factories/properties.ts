@@ -1,8 +1,10 @@
 import SourceFactory from "./source";
+import ModelFactory from "./model";
 import PropertyFactory from "./property";
-import { Property, Source } from "@grouparoo/core";
+import { GrouparooModel, Property, Source } from "@grouparoo/core";
 
 export default async (
+  modelId?: string,
   props = {
     email: "email",
     firstName: "string",
@@ -15,7 +17,14 @@ export default async (
     purchaseAmounts: "float",
   }
 ) => {
-  const source = (await SourceFactory()) as Source;
+  if (!modelId) modelId = "mod_profiles";
+  const model =
+    (modelId
+      ? await GrouparooModel.findOne({ where: { id: modelId } })
+      : await GrouparooModel.findOne()) ??
+    ((await ModelFactory({ id: modelId })) as GrouparooModel);
+  const source = (await SourceFactory(null, { modelId: model.id })) as Source;
+
   await source.setOptions({ table: "__test_table" });
   await source.bootstrapUniqueProperty("userId", "integer", "id");
   await source.setMapping({ userId: "userId" });
@@ -47,5 +56,5 @@ export default async (
     properties.push(await PropertyFactory(source, ruleProps, options));
   }
 
-  return { properties, source };
+  return { properties, source, model };
 };

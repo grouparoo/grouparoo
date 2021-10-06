@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { plugin, App, Property, Source } from "../../src";
+import { plugin, App, Property, Source, GrouparooModel } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   PropertiesList,
@@ -20,6 +20,7 @@ import {
 describe("actions/properties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let id: string;
+  let model: GrouparooModel;
   let source: Source;
 
   beforeAll(async () => {
@@ -30,6 +31,7 @@ describe("actions/properties", () => {
       email: "mario@example.com",
     });
 
+    model = await helper.factories.model();
     await Property.truncate();
 
     source = await helper.factories.source();
@@ -480,7 +482,7 @@ describe("actions/properties", () => {
         source = await Source.create({
           appId: app.id,
           type: "dynamic-property-options-source",
-          modelId: "mod_profiles",
+          modelId: model.id,
         });
         await source.update({ state: "ready" });
         property = await Property.create({

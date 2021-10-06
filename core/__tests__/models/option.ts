@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Option, App, Destination, plugin } from "../../src";
+import { Option, App, Destination, GrouparooModel, plugin } from "../../src";
 import {
   OptionHelper,
   ObfuscatedPasswordString,
@@ -7,6 +7,11 @@ import {
 
 describe("models/option", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let model: GrouparooModel;
+
+  beforeAll(async () => {
+    model = await helper.factories.model();
+  });
 
   test("an option must have a valid type", async () => {
     const option = Option.build({
@@ -329,7 +334,7 @@ describe("models/option", () => {
             type: "export-from-test-template-app",
             syncMode: "sync",
             appId: appWithOptions.id,
-            modelId: "mod_profiles",
+            modelId: model.id,
           });
         });
 

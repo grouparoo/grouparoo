@@ -13,16 +13,18 @@ import {
   GrouparooRecord,
   GroupMember,
   Log,
+  GrouparooModel,
 } from "../../../src";
 import { utils } from "actionhero";
 
 describe("models/run", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let model: GrouparooModel;
   let schedule: Schedule;
   let firstRun: Run;
 
   beforeAll(async () => {
-    await helper.factories.properties();
+    ({ model } = await helper.factories.properties());
     schedule = await helper.factories.schedule();
   });
 
@@ -665,7 +667,7 @@ describe("models/run", () => {
         name: "bad source",
         type: "test-error-connection",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await source.setOptions({ query: "test table" });
       await source.setMapping({ id: "userId" });

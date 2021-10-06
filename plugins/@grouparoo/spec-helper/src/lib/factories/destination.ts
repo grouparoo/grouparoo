@@ -1,15 +1,21 @@
 import { loadPath } from "../loadPath";
 import faker from "faker";
 import AppFactory from "./app";
-import { Destination } from "@grouparoo/core";
+import ModelFactory from "./model";
+import { Destination, GrouparooModel } from "@grouparoo/core";
 
-const data = async (props = {}) => {
+const data = async (props: { modelId?: string } = {}) => {
   const { GrouparooModel } = await import(`@grouparoo/core/${loadPath}`);
+  const model =
+    (props.modelId
+      ? await GrouparooModel.findOne({ where: { id: props.modelId } })
+      : await GrouparooModel.findOne()) ??
+    ((await ModelFactory({ id: props.modelId })) as GrouparooModel);
 
   const defaultProps = {
     name: `destination ${faker.company.companyName()} - ${Math.random()}`,
     type: "test-plugin-export",
-    modelId: (await GrouparooModel.findOne()).id,
+    modelId: model.id,
     options: { table: "out table" },
     syncMode: "sync",
     mapping: {},

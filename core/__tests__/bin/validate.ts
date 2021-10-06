@@ -69,13 +69,6 @@ describe("bin/config-validate", () => {
       expect(await Setting.count()).toBeGreaterThan(0);
     });
 
-    test("the validate command will prepare models", async () => {
-      await GrouparooModel.truncate();
-      const command = new Validate();
-      await command.run({ params: {} });
-      expect(await GrouparooModel.count()).toBeGreaterThan(0);
-    });
-
     test("valid configurations can boot", async () => {
       await actionhero.start();
     });
