@@ -234,8 +234,9 @@ export default function Navigation(props) {
                     <Form.Control
                       name="selectedModel"
                       as="select"
-                      value={navigationModel.value}
+                      value={navigationModel.value ?? "_none"}
                       style={{ marginTop: 20 }}
+                      disabled={navigationModel.options.length === 0}
                       onChange={(
                         event: React.ChangeEvent<HTMLInputElement>
                       ) => {
@@ -243,7 +244,9 @@ export default function Navigation(props) {
                       }}
                     >
                       {navigationModel.options.length === 0 ? (
-                        <option disabled>(No models)</option>
+                        <option value="_none" disabled>
+                          (no models)
+                        </option>
                       ) : null}
                       {navigationModel.options.map((m) => (
                         <option value={m.id} key={`model-${m.id}`}>
