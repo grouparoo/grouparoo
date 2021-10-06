@@ -113,7 +113,10 @@ export default function Page(props) {
         `/record/${record.id}`
       );
       if (success) {
-        router.push("/records");
+        router.push(
+          "/model/[modelId]/records",
+          `/model/${record.modelId}/records`
+        );
       } else {
         setLoading(false);
       }
@@ -169,7 +172,7 @@ export default function Page(props) {
           There are no Properties added yet.
           <br />
           <br />
-          <Button size="sm" href="/properties">
+          <Button size="sm" href={`/model/${router.query.modelId}/properties`}>
             Add a Property
           </Button>
         </Alert>

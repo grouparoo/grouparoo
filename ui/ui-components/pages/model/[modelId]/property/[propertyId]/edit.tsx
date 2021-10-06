@@ -88,7 +88,7 @@ export default function Page(props) {
       propertiesHandler.set([response.property]);
       if (response.property.state === "ready" && property.state === "draft") {
         successHandler.set({ message: "Property Created" });
-        router.push(nextPage || "/properties");
+        router.push(nextPage || `/model/${source.modelId}/properties`);
       } else {
         setLoading(false);
         successHandler.set({ message: "Property Updated" });
@@ -112,7 +112,7 @@ export default function Page(props) {
       setLoading(false);
       if (success) {
         successHandler.set({ message: "Property Deleted" });
-        router.push(nextPage || "/properties");
+        router.push(nextPage || `/model/${source.modelId}/properties`);
       }
     }
   }
