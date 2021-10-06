@@ -11,16 +11,16 @@ export default {
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
-    let toCreteModel = false;
+    let toCreateModel = false;
     const [sources] = await queryInterface.sequelize.query(
       `SELECT * FROM "sources" WHERE "locked" IS NOT NULL`
     );
     const [destinations] = await queryInterface.sequelize.query(
       `SELECT * FROM "destinations" WHERE "locked" IS NOT NULL`
     );
-    if (sources.length > 0 || destinations.length > 0) toCreteModel = true;
+    if (sources.length > 0 || destinations.length > 0) toCreateModel = true;
 
-    if (toCreteModel) {
+    if (toCreateModel) {
       await queryInterface.sequelize.query(`
 INSERT INTO "models" ("id", "name", "type", "createdAt", "updatedAt")
 VALUES ('${default_model.id}', '${default_model.name}', '${default_model.type}', NOW(), NOW());
