@@ -132,7 +132,7 @@ export default function FindObject(props) {
       "schedules",
     ];
     if (byModel.includes(tableName) && props.navigationModel.value) {
-      return `/${navigationModel.value}/${tableName}`;
+      return `/model/${navigationModel.value}/${tableName}`;
     }
 
     return `/${tableName}`;
