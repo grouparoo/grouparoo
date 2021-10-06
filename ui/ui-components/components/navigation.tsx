@@ -242,6 +242,9 @@ export default function Navigation(props) {
                         onChangeModelId(event.target.value);
                       }}
                     >
+                      {navigationModel.options.length === 0 ? (
+                        <option disabled>(No models)</option>
+                      ) : null}
                       {navigationModel.options.map((m) => (
                         <option value={m.id} key={`model-${m.id}`}>
                           {m.name}

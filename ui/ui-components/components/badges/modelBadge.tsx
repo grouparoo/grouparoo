@@ -1,5 +1,5 @@
 import { Badge } from "react-bootstrap";
-import Link from "next/link";
+import EnterpriseLink from "../enterpriseLink";
 
 export default function ModelBadge({
   modelName,
@@ -12,9 +12,12 @@ export default function ModelBadge({
 }) {
   return (
     <Badge style={{ marginBottom: marginBottom ?? 20 }} variant="primary">
-      <Link href="/model/[id]/edit" as={`/model/${modelId}/edit`}>
+      <EnterpriseLink
+        href="/model/[modelId]/edit"
+        as={`/model/${modelId}/edit`}
+      >
         <a style={{ color: "white" }}>{modelName}</a>
-      </Link>
+      </EnterpriseLink>
     </Badge>
   );
 }
