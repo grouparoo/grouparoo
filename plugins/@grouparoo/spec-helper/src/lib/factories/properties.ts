@@ -19,8 +19,9 @@ export default async (
 ) => {
   if (!modelId) modelId = "mod_profiles";
   const model =
-    (await GrouparooModel.findOne({ where: { id: modelId } })) ??
-    ((await ModelFactory({ id: modelId })) as GrouparooModel);
+    (await GrouparooModel.findOne(
+      modelId ? { where: { id: modelId } } : undefined
+    )) ?? ((await ModelFactory({ id: modelId })) as GrouparooModel);
   const source = (await SourceFactory(null, { modelId: model.id })) as Source;
 
   await source.setOptions({ table: "__test_table" });
