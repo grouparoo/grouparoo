@@ -72,7 +72,7 @@ describe("tasks/model:destroy", () => {
       const reloadedModel = await GrouparooModel.findById(model.id);
       expect(reloadedModel.state).toBe("deleted");
 
-      // remove source
+      // remove destination
       await destination.destroy();
 
       // run it again
@@ -95,7 +95,7 @@ describe("tasks/model:destroy", () => {
       const reloadedModel = await GrouparooModel.findById(model.id);
       expect(reloadedModel.state).toBe("deleted");
 
-      // remove source
+      // remove group
       await group.destroy();
 
       // run it again
