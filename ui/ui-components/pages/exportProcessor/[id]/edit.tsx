@@ -31,8 +31,8 @@ export default function Page({
             <br />
             Destination:{" "}
             <EnterpriseLink
-              href="/destination/[id]/edit"
-              as={`/destination/${exportProcessor.destination.id}/edit`}
+              href="/model/[modelId]/destination/[destinationId]/edit"
+              as={`/model/${exportProcessor.destination.modelId}/destination/${exportProcessor.destination.id}/edit`}
             >
               <a>{exportProcessor.destination.name}</a>
             </EnterpriseLink>

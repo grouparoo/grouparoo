@@ -58,6 +58,7 @@ export default function FindObject(props) {
       `/schedule/${id}`
     );
     if (response?.schedule) {
+      // TODO:sched
       router.push(
         `/source/[id]/schedule`,
         `/source/${response.schedule.sourceId}/schedule`

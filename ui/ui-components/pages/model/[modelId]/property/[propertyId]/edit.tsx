@@ -229,8 +229,8 @@ export default function Page(props) {
                 <p>
                   <strong>Source</strong>:{" "}
                   <Link
-                    href="/source/[id]/overview"
-                    as={`/source/${source.id}/overview`}
+                    href="/model/[modelId]/source/[sourceId]/overview"
+                    as={`/model/${source.modelId}/source/${source.id}/overview`}
                   >
                     <a>{source.name}</a>
                   </Link>

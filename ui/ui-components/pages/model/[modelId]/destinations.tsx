@@ -54,7 +54,10 @@ export default function Page(props) {
       setTotal(response.total);
 
       if (response.total === 0) {
-        router.push("/destination/new");
+        router.push(
+          "/model/[modelId]/destination/new",
+          `/model/${modelId}/destination/new`
+        );
       }
     }
   }
@@ -108,8 +111,8 @@ export default function Page(props) {
                 <td>
                   {process.env.GROUPAROO_UI_EDITION !== "community" ? (
                     <EnterpriseLink
-                      href="/destination/[id]/edit"
-                      as={`/destination/${destination.id}/edit`}
+                      href="/model/[modelId]/destination/[destinationId]/edit"
+                      as={`/model/${destination.modelId}/destination/${destination.id}/edit`}
                     >
                       <a>
                         <strong>{formattedDestinationName}</strong>
@@ -117,8 +120,8 @@ export default function Page(props) {
                     </EnterpriseLink>
                   ) : (
                     <Link
-                      href="/destination/[id]/exports"
-                      as={`/destination/${destination.id}/exports`}
+                      href="/model/[modelId]/destination/[destinationId]/exports"
+                      as={`/model/${destination.modelId}/destination/${destination.id}/exports`}
                     >
                       <a>
                         <strong>{formattedDestinationName}</strong>
@@ -183,7 +186,7 @@ export default function Page(props) {
         <Button
           variant="primary"
           onClick={() => {
-            router.push("/destination/new");
+            router.push(`/model/${modelId}/destination/new`);
           }}
         >
           Add new Destination

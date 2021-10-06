@@ -57,7 +57,11 @@ export async function createSchedule({
   );
 
   if (response?.schedule) {
-    router.push(`/source/[id]/schedule`, `/source/${sourceId}/schedule`);
+    // TODO:sched GET MODEL
+    router.push(
+      `/model/[modelId]/source/[sourceId]/schedule`,
+      `/model/${"anything"}/source/${sourceId}/schedule`
+    );
     return true;
   } else {
     setLoading(false);

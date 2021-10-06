@@ -60,7 +60,10 @@ export default function Page(props) {
       setRuns(_runs);
 
       if (response.total === 0) {
-        router.push("/source/new");
+        router.push(
+          "/model/[modelId]/source/new",
+          `/model/${router.query.modelId}/source/new`
+        );
       }
     }
   }
@@ -135,8 +138,8 @@ export default function Page(props) {
                   </td>
                   <td>
                     <Link
-                      href="/source/[id]/overview"
-                      as={`/source/${source.id}/overview`}
+                      href="/model/[modelId]/source/[sourceId]/overview"
+                      as={`/model/${source.modelId}/source/${source.id}/overview`}
                     >
                       <a>
                         <strong>
@@ -216,7 +219,10 @@ export default function Page(props) {
         <Button
           variant="primary"
           onClick={() => {
-            router.push("/source/new");
+            router.push(
+              "/model/[modelId]/source/new",
+              `/model/${router.query.modelId}/source/new`
+            );
           }}
         >
           Add new Source

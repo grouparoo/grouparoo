@@ -182,8 +182,8 @@ export default function ExportsList(props) {
                     <br />
                     Destination:{" "}
                     <EnterpriseLink
-                      href="/destination/[id]/edit"
-                      as={`/destination/${_export.destination.id}/edit`}
+                      href="/model/[modelId]/destination/[destinationId]/edit"
+                      as={`/model/${_export.destination.modelId}/destination/${_export.destination.id}/edit`}
                     >
                       <a>{_export.destination.name}</a>
                     </EnterpriseLink>
