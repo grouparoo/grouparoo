@@ -8,7 +8,6 @@ describe("actions/logs", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
-    await helper.factories.properties();
     await specHelper.runAction("team:initialize", {
       firstName: "Mario",
       lastName: "Mario",
@@ -19,7 +18,7 @@ describe("actions/logs", () => {
 
   describe("reader signed in", () => {
     let connection;
-    let csrfToken;
+    let csrfToken: string;
 
     beforeAll(async () => {
       connection = await specHelper.buildConnection();

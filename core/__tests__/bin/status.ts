@@ -8,8 +8,6 @@ describe("bin/status", () => {
     resetSettings: true,
   });
 
-  beforeAll(async () => await helper.factories.properties());
-
   let messages = [];
   let spy;
 
