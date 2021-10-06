@@ -8,6 +8,7 @@ jest.mock("next/router", () => {
   nextRouter.useRouter = jest.fn(() => ({
     route: "/",
     query: {
+      modelId: "abcd",
       recordId: "asdf",
     },
     replace: jest.fn(),
@@ -64,6 +65,7 @@ describe("property / recordPreview", () => {
       return Promise.resolve({
         record: {
           id: "asdf",
+          modelId: "abcd",
           properties: {
             date: { type: "date", values: [1631127518020] },
           },
@@ -80,6 +82,7 @@ describe("property / recordPreview", () => {
       return Promise.resolve({
         record: {
           id: "asdf",
+          modelId: "abcd",
           properties: {
             date: { type: "date", values: [null] },
           },
@@ -96,6 +99,7 @@ describe("property / recordPreview", () => {
       return Promise.resolve({
         record: {
           id: "asdf",
+          modelId: "abcd",
           properties: {
             date: { type: "date", values: [true] },
           },
@@ -112,6 +116,7 @@ describe("property / recordPreview", () => {
       return Promise.resolve({
         record: {
           id: "asdf",
+          modelId: "abcd",
           properties: {
             date: { type: "date", values: ["6/18/2021, 6:07:22 AM"] },
           },
@@ -128,6 +133,7 @@ describe("property / recordPreview", () => {
       return Promise.resolve({
         record: {
           id: "asdf",
+          modelId: "abcd",
           properties: {
             date: { type: "date", values: [new Date("2/5/2019, 4:22:21 AM")] },
           },
