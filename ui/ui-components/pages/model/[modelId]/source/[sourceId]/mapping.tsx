@@ -113,7 +113,7 @@ export default function Page(props) {
         await createSchedule({
           router,
           execApi,
-          sourceId: response.source.id,
+          source: response.source,
           setLoading: () => {},
         });
       } else if (source.state !== response.source.state) {
