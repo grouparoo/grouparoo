@@ -1,19 +1,20 @@
 import { Fragment, useEffect, useState } from "react";
 import { Form, Table, Badge, Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
-import { UseApi } from "../../../hooks/useApi";
-import StateBadge from "../../../components/badges/stateBadge";
-import LockedBadge from "../../../components/badges/lockedBadge";
+import { UseApi } from "../../../../../hooks/useApi";
+import StateBadge from "../../../../../components/badges/stateBadge";
+import LockedBadge from "../../../../../components/badges/lockedBadge";
 import Head from "next/head";
-import GroupTabs from "../../../components/tabs/group";
-import DatePicker from "../../../components/datePicker";
-import LoadingButton from "../../../components/loadingButton";
-import { Models, Actions } from "../../../utils/apiData";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
-import { makeLocal } from "../../../utils/makeLocal";
-import PageHeader from "../../../components/pageHeader";
-import ModelBadge from "../../../components/badges/modelBadge";
+import GroupTabs from "../../../../../components/tabs/group";
+import DatePicker from "../../../../../components/datePicker";
+import LoadingButton from "../../../../../components/loadingButton";
+import { Models, Actions } from "../../../../../utils/apiData";
+import { ErrorHandler } from "../../../../../utils/errorHandler";
+import { SuccessHandler } from "../../../../../utils/successHandler";
+import { makeLocal } from "../../../../../utils/makeLocal";
+import PageHeader from "../../../../../components/pageHeader";
+import ModelBadge from "../../../../../components/badges/modelBadge";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -518,10 +519,10 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { id } = ctx.query;
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const { groupId } = ctx.query;
   const { execApi } = UseApi(ctx);
-  const { group } = await execApi("get", `/group/${id}`);
+  const { group } = await execApi("get", `/group/${groupId}`);
   const { properties } = await execApi("get", `/properties`, {
     state: "ready",
     modelId: group?.modelId,

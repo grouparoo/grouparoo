@@ -356,8 +356,8 @@ export default function Page(props) {
                 ) : null}
                 {process.env.GROUPAROO_UI_EDITION !== "config" ? (
                   <EnterpriseLink
-                    href="/group/[id]/members"
-                    as={`/group/${group.id}/members`}
+                    href="/model/[modelId]/group/[groupId]/members"
+                    as={`/model/${group.modelId}/group/${group.id}/members`}
                   >
                     <a>{group.name}</a>
                   </EnterpriseLink>

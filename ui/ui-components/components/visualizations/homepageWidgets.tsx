@@ -122,6 +122,7 @@ export function GroupsByNewestMember({
               return (
                 <tr key={`group-${group.id}`}>
                   <td>
+                    {/* <!-- TODO:sched --> */}
                     <EnterpriseLink
                       href="/group/[id]/rules"
                       as={`/group/${group.id}/rules`}
@@ -144,10 +145,6 @@ export function GroupsByNewestMember({
             })}
           </tbody>
         </Table>
-        <br />
-        <Link href="/groups">
-          <a>See all Groups</a>
-        </Link>
       </Card.Body>
     </Card>
   );

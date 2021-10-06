@@ -9,11 +9,12 @@ import LoadingTable from "@grouparoo/ui-components/components/loadingTable";
 import AppIcon from "@grouparoo/ui-components/components/appIcon";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
-import { formatTimestamp } from "../../../../ui-components/utils/formatTimestamp";
+import { formatTimestamp } from "@grouparoo/ui-components/utils/formatTimestamp";
 import PageHeader from "@grouparoo/ui-components/components/pageHeader";
 import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
 import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
 import ModelBadge from "@grouparoo/ui-components/components/badges/modelBadge";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -97,8 +98,8 @@ export default function Page(props) {
                 </td>
                 <td>
                   <Link
-                    href="/destination/[id]/edit"
-                    as={`/destination/${destination.id}/edit`}
+                    href="/model/[modelId]/destination/[id]/edit"
+                    as={`/model/${destination.modelId}/destination/${destination.id}/edit`}
                   >
                     <a>{destination.name}</a>
                   </Link>
@@ -121,10 +122,10 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { id, limit, offset } = ctx.query;
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const { groupId, limit, offset } = ctx.query;
   const { execApi } = UseApi(ctx);
-  const { group } = await execApi("get", `/group/${id}`);
+  const { group } = await execApi("get", `/group/${groupId}`);
   const { destinations, total } = await execApi(
     "get",
     `/group/${group.id}/destinations`,

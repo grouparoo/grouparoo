@@ -133,8 +133,8 @@ export default function Page(props) {
                 <td>
                   {destination.destinationGroup?.id ? (
                     <EnterpriseLink
-                      href="/group/[id]/edit"
-                      as={`/group/${destination.destinationGroup.id}/edit`}
+                      href="/model/[modelId]/group/[groupId]/edit"
+                      as={`/model/${destination.destinationGroup.modelId}/group/${destination.destinationGroup.id}/edit`}
                     >
                       <a>{destination.destinationGroup.name}</a>
                     </EnterpriseLink>

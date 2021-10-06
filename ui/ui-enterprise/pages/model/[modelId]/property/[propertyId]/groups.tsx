@@ -56,15 +56,15 @@ export default function Page({
                 <td>
                   {group.type === "calculated" ? (
                     <Link
-                      href="/group/[id]/rules"
-                      as={`/group/${group.id}/rules`}
+                      href="/model/[modelId]/group/[groupId]/rules"
+                      as={`/model/${group.modelId}/group/${group.id}/rules`}
                     >
                       <a>{group.name}</a>
                     </Link>
                   ) : (
                     <Link
-                      href="/group/[id]/edit"
-                      as={`/group/${group.id}/edit`}
+                      href="/model/[modelId]/group/[groupId]/edit"
+                      as={`/model/${group.modelId}/group/${group.id}/edit`}
                     >
                       <a>{group.name}</a>
                     </Link>

@@ -13,8 +13,8 @@ import { ErrorHandler } from "../../utils/errorHandler";
 import { NextPageContext } from "next";
 
 const getOwnerId = (query: { [key: string]: string | string[] }) => {
-  const { id, recordId, propertyId, sourceId, destinationId } = query;
-  return id ?? recordId ?? propertyId ?? sourceId ?? destinationId;
+  const { id, recordId, propertyId, sourceId, destinationId, groupId } = query;
+  return id ?? recordId ?? propertyId ?? sourceId ?? destinationId ?? groupId;
 };
 
 export default function LogsList(props) {

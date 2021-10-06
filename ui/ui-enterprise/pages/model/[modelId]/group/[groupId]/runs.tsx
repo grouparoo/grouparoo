@@ -6,6 +6,7 @@ import PageHeader from "@grouparoo/ui-components/components/pageHeader";
 import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
 import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
 import ModelBadge from "@grouparoo/ui-components/components/badges/modelBadge";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const { group } = props;
@@ -40,10 +41,10 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { id } = ctx.query;
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const { groupId } = ctx.query;
   const { execApi } = UseApi(ctx);
-  const { group } = await execApi("get", `/group/${id}`);
+  const { group } = await execApi("get", `/group/${groupId}`);
   const runsListInitialProps = await RunsList.hydrate(ctx);
   return { group, ...runsListInitialProps };
 };

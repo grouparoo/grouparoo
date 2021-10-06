@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
-import { UseApi } from "../../../hooks/useApi";
+import { UseApi } from "../../../../../hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
-import StateBadge from "../../../components/badges/stateBadge";
-import LockedBadge from "../../../components/badges/lockedBadge";
+import StateBadge from "../../../../../components/badges/stateBadge";
+import LockedBadge from "../../../../../components/badges/lockedBadge";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import GroupTabs from "../../../components/tabs/group";
-import LoadingButton from "../../../components/loadingButton";
+import GroupTabs from "../../../../../components/tabs/group";
+import LoadingButton from "../../../../../components/loadingButton";
 
-import { Models, Actions } from "../../../utils/apiData";
-import { formatTimestamp } from "../../../utils/formatTimestamp";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
-import { GroupHandler } from "../../../utils/groupHandler";
-import PageHeader from "../../../components/pageHeader";
-import ModelBadge from "../../../components/badges/modelBadge";
+import { Models, Actions } from "../../../../../utils/apiData";
+import { formatTimestamp } from "../../../../../utils/formatTimestamp";
+import { ErrorHandler } from "../../../../../utils/errorHandler";
+import { SuccessHandler } from "../../../../../utils/successHandler";
+import { GroupHandler } from "../../../../../utils/groupHandler";
+import PageHeader from "../../../../../components/pageHeader";
+import ModelBadge from "../../../../../components/badges/modelBadge";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -70,7 +71,10 @@ export default function Page(props) {
         successHandler.set({
           message: force ? "Group Deleted" : "Group scheduled to be deleted",
         });
-        router.push("/groups");
+        router.push(
+          "/model/[modelId]/groups",
+          `/model/${group.modelId}/groups`
+        );
       } else {
         setLoading(false);
       }
@@ -217,9 +221,9 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { id } = ctx.query;
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const { groupId } = ctx.query;
   const { execApi } = UseApi(ctx);
-  const { group } = await execApi("get", `/group/${id}`);
+  const { group } = await execApi("get", `/group/${groupId}`);
   return { group };
 };
