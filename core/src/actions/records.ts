@@ -204,7 +204,15 @@ export class RecordExport extends CLSAction {
     };
   }
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: {
+      id: string;
+      properties: Record<string, (string | number | boolean | Date)[]>;
+      removedProperties: string[];
+    };
+  }) {
     const record = await GrouparooRecord.findById(params.id);
     const exports = await record.export(true);
 

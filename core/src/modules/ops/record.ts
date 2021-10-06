@@ -1,5 +1,5 @@
 import { GrouparooRecord } from "../../models/GrouparooRecord";
-import { RecordProperty } from "../../models/RecordProperty";
+import { InvalidReasons, RecordProperty } from "../../models/RecordProperty";
 import { Property } from "../../models/Property";
 import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
@@ -31,6 +31,7 @@ export interface RecordPropertyType {
     state: RecordProperty["state"];
     values: Array<string | number | boolean | Date>;
     invalidValue: RecordProperty["invalidValue"];
+    invalidReason: RecordProperty["invalidReason"];
     configId: ReturnType<Property["getConfigId"]>;
     type: Property["type"];
     unique: Property["unique"];
@@ -78,6 +79,7 @@ export namespace RecordOps {
           state: recordProperties[i].state,
           values: [],
           invalidValue: recordProperties[i].invalidValue,
+          invalidReason: recordProperties[i].invalidReason,
           configId: property.getConfigId(),
           type: property.type,
           unique: property.unique,
@@ -144,15 +146,16 @@ export namespace RecordOps {
       caseSensitive = true;
 
     const ands: (Sequelize.Utils.Where | WhereAttributeHash)[] = [];
-    const include: Array<any> = [];
+    const include: Sequelize.Includeable[] = [];
     let countRequiresIncludes = false;
 
     // Are we searching for GrouparooRecords in a specific state?
-    if (state) ands.push({ state });
+    if (state && state !== "invalid") {
+      ands.push({ state });
+    }
 
     // Are we searching for a specific RecordProperty?
     if (searchKey && searchValue) {
-      countRequiresIncludes = true;
       include.push(RecordProperty);
       countRequiresIncludes = true;
 
@@ -207,6 +210,14 @@ export namespace RecordOps {
       ands.push({ modelId });
     }
 
+    // are we looking for invalid records
+    if (state === "invalid") {
+      countRequiresIncludes = true;
+      ands.push({
+        invalid: true,
+      });
+    }
+
     // Load the records in full now that we know the relevant records
     const recordIds = (
       await GrouparooRecord.findAll({
@@ -223,7 +234,7 @@ export namespace RecordOps {
     const records = await GrouparooRecord.findAll({
       where: { id: recordIds },
       order,
-      include: [RecordProperty],
+      include: RecordProperty,
     });
 
     const total = await GrouparooRecord.count({
@@ -261,7 +272,8 @@ export namespace RecordOps {
       position: number;
       rawValue: string;
       invalidValue?: string;
-      state: string;
+      invalidReason?: string;
+      state: RecordProperty["state"];
       unique: boolean;
       stateChangedAt: Date;
       confirmedAt: Date;
@@ -323,7 +335,7 @@ export namespace RecordOps {
                 p.propertyId === property.id &&
                 p.position === position
             );
-            const { rawValue, invalidValue } =
+            const { rawValue, invalidValue, invalidReason } =
               await RecordPropertyOps.buildRawValue(
                 value,
                 property.type,
@@ -339,6 +351,7 @@ export namespace RecordOps {
               position,
               rawValue,
               invalidValue,
+              invalidReason,
               state: "ready",
               stateChangedAt: now,
               confirmedAt: now,
@@ -382,6 +395,7 @@ export namespace RecordOps {
               "startedAt",
               "rawValue",
               "invalidValue",
+              "invalidReason",
               "updatedAt",
             ],
           });
@@ -400,6 +414,7 @@ export namespace RecordOps {
                     state: "ready",
                     rawValue: null,
                     invalidValue: `${attemptedRecordProperty.rawValue}`,
+                    invalidReason: InvalidReasons.Duplicate,
                     stateChangedAt: new Date(),
                     confirmedAt: new Date(),
                     startedAt: null,
@@ -485,7 +500,7 @@ export namespace RecordOps {
 
   export async function buildNullProperties(
     records: GrouparooRecord[],
-    state = "pending"
+    state: RecordProperty["state"] = "pending"
   ) {
     const bulkArgs = [];
     const now = new Date();
@@ -949,13 +964,12 @@ export namespace RecordOps {
     limit = 100,
     toExport = true
   ) {
-    let records: GrouparooRecord[] = await api.sequelize.query(
+    const records: GrouparooRecord[] = await api.sequelize.query(
       `
-    SELECT "id" from "records" where "state" = 'pending'
-    EXCEPT
-    SELECT DISTINCT("recordId") FROM "recordProperties" WHERE "state" = 'pending'
-    LIMIT ${limit}
-    ;
+      SELECT "id" from "records" where "state" = 'pending'
+      EXCEPT
+      SELECT DISTINCT("recordId") FROM "recordProperties" WHERE "state" = 'pending'
+      LIMIT ${limit};
     `,
       {
         type: QueryTypes.SELECT,
@@ -963,8 +977,12 @@ export namespace RecordOps {
       }
     );
 
-    const updateResponse = await GrouparooRecord.update(
-      { state: "ready" },
+    if (!records.length) {
+      return [];
+    }
+
+    await GrouparooRecord.update(
+      { state: "ready", invalid: false },
       {
         where: {
           id: { [Op.in]: records.map((p) => p.id) },
@@ -973,11 +991,20 @@ export namespace RecordOps {
       }
     );
 
-    // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer state=pending
-    // in SQLite this isn't possible, but contention is far less likely
-    if (updateResponse[1]) records = updateResponse[1];
-
-    if (records.length === 0) return [];
+    // Update records to invalid if any assocaited properties are invalid.
+    await api.sequelize.query(`
+      UPDATE
+        "records"
+      SET
+        "invalid" = TRUE
+      WHERE
+        "records"."id" IN(
+          SELECT
+            "recordProperties"."recordId" FROM "recordProperties"
+          WHERE
+            "recordProperties"."recordId" IN(${records.map((p) => `'${p.id}'`)})
+            AND "recordProperties"."invalidReason" IS NOT NULL);
+    `);
 
     await completeRecordImports(
       records.map((p) => p.id),

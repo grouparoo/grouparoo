@@ -24,6 +24,10 @@ const STATE_TRANSITIONS = [
   { from: "ready", to: "pending", checks: [] },
 ];
 
+export enum InvalidReasons {
+  Duplicate = "Duplicate Value",
+}
+
 @Table({ tableName: "recordProperties", paranoid: false })
 export class RecordProperty extends CommonModel<RecordProperty> {
   idPrefix() {
@@ -50,6 +54,9 @@ export class RecordProperty extends CommonModel<RecordProperty> {
 
   @Column
   invalidValue: string;
+
+  @Column
+  invalidReason: string;
 
   @AllowNull(false)
   @Default(0)
@@ -100,6 +107,7 @@ export class RecordProperty extends CommonModel<RecordProperty> {
       key: property.key,
       value: await this.getValue(),
       invalidValue: this.invalidValue,
+      invalidReason: this.invalidReason,
     };
   }
 
@@ -110,14 +118,12 @@ export class RecordProperty extends CommonModel<RecordProperty> {
 
   async setValue(value: any) {
     const property = await this.ensureProperty();
-    const { rawValue, invalidValue } = await RecordPropertyOps.buildRawValue(
-      value,
-      property.type,
-      this
-    );
+    const { rawValue, invalidValue, invalidReason } =
+      await RecordPropertyOps.buildRawValue(value, property.type, this);
 
     this.rawValue = rawValue;
     this.invalidValue = invalidValue;
+    this.invalidReason = invalidReason;
   }
 
   async ensureProperty() {

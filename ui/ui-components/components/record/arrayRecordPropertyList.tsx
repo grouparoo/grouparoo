@@ -8,10 +8,12 @@ export default function ArrayRecordPropertyList({
   type,
   values,
   invalidValue,
+  invalidReason,
 }: {
   type: string;
   values: Array<string | number | boolean | Date>;
   invalidValue: string;
+  invalidReason: string;
 }) {
   const [expanded, setExpanded] = useState(false);
   if (!values || values.length === 0) return null;
@@ -41,7 +43,9 @@ export default function ArrayRecordPropertyList({
         ))}
 
       {invalidValue ? (
-        <span className="text-danger">invalid value: {invalidValue}</span>
+        <span className="text-danger">
+          invalid value: {invalidValue} | {invalidReason}
+        </span>
       ) : null}
 
       {formattedValues.length > limit && !expanded ? (

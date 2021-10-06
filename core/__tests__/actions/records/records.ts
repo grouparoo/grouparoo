@@ -21,6 +21,7 @@ import {
 } from "../../../src/actions/records";
 import { GroupAddRecord, GroupRemoveRecord } from "../../../src/actions/groups";
 import { ConfigWriter } from "../../../src/modules/configWriter";
+import { RecordOps } from "../../../src/modules/ops/record";
 
 function simpleRecordValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -186,6 +187,109 @@ describe("actions/records", () => {
         await specHelper.runAction<RecordsList>("records:list", connection);
       expect(readyProfilesB.length).toBe(1);
       expect(readyTotalB).toBe(1);
+
+      // Put a recordProperty into an invalid state
+      await RecordProperty.update(
+        {
+          invalidValue: "email",
+          invalidReason: "Bad Email",
+        },
+        {
+          where: {
+            recordId: readyProfilesB[0].id,
+            propertyId: "email",
+          },
+        }
+      );
+      // Set the profile to pending so it's picked up
+      await GrouparooRecord.update(
+        {
+          state: "pending",
+        },
+        {
+          where: {
+            id: readyProfilesB[0].id,
+          },
+        }
+      );
+
+      // Run the import task
+      await RecordOps.makeReadyAndCompleteImports();
+
+      connection.params = {
+        csrfToken,
+        state: "invalid",
+      };
+      const { records: invalidRecords, total: invalidTotal } =
+        await specHelper.runAction<RecordsList>("records:list", connection);
+      expect(invalidRecords.length).toBe(1);
+      expect(invalidTotal).toBe(1);
+    });
+
+    test("a writer can find a record with an invalid state, even if the queried record is not invalid", async () => {
+      connection.params = {
+        csrfToken,
+        state: "invalid",
+      };
+      const { records: invalidRecords } =
+        await specHelper.runAction<RecordsList>("records:list", connection);
+      expect(invalidRecords[0]).toBeDefined();
+
+      const [invalidRecord] = invalidRecords;
+      const [userId] = invalidRecord.properties.userId.values;
+      connection.params = {
+        csrfToken,
+        state: "invalid",
+        searchKey: "userId",
+        searchValue: String(userId),
+      };
+
+      const { records: filteredInvalidRecords } =
+        await specHelper.runAction<RecordsList>("records:list", connection);
+      expect(filteredInvalidRecords.length).toBe(1);
+    });
+
+    test("a writer can remove records that are no longer invalid", async () => {
+      connection.params = {
+        csrfToken,
+        state: "invalid",
+      };
+      let { records: invalidRecords, total: invalidTotal } =
+        await specHelper.runAction<RecordsList>("records:list", connection);
+      expect(invalidRecords.length).toBe(1);
+      expect(invalidTotal).toBe(1);
+
+      const [invalidRecord] = invalidRecords;
+
+      await RecordProperty.update(
+        {
+          invalidValue: null,
+          invalidReason: null,
+        },
+        {
+          where: {
+            recordId: invalidRecord.id,
+            propertyId: "email",
+          },
+        }
+      );
+      await GrouparooRecord.update(
+        {
+          state: "pending",
+        },
+        {
+          where: {
+            id: invalidRecord.id,
+          },
+        }
+      );
+
+      await RecordOps.makeReadyAndCompleteImports();
+
+      ({ records: invalidRecords, total: invalidTotal } =
+        await specHelper.runAction<RecordsList>("records:list", connection));
+      expect(invalidRecords.length).toBe(0);
+      expect(invalidTotal).toBe(0);
     });
 
     test("a writer can get autocomplete results from properties", async () => {
@@ -697,6 +801,19 @@ describe("actions/records", () => {
         expect(error).toBeUndefined();
         expect(records.length).toBe(0);
         expect(total).toBe(0);
+      });
+
+      test("returns matching records when null is the searchValue", async () => {
+        connection.params = {
+          csrfToken,
+          searchKey: "ltv",
+          searchValue: "null",
+        };
+        const { error, records, total } =
+          await specHelper.runAction<RecordsList>("records:list", connection);
+        expect(error).toBeUndefined();
+        expect(records.length).toBe(4);
+        expect(total).toBe(4);
       });
     });
   });

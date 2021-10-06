@@ -34,7 +34,9 @@ describe("tasks/run:internalRun", () => {
         { state: "ready" },
         { where: { recordId: record.id } }
       );
-      await record.reload({ include: [RecordProperty] });
+      await record.reload({
+        include: RecordProperty,
+      });
       await record.update({ state: "ready" });
     });
 
@@ -51,7 +53,9 @@ describe("tasks/run:internalRun", () => {
       expect(run.groupMemberOffset).toBe(1);
       expect(run.groupMethod).toBe("internalRun");
 
-      await record.reload({ include: [RecordProperty] });
+      await record.reload({
+        include: RecordProperty,
+      });
       expect(record.state).toBe("pending");
       record.recordProperties.forEach((p) => expect(p.state).toBe("pending"));
 
@@ -70,7 +74,9 @@ describe("tasks/run:internalRun", () => {
       expect(run.groupMemberOffset).toBe(1);
       expect(run.groupMethod).toBe("internalRun");
 
-      await record.reload({ include: [RecordProperty] });
+      await record.reload({
+        include: RecordProperty,
+      });
       expect(record.state).toBe("pending");
       expect(new Set(record.recordProperties.map((p) => p.state))).toEqual(
         new Set(["ready", "pending"])

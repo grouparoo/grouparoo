@@ -286,6 +286,9 @@ export class Property extends LoggedModel<Property> {
       isArray: this.isArray,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
+      recordProperties: this.RecordProperties
+        ? await Promise.all(this.RecordProperties.map((rp) => rp.apiData()))
+        : undefined,
     };
   }
 

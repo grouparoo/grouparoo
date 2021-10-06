@@ -308,6 +308,7 @@ export default function Page(props) {
                           type={recordProperty.type}
                           values={recordProperty.values}
                           invalidValue={recordProperty.invalidValue}
+                          invalidReason={recordProperty.invalidReason}
                         />
                       </td>
                       <td>

@@ -56,6 +56,11 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   state: typeof STATES[number];
 
   @AllowNull(false)
+  @Default(false)
+  @Column(DataType.BOOLEAN)
+  invalid: boolean;
+
+  @AllowNull(false)
   @ForeignKey(() => GrouparooModel)
   @Column
   modelId: string;
@@ -90,6 +95,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
       state: this.state,
       modelId: this.modelId,
       modelName: model.name,
+      invalid: this.invalid,
       properties,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
@@ -133,7 +139,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
     return RecordOps.removeProperties(this, properties);
   }
 
-  async buildNullProperties(state = "pending") {
+  async buildNullProperties(state: GrouparooRecord["state"] = "pending") {
     return RecordOps.buildNullProperties([this], state);
   }
 

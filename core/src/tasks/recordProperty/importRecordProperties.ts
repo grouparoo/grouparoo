@@ -27,7 +27,7 @@ export class ImportRecordProperties extends RetryableTask {
   async runWithinTransaction(params) {
     const records = await GrouparooRecord.findAll({
       where: { id: { [Op.in]: params.recordIds } },
-      include: [RecordProperty],
+      include: RecordProperty,
     });
     if (records.length === 0) return;
 

@@ -97,7 +97,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
     });
 
     test("will import record properties that have no dependencies", async () => {
-      const record: GrouparooRecord = await helper.factories.record();
+      const record = await helper.factories.record();
       await record.addOrUpdateProperties({
         userId: [1],
         email: ["old@example.com"],
@@ -130,7 +130,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
         where: { key: "userId" },
       });
 
-      const record: GrouparooRecord = await helper.factories.record();
+      const record = await helper.factories.record();
       await record.addOrUpdateProperties({
         userId: [null],
         email: ["old@example.com"],
@@ -174,7 +174,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
         where: { key: "userId" },
       });
 
-      const record: GrouparooRecord = await helper.factories.record();
+      const record = await helper.factories.record();
       await record.addOrUpdateProperties({
         userId: ["2"],
         email: ["old@example.com"],
@@ -222,7 +222,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
         .spyOn(testPluginConnection.methods, "recordProperties")
         .mockImplementation(() => undefined);
 
-      const record: GrouparooRecord = await helper.factories.record();
+      const record = await helper.factories.record();
       await record.addOrUpdateProperties({
         userId: [99],
         email: ["someoldemail@example.com"],
@@ -267,13 +267,13 @@ describe("tasks/recordProperty:importRecordProperties", () => {
           return response;
         });
 
-      const recordA: GrouparooRecord = await helper.factories.record();
+      const recordA = await helper.factories.record();
       await recordA.addOrUpdateProperties({
         userId: [101],
         email: ["a@example.com"], // this old value will be replaced
       });
 
-      const recordB: GrouparooRecord = await helper.factories.record();
+      const recordB = await helper.factories.record();
       await recordB.addOrUpdateProperties({
         userId: [102],
         email: ["b@example.com"], // this old value will be replaced
@@ -298,12 +298,14 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       expect(recordPropertyA.rawValue).toBe(null);
       expect(recordPropertyA.invalidValue).toBe("not-an-email");
       expect(recordPropertyA.startedAt).toBe(null);
+      expect(recordPropertyA.invalidReason).toBe("Invalid email value");
 
       await recordPropertyB.reload();
       expect(recordPropertyB.state).toBe("ready");
       expect(recordPropertyB.rawValue).toBe(null);
       expect(recordPropertyB.invalidValue).toBe("not-an-email");
       expect(recordPropertyB.startedAt).toBe(null);
+      expect(recordPropertyB.invalidReason).toBe("Invalid email value");
 
       await recordA.destroy();
       await recordB.destroy();
@@ -318,10 +320,10 @@ describe("tasks/recordProperty:importRecordProperties", () => {
           throw new Error("Oh no!");
         });
 
-      const recordA: GrouparooRecord = await helper.factories.record();
+      const recordA = await helper.factories.record();
       await recordA.addOrUpdateProperties({ userId: [201] });
 
-      const recordB: GrouparooRecord = await helper.factories.record();
+      const recordB = await helper.factories.record();
       await recordB.addOrUpdateProperties({ userId: [202] });
 
       const recordPropertyA = await RecordProperty.findOne({
@@ -363,7 +365,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
     });
 
     test("update errors will be retried one at a time with importRecordProperty", async () => {
-      const record: GrouparooRecord = await helper.factories.record();
+      const record = await helper.factories.record();
       await record.addOrUpdateProperties({ userId: [301] });
 
       const recordProperty = await RecordProperty.findOne({
@@ -482,14 +484,12 @@ describe("tasks/recordProperty:importRecordProperties", () => {
         await otherSource.setMapping({ word: "lastName" });
         await otherSource.update({ state: "ready" });
 
-        const newPropertyA: Property = await helper.factories.property(
-          otherSource,
-          { key: "wordInSpanish" }
-        );
-        const newPropertyB: Property = await helper.factories.property(
-          otherSource,
-          { key: "wordInFrench" }
-        );
+        const newPropertyA = await helper.factories.property(otherSource, {
+          key: "wordInSpanish",
+        });
+        const newPropertyB = await helper.factories.property(otherSource, {
+          key: "wordInFrench",
+        });
         await newPropertyA.update({ state: "ready" });
         await newPropertyB.update({ state: "ready" });
         await recordA.buildNullProperties();
