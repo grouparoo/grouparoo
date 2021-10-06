@@ -5,6 +5,7 @@ import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
 import { APIData } from "../modules/apiData";
 import { Op } from "sequelize";
+import { Source } from "../models/Source";
 
 export class SchedulesList extends AuthenticatedAction {
   constructor() {
@@ -14,6 +15,7 @@ export class SchedulesList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "read" };
     this.inputs = {
+      modelId: { required: false },
       limit: { required: true, default: 100, formatter: APIData.ensureNumber },
       offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       state: { required: false },
@@ -30,8 +32,22 @@ export class SchedulesList extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const where = {};
+    const sourceIds: string[] = [];
     if (params.state) where["state"] = params.state;
 
+    if (params.modelId) {
+      const sources = await Source.scope(null).findAll({
+        where: {
+          modelId: params.modelId,
+        },
+      });
+
+      for (const source of sources) {
+        sourceIds.push(source.id);
+      }
+
+      where["sourceId"] = { [Op.in]: sourceIds };
+    }
     const schedules = await Schedule.scope(null).findAll({
       where,
       limit: params.limit,

@@ -138,6 +138,7 @@ export class ImportRecordProperties extends RetryableTask {
           rawValue: null,
           stateChangedAt: new Date(),
           confirmedAt: new Date(),
+          startedAt: null,
         },
         {
           where: {
