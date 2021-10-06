@@ -2,6 +2,16 @@ const nock = require("nock");
 
 nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/user_fields.json")
+  .matchHeader("content-type", "application/json")
+  .matchHeader("accept", "application/json")
+  .matchHeader(
+    "authorization",
+    "Basic ZGV2QGdyb3VwYXJvby5jb20vdG9rZW46OHFNNzdXd2cyT3VJQ0ZZSlNwbzU0UmdIb2hvbHZNa2t4VUF4VzMwYw=="
+  )
+  .matchHeader("x-zendesk-marketplace-name", "Grouparoo")
+  .matchHeader("x-zendesk-marketplace-organization-id", 5084)
+  .matchHeader("x-zendesk-marketplace-app-id", 577390)
+  .matchHeader("host", "d3v-grouparoo.zendesk.com")
   .once()
   .reply(
     200,
@@ -159,7 +169,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 06 Oct 2021 03:55:59 GMT",
+      "Wed, 06 Oct 2021 13:29:51 GMT",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Transfer-Encoding",
@@ -169,7 +179,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       "X-Zendesk-API-Version",
       "v2",
       "X-Zendesk-Application-Version",
-      "v9871",
+      "v9875",
       "X-Frame-Options",
       "SAMEORIGIN",
       "ETag",
@@ -179,19 +189,19 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       "X-Rate-Limit",
       "700",
       "X-Rate-Limit-Remaining",
-      "671",
+      "696",
       "Strict-Transport-Security",
       "max-age=31536000;",
       "X-Zendesk-Origin-Server",
-      "classic-app-server-7cf697f86f-pq6dw",
+      "classic-app-server-86b99669db-qrnsh",
       "X-Request-Id",
-      "699bf50cbb45d038-SEA",
+      "699f3dad38716ad1-SEA",
       "X-Runtime",
-      "0.161863",
+      "0.186984",
       "X-Zendesk-Zorg",
       "yes",
       "X-Request-ID",
-      "699bf50cbb45d038-SEA",
+      "699f3dad38716ad1-SEA",
       "X-Content-Type-Options",
       "nosniff",
       "CF-Cache-Status",
@@ -199,19 +209,29 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Report-To",
-      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=7N%2BkW7swFYtpXkem7EEBaYJHqfv9dPBuvd7Rt5YBKfu%2FVyEzAsQfQSmqi5W1z%2Bqk2KGSZR1TG2J9VQyxN5KCwVApRw%2Bsgqh5AokHyVRLy0PE1XwQgblnB4acNkz8ni9C8yHbN%2Fbezd0D%2BBw%3D"}],"group":"cf-nel","max_age":604800}',
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=i%2BPuL3DeRJFKMofB0gNV2l9nO4%2BUjZOGT0ZvCve2euVMMT66K5%2FgU49b%2F499cDs6j61XCBXWu2AfD12ufw%2FOOTQHYQwID%2FP7EStUtq0HmF8jwlPbucKybnpgp%2Bcd49Yno3JctA8HX%2Ba7hMo%3D"}],"group":"cf-nel","max_age":604800}',
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Set-Cookie",
-      "__cfruid=e1773f5f82cdb7296a44532b8455386970c30a40-1633492559; path=/; domain=.d3v-grouparoo.zendesk.com; HttpOnly; Secure; SameSite=None",
+      "__cfruid=bce5eb2dd5b8e4904bce54d13cb077747725be2c-1633526991; path=/; domain=.d3v-grouparoo.zendesk.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "699bf50cbb45d038-GRU",
+      "699f3dad38716ad1-GRU",
     ]
   );
 nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/user_fields.json")
+  .matchHeader("content-type", "application/json")
+  .matchHeader("accept", "application/json")
+  .matchHeader(
+    "authorization",
+    "Basic ZGV2QGdyb3VwYXJvby5jb20vdG9rZW46OHFNNzdXd2cyT3VJQ0ZZSlNwbzU0UmdIb2hvbHZNa2t4VUF4VzMwYw=="
+  )
+  .matchHeader("x-zendesk-marketplace-name", "Grouparoo")
+  .matchHeader("x-zendesk-marketplace-organization-id", 5084)
+  .matchHeader("x-zendesk-marketplace-app-id", 577390)
+  .matchHeader("host", "d3v-grouparoo.zendesk.com")
   .once()
   .reply(
     200,
@@ -369,7 +389,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 06 Oct 2021 03:55:59 GMT",
+      "Wed, 06 Oct 2021 13:29:52 GMT",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Transfer-Encoding",
@@ -379,7 +399,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       "X-Zendesk-API-Version",
       "v2",
       "X-Zendesk-Application-Version",
-      "v9871",
+      "v9875",
       "X-Frame-Options",
       "SAMEORIGIN",
       "ETag",
@@ -389,19 +409,19 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       "X-Rate-Limit",
       "700",
       "X-Rate-Limit-Remaining",
-      "670",
+      "695",
       "Strict-Transport-Security",
       "max-age=31536000;",
       "X-Zendesk-Origin-Server",
-      "classic-app-server-7cf697f86f-sf87j",
+      "classic-app-server-86b99669db-zvnj6",
       "X-Request-Id",
-      "699bf5115c2f6ae2-SEA",
+      "699f3db21d5ef203-SEA",
       "X-Runtime",
-      "0.157928",
+      "0.175108",
       "X-Zendesk-Zorg",
       "yes",
       "X-Request-ID",
-      "699bf5115c2f6ae2-SEA",
+      "699f3db21d5ef203-SEA",
       "X-Content-Type-Options",
       "nosniff",
       "CF-Cache-Status",
@@ -409,14 +429,14 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Report-To",
-      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=WlAHP1ZSxddxPaj0G57QiHpjjYOgMp1CnFXR%2BBGT3kXdE7mJzMBdmPcpm7za1mG%2B%2FW61LUW29zXFnZ9W3dwunDQM0KGpkqh6c3MiVXKikyulrqm89C%2BPCaEv80U7BHfgKGzBkdfogxzsG3s%3D"}],"group":"cf-nel","max_age":604800}',
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=pOyqcaYpSBR09JFmwuxoxhBl%2BJeJTM9Uk6biHqtPK6OI0YAVZMe1Z6lwM0d8aQ0hvV4t8a4T2rXX555nh1Kwet8JxzMfNvk3MB4PlEqlJPg9VxoXUqmzMxHAsWlMiiz8xF7k050vpHYqZrU%3D"}],"group":"cf-nel","max_age":604800}',
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Set-Cookie",
-      "__cfruid=e1773f5f82cdb7296a44532b8455386970c30a40-1633492559; path=/; domain=.d3v-grouparoo.zendesk.com; HttpOnly; Secure; SameSite=None",
+      "__cfruid=cabee168dc13f521f26ccccdda09b318c9d0d400-1633526992; path=/; domain=.d3v-grouparoo.zendesk.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "699bf5115c2f6ae2-GRU",
+      "699f3db21d5ef203-GRU",
     ]
   );

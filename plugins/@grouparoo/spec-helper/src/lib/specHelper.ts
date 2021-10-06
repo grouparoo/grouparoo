@@ -641,6 +641,7 @@ export namespace helper {
     nock.recorder.rec({
       logging: addRecording,
       use_separator: false,
+      enable_reqheaders_recording: updater?.recordRequestHeaders || false,
     });
   }
 

@@ -26,6 +26,7 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
 }
 
 export const updater = {
+  recordRequestHeaders: true,
   rewrite: function (nockCall) {
     return nockCall;
   },
