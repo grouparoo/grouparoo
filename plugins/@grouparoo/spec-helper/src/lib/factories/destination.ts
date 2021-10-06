@@ -7,8 +7,9 @@ import { Destination, GrouparooModel } from "@grouparoo/core";
 const data = async (props: { modelId?: string } = {}) => {
   const { GrouparooModel } = await import(`@grouparoo/core/${loadPath}`);
   const model =
-    await GrouparooModel.findOne(props.modelId ? { where: { id: props.modelId } } : undefined)) ??
-    ((await ModelFactory({ id: props.modelId })) as GrouparooModel);
+    (await GrouparooModel.findOne(
+      props.modelId ? { where: { id: props.modelId } } : undefined
+    )) ?? ((await ModelFactory({ id: props.modelId })) as GrouparooModel);
 
   const defaultProps = {
     name: `destination ${faker.company.companyName()} - ${Math.random()}`,
