@@ -19,9 +19,7 @@ export default async (
 ) => {
   if (!modelId) modelId = "mod_profiles";
   const model =
-    (modelId
-      ? await GrouparooModel.findOne({ where: { id: modelId } })
-      : await GrouparooModel.findOne()) ??
+    (await GrouparooModel.findOne({ where: { id: modelId } })) ??
     ((await ModelFactory({ id: modelId })) as GrouparooModel);
   const source = (await SourceFactory(null, { modelId: model.id })) as Source;
 
