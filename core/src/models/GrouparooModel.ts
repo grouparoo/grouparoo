@@ -19,6 +19,8 @@ import { LoggedModel } from "../classes/loggedModel";
 import { APIData } from "../modules/apiData";
 import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
+import { Destination } from "./Destination";
+import { Group } from "./Group";
 
 export const ModelTypes = ["profile"] as const;
 export type ModelType = typeof ModelTypes[number];
@@ -150,6 +152,22 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
     if (sources.length > 0) {
       throw new Error(
         `cannot delete this model, source ${sources[0].id} relies on it`
+      );
+    }
+    const destinations = await Destination.scope(null).findAll({
+      where: { modelId: instance.id },
+    });
+    if (destinations.length > 0) {
+      throw new Error(
+        `cannot delete this model, group ${destinations[0].id} relies on it`
+      );
+    }
+    const groups = await Group.scope(null).findAll({
+      where: { modelId: instance.id },
+    });
+    if (groups.length > 0) {
+      throw new Error(
+        `cannot delete this model, group ${groups[0].id} relies on it`
       );
     }
   }

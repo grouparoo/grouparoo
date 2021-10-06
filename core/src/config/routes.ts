@@ -144,6 +144,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/record/:id", action: "record:destroy" },
         { path: "/v:apiVersion/property/:id", action: "property:destroy" },
         { path: "/v:apiVersion/app/:id", action: "app:destroy" },
+        { path: "/v:apiVersion/model/:id", action: "model:destroy" },
         { path: "/v:apiVersion/source/:id", action: "source:destroy" },
         { path: "/v:apiVersion/schedule/:id", action: "schedule:destroy" },
         { path: "/v:apiVersion/destination/:id", action: "destination:destroy" },

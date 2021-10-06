@@ -8,9 +8,9 @@ export class ModelDestroy extends CLSTask {
     this.description =
       "wait for dependencies to finish being deleted, then delete the model";
     this.frequency = 0;
-    this.queue = "model";
+    this.queue = "models";
     this.inputs = {
-      appId: { required: true },
+      modelId: { required: true },
     };
   }
 
@@ -20,7 +20,9 @@ export class ModelDestroy extends CLSTask {
     });
 
     // the model may have been force-deleted
-    if (!model) return;
+    if (!model) {
+      return;
+    }
 
     // check if we're still being used by something
     try {
@@ -33,7 +35,7 @@ export class ModelDestroy extends CLSTask {
       throw error;
     }
 
-    // all things that depend on this app have been cleaned up
+    // all things that depend on this model have been cleaned up
     await model.destroy();
   }
 }

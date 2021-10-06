@@ -6,7 +6,7 @@ import { App } from "../../models/App";
 import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
 import { RecordOps } from "../../modules/ops/record";
-import { GrouparooModel } from "../..";
+import { GrouparooModel } from "../../models/GrouparooModel";
 
 export class DestroySweeper extends CLSTask {
   constructor() {
