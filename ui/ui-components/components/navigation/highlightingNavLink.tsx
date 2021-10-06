@@ -15,11 +15,19 @@ export default function HighlightingNavLink({
   const [active, setActive] = useState(false);
 
   useEffect(() => {
-    const mainPathSection = router?.asPath.split("/")[mainPathSectionIdx] || "";
-    const mainHrefSection = href.split("/")[mainPathSectionIdx];
-    const active =
+    const pathParts = router?.asPath.split("/");
+    const hrefParts = href.split("/");
+    const mainPathSection = pathParts[mainPathSectionIdx] || "";
+    const mainHrefSection = hrefParts[mainPathSectionIdx];
+    let active =
       mainPathSection === mainHrefSection ||
       `${mainPathSection}s` === mainHrefSection;
+
+    // special case: models in sidebar
+    if (active && mainHrefSection === "models" && pathParts.length > 3) {
+      active = false;
+    }
+
     setActive(active);
   }, [globalThis?.location?.href]);
 

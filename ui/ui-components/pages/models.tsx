@@ -80,7 +80,7 @@ export default function Page(props) {
                 </td>
                 <td>
                   <EnterpriseLink
-                    href="/model/[id]/edit"
+                    href="/model/[modelId]/edit"
                     as={`/model/${model.id}/edit`}
                   >
                     <a>
