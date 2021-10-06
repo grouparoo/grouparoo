@@ -9,15 +9,12 @@ import {
   PendingExports,
 } from "../components/visualizations/homepageWidgets";
 import { StatusHandler } from "../utils/statusHandler";
-import { Actions } from "../utils/apiData";
 
 export default function Page(props) {
   const {
     statusHandler,
-    navModel,
   }: {
     statusHandler: StatusHandler;
-    navModel: Actions.NavigationList["navModel"];
   } = props;
 
   return (

@@ -35,8 +35,8 @@ export const iconConstrainedStyle = { width: 20 };
 
 export default function Navigation(props) {
   const {
-    navModel,
     onChangeModelId,
+    navigationModel,
     navigationMode,
     navigation,
     clusterName,
@@ -50,7 +50,7 @@ export default function Navigation(props) {
     navigationMode: Actions.NavigationList["navigationMode"];
     navigation: Actions.NavigationList["navigation"];
     clusterName: { value: string; default: boolean };
-    navModel: Actions.NavigationList["navModel"];
+    navigationModel: Actions.NavigationList["navigationModel"];
     onChangeModelId: (id: string) => Promise<void>;
     navExpanded: boolean;
     toggleNavExpanded: () => {};
@@ -234,7 +234,7 @@ export default function Navigation(props) {
                     <Form.Control
                       name="selectedModel"
                       as="select"
-                      value={navModel.value}
+                      value={navigationModel.value}
                       style={{ marginTop: 20 }}
                       onChange={(
                         event: React.ChangeEvent<HTMLInputElement>
@@ -242,7 +242,7 @@ export default function Navigation(props) {
                         onChangeModelId(event.target.value);
                       }}
                     >
-                      {navModel.options.map((m) => (
+                      {navigationModel.options.map((m) => (
                         <option value={m.id} key={`model-${m.id}`}>
                           {m.name}
                         </option>

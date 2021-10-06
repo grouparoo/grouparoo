@@ -103,7 +103,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         value: clusterNameSetting?.value || "",
       },
       teamMember: teamMember ? await teamMember.apiData() : undefined,
-      navModel: isAuthenticated
+      navigationModel: isAuthenticated
         ? {
             value: currentModelId,
             options: await Promise.all(models.map((m) => m.apiData())),

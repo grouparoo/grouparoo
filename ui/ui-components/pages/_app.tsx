@@ -70,9 +70,9 @@ export default function GrouparooWebApp(props) {
   };
 
   const combinedProps = Object.assign({}, pageProps || {}, {
-    navModel: props.navModel,
     navigation: props.navigation,
     navigationMode: props.navigationMode,
+    navigationModel: props.navigationModel,
     clusterName: props.clusterName,
     onChangeModelId,
     currentTeamMember: props.currentTeamMember,
@@ -135,11 +135,10 @@ GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
       currentTeamMember = navigationResponse.teamMember;
     }
 
-    console.log("NAV RES", navigationResponse);
-    if (navigationResponse.navModel.value && appContext.ctx.res) {
+    if (navigationResponse.navigationModel.value && appContext.ctx.res) {
       appContext.ctx.res.setHeader(
         "set-cookie",
-        `grouparooModelId=${navigationResponse.navModel.value}; Path=/`
+        `grouparooModelId=${navigationResponse.navigationModel.value}; Path=/`
       );
     }
 
@@ -167,7 +166,7 @@ GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
     return {
       ...appProps,
       currentTeamMember,
-      navModel: navigationResponse.navModel,
+      navigationModel: navigationResponse.navigationModel,
       navigationMode: navigationResponse.navigationMode,
       navigation: navigationResponse.navigation,
       clusterName: navigationResponse.clusterName,

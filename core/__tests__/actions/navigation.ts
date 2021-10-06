@@ -70,6 +70,37 @@ describe("actions/navigation", () => {
       );
       expect(teamMember.email).toBe("peach@example.com");
     });
+
+    test("the navigation action does not include models if not logged in", async () => {
+      const { navigationModel, navigationMode } =
+        await specHelper.runAction<NavigationList>("navigation:list");
+
+      expect(navigationMode).toBe("unauthenticated");
+
+      expect(navigationModel.value).toBe(null);
+      expect(navigationModel.options).toHaveLength(0);
+    });
+
+    test("the navigation action includes models if logged in", async () => {
+      const connection = await specHelper.buildConnection();
+      connection.params = {
+        email: "peach@example.com",
+        password: "P@ssw0rd!",
+      };
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
+        "session:create",
+        connection
+      );
+      const csrfToken = sessionResponse.csrfToken;
+      connection.params = { csrfToken };
+
+      const { navigationModel } = await specHelper.runAction<NavigationList>(
+        "navigation:list",
+        connection
+      );
+      expect(navigationModel.value).toBe("mod_profiles");
+      expect(navigationModel.options).toHaveLength(1);
+    });
   });
 
   describe("in config mode", () => {
@@ -110,8 +141,9 @@ describe("actions/navigation", () => {
         connection
       );
 
-      expect(navigation.navigationItems[0].title).toEqual("Apps");
-      expect(navigation.navigationItems[1].title).toEqual("Models");
+      expect(navigation.navigationItems[0].type).toEqual("modelMenu");
+      expect(navigation.navigationItems[1].title).toEqual("Apps");
+      expect(navigation.navigationItems[2].title).toEqual("Models");
     });
 
     test("the navigation does not include Platform items if in config mode", async () => {
