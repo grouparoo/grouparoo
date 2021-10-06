@@ -208,7 +208,7 @@ describe("actions/records", () => {
         },
         {
           where: {
-            id: readyProfiles[0].id,
+            id: readyProfilesB[0].id,
           },
         }
       );

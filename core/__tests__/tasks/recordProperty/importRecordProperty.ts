@@ -111,7 +111,7 @@ describe("tasks/recordProperty:importRecordProperty", () => {
       expect(recordProperty.rawValue).toBe(null);
       expect(recordProperty.invalidValue).toBe("not-an-email");
       expect(recordProperty.startedAt).toBe(null);
-      expect(recordProperty?.invalidReason).toBe("Invalid email value");
+      expect(recordProperty.invalidReason).toBe("Invalid email value");
 
       await record.destroy();
 
