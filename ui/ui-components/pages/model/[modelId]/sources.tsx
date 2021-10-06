@@ -14,7 +14,6 @@ import { Button } from "react-bootstrap";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { ErrorHandler } from "../../../utils/errorHandler";
-import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page(props) {
   const {
@@ -116,7 +115,6 @@ export default function Page(props) {
             <th>Name</th>
             <th>Type</th>
             <th>App</th>
-            <th>Model</th>
             <th>State</th>
             <th>Created At</th>
             <th>Schedule</th>
@@ -163,12 +161,6 @@ export default function Page(props) {
                         <strong>{source.app.name}</strong>
                       </a>
                     </Link>
-                  </td>
-                  <td>
-                    <ModelBadge
-                      modelName={source.modelName}
-                      modelId={source.modelId}
-                    />
                   </td>
                   <td>
                     <StateBadge state={source.state} />

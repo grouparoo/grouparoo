@@ -1,19 +1,19 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
+import { NextPageContext } from "next";
+import { Button, Alert } from "react-bootstrap";
+
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
-import { useRouter } from "next/router";
 import Link from "../../../components/enterpriseLink";
-import { Button, Alert } from "react-bootstrap";
 import Pagination from "../../../components/pagination";
 import LoadingTable from "../../../components/loadingTable";
 import StateBadge from "../../../components/badges/stateBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
-import ModelBadge from "../../../components/badges/modelBadge";
-import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -120,7 +120,6 @@ export default function Page(props) {
             <th>Unique</th>
             <th>Is Array</th>
             <th>Source</th>
-            <th>Model</th>
             <th>State</th>
             <th>Example Values</th>
             <th>Updated At</th>
@@ -158,12 +157,6 @@ export default function Page(props) {
                   >
                     <a>{source.name}</a>
                   </Link>
-                </td>
-                <td>
-                  <ModelBadge
-                    modelName={source.modelName}
-                    modelId={source.modelId}
-                  />
                 </td>
                 <td>
                   <StateBadge state={rule.state} />

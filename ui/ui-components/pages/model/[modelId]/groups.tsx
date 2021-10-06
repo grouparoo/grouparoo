@@ -12,7 +12,6 @@ import StateBadge from "../../../components/badges/stateBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { ErrorHandler } from "../../../utils/errorHandler";
-import ModelBadge from "../../../components/badges/modelBadge";
 import { NextPageContext } from "next";
 
 export default function Page(props) {
@@ -70,7 +69,6 @@ export default function Page(props) {
             <th>Name</th>
             <th>Type</th>
             {process.env.GROUPAROO_UI_EDITION !== "config" && <th>Records</th>}
-            <th>Model</th>
             <th>State</th>
             {process.env.GROUPAROO_UI_EDITION !== "config" && (
               <th>Calculated At</th>
@@ -104,12 +102,6 @@ export default function Page(props) {
                 {process.env.GROUPAROO_UI_EDITION !== "config" && (
                   <td>{group.recordsCount}</td>
                 )}
-                <td>
-                  <ModelBadge
-                    modelName={group.modelName}
-                    modelId={group.modelId}
-                  />
-                </td>
                 <td>
                   <StateBadge state={group.state} />
                 </td>

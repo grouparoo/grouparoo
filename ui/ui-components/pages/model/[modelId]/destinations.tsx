@@ -14,7 +14,6 @@ import StateBadge from "../../../components/badges/stateBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { ErrorHandler } from "../../../utils/errorHandler";
-import ModelBadge from "../../../components/badges/modelBadge";
 
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
@@ -87,7 +86,6 @@ export default function Page(props) {
             <th>Type</th>
             <th>Group Tracked</th>
             <th>App</th>
-            <th>Model</th>
             <th>State</th>
             <th>Pending Exports</th>
             <th>Created At</th>
@@ -151,12 +149,6 @@ export default function Page(props) {
                       <strong>{destination.app.name}</strong>
                     </a>
                   </EnterpriseLink>
-                </td>
-                <td>
-                  <ModelBadge
-                    modelName={destination.modelName}
-                    modelId={destination.modelId}
-                  />
                 </td>
                 <td>
                   <StateBadge state={destination.state} />

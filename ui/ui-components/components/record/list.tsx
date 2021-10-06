@@ -14,7 +14,6 @@ import ArrayRecordPropertyList from "./arrayRecordPropertyList";
 import StateBadge from "../badges/stateBadge";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
-import ModelBadge from "../badges/modelBadge";
 import { NextPageContext } from "next";
 
 export default function RecordsList(props) {
@@ -279,7 +278,6 @@ export default function RecordsList(props) {
               <th>Unique Properties</th>
             )}
             <th>State</th>
-            <th>Model</th>
             <th>Created At</th>
             <th>Updated At</th>
           </tr>
@@ -355,12 +353,6 @@ export default function RecordsList(props) {
                 </td>
                 <td>
                   <StateBadge state={record.state} />
-                </td>
-                <td>
-                  <ModelBadge
-                    modelName={record.modelName}
-                    modelId={record.modelId}
-                  />
                 </td>
                 <td>{formatTimestamp(record.createdAt)}</td>
                 <td>{formatTimestamp(record.updatedAt)}</td>
