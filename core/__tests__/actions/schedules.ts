@@ -17,11 +17,12 @@ describe("actions/schedules", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let id: string;
   let model: GrouparooModel;
+  let otherModel: GrouparooModel;
   let source: Source;
   let source2: Source;
 
   beforeAll(async () => {
-    await helper.factories.properties();
+    ({ model } = await helper.factories.properties());
 
     await specHelper.runAction("team:initialize", {
       firstName: "Mario",
@@ -45,7 +46,10 @@ describe("actions/schedules", () => {
       );
       csrfToken = sessionResponse.csrfToken;
 
-      model = await helper.factories.model();
+      otherModel = await helper.factories.model({
+        id: "other_id",
+        name: "other model",
+      });
       //source using default model
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
@@ -54,7 +58,7 @@ describe("actions/schedules", () => {
 
       //source using new model
       source2 = await helper.factories.source(null, {
-        modelId: model.id,
+        modelId: otherModel.id,
       });
 
       await source2.setOptions({ table: "test table2" });
@@ -95,7 +99,7 @@ describe("actions/schedules", () => {
 
     describe("with schedule", () => {
       beforeAll(async () => {
-        //schedule with created model's source
+        //schedule with created otherModel's source
         connection.params = {
           csrfToken,
           name: "test schedule 2",
@@ -129,7 +133,7 @@ describe("actions/schedules", () => {
       test("an administrator can list all schedules by model id", async () => {
         connection.params = {
           csrfToken,
-          modelId: "mod_profiles",
+          modelId: model.id,
         };
         const { error, schedules, total } =
           await specHelper.runAction<SchedulesList>(

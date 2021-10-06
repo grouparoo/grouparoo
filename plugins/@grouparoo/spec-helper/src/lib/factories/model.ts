@@ -3,8 +3,9 @@ import { GrouparooModel } from "@grouparoo/core";
 
 const data = async (props = {}) => {
   const defaultProps = {
-    name: "test-model",
+    id: undefined,
     type: "profile",
+    name: "Profiles",
 
     createdAt: new Date(),
     updatedAt: new Date(),

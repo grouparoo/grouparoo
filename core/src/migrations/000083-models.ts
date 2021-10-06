@@ -1,12 +1,32 @@
 import Sequelize from "sequelize";
 
-const default_model = "mod_profiles";
+const default_model = {
+  id: "mod_profiles",
+  name: "Profiles",
+  type: "profile",
+};
 
 export default {
   up: async (
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
+    let toCreateModel = false;
+    const [sources] = await queryInterface.sequelize.query(
+      `SELECT * FROM "sources" WHERE "locked" IS NOT NULL`
+    );
+    const [destinations] = await queryInterface.sequelize.query(
+      `SELECT * FROM "destinations" WHERE "locked" IS NOT NULL`
+    );
+    if (sources.length > 0 || destinations.length > 0) toCreateModel = true;
+
+    if (toCreateModel) {
+      await queryInterface.sequelize.query(`
+INSERT INTO "models" ("id", "name", "type", "createdAt", "updatedAt")
+VALUES ('${default_model.id}', '${default_model.name}', '${default_model.type}', NOW(), NOW());
+      `);
+    }
+
     await queryInterface.addColumn("models", "locked", {
       type: DataTypes.STRING(191),
       allowNull: true,
@@ -14,7 +34,7 @@ export default {
 
     await queryInterface.addColumn("records", "modelId", {
       type: DataTypes.STRING(191),
-      defaultValue: default_model,
+      defaultValue: default_model.id,
       allowNull: true,
     });
 
@@ -25,7 +45,7 @@ export default {
 
     await queryInterface.addColumn("sources", "modelId", {
       type: DataTypes.STRING(191),
-      defaultValue: default_model,
+      defaultValue: default_model.id,
       allowNull: true,
     });
 
@@ -36,7 +56,7 @@ export default {
 
     await queryInterface.addColumn("groups", "modelId", {
       type: DataTypes.STRING(191),
-      defaultValue: default_model,
+      defaultValue: default_model.id,
       allowNull: true,
     });
 
@@ -47,7 +67,7 @@ export default {
 
     await queryInterface.addColumn("destinations", "modelId", {
       type: DataTypes.STRING(191),
-      defaultValue: default_model,
+      defaultValue: default_model.id,
       allowNull: true,
     });
 
@@ -58,6 +78,10 @@ export default {
   },
 
   down: async (queryInterface: Sequelize.QueryInterface) => {
-    await queryInterface.dropTable("models");
+    await queryInterface.removeColumn("models", "locked");
+    await queryInterface.removeColumn("records", "modelId");
+    await queryInterface.removeColumn("sources", "modelId");
+    await queryInterface.removeColumn("groups", "modelId");
+    await queryInterface.removeColumn("destinations", "modelId");
   },
 };

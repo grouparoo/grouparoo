@@ -4,6 +4,7 @@ import { Op } from "sequelize";
 import {
   App,
   Destination,
+  GrouparooModel,
   GrouparooRecord,
   Log,
   Option,
@@ -17,11 +18,12 @@ import { SourceOps } from "../../../src/modules/ops/source";
 
 describe("models/source", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let model: GrouparooModel;
   let app: App;
 
   beforeAll(async () => {
     app = await helper.factories.app();
-    await helper.factories.properties();
+    ({ model } = await helper.factories.properties());
   });
 
   describe("plugin connections", () => {
@@ -32,7 +34,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
@@ -70,7 +72,7 @@ describe("models/source", () => {
           type: "test-plugin-import",
           name: "test source",
           appId: app.id,
-          modelId: "mod_profiles",
+          modelId: model.id,
         })
       ).rejects.toThrow(/app .* not ready/);
 
@@ -83,7 +85,7 @@ describe("models/source", () => {
           type: "missing-source",
           name: "test source",
           appId: app.id,
-          modelId: "mod_profiles",
+          modelId: model.id,
         })
       ).rejects.toThrow(
         /Cannot find a \"missing-source\" connection available within the installed plugins. Current connections installed are:/
@@ -105,7 +107,7 @@ describe("models/source", () => {
       const source = await Source.create({
         type: "test-plugin-import",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       expect(source.name).toBe("");
@@ -117,12 +119,12 @@ describe("models/source", () => {
       const sourceOne = await Source.create({
         type: "test-plugin-import",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       const sourceTwo = await Source.create({
         type: "test-plugin-import",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       expect(sourceOne.name).toBe("");
@@ -145,17 +147,17 @@ describe("models/source", () => {
       const sourceOne = await Source.create({
         type: "test-plugin-import",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       const sourceTwo = await Source.create({
         type: "test-plugin-import",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       const sourceThree = await Source.create({
         type: "test-plugin-import",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       expect(sourceOne.name).toBe("");
@@ -222,7 +224,7 @@ describe("models/source", () => {
         name: "no opts",
         type: "test-plugin-import",
         state: "ready",
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       await expect(source.save()).rejects.toThrow(
@@ -235,7 +237,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
@@ -255,7 +257,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
@@ -297,7 +299,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       await Option.create({
@@ -329,7 +331,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       await source.setOptions({
@@ -348,7 +350,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       await expect(source.setOptions({ notThing: "abc" })).rejects.toThrow(
@@ -372,7 +374,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       await source.setOptions({ table: "abc" });
@@ -390,7 +392,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       await source.setOptions({ table: "abc" });
@@ -444,7 +446,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       await source.setOptions({ table: "TEST_OPTION" });
@@ -472,7 +474,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
     });
 
@@ -511,7 +513,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
     });
 
@@ -550,7 +552,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
     });
 
@@ -600,7 +602,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await source.setOptions({ table: "some table" });
       await source.setMapping({ local_user_id: "userId" });
@@ -651,7 +653,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await source.setOptions({ table: "some table" });
     });
@@ -746,7 +748,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source 2",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await source.setOptions({ table: "some table" });
     });
@@ -808,7 +810,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
@@ -921,7 +923,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       await source.setOptions({ table: "test table" });
@@ -968,7 +970,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "test source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       await source.setOptions({ table: "test table" });
@@ -1017,7 +1019,7 @@ describe("models/source", () => {
         type: "test-plugin-import",
         name: "translations source",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
 
       await source.setOptions({ table: "translations" });

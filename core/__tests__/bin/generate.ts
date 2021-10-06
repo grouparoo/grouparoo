@@ -11,7 +11,6 @@ fs.emptyDirSync(process.env.GROUPAROO_CONFIG_DIR);
 
 describe("bin/generate", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  beforeAll(async () => await helper.factories.properties());
 
   beforeAll(() => {
     fs.mkdirpSync(process.env.GROUPAROO_CONFIG_DIR);

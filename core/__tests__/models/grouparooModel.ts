@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
 import { GrouparooModel, Log } from "../../src";
-import { ModelOps } from "../../src/modules/ops/model";
 
 describe("models/grouparooModel", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -38,13 +37,6 @@ describe("models/grouparooModel", () => {
     });
 
     expect(latestLog).toBeTruthy();
-  });
-
-  test("the default model is not locked and can be edited", async () => {
-    await ModelOps.prepare();
-    expect(await GrouparooModel.count()).toBe(1);
-    const model = await GrouparooModel.findOne();
-    expect(model.locked).toBe(null);
   });
 
   describe("validations", () => {

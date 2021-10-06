@@ -3,7 +3,6 @@ import { RunCLI } from "../../src/bin/run";
 
 describe("bin/run", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  beforeAll(async () => await helper.factories.properties());
 
   let messages = [];
   let spies = [];

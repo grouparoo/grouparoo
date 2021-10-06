@@ -1,14 +1,19 @@
-import { GrouparooRecord } from "@grouparoo/core";
+import { GrouparooModel, GrouparooRecord } from "@grouparoo/core";
 import faker from "faker";
 import { loadPath } from "../loadPath";
+import ModelFactory from "./model";
 
-const data = async (props = {}) => {
+const data = async (props: { modelId?: string } = {}) => {
   const { GrouparooModel } = await import(`@grouparoo/core/${loadPath}`);
+  const model =
+    (await GrouparooModel.findOne(
+      props.modelId ? { where: { id: props.modelId } } : undefined
+    )) ?? ((await ModelFactory({ id: props.modelId })) as GrouparooModel);
 
   const defaultProps = {
     createdAt: new Date(),
     updatedAt: new Date(),
-    modelId: (await GrouparooModel.findOne()).id,
+    modelId: model.id,
   };
 
   return Object.assign({}, defaultProps, props);

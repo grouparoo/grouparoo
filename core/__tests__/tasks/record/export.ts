@@ -10,10 +10,12 @@ import {
   plugin,
   Source,
   Property,
+  GrouparooModel,
 } from "../../../src";
 import { Op } from "sequelize";
 
 describe("tasks/record:export", () => {
+  let model: GrouparooModel;
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
@@ -53,7 +55,7 @@ describe("tasks/record:export", () => {
       let destination: Destination;
 
       beforeAll(async () => {
-        await helper.factories.properties();
+        ({ model } = await helper.factories.properties());
         helper.disableTestPluginImport();
 
         record = await helper.factories.record();
@@ -129,7 +131,7 @@ describe("tasks/record:export", () => {
           type: "export-from-test-template-app",
           syncMode: "sync",
           appId: app.id,
-          modelId: "mod_profiles",
+          modelId: model.id,
         });
         await destination.setMapping({
           email: "email",

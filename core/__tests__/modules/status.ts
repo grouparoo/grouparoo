@@ -385,11 +385,6 @@ describe("modules/status", () => {
 
     beforeEach(async () => {
       await helper.truncate();
-      await GrouparooModel.create({
-        id: "mod_profiles",
-        name: "Profiles",
-        type: "profile",
-      });
       await helper.factories.properties();
       oldProfile = await helper.factories.record();
       await helper.changeTimestamps(oldProfile, true); // 'true' will set both updatedAt and createdAt

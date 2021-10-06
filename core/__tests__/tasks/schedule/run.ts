@@ -1,8 +1,16 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Source, Schedule, App, Run, plugin } from "../../../src";
+import {
+  Source,
+  Schedule,
+  App,
+  Run,
+  plugin,
+  GrouparooModel,
+} from "../../../src";
 
 describe("tasks/schedule:run", () => {
+  let model: GrouparooModel;
   let source: Source;
   let schedule: Schedule;
 
@@ -10,7 +18,7 @@ describe("tasks/schedule:run", () => {
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
 
   beforeAll(async () => {
-    await helper.factories.properties();
+    ({ model } = await helper.factories.properties());
     source = await helper.factories.source();
     await source.setOptions({ table: "test table" });
     await source.setMapping({ id: "userId" });
@@ -122,7 +130,7 @@ describe("tasks/schedule:run", () => {
         name: "test source from plugin",
         type: "import-from-test-template-app",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });

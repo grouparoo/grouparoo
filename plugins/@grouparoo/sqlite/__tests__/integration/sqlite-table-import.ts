@@ -16,8 +16,10 @@ import {
   Schedule,
   Source,
   App,
+  GrouparooModel,
 } from "@grouparoo/core";
 import { SessionCreate } from "@grouparoo/core/src/actions/session";
+import { ModelCreate } from "@grouparoo/core/src/actions/models";
 import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
 import {
   SourceBootstrapUniqueProperty,
@@ -50,6 +52,7 @@ describe("integration/runs/sqlite", () => {
 
   let session;
   let csrfToken: string;
+  let model: AsyncReturnType<GrouparooModel["apiData"]>;
   let app: AsyncReturnType<App["apiData"]>;
   let source: AsyncReturnType<Source["apiData"]>;
   let schedule: AsyncReturnType<Schedule["apiData"]>;
@@ -83,6 +86,19 @@ describe("integration/runs/sqlite", () => {
     expect(sessionResponse.error).toBeUndefined();
     csrfToken = sessionResponse.csrfToken;
 
+    // create a model
+    session.params = {
+      csrfToken,
+      name: "Profiles",
+      type: "profile",
+    };
+    const modelCreateResponse = await specHelper.runAction<ModelCreate>(
+      "model:create",
+      session
+    );
+    expect(modelCreateResponse.error).toBeUndefined();
+    model = modelCreateResponse.model;
+
     // create a sqlite app
     session.params = {
       csrfToken,
@@ -105,7 +121,7 @@ describe("integration/runs/sqlite", () => {
       name: "sqlite import source",
       type: "sqlite-import-table",
       appId: app.id,
-      modelId: "mod_profiles",
+      modelId: model.id,
       options: { table: usersTableName },
     };
     const sourceResponse = await specHelper.runAction<SourceCreate>(
@@ -172,7 +188,7 @@ describe("integration/runs/sqlite", () => {
       name: "test destination",
       type: "sqlite-export-records",
       appId: app.id,
-      modelId: "mod_profiles",
+      modelId: model.id,
       options: {
         table: recordsDestinationTableName,
         primaryKey: "id",

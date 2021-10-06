@@ -8,11 +8,15 @@ import {
   Run,
   App,
   plugin,
+  GrouparooModel,
 } from "../../../src";
 
 describe("tasks/export:send", () => {
+  let model: GrouparooModel;
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  beforeAll(async () => await helper.factories.properties());
+  beforeAll(async () => {
+    ({ model } = await helper.factories.properties());
+  });
 
   test("can be enqueued", async () => {
     await task.enqueue("export:send", {
@@ -192,7 +196,7 @@ describe("tasks/export:send", () => {
           name: "test plugin destination",
           type: "export-from-test-app",
           appId: app.id,
-          modelId: "mod_profiles",
+          modelId: model.id,
         });
         await destination.update({ state: "ready" });
         await destination.trackGroup(group);

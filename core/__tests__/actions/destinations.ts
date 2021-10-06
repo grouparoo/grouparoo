@@ -8,6 +8,7 @@ import {
   Run,
   App,
   Property,
+  GrouparooModel,
 } from "../../src";
 import {
   DestinationConnectionApps,
@@ -28,6 +29,7 @@ describe("actions/destinations", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let app: App;
   let id: string;
+  let model: GrouparooModel;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
@@ -36,7 +38,7 @@ describe("actions/destinations", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
-    await helper.factories.properties();
+    ({ model } = await helper.factories.properties());
     await api.resque.queue.connection.redis.flushdb();
   });
 
@@ -63,7 +65,7 @@ describe("actions/destinations", () => {
         name: "test destination",
         type: "test-plugin-export",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
         syncMode: "sync",
       };
       const { error, destination } =
@@ -86,7 +88,7 @@ describe("actions/destinations", () => {
         name: "test destination again",
         type: "test-plugin-export",
         appId: app.id,
-        modelId: "mod_profiles",
+        modelId: model.id,
         syncMode: "sync",
       };
       const { error } = await specHelper.runAction(

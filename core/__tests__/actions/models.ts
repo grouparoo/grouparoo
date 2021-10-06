@@ -63,7 +63,7 @@ describe("actions/models", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(models.length).toBe(2); // the new one and the default model
+      expect(models.length).toBe(1);
     });
 
     test("an administrator can get the options for a new model", async () => {

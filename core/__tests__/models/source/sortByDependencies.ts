@@ -1,9 +1,17 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Source, App, Property, Mapping, GrouparooRecord } from "../../../src";
+import {
+  Source,
+  App,
+  Property,
+  Mapping,
+  GrouparooRecord,
+  GrouparooModel,
+} from "../../../src";
 import { SourceOps } from "../../../src/modules/ops/source";
 
 describe("models/source/sortByDependencies", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let model: GrouparooModel;
   let app: App;
   let usersTable: Source;
   let purchasesTable: Source;
@@ -14,13 +22,14 @@ describe("models/source/sortByDependencies", () => {
   let purchasedProductNameProperty: Property;
 
   beforeAll(async () => {
+    model = await helper.factories.model();
     app = await helper.factories.app();
 
     usersTable = await Source.create({
       type: "test-plugin-import",
       name: "users table",
       appId: app.id,
-      modelId: "mod_profiles",
+      modelId: model.id,
     });
     await usersTable.setOptions({ table: "users" });
     await usersTable.bootstrapUniqueProperty("userId", "integer", "id");
@@ -37,7 +46,7 @@ describe("models/source/sortByDependencies", () => {
       type: "test-plugin-import",
       name: "purchases table",
       appId: app.id,
-      modelId: "mod_profiles",
+      modelId: model.id,
     });
     await purchasesTable.setOptions({ table: "purchases" });
     await purchasesTable.setMapping({ user_id: "userId" });
@@ -53,7 +62,7 @@ describe("models/source/sortByDependencies", () => {
       type: "test-plugin-import",
       name: "products table",
       appId: app.id,
-      modelId: "mod_profiles",
+      modelId: model.id,
     });
     await productsTable.setOptions({ table: "products" });
     await productsTable.setMapping({ id: "product_id" });

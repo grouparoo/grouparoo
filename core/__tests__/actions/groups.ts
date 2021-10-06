@@ -1,6 +1,12 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Group, GrouparooRecord, Team, TeamMember } from "../../src";
+import {
+  Group,
+  GrouparooRecord,
+  Team,
+  TeamMember,
+  GrouparooModel,
+} from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   GroupCountComponentMembers,
@@ -18,8 +24,11 @@ import {
 describe("actions/groups", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let id: string;
+  let model: GrouparooModel;
 
   beforeAll(async () => {
+    model = await helper.factories.model();
+
     await specHelper.runAction("team:initialize", {
       firstName: "Mario",
       lastName: "Mario",
@@ -47,7 +56,7 @@ describe("actions/groups", () => {
         csrfToken,
         name: "new group",
         type: "manual",
-        modelId: "mod_profiles",
+        modelId: model.id,
       };
       const { error, group } = await specHelper.runAction<GroupCreate>(
         "group:create",
@@ -195,14 +204,14 @@ describe("actions/groups", () => {
       let luigi: GrouparooRecord;
 
       beforeAll(async () => {
-        await helper.factories.properties();
+        await helper.factories.properties(model.id);
       });
 
       beforeEach(async () => {
         group = await Group.create({
           name: "test calculated group",
           type: "calculated",
-          modelId: "mod_profiles",
+          modelId: model.id,
           rules: {},
         });
       });
@@ -214,8 +223,8 @@ describe("actions/groups", () => {
       beforeAll(async () => {
         await GrouparooRecord.truncate();
 
-        mario = await GrouparooRecord.create({ modelId: "mod_profiles" });
-        luigi = await GrouparooRecord.create({ modelId: "mod_profiles" });
+        mario = await GrouparooRecord.create({ modelId: model.id });
+        luigi = await GrouparooRecord.create({ modelId: model.id });
 
         await mario.addOrUpdateProperties({
           firstName: ["Mario"],
@@ -357,7 +366,7 @@ describe("actions/groups", () => {
       group = new Group({
         type: "manual",
         name: "test group",
-        modelId: "mod_profiles",
+        modelId: model.id,
       });
       await group.save();
       id = group.id;
