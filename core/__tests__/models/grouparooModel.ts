@@ -24,6 +24,14 @@ describe("models/grouparooModel", () => {
     expect(latestLog).toBeTruthy();
   });
 
+  test("models start in the ready state", async () => {
+    const model = GrouparooModel.scope(null).findOne({
+      where: { name: "test model", state: "ready" },
+    });
+
+    expect(model).toBeTruthy();
+  });
+
   test("destroying a model creates a log entry", async () => {
     await GrouparooModel.create({ name: "test model", type: "profile" });
 
