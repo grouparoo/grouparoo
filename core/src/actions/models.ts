@@ -123,8 +123,6 @@ export class ModelDestroy extends AuthenticatedAction {
     const model = await GrouparooModel.findById(params.id);
     await model.destroy();
 
-    await ConfigWriter.run();
-
     return { success: true };
   }
 }
