@@ -28,6 +28,15 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
 export const updater = {
   recordRequestHeaders: true,
   rewrite: function (nockCall) {
+    const realEnv = readEnv(realPath);
+    const nockEnv = readEnv(nockPath);
+    const realToken = Buffer.from(
+      `${realEnv.ZENDESK_USERNAME}/token:${realEnv.ZENDESK_TOKEN}`
+    ).toString("base64");
+    const nockToken = Buffer.from(
+      `${nockEnv.ZENDESK_USERNAME}/token:${nockEnv.ZENDESK_TOKEN}`
+    ).toString("base64");
+    nockCall = nockCall.replace(new RegExp(realToken, "gi"), nockToken);
     return nockCall;
   },
 };
