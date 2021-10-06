@@ -130,6 +130,7 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
       );
     }
   }
+
   @BeforeSave
   static async updateState(instance: GrouparooModel) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
@@ -159,7 +160,7 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
     });
     if (destinations.length > 0) {
       throw new Error(
-        `cannot delete this model, group ${destinations[0].id} relies on it`
+        `cannot delete this model, destination ${destinations[0].id} relies on it`
       );
     }
     const groups = await Group.scope(null).findAll({
