@@ -96,8 +96,8 @@ export default function ImportList(props) {
                     <br /> Record:{" "}
                     {_import.recordId ? (
                       <Link
-                        href="/record/[id]/[...verb]"
-                        as={`/record/${_import.recordId}/edit`}
+                        href="/object/[id]"
+                        as={`/object/${_import.recordId}`}
                       >
                         <a>{_import.recordId}</a>
                       </Link>

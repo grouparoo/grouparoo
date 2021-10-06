@@ -15,7 +15,7 @@ export default function AddScheduleForm(props) {
   const router = useRouter();
 
   async function create() {
-    createSchedule({ execApi, router, sourceId: source.id, setLoading });
+    createSchedule({ execApi, router, source, setLoading });
   }
 
   if (source.state === "draft") {
@@ -38,14 +38,9 @@ export default function AddScheduleForm(props) {
   );
 }
 
-export async function createSchedule({
-  execApi,
-  router,
-  sourceId,
-  setLoading,
-}) {
+export async function createSchedule({ execApi, router, source, setLoading }) {
   const data = {
-    sourceId,
+    sourceId: source.id,
     recurring: false,
   };
 
@@ -57,10 +52,9 @@ export async function createSchedule({
   );
 
   if (response?.schedule) {
-    // TODO:sched GET MODEL
     router.push(
       `/model/[modelId]/source/[sourceId]/schedule`,
-      `/model/${"anything"}/source/${sourceId}/schedule`
+      `/model/${source.modelId}/source/${source.id}/schedule`
     );
     return true;
   } else {

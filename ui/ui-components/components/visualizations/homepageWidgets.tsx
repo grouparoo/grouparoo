@@ -122,10 +122,9 @@ export function GroupsByNewestMember({
               return (
                 <tr key={`group-${group.id}`}>
                   <td>
-                    {/* <!-- TODO:sched --> */}
                     <EnterpriseLink
-                      href="/group/[id]/rules"
-                      as={`/group/${group.id}/rules`}
+                      href="/object/[id]"
+                      as={`/object/${group.id}`}
                     >
                       <a>{group.name}</a>
                     </EnterpriseLink>
@@ -318,10 +317,9 @@ export function ScheduleRuns({
               return (
                 <tr key={`source-${sourceSchedule.id}`}>
                   <td>
-                    {/* <!-- TODO:sched --> */}
                     <EnterpriseLink
-                      href="/source/[id]/schedule"
-                      as={`/source/${sourceSchedule.id}/schedule`}
+                      href="/object/[id]"
+                      as={`/object/${sourceSchedule.id}`}
                     >
                       <a>{sourceSchedule.name}</a>
                     </EnterpriseLink>

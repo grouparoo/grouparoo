@@ -10,7 +10,13 @@ import { ErrorHandler } from "../../utils/errorHandler";
 
 export default function FindObject(props) {
   const router = useRouter();
-  const { errorHandler }: { errorHandler: ErrorHandler } = props;
+  const {
+    errorHandler,
+    navigationModel,
+  }: {
+    errorHandler: ErrorHandler;
+    navigationModel: Actions.NavigationList["navigationModel"];
+  } = props;
   const { execApi } = UseApi(props, errorHandler);
   const [error, setError] = useState<string>(null);
   const [records, setRecords] = useState<string[]>([]);
@@ -18,8 +24,11 @@ export default function FindObject(props) {
   const id = router.query.id?.toString();
 
   const detailPages = {
-    groups: "members",
-    sources: "overview",
+    records: redirectTopicWithModel("record"),
+    groups: redirectTopicWithModel("group", "members"),
+    destinations: redirectTopicWithModel("destination"),
+    sources: redirectTopicWithModel("source", "overview"),
+    properties: redirectProperty,
     schedules: redirectSchedule,
   };
 
@@ -46,7 +55,8 @@ export default function FindObject(props) {
       response.records.length === 1 &&
       process.env.GROUPAROO_UI_EDITION === "community"
     ) {
-      router.push(`/${response.records[0].tableName.toLowerCase()}`);
+      const listPage = getListPage(response.records[0].tableName.toLowerCase());
+      router.push(listPage);
     } else {
       setRecords(response.records.map((r) => r.tableName.toLowerCase()));
     }
@@ -57,15 +67,75 @@ export default function FindObject(props) {
       "get",
       `/schedule/${id}`
     );
-    if (response?.schedule) {
-      // TODO:sched
-      router.push(
-        `/source/[id]/schedule`,
-        `/source/${response.schedule.sourceId}/schedule`
-      );
-    } else {
+
+    if (!response || !response.schedule) {
       setError(`Cannot find object "${id}"`);
+      return;
     }
+
+    const { source }: Actions.SourceView = await execApi(
+      "get",
+      `/source/${response.schedule.sourceId}`
+    );
+
+    router.replace(
+      `/model/[modelId]/source/[sourceId]/schedule`,
+      `/model/${source.modelId}/source/${response.schedule.sourceId}/schedule`
+    );
+  }
+
+  async function redirectProperty(id: string) {
+    const response: Actions.PropertyView = await execApi(
+      "get",
+      `/property/${id}`
+    );
+
+    if (!response || !response.property) {
+      setError(`Cannot find object "${id}"`);
+      return;
+    }
+
+    const { source }: Actions.SourceView = await execApi(
+      "get",
+      `/source/${response.property.sourceId}`
+    );
+
+    router.replace(
+      `/model/[modelId]/property/[propertyId]/edit`,
+      `/model/${source.modelId}/property/${id}/edit`
+    );
+  }
+
+  function redirectTopicWithModel(topic: string, page: string = "edit") {
+    return async function (id: string) {
+      const response = await execApi("get", `/${topic}/${id}`);
+
+      if (!response || !response[topic]) {
+        setError(`Cannot find object "${id}"`);
+        return;
+      }
+
+      router.replace(
+        `/model/[modelId]/${topic}/[${topic}Id]/${page}`,
+        `/model/${response[topic].modelId}/${topic}/${response[topic].id}/${page}`
+      );
+    };
+  }
+
+  function getListPage(tableName: string) {
+    const byModel = [
+      "records",
+      "groups",
+      "destinations",
+      "sources",
+      "properties",
+      "schedules",
+    ];
+    if (byModel.includes(tableName) && props.navigationModel.value) {
+      return `/${navigationModel.value}/${tableName}`;
+    }
+
+    return `/${tableName}`;
   }
 
   if (records.length > 0) {
@@ -85,7 +155,7 @@ export default function FindObject(props) {
                         process.env.GROUPAROO_UI_EDITION === "enterprise" &&
                         typeof detailPage === "string"
                           ? `/${singular(r)}/${id}/${detailPage}`
-                          : `/${r}`
+                          : getListPage(r)
                       }
                     >
                       <a>{r}</a>

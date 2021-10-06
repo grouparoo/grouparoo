@@ -58,8 +58,8 @@ export default function Page({
             ) : null}
             Record:{" "}
             <Link
-              href="/record/[id]/[...verb]"
-              as={`/record/${_export.recordId}/edit`}
+              href="/model/[modelId]/record/[recordId]/edit"
+              as={`/model/${_export.destination.modelId}/record/${_export.recordId}/edit`}
             >
               <a>{_export.recordId}</a>
             </Link>
