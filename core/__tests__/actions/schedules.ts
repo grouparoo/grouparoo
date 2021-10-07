@@ -51,7 +51,7 @@ describe("actions/schedules", () => {
         name: "other model",
       });
       //source using default model
-      source = await helper.factories.source();
+      source = await helper.factories.source(null, { modelId: "mod_profiles" });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });

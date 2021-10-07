@@ -117,6 +117,19 @@ describe("modules/status", () => {
 
       const foundMetrics = await Status.get();
       expect(foundMetrics).toEqual({
+        Model: {
+          deleted: [
+            {
+              timestamp: expect.any(Number),
+              metric: {
+                collection: "deleted",
+                topic: "Model",
+                aggregation: "count",
+                count: 0,
+              },
+            },
+          ],
+        },
         Destination: {
           deleted: [
             {

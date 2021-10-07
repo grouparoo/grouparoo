@@ -640,6 +640,14 @@ describe("modules/codeConfig", () => {
       expect(sources[0].locked).toBeNull();
     });
 
+    test("a removed model will be deleted", async () => {
+      const sources = await GrouparooModel.scope(null).findAll();
+      expect(sources.length).toBe(1);
+      expect(sources[0].id).toBe("mod_profiles");
+      expect(sources[0].state).toBe("deleted");
+      expect(sources[0].locked).toBeNull();
+    });
+
     test("a removed app will be deleted", async () => {
       const app = await App.scope(null).findOne({
         where: { id: "data_warehouse" },
@@ -666,11 +674,13 @@ describe("modules/codeConfig", () => {
 
       await highValue.stopPreviousRuns();
 
-      await GrouparooModel.create({
-        type: "profile",
-        name: "Profiles",
-        id: "mod_profiles",
+      const model = await GrouparooModel.scope(null).findOne({
+        where: { id: "mod_profiles", state: "deleted" },
       });
+      expect(model).toBeTruthy();
+
+      await model.update({ state: "ready" });
+
       const record: GrouparooRecord = await helper.factories.record();
       await GroupMember.create({
         recordId: record.id,

@@ -53,7 +53,7 @@ export async function deleteModels(ids: string[]) {
   });
 
   for (const i in models) {
-    await models[i].destroy();
+    await models[i].update({ state: "deleted", locked: null });
     logModel(models[i], "deleted");
   }
 

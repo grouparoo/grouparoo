@@ -8,17 +8,35 @@ import {
   DataType,
   BeforeSave,
   BeforeDestroy,
+  DefaultScope,
+  Default,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
+import { Source } from "./Source";
 import { ModelConfigurationObject } from "../classes/codeConfig";
 import { LoggedModel } from "../classes/loggedModel";
 import { APIData } from "../modules/apiData";
 import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
+import { Destination } from "./Destination";
+import { Group } from "./Group";
 
 export const ModelTypes = ["profile"] as const;
 export type ModelType = typeof ModelTypes[number];
 
+const STATES = ["ready", "deleted"] as const;
+const STATE_TRANSITIONS = [
+  { from: "ready", to: "deleted", checks: [] },
+  {
+    from: "deleted",
+    to: "ready",
+    checks: [],
+  },
+];
+
+@DefaultScope(() => ({
+  where: { state: "ready" },
+}))
 @Table({ tableName: "models", paranoid: false })
 export class GrouparooModel extends LoggedModel<GrouparooModel> {
   idPrefix() {
@@ -46,6 +64,11 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
   @Column
   locked: string;
 
+  @AllowNull(false)
+  @Default("ready")
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
+
   getIcon() {
     switch (this.type) {
       case "profile":
@@ -60,6 +83,7 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
       id: this.id,
       name: this.name,
       type: this.type,
+      state: this.state,
       locked: this.locked,
       icon: this.getIcon(),
       createdAt: APIData.formatDate(this.createdAt),
@@ -108,5 +132,33 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
   @BeforeDestroy
   static async noDestroyIfLocked(instance) {
     await LockableHelper.beforeDestroy(instance);
+  }
+
+  @BeforeDestroy
+  static async ensureNotInUse(instance: GrouparooModel) {
+    const sources = await Source.scope(null).findAll({
+      where: { modelId: instance.id },
+    });
+    if (sources.length > 0) {
+      throw new Error(
+        `cannot delete this model, source ${sources[0].id} relies on it`
+      );
+    }
+    const destinations = await Destination.scope(null).findAll({
+      where: { modelId: instance.id },
+    });
+    if (destinations.length > 0) {
+      throw new Error(
+        `cannot delete this model, destination ${destinations[0].id} relies on it`
+      );
+    }
+    const groups = await Group.scope(null).findAll({
+      where: { modelId: instance.id },
+    });
+    if (groups.length > 0) {
+      throw new Error(
+        `cannot delete this model, group ${groups[0].id} relies on it`
+      );
+    }
   }
 }

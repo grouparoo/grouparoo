@@ -6,6 +6,7 @@ import { App } from "../../models/App";
 import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
 import { RecordOps } from "../../modules/ops/record";
+import { GrouparooModel } from "../../models/GrouparooModel";
 
 export class DestroySweeper extends CLSTask {
   constructor() {
@@ -43,6 +44,14 @@ export class DestroySweeper extends CLSTask {
     const sources = await Source.findAll({ where: { state: "deleted" } });
     for (const source of sources) {
       await CLS.enqueueTask("source:destroy", { sourceId: source.id });
+    }
+
+    // --- MODELS ---
+    const models = await GrouparooModel.findAll({
+      where: { state: "deleted" },
+    });
+    for (const model of models) {
+      await CLS.enqueueTask("model:destroy", { modelId: model.id });
     }
 
     // --- APPS ---

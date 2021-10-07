@@ -50,6 +50,7 @@ export namespace Status {
     async () => StatusReporters.Deleted.deletedProperties(),
     async () => StatusReporters.Deleted.deletedSources(),
     async () => StatusReporters.Deleted.deletedRecords(),
+    async () => StatusReporters.Deleted.deletedModels(),
 
     // additional things
     async () => StatusReporters.Groups.byNewestMember(),

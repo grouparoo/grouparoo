@@ -22,6 +22,7 @@ export const DEFAULT = {
             "properties",
             "sources",
             "apps",
+            "models",
             "default",
           ]
         );

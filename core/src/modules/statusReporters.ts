@@ -22,6 +22,7 @@ import { Notification } from "../models/Notification";
 import { GroupOps } from "../modules/ops/group";
 import { SourceOps } from "../modules/ops/source";
 import { RecordOps } from "./ops/record";
+import { GrouparooModel } from "../models/GrouparooModel";
 
 export interface StatusMetric {
   // the possible attributes for a metric are:
@@ -140,7 +141,7 @@ export namespace StatusReporters {
   export namespace Totals {
     export async function Models(
       models = [
-        App,
+        App, // order of these matters!
         ApiKey,
         Source,
         Schedule,
@@ -155,6 +156,7 @@ export namespace StatusReporters {
         Run,
         Team,
         TeamMember,
+        GrouparooModel,
       ]
     ) {
       const metrics: StatusMetric[] = [];
@@ -378,15 +380,24 @@ export namespace StatusReporters {
         count: recordsToDestroy.length,
       };
     }
-  }
 
-  export async function deletedApps(): Promise<StatusMetric> {
-    return {
-      collection: "deleted",
-      topic: "App",
-      aggregation: "count",
-      count: await App.count({ where: { state: "deleted" } }),
-    };
+    export async function deletedModels(): Promise<StatusMetric> {
+      return {
+        collection: "deleted",
+        topic: "Model",
+        aggregation: "count",
+        count: await GrouparooModel.count({ where: { state: "deleted" } }),
+      };
+    }
+
+    export async function deletedApps(): Promise<StatusMetric> {
+      return {
+        collection: "deleted",
+        topic: "App",
+        aggregation: "count",
+        count: await App.count({ where: { state: "deleted" } }),
+      };
+    }
   }
 
   export namespace Groups {

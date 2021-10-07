@@ -31,6 +31,7 @@ export default function Page(props) {
   async function edit(event) {
     event.preventDefault();
     setLoading(true);
+
     const response: Actions.ModelEdit = await execApi(
       "put",
       `/model/${id}`,
