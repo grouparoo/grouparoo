@@ -956,6 +956,38 @@ export namespace RecordOps {
     }
   }
 
+  export async function computeRecordsValidity(records: GrouparooRecord[]) {
+    const recordIds = records.map((r) => r.id);
+    await GrouparooRecord.update(
+      {
+        invalid: false,
+      },
+      {
+        where: {
+          id: {
+            [Op.in]: recordIds,
+          },
+        },
+      }
+    );
+    // Update records to invalid if any assocaited properties are invalid.
+    await api.sequelize.query(`
+      UPDATE
+        "records"
+      SET
+        "invalid" = TRUE
+      WHERE
+        "records"."id" IN(
+          SELECT
+            "recordProperties"."recordId" FROM "recordProperties"
+          WHERE
+            "recordProperties"."recordId" IN(${recordIds.map(
+              (id) => `'${id}'`
+            )})
+            AND "recordProperties"."invalidReason" IS NOT NULL);
+    `);
+  }
+
   /**
    * Find records that are not ready but whose properties are and make them ready.
    * Then, process the related imports.
@@ -982,7 +1014,7 @@ export namespace RecordOps {
     }
 
     await GrouparooRecord.update(
-      { state: "ready", invalid: false },
+      { state: "ready" },
       {
         where: {
           id: { [Op.in]: records.map((p) => p.id) },
@@ -990,21 +1022,6 @@ export namespace RecordOps {
         },
       }
     );
-
-    // Update records to invalid if any assocaited properties are invalid.
-    await api.sequelize.query(`
-      UPDATE
-        "records"
-      SET
-        "invalid" = TRUE
-      WHERE
-        "records"."id" IN(
-          SELECT
-            "recordProperties"."recordId" FROM "recordProperties"
-          WHERE
-            "recordProperties"."recordId" IN(${records.map((p) => `'${p.id}'`)})
-            AND "recordProperties"."invalidReason" IS NOT NULL);
-    `);
 
     await completeRecordImports(
       records.map((p) => p.id),
@@ -1024,10 +1041,14 @@ export namespace RecordOps {
         { model: Import, required: false, where: { recordUpdatedAt: null } },
       ],
     });
-    if (records.length === 0) return;
+    if (!records.length) {
+      return;
+    }
 
     const memberships = await RecordOps.updateGroupMemberships(records);
     const now = new Date();
+
+    await computeRecordsValidity(records);
 
     for (const record of records) {
       const imports = record.imports;
