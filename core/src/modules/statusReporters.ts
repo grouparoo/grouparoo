@@ -141,19 +141,20 @@ export namespace StatusReporters {
   export namespace Totals {
     export async function Models(
       models = [
-        App,
         ApiKey,
-        Source,
-        Schedule,
+        App,
         Destination,
-        Import,
-        Group,
-        GroupRule,
         Export,
+        Group,
+        GrouparooModel,
         GrouparooRecord,
-        RecordProperty,
+        GroupRule,
+        Import,
         Property,
+        RecordProperty,
         Run,
+        Schedule,
+        Source,
         Team,
         TeamMember,
       ]
@@ -388,6 +389,7 @@ export namespace StatusReporters {
         count: await GrouparooModel.count({ where: { state: "deleted" } }),
       };
     }
+
     export async function deletedApps(): Promise<StatusMetric> {
       return {
         collection: "deleted",
