@@ -556,6 +556,40 @@ describe("models/destination - with custom exportRecord plugin", () => {
       await record.destroy();
     });
 
+    test("if a destination is no longer tracking a model, toDelete is true", async () => {
+      await destination.setMapping({
+        uid: "userId",
+        customer_email: "email",
+      });
+
+      const record = await helper.factories.record();
+
+      const oldExport = await helper.factories.export(record, destination, {
+        newRecordProperties: {},
+        startedAt: new Date(),
+        completedAt: new Date(),
+        state: "complete",
+      });
+      await specHelper.deleteEnqueuedTasks("exports:send", {
+        id: oldExport.id,
+      });
+
+      await destination.updateTracking(null);
+      await destination.exportRecord(record);
+
+      await specHelper.runTask("export:enqueue", {});
+      const foundTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("export:send", foundTasks[0].args[0]);
+
+      expect(exportArgs.record.id).toEqual(record.id);
+      expect(exportArgs.oldGroups).toEqual([]);
+      expect(exportArgs.newGroups).toEqual([]);
+      expect(exportArgs.toDelete).toEqual(true);
+
+      await record.destroy();
+    });
+
     test('if record is removed from destination\'s tracked group in "sync" syncMode, toDelete is true', async () => {
       expect(destination.syncMode).toBe("sync");
 

@@ -42,7 +42,10 @@ describe("tasks/grouparooModel:run", () => {
       luigi = await GrouparooRecord.create({ modelId: "mod_profiles" });
       peach = await GrouparooRecord.create({ modelId: "mod_profiles" });
 
-      const otherModel = await helper.factories.model();
+      const otherModel = await helper.factories.model({
+        id: "other_model",
+        name: "Other Model",
+      });
       bowser = await GrouparooRecord.create({ modelId: otherModel.id });
 
       await mario.addOrUpdateProperties({

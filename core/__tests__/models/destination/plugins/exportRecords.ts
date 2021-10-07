@@ -426,6 +426,50 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(exportArgs.exports[0].toDelete).toEqual(true);
     });
 
+    test("if a destination is no longer tracking a model, toDelete is true", async () => {
+      expect(destination.syncMode).toBe("sync");
+
+      await destination.setMapping({
+        uid: "userId",
+        customer_email: "email",
+      });
+
+      const record = await helper.factories.record();
+      const oldExport = await helper.factories.export(record, destination, {
+        newRecordProperties: {},
+        newGroups: [],
+        startedAt: new Date(),
+        completedAt: new Date(),
+        state: "complete",
+      });
+      await specHelper.deleteEnqueuedTasks("exports:send", {
+        id: oldExport.id,
+      });
+
+      await destination.updateTracking(null);
+      await destination.exportRecord(record);
+
+      // there should be no export:send tasks
+      let foundTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundTasks.length).toBe(0);
+
+      // there should be no export:sendBatch tasks until the run has completed
+      foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(0);
+
+      await specHelper.runTask("export:enqueue", {});
+
+      foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
+
+      expect(exportArgs.exports.length).toBe(1);
+      expect(exportArgs.exports[0].record.id).toEqual(record.id);
+      expect(exportArgs.exports[0].oldGroups).toEqual([]);
+      expect(exportArgs.exports[0].newGroups).toEqual([]);
+      expect(exportArgs.exports[0].toDelete).toEqual(true);
+    });
+
     test("if record is removed from destination's tracked group, toDelete is true", async () => {
       await destination.setMapping({
         uid: "userId",
