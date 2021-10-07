@@ -1,7 +1,8 @@
-import { config } from "actionhero";
+import { Action, config } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
+import { Group } from "../models/Group";
 import { internalRun } from "../modules/internalRun";
 import { Op } from "sequelize";
 import { ConfigWriter } from "../modules/configWriter";
@@ -13,6 +14,7 @@ import {
   ActionPermissionTopic,
 } from "../models/Permission";
 import { CLSAction } from "../classes/actions/clsAction";
+import { CLS } from "../modules/cls";
 
 export class RecordsList extends AuthenticatedAction {
   constructor() {
@@ -149,7 +151,7 @@ export class RecordCreate extends AuthenticatedAction {
   }
 }
 
-export class RecordImport extends CLSAction {
+export class RecordImport extends Action {
   permission: {
     topic: ActionPermissionTopic;
     mode: ActionPermissionMode;
@@ -165,18 +167,29 @@ export class RecordImport extends CLSAction {
     this.inputs = {
       id: { required: true },
     };
+    this.middleware = ["authenticated-action"];
   }
 
-  async runWithinTransaction({ params }) {
-    const record = await GrouparooRecord.findById(params.id);
+  // This action needs custom transaction handling to handle problems with each source/recordProperty
+  async run({ params }) {
+    let record: GrouparooRecord;
+    let groups: Group[];
 
-    await record.buildNullProperties();
-    await record.markPending();
+    await CLS.wrap(async () => {
+      record = await GrouparooRecord.findById(params.id);
+      await record.buildNullProperties();
+      await record.markPending();
+    });
+
+    // not CLS-Wrapped
     await record.import();
-    await record.reload({ include: [RecordProperty] });
-    await record.update({ state: "ready" });
-    await record.updateGroupMembership();
-    const groups = await record.$get("groups");
+
+    await CLS.wrap(async () => {
+      await record.reload({ include: [RecordProperty] });
+      await record.update({ state: "ready" });
+      await record.updateGroupMembership();
+      groups = await record.$get("groups");
+    });
 
     return {
       success: true,
