@@ -1,19 +1,28 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { SessionCreate } from "../../../src/actions/session";
+import { Op } from "sequelize";
+import {
+  Destination,
+  Group,
+  GrouparooModel,
+  GrouparooRecord,
+  RecordProperty,
+} from "../../../src";
 import {
   RecordCreate,
   RecordExport,
   RecordImport,
 } from "../../../src/actions/records";
-import {
-  Destination,
-  GrouparooRecord,
-  RecordProperty,
-  Group,
-  GrouparooModel,
-} from "../../../src";
-import { Op } from "sequelize";
+import { SessionCreate } from "../../../src/actions/session";
+
+var mockRecordResponseData: ReturnType<typeof jest.fn>;
+jest.mock("@grouparoo/spec-helper", () => {
+  const specHelper: typeof import("@grouparoo/spec-helper") =
+    jest.requireActual("@grouparoo/spec-helper");
+  mockRecordResponseData = jest.fn(specHelper.helper.recordResponseData);
+  specHelper.helper.recordResponseData = mockRecordResponseData;
+  return specHelper;
+});
 
 function simpleRecordValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -114,6 +123,37 @@ describe("actions/records", () => {
       expect(groups[0].id).toEqual(group.id);
 
       id = record.properties.userId[0];
+    });
+
+    test("an invalid record can be imported, and can also be fixed", async () => {
+      const luigi = await GrouparooRecord.findOne();
+
+      connection.params = {
+        csrfToken,
+        id: luigi.id,
+      };
+      let { record, error } = await specHelper.runAction<RecordImport>(
+        "record:import",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(record.invalid).toBe(true);
+
+      const shim = mockRecordResponseData.getMockImplementation();
+      mockRecordResponseData.mockImplementation((record, key) => {
+        if (key !== "purchaseAmounts") {
+          return shim(record, key);
+        }
+        return 22;
+      })(
+        ({ record, error } = await specHelper.runAction<RecordImport>(
+          "record:import",
+          connection
+        ))
+      );
+      expect(error).toBeUndefined();
+      expect(record.invalid).toBe(false);
+      mockRecordResponseData.mockImplementation(shim);
     });
 
     test("a record can be exported", async () => {
