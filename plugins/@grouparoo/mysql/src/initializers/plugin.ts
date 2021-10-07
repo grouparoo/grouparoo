@@ -1,5 +1,5 @@
 import { Initializer } from "actionhero";
-import { DestinationSyncMode, plugin } from "@grouparoo/core";
+import { plugin } from "@grouparoo/core";
 import path from "path";
 
 import { test } from "./../lib/test";
@@ -38,9 +38,6 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
-    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
-    const defaultSyncMode: DestinationSyncMode = "sync";
-
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/mysql/mysql.png",
@@ -52,12 +49,9 @@ export class Plugins extends Initializer {
         new TablePropertyTemplate("mysql"),
         new QuerySourceTemplate("mysql"),
         new QueryPropertyTemplate("mysql"),
-        new DestinationTemplate(
-          "mysql",
-          [path.join(templateRoot, "destination", "*.template")],
-          syncModes,
-          defaultSyncMode
-        ),
+        new DestinationTemplate("mysql", [
+          path.join(templateRoot, "destination", "*.template"),
+        ]),
       ],
       apps: [
         {
@@ -111,7 +105,6 @@ export class Plugins extends Initializer {
           description:
             "Export Records to a MySQL table.  Groups will be exported to a secondary table linked by a foreign key.",
           app: "mysql",
-          syncModes,
           options: [
             {
               key: "table",

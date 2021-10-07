@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { DestinationSyncMode, plugin } from "@grouparoo/core";
+import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { appOptions } from "./../lib/appOptions";
@@ -22,9 +22,6 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
-    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
-    const defaultSyncMode: DestinationSyncMode = "sync";
-
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/logger/log.svg",
@@ -32,12 +29,9 @@ export class Plugins extends Initializer {
         new AppTemplate("logger", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new DestinationTemplate(
-          "logger",
-          [path.join(templateRoot, "destination", "*.template")],
-          syncModes,
-          defaultSyncMode
-        ),
+        new DestinationTemplate("logger", [
+          path.join(templateRoot, "destination", "*.template"),
+        ]),
       ],
       apps: [
         {
@@ -70,7 +64,6 @@ export class Plugins extends Initializer {
           direction: "export",
           description: "Export Records to a log file as JSON.",
           app: "logger",
-          syncModes,
           options: [],
           methods: {
             exportRecords,
