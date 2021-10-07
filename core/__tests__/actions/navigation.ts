@@ -36,6 +36,8 @@ describe("actions/navigation", () => {
   });
 
   describe("with session", () => {
+    let model: GrouparooModel;
+
     beforeAll(async () => {
       await specHelper.runAction("team:initialize", {
         firstName: "Peach",
@@ -43,6 +45,8 @@ describe("actions/navigation", () => {
         password: "P@ssw0rd!",
         email: "peach@example.com",
       });
+
+      model = await helper.factories.model();
     });
 
     test("the navigation action does not include the teamMember if not logged in", async () => {
@@ -99,17 +103,14 @@ describe("actions/navigation", () => {
         "navigation:list",
         connection
       );
-      expect(navigationModel.value).toBe("mod_profiles");
+      expect(navigationModel.value).toBe(model.id);
       expect(navigationModel.options).toHaveLength(1);
     });
 
     describe("with additional models", () => {
       let adminModel: GrouparooModel;
       beforeAll(async () => {
-        adminModel = await GrouparooModel.create({
-          name: "Administrators",
-          type: "profile",
-        });
+        adminModel = await helper.factories.model({ name: "Admins" });
       });
 
       afterAll(async () => {
@@ -133,7 +134,7 @@ describe("actions/navigation", () => {
           "navigation:list",
           connection
         );
-        expect(navigationModel.value).toBe("mod_profiles");
+        expect(navigationModel.value).toBe(model.id);
         expect(navigationModel.options).toHaveLength(2);
       });
 
