@@ -14,7 +14,7 @@ export default class Profile {
   }
 
   async getByDistinctId(distinctId: string) {
-    const response = await this.client._request<MixpanelDataResponse>({
+    const response: MixpanelDataResponse = await this.client._request({
       method: "POST",
       url: `/api/2.0/engage`,
       params: { project_id: this.client.projectId },
@@ -28,7 +28,7 @@ export default class Profile {
   }
 
   async getByDistinctIds(distinctIds: string[]) {
-    const response = await this.client._request<MixpanelDataResponse>({
+    const response: MixpanelDataResponse = await this.client._request({
       method: "POST",
       url: `/api/2.0/engage`,
       params: { project_id: this.client.projectId },
