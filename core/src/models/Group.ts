@@ -730,7 +730,7 @@ export class Group extends LoggedModel<Group> {
   @BeforeCreate
   @BeforeSave
   static async ensureModel(instance: Destination) {
-    const model = await GrouparooModel.scope(null).findOne({
+    const model = await GrouparooModel.findOne({
       where: { id: instance.modelId },
     });
     if (!model) {
