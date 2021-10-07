@@ -14,7 +14,6 @@ import {
 import * as uuid from "uuid";
 import { Source } from "./Source";
 import { ModelConfigurationObject } from "../classes/codeConfig";
-import { StateMachine } from "./../modules/stateMachine";
 import { LoggedModel } from "../classes/loggedModel";
 import { APIData } from "../modules/apiData";
 import { ConfigWriter } from "../modules/configWriter";
@@ -125,10 +124,6 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
     }
   }
 
-  @BeforeSave
-  static async updateState(instance: GrouparooModel) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
-  }
   @BeforeSave
   static async noUpdateIfLocked(instance) {
     await LockableHelper.beforeSave(instance);
