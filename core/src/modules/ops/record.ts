@@ -1023,8 +1023,6 @@ export namespace RecordOps {
       }
     );
 
-    await computeRecordsValidity(records);
-
     await completeRecordImports(
       records.map((p) => p.id),
       toExport
