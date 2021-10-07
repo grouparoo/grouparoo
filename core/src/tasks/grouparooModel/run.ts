@@ -29,8 +29,8 @@ export class RunInternalRun extends CLSTask {
     if (!run) return;
     if (run.state === "stopped") return;
 
-    const offset: number = run.groupMemberOffset || 0;
-    const limit: number = run.groupMemberLimit || config.batchSize.imports;
+    const offset: number = run.memberOffset || 0;
+    const limit: number = run.memberLimit || config.batchSize.imports;
 
     const model = await GrouparooModel.findOne({
       where: { id: run.creatorId },
@@ -78,8 +78,8 @@ export class RunInternalRun extends CLSTask {
     }
 
     await run.update({
-      groupMemberLimit: limit,
-      groupMemberOffset: offset + records.length,
+      memberLimit: limit,
+      memberOffset: offset + records.length,
     });
 
     const pendingImports = await run.$count("imports", {

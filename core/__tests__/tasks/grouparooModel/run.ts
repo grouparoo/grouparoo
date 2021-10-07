@@ -95,8 +95,8 @@ describe("tasks/grouparooModel:run", () => {
       await specHelper.runTask("grouparooModel:run", { runId: run.id });
       await run.reload();
       expect(run.state).toBe("running");
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(3);
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(3);
 
       imports = await Import.findAll();
       expect(imports.length).toBe(3);

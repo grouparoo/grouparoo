@@ -241,7 +241,7 @@ export namespace StatusReporters {
         const percentComplete = run.percentComplete;
         const highWaterMark = run.highWaterMark
           ? Object.values(run.highWaterMark)[0]
-          : run.groupHighWaterMark;
+          : null;
 
         metrics.push({
           collection: "percentComplete",

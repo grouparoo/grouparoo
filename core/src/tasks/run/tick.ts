@@ -25,7 +25,7 @@ export class RunsTick extends CLSTask {
       const args = { runId: run.id };
       let taskName = "";
 
-      if (run.groupMethod === "internalRun") {
+      if (run.method === "internalRun") {
         taskName = "run:internalRun";
       } else if (run.creatorType === "group") {
         taskName = "group:run";

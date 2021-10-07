@@ -216,19 +216,13 @@ export default function RunsList(props) {
                         {run.creatorType === "group" ||
                         run.creatorType === "grouparooModel" ? (
                           <>
-                            groupMemberLimit: {run.groupMemberLimit} <br />
+                            Member Limit: {run.memberLimit} <br />
                           </>
                         ) : null}
                         {run.creatorType === "group" ||
                         run.creatorType === "grouparooModel" ? (
                           <>
-                            groupMemberOffset: {run.groupMemberOffset} <br />
-                          </>
-                        ) : null}
-                        {run.creatorType === "group" ||
-                        run.creatorType === "grouparooModel" ? (
-                          <>
-                            groupHighWaterMark: {run.groupHighWaterMark} <br />
+                            Member Offset: {run.memberOffset} <br />
                           </>
                         ) : null}
                         {run.creatorType !== "group" ? (

@@ -164,7 +164,7 @@ describe("models/run", () => {
           state: "running",
           creatorId: group.id,
           creatorType: "group",
-          groupMethod: "runAddGroupMembers",
+          method: "runAddGroupMembers",
         });
 
         // 0 members
@@ -182,7 +182,7 @@ describe("models/run", () => {
           state: "running",
           creatorId: group.id,
           creatorType: "group",
-          groupMethod: "runRemoveGroupMembers",
+          method: "runRemoveGroupMembers",
         });
 
         // 0 members
@@ -200,14 +200,14 @@ describe("models/run", () => {
           state: "running",
           creatorId: group.id,
           creatorType: "group",
-          groupMethod: "removePreviousRunGroupMembers",
+          method: "removePreviousRunGroupMembers",
         });
 
         run = await Run.create({
           state: "running",
           creatorId: group.id,
           creatorType: "group",
-          groupMethod: "runRemoveGroupMembers",
+          method: "runRemoveGroupMembers",
         });
 
         // 3 members
@@ -223,7 +223,7 @@ describe("models/run", () => {
           state: "running",
           creatorId: group.id,
           creatorType: "group",
-          groupMethod: "complete",
+          method: "complete",
         });
         await run.determinePercentComplete();
         expect(run.percentComplete).toBe(99);
@@ -244,7 +244,7 @@ describe("models/run", () => {
           state: "running",
           creatorId: group.id,
           creatorType: "group",
-          groupMethod: "runRemoveGroupMembers",
+          method: "runRemoveGroupMembers",
         });
 
         // 3 members left (manually added because group is deleted)

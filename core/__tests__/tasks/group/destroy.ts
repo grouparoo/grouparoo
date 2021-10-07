@@ -116,9 +116,9 @@ describe("tasks/group:destroy", () => {
 
       expect(run).toBeTruthy();
       expect(run.state).toBe("running");
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(0);
-      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(0);
+      expect(run.method).toBe("runRemoveGroupMembers");
     });
 
     it("will remove all members in a manual group and then delete the group", async () => {
@@ -153,9 +153,9 @@ describe("tasks/group:destroy", () => {
 
       expect(run).toBeTruthy();
       expect(run.state).toBe("running");
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(0);
-      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(0);
+      expect(run.method).toBe("runRemoveGroupMembers");
 
       // process the run
       await specHelper.runTask("group:run", { runId: run.id }); // runRemoveGroupMembers
@@ -216,9 +216,9 @@ describe("tasks/group:destroy", () => {
 
       expect(run).toBeTruthy();
       expect(run.state).toBe("running");
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(0);
-      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(0);
+      expect(run.method).toBe("runRemoveGroupMembers");
 
       // process the run
       await specHelper.runTask("group:run", { runId: run.id }); // runRemoveGroupMembers

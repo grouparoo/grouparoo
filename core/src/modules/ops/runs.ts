@@ -190,8 +190,8 @@ export namespace RunOps {
     if (run.state === "stopped") return 100;
 
     if (run.creatorType === "group") {
-      if (run.groupMethod === "complete") return 99;
-      if (!run.groupMethod) return 0; // we are exporting the group to CSV or not yet set
+      if (run.method === "complete") return 99;
+      if (!run.method) return 0; // we are exporting the group to CSV or not yet set
 
       const group = await Group.findById(run.creatorId);
       let totalGroupMembers =
@@ -230,7 +230,7 @@ export namespace RunOps {
               (totalGroupMembers > 0 ? totalGroupMembers : 1))
         );
 
-        if (!run.groupMethod.match(/remove/i)) {
+        if (!run.method.match(/remove/i)) {
           percentComplete = Math.floor(percentComplete / 2);
         } else {
           percentComplete = 49 + Math.floor(percentComplete / 2);

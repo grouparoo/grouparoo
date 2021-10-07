@@ -106,18 +106,14 @@ export class Run extends CommonModel<Run> {
 
   @Default(0)
   @Column
-  groupMemberLimit: number;
+  memberLimit: number;
 
   @Default(0)
   @Column
-  groupMemberOffset: number;
-
-  @Default(0)
-  @Column
-  groupHighWaterMark: number;
+  memberOffset: number;
 
   @Column
-  groupMethod: string;
+  method: string;
 
   @Default(0)
   @Column
@@ -269,10 +265,9 @@ export class Run extends CommonModel<Run> {
       error: this.error,
       highWaterMark: this.highWaterMark,
       sourceOffset: this.sourceOffset,
-      groupMemberLimit: this.groupMemberLimit,
-      groupMemberOffset: this.groupMemberOffset,
-      groupHighWaterMark: this.groupHighWaterMark,
-      groupMethod: this.groupMethod,
+      memberLimit: this.memberLimit,
+      memberOffset: this.memberOffset,
+      method: this.method,
       force: this.force,
       destinationId: this.destinationId,
       createdAt: APIData.formatDate(this.createdAt),
@@ -350,8 +345,8 @@ export class Run extends CommonModel<Run> {
     // we only need to broadcast at the end of each batch or on a state change, not as we increment values
     if (
       instance.changed("state") ||
-      instance.changed("groupMemberLimit") ||
-      instance.changed("groupMemberOffset") ||
+      instance.changed("memberLimit") ||
+      instance.changed("memberOffset") ||
       instance.changed("highWaterMark") ||
       instance.changed("sourceOffset") ||
       instance.changed("percentComplete")

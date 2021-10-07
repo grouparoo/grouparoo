@@ -34,10 +34,13 @@ export class RunGroup extends CLSTask {
 
     const force = run.force || false;
     const destinationId = run.destinationId;
-    const method = run.groupMethod || "runAddGroupMembers";
-    const highWaterMark: number = run.groupHighWaterMark || 0;
-    const offset: number = run.groupMemberOffset || 0;
-    const limit: number = run.groupMemberLimit || config.batchSize.imports;
+    const method = run.method || "runAddGroupMembers";
+    const highWaterMark: number =
+      run.highWaterMark && Object.values(run.highWaterMark)[0]
+        ? parseInt(Object.values(run.highWaterMark)[0] as string)
+        : 0;
+    const offset: number = run.memberOffset || 0;
+    const limit: number = run.memberLimit || config.batchSize.imports;
 
     let groupMembersCount = 0;
     let nextHighWaterMark = 0;
@@ -82,10 +85,10 @@ export class RunGroup extends CLSTask {
     }
 
     await run.update({
-      groupMemberLimit: limit,
-      groupMemberOffset: nextOffset,
-      groupHighWaterMark: nextHighWaterMark,
-      groupMethod: nextMethod,
+      memberLimit: limit,
+      memberOffset: nextOffset,
+      highWaterMark: { group: nextHighWaterMark },
+      method: nextMethod,
       force,
     });
 
