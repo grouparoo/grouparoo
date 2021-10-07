@@ -141,22 +141,22 @@ export namespace StatusReporters {
   export namespace Totals {
     export async function Models(
       models = [
-        ApiKey,
         App,
-        Destination,
-        Export,
-        Group,
-        GrouparooModel,
-        GrouparooRecord,
-        GroupRule,
-        Import,
-        Property,
-        RecordProperty,
-        Run,
-        Schedule,
+        ApiKey,
         Source,
+        Schedule,
+        Destination,
+        Import,
+        Group,
+        GroupRule,
+        Export,
+        GrouparooRecord,
+        RecordProperty,
+        Property,
+        Run,
         Team,
         TeamMember,
+        GrouparooModel,
       ]
     ) {
       const metrics: StatusMetric[] = [];
