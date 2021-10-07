@@ -163,7 +163,9 @@ describe("modules/configWriter", () => {
         id: "mod_profiles",
       });
       const app: App = await helper.factories.app();
-      const source: Source = await helper.factories.source(app);
+      const source: Source = await helper.factories.source(app, {
+        modelId: model.id,
+      });
       await source.setOptions({ table: "test-table-04" });
       await source.bootstrapUniqueProperty("userId_04", "integer", "id");
       await source.setMapping({ id: "userId_04" });
@@ -187,6 +189,14 @@ describe("modules/configWriter", () => {
         fs.readFileSync(expConfigFiles[0]).toString()
       );
       expect(appConfig).toEqual(await app.getConfigObject());
+
+      const sourceConfig = JSON.parse(
+        fs.readFileSync(
+          expConfigFiles.find((f) => f.includes("sources")),
+          { encoding: "utf8" }
+        )
+      );
+      expect(sourceConfig.modelId).toBe(model.id);
     });
 
     test("does not write objects that are locked", async () => {
