@@ -17,7 +17,7 @@ export default function HighlightingNavLink({
   useEffect(() => {
     const pathParts = router?.asPath.split("/");
     const hrefParts = href.split("/");
-    const mainPathSection = pathParts[mainPathSectionIdx].split("?")[0] || "";
+    const mainPathSection = (pathParts[mainPathSectionIdx] || "").split("?")[0];
     const mainHrefSection = hrefParts[mainPathSectionIdx];
     let active =
       mainPathSection === mainHrefSection ||
