@@ -7,9 +7,17 @@ import { Form } from "react-bootstrap";
 import LoadingButton from "../../../../components/loadingButton";
 import { Actions } from "../../../../utils/apiData";
 import { ErrorHandler } from "../../../../utils/errorHandler";
+import ModelBadge from "../../../../components/badges/modelBadge";
+import { NextPageContext } from "next";
 
 export default function NewGroup(props) {
-  const { errorHandler }: { errorHandler: ErrorHandler } = props;
+  const {
+    errorHandler,
+    model,
+  }: {
+    errorHandler: ErrorHandler;
+    model: Actions.ModelView["model"];
+  } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
@@ -21,7 +29,7 @@ export default function NewGroup(props) {
     const response: Actions.GroupCreate = await execApi(
       "post",
       `/group`,
-      Object.assign({}, data, { state, modelId: router.query.modelId })
+      Object.assign({}, data, { state, modelId: model.id })
     );
     if (response?.group) {
       const path = response.group.type === "calculated" ? "rules" : "edit";
@@ -41,6 +49,7 @@ export default function NewGroup(props) {
       </Head>
 
       <h1>Add Group</h1>
+      <ModelBadge modelName={model.name} modelId={model.id} />
 
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
         <Form.Group>
@@ -79,3 +88,10 @@ export default function NewGroup(props) {
     </>
   );
 }
+
+NewGroup.getInitialProps = async (ctx: NextPageContext) => {
+  const { modelId } = ctx.query;
+  const { execApi } = UseApi(ctx);
+  const { model } = await execApi("get", `/model/${modelId}`);
+  return { model };
+};
