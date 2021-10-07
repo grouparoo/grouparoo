@@ -28,14 +28,14 @@ describe("models/grouparooModel", () => {
     expect(latestLog).toBeTruthy();
   });
 
-  test("models start in the draft state", async () => {
+  test("models default to the ready state", async () => {
     const model = new GrouparooModel({
       name: "test model",
       type: "profile",
     });
     await model.save();
 
-    expect(model.state).toBe("draft");
+    expect(model.state).toBe("ready");
   });
 
   test("destroying a model creates a log entry", async () => {
