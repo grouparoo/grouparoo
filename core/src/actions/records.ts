@@ -189,6 +189,7 @@ export class RecordImport extends Action {
     await record.import();
 
     await CLS.wrap(async () => {
+      await RecordOps.computeRecordsValidity([record]);
       await record.reload({ include: [RecordProperty] });
       await record.update({ state: "ready" });
       await record.updateGroupMembership();
