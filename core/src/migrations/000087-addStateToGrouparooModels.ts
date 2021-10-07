@@ -8,7 +8,7 @@ export default {
     await queryInterface.addColumn("models", "state", {
       type: DataTypes.STRING(191),
       allowNull: false,
-      defaultValue: "draft",
+      defaultValue: "ready",
     });
     await queryInterface.changeColumn("models", "state", {
       type: DataTypes.STRING(191),
