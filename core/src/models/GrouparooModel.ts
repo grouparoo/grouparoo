@@ -72,7 +72,7 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
   locked: string;
 
   @AllowNull(false)
-  @Default("ready")
+  @Default("draft")
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 

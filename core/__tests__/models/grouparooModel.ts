@@ -3,10 +3,14 @@ import { GrouparooModel, Log } from "../../src";
 
 describe("models/grouparooModel", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+
   beforeEach(async () => await GrouparooModel.truncate());
 
   test("a model can be created", async () => {
-    const model = new GrouparooModel({ name: "test model", type: "profile" });
+    const model = new GrouparooModel({
+      name: "test model",
+      type: "profile",
+    });
     await model.save();
 
     expect(model.id.length).toBe(40);
@@ -24,18 +28,22 @@ describe("models/grouparooModel", () => {
     expect(latestLog).toBeTruthy();
   });
 
-  test("models start in the ready state", async () => {
-    const model = GrouparooModel.scope(null).findOne({
-      where: { name: "test model", state: "ready" },
+  test("models start in the draft state", async () => {
+    const model = new GrouparooModel({
+      name: "test model",
+      type: "profile",
     });
+    await model.save();
 
-    expect(model).toBeTruthy();
+    expect(model.state).toBe("draft");
   });
 
   test("destroying a model creates a log entry", async () => {
-    await GrouparooModel.create({ name: "test model", type: "profile" });
+    const model = await GrouparooModel.create({
+      name: "test model",
+      type: "profile",
+    });
 
-    const model = await GrouparooModel.findOne();
     await model.destroy();
 
     const latestLog = await Log.findOne({
