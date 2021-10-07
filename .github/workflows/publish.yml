@@ -20,7 +20,6 @@ jobs:
       - uses: actions/checkout@master
         with:
           ref: ${{ github.head_ref }}
-          token: ${{ secrets.BOT_GITHUB_PAT }}
           fetch-depth: 0
       - name: Update ENV
         if: github.event.inputs.release_type != ''
@@ -35,7 +34,7 @@ jobs:
       - name: publish
         run: ./bin/publish $RELEASE_TYPE
         env:
-          GITHUB_AUTH: ${{ secrets.BOT_GITHUB_PAT }}
+          GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.BOT_NPM_TOKEN }}
 
   update-lockfile:
@@ -46,7 +45,6 @@ jobs:
       - uses: actions/checkout@master
         with:
           ref: main
-          token: ${{ secrets.BOT_GITHUB_PAT }}
       - name: Update PNPM lockfile
         run: |
           cd tools/merger && ./lockfile
@@ -65,11 +63,17 @@ jobs:
     steps:
       - name: Sleep
         run: sleep 60
+      - name: Notifier auth
+        uses: getsentry/action-github-app-token@v1
+        id: notifier_auth
+        with:
+          app_id: ${{ secrets.OMNIBUS_NOTIFIER_APP_ID }}
+          private_key: ${{ secrets.OMNIBUS_NOTIFIER_APP_PRIVATE_KEY }}
       - name: Notify
         run: >-
           curl
           -X POST
-          -u "${{secrets.BOT_GITHUB_USERNAME}}:${{secrets.BOT_GITHUB_PAT}}"
+          -H "Authorization: token ${{ steps.notifier_auth.outputs.token }}"
           -H "Accept: application/vnd.github.everest-preview+json"
           -H "Content-Type: application/json"
           https://api.github.com/repos/grouparoo/omnibus/actions/workflows/update.yml/dispatches
