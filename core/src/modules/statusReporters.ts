@@ -141,7 +141,7 @@ export namespace StatusReporters {
   export namespace Totals {
     export async function Models(
       models = [
-        App,
+        App, // order of these matters!
         ApiKey,
         Source,
         Schedule,
