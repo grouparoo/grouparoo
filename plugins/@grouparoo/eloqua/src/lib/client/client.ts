@@ -80,7 +80,7 @@ export default class EloquaClient {
 
     try {
       const response = await axios(params);
-      const { data = {} } = response;
+      const { data = {} as Record<string, any> } = response;
       return data;
     } catch (err) {
       throw new Error(err);

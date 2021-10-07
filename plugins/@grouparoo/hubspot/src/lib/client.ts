@@ -2,6 +2,10 @@ import Client from "hubspot-api";
 import { SimpleAppOptions } from "@grouparoo/core";
 import Axios from "axios";
 
+export interface HubspotDataResponse {
+  lists?: Array<any>;
+}
+
 class HubspotClient {
   client: Client;
   hapikey: string;
@@ -15,7 +19,7 @@ class HubspotClient {
     // TODO: This is not paginated, it will need to be
     // https://legacydocs.hubspot.com/docs/methods/lists/get_static_lists
     const url = `https://api.hubapi.com/contacts/v1/lists/static?hapikey=${this.hapikey}&count=999`;
-    const { data }: { data: Record<string, any> } = await Axios({
+    const { data }: { data: HubspotDataResponse } = await Axios({
       method: "GET",
       url,
       headers: { "Content-Type": "application/json" },
