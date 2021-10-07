@@ -14,9 +14,9 @@ export default {
       `UPDATE "destinations" SET "collection"='group' WHERE "groupId" IS NOT NULL AND state='ready'`
     );
 
-    await queryInterface.addColumn("runs", "collection", {
+    await queryInterface.changeColumn("destinations", "collection", {
       type: DataTypes.STRING(191),
-      allowNull: true,
+      allowNull: false,
     });
 
     await queryInterface.renameColumn(
