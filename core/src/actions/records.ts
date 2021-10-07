@@ -15,6 +15,7 @@ import {
 } from "../models/Permission";
 import { CLSAction } from "../classes/actions/clsAction";
 import { CLS } from "../modules/cls";
+import { AsyncReturnType } from "type-fest";
 
 export class RecordsList extends AuthenticatedAction {
   constructor() {
@@ -167,13 +168,16 @@ export class RecordImport extends Action {
     this.inputs = {
       id: { required: true },
     };
-    this.middleware = ["authenticated-action"];
   }
 
   // This action needs custom transaction handling to handle problems with each source/recordProperty
   async run({ params }) {
     let record: GrouparooRecord;
-    let groups: Group[];
+    let response: {
+      success: boolean;
+      record: AsyncReturnType<GrouparooRecord["apiData"]>;
+      groups: AsyncReturnType<Group["apiData"]>[];
+    };
 
     await CLS.wrap(async () => {
       record = await GrouparooRecord.findById(params.id);
@@ -181,37 +185,33 @@ export class RecordImport extends Action {
       await record.markPending();
     });
 
-    // not CLS-Wrapped
+    // this method should not be wrapped in a transaction because we want to allow multiple sources to throw and recover their imports
     await record.import();
 
     await CLS.wrap(async () => {
       await record.reload({ include: [RecordProperty] });
       await record.update({ state: "ready" });
       await record.updateGroupMembership();
-      groups = await record.$get("groups");
+      const groups = await record.$get("groups");
+
+      response = {
+        success: true,
+        record: await record.apiData(),
+        groups: await Promise.all(groups.map((group) => group.apiData())),
+      };
     });
 
-    return {
-      success: true,
-      record: await record.apiData(),
-      groups: await Promise.all(groups.map((group) => group.apiData())),
-    };
+    return response;
   }
 }
 
 export class RecordExport extends CLSAction {
-  permission: {
-    topic: ActionPermissionTopic;
-    mode: ActionPermissionMode;
-  };
-
   constructor() {
     super();
     this.name = "record:export";
     this.description = "fully export a record";
     this.outputExample = {};
     this.permission = { topic: "record", mode: "write" };
-    this.middleware = ["authenticated-action"];
     this.inputs = {
       id: { required: true },
     };
