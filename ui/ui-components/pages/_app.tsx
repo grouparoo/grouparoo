@@ -56,7 +56,7 @@ export default function GrouparooWebApp(props) {
     const cookies = new Cookies();
     cookies.set("grouparooModelId", newModelId, { path: "/" });
 
-    if (router.pathname.match("/model/")) {
+    if (router.pathname.match(/^\/model\//)) {
       router.push({
         pathname: router.pathname,
         query: {
