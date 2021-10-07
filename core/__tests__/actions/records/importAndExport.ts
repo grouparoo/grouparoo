@@ -1,11 +1,13 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
 import {
   Destination,
   Group,
   GrouparooModel,
+  GrouparooPlugin,
   GrouparooRecord,
+  PluginConnection,
   RecordProperty,
 } from "../../../src";
 import {
@@ -14,15 +16,6 @@ import {
   RecordImport,
 } from "../../../src/actions/records";
 import { SessionCreate } from "../../../src/actions/session";
-
-var mockRecordResponseData: ReturnType<typeof jest.fn>;
-jest.mock("@grouparoo/spec-helper", () => {
-  const specHelper: typeof import("@grouparoo/spec-helper") =
-    jest.requireActual("@grouparoo/spec-helper");
-  mockRecordResponseData = jest.fn(specHelper.helper.recordResponseData);
-  specHelper.helper.recordResponseData = mockRecordResponseData;
-  return specHelper;
-});
 
 function simpleRecordValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -38,6 +31,7 @@ describe("actions/records", () => {
   let model: GrouparooModel;
   let id: string;
 
+  let testPluginConnection: PluginConnection;
   beforeAll(async () => {
     ({ model } = await helper.factories.properties());
 
@@ -47,6 +41,13 @@ describe("actions/records", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
+
+    const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
+      (a) => a.name === "@grouparoo/test-plugin"
+    );
+    testPluginConnection = testPlugin.connections.find(
+      (c) => c.name === "test-plugin-import"
+    );
   });
 
   describe("writer signed in", () => {
@@ -139,21 +140,21 @@ describe("actions/records", () => {
       expect(error).toBeUndefined();
       expect(record.invalid).toBe(true);
 
-      const shim = mockRecordResponseData.getMockImplementation();
-      mockRecordResponseData.mockImplementation((record, key) => {
-        if (key !== "purchaseAmounts") {
-          return shim(record, key);
-        }
-        return 22;
-      })(
-        ({ record, error } = await specHelper.runAction<RecordImport>(
-          "record:import",
-          connection
-        ))
-      );
+      jest
+        .spyOn(testPluginConnection.methods, "recordProperty")
+        .mockImplementation(({ property, record }: any): any => {
+          if (property.key !== "purchaseAmounts") {
+            return helper.recordResponseData(record, property.key);
+          }
+          return 22;
+        });
+
+      ({ record, error } = await specHelper.runAction<RecordImport>(
+        "record:import",
+        connection
+      ));
       expect(error).toBeUndefined();
       expect(record.invalid).toBe(false);
-      mockRecordResponseData.mockImplementation(shim);
     });
 
     test("a record can be exported", async () => {

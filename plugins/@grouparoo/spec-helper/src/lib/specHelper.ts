@@ -383,7 +383,7 @@ export namespace helper {
               };
             },
             recordProperty: async ({ property, record }) => {
-              return helper.recordResponseData(record, property.key);
+              return recordResponseData(record, property.key);
             },
             recordProperties: async ({ properties, records }) => {
               const response = {};
@@ -391,7 +391,7 @@ export namespace helper {
                 response[record.id] = {};
                 for (const property of properties) {
                   response[record.id][property.id] = [
-                    helper.recordResponseData(record, property.key),
+                    recordResponseData(record, property.key),
                   ];
                 }
               }
