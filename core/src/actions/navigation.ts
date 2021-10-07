@@ -57,7 +57,9 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       navigationMode === "authenticated" ||
       navigationMode === "config:authenticated";
 
-    const models = await GrouparooModel.findAll();
+    const models = await GrouparooModel.findAll({
+      order: [["createdAt", "asc"]],
+    });
     const currentModel = models.find((m) => m.id === params.modelId);
     const currentModelId = currentModel
       ? currentModel.id
