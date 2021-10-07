@@ -1,7 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { Group } from "../../../dist";
-import { App, GrouparooModel, Destination, Source } from "./../../../src";
+import { App, GrouparooModel, Destination, Source } from "../../../src";
 
 describe("tasks/model:destroy", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
