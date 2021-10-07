@@ -173,6 +173,7 @@ export class RecordImport extends CLSAction {
     await record.buildNullProperties();
     await record.markPending();
     await record.import();
+    await RecordOps.computeRecordsValidity([record]);
     await record.reload({ include: [RecordProperty] });
     await record.update({ state: "ready" });
     await record.updateGroupMembership();
