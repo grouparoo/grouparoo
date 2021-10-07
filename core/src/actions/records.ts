@@ -1,7 +1,8 @@
-import { config } from "actionhero";
+import { Action, config } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
+import { Group } from "../models/Group";
 import { internalRun } from "../modules/internalRun";
 import { Op } from "sequelize";
 import { ConfigWriter } from "../modules/configWriter";
@@ -13,6 +14,8 @@ import {
   ActionPermissionTopic,
 } from "../models/Permission";
 import { CLSAction } from "../classes/actions/clsAction";
+import { CLS } from "../modules/cls";
+import { AsyncReturnType } from "type-fest";
 
 export class RecordsList extends AuthenticatedAction {
   constructor() {
@@ -149,7 +152,7 @@ export class RecordCreate extends AuthenticatedAction {
   }
 }
 
-export class RecordImport extends CLSAction {
+export class RecordImport extends Action {
   permission: {
     topic: ActionPermissionTopic;
     mode: ActionPermissionMode;
@@ -167,39 +170,49 @@ export class RecordImport extends CLSAction {
     };
   }
 
-  async runWithinTransaction({ params }) {
-    const record = await GrouparooRecord.findById(params.id);
-
-    await record.buildNullProperties();
-    await record.markPending();
-    await record.import();
-    await RecordOps.computeRecordsValidity([record]);
-    await record.reload({ include: [RecordProperty] });
-    await record.update({ state: "ready" });
-    await record.updateGroupMembership();
-    const groups = await record.$get("groups");
-
-    return {
-      success: true,
-      record: await record.apiData(),
-      groups: await Promise.all(groups.map((group) => group.apiData())),
+  // This action needs custom transaction handling to handle problems with each source/recordProperty
+  async run({ params }) {
+    let record: GrouparooRecord;
+    let response: {
+      success: boolean;
+      record: AsyncReturnType<GrouparooRecord["apiData"]>;
+      groups: AsyncReturnType<Group["apiData"]>[];
     };
+
+    await CLS.wrap(async () => {
+      record = await GrouparooRecord.findById(params.id);
+      await record.buildNullProperties();
+      await record.markPending();
+    });
+
+    // this method should not be wrapped in a transaction because we want to allow multiple sources to throw and recover their imports
+    await record.import();
+
+    await CLS.wrap(async () => {
+      await RecordOps.computeRecordsValidity([record]);
+      await record.reload({ include: [RecordProperty] });
+      await record.update({ state: "ready" });
+      await record.updateGroupMembership();
+      const groups = await record.$get("groups");
+
+      response = {
+        success: true,
+        record: await record.apiData(),
+        groups: await Promise.all(groups.map((group) => group.apiData())),
+      };
+    });
+
+    return response;
   }
 }
 
 export class RecordExport extends CLSAction {
-  permission: {
-    topic: ActionPermissionTopic;
-    mode: ActionPermissionMode;
-  };
-
   constructor() {
     super();
     this.name = "record:export";
     this.description = "fully export a record";
     this.outputExample = {};
     this.permission = { topic: "record", mode: "write" };
-    this.middleware = ["authenticated-action"];
     this.inputs = {
       id: { required: true },
     };

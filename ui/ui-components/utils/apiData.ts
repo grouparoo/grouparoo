@@ -531,7 +531,9 @@ export namespace Actions {
     typeof RecordDestroy.prototype.runWithinTransaction
   >;
   export type RecordImport = AsyncReturnType<typeof RecordImport.prototype.run>;
-  export type RecordExport = AsyncReturnType<typeof RecordExport.prototype.run>;
+  export type RecordExport = AsyncReturnType<
+    typeof RecordExport.prototype.runWithinTransaction
+  >;
   export type RecordView = AsyncReturnType<
     typeof RecordView.prototype.runWithinTransaction
   >;
