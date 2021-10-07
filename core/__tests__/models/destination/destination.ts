@@ -706,7 +706,11 @@ describe("models/destination", () => {
       });
 
       test("a destination cannot track an unrelated model", async () => {
-        const otherModel = await helper.factories.model();
+        const otherModel = await helper.factories.model({
+          id: "otherModel",
+          name: "Other Model",
+          type: "profile",
+        });
 
         await expect(
           destination.updateTracking("model", otherModel.id)
