@@ -25,14 +25,8 @@ import { Group } from "./Group";
 export const ModelTypes = ["profile"] as const;
 export type ModelType = typeof ModelTypes[number];
 
-const STATES = ["draft", "ready", "deleted"] as const;
+const STATES = ["ready", "deleted"] as const;
 const STATE_TRANSITIONS = [
-  {
-    from: "draft",
-    to: "ready",
-    checks: [],
-  },
-  { from: "draft", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
   {
     from: "deleted",

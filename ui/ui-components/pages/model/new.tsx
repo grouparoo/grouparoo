@@ -23,7 +23,6 @@ export default function Page(props) {
 
   async function onSubmit(data: Models.GrouparooModelType) {
     setLoading(true);
-    data.state = "draft";
     const response: Actions.ModelCreate = await execApi(
       "post",
       `/model`,
