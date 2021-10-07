@@ -30,16 +30,23 @@ export default function Page(props) {
 
   async function edit(event) {
     event.preventDefault();
+    const state = model.state === "ready" ? undefined : "ready";
+
     setLoading(true);
+
     const response: Actions.ModelEdit = await execApi(
       "put",
       `/model/${id}`,
-      Object.assign({}, model)
+      Object.assign({}, model, { state })
     );
     if (response?.model) {
-      setLoading(false);
-      successHandler.set({ message: "Model Updated" });
-      setModel(response.model);
+      if (response.model.state === "ready" && model.state === "draft") {
+        router.push("/models");
+      } else {
+        setLoading(false);
+        successHandler.set({ message: "Model Updated" });
+        setModel(response.model);
+      }
     } else {
       setLoading(false);
     }
