@@ -119,6 +119,11 @@ export class Schedule extends LoggedModel<Schedule> {
   @Column
   confirmRecords: boolean;
 
+  @AllowNull(false)
+  @Default(true)
+  @Column
+  refreshEnabled: boolean;
+
   @HasMany(() => Option, {
     foreignKey: "ownerId",
     scope: { ownerType: "schedule" },
