@@ -58,7 +58,7 @@ async function deleteUsers() {
 async function deleteLists() {
   const lists = [list1];
 
-  const { data }: HubspotDataResponse = await Axios({
+  const { data }: { data: HubspotDataResponse } = await Axios({
     method: "GET",
     url: `https://api.hubapi.com/contacts/v1/lists/static?hapikey=${appOptions.hapikey}&count=999`,
     headers: { "Content-Type": "application/json" },
