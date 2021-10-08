@@ -6,6 +6,8 @@ import PageHeader from "../../../../../components/pageHeader";
 import StateBadge from "../../../../../components/badges/stateBadge";
 import LockedBadge from "../../../../../components/badges/lockedBadge";
 import ModelBadge from "../../../../../components/badges/modelBadge";
+import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const { destination } = props;
@@ -39,10 +41,11 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
-  const { destinationId } = ctx.query;
+  const { destinationId, modelId } = ctx.query;
   const { destination } = await execApi("get", `/destination/${destinationId}`);
+  ensureMatchingModel("Destination", destination.modelId, modelId.toString());
   const exportListInitialProps = await ExportsList.hydrate(ctx);
   return { destination, ...exportListInitialProps };
 };

@@ -11,6 +11,7 @@ import PageHeader from "../../../../../components/pageHeader";
 import ModelBadge from "../../../../../components/badges/modelBadge";
 import StateBadge from "../../../../../components/badges/stateBadge";
 import { NextPageContext } from "next";
+import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 
 export default function Page(props) {
   const {
@@ -62,8 +63,9 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
-  const { recordId } = ctx.query;
+  const { recordId, modelId } = ctx.query;
   const { record } = await execApi("get", `/record/${recordId}`);
+  ensureMatchingModel("Record", record?.modelId, modelId.toString());
   const { properties } = await execApi("get", `/properties`);
   const exportListInitialProps = await ExportsList.hydrate(ctx);
   return { record, properties, ...exportListInitialProps };

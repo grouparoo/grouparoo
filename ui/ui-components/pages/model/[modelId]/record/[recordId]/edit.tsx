@@ -18,6 +18,7 @@ import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import ModelBadge from "../../../../../components/badges/modelBadge";
 import PageHeader from "../../../../../components/pageHeader";
 import { NextPageContext } from "next";
+import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 
 export default function Page(props) {
   const {
@@ -417,9 +418,10 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { recordId } = ctx.query;
+  const { recordId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { record, groups } = await execApi("get", `/record/${recordId}`);
+  ensureMatchingModel("Record", record?.modelId, modelId.toString());
   const { properties } = await execApi("get", `/properties`, {
     modelId: record?.modelId,
   });

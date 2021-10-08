@@ -16,6 +16,7 @@ import { GroupHandler } from "../../../../../utils/groupHandler";
 import PageHeader from "../../../../../components/pageHeader";
 import ModelBadge from "../../../../../components/badges/modelBadge";
 import { NextPageContext } from "next";
+import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 
 export default function Page(props) {
   const {
@@ -222,8 +223,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { groupId } = ctx.query;
+  const { groupId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { group } = await execApi("get", `/group/${groupId}`);
+  ensureMatchingModel("Group", group.modelId, modelId.toString());
   return { group };
 };

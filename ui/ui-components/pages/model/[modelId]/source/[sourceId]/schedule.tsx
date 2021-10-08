@@ -18,6 +18,8 @@ import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import { filtersAreEqual } from "../../../../../utils/filtersAreEqual";
 import { makeLocal } from "../../../../../utils/makeLocal";
 import ModelBadge from "../../../../../components/badges/modelBadge";
+import { NextPageContext } from "next";
+import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 
 export default function Page(props) {
   const {
@@ -589,10 +591,11 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { sourceId } = ctx.query;
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const { sourceId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { source } = await execApi("get", `/source/${sourceId}`);
+  ensureMatchingModel("Source", source.modelId, modelId.toString());
   const { schedule, pluginOptions } = await execApi(
     "get",
     `/schedule/${source.schedule.id}`

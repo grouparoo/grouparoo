@@ -21,6 +21,7 @@ import { SuccessHandler } from "../../../../../utils/successHandler";
 import { PropertiesHandler } from "../../../../../utils/propertiesHandler";
 import ModelBadge from "../../../../../components/badges/modelBadge";
 import { NextPageContext } from "next";
+import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 
 export default function Page(props) {
   const {
@@ -710,7 +711,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { propertyId } = ctx.query;
+  const { propertyId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
 
   const { properties } = await execApi("get", `/properties`, {
@@ -719,7 +720,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sources } = await execApi("get", "/sources");
   const { types } = await execApi("get", `/propertyOptions`);
 
-  let property = {};
+  let property: Models.PropertyType = {};
   let pluginOptions = [];
   let filterOptions = {};
   let hydrationError: Error;
@@ -727,6 +728,11 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   try {
     const getResponse = await execApi("get", `/property/${propertyId}`);
     property = getResponse.property;
+
+    const source = sources.find(
+      (s: Models.SourceType) => s.id === property.sourceId
+    );
+    ensureMatchingModel("Property", source.modelId, modelId.toString());
 
     const pluginOptionsResponse = await execApi(
       "get",

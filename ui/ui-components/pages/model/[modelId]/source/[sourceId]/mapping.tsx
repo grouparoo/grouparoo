@@ -13,6 +13,8 @@ import { Actions, Models } from "../../../../../utils/apiData";
 import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { SuccessHandler } from "../../../../../utils/successHandler";
 import ModelBadge from "../../../../../components/badges/modelBadge";
+import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -400,11 +402,11 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { sourceId } = ctx.query;
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const { sourceId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { source } = await execApi("get", `/source/${sourceId}`);
-
+  ensureMatchingModel("Source", source.modelId, modelId.toString());
   const { properties, examples: propertyExamples } = await execApi(
     "get",
     `/properties`,

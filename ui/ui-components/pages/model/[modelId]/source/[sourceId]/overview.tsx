@@ -14,6 +14,8 @@ import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { SuccessHandler } from "../../../../../utils/successHandler";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import ModelBadge from "../../../../../components/badges/modelBadge";
+import { NextPageContext } from "next";
+import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 
 export default function Page({
   errorHandler,
@@ -288,10 +290,11 @@ export default function Page({
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { sourceId } = ctx.query;
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const { sourceId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { source } = await execApi("get", `/source/${sourceId}`);
+  ensureMatchingModel("Source", source.modelId, modelId.toString());
   const { properties } = await execApi("get", `/properties`, {
     sourceId,
   });

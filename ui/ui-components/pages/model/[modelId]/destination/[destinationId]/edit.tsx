@@ -16,6 +16,8 @@ import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { SuccessHandler } from "../../../../../utils/successHandler";
 import { DestinationHandler } from "../../../../../utils/destinationHandler";
 import ModelBadge from "../../../../../components/badges/modelBadge";
+import { NextPageContext } from "next";
+import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 
 export default function Page(props) {
   const {
@@ -427,10 +429,11 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
-  const { destinationId } = ctx.query;
+  const { destinationId, modelId } = ctx.query;
   const { destination } = await execApi("get", `/destination/${destinationId}`);
+  ensureMatchingModel("Destination", destination.modelId, modelId.toString());
   const { environmentVariableOptions } = await execApi(
     "get",
     "/destinations/connectionApps"
