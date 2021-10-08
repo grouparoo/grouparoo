@@ -414,7 +414,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.5
-      axios: 0.22.0
+      axios: 0.21.4
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -426,7 +426,7 @@ importers:
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.22.0
+      axios: 0.21.4
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -649,7 +649,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.5
-      axios: 0.22.0
+      axios: 0.21.4
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -660,7 +660,7 @@ importers:
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.22.0
+      axios: 0.21.4
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -758,7 +758,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.5
-      axios: 0.22.0
+      axios: 0.21.4
       dotenv: 10.0.0
       fs-extra: 10.0.0
       hubspot-api: 2.15.3
@@ -771,7 +771,7 @@ importers:
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.22.0
+      axios: 0.21.4
       hubspot-api: 2.15.3
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -931,7 +931,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.5
-      axios: 0.22.0
+      axios: 0.21.4
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -944,7 +944,7 @@ importers:
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.22.0
+      axios: 0.21.4
       node-mailjet: 3.3.4
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -1005,7 +1005,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.5
-      axios: 0.22.0
+      axios: 0.21.4
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -1016,7 +1016,7 @@ importers:
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.22.0
+      axios: 0.21.4
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1166,7 +1166,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.5
-      axios: 0.22.0
+      axios: 0.21.4
       dotenv: 10.0.0
       form-data: 4.0.0
       fs-extra: 10.0.0
@@ -1179,7 +1179,7 @@ importers:
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.22.0
+      axios: 0.21.4
       form-data: 4.0.0
       jsforce: 1.10.1
     devDependencies:
@@ -1205,7 +1205,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.5
-      axios: 0.22.0
+      axios: 0.21.4
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -1216,7 +1216,7 @@ importers:
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.22.0
+      axios: 0.21.4
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
