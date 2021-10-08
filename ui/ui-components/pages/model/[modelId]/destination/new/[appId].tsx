@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useState, Fragment } from "react";
 import { UseApi } from "../../../../../hooks/useApi";
-import { Row, Col, Card, Badge } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
 import LoadingButton from "../../../../../components/loadingButton";
 import AppIcon from "../../../../../components/appIcon";
 import { useRouter } from "next/router";
