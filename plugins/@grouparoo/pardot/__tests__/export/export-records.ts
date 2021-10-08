@@ -65,7 +65,7 @@ async function isProspectDeleted(id: number): Promise<boolean> {
 }
 
 async function getListMemberIds(listId: number): Promise<number[]> {
-  const response = await client.request.get(
+  const response: Record<string, any> = await client.request.get(
     "/listMembership/version/4/do/query",
     {
       params: {

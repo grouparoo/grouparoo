@@ -19,7 +19,7 @@ class HubspotClient {
     // TODO: This is not paginated, it will need to be
     // https://legacydocs.hubspot.com/docs/methods/lists/get_static_lists
     const url = `https://api.hubapi.com/contacts/v1/lists/static?hapikey=${this.hapikey}&count=999`;
-    const { data }: { data: HubspotDataResponse } = await Axios({
+    const { data }: HubspotDataResponse = await Axios({
       method: "GET",
       url,
       headers: { "Content-Type": "application/json" },
