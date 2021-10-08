@@ -20,6 +20,7 @@ jobs:
       - uses: actions/checkout@master
         with:
           ref: ${{ github.head_ref }}
+          token: ${{ secrets.BOT_GITHUB_PAT }}
           fetch-depth: 0
       - name: Update ENV
         if: github.event.inputs.release_type != ''
@@ -34,7 +35,7 @@ jobs:
       - name: publish
         run: ./bin/publish $RELEASE_TYPE
         env:
-          GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_AUTH: ${{ secrets.BOT_GITHUB_PAT }}
           NPM_TOKEN: ${{ secrets.BOT_NPM_TOKEN }}
 
   update-lockfile:
@@ -45,6 +46,7 @@ jobs:
       - uses: actions/checkout@master
         with:
           ref: main
+          token: ${{ secrets.BOT_GITHUB_PAT }}
       - name: Update PNPM lockfile
         run: |
           cd tools/merger && ./lockfile
