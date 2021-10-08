@@ -84,7 +84,7 @@ describe("models/group", () => {
 
       await run.reload();
       expect(run.state).toBe("complete");
-      expect(run.groupMethod).toBe("complete");
+      expect(run.method).toBe("complete");
 
       await group.reload();
       expect(group.state).toBe("ready");

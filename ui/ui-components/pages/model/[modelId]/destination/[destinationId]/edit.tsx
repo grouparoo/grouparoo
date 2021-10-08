@@ -56,15 +56,17 @@ export default function Page(props) {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    delete destination["mapping"];
-    delete destination["destinationGroupMemberships"];
-    delete destination["groups"];
 
     setLoading(true);
     const response: Actions.DestinationEdit = await execApi(
       "put",
       `/destination/${destinationId}`,
-      Object.assign({}, destination, { state: "ready" })
+      {
+        state: "ready",
+        name: destination.name,
+        syncMode: destination.syncMode,
+        options: destination.options,
+      }
     );
     if (response?.destination) {
       setDestination(response.destination);

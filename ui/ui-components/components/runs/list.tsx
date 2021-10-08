@@ -213,19 +213,16 @@ export default function RunsList(props) {
                     <td>
                       {/* <code>{JSON.stringify(run.filter)}</code> */}
                       <>
-                        {run.creatorType === "group" ? (
+                        {run.creatorType === "group" ||
+                        run.creatorType === "grouparooModel" ? (
                           <>
-                            groupMemberLimit: {run.groupMemberLimit} <br />
+                            Member Limit: {run.memberLimit} <br />
                           </>
                         ) : null}
-                        {run.creatorType === "group" ? (
+                        {run.creatorType === "group" ||
+                        run.creatorType === "grouparooModel" ? (
                           <>
-                            groupMemberOffset: {run.groupMemberOffset} <br />
-                          </>
-                        ) : null}
-                        {run.creatorType === "group" ? (
-                          <>
-                            groupHighWaterMark: {run.groupHighWaterMark} <br />
+                            Member Offset: {run.memberOffset} <br />
                           </>
                         ) : null}
                         {run.creatorType !== "group" ? (

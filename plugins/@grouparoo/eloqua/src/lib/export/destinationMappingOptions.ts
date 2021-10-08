@@ -1,6 +1,6 @@
 import {
   DestinationMappingOptionsMethod,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
 } from "@grouparoo/core";
 
 import { connect } from "../connect";
@@ -35,15 +35,15 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
 const mapTypesToGrouparoo = (
   eloquaType: string,
   fieldName: string
-): DestinationMappingOptionsResponseTypes => {
-  const overrides: Record<string, DestinationMappingOptionsResponseTypes> = {
+): DestinationMappingOptionsResponseType => {
+  const overrides: Record<string, DestinationMappingOptionsResponseType> = {
     emailAddress: "email",
     businessPhone: "phoneNumber",
     mobilePhone: "phoneNumber",
   };
   if (overrides[fieldName]) return overrides[fieldName];
 
-  const map: Record<string, DestinationMappingOptionsResponseTypes> = {
+  const map: Record<string, DestinationMappingOptionsResponseType> = {
     string: "string",
     date: "date",
     number: "number",
@@ -57,7 +57,7 @@ const mapTypesToGrouparoo = (
 
 export const getRequiredFields = (): Array<{
   key: string;
-  type: DestinationMappingOptionsResponseTypes;
+  type: DestinationMappingOptionsResponseType;
 }> => {
   return [{ key: "emailAddress", type: "email" }];
 };
@@ -71,7 +71,7 @@ export const getContactFields = async (
 ): Promise<
   Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
     statement: string;
     important?: boolean;
   }>
@@ -87,7 +87,7 @@ export const getAllContactFields = async (
 ): Promise<
   Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
     statement: string;
     important?: boolean;
   }>
@@ -101,7 +101,7 @@ export const getAllContactFields = async (
       continue;
     }
     if (!field["hasReadOnlyConstraint"]) {
-      const type: DestinationMappingOptionsResponseTypes = mapTypesToGrouparoo(
+      const type: DestinationMappingOptionsResponseType = mapTypesToGrouparoo(
         field["dataType"],
         key
       );

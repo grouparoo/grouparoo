@@ -1,5 +1,5 @@
 import {
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
   SimpleAppOptions,
   DestinationMappingOptionsMethodResponse,
 } from "@grouparoo/core";
@@ -153,11 +153,11 @@ const extractFields = (
 ): {
   required: Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
   }>;
   known: Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
     important?: boolean;
   }>;
 } => {
@@ -215,11 +215,11 @@ export const getFields = (
 ): {
   required: Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
   }>;
   known: Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
     important?: boolean;
   }>;
 } => {

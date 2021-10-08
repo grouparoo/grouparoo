@@ -160,7 +160,7 @@ describe("models/destination", () => {
         appId: app.id,
         modelId: model.id,
       });
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
       await expect(destination.destroy()).rejects.toThrow(
         /cannot delete a destination that is tracking a group/
       );
@@ -179,14 +179,14 @@ describe("models/destination", () => {
 
       await destination.setOptions({ table: "table" });
       await destination.setMapping({ "primary-id": "userId" });
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.id] = "remote-tag";
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
 
-      await destination.unTrackGroup();
+      await destination.updateTracking("none");
       await destination.destroy();
 
       let count = await DestinationGroupMembership.count({
@@ -320,11 +320,11 @@ describe("models/destination", () => {
         });
 
         group = await helper.factories.group();
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
       });
 
       afterAll(async () => {
-        await destination.unTrackGroup();
+        await destination.updateTracking("none");
         await destination.destroy();
         await group.destroy();
       });
@@ -540,13 +540,14 @@ describe("models/destination", () => {
         );
       });
 
-      test("an app can only have one destination per connection with the same options and group", async () => {
+      test("an app can only have one destination per connection with the same options and group tracking", async () => {
         destination = await Destination.create({
           name: "first destination",
           appId: app.id,
           modelId: model.id,
           type: "test-plugin-export",
           groupId: "abc123",
+          collection: "group",
         });
 
         await expect(
@@ -556,6 +557,7 @@ describe("models/destination", () => {
             modelId: model.id,
             type: "test-plugin-export",
             groupId: "abc123",
+            collection: "group",
           })
         ).rejects.toThrow(
           /destination "first destination" .* is already using this app with the same options/
@@ -568,6 +570,7 @@ describe("models/destination", () => {
           modelId: model.id,
           type: "test-plugin-export", // same
           groupId: "def456", // different
+          collection: "group",
         });
         expect(differentGroupDestination.state).toEqual("draft");
 
@@ -578,6 +581,7 @@ describe("models/destination", () => {
           modelId: model.id,
           type: "test-plugin-export-batch", // different
           groupId: "abc123", // same group
+          collection: "group",
         });
         expect(ok.state).toEqual("draft");
 
@@ -589,6 +593,7 @@ describe("models/destination", () => {
           modelId: model.id,
           type: "test-plugin-export", // same
           groupId: "abc123", // same
+          collection: "group",
         }); // does not throw, as first destination now has new options
 
         await otherDestination.setOptions({ table: "purchases" }); // does not throw
@@ -600,6 +605,62 @@ describe("models/destination", () => {
         );
 
         await differentGroupDestination.destroy();
+        await otherDestination.destroy();
+
+        // and it's ok to have the options here
+        await ok.setOptions({ table: "users" });
+        await ok.destroy();
+      });
+
+      test("an app can only have one destination per connection with the same options and model tracking", async () => {
+        destination = await Destination.create({
+          name: "first destination",
+          appId: app.id,
+          modelId: model.id,
+          type: "test-plugin-export",
+          collection: "model",
+        });
+
+        await expect(
+          Destination.create({
+            name: "second destination",
+            appId: app.id,
+            modelId: model.id,
+            type: "test-plugin-export",
+            collection: "model",
+          })
+        ).rejects.toThrow(
+          /destination "first destination" .* is already using this app with the same options/
+        );
+
+        // but it's ok to have one in another type of connection
+        const ok = await Destination.create({
+          name: "ok destination",
+          appId: app.id,
+          modelId: model.id,
+          type: "test-plugin-export-batch", // different
+          collection: "model",
+        });
+        expect(ok.state).toEqual("draft");
+
+        await destination.setOptions({ table: "users" });
+
+        const otherDestination = await Destination.create({
+          name: "second destination",
+          appId: app.id,
+          modelId: model.id,
+          type: "test-plugin-export", // same
+          collection: "model",
+        }); // does not throw, as first destination now has new options
+
+        await otherDestination.setOptions({ table: "purchases" }); // does not throw
+
+        await expect(
+          otherDestination.setOptions({ table: "users" })
+        ).rejects.toThrow(
+          /destination "first destination" .* is already using this app with the same options/
+        );
+
         await otherDestination.destroy();
 
         // and it's ok to have the options here
@@ -670,6 +731,119 @@ describe("models/destination", () => {
       });
     });
 
+    describe("tracking a model", () => {
+      let destination: Destination;
+      let model: GrouparooModel;
+
+      beforeEach(async () => {
+        model = await GrouparooModel.findOne();
+
+        destination = await Destination.create({
+          name: "test destination",
+          appId: app.id,
+          modelId: "mod_profiles",
+          syncMode: "sync",
+          type: "test-plugin-export",
+        });
+      });
+
+      afterEach(async () => {
+        await destination.destroy();
+      });
+
+      test("a model can be tracked", async () => {
+        const { newRun } = await destination.updateTracking("model");
+        expect(newRun.destinationId).toEqual(destination.id);
+        expect(destination.collection).toBe("model");
+        expect(destination.modelId).toBe(model.id);
+      });
+
+      test("tracking a model will enqueue runs", async () => {
+        const { newRun, oldRun } = await destination.updateTracking("model");
+        expect(oldRun).toBeFalsy();
+        expect(newRun).toBeTruthy();
+      });
+
+      test("a destination cannot track an unrelated model", async () => {
+        const otherModel = await helper.factories.model({
+          id: "otherModel",
+          name: "Other Model",
+          type: "profile",
+        });
+
+        const otherGroup = await helper.factories.group({
+          modelId: otherModel.id,
+        });
+
+        await expect(
+          destination.updateTracking("group", otherGroup.id)
+        ).rejects.toThrow(/do not share the same modelId/);
+
+        await otherGroup.destroy();
+        await otherModel.destroy();
+      });
+
+      test("a model can be unTracked", async () => {
+        await destination.updateTracking("model");
+        const { oldRun, newRun } = await destination.updateTracking("none");
+        expect(oldRun.destinationId).toEqual(destination.id);
+        expect(newRun).toBeFalsy();
+        expect(destination.collection).toBe("none");
+        expect(destination.groupId).toBe(null);
+      });
+
+      test("recordPreview - without updates - with model", async () => {
+        const record = await helper.factories.record();
+        await record.addOrUpdateProperties({
+          userId: [1],
+          email: ["yoshi@example.com"],
+        });
+        await destination.updateTracking("model");
+
+        const mapping = {
+          "primary-id": "userId",
+          email: "email",
+        };
+
+        const destinationGroupMemberships = {};
+
+        const _record = await destination.recordPreview(
+          record,
+          mapping,
+          destinationGroupMemberships
+        );
+        expect(_record.properties["primary-id"].values[0]).toBe(1);
+        expect(_record.properties["email"].values[0]).toBe("yoshi@example.com");
+
+        await record.destroy();
+      });
+
+      test("destination record previews will convert the type of the property to match the destination", async () => {
+        const record = await helper.factories.record();
+        await record.addOrUpdateProperties({
+          userId: [1],
+          email: ["yoshi@example.com"],
+          ltv: [123],
+        });
+        await destination.updateTracking("model");
+
+        const mapping = {
+          "primary-id": "userId",
+          "string-property": "ltv",
+        };
+
+        const _record = await destination.recordPreview(record, mapping, {});
+
+        expect(_record.properties["primary-id"].values[0]).toBe(1);
+        expect(_record.properties["primary-id"].type).toBe("integer");
+
+        expect(_record.properties["string-property"].values[0]).toBe("123");
+        expect(_record.properties["string-property"].type).toBe("string");
+
+        await record.destroy();
+      });
+    });
+
     describe("with groups", () => {
       let destination: Destination;
       let group: Group;
@@ -692,23 +866,34 @@ describe("models/destination", () => {
       });
 
       test("a group can be tracked", async () => {
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
         const _group = await destination.$get("group");
         expect(_group.id).toBe(group.id);
       });
 
-      test("tracking a group will not enqueue a run", async () => {
-        const runs = await Run.findAll({
-          where: { creatorId: destination.id },
-        });
-        expect(runs.length).toBe(0);
+      test("a group cannot be tracked in any other collection", async () => {
+        await expect(
+          destination.updateTracking("none", group.id)
+        ).rejects.toThrow(/cannot track/);
+        await expect(
+          destination.updateTracking("model", group.id)
+        ).rejects.toThrow(/cannot track/);
+      });
+
+      test("tracking a group will enqueue runs", async () => {
+        const { oldRun, newRun } = await destination.updateTracking(
+          "group",
+          group.id
+        );
+        expect(oldRun).toBeFalsy();
+        expect(newRun).toBeTruthy();
       });
 
       test("a destination can only track a single group", async () => {
         const newGroup = await helper.factories.group();
 
-        await destination.trackGroup(group);
-        await destination.trackGroup(newGroup);
+        await destination.updateTracking("group", group.id);
+        await destination.updateTracking("group", newGroup.id);
         const _group = await destination.$get("group");
         expect(_group.id).toBe(newGroup.id);
         await newGroup.destroy();
@@ -717,19 +902,19 @@ describe("models/destination", () => {
       test("a destination cannot track a deleted group", async () => {
         await group.update({ state: "deleted" });
 
-        expect(destination.trackGroup(group)).rejects.toThrow(
-          /Cannot track deleted Group/
-        );
+        await expect(
+          destination.updateTracking("group", group.id)
+        ).rejects.toThrow(/cannot track deleted Group/);
         const _group = await destination.$get("group");
         expect(_group).toBe(null);
       });
 
       test("a group can be unTracked", async () => {
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
         let _group = await destination.$get("group");
         expect(_group.id).toBe(group.id);
 
-        await destination.unTrackGroup();
+        await destination.updateTracking("none");
         _group = await destination.$get("group");
         expect(_group).toBe(null);
       });
@@ -741,7 +926,7 @@ describe("models/destination", () => {
           email: ["yoshi@example.com"],
         });
         await group.addRecord(record);
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
 
         const mapping = {
           "primary-id": "userId",
@@ -771,7 +956,7 @@ describe("models/destination", () => {
           ltv: [123],
         });
         await group.addRecord(record);
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
 
         const mapping = {
           "primary-id": "userId",
@@ -789,15 +974,21 @@ describe("models/destination", () => {
         await record.destroy();
       });
 
-      describe("destinationsForGroups", () => {
+      describe("relevantFor", () => {
         it("determined relevant destinations for a record", async () => {
-          const otherDestination = await helper.factories.destination();
+          const otherGroupDestination = await helper.factories.destination();
+          const modelDestination = await helper.factories.destination();
+          const otherGroup = await helper.factories.group();
+          const irrelevantDestination = await helper.factories.destination();
+          await irrelevantDestination.updateTracking("group", otherGroup.id);
+
           const record = await helper.factories.record();
           await group.addRecord(record);
 
           // before the destinations are ready
-          await destination.trackGroup(group);
-          let destinations = await Destination.destinationsForGroups(
+          await destination.updateTracking("group", group.id);
+          let destinations = await Destination.relevantFor(
+            record,
             await record.$get("groups")
           );
           expect(destinations.length).toBe(0);
@@ -805,59 +996,89 @@ describe("models/destination", () => {
           // after the destinations are ready
           await destination.setOptions({ table: "some table" });
           await destination.update({ state: "ready" });
-          await otherDestination.setOptions({ table: "some table" });
-          await otherDestination.update({ state: "ready" });
-          await otherDestination.trackGroup(group);
+          await otherGroupDestination.setOptions({ table: "some table" });
+          await otherGroupDestination.updateTracking("group", group.id);
+          await modelDestination.updateTracking("model");
 
-          destinations = await Destination.destinationsForGroups(
+          destinations = await Destination.relevantFor(
+            record,
             await record.$get("groups")
           );
-          expect(destinations.length).toBe(2);
+          expect(destinations.length).toBe(3);
           expect(destinations.map((d) => d.id).sort()).toEqual(
-            [destination.id, otherDestination.id].sort()
+            [
+              destination.id,
+              otherGroupDestination.id,
+              modelDestination.id,
+            ].sort()
+          );
+          expect(destinations.map((d) => d.id).sort()).not.toContain(
+            irrelevantDestination.id
           );
 
-          await destination.unTrackGroup();
+          await destination.updateTracking("none");
           await group.removeRecord(record);
-          await otherDestination.unTrackGroup();
-          await otherDestination.destroy();
-        });
-
-        test("force (reimporting) can be toggled when tracking and un-tracking groups", async () => {
-          const trackRunA = await destination.trackGroup(group, false);
-          expect(trackRunA.force).toBe(false);
-          const unTrackRunA = await destination.unTrackGroup(false);
-          expect(unTrackRunA.force).toBe(false);
-
-          const trackRunB = await destination.trackGroup(group, true);
-          expect(trackRunB.force).toBe(true);
-          const unTrackRunB = await destination.unTrackGroup(true);
-          expect(unTrackRunB.force).toBe(true);
+          await otherGroupDestination.updateTracking("none");
+          await otherGroupDestination.destroy();
+          await modelDestination.updateTracking("none");
+          await modelDestination.destroy();
+          await irrelevantDestination.updateTracking("none");
+          await irrelevantDestination.destroy();
+          await otherGroup.destroy();
         });
 
         test("when the group being tracked is removed, the previous group should be exported one last time", async () => {
-          const runA = await destination.trackGroup(group);
-          const runB = await destination.unTrackGroup();
+          const { newRun: runA } = await destination.updateTracking(
+            "group",
+            group.id
+          );
+
+          const { oldRun: runB } = await destination.updateTracking("none");
           await runA.reload();
+          await runB.reload();
 
           expect(runA.creatorId).toEqual(runB.creatorId);
           expect(runA.state).toBe("stopped");
           expect(runB.state).toBe("running");
+          expect(runA.destinationId).toBe(destination.id);
           expect(runB.destinationId).toBe(destination.id);
+          expect(runA.force).toBe(true);
+          expect(runB.force).toBe(false);
+        });
+
+        test("when the model being tracked is removed, the previous records should be exported one last time", async () => {
+          const { newRun: runA } = await destination.updateTracking("model");
+          const { oldRun: runB } = await destination.updateTracking("none");
+          await runA.reload();
+          await runB.reload();
+
+          expect(runA.creatorId).toEqual(runB.creatorId);
+          expect(runA.state).toBe("stopped");
+          expect(runB.state).toBe("running");
+          expect(runA.destinationId).toBe(destination.id);
+          expect(runB.destinationId).toBe(destination.id);
+          expect(runA.force).toBe(true);
           expect(runB.force).toBe(false);
         });
 
         test("when the group being tracked is changed, the previous group should be exported one last time", async () => {
           const otherGroup = await helper.factories.group();
           await otherGroup.update({ state: "ready" });
-          const runA = await destination.trackGroup(group);
-          const runB = await destination.trackGroup(otherGroup);
+          const { newRun: runA } = await destination.updateTracking(
+            "group",
+            group.id
+          );
+          const { newRun: runB } = await destination.updateTracking(
+            "group",
+            otherGroup.id
+          );
 
           expect(runA.creatorId).toEqual(group.id);
           expect(runB.creatorId).toEqual(otherGroup.id);
           expect(runA.state).toBe("running");
           expect(runB.state).toBe("running");
           expect(runB.destinationId).toBe(destination.id);
+          expect(runA.force).toBe(true);
           expect(runB.force).toBe(true);
 
           await otherGroup.destroy();

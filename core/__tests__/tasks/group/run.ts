@@ -107,21 +107,21 @@ describe("tasks/group:run", () => {
       await specHelper.runTask("group:run", { runId: run.id }); // adding records (some found, enqueue add again)
 
       await run.reload();
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(0);
-      expect(run.groupMethod).toBe("runAddGroupMembers");
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(0);
+      expect(run.method).toBe("runAddGroupMembers");
       await specHelper.runTask("group:run", { runId: run.id }); // adding records (none found, enqueue remove)
 
       await run.reload();
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(0);
-      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(0);
+      expect(run.method).toBe("runRemoveGroupMembers");
       await specHelper.runTask("group:run", { runId: run.id }); // remove records, (none found, enqueue removePreviousRunGroupMembers)
 
       await run.reload();
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(0);
-      expect(run.groupMethod).toBe("removePreviousRunGroupMembers");
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(0);
+      expect(run.method).toBe("removePreviousRunGroupMembers");
       expect(run.state).toBe("running");
       await specHelper.runTask("group:run", { runId: run.id }); // remove records, (none found)
 
@@ -141,7 +141,7 @@ describe("tasks/group:run", () => {
       await specHelper.runTask("group:run", { runId: run.id }); // run is complete, mark group as ready
 
       await run.reload();
-      expect(run.groupMethod).toBe("complete");
+      expect(run.method).toBe("complete");
       expect(run.state).toBe("complete");
       await group.reload();
       expect(group.state).toBe("ready");
@@ -173,20 +173,20 @@ describe("tasks/group:run", () => {
       await specHelper.runTask("group:run", { runId: run.id });
 
       await run.reload();
-      expect(run.groupMethod).toBe("runAddGroupMembers");
+      expect(run.method).toBe("runAddGroupMembers");
       await specHelper.runTask("group:run", { runId: run.id });
 
       await run.reload();
-      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      expect(run.method).toBe("runRemoveGroupMembers");
       await specHelper.runTask("group:run", { runId: run.id });
 
       await run.reload();
-      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      expect(run.method).toBe("runRemoveGroupMembers");
       expect(run.state).toBe("running");
       await specHelper.runTask("group:run", { runId: run.id });
 
       await run.reload();
-      expect(run.groupMethod).toBe("removePreviousRunGroupMembers");
+      expect(run.method).toBe("removePreviousRunGroupMembers");
       expect(run.state).toBe("running");
       await specHelper.runTask("group:run", { runId: run.id });
 
@@ -207,7 +207,7 @@ describe("tasks/group:run", () => {
       await specHelper.runTask("group:run", { runId: run.id }); // run is complete, mark group as ready
 
       await run.reload();
-      expect(run.groupMethod).toBe("complete");
+      expect(run.method).toBe("complete");
       expect(run.state).toBe("complete");
       await group.reload();
       expect(group.state).toBe("ready");
@@ -250,16 +250,16 @@ describe("tasks/group:run", () => {
       await specHelper.runTask("group:run", { runId: run.id });
 
       await run.reload();
-      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      expect(run.method).toBe("runRemoveGroupMembers");
       await specHelper.runTask("group:run", { runId: run.id });
 
       await run.reload();
-      expect(run.groupMethod).toBe("removePreviousRunGroupMembers");
+      expect(run.method).toBe("removePreviousRunGroupMembers");
       expect(run.state).toBe("running");
       await specHelper.runTask("group:run", { runId: run.id });
 
       await run.reload();
-      expect(run.groupMethod).toBe("removePreviousRunGroupMembers");
+      expect(run.method).toBe("removePreviousRunGroupMembers");
       expect(run.state).toBe("running");
       await specHelper.runTask("group:run", { runId: run.id });
 
@@ -273,7 +273,7 @@ describe("tasks/group:run", () => {
       await specHelper.runTask("group:run", { runId: run.id }); // run is complete, mark group as ready
 
       await run.reload();
-      expect(run.groupMethod).toBe("complete");
+      expect(run.method).toBe("complete");
       expect(run.state).toBe("complete");
       await group.reload();
       expect(group.state).toBe("ready");
@@ -303,7 +303,7 @@ describe("tasks/group:run", () => {
 
       expect(group.state).toBe("updating");
       expect(run.state).toBe("running");
-      expect(run.groupMethod).toBe("complete");
+      expect(run.method).toBe("complete");
 
       // check again
       await specHelper.runTask("group:run", { runId: run.id });
@@ -313,7 +313,7 @@ describe("tasks/group:run", () => {
 
       expect(group.state).toBe("updating");
       expect(run.state).toBe("running");
-      expect(run.groupMethod).toBe("complete");
+      expect(run.method).toBe("complete");
 
       // complete pending imports
       await ImportWorkflow();

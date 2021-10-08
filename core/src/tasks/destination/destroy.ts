@@ -3,7 +3,6 @@ import { Destination } from "../../models/Destination";
 import { Run } from "../../models/Run";
 import { Export } from "../../models/Export";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { CLS } from "../../modules/cls";
 
 export class DestinationDestroy extends CLSTask {
   constructor() {
@@ -29,11 +28,15 @@ export class DestinationDestroy extends CLSTask {
     let run: Run;
     // untrack the group, if we are still tracking one
     // this will trigger a run to export all group members one last time
-    if (destination.groupId) {
-      run = await destination.unTrackGroup();
+    if (
+      (destination.groupId && destination.collection === "group") ||
+      destination.collection === "model"
+    ) {
+      const unTrackResponse = await destination.updateTracking("none");
+      run = unTrackResponse.oldRun;
     } else {
       run = await Run.scope(null).findOne({
-        where: { destinationId: params.destinationId },
+        where: { destinationId: destination.id },
         order: [["updatedAt", "desc"]],
         limit: 1,
       });

@@ -105,11 +105,9 @@ export default function Page(props) {
               Records Imported: {run.recordsImported}
             </Col>
             <Col>
-              Group Member Limit: {run.groupMemberLimit}
+              Member Limit: {run.memberLimit}
               <br />
-              Group Member Offset: {run.groupMemberOffset}
-              <br />
-              Group Member High Water Mark: {run.groupHighWaterMark}
+              Member Offset: {run.memberOffset}
               <br />
               Source Offset: {run.sourceOffset}
               {run.highWaterMark ? (

@@ -10,12 +10,16 @@ export default function RecordPreview(props) {
   const {
     errorHandler,
     destination,
-    trackedGroupId,
+    collection,
+    groupId,
+    modelId,
     mappingOptions,
   }: {
     errorHandler: ErrorHandler;
     destination: Models.DestinationType;
-    trackedGroupId: string;
+    collection: Models.DestinationType["collection"];
+    groupId: string;
+    modelId: string;
     mappingOptions: Actions.DestinationMappingOptions["options"];
   } = props;
   const router = useRouter();
@@ -44,8 +48,9 @@ export default function RecordPreview(props) {
     };
   }, [
     destination.id,
-    trackedGroupId,
-    JSON.stringify(destination.destinationGroup),
+    groupId,
+    collection,
+    JSON.stringify(destination.group),
     JSON.stringify(destination.mapping),
     JSON.stringify(destination.destinationGroupMemberships),
   ]);
@@ -68,7 +73,7 @@ export default function RecordPreview(props) {
     setToHide(false);
     storeRecordPropertyId(_recordId);
 
-    if (trackedGroupId === "_none") {
+    if (collection === "none" || (collection === "group" && !groupId)) {
       setToHide(true);
       return;
     }
@@ -86,7 +91,8 @@ export default function RecordPreview(props) {
         "get",
         `/destination/${destination.id}/recordPreview`,
         {
-          groupId: trackedGroupId,
+          groupId: groupId,
+          modelId: modelId,
           mapping: destination.mapping,
           destinationGroupMemberships: destinationGroupMembershipsObject,
           recordId: _recordId !== "" ? _recordId : undefined,

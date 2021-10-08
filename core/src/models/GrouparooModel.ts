@@ -11,7 +11,6 @@ import {
   DefaultScope,
   Default,
 } from "sequelize-typescript";
-import * as uuid from "uuid";
 import { Source } from "./Source";
 import { ModelConfigurationObject } from "../classes/codeConfig";
 import { LoggedModel } from "../classes/loggedModel";
@@ -20,6 +19,7 @@ import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
 import { Destination } from "./Destination";
 import { Group } from "./Group";
+import { RunOps } from "../modules/ops/runs";
 
 export const ModelTypes = ["profile"] as const;
 export type ModelType = typeof ModelTypes[number];
@@ -76,6 +76,14 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
       default:
         throw new Error(`no icon for ${this.type} model`);
     }
+  }
+
+  async run(force = false, destinationId?: string) {
+    return RunOps.run(this, force, destinationId);
+  }
+
+  async stopPreviousRuns() {
+    return RunOps.stopPreviousRuns(this);
   }
 
   async apiData() {

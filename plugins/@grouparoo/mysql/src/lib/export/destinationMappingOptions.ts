@@ -1,6 +1,6 @@
 import {
   DestinationMappingOptionsMethod,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
 } from "@grouparoo/core";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod =
@@ -12,7 +12,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
 
     const columns: Array<{
       key: string;
-      type: DestinationMappingOptionsResponseTypes;
+      type: DestinationMappingOptionsResponseType;
       important: boolean;
     }> = [];
     for (const i in rows) {

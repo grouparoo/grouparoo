@@ -26,6 +26,7 @@ import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
+import { GrouparooModel } from "./GrouparooModel";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
@@ -35,6 +36,7 @@ const RUN_CREATORS = [
   "schedule",
   "property",
   "group",
+  "grouparooModel",
   "task",
   "teamMember",
 ] as const;
@@ -104,18 +106,14 @@ export class Run extends CommonModel<Run> {
 
   @Default(0)
   @Column
-  groupMemberLimit: number;
+  memberLimit: number;
 
   @Default(0)
   @Column
-  groupMemberOffset: number;
-
-  @Default(0)
-  @Column
-  groupHighWaterMark: number;
+  memberOffset: number;
 
   @Column
-  groupMethod: string;
+  method: string;
 
   @Default(0)
   @Column
@@ -267,10 +265,9 @@ export class Run extends CommonModel<Run> {
       error: this.error,
       highWaterMark: this.highWaterMark,
       sourceOffset: this.sourceOffset,
-      groupMemberLimit: this.groupMemberLimit,
-      groupMemberOffset: this.groupMemberOffset,
-      groupHighWaterMark: this.groupHighWaterMark,
-      groupMethod: this.groupMethod,
+      memberLimit: this.memberLimit,
+      memberOffset: this.memberOffset,
+      method: this.method,
       force: this.force,
       destinationId: this.destinationId,
       createdAt: APIData.formatDate(this.createdAt),
@@ -289,6 +286,9 @@ export class Run extends CommonModel<Run> {
       } else if (this.creatorType === "property") {
         const property = await Property.findById(this.creatorId);
         name = property.key;
+      } else if (this.creatorType === "grouparooModel") {
+        const model = await GrouparooModel.findById(this.creatorId);
+        name = model.name;
       } else if (this.creatorType === "schedule") {
         const schedule = await Schedule.findById(this.creatorId);
         const source = await schedule.$get("source", { scope: null });
@@ -345,8 +345,8 @@ export class Run extends CommonModel<Run> {
     // we only need to broadcast at the end of each batch or on a state change, not as we increment values
     if (
       instance.changed("state") ||
-      instance.changed("groupMemberLimit") ||
-      instance.changed("groupMemberOffset") ||
+      instance.changed("memberLimit") ||
+      instance.changed("memberOffset") ||
       instance.changed("highWaterMark") ||
       instance.changed("sourceOffset") ||
       instance.changed("percentComplete")

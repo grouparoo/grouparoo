@@ -74,7 +74,7 @@ describe("tasks/record:destroy", () => {
     );
     await record.update({ state: "ready" });
 
-    await destination.trackGroup(group);
+    await destination.updateTracking("group", group.id);
     const destinationGroupMemberships = {};
     destinationGroupMemberships[group.id] = group.name;
     await destination.setDestinationGroupMemberships(

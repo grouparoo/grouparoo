@@ -5,7 +5,7 @@ import {
   Destination,
   GrouparooRecord,
   Group,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
   GrouparooModel,
 } from "../../../../src";
 import { DestinationOps } from "../../../../src/modules/ops/destination";
@@ -24,7 +24,7 @@ describe("models/destination", () => {
       input: any,
       output: any,
       grouparooType: string,
-      destinationType: DestinationMappingOptionsResponseTypes
+      destinationType: DestinationMappingOptionsResponseType
     ) {
       if (output !== null) {
         expect(
@@ -59,17 +59,21 @@ describe("models/destination", () => {
         ["https://www.grouparoo.com", "url"],
       ];
 
-      mapping.map(([input, type]: [any, string]) => {
+      mapping.map(([input, type]) => {
         test(`exporting type ${type} to any`, () => {
           expect(
-            DestinationOps.formatOutgoingRecordProperties(input, type, "any")
+            DestinationOps.formatOutgoingRecordProperties(
+              input,
+              type as string,
+              "any"
+            )
           ).toEqual(input);
         });
       });
     });
 
     describe("null types", () => {
-      const types: DestinationMappingOptionsResponseTypes[] = [
+      const types: DestinationMappingOptionsResponseType[] = [
         "boolean",
         "integer",
         "float",
@@ -110,14 +114,15 @@ describe("models/destination", () => {
         ["date", null],
       ];
 
-      mapping.map(
-        ([destinationType, output]: [
-          DestinationMappingOptionsResponseTypes,
-          any
-        ]) =>
-          test(`exporting ${grouparooType} to ${destinationType}`, () => {
-            testValues(input, output, grouparooType, destinationType);
-          })
+      mapping.map(([destinationType, output]) =>
+        test(`exporting ${grouparooType} to ${destinationType}`, () => {
+          testValues(
+            input,
+            output,
+            grouparooType,
+            destinationType as DestinationMappingOptionsResponseType
+          );
+        })
       );
     });
 
@@ -136,14 +141,15 @@ describe("models/destination", () => {
         ["date", null],
       ];
 
-      mapping.map(
-        ([destinationType, output]: [
-          DestinationMappingOptionsResponseTypes,
-          any
-        ]) =>
-          test(`exporting ${grouparooType} to ${destinationType}`, () => {
-            testValues(input, output, grouparooType, destinationType);
-          })
+      mapping.map(([destinationType, output]) =>
+        test(`exporting ${grouparooType} to ${destinationType}`, () => {
+          testValues(
+            input,
+            output,
+            grouparooType,
+            destinationType as DestinationMappingOptionsResponseType
+          );
+        })
       );
     });
 
@@ -162,14 +168,15 @@ describe("models/destination", () => {
         ["date", null],
       ];
 
-      mapping.map(
-        ([destinationType, output]: [
-          DestinationMappingOptionsResponseTypes,
-          any
-        ]) =>
-          test(`exporting ${grouparooType} to ${destinationType}`, () => {
-            testValues(input, output, grouparooType, destinationType);
-          })
+      mapping.map(([destinationType, output]) =>
+        test(`exporting ${grouparooType} to ${destinationType}`, () => {
+          testValues(
+            input,
+            output,
+            grouparooType,
+            destinationType as DestinationMappingOptionsResponseType
+          );
+        })
       );
     });
 
@@ -188,14 +195,15 @@ describe("models/destination", () => {
         ["date", null],
       ];
 
-      mapping.map(
-        ([destinationType, output]: [
-          DestinationMappingOptionsResponseTypes,
-          any
-        ]) =>
-          test(`exporting ${grouparooType} to ${destinationType}`, () => {
-            testValues(input, output, grouparooType, destinationType);
-          })
+      mapping.map(([destinationType, output]) =>
+        test(`exporting ${grouparooType} to ${destinationType}`, () => {
+          testValues(
+            input,
+            output,
+            grouparooType,
+            destinationType as DestinationMappingOptionsResponseType
+          );
+        })
       );
     });
 
@@ -214,14 +222,15 @@ describe("models/destination", () => {
         ["date", null],
       ];
 
-      mapping.map(
-        ([destinationType, output]: [
-          DestinationMappingOptionsResponseTypes,
-          any
-        ]) =>
-          test(`exporting ${grouparooType} to ${destinationType}`, () => {
-            testValues(input, output, grouparooType, destinationType);
-          })
+      mapping.map(([destinationType, output]) =>
+        test(`exporting ${grouparooType} to ${destinationType}`, () => {
+          testValues(
+            input,
+            output,
+            grouparooType,
+            destinationType as DestinationMappingOptionsResponseType
+          );
+        })
       );
     });
 
@@ -240,14 +249,15 @@ describe("models/destination", () => {
         ["date", null],
       ];
 
-      mapping.map(
-        ([destinationType, output]: [
-          DestinationMappingOptionsResponseTypes,
-          any
-        ]) =>
-          test(`exporting ${grouparooType} to ${destinationType}`, () => {
-            testValues(input, output, grouparooType, destinationType);
-          })
+      mapping.map(([destinationType, output]) =>
+        test(`exporting ${grouparooType} to ${destinationType}`, () => {
+          testValues(
+            input,
+            output,
+            grouparooType,
+            destinationType as DestinationMappingOptionsResponseType
+          );
+        })
       );
     });
 
@@ -266,14 +276,15 @@ describe("models/destination", () => {
         ["date", null],
       ];
 
-      mapping.map(
-        ([destinationType, output]: [
-          DestinationMappingOptionsResponseTypes,
-          any
-        ]) =>
-          test(`exporting ${grouparooType} to ${destinationType}`, () => {
-            testValues(input, output, grouparooType, destinationType);
-          })
+      mapping.map(([destinationType, output]) =>
+        test(`exporting ${grouparooType} to ${destinationType}`, () => {
+          testValues(
+            input,
+            output,
+            grouparooType,
+            destinationType as DestinationMappingOptionsResponseType
+          );
+        })
       );
     });
 
@@ -292,14 +303,15 @@ describe("models/destination", () => {
         ["date", null],
       ];
 
-      mapping.map(
-        ([destinationType, output]: [
-          DestinationMappingOptionsResponseTypes,
-          any
-        ]) =>
-          test(`exporting ${grouparooType} to ${destinationType}`, () => {
-            testValues(input, output, grouparooType, destinationType);
-          })
+      mapping.map(([destinationType, output]) =>
+        test(`exporting ${grouparooType} to ${destinationType}`, () => {
+          testValues(
+            input,
+            output,
+            grouparooType,
+            destinationType as DestinationMappingOptionsResponseType
+          );
+        })
       );
     });
 
@@ -318,14 +330,15 @@ describe("models/destination", () => {
         ["date", new Date(123)],
       ];
 
-      mapping.map(
-        ([destinationType, output]: [
-          DestinationMappingOptionsResponseTypes,
-          any
-        ]) =>
-          test(`exporting ${grouparooType} to ${destinationType}`, () => {
-            testValues(input, output, grouparooType, destinationType);
-          })
+      mapping.map(([destinationType, output]) =>
+        test(`exporting ${grouparooType} to ${destinationType}`, () => {
+          testValues(
+            input,
+            output,
+            grouparooType,
+            destinationType as DestinationMappingOptionsResponseType
+          );
+        })
       );
     });
 
@@ -513,11 +526,11 @@ describe("models/destination", () => {
       });
 
       beforeEach(async () => {
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
       });
 
       afterEach(async () => {
-        await destination.unTrackGroup();
+        await destination.updateTracking("none");
       });
 
       test("record properties will be converted to the type requested by the plugin", async () => {

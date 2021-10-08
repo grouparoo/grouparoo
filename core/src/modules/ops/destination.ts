@@ -1,4 +1,6 @@
 import Moment from "moment";
+import { config, cache } from "actionhero";
+import { deepStrictEqual } from "assert";
 import {
   Destination,
   DestinationSyncModeData,
@@ -9,23 +11,24 @@ import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { Export, ExportRecordPropertiesWithType } from "../../models/Export";
 import { Group } from "../../models/Group";
 import { Property } from "../../models/Property";
-import { MappingHelper } from "../mappingHelper";
 import {
   ExportedRecord,
   ExportRecordsPluginMethod,
   ErrorWithRecordId,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
   DestinationMappingOptionsMethodResponse,
   ProcessExportsForRecordIds,
   ExportRecordsPluginMethodResponse,
 } from "../../classes/plugin";
-import { config, cache } from "actionhero";
-import { deepStrictEqual } from "assert";
-import { RecordPropertyOps } from "./recordProperty";
 import { destinationTypeConversions } from "../destinationTypeConversions";
 import { GroupMember } from "../../models/GroupMember";
 import { ExportProcessor } from "../../models/ExportProcessor";
+import { GrouparooModel } from "../../models/GrouparooModel";
+import { Run } from "../../models/Run";
+import { MappingHelper } from "../mappingHelper";
+import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
+import { RunOps } from "./runs";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -40,53 +43,91 @@ export namespace DestinationOps {
   /**
    * Export all the Group Members of the Groups that this Destination is Tracking
    */
-  export async function exportGroupMembers(
-    destination: Destination,
-    force = false
-  ) {
-    const group = await destination.$get("group");
-    if (group) return group.run(force, destination.id);
+  export async function exportMembers(destination: Destination, force = false) {
+    if (destination.collection === "none") {
+      // nothing to do
+    } else if (destination.collection === "group") {
+      const group = await destination.$get("group");
+      if (group) return group.run(force, destination.id);
+    } else if (destination.collection === "model") {
+      const model = await destination.$get("model");
+      if (model) return model.run(force, destination.id);
+    } else {
+      throw new Error(`cannot export members for a ${destination.collection}`);
+    }
   }
 
-  /**
-   * Track a Group
-   */
-  export async function trackGroup(
+  export async function updateTracking(
     destination: Destination,
-    group: Group,
-    force = true
+    collection: Destination["collection"],
+    collectionId?: string
   ) {
-    if (group.state === "deleted") {
-      throw new Error(`Cannot track deleted Group "${group.name}"`);
+    let oldRun: Run;
+    let newRun: Run;
+
+    if (
+      destination.collection === collection &&
+      destination.groupId === collectionId
+    ) {
+      return { oldRun, newRun }; // no changes
     }
-    if (destination.modelId !== group.modelId) {
+
+    // validations
+    if (collectionId && collection !== "group") {
       throw new Error(
-        `destination ${destination.id} and group ${group.id} do not share the same modelId`
+        `cannot track ${collectionId} without destination collection being "group"`
       );
     }
 
-    const oldGroupId = destination.groupId;
-    await destination.update({ groupId: group.id });
-
-    if (oldGroupId !== group.id) {
-      if (oldGroupId) {
-        const oldGroup = await Group.findById(oldGroupId);
-        await oldGroup.run(false, destination.id);
+    if (collection === "none") {
+      // nothing to check
+    } else if (collection === "group") {
+      if (!collectionId) {
+        throw new Error(`${collectionId} is required to track a group`);
       }
-      return group.run(force, destination.id);
+      const group = await Group.findById(collectionId);
+      if (group.state === "deleted") {
+        throw new Error(`cannot track deleted Group "${group.name}"`);
+      }
+      if (destination.modelId !== group.modelId) {
+        throw new Error(
+          `destination ${destination.id} and group ${group.id} do not share the same modelId`
+        );
+      }
+    } else if (collection === "model") {
+      if (collectionId && collectionId !== destination.modelId) {
+        throw new Error(
+          `a destination for model ${destination.modelId} cannot track another model`
+        );
+      }
     }
+
+    oldRun = await runDestinationCollection(destination, false); // old collection
+    await destination.update({
+      collection,
+      groupId: collection !== "group" ? null : collectionId,
+    });
+    newRun = await runDestinationCollection(destination, true); // new collection
+
+    return { oldRun, newRun };
   }
 
-  /**
-   * Un-track a Group
-   */
-  export async function unTrackGroup(destination: Destination, force = false) {
-    const oldGroupId = destination.groupId;
-    await destination.update({ groupId: null });
-
-    if (oldGroupId) {
-      const oldGroup = await Group.findById(oldGroupId);
-      return oldGroup.run(force, destination.id);
+  async function runDestinationCollection(
+    destination: Destination,
+    force: boolean
+  ) {
+    if (destination.collection === "none") {
+      // nothing to do
+    } else if (destination.collection === "group" && destination.groupId) {
+      const group = await Group.findById(destination.groupId);
+      if (group) return RunOps.run(group, force, destination.id);
+    } else if (destination.collection === "model") {
+      const model = await GrouparooModel.findById(destination.modelId);
+      if (model) return RunOps.run(model, force, destination.id);
+    } else {
+      throw new Error(
+        `unknown destination collection ${destination.collection}`
+      );
     }
   }
 
@@ -113,7 +154,7 @@ export namespace DestinationOps {
 
       mappedRecordProperties[k] = collection;
 
-      let destinationType: DestinationMappingOptionsResponseTypes = "any";
+      let destinationType: DestinationMappingOptionsResponseType = "any";
       for (const j in destinationMappingOptions.properties.required) {
         const destinationProperty =
           destinationMappingOptions.properties.required[j];
@@ -316,8 +357,15 @@ export namespace DestinationOps {
       include: [{ model: GroupMember, where: { recordId: record.id } }],
     });
 
-    if (!newGroups.map((g) => g.id).includes(destination.groupId)) {
+    // do we need to delete this record from the destination?
+    if (destination.collection === "none") {
       toDelete = true;
+    } else if (destination.collection === "group") {
+      if (!destination.groupId) {
+        toDelete = true;
+      } else if (!newGroups.map((g) => g.id).includes(destination.groupId)) {
+        toDelete = true;
+      }
     }
 
     let newRecordProperties = await record.getProperties();
@@ -947,7 +995,7 @@ export namespace DestinationOps {
     for (const k in rawProperties) {
       const type: string = rawProperties[k].type;
       const value = _export[key][k];
-      let destinationType: DestinationMappingOptionsResponseTypes = "any";
+      let destinationType: DestinationMappingOptionsResponseType = "any";
 
       for (const j in destinationMappingOptions.properties.required) {
         const destinationProperty =
@@ -986,7 +1034,7 @@ export namespace DestinationOps {
   export function formatOutgoingRecordProperties(
     value: any,
     grouparooType: string,
-    destinationType: DestinationMappingOptionsResponseTypes
+    destinationType: DestinationMappingOptionsResponseType
   ) {
     if (!grouparooType) return null;
     if (value === null || value === undefined) return value;

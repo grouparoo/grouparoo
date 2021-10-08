@@ -1,6 +1,6 @@
 import {
   DestinationMappingOptionsMethod,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
 } from "@grouparoo/core";
 import { connect } from "./../connect";
 import { log } from "actionhero";
@@ -72,11 +72,11 @@ export const getFields = async (
 ): Promise<{
   required: Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
   }>;
   known: Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
     important?: boolean;
   }>;
 }> => {

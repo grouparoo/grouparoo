@@ -21,18 +21,18 @@ export class RunsTick extends CLSTask {
     });
     let runsEnqueued = 0;
 
-    for (const i in runs) {
-      const run = runs[i];
-
+    for (const run of runs) {
       const args = { runId: run.id };
       let taskName = "";
 
-      if (run.groupMethod === "internalRun") {
+      if (run.method === "internalRun") {
         taskName = "run:internalRun";
       } else if (run.creatorType === "group") {
         taskName = "group:run";
       } else if (run.creatorType === "schedule") {
         taskName = "schedule:run";
+      } else if (run.creatorType === "grouparooModel") {
+        taskName = "grouparooModel:run";
       } else {
         throw new Error(`cannot tick run ${run.id}`);
       }

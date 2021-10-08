@@ -40,6 +40,7 @@ import { Run } from "./Run";
 import { Setting } from "./Setting";
 import { GrouparooModel } from "./GrouparooModel";
 import { Source } from "./Source";
+import { RunOps } from "../modules/ops/runs";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -392,11 +393,11 @@ export class Group extends LoggedModel<Group> {
   }
 
   async run(force = false, destinationId?: string) {
-    return GroupOps.run(this, force, destinationId);
+    return RunOps.run(this, force, destinationId);
   }
 
   async stopPreviousRuns() {
-    return GroupOps.stopPreviousRuns(this);
+    return RunOps.stopPreviousRuns(this);
   }
 
   async addRecord(record: GrouparooRecord, force = true) {
@@ -808,9 +809,7 @@ export class Group extends LoggedModel<Group> {
       );
       await destinationGroupMemberships[i].destroy();
 
-      if (destination) {
-        await destination.exportGroupMembers(false);
-      }
+      if (destination) await destination.exportMembers(false);
     }
   }
 

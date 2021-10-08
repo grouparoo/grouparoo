@@ -21,7 +21,7 @@ export async function internalRun(creatorType: string, creatorId: string) {
     creatorType,
     creatorId,
     state: "running",
-    groupMethod: "internalRun",
+    method: "internalRun",
   });
 
   return run;

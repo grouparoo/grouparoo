@@ -49,9 +49,9 @@ describe("tasks/run:internalRun", () => {
       await specHelper.runTask("run:internalRun", { runId: run.id });
 
       await run.reload();
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(1);
-      expect(run.groupMethod).toBe("internalRun");
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(1);
+      expect(run.method).toBe("internalRun");
 
       await record.reload({
         include: RecordProperty,
@@ -70,9 +70,9 @@ describe("tasks/run:internalRun", () => {
       await specHelper.runTask("run:internalRun", { runId: run.id });
 
       await run.reload();
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(1);
-      expect(run.groupMethod).toBe("internalRun");
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(1);
+      expect(run.method).toBe("internalRun");
 
       await record.reload({
         include: RecordProperty,

@@ -23,6 +23,7 @@ export class ObjectFind extends AuthenticatedAction {
       "files",
       "groups",
       "imports",
+      "models",
       "notifications",
       "records",
       "properties",

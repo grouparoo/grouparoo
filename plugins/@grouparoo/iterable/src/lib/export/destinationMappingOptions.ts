@@ -1,6 +1,6 @@
 import {
   DestinationMappingOptionsMethod,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
 } from "@grouparoo/core";
 import { connect } from "./../connect";
 
@@ -34,7 +34,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
 
 export const getRequiredFields = (): Array<{
   key: string;
-  type: DestinationMappingOptionsResponseTypes;
+  type: DestinationMappingOptionsResponseType;
 }> => {
   return [{ key: "email", type: "email" }];
 };
@@ -67,7 +67,7 @@ export const getUserFields = async (
 ): Promise<
   Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
     important?: boolean;
   }>
 > => {
@@ -76,7 +76,7 @@ export const getUserFields = async (
 
   for (const [key, value] of Object.entries(fields["fields"])) {
     if (value !== "object" && key !== "email") {
-      const type: DestinationMappingOptionsResponseTypes =
+      const type: DestinationMappingOptionsResponseType =
         mapTypesFromIterableToGrouparoo(key, value);
       if (type) {
         out.push({ key, type, important: isImportant(key) });

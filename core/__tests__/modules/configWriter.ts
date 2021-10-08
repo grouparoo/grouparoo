@@ -949,7 +949,7 @@ describe("modules/configWriter", () => {
     test("destinations can provide their config objects", async () => {
       const destination: Destination = await helper.factories.destination(
         undefined,
-        { groupId: group.id }
+        { groupId: group.id, collection: "group" }
       );
       const app: App = await destination.$get("app");
 
@@ -978,6 +978,7 @@ describe("modules/configWriter", () => {
         type,
         appId: app.getConfigId(),
         groupId: group.getConfigId(),
+        collection: "group",
         syncMode,
         options: Object.fromEntries(options.map((o) => [o.key, o.value])),
         mapping: { "primary-id": mappingProperty.getConfigId() },

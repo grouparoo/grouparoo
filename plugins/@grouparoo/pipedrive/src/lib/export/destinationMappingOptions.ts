@@ -1,6 +1,6 @@
 import {
   DestinationMappingOptionsMethod,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
   SimpleAppOptions,
   objectCache,
 } from "@grouparoo/core";
@@ -52,16 +52,16 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
 const mapTypesToGrouparoo = (
   pipedriveType: string,
   fieldName: string
-): DestinationMappingOptionsResponseTypes => {
+): DestinationMappingOptionsResponseType => {
   // https://pipedrive.readme.io/docs/core-api-concepts-custom-fields#section-types-of-custom-fields
 
-  const overrides: Record<string, DestinationMappingOptionsResponseTypes> = {
+  const overrides: Record<string, DestinationMappingOptionsResponseType> = {
     Email: "email",
   };
 
   if (overrides[fieldName]) return overrides[fieldName];
 
-  const map: Record<string, DestinationMappingOptionsResponseTypes> = {
+  const map: Record<string, DestinationMappingOptionsResponseType> = {
     varchar: "string",
     varchar_auto: "string",
     text: "string",
@@ -93,7 +93,7 @@ const mapTypesToGrouparoo = (
 type KnownPersonField = {
   key: string;
   pipedriveKey: string;
-  type: DestinationMappingOptionsResponseTypes;
+  type: DestinationMappingOptionsResponseType;
   required: boolean;
   important: boolean;
   groupMembershipField: boolean;
