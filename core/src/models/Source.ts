@@ -339,14 +339,17 @@ export class Source extends LoggedModel<Source> {
     this.app = await this.$get("app");
     this.model = await this.$get("model");
     const appId = this.app?.getConfigId();
+    const modelId = this.model?.getConfigId();
     const options = await this.getOptions(false);
 
-    if (!appId || !name) return;
+    if (!appId || !modelId || !name) {
+      return;
+    }
 
     let configObject: any = {
       class: "Source",
       id: this.getConfigId(),
-      modelId: this.model?.getConfigId(),
+      modelId,
       name,
       type,
       appId,

@@ -3,6 +3,7 @@ import glob from "glob";
 import path from "path";
 import os from "os";
 import faker from "faker";
+import * as uuid from "uuid";
 import { helper } from "@grouparoo/spec-helper";
 
 import { App } from "../../src/models/App";
@@ -160,7 +161,7 @@ describe("modules/configWriter", () => {
       const model: GrouparooModel = await GrouparooModel.create({
         type: "profile",
         name: "Profiles",
-        id: "mod_profiles",
+        id: "mod_" + uuid.v4(),
       });
       const app: App = await helper.factories.app();
       const source: Source = await helper.factories.source(app, {
@@ -196,7 +197,7 @@ describe("modules/configWriter", () => {
           { encoding: "utf8" }
         )
       );
-      expect(sourceConfig.modelId).toBe(model.id);
+      expect(sourceConfig.modelId).toBe("profiles");
     });
 
     test("does not write objects that are locked", async () => {
@@ -855,6 +856,7 @@ describe("modules/configWriter", () => {
         ConfigWriter.generateId(group.name)
       );
       expect(group.getConfigId()).toEqual(group.id);
+      expect(group.modelId).toBe("mod_profiles");
     });
 
     test("group rules properly set IDs for record column properties", async () => {
@@ -954,6 +956,7 @@ describe("modules/configWriter", () => {
         ConfigWriter.generateId(destination.name)
       );
       expect(destination.getConfigId()).toEqual(destination.id);
+      expect(destination.modelId).toBe("mod_profiles");
     });
 
     test("destinations can provide their config objects", async () => {
@@ -1043,6 +1046,7 @@ describe("modules/configWriter", () => {
           [bootstrapProperty.getConfigId()]: [12],
         },
       });
+      expect(record.modelId).toBe("mod_profiles");
     });
 
     // --- Setting ---
