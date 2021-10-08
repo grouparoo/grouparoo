@@ -10,9 +10,14 @@ import { ErrorHandler } from "../../../ui-components/utils/errorHandler";
 
 export default function SignInPage(props) {
   const {
+    navigationModel,
     clusterName,
     errorHandler,
-  }: { clusterName: any; errorHandler: ErrorHandler } = props;
+  }: {
+    clusterName: any;
+    errorHandler: ErrorHandler;
+    navigationModel: Actions.NavigationList["navigationModel"];
+  } = props;
   const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
@@ -35,7 +40,8 @@ export default function SignInPage(props) {
         const { setupSteps } = await getSetupSteps();
         const isSetupComplete = setupSteps.every((step) => step.complete);
         if (isSetupComplete) {
-          router.push("/records");
+          const currentModel = navigationModel.value;
+          router.push(`/model/${currentModel}/records`);
         } else {
           router.push("/setup");
         }

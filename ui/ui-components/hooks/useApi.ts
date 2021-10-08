@@ -1,3 +1,4 @@
+import { NextPageContext } from "next";
 import { Client } from "../client/client";
 import { ErrorHandler } from "../utils/errorHandler";
 import { UploadHandler } from "../utils/uploadHandler";
@@ -5,10 +6,7 @@ import { UploadHandler } from "../utils/uploadHandler";
 export const client = new Client();
 
 export function UseApi(
-  ctx: {
-    req?: { headers?: { cookie: string } };
-    res?: any;
-  },
+  ctx: NextPageContext,
   errorHandler?: ErrorHandler,
   uploadHandler?: UploadHandler
 ) {

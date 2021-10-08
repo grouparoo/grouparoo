@@ -41,16 +41,12 @@ export default function ExportsList(props) {
   const { offset, setOffset } = useOffset();
   const [state, setState] = useState(router.query.state?.toString() || "all");
 
-  let recordId: string;
+  const recordId = router.query.recordId;
   let exportProcessorId: string;
-  let destinationId: string;
+  let destinationId = router.query.destinationId;
   if (router.query.id) {
-    if (router.pathname.match("/record/")) {
-      recordId = router.query.id.toString();
-    } else if (router.pathname.match("/exportProcessor/")) {
+    if (router.pathname.match("/exportProcessor/")) {
       exportProcessorId = router.query.id.toString();
-    } else {
-      destinationId = router.query.id.toString();
     }
   }
 
@@ -176,16 +172,16 @@ export default function ExportsList(props) {
                     ) : null}
                     Record:{" "}
                     <Link
-                      href="/record/[id]/edit"
-                      as={`/record/${_export.recordId}/edit`}
+                      href="/model/[modelId]/record/[recordId]/edit"
+                      as={`/model/${_export.destination.modelId}/record/${_export.recordId}/edit`}
                     >
                       <a>{_export.recordId}</a>
                     </Link>
                     <br />
                     Destination:{" "}
                     <EnterpriseLink
-                      href="/destination/[id]/edit"
-                      as={`/destination/${_export.destination.id}/edit`}
+                      href="/model/[modelId]/destination/[destinationId]/edit"
+                      as={`/model/${_export.destination.modelId}/destination/${_export.destination.id}/edit`}
                     >
                       <a>{_export.destination.name}</a>
                     </EnterpriseLink>
@@ -261,20 +257,12 @@ export default function ExportsList(props) {
 
 ExportsList.hydrate = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { id, limit, offset, state } = ctx.query;
+  const { id, limit, offset, state, recordId, destinationId } = ctx.query;
   const { groups } = await execApi("get", `/groups`);
 
-  let recordId: string;
   let exportProcessorId: string;
-  let destinationId: string;
-  if (id) {
-    if (ctx.pathname.match("/record/")) {
-      recordId = id;
-    } else if (ctx.pathname.match("/exportProcessor/")) {
-      exportProcessorId = id;
-    } else {
-      destinationId = id;
-    }
+  if (id && ctx.pathname.match("/exportProcessor/")) {
+    exportProcessorId = id;
   }
 
   const { exports: _exports, total } = await execApi("get", `/exports`, {

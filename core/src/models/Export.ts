@@ -241,6 +241,7 @@ export class Export extends CommonModel<Export> {
             state: destination.state,
             name: destination.name,
             groupId: destination.groupId,
+            modelId: destination.modelId,
           }
         : undefined,
       destinationName: destination ? destination.name : null,

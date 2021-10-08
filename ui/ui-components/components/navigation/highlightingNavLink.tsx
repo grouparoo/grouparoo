@@ -4,16 +4,30 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { navIconStyle, navLiStyle, iconConstrainedStyle } from "../navigation";
 
-export default function HighlightingNavLink({ href, text, icon, idx }) {
+export default function HighlightingNavLink({
+  href,
+  text,
+  icon,
+  mainPathSectionIdx,
+  idx,
+}) {
   const router = useRouter();
   const [active, setActive] = useState(false);
 
   useEffect(() => {
-    const mainPathSection = router?.asPath.split("/")[1] || "";
-    const mainHrefSection = href.split("/")[1];
-    const active =
+    const pathParts = router?.asPath.split("/");
+    const hrefParts = href.split("/");
+    const mainPathSection = (pathParts[mainPathSectionIdx] || "").split("?")[0];
+    const mainHrefSection = hrefParts[mainPathSectionIdx];
+    let active =
       mainPathSection === mainHrefSection ||
       `${mainPathSection}s` === mainHrefSection;
+
+    // special case: models in sidebar
+    if (active && mainHrefSection === "models" && pathParts.length > 3) {
+      active = false;
+    }
+
     setActive(active);
   }, [globalThis?.location?.href]);
 

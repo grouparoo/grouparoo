@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Image, Accordion, Button, Badge } from "react-bootstrap";
+import { Image, Accordion, Button, Badge, Form, Col } from "react-bootstrap";
 import Link from "next/link";
 import {
   FontAwesomeIcon,
@@ -35,6 +35,8 @@ export const iconConstrainedStyle = { width: 20 };
 
 export default function Navigation(props) {
   const {
+    onChangeModelId,
+    navigationModel,
     navigationMode,
     navigation,
     clusterName,
@@ -48,6 +50,8 @@ export default function Navigation(props) {
     navigationMode: Actions.NavigationList["navigationMode"];
     navigation: Actions.NavigationList["navigation"];
     clusterName: { value: string; default: boolean };
+    navigationModel: Actions.NavigationList["navigationModel"];
+    onChangeModelId: (id: string) => Promise<void>;
     navExpanded: boolean;
     toggleNavExpanded: () => {};
     errorHandler: ErrorHandler;
@@ -83,14 +87,21 @@ export default function Navigation(props) {
     let onAccountPage = false;
 
     if (router.pathname && router.pathname !== "/") {
-      const firstPathPart = "/" + router.pathname.split("/")[1];
+      const pathParts = router.pathname.split("/");
+      const firstPathPart = "/" + pathParts[1];
 
       navigation?.platformItems
         .filter((i) => i.type === "link")
         .map((i) => i.href)
         .forEach((route) => {
           if (route.indexOf(firstPathPart) === 0) {
-            onPlatformPage = true;
+            const verb = pathParts[3];
+            if (route === "/models" && verb && verb !== "edit") {
+              // special case: don't open Platform menu for model-scoped pages
+              onPlatformPage = false;
+            } else {
+              onPlatformPage = true;
+            }
           }
         });
 
@@ -200,6 +211,7 @@ export default function Navigation(props) {
                   <Fragment key={nav.href}>
                     <HighlightingNavLink
                       href={nav.href}
+                      mainPathSectionIdx={nav.mainPathSectionIdx ?? 1}
                       text={
                         <>
                           {nav.title}
@@ -214,6 +226,34 @@ export default function Navigation(props) {
                       icon={nav.icon}
                       idx={idx}
                     />
+                  </Fragment>
+                );
+              } else if (nav.type === "modelMenu") {
+                return (
+                  <Fragment key={idx}>
+                    <Form.Control
+                      name="selectedModel"
+                      as="select"
+                      value={navigationModel.value ?? "_none"}
+                      style={{ marginTop: 20 }}
+                      disabled={navigationModel.options.length === 0}
+                      onChange={(
+                        event: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        onChangeModelId(event.target.value);
+                      }}
+                    >
+                      {navigationModel.options.length === 0 ? (
+                        <option value="_none" disabled>
+                          (no models)
+                        </option>
+                      ) : null}
+                      {navigationModel.options.map((m) => (
+                        <option value={m.id} key={`model-${m.id}`}>
+                          {m.name}
+                        </option>
+                      ))}
+                    </Form.Control>
                   </Fragment>
                 );
               } else if (nav.type === "divider") {

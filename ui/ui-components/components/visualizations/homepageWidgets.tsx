@@ -123,8 +123,8 @@ export function GroupsByNewestMember({
                 <tr key={`group-${group.id}`}>
                   <td>
                     <EnterpriseLink
-                      href="/group/[id]/rules"
-                      as={`/group/${group.id}/rules`}
+                      href="/object/[id]"
+                      as={`/object/${group.id}`}
                     >
                       <a>{group.name}</a>
                     </EnterpriseLink>
@@ -144,10 +144,6 @@ export function GroupsByNewestMember({
             })}
           </tbody>
         </Table>
-        <br />
-        <Link href="/groups">
-          <a>See all Groups</a>
-        </Link>
       </Card.Body>
     </Card>
   );
@@ -322,8 +318,8 @@ export function ScheduleRuns({
                 <tr key={`source-${sourceSchedule.id}`}>
                   <td>
                     <EnterpriseLink
-                      href="/source/[id]/schedule"
-                      as={`/source/${sourceSchedule.id}/schedule`}
+                      href="/object/[id]"
+                      as={`/object/${sourceSchedule.id}`}
                     >
                       <a>{sourceSchedule.name}</a>
                     </EnterpriseLink>

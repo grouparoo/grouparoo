@@ -1,4 +1,6 @@
 import App from "next/app";
+import Cookies from "universal-cookie";
+
 import { UseApi } from "../hooks/useApi";
 
 import Injection from "../components/componentInjection";
@@ -27,6 +29,8 @@ import { SourceHandler } from "../utils/sourceHandler";
 import { TeamHandler } from "../utils/teamHandler";
 import { TeamMemberHandler } from "../utils/teamMembersHandler";
 import { UploadHandler } from "../utils/uploadHandler";
+import { AppContext } from "next/app";
+import router from "next/router";
 
 const successHandler = new SuccessHandler();
 const errorHandler = new ErrorHandler();
@@ -48,11 +52,30 @@ const uploadHandler = new UploadHandler();
 export default function GrouparooWebApp(props) {
   const { Component, pageProps, err, hydrationError } = props;
 
+  const onChangeModelId = async (newModelId: string) => {
+    const cookies = new Cookies();
+    cookies.set("grouparooModelId", newModelId, { path: "/" });
+
+    if (router.pathname.match(/^\/model\//)) {
+      router.push({
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          modelId: newModelId,
+        },
+      });
+    } else {
+      router.reload();
+    }
+  };
+
   const combinedProps = Object.assign({}, pageProps || {}, {
-    currentTeamMember: props.currentTeamMember,
     navigation: props.navigation,
     navigationMode: props.navigationMode,
+    navigationModel: props.navigationModel,
     clusterName: props.clusterName,
+    onChangeModelId,
+    currentTeamMember: props.currentTeamMember,
     successHandler,
     errorHandler,
     appHandler,
@@ -86,21 +109,37 @@ export default function GrouparooWebApp(props) {
   );
 }
 
-GrouparooWebApp.getInitialProps = async (appContext) => {
+GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
   const { execApi } = UseApi(appContext.ctx);
   let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
     firstName: "",
     id: null,
   };
 
+  let modelId: string;
+  if (appContext.ctx.pathname.match("/model/")) {
+    modelId = appContext.ctx.query.modelId as string;
+  } else {
+    const cookies = new Cookies(appContext.ctx.req?.headers.cookie);
+    modelId = cookies.get("grouparooModelId");
+  }
+
   try {
     const navigationResponse: Actions.NavigationList = await execApi(
       "get",
-      `/navigation`
+      `/navigation`,
+      { modelId }
     );
 
     if (navigationResponse.teamMember) {
       currentTeamMember = navigationResponse.teamMember;
+    }
+
+    if (navigationResponse.navigationModel.value && appContext.ctx.res) {
+      appContext.ctx.res.setHeader(
+        "set-cookie",
+        `grouparooModelId=${navigationResponse.navigationModel.value}; Path=/`
+      );
     }
 
     // render page-specific getInitialProps
@@ -127,6 +166,7 @@ GrouparooWebApp.getInitialProps = async (appContext) => {
     return {
       ...appProps,
       currentTeamMember,
+      navigationModel: navigationResponse.navigationModel,
       navigationMode: navigationResponse.navigationMode,
       navigation: navigationResponse.navigation,
       clusterName: navigationResponse.clusterName,

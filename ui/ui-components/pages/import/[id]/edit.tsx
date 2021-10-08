@@ -45,10 +45,7 @@ export default function Page(props) {
             )}
             <br />
             Record:{" "}
-            <Link
-              href="/record/[id]/edit"
-              as={`/record/${_import.recordId}/edit`}
-            >
+            <Link href="/object/[id]" as={`/object/${_import.recordId}`}>
               <a>{_import.recordId}</a>
             </Link>
           </p>

@@ -14,17 +14,15 @@ import ArrayRecordPropertyList from "./arrayRecordPropertyList";
 import StateBadge from "../badges/stateBadge";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
-import ModelBadge from "../badges/modelBadge";
+import { NextPageContext } from "next";
 
 export default function RecordsList(props) {
   const {
     errorHandler,
     properties,
-    models,
   }: {
     errorHandler: ErrorHandler;
     properties: Models.PropertyType[];
-    models: Models.GrouparooModelType[];
   } = props;
   const { execApi } = UseApi(props, errorHandler);
   const router = useRouter();
@@ -46,24 +44,22 @@ export default function RecordsList(props) {
     router.query.searchValue || props.searchValue || ""
   );
   const [state, setState] = useState(router.query.state?.toString() || null);
-  const [modelId, setModelId] = useState(
-    router.query.modelId?.toString() || null
-  );
   const [caseSensitive, setCaseSensitive] = useState(
     router.query.caseSensitive ? router.query.caseSensitive === "true" : true
   );
   const states = ["pending", "ready", "invalid"];
 
-  useSecondaryEffect(() => {
-    load();
-  }, [offset, limit, state, modelId, caseSensitive]);
-
   let groupId: string;
+  let modelId = router.query.modelId;
   if (router.query.id) {
     if (router.pathname.match("/group/")) {
       groupId = router.query.id.toString();
     }
   }
+
+  useSecondaryEffect(() => {
+    load();
+  }, [offset, limit, state, modelId, caseSensitive]);
 
   async function load(event?) {
     if (event) event.preventDefault();
@@ -93,7 +89,6 @@ export default function RecordsList(props) {
       searchKey,
       searchValue,
       state,
-      modelId,
       caseSensitive: caseSensitive.toString(),
     });
   }
@@ -254,37 +249,6 @@ export default function RecordsList(props) {
             })}
           </ButtonGroup>
         </Col>
-        <Col>
-          Models:{" "}
-          <ButtonGroup id="record-models">
-            <Button
-              size="sm"
-              variant={modelId ? "info" : "secondary"}
-              onClick={() => {
-                setModelId(null);
-                setOffset(0);
-              }}
-            >
-              All
-            </Button>
-            {models.map((m) => {
-              const variant = m.id === modelId ? "secondary" : "info";
-              return (
-                <Button
-                  key={`model-${m}`}
-                  size="sm"
-                  variant={variant}
-                  onClick={() => {
-                    setModelId(m.id);
-                    setOffset(0);
-                  }}
-                >
-                  {m.name}
-                </Button>
-              );
-            })}
-          </ButtonGroup>
-        </Col>
       </Row>
 
       <br />
@@ -314,7 +278,6 @@ export default function RecordsList(props) {
               <th>Unique Properties</th>
             )}
             <th>State</th>
-            <th>Model</th>
             <th>Created At</th>
             <th>Updated At</th>
           </tr>
@@ -325,8 +288,8 @@ export default function RecordsList(props) {
               <tr key={`record-${record.id}`}>
                 <td>
                   <Link
-                    href="/record/[id]/edit"
-                    as={`/record/${record.id}/edit`}
+                    href="/model/[modelId]/record/[recordId]/edit"
+                    as={`/model/${record.modelId}/record/${record.id}/edit`}
                   >
                     <a className="text-muted">
                       {identifyingRecordProperty?.key &&
@@ -391,12 +354,6 @@ export default function RecordsList(props) {
                 <td>
                   <StateBadge state={record.state} />
                 </td>
-                <td>
-                  <ModelBadge
-                    modelName={record.modelName}
-                    modelId={record.modelId}
-                  />
-                </td>
                 <td>{formatTimestamp(record.createdAt)}</td>
                 <td>{formatTimestamp(record.updatedAt)}</td>
               </tr>
@@ -416,18 +373,26 @@ export default function RecordsList(props) {
 }
 
 RecordsList.hydrate = async (
-  ctx,
+  ctx: NextPageContext,
   _searchKey?: string,
   _searchValue?: string
 ) => {
   const { execApi } = UseApi(ctx);
-  const { id, limit, offset, state, searchKey, searchValue, caseSensitive } =
-    ctx.query;
+  const {
+    id,
+    modelId,
+    limit,
+    offset,
+    state,
+    searchKey,
+    searchValue,
+    caseSensitive,
+  } = ctx.query;
 
   let groupId: string;
   if (id) {
     if (ctx.pathname.match("/group/")) {
-      groupId = id;
+      groupId = id as string;
     }
   }
   const { records, total } = await execApi("get", `/records`, {
@@ -436,10 +401,10 @@ RecordsList.hydrate = async (
     searchKey: searchKey || _searchKey,
     searchValue: searchValue || _searchValue,
     groupId,
+    modelId,
     state,
     caseSensitive,
   });
   const { properties } = await execApi("get", `/properties`);
-  const { models } = await execApi("get", `/models`);
-  return { records, total, properties, models };
+  return { records, total, properties };
 };

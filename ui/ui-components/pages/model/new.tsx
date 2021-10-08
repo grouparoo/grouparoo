@@ -29,7 +29,7 @@ export default function Page(props) {
       Object.assign({}, data)
     );
     if (response?.model) {
-      router.push(`/model/[id]/edit`, `/model/${response.model.id}/edit`);
+      router.push(`/model/[modelId]/edit`, `/model/${response.model.id}/edit`);
     } else {
       setLoading(false);
     }

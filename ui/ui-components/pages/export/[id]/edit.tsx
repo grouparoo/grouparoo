@@ -38,8 +38,8 @@ export default function Page({
             <br />
             Destination:{" "}
             <EnterpriseLink
-              href="/destination/[id]/edit"
-              as={`/destination/${_export.destination.id}/edit`}
+              href="/model/[modelId]/destination/[destinationId]/edit"
+              as={`/model/${_export.destination.modelId}/destination/${_export.destination.id}/edit`}
             >
               <a>{_export.destination.name}</a>
             </EnterpriseLink>
@@ -58,8 +58,8 @@ export default function Page({
             ) : null}
             Record:{" "}
             <Link
-              href="/record/[id]/edit"
-              as={`/record/${_export.recordId}/edit`}
+              href="/model/[modelId]/record/[recordId]/edit"
+              as={`/model/${_export.destination.modelId}/record/${_export.recordId}/edit`}
             >
               <a>{_export.recordId}</a>
             </Link>
