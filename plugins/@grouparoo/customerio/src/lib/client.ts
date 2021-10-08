@@ -24,7 +24,7 @@ class CustomerioClient {
 
   async getCustomer(customerId: string) {
     try {
-      const { data } = await axios.get(
+      const { data } = await axios.get<Record<string, any>>(
         `https://beta-api.customer.io/v1/api/customers/${customerId}/attributes`,
         {
           headers: {
@@ -42,7 +42,7 @@ class CustomerioClient {
   }
 
   async getCampaigns() {
-    const { data } = await axios.get(
+    const { data } = await axios.get<Record<string, any>>(
       `https://beta-api.customer.io/v1/api/campaigns`,
       {
         headers: {

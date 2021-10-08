@@ -174,7 +174,7 @@ export class Client {
     }
 
     try {
-      const response = await Axios(options);
+      const response: Record<string, any> = await Axios(options);
 
       if (unlock) {
         unlock(response.data);

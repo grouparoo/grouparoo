@@ -70,7 +70,7 @@ async function ensureList(
 
   // need to create it
   const url = `https://api.hubapi.com/contacts/v1/lists?hapikey=${appOptions.hapikey}`;
-  const response = await Axios({
+  const { data }: { data: Record<string, any> } = await Axios({
     method: "POST",
     url,
     headers: { "Content-Type": "application/json" },
@@ -79,7 +79,7 @@ async function ensureList(
     },
   });
 
-  return response.data.listId;
+  return data.listId;
 }
 
 export async function addToList(client, appId, appOptions, email, groupName) {
