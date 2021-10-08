@@ -73,6 +73,12 @@ export namespace DestinationOps {
     }
 
     // validations
+    if (collectionId && collection !== "group") {
+      throw new Error(
+        `cannot track ${collectionId} without destination collection being "group"`
+      );
+    }
+
     if (collection === "none") {
       // nothing to check
     } else if (collection === "group") {

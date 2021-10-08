@@ -771,9 +771,15 @@ describe("models/destination", () => {
           type: "profile",
         });
 
+        const otherGroup = await helper.factories.group({
+          modelId: otherModel.id,
+        });
+
         await expect(
-          destination.updateTracking("model", otherModel.id)
-        ).rejects.toThrow(/cannot track another model/);
+          destination.updateTracking("group", otherGroup.id)
+        ).rejects.toThrow(/do not share the same modelId/);
+
+        await otherGroup.destroy();
         await otherModel.destroy();
       });
 
@@ -863,6 +869,15 @@ describe("models/destination", () => {
         await destination.updateTracking("group", group.id);
         const _group = await destination.$get("group");
         expect(_group.id).toBe(group.id);
+      });
+
+      test("a group cannot be tracked in any other collection", async () => {
+        await expect(
+          destination.updateTracking("none", group.id)
+        ).rejects.toThrow(/cannot track/);
+        await expect(
+          destination.updateTracking("model", group.id)
+        ).rejects.toThrow(/cannot track/);
       });
 
       test("tracking a group will enqueue runs", async () => {
