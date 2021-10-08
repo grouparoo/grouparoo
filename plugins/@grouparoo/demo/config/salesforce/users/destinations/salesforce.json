@@ -5,7 +5,7 @@
   "name": "Salesforce",
   "type": "salesforce-export-objects",
   "appId": "salesforce",
-  "groupId": "nobody",
+  "collection": "none",
   "syncMode": "sync",
   "options": {
     "groupNameField": "Name",

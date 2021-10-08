@@ -5,7 +5,7 @@
   "name": "Mailchimp",
   "type": "mailchimp-export-contacts",
   "appId": "mailchimpapp",
-  "groupId": "nobody",
+  "collection": "none",
   "syncMode": "sync",
   "options": {
     "listId": "MAILCHIMP_DESTINATION_LIST_ID"
