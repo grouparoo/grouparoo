@@ -32,7 +32,7 @@ export class DestinationDestroy extends CLSTask {
       (destination.groupId && destination.collection === "group") ||
       destination.collection === "model"
     ) {
-      const unTrackResponse = await destination.updateTracking(null, null);
+      const unTrackResponse = await destination.updateTracking("none");
       run = unTrackResponse.oldRun;
     } else {
       run = await Run.scope(null).findOne({

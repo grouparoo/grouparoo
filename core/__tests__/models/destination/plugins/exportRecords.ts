@@ -139,7 +139,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
     });
 
     afterEach(async () => {
-      await destination.updateTracking(null);
+      await destination.updateTracking("none");
       await destination.destroy();
     });
 
@@ -446,7 +446,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
         id: oldExport.id,
       });
 
-      await destination.updateTracking(null);
+      await destination.updateTracking("none");
       await destination.exportRecord(record);
 
       // there should be no export:send tasks

@@ -174,7 +174,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
     });
 
     afterEach(async () => {
-      await destination.updateTracking(null);
+      await destination.updateTracking("none");
       await destination.destroy();
     });
 
@@ -574,7 +574,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
         id: oldExport.id,
       });
 
-      await destination.updateTracking(null);
+      await destination.updateTracking("none");
       await destination.exportRecord(record);
 
       await specHelper.runTask("export:enqueue", {});

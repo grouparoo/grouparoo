@@ -297,7 +297,7 @@ describe("models/export", () => {
 
     // cleanup
     await record.destroy();
-    await destination.updateTracking(null, null);
+    await destination.updateTracking("none");
     await group.destroy();
     await destination.destroy();
   });
@@ -352,7 +352,7 @@ describe("models/export", () => {
 
     // cleanup
     await record.destroy();
-    await destination.updateTracking(null, null);
+    await destination.updateTracking("none");
     await group.destroy();
     await destination.destroy();
   });

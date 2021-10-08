@@ -269,7 +269,7 @@ describe("models/group", () => {
           /this group still in use by 1 destinations, cannot delete/
         );
 
-        await destination.updateTracking(null, null);
+        await destination.updateTracking("none");
         await group.destroy(); // does not throw
       });
 
@@ -288,7 +288,7 @@ describe("models/group", () => {
           /this group still in use by 1 destinations, cannot delete/
         );
 
-        await destination.updateTracking(null, null);
+        await destination.updateTracking("none");
         await group.destroy(); // does not throw
       });
 
@@ -354,7 +354,7 @@ describe("models/group", () => {
         expect(runningRuns[0].force).toBe(false);
         expect(runningRuns[0].id).not.toBe(newRun.id);
 
-        await destination.updateTracking(null, null);
+        await destination.updateTracking("none");
         await trackedGroup.destroy();
         await taggedGroup.destroy();
       });

@@ -530,7 +530,7 @@ describe("models/destination", () => {
       });
 
       afterEach(async () => {
-        await destination.updateTracking(null, null);
+        await destination.updateTracking("none");
       });
 
       test("record properties will be converted to the type requested by the plugin", async () => {

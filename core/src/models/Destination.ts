@@ -52,7 +52,7 @@ export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 const SYNC_MODES = ["sync", "additive", "enrich"] as const;
 export type DestinationSyncMode = typeof SYNC_MODES[number];
 
-const DESTINATION_COLLECTIONS = ["group", "model"] as const;
+const DESTINATION_COLLECTIONS = ["none", "group", "model"] as const;
 export type DestinationCollection = typeof DESTINATION_COLLECTIONS[number];
 
 export interface DestinationSyncOperations {
@@ -167,8 +167,8 @@ export class Destination extends LoggedModel<Destination> {
   @Column(DataType.ENUM(...SYNC_MODES))
   syncMode: DestinationSyncMode;
 
-  @AllowNull(true)
-  @Default("group")
+  @AllowNull(false)
+  @Default("none")
   @Column(DataType.ENUM(...DESTINATION_COLLECTIONS))
   collection: DestinationCollection;
 
@@ -546,14 +546,19 @@ export class Destination extends LoggedModel<Destination> {
 
     for (const otherDestination of otherDestinations) {
       const otherOptions = await otherDestination.getOptions(true);
-      let isSameGroup =
-        this.groupId === otherDestination.groupId ||
-        (!this.groupId && !otherDestination.groupId);
-      let isSameOptions =
+      const isSameGroup =
+        this.collection === "group" && otherDestination.collection === "group"
+          ? this.groupId === otherDestination.groupId
+          : false;
+      const isSameModel =
+        this.collection === "model" && otherDestination.collection === "model"
+          ? this.modelId === otherDestination.modelId
+          : false;
+      const isSameOptions =
         JSON.stringify(Object.entries(otherOptions)) ===
         JSON.stringify(Object.entries(options));
 
-      if (isSameOptions && isSameGroup) {
+      if (isSameOptions && (isSameGroup || isSameModel)) {
         throw new Error(
           `destination "${otherDestination.name}" (${otherDestination.id}) is already using this app with the same options and group`
         );
@@ -760,6 +765,8 @@ export class Destination extends LoggedModel<Destination> {
     oldGroups: Group[] = [],
     newGroups: Group[] = []
   ) {
+    // TODO How do we find previously relevant destinations?  There's no "old destination id"
+
     const combinedGroupIds = [...oldGroups, ...newGroups].map((g) => g.id);
     const relevantDestinations =
       combinedGroupIds.length > 0

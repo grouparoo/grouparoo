@@ -7,6 +7,7 @@ import {
   GrouparooRecord,
   Run,
   GrouparooModel,
+  Destination,
   RecordProperty,
 } from "../../../src";
 
@@ -136,6 +137,39 @@ describe("tasks/grouparooModel:run", () => {
 
       await run.reload();
       expect(run.state).toBe("complete");
+    });
+
+    describe("with destination", () => {
+      let destination: Destination;
+
+      beforeAll(async () => {
+        destination = await helper.factories.destination();
+      });
+
+      it("will record destinationId on the import if run from a destination", async () => {
+        let imports = [];
+        await model.run(true, destination.id);
+
+        const run = await Run.findOne({
+          where: { state: "running", creatorId: model.id },
+        });
+        expect(run.state).toBe("running");
+
+        await specHelper.runTask("grouparooModel:run", { runId: run.id });
+        await run.reload();
+        expect(run.state).toBe("running");
+        expect(run.memberLimit).toBe(100);
+        expect(run.memberOffset).toBe(3);
+
+        imports = await Import.findAll();
+        expect(imports.length).toBe(3);
+
+        for (const i of imports) {
+          expect(i.rawData).toEqual({
+            _meta: { destinationId: destination.id },
+          });
+        }
+      });
     });
   });
 });

@@ -85,7 +85,7 @@ export async function loadDestination(
   await destination.setDestinationGroupMemberships(destinationGroupMemberships);
 
   await destination.updateTracking(
-    configObject.collection,
+    configObject.collection ?? "none", // allow a "null" collection in config to be treated as a "none" collection
     configObject.groupId
   );
 

@@ -266,7 +266,7 @@ describe("tasks/group:destroy", () => {
         let reloadedGroup = await Group.findById(group.id);
         expect(reloadedGroup.state).toBe("deleted"); // still waiting
 
-        await destination.updateTracking(null, null);
+        await destination.updateTracking("none");
         await group.stopPreviousRuns();
 
         // try to delete again

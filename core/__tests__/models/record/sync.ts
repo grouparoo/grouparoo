@@ -232,7 +232,7 @@ describe("record sync", () => {
         expect(groups.length).toBe(2);
 
         // change the destination
-        await destination.updateTracking(null, null);
+        await destination.updateTracking("none");
 
         // test
         let exports = await record.sync();

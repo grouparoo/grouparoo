@@ -29,7 +29,6 @@ import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { RunOps } from "./runs";
-import { NullKey } from "../nullKey";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -45,7 +44,9 @@ export namespace DestinationOps {
    * Export all the Group Members of the Groups that this Destination is Tracking
    */
   export async function exportMembers(destination: Destination, force = false) {
-    if (destination.collection === "group") {
+    if (destination.collection === "none") {
+      // nothing to do
+    } else if (destination.collection === "group") {
       const group = await destination.$get("group");
       if (group) return group.run(force, destination.id);
     } else if (destination.collection === "model") {
@@ -58,7 +59,7 @@ export namespace DestinationOps {
 
   export async function updateTracking(
     destination: Destination,
-    collection: Destination["collection"] | typeof NullKey,
+    collection: Destination["collection"],
     collectionId?: string
   ) {
     let oldRun: Run;
@@ -71,7 +72,13 @@ export namespace DestinationOps {
       return { oldRun, newRun }; // no changes
     }
 
-    if (collection === "group" && collectionId && collectionId !== NullKey) {
+    // validations
+    if (collection === "none") {
+      // nothing to check
+    } else if (collection === "group") {
+      if (!collectionId) {
+        throw new Error(`${collectionId} is required to track a group`);
+      }
       const group = await Group.findById(collectionId);
       if (group.state === "deleted") {
         throw new Error(`cannot track deleted Group "${group.name}"`);
@@ -82,12 +89,7 @@ export namespace DestinationOps {
         );
       }
     } else if (collection === "model") {
-      const model = await GrouparooModel.findById(
-        !collectionId || collectionId === NullKey
-          ? destination.modelId
-          : collectionId
-      );
-      if (model.id !== destination.modelId) {
+      if (collectionId && collectionId !== destination.modelId) {
         throw new Error(
           `a destination for model ${destination.modelId} cannot track another model`
         );
@@ -96,11 +98,8 @@ export namespace DestinationOps {
 
     oldRun = await runDestinationCollection(destination, false); // old collection
     await destination.update({
-      collection: collection === NullKey ? null : collection,
-      groupId:
-        collectionId === NullKey || collection !== "group"
-          ? null
-          : collectionId,
+      collection,
+      groupId: collection !== "group" ? null : collectionId,
     });
     newRun = await runDestinationCollection(destination, true); // new collection
 
@@ -111,12 +110,18 @@ export namespace DestinationOps {
     destination: Destination,
     force: boolean
   ) {
-    if (destination.collection === "group" && destination.groupId) {
+    if (destination.collection === "none") {
+      // nothing to do
+    } else if (destination.collection === "group" && destination.groupId) {
       const group = await Group.findById(destination.groupId);
       if (group) return RunOps.run(group, force, destination.id);
     } else if (destination.collection === "model") {
       const model = await GrouparooModel.findById(destination.modelId);
       if (model) return RunOps.run(model, force, destination.id);
+    } else {
+      throw new Error(
+        `unknown destination collection ${destination.collection}`
+      );
     }
   }
 
@@ -347,14 +352,14 @@ export namespace DestinationOps {
     });
 
     // do we need to delete this record from the destination?
-    if (destination.collection === "group") {
+    if (destination.collection === "none") {
+      toDelete = true;
+    } else if (destination.collection === "group") {
       if (!destination.groupId) {
         toDelete = true;
       } else if (!newGroups.map((g) => g.id).includes(destination.groupId)) {
         toDelete = true;
       }
-    } else {
-      if (!destination.collection) toDelete = true;
     }
 
     let newRecordProperties = await record.getProperties();

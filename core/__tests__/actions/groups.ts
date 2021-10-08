@@ -139,7 +139,7 @@ describe("actions/groups", () => {
       expect(destinations.length).toBe(1);
       expect(destinations[0].id).toEqual(destination.id);
 
-      await destination.updateTracking(null, null);
+      await destination.updateTracking("none");
       await destination.destroy();
     });
 
@@ -160,7 +160,7 @@ describe("actions/groups", () => {
         /this group still in use by 1 destinations, cannot delete/
       );
 
-      await destination.updateTracking(null, null);
+      await destination.updateTracking("none");
       await destination.destroy();
     });
 

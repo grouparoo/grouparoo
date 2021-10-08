@@ -13,7 +13,6 @@ import { destinationTypeConversions } from "../modules/destinationTypeConversion
 import { AsyncReturnType } from "type-fest";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
-import { NullKey } from "../modules/nullKey";
 
 export class DestinationsList extends AuthenticatedAction {
   constructor() {
@@ -344,6 +343,7 @@ export class DestinationRecordPreview extends AuthenticatedAction {
     this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       id: { required: true },
+      collection: { required: false },
       groupId: { required: false },
       modelId: { required: false },
       recordId: { required: false },
@@ -359,9 +359,11 @@ export class DestinationRecordPreview extends AuthenticatedAction {
     const destination = await Destination.findById(params.id);
 
     let record: GrouparooRecord;
+    const collection = params.collection ?? destination.collection;
+
     if (params.recordId) {
       record = await GrouparooRecord.findById(params.recordId);
-    } else if (params.groupId && params.groupId !== NullKey) {
+    } else if (collection === "group" && params.groupId) {
       const group = await Group.findById(params.groupId);
       const groupMember = await GroupMember.findOne({
         where: { groupId: group.id },

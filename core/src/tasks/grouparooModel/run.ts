@@ -63,8 +63,13 @@ export class RunInternalRun extends CLSTask {
       for (const record of records) {
         const oldRecordProperties = await record.simplifiedProperties();
         const oldGroupIds = record.groupMembers.map((gm) => gm.groupId);
+        const data = run.destinationId
+          ? { _meta: { destinationId: run.destinationId } }
+          : {};
 
         bulkImports.push({
+          rawData: data,
+          data: data,
           recordId: record.id,
           recordAssociatedAt: now,
           oldRecordProperties,

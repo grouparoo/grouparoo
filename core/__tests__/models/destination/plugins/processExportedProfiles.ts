@@ -191,7 +191,7 @@ describe("models/destination - with custom processExportedRecords", () => {
 
     afterEach(async () => {
       await Export.truncate();
-      await destination.updateTracking(null);
+      await destination.updateTracking("none");
       await destination.destroy();
     });
 

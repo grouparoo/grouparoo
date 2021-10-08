@@ -186,7 +186,7 @@ describe("models/destination", () => {
         destinationGroupMemberships
       );
 
-      await destination.updateTracking(null, null);
+      await destination.updateTracking("none");
       await destination.destroy();
 
       let count = await DestinationGroupMembership.count({
@@ -324,7 +324,7 @@ describe("models/destination", () => {
       });
 
       afterAll(async () => {
-        await destination.updateTracking(null, null);
+        await destination.updateTracking("none");
         await destination.destroy();
         await group.destroy();
       });
@@ -540,13 +540,14 @@ describe("models/destination", () => {
         );
       });
 
-      test("an app can only have one destination per connection with the same options and group", async () => {
+      test("an app can only have one destination per connection with the same options and group tracking", async () => {
         destination = await Destination.create({
           name: "first destination",
           appId: app.id,
           modelId: model.id,
           type: "test-plugin-export",
           groupId: "abc123",
+          collection: "group",
         });
 
         await expect(
@@ -556,6 +557,7 @@ describe("models/destination", () => {
             modelId: model.id,
             type: "test-plugin-export",
             groupId: "abc123",
+            collection: "group",
           })
         ).rejects.toThrow(
           /destination "first destination" .* is already using this app with the same options/
@@ -568,6 +570,7 @@ describe("models/destination", () => {
           modelId: model.id,
           type: "test-plugin-export", // same
           groupId: "def456", // different
+          collection: "group",
         });
         expect(differentGroupDestination.state).toEqual("draft");
 
@@ -578,6 +581,7 @@ describe("models/destination", () => {
           modelId: model.id,
           type: "test-plugin-export-batch", // different
           groupId: "abc123", // same group
+          collection: "group",
         });
         expect(ok.state).toEqual("draft");
 
@@ -589,6 +593,7 @@ describe("models/destination", () => {
           modelId: model.id,
           type: "test-plugin-export", // same
           groupId: "abc123", // same
+          collection: "group",
         }); // does not throw, as first destination now has new options
 
         await otherDestination.setOptions({ table: "purchases" }); // does not throw
@@ -600,6 +605,62 @@ describe("models/destination", () => {
         );
 
         await differentGroupDestination.destroy();
+        await otherDestination.destroy();
+
+        // and it's ok to have the options here
+        await ok.setOptions({ table: "users" });
+        await ok.destroy();
+      });
+
+      test("an app can only have one destination per connection with the same options and model tracking", async () => {
+        destination = await Destination.create({
+          name: "first destination",
+          appId: app.id,
+          modelId: model.id,
+          type: "test-plugin-export",
+          collection: "model",
+        });
+
+        await expect(
+          Destination.create({
+            name: "second destination",
+            appId: app.id,
+            modelId: model.id,
+            type: "test-plugin-export",
+            collection: "model",
+          })
+        ).rejects.toThrow(
+          /destination "first destination" .* is already using this app with the same options/
+        );
+
+        // but it's ok to have one in another type of connection
+        const ok = await Destination.create({
+          name: "ok destination",
+          appId: app.id,
+          modelId: model.id,
+          type: "test-plugin-export-batch", // different
+          collection: "model",
+        });
+        expect(ok.state).toEqual("draft");
+
+        await destination.setOptions({ table: "users" });
+
+        const otherDestination = await Destination.create({
+          name: "second destination",
+          appId: app.id,
+          modelId: model.id,
+          type: "test-plugin-export", // same
+          collection: "model",
+        }); // does not throw, as first destination now has new options
+
+        await otherDestination.setOptions({ table: "purchases" }); // does not throw
+
+        await expect(
+          otherDestination.setOptions({ table: "users" })
+        ).rejects.toThrow(
+          /destination "first destination" .* is already using this app with the same options/
+        );
+
         await otherDestination.destroy();
 
         // and it's ok to have the options here
@@ -691,18 +752,16 @@ describe("models/destination", () => {
       });
 
       test("a model can be tracked", async () => {
-        await destination.updateTracking("model");
+        const { newRun } = await destination.updateTracking("model");
+        expect(newRun.destinationId).toEqual(destination.id);
         expect(destination.collection).toBe("model");
         expect(destination.modelId).toBe(model.id);
       });
 
-      test("tracking a model will not enqueue a run", async () => {
-        await destination.updateTracking("model");
-
-        const runs = await Run.findAll({
-          where: { creatorId: destination.id },
-        });
-        expect(runs.length).toBe(0);
+      test("tracking a model will enqueue runs", async () => {
+        const { newRun, oldRun } = await destination.updateTracking("model");
+        expect(oldRun).toBeFalsy();
+        expect(newRun).toBeTruthy();
       });
 
       test("a destination cannot track an unrelated model", async () => {
@@ -720,8 +779,10 @@ describe("models/destination", () => {
 
       test("a model can be unTracked", async () => {
         await destination.updateTracking("model");
-        await destination.updateTracking(null);
-        expect(destination.collection).toBe(null);
+        const { oldRun, newRun } = await destination.updateTracking("none");
+        expect(oldRun.destinationId).toEqual(destination.id);
+        expect(newRun).toBeFalsy();
+        expect(destination.collection).toBe("none");
         expect(destination.groupId).toBe(null);
       });
 
@@ -804,13 +865,13 @@ describe("models/destination", () => {
         expect(_group.id).toBe(group.id);
       });
 
-      test("tracking a group will not enqueue a run", async () => {
-        await destination.updateTracking("group", group.id);
-
-        const runs = await Run.findAll({
-          where: { creatorId: destination.id },
-        });
-        expect(runs.length).toBe(0);
+      test("tracking a group will enqueue runs", async () => {
+        const { oldRun, newRun } = await destination.updateTracking(
+          "group",
+          group.id
+        );
+        expect(oldRun).toBeFalsy();
+        expect(newRun).toBeTruthy();
       });
 
       test("a destination can only track a single group", async () => {
@@ -838,7 +899,7 @@ describe("models/destination", () => {
         let _group = await destination.$get("group");
         expect(_group.id).toBe(group.id);
 
-        await destination.updateTracking(null, null);
+        await destination.updateTracking("none");
         _group = await destination.$get("group");
         expect(_group).toBe(null);
       });
@@ -940,13 +1001,13 @@ describe("models/destination", () => {
             irrelevantDestination.id
           );
 
-          await destination.updateTracking(null, null);
+          await destination.updateTracking("none");
           await group.removeRecord(record);
-          await otherGroupDestination.updateTracking(null, null);
+          await otherGroupDestination.updateTracking("none");
           await otherGroupDestination.destroy();
-          await modelDestination.updateTracking(null, null);
+          await modelDestination.updateTracking("none");
           await modelDestination.destroy();
-          await irrelevantDestination.updateTracking(null, null);
+          await irrelevantDestination.updateTracking("none");
           await irrelevantDestination.destroy();
           await otherGroup.destroy();
         });
@@ -957,7 +1018,7 @@ describe("models/destination", () => {
             group.id
           );
 
-          const { oldRun: runB } = await destination.updateTracking(null, null);
+          const { oldRun: runB } = await destination.updateTracking("none");
           await runA.reload();
           await runB.reload();
 
@@ -972,7 +1033,7 @@ describe("models/destination", () => {
 
         test("when the model being tracked is removed, the previous records should be exported one last time", async () => {
           const { newRun: runA } = await destination.updateTracking("model");
-          const { oldRun: runB } = await destination.updateTracking(null, null);
+          const { oldRun: runB } = await destination.updateTracking("none");
           await runA.reload();
           await runB.reload();
 

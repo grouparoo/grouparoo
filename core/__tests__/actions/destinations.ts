@@ -82,25 +82,6 @@ describe("actions/destinations", () => {
       id = destination.id;
     });
 
-    test("only one destination can be created for each app with the same options and group", async () => {
-      connection.params = {
-        csrfToken,
-        name: "test destination again",
-        type: "test-plugin-export",
-        appId: app.id,
-        modelId: model.id,
-        syncMode: "sync",
-      };
-      const { error } = await specHelper.runAction(
-        "destination:create",
-        connection
-      );
-
-      expect(error.message).toMatch(
-        /destination "test destination" .* is already using this app with the same options/
-      );
-    });
-
     test("an administrator can see the combinations of apps and connections available for a new destination", async () => {
       connection.params = {
         csrfToken,
@@ -347,6 +328,42 @@ describe("actions/destinations", () => {
         expect(newRun.state).toBe("running");
       });
 
+      test("only one destination can be created for each app with the same options and group", async () => {
+        connection.params = {
+          csrfToken,
+          name: "test destination again",
+          type: "test-plugin-export",
+          appId: app.id,
+          modelId: model.id,
+
+          syncMode: "sync",
+        };
+
+        const { destination: newDestination } =
+          await specHelper.runAction<DestinationCreate>(
+            "destination:create",
+            connection
+          );
+
+        connection.params = {
+          csrfToken,
+          id: newDestination.id,
+          groupId: group.id,
+          collection: "group",
+        };
+
+        const { error } = await specHelper.runAction<DestinationEdit>(
+          "destination:edit",
+          connection
+        );
+
+        expect(error.message).toMatch(
+          /destination "test destination" .* is already using this app with the same options/
+        );
+
+        await Destination.destroy({ where: { id: newDestination.id } });
+      });
+
       test("an administrator can set the destination group memberships", async () => {
         const destinationGroupMemberships = {};
         destinationGroupMemberships[group.id] = "remote-group-tag";
@@ -532,7 +549,7 @@ describe("actions/destinations", () => {
         connection.params = {
           csrfToken,
           id,
-          collection: null,
+          collection: "none",
         };
         const {
           destination: updatedDestination,
@@ -550,7 +567,7 @@ describe("actions/destinations", () => {
         expect(oldRun.state).toBe("running");
 
         expect(updatedDestination.group).toBe(null);
-        expect(updatedDestination.collection).toBe(null);
+        expect(updatedDestination.collection).toBe("none");
       });
 
       test("update the tracked group", async () => {
@@ -683,7 +700,7 @@ describe("actions/destinations", () => {
       connection.params = {
         csrfToken,
         id,
-        groupId: "_none",
+        collection: "none",
       };
       const { destination, error } =
         await specHelper.runAction<DestinationEdit>(

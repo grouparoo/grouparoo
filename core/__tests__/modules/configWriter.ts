@@ -949,7 +949,7 @@ describe("modules/configWriter", () => {
     test("destinations can provide their config objects", async () => {
       const destination: Destination = await helper.factories.destination(
         undefined,
-        { groupId: group.id }
+        { groupId: group.id, collection: "group" }
       );
       const app: App = await destination.$get("app");
 

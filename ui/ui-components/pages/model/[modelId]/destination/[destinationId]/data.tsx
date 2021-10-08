@@ -16,7 +16,6 @@ import { SuccessHandler } from "../../../../../utils/successHandler";
 import ModelBadge from "../../../../../components/badges/modelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
-import { NullKey } from "../../../../../utils/nullKey";
 
 export default function Page(props) {
   const {
@@ -44,9 +43,7 @@ export default function Page(props) {
   const [destination, setDestination] = useState<Models.DestinationType>(
     props.destination
   );
-  const [groupId, setGroupId] = useState<string>(
-    destination.group?.id ?? NullKey
-  );
+  const [groupId, setGroupId] = useState<string>(destination.group?.id);
   const [collection, setCollection] = useState<
     Models.DestinationType["collection"]
   >(destination.collection);
@@ -79,8 +76,8 @@ export default function Page(props) {
 
     await execApi("put", `/destination/${destinationId}`, {
       mapping: filteredMapping,
-      groupId: groupId || NullKey,
       collection,
+      groupId,
       destinationGroupMemberships: destinationGroupMembershipsObject,
       triggerExport: true,
     });
@@ -304,15 +301,26 @@ export default function Page(props) {
                     value={collection === "model" ? "__model" : groupId}
                     disabled={loading}
                     onChange={(e) => {
-                      e.target.value === "__model"
-                        ? setGroupId(NullKey)
-                        : setGroupId(e.target.value);
-                      e.target.value === "__model"
-                        ? setCollection("model")
-                        : setCollection("group");
+                      switch (e.target.value) {
+                        case "__none": {
+                          setCollection("none");
+                          setGroupId(null);
+                          break;
+                        }
+                        case "__model": {
+                          setCollection("model");
+                          setGroupId(null);
+                          break;
+                        }
+                        default: {
+                          setCollection("group");
+                          setGroupId(e.target.value);
+                          break;
+                        }
+                      }
                     }}
                   >
-                    <option value={NullKey}>No Group or Model</option>
+                    <option value="__none">No Group or Model</option>
                     <option disabled>--- Models ---</option>
                     <option value="__model">
                       All Records in the {destination.modelName} Model
