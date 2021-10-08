@@ -765,8 +765,6 @@ export class Destination extends LoggedModel<Destination> {
     oldGroups: Group[] = [],
     newGroups: Group[] = []
   ) {
-    // TODO How do we find previously relevant destinations?  There's no "old destination id"
-
     const combinedGroupIds = [...oldGroups, ...newGroups].map((g) => g.id);
     const relevantDestinations =
       combinedGroupIds.length > 0

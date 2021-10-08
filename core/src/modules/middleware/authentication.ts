@@ -181,7 +181,7 @@ async function authenticateTeamMemberInRoom(
     process.env.GROUPAROO_RUN_MODE === "cli:config" &&
     env === "development"
   ) {
-    return; // TODO: What's the log in story for `grouparoo config`
+    return;
   }
 
   await CLS.wrap(async () => {
