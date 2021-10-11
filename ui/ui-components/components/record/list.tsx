@@ -340,7 +340,6 @@ export default function RecordsList(props) {
                             invalidReason={record.properties[key].invalidReason}
                           />
                         </span>
-                        <br />
                       </div>
                     );
                   })}
