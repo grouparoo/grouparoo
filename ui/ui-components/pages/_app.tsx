@@ -61,7 +61,7 @@ export default function GrouparooWebApp(props) {
       const pathParts = router.pathname.split("/");
       let newPath = router.pathname;
 
-      if (pathParts.length > 4) {
+      if (pathParts.length >= 5 && pathParts[4] !== "new") {
         // redirect /model/old/source/abc to /model/new/sources
         const topic = pathParts[3];
         newPath = `/model/[modelId]/${plural(topic)}`;
