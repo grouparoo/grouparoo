@@ -5,6 +5,7 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       type: "{{{__pluginName}}}",
+      refreshQuery: "...", // How will Grouparoo know to trigger a Data Refresh? ie: `SELECT MAX(updated_at) FROM users`;
       options: {
         host: "localhost",
         port: 3306,

@@ -44,6 +44,7 @@ export interface ModelConfigurationObject extends ConfigurationObject {
 export interface AppConfigurationObject extends ConfigurationObject {
   name: string;
   type: string;
+  refreshQuery?: string;
   options?: { [key: string]: any };
 }
 
