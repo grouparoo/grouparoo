@@ -34,8 +34,8 @@ export class SetupStep extends LoggedModel<SetupStep> {
   @Column
   complete: boolean;
 
-  async apiData() {
-    const ssd = this.getSetupStepDescription();
+  async apiData(modelId?: string) {
+    const ssd = this.getSetupStepDescription(modelId);
     const title = this.getTitle(ssd);
     const description = this.getDescription(ssd);
     const href = this.getHref(ssd);
@@ -43,6 +43,7 @@ export class SetupStep extends LoggedModel<SetupStep> {
     const helpLink = this.getHelpLink(ssd);
     const showCtaOnCommunity = this.getShowCtaOnCommunity(ssd);
     const outcome = await this.getOutcome(ssd);
+    const disabled = await this.getDisabled(ssd);
 
     return {
       id: this.id,
@@ -55,6 +56,7 @@ export class SetupStep extends LoggedModel<SetupStep> {
       helpLink,
       showCtaOnCommunity,
       outcome,
+      disabled,
       skipped: this.skipped,
       complete: this.complete,
       createdAt: APIData.formatDate(this.createdAt),
@@ -62,40 +64,46 @@ export class SetupStep extends LoggedModel<SetupStep> {
     };
   }
 
-  getTitle(ssd?: SetupStepOps.setupStepDescription) {
-    if (!ssd) ssd = this.getSetupStepDescription();
+  getTitle(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+    if (!ssd) ssd = this.getSetupStepDescription(modelId);
     return ssd.title;
   }
 
-  getDescription(ssd?: SetupStepOps.setupStepDescription) {
-    if (!ssd) ssd = this.getSetupStepDescription();
+  getDescription(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+    if (!ssd) ssd = this.getSetupStepDescription(modelId);
     return ssd.description;
   }
 
-  getHref(ssd?: SetupStepOps.setupStepDescription) {
-    if (!ssd) ssd = this.getSetupStepDescription();
+  getHref(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+    if (!ssd) ssd = this.getSetupStepDescription(modelId);
     return ssd.href;
   }
 
-  getCta(ssd?: SetupStepOps.setupStepDescription) {
-    if (!ssd) ssd = this.getSetupStepDescription();
+  getCta(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+    if (!ssd) ssd = this.getSetupStepDescription(modelId);
     return ssd.cta;
   }
 
-  getHelpLink(ssd?: SetupStepOps.setupStepDescription) {
-    if (!ssd) ssd = this.getSetupStepDescription();
+  getHelpLink(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+    if (!ssd) ssd = this.getSetupStepDescription(modelId);
     return ssd.helpLink;
   }
 
-  getShowCtaOnCommunity(ssd?: SetupStepOps.setupStepDescription) {
-    if (!ssd) ssd = this.getSetupStepDescription();
+  getShowCtaOnCommunity(
+    ssd?: SetupStepOps.setupStepDescription,
+    modelId?: string
+  ) {
+    if (!ssd) ssd = this.getSetupStepDescription(modelId);
     return ssd.showCtaOnCommunity || false;
   }
 
-  async performCheck(ssd?: SetupStepOps.setupStepDescription) {
+  async performCheck(
+    ssd?: SetupStepOps.setupStepDescription,
+    modelId?: string
+  ) {
     if (this.complete) return true;
 
-    if (!ssd) ssd = this.getSetupStepDescription();
+    if (!ssd) ssd = this.getSetupStepDescription(modelId);
     if (ssd.check) {
       const check = await ssd.check();
       if (check) await this.update({ complete: true });
@@ -105,14 +113,19 @@ export class SetupStep extends LoggedModel<SetupStep> {
     }
   }
 
-  async getOutcome(ssd?: SetupStepOps.setupStepDescription) {
-    if (!ssd) ssd = this.getSetupStepDescription();
+  async getOutcome(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+    if (!ssd) ssd = this.getSetupStepDescription(modelId);
     if (ssd.outcome) return ssd.outcome();
     return null;
   }
 
-  getSetupStepDescription() {
-    const setupSteps = SetupStepOps.setupStepDescriptions();
+  async getDisabled(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+    if (!ssd) ssd = this.getSetupStepDescription(modelId);
+    return ssd.disabled();
+  }
+
+  getSetupStepDescription(modelId: string) {
+    const setupSteps = SetupStepOps.setupStepDescriptions(modelId);
     const ssdFilteredArray = setupSteps.filter((ssd) => ssd.key === this.key);
 
     if (ssdFilteredArray.length === 1) return ssdFilteredArray[0];

@@ -10,6 +10,7 @@ export class SetupStepsList extends AuthenticatedAction {
     this.description = "List the SetupSteps and their status";
     this.permission = { topic: "setupStep", mode: "read" };
     this.outputExample = {};
+    this.inputs = { modelId: { required: false } };
   }
 
   isWriteTransaction() {
@@ -17,8 +18,8 @@ export class SetupStepsList extends AuthenticatedAction {
     return true;
   }
 
-  async runWithinTransaction() {
-    const responseSetupSteps: Array<AsyncReturnType<SetupStep["apiData"]>> = [];
+  async runWithinTransaction({ params }: { params: { modelId?: string } }) {
+    const responseSetupSteps: AsyncReturnType<SetupStep["apiData"]>[] = [];
 
     const setupSteps = await SetupStep.findAll({
       order: [["position", "asc"]],
@@ -26,7 +27,7 @@ export class SetupStepsList extends AuthenticatedAction {
 
     for (const i in setupSteps) {
       await setupSteps[i].performCheck();
-      responseSetupSteps.push(await setupSteps[i].apiData());
+      responseSetupSteps.push(await setupSteps[i].apiData(params.modelId));
     }
     return { setupSteps: responseSetupSteps };
   }

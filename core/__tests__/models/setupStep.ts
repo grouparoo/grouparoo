@@ -103,4 +103,12 @@ describe("models/setupStep", () => {
 
     expect(step.getCta()).toBe("Change your Grouparoo Cluster Name");
   });
+
+  test("setupSteps can check if they are disabled", async () => {
+    const step = await SetupStep.findOne({
+      where: { key: "create_a_group" },
+    });
+    const disabled = await step.getDisabled();
+    expect(disabled).toBe(true);
+  });
 });
