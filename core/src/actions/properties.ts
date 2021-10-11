@@ -352,18 +352,21 @@ export class PropertyRecordPreview extends AuthenticatedAction {
     let record: GrouparooRecord;
 
     const property = await Property.findById(params.id);
+    const source = await property.$get("source", { scope: null });
 
     if (params.recordId) {
       record = await GrouparooRecord.findById(params.recordId);
     } else {
-      record = await GrouparooRecord.findOne({ order: [["id", "asc"]] });
+      record = await GrouparooRecord.findOne({
+        where: { modelId: source.modelId },
+        order: [["id", "asc"]],
+      });
       if (!record) {
         return { errorMessage: "No records found" };
       }
     }
 
     const apiData = await record.apiData();
-    const source = await property.$get("source", { scope: null });
 
     let newPropertyValues: Array<string | number | boolean | Date> = [];
     let errorMessage: string;
