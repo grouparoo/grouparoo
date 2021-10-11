@@ -14,12 +14,18 @@ import { Button } from "react-bootstrap";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { ErrorHandler } from "../../../utils/errorHandler";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
     successHandler,
     errorHandler,
-  }: { successHandler: SuccessHandler; errorHandler: ErrorHandler } = props;
+    model,
+  }: {
+    successHandler: SuccessHandler;
+    errorHandler: ErrorHandler;
+    model: Models.GrouparooModelType;
+  } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -100,7 +106,7 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: Sources</title>
       </Head>
-      <h1>Sources</h1>
+      <h1>{model ? `Sources: ${model.name}` : "Sources"}</h1>
       <p>{total} sources</p>
       <Pagination
         total={total}
@@ -233,7 +239,7 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
   const { modelId, limit, offset } = ctx.query;
   const { sources, total } = await execApi("get", `/sources`, {
@@ -247,7 +253,9 @@ Page.getInitialProps = async (ctx) => {
     runs[sources[i].id] = await loadRun(sources[i], execApi);
   }
 
-  return { sources, total, runs };
+  const { model } = await execApi("get", `/model/${modelId}`);
+
+  return { sources, model, total, runs };
 };
 
 async function loadRun(source: Models.SourceType, execApi) {

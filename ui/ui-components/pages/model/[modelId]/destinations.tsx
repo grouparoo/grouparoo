@@ -14,9 +14,13 @@ import StateBadge from "../../../components/badges/stateBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { ErrorHandler } from "../../../utils/errorHandler";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
-  const { errorHandler }: { errorHandler: ErrorHandler } = props;
+  const {
+    errorHandler,
+    model,
+  }: { errorHandler: ErrorHandler; model: Models.GrouparooModelType } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -67,7 +71,7 @@ export default function Page(props) {
         <title>Grouparoo: Destinations</title>
       </Head>
 
-      <h1>Destination</h1>
+      <h1>{model ? `Destinations: ${model.name}` : "Destinations"}</h1>
 
       <p>{total} destinations</p>
 
@@ -188,7 +192,7 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
   const { modelId, limit, offset } = ctx.query;
 
@@ -197,5 +201,8 @@ Page.getInitialProps = async (ctx) => {
     offset,
     modelId,
   });
-  return { destinations, total };
+
+  const { model } = await execApi("get", `/model/${modelId}`);
+
+  return { destinations, model, total };
 };

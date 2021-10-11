@@ -15,7 +15,10 @@ import { ErrorHandler } from "../../../utils/errorHandler";
 import { NextPageContext } from "next";
 
 export default function Page(props) {
-  const { errorHandler }: { errorHandler: ErrorHandler } = props;
+  const {
+    errorHandler,
+    model,
+  }: { errorHandler: ErrorHandler; model: Models.GrouparooModelType } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);
@@ -52,7 +55,7 @@ export default function Page(props) {
         <title>Grouparoo: Groups</title>
       </Head>
 
-      <h1>Groups</h1>
+      <h1>{model ? `Groups: ${model.name}` : "Groups"}</h1>
 
       <p>{total} groups</p>
 
@@ -152,5 +155,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     offset,
     modelId,
   });
-  return { groups, total };
+  const { model } = await execApi("get", `/model/${modelId}`);
+  return { groups, model, total };
 };

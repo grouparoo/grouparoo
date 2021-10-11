@@ -19,9 +19,11 @@ export default function Page(props) {
   const {
     errorHandler,
     sources,
+    model,
   }: {
     errorHandler: ErrorHandler;
     sources: Models.SourceType[];
+    model: Models.GrouparooModelType;
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
@@ -101,7 +103,7 @@ export default function Page(props) {
         <title>Grouparoo: Properties</title>
       </Head>
 
-      <h1>Properties</h1>
+      <h1>{model ? `Properties: ${model.name}` : "Properties"}</h1>
 
       <p>{total} Properties</p>
 
@@ -206,5 +208,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sources } = await execApi("get", "/sources", {
     state: ["ready", "deleted"],
   });
-  return { properties, total, examples, sources };
+  const { model } = await execApi("get", `/model/${modelId}`);
+  return { properties, model, total, examples, sources };
 };
