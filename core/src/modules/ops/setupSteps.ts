@@ -61,7 +61,7 @@ export namespace SetupStepOps {
         "Models define the shape of your Records.  Grouparoo uses a Profile Model by default.  You can add new Models and customize them when you begin adding Sources and Properties.",
       href: "/models",
       cta: "Add a Model",
-      helpLink: null,
+      helpLink: `${configURL}/models`,
       check: async () => {
         const count = await GrouparooModel.count();
         return count > 1;
