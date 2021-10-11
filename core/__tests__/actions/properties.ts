@@ -417,7 +417,9 @@ describe("actions/properties", () => {
       });
 
       test("record preview will select a record from the property's model", async () => {
-        const foreignRecord = await helper.factories.record();
+        const foreignRecord = await helper.factories.record({
+          modelId: model.id,
+        });
         await foreignRecord.addOrUpdateProperties({ userId: [1001] });
 
         const _record = await helper.factories.record({ modelId: model2.id });
