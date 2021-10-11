@@ -1027,7 +1027,7 @@ describe("modules/configWriter", () => {
       const config = await record.getConfigObject();
       expect(config.id).toBeTruthy();
       expect(config).toEqual({
-        class: "GrouparooRecord",
+        class: "Record",
         id: record.id,
         modelId: "mod_profiles",
         properties: {

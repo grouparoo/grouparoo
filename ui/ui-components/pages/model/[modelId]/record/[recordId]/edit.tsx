@@ -249,7 +249,6 @@ export default function Page(props) {
                   <LoadingButton
                     disabled={loading}
                     variant="outline-danger"
-                    size="sm"
                     onClick={() => {
                       handleDelete();
                     }}

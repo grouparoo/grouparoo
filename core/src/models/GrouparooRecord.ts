@@ -228,7 +228,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
 
     return {
       id: this.id,
-      class: "GrouparooRecord",
+      class: "Record",
       modelId: this.modelId,
       properties: directlyMappedProps,
     };
