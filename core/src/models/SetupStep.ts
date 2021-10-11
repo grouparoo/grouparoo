@@ -121,8 +121,7 @@ export class SetupStep extends LoggedModel<SetupStep> {
 
   async getDisabled(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
     if (!ssd) ssd = this.getSetupStepDescription(modelId);
-    if (ssd.disabled) return ssd.disabled();
-    return false;
+    return ssd.disabled();
   }
 
   getSetupStepDescription(modelId: string) {
