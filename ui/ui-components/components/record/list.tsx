@@ -394,6 +394,6 @@ RecordsList.hydrate = async (
     state,
     caseSensitive,
   });
-  const { properties } = await execApi("get", `/properties`);
+  const { properties } = await execApi("get", `/properties`, { modelId });
   return { records, total, properties };
 };
