@@ -109,7 +109,7 @@ describe("actions/setupSteps", () => {
         connection
       );
 
-      const modelStep = setupSteps.find((s) => s.key === `create_a_model`);
+      const modelStep = setupSteps.find((s) => s.key === `add_a_model`);
       expect(modelStep.disabled).toEqual(false);
 
       const destinationStep = setupSteps.find(
