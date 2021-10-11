@@ -46,6 +46,36 @@ describe("models/group", () => {
     expect(group.state).toBe("ready");
   });
 
+  test("a group cannot be created with a deleted state model", async () => {
+    await model.update({ state: "deleted" });
+
+    const group = new Group({
+      name: "test group",
+      type: "manual",
+      modelId: model.id,
+    });
+
+    await expect(group.save()).rejects.toThrow(
+      /cannot find ready model with id/
+    );
+
+    await model.update({ state: "ready" });
+  });
+
+  test("a deleted group can be saved with a deleted state model", async () => {
+    const group = new Group({
+      name: "test group",
+      type: "manual",
+      modelId: model.id,
+    });
+
+    await group.save();
+    await model.update({ state: "deleted" });
+    await group.update({ name: "abc", state: "deleted" });
+    expect(group.name).toBe("abc");
+    await model.update({ state: "ready" });
+  });
+
   test("creating a group creates a log entry with a relevant message", async () => {
     const log = await Log.findOne({
       where: { verb: "create", topic: "group" },
@@ -54,7 +84,7 @@ describe("models/group", () => {
     });
 
     expect(log).toBeTruthy();
-    expect(log.message).toBe('group "test group ready" created');
+    expect(log.message).toBe('group "test group" created');
   });
 
   test("deleting a group creates a log entry with a relevant message", async () => {
@@ -82,7 +112,7 @@ describe("models/group", () => {
         type: "manual",
         modelId: "foo",
       })
-    ).rejects.toThrow(/cannot find model with id foo/);
+    ).rejects.toThrow(/cannot find ready model with id foo/);
   });
 
   describe("run()", () => {

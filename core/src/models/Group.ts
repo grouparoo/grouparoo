@@ -729,13 +729,31 @@ export class Group extends LoggedModel<Group> {
   }
 
   @BeforeCreate
-  @BeforeSave
-  static async ensureModel(instance: Destination) {
+  static async ensureModelNotDeleted(instance: Group) {
     const model = await GrouparooModel.findOne({
       where: { id: instance.modelId },
     });
     if (!model) {
-      throw new Error(`cannot find model with id ${instance.modelId}`);
+      throw new Error(`cannot find ready model with id ${instance.modelId}`);
+    }
+  }
+
+  @BeforeSave
+  static async ensureModel(instance: Group) {
+    if (instance.state === "deleted") {
+      const model = await GrouparooModel.scope(null).findOne({
+        where: { id: instance.modelId },
+      });
+      if (!model) {
+        throw new Error(`cannot find model with id ${instance.modelId}`);
+      }
+    } else {
+      const model = await GrouparooModel.findOne({
+        where: { id: instance.modelId },
+      });
+      if (!model) {
+        throw new Error(`cannot find ready model with id ${instance.modelId}`);
+      }
     }
   }
 
