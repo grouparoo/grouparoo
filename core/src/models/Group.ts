@@ -734,7 +734,7 @@ export class Group extends LoggedModel<Group> {
       where: { id: instance.modelId },
     });
     if (!model) {
-      throw new Error(`cannot find model with id ${instance.modelId}`);
+      throw new Error(`cannot find ready model with id ${instance.modelId}`);
     }
   }
 

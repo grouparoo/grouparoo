@@ -14,9 +14,11 @@ import { GroupOps } from "../../../src/modules/ops/group";
 describe("models/group", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let model: GrouparooModel;
+  let secondModel: GrouparooModel;
 
   beforeAll(async () => {
     model = await helper.factories.model();
+    // secondModel = await helper.factories.model();
   });
 
   test("a group can be created", async () => {
@@ -46,6 +48,36 @@ describe("models/group", () => {
     expect(group.state).toBe("ready");
   });
 
+  test("a group cannot be created with a deleted state model", async () => {
+    await model.update({ state: "deleted" });
+
+    const group = new Group({
+      name: "test group",
+      type: "manual",
+      modelId: model.id,
+    });
+
+    expect(group.save()).rejects.toThrow(/cannot find ready model with id/);
+
+    await model.update({ state: "ready" });
+  });
+
+  test("a group can be saved with a deleted state model", async () => {
+    const group = new Group({
+      name: "test group",
+      type: "manual",
+      modelId: model.id,
+    });
+
+    await group.save();
+
+    await model.update({ state: "deleted" });
+    await group.update({ name: "abc" });
+    expect(group.name).toBe("abc");
+
+    await model.update({ state: "ready" });
+  });
+
   test("creating a group creates a log entry with a relevant message", async () => {
     const log = await Log.findOne({
       where: { verb: "create", topic: "group" },
@@ -54,7 +86,7 @@ describe("models/group", () => {
     });
 
     expect(log).toBeTruthy();
-    expect(log.message).toBe('group "test group ready" created');
+    expect(log.message).toBe('group "test group" created');
   });
 
   test("deleting a group creates a log entry with a relevant message", async () => {
@@ -82,7 +114,7 @@ describe("models/group", () => {
         type: "manual",
         modelId: "foo",
       })
-    ).rejects.toThrow(/cannot find model with id foo/);
+    ).rejects.toThrow(/cannot find ready model with id foo/);
   });
 
   describe("run()", () => {
