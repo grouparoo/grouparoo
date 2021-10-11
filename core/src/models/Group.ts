@@ -676,6 +676,10 @@ export class Group extends LoggedModel<Group> {
     this.model = await this.$get("model");
     const modelId = this.model?.getConfigId();
 
+    if (!name || !modelId) {
+      return;
+    }
+
     let rules = [];
 
     const groupRules = await this.getRules();
@@ -684,7 +688,7 @@ export class Group extends LoggedModel<Group> {
     for (const rule of convenientRules) {
       const property = await Property.findOneWithCache(
         rule.key,
-        this.model?.getConfigId(),
+        modelId,
         "key"
       );
       rules.push({
@@ -695,10 +699,6 @@ export class Group extends LoggedModel<Group> {
         relativeMatchUnit: rule.relativeMatchUnit,
         relativeMatchDirection: rule.relativeMatchDirection,
       });
-    }
-
-    if (!name || !modelId) {
-      return;
     }
 
     let configObject: {
