@@ -10,6 +10,7 @@ import { App } from "../..";
 import { Op } from "sequelize";
 
 import { ConfigWriter } from "../configWriter";
+import { AppDataRefresh } from "../../models/AppDataRefresh";
 
 export async function loadApp(
   configObject: AppConfigurationObject,
@@ -45,6 +46,17 @@ export async function loadApp(
 
   const options = extractNonNullParts(configObject, "options");
   if (options) await app.setOptions(options);
+
+  if (configObject.refreshQuery) {
+    let appDataRefresh = await AppDataRefresh.create({
+      id: configObject.refreshQuery,
+      locked: ConfigWriter.getLockKey(configObject),
+    });
+    logModel(
+      appDataRefresh,
+      validate ? "validated" : isNew ? "created" : "updated"
+    );
+  }
 
   if (externallyValidate) {
     const response = await app.test(
