@@ -67,12 +67,22 @@ export default function GrouparooWebApp(props) {
         newPath = `/model/[modelId]/${plural(topic)}`;
       }
 
-      router.push({
-        pathname: newPath,
-        query: {
-          modelId: newModelId,
-          appId: router.query.appId,
+      // only keep path params for new url
+      const newQuery: typeof router.query = Object.keys(router.query).reduce(
+        (query, paramName) => {
+          if (newPath.includes(`[${paramName}]`)) {
+            query[paramName] = router.query[paramName];
+          }
+          return query;
         },
+        {}
+      );
+
+      newQuery.modelId = newModelId;
+
+      router.push({
+        query: newQuery,
+        pathname: newPath,
       });
     } else {
       // model is not in url,
