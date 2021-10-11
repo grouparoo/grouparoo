@@ -55,7 +55,7 @@ export default function Page(props) {
         <title>Grouparoo: Groups</title>
       </Head>
 
-      <h1>{model ? `Groups: ${model.name}` : "Groups"}</h1>
+      <h1>Groups: {model.name}</h1>
 
       <p>{total} groups</p>
 

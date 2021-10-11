@@ -103,7 +103,7 @@ export default function Page(props) {
         <title>Grouparoo: Properties</title>
       </Head>
 
-      <h1>{model ? `Properties: ${model.name}` : "Properties"}</h1>
+      <h1>Properties: {model.name}</h1>
 
       <p>{total} Properties</p>
 

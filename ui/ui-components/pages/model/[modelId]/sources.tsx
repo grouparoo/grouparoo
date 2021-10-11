@@ -106,7 +106,7 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: Sources</title>
       </Head>
-      <h1>{model ? `Sources: ${model.name}` : "Sources"}</h1>
+      <h1>Sources: {model.name}</h1>
       <p>{total} sources</p>
       <Pagination
         total={total}

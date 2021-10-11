@@ -71,7 +71,7 @@ export default function Page(props) {
         <title>Grouparoo: Destinations</title>
       </Head>
 
-      <h1>{model ? `Destinations: ${model.name}` : "Destinations"}</h1>
+      <h1>Destinations: {model.name}</h1>
 
       <p>{total} destinations</p>
 
