@@ -7,6 +7,7 @@ import { Form, Button, Alert } from "react-bootstrap";
 import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { NextPageContext } from "next";
 
 export default function NewRecord(props) {
   const {
@@ -108,11 +109,13 @@ export default function NewRecord(props) {
   );
 }
 
-NewRecord.getInitialProps = async (ctx) => {
+NewRecord.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
+  const { modelId } = ctx.query;
   const { properties }: Actions.PropertiesList = await execApi(
     "get",
-    `/properties`
+    `/properties`,
+    { modelId }
   );
 
   return { properties };
