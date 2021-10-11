@@ -70,8 +70,8 @@ export default function GrouparooWebApp(props) {
       router.push({
         pathname: newPath,
         query: {
-          ...router.query,
           modelId: newModelId,
+          appId: router.query.appId,
         },
       });
     } else {
