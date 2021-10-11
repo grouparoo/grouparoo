@@ -49,13 +49,7 @@ export default function RecordsList(props) {
   );
   const states = ["pending", "ready", "invalid"];
 
-  let groupId: string;
-  let modelId = router.query.modelId;
-  if (router.query.id) {
-    if (router.pathname.match("/group/")) {
-      groupId = router.query.id.toString();
-    }
-  }
+  const { modelId, groupId } = router.query;
 
   useSecondaryEffect(() => {
     load();
@@ -381,6 +375,7 @@ RecordsList.hydrate = async (
   const {
     id,
     modelId,
+    groupId,
     limit,
     offset,
     state,
@@ -389,12 +384,6 @@ RecordsList.hydrate = async (
     caseSensitive,
   } = ctx.query;
 
-  let groupId: string;
-  if (id) {
-    if (ctx.pathname.match("/group/")) {
-      groupId = id as string;
-    }
-  }
   const { records, total } = await execApi("get", `/records`, {
     limit,
     offset,
