@@ -402,6 +402,53 @@ describe("actions/properties", () => {
       expect(success).toBe(true);
     });
 
+    describe("with multiple models", () => {
+      let model2: GrouparooModel;
+      let source2: Source;
+
+      beforeAll(async () => {
+        model2 = await helper.factories.model({ name: "admins" });
+
+        source2 = await helper.factories.source(null, { modelId: model2.id });
+        await source2.setOptions({ table: "test table" });
+        await source2.bootstrapUniqueProperty("adminId", "integer", "id");
+        await source2.setMapping({ id: "adminId" });
+        await source2.update({ state: "ready" });
+      });
+
+      test("record preview will select a record from the property's model", async () => {
+        const foreignRecord = await helper.factories.record({
+          modelId: model.id,
+        });
+        await foreignRecord.addOrUpdateProperties({ userId: [1001] });
+
+        const _record = await helper.factories.record({ modelId: model2.id });
+        await _record.addOrUpdateProperties({ adminId: [1001] });
+
+        const property = await helper.factories.property(
+          source2,
+          { key: "adminEmail" },
+          { column: "email" }
+        );
+
+        connection.params = {
+          csrfToken,
+          id: property.id,
+        };
+        const { error, record } =
+          await specHelper.runAction<PropertyRecordPreview>(
+            "property:recordPreview",
+            connection
+          );
+        expect(error).toBeUndefined();
+        expect(record.id).toBe(_record.id);
+        expect(record.modelId).toBe(source2.modelId);
+
+        await _record.destroy();
+        await foreignRecord.destroy();
+      });
+    });
+
     describe("dynamic property options", () => {
       let app: App;
       let source: Source;
