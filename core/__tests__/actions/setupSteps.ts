@@ -102,6 +102,22 @@ describe("actions/setupSteps", () => {
       expect(setupStep.skipped).toBe(true);
     });
 
+    test("setupSteps can be disabled based on other models", async () => {
+      connection.params = { csrfToken };
+      const { setupSteps } = await specHelper.runAction<SetupStepsList>(
+        "setupSteps:list",
+        connection
+      );
+
+      const modelStep = setupSteps.find((s) => s.key === `create_a_model`);
+      expect(modelStep.disabled).toEqual(false);
+
+      const destinationStep = setupSteps.find(
+        (s) => s.key === `create_a_destination`
+      );
+      expect(destinationStep.disabled).toEqual(true);
+    });
+
     test.each(["source", "group", "schedule", "destination"])(
       "%s setupSteps href changes based on modelId",
       async (topic) => {
