@@ -16,19 +16,13 @@ import { StateMachine } from "./../modules/stateMachine";
 import { LockableHelper } from "../modules/lockableHelper";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
+import { AppDataRefreshOps } from "../modules/ops/appDataRefresh";
 
-const STATES = ["draft", "ready", "deleted"] as const;
+const STATES = ["draft", "ready"] as const;
 
 const STATE_TRANSITIONS = [
   {
     from: "draft",
-    to: "ready",
-    checks: [],
-  },
-  { from: "draft", to: "deleted", checks: [] },
-  { from: "ready", to: "deleted", checks: [] },
-  {
-    from: "deleted",
     to: "ready",
     checks: [],
   },
@@ -112,15 +106,15 @@ export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
-  @AfterSave
+  @BeforeSave
   static async runCheckIfNewQuery(instance: AppDataRefresh) {
-    //if instance.query was changed, run the check from appDataRefreshOps
+    if (instance.changed("refreshQuery")) {
+      // AppDataRefreshOps.checkDataRefreshValue(instance); ? or enqueue task?
+    }
   }
 
   @BeforeDestroy
   static async noDestroyIfLocked(instance: AppDataRefresh) {
     await LockableHelper.beforeDestroy(instance);
   }
-
-  //import and name the appDataRefreshOps methods here as well?
 }

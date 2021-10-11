@@ -7,7 +7,7 @@ export default {
   ) => {
     await queryInterface.createTable("appDataRefreshes", {
       id: {
-        type: DataTypes.STRING(40),
+        type: DataTypes.STRING(191),
         primaryKey: true,
       },
 
@@ -33,7 +33,6 @@ export default {
 
       refreshQuery: {
         type: DataTypes.TEXT,
-        allowNull: false,
       },
 
       value: {
@@ -57,11 +56,6 @@ export default {
       lastConfirmedAt: {
         type: DataTypes.DATE,
       },
-    });
-
-    await queryInterface.changeColumn("appDataRefreshes", "state", {
-      type: DataTypes.STRING(191),
-      allowNull: false,
     });
 
     await queryInterface.addColumn("schedules", "refreshEnabled", {
