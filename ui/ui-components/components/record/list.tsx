@@ -20,9 +20,11 @@ export default function RecordsList(props) {
   const {
     errorHandler,
     properties,
+    model,
   }: {
     errorHandler: ErrorHandler;
     properties: Models.PropertyType[];
+    model?: Models.GrouparooModelType;
   } = props;
   const { execApi } = UseApi(props, errorHandler);
   const router = useRouter();
@@ -124,7 +126,11 @@ export default function RecordsList(props) {
 
   return (
     <>
-      {props.header ? props.header : <h1>Records</h1>}
+      {props.header ? (
+        props.header
+      ) : (
+        <h1>{model ? `Records: ${model.name}` : "Records"}</h1>
+      )}
 
       {groupId ? null : (
         <Form id="search" onSubmit={load}>
@@ -373,7 +379,6 @@ RecordsList.hydrate = async (
 ) => {
   const { execApi } = UseApi(ctx);
   const {
-    id,
     modelId,
     groupId,
     limit,
@@ -395,5 +400,11 @@ RecordsList.hydrate = async (
     caseSensitive,
   });
   const { properties } = await execApi("get", `/properties`);
-  return { records, total, properties };
+
+  let model;
+  if (modelId) {
+    ({ model } = await execApi("get", `/model/${modelId}`));
+  }
+
+  return { records, total, properties, model };
 };
