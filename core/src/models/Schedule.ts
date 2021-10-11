@@ -213,6 +213,7 @@ export class Schedule extends LoggedModel<Schedule> {
       state: this.state,
       sourceId: this.sourceId,
       recurring: this.recurring,
+      refreshEnabled: this.refreshEnabled,
       locked: this.locked,
       confirmRecords: this.confirmRecords,
       options,
