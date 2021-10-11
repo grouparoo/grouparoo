@@ -30,7 +30,7 @@ export async function downloadAndRefreshFile(
 
   if (toDownload) {
     log(`downloading csv from \`${url}\` to \`${localPath}\``);
-    fs.rmSync(localPath, { force: true });
+    if (fs.existsSync(localPath)) fs.rmSync(localPath, { force: true });
     const writer = fs.createWriteStream(localPath);
     const response: { data: NodeJS.ReadStream } = await Axios({
       url,
