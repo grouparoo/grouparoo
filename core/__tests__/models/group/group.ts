@@ -57,7 +57,9 @@ describe("models/group", () => {
       modelId: model.id,
     });
 
-    expect(group.save()).rejects.toThrow(/cannot find ready model with id/);
+    await expect(group.save()).rejects.toThrow(
+      /cannot find ready model with id/
+    );
 
     await model.update({ state: "ready" });
   });
