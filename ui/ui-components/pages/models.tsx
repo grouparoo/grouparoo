@@ -12,6 +12,7 @@ import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { ErrorHandler } from "../utils/errorHandler";
 import EnterpriseLink from "../components/enterpriseLink";
+import StateBadge from "../components/badges/stateBadge";
 
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
@@ -67,6 +68,7 @@ export default function Page(props) {
             <th></th>
             <th>Name</th>
             <th>Type</th>
+            <th>State</th>
             <th>Created At</th>
             <th>Updated At</th>
           </tr>
@@ -89,6 +91,9 @@ export default function Page(props) {
                   </EnterpriseLink>
                 </td>
                 <td>{model.type}</td>
+                <td>
+                  <StateBadge state={model.state} />
+                </td>
                 <td>{formatTimestamp(model.createdAt)}</td>
                 <td>{formatTimestamp(model.updatedAt)}</td>
               </tr>
