@@ -401,6 +401,7 @@ describe("modules/configWriter", () => {
       const model: GrouparooModel = await GrouparooModel.create({
         type: "profile",
         name: "Profiles",
+        id: "mod_" + uuid.v4(),
       });
       const app: App = await helper.factories.app();
       const source: Source = await helper.factories.source(app);
@@ -466,7 +467,7 @@ describe("modules/configWriter", () => {
       model = await GrouparooModel.create({
         type: "profile",
         name: "Profiles",
-        id: "mod_profiles",
+        id: "mod_" + uuid.v4(),
       });
       source = await helper.factories.source();
       await source.setOptions(sourceOptions);
@@ -606,7 +607,7 @@ describe("modules/configWriter", () => {
       expect(config).toEqual({
         class: "Source",
         id: source.getConfigId(),
-        modelId: "mod_profiles",
+        modelId: "profiles",
         name,
         type,
         appId: app.getConfigId(),
@@ -647,7 +648,7 @@ describe("modules/configWriter", () => {
       expect(config[0]).toEqual({
         class: "Source",
         id: source.getConfigId(),
-        modelId: "mod_profiles",
+        modelId: "profiles",
         name,
         type,
         appId: app.getConfigId(),
@@ -754,7 +755,7 @@ describe("modules/configWriter", () => {
       expect(config).toEqual({
         class: "Source",
         id: source.getConfigId(),
-        modelId: "mod_profiles",
+        modelId: "profiles",
         name,
         type,
         appId: app.getConfigId(),
@@ -856,7 +857,7 @@ describe("modules/configWriter", () => {
         ConfigWriter.generateId(group.name)
       );
       expect(group.getConfigId()).toEqual(group.id);
-      expect(group.modelId).toBe("mod_profiles");
+      expect((await group.getConfigObject()).modelId).toBe("profiles");
     });
 
     test("group rules properly set IDs for record column properties", async () => {
@@ -888,7 +889,7 @@ describe("modules/configWriter", () => {
       expect(config).toEqual({
         class: "Group",
         id: group.getConfigId(),
-        modelId: "mod_profiles",
+        modelId: "profiles",
         type,
         name,
         rules: [
@@ -915,7 +916,7 @@ describe("modules/configWriter", () => {
       expect(config).toEqual({
         class: "Group",
         id: group.getConfigId(),
-        modelId: "mod_profiles",
+        modelId: "profiles",
         type,
         name,
       });
@@ -956,7 +957,7 @@ describe("modules/configWriter", () => {
         ConfigWriter.generateId(destination.name)
       );
       expect(destination.getConfigId()).toEqual(destination.id);
-      expect(destination.modelId).toBe("mod_profiles");
+      expect((await destination.getConfigObject()).modelId).toBe("profiles");
     });
 
     test("destinations can provide their config objects", async () => {
@@ -994,7 +995,7 @@ describe("modules/configWriter", () => {
         syncMode,
         options: Object.fromEntries(options.map((o) => [o.key, o.value])),
         mapping: { "primary-id": mappingProperty.getConfigId() },
-        modelId: "mod_profiles",
+        modelId: "profiles",
         destinationGroupMemberships: {
           "My Dest Tag": group.getConfigId(),
         },
@@ -1041,12 +1042,11 @@ describe("modules/configWriter", () => {
       expect(config).toEqual({
         class: "GrouparooRecord",
         id: record.id,
-        modelId: "mod_profiles",
+        modelId: "profiles",
         properties: {
           [bootstrapProperty.getConfigId()]: [12],
         },
       });
-      expect(record.modelId).toBe("mod_profiles");
     });
 
     // --- Setting ---
