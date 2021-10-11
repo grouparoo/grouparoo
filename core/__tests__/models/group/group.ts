@@ -62,7 +62,7 @@ describe("models/group", () => {
     await model.update({ state: "ready" });
   });
 
-  test("a group can be saved with a deleted state model", async () => {
+  test("a deleted group can be saved with a deleted state model", async () => {
     const group = new Group({
       name: "test group",
       type: "manual",
@@ -72,7 +72,7 @@ describe("models/group", () => {
     await group.save();
 
     await model.update({ state: "deleted" });
-    await group.update({ name: "abc" });
+    await group.update({ name: "abc", state: "deleted" });
     expect(group.name).toBe("abc");
 
     await model.update({ state: "ready" });
