@@ -101,5 +101,36 @@ describe("actions/setupSteps", () => {
       expect(setupStep.id).toBe(id);
       expect(setupStep.skipped).toBe(true);
     });
+
+    test.each(["source", "group", "schedule", "destination"])(
+      "%s setupSteps href changes based on modelId",
+      async (topic) => {
+        connection.params = { csrfToken, modelId: null };
+        const { setupSteps: setupStepsNoModelId } =
+          await specHelper.runAction<SetupStepsList>(
+            "setupSteps:list",
+            connection
+          );
+        let destinationStep = setupStepsNoModelId.find(
+          (s) => s.key === `create_a_${topic}`
+        );
+        expect(destinationStep.href).toEqual(`/models`);
+
+        connection.params = { csrfToken, modelId: "mod_abc123" };
+        const { setupSteps: setupStepsWithModelId } =
+          await specHelper.runAction<SetupStepsList>(
+            "setupSteps:list",
+            connection
+          );
+        destinationStep = setupStepsWithModelId.find(
+          (s) => s.key === `create_a_${topic}`
+        );
+        expect(destinationStep.href).toEqual(
+          topic === "schedule"
+            ? `/model/mod_abc123/sources`
+            : `/model/mod_abc123/${topic}s`
+        );
+      }
+    );
   });
 });
