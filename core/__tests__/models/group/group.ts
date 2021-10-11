@@ -14,11 +14,9 @@ import { GroupOps } from "../../../src/modules/ops/group";
 describe("models/group", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let model: GrouparooModel;
-  let secondModel: GrouparooModel;
 
   beforeAll(async () => {
     model = await helper.factories.model();
-    // secondModel = await helper.factories.model();
   });
 
   test("a group can be created", async () => {
@@ -72,11 +70,9 @@ describe("models/group", () => {
     });
 
     await group.save();
-
     await model.update({ state: "deleted" });
     await group.update({ name: "abc", state: "deleted" });
     expect(group.name).toBe("abc");
-
     await model.update({ state: "ready" });
   });
 
