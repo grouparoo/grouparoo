@@ -13,6 +13,7 @@ import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { DurationTime } from "../durationTime";
+import { NextPageContext } from "next";
 
 export default function RunsList(props) {
   const { errorHandler, topic }: { errorHandler: ErrorHandler; topic: string } =
@@ -39,7 +40,7 @@ export default function RunsList(props) {
 
   async function load() {
     const params = { limit, offset, topic };
-    if (router.query.id) params["id"] = router.query.id.toString();
+    if (router.query.sourceId) params["id"] = router.query.sourceId.toString();
     if (stateFilter !== "") params["state"] = stateFilter;
     if (errorFilter !== "") params["hasError"] = errorFilter;
 
@@ -281,11 +282,14 @@ export default function RunsList(props) {
   );
 }
 
-RunsList.hydrate = async (ctx, options: { topic?: string } = {}) => {
-  const { id, limit, offset, stateFilter, error } = ctx.query;
+RunsList.hydrate = async (
+  ctx: NextPageContext,
+  options: { topic?: string } = {}
+) => {
+  const { sourceId, limit, offset, stateFilter, error } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { runs, total } = await execApi("get", `/runs`, {
-    id,
+    id: sourceId,
     topic: options.topic,
     limit,
     offset,
