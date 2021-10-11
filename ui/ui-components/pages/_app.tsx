@@ -1,5 +1,6 @@
 import App from "next/app";
 import Cookies from "universal-cookie";
+import { plural } from "pluralize";
 
 import { UseApi } from "../hooks/useApi";
 
@@ -57,14 +58,25 @@ export default function GrouparooWebApp(props) {
     cookies.set("grouparooModelId", newModelId, { path: "/" });
 
     if (router.pathname.match(/^\/model\//)) {
+      const pathParts = router.pathname.split("/");
+      let newPath = router.pathname;
+
+      if (pathParts.length >= 5 && pathParts[4] !== "new") {
+        // redirect /model/old/source/abc to /model/new/sources
+        const topic = pathParts[3];
+        newPath = `/model/[modelId]/${plural(topic)}`;
+      }
+
       router.push({
-        pathname: router.pathname,
+        pathname: newPath,
         query: {
           ...router.query,
           modelId: newModelId,
         },
       });
     } else {
+      // model is not in url,
+      // but we should still refresh to update nav menu
       router.reload();
     }
   };
