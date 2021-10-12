@@ -18,7 +18,7 @@ export async function loadApp(
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
-  validateConfigObjectKeys(App, configObject);
+  validateConfigObjectKeys(App, configObject, ["refreshQuery"]);
 
   let app = await App.scope(null).findOne({
     where: {
@@ -47,16 +47,16 @@ export async function loadApp(
   const options = extractNonNullParts(configObject, "options");
   if (options) await app.setOptions(options);
 
-  if (configObject.refreshQuery) {
-    let appDataRefresh = await AppDataRefresh.create({
-      id: configObject.refreshQuery,
-      locked: ConfigWriter.getLockKey(configObject),
-    });
-    logModel(
-      appDataRefresh,
-      validate ? "validated" : isNew ? "created" : "updated"
-    );
-  }
+  // if (configObject.refreshQuery) {
+  //   let appDataRefresh = await AppDataRefresh.create({
+  //     id: configObject.refreshQuery,
+  //     locked: ConfigWriter.getLockKey(configObject),
+  //   });
+  //   logModel(
+  //     appDataRefresh,
+  //     validate ? "validated" : isNew ? "created" : "updated"
+  //   );
+  // }
 
   if (externallyValidate) {
     const response = await app.test(
