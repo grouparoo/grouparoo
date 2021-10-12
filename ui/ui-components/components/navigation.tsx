@@ -18,6 +18,7 @@ import { SetupStepHandler } from "../utils/setupStepsHandler";
 import { SessionHandler } from "../utils/sessionHandler";
 import { StatusHandler } from "../utils/statusHandler";
 import { truncate } from "../utils/truncate";
+import { onChangeModelId } from "../utils/modelHelper";
 
 export const navLiStyle = { marginTop: 20, marginBottom: 20 };
 
@@ -35,7 +36,6 @@ export const iconConstrainedStyle = { width: 20 };
 
 export default function Navigation(props) {
   const {
-    onChangeModelId,
     navigationModel,
     navigationMode,
     navigation,
@@ -51,7 +51,6 @@ export default function Navigation(props) {
     navigation: Actions.NavigationList["navigation"];
     clusterName: { value: string; default: boolean };
     navigationModel: Actions.NavigationList["navigationModel"];
-    onChangeModelId: (id: string) => Promise<void>;
     navExpanded: boolean;
     toggleNavExpanded: () => {};
     errorHandler: ErrorHandler;

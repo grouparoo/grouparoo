@@ -1,6 +1,6 @@
 import App from "next/app";
-import Cookies from "universal-cookie";
-import { plural } from "pluralize";
+import { AxiosError } from "axios";
+import type { AppContext } from "next/app";
 
 import { UseApi } from "../hooks/useApi";
 
@@ -9,8 +9,6 @@ import Layout from "../components/layouts/main";
 import PageTransition from "../components/pageTransition";
 import StatusSubscription from "../components/statusSubscription";
 import "../components/icons";
-
-import { AxiosError } from "axios";
 
 import { Actions } from "../utils/apiData";
 
@@ -30,8 +28,7 @@ import { SourceHandler } from "../utils/sourceHandler";
 import { TeamHandler } from "../utils/teamHandler";
 import { TeamMemberHandler } from "../utils/teamMembersHandler";
 import { UploadHandler } from "../utils/uploadHandler";
-import { AppContext } from "next/app";
-import router from "next/router";
+import { getModelFromUrlOrCookie } from "../utils/modelHelper";
 
 const successHandler = new SuccessHandler();
 const errorHandler = new ErrorHandler();
@@ -53,40 +50,11 @@ const uploadHandler = new UploadHandler();
 export default function GrouparooWebApp(props) {
   const { Component, pageProps, err, hydrationError } = props;
 
-  const onChangeModelId = async (newModelId: string) => {
-    const cookies = new Cookies();
-    cookies.set("grouparooModelId", newModelId, { path: "/" });
-
-    if (router.pathname.match(/^\/model\//)) {
-      const pathParts = router.pathname.split("/");
-      let newPath = router.pathname;
-
-      if (pathParts.length >= 5 && pathParts[4] !== "new") {
-        // redirect /model/old/source/abc to /model/new/sources
-        const topic = pathParts[3];
-        newPath = `/model/[modelId]/${plural(topic)}`;
-      }
-
-      router.push({
-        pathname: newPath,
-        query: {
-          ...router.query,
-          modelId: newModelId,
-        },
-      });
-    } else {
-      // model is not in url,
-      // but we should still refresh to update nav menu
-      router.reload();
-    }
-  };
-
   const combinedProps = Object.assign({}, pageProps || {}, {
     navigation: props.navigation,
     navigationMode: props.navigationMode,
     navigationModel: props.navigationModel,
     clusterName: props.clusterName,
-    onChangeModelId,
     currentTeamMember: props.currentTeamMember,
     successHandler,
     errorHandler,
@@ -128,13 +96,7 @@ GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
     id: null,
   };
 
-  let modelId: string;
-  if (appContext.ctx.pathname.match("/model/")) {
-    modelId = appContext.ctx.query.modelId as string;
-  } else {
-    const cookies = new Cookies(appContext.ctx.req?.headers.cookie);
-    modelId = cookies.get("grouparooModelId");
-  }
+  const modelId = getModelFromUrlOrCookie(appContext.ctx);
 
   try {
     const navigationResponse: Actions.NavigationList = await execApi(
