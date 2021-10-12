@@ -1,11 +1,13 @@
+import { useState } from "react";
 import Head from "next/head";
-import { Button, Badge } from "react-bootstrap";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { Button, Badge } from "react-bootstrap";
+import type { NextPageContext } from "next";
+
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
-import { useMemo, useState } from "react";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
-import Link from "next/link";
 import EnterpriseLink from "../../../components/enterpriseLink";
 import Pagination from "../../../components/pagination";
 import LoadingTable from "../../../components/loadingTable";
@@ -14,7 +16,6 @@ import StateBadge from "../../../components/badges/stateBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { ErrorHandler } from "../../../utils/errorHandler";
-import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {

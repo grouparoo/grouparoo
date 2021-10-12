@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
+import { Form, Row, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import type { NextPageContext } from "next";
+
 import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { AsyncTypeahead } from "react-bootstrap-typeahead";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { Form, Row, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import LoadingButton from "../loadingButton";
@@ -14,7 +16,6 @@ import ArrayRecordPropertyList from "./arrayRecordPropertyList";
 import StateBadge from "../badges/stateBadge";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
-import { NextPageContext } from "next";
 
 export default function RecordsList(props) {
   const {
