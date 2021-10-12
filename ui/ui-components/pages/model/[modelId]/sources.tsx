@@ -20,11 +20,11 @@ export default function Page(props) {
   const {
     successHandler,
     errorHandler,
-    model,
+    modelName,
   }: {
     successHandler: SuccessHandler;
     errorHandler: ErrorHandler;
-    model: Models.GrouparooModelType;
+    modelName: string;
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
@@ -106,7 +106,7 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: Sources</title>
       </Head>
-      <h1>Sources: {model.name}</h1>
+      <h1>Sources: {modelName}</h1>
       <p>{total} sources</p>
       <Pagination
         total={total}
@@ -253,9 +253,13 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     runs[sources[i].id] = await loadRun(sources[i], execApi);
   }
 
-  const { model } = await execApi("get", `/model/${modelId}`);
+  let modelName = sources.length > 0 ? sources[0].modelName : null;
+  if (!modelName) {
+    const { model } = await execApi("get", `/model/${modelId}`);
+    modelName = model.name;
+  }
 
-  return { sources, model, total, runs };
+  return { sources, modelName, total, runs };
 };
 
 async function loadRun(source: Models.SourceType, execApi) {

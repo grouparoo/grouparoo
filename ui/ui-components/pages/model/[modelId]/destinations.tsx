@@ -3,7 +3,7 @@ import { Button, Badge } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
 import Link from "next/link";
 import EnterpriseLink from "../../../components/enterpriseLink";
@@ -19,8 +19,11 @@ import { NextPageContext } from "next";
 export default function Page(props) {
   const {
     errorHandler,
-    model,
-  }: { errorHandler: ErrorHandler; model: Models.GrouparooModelType } = props;
+    modelName,
+  }: {
+    errorHandler: ErrorHandler;
+    modelName: string;
+  } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -71,7 +74,7 @@ export default function Page(props) {
         <title>Grouparoo: Destinations</title>
       </Head>
 
-      <h1>Destinations: {model.name}</h1>
+      <h1>Destinations: {modelName}</h1>
 
       <p>{total} destinations</p>
 
@@ -202,7 +205,11 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     modelId,
   });
 
-  const { model } = await execApi("get", `/model/${modelId}`);
+  let modelName = destinations.length > 0 ? destinations[0].modelName : null;
+  if (!modelName) {
+    const { model } = await execApi("get", `/model/${modelId}`);
+    modelName = model.name;
+  }
 
-  return { destinations, model, total };
+  return { destinations, modelName, total };
 };

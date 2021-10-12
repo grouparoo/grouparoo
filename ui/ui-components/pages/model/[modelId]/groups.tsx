@@ -17,8 +17,11 @@ import { NextPageContext } from "next";
 export default function Page(props) {
   const {
     errorHandler,
-    model,
-  }: { errorHandler: ErrorHandler; model: Models.GrouparooModelType } = props;
+    modelName,
+  }: {
+    errorHandler: ErrorHandler;
+    modelName: string;
+  } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);
@@ -32,7 +35,7 @@ export default function Page(props) {
 
   useSecondaryEffect(() => {
     load();
-  }, [limit, offset, modelId]);
+  }, [limit, offset]);
 
   async function load() {
     updateURLParams(router, { offset });
@@ -55,7 +58,7 @@ export default function Page(props) {
         <title>Grouparoo: Groups</title>
       </Head>
 
-      <h1>Groups: {model.name}</h1>
+      <h1>Groups: {modelName}</h1>
 
       <p>{total} groups</p>
 
@@ -150,11 +153,21 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
   const { modelId, limit, offset } = ctx.query;
-  const { groups, total } = await execApi("get", `/groups`, {
-    limit,
-    offset,
-    modelId,
-  });
-  const { model } = await execApi("get", `/model/${modelId}`);
-  return { groups, model, total };
+  const { groups, total }: Actions.GroupsList = await execApi(
+    "get",
+    `/groups`,
+    {
+      limit,
+      offset,
+      modelId,
+    }
+  );
+
+  let modelName = groups.length > 0 ? groups[0].modelName : null;
+  if (!modelName) {
+    const { model } = await execApi("get", `/model/${modelId}`);
+    modelName = model.name;
+  }
+
+  return { groups, modelName, total };
 };
