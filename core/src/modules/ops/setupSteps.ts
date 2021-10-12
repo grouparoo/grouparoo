@@ -143,7 +143,7 @@ export namespace SetupStepOps {
         title: "Create a Sample Record",
         description:
           "Create a Sample Record so you can validate your configuration is importing the correct data. These Records will allow you to test Group building and your Destination settings and mappings.",
-        href: "/record/new",
+        href: modelId ? `/model/${modelId}/record/new` : "/models",
         cta: "Add a Sample Record",
         helpLink: `${configURL}/records`,
         check: async () => {

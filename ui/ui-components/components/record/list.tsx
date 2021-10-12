@@ -347,7 +347,6 @@ export default function RecordsList(props) {
                             invalidReason={record.properties[key].invalidReason}
                           />
                         </span>
-                        <br />
                       </div>
                     );
                   })}
@@ -404,7 +403,7 @@ RecordsList.hydrate = async (
       caseSensitive,
     }
   );
-  const { properties } = await execApi("get", `/properties`);
+  const { properties } = await execApi("get", `/properties`, { modelId });
 
   let modelName: string;
   if (modelId) {
