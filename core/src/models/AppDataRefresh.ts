@@ -9,6 +9,7 @@ import {
   DefaultScope,
   BelongsTo,
   AfterSave,
+  Default,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
@@ -38,10 +39,6 @@ export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
   }
 
   @AllowNull(false)
-  @Column
-  name: string;
-
-  @AllowNull(false)
   @ForeignKey(() => App)
   @Column
   appId: string;
@@ -58,6 +55,7 @@ export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
   locked: string;
 
   @AllowNull(false)
+  @Default("draft")
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
@@ -73,7 +71,6 @@ export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
   async apiData() {
     return {
       id: this.id,
-      name: this.name,
       appId: this.appId,
       refreshQuery: this.refreshQuery,
       value: this.value,
@@ -84,15 +81,15 @@ export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
     };
   }
 
-  getConfigId() {
-    return this.idIsDefault() ? ConfigWriter.generateId(this.name) : this.id;
-  }
+  // getConfigId() {
+  //   return this.idIsDefault() ? ConfigWriter.generateId() : this.id;
+  // }
 
   // --- Class Methods --- //
 
   static async findById(id: string) {
     const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
+    if (!instance) throw new Error(`cannot find AppDataRefresh ${id}`);
     return instance;
   }
 

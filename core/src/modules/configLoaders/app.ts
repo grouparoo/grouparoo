@@ -47,16 +47,20 @@ export async function loadApp(
   const options = extractNonNullParts(configObject, "options");
   if (options) await app.setOptions(options);
 
-  // if (configObject.refreshQuery) {
-  //   let appDataRefresh = await AppDataRefresh.create({
-  //     id: configObject.refreshQuery,
-  //     locked: ConfigWriter.getLockKey(configObject),
-  //   });
-  //   logModel(
-  //     appDataRefresh,
-  //     validate ? "validated" : isNew ? "created" : "updated"
-  //   );
-  // }
+  if (configObject.refreshQuery && configObject.refreshQuery !== null) {
+    let appDataRefresh = await AppDataRefresh.create({
+      appId: configObject.id,
+      refreshQuery: configObject.refreshQuery,
+    });
+    await appDataRefresh.update({
+      locked: ConfigWriter.getLockKey(configObject),
+    });
+
+    logModel(
+      appDataRefresh,
+      validate ? "validated" : isNew ? "created" : "updated"
+    );
+  }
 
   if (externallyValidate) {
     const response = await app.test(
