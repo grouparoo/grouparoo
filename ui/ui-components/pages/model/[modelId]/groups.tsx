@@ -2,6 +2,8 @@ import Head from "next/head";
 import { Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import type { NextPageContext } from "next";
+
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
@@ -12,10 +14,15 @@ import StateBadge from "../../../components/badges/stateBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { ErrorHandler } from "../../../utils/errorHandler";
-import { NextPageContext } from "next";
 
 export default function Page(props) {
-  const { errorHandler }: { errorHandler: ErrorHandler } = props;
+  const {
+    errorHandler,
+    modelName,
+  }: {
+    errorHandler: ErrorHandler;
+    modelName: string;
+  } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);
@@ -29,7 +36,7 @@ export default function Page(props) {
 
   useSecondaryEffect(() => {
     load();
-  }, [limit, offset, modelId]);
+  }, [limit, offset]);
 
   async function load() {
     updateURLParams(router, { offset });
@@ -52,7 +59,7 @@ export default function Page(props) {
         <title>Grouparoo: Groups</title>
       </Head>
 
-      <h1>Groups</h1>
+      <h1>Groups: {modelName}</h1>
 
       <p>{total} groups</p>
 
@@ -147,10 +154,21 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
   const { modelId, limit, offset } = ctx.query;
-  const { groups, total } = await execApi("get", `/groups`, {
-    limit,
-    offset,
-    modelId,
-  });
-  return { groups, total };
+  const { groups, total }: Actions.GroupsList = await execApi(
+    "get",
+    `/groups`,
+    {
+      limit,
+      offset,
+      modelId,
+    }
+  );
+
+  let modelName = groups.length > 0 ? groups[0].modelName : null;
+  if (!modelName) {
+    const { model } = await execApi("get", `/model/${modelId}`);
+    modelName = model.name;
+  }
+
+  return { groups, modelName, total };
 };

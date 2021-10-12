@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
+import { Form, Row, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import type { NextPageContext } from "next";
+
 import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { AsyncTypeahead } from "react-bootstrap-typeahead";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { Form, Row, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import LoadingButton from "../loadingButton";
@@ -14,15 +16,16 @@ import ArrayRecordPropertyList from "./arrayRecordPropertyList";
 import StateBadge from "../badges/stateBadge";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
-import { NextPageContext } from "next";
 
 export default function RecordsList(props) {
   const {
     errorHandler,
     properties,
+    modelName,
   }: {
     errorHandler: ErrorHandler;
     properties: Models.PropertyType[];
+    modelName?: string;
   } = props;
   const { execApi } = UseApi(props, errorHandler);
   const router = useRouter();
@@ -124,7 +127,11 @@ export default function RecordsList(props) {
 
   return (
     <>
-      {props.header ? props.header : <h1>Records</h1>}
+      {props.header ? (
+        props.header
+      ) : (
+        <h1>{modelName ? `Records: ${modelName}` : "Records"}</h1>
+      )}
 
       {groupId ? null : (
         <Form id="search" onSubmit={load}>
@@ -373,7 +380,6 @@ RecordsList.hydrate = async (
 ) => {
   const { execApi } = UseApi(ctx);
   const {
-    id,
     modelId,
     groupId,
     limit,
@@ -384,16 +390,30 @@ RecordsList.hydrate = async (
     caseSensitive,
   } = ctx.query;
 
-  const { records, total } = await execApi("get", `/records`, {
-    limit,
-    offset,
-    searchKey: searchKey || _searchKey,
-    searchValue: searchValue || _searchValue,
-    groupId,
-    modelId,
-    state,
-    caseSensitive,
-  });
+  const { records, total }: Actions.RecordsList = await execApi(
+    "get",
+    `/records`,
+    {
+      limit,
+      offset,
+      searchKey: searchKey || _searchKey,
+      searchValue: searchValue || _searchValue,
+      groupId,
+      modelId,
+      state,
+      caseSensitive,
+    }
+  );
   const { properties } = await execApi("get", `/properties`);
-  return { records, total, properties };
+
+  let modelName: string;
+  if (modelId) {
+    modelName = records.length > 0 ? records[0].modelName : null;
+    if (!modelName) {
+      const { model } = await execApi("get", `/model/${modelId}`);
+      modelName = model.name;
+    }
+  }
+
+  return { records, total, properties, modelName };
 };

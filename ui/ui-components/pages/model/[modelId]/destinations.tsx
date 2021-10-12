@@ -1,11 +1,13 @@
+import { useState } from "react";
 import Head from "next/head";
-import { Button, Badge } from "react-bootstrap";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { Button, Badge } from "react-bootstrap";
+import type { NextPageContext } from "next";
+
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
-import { useState } from "react";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
-import Link from "next/link";
 import EnterpriseLink from "../../../components/enterpriseLink";
 import Pagination from "../../../components/pagination";
 import LoadingTable from "../../../components/loadingTable";
@@ -16,7 +18,13 @@ import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { ErrorHandler } from "../../../utils/errorHandler";
 
 export default function Page(props) {
-  const { errorHandler }: { errorHandler: ErrorHandler } = props;
+  const {
+    errorHandler,
+    modelName,
+  }: {
+    errorHandler: ErrorHandler;
+    modelName: string;
+  } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -67,7 +75,7 @@ export default function Page(props) {
         <title>Grouparoo: Destinations</title>
       </Head>
 
-      <h1>Destination</h1>
+      <h1>Destinations: {modelName}</h1>
 
       <p>{total} destinations</p>
 
@@ -188,7 +196,7 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
   const { modelId, limit, offset } = ctx.query;
 
@@ -197,5 +205,12 @@ Page.getInitialProps = async (ctx) => {
     offset,
     modelId,
   });
-  return { destinations, total };
+
+  let modelName = destinations.length > 0 ? destinations[0].modelName : null;
+  if (!modelName) {
+    const { model } = await execApi("get", `/model/${modelId}`);
+    modelName = model.name;
+  }
+
+  return { destinations, modelName, total };
 };

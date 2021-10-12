@@ -1,16 +1,18 @@
-import Head from "next/head";
 import { useState, Fragment } from "react";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import { Button } from "react-bootstrap";
+import type { NextPageContext } from "next";
+
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
 import Link from "../../../components/enterpriseLink";
-import { useRouter } from "next/router";
 import Pagination from "../../../components/pagination";
 import LoadingTable from "../../../components/loadingTable";
 import AppIcon from "../../../components/appIcon";
 import StateBadge from "../../../components/badges/stateBadge";
 import { Models, Actions } from "../../../utils/apiData";
-import { Button } from "react-bootstrap";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { ErrorHandler } from "../../../utils/errorHandler";
@@ -19,7 +21,12 @@ export default function Page(props) {
   const {
     successHandler,
     errorHandler,
-  }: { successHandler: SuccessHandler; errorHandler: ErrorHandler } = props;
+    modelName,
+  }: {
+    successHandler: SuccessHandler;
+    errorHandler: ErrorHandler;
+    modelName: string;
+  } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -100,7 +107,7 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: Sources</title>
       </Head>
-      <h1>Sources</h1>
+      <h1>Sources: {modelName}</h1>
       <p>{total} sources</p>
       <Pagination
         total={total}
@@ -233,7 +240,7 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
   const { modelId, limit, offset } = ctx.query;
   const { sources, total } = await execApi("get", `/sources`, {
@@ -247,7 +254,13 @@ Page.getInitialProps = async (ctx) => {
     runs[sources[i].id] = await loadRun(sources[i], execApi);
   }
 
-  return { sources, total, runs };
+  let modelName = sources.length > 0 ? sources[0].modelName : null;
+  if (!modelName) {
+    const { model } = await execApi("get", `/model/${modelId}`);
+    modelName = model.name;
+  }
+
+  return { sources, modelName, total, runs };
 };
 
 async function loadRun(source: Models.SourceType, execApi) {
