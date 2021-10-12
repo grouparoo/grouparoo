@@ -674,6 +674,12 @@ export class Group extends LoggedModel<Group> {
 
   async getConfigObject(): Promise<GroupConfigurationObject> {
     const { name, type } = this;
+    this.model = await this.$get("model");
+    const modelId = this.model?.getConfigId();
+
+    if (!name || !modelId) {
+      return;
+    }
 
     let rules = [];
 
@@ -683,7 +689,7 @@ export class Group extends LoggedModel<Group> {
     for (const rule of convenientRules) {
       const property = await Property.findOneWithCache(
         rule.key,
-        this.modelId,
+        modelId,
         "key"
       );
       rules.push({
@@ -696,8 +702,6 @@ export class Group extends LoggedModel<Group> {
       });
     }
 
-    if (!name) return;
-
     let configObject: {
       id: string;
       class: string;
@@ -709,7 +713,7 @@ export class Group extends LoggedModel<Group> {
       id: this.getConfigId(),
       class: "Group",
       type,
-      modelId: this.modelId,
+      modelId,
       name,
     };
 

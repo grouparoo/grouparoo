@@ -47,32 +47,38 @@ export default function Page(props) {
 
       <GroupTabs group={group} />
 
-      <PageHeader
-        title={`${group.name} - Members`}
-        iconType="group"
-        badges={[
-          <LockedBadge key="header-badge-1" object={group} />,
-          <StateBadge key="header-badge-2" state={group.state} />,
-          <ModelBadge
-            key="header-badge-3"
-            modelName={group.modelName}
-            modelId={group.modelId}
-          />,
-        ]}
-      />
+      <RecordsList
+        {...props}
+        header={
+          <>
+            <PageHeader
+              title={`${group.name} - Members`}
+              iconType="group"
+              badges={[
+                <LockedBadge key="header-badge-1" object={group} />,
+                <StateBadge key="header-badge-2" state={group.state} />,
+                <ModelBadge
+                  key="header-badge-3"
+                  modelName={group.modelName}
+                  modelId={group.modelId}
+                />,
+              ]}
+            />
 
-      <Button
-        variant="outline-secondary"
-        size="sm"
-        onClick={() => {
-          run();
-        }}
-      >
-        Recalculate Members
-      </Button>
-      <br />
-      <hr />
-      <RecordsList {...props} />
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              onClick={() => {
+                run();
+              }}
+            >
+              Recalculate Members
+            </Button>
+            <br />
+            <br />
+          </>
+        }
+      />
     </>
   );
 }
