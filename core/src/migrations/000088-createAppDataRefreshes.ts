@@ -11,11 +11,6 @@ export default {
         primaryKey: true,
       },
 
-      name: {
-        type: DataTypes.STRING(191),
-        allowNull: false,
-      },
-
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,

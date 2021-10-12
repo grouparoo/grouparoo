@@ -13,6 +13,7 @@ module.exports = async function getConfig() {
       name: "Data Warehouse",
       class: "App",
       type: "test-plugin-app",
+      refreshQuery: "test query ",
       options: {
         fileId: "test-file-path.db",
       },
