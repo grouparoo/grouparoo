@@ -20,11 +20,11 @@ export default function RecordsList(props) {
   const {
     errorHandler,
     properties,
-    model,
+    modelName,
   }: {
     errorHandler: ErrorHandler;
     properties: Models.PropertyType[];
-    model?: Models.GrouparooModelType;
+    modelName?: string;
   } = props;
   const { execApi } = UseApi(props, errorHandler);
   const router = useRouter();
@@ -129,7 +129,7 @@ export default function RecordsList(props) {
       {props.header ? (
         props.header
       ) : (
-        <h1>{model ? `Records: ${model.name}` : "Records"}</h1>
+        <h1>{modelName ? `Records: ${modelName}` : "Records"}</h1>
       )}
 
       {groupId ? null : (
@@ -389,22 +389,30 @@ RecordsList.hydrate = async (
     caseSensitive,
   } = ctx.query;
 
-  const { records, total } = await execApi("get", `/records`, {
-    limit,
-    offset,
-    searchKey: searchKey || _searchKey,
-    searchValue: searchValue || _searchValue,
-    groupId,
-    modelId,
-    state,
-    caseSensitive,
-  });
+  const { records, total }: Actions.RecordsList = await execApi(
+    "get",
+    `/records`,
+    {
+      limit,
+      offset,
+      searchKey: searchKey || _searchKey,
+      searchValue: searchValue || _searchValue,
+      groupId,
+      modelId,
+      state,
+      caseSensitive,
+    }
+  );
   const { properties } = await execApi("get", `/properties`);
 
-  let model;
+  let modelName: string;
   if (modelId) {
-    ({ model } = await execApi("get", `/model/${modelId}`));
+    modelName = records.length > 0 ? records[0].modelName : null;
+    if (!modelName) {
+      const { model } = await execApi("get", `/model/${modelId}`);
+      modelName = model.name;
+    }
   }
 
-  return { records, total, properties, model };
+  return { records, total, properties, modelName };
 };
