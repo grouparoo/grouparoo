@@ -36,17 +36,15 @@ export class LogsList extends AuthenticatedAction {
       where: {},
     };
 
-    if (params.topic) search.where["topic"] = params.topic;
+    let topic = params.topic;
+    if (topic) {
+      if (topic === "record") topic = "grouparooRecord";
+      search.where["topic"] = topic;
+    }
+
     if (params.verb) search.where["verb"] = params.verb;
     if (params.ownerId) {
       const ownerIds = [params.ownerId];
-
-      // in the case we are dealing with a record
-      const recordProperties = await RecordProperty.findAll({
-        where: { recordId: params.ownerId },
-      });
-      recordProperties.forEach((prop) => ownerIds.push(prop.id));
-
       search.where["ownerId"] = { [Op.in]: ownerIds };
     }
 

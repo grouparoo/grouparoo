@@ -16,8 +16,10 @@ import {
   Schedule,
   Source,
   App,
+  GrouparooModel,
 } from "@grouparoo/core";
 import { SessionCreate } from "@grouparoo/core/src/actions/session";
+import { ModelCreate } from "@grouparoo/core/src/actions/models";
 import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
 import {
   SourceBootstrapUniqueProperty,
@@ -50,6 +52,7 @@ describe("integration/runs/sqlite", () => {
 
   let session;
   let csrfToken: string;
+  let model: AsyncReturnType<GrouparooModel["apiData"]>;
   let app: AsyncReturnType<App["apiData"]>;
   let source: AsyncReturnType<Source["apiData"]>;
   let schedule: AsyncReturnType<Schedule["apiData"]>;
@@ -83,6 +86,19 @@ describe("integration/runs/sqlite", () => {
     expect(sessionResponse.error).toBeUndefined();
     csrfToken = sessionResponse.csrfToken;
 
+    // create a model
+    session.params = {
+      csrfToken,
+      name: "Profiles",
+      type: "profile",
+    };
+    const modelCreateResponse = await specHelper.runAction<ModelCreate>(
+      "model:create",
+      session
+    );
+    expect(modelCreateResponse.error).toBeUndefined();
+    model = modelCreateResponse.model;
+
     // create a sqlite app
     session.params = {
       csrfToken,
@@ -103,8 +119,9 @@ describe("integration/runs/sqlite", () => {
     session.params = {
       csrfToken,
       name: "sqlite import source",
-      type: "sqlite-table-import",
+      type: "sqlite-import-table",
       appId: app.id,
+      modelId: model.id,
       options: { table: usersTableName },
     };
     const sourceResponse = await specHelper.runAction<SourceCreate>(
@@ -169,8 +186,9 @@ describe("integration/runs/sqlite", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "sqlite-export",
+      type: "sqlite-export-records",
       appId: app.id,
+      modelId: model.id,
       options: {
         table: recordsDestinationTableName,
         primaryKey: "id",
@@ -343,12 +361,13 @@ describe("integration/runs/sqlite", () => {
       csrfToken,
       id: destination.id,
       destinationGroupMemberships,
-      trackedGroupId: group.id,
+      groupId: group.id,
+      collection: "group",
     };
     const { error, destination: _destination } =
       await specHelper.runAction<DestinationEdit>("destination:edit", session);
     expect(error).toBeUndefined();
-    expect(_destination.destinationGroup.id).toBe(group.id);
+    expect(_destination.group.id).toBe(group.id);
     expect(_destination.destinationGroupMemberships).toEqual([
       {
         groupId: group.id,

@@ -35,7 +35,10 @@ export class ImportRecordProperty extends RetryableTask {
       });
     }
 
-    const property = await Property.findOneWithCache(params.propertyId);
+    const property = await Property.findOneWithCache(
+      params.propertyId,
+      record.modelId
+    );
     if (!property) return;
     const recordProperties = await record.getProperties();
     const source = await property.$get("source", {
@@ -70,6 +73,7 @@ export class ImportRecordProperty extends RetryableTask {
       hash[property.id] = Array.isArray(propertyValues)
         ? propertyValues
         : [propertyValues];
+
       await record.addOrUpdateProperties(hash);
     } else {
       // got no data back, clear value
@@ -79,6 +83,7 @@ export class ImportRecordProperty extends RetryableTask {
           rawValue: null,
           stateChangedAt: new Date(),
           confirmedAt: new Date(),
+          startedAt: null,
         },
         {
           where: {

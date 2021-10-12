@@ -30,7 +30,7 @@ export const exportRecord: ExportRecordPluginMethod = async ({
   }
 
   try {
-    // --- Profiles --- //
+    // --- Records --- //
     if (toDelete) {
       if (!syncOperations.delete) {
         throw new Errors.InfoError(

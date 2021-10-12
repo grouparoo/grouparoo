@@ -1,4 +1,5 @@
 import { loadPath } from "../loadPath";
+import { Log } from "@grouparoo/core";
 
 const data = async (props = {}) => {
   const defaultProps = {
@@ -17,5 +18,5 @@ const data = async (props = {}) => {
 
 export default async (props = {}) => {
   const { Log } = await import(`@grouparoo/core/${loadPath}`);
-  return Log.create(await data(props));
+  return Log.create(await data(props)) as Log;
 };

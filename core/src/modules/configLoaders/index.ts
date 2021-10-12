@@ -10,6 +10,7 @@ import {
   IdsByClass,
   getDirectParentId,
   SettingConfigurationObject,
+  ModelConfigurationObject,
   AppConfigurationObject,
   SourceConfigurationObject,
   PropertyConfigurationObject,
@@ -20,8 +21,10 @@ import {
   TeamConfigurationObject,
   TeamMemberConfigurationObject,
   cleanClass,
+  RecordConfigurationObject,
 } from "../../classes/codeConfig";
 import { GrouparooErrorSerializer } from "../../config/errors";
+import { loadModel, deleteModels } from "./model";
 import { loadApp, deleteApps } from "./app";
 import { loadSource, deleteSources } from "./source";
 import { loadProperty, deleteProperties } from "./property";
@@ -38,6 +41,7 @@ import Sequelize from "sequelize";
 import { Deprecation } from "../deprecation";
 
 const freshIdsByClass: () => IdsByClass = () => ({
+  model: [],
   app: [],
   source: [],
   property: [],
@@ -120,7 +124,7 @@ async function loadConfigFile(file: string): Promise<AnyConfigurationObject> {
   const objects = Array.isArray(payload) ? payload : [payload];
   ConfigWriter.cacheConfigFile({ absFilePath: file, objects });
 
-  return payload;
+  return payload as AnyConfigurationObject;
 }
 
 export async function shouldExternallyValidate(
@@ -223,6 +227,13 @@ export async function processConfigObjects(
             validate
           );
           break;
+        case "model":
+          ids = await loadModel(
+            configObject as ModelConfigurationObject,
+            externallyValidate,
+            validate
+          );
+          break;
         case "app":
           ids = await loadApp(
             configObject as AppConfigurationObject,
@@ -288,11 +299,19 @@ export async function processConfigObjects(
           );
           break;
         case "record":
-          ids = await loadRecord(configObject, externallyValidate, validate);
+          ids = await loadRecord(
+            configObject as RecordConfigurationObject,
+            externallyValidate,
+            validate
+          );
           break;
         case "profile":
           Deprecation.warn("config", "Profile", "Record");
-          ids = await loadRecord(configObject, externallyValidate, validate);
+          ids = await loadRecord(
+            configObject as RecordConfigurationObject,
+            externallyValidate,
+            validate
+          );
           break;
         default:
           throw new Error(`unknown config object class: ${configObject.class}`);
@@ -372,6 +391,9 @@ export async function deleteLockedObjects(seenIds: IdsByClass) {
   }
   if (seenIds.app) {
     deletedIds["app"] = await deleteApps(seenIds.app);
+  }
+  if (seenIds.model) {
+    deletedIds["model"] = await deleteModels(seenIds.model);
   }
 
   return deletedIds;

@@ -153,7 +153,7 @@ export default function RecordPreview(props) {
             <RecordImageFromEmail email={email} width={100} />
             <br />
             <Card.Link
-              href={`/record/${record.id}/edit`}
+              href={`/model/${record.modelId}/record/${record.id}/edit`}
               style={{ color: "white" }}
             >
               View Record

@@ -22,7 +22,7 @@ exports[`property / recordPreview should not render with a boolean date 1`] = `
       <br />
       <a
         class="card-link"
-        href="/record/asdf/edit"
+        href="/model/abcd/record/asdf/edit"
         style="color: white;"
       >
         View Record
@@ -81,7 +81,7 @@ exports[`property / recordPreview should not render with a null date 1`] = `
       <br />
       <a
         class="card-link"
-        href="/record/asdf/edit"
+        href="/model/abcd/record/asdf/edit"
         style="color: white;"
       >
         View Record
@@ -118,7 +118,7 @@ exports[`property / recordPreview should not render with a null date 1`] = `
 </div>
 `;
 
-exports[`property / recordPreview should render a whole user profile including the date 1`] = `
+exports[`property / recordPreview should render a whole user record including the date 1`] = `
 <div>
   <div
     class="card bg-light"
@@ -140,7 +140,7 @@ exports[`property / recordPreview should render a whole user profile including t
       <br />
       <a
         class="card-link"
-        href="/record/rec_87cc054b-7cc2-4eb4-8932-db1011056517/edit"
+        href="/model/mod_profiles/record/rec_87cc054b-7cc2-4eb4-8932-db1011056517/edit"
         style="color: white;"
       >
         View Record
@@ -315,7 +315,7 @@ exports[`property / recordPreview should render with a Date date 1`] = `
       <br />
       <a
         class="card-link"
-        href="/record/asdf/edit"
+        href="/model/abcd/record/asdf/edit"
         style="color: white;"
       >
         View Record
@@ -375,7 +375,7 @@ exports[`property / recordPreview should render with a number date 1`] = `
       <br />
       <a
         class="card-link"
-        href="/record/asdf/edit"
+        href="/model/abcd/record/asdf/edit"
         style="color: white;"
       >
         View Record
@@ -435,7 +435,7 @@ exports[`property / recordPreview should render with a string date 1`] = `
       <br />
       <a
         class="card-link"
-        href="/record/asdf/edit"
+        href="/model/abcd/record/asdf/edit"
         style="color: white;"
       >
         View Record

@@ -9,7 +9,6 @@ import {
   DestinationGroupMembership,
   Export,
   ExportProcessor,
-  File,
   Group,
   GroupMember,
   GroupRule,
@@ -17,6 +16,7 @@ import {
   Log,
   Notification,
   Permission,
+  GrouparooModel,
   GrouparooRecord,
   RecordProperty,
   Property,
@@ -39,7 +39,6 @@ export namespace Models {
   export type DestinationGroupMembershipType = Partial<
     AsyncReturnType<DestinationGroupMembership["apiData"]>
   >;
-  export type FileType = Partial<AsyncReturnType<File["apiData"]>>;
   export type ExportType = Partial<AsyncReturnType<Export["apiData"]>>;
   export type ExportProcessorType = Partial<
     AsyncReturnType<ExportProcessor["apiData"]>
@@ -57,6 +56,9 @@ export namespace Models {
   export type PermissionType = Partial<AsyncReturnType<Permission["apiData"]>>;
   export type GrouparooRecordType = Partial<
     AsyncReturnType<GrouparooRecord["apiData"]>
+  >;
+  export type GrouparooModelType = Partial<
+    AsyncReturnType<GrouparooModel["apiData"]>
   >;
   export type RecordPropertyType = Partial<
     AsyncReturnType<RecordProperty["apiData"]>
@@ -79,6 +81,14 @@ export namespace Misc {
 
 // -----------------------------------------
 
+import {
+  ModelCreate,
+  ModelDestroy,
+  ModelEdit,
+  ModelView,
+  ModelsList,
+  ModelOptions,
+} from "@grouparoo/core/src/actions/models";
 import {
   ApiKeyCreate,
   ApiKeyDestroy,
@@ -125,21 +135,12 @@ import {
   ExportProcessorsList,
 } from "@grouparoo/core/src/actions/exportProcessors";
 import {
-  FileCreate,
-  FileDestroy,
-  FileDetails,
-  FileOptions,
-  FileView,
-  FilesList,
-} from "@grouparoo/core/src/actions/files";
-import {
   GroupAddRecord,
   GroupCountComponentMembers,
   GroupCountPotentialMembers,
   GroupCreate,
   GroupDestroy,
   GroupEdit,
-  GroupExport,
   GroupListDestinations,
   GroupRemoveRecord,
   GroupRun,
@@ -184,8 +185,8 @@ import {
   RecordAutocompleteRecordProperty,
   RecordCreate,
   RecordDestroy,
-  RecordEdit,
-  RecordImportAndExport,
+  RecordImport,
+  RecordExport,
   RecordView,
   RecordsImportAndUpdate,
   RecordsList,
@@ -270,6 +271,25 @@ import { TotalsAction } from "@grouparoo/core/src/actions/totals";
 import { ObjectFind } from "@grouparoo/core/src/actions/object";
 
 export namespace Actions {
+  export type ModelCreate = AsyncReturnType<
+    typeof ModelCreate.prototype.runWithinTransaction
+  >;
+  export type ModelDestroy = AsyncReturnType<
+    typeof ModelDestroy.prototype.runWithinTransaction
+  >;
+  export type ModelEdit = AsyncReturnType<
+    typeof ModelEdit.prototype.runWithinTransaction
+  >;
+  export type ModelView = AsyncReturnType<
+    typeof ModelView.prototype.runWithinTransaction
+  >;
+  export type ModelsList = AsyncReturnType<
+    typeof ModelsList.prototype.runWithinTransaction
+  >;
+  export type ModelOptions = AsyncReturnType<
+    typeof ModelOptions.prototype.runWithinTransaction
+  >;
+
   export type ApiKeyCreate = AsyncReturnType<
     typeof ApiKeyCreate.prototype.runWithinTransaction
   >;
@@ -379,25 +399,6 @@ export namespace Actions {
     typeof ExportProcessorsList.prototype.runWithinTransaction
   >;
 
-  export type FileCreate = AsyncReturnType<
-    typeof FileCreate.prototype.runWithinTransaction
-  >;
-  export type FileDestroy = AsyncReturnType<
-    typeof FileDestroy.prototype.runWithinTransaction
-  >;
-  export type FileDetails = AsyncReturnType<
-    typeof FileDetails.prototype.runWithinTransaction
-  >;
-  export type FileOptions = AsyncReturnType<
-    typeof FileOptions.prototype.runWithinTransaction
-  >;
-  export type FileView = AsyncReturnType<
-    typeof FileView.prototype.runWithinTransaction
-  >;
-  export type FilesList = AsyncReturnType<
-    typeof FilesList.prototype.runWithinTransaction
-  >;
-
   export type GroupAddRecord = AsyncReturnType<
     typeof GroupAddRecord.prototype.runWithinTransaction
   >;
@@ -415,9 +416,6 @@ export namespace Actions {
   >;
   export type GroupEdit = AsyncReturnType<
     typeof GroupEdit.prototype.runWithinTransaction
-  >;
-  export type GroupExport = AsyncReturnType<
-    typeof GroupExport.prototype.runWithinTransaction
   >;
   export type GroupListDestinations = AsyncReturnType<
     typeof GroupListDestinations.prototype.runWithinTransaction
@@ -532,11 +530,9 @@ export namespace Actions {
   export type RecordDestroy = AsyncReturnType<
     typeof RecordDestroy.prototype.runWithinTransaction
   >;
-  export type RecordEdit = AsyncReturnType<
-    typeof RecordEdit.prototype.runWithinTransaction
-  >;
-  export type RecordImportAndExport = AsyncReturnType<
-    typeof RecordImportAndExport.prototype.runWithinTransaction
+  export type RecordImport = AsyncReturnType<typeof RecordImport.prototype.run>;
+  export type RecordExport = AsyncReturnType<
+    typeof RecordExport.prototype.runWithinTransaction
   >;
   export type RecordView = AsyncReturnType<
     typeof RecordView.prototype.runWithinTransaction
@@ -693,9 +689,7 @@ export namespace Actions {
     typeof SourcePreview.prototype.runWithinTransaction
   >;
 
-  export type PublicStatus = AsyncReturnType<
-    typeof PublicStatus.prototype.runWithinTransaction
-  >;
+  export type PublicStatus = AsyncReturnType<typeof PublicStatus.prototype.run>;
   export type PrivateStatus = AsyncReturnType<
     typeof PrivateStatus.prototype.runWithinTransaction
   >;

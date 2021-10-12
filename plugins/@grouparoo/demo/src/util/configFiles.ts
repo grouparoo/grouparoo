@@ -3,7 +3,7 @@ import fs from "fs-extra";
 import os from "os";
 import replaceInFiles from "replace-in-files";
 import glob from "glob";
-import { api, log } from "actionhero";
+import { api, config, log } from "actionhero";
 import { loadConfigDirectory } from "@grouparoo/core/dist/modules/configLoaders";
 import { getConfigDir } from "@grouparoo/core/dist/modules/pluginDetails";
 import { prettier } from "./shared";
@@ -16,34 +16,35 @@ export async function deleteConfigDir() {
 }
 
 export async function writeConfigFiles(
-  dataset: string,
   db: Connection,
-  subDirs: string[]
+  setup: boolean,
+  sources: string[],
+  destinatons: string[]
 ) {
   const configDir = await getConfigDir(true);
-  await generateConfig(dataset, db, configDir, subDirs);
-  if (subDirs.length > 0) {
-    await prettier(configDir);
-  }
+  await generateConfig(db, configDir, setup, sources, destinatons);
+  await prettier(configDir);
 }
 
 export async function loadConfigFiles(
-  dataset: string,
   db: Connection,
-  subDirs: string[]
+  setup: boolean,
+  sources: string[],
+  destinations: string[]
 ) {
-  subDirs = [...new Set(subDirs)]; // unique
-
   const demoDir = process.env.JEST_WORKER_ID
     ? `demo-${process.env.JEST_WORKER_ID}`
     : "demo";
   const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", demoDir));
-  await generateConfig(dataset, db, configDir, subDirs);
+  await generateConfig(db, configDir, setup, sources, destinations);
 
   const locked = api.codeConfig.allowLockedModelChanges;
   api.codeConfig.allowLockedModelChanges = true;
 
-  await loadConfigDirectory(configDir);
+  const { errors } = await loadConfigDirectory(configDir);
+  if (errors && errors.length) {
+    throw new Error(errors.join(", "));
+  }
 
   api.codeConfig.allowLockedModelChanges = locked;
 
@@ -51,17 +52,31 @@ export async function loadConfigFiles(
 }
 
 async function generateConfig(
-  dataset: string,
   db: Connection,
   configDir,
-  subDirs: string[]
+  setup: boolean,
+  sources: string[],
+  destinations: string[]
 ) {
   log(`Config Directory: ${configDir}`, "debug");
   deleteDir(configDir);
 
-  for (const subDir of subDirs) {
-    copyDir(configDir, dataset, db, subDir);
+  if (setup) {
+    copyDir(configDir, "setup");
   }
+
+  if (sources.length > 0) {
+    copyDir(configDir, "shared");
+  }
+
+  for (const sourceName of sources) {
+    copySource(configDir, sourceName);
+  }
+
+  for (const destinationName of destinations) {
+    copyDestination(configDir, destinationName, sources);
+  }
+
   await updateDatabase(db, configDir);
   await updateEnvVariables(configDir);
 }
@@ -72,30 +87,33 @@ function deleteDir(configDir) {
   }
 }
 
-function copyDir(configDir, dataset: string, db: any, subDir: string) {
+function copySource(configDir, sourceName: string) {
+  copyDir(configDir, sourceName);
+}
+
+function copyDestination(
+  configDir,
+  destinationName: string,
+  sources: string[]
+) {
+  copyDir(configDir, destinationName, "all");
+  for (const sourceName of sources) {
+    copyDir(configDir, destinationName, sourceName);
+  }
+}
+
+function copyDir(configDir, one: string, two?: string) {
   const rootPath = path.resolve(path.join(__dirname, "..", "..", "config"));
   fs.mkdirpSync(configDir);
 
-  copyDirIfExists(configDir, rootPath, "shared", "all", subDir);
-  copyDirIfExists(configDir, rootPath, "shared", db, subDir);
-  copyDirIfExists(configDir, rootPath, dataset, "all", subDir);
-  copyDirIfExists(configDir, rootPath, dataset, db, subDir);
-}
-
-function copyDirIfExists(
-  toConfigDir: string,
-  rootPath: string,
-  dataset: string,
-  db: any,
-  subDir: string
-) {
-  if (!dataset || !db) {
-    return;
+  let from;
+  if (two) {
+    from = path.join(rootPath, one, two);
+  } else {
+    from = path.join(rootPath, one);
   }
-  const dbName = typeof db === "string" ? db : db.name();
-  const from = path.join(rootPath, dataset, dbName, subDir);
   if (fs.existsSync(from)) {
-    fs.copySync(from, toConfigDir);
+    fs.copySync(from, configDir);
   }
 }
 
@@ -129,13 +147,13 @@ async function updateDatabase(db: Connection, configDir) {
 }
 
 async function uppercaseDatabase(configDir: string, name: string) {
-  // type: snowflake-table-import
+  // type: snowflake-import-table
   // options.table, mapping.keys
 
-  // schedule with sourceId with type: snowflake-table-import
+  // schedule with sourceId with type: snowflake-import-table
   // options.column, filters(all).key
 
-  // property with sourceId with type: snowflake-table-import
+  // property with sourceId with type: snowflake-import-table
   // options.column, options.sortColumn, filters(all).key,
 
   const sourcesPath = path.resolve(path.join(configDir, "sources", "*.json"));
@@ -146,7 +164,6 @@ async function uppercaseDatabase(configDir: string, name: string) {
   const sourceIds = [];
   const sourceFiles = glob.sync(sourcesPath);
   for (const file of sourceFiles) {
-    console.log(file);
     const contents = fs.readJSONSync(file);
     let source = null;
     let schedule = null;
@@ -163,7 +180,7 @@ async function uppercaseDatabase(configDir: string, name: string) {
       );
     }
     // find the source
-    if (source && source.type === `${name}-table-import`) {
+    if (source && source.type === `${name}-import-table`) {
       write = true;
       sourceIds.push(source.id);
       if (source.options?.table) {
@@ -194,7 +211,6 @@ async function uppercaseDatabase(configDir: string, name: string) {
 
   const propertyFiles = glob.sync(propertiesPath);
   for (const file of propertyFiles) {
-    console.log(file);
     let write = false;
     const contents = fs.readJSONSync(file);
     const property = contents;

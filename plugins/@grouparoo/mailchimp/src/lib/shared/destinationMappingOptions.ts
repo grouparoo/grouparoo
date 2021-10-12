@@ -65,7 +65,7 @@ function getProperties(
   }
 
   if (!requiredField) {
-    throw new Error(`Unknown profile mapping key: ${mappingKey}`);
+    throw new Error(`Unknown record mapping key: ${mappingKey}`);
   }
 
   return {

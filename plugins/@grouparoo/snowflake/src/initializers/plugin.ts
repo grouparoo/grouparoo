@@ -47,6 +47,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "snowflake",
+          displayName: "Snowflake",
           options: [
             {
               key: "account",

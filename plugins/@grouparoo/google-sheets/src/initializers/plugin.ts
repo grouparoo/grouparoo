@@ -35,6 +35,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "google-sheets",
+          displayName: "Google Sheets",
           options: [
             {
               key: "client_email",
@@ -59,6 +60,7 @@ export class Plugins extends Initializer {
       connections: [
         {
           name: "google-sheet-import",
+          displayName: "Google Sheets Import",
           direction: "import",
           description: "Import or update Records from a Google Sheet.",
           app: "google-sheets",

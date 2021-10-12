@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper, api } from "actionhero";
-import { Run, Schedule, Source } from "../../src";
+import { GrouparooModel, Run, Source } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   ScheduleCreate,
@@ -16,10 +16,13 @@ import {
 describe("actions/schedules", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let id: string;
+  let model: GrouparooModel;
+  let otherModel: GrouparooModel;
   let source: Source;
+  let source2: Source;
 
   beforeAll(async () => {
-    await helper.factories.properties();
+    ({ model } = await helper.factories.properties());
 
     await specHelper.runAction("team:initialize", {
       firstName: "Mario",
@@ -43,10 +46,33 @@ describe("actions/schedules", () => {
       );
       csrfToken = sessionResponse.csrfToken;
 
-      source = await helper.factories.source();
+      otherModel = await helper.factories.model({
+        id: "other_id",
+        name: "other model",
+      });
+      //source using default model
+      source = await helper.factories.source(null, { modelId: "mod_profiles" });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
+
+      //source using new model
+      source2 = await helper.factories.source(null, {
+        modelId: otherModel.id,
+      });
+
+      await source2.setOptions({ table: "test table2" });
+      const newProperty = await helper.factories.property(
+        source2,
+        {
+          unique: true,
+          key: "newProperty",
+        },
+        { column: "email" }
+      );
+      newProperty.update({ state: "ready" });
+      await source2.setMapping({ id: newProperty.key });
+      await source2.update({ state: "ready" });
     });
 
     test("an administrator can create a new schedule", async () => {
@@ -62,6 +88,7 @@ describe("actions/schedules", () => {
         "schedule:create",
         connection
       );
+
       expect(error).toBeUndefined();
       expect(schedule.id).toBeTruthy();
       expect(schedule.name).toBe("test schedule");
@@ -71,6 +98,22 @@ describe("actions/schedules", () => {
     });
 
     describe("with schedule", () => {
+      beforeAll(async () => {
+        //schedule with created otherModel's source
+        connection.params = {
+          csrfToken,
+          name: "test schedule 2",
+          type: "test-plugin-import",
+          sourceId: source2.id,
+          recurring: false,
+          confirmRecords: true,
+        };
+        const schedule2 = await specHelper.runAction<ScheduleCreate>(
+          "schedule:create",
+          connection
+        );
+      });
+
       test("an administrator can list all the schedules", async () => {
         connection.params = {
           csrfToken,
@@ -80,6 +123,24 @@ describe("actions/schedules", () => {
             "schedules:list",
             connection
           );
+
+        expect(error).toBeUndefined();
+        expect(schedules.length).toBe(2);
+        expect(schedules[0].name).toBe("test schedule 2");
+        expect(total).toBe(2);
+      });
+
+      test("an administrator can list all schedules by model id", async () => {
+        connection.params = {
+          csrfToken,
+          modelId: model.id,
+        };
+        const { error, schedules, total } =
+          await specHelper.runAction<SchedulesList>(
+            "schedules:list",
+            connection
+          );
+
         expect(error).toBeUndefined();
         expect(schedules.length).toBe(1);
         expect(schedules[0].name).toBe("test schedule");

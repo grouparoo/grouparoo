@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { plugin, App, Property, Source } from "../../src";
+import { plugin, App, Property, Source, GrouparooModel } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   PropertiesList,
@@ -20,6 +20,7 @@ import {
 describe("actions/properties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let id: string;
+  let model: GrouparooModel;
   let source: Source;
 
   beforeAll(async () => {
@@ -30,6 +31,7 @@ describe("actions/properties", () => {
       email: "mario@example.com",
     });
 
+    model = await helper.factories.model();
     await Property.truncate();
 
     source = await helper.factories.source();
@@ -400,6 +402,53 @@ describe("actions/properties", () => {
       expect(success).toBe(true);
     });
 
+    describe("with multiple models", () => {
+      let model2: GrouparooModel;
+      let source2: Source;
+
+      beforeAll(async () => {
+        model2 = await helper.factories.model({ name: "admins" });
+
+        source2 = await helper.factories.source(null, { modelId: model2.id });
+        await source2.setOptions({ table: "test table" });
+        await source2.bootstrapUniqueProperty("adminId", "integer", "id");
+        await source2.setMapping({ id: "adminId" });
+        await source2.update({ state: "ready" });
+      });
+
+      test("record preview will select a record from the property's model", async () => {
+        const foreignRecord = await helper.factories.record({
+          modelId: model.id,
+        });
+        await foreignRecord.addOrUpdateProperties({ userId: [1001] });
+
+        const _record = await helper.factories.record({ modelId: model2.id });
+        await _record.addOrUpdateProperties({ adminId: [1001] });
+
+        const property = await helper.factories.property(
+          source2,
+          { key: "adminEmail" },
+          { column: "email" }
+        );
+
+        connection.params = {
+          csrfToken,
+          id: property.id,
+        };
+        const { error, record } =
+          await specHelper.runAction<PropertyRecordPreview>(
+            "property:recordPreview",
+            connection
+          );
+        expect(error).toBeUndefined();
+        expect(record.id).toBe(_record.id);
+        expect(record.modelId).toBe(source2.modelId);
+
+        await _record.destroy();
+        await foreignRecord.destroy();
+      });
+    });
+
     describe("dynamic property options", () => {
       let app: App;
       let source: Source;
@@ -411,6 +460,7 @@ describe("actions/properties", () => {
           apps: [
             {
               name: "test-dynamic-app",
+              displayName: "test-dynamic-app",
               options: [],
               methods: {
                 test: async () => {
@@ -422,6 +472,7 @@ describe("actions/properties", () => {
           connections: [
             {
               name: "dynamic-property-options-source",
+              displayName: "dynamic-property-options-source",
               description: "a test app connection",
               app: "test-dynamic-app",
               direction: "import",
@@ -478,6 +529,7 @@ describe("actions/properties", () => {
         source = await Source.create({
           appId: app.id,
           type: "dynamic-property-options-source",
+          modelId: model.id,
         });
         await source.update({ state: "ready" });
         property = await Property.create({

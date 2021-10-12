@@ -1,4 +1,7 @@
 import App from "next/app";
+import { AxiosError } from "axios";
+import type { AppContext } from "next/app";
+
 import { UseApi } from "../hooks/useApi";
 
 import Injection from "../components/componentInjection";
@@ -7,15 +10,12 @@ import PageTransition from "../components/pageTransition";
 import StatusSubscription from "../components/statusSubscription";
 import "../components/icons";
 
-import { AxiosError } from "axios";
-
 import { Actions } from "../utils/apiData";
 
 import { ErrorHandler } from "../utils/errorHandler";
 import { SuccessHandler } from "../utils/successHandler";
 import { AppHandler } from "../utils/appHandler";
 import { DestinationHandler } from "../utils/destinationHandler";
-import { FileHandler } from "../utils/fileHandler";
 import { GroupHandler } from "../utils/groupHandler";
 import { RecordHandler } from "../utils/recordHandler";
 import { PropertiesHandler } from "../utils/propertiesHandler";
@@ -28,12 +28,12 @@ import { SourceHandler } from "../utils/sourceHandler";
 import { TeamHandler } from "../utils/teamHandler";
 import { TeamMemberHandler } from "../utils/teamMembersHandler";
 import { UploadHandler } from "../utils/uploadHandler";
+import { getModelFromUrlOrCookie } from "../utils/modelHelper";
 
 const successHandler = new SuccessHandler();
 const errorHandler = new ErrorHandler();
 const appHandler = new AppHandler();
 const destinationHandler = new DestinationHandler();
-const fileHandler = new FileHandler();
 const groupHandler = new GroupHandler();
 const recordHandler = new RecordHandler();
 const propertiesHandler = new PropertiesHandler();
@@ -51,15 +51,15 @@ export default function GrouparooWebApp(props) {
   const { Component, pageProps, err, hydrationError } = props;
 
   const combinedProps = Object.assign({}, pageProps || {}, {
-    currentTeamMember: props.currentTeamMember,
     navigation: props.navigation,
     navigationMode: props.navigationMode,
+    navigationModel: props.navigationModel,
     clusterName: props.clusterName,
+    currentTeamMember: props.currentTeamMember,
     successHandler,
     errorHandler,
     appHandler,
     destinationHandler,
-    fileHandler,
     groupHandler,
     recordHandler,
     propertiesHandler,
@@ -89,21 +89,31 @@ export default function GrouparooWebApp(props) {
   );
 }
 
-GrouparooWebApp.getInitialProps = async (appContext) => {
+GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
   const { execApi } = UseApi(appContext.ctx);
   let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
     firstName: "",
     id: null,
   };
 
+  const modelId = getModelFromUrlOrCookie(appContext.ctx);
+
   try {
     const navigationResponse: Actions.NavigationList = await execApi(
       "get",
-      `/navigation`
+      `/navigation`,
+      { modelId }
     );
 
     if (navigationResponse.teamMember) {
       currentTeamMember = navigationResponse.teamMember;
+    }
+
+    if (navigationResponse.navigationModel.value && appContext.ctx.res) {
+      appContext.ctx.res.setHeader(
+        "set-cookie",
+        `grouparooModelId=${navigationResponse.navigationModel.value}; Path=/`
+      );
     }
 
     // render page-specific getInitialProps
@@ -130,6 +140,7 @@ GrouparooWebApp.getInitialProps = async (appContext) => {
     return {
       ...appProps,
       currentTeamMember,
+      navigationModel: navigationResponse.navigationModel,
       navigationMode: navigationResponse.navigationMode,
       navigation: navigationResponse.navigation,
       clusterName: navigationResponse.clusterName,

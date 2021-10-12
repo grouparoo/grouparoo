@@ -15,16 +15,7 @@ import { SimpleAppOptions, Import, plugin, Run } from "@grouparoo/core";
 import { getConnection } from "../../src/lib/table-import/connection";
 const records = getConnection().methods.records;
 
-const nockFile = path.join(__dirname, "../", "fixtures", "table-records.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
-// these used and set by test
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
 let source;
@@ -89,7 +80,7 @@ describe("snowflake/table/records", () => {
 
     source = await helper.factories.source(app, {
       name: "SFS",
-      type: "snowflake-table-import",
+      type: "snowflake-import-table",
     });
     sourceMapping = { ID: "userId" };
     await source.setOptions({ table: "PROFILES" });

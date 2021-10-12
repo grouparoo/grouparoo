@@ -3,7 +3,6 @@ import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { Fragment, useState } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { Row, Col, ButtonGroup, Button, Alert, Card } from "react-bootstrap";
-import Moment from "react-moment";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import EnterpriseLink from "../enterpriseLink";
@@ -13,6 +12,8 @@ import RunDurationChart from "../visualizations/runDurations";
 import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
+import { DurationTime } from "../durationTime";
+import { NextPageContext } from "next";
 
 export default function RunsList(props) {
   const { errorHandler, topic }: { errorHandler: ErrorHandler; topic: string } =
@@ -39,7 +40,7 @@ export default function RunsList(props) {
 
   async function load() {
     const params = { limit, offset, topic };
-    if (router.query.id) params["id"] = router.query.id.toString();
+    if (router.query.sourceId) params["id"] = router.query.sourceId.toString();
     if (stateFilter !== "") params["state"] = stateFilter;
     if (errorFilter !== "") params["hasError"] = errorFilter;
 
@@ -188,9 +189,9 @@ export default function RunsList(props) {
                           <br />
                           <small>
                             Duration:{" "}
-                            <Moment
-                              duration={run.createdAt}
-                              date={run.completedAt}
+                            <DurationTime
+                              start={run.createdAt}
+                              end={run.completedAt}
                             />
                           </small>
                         </>
@@ -213,19 +214,16 @@ export default function RunsList(props) {
                     <td>
                       {/* <code>{JSON.stringify(run.filter)}</code> */}
                       <>
-                        {run.creatorType === "group" ? (
+                        {run.creatorType === "group" ||
+                        run.creatorType === "grouparooModel" ? (
                           <>
-                            groupMemberLimit: {run.groupMemberLimit} <br />
+                            Member Limit: {run.memberLimit} <br />
                           </>
                         ) : null}
-                        {run.creatorType === "group" ? (
+                        {run.creatorType === "group" ||
+                        run.creatorType === "grouparooModel" ? (
                           <>
-                            groupMemberOffset: {run.groupMemberOffset} <br />
-                          </>
-                        ) : null}
-                        {run.creatorType === "group" ? (
-                          <>
-                            groupHighWaterMark: {run.groupHighWaterMark} <br />
+                            Member Offset: {run.memberOffset} <br />
                           </>
                         ) : null}
                         {run.creatorType !== "group" ? (
@@ -284,11 +282,14 @@ export default function RunsList(props) {
   );
 }
 
-RunsList.hydrate = async (ctx, options: { topic?: string } = {}) => {
-  const { id, limit, offset, stateFilter, error } = ctx.query;
+RunsList.hydrate = async (
+  ctx: NextPageContext,
+  options: { topic?: string } = {}
+) => {
+  const { sourceId, limit, offset, stateFilter, error } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { runs, total } = await execApi("get", `/runs`, {
-    id,
+    id: sourceId,
     topic: options.topic,
     limit,
     offset,

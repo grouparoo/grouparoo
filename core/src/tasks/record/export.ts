@@ -56,7 +56,8 @@ export class RecordExport extends RetryableTask {
             })
           : [];
 
-      const destinations = await Destination.destinationsForGroups(
+      const destinations = await Destination.relevantFor(
+        record,
         oldGroups,
         newGroups
       );

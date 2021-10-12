@@ -39,8 +39,10 @@ import {
   Property,
   PropertyFiltersWithKey,
   SimplePropertyOptions,
+  PropertyTypes,
 } from "./Property";
 import { Run } from "./Run";
+import { GrouparooModel } from "./GrouparooModel";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
@@ -100,6 +102,11 @@ export class Source extends LoggedModel<Source> {
   @Column
   locked: string;
 
+  @AllowNull(false)
+  @ForeignKey(() => GrouparooModel)
+  @Column
+  modelId: string;
+
   @BelongsTo(() => App)
   app: App;
 
@@ -117,6 +124,9 @@ export class Source extends LoggedModel<Source> {
     scope: { ownerType: "source" },
   })
   __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
+
+  @BelongsTo(() => GrouparooModel)
+  model: GrouparooModel;
 
   async getOptions(sourceFromEnvironment = true) {
     return OptionHelper.getOptions(this, sourceFromEnvironment);
@@ -186,6 +196,7 @@ export class Source extends LoggedModel<Source> {
   }
 
   async apiData() {
+    const model = await this.$get("model");
     const app = await this.$get("app", { scope: null, include: [Option] });
     const schedule = await this.$get("schedule", { scope: null });
 
@@ -203,6 +214,8 @@ export class Source extends LoggedModel<Source> {
       mapping,
       app: app ? await app.apiData() : undefined,
       appId: this.appId,
+      modelName: model.name,
+      modelId: this.modelId,
       scheduleAvailable,
       schedule: schedule ? await schedule.apiData() : undefined,
       previewAvailable,
@@ -225,9 +238,10 @@ export class Source extends LoggedModel<Source> {
       return true;
     } else {
       const propertyMappingKey = Object.values(mapping)[0];
-      const property = (await Property.findAllWithCache()).find(
+      const property = (await Property.findAllWithCache(this.modelId)).find(
         (p) => p.key === propertyMappingKey
       );
+      if (!property) return false;
       if (!property.unique) return false;
       return true;
     }
@@ -295,7 +309,7 @@ export class Source extends LoggedModel<Source> {
 
   async bootstrapUniqueProperty(
     key: string,
-    type: string,
+    type: typeof PropertyTypes[number],
     mappedColumn: string,
     id?: string,
     local = false,
@@ -323,14 +337,19 @@ export class Source extends LoggedModel<Source> {
     const { name, type } = this;
 
     this.app = await this.$get("app");
+    this.model = await this.$get("model");
     const appId = this.app?.getConfigId();
+    const modelId = this.model?.getConfigId();
     const options = await this.getOptions(false);
 
-    if (!appId || !name) return;
+    if (!appId || !modelId || !name) {
+      return;
+    }
 
     let configObject: any = {
       class: "Source",
       id: this.getConfigId(),
+      modelId,
       name,
       type,
       appId,
@@ -362,6 +381,17 @@ export class Source extends LoggedModel<Source> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  @BeforeCreate
+  @BeforeSave
+  static async ensureModel(instance: Source) {
+    const model = await GrouparooModel.findOne({
+      where: { id: instance.modelId },
+    });
+    if (!model) {
+      throw new Error(`cannot find model with id ${instance.modelId}`);
+    }
   }
 
   @BeforeCreate

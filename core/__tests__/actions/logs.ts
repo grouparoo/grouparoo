@@ -2,12 +2,12 @@ import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { SessionCreate } from "../../src/actions/session";
 import { LogsList } from "../../src/actions/logs";
+import { GrouparooRecord } from "../../src/models/GrouparooRecord";
 
 describe("actions/logs", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
-    await helper.factories.properties();
     await specHelper.runAction("team:initialize", {
       firstName: "Mario",
       lastName: "Mario",
@@ -18,7 +18,7 @@ describe("actions/logs", () => {
 
   describe("reader signed in", () => {
     let connection;
-    let csrfToken;
+    let csrfToken: string;
 
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
@@ -63,27 +63,19 @@ describe("actions/logs", () => {
       expect(logs.length).toBeGreaterThanOrEqual(3);
     });
 
-    test("a reader can ask for logs about a record and also see logs about properties", async () => {
-      const record = await helper.factories.record();
-      await record.buildNullProperties();
-
+    test("searching for records returns GrouparooRecords", async () => {
+      const record: GrouparooRecord = await helper.factories.record();
       connection.params = {
         csrfToken,
-        ownerId: record.id,
+        topic: "record",
       };
-
       const { error, logs } = await specHelper.runAction<LogsList>(
         "logs:list",
         connection
       );
-
       expect(error).toBeUndefined();
-
-      expect(logs.length).toBeGreaterThan(1);
-      expect(logs.reverse()[0].topic).toBe("grouparooRecord");
-      expect(logs.reverse()[0].verb).toBe("create");
-      expect(logs.reverse()[1].topic).toBe("recordProperty");
-      expect(logs.reverse()[1].verb).toBe("create");
+      expect(logs.length).toEqual(1);
+      await record.destroy();
     });
   });
 });

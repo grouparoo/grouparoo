@@ -2,7 +2,6 @@ import "../utils/mock";
 import "@grouparoo/spec-helper";
 
 import { helper } from "@grouparoo/spec-helper";
-import path from "path";
 import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
@@ -11,21 +10,7 @@ import { SimpleAppOptions } from "@grouparoo/core";
 import { getConnection } from "../../src/lib/table-import/connection";
 const sourceFilters = getConnection().methods.sourceFilters;
 
-const nockFile = path.join(
-  __dirname,
-  "../",
-  "fixtures",
-  "table-source-filters.js"
-);
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
-// these used and set by test
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const sourceOptions = { table: "PURCHASES" };
 

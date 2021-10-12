@@ -43,6 +43,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "marketo",
+          displayName: "Marketo",
           options: [
             {
               key: "endpoint",
@@ -77,9 +78,10 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "marketo-export",
+          name: "marketo-export-leads",
+          displayName: "Marketo Export Leads",
           direction: "export",
-          description: "Export Profiles to a Marketo account.",
+          description: "Export Records to a Marketo account.",
           app: "marketo",
           syncModes,
           defaultSyncMode,

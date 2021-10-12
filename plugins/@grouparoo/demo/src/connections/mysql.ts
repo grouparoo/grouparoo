@@ -100,8 +100,19 @@ export default class MySQL extends Connection {
 
     await this.query(1, `DROP TABLE IF EXISTS ${sqlTable}`);
 
-    const createQuery = `CREATE TABLE ${sqlTable} (${columnTypes.join(", ")})`;
-    await this.query(1, createQuery);
+    try {
+      // new mysql
+      const createQuery = `CREATE TABLE ${sqlTable} (${columnTypes.join(
+        ", "
+      )})`;
+      await this.query(1, createQuery);
+    } catch (e) {
+      // old mysql
+      const createQuery = `CREATE TABLE ${sqlTable} (${columnTypes
+        .map((t) => t.replace(`TIMESTAMP NOT NULL`, `DATETIME NOT NULL`))
+        .join(", ")})`;
+      await this.query(1, createQuery);
+    }
 
     if (typeColumn !== "id") {
       const indexQuery = `CREATE INDEX \`${tableName}_${typeColumn}\` ON ${sqlTable} (${typeColumn});`;

@@ -41,6 +41,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "sailthru",
+          displayName: "SailThru",
           options: [
             {
               key: "apiKey",
@@ -61,9 +62,10 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "sailthru-export",
+          name: "sailthru-export-users",
+          displayName: "SailThru Export Users",
           direction: "export",
-          description: "Export Profiles to Sailthru.",
+          description: "Export Records to Sailthru.",
           app: "sailthru",
           syncModes,
           defaultSyncMode,

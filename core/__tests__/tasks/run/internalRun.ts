@@ -34,7 +34,9 @@ describe("tasks/run:internalRun", () => {
         { state: "ready" },
         { where: { recordId: record.id } }
       );
-      await record.reload({ include: [RecordProperty] });
+      await record.reload({
+        include: RecordProperty,
+      });
       await record.update({ state: "ready" });
     });
 
@@ -47,11 +49,13 @@ describe("tasks/run:internalRun", () => {
       await specHelper.runTask("run:internalRun", { runId: run.id });
 
       await run.reload();
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(1);
-      expect(run.groupMethod).toBe("internalRun");
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(1);
+      expect(run.method).toBe("internalRun");
 
-      await record.reload({ include: [RecordProperty] });
+      await record.reload({
+        include: RecordProperty,
+      });
       expect(record.state).toBe("pending");
       record.recordProperties.forEach((p) => expect(p.state).toBe("pending"));
 
@@ -66,11 +70,13 @@ describe("tasks/run:internalRun", () => {
       await specHelper.runTask("run:internalRun", { runId: run.id });
 
       await run.reload();
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(1);
-      expect(run.groupMethod).toBe("internalRun");
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(1);
+      expect(run.method).toBe("internalRun");
 
-      await record.reload({ include: [RecordProperty] });
+      await record.reload({
+        include: RecordProperty,
+      });
       expect(record.state).toBe("pending");
       expect(new Set(record.recordProperties.map((p) => p.state))).toEqual(
         new Set(["ready", "pending"])

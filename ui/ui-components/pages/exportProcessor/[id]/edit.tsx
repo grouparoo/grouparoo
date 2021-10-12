@@ -1,12 +1,12 @@
 import { UseApi } from "../../../hooks/useApi";
-import { Row, Col, Table, Alert, Card } from "react-bootstrap";
-import Link from "next/link";
+import { Table, Alert, Card } from "react-bootstrap";
 import EnterpriseLink from "../../../components/enterpriseLink";
 import Head from "next/head";
-import Moment from "react-moment";
 import ExportProcessorTabs from "../../../components/tabs/exportProcessor";
 import { Models } from "../../../utils/apiData";
 import StateBadge from "../../../components/badges/stateBadge";
+import { DurationTime } from "../../../components/durationTime";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page({
   exportProcessor,
@@ -31,8 +31,8 @@ export default function Page({
             <br />
             Destination:{" "}
             <EnterpriseLink
-              href="/destination/[id]/edit"
-              as={`/destination/${exportProcessor.destination.id}/edit`}
+              href="/model/[modelId]/destination/[destinationId]/edit"
+              as={`/model/${exportProcessor.destination.modelId}/destination/${exportProcessor.destination.id}/edit`}
             >
               <a>{exportProcessor.destination.name}</a>
             </EnterpriseLink>
@@ -57,9 +57,9 @@ export default function Page({
           <p>
             Total duration:{" "}
             <strong>
-              <Moment
-                duration={exportProcessor.createdAt}
-                date={exportProcessor.completedAt}
+              <DurationTime
+                start={exportProcessor.createdAt}
+                end={exportProcessor.completedAt}
               />
             </strong>
           </p>
@@ -74,58 +74,52 @@ export default function Page({
             <tbody>
               <tr>
                 <td>Created</td>
-                <td>{new Date(exportProcessor.createdAt).toLocaleString()}</td>
+                <td>{formatTimestamp(exportProcessor.createdAt)}</td>
                 <td>⇣</td>
               </tr>
               <tr>
                 <td>Process</td>
                 <td>
                   {exportProcessor.processAt
-                    ? new Date(exportProcessor.processAt).toLocaleString()
-                    : null}
+                    ? formatTimestamp(exportProcessor.processAt)
+                    : "pending"}
                 </td>
                 <td>
                   ⇣
-                  {exportProcessor.processAt ? (
-                    <Moment
-                      duration={exportProcessor.createdAt}
-                      date={exportProcessor.processAt + 1} // +1 needed as the times may be exactly the same
-                    />
-                  ) : null}
+                  <DurationTime
+                    start={exportProcessor.createdAt}
+                    end={exportProcessor.processAt}
+                  />
                 </td>
               </tr>
               <tr>
                 <td>Started</td>
                 <td>
                   {exportProcessor.startedAt
-                    ? new Date(exportProcessor.startedAt).toLocaleString()
-                    : null}
+                    ? formatTimestamp(exportProcessor.startedAt)
+                    : "pending"}
                 </td>
                 <td>
                   ⇣
-                  {exportProcessor.startedAt ? (
-                    <Moment
-                      duration={exportProcessor.processAt}
-                      date={exportProcessor.startedAt}
-                    />
-                  ) : null}
+                  <DurationTime
+                    start={exportProcessor.processAt}
+                    end={exportProcessor.startedAt}
+                  />
                 </td>
               </tr>
               <tr>
                 <td>Completed</td>
                 <td>
                   {exportProcessor.completedAt
-                    ? new Date(exportProcessor.completedAt).toLocaleString()
-                    : null}
+                    ? formatTimestamp(exportProcessor.completedAt)
+                    : "pending"}
                 </td>
                 <td>
                   ⇣
-                  {exportProcessor.completedAt ? (
-                    <Moment
-                      duration={exportProcessor.startedAt}
-                      date={exportProcessor.completedAt}
-                    />
-                  ) : null}
+                  <DurationTime
+                    start={exportProcessor.startedAt}
+                    end={exportProcessor.completedAt}
+                  />
                 </td>
               </tr>
             </tbody>

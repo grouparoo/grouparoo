@@ -10,6 +10,12 @@ import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
+import { NextPageContext } from "next";
+
+const getOwnerId = (query: { [key: string]: string | string[] }) => {
+  const { id, recordId, propertyId, sourceId, destinationId, groupId } = query;
+  return id ?? recordId ?? propertyId ?? sourceId ?? destinationId ?? groupId;
+};
 
 export default function LogsList(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
@@ -35,7 +41,6 @@ export default function LogsList(props) {
     "group",
     "groupMember",
     "record",
-    "recordProperty",
     "property",
     "schedule",
     "setting",
@@ -55,7 +60,7 @@ export default function LogsList(props) {
       limit,
       offset,
       topic,
-      ownerId: router.query.id,
+      ownerId: getOwnerId(router.query),
     });
     setLoading(false);
     if (response?.logs) {
@@ -68,9 +73,8 @@ export default function LogsList(props) {
     let ownerId = log.ownerId;
     let topic = log.topic;
 
-    if (topic === "recordProperty") {
+    if (topic === "grouparooRecord") {
       topic = "record";
-      ownerId = log.data.recordId;
     }
 
     if (topic === "groupMember") {
@@ -108,6 +112,8 @@ export default function LogsList(props) {
     <>
       {props.header ? props.header : <h1>Logs</h1>}
 
+      <strong>Topics:</strong>
+      <br />
       <ButtonGroup id="log-types">
         <Button
           size="sm"
@@ -212,11 +218,11 @@ export default function LogsList(props) {
   );
 }
 
-LogsList.hydrate = async (ctx) => {
+LogsList.hydrate = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
-  const { id, limit, offset, topic } = ctx.query;
+  const { limit, offset, topic } = ctx.query;
   const { logs, total } = await execApi("get", `/logs`, {
-    ownerId: id,
+    ownerId: getOwnerId(ctx.query),
     limit,
     offset,
     topic,

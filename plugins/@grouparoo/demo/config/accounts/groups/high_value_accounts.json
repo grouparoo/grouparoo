@@ -1,0 +1,16 @@
+{
+  "id": "high_value_accounts",
+  "class": "Group",
+  "type": "calculated",
+  "name": "High Value Accounts",
+  "modelId": "accounts",
+  "rules": [
+    {
+      "propertyId": "account_value",
+      "operation": {
+        "op": "gt"
+      },
+      "match": "800"
+    }
+  ]
+}

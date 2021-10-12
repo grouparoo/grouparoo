@@ -42,6 +42,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "mailjet",
+          displayName: "Mailjet",
           options: [
             {
               key: "apiKey",
@@ -63,10 +64,11 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "mailjet-export",
+          name: "mailjet-export-contacts",
+          displayName: "Mailjet Export Contacts",
           direction: "export",
           description:
-            "Export Profiles to Mailjet and add them to Contact Lists.",
+            "Export Records to Mailjet and add them to Contact Lists.",
           app: "mailjet",
           syncModes,
           defaultSyncMode,

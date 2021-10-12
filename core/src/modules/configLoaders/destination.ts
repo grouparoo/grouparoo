@@ -41,6 +41,7 @@ export async function loadDestination(
       type: configObject.type,
       syncMode: configObject.syncMode,
       appId: app.id,
+      modelId: configObject.modelId,
     });
   }
 
@@ -49,10 +50,12 @@ export async function loadDestination(
     group = await getParentByName(Group, configObject.groupId);
   }
 
+  // do not set groupId or collection here, that's handled within the updateTracking method
   await destination.update({
     name: configObject.name,
     type: configObject.type,
     syncMode: configObject.syncMode,
+    modelId: configObject.modelId,
     locked: ConfigWriter.getLockKey(configObject),
   });
 
@@ -81,13 +84,14 @@ export async function loadDestination(
   }
   await destination.setDestinationGroupMemberships(destinationGroupMemberships);
 
-  if (group && destination.groupId !== group.id) {
-    await destination.trackGroup(group);
-  }
+  await destination.updateTracking(
+    configObject.collection ?? "none", // allow a "null" collection in config to be treated as a "none" collection
+    configObject.groupId
+  );
 
   if (destination.state === "deleted") {
     // when bringing back deleted destinations, we need to be sure to trigger a new export even though options may be the same
-    await destination.exportGroupMembers(true);
+    await destination.exportMembers(true);
   }
 
   await destination.update({ state: "ready" });

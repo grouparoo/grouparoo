@@ -111,6 +111,7 @@ export class Client {
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json",
+      "X-Grouparoo-Client": `${PackageJSON.name}-v${PackageJSON.version}`,
     };
 
     if (req?.headers?.cookie) {
@@ -124,8 +125,6 @@ export class Client {
       data: null,
       url: `${this.webUrl}/api/${this.apiVersion}${path}`, // path comes with a leading "/"
       withCredentials: true,
-      //@ts-ignore
-      agent: `${PackageJSON.name}-v${PackageJSON.version}`,
       method: verb.toLowerCase() as Method,
       headers,
       onUploadProgress: (progressEvent) => {
@@ -175,7 +174,7 @@ export class Client {
     }
 
     try {
-      const response = await Axios(options);
+      const response: Record<string, any> = await Axios(options);
 
       if (unlock) {
         unlock(response.data);

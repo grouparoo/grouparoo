@@ -1,7 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Validate } from "../../src/bin/validate";
 import { join } from "path";
-import { Setting } from "../../src";
+import { GrouparooModel, Setting } from "../../src";
 let actionhero;
 
 const filename = join(
@@ -58,7 +58,7 @@ describe("bin/config-validate", () => {
 
       const output = messages.join(" ");
       expect(output).toContain(
-        "✅ Validation succeeded - 14 config objects OK!"
+        "✅ Validation succeeded - 15 config objects OK!"
       );
     });
 

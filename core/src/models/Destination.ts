@@ -39,6 +39,7 @@ import { GroupRule } from "./GroupRule";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
 import { Property } from "./Property";
+import { GrouparooModel } from "./GrouparooModel";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -50,6 +51,9 @@ export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
 const SYNC_MODES = ["sync", "additive", "enrich"] as const;
 export type DestinationSyncMode = typeof SYNC_MODES[number];
+
+const DESTINATION_COLLECTIONS = ["none", "group", "model"] as const;
+export type DestinationCollection = typeof DESTINATION_COLLECTIONS[number];
 
 export interface DestinationSyncOperations {
   create: boolean;
@@ -159,6 +163,20 @@ export class Destination extends LoggedModel<Destination> {
   @ForeignKey(() => Group)
   groupId: string;
 
+  @AllowNull(true)
+  @Column(DataType.ENUM(...SYNC_MODES))
+  syncMode: DestinationSyncMode;
+
+  @AllowNull(false)
+  @Default("none")
+  @Column(DataType.ENUM(...DESTINATION_COLLECTIONS))
+  collection: DestinationCollection;
+
+  @AllowNull(false)
+  @ForeignKey(() => GrouparooModel)
+  @Column
+  modelId: string;
+
   @BelongsTo(() => App)
   app: App;
 
@@ -180,9 +198,8 @@ export class Destination extends LoggedModel<Destination> {
   @HasMany(() => Export)
   exports: Export[];
 
-  @AllowNull(true)
-  @Column(DataType.ENUM(...SYNC_MODES))
-  syncMode: DestinationSyncMode;
+  @BelongsTo(() => GrouparooModel)
+  model: GrouparooModel;
 
   async apiData(includeApp = true, includeGroup = true) {
     let app: App;
@@ -193,6 +210,7 @@ export class Destination extends LoggedModel<Destination> {
       group = await this.$get("group", { scope: null, include: [GroupRule] });
     }
 
+    const model = await this.$get("model");
     const mapping = await this.getMapping();
     const options = await this.getOptions(null);
     const destinationGroupMemberships =
@@ -214,11 +232,14 @@ export class Destination extends LoggedModel<Destination> {
       locked: this.locked,
       syncMode,
       syncModes: syncModeData,
+      collection: this.collection,
       app: app ? await app.apiData() : null,
+      modelId: this.modelId,
+      modelName: model.name,
       mapping,
       options,
       connection: pluginConnection,
-      destinationGroup: group ? await group.apiData() : null,
+      group: group ? await group.apiData() : null,
       destinationGroupMemberships,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
@@ -253,7 +274,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) return this.exportGroupMembers(true);
+    if (hasChanges) return this.exportMembers(true);
   }
 
   async getExportArrayProperties() {
@@ -314,16 +335,15 @@ export class Destination extends LoggedModel<Destination> {
     return OptionHelper.getPlugin(this);
   }
 
-  async exportGroupMembers(force = false) {
-    return DestinationOps.exportGroupMembers(this, force);
+  async exportMembers(force = false) {
+    return DestinationOps.exportMembers(this, force);
   }
 
-  async trackGroup(group: Group, force = true) {
-    return DestinationOps.trackGroup(this, group, force);
-  }
-
-  async unTrackGroup(force = false) {
-    return DestinationOps.unTrackGroup(this, force);
+  async updateTracking(
+    collection: Destination["collection"],
+    collectionId?: string
+  ) {
+    return DestinationOps.updateTracking(this, collection, collectionId);
   }
 
   async getSupportedSyncModes() {
@@ -379,7 +399,7 @@ export class Destination extends LoggedModel<Destination> {
       false,
       saveCache
     );
-    const properties = await Property.findAllWithCache();
+    const properties = await Property.findAllWithCache(this.modelId);
     const exportArrayProperties = await this.getExportArrayProperties();
 
     // check for array properties
@@ -526,14 +546,19 @@ export class Destination extends LoggedModel<Destination> {
 
     for (const otherDestination of otherDestinations) {
       const otherOptions = await otherDestination.getOptions(true);
-      let isSameGroup =
-        this.groupId === otherDestination.groupId ||
-        (!this.groupId && !otherDestination.groupId);
-      let isSameOptions =
+      const isSameGroup =
+        this.collection === "group" && otherDestination.collection === "group"
+          ? this.groupId === otherDestination.groupId
+          : false;
+      const isSameModel =
+        this.collection === "model" && otherDestination.collection === "model"
+          ? this.modelId === otherDestination.modelId
+          : false;
+      const isSameOptions =
         JSON.stringify(Object.entries(otherOptions)) ===
         JSON.stringify(Object.entries(options));
 
-      if (isSameOptions && isSameGroup) {
+      if (isSameOptions && (isSameGroup || isSameModel)) {
         throw new Error(
           `destination "${otherDestination.name}" (${otherDestination.id}) is already using this app with the same options and group`
         );
@@ -549,6 +574,8 @@ export class Destination extends LoggedModel<Destination> {
     const { name, type, syncMode } = this;
 
     this.app = await this.$get("app");
+    this.model = await this.$get("model");
+    const modelId = this.model?.getConfigId();
     const appId = this.app?.getConfigId();
     this.group = await this.$get("group");
     const groupId = this.group?.getConfigId();
@@ -563,14 +590,18 @@ export class Destination extends LoggedModel<Destination> {
     const options = await this.getOptions(false);
     const mapping = await MappingHelper.getConfigMapping(this);
 
-    if (!name || !appId) return;
+    if (!name || !appId || !modelId) {
+      return;
+    }
 
     return {
       class: "Destination",
       id: this.getConfigId(),
+      modelId,
       name,
       type,
       appId,
+      collection: this.collection,
       groupId,
       syncMode,
       options,
@@ -585,6 +616,17 @@ export class Destination extends LoggedModel<Destination> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  @BeforeCreate
+  @BeforeSave
+  static async ensureModel(instance: Destination) {
+    const model = await GrouparooModel.findOne({
+      where: { id: instance.modelId },
+    });
+    if (!model) {
+      throw new Error(`cannot find model with id ${instance.modelId}`);
+    }
   }
 
   @BeforeCreate
@@ -614,6 +656,22 @@ export class Destination extends LoggedModel<Destination> {
   static async validateSyncMode(instance: Destination) {
     if (instance.state !== "ready") return;
     await instance.validateSyncMode();
+  }
+
+  @BeforeSave
+  static async validateRecordCollectionMode(instance: Destination) {
+    if (
+      instance.collection &&
+      !DESTINATION_COLLECTIONS.includes(instance.collection)
+    ) {
+      throw new Error(
+        `${instance.collection} is not a valid destination collection`
+      );
+    }
+
+    if (instance.collection !== "group" && instance.groupId) {
+      instance.groupId = null;
+    }
   }
 
   @BeforeSave
@@ -706,14 +764,25 @@ export class Destination extends LoggedModel<Destination> {
   /**
    * Determine which destinations are interested in this record due to the groups they are tracking
    */
-  static async destinationsForGroups(
+  static async relevantFor(
+    record: GrouparooRecord,
     oldGroups: Group[] = [],
     newGroups: Group[] = []
   ) {
     const combinedGroupIds = [...oldGroups, ...newGroups].map((g) => g.id);
-    const relevantDestinations = await Destination.findAll({
-      where: { groupId: { [Op.in]: combinedGroupIds } },
-    });
+    const relevantDestinations =
+      combinedGroupIds.length > 0
+        ? await Destination.findAll({
+            where: {
+              [Op.or]: [
+                { collection: "model", modelId: record.modelId },
+                { collection: "group", groupId: { [Op.in]: combinedGroupIds } },
+              ],
+            },
+          })
+        : await Destination.findAll({
+            where: { collection: "model", modelId: record.modelId },
+          });
 
     return relevantDestinations;
   }

@@ -3,12 +3,13 @@ import Head from "next/head";
 import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Alert, Card } from "react-bootstrap";
 import Link from "next/link";
-import Moment from "react-moment";
 import { Models } from "../../../utils/apiData";
 import {
   ImportRecordPropertiesDiff,
   ImportGroupsDiff,
 } from "../../../components/import/diff";
+import { DurationTime } from "../../../components/durationTime";
+import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page(props) {
   const {
@@ -44,10 +45,7 @@ export default function Page(props) {
             )}
             <br />
             Record:{" "}
-            <Link
-              href="/record/[id]/edit"
-              as={`/record/${_import.recordId}/edit`}
-            >
+            <Link href="/object/[id]" as={`/object/${_import.recordId}`}>
               <a>{_import.recordId}</a>
             </Link>
           </p>
@@ -108,9 +106,9 @@ export default function Page(props) {
           <p>
             Total duration:{" "}
             <strong>
-              <Moment
-                duration={_import.createdAt}
-                date={_import.groupsUpdatedAt}
+              <DurationTime
+                start={_import.createdAt}
+                end={_import.groupsUpdatedAt}
               />
             </strong>
           </p>
@@ -125,39 +123,55 @@ export default function Page(props) {
             <tbody>
               <tr>
                 <td>Created</td>
-                <td>{new Date(_import.createdAt).toLocaleString()}</td>
+                <td>
+                  {_import.createdAt
+                    ? formatTimestamp(_import.createdAt)
+                    : "pending"}
+                </td>
                 <td>⇣</td>
               </tr>
               <tr>
                 <td>Associated</td>
-                <td>{new Date(_import.recordAssociatedAt).toLocaleString()}</td>
+                <td>
+                  {_import.recordAssociatedAt
+                    ? formatTimestamp(_import.recordAssociatedAt)
+                    : "pending"}
+                </td>
                 <td>
                   ⇣
-                  <Moment
-                    duration={_import.recordAssociatedAt || 0}
-                    date={_import.createdAt}
+                  <DurationTime
+                    start={_import.createdAt}
+                    end={_import.recordAssociatedAt}
                   />
                 </td>
               </tr>
               <tr>
                 <td>Record Updated</td>
-                <td>{new Date(_import.recordUpdatedAt).toLocaleString()}</td>
+                <td>
+                  {_import.recordUpdatedAt
+                    ? formatTimestamp(_import.recordUpdatedAt)
+                    : "pending"}
+                </td>
                 <td>
                   ⇣
-                  <Moment
-                    duration={_import.recordAssociatedAt || 0}
-                    date={_import.recordUpdatedAt}
+                  <DurationTime
+                    start={_import.recordAssociatedAt}
+                    end={_import.recordUpdatedAt}
                   />
                 </td>
               </tr>
               <tr>
                 <td>Groups Updated</td>
-                <td>{new Date(_import.groupsUpdatedAt).toLocaleString()}</td>
+                <td>
+                  {_import.groupsUpdatedAt
+                    ? formatTimestamp(_import.groupsUpdatedAt)
+                    : "pending"}
+                </td>
                 <td>
                   ⇣
-                  <Moment
-                    duration={_import.groupsUpdatedAt}
-                    date={_import.recordUpdatedAt}
+                  <DurationTime
+                    start={_import.recordUpdatedAt}
+                    end={_import.groupsUpdatedAt}
                   />
                 </td>
               </tr>

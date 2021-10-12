@@ -30,8 +30,9 @@ export default function AddPropertyForm(props) {
     );
 
     if (response?.property) {
+      const property = response.property;
       router.push(
-        `/property/${response.property.id}/edit?nextPage=/source/${source.id}/overview`
+        `/model/${source.modelId}/property/${property.id}/edit?nextPage=/model/${source.modelId}/source/${source.id}/overview`
       );
     } else {
       setLoading(false);

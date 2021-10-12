@@ -6,7 +6,8 @@ import { sourceRunPercentComplete } from "./sourceRunPercentComplete";
 import { getSourceOptions } from "../shared/connectionOptions";
 
 const connection: PluginConnection = {
-  name: "mailchimp-import",
+  name: "mailchimp-import-contacts",
+  displayName: "Mailchimp Import Contacts",
   direction: "import",
   description: "Import or update records with data from Mailchimp contacts.",
   app: "mailchimp",

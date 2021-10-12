@@ -1,4 +1,3 @@
-import path from "path";
 import { helper } from "@grouparoo/spec-helper";
 import { exportBatch } from "../../src/lib/export/exportRecords";
 import { connect } from "../../src/lib/connect";
@@ -6,15 +5,7 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 import PardotClient from "../../src/lib/client";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-records.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const appId = "app_a0bb07d8-0a4e-49b5-ad42-545f2e8662e6";
 
@@ -74,7 +65,7 @@ async function isProspectDeleted(id: number): Promise<boolean> {
 }
 
 async function getListMemberIds(listId: number): Promise<number[]> {
-  const response = await client.request.get(
+  const response: Record<string, any> = await client.request.get(
     "/listMembership/version/4/do/query",
     {
       params: {

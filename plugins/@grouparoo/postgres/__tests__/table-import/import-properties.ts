@@ -173,6 +173,18 @@ describe("postgres/table/recordProperties", () => {
           expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
           expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
+        test("to get multiple values from the same column", async () => {
+          const columns = ["first_name", "first_name"];
+          const [values, properties] = await getPropertyValues({
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          });
+          expect(values[record.id][properties[0].id]).toEqual(["Erie"]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual(["Cacilie"]);
+          expect(values[record.id][properties[1].id]).toEqual(["Erie"]);
+          expect(values[otherRecord.id][properties[1].id]).toEqual(["Cacilie"]);
+        });
 
         test("to get a float", async () => {
           const columns = ["ltv"];

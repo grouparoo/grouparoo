@@ -7,7 +7,6 @@ import EnterpriseLink from "../enterpriseLink";
 import { useRouter } from "next/router";
 import { Row, Col, ButtonGroup, Button, Badge, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
-import Moment from "react-moment";
 import LoadingTable from "../loadingTable";
 import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
@@ -15,6 +14,7 @@ import { ExportGroupsDiff, ExportRecordPropertiesDiff } from "./diff";
 import { capitalize } from "../../utils/languageHelper";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import StateBadge from "../badges/stateBadge";
+import { DurationTime } from "../durationTime";
 
 const states = [
   "all",
@@ -41,16 +41,12 @@ export default function ExportsList(props) {
   const { offset, setOffset } = useOffset();
   const [state, setState] = useState(router.query.state?.toString() || "all");
 
-  let recordId: string;
+  const recordId = router.query.recordId;
   let exportProcessorId: string;
-  let destinationId: string;
+  let destinationId = router.query.destinationId;
   if (router.query.id) {
-    if (router.pathname.match("/record/")) {
-      recordId = router.query.id.toString();
-    } else if (router.pathname.match("/exportProcessor/")) {
+    if (router.pathname.match("/exportProcessor/")) {
       exportProcessorId = router.query.id.toString();
-    } else {
-      destinationId = router.query.id.toString();
     }
   }
 
@@ -176,16 +172,16 @@ export default function ExportsList(props) {
                     ) : null}
                     Record:{" "}
                     <Link
-                      href="/record/[id]/edit"
-                      as={`/record/${_export.recordId}/edit`}
+                      href="/model/[modelId]/record/[recordId]/edit"
+                      as={`/model/${_export.destination.modelId}/record/${_export.recordId}/edit`}
                     >
                       <a>{_export.recordId}</a>
                     </Link>
                     <br />
                     Destination:{" "}
                     <EnterpriseLink
-                      href="/destination/[id]/edit"
-                      as={`/destination/${_export.destination.id}/edit`}
+                      href="/model/[modelId]/destination/[destinationId]/edit"
+                      as={`/model/${_export.destination.modelId}/destination/${_export.destination.id}/edit`}
                     >
                       <a>{_export.destination.name}</a>
                     </EnterpriseLink>
@@ -211,28 +207,28 @@ export default function ExportsList(props) {
                     Created:{" "}
                     {_export.createdAt
                       ? formatTimestamp(_export.createdAt)
-                      : null}
+                      : "pending"}
                     <br />
                     Send:{" "}
-                    {_export.startedAt ? formatTimestamp(_export.sendAt) : null}
+                    {_export.startedAt
+                      ? formatTimestamp(_export.sendAt)
+                      : "pending"}
                     <br />
                     Start:{" "}
                     {_export.startedAt
                       ? formatTimestamp(_export.startedAt)
-                      : null}
+                      : "pending"}
                     <br />
                     End:{" "}
                     {_export.completedAt
                       ? formatTimestamp(_export.completedAt)
-                      : null}
+                      : "pending"}
                     <br />
                     Duration:{" "}
-                    {_export.completedAt ? (
-                      <Moment
-                        duration={_export.createdAt}
-                        date={_export.completedAt}
-                      />
-                    ) : null}
+                    <DurationTime
+                      start={_export.createdAt}
+                      end={_export.completedAt}
+                    />
                   </td>
                   <td>
                     <ExportRecordPropertiesDiff _export={_export} />
@@ -261,20 +257,12 @@ export default function ExportsList(props) {
 
 ExportsList.hydrate = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { id, limit, offset, state } = ctx.query;
+  const { id, limit, offset, state, recordId, destinationId } = ctx.query;
   const { groups } = await execApi("get", `/groups`);
 
-  let recordId: string;
   let exportProcessorId: string;
-  let destinationId: string;
-  if (id) {
-    if (ctx.pathname.match("/record/")) {
-      recordId = id;
-    } else if (ctx.pathname.match("/exportProcessor/")) {
-      exportProcessorId = id;
-    } else {
-      destinationId = id;
-    }
+  if (id && ctx.pathname.match("/exportProcessor/")) {
+    exportProcessorId = id;
   }
 
   const { exports: _exports, total } = await execApi("get", `/exports`, {

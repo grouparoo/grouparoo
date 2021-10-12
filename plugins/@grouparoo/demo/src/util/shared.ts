@@ -79,9 +79,5 @@ export async function reset() {
 }
 
 export async function finalize() {
-  // stop all the runs. they will get picked up later
-  const runs = await Run.findAll({ where: { state: "running" } });
-  for (const run of runs) {
-    await run.stop();
-  }
+  // nothing to do for now
 }

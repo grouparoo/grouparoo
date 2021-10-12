@@ -25,6 +25,7 @@ export class DestinationsList extends AuthenticatedAction {
       limit: { required: true, default: 100, formatter: APIData.ensureNumber },
       offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       state: { required: false },
+      modelId: { required: false },
       order: {
         required: false,
         formatter: APIData.ensureObject,
@@ -40,6 +41,7 @@ export class DestinationsList extends AuthenticatedAction {
     const where = {};
 
     if (params.state) where["state"] = params.state;
+    if (params.modelId) where["modelId"] = params.modelId;
 
     const total = await Destination.scope(null).count({ where });
 
@@ -115,6 +117,7 @@ export class DestinationCreate extends AuthenticatedAction {
     this.inputs = {
       name: { required: false },
       type: { required: true },
+      modelId: { required: true },
       state: { required: false },
       appId: { required: true },
       options: { required: false, formatter: APIData.ensureObject },
@@ -132,6 +135,7 @@ export class DestinationCreate extends AuthenticatedAction {
     const destination = await Destination.create({
       name: params.name,
       type: params.type,
+      modelId: params.modelId,
       appId: params.appId,
       syncMode: params.syncMode,
     });
@@ -166,8 +170,9 @@ export class DestinationEdit extends AuthenticatedAction {
       mapping: { required: false, formatter: APIData.ensureObject },
       syncMode: { required: false },
       destinationGroupMemberships: { required: false },
-      trackedGroupId: { required: false },
-      triggerExport: { required: false },
+      groupId: { required: false },
+      collection: { required: false },
+      triggerExport: { required: false, formatter: APIData.ensureBoolean },
     };
   }
 
@@ -183,31 +188,37 @@ export class DestinationEdit extends AuthenticatedAction {
       );
     }
 
-    await destination.update(params);
+    // do not set groupId or collection here, that's handled within the updateTracking method
+    await destination.update({
+      name: params.name,
+      type: params.type,
+      modelId: params.modelId,
+      appId: params.appId,
+      state: params.state,
+      syncMode: params.syncMode,
+    });
 
-    let run: Run;
+    let oldRun: Run;
+    let newRun: Run;
+    if (params.collection !== undefined || params.groupId !== undefined) {
+      const updateResponse = await destination.updateTracking(
+        params.collection,
+        params.groupId
+      );
+      oldRun = updateResponse.oldRun;
+      newRun = updateResponse.newRun;
+    }
 
-    if (
-      params.trackedGroupId &&
-      params.trackedGroupId !== "_none" &&
-      params.trackedGroupId !== destination.groupId
-    ) {
-      const group = await Group.findById(params.trackedGroupId);
-      run = await destination.trackGroup(group);
-    } else if (
-      (params.trackedGroupId === "_none" || params.trackedGroupId === null) &&
-      destination.groupId
-    ) {
-      run = await destination.unTrackGroup();
-    } else if (params.triggerExport) {
-      run = await destination.exportGroupMembers(true);
+    if (params.triggerExport && !newRun && !oldRun) {
+      newRun = await destination.exportMembers(true);
     }
 
     await ConfigWriter.run();
 
     return {
       destination: await destination.apiData(),
-      run: run ? await run.apiData() : undefined,
+      oldRun: oldRun ? await oldRun.apiData() : undefined,
+      newRun: newRun ? await newRun.apiData() : undefined,
     };
   }
 }
@@ -317,7 +328,7 @@ export class DestinationExport extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const destination = await Destination.findById(params.id);
-    await destination.exportGroupMembers(params.force);
+    await destination.exportMembers(params.force);
     return { success: true };
   }
 }
@@ -332,7 +343,9 @@ export class DestinationRecordPreview extends AuthenticatedAction {
     this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       id: { required: true },
+      collection: { required: false },
       groupId: { required: false },
+      modelId: { required: false },
       recordId: { required: false },
       mapping: { required: false, formatter: APIData.ensureObject },
       destinationGroupMemberships: {
@@ -346,9 +359,11 @@ export class DestinationRecordPreview extends AuthenticatedAction {
     const destination = await Destination.findById(params.id);
 
     let record: GrouparooRecord;
+    const collection = params.collection ?? destination.collection;
+
     if (params.recordId) {
       record = await GrouparooRecord.findById(params.recordId);
-    } else {
+    } else if (collection === "group" && params.groupId) {
       const group = await Group.findById(params.groupId);
       const groupMember = await GroupMember.findOne({
         where: { groupId: group.id },
@@ -356,6 +371,10 @@ export class DestinationRecordPreview extends AuthenticatedAction {
       if (groupMember) {
         record = await GrouparooRecord.findById(groupMember.recordId);
       }
+    } else if (params.modelId) {
+      record = await GrouparooRecord.findOne({
+        where: { modelId: params.modelId },
+      });
     }
 
     if (!record) return;

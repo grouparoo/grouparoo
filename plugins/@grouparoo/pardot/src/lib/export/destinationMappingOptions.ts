@@ -1,7 +1,7 @@
 import {
   DestinationMappingOptionsMethod,
   DestinationMappingOptionsResponseProperty,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
 } from "@grouparoo/core";
 
 import PardotClient from "../client";
@@ -66,7 +66,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
 
 const mapTypesToGrouparoo = (
   pardotType: string
-): DestinationMappingOptionsResponseTypes => {
+): DestinationMappingOptionsResponseType => {
   // https://help.salesforce.com/articleView?id=sf.pardot_field_types.htm&type=5
 
   const map = {

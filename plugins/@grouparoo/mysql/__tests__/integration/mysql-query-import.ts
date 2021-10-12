@@ -70,8 +70,9 @@ describe("integration/runs/mysql", () => {
     session.params = {
       csrfToken,
       name: "mysql source",
-      type: "mysql-query-import",
+      type: "mysql-import-query",
       appId: app.id,
+      modelId: "mod_profiles",
       state: "ready",
     };
     const sourceResponse = await specHelper.runAction<SourceCreate>(

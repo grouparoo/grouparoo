@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$0")"
+cd ..
+
+if [ -f "node_modules/.bin/ts-node" ]; then
+  TS_NODE="node_modules/.bin/ts-node"
+  NODEMON="node_modules/.bin/nodemon"
+else
+  TS_NODE="../../../node_modules/.bin/ts-node"
+  NODEMON="../../../node_modules/.bin/nodemon"
+fi
+
+export NEXT_DEVELOPMENT_MODE=true
+
+# in develeopment mode, often there is an orphan next.js/webpack process hanging around if the process crashes.
+GROUPAROO_PIDS=`ps | grep src/grouparoo | grep -v grep | awk '{print $1}'`
+for p in $GROUPAROO_PIDS; do
+  printf "stopping orphan grouparoo process $p\r\n"
+  kill -9 $p
+  sleep 1
+done
+
+"$NODEMON" -e js,jsx,ts,tsx --signal SIGTERM --ignore dist --watch ./src --watch ../plugins/**/*.js \
+--exec "node -r ts-node/register/transpile-only --inspect src/grouparoo.ts" \
+|| exit 0
+

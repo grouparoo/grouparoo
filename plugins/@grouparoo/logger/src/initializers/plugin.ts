@@ -36,6 +36,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "logger",
+          displayName: "Logger",
           options: [
             {
               key: "filename",
@@ -58,9 +59,10 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "logger-export",
+          name: "logger-export-records",
+          displayName: "Logger Export Records",
           direction: "export",
-          description: "Export Profiles to a log file as JSON.",
+          description: "Export Records to a log file as JSON.",
           app: "logger",
           options: [],
           methods: {

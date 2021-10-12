@@ -28,7 +28,7 @@ export const exportRecord: ExportRecordPluginMethod = async ({
   }
 
   try {
-    // --- Profiles --- //
+    // --- Records --- //
     if (toDelete) {
       await connection.asyncQuery(`DELETE FROM ?? WHERE ?? = ?`, [
         table,

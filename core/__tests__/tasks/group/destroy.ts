@@ -8,10 +8,12 @@ import {
   Import,
   GrouparooRecord,
   Run,
-  plugin,
+  GrouparooModel,
 } from "./../../../src";
 
 describe("tasks/group:destroy", () => {
+  let model: GrouparooModel;
+
   helper.grouparooTestServer({
     truncate: true,
     enableTestPlugin: true,
@@ -28,13 +30,13 @@ describe("tasks/group:destroy", () => {
     });
 
     beforeAll(async () => {
-      await helper.factories.properties();
+      ({ model } = await helper.factories.properties());
       helper.disableTestPluginImport();
 
       await GrouparooRecord.truncate();
 
-      mario = await GrouparooRecord.create();
-      luigi = await GrouparooRecord.create();
+      mario = await GrouparooRecord.create({ modelId: model.id });
+      luigi = await GrouparooRecord.create({ modelId: model.id });
 
       await mario.addOrUpdateProperties({
         userId: [1],
@@ -62,6 +64,7 @@ describe("tasks/group:destroy", () => {
         name: "test group 0",
         type: "manual",
         state: "ready",
+        modelId: model.id,
       });
 
       let run: Run = await specHelper.runTask("group:destroy", {
@@ -78,6 +81,7 @@ describe("tasks/group:destroy", () => {
         name: "test group",
         type: "manual",
         state: "ready",
+        modelId: model.id,
       });
 
       await group.update({ state: "deleted" }); // mark group as deleted
@@ -95,6 +99,7 @@ describe("tasks/group:destroy", () => {
         name: "test group 2",
         type: "manual",
         state: "ready",
+        modelId: model.id,
       });
 
       await group.addRecord(mario);
@@ -111,9 +116,9 @@ describe("tasks/group:destroy", () => {
 
       expect(run).toBeTruthy();
       expect(run.state).toBe("running");
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(0);
-      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(0);
+      expect(run.method).toBe("runRemoveGroupMembers");
     });
 
     it("will remove all members in a manual group and then delete the group", async () => {
@@ -124,6 +129,7 @@ describe("tasks/group:destroy", () => {
         name: "test group",
         type: "manual",
         state: "ready",
+        modelId: model.id,
       });
 
       await group.addRecord(mario);
@@ -147,9 +153,9 @@ describe("tasks/group:destroy", () => {
 
       expect(run).toBeTruthy();
       expect(run.state).toBe("running");
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(0);
-      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(0);
+      expect(run.method).toBe("runRemoveGroupMembers");
 
       // process the run
       await specHelper.runTask("group:run", { runId: run.id }); // runRemoveGroupMembers
@@ -177,6 +183,7 @@ describe("tasks/group:destroy", () => {
         name: "test group 3",
         type: "calculated",
         state: "ready",
+        modelId: model.id,
       });
 
       await group.setRules([
@@ -209,9 +216,9 @@ describe("tasks/group:destroy", () => {
 
       expect(run).toBeTruthy();
       expect(run.state).toBe("running");
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(0);
-      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      expect(run.memberLimit).toBe(100);
+      expect(run.memberOffset).toBe(0);
+      expect(run.method).toBe("runRemoveGroupMembers");
 
       // process the run
       await specHelper.runTask("group:run", { runId: run.id }); // runRemoveGroupMembers
@@ -239,10 +246,11 @@ describe("tasks/group:destroy", () => {
           name: "test group 4",
           type: "manual",
           state: "ready",
+          modelId: model.id,
         });
 
         const destination: Destination = await helper.factories.destination();
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
         await group.stopPreviousRuns();
 
         await destination.update({ state: destinationState });
@@ -258,7 +266,7 @@ describe("tasks/group:destroy", () => {
         let reloadedGroup = await Group.findById(group.id);
         expect(reloadedGroup.state).toBe("deleted"); // still waiting
 
-        await destination.unTrackGroup(true);
+        await destination.updateTracking("none");
         await group.stopPreviousRuns();
 
         // try to delete again

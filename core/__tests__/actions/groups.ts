@@ -1,6 +1,12 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Group, GrouparooRecord, Team, TeamMember } from "../../src";
+import {
+  Group,
+  GrouparooRecord,
+  Team,
+  TeamMember,
+  GrouparooModel,
+} from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   GroupCountComponentMembers,
@@ -8,7 +14,6 @@ import {
   GroupCreate,
   GroupDestroy,
   GroupEdit,
-  GroupExport,
   GroupListDestinations,
   GroupRun,
   GroupsList,
@@ -19,8 +24,11 @@ import {
 describe("actions/groups", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let id: string;
+  let model: GrouparooModel;
 
   beforeAll(async () => {
+    model = await helper.factories.model();
+
     await specHelper.runAction("team:initialize", {
       firstName: "Mario",
       lastName: "Mario",
@@ -48,6 +56,7 @@ describe("actions/groups", () => {
         csrfToken,
         name: "new group",
         type: "manual",
+        modelId: model.id,
       };
       const { error, group } = await specHelper.runAction<GroupCreate>(
         "group:create",
@@ -115,7 +124,7 @@ describe("actions/groups", () => {
     test("an administrator can view the destinations tracking a group", async () => {
       const destination = await helper.factories.destination();
       const group = await Group.findById(id);
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
 
       connection.params = {
         csrfToken,
@@ -130,34 +139,14 @@ describe("actions/groups", () => {
       expect(destinations.length).toBe(1);
       expect(destinations[0].id).toEqual(destination.id);
 
-      await destination.unTrackGroup();
+      await destination.updateTracking("none");
       await destination.destroy();
-    });
-
-    test("an administrator can enqueue a group export to CSV", async () => {
-      connection.params = {
-        csrfToken,
-        id,
-        type: "csv",
-      };
-      const { error, success } = await specHelper.runAction<GroupExport>(
-        "group:export",
-        connection
-      );
-      expect(error).toBeUndefined();
-      expect(success).toBe(true);
-
-      const foundTasks = await specHelper.findEnqueuedTasks(
-        "group:exportToCSV"
-      );
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0]).toEqual({ groupId: id });
     });
 
     test("an administrator cannot destroy a group used by a destination", async () => {
       const destination = await helper.factories.destination();
       const group = await Group.findById(id);
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
 
       connection.params = {
         csrfToken,
@@ -171,7 +160,7 @@ describe("actions/groups", () => {
         /this group still in use by 1 destinations, cannot delete/
       );
 
-      await destination.unTrackGroup();
+      await destination.updateTracking("none");
       await destination.destroy();
     });
 
@@ -215,13 +204,14 @@ describe("actions/groups", () => {
       let luigi: GrouparooRecord;
 
       beforeAll(async () => {
-        await helper.factories.properties();
+        await helper.factories.properties(model.id);
       });
 
       beforeEach(async () => {
         group = await Group.create({
           name: "test calculated group",
           type: "calculated",
+          modelId: model.id,
           rules: {},
         });
       });
@@ -233,8 +223,8 @@ describe("actions/groups", () => {
       beforeAll(async () => {
         await GrouparooRecord.truncate();
 
-        mario = await GrouparooRecord.create();
-        luigi = await GrouparooRecord.create();
+        mario = await GrouparooRecord.create({ modelId: model.id });
+        luigi = await GrouparooRecord.create({ modelId: model.id });
 
         await mario.addOrUpdateProperties({
           firstName: ["Mario"],
@@ -376,6 +366,7 @@ describe("actions/groups", () => {
       group = new Group({
         type: "manual",
         name: "test group",
+        modelId: model.id,
       });
       await group.save();
       id = group.id;

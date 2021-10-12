@@ -4,7 +4,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 import { helper } from "@grouparoo/spec-helper";
 import { SimpleSourceOptions, Import, plugin, Run } from "@grouparoo/core";
-import { records } from "../../src/lib/remote-import/records";
+import { records } from "../../src/lib/records";
 
 // these used and set by test
 const sourceOptions: SimpleSourceOptions = {
@@ -75,7 +75,7 @@ describe("csv/table/records", () => {
 
     source = await helper.factories.source(app, {
       name: "CSV-SOURCE",
-      type: "csv-remote-import",
+      type: "csv-import-table",
     });
     sourceMapping = { id: "userId" };
     await source.setOptions(sourceOptions);

@@ -7,7 +7,6 @@ import { App } from "../models/App";
 import { ApiKey } from "../models/ApiKey";
 import { Destination } from "../models/Destination";
 import { DestinationGroupMembership } from "../models/DestinationGroupMembership";
-import { File } from "../models/File";
 import { Export } from "../models/Export";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
@@ -23,6 +22,7 @@ import { Property } from "../models/Property";
 import { Filter } from "../models/Filter";
 import { RecordMultipleAssociationShim } from "../models/RecordMultipleAssociationShim";
 import { Run } from "../models/Run";
+import { GrouparooModel } from "../models/GrouparooModel";
 import { Schedule } from "../models/Schedule";
 import { Session } from "../models/Session";
 import { Setting, settingTypes } from "../models/Setting";
@@ -47,12 +47,12 @@ const models = [
   Run,
   Export,
   ExportProcessor,
-  File,
   GroupMember,
   Group,
   GroupRule,
   Log,
   Permission,
+  GrouparooModel,
   GrouparooRecord,
   RecordProperty,
   Property,
@@ -229,18 +229,6 @@ export namespace plugin {
   }
 
   /**
-   * Given a fileId, download the file to this server and return the readable local path
-   */
-  export async function getLocalFilePath(fileId: string): Promise<string> {
-    const file = await File.findOne({ where: { id: fileId } });
-
-    if (!file) throw new Error(`cannot find a file with id ${fileId}`);
-
-    const { localPath } = await api.files.downloadToServer(file);
-    return localPath;
-  }
-
-  /**
    * data helpers
    */
   export function expandDates(raw: Date) {
@@ -356,11 +344,12 @@ export namespace plugin {
    * ie: `select * where id = {{ userId }}` => `select * where id = {{ ppr_abc123 }}`
    */
   export async function replaceTemplateRecordPropertyKeysWithRecordPropertyId(
-    string: string
+    string: string,
+    modelId: string
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
 
-    const properties = (await Property.findAllWithCache()).filter(
+    const properties = (await Property.findAllWithCache(modelId)).filter(
       (p) => p.isArray === false
     );
 
@@ -377,11 +366,12 @@ export namespace plugin {
    * ie: `select * where id = {{ ppr_abc123 }}` => `select * where id = {{ userId }}`
    */
   export async function replaceTemplateRecordPropertyIdsWithRecordPropertyKeys(
-    string: string
+    string: string,
+    modelId: string
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
 
-    const properties = await Property.findAllWithCache();
+    const properties = await Property.findAllWithCache(modelId);
 
     const data = {};
     properties.forEach((rule) => {

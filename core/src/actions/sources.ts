@@ -21,6 +21,7 @@ export class SourcesList extends AuthenticatedAction {
       limit: { required: true, default: 100, formatter: APIData.ensureNumber },
       offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       state: { required: false },
+      modelId: { required: false },
       order: {
         required: false,
         formatter: APIData.ensureObject,
@@ -35,6 +36,7 @@ export class SourcesList extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const where = {};
     if (params.state) where["state"] = params.state;
+    if (params.modelId) where["modelId"] = params.modelId;
 
     const sources = await Source.scope(null).findAll({
       where,
@@ -109,6 +111,7 @@ export class SourceCreate extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       appId: { required: true },
+      modelId: { required: true },
       name: { required: false },
       type: { required: true },
       state: { required: false },
@@ -120,6 +123,7 @@ export class SourceCreate extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const source = await Source.create({
       appId: params.appId,
+      modelId: params.modelId,
       name: params.name,
       type: params.type,
     });

@@ -78,7 +78,7 @@ export default function Page(props) {
         <tbody>
           {apps.map((app) => {
             return (
-              <tr key={`team-${app.id}`}>
+              <tr key={`model-${app.id}`}>
                 <td>
                   <AppIcon src={app.icon} />
                 </td>
@@ -96,7 +96,7 @@ export default function Page(props) {
                     </a>
                   </Link>
                 </td>
-                <td>{app.type}</td>
+                <td>{app.pluginApp.displayName}</td>
                 <td>
                   <StateBadge state={app.state} />
                 </td>

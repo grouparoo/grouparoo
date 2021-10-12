@@ -1,10 +1,10 @@
-import { Apply } from "../../dist/bin/config";
+import { Config } from "../../dist/bin/config";
 
 describe("grouparoo config", () => {
-  let apply, testDatabaseUrl, testRedisUrl, testPort;
+  let config, testDatabaseUrl, testRedisUrl, testPort;
 
   beforeEach(() => {
-    apply = new Apply();
+    config = new Config();
 
     testDatabaseUrl = process.env.DATABASE_URL;
     testRedisUrl = process.env.REDIS_URL;
@@ -42,7 +42,7 @@ describe("grouparoo config", () => {
     expect(process.env.WEB_SERVER).toBeUndefined();
     expect(process.env.PORT).toBeUndefined();
 
-    apply.preInitialize();
+    config.preInitialize();
 
     expect(process.env.GROUPAROO_RUN_MODE).toBe("cli:config");
     expect(process.env.NEXT_DEVELOPMENT_MODE).toBe("false");
@@ -57,7 +57,7 @@ describe("grouparoo config", () => {
   test("sets DATABASE_URL from CONFIG_DATABASE_URL", () => {
     expect(process.env.DATABASE_URL).toBeUndefined();
     process.env.CONFIG_DATABASE_URL = "sqlite://grouparoo_config.sqlite";
-    apply.preInitialize();
+    config.preInitialize();
     expect(process.env.DATABASE_URL).toBe("sqlite://grouparoo_config.sqlite");
   });
 });

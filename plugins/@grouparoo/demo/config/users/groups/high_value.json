@@ -1,0 +1,16 @@
+{
+  "id": "high_value",
+  "class": "Group",
+  "type": "calculated",
+  "name": "High Value",
+  "modelId": "users",
+  "rules": [
+    {
+      "propertyId": "ltv",
+      "operation": {
+        "op": "gt"
+      },
+      "match": "100"
+    }
+  ]
+}

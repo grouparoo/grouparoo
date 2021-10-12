@@ -1,0 +1,15 @@
+{
+  "id": "all_admins",
+  "class": "Group",
+  "type": "calculated",
+  "modelId": "admins",
+  "name": "All Admins",
+  "rules": [
+    {
+      "propertyId": "admin_email",
+      "operation": {
+        "op": "exists"
+      }
+    }
+  ]
+}

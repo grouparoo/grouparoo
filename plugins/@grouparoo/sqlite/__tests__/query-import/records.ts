@@ -79,7 +79,7 @@ describe("sqlite/query/records", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "sqlite-query-import",
+      type: "sqlite-import-query",
     });
     await source.update({ state: "ready" });
 

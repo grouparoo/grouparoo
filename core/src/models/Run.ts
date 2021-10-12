@@ -1,11 +1,8 @@
 import Sequelize, { Op } from "sequelize";
 import { GrouparooRecord } from "./GrouparooRecord";
 import {
-  Model,
   Table,
   Column,
-  CreatedAt,
-  UpdatedAt,
   AllowNull,
   DataType,
   BeforeSave,
@@ -18,7 +15,6 @@ import {
   BeforeUpdate,
 } from "sequelize-typescript";
 import { chatRoom, log } from "actionhero";
-import * as uuid from "uuid";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
 import { Group } from "./Group";
@@ -29,6 +25,8 @@ import { RunOps } from "../modules/ops/runs";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
+import { GrouparooModel } from "./GrouparooModel";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
@@ -38,6 +36,7 @@ const RUN_CREATORS = [
   "schedule",
   "property",
   "group",
+  "grouparooModel",
   "task",
   "teamMember",
 ] as const;
@@ -53,19 +52,10 @@ const STATE_TRANSITIONS = [
 ];
 
 @Table({ tableName: "runs", paranoid: false })
-export class Run extends Model {
+export class Run extends CommonModel<Run> {
   idPrefix() {
     return "run";
   }
-
-  @Column({ primaryKey: true })
-  id: string;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @AllowNull(false)
   @ForeignKey(() => Schedule)
@@ -116,18 +106,14 @@ export class Run extends Model {
 
   @Default(0)
   @Column
-  groupMemberLimit: number;
+  memberLimit: number;
 
   @Default(0)
   @Column
-  groupMemberOffset: number;
-
-  @Default(0)
-  @Column
-  groupHighWaterMark: number;
+  memberOffset: number;
 
   @Column
-  groupMethod: string;
+  method: string;
 
   @Default(0)
   @Column
@@ -279,10 +265,9 @@ export class Run extends Model {
       error: this.error,
       highWaterMark: this.highWaterMark,
       sourceOffset: this.sourceOffset,
-      groupMemberLimit: this.groupMemberLimit,
-      groupMemberOffset: this.groupMemberOffset,
-      groupHighWaterMark: this.groupHighWaterMark,
-      groupMethod: this.groupMethod,
+      memberLimit: this.memberLimit,
+      memberOffset: this.memberOffset,
+      method: this.method,
       force: this.force,
       destinationId: this.destinationId,
       createdAt: APIData.formatDate(this.createdAt),
@@ -301,6 +286,9 @@ export class Run extends Model {
       } else if (this.creatorType === "property") {
         const property = await Property.findById(this.creatorId);
         name = property.key;
+      } else if (this.creatorType === "grouparooModel") {
+        const model = await GrouparooModel.findById(this.creatorId);
+        name = model.name;
       } else if (this.creatorType === "schedule") {
         const schedule = await Schedule.findById(this.creatorId);
         const source = await schedule.$get("source", { scope: null });
@@ -327,27 +315,16 @@ export class Run extends Model {
   }
 
   @BeforeCreate
-  static generateId(instance) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
-  }
-
-  @BeforeCreate
   static async ensureCreatorReady(instance: Run) {
     let ready = true;
     // properties are ok to enqueue if they are in draft at the time.  Options update before state
     if (instance.creatorType === "group") {
       let creator = await Group.findById(instance.creatorId);
-      if (creator.state === "draft") {
-        ready = false;
-      }
+      if (creator.state === "draft") ready = false;
     }
     if (instance.creatorType === "schedule") {
       let creator = await Schedule.findById(instance.creatorId);
-      if (creator.state === "draft") {
-        ready = false;
-      }
+      if (creator.state === "draft") ready = false;
     }
 
     if (!ready) throw new Error(`creator ${instance.creatorType} is not ready`);
@@ -368,8 +345,8 @@ export class Run extends Model {
     // we only need to broadcast at the end of each batch or on a state change, not as we increment values
     if (
       instance.changed("state") ||
-      instance.changed("groupMemberLimit") ||
-      instance.changed("groupMemberOffset") ||
+      instance.changed("memberLimit") ||
+      instance.changed("memberOffset") ||
       instance.changed("highWaterMark") ||
       instance.changed("sourceOffset") ||
       instance.changed("percentComplete")

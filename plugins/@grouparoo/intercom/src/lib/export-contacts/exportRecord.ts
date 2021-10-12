@@ -31,7 +31,7 @@ export const exportRecord: ExportRecordPluginMethod = async (args) => {
     if (retryDelay > 0) {
       return {
         error: new Error(
-          "Intercom profile recently synced. This will be retried soon."
+          "Intercom record recently synced. This will be retried soon."
         ),
         success: false,
         retryDelay,
@@ -324,7 +324,7 @@ async function makePayload(
 ) {
   const payload: any = { external_id, email };
 
-  // set profile properties, including old ones
+  // set record properties, including old ones
   const newKeys = Object.keys(newRecordProperties);
   const oldKeys = Object.keys(oldRecordProperties);
   const allKeys = oldKeys.concat(newKeys);

@@ -1,19 +1,9 @@
-import path from "path";
-import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
 import { getRandomNumbers, loadAppOptions, updater } from "../utils/nockHelper";
 import { setup } from "../utils/shared";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "lead-quirks.js");
-
-// these comments to use nock
-const newNock = false;
-require("./../fixtures/lead-quirks");
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 
 let userId = null;

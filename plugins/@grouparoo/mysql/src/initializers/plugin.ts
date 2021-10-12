@@ -56,6 +56,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "mysql",
+          displayName: "MySQL",
           options: [
             {
               key: "host",
@@ -98,10 +99,11 @@ export class Plugins extends Initializer {
         getTableConnection(),
         getQueryConnection(),
         {
-          name: "mysql-export",
+          name: "mysql-export-records",
+          displayName: "MySQL Export Record",
           direction: "export",
           description:
-            "Export Profiles to a MySQL table.  Groups will be exported to a secondary table linked by a foreign key.",
+            "Export Records to a MySQL table.  Groups will be exported to a secondary table linked by a foreign key.",
           app: "mysql",
           options: [
             {
@@ -124,7 +126,7 @@ export class Plugins extends Initializer {
             },
             {
               key: "groupForeignKey",
-              displayName: "Groups Forigen Key",
+              displayName: "Groups Foreign Key",
               required: true,
               description:
                 "The foreign key that the groups table uses to reference table.",

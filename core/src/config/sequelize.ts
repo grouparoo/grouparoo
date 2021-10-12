@@ -18,6 +18,7 @@ require("pg").defaults.parseInt8 = true;
 
 export const DEFAULT = {
   sequelize: (config) => {
+    const env = process.env.NODE_ENV ?? "development";
     let storage: string; //only for sqlite
     let dialect = process.env.DB_DIALECT;
     let host = process.env.DB_HOST;
@@ -75,11 +76,7 @@ export const DEFAULT = {
         storage = `${parsed.hostname}${parsed.pathname}`;
       }
 
-      if (
-        process.env.NODE_ENV === "test" &&
-        !parsed.hostname &&
-        !parsed.pathname
-      ) {
+      if (env === "test" && !parsed.hostname && !parsed.pathname) {
         storage = join(getParentPath(), `${database}.sqlite`);
       }
 
@@ -97,6 +94,30 @@ export const DEFAULT = {
       log(message, "debug", { time });
     }
 
+    /** Migration */
+    function shouldAutoMigrate() {
+      const runMode = process.env.GROUPAROO_RUN_MODE;
+      const workers = parseInt(process.env.WORKERS || "0");
+
+      if (["cli:apply"].includes(runMode)) {
+        // doing it in the same transaction elsewhere
+        return false;
+      }
+      if (["test", "development"].includes(env)) {
+        // working locally, make sure to migrate
+        return true;
+      }
+      if (["cli:config"].includes(runMode)) {
+        // always migrate because don't have other workers
+        return true;
+      }
+      if (workers > 0) {
+        // in production, background servers do the migration
+        return true;
+      }
+      return false;
+    }
+
     /** Load plugin migrations */
     const { plugins } = getPluginManifest();
     const pluginMigrations = [];
@@ -111,8 +132,7 @@ export const DEFAULT = {
       _toExpand: false,
       logging,
       benchmark: true,
-      autoMigrate:
-        process.env.GROUPAROO_RUN_MODE === "cli:apply" ? false : true,
+      autoMigrate: shouldAutoMigrate(),
       dialect: dialect,
       port: parseInt(port),
       database: database,

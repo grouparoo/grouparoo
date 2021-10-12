@@ -131,7 +131,7 @@ async function buildPayload(
     payload.id = destinationId;
   }
 
-  // set profile properties, including old ones
+  // set record properties, including old ones
   const newKeys = Object.keys(newRecordProperties);
   const oldKeys = Object.keys(oldRecordProperties);
   const allKeys = new Set([...oldKeys, ...newKeys]);

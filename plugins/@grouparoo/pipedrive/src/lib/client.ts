@@ -13,27 +13,32 @@ export class PipedriveClient {
   }
 
   async getCurrentUser(): Promise<Record<string, any>> {
-    const { data } = await this.request.get("/users/me");
+    const { data } = await this.request.get<Record<string, any>>("/users/me");
     return data.data;
   }
 
   async findPersonIdByEmail(email: string): Promise<number> {
     if (!email) return null;
 
-    const { data } = await this.request.get("/persons/search", {
-      params: {
-        term: email,
-        fields: "email",
-        exact_match: true,
-      },
-    });
+    const { data } = await this.request.get<Record<string, any>>(
+      "/persons/search",
+      {
+        params: {
+          term: email,
+          fields: "email",
+          exact_match: true,
+        },
+      }
+    );
 
     if (data.data.items.length == 0) return null;
     return data.data.items[0].item.id;
   }
 
   async getPerson(id: number): Promise<Record<string, any>> {
-    const { data } = await this.request.get(`/persons/${id}`);
+    const { data } = await this.request.get<Record<string, any>>(
+      `/persons/${id}`
+    );
     return data.data;
   }
 
@@ -68,7 +73,9 @@ export class PipedriveClient {
   }
 
   async getAllPersonFields(): Promise<Record<string, any>[]> {
-    const { data } = await this.request.get("/personFields");
+    const { data } = await this.request.get<Record<string, any>>(
+      "/personFields"
+    );
     return data.data;
   }
 
@@ -93,7 +100,7 @@ export class PipedriveClient {
   }
 
   async getAllPersonFilters(): Promise<Record<string, any>[]> {
-    const { data } = await this.request.get("/filters", {
+    const { data } = await this.request.get<Record<string, any>>("/filters", {
       params: { type: "people" },
     });
     return data.data;

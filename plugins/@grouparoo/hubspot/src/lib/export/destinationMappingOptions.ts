@@ -1,6 +1,6 @@
 import {
   DestinationMappingOptionsMethod,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
   SimpleAppOptions,
 } from "@grouparoo/core";
 import { connect } from "./../connect";
@@ -59,7 +59,7 @@ const mapTypesFromHubspotToGrouparoo = (fieldKey, hubspotType) => {
 
 export const getRequiredFields = (): Array<{
   key: string;
-  type: DestinationMappingOptionsResponseTypes;
+  type: DestinationMappingOptionsResponseType;
 }> => {
   return [{ key: "email", type: "email" }];
 };
@@ -74,7 +74,7 @@ export const getUserFields = async (
 ): Promise<
   Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
     important?: boolean;
   }>
 > => {
@@ -82,7 +82,7 @@ export const getUserFields = async (
   const out = [];
   for (const field of fields) {
     if (field["name"] !== "email" && !field["readOnlyValue"]) {
-      const type: DestinationMappingOptionsResponseTypes =
+      const type: DestinationMappingOptionsResponseType =
         mapTypesFromHubspotToGrouparoo(field["name"], field["type"]);
       if (type) {
         out.push({

@@ -594,10 +594,10 @@ function assignAction(exportedRecord: BatchExport, config: BatchConfig) {
       exportedRecord.shouldGroups = true;
       if (destinationId) {
         skippedMessage =
-          "Destination not deleting. Removing profile from groups.";
+          "Destination not deleting. Removing record from groups.";
       } else {
         skippedMessage =
-          "Destination not deleting, though profile was not found.";
+          "Destination not deleting, though record was not found.";
       }
     }
   } else if (destinationId) {

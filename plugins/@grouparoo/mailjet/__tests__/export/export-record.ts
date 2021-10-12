@@ -1,5 +1,3 @@
-import path from "path";
-import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
 import { exportRecord } from "../../src/lib/export/exportRecord";
@@ -40,15 +38,7 @@ const invalidDate = "asd000";
 const numberField = 3039;
 const floatField = 30.39;
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 
 async function getListId(listName): Promise<any> {

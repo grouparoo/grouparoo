@@ -68,8 +68,9 @@ describe("integration/runs/postgres", () => {
     session.params = {
       csrfToken,
       name: "pg import source",
-      type: "postgres-query-import",
+      type: "postgres-import-query",
       appId: app.id,
+      modelId: "mod_profiles",
       state: "ready",
     };
     const sourceResponse = await specHelper.runAction<SourceCreate>(

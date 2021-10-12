@@ -1,11 +1,11 @@
 export { plugin } from "./modules/plugin";
 
 export * from "./classes/plugin";
-export * from "./classes/fileTransport";
 export * from "./classes/configTemplate";
 export { AuthenticatedAction } from "./classes/actions/authenticatedAction";
 export { OptionallyAuthenticatedAction } from "./classes/actions/optionallyAuthenticatedAction";
 
+export { GrouparooModel } from "./models/GrouparooModel";
 export { App, SimpleAppOptions } from "./models/App";
 export { ApiKey } from "./models/ApiKey";
 export {
@@ -17,7 +17,6 @@ export {
 export { DestinationGroupMembership } from "./models/DestinationGroupMembership";
 export { Export } from "./models/Export";
 export { ExportProcessor } from "./models/ExportProcessor";
-export { File } from "./models/File";
 export { Group } from "./models/Group";
 export { GroupMember } from "./models/GroupMember";
 export { GroupRule } from "./models/GroupRule";

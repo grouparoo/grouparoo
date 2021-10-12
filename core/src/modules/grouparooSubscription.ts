@@ -1,7 +1,7 @@
 import { TeamMember } from "../models/TeamMember";
 import { CLS } from "../modules/cls";
 import { plugin } from "../modules/plugin";
-import { config, log } from "actionhero";
+import { config, log, env } from "actionhero";
 import path from "path";
 
 require("isomorphic-fetch"); // I need to be required vs imported to avoid TS conflicts with the @grouparoo/ui-* package which has its own fetch polyfill
@@ -26,7 +26,7 @@ export async function GrouparooSubscription({
   email?: string;
   subscribed: boolean;
 }) {
-  if (process.env.NODE_ENV === "test") return;
+  if (env === "test") return;
   if (!config.telemetry.enabled) return;
   if (!teamMember && !subscriberEmail) return;
 

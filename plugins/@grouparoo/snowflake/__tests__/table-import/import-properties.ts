@@ -19,19 +19,7 @@ import {
 import { getConnection } from "../../src/lib/table-import/connection";
 const recordProperties = getConnection().methods.recordProperties;
 
-const nockFile = path.join(
-  __dirname,
-  "../",
-  "fixtures",
-  "table-record-properties.js"
-);
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
+const { newNock } = helper.useNock(__filename, updater);
 
 let record: GrouparooRecord;
 let otherRecord: GrouparooRecord;
@@ -183,6 +171,19 @@ describe("snowflake/table/recordProperties", () => {
           expect(values[otherRecord.id][properties[0].id]).toEqual(["Cacilie"]);
           expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
           expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
+        });
+
+        test("to get multiple values from the same column", async () => {
+          const columns = ["FIRST_NAME", "FIRST_NAME"];
+          const [values, properties] = await getPropertyValues({
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          });
+          expect(values[record.id][properties[0].id]).toEqual(["Erie"]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual(["Cacilie"]);
+          expect(values[record.id][properties[1].id]).toEqual(["Erie"]);
+          expect(values[otherRecord.id][properties[1].id]).toEqual(["Cacilie"]);
         });
 
         test("to get a float", async () => {

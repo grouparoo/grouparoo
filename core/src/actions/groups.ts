@@ -1,4 +1,3 @@
-import { CLS } from "../modules/cls";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Group, GROUP_RULE_LIMIT } from "../models/Group";
 import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
@@ -19,6 +18,7 @@ export class GroupsList extends AuthenticatedAction {
       limit: { required: true, default: 100, formatter: APIData.ensureNumber },
       offset: { required: true, default: 0, formatter: APIData.ensureNumber },
       state: { required: false },
+      modelId: { required: false },
       order: {
         required: false,
         formatter: APIData.ensureObject,
@@ -34,6 +34,7 @@ export class GroupsList extends AuthenticatedAction {
     const where = {};
 
     if (params.state) where["state"] = params.state;
+    if (params.modelId) where["modelId"] = params.modelId;
 
     const groups = await Group.scope(null).findAll({
       where,
@@ -80,6 +81,7 @@ export class GroupCreate extends AuthenticatedAction {
     this.inputs = {
       name: { required: true },
       type: { required: true },
+      modelId: { required: true },
       matchType: { required: true, default: "all" },
       rules: { required: false, formatter: APIData.ensureObject },
       state: { required: false },
@@ -87,7 +89,14 @@ export class GroupCreate extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const group = await Group.create(params);
+    const group = await Group.create({
+      name: params.name,
+      type: params.type,
+      modelId: params.modelId,
+      matchType: params.matchType,
+      state: params.state,
+    });
+
     if (params.rules) await group.setRules(params.rules);
 
     const responseGroup = await group.apiData();
@@ -306,32 +315,6 @@ export class GroupListDestinations extends AuthenticatedAction {
       total: destinations.length,
       destinations: await Promise.all(destinations.map((d) => d.apiData())),
     };
-  }
-}
-
-export class GroupExport extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "group:export";
-    this.description = "export the records in this group";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      type: { required: true },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const group = await Group.findById(params.id);
-
-    if (params.type === "csv") {
-      await CLS.enqueueTask("group:exportToCSV", { groupId: group.id });
-    } else {
-      throw new Error(`${params.type} is not a type of group export`);
-    }
-
-    return { success: true };
   }
 }
 

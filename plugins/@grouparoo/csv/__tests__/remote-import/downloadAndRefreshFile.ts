@@ -1,5 +1,5 @@
 import fs from "fs-extra";
-import { downloadAndRefreshFile } from "../../src/lib/remote-import/downloadAndRefreshFile";
+import { downloadAndRefreshFile } from "../../src/lib/downloadAndRefreshFile";
 
 describe("downloadAndRefreshFile", () => {
   const url =

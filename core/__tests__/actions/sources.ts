@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Option, Source, App } from "../../src";
+import { Option, Source, App, GrouparooModel } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   SourceBootstrapUniqueProperty,
@@ -18,6 +18,7 @@ import { PropertyDestroy } from "../../src/actions/properties";
 
 describe("actions/sources", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let model: GrouparooModel;
   let app: App;
   let id: string;
   let propertyId: string;
@@ -30,6 +31,7 @@ describe("actions/sources", () => {
       email: "mario@example.com",
     });
 
+    model = await helper.factories.model();
     app = await helper.factories.app();
     await app.update({ name: "test app" });
   });
@@ -54,6 +56,7 @@ describe("actions/sources", () => {
         name: "test source",
         type: "test-plugin-import",
         appId: app.id,
+        modelId: model.id,
         options: { table: "users" },
       };
       const { error, source } = await specHelper.runAction<SourceCreate>(

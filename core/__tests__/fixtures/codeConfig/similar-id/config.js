@@ -1,6 +1,13 @@
 module.exports = async function getConfig() {
   return [
     {
+      id: "mod_profiles",
+      class: "Model",
+      name: "Profiles",
+      type: "profile",
+    },
+
+    {
       id: "mailchimp",
       name: "Mailchimp App",
       class: "App",
@@ -16,6 +23,7 @@ module.exports = async function getConfig() {
       class: "Destination",
       type: "test-plugin-export",
       appId: "mailchimp",
+      modelId: "mod_profiles",
       syncMode: "sync",
       options: {
         table: "other-file-path.db",

@@ -11,12 +11,17 @@ import {
   plugin,
   App,
   AggregationMethod,
+  GrouparooModel,
 } from "../../../src";
+import { RecordOps } from "../../../src/modules/ops/record";
 
 describe("tasks/recordProperty:importRecordProperties", () => {
+  let model: GrouparooModel;
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
-  beforeAll(async () => await helper.factories.properties());
+  beforeAll(async () => {
+    ({ model } = await helper.factories.properties());
+  });
 
   let userIdCounter = 1;
   describe("recordProperty:importRecordProperties", () => {
@@ -96,7 +101,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
     });
 
     test("will import record properties that have no dependencies", async () => {
-      const record: GrouparooRecord = await helper.factories.record();
+      const record = await helper.factories.record();
       await record.addOrUpdateProperties({
         userId: [1],
         email: ["old@example.com"],
@@ -105,6 +110,11 @@ describe("tasks/recordProperty:importRecordProperties", () => {
         where: { rawValue: "1" },
       });
       await recordProperty.update({ state: "pending" });
+
+      await RecordProperty.update(
+        { startedAt: null },
+        { where: { recordId: record.id } }
+      );
 
       await specHelper.runTask("recordProperty:importRecordProperties", {
         recordIds: [record.id],
@@ -115,6 +125,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       await recordProperty.reload();
       expect(recordProperty.state).toBe("ready");
       expect(recordProperty.rawValue).toBe(`1`);
+      expect(recordProperty.startedAt).toBe(null);
       await record.destroy();
     });
 
@@ -123,7 +134,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
         where: { key: "userId" },
       });
 
-      const record: GrouparooRecord = await helper.factories.record();
+      const record = await helper.factories.record();
       await record.addOrUpdateProperties({
         userId: [null],
         email: ["old@example.com"],
@@ -131,7 +142,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       const recordProperty = await RecordProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
-      await recordProperty.update({ state: "pending" });
+      await recordProperty.update({ state: "pending", startedAt: new Date() });
 
       const userIdRecordProperty = await RecordProperty.findOne({
         where: {
@@ -150,6 +161,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       await recordProperty.reload();
       expect(recordProperty.state).toBe("pending");
       expect(recordProperty.rawValue).toBe(`old@example.com`);
+      expect(recordProperty.startedAt).not.toBe(null);
 
       // sendAt is slightly in the future from (now - 5 minutes) to try again soon
       expect(recordProperty.startedAt.getTime()).toBeGreaterThan(
@@ -166,7 +178,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
         where: { key: "userId" },
       });
 
-      const record: GrouparooRecord = await helper.factories.record();
+      const record = await helper.factories.record();
       await record.addOrUpdateProperties({
         userId: ["2"],
         email: ["old@example.com"],
@@ -174,7 +186,10 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       const emailRecordProperty = await RecordProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
-      await emailRecordProperty.update({ state: "pending" });
+      await emailRecordProperty.update({
+        state: "pending",
+        startedAt: new Date(),
+      });
 
       const userIdRecordProperty = await RecordProperty.findOne({
         where: {
@@ -196,10 +211,13 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       await emailRecordProperty.reload();
       expect(emailRecordProperty.state).toBe("ready");
       expect(emailRecordProperty.rawValue).toBe(`${record.id}@example.com`);
+      expect(emailRecordProperty.startedAt).toBe(null);
 
       await userIdRecordProperty.reload();
       expect(userIdRecordProperty.state).toBe("ready");
       expect(userIdRecordProperty.rawValue).toBe(`2`);
+      expect(emailRecordProperty.startedAt).toBe(null);
+
       await record.destroy();
     });
 
@@ -208,7 +226,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
         .spyOn(testPluginConnection.methods, "recordProperties")
         .mockImplementation(() => undefined);
 
-      const record: GrouparooRecord = await helper.factories.record();
+      const record = await helper.factories.record();
       await record.addOrUpdateProperties({
         userId: [99],
         email: ["someoldemail@example.com"],
@@ -216,7 +234,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       const recordProperty = await RecordProperty.findOne({
         where: { rawValue: "99" },
       });
-      await recordProperty.update({ state: "pending" });
+      await recordProperty.update({ state: "pending", startedAt: new Date() });
 
       await specHelper.runTask("recordProperty:importRecordProperties", {
         recordIds: [record.id],
@@ -227,9 +245,163 @@ describe("tasks/recordProperty:importRecordProperties", () => {
       await recordProperty.reload();
       expect(recordProperty.state).toBe("ready");
       expect(recordProperty.rawValue).toBe(null);
+      expect(recordProperty.startedAt).toBe(null);
       await record.destroy();
 
       spy.mockRestore();
+    });
+
+    test("will not crash with invalidValues and they will be set on the recordProperties", async () => {
+      const spy = jest
+        .spyOn(testPluginConnection.methods, "recordProperties")
+        //@ts-ignore // partial mock
+        .mockImplementation(({ records, properties }) => {
+          const response = {};
+
+          for (const i in records) {
+            const record = records[i];
+            const data = { email: `not-an-email` };
+
+            response[record.id] = {};
+            for (const property of properties) {
+              response[record.id][property.id] = data[property.key];
+            }
+          }
+
+          return response;
+        });
+
+      const recordA = await helper.factories.record();
+      await recordA.addOrUpdateProperties({
+        userId: [101],
+        email: ["a@example.com"], // this old value will be replaced
+      });
+
+      const recordB = await helper.factories.record();
+      await recordB.addOrUpdateProperties({
+        userId: [102],
+        email: ["b@example.com"], // this old value will be replaced
+      });
+
+      const recordPropertyA = await RecordProperty.findOne({
+        where: { rawValue: "a@example.com" },
+      });
+      await recordPropertyA.update({ state: "pending", startedAt: new Date() });
+      const recordPropertyB = await RecordProperty.findOne({
+        where: { rawValue: "b@example.com" },
+      });
+      await recordPropertyB.update({ state: "pending", startedAt: new Date() });
+
+      await specHelper.runTask("recordProperty:importRecordProperties", {
+        recordIds: [recordA.id, recordB.id],
+        propertyIds: [recordPropertyA.propertyId, recordPropertyB.propertyId],
+      });
+
+      await recordPropertyA.reload();
+      expect(recordPropertyA.state).toBe("ready");
+      expect(recordPropertyA.rawValue).toBe(null);
+      expect(recordPropertyA.invalidValue).toBe("not-an-email");
+      expect(recordPropertyA.startedAt).toBe(null);
+      expect(recordPropertyA.invalidReason).toBe("Invalid email value");
+
+      await recordPropertyB.reload();
+      expect(recordPropertyB.state).toBe("ready");
+      expect(recordPropertyB.rawValue).toBe(null);
+      expect(recordPropertyB.invalidValue).toBe("not-an-email");
+      expect(recordPropertyB.startedAt).toBe(null);
+      expect(recordPropertyB.invalidReason).toBe("Invalid email value");
+
+      await recordA.destroy();
+      await recordB.destroy();
+
+      spy.mockRestore();
+    });
+
+    test("import errors will be retried one at a time with importRecordProperty", async () => {
+      const spy = jest
+        .spyOn(testPluginConnection.methods, "recordProperties")
+        .mockImplementation(() => {
+          throw new Error("Oh no!");
+        });
+
+      const recordA = await helper.factories.record();
+      await recordA.addOrUpdateProperties({ userId: [201] });
+
+      const recordB = await helper.factories.record();
+      await recordB.addOrUpdateProperties({ userId: [202] });
+
+      const recordPropertyA = await RecordProperty.findOne({
+        where: { rawValue: "201" },
+      });
+      await recordPropertyA.update({ state: "pending", startedAt: new Date() });
+      const recordPropertyB = await RecordProperty.findOne({
+        where: { rawValue: "202" },
+      });
+      await recordPropertyB.update({ state: "pending", startedAt: new Date() });
+
+      await specHelper.runTask("recordProperty:importRecordProperties", {
+        recordIds: [recordA.id, recordB.id],
+        propertyIds: [recordPropertyA.propertyId, recordPropertyB.propertyId],
+      });
+
+      await recordPropertyA.reload();
+      await recordPropertyB.reload();
+      expect(recordPropertyA.state).toBe("pending");
+      expect(recordPropertyA.startedAt).not.toBe(null);
+      expect(recordPropertyB.state).toBe("pending");
+      expect(recordPropertyB.startedAt).not.toBe(null);
+
+      const foundTasks = await specHelper.findEnqueuedTasks(
+        "recordProperty:importRecordProperty"
+      );
+      expect(foundTasks.length).toBe(2);
+      expect(foundTasks.map((t) => t.args[0].recordId).sort()).toEqual(
+        [recordA.id, recordB.id].sort()
+      );
+      expect(foundTasks.map((t) => t.args[0].propertyId).sort()).toEqual(
+        [recordPropertyA.propertyId, recordPropertyB.propertyId].sort()
+      );
+
+      await recordA.destroy();
+      await recordB.destroy();
+
+      spy.mockRestore();
+    });
+
+    test("update errors will be retried one at a time with importRecordProperty", async () => {
+      const record = await helper.factories.record();
+      await record.addOrUpdateProperties({ userId: [301] });
+
+      const recordProperty = await RecordProperty.findOne({
+        where: { rawValue: "301" },
+      });
+      await recordProperty.update({ state: "pending" });
+
+      const updateSpy = jest
+        .spyOn(RecordOps, "addOrUpdateProperties")
+        .mockImplementation(() => {
+          throw new Error("nope!");
+        });
+
+      await specHelper.runTask("recordProperty:importRecordProperties", {
+        recordIds: [record.id],
+        propertyIds: [recordProperty.propertyId],
+      });
+
+      await recordProperty.reload();
+      expect(recordProperty.state).toBe("pending");
+
+      const foundTasks = await specHelper.findEnqueuedTasks(
+        "recordProperty:importRecordProperty"
+      );
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0].recordId).toEqual(record.id);
+      expect(foundTasks[0].args[0].propertyId).toEqual(
+        recordProperty.propertyId
+      );
+
+      await record.destroy();
+      updateSpy.mockRestore();
     });
 
     describe("with records", () => {
@@ -266,6 +438,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
           apps: [
             {
               name: "test-non-unique-app",
+              displayName: "test-non-unique-app",
               options: [],
               methods: {
                 test: async () => {
@@ -277,6 +450,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
           connections: [
             {
               name: "test-non-unique-connection",
+              displayName: "test-non-unique-connection",
               description: "a test app",
               app: "test-non-unique-app",
               direction: "import",
@@ -309,18 +483,17 @@ describe("tasks/recordProperty:importRecordProperties", () => {
           type: "test-non-unique-connection",
           name: "translations source",
           appId: app.id,
+          modelId: model.id,
         });
         await otherSource.setMapping({ word: "lastName" });
         await otherSource.update({ state: "ready" });
 
-        const newPropertyA: Property = await helper.factories.property(
-          otherSource,
-          { key: "wordInSpanish" }
-        );
-        const newPropertyB: Property = await helper.factories.property(
-          otherSource,
-          { key: "wordInFrench" }
-        );
+        const newPropertyA = await helper.factories.property(otherSource, {
+          key: "wordInSpanish",
+        });
+        const newPropertyB = await helper.factories.property(otherSource, {
+          key: "wordInFrench",
+        });
         await newPropertyA.update({ state: "ready" });
         await newPropertyB.update({ state: "ready" });
         await recordA.buildNullProperties();

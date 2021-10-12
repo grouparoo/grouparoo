@@ -8,7 +8,8 @@ import { exportArrayProperties } from "../shared/exportArrayProperties";
 export const idSupportedSyncModes: DestinationSyncMode[] = ["enrich"];
 
 export const idDestinationConnection: PluginConnection = {
-  name: "mailchimp-export-id",
+  name: "mailchimp-export-contacts-by-id",
+  displayName: "Mailchimp Export Contacts by id",
   direction: "export",
   description:
     "Updates existing contacts in a Mailchimp list based on a known Mailchimp ID.",

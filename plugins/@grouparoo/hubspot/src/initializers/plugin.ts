@@ -42,6 +42,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "hubspot",
+          displayName: "HubSpot",
           options: [
             {
               key: "hapikey",
@@ -56,10 +57,11 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "hubspot-export",
+          name: "hubspot-export-contacts",
+          displayName: "Hubspot Export Contacts",
           direction: "export",
           description:
-            "Export Profiles to Hubspot and add them to Contact Lists.",
+            "Export Records to Hubspot and add them to Contact Lists.",
           app: "hubspot",
           syncModes,
           defaultSyncMode,

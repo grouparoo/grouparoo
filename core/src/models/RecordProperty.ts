@@ -1,4 +1,3 @@
-import { Op } from "sequelize";
 import {
   Table,
   Column,
@@ -9,12 +8,12 @@ import {
   BeforeSave,
   DataType,
 } from "sequelize-typescript";
-import { LoggedModel } from "../classes/loggedModel";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Property } from "./Property";
 import { RecordPropertyOps } from "../modules/ops/recordProperty";
 import { StateMachine } from "../modules/stateMachine";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -25,8 +24,12 @@ const STATE_TRANSITIONS = [
   { from: "ready", to: "pending", checks: [] },
 ];
 
+export enum InvalidReasons {
+  Duplicate = "Duplicate Value",
+}
+
 @Table({ tableName: "recordProperties", paranoid: false })
-export class RecordProperty extends LoggedModel<RecordProperty> {
+export class RecordProperty extends CommonModel<RecordProperty> {
   idPrefix() {
     return "rpr";
   }
@@ -48,6 +51,12 @@ export class RecordProperty extends LoggedModel<RecordProperty> {
 
   @Column
   rawValue: string;
+
+  @Column
+  invalidValue: string;
+
+  @Column
+  invalidReason: string;
 
   @AllowNull(false)
   @Default(0)
@@ -83,7 +92,7 @@ export class RecordProperty extends LoggedModel<RecordProperty> {
   property: Property;
 
   async apiData() {
-    const property = await Property.findOneWithCache(this.propertyId);
+    const property = await this.ensureProperty();
 
     return {
       recordId: this.recordId,
@@ -97,6 +106,8 @@ export class RecordProperty extends LoggedModel<RecordProperty> {
       unique: this.unique,
       key: property.key,
       value: await this.getValue(),
+      invalidValue: this.invalidValue,
+      invalidReason: this.invalidReason,
     };
   }
 
@@ -107,7 +118,12 @@ export class RecordProperty extends LoggedModel<RecordProperty> {
 
   async setValue(value: any) {
     const property = await this.ensureProperty();
-    this.rawValue = await RecordPropertyOps.buildRawValue(value, property.type);
+    const { rawValue, invalidValue, invalidReason } =
+      await RecordPropertyOps.buildRawValue(value, property.type, this);
+
+    this.rawValue = rawValue;
+    this.invalidValue = invalidValue;
+    this.invalidReason = invalidReason;
   }
 
   async ensureProperty() {
@@ -116,33 +132,6 @@ export class RecordProperty extends LoggedModel<RecordProperty> {
       throw new Error(`property not found for propertyId ${this.propertyId}`);
     }
     return property;
-  }
-
-  async logMessage(verb: "create" | "update" | "destroy") {
-    let message = "";
-    const property = await this.ensureProperty();
-
-    switch (verb) {
-      case "create":
-        message = `recordProperty "${property.key}" created`;
-        break;
-      case "update":
-        const changedValueStrings = [];
-        const changedKeys = this.changed() as Array<string>;
-        changedKeys.forEach((k) => {
-          changedValueStrings.push(`${k} -> ${this[k]}`);
-        });
-
-        message = `recordProperty "${
-          property.key
-        }" updated: ${changedValueStrings.join(", ")}`;
-        break;
-      case "destroy":
-        message = `recordProperty "${property.key}" destroyed`;
-        break;
-    }
-
-    return message;
   }
 
   // --- Class Methods --- //

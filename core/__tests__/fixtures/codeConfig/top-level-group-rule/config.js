@@ -1,10 +1,18 @@
 module.exports = async function getConfig() {
   return [
     {
+      id: "mod_profiles",
+      class: "Model",
+      name: "Profiles",
+      type: "profile",
+    },
+
+    {
       id: "group_exists",
       name: "People that exist",
       class: "Group",
       type: "calculated",
+      modelId: "mod_profiles",
       rules: [
         {
           propertyId: "grouparooId",
@@ -12,11 +20,13 @@ module.exports = async function getConfig() {
         },
       ],
     },
+
     {
       id: "group_recent",
       name: "People that have been recently added",
       class: "Group",
       type: "calculated",
+      modelId: "mod_profiles",
       rules: [
         {
           propertyId: "grouparooCreatedAt",

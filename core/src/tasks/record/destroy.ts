@@ -16,9 +16,10 @@ export class RecordDestroy extends CLSTask {
   }
 
   async runWithinTransaction({ recordId }: { recordId: string }) {
-    const record = await GrouparooRecord.findById(recordId);
+    const record = await GrouparooRecord.findOne({
+      where: { id: recordId, state: "ready" },
+    });
     if (!record) return;
-    if (record.state !== "ready") return;
 
     const pendingExports = await Export.count({
       where: {

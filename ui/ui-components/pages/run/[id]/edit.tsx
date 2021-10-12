@@ -1,7 +1,6 @@
 import { UseApi } from "../../../hooks/useApi";
 import { useState, Fragment } from "react";
 import { Row, Col, Badge, Alert, Card } from "react-bootstrap";
-import Moment from "react-moment";
 import Link from "../../../components/enterpriseLink";
 import { GrouparooChart } from "../../../components/visualizations/grouparooChart";
 import RunTabs from "../../../components/tabs/run";
@@ -11,6 +10,7 @@ import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { ErrorHandler } from "../../../utils/errorHandler";
+import { DurationTime } from "../../../components/durationTime";
 
 export default function Page(props) {
   const {
@@ -88,7 +88,7 @@ export default function Page(props) {
                 <br />
                 <small>
                   Total Duration:{" "}
-                  <Moment duration={run.createdAt} date={run.completedAt} />
+                  <DurationTime start={run.createdAt} end={run.completedAt} />
                 </small>
               </>
             ) : null}
@@ -105,11 +105,9 @@ export default function Page(props) {
               Records Imported: {run.recordsImported}
             </Col>
             <Col>
-              Group Member Limit: {run.groupMemberLimit}
+              Member Limit: {run.memberLimit}
               <br />
-              Group Member Offset: {run.groupMemberOffset}
-              <br />
-              Group Member High Water Mark: {run.groupHighWaterMark}
+              Member Offset: {run.memberOffset}
               <br />
               Source Offset: {run.sourceOffset}
               {run.highWaterMark ? (

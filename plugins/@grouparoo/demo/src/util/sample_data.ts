@@ -13,38 +13,29 @@ import { TYPES } from "./data";
 
 interface DataOptions {
   scale?: number;
+  junkPercent?: number;
 }
 
-export async function employees(db: Connection, options: DataOptions = {}) {
-  await createCsvTable(
-    db,
-    "shared",
-    "users",
-    "account_id",
-    "account",
-    true,
-    true,
-    options
-  );
+export async function writeAll(db: Connection, options: DataOptions = {}) {
+  await users(db, options);
+  await admins(db, options);
+  await purchases(db, options);
+  await plans(db, {});
+  await accounts(db, options);
+  await payments(db, options);
 }
 
-export async function consumers(db: Connection, options: DataOptions = {}) {
-  await createCsvTable(
-    db,
-    "shared",
-    "users",
-    "id",
-    "user",
-    true,
-    true,
-    options
-  );
+async function users(db: Connection, options: DataOptions = {}) {
+  await createCsvTable(db, "users", "id", "user", true, true, options);
 }
 
-export async function purchases(db: Connection, options: DataOptions = {}) {
+async function admins(db: Connection, options: DataOptions = {}) {
+  await createCsvTable(db, "admins", "id", "admin", true, true, options);
+}
+
+async function purchases(db: Connection, options: DataOptions = {}) {
   await createCsvTable(
     db,
-    "b2c",
     "purchases",
     "user_id",
     "user",
@@ -54,22 +45,13 @@ export async function purchases(db: Connection, options: DataOptions = {}) {
   );
 }
 
-export async function accounts(db: Connection, options: DataOptions = {}) {
-  await createCsvTable(
-    db,
-    "b2b",
-    "accounts",
-    "id",
-    "account",
-    true,
-    true,
-    options
-  );
+async function accounts(db: Connection, options: DataOptions = {}) {
+  await createCsvTable(db, "accounts", "id", "account", true, true, options);
 }
-export async function payments(db: Connection, options: DataOptions = {}) {
+
+async function payments(db: Connection, options: DataOptions = {}) {
   await createCsvTable(
     db,
-    "b2b",
     "payments",
     "account_id",
     "account",
@@ -78,21 +60,24 @@ export async function payments(db: Connection, options: DataOptions = {}) {
     options
   );
 }
-export async function plans(db: Connection, options: DataOptions = {}) {
-  await createCsvTable(db, "b2b", "plans", "id", null, false, false, options);
+async function plans(db: Connection, options: DataOptions = {}) {
+  await createCsvTable(db, "plans", "id", null, false, false, options);
 }
 
-export function readCsvTable(dataset: string, tableName: string) {
+export function readCsvTable(tableName: string, junkPercent: number) {
   const filePath = path.resolve(
-    path.join(__dirname, "..", "..", "data", dataset, `${tableName}.csv`)
+    path.join(__dirname, "..", "..", "data", "rows", `${tableName}.csv`)
   );
-  const rows = parse(fs.readFileSync(filePath), { columns: true });
+  const rows = junkifyData(
+    tableName,
+    parse(fs.readFileSync(filePath), { columns: true }),
+    junkPercent
+  );
   return rows;
 }
 
 async function createCsvTable(
   db: Connection,
-  dataset: string,
   tableName: string,
   typeColumn: string,
   typeName: string,
@@ -108,33 +93,32 @@ async function createCsvTable(
   await db.connect();
   await loadCsvTable(
     db,
-    dataset,
     tableName,
     typeColumn,
     typeName,
     createdAt,
     updatedAt,
-    options.scale
+    options.scale,
+    options.junkPercent
   );
   await db.disconnect();
 }
 
 async function loadCsvTable(
   db: Connection,
-  dataset: string,
   tableName: string,
   typeColumn: string,
   typeName: string,
   createdAt: boolean,
   updatedAt: boolean,
-  scale: number = 0
+  scale: number = 0,
+  junkPercent: number = 0
 ) {
-  if (!scale || scale < 1) {
-    scale = 1;
-  }
-  log(`Adding ${tableName}`);
+  if (!scale || scale < 1) scale = 1;
+  if (!junkPercent || junkPercent < 1) junkPercent = 0;
+
   // read from data file
-  const rows = readCsvTable(dataset, tableName);
+  const rows = readCsvTable(tableName, junkPercent);
   const keys = Object.keys(rows[0]);
 
   if (createdAt) {
@@ -216,8 +200,9 @@ function getRowData(
   const now = new Date();
   switch (typeName) {
     case "user":
+    case "admin":
       rootCreatedAt = userCreatedAt(typeId);
-      isRoot = tableName === "users";
+      isRoot = ["users", "admins"].includes(tableName);
       numOfRoot = numberOfUsers;
       break;
     case "account":
@@ -288,4 +273,50 @@ function parseValue(tableName: string, key: string, value: string) {
     return false;
   }
   return value;
+}
+
+function junkifyData(
+  tableName: string,
+  rows: Record<string, any>[],
+  junkPercent: number
+) {
+  let junkCounter = 0;
+  // skip the primary key (the first column)
+  const keys = Object.keys(rows[0]).slice(1, Object.keys(rows[0]).length - 1);
+  for (const row of rows) {
+    const toJunk = Math.random() < junkPercent / 100;
+    if (toJunk) {
+      junkCounter++;
+      const key = keys[Math.floor(Math.random() * keys.length)];
+      row[key] = junkRow(key, row[key]);
+    }
+  }
+
+  if (junkCounter > 0) {
+    log(`    created junk data on ${junkCounter} ${tableName} records`);
+  }
+
+  return rows;
+}
+
+function junkRow(column: string, v: string) {
+  // don't mess with primary keys
+  if (column.match(/_id$/)) return v;
+
+  if (v.includes(".") && !isNaN(parseFloat(v))) {
+    v = Math.random() < 0.5 ? `-${v}` : "";
+    v = v;
+  }
+  if (v.includes("@")) {
+    v =
+      Math.random() < 0.5
+        ? ` ${v} `
+        : Math.random() < 0.5
+        ? v.replace("@", "-")
+        : "";
+  } else {
+    v = Math.random() < 0.5 ? ` ${v} ` : "";
+  }
+
+  return v;
 }

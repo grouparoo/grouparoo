@@ -16,6 +16,7 @@ describe("modules/plugin", () => {
         apps: [
           {
             name: "sample-plugin-app",
+            displayName: "sample-plugin-app",
             options: [],
             methods: {
               test: async () => {
@@ -30,6 +31,7 @@ describe("modules/plugin", () => {
         connections: [
           {
             name: "sample-plugin-import",
+            displayName: "sample-plugin-import",
             direction: "import",
             description: "import or update records from an uploaded file",
             app: "sample-plugin-app",
@@ -87,6 +89,7 @@ describe("modules/plugin", () => {
           connections: [
             {
               name: "sample-plugin-export",
+              displayName: "sample-plugin-export",
               direction: "export",
               description: "export stuff",
               app: "sample-plugin-app",
@@ -258,10 +261,12 @@ describe("modules/plugin", () => {
         const property = await Property.findOne({
           where: { key: "userId" },
         });
+        const source = await property.$get("source");
         const initialString = "select * from users where id = {{ userId }}";
         const replacedWithId =
           await plugin.replaceTemplateRecordPropertyKeysWithRecordPropertyId(
-            initialString
+            initialString,
+            source.modelId
           );
         expect(replacedWithId).toEqual(
           `select * from users where id = {{ ${property.id} }}`
@@ -269,7 +274,8 @@ describe("modules/plugin", () => {
 
         expect(
           await plugin.replaceTemplateRecordPropertyIdsWithRecordPropertyKeys(
-            replacedWithId
+            replacedWithId,
+            source.modelId
           )
         ).toEqual(initialString);
       });

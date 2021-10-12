@@ -1,0 +1,15 @@
+{
+  "id": "all_emails",
+  "class": "Group",
+  "type": "calculated",
+  "name": "All Emails",
+  "modelId": "users",
+  "rules": [
+    {
+      "propertyId": "email",
+      "operation": {
+        "op": "exists"
+      }
+    }
+  ]
+}

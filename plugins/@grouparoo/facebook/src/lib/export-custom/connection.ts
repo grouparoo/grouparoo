@@ -8,7 +8,8 @@ export const supportedSyncModes: DestinationSyncMode[] = ["sync", "additive"];
 
 export function buildConnection(): PluginConnection {
   return {
-    name: "facebook-audiences-custom",
+    name: "facebook-export-audiences-custom",
+    displayName: "Facebook Export Custom Audiences",
     direction: "export",
     description: "Export to Facebook Custom Audiences",
     app: "facebook",

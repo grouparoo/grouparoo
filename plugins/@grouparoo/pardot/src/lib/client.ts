@@ -48,12 +48,15 @@ class PardotClient {
   }
 
   async getCustomFields(): Promise<PardotCustomField[]> {
-    const res = await this.request.get("/customField/version/4/do/query", {
-      params: {
-        format: "json",
-        output: "mobile", // mobile output does not require pagination
-      },
-    });
+    const res = await this.request.get<Record<string, any>>(
+      "/customField/version/4/do/query",
+      {
+        params: {
+          format: "json",
+          output: "mobile", // mobile output does not require pagination
+        },
+      }
+    );
 
     const { result } = res.data;
 
@@ -76,7 +79,7 @@ class PardotClient {
 
   async getProspectByEmail(email: string) {
     try {
-      const res = await this.request.get(
+      const res = await this.request.get<Record<string, any>>(
         `/prospect/version/4/do/read/email/${encodeURIComponent(email)}`,
         {
           params: {
@@ -104,7 +107,7 @@ class PardotClient {
 
   async getProspectById(id: number) {
     try {
-      const res = await this.request.get(
+      const res = await this.request.get<Record<string, any>>(
         `/prospect/version/4/do/read/id/${id}`,
         {
           params: {
@@ -133,12 +136,15 @@ class PardotClient {
   async queryProspects(
     options?: Record<string, any>
   ): Promise<Record<string, any>[]> {
-    const res = await this.request.get("/prospect/version/4/do/query", {
-      params: {
-        format: "json",
-        ...options,
-      },
-    });
+    const res = await this.request.get<Record<string, any>>(
+      "/prospect/version/4/do/query",
+      {
+        params: {
+          format: "json",
+          ...options,
+        },
+      }
+    );
 
     const { result } = res.data;
     if (result.total_results === 0) {
@@ -154,7 +160,7 @@ class PardotClient {
     const form = new FormData();
     form.append("prospects", JSON.stringify({ prospects }));
 
-    const res = await this.request.post(
+    const res = await this.request.post<Record<string, any>>(
       "/prospect/version/4/do/batchUpsert",
       form,
       {
@@ -174,12 +180,15 @@ class PardotClient {
   }
 
   async getListByName(listName: string) {
-    const res = await this.request.get("/list/version/4/do/query", {
-      params: {
-        format: "json",
-        name: listName,
-      },
-    });
+    const res = await this.request.get<Record<string, any>>(
+      "/list/version/4/do/query",
+      {
+        params: {
+          format: "json",
+          name: listName,
+        },
+      }
+    );
 
     const { result } = res.data;
 
@@ -193,7 +202,7 @@ class PardotClient {
   }
 
   async createList(listName: string): Promise<Record<string, any>> {
-    const res = await this.request.post(
+    const res = await this.request.post<Record<string, any>>(
       "/list/version/4/do/create",
       {},
       {

@@ -10,10 +10,12 @@ import {
   plugin,
   Source,
   Property,
+  GrouparooModel,
 } from "../../../src";
 import { Op } from "sequelize";
 
 describe("tasks/record:export", () => {
+  let model: GrouparooModel;
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
@@ -53,8 +55,7 @@ describe("tasks/record:export", () => {
       let destination: Destination;
 
       beforeAll(async () => {
-        await helper.truncate();
-        await helper.factories.properties();
+        ({ model } = await helper.factories.properties());
         helper.disableTestPluginImport();
 
         record = await helper.factories.record();
@@ -72,6 +73,7 @@ describe("tasks/record:export", () => {
           apps: [
             {
               name: "test-template-app",
+              displayName: "test-template-app",
               options: [],
               methods: {
                 test: async () => {
@@ -83,6 +85,7 @@ describe("tasks/record:export", () => {
           connections: [
             {
               name: "export-from-test-template-app",
+              displayName: "export-from-test-template-app",
               description: "a test app connection",
               app: "test-template-app",
               direction: "export",
@@ -128,13 +131,14 @@ describe("tasks/record:export", () => {
           type: "export-from-test-template-app",
           syncMode: "sync",
           appId: app.id,
+          modelId: model.id,
         });
         await destination.setMapping({
           email: "email",
           firstName: "firstName",
           lastName: "lastName",
         });
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
         const destinationGroupMemberships = {};
         destinationGroupMemberships[group.id] = group.name;
         await destination.setDestinationGroupMemberships(

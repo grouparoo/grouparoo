@@ -3,6 +3,7 @@ import { api, specHelper } from "actionhero";
 import {
   App,
   Filter,
+  GrouparooModel,
   Log,
   Option,
   plugin,
@@ -13,10 +14,11 @@ import {
 import { FilterHelper } from "../../../src/modules/filterHelper";
 
 describe("models/property", () => {
+  let model: GrouparooModel;
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
-    await helper.factories.properties();
+    ({ model } = await helper.factories.properties());
   });
 
   test("creating a property with options enqueued an internalRun", async () => {
@@ -287,6 +289,7 @@ describe("models/property", () => {
       apps: [
         {
           name: "app-no-options",
+          displayName: "app-no-options",
           options: [],
           methods: {
             test: async () => {
@@ -298,6 +301,7 @@ describe("models/property", () => {
       connections: [
         {
           name: "source-no-options",
+          displayName: "source-no-options",
           description: "a test source",
           app: "app-no-options",
           direction: "import",
@@ -316,6 +320,7 @@ describe("models/property", () => {
     const source = await Source.create({
       appId: app.id,
       type: "source-no-options",
+      modelId: model.id,
     });
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
@@ -655,6 +660,7 @@ describe("models/property", () => {
         apps: [
           {
             name: "test-template-app",
+            displayName: "test-template-app",
             options: [],
             methods: {
               test: async () => {
@@ -666,6 +672,7 @@ describe("models/property", () => {
         connections: [
           {
             name: "import-from-test-app",
+            displayName: "import-from-test-app",
             description: "a test app",
             app: "test-template-app",
             direction: "import",
@@ -740,6 +747,7 @@ describe("models/property", () => {
         name: "test source",
         type: "import-from-test-app",
         appId: app.id,
+        modelId: model.id,
       });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });

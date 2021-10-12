@@ -13,16 +13,18 @@ import {
   GrouparooRecord,
   GroupMember,
   Log,
+  GrouparooModel,
 } from "../../../src";
 import { utils } from "actionhero";
 
 describe("models/run", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let model: GrouparooModel;
   let schedule: Schedule;
   let firstRun: Run;
 
   beforeAll(async () => {
-    await helper.factories.properties();
+    ({ model } = await helper.factories.properties());
     schedule = await helper.factories.schedule();
   });
 
@@ -162,7 +164,7 @@ describe("models/run", () => {
           state: "running",
           creatorId: group.id,
           creatorType: "group",
-          groupMethod: "runAddGroupMembers",
+          method: "runAddGroupMembers",
         });
 
         // 0 members
@@ -180,7 +182,7 @@ describe("models/run", () => {
           state: "running",
           creatorId: group.id,
           creatorType: "group",
-          groupMethod: "runRemoveGroupMembers",
+          method: "runRemoveGroupMembers",
         });
 
         // 0 members
@@ -198,14 +200,14 @@ describe("models/run", () => {
           state: "running",
           creatorId: group.id,
           creatorType: "group",
-          groupMethod: "removePreviousRunGroupMembers",
+          method: "removePreviousRunGroupMembers",
         });
 
         run = await Run.create({
           state: "running",
           creatorId: group.id,
           creatorType: "group",
-          groupMethod: "runRemoveGroupMembers",
+          method: "runRemoveGroupMembers",
         });
 
         // 3 members
@@ -221,7 +223,7 @@ describe("models/run", () => {
           state: "running",
           creatorId: group.id,
           creatorType: "group",
-          groupMethod: "complete",
+          method: "complete",
         });
         await run.determinePercentComplete();
         expect(run.percentComplete).toBe(99);
@@ -242,7 +244,7 @@ describe("models/run", () => {
           state: "running",
           creatorId: group.id,
           creatorType: "group",
-          groupMethod: "runRemoveGroupMembers",
+          method: "runRemoveGroupMembers",
         });
 
         // 3 members left (manually added because group is deleted)
@@ -610,6 +612,7 @@ describe("models/run", () => {
         apps: [
           {
             name: "test-error-app",
+            displayName: "test-error-app",
             options: [],
             methods: {
               test: async () => {
@@ -621,6 +624,7 @@ describe("models/run", () => {
         connections: [
           {
             name: "test-error-connection",
+            displayName: "test-error-connection",
             description: "a test app",
             app: "test-error-app",
             direction: "import",
@@ -663,6 +667,7 @@ describe("models/run", () => {
         name: "bad source",
         type: "test-error-connection",
         appId: app.id,
+        modelId: model.id,
       });
       await source.setOptions({ query: "test table" });
       await source.setMapping({ id: "userId" });

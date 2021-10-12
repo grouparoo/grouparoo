@@ -1,9 +1,13 @@
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, App, Destination } from "../../../../src";
+import { plugin, App, Destination, GrouparooModel } from "../../../../src";
 
 describe("models/destination", () => {
+  let model: GrouparooModel;
+
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  beforeAll(async () => await helper.factories.properties());
+  beforeAll(async () => {
+    ({ model } = await helper.factories.properties());
+  });
 
   describe("with a connection that cannot export", () => {
     let app: App;
@@ -15,6 +19,7 @@ describe("models/destination", () => {
           apps: [
             {
               name: "test-template-app",
+              displayName: "test-template-app",
               options: [],
               methods: {
                 test: async () => {
@@ -26,6 +31,7 @@ describe("models/destination", () => {
           connections: [
             {
               name: "import-from-test-template-app",
+              displayName: "import-from-test-template-app",
               description: "a test app connection",
               app: "test-template-app",
               direction: "export",
@@ -55,6 +61,7 @@ describe("models/destination", () => {
           name: "test plugin destination app missing methods",
           type: "import-from-test-template-app",
           appId: app.id,
+          modelId: model.id,
         })
       ).rejects.toThrow(
         /cannot be created as there are no record export methods/

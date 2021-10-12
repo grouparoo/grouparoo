@@ -1,5 +1,8 @@
 import { Initializer, route, task, api, log } from "actionhero";
+import { getCoreVersion } from "../modules/pluginDetails";
+import { Reset } from "../modules/reset";
 
+const grouparooVersionKey = "grouparoo:version";
 let taskRecheckInterval: NodeJS.Timeout;
 
 export class ResqueInitializer extends Initializer {
@@ -7,6 +10,7 @@ export class ResqueInitializer extends Initializer {
     super();
     this.name = `@grouparoo/resque`;
     this.loadPriority = 1000;
+    this.startPriority = 100;
   }
 
   async initialize() {
@@ -93,6 +97,12 @@ export class ResqueInitializer extends Initializer {
   async start() {
     const delay = 1000 * 60 * 60 * 1; // 1 hour
     taskRecheckInterval = setInterval(this.recheckPeriodicTasks, delay);
+
+    const client = api.redis.clients.client;
+    const currentVersion = getCoreVersion();
+    const previousVersion = await client.get(grouparooVersionKey);
+    if (currentVersion !== previousVersion) await Reset.clearRedis();
+    await client.set(grouparooVersionKey, currentVersion);
   }
 
   async stop() {

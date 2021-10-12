@@ -1,13 +1,21 @@
-import { config } from "actionhero";
+import { Action, config } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
+import { Group } from "../models/Group";
 import { internalRun } from "../modules/internalRun";
 import { Op } from "sequelize";
 import { ConfigWriter } from "../modules/configWriter";
 import { RecordOps } from "../modules/ops/record";
 import Sequelize from "sequelize";
 import { APIData } from "../modules/apiData";
+import {
+  ActionPermissionMode,
+  ActionPermissionTopic,
+} from "../models/Permission";
+import { CLSAction } from "../classes/actions/clsAction";
+import { CLS } from "../modules/cls";
+import { AsyncReturnType } from "type-fest";
 
 export class RecordsList extends AuthenticatedAction {
   constructor() {
@@ -21,6 +29,7 @@ export class RecordsList extends AuthenticatedAction {
       searchKey: { required: false },
       searchValue: { required: false },
       state: { required: false },
+      modelId: { required: false },
       caseSensitive: {
         required: false,
         formatter: APIData.ensureBoolean,
@@ -116,6 +125,7 @@ export class RecordCreate extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "record", mode: "write" };
     this.inputs = {
+      modelId: { required: true },
       properties: {
         required: false,
         default: {},
@@ -125,8 +135,9 @@ export class RecordCreate extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const record = new GrouparooRecord(params);
+    const record = new GrouparooRecord({ modelId: params.modelId });
     await record.save();
+
     if (params.properties) {
       await record.addOrUpdateProperties(params.properties);
     }
@@ -141,11 +152,65 @@ export class RecordCreate extends AuthenticatedAction {
   }
 }
 
-export class RecordImportAndExport extends AuthenticatedAction {
+export class RecordImport extends Action {
+  permission: {
+    topic: ActionPermissionTopic;
+    mode: ActionPermissionMode;
+  };
+
   constructor() {
     super();
-    this.name = "record:importAndExport";
-    this.description = "fully import a record from all apps and update groups";
+    this.name = "record:import";
+    this.description = "fully import a record";
+    this.outputExample = {};
+    this.permission = { topic: "record", mode: "write" };
+    this.middleware = ["authenticated-action"];
+    this.inputs = {
+      id: { required: true },
+    };
+  }
+
+  // This action needs custom transaction handling to handle problems with each source/recordProperty
+  async run({ params }) {
+    let record: GrouparooRecord;
+    let response: {
+      success: boolean;
+      record: AsyncReturnType<GrouparooRecord["apiData"]>;
+      groups: AsyncReturnType<Group["apiData"]>[];
+    };
+
+    await CLS.wrap(async () => {
+      record = await GrouparooRecord.findById(params.id);
+      await record.buildNullProperties();
+      await record.markPending();
+    });
+
+    // this method should not be wrapped in a transaction because we want to allow multiple sources to throw and recover their imports
+    await record.import();
+
+    await CLS.wrap(async () => {
+      await RecordOps.computeRecordsValidity([record]);
+      await record.reload({ include: [RecordProperty] });
+      await record.update({ state: "ready" });
+      await record.updateGroupMembership();
+      const groups = await record.$get("groups");
+
+      response = {
+        success: true,
+        record: await record.apiData(),
+        groups: await Promise.all(groups.map((group) => group.apiData())),
+      };
+    });
+
+    return response;
+  }
+}
+
+export class RecordExport extends CLSAction {
+  constructor() {
+    super();
+    this.name = "record:export";
+    this.description = "fully export a record";
     this.outputExample = {};
     this.permission = { topic: "record", mode: "write" };
     this.inputs = {
@@ -153,59 +218,22 @@ export class RecordImportAndExport extends AuthenticatedAction {
     };
   }
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: {
+      id: string;
+      properties: Record<string, (string | number | boolean | Date)[]>;
+      removedProperties: string[];
+    };
+  }) {
     const record = await GrouparooRecord.findById(params.id);
-    await record.sync();
-    const groups = await record.$get("groups");
+    const exports = await record.export(true);
 
     return {
       success: true,
       record: await record.apiData(),
-      groups: await Promise.all(groups.map((group) => group.apiData())),
-    };
-  }
-}
-
-export class RecordEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "record:edit";
-    this.description = "edit a record";
-    this.outputExample = {};
-    this.permission = { topic: "record", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      properties: {
-        required: false,
-        default: {},
-        formatter: APIData.ensureObject,
-      },
-      removedProperties: {
-        required: false,
-        default: [],
-        formatter: APIData.ensureObject,
-      },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const record = await GrouparooRecord.findById(params.id);
-
-    await record.update(params);
-    if (params.properties) {
-      await record.addOrUpdateProperties(params.properties);
-    }
-    if (params.removedProperties) {
-      await record.removeProperties(params.removedProperties);
-    }
-
-    await record.sync(false);
-
-    const groups = await record.$get("groups");
-
-    return {
-      record: await record.apiData(),
-      groups: await Promise.all(groups.map((group) => group.apiData())),
+      exports: await Promise.all(exports.map((e) => e.apiData())),
     };
   }
 }

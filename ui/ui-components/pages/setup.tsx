@@ -1,21 +1,29 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UseApi } from "../hooks/useApi";
-import { Models } from "../utils/apiData";
+import { Actions, Models } from "../utils/apiData";
 import { Row, Col, ProgressBar, Alert } from "react-bootstrap";
 import SetupStepCard from "../components/setupSteps/setupStepCard";
 import { ErrorHandler } from "../utils/errorHandler";
 import { SetupStepHandler } from "../utils/setupStepsHandler";
+import Loader from "../components/loader";
 
 export default function Page(props) {
   const {
     errorHandler,
     setupStepHandler,
-  }: { errorHandler: ErrorHandler; setupStepHandler: SetupStepHandler } = props;
+    navigationModel,
+  }: {
+    errorHandler: ErrorHandler;
+    setupStepHandler: SetupStepHandler;
+    navigationModel: Actions.NavigationList["navigationModel"];
+  } = props;
   const { execApi } = UseApi(props, errorHandler);
-  const [setupSteps, setSetupSteps] = useState<Models.SetupStepType[]>(
-    props.setupSteps
-  );
+  const [setupSteps, setSetupSteps] = useState<Models.SetupStepType[]>([]);
+
+  useEffect(() => {
+    load();
+  }, []);
 
   const completeStepsCount = setupSteps.filter(
     (step) => step.complete || step.skipped
@@ -28,12 +36,23 @@ export default function Page(props) {
     (step) => !step.complete && !step.skipped
   );
 
-  async function reload() {
-    const response = await execApi("get", `/setupSteps`, {}, null, null, false);
+  async function load() {
+    const response = await execApi(
+      "get",
+      `/setupSteps`,
+      { modelId: navigationModel.value },
+      null,
+      null,
+      false
+    );
     if (response.setupSteps) {
       setSetupSteps(response.setupSteps);
       setupStepHandler.set(response.setupSteps);
     }
+  }
+
+  if (setupSteps.length === 0) {
+    return <Loader />;
   }
 
   return (
@@ -82,7 +101,7 @@ export default function Page(props) {
               key={`setupStep-${setupStep.key}`}
               execApi={execApi}
               setupStep={setupStep}
-              reload={reload}
+              reload={load}
             />
           ))}
         </Col>
@@ -92,9 +111,3 @@ export default function Page(props) {
     </>
   );
 }
-
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { setupSteps } = await execApi("get", `/setupSteps`);
-  return { setupSteps };
-};

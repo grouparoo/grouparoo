@@ -1,4 +1,4 @@
-import { CLI, api } from "actionhero";
+import { CLI, api, env } from "actionhero";
 import Colors from "colors/safe";
 import { FinalSummary } from "./status";
 import { FinalSummaryReporters } from "../../../core/src/modules/statusReporters";
@@ -100,19 +100,18 @@ export namespace GrouparooCLI {
     }
 
     export function deCamel(s: string) {
-      return s.replace(/([a-z])([A-Z])/g, "$1 $2");
+      return s
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace("Grouparoo Record", "Record"); // special replacement for logging "record"
     }
 
     export function deCamelAndCapitalize(s: string) {
-      return (
-        s.charAt(0).toUpperCase() +
-        s.slice(1).replace(/([a-z])([A-Z])/g, "$1 $2")
-      );
+      return s.charAt(0).toUpperCase() + deCamel(s.slice(1));
     }
 
     export function fatal(message: string) {
       logger.error("❌ " + message);
-      if (process.env.NODE_ENV !== "test") process.exit(1);
+      if (env !== "test") process.exit(1);
       return true;
     }
 
@@ -185,7 +184,6 @@ export namespace GrouparooCLI {
             }
           } else {
             for (const property in category) {
-              // GrouparooCLI.logger.log(logBlock);
               if (property !== "name") {
                 GrouparooCLI.logger.log(
                   category[property] === null
@@ -212,7 +210,7 @@ export namespace GrouparooCLI {
 
       GrouparooCLI.logger.log("");
       GrouparooCLI.logger.log(cyanBold(formattedTitle));
-      const headings = ["PROFILES", "SOURCES", "DESTINATIONS"];
+      const headings = ["RECORDS", "SOURCES", "DESTINATIONS"];
       if (finalSummaryLogs[3].length > 0) headings.push("WARNINGS");
 
       finalSummaryLogs.forEach((log, idx) => {

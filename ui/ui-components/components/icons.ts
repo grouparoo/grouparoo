@@ -3,12 +3,14 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 // Add new Icons you want to use in the Grouparoo app here
 import {
   faAddressCard,
-  faCaretSquareRight,
   faCaretSquareLeft,
+  faCaretSquareRight,
+  faClipboardList,
   faExchangeAlt,
   faFileExport,
   faFileImport,
   faHome,
+  faList,
   faStream,
   faTerminal,
   faThLarge,
@@ -21,12 +23,14 @@ import { faSlack } from "@fortawesome/free-brands-svg-icons";
 
 library.add(
   faAddressCard,
-  faCaretSquareRight,
+  faClipboardList,
   faCaretSquareLeft,
+  faCaretSquareRight,
   faExchangeAlt,
   faFileExport,
   faFileImport,
   faHome,
+  faList,
   faSlack,
   faStream,
   faTerminal,

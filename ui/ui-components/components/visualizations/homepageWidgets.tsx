@@ -123,8 +123,8 @@ export function GroupsByNewestMember({
                 <tr key={`group-${group.id}`}>
                   <td>
                     <EnterpriseLink
-                      href="/group/[id]/rules"
-                      as={`/group/${group.id}/rules`}
+                      href="/object/[id]"
+                      as={`/object/${group.id}`}
                     >
                       <a>{group.name}</a>
                     </EnterpriseLink>
@@ -144,10 +144,6 @@ export function GroupsByNewestMember({
             })}
           </tbody>
         </Table>
-        <br />
-        <Link href="/groups">
-          <a>See all Groups</a>
-        </Link>
       </Card.Body>
     </Card>
   );
@@ -322,8 +318,8 @@ export function ScheduleRuns({
                 <tr key={`source-${sourceSchedule.id}`}>
                   <td>
                     <EnterpriseLink
-                      href="/source/[id]/schedule"
-                      as={`/source/${sourceSchedule.id}/schedule`}
+                      href="/object/[id]"
+                      as={`/object/${sourceSchedule.id}`}
                     >
                       <a>{sourceSchedule.name}</a>
                     </EnterpriseLink>
@@ -398,7 +394,7 @@ export function PendingImports({
       if (!_pendingImportKeys.includes(metric.value)) {
         _pendingImportKeys.push(metric.value);
       }
-      const idx = _pendingImportKeys.indexOf(metric.value);
+      const idx = _pendingImportKeys.sort().indexOf(metric.value);
 
       if (!_chartData[idx]) _chartData[idx] = [];
       _chartData[idx].push({
@@ -420,7 +416,7 @@ export function PendingImports({
     }
 
     if (_sources) setSources(_sources);
-    if (_pendingImportKeys) setPendingImportKeys(_pendingImportKeys);
+    if (_pendingImportKeys) setPendingImportKeys(_pendingImportKeys.sort());
     if (_chartData) setChartData(_chartData);
   }
 
@@ -496,7 +492,7 @@ export function PendingExports({
           _pendingExportKeys.push(metric.value);
         }
 
-        const idx = _pendingExportKeys.indexOf(metric.value);
+        const idx = _pendingExportKeys.sort().indexOf(metric.value);
         if (!_chartData[idx]) _chartData[idx] = [];
 
         _chartData[idx].push({
@@ -519,7 +515,7 @@ export function PendingExports({
       }
 
       setDestinations(_destinations);
-      setPendingExportKeys(_pendingExportKeys);
+      setPendingExportKeys(_pendingExportKeys.sort());
       setChartData(_chartData);
     }
 

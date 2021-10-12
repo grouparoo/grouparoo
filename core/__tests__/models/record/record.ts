@@ -10,6 +10,7 @@ import {
   App,
   Source,
   Log,
+  GrouparooModel,
 } from "../../../src";
 import { RecordOps } from "../../../src/modules/ops/record";
 
@@ -23,10 +24,15 @@ function simpleRecordValues(complexProfileValues): { [key: string]: any } {
 }
 
 describe("models/record", () => {
+  let model: GrouparooModel;
+
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => {
+    model = await helper.factories.model();
+  });
 
   test("a record can be created", async () => {
-    const record = new GrouparooRecord();
+    const record = new GrouparooRecord({ modelId: model.id });
 
     await record.save();
 
@@ -45,13 +51,20 @@ describe("models/record", () => {
   });
 
   it("deleting a record creates a custom log messages", async () => {
-    const record = await GrouparooRecord.create();
+    const record = await GrouparooRecord.create({ modelId: model.id });
     await record.destroy();
     const logs = await record.$get("logs", { order: [["createdAt", "asc"]] });
     expect(logs.length).toBe(2);
     expect(logs[1].topic).toBe("grouparooRecord");
     expect(logs[1].verb).toBe("destroy");
     expect(logs[1].message).toBe("record destroyed");
+  });
+
+  test("records require a valid modelId", async () => {
+    expect(GrouparooRecord.create()).rejects.toThrow(/modelId cannot be null/);
+    expect(GrouparooRecord.create({ modelId: "foo" })).rejects.toThrow(
+      /cannot find model with id foo/
+    );
   });
 
   describe("findOrCreateByUniqueRecordProperties", () => {
@@ -102,7 +115,7 @@ describe("models/record", () => {
       await houseProperty.setOptions({ column: "house" });
       await houseProperty.update({ state: "ready" });
 
-      const record = await GrouparooRecord.create();
+      const record = await GrouparooRecord.create({ modelId: model.id });
       await record.addOrUpdateProperties({
         email: ["toad@example.com"],
         color: ["orange"],
@@ -246,7 +259,7 @@ describe("models/record", () => {
     });
 
     test("it cannot add a record property that is not defined", async () => {
-      record = new GrouparooRecord();
+      record = new GrouparooRecord({ modelId: model.id });
       await record.save();
       await expect(
         record.addOrUpdateProperties({ email: ["luigi@example.com"] })
@@ -298,7 +311,7 @@ describe("models/record", () => {
       });
 
       beforeAll(async () => {
-        record = new GrouparooRecord();
+        record = new GrouparooRecord({ modelId: model.id });
         await record.save();
       });
 
@@ -309,7 +322,9 @@ describe("models/record", () => {
       });
 
       test("creating a record creates null record properties", async () => {
-        const newProfile = await GrouparooRecord.create();
+        const newProfile = await GrouparooRecord.create({
+          modelId: model.id,
+        });
         const properties = await newProfile.getProperties();
         expect(Object.keys(properties).length).toBe(5);
         for (const k in properties) {
@@ -319,7 +334,9 @@ describe("models/record", () => {
       });
 
       test("a record can be marked as pending and it's properties will be marked as pending as well", async () => {
-        const newProfile = await GrouparooRecord.create();
+        const newProfile = await GrouparooRecord.create({
+          modelId: model.id,
+        });
         await RecordProperty.update(
           { state: "ready" },
           { where: { recordId: newProfile.id } }
@@ -717,6 +734,38 @@ describe("models/record", () => {
           ).toBeGreaterThan(firstUpdate.getTime());
         });
 
+        test("array property length can grow and shrink", async () => {
+          await record.addOrUpdateProperties({
+            email: ["luigi@example.com"],
+            purchases: ["star", "mushroom", "mushroom", "go kart"],
+          });
+          const firstProperties = await record.getProperties();
+          expect(firstProperties.purchases.values).toEqual([
+            "star",
+            "mushroom",
+            "mushroom",
+            "go kart",
+          ]);
+
+          await record.addOrUpdateProperties({
+            email: ["luigi@example.com"],
+            purchases: ["star"],
+          });
+          const secondProperties = await record.getProperties();
+          expect(secondProperties.purchases.values).toEqual(["star"]);
+
+          await record.addOrUpdateProperties({
+            email: ["luigi@example.com"],
+            purchases: ["star", "mushroom", "mushroom"],
+          });
+          const thirdProperties = await record.getProperties();
+          expect(thirdProperties.purchases.values).toEqual([
+            "star",
+            "mushroom",
+            "mushroom",
+          ]);
+        });
+
         test("other record properties do not accept array values", async () => {
           await expect(
             record.addOrUpdateProperties({
@@ -742,9 +791,10 @@ describe("models/record", () => {
         name: "test group",
         type: "manual",
         state: "ready",
+        modelId: model.id,
       });
 
-      record = await GrouparooRecord.create();
+      record = await GrouparooRecord.create({ modelId: model.id });
       await group.addRecord(record);
     });
 
@@ -791,6 +841,7 @@ describe("models/record", () => {
         appId: app.id,
         name: "test import source",
         type: "test-plugin-import",
+        modelId: model.id,
       });
       await source.setOptions({ table: "test table" });
       await source.bootstrapUniqueProperty("userId", "integer", "id");
@@ -811,7 +862,7 @@ describe("models/record", () => {
         type: "calculated",
       });
 
-      record = await GrouparooRecord.create();
+      record = await GrouparooRecord.create({ modelId: model.id });
       await record.addOrUpdateProperties({
         email: ["mario@example.com"],
       });
@@ -863,6 +914,7 @@ describe("models/record", () => {
         apps: [
           {
             name: "test-template-app",
+            displayName: "test-template-app",
             options: [],
             methods: {
               test: async () => {
@@ -874,6 +926,7 @@ describe("models/record", () => {
         connections: [
           {
             name: "import-from-test-template-app",
+            displayName: "import-from-test-template-app",
             description: "a test app connection",
             app: "test-template-app",
             direction: "import" as "import",
@@ -914,6 +967,7 @@ describe("models/record", () => {
         appId: app.id,
         name: "test import source",
         type: "import-from-test-template-app",
+        modelId: model.id,
       });
       await source.bootstrapUniqueProperty("userId", "integer", "id");
       await source.setMapping({ id: "userId" });
@@ -945,7 +999,7 @@ describe("models/record", () => {
     });
 
     test("it can pull record properties in from all connected apps", async () => {
-      const record = await GrouparooRecord.create();
+      const record = await GrouparooRecord.create({ modelId: model.id });
       await record.addOrUpdateProperties({ userId: [1001] });
       await record.addOrUpdateProperties({ email: ["peach@example.com"] });
       let properties = await record.getProperties();
@@ -975,7 +1029,7 @@ describe("models/record", () => {
     });
 
     test("importing properties for source that doesn't support direct property imports will keep the old value", async () => {
-      const record = await GrouparooRecord.create();
+      const record = await GrouparooRecord.create({ modelId: model.id });
       await record.addOrUpdateProperties({
         userId: [1003],
         email: ["bowser@example.com"],
@@ -1011,7 +1065,7 @@ describe("models/record", () => {
     });
 
     test("after importing, all missing properties will have created a null record property", async () => {
-      const record = await GrouparooRecord.create();
+      const record = await GrouparooRecord.create({ modelId: model.id });
       await record.addOrUpdateProperties({ userId: [1002] });
       let properties = await record.getProperties();
       expect(Object.keys(properties).sort()).toEqual([
@@ -1052,6 +1106,7 @@ describe("models/record", () => {
           appId: app.id,
           name: "test import purchases source",
           type: "import-from-test-template-app",
+          modelId: model.id,
         });
         await purchasesTable.setOptions({ table: "purchases" });
         await purchasesTable.setMapping({ user_id: "userId" });
@@ -1067,7 +1122,9 @@ describe("models/record", () => {
       });
 
       test("properties from a dependent source can be imported at the same time", async () => {
-        const record = await GrouparooRecord.create();
+        const record = await GrouparooRecord.create({
+          modelId: model.id,
+        });
         await record.addOrUpdateProperties({ userId: [1010] });
         let properties = await record.getProperties();
         expect(simpleRecordValues(properties)).toEqual({
@@ -1146,7 +1203,7 @@ describe("models/record", () => {
 
     beforeAll(async () => {
       await GrouparooRecord.truncate();
-      await helper.factories.properties();
+      await helper.factories.properties(model.id);
 
       // create the records
       recordA = await helper.factories.record();

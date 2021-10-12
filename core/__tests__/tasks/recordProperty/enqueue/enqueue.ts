@@ -2,6 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import {
   PluginConnection,
+  GrouparooModel,
   RecordPropertyPluginMethod,
   RecordPropertiesPluginMethod,
   Property,
@@ -49,6 +50,17 @@ describe("tasks/recordProperties:enqueue", () => {
         await Property.truncate();
         await Source.truncate();
         await App.truncate();
+        await GrouparooModel.truncate();
+      });
+
+      // this test is really testing CLSTask in general
+      it("cannot be enqueued more than once due to the QueueLock middleware", async () => {
+        await task.enqueue("recordProperties:enqueue", {});
+        await task.enqueue("recordProperties:enqueue", {});
+        const foundTasks = await specHelper.findEnqueuedTasks(
+          "recordProperties:enqueue"
+        );
+        expect(foundTasks.length).toEqual(1);
       });
 
       it("will not crash when there is a property without a ready source", async () => {

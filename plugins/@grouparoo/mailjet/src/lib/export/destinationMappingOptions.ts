@@ -1,6 +1,6 @@
 import {
   DestinationMappingOptionsMethod,
-  DestinationMappingOptionsResponseTypes,
+  DestinationMappingOptionsResponseType,
   SimpleAppOptions,
 } from "@grouparoo/core";
 import { connect } from "./../connect";
@@ -53,7 +53,7 @@ const mapTypesFromMailjetToGrouparoo = (fieldKey, mailjetType) => {
 
 export const getRequiredFields = (): Array<{
   key: string;
-  type: DestinationMappingOptionsResponseTypes;
+  type: DestinationMappingOptionsResponseType;
 }> => {
   return [{ key: "Email", type: "email" }];
 };
@@ -67,14 +67,14 @@ export const getUserFields = async (
 ): Promise<
   Array<{
     key: string;
-    type: DestinationMappingOptionsResponseTypes;
+    type: DestinationMappingOptionsResponseType;
     important?: boolean;
   }>
 > => {
   const fields = await client.getAllContactsProperties();
   const out = [];
   for (const field of fields) {
-    const type: DestinationMappingOptionsResponseTypes =
+    const type: DestinationMappingOptionsResponseType =
       mapTypesFromMailjetToGrouparoo(field["Name"], field["Datatype"]);
     if (type) {
       out.push({

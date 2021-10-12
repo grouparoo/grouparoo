@@ -1,34 +1,21 @@
 import {
   Table,
-  Model,
   Column,
   AllowNull,
   ForeignKey,
-  CreatedAt,
-  UpdatedAt,
-  BeforeCreate,
   BelongsTo,
   BeforeSave,
 } from "sequelize-typescript";
-import * as uuid from "uuid";
 import { Group } from "./Group";
 import { Property } from "./Property";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "groupRules", paranoid: false })
-export class GroupRule extends Model {
+export class GroupRule extends CommonModel<GroupRule> {
   idPrefix() {
     return "grr";
   }
-
-  @Column({ primaryKey: true })
-  id: string;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @AllowNull(false)
   @ForeignKey(() => Group)
@@ -93,13 +80,6 @@ export class GroupRule extends Model {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
-  }
-
-  @BeforeCreate
-  static generateId(instance) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
   }
 
   @BeforeSave

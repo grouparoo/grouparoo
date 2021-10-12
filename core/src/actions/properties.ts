@@ -1,7 +1,7 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
-import { Op } from "sequelize";
+import { Op, Order } from "sequelize";
 import { GrouparooRecord } from "../models/GrouparooRecord";
-import { Property, SimplePropertyOptions } from "../models/Property";
+import { Property } from "../models/Property";
 import { RecordProperty } from "../models/RecordProperty";
 import { Group } from "../models/Group";
 import { GroupRule } from "../models/GroupRule";
@@ -9,6 +9,8 @@ import { AsyncReturnType } from "type-fest";
 import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
 import { APIData } from "../modules/apiData";
+import { Source } from "../models/Source";
+import { Includeable } from "sequelize/types";
 
 export class PropertiesList extends AuthenticatedAction {
   constructor() {
@@ -20,10 +22,15 @@ export class PropertiesList extends AuthenticatedAction {
     this.inputs = {
       limit: { required: true, default: 100, formatter: APIData.ensureNumber },
       offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-      unique: { required: false },
+      unique: { required: false, formatter: APIData.ensureBoolean },
       state: { required: false },
+      modelId: { required: false },
       sourceId: { required: false },
-      includeExamples: { required: true, default: "false" },
+      includeExamples: {
+        required: true,
+        default: "false",
+        formatter: APIData.ensureBoolean,
+      },
       order: {
         required: false,
         formatter: APIData.ensureObject,
@@ -35,22 +42,51 @@ export class PropertiesList extends AuthenticatedAction {
     };
   }
 
-  async runWithinTransaction({ params }) {
-    const includeExamples =
-      params.includeExamples === "true" || params.includeExamples === true;
+  async runWithinTransaction({
+    params,
+  }: {
+    params: {
+      state: GrouparooRecord["state"] | "invalid";
+      sourceId: string;
+      includeExamples: boolean;
+      unique: boolean;
+      limit: number;
+      offset: number;
+      order: Order;
+      modelId: string;
+    };
+  }) {
+    const includeExamples = params.includeExamples;
 
     const where = {};
-    if (params.state) where["state"] = params.state;
-    if (params.sourceId) where["sourceId"] = params.sourceId;
-    if (params?.unique?.toString().toLowerCase() === "true")
+    if (params.state && params.state !== "invalid") {
+      where["state"] = params.state;
+    }
+    if (params.sourceId) {
+      where["sourceId"] = params.sourceId;
+    }
+    if (params.unique) {
       where["unique"] = true;
+    }
 
-    const properties = await Property.scope(null).findAll({
-      limit: params.limit,
-      offset: params.offset,
-      order: params.order,
-      where,
-    });
+    const include: Includeable[] = [
+      {
+        model: Source,
+        where: { state: ["draft", "ready"] },
+      },
+    ];
+
+    const properties = (
+      await Property.scope(null).findAll({
+        include,
+        limit: params.limit,
+        offset: params.offset,
+        order: params.order,
+        where,
+      })
+    ).filter((p) =>
+      params.modelId ? p.source?.modelId === params.modelId : true
+    );
 
     const responseProperties: Array<AsyncReturnType<Property["apiData"]>> = [];
     const responseExamples: { [id: string]: string[] } = {};
@@ -64,6 +100,13 @@ export class PropertiesList extends AuthenticatedAction {
           where: {
             propertyId: property.id,
             rawValue: { [Op.not]: null },
+            ...(params.state === "invalid"
+              ? {
+                  invalidReason: {
+                    [Op.not]: null,
+                  },
+                }
+              : {}),
           },
           order: [["id", "asc"]],
           limit: 5,
@@ -309,18 +352,21 @@ export class PropertyRecordPreview extends AuthenticatedAction {
     let record: GrouparooRecord;
 
     const property = await Property.findById(params.id);
+    const source = await property.$get("source", { scope: null });
 
     if (params.recordId) {
       record = await GrouparooRecord.findById(params.recordId);
     } else {
-      record = await GrouparooRecord.findOne({ order: [["id", "asc"]] });
+      record = await GrouparooRecord.findOne({
+        where: { modelId: source.modelId },
+        order: [["id", "asc"]],
+      });
       if (!record) {
         return { errorMessage: "No records found" };
       }
     }
 
     const apiData = await record.apiData();
-    const source = await property.$get("source", { scope: null });
 
     let newPropertyValues: Array<string | number | boolean | Date> = [];
     let errorMessage: string;
@@ -339,6 +385,8 @@ export class PropertyRecordPreview extends AuthenticatedAction {
       id: property.id,
       state: null,
       values: newPropertyValues,
+      invalidValue: null,
+      invalidReason: null,
       configId: property.getConfigId(),
       type: property.type,
       unique: property.unique,

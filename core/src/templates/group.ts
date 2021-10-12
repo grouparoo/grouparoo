@@ -12,6 +12,11 @@ export class CalculatedGroupTemplate extends ConfigTemplate {
         description: `The id of this new Property`,
         formatter: (p) => this.formatId(p),
       },
+      modelId: {
+        required: true,
+        description: `The id of the Model that the Records in this Group belong to`,
+        default: "mod_profiles",
+      },
     };
     this.files = [
       path.join(
@@ -45,6 +50,11 @@ export class ManualGroupTemplate extends ConfigTemplate {
         required: true,
         description: `The id of this new Property`,
         formatter: (p) => this.formatId(p),
+      },
+      modelId: {
+        required: true,
+        description: `The id of the Model that the Records in this Group belong to`,
+        default: "mod_profiles",
       },
     };
     this.files = [

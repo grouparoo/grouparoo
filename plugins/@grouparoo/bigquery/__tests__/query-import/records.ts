@@ -14,19 +14,10 @@ import {
   Property,
 } from "@grouparoo/core";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "query-records.js");
-
 import { getConnection } from "../../src/lib/query-import/connection";
 const records = getConnection().methods.records;
 
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
-// these used and set by test
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
 let source;
@@ -93,7 +84,7 @@ describe("bigquery/query/records", () => {
 
     source = await helper.factories.source(app, {
       name: "BQS",
-      type: "bigquery-query-import",
+      type: "bigquery-import-query",
     });
     await source.update({ state: "ready" });
 

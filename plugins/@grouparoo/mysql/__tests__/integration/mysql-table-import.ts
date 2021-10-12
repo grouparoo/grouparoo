@@ -8,6 +8,7 @@ import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import { GrouparooRecord, RecordProperty, Run } from "@grouparoo/core";
 import { SessionCreate } from "@grouparoo/core/src/actions/session";
+import { ModelCreate } from "@grouparoo/core/src/actions/models";
 import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
 import {
   SourceBootstrapUniqueProperty,
@@ -48,6 +49,7 @@ describe("integration/runs/mysql", () => {
   let client;
   let session;
   let csrfToken;
+  let model;
   let app;
   let source;
   let schedule;
@@ -80,6 +82,19 @@ describe("integration/runs/mysql", () => {
     expect(sessionResponse.error).toBeUndefined();
     csrfToken = sessionResponse.csrfToken;
 
+    // create a model
+    session.params = {
+      csrfToken,
+      name: "Profiles",
+      type: "profile",
+    };
+    const modelCreateResponse = await specHelper.runAction<ModelCreate>(
+      "model:create",
+      session
+    );
+    expect(modelCreateResponse.error).toBeUndefined();
+    model = modelCreateResponse.model;
+
     // create a mysql app
     session.params = {
       csrfToken,
@@ -99,8 +114,9 @@ describe("integration/runs/mysql", () => {
     session.params = {
       csrfToken,
       name: "mysql source",
-      type: "mysql-table-import",
+      type: "mysql-import-table",
       appId: app.id,
+      modelId: model.id,
       options: { table: usersTableName },
       // mapping: { id: "userId" },
       // state: "ready",
@@ -167,8 +183,9 @@ describe("integration/runs/mysql", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "mysql-export",
+      type: "mysql-export-records",
       appId: app.id,
+      modelId: model.id,
       options: {
         table: recordsDestinationTableName,
         primaryKey: "id",
@@ -340,12 +357,13 @@ describe("integration/runs/mysql", () => {
       csrfToken,
       id: destination.id,
       destinationGroupMemberships,
-      trackedGroupId: group.id,
+      groupId: group.id,
+      collection: "group",
     };
     const { error, destination: _destination } =
       await specHelper.runAction<DestinationEdit>("destination:edit", session);
     expect(error).toBeUndefined();
-    expect(_destination.destinationGroup.id).toBe(group.id);
+    expect(_destination.group.id).toBe(group.id);
     expect(_destination.destinationGroupMemberships).toEqual([
       {
         groupId: group.id,

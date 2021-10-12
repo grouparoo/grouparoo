@@ -1,0 +1,16 @@
+{
+  "class": "Property",
+  "id": "contact_email",
+  "type": "email",
+  "key": "contactEmail",
+  "sourceId": "account_users",
+  "unique": false,
+  "identifying": false,
+  "isArray": false,
+  "options": {
+    "aggregationMethod": "least recent value",
+    "column": "email",
+    "sortColumn": "created_at"
+  },
+  "filters": []
+}

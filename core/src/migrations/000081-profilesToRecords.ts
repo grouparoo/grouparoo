@@ -97,6 +97,13 @@ export default {
 
     await queryInterface.renameTable("profileProperties", "recordProperties");
 
+    await queryInterface.sequelize.query(
+      `UPDATE "logs" SET "topic"='grouparooRecord' WHERE "topic"='profile'`
+    );
+    await queryInterface.sequelize.query(
+      `UPDATE "logs" SET "topic"='recordProperty' WHERE "topic"='profileProperty'`
+    );
+
     if (config.sequelize?.dialect === "sqlite") {
       await queryInterface.addIndex(
         "recordProperties",

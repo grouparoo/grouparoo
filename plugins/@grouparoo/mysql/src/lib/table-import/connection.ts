@@ -10,8 +10,9 @@ import { getChangedRowCount } from "./getChangedRowCount";
 export function getConnection() {
   return buildConnection({
     app: "mysql",
-    name: "mysql-table-import",
-    description: "Import or update Profiles from a MySQL database table.",
+    name: "mysql-import-table",
+    displayName: "MySQL Table Import",
+    description: "Import or update Records from a MySQL database table.",
     tableOptionDescription: "The table to scan",
     getSampleRows,
     getColumns,

@@ -1,19 +1,14 @@
 import {
-  Model,
   Table,
   Column,
-  CreatedAt,
-  UpdatedAt,
   AllowNull,
   Is,
   BelongsTo,
-  BeforeCreate,
   BeforeSave,
   ForeignKey,
   DataType,
   Default,
 } from "sequelize-typescript";
-import * as uuid from "uuid";
 import { Destination } from "./Destination";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { plugin } from "../modules/plugin";
@@ -25,6 +20,8 @@ import { StateMachine } from "../modules/stateMachine";
 import { api, config } from "actionhero";
 import { ExportProcessor } from "./ExportProcessor";
 import { Errors } from "../modules/errors";
+import { PropertyTypes } from "./Property";
+import { CommonModel } from "../classes/commonModel";
 
 /**
  * The GrouparooRecord Properties in their normal data types (string, boolean, date, etc)
@@ -37,7 +34,10 @@ export interface ExportRecordProperties {
  * The GrouparooRecord Properties as stringified rawValues + types
  */
 export interface ExportRecordPropertiesWithType {
-  [key: string]: { type: string; rawValue: string | string[] };
+  [key: string]: {
+    type: typeof PropertyTypes[number];
+    rawValue: string | string[];
+  };
 }
 
 export const ExportStates = [
@@ -63,19 +63,10 @@ const STATE_TRANSITIONS = [
 ];
 
 @Table({ tableName: "exports", paranoid: false })
-export class Export extends Model {
+export class Export extends CommonModel<Export> {
   idPrefix() {
     return "exp";
   }
-
-  @Column({ primaryKey: true })
-  id: string;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @AllowNull(false)
   @ForeignKey(() => Destination)
@@ -250,6 +241,7 @@ export class Export extends Model {
             state: destination.state,
             name: destination.name,
             groupId: destination.groupId,
+            modelId: destination.modelId,
           }
         : undefined,
       destinationName: destination ? destination.name : null,
@@ -286,13 +278,6 @@ export class Export extends Model {
   @BeforeSave
   static async updateState(instance: Export) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
-  }
-
-  @BeforeCreate
-  static generateId(instance) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
   }
 
   @BeforeSave

@@ -1,0 +1,15 @@
+{
+  "class": "Property",
+  "id": "account_id",
+  "type": "integer",
+  "key": "accountId",
+  "sourceId": "demo_accounts",
+  "unique": true,
+  "identifying": false,
+  "isArray": false,
+  "options": {
+    "aggregationMethod": "exact",
+    "column": "id"
+  },
+  "filters": []
+}

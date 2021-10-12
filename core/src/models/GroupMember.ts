@@ -1,9 +1,6 @@
 import {
-  Model,
   Table,
   Column,
-  CreatedAt,
-  UpdatedAt,
   AllowNull,
   BeforeCreate,
   BeforeBulkCreate,
@@ -14,27 +11,18 @@ import {
   AfterBulkCreate,
   AfterDestroy,
 } from "sequelize-typescript";
-import * as uuid from "uuid";
 import { Op, WhereAttributeHash } from "sequelize";
 import { Group } from "./Group";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Log } from "./Log";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "groupMembers", paranoid: false })
-export class GroupMember extends Model {
+export class GroupMember extends CommonModel<GroupMember> {
   idPrefix() {
     return "mem";
   }
-
-  @Column({ primaryKey: true })
-  id: string;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @AllowNull(false)
   @ForeignKey(() => GrouparooRecord)
@@ -73,18 +61,6 @@ export class GroupMember extends Model {
     return instance;
   }
 
-  @BeforeCreate
-  static generateId(instance: GroupMember) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
-  }
-
-  @BeforeBulkCreate
-  static generateIds(instances: GroupMember[]) {
-    instances.forEach((instance) => this.generateId(instance));
-  }
-
   @BeforeSave
   static async ensureOneRecordPerGroup(instance: GroupMember) {
     const existing = await GroupMember.scope(null).findOne({
@@ -98,6 +74,37 @@ export class GroupMember extends Model {
       throw new Error(
         `There is already a GroupMember for ${instance.recordId} and ${instance.groupId}`
       );
+    }
+  }
+
+  @BeforeCreate
+  static async ensureModelMatch(instance: GroupMember) {
+    const group = await instance.$get("group", { scope: null });
+    const record = await instance.$get("record", { scope: null });
+    if (record.modelId !== group.modelId) {
+      throw new Error(
+        `models ${group.modelId} and ${record.modelId} do not match`
+      );
+    }
+  }
+
+  @BeforeBulkCreate
+  static async ensureModelsMatch(instances: GroupMember[]) {
+    const groups = await Group.findAll({
+      where: { id: instances.map((i) => i.groupId) },
+    });
+    const records = await GrouparooRecord.findAll({
+      where: { id: instances.map((i) => i.recordId) },
+    });
+
+    for (const i of instances) {
+      const group = groups.find((g) => g.id === i.groupId);
+      const record = records.find((r) => r.id === i.recordId);
+      if (record.modelId !== group.modelId) {
+        throw new Error(
+          `models ${group.modelId} and ${record.modelId} do not match`
+        );
+      }
     }
   }
 

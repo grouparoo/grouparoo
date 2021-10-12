@@ -1,7 +1,7 @@
 import { api } from "actionhero";
 
 export const DEFAULT = {
-  tasks: (config) => {
+  tasks: () => {
     return {
       _toExpand: false,
 
@@ -22,6 +22,7 @@ export const DEFAULT = {
             "properties",
             "sources",
             "apps",
+            "models",
             "default",
           ]
         );

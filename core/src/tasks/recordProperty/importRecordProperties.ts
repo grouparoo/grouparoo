@@ -7,7 +7,6 @@ import { Option } from "../../models/Option";
 import { Op } from "sequelize";
 import { log } from "actionhero";
 import { CLS } from "../../modules/cls";
-import { RecordPropertiesPluginMethodResponse } from "../../classes/plugin";
 import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
 import { RecordOps } from "../../modules/ops/record";
@@ -28,7 +27,7 @@ export class ImportRecordProperties extends RetryableTask {
   async runWithinTransaction(params) {
     const records = await GrouparooRecord.findAll({
       where: { id: { [Op.in]: params.recordIds } },
-      include: [RecordProperty],
+      include: RecordProperty,
     });
     if (records.length === 0) return;
 
@@ -110,11 +109,46 @@ export class ImportRecordProperties extends RetryableTask {
 
     if (recordsToImport.length === 0) return;
 
-    let propertyValuesBatch: RecordPropertiesPluginMethodResponse = {};
     try {
-      propertyValuesBatch = await source.importRecordProperties(
+      const propertyValuesBatch = await source.importRecordProperties(
         recordsToImport,
         properties
+      );
+
+      const orderedRecords: GrouparooRecord[] = [];
+      const orderedHashes: any[] = [];
+      for (const recordId in propertyValuesBatch) {
+        const record = recordsToImport.find((p) => p.id === recordId);
+        orderedRecords.push(record);
+        orderedHashes.push(propertyValuesBatch[recordId]);
+      }
+
+      if (orderedRecords.length > 0) {
+        await RecordOps.addOrUpdateProperties(
+          orderedRecords,
+          orderedHashes,
+          false // we are disabling the record lock here because the transaction will be saved out-of-band from the lock check
+        );
+      }
+
+      // update the properties that got no data back
+      await RecordProperty.update(
+        {
+          state: "ready",
+          rawValue: null,
+          stateChangedAt: new Date(),
+          confirmedAt: new Date(),
+          startedAt: null,
+        },
+        {
+          where: {
+            propertyId: { [Op.in]: properties.map((p) => p.id) },
+            recordId: {
+              [Op.in]: recordsToImport.map((p) => p.id),
+            },
+            state: "pending",
+          },
+        }
       );
     } catch (error) {
       // if something goes wrong with the batch import, fall-back to per-record/property imports
@@ -127,42 +161,7 @@ export class ImportRecordProperties extends RetryableTask {
         }
       }
 
-      return log(error.stack, "error");
+      log(error.stack, "error");
     }
-
-    const orderedRecords: GrouparooRecord[] = [];
-    const orderedHashes: any[] = [];
-    for (const recordId in propertyValuesBatch) {
-      const record = recordsToImport.find((p) => p.id === recordId);
-      orderedRecords.push(record);
-      orderedHashes.push(propertyValuesBatch[recordId]);
-    }
-
-    if (orderedRecords.length > 0) {
-      await RecordOps.addOrUpdateProperties(
-        orderedRecords,
-        orderedHashes,
-        false // we are disabling the record lock here because the transaction will be saved out-of-band from the lock check
-      );
-    }
-
-    // update the properties that got no data back
-    await RecordProperty.update(
-      {
-        state: "ready",
-        rawValue: null,
-        stateChangedAt: new Date(),
-        confirmedAt: new Date(),
-      },
-      {
-        where: {
-          propertyId: { [Op.in]: properties.map((p) => p.id) },
-          recordId: {
-            [Op.in]: recordsToImport.map((p) => p.id),
-          },
-          state: "pending",
-        },
-      }
-    );
   }
 }

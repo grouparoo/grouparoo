@@ -9,7 +9,6 @@ export class StatusSample extends CLSTask {
     this.description = "Calculate and set one of the status samples";
     this.frequency = 0;
     this.queue = "system";
-    this.plugins = ["QueueLock"];
     this.inputs = {
       index: { required: true },
     };

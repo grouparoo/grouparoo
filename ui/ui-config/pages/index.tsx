@@ -7,7 +7,7 @@ import Loader from "../../ui-components/components/loader";
 
 export default function Page(props) {
   const router = useRouter();
-  const { navigationMode, navigation } = props;
+  const { navigationMode, navigationModel } = props;
   const [shouldRender, setShouldRender] = useState(false);
   const [CTAs, setCTAs] = useState({
     CTALink: "/session/sign-in",
@@ -36,9 +36,10 @@ export default function Page(props) {
           CTATarget: null,
         });
       } else if (navigationMode === "config:authenticated" && !currentStep) {
+        const currentModel = navigationModel.value;
         setCTAs({
           CTAMessage: "Configure Records",
-          CTALink: "/records",
+          CTALink: `/model/${currentModel}/records`,
           CTATarget: null,
         });
       }

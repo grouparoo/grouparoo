@@ -21,12 +21,14 @@ if (
 }
 
 // normal pathway
-import fs from "fs";
+import fs from "fs-extra";
 import path from "path";
 import nock from "nock";
+import prettier from "prettier";
 
 import LogFactory from "./factories/log";
 import GroupFactory from "./factories/group";
+import ModelFactory from "./factories/model";
 import ImportFactory from "./factories/import";
 import TeamFactory from "./factories/team";
 import TeamMemberFactory from "./factories/teamMember";
@@ -63,13 +65,13 @@ const {
   Option,
   Filter,
   Import,
-  File,
   Export,
   ExportProcessor,
   Group,
   GroupMember,
   GroupRule,
   Log,
+  GrouparooModel,
   Notification,
   Permission,
   GrouparooRecord,
@@ -92,13 +94,13 @@ const models = [
   Option,
   Filter,
   Import,
-  File,
   Group,
   GroupMember,
   GroupRule,
   Export,
   ExportProcessor,
   Log,
+  GrouparooModel,
   Notification,
   Permission,
   GrouparooRecord,
@@ -121,6 +123,7 @@ export namespace helper {
 
   export const factories = {
     apiKey: ApiKeyFactory,
+    model: ModelFactory,
     app: AppFactory,
     destination: DestinationFactory,
     export: ExportFactory,
@@ -233,6 +236,7 @@ export namespace helper {
   export function recordResponseData(record, key) {
     const data = {
       userId: new Date().getTime(),
+      adminUserId: new Date().getTime(),
       isVIP: true,
       email: `${record.id}@example.com`,
       firstName: "Mario",
@@ -252,6 +256,7 @@ export namespace helper {
       apps: [
         {
           name: "test-plugin-app",
+          displayName: "test-plugin-app",
           options: [
             {
               key: "fileId",
@@ -286,6 +291,7 @@ export namespace helper {
       connections: [
         {
           name: "test-plugin-import",
+          displayName: "test-plugin-import",
           direction: "import",
           description: "import or update records from a table",
           app: "test-plugin-app",
@@ -396,6 +402,7 @@ export namespace helper {
         },
         {
           name: "test-plugin-export",
+          displayName: "test-plugin-export",
           direction: "export",
           description: "export records to nowhere",
           app: "test-plugin-app",
@@ -451,6 +458,7 @@ export namespace helper {
         },
         {
           name: "test-plugin-export-batch",
+          displayName: "test-plugin-export-batch",
           direction: "export",
           description: "export records to nowhere",
           app: "test-plugin-app",
@@ -554,6 +562,43 @@ export namespace helper {
     return { record, snapshot };
   }
 
+  export function useNock(testFilePath, updater: any = {}) {
+    const pieces = testFilePath.split("/__tests__/");
+    if (pieces.length !== 2) {
+      throw new Error("invalid __tests__ path for nock: " + testFilePath);
+    }
+
+    const extname = path.extname(pieces[1]);
+    const filename = path.basename(pieces[1], extname);
+    const dirname = path.resolve(
+      path.join(pieces[0], "__tests__", "fixtures", path.dirname(pieces[1]))
+    );
+
+    const nockFile = path.join(dirname, filename + ".js");
+    if (!fs.existsSync(dirname)) {
+      fs.mkdirpSync(dirname);
+    }
+
+    const newNock: boolean = !!process.env.NOCK;
+    if (newNock) {
+      recordNock(nockFile, updater);
+    } else {
+      require(nockFile);
+    }
+    afterAll(() => {
+      if (newNock) {
+        try {
+          const contents = fs.readFileSync(nockFile).toString();
+          const formatted = prettier.format(contents, { parser: "babel" });
+          fs.writeFileSync(nockFile, formatted);
+        } catch (err) {
+          console.log(`Nock formatting error`, err);
+        }
+      }
+    });
+    return { newNock };
+  }
+
   export function recordNock(nockFile, updater: any = {}) {
     nockFile = path.resolve(nockFile);
     if (fs.existsSync(nockFile)) {
@@ -596,6 +641,7 @@ export namespace helper {
     nock.recorder.rec({
       logging: addRecording,
       use_separator: false,
+      enable_reqheaders_recording: updater?.recordRequestHeaders || false,
     });
   }
 

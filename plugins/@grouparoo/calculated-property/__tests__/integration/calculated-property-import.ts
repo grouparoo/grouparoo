@@ -62,6 +62,7 @@ describe("integration/runs/calculated-property", () => {
       name: "calculated import source",
       type: "calculated-property-import",
       appId: app.id,
+      modelId: "mod_profiles",
       state: "ready",
     };
     const sourceResponse = await specHelper.runAction<SourceCreate>(

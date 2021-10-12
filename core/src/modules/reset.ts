@@ -146,10 +146,23 @@ export namespace Reset {
   }
 
   async function deleteKeys(pattern: string) {
-    const keys = await api.resque.queue.connection.redis.keys(pattern);
-    return Promise.all(
-      keys.map((k) => api.resque.queue.connection.redis.del(k))
-    );
+    const client = api.resque.queue.connection.redis;
+
+    const result: number = await new Promise((resolve, reject) => {
+      let count = 0;
+      const scanStream = client.scanStream({ match: pattern });
+      scanStream.once("error", (error) => reject(error));
+      scanStream.once("end", () => resolve(count));
+
+      scanStream.on("data", async (keys: string[]) => {
+        scanStream.pause();
+        await Promise.all(keys.map((k) => client.del(k)));
+        count += keys.length;
+        scanStream.resume();
+      });
+    });
+
+    return result;
   }
 
   async function clearFailedTasks() {

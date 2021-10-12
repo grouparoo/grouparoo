@@ -41,6 +41,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "zendesk",
+          displayName: "Zendesk",
           options: [
             {
               key: "subdomain",
@@ -68,9 +69,10 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "zendesk-export",
+          name: "zendesk-export-users",
+          displayName: "Zendesk Export Users",
           direction: "export",
-          description: "Export Profiles to a Zendesk account.",
+          description: "Export Records to a Zendesk account.",
           app: "zendesk",
           syncModes,
           defaultSyncMode,

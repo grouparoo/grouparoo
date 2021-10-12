@@ -50,7 +50,7 @@ describe("actions/setupSteps", () => {
 
       expect(error).toBeFalsy();
 
-      expect(setupSteps.length).toBe(7);
+      expect(setupSteps.length).toBe(8);
       expect(setupSteps[0].position).toBe(1);
       expect(setupSteps[0].key).toBe("name_your_grouparoo_instance");
       expect(setupSteps[0].title).toBe("Name your Grouparoo Instance");
@@ -81,7 +81,7 @@ describe("actions/setupSteps", () => {
         "setupSteps:list",
         connection
       );
-      expect(setupSteps.length).toBe(7);
+      expect(setupSteps.length).toBe(8);
       expect(setupSteps[0].key).toBe("name_your_grouparoo_instance");
       expect(setupSteps[0].complete).toBe(true);
     });
@@ -101,5 +101,52 @@ describe("actions/setupSteps", () => {
       expect(setupStep.id).toBe(id);
       expect(setupStep.skipped).toBe(true);
     });
+
+    test("setupSteps can be disabled based on other models", async () => {
+      connection.params = { csrfToken };
+      const { setupSteps } = await specHelper.runAction<SetupStepsList>(
+        "setupSteps:list",
+        connection
+      );
+
+      const modelStep = setupSteps.find((s) => s.key === `add_a_model`);
+      expect(modelStep.disabled).toEqual(false);
+
+      const destinationStep = setupSteps.find(
+        (s) => s.key === `create_a_destination`
+      );
+      expect(destinationStep.disabled).toEqual(true);
+    });
+
+    test.each(["source", "group", "schedule", "destination"])(
+      "%s setupSteps href changes based on modelId",
+      async (topic) => {
+        connection.params = { csrfToken, modelId: null };
+        const { setupSteps: setupStepsNoModelId } =
+          await specHelper.runAction<SetupStepsList>(
+            "setupSteps:list",
+            connection
+          );
+        let destinationStep = setupStepsNoModelId.find(
+          (s) => s.key === `create_a_${topic}`
+        );
+        expect(destinationStep.href).toEqual(`/models`);
+
+        connection.params = { csrfToken, modelId: "mod_abc123" };
+        const { setupSteps: setupStepsWithModelId } =
+          await specHelper.runAction<SetupStepsList>(
+            "setupSteps:list",
+            connection
+          );
+        destinationStep = setupStepsWithModelId.find(
+          (s) => s.key === `create_a_${topic}`
+        );
+        expect(destinationStep.href).toEqual(
+          topic === "schedule"
+            ? `/model/mod_abc123/sources`
+            : `/model/mod_abc123/${topic}s`
+        );
+      }
+    );
   });
 });

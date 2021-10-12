@@ -26,7 +26,7 @@ Focus on building your core product, not integrating with 3rd-party tools. Learn
   - Grouparoo is Open Source, and easy to run on your laptop or in the cloud.
   - → View the [Getting Started Docs](https://www.grouparoo.com/docs/getting-started).
 - 📚 **Want to learn more about how to configure and use Grouparoo?**
-  - Grouparoo is can be configured without needing to write any code. Learn how to connect to your Sources and Destinations to begin syncing your data.
+  - Grouparoo can be configured without needing to write any code. Learn how to connect to your Sources and Destinations to begin syncing your data.
   - → View the [Configuration Guides](https://www.grouparoo.com/docs/config).
   - → View the [Runtime Guides](https://www.grouparoo.com/docs/running).
   - → View the [Deployment Examples](https://www.grouparoo.com/docs/deployment).
@@ -49,7 +49,7 @@ Use the Grouparoo CLI to initialize a new Grouparoo Project:
 # Assuming you have node.js (https://nodejs.org) v12+ installed
 npm install -g grouparoo
 grouparoo init .
-grouparoo start
+grouparoo config
 ```
 
 This will generate a `package.json`, `config` directory, and `.env` file for configuration.

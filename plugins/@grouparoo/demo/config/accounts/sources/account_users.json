@@ -1,0 +1,14 @@
+{
+  "class": "Source",
+  "id": "account_users",
+  "modelId": "accounts",
+  "name": "Account Users",
+  "type": "DBNAME-import-table",
+  "appId": "demo_db",
+  "options": {
+    "table": "users"
+  },
+  "mapping": {
+    "account_id": "account_id"
+  }
+}

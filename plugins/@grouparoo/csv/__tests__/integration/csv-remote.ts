@@ -81,9 +81,10 @@ describe("integration/runs/csv/remote", () => {
       // create the source
       session.params = {
         csrfToken,
-        type: "csv-remote-import",
+        type: "csv-import-table",
         name: "csv source",
         appId: app.id,
+        modelId: "mod_profiles",
         options: {
           url: "https://raw.githubusercontent.com/grouparoo/grouparoo/main/core/__tests__/data/records-10.csv",
           fileAgeHours: 1,
@@ -102,7 +103,7 @@ describe("integration/runs/csv/remote", () => {
       session.params = {
         csrfToken,
         name: "test import schedule",
-        type: "csv-import",
+        type: "csv-import-table",
         sourceId: source.id,
         recurring: false,
         state: "ready",

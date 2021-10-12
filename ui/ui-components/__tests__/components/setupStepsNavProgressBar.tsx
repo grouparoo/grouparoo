@@ -4,6 +4,7 @@ import mockAxios from "jest-mock-axios";
 import { Actions } from "../../utils/apiData";
 import { UseApi } from "../../hooks/useApi";
 import { EventDispatcher } from "../../utils/eventDispatcher";
+import { NextPageContext } from "next";
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
 const mockSetupStepHandler = new EventDispatcher<any>();
@@ -32,7 +33,7 @@ describe("setupStepsNavProgressBar", () => {
   });
 
   describe("on a logged in page", () => {
-    const { execApi } = UseApi({});
+    const { execApi } = UseApi({} as NextPageContext);
 
     beforeEach(() => {
       useRouter.mockImplementation(() => ({
@@ -69,6 +70,7 @@ describe("setupStepsNavProgressBar", () => {
             showCtaOnCommunity: true,
             outcome: "yay",
             skipped: false,
+            disabled: false,
             complete: false,
             createdAt: 1,
             updatedAt: 1,
@@ -108,6 +110,7 @@ describe("setupStepsNavProgressBar", () => {
             showCtaOnCommunity: true,
             outcome: "yay",
             skipped: false,
+            disabled: false,
             complete: true,
             createdAt: 1,
             updatedAt: 1,

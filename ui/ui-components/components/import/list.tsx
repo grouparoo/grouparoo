@@ -27,14 +27,10 @@ export default function ImportList(props) {
   const limit = 100;
   const { offset, setOffset } = useOffset();
 
-  let recordId: string;
+  let recordId = router.query.recordId;
   let creatorId: string;
   if (router.query.id) {
-    if (router.pathname.match("/record/")) {
-      recordId = router.query.id.toString();
-    } else {
-      creatorId = router.query.id.toString();
-    }
+    creatorId = router.query.id.toString();
   }
 
   useSecondaryEffect(() => {
@@ -100,8 +96,8 @@ export default function ImportList(props) {
                     <br /> Record:{" "}
                     {_import.recordId ? (
                       <Link
-                        href="/record/[id]/edit"
-                        as={`/record/${_import.recordId}/edit`}
+                        href="/object/[id]"
+                        as={`/object/${_import.recordId}`}
                       >
                         <a>{_import.recordId}</a>
                       </Link>
@@ -124,23 +120,17 @@ export default function ImportList(props) {
                   <td>
                     Created: {formatTimestamp(_import.createdAt)}
                     <br /> Record Associated:{" "}
-                    {_import.recordAssociatedAt ? (
-                      formatTimestamp(_import.recordAssociatedAt)
-                    ) : (
-                      <span>x</span>
-                    )}
+                    {_import.recordAssociatedAt
+                      ? formatTimestamp(_import.recordAssociatedAt)
+                      : "pending"}
                     <br /> Record Updated:{" "}
-                    {_import.recordUpdatedAt ? (
-                      formatTimestamp(_import.recordUpdatedAt)
-                    ) : (
-                      <span>x</span>
-                    )}
+                    {_import.recordUpdatedAt
+                      ? formatTimestamp(_import.recordUpdatedAt)
+                      : "pending"}
                     <br /> Groups Updated:{" "}
-                    {_import.groupsUpdatedAt ? (
-                      formatTimestamp(_import.groupsUpdatedAt)
-                    ) : (
-                      <span>x</span>
-                    )}
+                    {_import.groupsUpdatedAt
+                      ? formatTimestamp(_import.groupsUpdatedAt)
+                      : "pending"}
                   </td>
                   <td>
                     <ImportRecordPropertiesDiff _import={_import} />
@@ -187,17 +177,8 @@ export default function ImportList(props) {
 
 ImportList.hydrate = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { id, limit, offset } = ctx.query;
+  const { id: creatorId, limit, offset, recordId } = ctx.query;
 
-  let recordId: string;
-  let creatorId: string;
-  if (id) {
-    if (ctx.pathname.match("/record/")) {
-      recordId = id;
-    } else {
-      creatorId = id;
-    }
-  }
   const { imports, total } = await execApi("get", `/imports`, {
     limit,
     offset,

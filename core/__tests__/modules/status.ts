@@ -5,7 +5,13 @@ import {
   FinalSummaryReporters,
 } from "../../src/modules/statusReporters";
 import { Status } from "../../src/modules/status";
-import { Destination, GrouparooRecord, Source, Schedule } from "../../src";
+import {
+  Destination,
+  GrouparooRecord,
+  Source,
+  Schedule,
+  GrouparooModel,
+} from "../../src";
 
 describe("modules/status", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -111,6 +117,19 @@ describe("modules/status", () => {
 
       const foundMetrics = await Status.get();
       expect(foundMetrics).toEqual({
+        Model: {
+          deleted: [
+            {
+              timestamp: expect.any(Number),
+              metric: {
+                collection: "deleted",
+                topic: "Model",
+                aggregation: "count",
+                count: 0,
+              },
+            },
+          ],
+        },
         Destination: {
           deleted: [
             {

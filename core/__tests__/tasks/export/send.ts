@@ -8,11 +8,15 @@ import {
   Run,
   App,
   plugin,
+  GrouparooModel,
 } from "../../../src";
 
 describe("tasks/export:send", () => {
+  let model: GrouparooModel;
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  beforeAll(async () => await helper.factories.properties());
+  beforeAll(async () => {
+    ({ model } = await helper.factories.properties());
+  });
 
   test("can be enqueued", async () => {
     await task.enqueue("export:send", {
@@ -52,7 +56,7 @@ describe("tasks/export:send", () => {
       await group.addRecord(record);
 
       destination = await helper.factories.destination();
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
 
       await api.resque.queue.connection.redis.flushdb();
       await Run.truncate();
@@ -64,7 +68,7 @@ describe("tasks/export:send", () => {
       );
       await destination.update({ state: "ready" });
 
-      await destination.exportGroupMembers(true);
+      await destination.exportMembers(true);
 
       run = await Run.findOne({
         where: { creatorId: group.id },
@@ -135,6 +139,7 @@ describe("tasks/export:send", () => {
           apps: [
             {
               name: "test-template-app",
+              displayName: "test-template-app",
               options: [{ key: "test_key", required: true }],
               methods: {
                 test: async () => {
@@ -146,6 +151,7 @@ describe("tasks/export:send", () => {
           connections: [
             {
               name: "export-from-test-app",
+              displayName: "export-from-test-app",
               description: "a test app connection",
               app: "test-template-app",
               direction: "export",
@@ -190,9 +196,10 @@ describe("tasks/export:send", () => {
           name: "test plugin destination",
           type: "export-from-test-app",
           appId: app.id,
+          modelId: model.id,
         });
         await destination.update({ state: "ready" });
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
       });
 
       beforeEach(async () => {

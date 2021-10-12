@@ -16,6 +16,7 @@ import {
   Mapping,
   Option,
   Setting,
+  GrouparooModel,
 } from "../../src";
 
 function ensureNoSavedModels() {
@@ -84,9 +85,9 @@ describe("bin/config-apply", () => {
       expect(toStop).toBe(true);
 
       const output = messages.join(" ");
-      expect(output).toContain("Applying 14 objects...");
+      expect(output).toContain("Applying 15 objects...");
       expect(output).toContain(
-        "✅ Config applied - 14 config objects up-to-date!"
+        "✅ Config applied - 15 config objects up-to-date!"
       );
     });
 
@@ -110,6 +111,13 @@ describe("bin/config-apply", () => {
       const command = new Apply();
       await command.run({ params: {} });
       expect(await Setting.count()).toBeGreaterThan(0);
+    });
+
+    test("the apply command will prepare models", async () => {
+      await GrouparooModel.truncate();
+      const command = new Apply();
+      await command.run({ params: {} });
+      expect(await GrouparooModel.count()).toBeGreaterThan(0);
     });
   });
 

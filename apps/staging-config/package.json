@@ -2,27 +2,28 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/app-staging-config",
   "description": "A simple app to demonstrate working with the Config UI",
-  "version": "0.7.0-alpha.1",
+  "version": "0.7.0-alpha.12",
   "license": "MPL-2.0",
   "private": true,
   "engines": {
     "node": ">=12.0.0"
   },
   "dependencies": {
-    "@grouparoo/core": "0.7.0-alpha.1",
-    "@grouparoo/demo": "0.7.0-alpha.1",
-    "@grouparoo/postgres": "0.7.0-alpha.1",
-    "@grouparoo/sqlite": "0.7.0-alpha.1"
+    "@grouparoo/core": "0.7.0-alpha.12",
+    "@grouparoo/demo": "0.7.0-alpha.12",
+    "@grouparoo/postgres": "0.7.0-alpha.12",
+    "@grouparoo/sqlite": "0.7.0-alpha.12"
   },
   "devDependencies": {
-    "@grouparoo/spec-helper": "0.7.0-alpha.1",
-    "@grouparoo/ui-config": "0.7.0-alpha.1",
-    "grouparoo": "0.7.0-alpha.1",
+    "@grouparoo/spec-helper": "0.7.0-alpha.12",
+    "@grouparoo/ui-config": "0.7.0-alpha.12",
+    "grouparoo": "0.7.0-alpha.12",
     "jest": "27.1.0"
   },
   "scripts": {
     "dev": "rm -f grouparoo_config.sqlite && cd node_modules/@grouparoo/core && DATABASE_URL=\"sqlite://grouparoo_config.sqlite\" NEXT_DEVELOPMENT_MODE=true GROUPAROO_RUN_MODE=\"cli:config\" WORKERS=0 ./bin/dev",
-    "demo": "./node_modules/.bin/grouparoo demo purchases --config"
+    "demo": "./node_modules/.bin/grouparoo demo --config",
+    "debug": "cd node_modules/@grouparoo/core && ./bin/debug"
   },
   "grouparoo": {
     "grouparoo_monorepo_app": "staging-config",

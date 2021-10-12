@@ -11,7 +11,11 @@ import {
 import { StatusHandler } from "../utils/statusHandler";
 
 export default function Page(props) {
-  const { statusHandler }: { statusHandler: StatusHandler } = props;
+  const {
+    statusHandler,
+  }: {
+    statusHandler: StatusHandler;
+  } = props;
 
   return (
     <>
@@ -24,7 +28,6 @@ export default function Page(props) {
         <Col>
           <BigTotalNumber
             statusHandler={statusHandler}
-            href="/records"
             model="GrouparooRecord"
             title="Records"
           />
@@ -33,7 +36,6 @@ export default function Page(props) {
         <Col>
           <BigTotalNumber
             statusHandler={statusHandler}
-            href="/groups"
             model="Group"
             title="Groups"
           />

@@ -4,8 +4,9 @@ import { executeQuery } from "@grouparoo/postgres/dist/lib/query-import/executeQ
 export function getConnection() {
   return buildConnection({
     app: "redshift",
-    name: "redshift-query-import",
-    description: "Import or update Profiles via a custom Redshift query.",
+    name: "redshift-import-query",
+    displayName: "Redshift Query Import",
+    description: "Import or update Records via a custom Redshift query.",
     executeQuery,
   });
 }

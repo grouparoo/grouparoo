@@ -45,15 +45,7 @@ const invalidDate = "AAAAA";
 
 let listIds = {};
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 
 async function getListId(listName): Promise<any> {

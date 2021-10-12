@@ -1,0 +1,15 @@
+{
+  "id": "all_accounts",
+  "class": "Group",
+  "type": "calculated",
+  "modelId": "accounts",
+  "name": "All Accounts",
+  "rules": [
+    {
+      "propertyId": "account_name",
+      "operation": {
+        "op": "exists"
+      }
+    }
+  ]
+}

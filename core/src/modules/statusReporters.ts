@@ -9,7 +9,6 @@ import { Source } from "../models/Source";
 import { Schedule } from "../models/Schedule";
 import { Destination } from "../models/Destination";
 import { Import } from "../models/Import";
-import { File } from "../models/File";
 import { Group } from "../models/Group";
 import { GroupRule } from "../models/GroupRule";
 import { Export } from "../models/Export";
@@ -23,6 +22,7 @@ import { Notification } from "../models/Notification";
 import { GroupOps } from "../modules/ops/group";
 import { SourceOps } from "../modules/ops/source";
 import { RecordOps } from "./ops/record";
+import { GrouparooModel } from "../models/GrouparooModel";
 
 export interface StatusMetric {
   // the possible attributes for a metric are:
@@ -141,13 +141,12 @@ export namespace StatusReporters {
   export namespace Totals {
     export async function Models(
       models = [
-        App,
+        App, // order of these matters!
         ApiKey,
         Source,
         Schedule,
         Destination,
         Import,
-        File,
         Group,
         GroupRule,
         Export,
@@ -157,6 +156,7 @@ export namespace StatusReporters {
         Run,
         Team,
         TeamMember,
+        GrouparooModel,
       ]
     ) {
       const metrics: StatusMetric[] = [];
@@ -241,7 +241,7 @@ export namespace StatusReporters {
         const percentComplete = run.percentComplete;
         const highWaterMark = run.highWaterMark
           ? Object.values(run.highWaterMark)[0]
-          : run.groupHighWaterMark;
+          : null;
 
         metrics.push({
           collection: "percentComplete",
@@ -273,7 +273,9 @@ export namespace StatusReporters {
         collection: "pending",
         topic: "Import",
         aggregation: "count",
-        count: await Import.count({ where: { exportedAt: null } }),
+        count: await Import.count({
+          where: { exportedAt: null, errorMessage: null },
+        }),
       };
     }
 
@@ -378,15 +380,24 @@ export namespace StatusReporters {
         count: recordsToDestroy.length,
       };
     }
-  }
 
-  export async function deletedApps(): Promise<StatusMetric> {
-    return {
-      collection: "deleted",
-      topic: "App",
-      aggregation: "count",
-      count: await App.count({ where: { state: "deleted" } }),
-    };
+    export async function deletedModels(): Promise<StatusMetric> {
+      return {
+        collection: "deleted",
+        topic: "Model",
+        aggregation: "count",
+        count: await GrouparooModel.count({ where: { state: "deleted" } }),
+      };
+    }
+
+    export async function deletedApps(): Promise<StatusMetric> {
+      return {
+        collection: "deleted",
+        topic: "App",
+        aggregation: "count",
+        count: await App.count({ where: { state: "deleted" } }),
+      };
+    }
   }
 
   export namespace Groups {

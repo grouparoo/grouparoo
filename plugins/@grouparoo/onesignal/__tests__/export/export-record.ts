@@ -1,5 +1,3 @@
-import path from "path";
-import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 import OneSignal from "onesignal-node";
 
@@ -23,15 +21,7 @@ const weirdTagNormalized = "my_weird_tag_name";
 const weirdGroup = "=~High Value!!/=";
 const weirdGroupNormalized = "__high_value____";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-record.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 
 async function getUserCount() {

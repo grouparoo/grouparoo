@@ -34,7 +34,7 @@ describe("postgres/table/scheduleOptions", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "postgres-table-import",
+      type: "postgres-import-table",
     });
     await source.setOptions({ table: usersTableName });
     await source.setMapping({ id: "userId" });

@@ -78,7 +78,12 @@ export default function SetupStepCard({
                     {(process.env.GROUPAROO_UI_EDITION !== "community" ||
                       step.showCtaOnCommunity) &&
                       step.cta && (
-                        <Button size="sm" className="m-1" href={step.href}>
+                        <Button
+                          size="sm"
+                          className="m-1"
+                          href={step.href}
+                          disabled={step.disabled}
+                        >
                           {step.cta}
                         </Button>
                       )}

@@ -10,8 +10,8 @@ describe("<PropertyTab />", () => {
 
   beforeEach(async () => {
     useRouter.mockImplementationOnce(() => ({
-      pathname: "/property/[id]/edit",
-      asPath: "/property/abc123/edit",
+      pathname: "/model/[modelId]/property/[propertyId]/edit",
+      asPath: "/model/xyz321/property/abc123/edit",
     }));
 
     render(<PropertyTab property={property} source={source} />);
@@ -19,12 +19,12 @@ describe("<PropertyTab />", () => {
 
   it("renders the plural word properly", async () => {
     const link = screen.getByRole("link", { name: "Properties" });
-    expect(link).toHaveAttribute("href", "/properties");
+    expect(link).toHaveAttribute("href", "/model/xyz321/properties");
   });
 
   it("shows the property key", () => {
     const link = screen.getByRole("link", { name: "Email" });
-    expect(link).toHaveAttribute("href", "/property/abc123/edit");
+    expect(link).toHaveAttribute("href", "/model/xyz321/property/abc123/edit");
   });
 });
 

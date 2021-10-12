@@ -1,0 +1,29 @@
+[
+  {
+    "class": "Source",
+    "id": "demo_users",
+    "name": "Product Users",
+    "type": "DBNAME-import-table",
+    "appId": "demo_db",
+    "modelId": "users",
+    "options": {
+      "table": "users"
+    },
+    "mapping": {
+      "id": "user_id"
+    }
+  },
+  {
+    "class": "Schedule",
+    "id": "demo_users_schedule",
+    "name": "Users Schedule",
+    "sourceId": "demo_users",
+    "recurring": true,
+    "recurringFrequency": 900000,
+    "confirmRecords": false,
+    "options": {
+      "column": "updated_at"
+    },
+    "filters": []
+  }
+]

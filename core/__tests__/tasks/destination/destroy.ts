@@ -57,7 +57,7 @@ describe("tasks/destination:destroy", () => {
         luigi = await helper.factories.record();
         await group.addRecord(mario);
         await group.addRecord(luigi);
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
 
         await group.update({ state: groupState });
 
@@ -94,6 +94,9 @@ describe("tasks/destination:destroy", () => {
       });
 
       test("the destination will not be deleted yet (running run)", async () => {
+        destination = await Destination.findById(destination.id);
+        expect(destination.state).toBe("deleted");
+
         await utils.sleep(1000);
         await specHelper.runTask("destination:destroy", {
           destinationId: destination.id,

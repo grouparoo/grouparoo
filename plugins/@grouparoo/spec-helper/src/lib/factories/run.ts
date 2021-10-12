@@ -1,3 +1,4 @@
+import { Run } from "@grouparoo/core";
 import { loadPath } from "../loadPath";
 import ScheduleFactory from "./schedule";
 
@@ -21,6 +22,6 @@ export default async (owner?, props: { [key: string]: any } = {}) => {
   props.creatorId = owner.id;
   props.creatorType = owner.constructor.name.toLowerCase();
 
-  const instance = await Run.create(await data(props));
+  const instance = (await Run.create(await data(props))) as Run;
   return instance;
 };

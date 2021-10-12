@@ -40,6 +40,7 @@ export class Plugins extends Initializer {
       apps: [
         {
           name: "intercom",
+          displayName: "Intercom",
           options: [
             {
               key: "token",
@@ -56,8 +57,9 @@ export class Plugins extends Initializer {
       connections: [
         {
           name: "intercom-export-contacts",
+          displayName: "Intercom Export Contacts",
           direction: "export",
-          description: "Export Profiles to contacts in an Intercom account.",
+          description: "Export Records to contacts in an Intercom account.",
           app: "intercom",
           syncModes,
           options: [

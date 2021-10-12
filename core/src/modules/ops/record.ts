@@ -1,5 +1,5 @@
 import { GrouparooRecord } from "../../models/GrouparooRecord";
-import { RecordProperty } from "../../models/RecordProperty";
+import { InvalidReasons, RecordProperty } from "../../models/RecordProperty";
 import { Property } from "../../models/Property";
 import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
@@ -13,6 +13,8 @@ import Sequelize, {
   OrderItem,
   WhereAttributeHash,
   QueryTypes,
+  UniqueConstraintError,
+  Transaction,
 } from "sequelize";
 import { waitForLock } from "../locks";
 import { RecordPropertyOps } from "./recordProperty";
@@ -20,12 +22,16 @@ import { GroupRule } from "../../models/GroupRule";
 import { Import } from "../../models/Import";
 import { Mapping } from "../../models/Mapping";
 import { SourceOps } from "./source";
+import { GrouparooModel } from "../../models/GrouparooModel";
+import { CLS } from "../cls";
 
 export interface RecordPropertyType {
   [key: string]: {
     id: RecordProperty["id"];
     state: RecordProperty["state"];
     values: Array<string | number | boolean | Date>;
+    invalidValue: RecordProperty["invalidValue"];
+    invalidReason: RecordProperty["invalidReason"];
     configId: ReturnType<Property["getConfigId"]>;
     type: Property["type"];
     unique: Property["unique"];
@@ -53,7 +59,7 @@ export namespace RecordOps {
         order: [["position", "ASC"]],
       }));
 
-    const properties = await Property.findAllWithCache();
+    const properties = await Property.findAllWithCache(record.modelId);
 
     const hash: RecordPropertyType = {};
 
@@ -72,6 +78,8 @@ export namespace RecordOps {
           id: recordProperties[i].propertyId,
           state: recordProperties[i].state,
           values: [],
+          invalidValue: recordProperties[i].invalidValue,
+          invalidReason: recordProperties[i].invalidReason,
           configId: property.getConfigId(),
           type: property.type,
           unique: property.unique,
@@ -115,6 +123,7 @@ export namespace RecordOps {
     offset,
     state,
     groupId,
+    modelId,
     searchKey,
     searchValue,
     order,
@@ -124,6 +133,7 @@ export namespace RecordOps {
     offset?: number;
     state?: string;
     groupId?: string;
+    modelId?: string;
     searchKey?: string | number;
     searchValue?: string;
     order?: OrderItem[];
@@ -136,19 +146,24 @@ export namespace RecordOps {
       caseSensitive = true;
 
     const ands: (Sequelize.Utils.Where | WhereAttributeHash)[] = [];
-    const include: Array<any> = [];
+    const include: Sequelize.Includeable[] = [];
     let countRequiresIncludes = false;
 
     // Are we searching for GrouparooRecords in a specific state?
-    if (state) ands.push({ state });
+    if (state && state !== "invalid") {
+      ands.push({ state });
+    }
 
     // Are we searching for a specific RecordProperty?
     if (searchKey && searchValue) {
-      countRequiresIncludes = true;
       include.push(RecordProperty);
       countRequiresIncludes = true;
 
-      const property = await Property.findOneWithCache(`${searchKey}`, "key");
+      const property = await Property.findOneWithCache(
+        `${searchKey}`,
+        undefined,
+        "key"
+      );
       if (!property) throw new Error(`cannot find a property for ${searchKey}`);
 
       ands.push(
@@ -190,6 +205,19 @@ export namespace RecordOps {
       );
     }
 
+    // Are we limiting to a certain modelId?
+    if (modelId) {
+      ands.push({ modelId });
+    }
+
+    // are we looking for invalid records
+    if (state === "invalid") {
+      countRequiresIncludes = true;
+      ands.push({
+        invalid: true,
+      });
+    }
+
     // Load the records in full now that we know the relevant records
     const recordIds = (
       await GrouparooRecord.findAll({
@@ -206,7 +234,7 @@ export namespace RecordOps {
     const records = await GrouparooRecord.findAll({
       where: { id: recordIds },
       order,
-      include: [RecordProperty],
+      include: RecordProperty,
     });
 
     const total = await GrouparooRecord.count({
@@ -237,9 +265,22 @@ export namespace RecordOps {
     }
 
     const releaseLocks: Function[] = [];
-    const bulkCreates = [];
-    const bulkDeletes = { where: { [Op.or]: [] } };
-    const properties = await Property.findAllWithCache();
+    const bulkCreates: Array<{
+      id?: string;
+      propertyId: string;
+      recordId: string;
+      position: number;
+      rawValue: string;
+      invalidValue?: string;
+      invalidReason?: string;
+      state: RecordProperty["state"];
+      unique: boolean;
+      stateChangedAt: Date;
+      confirmedAt: Date;
+      startedAt: Date;
+      valueChangedAt: Date;
+    }> = [];
+    const bulkDeletes = { where: { id: [] as string[] } };
     const now = new Date();
 
     // load existing record properties
@@ -250,6 +291,8 @@ export namespace RecordOps {
     try {
       let recordOffset = 0;
       for (const record of records) {
+        const properties = await Property.findAllWithCache(record.modelId);
+
         if (toLock) {
           const response = await waitForLock(`record:${record.id}`);
           releaseLocks.push(response.releaseLock);
@@ -292,10 +335,12 @@ export namespace RecordOps {
                 p.propertyId === property.id &&
                 p.position === position
             );
-            const rawValue = await RecordPropertyOps.buildRawValue(
-              value,
-              property.type
-            );
+            const { rawValue, invalidValue, invalidReason } =
+              await RecordPropertyOps.buildRawValue(
+                value,
+                property.type,
+                existingRecordProperty
+              );
 
             bulkCreates.push({
               id: existingRecordProperty
@@ -305,9 +350,12 @@ export namespace RecordOps {
               propertyId: property.id,
               position,
               rawValue,
+              invalidValue,
+              invalidReason,
               state: "ready",
               stateChangedAt: now,
               confirmedAt: now,
+              startedAt: null,
               valueChangedAt:
                 !existingRecordProperty ||
                 !existingRecordProperty.valueChangedAt ||
@@ -322,30 +370,72 @@ export namespace RecordOps {
           }
 
           // delete old properties we didn't update
-          bulkDeletes.where[Op.or].push({
-            recordId: record.id,
-            propertyId: property.id,
-            position: { [Op.gte]: position },
-          });
+          existingRecordProperties
+            .filter(
+              (p) =>
+                p.recordId === record.id &&
+                p.propertyId === property.id &&
+                p.position >= position
+            )
+            .map((p) => bulkDeletes.where.id.push(p.id));
         }
 
         recordOffset++;
       }
 
       if (bulkCreates.length > 0) {
-        await RecordProperty.bulkCreate(bulkCreates, {
-          updateOnDuplicate: [
-            "state",
-            "unique",
-            "stateChangedAt",
-            "confirmedAt",
-            "valueChangedAt",
-            "rawValue",
-            "updatedAt",
-          ],
-        });
+        try {
+          await RecordProperty.bulkCreate(bulkCreates, {
+            updateOnDuplicate: [
+              "state",
+              "unique",
+              "stateChangedAt",
+              "confirmedAt",
+              "valueChangedAt",
+              "startedAt",
+              "rawValue",
+              "invalidValue",
+              "invalidReason",
+              "updatedAt",
+            ],
+          });
+        } catch (error) {
+          // we can resque an attempted single-write due to uniqueConstraint problems
+          const attemptedRecordProperty = bulkCreates[0];
+          if (
+            bulkCreates.length === 1 &&
+            attemptedRecordProperty.unique &&
+            error instanceof UniqueConstraintError
+          ) {
+            return CLS.afterCommit(() =>
+              api.sequelize.transaction((transaction: Transaction) =>
+                RecordProperty.update(
+                  {
+                    state: "ready",
+                    rawValue: null,
+                    invalidValue: `${attemptedRecordProperty.rawValue}`,
+                    invalidReason: InvalidReasons.Duplicate,
+                    stateChangedAt: new Date(),
+                    confirmedAt: new Date(),
+                    startedAt: null,
+                  },
+                  {
+                    transaction,
+                    where: {
+                      propertyId: attemptedRecordProperty.propertyId,
+                      recordId: attemptedRecordProperty.recordId,
+                      state: "pending",
+                    },
+                  }
+                )
+              )
+            );
+          } else {
+            throw error;
+          }
+        }
       }
-      if (bulkDeletes.where[Op.or].length > 0) {
+      if (bulkDeletes.where.id.length > 0) {
         await RecordProperty.destroy(bulkDeletes);
       }
     } finally {
@@ -364,7 +454,8 @@ export namespace RecordOps {
     const clearRecordPropertyIds = [];
     for (let recordProperty of pendingProperties) {
       const property = await Property.findOneWithCache(
-        recordProperty.propertyId
+        recordProperty.propertyId,
+        record.modelId
       );
       if (!sourceId || property.sourceId === sourceId) {
         clearRecordPropertyIds.push(recordProperty.id);
@@ -409,14 +500,13 @@ export namespace RecordOps {
 
   export async function buildNullProperties(
     records: GrouparooRecord[],
-    state = "pending"
+    state: RecordProperty["state"] = "pending"
   ) {
-    const properties = await Property.findAllWithCache();
-
     const bulkArgs = [];
     const now = new Date();
 
     for (const record of records) {
+      const properties = await Property.findAllWithCache(record.modelId);
       const recordProperties = await record.getProperties();
 
       for (const key in properties) {
@@ -474,7 +564,7 @@ export namespace RecordOps {
 
     try {
       const sources = await Source.findAll({
-        where: { state: "ready" },
+        where: { state: "ready", modelId: record.modelId },
         include: [Mapping, Property],
       });
       const sortedSources = SourceOps.sortByDependencies(sources);
@@ -483,8 +573,11 @@ export namespace RecordOps {
         const { canImport, properties } = await source.import(record);
 
         // We need to save each property as it is loaded so it can be used as a mapping for the next source
+        // We also don't want to save more than one recordProperty at a time so we can isolate any problem values
         if (canImport && toSave) {
-          await addOrUpdateProperties([record], [properties], false);
+          for (const [k, property] of Object.entries(properties)) {
+            await addOrUpdateProperties([record], [{ [k]: property }], false);
+          }
           await resolvePendingProperties(record, source.id);
         }
       }
@@ -500,8 +593,6 @@ export namespace RecordOps {
       }
 
       return record;
-    } catch (error) {
-      throw error;
     } finally {
       if (toLock) await releaseLock();
     }
@@ -519,10 +610,11 @@ export namespace RecordOps {
   ) {
     const groups = await record.$get("groups");
 
-    const destinations = await Destination.destinationsForGroups([
-      ...oldGroups,
-      ...groups,
-    ]);
+    const destinations = await Destination.relevantFor(
+      record,
+      oldGroups,
+      groups
+    );
 
     // We want to find destinations which aren't in the above set and already have an Export for this GrouparooRecord.
     // That's a sign that the GrouparooRecord is about to get a toDelete export
@@ -598,9 +690,11 @@ export namespace RecordOps {
     let record: GrouparooRecord;
     let isNew = false;
     let recordProperty: RecordProperty;
-    const uniqueProperties = (await Property.findAllWithCache()).filter(
-      (p) => p.unique === true
-    );
+    const uniqueProperties = (
+      await Property.findAllWithCache(
+        source instanceof Source ? source.modelId : undefined
+      )
+    ).filter((p) => p.unique === true);
     const uniquePropertiesHash = {};
 
     uniqueProperties.forEach((property) => {
@@ -655,7 +749,7 @@ export namespace RecordOps {
           typeof source === "boolean"
             ? source
             : source instanceof Source
-            ? (await Property.findAllWithCache())
+            ? (await Property.findAllWithCache(source.modelId))
                 .filter((p) => p.unique === true && p.sourceId === source.id)
                 .map((p) => p.key)
                 .filter((key) => !!hash[key]).length > 0
@@ -669,7 +763,16 @@ export namespace RecordOps {
           );
         }
 
-        record = await GrouparooRecord.create();
+        let modelId: string;
+        if (source instanceof Source) {
+          modelId = source.modelId;
+        } else {
+          const models = await GrouparooModel.findAll();
+          if (models.length > 1) throw new Error(`indeterminate model`);
+          modelId = models[0].id;
+        }
+
+        record = await GrouparooRecord.create({ modelId });
         record = await record.reload();
         const { releaseLock } = await waitForLock(`record:${record.id}`);
         lockReleases.push(releaseLock);
@@ -713,11 +816,11 @@ export namespace RecordOps {
     const limit: number = config.batchSize.imports;
     let records: GrouparooRecord[] = [];
 
-    const directlyMappedProperties = (await Property.findAllWithCache()).filter(
-      (p) => p.directlyMapped
-    );
+    const directlyMapped = await Property.findAll({
+      where: { directlyMapped: true },
+    });
 
-    if (directlyMappedProperties.length === 0) {
+    if (directlyMapped.length === 0) {
       // We have no directly mapped Property and every record should be removed
       // It's safe to assume that if there are no Properties, we aren't exporting
       records = await GrouparooRecord.findAll({
@@ -757,10 +860,13 @@ export namespace RecordOps {
     fromDate: Date,
     sourceId?: string
   ) {
-    const properties = await Property.findAllWithCache();
-    const directlyMapped = properties.filter(
-      (p) => p.directlyMapped && (!sourceId || sourceId === p.sourceId)
-    );
+    const directlyMapped = sourceId
+      ? await Property.findAll({
+          where: { directlyMapped: true, sourceId },
+        })
+      : await Property.findAll({
+          where: { directlyMapped: true },
+        });
 
     const recordProperties = await RecordProperty.findAll({
       where: {
@@ -851,6 +957,38 @@ export namespace RecordOps {
     }
   }
 
+  export async function computeRecordsValidity(records: GrouparooRecord[]) {
+    const recordIds = records.map((r) => r.id);
+    await GrouparooRecord.update(
+      {
+        invalid: false,
+      },
+      {
+        where: {
+          id: {
+            [Op.in]: recordIds,
+          },
+        },
+      }
+    );
+    // Update records to invalid if any assocaited properties are invalid.
+    await api.sequelize.query(`
+      UPDATE
+        "records"
+      SET
+        "invalid" = TRUE
+      WHERE
+        "records"."id" IN(
+          SELECT
+            "recordProperties"."recordId" FROM "recordProperties"
+          WHERE
+            "recordProperties"."recordId" IN(${recordIds.map(
+              (id) => `'${id}'`
+            )})
+            AND "recordProperties"."invalidReason" IS NOT NULL);
+    `);
+  }
+
   /**
    * Find records that are not ready but whose properties are and make them ready.
    * Then, process the related imports.
@@ -859,13 +997,12 @@ export namespace RecordOps {
     limit = 100,
     toExport = true
   ) {
-    let records: GrouparooRecord[] = await api.sequelize.query(
+    const records: GrouparooRecord[] = await api.sequelize.query(
       `
-    SELECT "id" from "records" where "state" = 'pending'
-    EXCEPT
-    SELECT DISTINCT("recordId") FROM "recordProperties" WHERE "state" = 'pending'
-    LIMIT ${limit}
-    ;
+      SELECT "id" from "records" where "state" = 'pending'
+      EXCEPT
+      SELECT DISTINCT("recordId") FROM "recordProperties" WHERE "state" = 'pending'
+      LIMIT ${limit};
     `,
       {
         type: QueryTypes.SELECT,
@@ -873,7 +1010,11 @@ export namespace RecordOps {
       }
     );
 
-    const updateResponse = await GrouparooRecord.update(
+    if (!records.length) {
+      return [];
+    }
+
+    await GrouparooRecord.update(
       { state: "ready" },
       {
         where: {
@@ -882,12 +1023,6 @@ export namespace RecordOps {
         },
       }
     );
-
-    // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer state=pending
-    // in SQLite this isn't possible, but contention is far less likely
-    if (updateResponse[1]) records = updateResponse[1];
-
-    if (records.length === 0) return [];
 
     await completeRecordImports(
       records.map((p) => p.id),
@@ -907,10 +1042,14 @@ export namespace RecordOps {
         { model: Import, required: false, where: { recordUpdatedAt: null } },
       ],
     });
-    if (records.length === 0) return;
+    if (!records.length) {
+      return;
+    }
 
     const memberships = await RecordOps.updateGroupMemberships(records);
     const now = new Date();
+
+    await computeRecordsValidity(records);
 
     for (const record of records) {
       const imports = record.imports;

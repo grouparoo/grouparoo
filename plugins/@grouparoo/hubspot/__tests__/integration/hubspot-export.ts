@@ -16,18 +16,11 @@ import {
   DestinationMappingOptions,
 } from "@grouparoo/core/src/actions/destinations";
 import { connect } from "./../../src/lib/connect";
+import { HubspotDataResponse } from "./../../src/lib/client";
 import Axios from "axios";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "hubspot-export.js");
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 
 const email1 = "luigi@example.com";
@@ -65,7 +58,7 @@ async function deleteUsers() {
 async function deleteLists() {
   const lists = [list1];
 
-  const { data } = await Axios({
+  const { data }: { data: HubspotDataResponse } = await Axios({
     method: "GET",
     url: `https://api.hubapi.com/contacts/v1/lists/static?hapikey=${appOptions.hapikey}&count=999`,
     headers: { "Content-Type": "application/json" },
@@ -158,9 +151,10 @@ describe("integration/runs/hubspot", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "hubspot-export",
+      type: "hubspot-export-contacts",
       syncMode: "sync",
       appId: app.id,
+      modelId: "mod_profiles",
       mapping: {
         email: "email",
         firstname: "firstName",
@@ -258,12 +252,13 @@ describe("integration/runs/hubspot", () => {
       csrfToken,
       id: destination.id,
       destinationGroupMemberships,
-      trackedGroupId: group.id,
+      groupId: group.id,
+      collection: "group",
     };
     const { error, destination: _destination } =
       await specHelper.runAction<DestinationEdit>("destination:edit", session);
     expect(error).toBeUndefined();
-    expect(_destination.destinationGroup.id).toBe(group.id);
+    expect(_destination.group.id).toBe(group.id);
     expect(_destination.destinationGroupMemberships).toEqual([
       {
         groupId: group.id,

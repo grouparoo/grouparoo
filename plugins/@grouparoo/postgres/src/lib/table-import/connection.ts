@@ -10,8 +10,9 @@ import { getChangedRowCount } from "./getChangedRowCount";
 export function getConnection() {
   return buildConnection({
     app: "postgres",
-    name: "postgres-table-import",
-    description: "Import or update Profiles from a Postgres database table.",
+    name: "postgres-import-table",
+    displayName: "Postgres Table Import",
+    description: "Import or update Records from a Postgres database table.",
     tableOptionDescription: "The table to scan",
     getSampleRows,
     getColumns,

@@ -48,9 +48,9 @@ export class GroupDestroy extends CLSTask {
         creatorId: group.id,
         creatorType: "group",
         state: "running",
-        groupMemberOffset: 0,
-        groupMemberLimit: limit,
-        groupMethod: "runRemoveGroupMembers",
+        memberOffset: 0,
+        memberLimit: limit,
+        method: "runRemoveGroupMembers",
       });
     }
 

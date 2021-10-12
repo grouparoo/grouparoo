@@ -8,11 +8,15 @@ import {
   Run,
   App,
   plugin,
+  GrouparooModel,
 } from "../../../src";
 
 describe("tasks/export:sendBatch", () => {
+  let model: GrouparooModel;
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  beforeAll(async () => await helper.factories.properties());
+  beforeAll(async () => {
+    ({ model } = await helper.factories.properties());
+  });
 
   test("can be enqueued", async () => {
     await task.enqueue("export:sendBatch", {
@@ -54,7 +58,7 @@ describe("tasks/export:sendBatch", () => {
       destination = await helper.factories.destination(null, {
         type: "test-plugin-export-batch",
       });
-      await destination.trackGroup(group);
+      await destination.updateTracking("group", group.id);
 
       await api.resque.queue.connection.redis.flushdb();
       await Run.truncate();
@@ -66,7 +70,7 @@ describe("tasks/export:sendBatch", () => {
       );
       await destination.update({ state: "ready" });
 
-      await destination.exportGroupMembers(true);
+      await destination.exportMembers(true);
 
       run = await Run.findOne({
         where: { creatorId: group.id },
@@ -146,6 +150,7 @@ describe("tasks/export:sendBatch", () => {
           apps: [
             {
               name: "test-template-app",
+              displayName: "test-template-app",
               options: [{ key: "test_key", required: true }],
               methods: {
                 test: async () => {
@@ -157,6 +162,7 @@ describe("tasks/export:sendBatch", () => {
           connections: [
             {
               name: "export-from-test-app",
+              displayName: "export-from-test-app",
               description: "a test app connection",
               app: "test-template-app",
               direction: "export",
@@ -201,9 +207,10 @@ describe("tasks/export:sendBatch", () => {
           name: "test plugin destination",
           type: "export-from-test-app",
           appId: app.id,
+          modelId: model.id,
         });
         await destination.update({ state: "ready" });
-        await destination.trackGroup(group);
+        await destination.updateTracking("group", group.id);
       });
 
       beforeEach(async () => {

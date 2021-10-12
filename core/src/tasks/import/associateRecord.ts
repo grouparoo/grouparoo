@@ -46,7 +46,7 @@ export class ImportAssociateRecord extends Task {
         const nextAttempt = attempts + 1;
         if (nextAttempt >= maxAttempts) {
           if (env !== "test") {
-            log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");
+            log(`[ASSOCIATE RECORD ERROR] ${error}`, "alert");
           }
           if (_import) await _import.setError(error, this.name);
         } else {

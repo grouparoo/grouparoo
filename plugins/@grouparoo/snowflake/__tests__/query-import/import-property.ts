@@ -1,4 +1,3 @@
-import path from "path";
 import { helper } from "@grouparoo/spec-helper";
 import "../utils/mock";
 import { connect } from "../../src/lib/connect";
@@ -8,21 +7,7 @@ import { GrouparooRecord, SimpleAppOptions, Property } from "@grouparoo/core";
 import { getConnection } from "../../src/lib/query-import/connection";
 const recordProperty = getConnection().methods.recordProperty;
 
-const nockFile = path.join(
-  __dirname,
-  "../",
-  "fixtures",
-  "query-import-property.js"
-);
-
-// these comments to use nock
-const newNock = false;
-require(nockFile);
-// or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
-
-// these used and set by test
+const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 let record: GrouparooRecord;
 
