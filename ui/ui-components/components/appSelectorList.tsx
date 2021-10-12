@@ -102,7 +102,7 @@ export default function AppSelectorList({
             // these are apps extracted from connectionApps
             src = item.icon;
             title = item.pluginApp.displayName;
-            subheading = item.type;
+            subheading = item.name;
             className =
               item.id === selectedItem.id
                 ? "selector-list-selected"
