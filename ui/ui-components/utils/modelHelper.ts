@@ -42,13 +42,10 @@ export const onChangeModelId = async (newModelId: string) => {
 };
 
 export const getModelFromUrlOrCookie = (ctx: NextPageContext) => {
-  let modelId: string;
   if (ctx.pathname.match("/model/")) {
-    modelId = String(ctx.query.modelId);
-  } else {
-    const cookies = new Cookies(ctx.req?.headers.cookie);
-    modelId = cookies.get("grouparooModelId");
+    return String(ctx.query.modelId);
   }
 
-  return modelId;
+  const cookies = new Cookies(ctx.req?.headers.cookie);
+  return cookies.get("grouparooModelId") as string;
 };
