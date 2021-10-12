@@ -574,6 +574,8 @@ export class Destination extends LoggedModel<Destination> {
     const { name, type, syncMode } = this;
 
     this.app = await this.$get("app");
+    this.model = await this.$get("model");
+    const modelId = this.model?.getConfigId();
     const appId = this.app?.getConfigId();
     this.group = await this.$get("group");
     const groupId = this.group?.getConfigId();
@@ -588,12 +590,14 @@ export class Destination extends LoggedModel<Destination> {
     const options = await this.getOptions(false);
     const mapping = await MappingHelper.getConfigMapping(this);
 
-    if (!name || !appId) return;
+    if (!name || !appId || !modelId) {
+      return;
+    }
 
     return {
       class: "Destination",
       id: this.getConfigId(),
-      modelId: this.modelId,
+      modelId,
       name,
       type,
       appId,

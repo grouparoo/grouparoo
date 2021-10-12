@@ -214,6 +214,8 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   }
 
   async getConfigObject(): Promise<RecordConfigurationObject> {
+    this.model = await this.$get("model");
+    const modelId = this.model?.getConfigId();
     const properties = await this.getProperties();
     const directlyMappedProps: {
       [key: string]: Array<string | boolean | number | Date>;
@@ -226,10 +228,14 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
       }
     }
 
+    if (!modelId) {
+      return;
+    }
+
     return {
       id: this.id,
       class: "GrouparooRecord",
-      modelId: this.modelId,
+      modelId,
       properties: directlyMappedProps,
     };
   }
