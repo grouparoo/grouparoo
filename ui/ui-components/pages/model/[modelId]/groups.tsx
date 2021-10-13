@@ -36,7 +36,7 @@ export default function Page(props) {
 
   useSecondaryEffect(() => {
     load();
-  }, [limit, offset]);
+  }, [limit, offset, modelId]);
 
   async function load() {
     updateURLParams(router, { offset });
