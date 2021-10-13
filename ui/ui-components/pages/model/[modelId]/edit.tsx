@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
 import { useRouter } from "next/router";
@@ -27,6 +27,10 @@ export default function Page(props) {
   const [model, setModel] = useState<Models.GrouparooModelType>(props.model);
   const [loading, setLoading] = useState(false);
   const { modelId } = router.query;
+
+  useEffect(() => {
+    setModel(props.model);
+  }, [modelId]);
 
   async function edit(event) {
     event.preventDefault();
