@@ -41,6 +41,7 @@ export default function RunsList(props) {
   async function load() {
     const params = { limit, offset, topic };
     if (router.query.sourceId) params["id"] = router.query.sourceId.toString();
+    if (router.query.groupId) params["id"] = router.query.groupId.toString();
     if (stateFilter !== "") params["state"] = stateFilter;
     if (errorFilter !== "") params["hasError"] = errorFilter;
 
@@ -286,10 +287,10 @@ RunsList.hydrate = async (
   ctx: NextPageContext,
   options: { topic?: string } = {}
 ) => {
-  const { sourceId, limit, offset, stateFilter, error } = ctx.query;
+  const { sourceId, groupId, limit, offset, stateFilter, error } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { runs, total } = await execApi("get", `/runs`, {
-    id: sourceId,
+    id: sourceId ?? groupId,
     topic: options.topic,
     limit,
     offset,
