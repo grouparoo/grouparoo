@@ -57,10 +57,62 @@ describe("actions/runs", () => {
     expect(ids).toContain(runB.id);
   });
 
+  test("runs for just a group can be listed", async () => {
+    const group = await helper.factories.group();
+    await group.update({ type: "calculated" });
+    await group.setRules([{ key: "grouparooId", operation: { op: "exists" } }]);
+    await group.update({ state: "ready" }); // creates a run
+
+    connection.params = {
+      csrfToken,
+      creatorId: group.id,
+    };
+
+    const { error, runs, total } = await specHelper.runAction<RunsList>(
+      "runs:list",
+      connection
+    );
+    expect(error).toBeUndefined();
+    expect(total).toBe(1);
+    expect(runs.length).toBe(1);
+    expect(runs[0].creatorId).toBe(group.id);
+
+    await group.destroy();
+  });
+
+  test("runs for just a property can be listed", async () => {
+    await helper.factories.record();
+    const source = await helper.factories.source();
+    await source.setMapping({ id: "userId" });
+    await source.setOptions({ table: "foo" });
+    await source.update({ state: "ready" });
+    const property = await helper.factories.property(source, undefined, {
+      column: "foo",
+    });
+    await property.update({ state: "ready" });
+
+    connection.params = {
+      csrfToken,
+      creatorId: property.id,
+    };
+
+    const { error, runs, total } = await specHelper.runAction<RunsList>(
+      "runs:list",
+      connection
+    );
+    expect(error).toBeUndefined();
+    expect(total).toBe(1);
+    expect(runs.length).toBe(1);
+    expect(runs[0].creatorId).toBe(property.id);
+
+    await property.destroy();
+    await source.destroy();
+  });
+
   test("runs for just a schedule can be listed", async () => {
     connection.params = {
       csrfToken,
-      id: scheduleA.id,
+      creatorId: scheduleA.id,
     };
 
     const { error, runs, total } = await specHelper.runAction<RunsList>(
@@ -80,7 +132,7 @@ describe("actions/runs", () => {
 
     connection.params = {
       csrfToken,
-      id: source.id,
+      creatorId: source.id,
       topic: "source",
     };
 

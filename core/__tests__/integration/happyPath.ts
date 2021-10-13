@@ -456,7 +456,7 @@ describe("integration/happyPath", () => {
     test("the run was created", async () => {
       connection.params = {
         csrfToken,
-        id: scheduleId,
+        creatorId: scheduleId,
       };
       const { error, runs } = await specHelper.runAction<RunsList>(
         "runs:list",

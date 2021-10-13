@@ -1,6 +1,6 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Run } from "../models/Run";
-import { Op } from "sequelize";
+import { Op, WhereAttributeHash } from "sequelize";
 import { Schedule } from "../models/Schedule";
 import { APIData } from "../modules/apiData";
 
@@ -12,7 +12,7 @@ export class RunsList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "system", mode: "read" };
     this.inputs = {
-      id: { required: false },
+      creatorId: { required: false },
       topic: { required: false },
       state: { required: false },
       hasError: { required: false },
@@ -27,33 +27,31 @@ export class RunsList extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    let id: string = params.id;
+    let creatorId: string = params.creatorId;
 
     if (params.topic === "source") {
       const schedule = await Schedule.scope(null).findOne({
-        where: { sourceId: params.id },
+        where: { sourceId: params.creatorId },
       });
       if (!schedule) {
         throw new Error("no schedule for this source");
       } else {
-        id = schedule.id;
+        creatorId = schedule.id;
       }
     }
 
-    const where = {};
-    if (id) where["creatorId"] = id;
+    const where: WhereAttributeHash = {};
+    if (creatorId) where["creatorId"] = creatorId;
     if (params.state) where["state"] = params.state;
     if (params.hasError === "true") where["error"] = { [Op.ne]: null };
     if (params.hasError === "false") where["error"] = { [Op.eq]: null };
 
-    const search = {
+    const runs = await Run.scope(null).findAll({
       where,
       limit: params.limit,
       offset: params.offset,
       order: params.order,
-    };
-
-    const runs = await Run.scope(null).findAll(search);
+    });
 
     return {
       runs: await Promise.all(runs.map((run) => run.apiData())),
