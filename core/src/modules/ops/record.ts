@@ -809,28 +809,42 @@ export namespace RecordOps {
   }
 
   /**
-   * Look for records that don't have a directlyMapped property and are done importing/exporting.
+   * Look for records by model that don't have a directlyMapped property and are done importing/exporting.
    */
 
   export async function getRecordsToDestroy() {
     const limit: number = config.batchSize.imports;
-    let records: GrouparooRecord[] = [];
+    let records: GrouparooRecord[] = await GrouparooRecord.findAll();
+    let recordsToClear: GrouparooRecord[] = [];
+    let models: GrouparooModel[] = await GrouparooModel.scope(null).findAll();
+    let modelIdsToClear: string[] = [];
 
-    const directlyMapped = await Property.findAll({
-      where: { directlyMapped: true },
-    });
+    for (const model of models) {
+      console.log("CHECKING MODEL: " + model.id);
+      const propertiesByModel = await Property.findAllWithCache(model.id);
+      const directlyMapped = propertiesByModel.filter((property) => {
+        property.directlyMapped === true;
+      });
+      console.log("DIRECTLY MAPPED: " + directlyMapped);
+      if (directlyMapped.length === 0) {
+        modelIdsToClear.push(model.id);
+        console.log("CLEAR MODEL" + model.id);
+      }
+    }
 
-    if (directlyMapped.length === 0) {
+    for (const modelId of modelIdsToClear) {
       // We have no directly mapped Property and every record should be removed
       // It's safe to assume that if there are no Properties, we aren't exporting
-      records = await GrouparooRecord.findAll({
+      recordsToClear = await GrouparooRecord.findAll({
         attributes: ["id"],
-        where: { state: "ready" },
+        where: { state: "ready", modelId: modelId },
         limit,
       });
-    } else {
-      // We have directly mapped Properties and we only want to remove those GrouparooRecords with a null "user_id" (directlyMapped) Property (and are ready with no exports)
-      records = await api.sequelize.query(
+    }
+
+    // We have directly mapped Properties and we only want to remove those GrouparooRecords with a null "user_id" (directlyMapped) Property (and are ready with no exports)
+    recordsToClear.concat(
+      await api.sequelize.query(
         `
   SELECT "id" FROM "records"
   WHERE "state"='ready'
@@ -846,10 +860,10 @@ export namespace RecordOps {
         {
           model: GrouparooRecord,
         }
-      );
-    }
+      )
+    );
 
-    return records;
+    return recordsToClear;
   }
 
   /**
