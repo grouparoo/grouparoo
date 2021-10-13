@@ -29,20 +29,8 @@ export default function Page(props) {
   const { modelId } = router.query;
 
   useEffect(() => {
-    load();
+    setModel(props.model);
   }, [modelId]);
-
-  async function load() {
-    setLoading(true);
-    const response: Actions.ModelView = await execApi(
-      "get",
-      `/model/${modelId}`
-    );
-    setLoading(false);
-    if (response?.model) {
-      setModel(response.model);
-    }
-  }
 
   async function edit(event) {
     event.preventDefault();
