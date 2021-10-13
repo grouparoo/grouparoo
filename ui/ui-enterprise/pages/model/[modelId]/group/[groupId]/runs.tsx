@@ -45,6 +45,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { groupId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { group } = await execApi("get", `/group/${groupId}`);
-  const runsListInitialProps = await RunsList.hydrate(ctx);
+  const runsListInitialProps = await RunsList.hydrate(ctx, { topic: "group" });
   return { group, ...runsListInitialProps };
 };

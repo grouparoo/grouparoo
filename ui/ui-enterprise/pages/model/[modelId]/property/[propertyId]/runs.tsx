@@ -53,6 +53,8 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
   const { property } = await execApi("get", `/property/${propertyId}`);
   const { source } = await execApi("get", `/source/${property.sourceId}`);
-  const runsListInitialProps = await RunsList.hydrate(ctx);
+  const runsListInitialProps = await RunsList.hydrate(ctx, {
+    topic: "property",
+  });
   return { property, source, ...runsListInitialProps };
 };
