@@ -3,7 +3,6 @@ import { Connection, specHelper } from "actionhero";
 import { Run, Source, Schedule } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import { RunEdit, RunsList, RunView } from "../../src/actions/runs";
-import { RecordProperty } from "../../dist";
 
 describe("actions/runs", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
