@@ -84,7 +84,9 @@ export class Apply extends CLI {
       { catchError: true }
     );
 
-    if (response instanceof Error) log(String(response), "error");
+    if (response instanceof Error) {
+      log(response.message ?? String(response), "error");
+    }
 
     return true;
   }
