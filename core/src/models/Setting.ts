@@ -115,6 +115,30 @@ export class Setting extends LoggedModel<Setting> {
   }
 
   @BeforeSave
+  static validateValue(instance: Setting) {
+    switch (instance.type) {
+      case "boolean": {
+        // already coerced by setter/getter
+        break;
+      }
+      case "string": {
+        // anything is fine
+        break;
+      }
+      case "number": {
+        const numberValue = parseFloat(instance.value);
+        if (isNaN(numberValue)) {
+          throw new Error(`${instance.value} is not a number`);
+        }
+        if (numberValue < 0) {
+          throw new Error(`setting values cannot have negative numbers`);
+        }
+        break;
+      }
+    }
+  }
+
+  @BeforeSave
   static async noUpdateIfLocked(instance) {
     await LockableHelper.beforeSave(instance);
   }

@@ -52,6 +52,7 @@ export default function SettingCard({
                     style={{ width: "100%" }}
                     required
                     type="number"
+                    min="0"
                     name="value"
                     disabled={loading}
                     ref={register}

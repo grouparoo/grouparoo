@@ -38,7 +38,7 @@ describe("models/setting", () => {
     expect(latestLog).toBeTruthy();
   });
 
-  test("settings can be read via the helpery method", async () => {
+  test("settings can be read via the helper method", async () => {
     const setting = await plugin.readSetting("testPlugin", "key");
     expect(setting.key).toBe("key");
     expect(setting.value).toBe("value");
@@ -93,7 +93,7 @@ describe("models/setting", () => {
       "new title",
       100,
       "this is a better description of the setting",
-      "number"
+      "string"
     );
 
     const { updatedAt } = await plugin.readSetting("testPlugin", "key");
@@ -104,7 +104,7 @@ describe("models/setting", () => {
       "new title",
       100,
       "this is a better description of the setting",
-      "number"
+      "string"
     );
 
     const setting = await plugin.readSetting("testPlugin", "key");
@@ -129,6 +129,25 @@ describe("models/setting", () => {
     expect(latestLog).toBeTruthy();
   });
 
+  describe("validations", () => {
+    test("booleans must be either true or false", async () => {
+      // coerced by setter/getter
+    });
+
+    test("strings", async () => {
+      // everything is OK
+    });
+
+    test("numbers", async () => {
+      await expect(
+        plugin.updateSetting("core", "exports-retry-delay-seconds", "foo")
+      ).rejects.toThrow(/foo is not a number/);
+      await expect(
+        plugin.updateSetting("core", "exports-retry-delay-seconds", -1)
+      ).rejects.toThrow(/setting values cannot have negative numbers/);
+    });
+  });
+
   describe("#SettingOps", () => {
     beforeEach(async () => await Setting.truncate());
 
@@ -143,19 +162,21 @@ describe("models/setting", () => {
       ).toEqual(1);
       expect(
         settings.filter((s) => s.pluginName === "telemetry").length
-      ).toEqual(2);
+      ).toEqual(1);
     });
 
     test("settings can be pruned", async () => {
       const goodSetting = await Setting.create({
         key: "goodKey",
         pluginName: "test",
+        value: 1,
         defaultValue: 1,
         type: "number",
       });
       const badSetting = await Setting.create({
         key: "badKey",
         pluginName: "test",
+        value: 1,
         defaultValue: 1,
         type: "number",
       });

@@ -28,13 +28,10 @@ describe("modules/status", () => {
 
   describe("telemetry module", () => {
     test("the telemetry object can be built", async () => {
-      const { name, id, license, metrics, trigger } = await Telemetry.build(
-        "timer"
-      );
+      const { name, id, metrics, trigger } = await Telemetry.build("timer");
 
       expect(name).toBe("My Grouparoo Cluster");
       expect(id).toMatch(/^tcs_/);
-      expect(license).toBe("");
       expect(trigger).toBe("timer");
 
       expect(metrics[0]).toEqual(

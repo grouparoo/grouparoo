@@ -60,9 +60,6 @@ export namespace Telemetry {
       .value;
     const customerId = (await plugin.readSetting("telemetry", "customer-id"))
       .value;
-    const customerLicense = (
-      await plugin.readSetting("telemetry", "customer-license")
-    ).value;
 
     // information about how Grouparoo is being operated
     metrics.push(await StatusReporters.Cluster.Workers.countWorkers());
@@ -99,7 +96,6 @@ export namespace Telemetry {
       name: clusterName,
       id: customerId,
       trigger,
-      license: customerLicense,
       metrics: metrics,
     };
   }
@@ -112,9 +108,6 @@ export namespace Telemetry {
       .value;
     const customerId = (await plugin.readSetting("telemetry", "customer-id"))
       .value;
-    const customerLicense = (
-      await plugin.readSetting("telemetry", "customer-license")
-    ).value;
 
     const sanitizedError = sanitizeErrorPayload(error);
 
@@ -122,13 +115,11 @@ export namespace Telemetry {
       name: string;
       id: string;
       trigger: string;
-      license: string;
       metrics: StatusMetric[];
     } = {
       name: clusterName,
       id: customerId,
       trigger,
-      license: customerLicense,
       metrics: [
         {
           collection: "telemetry",

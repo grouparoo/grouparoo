@@ -197,12 +197,5 @@ export namespace SettingOps {
       description: "A unique, anonymous ID for this Grouparoo cluster.",
       type: "string",
     },
-    {
-      key: "customer-license",
-      title: "Customer License",
-      defaultValue: ``,
-      description: "Your Grouparoo License Key (for paid features).",
-      type: "string",
-    },
   ];
 }
