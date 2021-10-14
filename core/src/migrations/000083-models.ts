@@ -45,7 +45,7 @@ export default {
         throw new Error("Make a single Model config file");
       } else if (modelConfigObjects.length > 1) {
         throw new Error(
-          "to migrate existing records, we need you to deploy with just one Model"
+          "To migrate existing records, deploy this migration with just one Model"
         );
       }
       // Use the model file to migrate all the existing records, but do not create the model (code config will handle that later)
