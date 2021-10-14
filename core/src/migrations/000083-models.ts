@@ -13,7 +13,7 @@ export default {
     const [counts] = await queryInterface.sequelize.query(
       `SELECT COUNT(*) as c FROM "records"`
     );
-    const countRecords = parseInt(counts["c"]);
+    const countRecords = parseInt(counts[0]["c"]);
 
     let codeConfigInUse = false;
     const [sources] = await queryInterface.sequelize.query(
@@ -22,7 +22,7 @@ export default {
     const [destinations] = await queryInterface.sequelize.query(
       `SELECT COUNT(*) as c FROM "destinations" WHERE "locked" IS NOT NULL`
     );
-    if (parseInt(sources["c"]) > 0 || parseInt(destinations["c"]) > 0) {
+    if (parseInt(sources[0]["c"]) > 0 || parseInt(destinations[0]["c"]) > 0) {
       codeConfigInUse = true;
     }
 
@@ -51,8 +51,7 @@ export default {
       // Use the model file to migrate all the existing records, but do not create the model (code config will handle that later)
       default_model = modelConfigObjects[0];
     } else {
-      // Not using Code Config
-      // Create the default Model
+      // Not using Code Config - Create the default Model
       await queryInterface.sequelize.query(`
 INSERT INTO "models" ("id", "name", "type", "createdAt", "updatedAt")
 VALUES ('${default_model.id}', '${default_model.name}', '${default_model.type}', NOW(), NOW())
