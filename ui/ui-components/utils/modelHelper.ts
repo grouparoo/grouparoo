@@ -4,8 +4,7 @@ import { plural } from "pluralize";
 import { NextPageContext } from "next";
 
 export const onChangeModelId = async (newModelId: string) => {
-  const cookies = new Cookies();
-  cookies.set("grouparooModelId", newModelId, { path: "/" });
+  setModelCookie(newModelId);
 
   if (router.pathname.match(/^\/model\//)) {
     const pathParts = router.pathname.split("/");
@@ -42,10 +41,24 @@ export const onChangeModelId = async (newModelId: string) => {
 };
 
 export const getModelFromUrlOrCookie = (ctx: NextPageContext) => {
-  if (ctx.pathname.match("/model/")) {
+  const pathParts = ctx.pathname.split("/");
+  if (
+    pathParts.length > 3 &&
+    pathParts[1] === "model" &&
+    pathParts[2] === "[modelId]"
+  ) {
     return String(ctx.query.modelId);
   }
 
   const cookies = new Cookies(ctx.req?.headers.cookie);
-  return cookies.get("grouparooModelId") as string;
+  return String(cookies.get("grouparooModelId"));
+};
+
+export const setModelCookie = (modelId: string, ctx?: NextPageContext) => {
+  if (ctx?.res) {
+    ctx.res.setHeader("set-cookie", `grouparooModelId=${modelId}; Path=/`);
+  } else {
+    const cookies = new Cookies();
+    cookies.set("grouparooModelId", modelId, { path: "/" });
+  }
 };

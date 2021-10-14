@@ -28,7 +28,7 @@ import { SourceHandler } from "../utils/sourceHandler";
 import { TeamHandler } from "../utils/teamHandler";
 import { TeamMemberHandler } from "../utils/teamMembersHandler";
 import { UploadHandler } from "../utils/uploadHandler";
-import { getModelFromUrlOrCookie } from "../utils/modelHelper";
+import { getModelFromUrlOrCookie, setModelCookie } from "../utils/modelHelper";
 
 const successHandler = new SuccessHandler();
 const errorHandler = new ErrorHandler();
@@ -109,11 +109,8 @@ GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
       currentTeamMember = navigationResponse.teamMember;
     }
 
-    if (navigationResponse.navigationModel.value && appContext.ctx.res) {
-      appContext.ctx.res.setHeader(
-        "set-cookie",
-        `grouparooModelId=${navigationResponse.navigationModel.value}; Path=/`
-      );
+    if (navigationResponse.navigationModel.value) {
+      setModelCookie(navigationResponse.navigationModel.value, appContext.ctx);
     }
 
     // render page-specific getInitialProps
