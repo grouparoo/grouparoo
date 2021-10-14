@@ -7,11 +7,9 @@ import {
   Group,
   GrouparooRecord,
   RecordProperty,
-  Export,
   GrouparooModel,
 } from "../../../src";
 import { api, task, specHelper } from "actionhero";
-import { appendFile } from "fs";
 
 describe("tasks/destroy", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

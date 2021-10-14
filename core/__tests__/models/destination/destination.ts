@@ -159,7 +159,7 @@ describe("models/destination", () => {
       await model.update({ state: "ready" });
     });
 
-    test("a deleted group can be saved with a deleted state model", async () => {
+    test("a deleted destination can be saved with a deleted state model", async () => {
       const destination = new Destination({
         type: "test-plugin-export",
         syncMode: "sync",
