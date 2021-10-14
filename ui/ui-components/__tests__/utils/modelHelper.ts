@@ -58,7 +58,7 @@ describe("modelHelper", () => {
       cookieMock.mockRestore();
     });
 
-    test("Gets from URL when in subpage within /model/[modelId]/topic", () => {
+    test("Gets from URL when in subpage within /model/[modelId]", () => {
       const ctx: NextPageContext = {
         pathname: "/model/[modelId]/records",
         query: { modelId: "profiles" },
@@ -69,7 +69,7 @@ describe("modelHelper", () => {
       expect(modelId).toBe("profiles");
     });
 
-    test("Gets from URL when in deeply nested subpage within /model/[modelId]/topic", () => {
+    test("Gets from URL when in subpage within /model/[modelId]/topic", () => {
       const ctx: NextPageContext = {
         pathname: "/model/[modelId]/sources/[sourceId]/schedule",
         query: { modelId: "admins", sourceId: "abcd123" },
@@ -91,19 +91,6 @@ describe("modelHelper", () => {
 
       const modelId = getModelFromUrlOrCookie(ctx);
       expect(modelId).toBe("someModelId");
-    });
-
-    test("Gets from Cookie when in direct model page", () => {
-      const ctx: NextPageContext = {
-        pathname: "/model/[modelId]",
-        query: { modelId: "users" },
-        AppTree: null,
-      };
-
-      modelCookieValue = "profiles";
-
-      const modelId = getModelFromUrlOrCookie(ctx);
-      expect(modelId).toBe("profiles");
     });
 
     test("Gets from Cookie when in new page", () => {
