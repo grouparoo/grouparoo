@@ -213,7 +213,7 @@ describe("models/destination", () => {
           appId: app.id,
           modelId: "foo",
         })
-      ).rejects.toThrow(/cannot find model with id foo/);
+      ).rejects.toThrow(/cannot find ready model with id foo/);
     });
 
     test("deleting a destination does not delete options for other models with the same id", async () => {

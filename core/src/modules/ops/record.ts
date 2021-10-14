@@ -843,7 +843,7 @@ export namespace RecordOps {
     }
 
     // Also search all records for a "null" value in the directly mapped property
-    recordsToDestroy.concat(
+    return recordsToDestroy.concat(
       await api.sequelize.query(
         `
     SELECT "id" FROM "records"
@@ -862,8 +862,6 @@ export namespace RecordOps {
         }
       )
     );
-
-    return recordsToDestroy;
   }
 
   /**
