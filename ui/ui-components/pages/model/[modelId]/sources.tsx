@@ -93,7 +93,8 @@ export default function Page(props) {
     try {
       const response: Actions.SchedulesRun = await execApi(
         "post",
-        `/schedules/run`
+        `/schedules/run`,
+        { modelId }
       );
       successHandler.set({ message: `${response.runs.length} runs enqueued` });
     } finally {
@@ -233,7 +234,7 @@ export default function Page(props) {
           variant="outline-primary"
           onClick={() => enqueueAllSchedulesRun()}
         >
-          Run all Schedules
+          Run all {modelName} Schedules
         </Button>
       ) : null}
     </>

@@ -311,6 +311,22 @@ describe("actions/schedules", () => {
         expect(runsAgain.length).toBe(0);
       });
 
+      test("an administrator can request to run some schedules by modelId", async () => {
+        connection.params = { csrfToken, modelId: model.id };
+        const { error, runs } = await specHelper.runAction<SchedulesRun>(
+          "schedules:run",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(runs.length).toBe(1);
+
+        connection.params = { csrfToken, modelId: "foo" };
+        const { error: errorAgain, runs: runsAgain } =
+          await specHelper.runAction<SchedulesRun>("schedules:run", connection);
+        expect(errorAgain).toBeUndefined();
+        expect(runsAgain.length).toBe(0);
+      });
+
       test("an administrator can destroy a connection", async () => {
         connection.params = {
           csrfToken,
