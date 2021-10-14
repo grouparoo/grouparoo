@@ -40,7 +40,7 @@ export class Apply extends CLI {
     const configDir = await getConfigDir(true);
     const configObjects = await loadConfigObjects(configDir);
 
-    await CLS.wrap(
+    const response = await CLS.wrap(
       async () => {
         await Migrations.migrate(
           config.sequelize,
@@ -83,6 +83,10 @@ export class Apply extends CLI {
       },
       { catchError: true }
     );
+
+    if (response instanceof Error) {
+      log(response.message ?? String(response), "error");
+    }
 
     return true;
   }

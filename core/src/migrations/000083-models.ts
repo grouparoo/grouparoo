@@ -1,29 +1,67 @@
 import Sequelize from "sequelize";
 
-const default_model = {
-  id: "mod_profiles",
-  name: "Profiles",
-  type: "profile",
-};
+// Note: In some future world this import might break.  We no longer need to use this after a few months from when this migration is deployed in Grouparoo v0.7
+import { getConfigDir } from "../modules/pluginDetails";
+import { loadConfigObjects } from "../modules/configLoaders";
+import { ModelConfigurationObject } from "../classes/codeConfig";
+import * as uuid from "uuid";
 
 export default {
   up: async (
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
-    let toCreateModel = false;
+    const [counts] = await queryInterface.sequelize.query(
+      `SELECT COUNT(*) as c FROM "records"`
+    );
+    const countRecords = parseInt(counts[0]["c"]);
+
+    let codeConfigInUse = false;
     const [sources] = await queryInterface.sequelize.query(
-      `SELECT * FROM "sources" WHERE "locked" IS NOT NULL`
+      `SELECT COUNT(*) as c FROM "sources" WHERE "locked" IS NOT NULL`
     );
     const [destinations] = await queryInterface.sequelize.query(
-      `SELECT * FROM "destinations" WHERE "locked" IS NOT NULL`
+      `SELECT COUNT(*) as c FROM "destinations" WHERE "locked" IS NOT NULL`
     );
-    if (sources.length > 0 || destinations.length > 0) toCreateModel = true;
+    if (parseInt(sources[0]["c"]) > 0 || parseInt(destinations[0]["c"]) > 0) {
+      codeConfigInUse = true;
+    }
 
-    if (toCreateModel) {
+    let default_model = {
+      id: `mod_${uuid.v4()}`,
+      name: "Profiles",
+      type: "profile",
+    };
+
+    if (countRecords === 0) {
+      // OK, we don't have any records we need to worry about updating
+    } else if (codeConfigInUse === true) {
+      const configDir = await getConfigDir();
+      const configObjects = await loadConfigObjects(configDir);
+      const modelConfigObjects = configObjects.filter(
+        (o) => o.class === "Model"
+      ) as Required<ModelConfigurationObject>[];
+
+      if (modelConfigObjects.length === 0) {
+        throw new Error(
+          "There are no Models configured. When first upgrading to v0.7, Grouparoo requires a single Model to be created to define where existing Records should be migrated. See https://www.grouparoo.com/docs/support/upgrading-grouparoo/v06-v07 for more information."
+        );
+      } else if (modelConfigObjects.length > 1) {
+        throw new Error(
+          "There is more than one Model configured. When first upgrading to v0.7, Grouparoo requires a single Model to be created to define where existing Records should be migrated. More Models can then be created after that. See https://www.grouparoo.com/docs/support/upgrading-grouparoo/v06-v07 for more information."
+        );
+      }
+      // Use the model file to migrate all the existing records, but do not create the model (code config will handle that later)
+      default_model = modelConfigObjects[0];
+      if (!default_model.id)
+        throw new Error(
+          `Model does not have an id (${JSON.stringify(default_model)})`
+        );
+    } else {
+      // Not using Code Config - Create the default Model
       await queryInterface.sequelize.query(`
 INSERT INTO "models" ("id", "name", "type", "createdAt", "updatedAt")
-VALUES ('${default_model.id}', '${default_model.name}', '${default_model.type}', NOW(), NOW());
+VALUES ('${default_model.id}', '${default_model.name}', '${default_model.type}', NOW(), NOW())
       `);
     }
 

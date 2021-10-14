@@ -2,7 +2,6 @@ import { api } from "actionhero";
 import { loadConfigDirectory } from "../modules/configLoaders";
 import { getConfigDir } from "../modules/pluginDetails";
 import { CLSInitializer } from "../classes/initializers/clsInitializer";
-import { GrouparooCLI } from "../modules/cli";
 
 declare module "actionhero" {
   export interface Api {
