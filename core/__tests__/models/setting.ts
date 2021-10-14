@@ -143,7 +143,7 @@ describe("models/setting", () => {
       ).toEqual(1);
       expect(
         settings.filter((s) => s.pluginName === "telemetry").length
-      ).toEqual(2);
+      ).toEqual(1);
     });
 
     test("settings can be pruned", async () => {
