@@ -64,13 +64,6 @@ export default function Page(props) {
       setSources(response.sources);
       setTotal(response.total);
       setRuns(_runs);
-
-      if (response.total === 0) {
-        router.push(
-          "/model/[modelId]/source/new",
-          `/model/${router.query.modelId}/source/new`
-        );
-      }
     }
   }
 
