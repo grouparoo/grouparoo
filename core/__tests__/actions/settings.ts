@@ -120,7 +120,7 @@ describe("actions/settings", () => {
       connection.params = {
         id,
         csrfToken,
-        value: "new value",
+        value: "9999",
       };
       const { error } = await specHelper.runAction("setting:edit", connection);
       expect(error).toBeUndefined();
@@ -132,7 +132,7 @@ describe("actions/settings", () => {
         "settings:list",
         connection
       );
-      expect(settings[0].value).toBe("new value");
+      expect(settings[0].value).toBe("9999");
     });
   });
 });
