@@ -814,56 +814,56 @@ export namespace RecordOps {
 
   export async function getRecordsToDestroy() {
     const limit: number = config.batchSize.imports;
-    let records: GrouparooRecord[] = await GrouparooRecord.findAll();
-    let recordsToClear: GrouparooRecord[] = [];
+    let recordsToDestroy: GrouparooRecord[] = [];
     let models: GrouparooModel[] = await GrouparooModel.scope(null).findAll();
     let modelIdsToClear: string[] = [];
 
     for (const model of models) {
-      console.log("CHECKING MODEL: " + model.id);
-      const propertiesByModel = await Property.findAllWithCache(model.id);
+      const propertiesByModel: Property[] = await Property.findAllWithCache(
+        model.id
+      );
+
       const directlyMapped = propertiesByModel.filter((property) => {
-        property.directlyMapped === true;
+        return property.directlyMapped == true;
       });
-      console.log("DIRECTLY MAPPED: " + directlyMapped);
+
       if (directlyMapped.length === 0) {
         modelIdsToClear.push(model.id);
-        console.log("CLEAR MODEL" + model.id);
       }
     }
 
     for (const modelId of modelIdsToClear) {
-      // We have no directly mapped Property and every record should be removed
+      // We have no directly mapped Property and every record for this model should be removed
       // It's safe to assume that if there are no Properties, we aren't exporting
-      recordsToClear = await GrouparooRecord.findAll({
+      recordsToDestroy = await GrouparooRecord.findAll({
         attributes: ["id"],
         where: { state: "ready", modelId: modelId },
         limit,
       });
     }
 
-    // We have directly mapped Properties and we only want to remove those GrouparooRecords with a null "user_id" (directlyMapped) Property (and are ready with no exports)
-    recordsToClear.concat(
+    // Also search all records for a "null" value in the directly mapped property
+    recordsToDestroy.concat(
       await api.sequelize.query(
         `
-  SELECT "id" FROM "records"
-  WHERE "state"='ready'
-  AND "id" IN (
-    SELECT DISTINCT("recordId") FROM "recordProperties"
-    JOIN properties ON "properties"."id"="recordProperties"."propertyId"
-    WHERE
-      "properties"."directlyMapped"=true
-      AND "rawValue" IS NULL
-  )
-  LIMIT ${limit};
-        `,
+    SELECT "id" FROM "records"
+    WHERE "state"='ready'
+    AND "id" IN (
+      SELECT DISTINCT("recordId") FROM "recordProperties"
+      JOIN properties ON "properties"."id"="recordProperties"."propertyId"
+      WHERE
+        "properties"."directlyMapped"=true
+        AND "rawValue" IS NULL
+    )
+    LIMIT ${limit};
+          `,
         {
           model: GrouparooRecord,
         }
       )
     );
 
-    return recordsToClear;
+    return recordsToDestroy;
   }
 
   /**
