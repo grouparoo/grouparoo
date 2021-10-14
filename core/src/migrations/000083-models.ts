@@ -4,6 +4,7 @@ import Sequelize from "sequelize";
 import { getConfigDir } from "../modules/pluginDetails";
 import { loadConfigObjects } from "../modules/configLoaders";
 import { ModelConfigurationObject } from "../classes/codeConfig";
+import * as uuid from "uuid";
 
 export default {
   up: async (
@@ -27,7 +28,7 @@ export default {
     }
 
     let default_model = {
-      id: "mod_profiles",
+      id: `mod_${uuid.v4()}`,
       name: "Profiles",
       type: "profile",
     };
@@ -42,14 +43,20 @@ export default {
       ) as Required<ModelConfigurationObject>[];
 
       if (modelConfigObjects.length === 0) {
-        throw new Error("Make a single Model config file");
+        throw new Error(
+          "There are no Models configured. When first upgrading to v0.7, Grouparoo requires a single Model to be created to define where existing Records should be migrated. See https://www.grouparoo.com/docs/support/upgrading-grouparoo/v06-v07 for more information."
+        );
       } else if (modelConfigObjects.length > 1) {
         throw new Error(
-          "To migrate existing records, deploy this migration with just one Model"
+          "There is more than one Model configured. When first upgrading to v0.7, Grouparoo requires a single Model to be created to define where existing Records should be migrated. More Models can then be created after that. See https://www.grouparoo.com/docs/support/upgrading-grouparoo/v06-v07 for more information."
         );
       }
       // Use the model file to migrate all the existing records, but do not create the model (code config will handle that later)
       default_model = modelConfigObjects[0];
+      if (!default_model.id)
+        throw new Error(
+          `Model does not have an id (${JSON.stringify(default_model)})`
+        );
     } else {
       // Not using Code Config - Create the default Model
       await queryInterface.sequelize.query(`
