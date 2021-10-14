@@ -8,8 +8,10 @@ import {
   GrouparooRecord,
   RecordProperty,
   Export,
+  GrouparooModel,
 } from "../../../src";
 import { api, task, specHelper } from "actionhero";
+import { appendFile } from "fs";
 
 describe("tasks/destroy", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -80,7 +82,20 @@ describe("tasks/destroy", () => {
       expect(found.length).toEqual(1);
       expect(found[0].args[0].destinationId).toBe(destination.id);
     });
+    test("it will enqueue destroy tasks for deleted models", async () => {
+      const model: GrouparooModel = await helper.factories.model({
+        name: "test_model",
+      });
+      await model.update({ state: "deleted" });
 
+      await specHelper.runTask("destroy", {});
+
+      const found = await specHelper.findEnqueuedTasks("model:destroy");
+      expect(found.length).toEqual(1);
+      expect(found[0].args[0].modelId).toBe(model.id);
+
+      await model.destroy();
+    });
     test("it will enqueue destroy tasks for deleted apps", async () => {
       const app: App = await helper.factories.app();
       await app.update({ state: "deleted" });
