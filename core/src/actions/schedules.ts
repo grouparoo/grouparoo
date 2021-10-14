@@ -4,7 +4,7 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
 import { APIData } from "../modules/apiData";
-import { Op } from "sequelize";
+import { Op, WhereAttributeHash } from "sequelize";
 import { Source } from "../models/Source";
 
 export class SchedulesList extends AuthenticatedAction {
@@ -92,16 +92,28 @@ export class SchedulesRun extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       scheduleIds: { required: false, formatter: APIData.ensureObject },
+      modelId: { required: false },
     };
   }
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: { scheduleIds?: string[]; modelId?: string };
+  }) {
     const runs: Run[] = [];
 
-    const where = {};
+    const where: WhereAttributeHash = {};
     if (params.scheduleIds && params.scheduleIds.length > 0) {
       where["id"] = { [Op.in]: params.scheduleIds };
     }
+    if (params.modelId) {
+      const sources = await Source.findAll({
+        where: { modelId: params.modelId },
+      });
+      where["sourceId"] = sources.map((source) => source.id);
+    }
+
     const schedules = await Schedule.findAll({ where });
 
     for (const schedule of schedules) {
