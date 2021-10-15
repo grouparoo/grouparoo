@@ -54,6 +54,7 @@ export async function loadApp(
     });
     await appDataRefresh.update({
       locked: ConfigWriter.getLockKey(configObject),
+      state: "ready",
     });
 
     logModel(

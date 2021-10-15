@@ -19,6 +19,7 @@ import {
   Team,
   TeamMember,
   GrouparooModel,
+  AppDataRefresh,
 } from "../../../src";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
@@ -100,6 +101,11 @@ describe("modules/codeConfig", () => {
         expect(apps[0].locked).toBe("config:code");
         const options = await apps[0].getOptions();
         expect(options).toEqual({ fileId: "test-file-path.db" });
+      });
+
+      test("appDataRefresh is created", async () => {
+        const appDataRefreshes = await AppDataRefresh.findAll();
+        expect(appDataRefreshes.length).toBe(1);
       });
 
       test("sources are created", async () => {
