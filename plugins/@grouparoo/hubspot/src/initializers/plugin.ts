@@ -2,12 +2,16 @@ import path from "path";
 import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
-import { test } from "./../lib/test";
+import { test } from "../lib/test";
 
-import { exportRecord } from "../lib/export/exportRecord";
-import { destinationOptions } from "../lib/export/destinationOptions";
-import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
-import { exportArrayProperties } from "../lib/export/exportArrayProperties";
+import {
+  contactsDestinationConnection,
+  contactsSupportedSyncModes,
+} from "../lib/export-contacts/connection";
+import {
+  objectsDestinationConnection,
+  objectsSupportedSyncModes,
+} from "../lib/export-objects/connection";
 
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
@@ -22,7 +26,6 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
-    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
     const defaultSyncMode: DestinationSyncMode = "sync";
 
     plugin.registerPlugin({
@@ -33,9 +36,15 @@ export class Plugins extends Initializer {
           path.join(templateRoot, "app", "*.template"),
         ]),
         new DestinationTemplate(
-          "hubspot",
-          [path.join(templateRoot, "destination", "*.template")],
-          syncModes,
+          "hubspot:contacts",
+          [path.join(templateRoot, "destination", "contacts", "*.template")],
+          contactsSupportedSyncModes,
+          defaultSyncMode
+        ),
+        new DestinationTemplate(
+          "hubspot:objects",
+          [path.join(templateRoot, "destination", "objects", "*.template")],
+          objectsSupportedSyncModes,
           defaultSyncMode
         ),
       ],
@@ -56,23 +65,8 @@ export class Plugins extends Initializer {
         },
       ],
       connections: [
-        {
-          name: "hubspot-export-contacts",
-          displayName: "Hubspot Export Contacts",
-          direction: "export",
-          description:
-            "Export Records to Hubspot and add them to Contact Lists.",
-          app: "hubspot",
-          syncModes,
-          defaultSyncMode,
-          options: [],
-          methods: {
-            exportRecord,
-            destinationOptions,
-            destinationMappingOptions,
-            exportArrayProperties,
-          },
-        },
+        contactsDestinationConnection,
+        objectsDestinationConnection,
       ],
     });
   }

@@ -2,7 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { exportRecord } from "../../src/lib/export/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { HubspotClient } from "../../src/lib/client";
+import { HubspotClient } from "../../src/lib/client/client";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 const appId = "app_ds789a789gdf789jh.m678rt90-90-3k";

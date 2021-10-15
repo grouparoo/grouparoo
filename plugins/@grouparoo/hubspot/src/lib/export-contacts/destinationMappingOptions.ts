@@ -3,7 +3,7 @@ import {
   DestinationMappingOptionsResponseType,
   SimpleAppOptions,
 } from "@grouparoo/core";
-import { connect } from "./../connect";
+import { connect } from "../connect";
 
 const importantFields = ["firstname", "lastname", "company"];
 
