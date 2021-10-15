@@ -59,13 +59,6 @@ export default function Page(props) {
     if (response?.destinations) {
       setDestinations(response.destinations);
       setTotal(response.total);
-
-      if (response.total === 0) {
-        router.push(
-          "/model/[modelId]/destination/new",
-          `/model/${modelId}/destination/new`
-        );
-      }
     }
   }
 
