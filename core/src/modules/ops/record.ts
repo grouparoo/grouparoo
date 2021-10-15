@@ -809,47 +809,59 @@ export namespace RecordOps {
   }
 
   /**
-   * Look for records that don't have a directlyMapped property and are done importing/exporting.
+   * Look for records by model that don't have a directlyMapped property and are done importing/exporting.
    */
 
   export async function getRecordsToDestroy() {
     const limit: number = config.batchSize.imports;
-    let records: GrouparooRecord[] = [];
+    let recordsToDestroy: GrouparooRecord[] = [];
+    let models: GrouparooModel[] = await GrouparooModel.scope(null).findAll();
+    let modelIdsToClear: string[] = [];
 
-    const directlyMapped = await Property.findAll({
-      where: { directlyMapped: true },
-    });
+    for (const model of models) {
+      const propertiesByModel: Property[] = await Property.findAllWithCache(
+        model.id
+      );
 
-    if (directlyMapped.length === 0) {
-      // We have no directly mapped Property and every record should be removed
+      const directlyMapped = propertiesByModel.filter((property) => {
+        return property.directlyMapped == true;
+      });
+
+      if (directlyMapped.length === 0) {
+        modelIdsToClear.push(model.id);
+      }
+    }
+
+    for (const modelId of modelIdsToClear) {
+      // We have no directly mapped Property and every record for this model should be removed
       // It's safe to assume that if there are no Properties, we aren't exporting
-      records = await GrouparooRecord.findAll({
+      recordsToDestroy = await GrouparooRecord.findAll({
         attributes: ["id"],
-        where: { state: "ready" },
+        where: { state: "ready", modelId: modelId },
         limit,
       });
-    } else {
-      // We have directly mapped Properties and we only want to remove those GrouparooRecords with a null "user_id" (directlyMapped) Property (and are ready with no exports)
-      records = await api.sequelize.query(
+    }
+
+    // Also search all records for a "null" value in the directly mapped property
+    return recordsToDestroy.concat(
+      await api.sequelize.query(
         `
-  SELECT "id" FROM "records"
-  WHERE "state"='ready'
-  AND "id" IN (
-    SELECT DISTINCT("recordId") FROM "recordProperties"
-    JOIN properties ON "properties"."id"="recordProperties"."propertyId"
-    WHERE
-      "properties"."directlyMapped"=true
-      AND "rawValue" IS NULL
-  )
-  LIMIT ${limit};
-        `,
+    SELECT "id" FROM "records"
+    WHERE "state"='ready'
+    AND "id" IN (
+      SELECT DISTINCT("recordId") FROM "recordProperties"
+      JOIN properties ON "properties"."id"="recordProperties"."propertyId"
+      WHERE
+        "properties"."directlyMapped"=true
+        AND "rawValue" IS NULL
+    )
+    LIMIT ${limit};
+          `,
         {
           model: GrouparooRecord,
         }
-      );
-    }
-
-    return records;
+      )
+    );
   }
 
   /**

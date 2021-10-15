@@ -142,6 +142,38 @@ describe("models/destination", () => {
       await otherOtherApp.destroy();
     });
 
+    test("a destination cannot be created with a deleted state model", async () => {
+      await model.update({ state: "deleted" });
+
+      const destination = new Destination({
+        type: "test-plugin-export",
+        syncMode: "sync",
+        appId: app.id,
+        modelId: model.id,
+      });
+
+      await expect(destination.save()).rejects.toThrow(
+        /cannot find ready model with id/
+      );
+
+      await model.update({ state: "ready" });
+    });
+
+    test("a deleted destination can be saved with a deleted state model", async () => {
+      const destination = new Destination({
+        type: "test-plugin-export",
+        syncMode: "sync",
+        appId: app.id,
+        modelId: model.id,
+      });
+
+      await destination.save();
+      await model.update({ state: "deleted" });
+      await destination.update({ name: "abc", state: "deleted" });
+      expect(destination.name).toBe("abc");
+      await model.update({ state: "ready" });
+    });
+
     test("creating a destination creates a log entry", async () => {
       const latestLog = await Log.findOne({
         where: { verb: "create", topic: "destination" },
@@ -213,7 +245,7 @@ describe("models/destination", () => {
           appId: app.id,
           modelId: "foo",
         })
-      ).rejects.toThrow(/cannot find model with id foo/);
+      ).rejects.toThrow(/cannot find ready model with id foo/);
     });
 
     test("deleting a destination does not delete options for other models with the same id", async () => {
