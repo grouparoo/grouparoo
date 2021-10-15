@@ -172,7 +172,10 @@ describe("tasks/destroy", () => {
         });
 
         test("it will only destroy records from the correct model when there is a null directlyMapped property", async () => {
-          const record: GrouparooRecord = await helper.factories.record();
+          const record: GrouparooRecord = await helper.factories.record({
+            modelId: "mod_profiles",
+          });
+
           await record.addOrUpdateProperties({
             userId: [null],
             isVIP: [true],
