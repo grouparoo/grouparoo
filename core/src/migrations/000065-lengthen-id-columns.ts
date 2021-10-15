@@ -41,8 +41,10 @@ const runMigration = async ({
   queryInterface: Sequelize.QueryInterface;
   DataTypes: typeof Sequelize;
 }) => {
+  const dialect: string = queryInterface.sequelize["options"].dialect;
+
   const changeColumn = async (tableName, columnName) => {
-    if (config.sequelize?.dialect !== "sqlite") {
+    if (dialect !== "sqlite") {
       const query = `ALTER TABLE "${tableName}" ALTER COLUMN "${columnName}" SET DATA TYPE varchar(${maxIdLength}); `;
       await queryInterface.sequelize.query(query);
     } else {

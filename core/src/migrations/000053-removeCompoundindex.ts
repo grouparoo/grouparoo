@@ -1,5 +1,3 @@
-import { config } from "actionhero";
-
 import Sequelize from "sequelize";
 
 export default {
@@ -7,7 +5,9 @@ export default {
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
-    if (config.sequelize?.dialect === "sqlite") {
+    const dialect: string = queryInterface.sequelize["options"].dialect;
+
+    if (dialect === "sqlite") {
       await queryInterface.removeIndex(
         "groupMembers",
         ["profileGuid", "groupGuid"],
