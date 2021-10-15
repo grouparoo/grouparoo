@@ -12,11 +12,12 @@ import {
 import { api, task, specHelper } from "actionhero";
 
 describe("tasks/destroy", () => {
+  let model: GrouparooModel;
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   describe("destroy", () => {
     beforeAll(async () => {
-      await helper.factories.properties();
+      ({ model } = await helper.factories.properties());
     });
 
     beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
@@ -206,7 +207,9 @@ describe("tasks/destroy", () => {
 
         // this test should be last
         test("it will enqueue destroy task by model for records when there is no directlyMapped property", async () => {
-          const record: GrouparooRecord = await helper.factories.record();
+          const record: GrouparooRecord = await helper.factories.record({
+            modelId: model.id,
+          });
           await record.addOrUpdateProperties({
             userId: [1000],
             isVIP: [true],
