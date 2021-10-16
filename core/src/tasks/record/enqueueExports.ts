@@ -22,9 +22,7 @@ export class GrouparooRecordsEnqueueExports extends CLSTask {
 
     const records = await GrouparooRecord.findAll({
       limit,
-      where: {
-        state: "ready",
-      },
+      where: { state: "ready" },
       include: [
         {
           model: Import,
@@ -41,6 +39,7 @@ export class GrouparooRecordsEnqueueExports extends CLSTask {
           required: true,
         },
       ],
+      subQuery: false,
     });
 
     const readyRecords = records.filter(
