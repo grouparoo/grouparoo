@@ -5,7 +5,7 @@ import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { RecordProperty } from "../../models/RecordProperty";
 import { CLS } from "../../modules/cls";
-import Sequelize from "Sequelize";
+import Sequelize from "sequelize";
 
 export class GrouparooRecordsEnqueueExports extends CLSTask {
   constructor() {
