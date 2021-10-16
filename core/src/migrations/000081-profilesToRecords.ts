@@ -66,8 +66,11 @@ export default {
     for (const [table, collection] of Object.entries(renames)) {
       for (const batch of collection) {
         const [oldName, newName] = batch;
+        console.log(
+          `ALTER TABLE "${table}" RENAME COLUMN "${oldName}" TO "${newName}";`
+        );
         await queryInterface.sequelize.query(
-          `ALTER TABLE "${table}" RENAME COLUMN '${oldName}' TO '${newName}';`
+          `ALTER TABLE "${table}" RENAME COLUMN "${oldName}" TO "${newName}";`
         );
       }
     }
