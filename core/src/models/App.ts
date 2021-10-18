@@ -10,6 +10,7 @@ import {
   BeforeCreate,
   AfterDestroy,
   HasMany,
+  HasOne,
   DefaultScope,
 } from "sequelize-typescript";
 import { api, redis } from "actionhero";
@@ -73,9 +74,9 @@ export class App extends LoggedModel<App> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @HasMany(() => AppDataRefresh, {
-    foreignKey: "appId",
-  })
+  @HasMany(() => AppDataRefresh)
+  appDataRefreshes: AppDataRefresh[];
+
   @HasMany(() => Option, {
     foreignKey: "ownerId",
     scope: { ownerType: "app" },
