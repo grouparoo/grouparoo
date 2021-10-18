@@ -42,7 +42,7 @@ const runMigration = async ({
   queryInterface: Sequelize.QueryInterface;
   DataTypes: typeof Sequelize;
 }) => {
-  const dialect = await MigrationUtils.getDialect(queryInterface);
+  const dialect = MigrationUtils.getDialect(queryInterface);
 
   const changeColumn = async (tableName, columnName) => {
     if (dialect !== "sqlite") {
