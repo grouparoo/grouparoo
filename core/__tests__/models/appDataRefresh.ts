@@ -23,7 +23,7 @@ describe("appDataRefresh", () => {
       expect(appDataRefresh.id.length).toBe(40);
       expect(appDataRefresh.createdAt).toBeTruthy();
       expect(appDataRefresh.updatedAt).toBeTruthy();
-      expect(appDataRefresh.value).toBeNull();
+      expect(appDataRefresh.value).toBeFalsy();
     });
 
     test("creating an app data refresh creates a log entry", async () => {
