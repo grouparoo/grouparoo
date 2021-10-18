@@ -25,7 +25,7 @@ export namespace MigrationUtils {
     const count = await countRows(queryInterface, table);
     if (count > 0)
       throw new Error(
-        `[ migration ] Cannot proceed with migration - table ${table} is not empty.  Please remove your SQLite database at ${queryInterface.sequelize["options"].storage} and retry the migration.  See https://www.grouparoo.com/docs/support/upgrading-grouparoo/v06-v07 for more information.`
+        `[ migration ] Cannot proceed with migration - table ${table} is not empty.  Please remove your SQLite database at ${queryInterface.sequelize["options"].storage} and retry the migration.  See https://github.com/grouparoo/grouparoo/discussions/2428 for more information.`
       );
   }
 }
