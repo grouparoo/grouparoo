@@ -58,6 +58,7 @@ const {
 
   // models
   App,
+  AppDataRefresh,
   ApiKey,
   Source,
   Schedule,
@@ -87,6 +88,7 @@ const {
 
 const models = [
   App,
+  AppDataRefresh,
   ApiKey,
   Source,
   Schedule,

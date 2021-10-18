@@ -12,12 +12,11 @@ import {
   Default,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
-import { App } from "./App";
 import { StateMachine } from "./../modules/stateMachine";
 import { LockableHelper } from "../modules/lockableHelper";
-import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
 import { AppDataRefreshOps } from "../modules/ops/appDataRefresh";
+import { App } from "./App";
 
 const STATES = ["draft", "ready"] as const;
 
@@ -80,10 +79,6 @@ export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
       updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
-
-  // getConfigId() {
-  //   return this.idIsDefault() ? ConfigWriter.generateId() : this.id;
-  // }
 
   // --- Class Methods --- //
 
