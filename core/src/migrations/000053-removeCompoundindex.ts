@@ -6,7 +6,7 @@ export default {
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
-    const dialect = await MigrationUtils.getDialect(queryInterface);
+    const dialect = MigrationUtils.getDialect(queryInterface);
 
     if (dialect === "sqlite") {
       await queryInterface.removeIndex(
