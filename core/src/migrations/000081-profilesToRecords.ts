@@ -29,6 +29,32 @@ export default {
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
+    const dialect: string = queryInterface.sequelize["options"].dialect;
+
+    if (dialect === "sqlite") {
+      // All previous SQLite indexes had been removed (migration 000053), but we need to manually remove and re-add those special indexes for the recordProperties table.
+      // Continued below at end of migration
+      // See https://github.com/sequelize/sequelize/issues/12823
+      await queryInterface.removeIndex(
+        "profileProperties",
+        ["profileId", "propertyId", "position"],
+        {
+          unique: true,
+          fields: ["profileId", "propertyId", "position"],
+        }
+      );
+
+      await queryInterface.removeIndex(
+        "profileProperties",
+        ["propertyId", "rawValue", "position", "unique"],
+        {
+          unique: true,
+          fields: ["propertyId", "rawValue", "position", "unique"],
+          where: { unique: true },
+        }
+      );
+    }
+
     await queryInterface.createTable("models", {
       id: {
         type: DataTypes.STRING(191),
@@ -66,9 +92,7 @@ export default {
     for (const [table, collection] of Object.entries(renames)) {
       for (const batch of collection) {
         const [oldName, newName] = batch;
-        await queryInterface.sequelize.query(
-          `ALTER TABLE "${table}" RENAME COLUMN "${oldName}" TO "${newName}";`
-        );
+        await queryInterface.renameColumn(table, oldName, newName);
       }
     }
 
@@ -80,6 +104,27 @@ export default {
     await queryInterface.sequelize.query(
       `UPDATE "logs" SET "topic"='recordProperty' WHERE "topic"='profileProperty'`
     );
+
+    if (dialect === "sqlite") {
+      await queryInterface.addIndex(
+        "recordProperties",
+        ["propertyId", "rawValue", "position", "unique"],
+        {
+          unique: true,
+          fields: ["propertyId", "rawValue", "position", "unique"],
+          where: { unique: true },
+        }
+      );
+
+      await queryInterface.addIndex(
+        "recordProperties",
+        ["recordId", "propertyId", "position"],
+        {
+          unique: true,
+          fields: ["recordId", "propertyId", "position"],
+        }
+      );
+    }
   },
 
   down: async function () {
