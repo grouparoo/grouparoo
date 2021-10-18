@@ -1,4 +1,5 @@
-import { config } from "actionhero";
+import Sequelize from "sequelize";
+import { MigrationUtils } from "../utils/migration";
 
 const tables = {
   apiKeys: ["apiKey"],
@@ -41,7 +42,7 @@ const runMigration = async ({
   queryInterface: Sequelize.QueryInterface;
   DataTypes: typeof Sequelize;
 }) => {
-  const dialect: string = queryInterface.sequelize["options"].dialect;
+  const dialect = await MigrationUtils.getDialect(queryInterface);
 
   const changeColumn = async (tableName, columnName) => {
     if (dialect !== "sqlite") {
@@ -61,8 +62,6 @@ const runMigration = async ({
     }
   }
 };
-
-import Sequelize from "sequelize";
 
 export default {
   up: async (

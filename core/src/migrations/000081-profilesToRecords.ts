@@ -1,4 +1,5 @@
 import Sequelize from "sequelize";
+import { MigrationUtils } from "../utils/migration";
 
 const renames: { [table: string]: [string, string][] } = {
   exports: [
@@ -29,12 +30,18 @@ export default {
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
-    const dialect: string = queryInterface.sequelize["options"].dialect;
+    const dialect = MigrationUtils.getDialect(queryInterface);
 
     if (dialect === "sqlite") {
       // All previous SQLite indexes had been removed (migration 000053), but we need to manually remove and re-add those special indexes for the recordProperties table.
       // Continued below at end of migration
       // See https://github.com/sequelize/sequelize/issues/12823
+
+      await MigrationUtils.ensureSQLiteTableEmpty(
+        queryInterface,
+        "profileProperties"
+      );
+
       await queryInterface.removeIndex(
         "profileProperties",
         ["profileId", "propertyId", "position"],

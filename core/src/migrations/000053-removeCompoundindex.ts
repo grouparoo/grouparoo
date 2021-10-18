@@ -1,11 +1,12 @@
 import Sequelize from "sequelize";
+import { MigrationUtils } from "../utils/migration";
 
 export default {
   up: async (
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
-    const dialect: string = queryInterface.sequelize["options"].dialect;
+    const dialect = await MigrationUtils.getDialect(queryInterface);
 
     if (dialect === "sqlite") {
       await queryInterface.removeIndex(
