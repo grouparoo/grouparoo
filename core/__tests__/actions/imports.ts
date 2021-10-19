@@ -41,10 +41,15 @@ describe("actions/imports", () => {
     });
 
     beforeAll(async () => {
-      await helper.factories.import(undefined, {
-        email: "toad@mushroom-kingdom.gov",
-        something: "else",
-      });
+      const record = await helper.factories.record({ modelId: "mod_profiles" });
+      await helper.factories.import(
+        undefined,
+        {
+          email: "toad@mushroom-kingdom.gov",
+          something: "else",
+        },
+        record.id
+      );
     });
 
     test("an import can be viewed", async () => {
