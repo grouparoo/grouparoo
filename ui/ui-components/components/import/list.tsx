@@ -29,8 +29,8 @@ export default function ImportList(props) {
 
   let recordId = router.query.recordId;
   let creatorId: string;
-  if (router.query.id) {
-    creatorId = router.query.id.toString();
+  if (router.query.creatorId) {
+    creatorId = router.query.creatorId.toString();
   }
 
   useSecondaryEffect(() => {
@@ -177,7 +177,7 @@ export default function ImportList(props) {
 
 ImportList.hydrate = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { id: creatorId, limit, offset, recordId } = ctx.query;
+  const { creatorId, limit, offset, recordId } = ctx.query;
 
   const { imports, total } = await execApi("get", `/imports`, {
     limit,
