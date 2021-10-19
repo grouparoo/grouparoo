@@ -253,7 +253,7 @@ export default function Page(props) {
                       handleDelete();
                     }}
                   >
-                    Delete
+                    Remove Sample Record
                   </LoadingButton>
                 </>
               ) : null}
