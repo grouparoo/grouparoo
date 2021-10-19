@@ -279,11 +279,6 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   }
 
   @AfterDestroy
-  static async removeFromDestinations(instance: GrouparooRecord) {
-    await instance.export();
-  }
-
-  @AfterDestroy
   static async destroyRecordProperties(instance: GrouparooRecord) {
     await RecordProperty.destroy({
       where: { recordId: instance.id },
