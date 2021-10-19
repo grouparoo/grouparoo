@@ -1,5 +1,5 @@
 import Moment from "moment";
-import { config, cache } from "actionhero";
+import { config, cache, log } from "actionhero";
 import { deepStrictEqual } from "assert";
 import {
   Destination,
@@ -655,6 +655,17 @@ export namespace DestinationOps {
     }
   }
 
+  function logExportError(destination: Destination, error: Error) {
+    const recordId = error["recordId"]; // it might have one of these
+    log(
+      `ExportError  Destination: ${destination.id} - ${
+        destination.name
+      } - Record: ${recordId ?? "Unknown"}`,
+      "warning",
+      { error }
+    );
+  }
+
   async function updateExports(
     destination: Destination,
     _exports: Export[],
@@ -663,6 +674,20 @@ export namespace DestinationOps {
     synchronous = false,
     exportProcessor?: ExportProcessor
   ) {
+    if (combinedError) {
+      logExportError(destination, combinedError);
+      if (combinedError.errors) {
+        for (const error of combinedError.errors) {
+          logExportError(destination, error);
+        }
+      }
+    }
+    if (exportResult?.errors) {
+      for (const error of exportResult?.errors) {
+        logExportError(destination, error);
+      }
+    }
+
     if (!combinedError) {
       const errors = exportResult?.errors;
       combinedError = new Error(
