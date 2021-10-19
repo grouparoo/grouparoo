@@ -172,12 +172,11 @@ export const exportRecord: ExportRecordPluginMethod = async ({
 };
 
 export async function searchForUser(client, findBy: any) {
-  let query = findBy;
-  const { email } = query;
+  const { email } = findBy;
   if (email) {
-    query = { query: email };
+    findBy = { query: email };
   }
-  const response = await client.users.search(query);
+  const response = await client.users.search(findBy);
   let found = null;
   for (const user of response) {
     if (user.active) {
