@@ -51,7 +51,14 @@ export default function StateBadge({
   }
 
   return (
-    <Badge style={{ marginBottom: marginBottom ?? 20 }} variant={variant}>
+    <Badge
+      style={{
+        marginLeft: 3,
+        marginRight: 3,
+        marginBottom: marginBottom ?? 20,
+      }}
+      variant={variant}
+    >
       {state}
     </Badge>
   );
