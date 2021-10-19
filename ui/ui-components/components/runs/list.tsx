@@ -244,7 +244,10 @@ export default function RunsList(props) {
                       ) : null}
                     </td>
                     <td>
-                      <Link href="/imports/[id]" as={`/imports/${run.id}`}>
+                      <Link
+                        href="/imports/[creatorId]"
+                        as={`/imports/${run.id}`}
+                      >
                         <a>Imports Created: {run.importsCreated}</a>
                       </Link>
                       <br />
