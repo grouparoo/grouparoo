@@ -174,8 +174,9 @@ export const exportRecord: ExportRecordPluginMethod = async ({
 export async function searchForUser(client, findBy: any) {
   const response = await client.users.search(findBy);
   let found = null;
+  const email = findBy.query;
   for (const user of response) {
-    if (user.active) {
+    if (user.active && (!email || user.email === email)) {
       if (!found) {
         // not deleted
         found = user;
@@ -206,10 +207,14 @@ export async function findUser(
     found = await searchForUser(client, { external_id: oldId });
   }
   if (!found && newEmail && newEmail !== "") {
-    found = await searchForUser(client, { query: newEmail });
+    found = await searchForUser(client, {
+      query: newEmail,
+    });
   }
   if (!found && oldEmail && oldEmail !== "" && oldEmail !== newEmail) {
-    found = await searchForUser(client, { query: oldEmail });
+    found = await searchForUser(client, {
+      query: oldEmail,
+    });
   }
   return found;
 }
