@@ -1,4 +1,5 @@
-import { config } from "actionhero";
+import Sequelize from "sequelize";
+import { MigrationUtils } from "../utils/migration";
 
 const tables = {
   apiKeys: ["apiKey"],
@@ -41,8 +42,10 @@ const runMigration = async ({
   queryInterface: Sequelize.QueryInterface;
   DataTypes: typeof Sequelize;
 }) => {
+  const dialect = MigrationUtils.getDialect(queryInterface);
+
   const changeColumn = async (tableName, columnName) => {
-    if (config.sequelize?.dialect !== "sqlite") {
+    if (dialect !== "sqlite") {
       const query = `ALTER TABLE "${tableName}" ALTER COLUMN "${columnName}" SET DATA TYPE varchar(${maxIdLength}); `;
       await queryInterface.sequelize.query(query);
     } else {
@@ -59,8 +62,6 @@ const runMigration = async ({
     }
   }
 };
-
-import Sequelize from "sequelize";
 
 export default {
   up: async (

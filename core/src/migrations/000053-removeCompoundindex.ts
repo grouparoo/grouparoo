@@ -1,13 +1,14 @@
-import { config } from "actionhero";
-
 import Sequelize from "sequelize";
+import { MigrationUtils } from "../utils/migration";
 
 export default {
   up: async (
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
-    if (config.sequelize?.dialect === "sqlite") {
+    const dialect = MigrationUtils.getDialect(queryInterface);
+
+    if (dialect === "sqlite") {
       await queryInterface.removeIndex(
         "groupMembers",
         ["profileGuid", "groupGuid"],

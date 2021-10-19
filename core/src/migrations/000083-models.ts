@@ -1,4 +1,5 @@
 import Sequelize from "sequelize";
+import { MigrationUtils } from "../utils/migration";
 
 // Note: In some future world this import might break.  We no longer need to use this after a few months from when this migration is deployed in Grouparoo v0.7
 import { getConfigDir } from "../modules/pluginDetails";
@@ -11,19 +12,11 @@ export default {
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
-    const [counts] = await queryInterface.sequelize.query(
-      `SELECT COUNT(*) as c FROM "records"`
-    );
-    const countRecords = parseInt(counts[0]["c"]);
-
     let codeConfigInUse = false;
-    const [sources] = await queryInterface.sequelize.query(
-      `SELECT COUNT(*) as c FROM "sources" WHERE "locked" IS NOT NULL`
-    );
-    const [destinations] = await queryInterface.sequelize.query(
-      `SELECT COUNT(*) as c FROM "destinations" WHERE "locked" IS NOT NULL`
-    );
-    if (parseInt(sources[0]["c"]) > 0 || parseInt(destinations[0]["c"]) > 0) {
+    if (
+      (await MigrationUtils.countRows(queryInterface, "sources")) > 0 ||
+      (await MigrationUtils.countRows(queryInterface, "destinations")) > 0
+    ) {
       codeConfigInUse = true;
     }
 
@@ -32,6 +25,11 @@ export default {
       name: "Profiles",
       type: "profile",
     };
+
+    const countRecords = await MigrationUtils.countRows(
+      queryInterface,
+      "records"
+    );
 
     if (countRecords === 0) {
       // OK, we don't have any records we need to worry about updating
