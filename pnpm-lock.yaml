@@ -99,6 +99,7 @@ importers:
 
   apps/staging-config:
     specifiers:
+      '@grouparoo/calculated-property': 0.7.0-alpha.15
       '@grouparoo/core': 0.7.0-alpha.15
       '@grouparoo/demo': 0.7.0-alpha.15
       '@grouparoo/postgres': 0.7.0-alpha.15
@@ -108,6 +109,7 @@ importers:
       grouparoo: 0.7.0-alpha.15
       jest: 27.1.0
     dependencies:
+      '@grouparoo/calculated-property': link:../../plugins/@grouparoo/calculated-property
       '@grouparoo/core': link:../../core
       '@grouparoo/demo': link:../../plugins/@grouparoo/demo
       '@grouparoo/postgres': link:../../plugins/@grouparoo/postgres
