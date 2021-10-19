@@ -19,7 +19,7 @@ import { Op } from "sequelize";
 import { ImportOps } from "../modules/ops/import";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
-import { GrouparooModel } from "..";
+import { GrouparooModel } from "../GrouparooModel";
 
 export interface ImportData {
   [key: string]: any;
