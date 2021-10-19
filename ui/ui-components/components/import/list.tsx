@@ -105,6 +105,14 @@ export default function ImportList(props) {
                       "none"
                     )}
                     <br />
+                    Model:{" "}
+                    <Link
+                      href="/model/[modelId]/edit"
+                      as={`/model/${_import.modelId}/edit`}
+                    >
+                      <a>{_import.modelId}</a>
+                    </Link>
+                    <br />
                     Creator:{" "}
                     {_import.creatorType === "run" ? (
                       <Link

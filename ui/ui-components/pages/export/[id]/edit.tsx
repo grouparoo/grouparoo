@@ -64,6 +64,11 @@ export default function Page({
               <a>{_export.recordId}</a>
             </Link>
             <br />
+            Model:{" "}
+            <Link href={`/model/${_export.destination.modelId}/edit`}>
+              <a>{_export.destination.modelId}</a>
+            </Link>
+            <br />
             To Delete?{" "}
             <Badge variant={_export.toDelete ? "danger" : "secondary"}>
               {_export.toDelete.toString()}
