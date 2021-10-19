@@ -195,13 +195,21 @@ export async function findUser(
 ) {
   const newId = newRecordProperties.external_id;
   const oldId = oldRecordProperties.external_id;
+  const newEmail = (newRecordProperties.email || "").toLowerCase().trim();
+  const oldEmail = (oldRecordProperties.email || "").toLowerCase().trim();
 
   let found = null;
-  if (!found && newId) {
+  if (newId) {
     found = await searchForUser(client, { external_id: newId });
   }
   if (!found && oldId && oldId !== newId) {
     found = await searchForUser(client, { external_id: oldId });
+  }
+  if (!found && newEmail && newEmail !== "") {
+    found = await searchForUser(client, { query: newEmail });
+  }
+  if (!found && oldEmail && oldEmail !== "" && oldEmail !== newEmail) {
+    found = await searchForUser(client, { query: oldEmail });
   }
   return found;
 }

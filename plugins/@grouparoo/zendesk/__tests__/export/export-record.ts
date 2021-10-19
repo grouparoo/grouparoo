@@ -27,6 +27,7 @@ const groupOne = "test_high_value";
 const groupTwo = "test_spanish_speaking";
 const groupThree = "test_recently_added";
 const outsideGroup = "outsider";
+const checkboxTag = "checkedbox"; // automatically added to the tags list when checkbox_field=true
 const exampleDate = new Date(1597870204 * 1000);
 
 const { newNock } = helper.useNock(__filename, updater);
@@ -40,8 +41,8 @@ async function cleanUp() {
     email2,
     email3,
     email4,
-    nonexistentEmail,
     migratedEmail,
+    nonexistentEmail,
   ]) {
     const response = await client.users.search({ query: email });
     for (const user of response) {
@@ -276,7 +277,6 @@ describe("zendesk/exportRecord", () => {
       newGroups: [groupOne, groupTwo],
       toDelete: false,
     });
-
     const user = await searchForUser(client, { external_id: externalId1 });
     expect(user.tags.sort()).toEqual([groupOne, groupTwo]);
   });
@@ -401,7 +401,7 @@ describe("zendesk/exportRecord", () => {
     expect(user.name).toBe(migratedName);
     expect(user.user_fields.checkbox_field).toBe(true);
     expect(user.user_fields.text_field).toBe("change");
-    expect(user.tags.sort()).toEqual([groupThree]);
+    expect(user.tags.sort()).toEqual([checkboxTag, groupThree]); // including the automatically added tag.
   });
 
   test("can add an user passing a nonexistent email on the oldRecordProperties", async () => {
