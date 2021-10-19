@@ -287,6 +287,11 @@ export namespace helper {
                 password: { type: "password" },
               };
             },
+            getConnection: async () => {
+              return {
+                query: "hi!",
+              };
+            },
           },
         },
       ],
@@ -303,6 +308,9 @@ export namespace helper {
           ],
           groupAggregations: [AggregationMethod.Exact],
           methods: {
+            query: async () => {
+              return "test query response";
+            },
             sourceOptions: async ({ sourceOptions }) => {
               const response: SourceOptionsMethodResponse = {
                 table: { type: "list", options: ["users"] },

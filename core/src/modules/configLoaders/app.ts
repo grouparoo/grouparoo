@@ -47,22 +47,6 @@ export async function loadApp(
   const options = extractNonNullParts(configObject, "options");
   if (options) await app.setOptions(options);
 
-  if (configObject.refreshQuery && configObject.refreshQuery !== null) {
-    let appDataRefresh = await AppDataRefresh.create({
-      appId: configObject.id,
-      refreshQuery: configObject.refreshQuery,
-    });
-    await appDataRefresh.update({
-      locked: ConfigWriter.getLockKey(configObject),
-      state: "ready",
-    });
-
-    logModel(
-      appDataRefresh,
-      validate ? "validated" : isNew ? "created" : "updated"
-    );
-  }
-
   if (externallyValidate) {
     const response = await app.test(
       extractNonNullParts(configObject, "options")
@@ -77,6 +61,36 @@ export async function loadApp(
   await app.update({ state: "ready" }, {});
 
   logModel(app, validate ? "validated" : isNew ? "created" : "updated");
+
+  if (configObject.refreshQuery && configObject.refreshQuery !== null) {
+    let appDataRefresh: AppDataRefresh;
+
+    appDataRefresh = await AppDataRefresh.findOne({
+      where: {
+        appId: configObject.id,
+      },
+    });
+
+    if (appDataRefresh === null) {
+      appDataRefresh = await AppDataRefresh.create({
+        appId: configObject.id,
+        refreshQuery: configObject.refreshQuery,
+      });
+      isNew = true;
+    }
+
+    await appDataRefresh.update({
+      appId: configObject.id,
+      refreshQuery: configObject.refreshQuery,
+      locked: ConfigWriter.getLockKey(configObject),
+      state: "ready",
+    });
+
+    logModel(
+      appDataRefresh,
+      validate ? "validated" : isNew ? "created" : "updated"
+    );
+  }
 
   return { app: [app.id] };
 }

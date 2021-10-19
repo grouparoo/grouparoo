@@ -63,7 +63,6 @@ export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
 
   @Column
   lastConfirmedAt: Date;
-
   @BelongsTo(() => App)
   app: App;
 
@@ -101,7 +100,7 @@ export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
   @BeforeSave
   static async runCheckIfNewQuery(instance: AppDataRefresh) {
     if (instance.changed("refreshQuery")) {
-      // AppDataRefreshOps.checkDataRefreshValue(instance); ? or enqueue task?
+      AppDataRefreshOps.checkDataRefreshValue(instance);
     }
   }
 
