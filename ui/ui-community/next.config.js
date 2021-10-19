@@ -59,8 +59,13 @@ const nextConfig = {
   async headers() {
     return [
       {
-        key: "X-Frame-Options",
-        value: "SAMEORIGIN",
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
+          },
+        ],
       },
     ];
   },
