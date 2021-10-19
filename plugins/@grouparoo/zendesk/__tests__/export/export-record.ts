@@ -375,8 +375,10 @@ describe("zendesk/exportRecord", () => {
         email: migratedEmail,
         user_fields: {
           text_field: "my text",
+          numeric_field: 3039,
           checkbox_field: true,
         },
+        tags: [groupOne, groupTwo],
       },
     });
 
@@ -401,7 +403,13 @@ describe("zendesk/exportRecord", () => {
     expect(user.name).toBe(migratedName);
     expect(user.user_fields.checkbox_field).toBe(true);
     expect(user.user_fields.text_field).toBe("change");
-    expect(user.tags.sort()).toEqual([checkboxTag, groupThree]); // including the automatically added tag.
+    expect(user.user_fields.numeric_field).toBe(3039);
+    expect(user.tags.sort()).toEqual([
+      checkboxTag,
+      groupOne,
+      groupThree,
+      groupTwo,
+    ]); // including the automatically added tag.
   });
 
   test("can add an user passing a nonexistent email on the oldRecordProperties", async () => {
