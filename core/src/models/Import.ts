@@ -154,12 +154,7 @@ export class Import extends CommonModel<Import> {
     delete data._meta;
     delete rawData._meta;
 
-    const record = await GrouparooRecord.findOne({
-      where: { id: this.recordId },
-    });
-    const model = await GrouparooModel.findOne({
-      where: { id: record.modelId },
-    });
+    const record = await this.$get("record");
 
     return {
       // IDs
@@ -167,7 +162,7 @@ export class Import extends CommonModel<Import> {
       creatorType: this.creatorType,
       creatorId: this.creatorId,
       recordId: this.recordId,
-      modelId: model.id,
+      modelId: record.modelId,
 
       //data
       data,
