@@ -353,6 +353,9 @@ export default function RecordsList(props) {
                 </td>
                 <td>
                   <StateBadge state={record.state} />
+                  {record.invalid === true ? (
+                    <StateBadge state="invalid" />
+                  ) : null}
                 </td>
                 <td>{formatTimestamp(record.createdAt)}</td>
                 <td>{formatTimestamp(record.updatedAt)}</td>

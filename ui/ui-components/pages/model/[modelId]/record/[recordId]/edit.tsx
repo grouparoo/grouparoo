@@ -218,6 +218,7 @@ export default function Page(props) {
         badges={[
           <StateBadge state={record.state} />,
           <ModelBadge modelName={record.modelName} modelId={record.modelId} />,
+          record.invalid === true ? <StateBadge state="invalid" /> : null,
         ]}
       />
 
@@ -315,6 +316,9 @@ export default function Page(props) {
                       </td>
                       <td>
                         <StateBadge state={recordProperty.state} />
+                        {recordProperty.invalidReason ? (
+                          <StateBadge state="invalid" />
+                        ) : null}
                       </td>
                       <td>
                         {recordProperty.valueChangedAt
