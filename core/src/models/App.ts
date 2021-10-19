@@ -74,8 +74,8 @@ export class App extends LoggedModel<App> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @HasMany(() => AppDataRefresh)
-  appDataRefreshes: AppDataRefresh[];
+  @HasOne(() => AppDataRefresh)
+  appDataRefresh: AppDataRefresh;
 
   @HasMany(() => Option, {
     foreignKey: "ownerId",

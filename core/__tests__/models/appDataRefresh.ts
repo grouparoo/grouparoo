@@ -1,17 +1,17 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api } from "actionhero";
+import { api, redis, utils } from "actionhero";
 import { plugin, App, AppDataRefresh, GrouparooModel, Log } from "../../src";
 
 describe("appDataRefresh", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  let model: GrouparooModel;
 
   describe("with app", () => {
-    let app: App;
-
-    beforeAll(async () => {
-      app = await helper.factories.app();
+    const app = new App({
+      name: "test app",
+      type: "test-plugin-app",
     });
+    app.save();
+    beforeAll(async () => {});
 
     test("an app data refresh can be created with an app", async () => {
       const appDataRefresh = new AppDataRefresh({
@@ -33,6 +33,21 @@ describe("appDataRefresh", () => {
         limit: 1,
       });
       expect(latestLog).toBeTruthy();
+    });
+
+    test("updating a refreshQuery triggers an appDataRefresh check", async () => {
+      const appDataRefresh = new AppDataRefresh({
+        appId: app.id,
+        refreshQuery: "test query",
+      });
+      await appDataRefresh.save();
+      await appDataRefresh.update({
+        refreshQuery: "SELECT MAX(updated_at) FROM users;",
+      });
+      await appDataRefresh.save();
+      expect(AppDataRefresh.runCheckIfNewQuery).toHaveBeenCalledWith(
+        appDataRefresh
+      );
     });
   });
 });
