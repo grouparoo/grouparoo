@@ -17,7 +17,10 @@ if (fs.existsSync(envFile)) {
   require("dotenv").config({ path: envFile });
 }
 
-module.exports = withSourceMaps({
+/**
+ * @type {import('next').NextConfig}
+ */
+const nextConfig = {
   env: {
     GROUPAROO_UI_EDITION: "config",
   },
@@ -49,4 +52,15 @@ module.exports = withSourceMaps({
   async redirects() {
     return [];
   },
-});
+
+  async headers() {
+    return [
+      {
+        key: "X-Frame-Options",
+        value: "SAMEORIGIN",
+      },
+    ];
+  },
+};
+
+module.exports = withSourceMaps(nextConfig);
