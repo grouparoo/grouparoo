@@ -1,8 +1,7 @@
 import { Includeable } from "sequelize/types";
-import { GrouparooRecord } from "..";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Import } from "../models/Import";
-import { Property } from "../models/Property";
 import { APIData } from "../modules/apiData";
 
 export class ImportsList extends AuthenticatedAction {
