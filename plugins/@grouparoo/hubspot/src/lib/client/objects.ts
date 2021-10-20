@@ -7,6 +7,13 @@ export default class Contact {
     this.client = client;
   }
 
+  async getSchema(objectTypeId) {
+    return await this.client._request({
+      method: "GET",
+      url: `/crm/v3/schemas/${objectTypeId}`,
+    });
+  }
+
   async getSchemas() {
     const response = await this.client._request({
       method: "GET",
