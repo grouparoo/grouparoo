@@ -292,6 +292,9 @@ export namespace helper {
                 query: "hi!",
               };
             },
+            query: async () => {
+              return [new Date().getTime()];
+            },
           },
         },
       ],
