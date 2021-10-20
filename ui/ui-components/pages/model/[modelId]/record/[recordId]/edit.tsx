@@ -238,9 +238,7 @@ export default function Page(props) {
               <LoadingButton
                 variant="outline-primary"
                 disabled={loading}
-                onClick={() => {
-                  exportRecord();
-                }}
+                onClick={exportRecord}
               >
                 Export
               </LoadingButton>
