@@ -1,4 +1,3 @@
-import { Includeable } from "sequelize/types";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Import } from "../models/Import";
@@ -28,18 +27,9 @@ export class ImportsList extends AuthenticatedAction {
     const where = {};
     if (params.creatorId) where["creatorId"] = params.creatorId;
     if (params.recordId) where["recordId"] = params.recordId;
-    let include: Includeable[] = [];
-    if (params.recordId) {
-      include = [
-        {
-          model: GrouparooRecord,
-          where: { id: params.recordId },
-        },
-      ];
-    }
 
     const search = {
-      include,
+      include: [GrouparooRecord],
       where,
       limit: params.limit,
       offset: params.offset,
