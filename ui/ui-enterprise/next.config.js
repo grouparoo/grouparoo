@@ -17,7 +17,10 @@ if (fs.existsSync(envFile)) {
   require("dotenv").config({ path: envFile });
 }
 
-module.exports = withSourceMaps({
+/**
+ * @type {import('next').NextConfig}
+ */
+const nextConfig = {
   env: {
     GROUPAROO_UI_EDITION: "enterprise",
   },
@@ -52,4 +55,20 @@ module.exports = withSourceMaps({
       { source: "/resque", destination: "/resque/overview", statusCode: 307 },
     ];
   },
-});
+
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
+          },
+        ],
+      },
+    ];
+  },
+};
+
+module.exports = withSourceMaps(nextConfig);
