@@ -46,9 +46,38 @@ async function cleanUp() {
   ]) {
     const response = await client.users.search({ query: email });
     for (const user of response) {
-      await client.users.delete(user.id);
+      await withRetry(() => {
+        return client.users.delete(user.id);
+      });
     }
   }
+}
+
+async function sleep() {
+  if (newNock) {
+    await helper.sleep(35 * 1000);
+  }
+}
+
+async function withRetry(func: () => Promise<any>): Promise<any> {
+  let count = 0;
+  try {
+    return await func();
+  } catch (error) {
+    if (error?.statusCode === 429 && count < 5) {
+      count++;
+      await sleep();
+      return await func();
+    } else {
+      throw error;
+    }
+  }
+}
+
+async function findUser(findBy: any) {
+  return withRetry(() => {
+    return searchForUser(client, findBy);
+  });
 }
 
 async function runExport({
@@ -59,25 +88,38 @@ async function runExport({
   newGroups,
   toDelete,
 }) {
-  return exportRecord({
-    appOptions,
-    appId,
-    connection: null,
-    app: null,
-    destination: null,
-    destinationId: null,
-    destinationOptions: null,
-    syncOperations,
-    export: {
-      record: null,
-      recordId: null,
-      oldRecordProperties,
-      newRecordProperties,
-      oldGroups,
-      newGroups,
-      toDelete,
-    },
-  });
+  let response = null;
+  let count = 0;
+  while (!response) {
+    response = await exportRecord({
+      appOptions,
+      appId,
+      connection: null,
+      app: null,
+      destination: null,
+      destinationId: null,
+      destinationOptions: null,
+      syncOperations,
+      export: {
+        record: null,
+        recordId: null,
+        oldRecordProperties,
+        newRecordProperties,
+        oldGroups,
+        newGroups,
+        toDelete,
+      },
+    });
+    if (response.retryDelay) {
+      if (count < 5) {
+        count++;
+        await sleep();
+        response = null;
+      }
+    }
+  }
+
+  return response;
 }
 
 describe("zendesk/exportRecord", () => {
@@ -86,12 +128,16 @@ describe("zendesk/exportRecord", () => {
     await cleanUp();
   }, helper.setupTime);
 
+  beforeEach(() => {
+    jest.setTimeout(120 * 1000);
+  });
+
   afterAll(async () => {
     await cleanUp();
   }, helper.setupTime);
 
   test("can create Person on zendesk", async () => {
-    let user = await searchForUser(client, { external_id: externalId1 });
+    let user = await findUser({ external_id: externalId1 });
     expect(user).toBe(null);
     await runExport({
       oldRecordProperties: {},
@@ -105,7 +151,7 @@ describe("zendesk/exportRecord", () => {
       toDelete: false,
     });
 
-    user = await searchForUser(client, { external_id: externalId1 });
+    user = await findUser({ external_id: externalId1 });
     expect(user).not.toBe(null);
     expect(user.email).toBe(email1);
     expect(user.external_id).toBe(externalId1);
@@ -160,7 +206,7 @@ describe("zendesk/exportRecord", () => {
       toDelete: false,
     });
 
-    const user = await searchForUser(client, { external_id: externalId1 });
+    const user = await findUser({ external_id: externalId1 });
     expect(user).not.toBe(null);
     expect(user.name).toBe("John Doe");
     expect(user.alias).toBe("BL");
@@ -193,7 +239,7 @@ describe("zendesk/exportRecord", () => {
       })
     ).rejects.toThrow(/sync mode does not allow updating/);
 
-    const user = await searchForUser(client, { external_id: externalId1 });
+    const user = await findUser({ external_id: externalId1 });
     expect(user).not.toBe(null);
     expect(user.name).toBe("John Doe"); // no change
   });
@@ -222,7 +268,7 @@ describe("zendesk/exportRecord", () => {
       toDelete: false,
     });
 
-    const user = await searchForUser(client, { external_id: externalId1 });
+    const user = await findUser({ external_id: externalId1 });
     expect(user).not.toBe(null);
     expect(user.name).toBe("John Connor");
     expect(user.alias).toBe("JC");
@@ -252,7 +298,7 @@ describe("zendesk/exportRecord", () => {
       toDelete: false,
     });
 
-    const user = await searchForUser(client, { external_id: externalId1 });
+    const user = await findUser({ external_id: externalId1 });
     expect(user.name).toBe("John Connor");
     expect(user.email).toBe(email1);
 
@@ -277,7 +323,7 @@ describe("zendesk/exportRecord", () => {
       newGroups: [groupOne, groupTwo],
       toDelete: false,
     });
-    const user = await searchForUser(client, { external_id: externalId1 });
+    const user = await findUser({ external_id: externalId1 });
     expect(user.tags.sort()).toEqual([groupOne, groupTwo]);
   });
 
@@ -296,55 +342,65 @@ describe("zendesk/exportRecord", () => {
       toDelete: false,
     });
 
-    const user = await searchForUser(client, { external_id: externalId1 });
+    const user = await findUser({ external_id: externalId1 });
     expect(user.tags.sort()).toEqual([groupOne]);
   });
 
-  test("it does not change zendesk-created tags", async () => {
-    let user = await searchForUser(client, { external_id: externalId1 });
-    expect(user).not.toBe(null);
+  test(
+    "it does not change zendesk-created tags",
+    async () => {
+      let user = await findUser({ external_id: externalId1 });
+      expect(user).not.toBe(null);
 
-    await client.users.update(user.id, {
-      user: {
-        tags: [groupOne, outsideGroup],
-      },
-    });
-    await runExport({
-      oldRecordProperties: {
-        email: email1,
-        external_id: externalId1,
-      },
-      newRecordProperties: {
-        email: email1,
-        external_id: externalId1,
-      },
-      oldGroups: [groupOne],
-      newGroups: [groupOne, groupThree],
-      toDelete: false,
-    });
+      await withRetry(() => {
+        return client.users.update(user.id, {
+          user: {
+            tags: [groupOne, outsideGroup],
+          },
+        });
+      });
+      await runExport({
+        oldRecordProperties: {
+          email: email1,
+          external_id: externalId1,
+        },
+        newRecordProperties: {
+          email: email1,
+          external_id: externalId1,
+        },
+        oldGroups: [groupOne],
+        newGroups: [groupOne, groupThree],
+        toDelete: false,
+      });
 
-    user = await searchForUser(client, { external_id: externalId1 });
-    expect(user.tags.sort()).toEqual([outsideGroup, groupOne, groupThree]);
-  });
+      user = await findUser({ external_id: externalId1 });
+      expect(user.tags.sort()).toEqual([outsideGroup, groupOne, groupThree]);
+    },
+    120 * 1000
+  );
 
-  test("it does not change zendesk-created tags when groups are removed", async () => {
-    await runExport({
-      oldRecordProperties: {
-        email: email1,
-        external_id: externalId1,
-      },
-      newRecordProperties: {
-        email: email1,
-        external_id: externalId1,
-      },
-      oldGroups: [groupOne, groupThree],
-      newGroups: [],
-      toDelete: false,
-    });
+  test(
+    "it does not change zendesk-created tags when groups are removed",
+    async () => {
+      await runExport({
+        oldRecordProperties: {
+          email: email1,
+          external_id: externalId1,
+        },
+        newRecordProperties: {
+          email: email1,
+          external_id: externalId1,
+        },
+        oldGroups: [groupOne, groupThree],
+        newGroups: [],
+        toDelete: false,
+      });
 
-    const user = await searchForUser(client, { external_id: externalId1 });
-    expect(user.tags.sort()).toEqual([outsideGroup]);
-  });
+      const user = await findUser({ external_id: externalId1 });
+      expect(user.tags.sort()).toEqual([outsideGroup]);
+    },
+    120 * 1000
+  );
 
   test("can change email", async () => {
     await runExport({
@@ -361,25 +417,27 @@ describe("zendesk/exportRecord", () => {
       toDelete: false,
     });
 
-    const user = await searchForUser(client, { external_id: externalId1 });
+    const user = await findUser({ external_id: externalId1 });
     expect(user.email).toBe(email2);
   });
 
   test("it can migrate an email user to having a external_id", async () => {
     // make a user with email
-    const created = await client.users.create({
-      user: {
-        verified: true,
-        name: migratedName,
-        alias: "MU",
-        email: migratedEmail,
-        user_fields: {
-          text_field: "my text",
-          numeric_field: 3039,
-          checkbox_field: true,
+    const created = await withRetry(() => {
+      return client.users.create({
+        user: {
+          verified: true,
+          name: migratedName,
+          alias: "MU",
+          email: migratedEmail,
+          user_fields: {
+            text_field: "my text",
+            numeric_field: 3039,
+            checkbox_field: true,
+          },
+          tags: [groupOne, groupTwo],
         },
-        tags: [groupOne, groupTwo],
-      },
+      });
     });
 
     // then sync a record
@@ -396,7 +454,9 @@ describe("zendesk/exportRecord", () => {
       toDelete: false,
     });
 
-    const user = await client.users.show(created.id);
+    const user = await withRetry(() => {
+      return client.users.show(created.id);
+    });
     expect(user.external_id).toBe(migratedExternalId);
     expect(user.email).toBe(migratedEmail);
     expect(user.alias).toBe("MU");
@@ -425,16 +485,16 @@ describe("zendesk/exportRecord", () => {
       toDelete: false,
     });
 
-    const user = await searchForUser(client, { external_id: externalId3 });
+    const user = await findUser({ external_id: externalId3 });
     expect(user.external_id).toBe(externalId3);
     expect(user.email).toBe(email3);
   });
 
   test("can update the correct user on external id change if both external id exist", async () => {
-    let oldUser = await searchForUser(client, { external_id: externalId1 });
+    let oldUser = await findUser({ external_id: externalId1 });
     expect(oldUser).not.toBe(null);
 
-    let newUser = await searchForUser(client, { external_id: externalId3 });
+    let newUser = await findUser({ external_id: externalId3 });
     expect(newUser).not.toBe(null);
 
     await runExport({
@@ -449,13 +509,13 @@ describe("zendesk/exportRecord", () => {
     });
 
     // Leave the old one untouched
-    oldUser = await searchForUser(client, { external_id: externalId1 });
+    oldUser = await findUser({ external_id: externalId1 });
     expect(oldUser).not.toBe(null);
     expect(oldUser.external_id).toBe(externalId1);
     expect(oldUser.email).toBe(email2);
 
     // Update the new one
-    const user = await searchForUser(client, { external_id: externalId3 });
+    const user = await findUser({ external_id: externalId3 });
     expect(user).not.toBe(null);
     expect(user.external_id).toBe(externalId3);
     expect(user.id).toBe(newUser.id);
@@ -463,10 +523,10 @@ describe("zendesk/exportRecord", () => {
   });
 
   test("it can change the external id when the new external id does not exist", async () => {
-    const oldUser = await searchForUser(client, { external_id: externalId3 });
+    const oldUser = await findUser({ external_id: externalId3 });
     expect(oldUser).not.toBe(null);
 
-    const newUser = await searchForUser(client, { external_id: externalId5 });
+    const newUser = await findUser({ external_id: externalId5 });
     expect(newUser).toBe(null);
 
     await runExport({
@@ -483,7 +543,7 @@ describe("zendesk/exportRecord", () => {
       toDelete: false,
     });
 
-    const user = await searchForUser(client, { external_id: externalId5 });
+    const user = await findUser({ external_id: externalId5 });
     expect(user.id).toBe(oldUser.id);
     expect(user.external_id).toBe(externalId5);
     expect(user.email).toBe(email5);
@@ -512,7 +572,7 @@ describe("zendesk/exportRecord", () => {
     ).rejects.toThrow(/sync mode does not allow removing/);
 
     // no effect
-    const user = await searchForUser(client, { external_id: externalId1 });
+    const user = await findUser({ external_id: externalId1 });
     expect(user).not.toBe(null);
     expect(user.external_id).toBe(externalId1);
   });
@@ -532,7 +592,7 @@ describe("zendesk/exportRecord", () => {
       toDelete: true,
     });
 
-    const user = await searchForUser(client, { external_id: externalId1 });
+    const user = await findUser({ external_id: externalId1 });
     expect(user).toBe(null);
   });
 
@@ -545,7 +605,7 @@ describe("zendesk/exportRecord", () => {
       toDelete: true,
     });
 
-    const user = await searchForUser(client, { external_id: externalId3 });
+    const user = await findUser({ external_id: externalId3 });
     expect(user).toBe(null);
   });
 
@@ -562,7 +622,7 @@ describe("zendesk/exportRecord", () => {
       toDelete: false,
     });
 
-    const user = await searchForUser(client, { external_id: externalId4 });
+    const user = await findUser({ external_id: externalId4 });
     expect(user).not.toBe(null);
     expect(user.external_id).toBe(externalId4);
     expect(user.email).toBe(email4);
@@ -583,7 +643,7 @@ describe("zendesk/exportRecord", () => {
       toDelete: false,
     });
 
-    const user = await searchForUser(client, { external_id: externalId1 });
+    const user = await findUser({ external_id: externalId1 });
     expect(user).not.toBe(null);
 
     // delete them
@@ -596,11 +656,11 @@ describe("zendesk/exportRecord", () => {
     });
 
     // email1 is deleted
-    const user1 = await searchForUser(client, { external_id: externalId1 });
+    const user1 = await findUser({ external_id: externalId1 });
     expect(user1).toBe(null);
 
     // email4 is untouched
-    const user4 = await searchForUser(client, { external_id: externalId4 });
+    const user4 = await findUser({ external_id: externalId4 });
     expect(user4.name).toBe("Jill");
     expect(user4.email).toBe(email4);
   });
@@ -619,11 +679,11 @@ describe("zendesk/exportRecord", () => {
     });
 
     // user4 is deleted
-    const user4 = await searchForUser(client, { external_id: externalId4 });
+    const user4 = await findUser({ external_id: externalId4 });
     expect(user4).toBe(null);
 
     // nonexistentUser was not created
-    const nonexistentUser = await searchForUser(client, {
+    const nonexistentUser = await findUser({
       external_id: nonexistentExternalId,
     });
     expect(nonexistentUser).toBe(null);
@@ -645,7 +705,7 @@ describe("zendesk/exportRecord", () => {
     });
 
     // nonexistentUser is null
-    const nonexistentUser = await searchForUser(client, {
+    const nonexistentUser = await findUser({
       external_id: nonexistentExternalId,
     });
     expect(nonexistentUser).toBe(null);
