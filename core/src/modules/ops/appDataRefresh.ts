@@ -1,22 +1,33 @@
 import { Source } from "../../models/Source";
 import { AppDataRefresh } from "../../models/AppDataRefresh";
 import { Schedule } from "../../models/Schedule";
-import { App } from "../../models/App";
 
 export namespace AppDataRefreshOps {
   export async function checkDataRefreshValue(appDataRefresh: AppDataRefresh) {
     const { refreshQuery, value } = appDataRefresh;
-    //connect to the app
-    const app = await App.findOne({
-      where: { id: appDataRefresh.appId },
-    });
+    const app = await appDataRefresh.$get("app");
+    const options = await app.getOptions();
+    const { pluginApp } = await app.getPlugin();
     const connection = await app.getConnection();
 
     //query and compare
-    const response = await connection.query(refreshQuery);
+    // TODO: `connection` here is an instance of the plugins "raw" connection, like a Hubspot API client or the mongo driver.
+    // You'll need to make a method on the plugin like `query(): AppQueryMethod` that you call here and pass in the app, appOptions, etc that each plugin has implemented.
 
-    const sampleValue = JSON.stringify(response.rows);
-    console.log("sample value: " + sampleValue);
+    if (typeof pluginApp.methods.query !== "function") {
+      throw new Error(
+        `app ${app.name} (${app.id}) of type ${app.type} cannot use app data refresh`
+      );
+    }
+
+    const responseRows = await pluginApp.methods.query({
+      app,
+      appId: app.id,
+      appOptions: options,
+      connection,
+    });
+
+    const sampleValue = JSON.stringify(responseRows);
     if (sampleValue !== value) {
       appDataRefresh.value = sampleValue;
       appDataRefresh.lastChangedAt = new Date();
@@ -29,8 +40,9 @@ export namespace AppDataRefreshOps {
   }
 
   export async function triggerSchedules(appDataRefresh: AppDataRefresh) {
-    const appId: string = appDataRefresh.appId;
-    const sources: Source[] = await Source.findAll({ where: { appId: appId } });
+    const sources: Source[] = await Source.findAll({
+      where: { appId: appDataRefresh.appId },
+    });
     const schedulesToRun: Schedule[] = [];
 
     for (const source of sources) {

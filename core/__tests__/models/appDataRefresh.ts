@@ -1,29 +1,28 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, redis, utils } from "actionhero";
-import { plugin, App, AppDataRefresh, GrouparooModel, Log } from "../../src";
+import { App, AppDataRefresh, Log } from "../../src";
+import { AppDataRefreshOps } from "../../src/modules/ops/appDataRefresh";
 
 describe("appDataRefresh", () => {
+  let app: App;
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   describe("with app", () => {
-    const app = new App({
-      name: "test app",
-      type: "test-plugin-app",
+    beforeAll(async () => {
+      app = await helper.factories.app();
     });
-    app.save();
-    beforeAll(async () => {});
 
     test("an app data refresh can be created with an app", async () => {
       const appDataRefresh = new AppDataRefresh({
         appId: app.id,
         refreshQuery: "test query",
       });
+
       await appDataRefresh.save();
 
       expect(appDataRefresh.id.length).toBe(40);
       expect(appDataRefresh.createdAt).toBeTruthy();
       expect(appDataRefresh.updatedAt).toBeTruthy();
-      expect(appDataRefresh.value).toBeFalsy();
+      expect(appDataRefresh.value).toBeTruthy();
     });
 
     test("creating an app data refresh creates a log entry", async () => {
@@ -41,13 +40,14 @@ describe("appDataRefresh", () => {
         refreshQuery: "test query",
       });
       await appDataRefresh.save();
+
+      const spy = jest.spyOn(AppDataRefreshOps, "checkDataRefreshValue");
       await appDataRefresh.update({
         refreshQuery: "SELECT MAX(updated_at) FROM users;",
       });
-      await appDataRefresh.save();
-      expect(AppDataRefresh.runCheckIfNewQuery).toHaveBeenCalledWith(
-        appDataRefresh
-      );
+      expect(spy).toHaveBeenCalledWith(appDataRefresh);
+
+      spy.mockRestore();
     });
   });
 });
