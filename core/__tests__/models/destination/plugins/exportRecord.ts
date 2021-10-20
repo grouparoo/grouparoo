@@ -13,6 +13,11 @@ import {
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
 
+const mockLog = jest.fn();
+const logSpy = jest
+  .spyOn(require("actionhero"), "log", "get")
+  .mockImplementation(() => mockLog);
+
 describe("models/destination - with custom exportRecord plugin", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
@@ -41,12 +46,16 @@ describe("models/destination - with custom exportRecord plugin", () => {
   };
   let exportProfileThrow = null;
 
-  beforeAll(async () => {
-    await helper.truncate();
-    ({ model } = await helper.factories.properties());
+  afterEach(() => {
+    mockLog.mockReset();
+  });
+  afterAll(() => {
+    logSpy.mockRestore();
   });
 
   beforeAll(async () => {
+    await helper.truncate();
+    ({ model } = await helper.factories.properties());
     plugin.registerPlugin({
       name: "test-export-plugin",
       apps: [
@@ -1131,6 +1140,10 @@ describe("models/destination - with custom exportRecord plugin", () => {
       await expect(destination.exportRecord(record, true)).rejects.toThrow(
         /: oh no!/
       );
+      expect(
+        mockLog.mock.calls.find((call) => call[0].includes("ExportError"))
+          .length
+      ).toBe(3);
       exportProfileThrow = null;
 
       const newExport = await Export.findOne({
