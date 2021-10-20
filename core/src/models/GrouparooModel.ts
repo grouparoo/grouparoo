@@ -18,14 +18,17 @@ import { APIData } from "../modules/apiData";
 import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
 import { Destination } from "./Destination";
+import { GrouparooRecord } from "./GrouparooRecord";
 import { Group } from "./Group";
 import { RunOps } from "../modules/ops/runs";
+import { StateMachine } from "../modules/stateMachine";
 
 export const ModelTypes = ["profile"] as const;
 export type ModelType = typeof ModelTypes[number];
 
 const STATES = ["ready", "deleted"] as const;
 const STATE_TRANSITIONS = [
+  { from: "draft", to: "ready", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
   {
     from: "deleted",
@@ -137,6 +140,11 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
     await LockableHelper.beforeSave(instance);
   }
 
+  @BeforeSave
+  static async updateState(instance: Group) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
   @BeforeDestroy
   static async noDestroyIfLocked(instance) {
     await LockableHelper.beforeDestroy(instance);
@@ -166,6 +174,14 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
     if (groups.length > 0) {
       throw new Error(
         `cannot delete this model, group ${groups[0].id} relies on it`
+      );
+    }
+    const records = await GrouparooRecord.scope(null).count({
+      where: { modelId: instance.id },
+    });
+    if (records > 0) {
+      throw new Error(
+        `cannot delete this model, ${records} records rely on it`
       );
     }
   }
