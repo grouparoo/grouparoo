@@ -179,9 +179,17 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
     force = false,
     oldGroupsOverride?: Group[],
     saveExports = true,
-    sync = true
+    sync = true,
+    toDelete?: boolean
   ) {
-    return RecordOps._export(this, force, oldGroupsOverride, saveExports, sync);
+    return RecordOps._export(
+      this,
+      force,
+      oldGroupsOverride,
+      saveExports,
+      sync,
+      toDelete
+    );
   }
 
   async logMessage(verb: "create" | "update" | "destroy") {

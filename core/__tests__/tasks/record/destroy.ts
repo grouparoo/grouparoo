@@ -5,7 +5,6 @@ import {
   Property,
   RecordProperty,
   GrouparooRecord,
-  Destination,
   Group,
   Export,
   Import,
@@ -43,7 +42,7 @@ describe("tasks/record:destroy", () => {
   });
 
   test("does not delete records that aren't ready", async () => {
-    const record: GrouparooRecord = await helper.factories.record();
+    const record = await helper.factories.record();
     await record.update({ state: "pending" });
 
     await specHelper.runTask("record:destroy", { recordId: record.id });
@@ -62,9 +61,12 @@ describe("tasks/record:destroy", () => {
   });
 
   test("exports records and removes them from groups before destroying", async () => {
-    const record: GrouparooRecord = await helper.factories.record();
+    const record = await helper.factories.record();
 
-    const destination: Destination = await helper.factories.destination();
+    const modelDestination = await helper.factories.destination();
+    await modelDestination.update({ collection: "model", state: "ready" });
+
+    const groupDestination = await helper.factories.destination();
     const group: Group = await helper.factories.group();
 
     await group.addRecord(record);
@@ -74,13 +76,13 @@ describe("tasks/record:destroy", () => {
     );
     await record.update({ state: "ready" });
 
-    await destination.updateTracking("group", group.id);
+    await groupDestination.updateTracking("group", group.id);
     const destinationGroupMemberships = {};
     destinationGroupMemberships[group.id] = group.name;
-    await destination.setDestinationGroupMemberships(
+    await groupDestination.setDestinationGroupMemberships(
       destinationGroupMemberships
     );
-    await destination.exportRecord(record);
+    await groupDestination.exportRecord(record);
 
     let recordGroups = await record.$get("groups");
     expect(recordGroups.length).toBe(1);
@@ -113,7 +115,7 @@ describe("tasks/record:destroy", () => {
     exportCount = await Export.count({
       where: { recordId: record.id, state: { [Op.ne]: "complete" } },
     });
-    expect(exportCount).toBe(1);
+    expect(exportCount).toBe(2);
 
     // try to delete
     await specHelper.runTask("record:destroy", { recordId: record.id });
@@ -124,20 +126,31 @@ describe("tasks/record:destroy", () => {
     exportCount = await Export.count({
       where: { recordId: record.id, state: { [Op.ne]: "complete" } },
     });
-    expect(exportCount).toBe(1); // still only 1
+    expect(exportCount).toBe(2); // still only 2
 
     // process the export
     await specHelper.runTask("export:enqueue", {});
     foundTasks = await specHelper.findEnqueuedTasks("export:send");
-    expect(foundTasks.length).toBe(1);
+    expect(foundTasks.length).toBe(2);
     for (const i in foundTasks) {
       await specHelper.runTask("export:send", foundTasks[i].args[0]);
     }
 
-    const finalExport = await Export.findById(foundTasks[0].args[0].exportId);
-    expect(finalExport.toDelete).toBe(true);
-    expect(finalExport.oldGroups.length).toBe(1);
-    expect(finalExport.newGroups.length).toBe(0);
+    const finalModelExportId: string = foundTasks.find(
+      (t) => t.args[0].destinationId === modelDestination.id
+    ).args[0].exportId;
+    const finalGroupExportId: string = foundTasks.find(
+      (t) => t.args[0].destinationId === groupDestination.id
+    ).args[0].exportId;
+
+    const finalModelExport = await Export.findById(finalModelExportId);
+    const finalGroupExport = await Export.findById(finalGroupExportId);
+    expect(finalModelExport.toDelete).toBe(true);
+    expect(finalModelExport.oldGroups.length).toBe(0);
+    expect(finalModelExport.newGroups.length).toBe(0);
+    expect(finalGroupExport.toDelete).toBe(true);
+    expect(finalGroupExport.oldGroups.length).toBe(1);
+    expect(finalGroupExport.newGroups.length).toBe(0);
 
     // now we can destroy
     await specHelper.runTask("record:destroy", { recordId: record.id });
@@ -145,13 +158,13 @@ describe("tasks/record:destroy", () => {
   });
 
   test("all related models are cleaned up", async () => {
-    const record: GrouparooRecord = await helper.factories.record();
-    const _import: Import = await helper.factories.import(
+    const record = await helper.factories.record();
+    const _import = await helper.factories.import(
       undefined,
       undefined,
       record.id
     );
-    const _export: Export = await helper.factories.export(record);
+    const _export = await helper.factories.export(record);
     await _export.update({ state: "complete" });
 
     await record.addOrUpdateProperties({

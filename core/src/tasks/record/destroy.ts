@@ -34,7 +34,7 @@ export class RecordDestroy extends CLSTask {
       // clear groups and export
       // when the export is done, this task will be enqueued again to destroy it
       await GrouparooRecord.destroyGroupMembers(record);
-      await record.export(false, oldGroups, true, false);
+      await record.export(false, oldGroups, true, false, true);
     } else {
       // use "destroy" to clean up related models
       await record.destroy();

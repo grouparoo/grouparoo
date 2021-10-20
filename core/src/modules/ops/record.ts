@@ -606,7 +606,8 @@ export namespace RecordOps {
     force = false,
     oldGroups: Group[] = [],
     saveExports = true,
-    sync = true
+    sync = true,
+    toDelete?: boolean
   ) {
     const groups = await record.$get("groups");
 
@@ -652,7 +653,8 @@ export namespace RecordOps {
           record,
           sync, // sync = true -> do the export in-line
           force, // force = true -> do the export even if it looks like the data hasn't changed
-          saveExports // saveExports = true -> should we really save these exports, or do we just want examples for the next export?
+          saveExports, // saveExports = true -> should we really save these exports, or do we just want examples for the next export?
+          toDelete // are we deleting this record and should we ensure that all exports are toDelete=true?
         )
       )
     );
