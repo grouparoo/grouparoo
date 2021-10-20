@@ -601,7 +601,7 @@ export interface DestinationMappingOptionsMethodResponse {
       singular: string; // merge var
       plural: string; // merge vars
     };
-    group: {
+    group?: {
       singular: string; // mailchimp tag
       plural: string; // mailchimp tags
     };

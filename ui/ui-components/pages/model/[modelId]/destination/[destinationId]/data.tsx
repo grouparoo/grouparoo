@@ -669,134 +669,137 @@ export default function Page(props) {
                       <br />
                     </>
                   ) : null}
-
                   <br />
 
-                  <h6>{mappingOptions?.labels?.group.plural}</h6>
+                  {mappingOptions?.labels?.group && (
+                    <>
+                      <h6>{mappingOptions?.labels?.group.plural}</h6>
 
-                  <Table size="sm">
-                    <thead>
-                      <tr>
-                        <th>Grouparoo Group</th>
-                        <th />
-                        <th>{mappingOptions?.labels?.group.singular}</th>
-                        <th />
-                        <th />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {destination.destinationGroupMemberships.map(
-                        ({ groupName, groupId, remoteKey }, idx) => (
-                          <tr key={`optional-mapping-${idx}`}>
-                            <td>
-                              <Form.Control
-                                as="select"
-                                required={false}
-                                value={groupId}
-                                disabled={loading}
-                                onChange={(e) =>
-                                  updateDestinationGroupMembership(
-                                    e.target["value"],
-                                    null,
-                                    groupId
-                                  )
-                                }
-                              >
-                                <option disabled value={""}>
-                                  choose a group
-                                </option>
-                                {groups.map((group) => (
-                                  <option
-                                    value={group.id}
-                                    key={`group-remote-mapping-${group.id}`}
-                                  >
-                                    {group.name}
-                                  </option>
-                                ))}
-                              </Form.Control>
-                            </td>
-                            <td style={{ textAlign: "center" }}>→</td>
-                            <td>
-                              <Form.Control
-                                required
-                                type="text"
-                                disabled={!unlockedGroups.includes(groupId)}
-                                value={remoteKey}
-                                onChange={(e) =>
-                                  updateDestinationGroupMembership(
-                                    groupId,
-                                    e.target["value"]
-                                  )
-                                }
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                {mappingOptions?.labels?.group.singular} is
-                                required
-                              </Form.Control.Feedback>
-                            </td>
-                            <td>
-                              <Button
-                                size="sm"
-                                variant="light"
-                                onClick={() => toggleUnlockedGroup(groupId)}
-                              >
-                                ✏️
-                              </Button>
-                            </td>
-                            <td>
-                              <Button
-                                size="sm"
-                                variant="danger"
-                                onClick={() => {
-                                  updateDestinationGroupMembership(
-                                    null,
-                                    null,
-                                    groupId
-                                  );
-                                }}
-                              >
-                                X
-                              </Button>
-                            </td>
+                      <Table size="sm">
+                        <thead>
+                          <tr>
+                            <th>Grouparoo Group</th>
+                            <th />
+                            <th>{mappingOptions?.labels?.group.singular}</th>
+                            <th />
+                            <th />
                           </tr>
-                        )
-                      )}
-                    </tbody>
-                  </Table>
-
-                  <Alert variant="light">
-                    <Form.Group as={Row}>
-                      <Form.Label column sm={3}>
-                        <strong>Send Group:</strong>
-                      </Form.Label>
-                      <Col>
-                        <Typeahead
-                          id="taggedGroup"
-                          ref={taggedGroupRef}
-                          disabled={
-                            groupsAvailalbeForDestinationGroupMemberships.length ===
-                            0
-                          }
-                          placeholder={`Choose a group...`}
-                          onChange={(selected) => {
-                            taggedGroupRef.current.clear();
-                            const chosenGroup =
-                              groupsAvailalbeForDestinationGroupMemberships.filter(
-                                (g) => g.name === selected[0]
-                              )[0];
-
-                            updateDestinationGroupMembership(
-                              chosenGroup.id,
-                              chosenGroup.name
-                            );
-                          }}
-                          options={groupsAvailalbeForDestinationGroupMemberships.map(
-                            ({ name }) => name
+                        </thead>
+                        <tbody>
+                          {destination.destinationGroupMemberships.map(
+                            ({ groupName, groupId, remoteKey }, idx) => (
+                              <tr key={`optional-mapping-${idx}`}>
+                                <td>
+                                  <Form.Control
+                                    as="select"
+                                    required={false}
+                                    value={groupId}
+                                    disabled={loading}
+                                    onChange={(e) =>
+                                      updateDestinationGroupMembership(
+                                        e.target["value"],
+                                        null,
+                                        groupId
+                                      )
+                                    }
+                                  >
+                                    <option disabled value={""}>
+                                      choose a group
+                                    </option>
+                                    {groups.map((group) => (
+                                      <option
+                                        value={group.id}
+                                        key={`group-remote-mapping-${group.id}`}
+                                      >
+                                        {group.name}
+                                      </option>
+                                    ))}
+                                  </Form.Control>
+                                </td>
+                                <td style={{ textAlign: "center" }}>→</td>
+                                <td>
+                                  <Form.Control
+                                    required
+                                    type="text"
+                                    disabled={!unlockedGroups.includes(groupId)}
+                                    value={remoteKey}
+                                    onChange={(e) =>
+                                      updateDestinationGroupMembership(
+                                        groupId,
+                                        e.target["value"]
+                                      )
+                                    }
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {mappingOptions?.labels?.group.singular} is
+                                    required
+                                  </Form.Control.Feedback>
+                                </td>
+                                <td>
+                                  <Button
+                                    size="sm"
+                                    variant="light"
+                                    onClick={() => toggleUnlockedGroup(groupId)}
+                                  >
+                                    ✏️
+                                  </Button>
+                                </td>
+                                <td>
+                                  <Button
+                                    size="sm"
+                                    variant="danger"
+                                    onClick={() => {
+                                      updateDestinationGroupMembership(
+                                        null,
+                                        null,
+                                        groupId
+                                      );
+                                    }}
+                                  >
+                                    X
+                                  </Button>
+                                </td>
+                              </tr>
+                            )
                           )}
-                        />
-                      </Col>
-                    </Form.Group>
-                  </Alert>
+                        </tbody>
+                      </Table>
+
+                      <Alert variant="light">
+                        <Form.Group as={Row}>
+                          <Form.Label column sm={3}>
+                            <strong>Send Group:</strong>
+                          </Form.Label>
+                          <Col>
+                            <Typeahead
+                              id="taggedGroup"
+                              ref={taggedGroupRef}
+                              disabled={
+                                groupsAvailalbeForDestinationGroupMemberships.length ===
+                                0
+                              }
+                              placeholder={`Choose a group...`}
+                              onChange={(selected) => {
+                                taggedGroupRef.current.clear();
+                                const chosenGroup =
+                                  groupsAvailalbeForDestinationGroupMemberships.filter(
+                                    (g) => g.name === selected[0]
+                                  )[0];
+
+                                updateDestinationGroupMembership(
+                                  chosenGroup.id,
+                                  chosenGroup.name
+                                );
+                              }}
+                              options={groupsAvailalbeForDestinationGroupMemberships.map(
+                                ({ name }) => name
+                              )}
+                            />
+                          </Col>
+                        </Form.Group>
+                      </Alert>
+                    </>
+                  )}
                 </Col>
               </Row>
 
