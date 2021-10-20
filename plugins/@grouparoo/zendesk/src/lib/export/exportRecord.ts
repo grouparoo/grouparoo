@@ -180,7 +180,11 @@ export async function searchForUser(client, findBy: any) {
   let found = null;
   for (const user of response) {
     if (user.active) {
-      if (!found && (!email || email === user.email)) {
+      if (
+        !found &&
+        (!email ||
+          email.toLowerCase().trim() === user.email.toLowerCase().trim())
+      ) {
         // not deleted
         found = user;
       } else {
