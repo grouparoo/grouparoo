@@ -381,6 +381,7 @@ export interface AppQueryMethod {
     appId: string;
     appOptions: SimpleAppOptions;
     connection: any;
+    refreshQuery: string;
   }): Promise<Array<unknown>>;
 }
 

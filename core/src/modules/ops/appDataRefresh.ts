@@ -25,9 +25,12 @@ export namespace AppDataRefreshOps {
       appId: app.id,
       appOptions: options,
       connection,
+      refreshQuery: appDataRefresh.refreshQuery,
     });
 
-    const sampleValue = JSON.stringify(responseRows);
+    const sampleValue = JSON.stringify(
+      Array.isArray(responseRows) ? responseRows[0] : {}
+    );
     if (sampleValue !== value) {
       appDataRefresh.value = sampleValue;
       appDataRefresh.lastChangedAt = new Date();

@@ -311,9 +311,6 @@ export namespace helper {
           ],
           groupAggregations: [AggregationMethod.Exact],
           methods: {
-            query: async () => {
-              return "test query response";
-            },
             sourceOptions: async ({ sourceOptions }) => {
               const response: SourceOptionsMethodResponse = {
                 table: { type: "list", options: ["users"] },

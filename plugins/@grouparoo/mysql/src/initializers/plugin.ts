@@ -92,7 +92,17 @@ export class Plugins extends Initializer {
               description: "The MySQL user's password.",
             },
           ],
-          methods: { test, connect, disconnect },
+          methods: {
+            test,
+            connect,
+            disconnect,
+            query: async (args) => {
+              // check that the query really is SQL? --- validateQuery()
+              // check that you got back an array?
+              const rows = await args.connection.asyncQuery(args.refreshQuery); // return [];
+              return rows.length > 0 ? rows[0] : [];
+            },
+          },
         },
       ],
       connections: [
