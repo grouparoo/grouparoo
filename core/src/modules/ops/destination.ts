@@ -29,7 +29,6 @@ import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { RunOps } from "./runs";
-import { boolean } from "webidl-conversions";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
