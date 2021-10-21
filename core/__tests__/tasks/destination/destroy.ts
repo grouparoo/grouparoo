@@ -4,177 +4,222 @@ import {
   Group,
   Destination,
   Export,
+  GrouparooModel,
   GrouparooRecord,
   Run,
 } from "./../../../src";
 
 describe("tasks/destination:destroy", () => {
+  let destination: Destination;
+  let model: GrouparooModel;
+  let mario: GrouparooRecord;
+
   helper.grouparooTestServer({
     truncate: true,
     enableTestPlugin: true,
     disableTestPluginImport: true,
   });
+
   beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
-  beforeAll(async () => await helper.factories.properties());
+  beforeAll(async () => ({ model } = await helper.factories.properties()));
   beforeAll(async () => await Export.truncate());
 
-  describe("without tracked group", () => {
-    let destination: Destination;
-
-    beforeAll(async () => {
-      destination = await helper.factories.destination();
-    });
-
-    afterAll(async () => {
-      await destination.destroy();
-    });
-
-    test("deleting a destination with no group tracked works", async () => {
-      await destination.update({ state: "deleted" });
-      await specHelper.runTask("destination:destroy", {
-        destinationId: destination.id,
-      });
-
-      await expect(Destination.findById(destination.id)).rejects.toThrow(
-        /cannot find Destination/
-      );
-    });
+  beforeEach(async () => {
+    await api.resque.queue.connection.redis.flushdb();
+    await Run.truncate();
+    await GrouparooRecord.truncate();
+    await Destination.truncate();
+    destination = await helper.factories.destination();
+    mario = await helper.factories.record();
+    await destination.update({ state: "deleted" });
   });
 
-  describe.each(["ready", "deleted"])(
-    "with a tracked group in %p state",
-    (groupState) => {
-      let group: Group;
-      let destination: Destination;
-      let mario: GrouparooRecord;
-      let luigi: GrouparooRecord;
-      let run: Run;
+  test("deleting a destination with no group tracked works", async () => {
+    await specHelper.runTask("destination:destroy", {
+      destinationId: destination.id,
+    });
 
-      beforeAll(async () => {
-        destination = await helper.factories.destination();
-        group = await helper.factories.group();
-        mario = await helper.factories.record();
-        luigi = await helper.factories.record();
-        await group.addRecord(mario);
-        await group.addRecord(luigi);
-        await destination.updateTracking("group", group.id);
+    expect(await Destination.unscoped().count()).toEqual(0);
+  });
 
-        await group.update({ state: groupState });
+  test("deleting a destination with a group tracked works", async () => {
+    const group = await helper.factories.group();
+    await destination.updateTracking("group", group.id);
+    await Run.truncate();
 
-        await api.resque.queue.connection.redis.flushdb();
-        await Run.truncate();
-      });
+    await specHelper.runTask("destination:destroy", {
+      destinationId: destination.id,
+    });
 
-      afterAll(async () => {
-        await mario.destroy();
-        await luigi.destroy();
-      });
+    expect(await Destination.unscoped().count()).toEqual(0);
+  });
 
-      test("a destination tracking a group cannot be deleted", async () => {
-        await expect(destination.destroy()).rejects.toThrow(
-          "cannot delete a destination that is tracking a group"
-        );
-      });
+  test("a destination which has a run from the group it is tracking will not be deleted", async () => {
+    const group = await helper.factories.group();
+    await destination.updateTracking("group", group.id);
+    await Run.truncate();
 
-      test("the task can be enqueued and create a run for the group", async () => {
-        await destination.update({ state: "deleted" });
-        await specHelper.runTask("destination:destroy", {
-          destinationId: destination.id,
-        });
+    await group.run(undefined, destination.id);
+    await specHelper.runTask("destination:destroy", {
+      destinationId: destination.id,
+    });
 
-        run = await Run.findOne({
-          where: { creatorId: group.id, destinationId: destination.id },
-        });
-        expect(run.state).toBe("running");
-        expect(run.force).toBe(false);
+    expect(await Destination.unscoped().count()).toEqual(1);
+    await Run.update(
+      { state: "complete" },
+      { where: { destinationId: destination.id } }
+    );
+    await specHelper.runTask("destination:destroy", {
+      destinationId: destination.id,
+    });
 
-        destination = await Destination.findById(destination.id);
-        expect(destination.state).toBe("deleted");
-        expect(destination.groupId).toBeNull();
-      });
+    expect(await Destination.unscoped().count()).toEqual(1);
+  });
 
-      test("the destination will not be deleted yet (running run)", async () => {
-        destination = await Destination.findById(destination.id);
-        expect(destination.state).toBe("deleted");
+  test("a destination with pending group exports cannot be deleted", async () => {
+    const group = await helper.factories.group();
+    await group.addRecord(mario);
+    const { newRun: run } = await destination.updateTracking("group", group.id);
 
-        await utils.sleep(1000);
-        await specHelper.runTask("destination:destroy", {
-          destinationId: destination.id,
-        });
+    await specHelper.runTask("group:run", { runId: run.id });
+    await specHelper.runTask("group:run", { runId: run.id });
+    await specHelper.runTask("group:run", { runId: run.id });
 
-        destination = await Destination.findById(destination.id);
-        expect(destination.state).toBe("deleted");
-      });
+    await ImportWorkflow();
 
-      test("the group run can be completed and create exports", async () => {
-        await specHelper.runTask("group:run", { runId: run.id });
-        await specHelper.runTask("group:run", { runId: run.id });
-        await specHelper.runTask("group:run", { runId: run.id });
-        await specHelper.runTask("group:run", { runId: run.id });
+    await specHelper.runTask("group:run", { runId: run.id });
+    await specHelper.runTask("group:run", { runId: run.id });
 
-        await ImportWorkflow();
+    await run.reload();
+    await group.reload();
+    expect(group.state).toBe("ready");
+    expect(run.state).toBe("complete");
 
-        await specHelper.runTask("group:run", { runId: run.id });
+    // create exports
+    const exportTasks = await specHelper.findEnqueuedTasks("record:export");
+    await Promise.all(
+      exportTasks.map((t) => specHelper.runTask("record:export", t.args[0]))
+    );
 
-        run = await run.reload();
-        group = await Group.findById(group.id);
-        expect(group.state).toBe(groupState);
-        expect(run.state).toBe("complete");
+    // can't delete (has exports)
+    await specHelper.runTask("destination:destroy", {
+      destinationId: destination.id,
+    });
+    expect(await Destination.unscoped().count()).toEqual(1);
 
-        // create exports
-        const exportTasks = await specHelper.findEnqueuedTasks("record:export");
-        await Promise.all(
-          exportTasks.map((t) => specHelper.runTask("record:export", t.args[0]))
-        );
-      });
+    // complete exports
+    await specHelper.runTask("export:enqueue", {});
+    const foundExportSendTasks = await specHelper.findEnqueuedTasks(
+      "export:send"
+    );
+    expect(foundExportSendTasks.length).toBe(1);
+    await Promise.all(
+      foundExportSendTasks.map((t) =>
+        specHelper.runTask("export:send", t.args[0])
+      )
+    );
 
-      test("the destination will not be deleted yet (pending exports)", async () => {
-        await utils.sleep(1000);
-        await specHelper.runTask("destination:destroy", {
-          destinationId: destination.id,
-        });
+    // can't delete (not enough time has passed)
+    await specHelper.runTask("destination:destroy", {
+      destinationId: destination.id,
+    });
+    expect(await Destination.unscoped().count()).toEqual(1);
 
-        destination = await Destination.findById(destination.id);
-        expect(destination.state).toBe("deleted");
-      });
+    // can delete (time has passed)
+    await utils.sleep(3000);
 
-      test("the exports can be exported", async () => {
-        await specHelper.runTask("export:enqueue", {});
-        const foundExportSendTasks = await specHelper.findEnqueuedTasks(
-          "export:send"
-        );
-        expect(foundExportSendTasks.length).toBe(2);
-        await Promise.all(
-          foundExportSendTasks.map((t) =>
-            specHelper.runTask("export:send", t.args[0])
-          )
-        );
-      });
+    // can delete (not enough time has passed)
+    await specHelper.runTask("destination:destroy", {
+      destinationId: destination.id,
+    });
+    expect(await Destination.unscoped().count()).toEqual(0);
+  }, 10000);
 
-      test("the destination will not be deleted yet (not enough time has passed)", async () => {
-        await api.resque.queue.connection.redis.flushdb();
-        await specHelper.runTask("destination:destroy", {
-          destinationId: destination.id,
-        });
+  test("deleting a destination with a model tracked works", async () => {
+    await destination.updateTracking("model");
+    await Run.truncate();
 
-        destination = await Destination.findById(destination.id);
-        expect(destination.state).toBe("deleted");
-      });
+    await specHelper.runTask("destination:destroy", {
+      destinationId: destination.id,
+    });
 
-      test("time passes", async () => {
-        await utils.sleep(1000);
-      });
+    expect(await Destination.unscoped().count()).toEqual(0);
+  });
 
-      test("now the destination can be deleted", async () => {
-        await utils.sleep(1000);
-        await specHelper.runTask("destination:destroy", {
-          destinationId: destination.id,
-        });
+  test("a destination which has a run from the destination it is tracking will not be deleted", async () => {
+    await destination.updateTracking("model");
+    await Run.truncate();
 
-        await expect(Destination.findById(destination.id)).rejects.toThrow(
-          /cannot find Destination/
-        );
-      });
-    }
-  );
+    await model.run(undefined, destination.id);
+    await specHelper.runTask("destination:destroy", {
+      destinationId: destination.id,
+    });
+
+    expect(await Destination.unscoped().count()).toEqual(1);
+
+    expect(await Destination.unscoped().count()).toEqual(1);
+    await Run.update(
+      { state: "complete" },
+      { where: { destinationId: destination.id } }
+    );
+    await specHelper.runTask("destination:destroy", {
+      destinationId: destination.id,
+    });
+
+    expect(await Destination.unscoped().count()).toEqual(1);
+  });
+
+  test("a destination with pending model exports cannot be deleted", async () => {
+    const { newRun: run } = await destination.updateTracking("model");
+
+    await specHelper.runTask("grouparooModel:run", { runId: run.id });
+
+    await ImportWorkflow();
+
+    await specHelper.runTask("grouparooModel:run", { runId: run.id });
+    await specHelper.runTask("grouparooModel:run", { runId: run.id });
+    await specHelper.runTask("grouparooModel:run", { runId: run.id });
+
+    await run.reload();
+    expect(run.state).toBe("complete");
+
+    // create exports
+    const exportTasks = await specHelper.findEnqueuedTasks("record:export");
+    await Promise.all(
+      exportTasks.map((t) => specHelper.runTask("record:export", t.args[0]))
+    );
+
+    // can't delete (has exports)
+    await specHelper.runTask("destination:destroy", {
+      destinationId: destination.id,
+    });
+    expect(await Destination.unscoped().count()).toEqual(1);
+
+    // complete exports
+    await specHelper.runTask("export:enqueue", {});
+    const foundExportSendTasks = await specHelper.findEnqueuedTasks(
+      "export:send"
+    );
+    expect(foundExportSendTasks.length).toBe(1);
+    await Promise.all(
+      foundExportSendTasks.map((t) =>
+        specHelper.runTask("export:send", t.args[0])
+      )
+    );
+
+    // can't delete (not enough time has passed)
+    await specHelper.runTask("destination:destroy", {
+      destinationId: destination.id,
+    });
+    expect(await Destination.unscoped().count()).toEqual(1);
+
+    // can delete (time has passed)
+    await utils.sleep(3000);
+
+    // can delete (not enough time has passed)
+    await specHelper.runTask("destination:destroy", {
+      destinationId: destination.id,
+    });
+    expect(await Destination.unscoped().count()).toEqual(0);
+  }, 10000);
 });

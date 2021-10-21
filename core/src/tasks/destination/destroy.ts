@@ -25,22 +25,11 @@ export class DestinationDestroy extends CLSTask {
     // the destination may have been force-deleted
     if (!destination) return;
 
-    let run: Run;
-    // untrack the group, if we are still tracking one
-    // this will trigger a run to export all group members one last time
-    if (
-      (destination.groupId && destination.collection === "group") ||
-      destination.collection === "model"
-    ) {
-      const unTrackResponse = await destination.updateTracking("none");
-      run = unTrackResponse.oldRun;
-    } else {
-      run = await Run.scope(null).findOne({
-        where: { destinationId: destination.id },
-        order: [["updatedAt", "desc"]],
-        limit: 1,
-      });
-    }
+    const run = await Run.scope(null).findOne({
+      where: { destinationId: destination.id },
+      order: [["updatedAt", "desc"]],
+      limit: 1,
+    });
 
     // the run is not yet complete
     if (run && (run.state === "running" || run.state === "draft")) {
@@ -81,7 +70,7 @@ export class DestinationDestroy extends CLSTask {
       }
     }
 
-    // the run is done (complete or stopped) or there was not a tracked group for this destination
+    // the run is done (complete or stopped) or there was nothing tracked for this destination
     await destination.destroy();
   }
 }

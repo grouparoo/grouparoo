@@ -727,19 +727,6 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeDestroy
-  static async cannotDeleteDestinationWithTrackedGroup(instance: Destination) {
-    if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
-    if (instance.groupId) {
-      const group = await Group.scope("notDraft").findOne({
-        where: { id: instance.groupId },
-      });
-      if (group) {
-        throw new Error("cannot delete a destination that is tracking a group");
-      }
-    }
-  }
-
-  @BeforeDestroy
   static async waitForPendingExports(instance: Destination) {
     const pendingExportCount = await instance.$count("exports", {
       where: { state: ["pending", "processing"] },
