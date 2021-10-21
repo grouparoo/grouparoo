@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { cache } from "actionhero";
+import { DestinationOps } from "../../../src/modules/ops/destination";
 import {
   App,
   Destination,
@@ -1019,7 +1020,7 @@ describe("models/destination", () => {
 
           // before the destinations are ready
           await destination.updateTracking("group", group.id);
-          let destinations = await Destination.relevantFor(
+          let destinations = await DestinationOps.relevantFor(
             record,
             await record.$get("groups")
           );
@@ -1032,7 +1033,7 @@ describe("models/destination", () => {
           await otherGroupDestination.updateTracking("group", group.id);
           await modelDestination.updateTracking("model");
 
-          destinations = await Destination.relevantFor(
+          destinations = await DestinationOps.relevantFor(
             record,
             await record.$get("groups")
           );

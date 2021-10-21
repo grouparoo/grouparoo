@@ -24,6 +24,7 @@ import { Mapping } from "../../models/Mapping";
 import { SourceOps } from "./source";
 import { GrouparooModel } from "../../models/GrouparooModel";
 import { CLS } from "../cls";
+import { DestinationOps } from "./destination";
 
 export interface RecordPropertyType {
   [key: string]: {
@@ -610,7 +611,7 @@ export namespace RecordOps {
   ) {
     const groups = await record.$get("groups");
 
-    const destinations = await Destination.relevantFor(
+    const destinations = await DestinationOps.relevantFor(
       record,
       oldGroups,
       groups

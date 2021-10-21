@@ -1,5 +1,6 @@
 import Moment from "moment";
 import { config, cache, log } from "actionhero";
+import { Op } from "sequelize";
 import { deepStrictEqual } from "assert";
 import {
   Destination,
@@ -1076,5 +1077,31 @@ export namespace DestinationOps {
         `cannot export grouparoo type ${grouparooType} to destination type ${destinationType}`
       );
     }
+  }
+
+  /**
+   * Determine which destinations are interested in this record due to the groups they are tracking
+   */
+  export async function relevantFor(
+    record: GrouparooRecord,
+    oldGroups: Group[] = [],
+    newGroups: Group[] = []
+  ) {
+    const combinedGroupIds = [...oldGroups, ...newGroups].map((g) => g.id);
+    const relevantDestinations =
+      combinedGroupIds.length > 0
+        ? await Destination.findAll({
+            where: {
+              [Op.or]: [
+                { collection: "model", modelId: record.modelId },
+                { collection: "group", groupId: { [Op.in]: combinedGroupIds } },
+              ],
+            },
+          })
+        : await Destination.findAll({
+            where: { collection: "model", modelId: record.modelId },
+          });
+
+    return relevantDestinations;
   }
 }
