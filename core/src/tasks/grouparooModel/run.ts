@@ -32,7 +32,7 @@ export class RunInternalRun extends CLSTask {
     const offset: number = run.memberOffset || 0;
     const limit: number = run.memberLimit || config.batchSize.imports;
 
-    const model = await GrouparooModel.findOne({
+    const model = await GrouparooModel.scope(null).findOne({
       where: { id: run.creatorId },
     });
     if (!model) return;
@@ -46,10 +46,12 @@ export class RunInternalRun extends CLSTask {
     });
 
     if (records.length > 0) {
-      await RecordProperty.update(
-        { state: "pending" },
-        { where: { recordId: { [Op.in]: records.map((p) => p.id) } } }
-      );
+      if (model.state === "ready") {
+        await RecordProperty.update(
+          { state: "pending" },
+          { where: { recordId: { [Op.in]: records.map((p) => p.id) } } }
+        );
+      }
 
       await GrouparooRecord.update(
         { state: "pending" },

@@ -40,6 +40,7 @@ import { GrouparooRecord } from "./GrouparooRecord";
 import { RecordProperty } from "./RecordProperty";
 import { Run } from "./Run";
 import { Source } from "./Source";
+import { Destination } from "./Destination";
 
 export function propertyJSToSQLType(jsType: string) {
   const map = {
@@ -583,6 +584,25 @@ export class Property extends LoggedModel<Property> {
       throw new Error(
         `cannot delete property "${instance.key}" as ${mapping.ownerId} is using it in a mapping`
       );
+    }
+
+    if (instance.directlyMapped) {
+      const source = await Source.scope(null).findOne({
+        where: { id: instance.sourceId },
+        logging: true,
+      });
+      if (source) {
+        // We also call this method from Source@beforeDestroy hook ensureDirectlyMappedPropertyNotInUse - the source will be null when trying to be deleted
+        const model = await source.$get("model", { scope: null });
+        const destinationsCount = await Destination.scope(null).count({
+          where: { modelId: model.id },
+        });
+        if (destinationsCount > 0) {
+          throw new Error(
+            `cannot delete property "${instance.key}" as this property is directly mapped and there is still a destination`
+          );
+        }
+      }
     }
   }
 

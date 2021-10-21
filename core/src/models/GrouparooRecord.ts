@@ -87,7 +87,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   exports: Export[];
 
   async apiData() {
-    const model = await this.$get("model");
+    const model = await this.$get("model", { scope: null });
     const properties = await this.getProperties();
 
     return {
@@ -266,7 +266,6 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   }
 
   @BeforeCreate
-  @BeforeSave
   static async ensureModel(instance: GrouparooRecord) {
     const model = await GrouparooModel.findOne({
       where: { id: instance.modelId },

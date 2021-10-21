@@ -67,10 +67,8 @@ export namespace RecordOps {
       const property = properties.find(
         (r) => r.id === recordProperties[i].propertyId
       );
-      if (!property) {
-        await recordProperties[i].destroy();
-        continue;
-      }
+
+      if (!property) continue;
 
       const key = property.key;
       if (!hash[key]) {
@@ -820,9 +818,13 @@ export namespace RecordOps {
     let models: GrouparooModel[] = await GrouparooModel.scope(null).findAll();
     let modelIdsToClear: string[] = [];
 
+    const properties = await Property.scope(null).findAll({
+      include: [{ model: Source.unscoped() }],
+    });
+
     for (const model of models) {
-      const propertiesByModel: Property[] = await Property.findAllWithCache(
-        model.id
+      const propertiesByModel = properties.filter(
+        (property) => property.source.modelId === model.id
       );
 
       const directlyMapped = propertiesByModel.filter((property) => {
@@ -845,7 +847,7 @@ export namespace RecordOps {
     }
 
     // Also search all records for a "null" value in the directly mapped property
-    return recordsToDestroy.concat(
+    recordsToDestroy = recordsToDestroy.concat(
       await api.sequelize.query(
         `
     SELECT "id" FROM "records"
@@ -864,6 +866,8 @@ export namespace RecordOps {
         }
       )
     );
+
+    return recordsToDestroy;
   }
 
   /**
@@ -985,7 +989,7 @@ export namespace RecordOps {
         },
       }
     );
-    // Update records to invalid if any assocaited properties are invalid.
+    // Update records to invalid if any associated properties are invalid.
     await api.sequelize.query(`
       UPDATE
         "records"
@@ -1052,7 +1056,7 @@ export namespace RecordOps {
         id: { [Op.in]: recordIds },
       },
       include: [
-        { model: RecordProperty, required: true },
+        { model: RecordProperty, required: false },
         { model: Import, required: false, where: { recordUpdatedAt: null } },
       ],
     });

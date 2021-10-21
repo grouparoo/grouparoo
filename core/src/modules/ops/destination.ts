@@ -403,7 +403,13 @@ export namespace DestinationOps {
 
     for (const k in mapping) {
       const property = properties.find((r) => r.key === mapping[k]);
-      if (!property) throw new Error(`cannot find rule for ${mapping[k]}`);
+      if (!property) {
+        if (destination.state === "ready") {
+          throw new Error(`cannot find rule for ${mapping[k]}`);
+        } else {
+          continue;
+        }
+      }
       const { type } = property;
 
       if (forceOldPropertyValues) {

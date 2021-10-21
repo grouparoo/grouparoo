@@ -210,7 +210,7 @@ export class Destination extends LoggedModel<Destination> {
       group = await this.$get("group", { scope: null, include: [GroupRule] });
     }
 
-    const model = await this.$get("model");
+    const model = await this.$get("model", { scope: null });
     const mapping = await this.getMapping();
     const options = await this.getOptions(null);
     const destinationGroupMemberships =
