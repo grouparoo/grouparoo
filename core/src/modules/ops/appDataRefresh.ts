@@ -27,9 +27,8 @@ export namespace AppDataRefreshOps {
       connection,
       refreshQuery: appDataRefresh.refreshQuery,
     });
-
     const sampleValue = JSON.stringify(
-      Array.isArray(responseRows) ? responseRows[0] : {}
+      Array.isArray(responseRows) ? responseRows[0] : responseRows
     );
     if (sampleValue !== value) {
       appDataRefresh.value = sampleValue;

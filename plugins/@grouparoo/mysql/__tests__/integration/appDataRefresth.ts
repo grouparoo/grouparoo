@@ -38,7 +38,17 @@ describe("integration/runs/mysql", () => {
     expect(adr.value).toEqual(JSON.stringify({ name: "HI" }));
   });
 
-  test.todo("I show a good error with a missing query");
+  test.todo("I show a good error with a missing query", async () => {
+    const app = await App.findOne();
+    expect(
+      await AppDataRefresh.create({
+        appId: app.id,
+        refreshQuery: "",
+      })
+    ).rejects.toThrow(
+      /error with mysql query: "" - Error: ER_EMPTY_QUERY: Query was empty/
+    );
+  });
   test.todo(
     "I show a good error with a query that has too many sql statements"
   );

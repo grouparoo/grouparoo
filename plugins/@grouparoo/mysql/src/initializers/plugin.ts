@@ -28,6 +28,7 @@ import {
   QuerySourceTemplate,
   QueryPropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
+import { validateQuery } from "../lib/validateQuery";
 
 const packageJSON = require("./../../package.json");
 
@@ -96,10 +97,12 @@ export class Plugins extends Initializer {
             test,
             connect,
             disconnect,
-            query: async (args) => {
-              // check that the query really is SQL? --- validateQuery()
-              // check that you got back an array?
-              const rows = await args.connection.asyncQuery(args.refreshQuery); // return [];
+            query: async ({ connection, refreshQuery }) => {
+              try {
+                validateQuery(refreshQuery);
+              } catch {}
+
+              const rows = await connection.asyncQuery(refreshQuery); // return [];
               return rows.length > 0 ? rows[0] : [];
             },
           },
