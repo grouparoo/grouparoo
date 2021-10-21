@@ -2,6 +2,7 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 import path from "path";
 
+import { appQuery } from "../lib/appQuery";
 import { test } from "./../lib/test";
 import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
@@ -97,14 +98,7 @@ export class Plugins extends Initializer {
             test,
             connect,
             disconnect,
-            query: async ({ connection, refreshQuery }) => {
-              try {
-                validateQuery(refreshQuery);
-              } catch {}
-
-              const rows = await connection.asyncQuery(refreshQuery); // return [];
-              return rows.length > 0 ? rows[0] : [];
-            },
+            query: appQuery,
           },
         },
       ],

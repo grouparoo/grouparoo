@@ -5,27 +5,25 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 
 import { helper } from "@grouparoo/spec-helper";
 import { App, AppDataRefresh } from "@grouparoo/core";
-import { beforeData, afterData, getConfig } from "../utils/data";
+import { loadAppOptions, updater } from "../utils/nockHelper";
+import { getConnection } from "../../src/lib/query-import/connection";
+import { SimpleAppOptions } from "@grouparoo/core";
 
-const { usersTableName, appOptions } = getConfig();
+const { newNock } = helper.useNock(__filename, updater);
+const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
-describe("integration/runs/mysql", () => {
+describe("integration/runs/bigquery/appDataRefresh", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: false });
 
   let app: App;
 
   beforeAll(async () => {
-    await beforeData();
     app = await App.create({
       name: "test app",
-      type: "mysql",
+      type: "bigquery",
     });
     await app.setOptions(appOptions);
     await app.update({ state: "ready" });
-  });
-
-  afterAll(async () => {
-    await afterData();
   });
 
   test("I can query using the appDataRefresh query method", async () => {
@@ -38,18 +36,24 @@ describe("integration/runs/mysql", () => {
     expect(adr.value).toEqual(JSON.stringify({ name: "HI" }));
   });
 
-  test.todo("I show a good error with a missing query", async () => {
+  test("I show a good error with a missing query", async () => {
     const app = await App.findOne();
-    expect(
-      await AppDataRefresh.create({
+    await expect(
+      AppDataRefresh.create({
         appId: app.id,
         refreshQuery: "",
       })
+    ).rejects.toThrow(/A SQL query string is required./);
+  });
+  test("I show a good error with a query that has too many sql statements", async () => {
+    const app = await App.findOne();
+    await expect(
+      AppDataRefresh.create({
+        appId: app.id,
+        refreshQuery: "SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;",
+      })
     ).rejects.toThrow(
-      /error with mysql query: "" - Error: ER_EMPTY_QUERY: Query was empty/
+      /Syntax error: Expected end of input but got keyword SELECT/
     );
   });
-  test.todo(
-    "I show a good error with a query that has too many sql statements"
-  );
 });

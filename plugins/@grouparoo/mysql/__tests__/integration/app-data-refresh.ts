@@ -49,7 +49,15 @@ describe("integration/runs/mysql", () => {
       /error with mysql query: "" - Error: ER_EMPTY_QUERY: Query was empty/
     );
   });
-  test.todo(
-    "I show a good error with a query that has too many sql statements"
-  );
+  test("I show a good error with a query that has too many sql statements", async () => {
+    const app = await App.findOne();
+    await expect(
+      AppDataRefresh.create({
+        appId: app.id,
+        refreshQuery: "SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;",
+      })
+    ).rejects.toThrow(
+      /error with mysql query: \"SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;\" - Error: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT id FROM demo.users LIMIT 1' at line 1/
+    );
+  });
 });
