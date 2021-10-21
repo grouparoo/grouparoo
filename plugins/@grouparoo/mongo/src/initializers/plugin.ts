@@ -20,6 +20,7 @@ import {
   QueryPropertyTemplate,
   QuerySourceTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
+import { appQuery } from "../lib/appQuery";
 
 const packageJSON = require("./../../package.json");
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
@@ -68,7 +69,7 @@ export class Plugins extends Initializer {
               placeholder: "mydb",
             },
           ],
-          methods: { test, connect, disconnect },
+          methods: { test, connect, disconnect, query: appQuery },
         },
       ],
       connections: [getTableConnection(), getQueryConnection()],

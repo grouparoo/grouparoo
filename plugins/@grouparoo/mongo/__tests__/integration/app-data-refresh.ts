@@ -1,15 +1,16 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/mysql": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/mongo": { path: path.join(__dirname, "..", "..") },
 });
 
 import { helper } from "@grouparoo/spec-helper";
 import { App, AppDataRefresh } from "@grouparoo/core";
 import { beforeData, afterData, getConfig } from "../utils/data";
+import { getConnection } from "../../src/lib/query-import/connection";
 
 const { appOptions } = getConfig();
 
-describe("integration/runs/mysql", () => {
+describe("integration/runs/mongo", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: false });
 
   let app: App;
@@ -18,7 +19,7 @@ describe("integration/runs/mysql", () => {
     await beforeData();
     app = await App.create({
       name: "test app",
-      type: "mysql",
+      type: "mongo",
     });
     await app.setOptions(appOptions);
     await app.update({ state: "ready" });
@@ -29,10 +30,14 @@ describe("integration/runs/mysql", () => {
   });
 
   test("I can query using the appDataRefresh query method", async () => {
+    const query = "{db.collection.find().sort({stamp:-1}).limit(1)}";
+
+    const refreshQuery = query.toString();
+
     const app = await App.findOne();
     const adr = await AppDataRefresh.create({
       appId: app.id,
-      refreshQuery: "SELECT 'HI' as name",
+      refreshQuery: refreshQuery,
     });
     expect(adr.lastChangedAt).toBeInstanceOf(Date);
     expect(adr.value).toEqual(JSON.stringify({ name: "HI" }));
