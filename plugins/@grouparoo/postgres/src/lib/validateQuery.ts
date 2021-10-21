@@ -1,8 +1,7 @@
 export function validateQuery(sql: string, allowLimitAndOffset = true) {
   const lowerCaseSQL = sql.toLowerCase();
 
-  console.info(`VALIDATING: ${lowerCaseSQL}... ${lowerCaseSQL.trim().length}`);
-  if (lowerCaseSQL.trim().length === 0) {
+  if (!lowerCaseSQL.trim()) {
     console.info("I should be throwing!");
     throw new Error("please provide a query");
   }
