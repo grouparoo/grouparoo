@@ -55,17 +55,15 @@ async function cleanUp() {
 
 async function sleep() {
   if (newNock) {
-    await helper.sleep(35 * 1000);
+    await helper.sleep(61 * 1000);
   }
 }
 
 async function withRetry(func: () => Promise<any>): Promise<any> {
-  let count = 0;
   try {
     return await func();
   } catch (error) {
-    if (error?.statusCode === 429 && count < 5) {
-      count++;
+    if (error?.statusCode === 429) {
       await sleep();
       return await func();
     } else {
@@ -111,7 +109,7 @@ async function runExport({
       },
     });
     if (response.retryDelay) {
-      if (count < 5) {
+      if (count < 1) {
         count++;
         await sleep();
         response = null;
@@ -127,10 +125,6 @@ describe("zendesk/exportRecord", () => {
     client = await connect(appOptions);
     await cleanUp();
   }, helper.setupTime);
-
-  beforeEach(() => {
-    jest.setTimeout(120 * 1000);
-  });
 
   afterAll(async () => {
     await cleanUp();
@@ -376,7 +370,7 @@ describe("zendesk/exportRecord", () => {
       user = await findUser({ external_id: externalId1 });
       expect(user.tags.sort()).toEqual([outsideGroup, groupOne, groupThree]);
     },
-    120 * 1000
+    3 * 60 * 1000
   );
 
   test(
@@ -399,7 +393,7 @@ describe("zendesk/exportRecord", () => {
       const user = await findUser({ external_id: externalId1 });
       expect(user.tags.sort()).toEqual([outsideGroup]);
     },
-    120 * 1000
+    3 * 60 * 1000
   );
 
   test("can change email", async () => {
@@ -435,7 +429,7 @@ describe("zendesk/exportRecord", () => {
             numeric_field: 3039,
             checkbox_field: true,
           },
-          tags: [groupOne, groupTwo],
+          tags: ["existing", "here"],
         },
       });
     });
@@ -466,9 +460,9 @@ describe("zendesk/exportRecord", () => {
     expect(user.user_fields.numeric_field).toBe(3039);
     expect(user.tags.sort()).toEqual([
       checkboxTag,
-      groupOne,
+      "existing",
+      "here",
       groupThree,
-      groupTwo,
     ]); // including the automatically added tag.
   });
 
