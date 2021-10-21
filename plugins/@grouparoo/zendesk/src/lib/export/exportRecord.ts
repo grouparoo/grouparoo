@@ -172,21 +172,27 @@ export const exportRecord: ExportRecordPluginMethod = async ({
 };
 
 export async function searchForUser(client, findBy: any) {
+  const { email } = findBy;
+  if (email) {
+    findBy = { query: email };
+  }
   const response = await client.users.search(findBy);
-  let found = null;
   for (const user of response) {
     if (user.active) {
-      if (!found) {
-        // not deleted
-        found = user;
-      } else {
-        throw `more than one id result! ${JSON.stringify(findBy)}: ${
-          user.id
-        } and ${found.id}`;
+      // not deleted
+      if (!email) {
+        // searching by external_id
+        return user;
+      }
+      // otherwise, make sure it's the email and not just in the text somewhere
+      if (
+        email.toLowerCase().trim() === (user.email || "").toLowerCase().trim()
+      ) {
+        return user;
       }
     }
   }
-  return found;
+  return null;
 }
 export async function findUser(
   client,
@@ -195,13 +201,21 @@ export async function findUser(
 ) {
   const newId = newRecordProperties.external_id;
   const oldId = oldRecordProperties.external_id;
+  const newEmail = (newRecordProperties.email || "").toLowerCase().trim();
+  const oldEmail = (oldRecordProperties.email || "").toLowerCase().trim();
 
   let found = null;
-  if (!found && newId) {
+  if (newId) {
     found = await searchForUser(client, { external_id: newId });
   }
   if (!found && oldId && oldId !== newId) {
     found = await searchForUser(client, { external_id: oldId });
+  }
+  if (!found && newEmail && newEmail !== "") {
+    found = await searchForUser(client, { email: newEmail });
+  }
+  if (!found && oldEmail && oldEmail !== "" && oldEmail !== newEmail) {
+    found = await searchForUser(client, { email: oldEmail });
   }
   return found;
 }
