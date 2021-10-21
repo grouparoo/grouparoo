@@ -29,6 +29,7 @@ import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { RunOps } from "./runs";
+import { boolean } from "webidl-conversions";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -328,7 +329,8 @@ export namespace DestinationOps {
     record: GrouparooRecord,
     synchronous = false,
     force = false,
-    saveExports = true
+    saveExports = true,
+    toDelete?: boolean
   ) {
     if (destination.modelId !== record.modelId) {
       throw new Error(
@@ -351,20 +353,23 @@ export namespace DestinationOps {
     let mappedNewRecordProperties: ExportRecordPropertiesWithType = {};
     let oldGroupNames: string[] = [];
     let newGroupNames: string[] = [];
-    let toDelete = false;
 
     let newGroups = await Group.findAll({
       include: [{ model: GroupMember, where: { recordId: record.id } }],
     });
 
-    // do we need to delete this record from the destination?
-    if (destination.collection === "none") {
-      toDelete = true;
-    } else if (destination.collection === "group") {
-      if (!destination.groupId) {
+    // Do we need to delete this record from the destination?
+    // If toDelete was not provided explicitly, determine what to do
+    if (typeof toDelete !== "boolean") {
+      toDelete = false;
+      if (destination.collection === "none") {
         toDelete = true;
-      } else if (!newGroups.map((g) => g.id).includes(destination.groupId)) {
-        toDelete = true;
+      } else if (destination.collection === "group") {
+        if (!destination.groupId) {
+          toDelete = true;
+        } else if (!newGroups.map((g) => g.id).includes(destination.groupId)) {
+          toDelete = true;
+        }
       }
     }
 
