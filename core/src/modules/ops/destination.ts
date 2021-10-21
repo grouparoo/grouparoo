@@ -108,7 +108,7 @@ export namespace DestinationOps {
       collection,
       groupId: collection !== "group" ? null : collectionId,
     });
-    newRun = await runDestinationCollection(destination, true); // new collection
+    newRun = await runDestinationCollection(destination, false); // new collection
 
     return { oldRun, newRun };
   }
