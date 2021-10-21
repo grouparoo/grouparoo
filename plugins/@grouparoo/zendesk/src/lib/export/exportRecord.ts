@@ -177,24 +177,22 @@ export async function searchForUser(client, findBy: any) {
     findBy = { query: email };
   }
   const response = await client.users.search(findBy);
-  let found = null;
   for (const user of response) {
     if (user.active) {
+      // not deleted
+      if (!email) {
+        // searching by external_id
+        return user;
+      }
+      // otherwise, make sure it's the email and not just in the text somewhere
       if (
-        !found &&
-        (!email ||
-          email.toLowerCase().trim() === user.email.toLowerCase().trim())
+        email.toLowerCase().trim() === (user.email || "").toLowerCase().trim()
       ) {
-        // not deleted
-        found = user;
-      } else {
-        throw `more than one id result! ${JSON.stringify(findBy)}: ${
-          user.id
-        } and ${found.id}`;
+        return user;
       }
     }
   }
-  return found;
+  return null;
 }
 export async function findUser(
   client,
