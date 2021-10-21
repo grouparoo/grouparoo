@@ -5,7 +5,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper } from "@grouparoo/spec-helper";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
-import { plugin, GrouparooRecord, Property } from "@grouparoo/core";
+import { GrouparooRecord, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/query-import/connection";
 const recordProperty = getConnection().methods.recordProperty;

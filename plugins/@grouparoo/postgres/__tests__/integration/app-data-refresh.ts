@@ -1,28 +1,31 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/bigquery": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
 });
 
 import { helper } from "@grouparoo/spec-helper";
 import { App, AppDataRefresh } from "@grouparoo/core";
-import { loadAppOptions, updater } from "../utils/nockHelper";
-import { SimpleAppOptions } from "@grouparoo/core";
+import { beforeData, afterData, getConfig } from "../utils/data";
 
-const { newNock } = helper.useNock(__filename, updater);
-const appOptions: SimpleAppOptions = loadAppOptions(newNock);
+const { appOptions } = getConfig();
 
-describe("integration/runs/bigquery/appDataRefresh", () => {
+describe("integration/runs/postgres", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: false });
 
   let app: App;
 
   beforeAll(async () => {
+    await beforeData();
     app = await App.create({
       name: "test app",
-      type: "bigquery",
+      type: "postgres",
     });
     await app.setOptions(appOptions);
     await app.update({ state: "ready" });
+  });
+
+  afterAll(async () => {
+    await afterData();
   });
 
   test("I can query using the appDataRefresh query method", async () => {
@@ -42,7 +45,7 @@ describe("integration/runs/bigquery/appDataRefresh", () => {
         appId: app.id,
         refreshQuery: "",
       })
-    ).rejects.toThrow(/A SQL query string is required./);
+    ).rejects.toThrow(/syntax error at or near \"SELECT\"/);
   });
   test("I show a good error with a query that has too many sql statements", async () => {
     const app = await App.findOne();
@@ -51,8 +54,6 @@ describe("integration/runs/bigquery/appDataRefresh", () => {
         appId: app.id,
         refreshQuery: "SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;",
       })
-    ).rejects.toThrow(
-      /Syntax error: Expected end of input but got keyword SELECT/
-    );
+    ).rejects.toThrow('syntax error at or near "SELECT"');
   });
 });
