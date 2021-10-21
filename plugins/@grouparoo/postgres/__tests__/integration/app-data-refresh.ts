@@ -45,7 +45,7 @@ describe("integration/runs/postgres", () => {
         appId: app.id,
         refreshQuery: "",
       })
-    ).rejects.toThrow(/syntax error at or near \"SELECT\"/);
+    ).rejects.toThrow(/please provide a query/);
   });
   test("I show a good error with a query that has too many sql statements", async () => {
     const app = await App.findOne();
@@ -54,6 +54,6 @@ describe("integration/runs/postgres", () => {
         appId: app.id,
         refreshQuery: "SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;",
       })
-    ).rejects.toThrow('syntax error at or near "SELECT"');
+    ).rejects.toThrow(/only provide a single query/);
   });
 });
