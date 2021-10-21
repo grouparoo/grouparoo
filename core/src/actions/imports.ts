@@ -1,6 +1,6 @@
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Import } from "../models/Import";
-import { Property } from "../models/Property";
 import { APIData } from "../modules/apiData";
 
 export class ImportsList extends AuthenticatedAction {
@@ -29,11 +29,13 @@ export class ImportsList extends AuthenticatedAction {
     if (params.recordId) where["recordId"] = params.recordId;
 
     const search = {
+      include: [GrouparooRecord],
       where,
       limit: params.limit,
       offset: params.offset,
       order: params.order,
     };
+
     const total = await Import.count({ where });
     const imports = await Import.findAll(search);
 

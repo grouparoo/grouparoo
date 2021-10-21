@@ -19,6 +19,7 @@ import { Op } from "sequelize";
 import { ImportOps } from "../modules/ops/import";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
+import { GrouparooModel } from "./GrouparooModel";
 
 export interface ImportData {
   [key: string]: any;
@@ -153,12 +154,15 @@ export class Import extends CommonModel<Import> {
     delete data._meta;
     delete rawData._meta;
 
+    const record = await this.$get("record");
+
     return {
       // IDs
       id: this.id,
       creatorType: this.creatorType,
       creatorId: this.creatorId,
       recordId: this.recordId,
+      modelId: record.modelId,
 
       //data
       data,

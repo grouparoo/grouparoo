@@ -186,6 +186,14 @@ export default function ExportsList(props) {
                       <a>{_export.destination.name}</a>
                     </EnterpriseLink>
                     <br />
+                    Model:{" "}
+                    <EnterpriseLink
+                      href="/model/[modelId]/edit"
+                      as={`/model/${_export.destination.modelId}/edit`}
+                    >
+                      <a>{_export.destination.modelId}</a>
+                    </EnterpriseLink>
+                    <br />
                     To Delete?{" "}
                     <Badge variant={_export.toDelete ? "danger" : "secondary"}>
                       {_export.toDelete.toString()}

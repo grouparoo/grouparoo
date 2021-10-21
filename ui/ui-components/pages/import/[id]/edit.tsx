@@ -15,7 +15,10 @@ export default function Page(props) {
   const {
     groups,
     _import,
-  }: { groups: Models.GroupType[]; _import: Models.ImportType } = props;
+  }: {
+    groups: Models.GroupType[];
+    _import: Models.ImportType;
+  } = props;
 
   const errorMetadata = _import.errorMetadata
     ? JSON.parse(_import.errorMetadata)
@@ -35,6 +38,11 @@ export default function Page(props) {
         <Card.Body>
           <h2>Details</h2>
           <p>
+            Model:{" "}
+            <Link href={`/model/${_import.modelId}/edit`}>
+              <a>{_import.modelId}</a>
+            </Link>
+            <br />
             Creator:{" "}
             {_import.creatorType === "run" ? (
               <Link href="/run/[id]/edit" as={`/run/${_import.creatorId}/edit`}>
@@ -187,6 +195,7 @@ Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { import: _import } = await execApi("get", `/import/${id}`);
+
   const { groups } = await execApi("get", `/groups`);
   return { _import, groups };
 };
