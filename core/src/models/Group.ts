@@ -401,8 +401,8 @@ export class Group extends LoggedModel<Group> {
     return RunOps.stopPreviousRuns(this);
   }
 
-  async addRecord(record: GrouparooRecord, force = true) {
-    await GroupOps.updateRecords([record.id], "group", this.id, force);
+  async addRecord(record: GrouparooRecord) {
+    await GroupOps.updateRecords([record.id], "group", this.id);
 
     await GroupMember.create({
       groupId: this.id,
@@ -410,14 +410,14 @@ export class Group extends LoggedModel<Group> {
     });
   }
 
-  async removeRecord(record: GrouparooRecord, force = false) {
+  async removeRecord(record: GrouparooRecord) {
     const membership = await GroupMember.findOne({
       where: { groupId: this.id, recordId: record.id },
     });
 
     if (!membership) throw new Error("record is not a member of this group");
 
-    await GroupOps.updateRecords([record.id], "group", this.id, force);
+    await GroupOps.updateRecords([record.id], "group", this.id);
 
     await membership.destroy();
   }

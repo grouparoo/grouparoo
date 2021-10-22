@@ -16,7 +16,6 @@ export namespace GroupOps {
     recordIds: string[],
     creatorType: string,
     creatorId: string,
-    force: boolean,
     destinationId?: string
   ) {
     const bulkData = [];
@@ -35,7 +34,7 @@ export namespace GroupOps {
 
     const _imports = await Import.bulkCreate(bulkData);
 
-    await RecordOps.markPendingByIds(recordIds, force);
+    await RecordOps.markPendingByIds(recordIds, false);
 
     return _imports;
   }
@@ -277,7 +276,6 @@ export namespace GroupOps {
       recordsNeedingGroupMembership.map((p) => p.id),
       "run",
       run.id,
-      force,
       destinationId
     );
 
@@ -327,7 +325,6 @@ export namespace GroupOps {
       groupMembersToRemove.map((member) => member.recordId),
       "run",
       run.id,
-      false,
       destinationId
     );
 
@@ -367,8 +364,7 @@ export namespace GroupOps {
     await updateRecords(
       groupMembersToRemove.map((member) => member.recordId),
       "run",
-      run.id,
-      false
+      run.id
     );
 
     const now = new Date();

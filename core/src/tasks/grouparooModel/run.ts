@@ -4,7 +4,6 @@ import { GrouparooModel } from "../../models/GrouparooModel";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { RecordProperty } from "../../models/RecordProperty";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { Op } from "sequelize";
 import { Import } from "../../models/Import";
 import { GroupMember } from "../../models/GroupMember";
 import { RecordOps } from "../../modules/ops/record";
@@ -38,8 +37,6 @@ export class RunInternalRun extends CLSTask {
     });
     if (!model) return;
 
-    const force = run.force || false;
-
     const records = await GrouparooRecord.findAll({
       where: { modelId: model.id },
       order: [["createdAt", "asc"]],
@@ -51,7 +48,7 @@ export class RunInternalRun extends CLSTask {
     if (records.length > 0) {
       await RecordOps.markPendingByIds(
         records.map((r) => r.id),
-        force
+        false
       );
 
       // create imports to track the lineage of the record property values
