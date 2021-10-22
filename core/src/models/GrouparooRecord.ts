@@ -271,7 +271,6 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   }
 
   @BeforeCreate
-  @BeforeSave
   static async ensureModel(instance: GrouparooRecord) {
     const model = await GrouparooModel.findOne({
       where: { id: instance.modelId },
