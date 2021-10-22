@@ -1,22 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api } from "actionhero";
-import { group } from "console";
 import {
-  plugin,
   GrouparooRecord,
-  RecordProperty,
-  Property,
   Group,
-  GroupMember,
-  App,
-  Source,
-  Log,
   GrouparooModel,
   Destination,
 } from "../../../src";
 import { Op } from "sequelize";
-import { RecordOps } from "../../../src/modules/ops/record";
-import { not } from "sequelize/types/lib/operators";
 
 describe("models/record", () => {
   let model: GrouparooModel;
