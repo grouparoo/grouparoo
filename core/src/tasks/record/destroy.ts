@@ -27,7 +27,7 @@ export class RecordDestroy extends CLSTask {
     });
     if (pendingExports > 0) return;
 
-    if (["draft", "pending", "ready"].includes(record.state)) {
+    if (record.state === "ready") {
       // clear groups and export
       // when the export is done, this task will be enqueued again to destroy it
       const oldGroups = await record.$get("groups");
