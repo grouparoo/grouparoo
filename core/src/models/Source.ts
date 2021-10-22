@@ -43,6 +43,7 @@ import {
 } from "./Property";
 import { Run } from "./Run";
 import { GrouparooModel } from "./GrouparooModel";
+import { ModelGuard } from "../modules/modelGuard";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
@@ -386,12 +387,7 @@ export class Source extends LoggedModel<Source> {
   @BeforeCreate
   @BeforeSave
   static async ensureModel(instance: Source) {
-    const model = await GrouparooModel.findOne({
-      where: { id: instance.modelId },
-    });
-    if (!model) {
-      throw new Error(`cannot find model with id ${instance.modelId}`);
-    }
+    return ModelGuard.check(instance);
   }
 
   @BeforeCreate

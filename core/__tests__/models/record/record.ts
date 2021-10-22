@@ -63,8 +63,17 @@ describe("models/record", () => {
   test("records require a valid modelId", async () => {
     expect(GrouparooRecord.create()).rejects.toThrow(/modelId cannot be null/);
     expect(GrouparooRecord.create({ modelId: "foo" })).rejects.toThrow(
-      /cannot find model with id foo/
+      /cannot find model with id "foo"/
     );
+  });
+
+  test("records cannot change models", async () => {
+    const record = await GrouparooRecord.create({ modelId: model.id });
+    await expect(record.update({ modelId: "foo" })).rejects.toThrow(
+      /cannot change models/
+    );
+
+    await record.destroy();
   });
 
   describe("findOrCreateByUniqueRecordProperties", () => {
