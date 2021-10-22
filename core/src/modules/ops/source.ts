@@ -261,6 +261,7 @@ export namespace SourceOps {
         records,
         recordIds: records.map((p) => p.id),
       });
+      console.log("importProperties result", response);
 
       await applyNonUniqueMappedResultsToAllRecords(response, {
         records,

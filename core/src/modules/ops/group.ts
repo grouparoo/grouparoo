@@ -16,7 +16,6 @@ export namespace GroupOps {
     recordIds: string[],
     creatorType: string,
     creatorId: string,
-    force: boolean,
     destinationId?: string
   ) {
     const bulkData = [];
@@ -35,7 +34,7 @@ export namespace GroupOps {
 
     const _imports = await Import.bulkCreate(bulkData);
 
-    await RecordOps.markPendingByIds(recordIds, force);
+    await RecordOps.markPendingByIds(recordIds, false);
 
     return _imports;
   }
@@ -199,7 +198,6 @@ export namespace GroupOps {
     limit = 1000,
     offset = 0,
     highWaterMark: number = null,
-    force = false,
     destinationId?: string
   ) {
     let records: RecordMultipleAssociationShim[];
@@ -268,16 +266,14 @@ export namespace GroupOps {
     const existingGroupMemberRecordIds = groupMembers.map(
       (member) => member.recordId
     );
-    const recordsNeedingGroupMembership =
-      force || destinationId
-        ? records
-        : records.filter((p) => !existingGroupMemberRecordIds.includes(p.id));
+    const recordsNeedingGroupMembership = destinationId
+      ? records
+      : records.filter((p) => !existingGroupMemberRecordIds.includes(p.id));
 
     await updateRecords(
       recordsNeedingGroupMembership.map((p) => p.id),
       "run",
       run.id,
-      force,
       destinationId
     );
 
@@ -327,7 +323,6 @@ export namespace GroupOps {
       groupMembersToRemove.map((member) => member.recordId),
       "run",
       run.id,
-      false,
       destinationId
     );
 
@@ -367,8 +362,7 @@ export namespace GroupOps {
     await updateRecords(
       groupMembersToRemove.map((member) => member.recordId),
       "run",
-      run.id,
-      false
+      run.id
     );
 
     const now = new Date();

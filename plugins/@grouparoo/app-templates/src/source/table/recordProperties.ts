@@ -105,6 +105,7 @@ export const getRecordProperties: GetRecordPropertiesMethod = ({
       isArray,
       primaryKeys: Object.keys(primaryKeysHash),
     });
+    console.log("responsesByPrimary", responsesByPrimaryKey);
 
     for (const pk in responsesByPrimaryKey) {
       primaryKeysHash[pk].forEach((recordId) => {
@@ -127,6 +128,8 @@ export const getRecordProperties: GetRecordPropertiesMethod = ({
         delete responsesById[recordId];
       }
     }
+
+    console.log("final responsesById", responsesById);
 
     return responsesById;
   };

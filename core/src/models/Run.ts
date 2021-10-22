@@ -119,11 +119,6 @@ export class Run extends CommonModel<Run> {
   @Column
   percentComplete: number;
 
-  @Default(false)
-  @AllowNull(false)
-  @Column
-  force: boolean;
-
   @AllowNull(true)
   @Column
   destinationId: string;
@@ -268,7 +263,6 @@ export class Run extends CommonModel<Run> {
       memberLimit: this.memberLimit,
       memberOffset: this.memberOffset,
       method: this.method,
-      force: this.force,
       destinationId: this.destinationId,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),

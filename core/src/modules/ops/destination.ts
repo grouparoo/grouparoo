@@ -44,15 +44,15 @@ export namespace DestinationOps {
   /**
    * Export all the Group Members of the Groups that this Destination is Tracking
    */
-  export async function exportMembers(destination: Destination, force = false) {
+  export async function exportMembers(destination: Destination) {
     if (destination.collection === "none") {
       // nothing to do
     } else if (destination.collection === "group") {
       const group = await destination.$get("group");
-      if (group) return group.run(force, destination.id);
+      if (group) return group.run(destination.id);
     } else if (destination.collection === "model") {
       const model = await destination.$get("model");
-      if (model) return model.run(force, destination.id);
+      if (model) return model.run(destination.id);
     } else {
       throw new Error(`cannot export members for a ${destination.collection}`);
     }
@@ -103,28 +103,25 @@ export namespace DestinationOps {
       }
     }
 
-    oldRun = await runDestinationCollection(destination, false); // old collection
+    oldRun = await runDestinationCollection(destination); // old collection
     await destination.update({
       collection,
       groupId: collection !== "group" ? null : collectionId,
     });
-    newRun = await runDestinationCollection(destination, false); // new collection
+    newRun = await runDestinationCollection(destination); // new collection
 
     return { oldRun, newRun };
   }
 
-  async function runDestinationCollection(
-    destination: Destination,
-    force: boolean
-  ) {
+  async function runDestinationCollection(destination: Destination) {
     if (destination.collection === "none") {
       // nothing to do
     } else if (destination.collection === "group" && destination.groupId) {
       const group = await Group.findById(destination.groupId);
-      if (group) return RunOps.run(group, force, destination.id);
+      if (group) return RunOps.run(group, destination.id);
     } else if (destination.collection === "model") {
       const model = await GrouparooModel.findById(destination.modelId);
-      if (model) return RunOps.run(model, force, destination.id);
+      if (model) return RunOps.run(model, destination.id);
     } else {
       throw new Error(
         `unknown destination collection ${destination.collection}`
