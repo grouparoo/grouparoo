@@ -60,14 +60,50 @@ describe("modules/status", () => {
 
       expect(metrics[3]).toEqual(
         expect.objectContaining({
-          collection: "cluster",
-          topic: "node_env",
+          collection: "sequelize",
+          topic: "dialect",
+          aggregation: "exact",
+          value: "postgres",
+        })
+      );
+
+      expect(metrics[4]).toEqual(
+        expect.objectContaining({
+          collection: "GROUPAROO_TELEMETRY_ENABLED",
+          topic: "env",
+          aggregation: "exact",
+          value: "false",
+        })
+      );
+
+      expect(metrics[5]).toEqual(
+        expect.objectContaining({
+          collection: "NODE_ENV",
+          topic: "env",
           aggregation: "exact",
           value: "test",
         })
       );
 
-      expect(metrics[4]).toEqual(
+      expect(metrics[6]).toEqual(
+        expect.objectContaining({
+          collection: "GROUPAROO_SPEC_HELPER_LOAD_PATH",
+          topic: "env",
+          aggregation: "exact",
+          value: "src",
+        })
+      );
+
+      expect(metrics[7]).toEqual(
+        expect.objectContaining({
+          collection: "GROUPAROO_RUN_MODE",
+          topic: "env",
+          aggregation: "exact",
+          value: "x",
+        })
+      );
+
+      expect(metrics[8]).toEqual(
         expect.objectContaining({
           collection: "cluster",
           topic: "@grouparoo/core",
@@ -76,7 +112,7 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[5]).toEqual(
+      expect(metrics[9]).toEqual(
         expect.objectContaining({
           collection: "totals",
           topic: "App",
