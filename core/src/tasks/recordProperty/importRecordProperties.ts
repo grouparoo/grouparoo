@@ -117,7 +117,6 @@ export class ImportRecordProperties extends RetryableTask {
 
       const orderedRecords: GrouparooRecord[] = [];
       const orderedHashes: any[] = [];
-      console.log(orderedHashes);
       for (const recordId in propertyValuesBatch) {
         const record = recordsToImport.find((p) => p.id === recordId);
         orderedRecords.push(record);
