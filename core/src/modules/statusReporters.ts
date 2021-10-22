@@ -89,25 +89,19 @@ export namespace StatusReporters {
 
       export async function env(): Promise<StatusMetric[]> {
         const metrics: StatusMetric[] = [];
+        const envVars = [
+          ["NODE_ENV", "development"],
+          ["GROUPAROO_CLOUD", "false"],
+          ["GROUPAROO_DISTRIBUTION", "unknown"],
+          ["GROUPAROO_RUN_MODE", "unknown"],
+        ];
 
-        metrics.push({
-          collection: "NODE_ENV",
-          topic: "env",
-          aggregation: "exact",
-          value: nodeEnv,
-        });
-
-        for (const [k, v] of Object.entries(process.env)) {
-          const key = k.toUpperCase();
-          if (!key.match(/^GROUPAROO_/)) continue;
-          if (key.match(/^GROUPAROO_OPTION_/)) continue;
-          if (["GROUPAROO_ENV_CONFIG_FILE"].includes(key)) continue;
-
+        for (const [k, defaultValue] of envVars) {
           metrics.push({
             collection: k,
-            topic: `env`,
+            topic: "env",
             aggregation: "exact",
-            value: v,
+            value: process.env[k] ?? defaultValue,
           });
         }
 

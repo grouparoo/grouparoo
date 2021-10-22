@@ -317,6 +317,28 @@ describe("modules/status", () => {
               timestamp: expect.any(Number),
             },
           ],
+          GROUPAROO_CLOUD: [
+            {
+              metric: {
+                aggregation: "exact",
+                collection: "GROUPAROO_CLOUD",
+                topic: "env",
+                value: "false",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+          GROUPAROO_DISTRIBUTION: [
+            {
+              metric: {
+                aggregation: "exact",
+                collection: "GROUPAROO_DISTRIBUTION",
+                topic: "env",
+                value: "unknown",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
           GROUPAROO_RUN_MODE: [
             {
               metric: {
@@ -324,28 +346,6 @@ describe("modules/status", () => {
                 collection: "GROUPAROO_RUN_MODE",
                 topic: "env",
                 value: "x",
-              },
-              timestamp: expect.any(Number),
-            },
-          ],
-          GROUPAROO_SPEC_HELPER_LOAD_PATH: [
-            {
-              metric: {
-                aggregation: "exact",
-                collection: "GROUPAROO_SPEC_HELPER_LOAD_PATH",
-                topic: "env",
-                value: "src",
-              },
-              timestamp: expect.any(Number),
-            },
-          ],
-          GROUPAROO_TELEMETRY_ENABLED: [
-            {
-              metric: {
-                aggregation: "exact",
-                collection: "GROUPAROO_TELEMETRY_ENABLED",
-                topic: "env",
-                value: "false",
               },
               timestamp: expect.any(Number),
             },

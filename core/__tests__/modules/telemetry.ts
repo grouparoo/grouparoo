@@ -79,7 +79,16 @@ describe("modules/status", () => {
 
       expect(metrics).toContainEqual(
         expect.objectContaining({
-          collection: "GROUPAROO_TELEMETRY_ENABLED",
+          collection: "GROUPAROO_RUN_MODE",
+          topic: "env",
+          aggregation: "exact",
+          value: "x",
+        })
+      );
+
+      expect(metrics).toContainEqual(
+        expect.objectContaining({
+          collection: "GROUPAROO_CLOUD",
           topic: "env",
           aggregation: "exact",
           value: "false",
@@ -88,19 +97,10 @@ describe("modules/status", () => {
 
       expect(metrics).toContainEqual(
         expect.objectContaining({
-          collection: "GROUPAROO_SPEC_HELPER_LOAD_PATH",
+          collection: "GROUPAROO_DISTRIBUTION",
           topic: "env",
           aggregation: "exact",
-          value: "src",
-        })
-      );
-
-      expect(metrics).toContainEqual(
-        expect.objectContaining({
-          collection: "GROUPAROO_RUN_MODE",
-          topic: "env",
-          aggregation: "exact",
-          value: "x",
+          value: "unknown",
         })
       );
 
