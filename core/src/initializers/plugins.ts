@@ -78,6 +78,7 @@ export class Plugins extends Initializer {
         name: uiPlugin.name,
         icon: "/public/@grouparoo/logo.png",
       });
+      process.env.GROUPAROO_UI_EDITION = uiPlugin.name;
     }
   }
 

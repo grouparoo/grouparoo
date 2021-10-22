@@ -94,6 +94,8 @@ export namespace StatusReporters {
           ["GROUPAROO_CLOUD", "false"],
           ["GROUPAROO_DISTRIBUTION", "unknown"],
           ["GROUPAROO_RUN_MODE", "unknown"],
+          ["GROUPAROO_RUN_MODE", "unknown"],
+          ["GROUPAROO_UI_EDITION", "unknown"],
         ];
 
         for (const [k, defaultValue] of envVars) {
