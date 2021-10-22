@@ -100,7 +100,21 @@ describe("models/source", () => {
           appId: app.id,
           modelId: "foo",
         })
-      ).rejects.toThrow(/cannot find model with id foo/);
+      ).rejects.toThrow(/cannot find model with id "foo"/);
+    });
+
+    test("sources cannot change models", async () => {
+      const source = await Source.create({
+        type: "test-plugin-import",
+        name: "test source",
+        appId: app.id,
+        modelId: model.id,
+      });
+      await expect(source.update({ modelId: "foo" })).rejects.toThrow(
+        /cannot change models/
+      );
+
+      await source.destroy();
     });
 
     test("a new source will have a '' name", async () => {

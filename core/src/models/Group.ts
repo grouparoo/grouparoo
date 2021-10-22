@@ -41,6 +41,7 @@ import { Setting } from "./Setting";
 import { GrouparooModel } from "./GrouparooModel";
 import { Source } from "./Source";
 import { RunOps } from "../modules/ops/runs";
+import { ModelGuard } from "../modules/modelGuard";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -733,32 +734,9 @@ export class Group extends LoggedModel<Group> {
   }
 
   @BeforeCreate
-  static async ensureModelNotDeleted(instance: Group) {
-    const model = await GrouparooModel.findOne({
-      where: { id: instance.modelId },
-    });
-    if (!model) {
-      throw new Error(`cannot find ready model with id ${instance.modelId}`);
-    }
-  }
-
   @BeforeSave
   static async ensureModel(instance: Group) {
-    if (instance.state === "deleted") {
-      const model = await GrouparooModel.scope(null).findOne({
-        where: { id: instance.modelId },
-      });
-      if (!model) {
-        throw new Error(`cannot find model with id ${instance.modelId}`);
-      }
-    } else {
-      const model = await GrouparooModel.findOne({
-        where: { id: instance.modelId },
-      });
-      if (!model) {
-        throw new Error(`cannot find ready model with id ${instance.modelId}`);
-      }
-    }
+    return ModelGuard.check(instance);
   }
 
   @BeforeSave

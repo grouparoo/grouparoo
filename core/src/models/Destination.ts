@@ -40,6 +40,7 @@ import { Mapping } from "./Mapping";
 import { Option } from "./Option";
 import { Property } from "./Property";
 import { GrouparooModel } from "./GrouparooModel";
+import { ModelGuard } from "../modules/modelGuard";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -627,32 +628,9 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeCreate
-  static async ensureModelNotDeleted(instance: Destination) {
-    const model = await GrouparooModel.findOne({
-      where: { id: instance.modelId },
-    });
-    if (!model) {
-      throw new Error(`cannot find ready model with id ${instance.modelId}`);
-    }
-  }
-
   @BeforeSave
   static async ensureModel(instance: Destination) {
-    if (instance.state === "deleted") {
-      const model = await GrouparooModel.scope(null).findOne({
-        where: { id: instance.modelId },
-      });
-      if (!model) {
-        throw new Error(`cannot find model with id ${instance.modelId}`);
-      }
-    } else {
-      const model = await GrouparooModel.findOne({
-        where: { id: instance.modelId },
-      });
-      if (!model) {
-        throw new Error(`cannot find ready model with id ${instance.modelId}`);
-      }
-    }
+    return ModelGuard.check(instance);
   }
 
   @BeforeCreate

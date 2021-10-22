@@ -27,6 +27,7 @@ import { GroupRule } from "./GroupRule";
 import { RecordConfigurationObject } from "../classes/codeConfig";
 import { Source } from "./Source";
 import { GrouparooModel } from "./GrouparooModel";
+import { ModelGuard } from "../modules/modelGuard";
 
 const STATES = ["draft", "pending", "ready", "deleted"] as const;
 
@@ -273,12 +274,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   @BeforeCreate
   @BeforeSave
   static async ensureModel(instance: GrouparooRecord) {
-    const model = await GrouparooModel.findOne({
-      where: { id: instance.modelId },
-    });
-    if (!model) {
-      throw new Error(`cannot find model with id ${instance.modelId}`);
-    }
+    return ModelGuard.check(instance);
   }
 
   @BeforeSave

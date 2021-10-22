@@ -112,7 +112,20 @@ describe("models/group", () => {
         type: "manual",
         modelId: "foo",
       })
-    ).rejects.toThrow(/cannot find ready model with id foo/);
+    ).rejects.toThrow(/cannot find model with id "foo"/);
+  });
+
+  test("groups cannot change models", async () => {
+    const group = await Group.create({
+      name: "doomed group",
+      type: "manual",
+      modelId: model.id,
+    });
+    await expect(group.update({ modelId: "foo" })).rejects.toThrow(
+      /cannot change models/
+    );
+
+    await group.destroy();
   });
 
   describe("run()", () => {
