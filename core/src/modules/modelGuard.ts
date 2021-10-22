@@ -24,7 +24,7 @@ export namespace ModelGuard {
         );
       }
     } else {
-      // we are updating an existing record
+      // we are updating an existing instance
       const changes = instance.changed();
       if (!changes) return;
       if (changes.includes("modelId")) {
