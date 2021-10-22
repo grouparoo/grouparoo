@@ -514,9 +514,17 @@ export class Destination extends LoggedModel<Destination> {
     record: GrouparooRecord,
     sync = false,
     force = false,
-    saveExports = true
+    saveExports = true,
+    toDelete?: boolean
   ) {
-    return DestinationOps.exportRecord(this, record, sync, force, saveExports);
+    return DestinationOps.exportRecord(
+      this,
+      record,
+      sync,
+      force,
+      saveExports,
+      toDelete
+    );
   }
 
   async sendExport(_export: Export, sync = false) {

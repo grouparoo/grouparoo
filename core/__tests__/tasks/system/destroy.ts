@@ -13,11 +13,12 @@ import { api, task, specHelper } from "actionhero";
 
 describe("tasks/destroy", () => {
   let model: GrouparooModel;
+  let source: Source;
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   describe("destroy", () => {
     beforeAll(async () => {
-      ({ model } = await helper.factories.properties());
+      ({ model, source } = await helper.factories.properties());
     });
 
     beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
@@ -29,13 +30,13 @@ describe("tasks/destroy", () => {
     });
 
     test("it will enqueue destroy tasks for deleted properties", async () => {
-      const source: Source = await helper.factories.source();
-      await source.setOptions({ table: "some_table" });
-      await source.setMapping({ id: "userId" });
-      await source.update({ state: "ready" });
+      const newSource = await helper.factories.source();
+      await newSource.setOptions({ table: "some_table" });
+      await newSource.setMapping({ id: "userId" });
+      await newSource.update({ state: "ready" });
 
       const property: Property = await helper.factories.property(
-        source,
+        newSource,
         {},
         { column: "col" }
       );
@@ -60,7 +61,7 @@ describe("tasks/destroy", () => {
     });
 
     test("it will enqueue destroy tasks for deleted sources", async () => {
-      const source = await helper.factories.source(undefined, {
+      const newSource = await helper.factories.source(undefined, {
         state: "deleted",
       });
 
@@ -68,7 +69,7 @@ describe("tasks/destroy", () => {
 
       const found = await specHelper.findEnqueuedTasks("source:destroy");
       expect(found.length).toEqual(1);
-      expect(found[0].args[0].sourceId).toBe(source.id);
+      expect(found[0].args[0].sourceId).toBe(newSource.id);
     });
 
     test("it will enqueue destroy tasks for deleted destinations", async () => {
@@ -106,77 +107,17 @@ describe("tasks/destroy", () => {
       expect(found[0].args[0].appId).toBe(app.id);
     });
 
-    describe("records", () => {
-      let userIdProperty: Property;
-      beforeAll(async () => {
-        userIdProperty = await Property.findOne({ where: { key: "userId" } });
-        expect(userIdProperty.directlyMapped).toBe(true);
-      });
-
-      test("it will enqueue destroy task for records with a directlyMapped property set to null", async () => {
-        const record: GrouparooRecord = await helper.factories.record();
-        await record.addOrUpdateProperties({
-          userId: [null],
-          isVIP: [true],
-          ltv: [213],
-        });
-
-        await RecordProperty.update(
-          { state: "ready" },
-          { where: { recordId: record.id } }
-        );
-        await record.update({ state: "ready" });
-
-        await specHelper.runTask("destroy", {});
-
-        const found = await specHelper.findEnqueuedTasks("record:destroy");
-        expect(found.length).toEqual(1);
-        expect(found[0].args[0].recordId).toBe(record.id);
-
-        await record.destroy();
-      });
-
-      test("does not enqueue destroy task for records that aren't done importing", async () => {
-        const record: GrouparooRecord = await helper.factories.record();
-        await record.addOrUpdateProperties({
-          userId: [null],
-          isVIP: [true],
-          ltv: [213],
-        });
-
-        await RecordProperty.update(
-          { state: "pending" },
-          { where: { recordId: record.id } }
-        );
-        await record.update({ state: "pending" });
-
-        await specHelper.runTask("destroy", {});
-
-        const found = await specHelper.findEnqueuedTasks("record:destroy");
-        expect(found.length).toEqual(0);
-
-        await record.destroy();
-      });
-
-      describe("with multiple models", () => {
-        let model2: GrouparooModel;
-        let source2: Source;
-
+    describe.each(["ready", "deleted"] as const)(
+      `records (%s)`,
+      (recordState) => {
+        let userIdProperty: Property;
         beforeAll(async () => {
-          model2 = await helper.factories.model({ name: "admins" });
-
-          source2 = await helper.factories.source(null, { modelId: model2.id });
-          await source2.setOptions({ table: "test table" });
-          await source2.bootstrapUniqueProperty("adminId", "integer", "id");
-          await source2.setMapping({ id: "adminId" });
-          await source2.update({ state: "ready" });
+          userIdProperty = await Property.findOne({ where: { key: "userId" } });
+          expect(userIdProperty.directlyMapped).toBe(true);
         });
 
-        test("it will only destroy records from the correct model when there is a null directlyMapped property", async () => {
-          const record: GrouparooRecord = await helper.factories.record({
-            modelId: "mod_profiles",
-          });
-
+        test("it will enqueue destroy task for records with a directlyMapped property set to null", async () => {
+          const record: GrouparooRecord = await helper.factories.record();
           await record.addOrUpdateProperties({
             userId: [null],
             isVIP: [true],
@@ -187,65 +128,145 @@ describe("tasks/destroy", () => {
             { state: "ready" },
             { where: { recordId: record.id } }
           );
-          await record.update({ state: "ready" });
-
-          const foreignRecord = await helper.factories.record({
-            modelId: model2.id,
-          });
-          await foreignRecord.addOrUpdateProperties({ adminId: [1000] });
+          await record.update({ state: recordState });
 
           await specHelper.runTask("destroy", {});
 
           const found = await specHelper.findEnqueuedTasks("record:destroy");
           expect(found.length).toEqual(1);
           expect(found[0].args[0].recordId).toBe(record.id);
-          await foreignRecord.reload();
 
           await record.destroy();
-          await foreignRecord.destroy();
         });
 
-        // this test should be last
-        test("it will enqueue destroy task by model for records when there is no directlyMapped property", async () => {
-          const record: GrouparooRecord = await helper.factories.record({
-            modelId: model.id,
-          });
+        test("does not enqueue destroy task for records that aren't done importing", async () => {
+          const record: GrouparooRecord = await helper.factories.record();
           await record.addOrUpdateProperties({
-            userId: [1000],
+            userId: [null],
             isVIP: [true],
             ltv: [213],
           });
 
-          const foreignRecord = await helper.factories.record({
-            modelId: model2.id,
-          });
-          await foreignRecord.addOrUpdateProperties({ adminId: [1000] });
-
           await RecordProperty.update(
-            { state: "ready" },
+            { state: "pending" },
             { where: { recordId: record.id } }
           );
-          await record.update({ state: "ready" });
+          await record.update({ state: "pending" });
 
           await specHelper.runTask("destroy", {});
 
-          let found = await specHelper.findEnqueuedTasks("record:destroy");
+          const found = await specHelper.findEnqueuedTasks("record:destroy");
           expect(found.length).toEqual(0);
 
-          // now remove the directly mapped property
-          // @ts-ignore
-          await userIdProperty.destroy({ hooks: false });
-
-          await specHelper.runTask("destroy", {});
-
-          found = await specHelper.findEnqueuedTasks("record:destroy");
-          expect(found.length).toEqual(1);
-          expect(found[0].args[0].recordId).toBe(record.id);
-
           await record.destroy();
-          await foreignRecord.destroy();
         });
-      });
-    });
+
+        describe("with multiple models", () => {
+          let model2: GrouparooModel;
+          let source2: Source;
+
+          beforeAll(async () => {
+            model2 = await helper.factories.model({ name: "admins" });
+
+            source2 = await helper.factories.source(null, {
+              modelId: model2.id,
+            });
+            await source2.setOptions({ table: "test table" });
+            await source2.bootstrapUniqueProperty("adminId", "integer", "id");
+            await source2.setMapping({ id: "adminId" });
+            await source2.update({ state: "ready" });
+          });
+
+          afterAll(async () => {
+            await source2.destroy();
+            await model2.destroy();
+          });
+
+          test("it will only destroy records from the correct model when there is a null directlyMapped property", async () => {
+            const record: GrouparooRecord = await helper.factories.record({
+              modelId: "mod_profiles",
+            });
+
+            await record.addOrUpdateProperties({
+              userId: [null],
+              isVIP: [true],
+              ltv: [213],
+            });
+
+            await RecordProperty.update(
+              { state: "ready" },
+              { where: { recordId: record.id } }
+            );
+            await record.update({ state: recordState });
+
+            const foreignRecord = await helper.factories.record({
+              modelId: model2.id,
+            });
+            await foreignRecord.addOrUpdateProperties({ adminId: [1000] });
+
+            await specHelper.runTask("destroy", {});
+
+            const found = await specHelper.findEnqueuedTasks("record:destroy");
+            expect(found.length).toEqual(1);
+            expect(found[0].args[0].recordId).toBe(record.id);
+            await foreignRecord.reload();
+
+            await record.destroy();
+            await foreignRecord.destroy();
+          });
+
+          describe("delete user_id property", () => {
+            afterAll(async () => {
+              userIdProperty = await source.bootstrapUniqueProperty(
+                "userId",
+                "integer",
+                "id"
+              );
+              await userIdProperty.update({ directlyMapped: true });
+            });
+
+            test("it will enqueue destroy task by model for records when there is no directlyMapped property", async () => {
+              const record: GrouparooRecord = await helper.factories.record({
+                modelId: model.id,
+              });
+              await record.addOrUpdateProperties({
+                userId: [1000],
+                isVIP: [true],
+                ltv: [213],
+              });
+
+              const foreignRecord = await helper.factories.record({
+                modelId: model2.id,
+              });
+              await foreignRecord.addOrUpdateProperties({ adminId: [1000] });
+
+              await RecordProperty.update(
+                { state: "ready" },
+                { where: { recordId: record.id } }
+              );
+              await record.update({ state: recordState });
+
+              await specHelper.runTask("destroy", {});
+
+              let found = await specHelper.findEnqueuedTasks("record:destroy");
+              expect(found.length).toEqual(0);
+
+              // now remove the directly mapped property
+              // @ts-ignore
+              await userIdProperty.destroy({ hooks: false });
+
+              await specHelper.runTask("destroy", {});
+
+              found = await specHelper.findEnqueuedTasks("record:destroy");
+              expect(found.length).toEqual(1);
+              expect(found[0].args[0].recordId).toBe(record.id);
+
+              await record.destroy();
+              await foreignRecord.destroy();
+            });
+          });
+        });
+      }
+    );
   });
 });

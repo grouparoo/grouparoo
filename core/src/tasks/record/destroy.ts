@@ -17,7 +17,7 @@ export class RecordDestroy extends CLSTask {
 
   async runWithinTransaction({ recordId }: { recordId: string }) {
     const record = await GrouparooRecord.findOne({
-      where: { id: recordId, state: "ready" },
+      where: { id: recordId, state: ["ready", "deleted"] },
     });
     if (!record) return;
 
@@ -29,12 +29,13 @@ export class RecordDestroy extends CLSTask {
     });
     if (pendingExports > 0) return;
 
-    const oldGroups = await record.$get("groups");
-    if (oldGroups.length > 0) {
+    if (record.state === "ready") {
       // clear groups and export
       // when the export is done, this task will be enqueued again to destroy it
+      const oldGroups = await record.$get("groups");
       await GrouparooRecord.destroyGroupMembers(record);
-      await record.export(false, oldGroups, true, false);
+      await record.update({ state: "deleted" });
+      await record.export(false, oldGroups, true, false, true);
     } else {
       // use "destroy" to clean up related models
       await record.destroy();

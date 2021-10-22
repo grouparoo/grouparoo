@@ -28,7 +28,7 @@ import { RecordConfigurationObject } from "../classes/codeConfig";
 import { Source } from "./Source";
 import { GrouparooModel } from "./GrouparooModel";
 
-const STATES = ["draft", "pending", "ready"] as const;
+const STATES = ["draft", "pending", "ready", "deleted"] as const;
 
 const STATE_TRANSITIONS = [
   { from: "draft", to: "pending", checks: [] },
@@ -42,6 +42,9 @@ const STATE_TRANSITIONS = [
     ],
   },
   { from: "ready", to: "pending", checks: [] },
+  { from: "draft", to: "deleted", checks: [] },
+  { from: "pending", to: "deleted", checks: [] },
+  { from: "ready", to: "deleted", checks: [] },
 ];
 
 @Table({ tableName: "records", paranoid: false })
@@ -140,7 +143,9 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   }
 
   async buildNullProperties(state: GrouparooRecord["state"] = "pending") {
-    return RecordOps.buildNullProperties([this], state);
+    if (state !== "deleted") {
+      return RecordOps.buildNullProperties([this], state);
+    }
   }
 
   async markPending() {
@@ -179,9 +184,17 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
     force = false,
     oldGroupsOverride?: Group[],
     saveExports = true,
-    sync = true
+    sync = true,
+    toDelete?: boolean
   ) {
-    return RecordOps._export(this, force, oldGroupsOverride, saveExports, sync);
+    return RecordOps._export(
+      this,
+      force,
+      oldGroupsOverride,
+      saveExports,
+      sync,
+      toDelete
+    );
   }
 
   async logMessage(verb: "create" | "update" | "destroy") {

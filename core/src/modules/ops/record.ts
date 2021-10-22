@@ -607,7 +607,8 @@ export namespace RecordOps {
     force = false,
     oldGroups: Group[] = [],
     saveExports = true,
-    sync = true
+    sync = true,
+    toDelete?: boolean
   ) {
     const groups = await record.$get("groups");
 
@@ -653,7 +654,8 @@ export namespace RecordOps {
           record,
           sync, // sync = true -> do the export in-line
           force, // force = true -> do the export even if it looks like the data hasn't changed
-          saveExports // saveExports = true -> should we really save these exports, or do we just want examples for the next export?
+          saveExports, // saveExports = true -> should we really save these exports, or do we just want examples for the next export?
+          toDelete // are we deleting this record and should we ensure that all exports are toDelete=true?
         )
       )
     );
@@ -838,7 +840,7 @@ export namespace RecordOps {
       // It's safe to assume that if there are no Properties, we aren't exporting
       recordsToDestroy = await GrouparooRecord.findAll({
         attributes: ["id"],
-        where: { state: "ready", modelId: modelId },
+        where: { state: ["ready", "deleted"], modelId: modelId },
         limit,
       });
     }
@@ -848,7 +850,7 @@ export namespace RecordOps {
       await api.sequelize.query(
         `
     SELECT "id" FROM "records"
-    WHERE "state"='ready'
+    WHERE "state" IN ('ready', 'deleted')
     AND "id" IN (
       SELECT DISTINCT("recordId") FROM "recordProperties"
       JOIN properties ON "properties"."id"="recordProperties"."propertyId"
@@ -984,7 +986,7 @@ export namespace RecordOps {
         },
       }
     );
-    // Update records to invalid if any assocaited properties are invalid.
+    // Update records to invalid if any associated properties are invalid.
     await api.sequelize.query(`
       UPDATE
         "records"
