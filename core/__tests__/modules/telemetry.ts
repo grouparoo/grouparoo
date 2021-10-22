@@ -35,7 +35,7 @@ describe("modules/status", () => {
       expect(id).toMatch(/^tcs_/);
       expect(trigger).toBe("timer");
 
-      expect(metrics[0]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "cluster",
           topic: "workers",
@@ -43,7 +43,7 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[1]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "cluster",
           topic: "resqueErrors",
@@ -51,7 +51,7 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[2]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "cluster",
           topic: "os",
@@ -59,7 +59,7 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[3]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "sequelize",
           topic: "dialect",
@@ -68,7 +68,7 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[4]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "NODE_ENV",
           topic: "env",
@@ -77,7 +77,7 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[5]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "GROUPAROO_TELEMETRY_ENABLED",
           topic: "env",
@@ -86,7 +86,7 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[6]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "GROUPAROO_SPEC_HELPER_LOAD_PATH",
           topic: "env",
@@ -95,7 +95,7 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[7]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "GROUPAROO_RUN_MODE",
           topic: "env",
@@ -104,7 +104,7 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[8]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "cluster",
           topic: "@grouparoo/core",
@@ -113,7 +113,7 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[9]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "totals",
           topic: "App",
