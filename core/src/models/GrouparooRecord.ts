@@ -143,11 +143,9 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   }
 
   async buildNullProperties(state: GrouparooRecord["state"] = "pending") {
-    if (state === "deleted") {
-      throw new Error("cannot build null properties when in the deleted state");
+    if (state !== "deleted") {
+      return RecordOps.buildNullProperties([this], state);
     }
-
-    return RecordOps.buildNullProperties([this], state);
   }
 
   async markPending() {
