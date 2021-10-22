@@ -92,7 +92,7 @@ describe("tasks/record:destroy", () => {
     }
     await api.resque.queue.connection.redis.flushdb();
 
-    let exportCount = await Export.count({
+    const exportCount = await Export.count({
       where: { recordId: record.id, state: { [Op.ne]: "complete" } },
     });
     expect(exportCount).toBe(0);
@@ -109,10 +109,12 @@ describe("tasks/record:destroy", () => {
     recordGroups = await record.$get("groups");
     expect(recordGroups.length).toBe(0); // removed from groups
 
-    exportCount = await Export.count({
+    let exports = await Export.findAll({
       where: { recordId: record.id, state: { [Op.ne]: "complete" } },
     });
-    expect(exportCount).toBe(1);
+    expect(exports.length).toBe(1);
+    expect(exports[0].toDelete).toBe(true);
+    expect(exports[0].completedAt).toBe(null);
 
     // try to delete
     await specHelper.runTask("record:destroy", { recordId: record.id });
@@ -120,10 +122,12 @@ describe("tasks/record:destroy", () => {
     // does nothing, there's an export being processed
     await record.reload();
     expect(record.state).toBe("deleted");
-    exportCount = await Export.count({
+    exports = await Export.findAll({
       where: { recordId: record.id, state: { [Op.ne]: "complete" } },
     });
-    expect(exportCount).toBe(1); // still only 1
+    expect(exports.length).toBe(1); // still only 1
+    expect(exports[0].toDelete).toBe(true);
+    expect(exports[0].completedAt).toBe(null);
 
     // process the export
     await specHelper.runTask("export:enqueue", {});
@@ -134,9 +138,10 @@ describe("tasks/record:destroy", () => {
     }
 
     const finalExport = await Export.findById(foundTasks[0].args[0].exportId);
-    expect(finalExport.toDelete).toBe(true);
     expect(finalExport.oldGroups.length).toBe(1);
     expect(finalExport.newGroups.length).toBe(0);
+    expect(finalExport.toDelete).toBe(true);
+    expect(finalExport.completedAt).not.toBe(null);
 
     // now we can destroy
     await specHelper.runTask("record:destroy", { recordId: record.id });
@@ -165,7 +170,7 @@ describe("tasks/record:destroy", () => {
     }
     await api.resque.queue.connection.redis.flushdb();
 
-    let exportCount = await Export.count({
+    const exportCount = await Export.count({
       where: { recordId: record.id, state: { [Op.ne]: "complete" } },
     });
     expect(exportCount).toBe(0);
@@ -179,10 +184,12 @@ describe("tasks/record:destroy", () => {
     await record.reload();
     expect(record.state).toBe("deleted");
 
-    exportCount = await Export.count({
+    let exports = await Export.findAll({
       where: { recordId: record.id, state: { [Op.ne]: "complete" } },
     });
-    expect(exportCount).toBe(1);
+    expect(exports.length).toBe(1);
+    expect(exports[0].toDelete).toBe(true);
+    expect(exports[0].completedAt).toBe(null);
 
     // try to delete
     await specHelper.runTask("record:destroy", { recordId: record.id });
@@ -190,10 +197,12 @@ describe("tasks/record:destroy", () => {
     // does nothing, there's an export being processed
     await record.reload();
     expect(record.state).toBe("deleted");
-    exportCount = await Export.count({
+    exports = await Export.findAll({
       where: { recordId: record.id, state: { [Op.ne]: "complete" } },
     });
-    expect(exportCount).toBe(1); // still only 1
+    expect(exports.length).toBe(1); // still only 1
+    expect(exports[0].toDelete).toBe(true);
+    expect(exports[0].completedAt).toBe(null);
 
     // process the export
     await specHelper.runTask("export:enqueue", {});
@@ -205,6 +214,7 @@ describe("tasks/record:destroy", () => {
 
     const finalExport = await Export.findById(foundTasks[0].args[0].exportId);
     expect(finalExport.toDelete).toBe(true);
+    expect(finalExport.completedAt).not.toBe(null);
 
     // now we can destroy
     await specHelper.runTask("record:destroy", { recordId: record.id });
