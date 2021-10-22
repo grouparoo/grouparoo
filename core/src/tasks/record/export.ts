@@ -5,6 +5,7 @@ import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
 import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { env, log } from "actionhero";
+import { DestinationOps } from "../../modules/ops/destination";
 
 export class RecordExport extends RetryableTask {
   constructor() {
@@ -56,7 +57,7 @@ export class RecordExport extends RetryableTask {
             })
           : [];
 
-      const destinations = await Destination.relevantFor(
+      const destinations = await DestinationOps.relevantFor(
         record,
         oldGroups,
         newGroups

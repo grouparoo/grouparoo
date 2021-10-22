@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { cache } from "actionhero";
+import { DestinationOps } from "../../../src/modules/ops/destination";
 import {
   App,
   Destination,
@@ -182,22 +183,6 @@ describe("models/destination", () => {
       });
 
       expect(latestLog).toBeTruthy();
-    });
-
-    test("a destination tracking a group cannot be deleted", async () => {
-      const group = await helper.factories.group();
-      destination = await Destination.create({
-        name: "bye destination",
-        type: "test-plugin-export",
-        appId: app.id,
-        modelId: model.id,
-      });
-      await destination.updateTracking("group", group.id);
-      await expect(destination.destroy()).rejects.toThrow(
-        /cannot delete a destination that is tracking a group/
-      );
-      await group.destroy();
-      await destination.destroy(); // does not throw
     });
 
     test("deleting a destination deletes related models", async () => {
@@ -1019,7 +1004,7 @@ describe("models/destination", () => {
 
           // before the destinations are ready
           await destination.updateTracking("group", group.id);
-          let destinations = await Destination.relevantFor(
+          let destinations = await DestinationOps.relevantFor(
             record,
             await record.$get("groups")
           );
@@ -1032,7 +1017,7 @@ describe("models/destination", () => {
           await otherGroupDestination.updateTracking("group", group.id);
           await modelDestination.updateTracking("model");
 
-          destinations = await Destination.relevantFor(
+          destinations = await DestinationOps.relevantFor(
             record,
             await record.$get("groups")
           );

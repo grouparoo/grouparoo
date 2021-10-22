@@ -663,7 +663,6 @@ describe("modules/codeConfig", () => {
 
   describe("bring it all back", () => {
     let previousGroupRun: Run;
-    let previousDestinationRun: Run;
 
     beforeAll(async () => {
       // fake that runs are still being executed for deleted group
@@ -711,16 +710,6 @@ describe("modules/codeConfig", () => {
         where: { id: "test_destination", state: "deleted" },
       });
       expect(destination).toBeTruthy();
-
-      await specHelper.runTask("destination:destroy", {
-        destinationId: destination.id,
-      });
-
-      previousDestinationRun = await Run.scope(null).findOne({
-        where: { destinationId: destination.id, state: "running" },
-      });
-      expect(previousDestinationRun).toBeTruthy();
-      expect(previousDestinationRun.creatorId).toBe("email_group");
     });
 
     beforeAll(async () => {
@@ -926,10 +915,6 @@ describe("modules/codeConfig", () => {
       expect(destinations[0].locked).toBe("config:code");
       const options = await destinations[0].getOptions();
       expect(options).toEqual({ table: "output" });
-
-      // previous run stopped
-      await previousDestinationRun.reload();
-      expect(previousDestinationRun.state).toBe("stopped");
 
       // new run kicked off
       const runs = await Run.findAll({

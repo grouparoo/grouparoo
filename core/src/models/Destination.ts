@@ -727,19 +727,6 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeDestroy
-  static async cannotDeleteDestinationWithTrackedGroup(instance: Destination) {
-    if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
-    if (instance.groupId) {
-      const group = await Group.scope("notDraft").findOne({
-        where: { id: instance.groupId },
-      });
-      if (group) {
-        throw new Error("cannot delete a destination that is tracking a group");
-      }
-    }
-  }
-
-  @BeforeDestroy
   static async waitForPendingExports(instance: Destination) {
     const pendingExportCount = await instance.$count("exports", {
       where: { state: ["pending", "processing"] },
@@ -777,31 +764,5 @@ export class Destination extends LoggedModel<Destination> {
     await Export.destroy({
       where: { destinationId: instance.id },
     });
-  }
-
-  /**
-   * Determine which destinations are interested in this record due to the groups they are tracking
-   */
-  static async relevantFor(
-    record: GrouparooRecord,
-    oldGroups: Group[] = [],
-    newGroups: Group[] = []
-  ) {
-    const combinedGroupIds = [...oldGroups, ...newGroups].map((g) => g.id);
-    const relevantDestinations =
-      combinedGroupIds.length > 0
-        ? await Destination.findAll({
-            where: {
-              [Op.or]: [
-                { collection: "model", modelId: record.modelId },
-                { collection: "group", groupId: { [Op.in]: combinedGroupIds } },
-              ],
-            },
-          })
-        : await Destination.findAll({
-            where: { collection: "model", modelId: record.modelId },
-          });
-
-    return relevantDestinations;
   }
 }
