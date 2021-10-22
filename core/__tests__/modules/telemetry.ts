@@ -70,19 +70,19 @@ describe("modules/status", () => {
 
       expect(metrics[4]).toEqual(
         expect.objectContaining({
-          collection: "GROUPAROO_TELEMETRY_ENABLED",
+          collection: "NODE_ENV",
           topic: "env",
           aggregation: "exact",
-          value: "false",
+          value: "test",
         })
       );
 
       expect(metrics[5]).toEqual(
         expect.objectContaining({
-          collection: "NODE_ENV",
+          collection: "GROUPAROO_TELEMETRY_ENABLED",
           topic: "env",
           aggregation: "exact",
-          value: "test",
+          value: "false",
         })
       );
 

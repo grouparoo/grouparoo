@@ -5,13 +5,7 @@ import {
   FinalSummaryReporters,
 } from "../../src/modules/statusReporters";
 import { Status } from "../../src/modules/status";
-import {
-  Destination,
-  GrouparooRecord,
-  Source,
-  Schedule,
-  GrouparooModel,
-} from "../../src";
+import { Destination, GrouparooRecord, Source, Schedule } from "../../src";
 
 describe("modules/status", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -319,6 +313,17 @@ describe("modules/status", () => {
                 collection: "NODE_ENV",
                 topic: "env",
                 value: "test",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+          GROUPAROO_RUN_MODE: [
+            {
+              metric: {
+                aggregation: "exact",
+                collection: "GROUPAROO_RUN_MODE",
+                topic: "env",
+                value: "x",
               },
               timestamp: expect.any(Number),
             },

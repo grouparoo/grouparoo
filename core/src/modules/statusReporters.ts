@@ -1,5 +1,5 @@
 import os from "os";
-import { api, config, task } from "actionhero";
+import { api, config, task, env as nodeEnv } from "actionhero";
 import Sequelize from "sequelize";
 import { getCoreVersion, getPluginManifest } from "../modules/pluginDetails";
 import { Op } from "sequelize";
@@ -89,18 +89,26 @@ export namespace StatusReporters {
 
       export async function env(): Promise<StatusMetric[]> {
         const metrics: StatusMetric[] = [];
+
+        metrics.push({
+          collection: "NODE_ENV",
+          topic: "env",
+          aggregation: "exact",
+          value: nodeEnv,
+        });
+
         for (const [k, v] of Object.entries(process.env)) {
-          if (
-            k.toUpperCase() === "NODE_ENV" ||
-            k.toUpperCase().match(/^GROUPAROO_/)
-          ) {
-            metrics.push({
-              collection: k,
-              topic: `env`,
-              aggregation: "exact",
-              value: v,
-            });
-          }
+          const key = k.toUpperCase();
+          if (!key.match(/^GROUPAROO_/)) continue;
+          if (key.match(/^GROUPAROO_OPTION_/)) continue;
+          if (["GROUPAROO_ENV_CONFIG_FILE"].includes(key)) continue;
+
+          metrics.push({
+            collection: k,
+            topic: `env`,
+            aggregation: "exact",
+            value: v,
+          });
         }
 
         return metrics;
