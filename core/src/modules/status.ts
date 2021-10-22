@@ -29,9 +29,10 @@ export namespace Status {
     async () => StatusReporters.Cluster.Workers.countWorkers(),
     async () => StatusReporters.Cluster.Workers.countErrors(),
     async () => StatusReporters.Cluster.Workers.details(),
-    async () => StatusReporters.Cluster.OS.exact(),
-    async () => StatusReporters.Cluster.NODE_ENV.exact(),
-    async () => StatusReporters.Cluster.NOTIFICATIONS.unread(),
+    async () => StatusReporters.Cluster.Process.platform(),
+    async () => StatusReporters.Cluster.Process.nodeEnv(),
+    async () => StatusReporters.Cluster.Process.runMode(),
+    async () => StatusReporters.Cluster.Notifications.unread(),
 
     // usage counts (we only care about some of the models)
     async () => StatusReporters.Totals.Models([GrouparooRecord, Group]),

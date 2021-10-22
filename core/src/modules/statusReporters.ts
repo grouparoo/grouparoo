@@ -77,8 +77,8 @@ export namespace StatusReporters {
       }
     }
 
-    export namespace OS {
-      export async function exact(): Promise<StatusMetric> {
+    export namespace Process {
+      export async function platform(): Promise<StatusMetric> {
         return {
           collection: "cluster",
           topic: "os",
@@ -86,10 +86,8 @@ export namespace StatusReporters {
           value: `${process.platform}/${os.release()}`,
         };
       }
-    }
 
-    export namespace NODE_ENV {
-      export async function exact(): Promise<StatusMetric> {
+      export async function nodeEnv(): Promise<StatusMetric> {
         return {
           collection: "cluster",
           topic: "node_env",
@@ -97,9 +95,36 @@ export namespace StatusReporters {
           value: env,
         };
       }
+
+      export async function runMode(): Promise<StatusMetric> {
+        return {
+          collection: "cluster",
+          topic: "run_mode",
+          aggregation: "exact",
+          value: process.env.GROUPAROO_RUN_MODE,
+        };
+      }
+
+      export async function uiEdition(): Promise<StatusMetric> {
+        return {
+          collection: "cluster",
+          topic: "ui_edition",
+          aggregation: "exact",
+          value: process.env.GROUPAROO_UI_EDITION,
+        };
+      }
+
+      export async function sequelizeDialect(): Promise<StatusMetric> {
+        return {
+          collection: "sequelize",
+          topic: "dialect",
+          aggregation: "exact",
+          value: api.sequelize.dialect,
+        };
+      }
     }
 
-    export namespace NOTIFICATIONS {
+    export namespace Notifications {
       export async function unread(): Promise<StatusMetric> {
         return {
           collection: "cluster",
