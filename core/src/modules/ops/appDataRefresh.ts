@@ -10,10 +10,6 @@ export namespace AppDataRefreshOps {
     const { pluginApp } = await app.getPlugin();
     const connection = await app.getConnection();
 
-    //query and compare
-    // TODO: `connection` here is an instance of the plugins "raw" connection, like a Hubspot API client or the mongo driver.
-    // You'll need to make a method on the plugin like `query(): AppQueryMethod` that you call here and pass in the app, appOptions, etc that each plugin has implemented.
-
     if (typeof pluginApp.methods.query !== "function") {
       throw new Error(
         `app ${app.name} (${app.id}) of type ${app.type} cannot use app data refresh`

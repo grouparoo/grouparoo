@@ -104,7 +104,9 @@ export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
       instance.changed("refreshQuery") &&
       !instance.changed("lastConfirmedAt")
     ) {
-      await AppDataRefreshOps.checkDataRefreshValue(instance);
+      try {
+        await AppDataRefreshOps.checkDataRefreshValue(instance);
+      } catch {}
     }
   }
 

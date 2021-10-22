@@ -289,7 +289,7 @@ export namespace helper {
             },
             getConnection: async () => {
               return {
-                query: "hi!",
+                connection: "this is a connection",
               };
             },
             query: async () => {
