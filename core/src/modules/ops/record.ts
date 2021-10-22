@@ -644,7 +644,7 @@ export namespace RecordOps {
     for (const _export of existingExportNotDeleted) {
       if (!destinations.map((d) => d.id).includes(_export.destinationId)) {
         const destination = await Destination.findById(_export.destinationId);
-        destinations.push(destination);
+        if (destination.state === "ready") destinations.push(destination);
       }
     }
 
