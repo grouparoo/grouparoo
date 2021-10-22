@@ -393,16 +393,16 @@ export class Group extends LoggedModel<Group> {
     return Moment(this.calculatedAt).add(delayMinutes, "minutes").toDate();
   }
 
-  async run(destinationId?: string) {
-    return RunOps.run(this, destinationId);
+  async run(force = false, destinationId?: string) {
+    return RunOps.run(this, force, destinationId);
   }
 
   async stopPreviousRuns() {
     return RunOps.stopPreviousRuns(this);
   }
 
-  async addRecord(record: GrouparooRecord) {
-    await GroupOps.updateRecords([record.id], "group", this.id);
+  async addRecord(record: GrouparooRecord, force = true) {
+    await GroupOps.updateRecords([record.id], "group", this.id, force);
 
     await GroupMember.create({
       groupId: this.id,
@@ -410,14 +410,14 @@ export class Group extends LoggedModel<Group> {
     });
   }
 
-  async removeRecord(record: GrouparooRecord) {
+  async removeRecord(record: GrouparooRecord, force = false) {
     const membership = await GroupMember.findOne({
       where: { groupId: this.id, recordId: record.id },
     });
 
     if (!membership) throw new Error("record is not a member of this group");
 
-    await GroupOps.updateRecords([record.id], "group", this.id);
+    await GroupOps.updateRecords([record.id], "group", this.id, force);
 
     await membership.destroy();
   }
@@ -427,6 +427,7 @@ export class Group extends LoggedModel<Group> {
     limit = 1000,
     offset = 0,
     highWaterMark: number = null,
+    force = false,
     destinationId?: string
   ) {
     return GroupOps.runAddGroupMembers(
@@ -435,6 +436,7 @@ export class Group extends LoggedModel<Group> {
       limit,
       offset,
       highWaterMark,
+      force,
       destinationId
     );
   }
@@ -807,7 +809,7 @@ export class Group extends LoggedModel<Group> {
       );
       await destinationGroupMemberships[i].destroy();
 
-      if (destination) await destination.exportMembers();
+      if (destination) await destination.exportMembers(false);
     }
   }
 

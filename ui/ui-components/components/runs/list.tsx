@@ -232,6 +232,7 @@ export default function RunsList(props) {
                             sourceOffset: {run.sourceOffset} <br />
                           </>
                         ) : null}
+                        force: {run.force.toString()}
                       </>
                       {run.highWaterMark &&
                       Object.keys(run.highWaterMark).length > 0 ? (

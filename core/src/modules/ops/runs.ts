@@ -12,10 +12,11 @@ import { Log } from "../../models/Log";
 
 export namespace RunOps {
   /**
-   * Create a Run for this Group or Model
+   * Create a Run for this Group
    */
   export async function run(
     creator: Group | GrouparooModel,
+    force = false,
     destinationId?: string
   ) {
     if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
@@ -34,6 +35,7 @@ export namespace RunOps {
       creatorType: getCreatorTypeString(creator),
       state: "running",
       destinationId,
+      force,
     });
 
     return run;

@@ -275,7 +275,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) return this.exportMembers();
+    if (hasChanges) return this.exportMembers(true);
   }
 
   async getExportArrayProperties() {
@@ -336,8 +336,8 @@ export class Destination extends LoggedModel<Destination> {
     return OptionHelper.getPlugin(this);
   }
 
-  async exportMembers() {
-    return DestinationOps.exportMembers(this);
+  async exportMembers(force = false) {
+    return DestinationOps.exportMembers(this, force);
   }
 
   async updateTracking(

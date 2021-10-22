@@ -38,6 +38,8 @@ export class RunInternalRun extends CLSTask {
     });
     if (!model) return;
 
+    const force = run.force || false;
+
     const records = await GrouparooRecord.findAll({
       where: { modelId: model.id },
       order: [["createdAt", "asc"]],
@@ -49,7 +51,7 @@ export class RunInternalRun extends CLSTask {
     if (records.length > 0) {
       await RecordOps.markPendingByIds(
         records.map((r) => r.id),
-        false
+        force
       );
 
       // create imports to track the lineage of the record property values

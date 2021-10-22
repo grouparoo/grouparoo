@@ -81,8 +81,8 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
     }
   }
 
-  async run(destinationId?: string) {
-    return RunOps.run(this, destinationId);
+  async run(force = false, destinationId?: string) {
+    return RunOps.run(this, force, destinationId);
   }
 
   async stopPreviousRuns() {
