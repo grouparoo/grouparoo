@@ -102,11 +102,11 @@ export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
   static async runCheckIfNewQuery(instance: AppDataRefresh) {
     if (
       instance.changed("refreshQuery") &&
-      !instance.changed("lastConfirmedAt")
+      !instance.changed("lastConfirmedAt") &&
+      instance.state === "ready"
     ) {
-      try {
-        await AppDataRefreshOps.checkDataRefreshValue(instance);
-      } catch {}
+      const isUpdated = await AppDataRefreshOps.checkDataRefreshValue(instance);
+      if (isUpdated === true) AppDataRefreshOps.triggerSchedules(instance);
     }
   }
 

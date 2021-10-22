@@ -545,6 +545,7 @@ describe("models/app", () => {
       await app.destroy();
       expect(await redis.exists(key)).toBe(0);
     });
+    test.todo("deleting an app deletes any related app data refreshes");
   });
 
   describe("RPC methods", () => {
