@@ -839,7 +839,7 @@ export namespace RecordOps {
       // It's safe to assume that if there are no Properties, we aren't exporting
       recordsToDestroy = await GrouparooRecord.findAll({
         attributes: ["id"],
-        where: { state: "ready", modelId: modelId },
+        where: { state: ["ready", "deleted"], modelId: modelId },
         limit,
       });
     }
@@ -849,7 +849,7 @@ export namespace RecordOps {
       await api.sequelize.query(
         `
     SELECT "id" FROM "records"
-    WHERE "state"='ready'
+    WHERE "state" IN ('ready', 'deleted')
     AND "id" IN (
       SELECT DISTINCT("recordId") FROM "recordProperties"
       JOIN properties ON "properties"."id"="recordProperties"."propertyId"
