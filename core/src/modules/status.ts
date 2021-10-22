@@ -30,8 +30,7 @@ export namespace Status {
     async () => StatusReporters.Cluster.Workers.countErrors(),
     async () => StatusReporters.Cluster.Workers.details(),
     async () => StatusReporters.Cluster.Process.platform(),
-    async () => StatusReporters.Cluster.Process.nodeEnv(),
-    async () => StatusReporters.Cluster.Process.runMode(),
+    async () => StatusReporters.Cluster.Process.env(),
     async () => StatusReporters.Cluster.Notifications.unread(),
 
     // usage counts (we only care about some of the models)

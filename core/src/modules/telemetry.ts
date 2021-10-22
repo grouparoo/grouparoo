@@ -65,10 +65,8 @@ export namespace Telemetry {
     metrics.push(await StatusReporters.Cluster.Workers.countWorkers());
     metrics.push(await StatusReporters.Cluster.Workers.countErrors());
     metrics.push(await StatusReporters.Cluster.Process.platform());
-    metrics.push(await StatusReporters.Cluster.Process.nodeEnv());
-    metrics.push(await StatusReporters.Cluster.Process.runMode());
-    metrics.push(await StatusReporters.Cluster.Process.uiEdition());
     metrics.push(await StatusReporters.Cluster.Process.sequelizeDialect());
+    metrics.push(...(await StatusReporters.Cluster.Process.env()));
 
     // versions of the plugins installed
     metrics.push(...(await StatusReporters.Plugins.Versions()));

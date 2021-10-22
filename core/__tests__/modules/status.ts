@@ -309,14 +309,36 @@ describe("modules/status", () => {
             },
           ],
         },
-        node_env: {
-          cluster: [
+        env: {
+          NODE_ENV: [
             {
               metric: {
                 aggregation: "exact",
-                collection: "cluster",
-                topic: "node_env",
+                collection: "NODE_ENV",
+                topic: "env",
                 value: "test",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+          GROUPAROO_SPEC_HELPER_LOAD_PATH: [
+            {
+              metric: {
+                aggregation: "exact",
+                collection: "GROUPAROO_SPEC_HELPER_LOAD_PATH",
+                topic: "env",
+                value: "src",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+          GROUPAROO_TELEMETRY_ENABLED: [
+            {
+              metric: {
+                aggregation: "exact",
+                collection: "GROUPAROO_TELEMETRY_ENABLED",
+                topic: "env",
+                value: "false",
               },
               timestamp: expect.any(Number),
             },

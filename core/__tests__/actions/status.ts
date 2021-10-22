@@ -150,7 +150,7 @@ describe("actions/status", () => {
         );
 
         expect(Object.keys(metrics).length).toBeGreaterThanOrEqual(1);
-        const nodeEnvMetric = metrics["node_env"]["cluster"][0].metric;
+        const nodeEnvMetric = metrics["env"]["NODE_ENV"][0].metric;
         expect(nodeEnvMetric.value).toBe("test");
       });
     });

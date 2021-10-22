@@ -1,5 +1,5 @@
 import os from "os";
-import { api, env, task } from "actionhero";
+import { api, config, task } from "actionhero";
 import Sequelize from "sequelize";
 import { getCoreVersion, getPluginManifest } from "../modules/pluginDetails";
 import { Op } from "sequelize";
@@ -87,31 +87,23 @@ export namespace StatusReporters {
         };
       }
 
-      export async function nodeEnv(): Promise<StatusMetric> {
-        return {
-          collection: "cluster",
-          topic: "node_env",
-          aggregation: "exact",
-          value: env,
-        };
-      }
+      export async function env(): Promise<StatusMetric[]> {
+        const metrics: StatusMetric[] = [];
+        for (const [k, v] of Object.entries(process.env)) {
+          if (
+            k.toUpperCase() === "NODE_ENV" ||
+            k.toUpperCase().match(/^GROUPAROO_/)
+          ) {
+            metrics.push({
+              collection: k,
+              topic: `env`,
+              aggregation: "exact",
+              value: v,
+            });
+          }
+        }
 
-      export async function runMode(): Promise<StatusMetric> {
-        return {
-          collection: "cluster",
-          topic: "run_mode",
-          aggregation: "exact",
-          value: process.env.GROUPAROO_RUN_MODE,
-        };
-      }
-
-      export async function uiEdition(): Promise<StatusMetric> {
-        return {
-          collection: "cluster",
-          topic: "ui_edition",
-          aggregation: "exact",
-          value: process.env.GROUPAROO_UI_EDITION,
-        };
+        return metrics;
       }
 
       export async function sequelizeDialect(): Promise<StatusMetric> {
@@ -119,7 +111,7 @@ export namespace StatusReporters {
           collection: "sequelize",
           topic: "dialect",
           aggregation: "exact",
-          value: api.sequelize.dialect,
+          value: config.sequelize.dialect,
         };
       }
     }
