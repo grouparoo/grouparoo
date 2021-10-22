@@ -19,6 +19,7 @@ describe("modules/status", () => {
     await api.resque.queue.connection.redis.flushdb();
     config.telemetry.enabled = true;
     process.env.GROUPAROO_RUN_MODE = "x";
+    process.env.GROUPAROO_TELEMETRY_ENABLED = "false";
   });
 
   afterEach(() => {
