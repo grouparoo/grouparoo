@@ -47,7 +47,7 @@ describe("tasks/record:destroy", () => {
 
     await specHelper.runTask("record:destroy", { recordId: record.id });
     await record.reload();
-    expect(record.state).toBe("deleted");
+    expect(record.state).toBe("pending"); // no change
 
     // make it ready
     await RecordProperty.update(
