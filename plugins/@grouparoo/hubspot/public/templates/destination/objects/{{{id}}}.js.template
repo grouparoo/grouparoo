@@ -13,10 +13,8 @@ exports.default = async function buildConfig() {
 
 
       options: {
-        recordObject: "Contact", // Which object in Salesforce represents a Grouparoo record?
-        recordMatchField: "Email", // Which field in the record Object is used to match Grouparoo records?
-        groupObject: "Account", // Which object in Salesforce represents a Grouparoo group?
-        groupNameField: "Name", // Which field in the group Object is used for the name of a Grouparoo group?
+        schemaId: "2-3039", // Hubspot Custom Object Schema ID
+        primaryKey: "email", // property that will uniquely represent the custom object
       },
 
       // Mappings are how you choose which properties to export to this destination.

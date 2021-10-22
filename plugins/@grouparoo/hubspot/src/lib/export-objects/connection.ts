@@ -1,5 +1,5 @@
 import { PluginConnection, DestinationSyncMode } from "@grouparoo/core";
-import { exportRecord } from "./exportRecord";
+import { exportRecords } from "./exportRecords";
 
 import { destinationOptions } from "./destinationOptions";
 import { destinationMappingOptions } from "./destinationMappingOptions";
@@ -22,34 +22,21 @@ export const objectsDestinationConnection: PluginConnection = {
   defaultSyncMode: "sync",
   options: [
     {
-      key: "recordObject",
-      displayName: "Record Object",
+      key: "schemaId",
+      displayName: "Schema",
       required: true,
       description: "Which object in Hubspot represents a Grouparoo record?",
     },
     {
-      key: "recordMatchField",
-      displayName: "Record Match Field",
+      key: "primaryKey",
+      displayName: "Primary Key",
       required: true,
       description:
-        "Which field in the record Object is used to match Grouparoo records?",
-    },
-    {
-      key: "groupObject",
-      displayName: "Group Object",
-      required: true,
-      description: "Which object in Hubspot represents a Grouparoo group?",
-    },
-    {
-      key: "groupNameField",
-      displayName: "Group Name Field",
-      required: true,
-      description:
-        "Which field in the group Object is used for the name of a Grouparoo group?",
+        "Which field in the Schema uniquely represents the Grouparoo records?",
     },
   ],
   methods: {
-    exportRecord,
+    exportRecords,
     destinationOptions,
     destinationMappingOptions,
     exportArrayProperties,

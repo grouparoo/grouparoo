@@ -1,10 +1,19 @@
 import { HubspotClient } from "./client";
+import { CustomObjectHandler } from "../export/customObject";
 
 export default class Contact {
   client: HubspotClient;
 
   constructor(client: HubspotClient) {
     this.client = client;
+  }
+
+  async getSchemas() {
+    const response = await this.client._request({
+      method: "GET",
+      url: `/crm/v3/schemas`,
+    });
+    return response.results;
   }
 
   async getSchema(objectTypeId) {
@@ -14,12 +23,31 @@ export default class Contact {
     });
   }
 
-  async getSchemas() {
-    const response = await this.client._request({
-      method: "GET",
-      url: `/crm/v3/schemas`,
+  searchObjects(
+    objectTypeId: string,
+    recordMatchField: string,
+    foreignKeys: string[]
+  ) {
+    const filterGroups = foreignKeys.map((key) => {
+      return {
+        filters: [
+          {
+            propertyName: recordMatchField,
+            operator: "EQ",
+            value: key,
+          },
+        ],
+      };
     });
-    return response.results;
+    const data = {
+      filterGroups,
+      properties: [recordMatchField],
+    };
+    return this.client._request({
+      data,
+      method: "POST",
+      url: `/crm/v3/objects/${objectTypeId}/search`,
+    });
   }
 
   create(data: any) {

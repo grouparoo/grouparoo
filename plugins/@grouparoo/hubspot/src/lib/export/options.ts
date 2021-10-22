@@ -6,6 +6,7 @@ import {
 } from "@grouparoo/core";
 import { HubspotClient } from "../client/client";
 import { connect } from "../connect";
+import { CustomObjectHandler } from "./customObject";
 
 export interface HubspotCacheData {
   appId: string;
@@ -15,20 +16,10 @@ export interface HubspotCacheData {
 class OptionsHandler {
   cacheData: HubspotCacheData;
   client: HubspotClient;
-  standardObjects: string[];
   customObjects: any[];
 
   constructor({ appId, appOptions }) {
     this.cacheData = { appId, appOptions };
-    this.standardObjects = [
-      "CONTACT",
-      "PRODUCT",
-      "COMPANY",
-      "DEAL",
-      "TICKET",
-      "MARKETING_EVENT",
-      "QUOTE",
-    ];
   }
 
   public async getDestinationOptions({
@@ -39,7 +30,6 @@ class OptionsHandler {
     this.customObjects = await this.getCustomObjects();
     const out: DestinationOptionsMethodResponse = {};
     Object.assign(out, await this.getRecordOptions(destinationOptions));
-    Object.assign(out, await this.getGroupsOptions(destinationOptions));
     return out;
   }
 
@@ -68,60 +58,39 @@ class OptionsHandler {
   }
 
   private async getRecordOptions(destinationOptions: SimpleDestinationOptions) {
-    return this.populateDestinationOption(
-      "recordObject",
-      "recordMatchField",
-      destinationOptions
-    );
-  }
-
-  private async getGroupsOptions(destinationOptions: SimpleDestinationOptions) {
-    return this.populateDestinationOption(
-      "groupObject",
-      "groupNameField",
-      destinationOptions
-    );
-  }
-
-  private async populateDestinationOption(
-    objectField: string,
-    propertyField: string,
-    destinationOptions: SimpleDestinationOptions
-  ) {
     const out: DestinationOptionsMethodResponse = {
-      [objectField]: { type: "typeahead", options: [] },
-      [propertyField]: { type: "pending", options: [] },
+      schemaId: { type: "list", options: [], descriptions: [] },
+      primaryKey: { type: "pending", options: [] },
     };
-    const objects = await this.getCustomObjectNames();
-    out[objectField].options = objects;
-    const name = destinationOptions[objectField]?.toString();
-    if (name && objects.includes(name)) {
-      const fields = await this.getObjectMatchNames(name);
-      out[propertyField].type = "typeahead";
-      out[propertyField].options = fields;
-      if (!fields.includes(destinationOptions[propertyField])) {
-        destinationOptions[propertyField] = null;
+    const objects = this.customObjects;
+    objects.map((object) => {
+      out.schemaId.options.push(object.objectTypeId);
+      out.schemaId.descriptions.push(object.name);
+    });
+    CustomObjectHandler.standardObjects.map((object) => {
+      out.schemaId.options.push(object);
+    });
+    const schemaId = destinationOptions.schemaId?.toString();
+    if (
+      schemaId &&
+      (CustomObjectHandler.standardObjects.includes(schemaId) ||
+        objects.filter((object) => object.objectTypeId === schemaId).length > 0)
+    ) {
+      const fields = await this.getObjectMatchNames(schemaId);
+      out.primaryKey.type = "typeahead";
+      out.primaryKey.options = fields;
+      if (!fields.includes(destinationOptions.primaryKey)) {
+        destinationOptions.primaryKey = null;
       }
     } else {
-      destinationOptions[objectField] = null;
-      destinationOptions[propertyField] = null;
+      destinationOptions.schemaId = null;
+      destinationOptions.primaryKey = null;
     }
     return out;
   }
 
-  private async getCustomObjectNames() {
-    const names = [];
-    for (const object of this.customObjects) {
-      if (object.archived) {
-        continue;
-      }
-      names.push(object.name);
-    }
-    return [...new Set(this.standardObjects.concat(names))];
-  }
-
-  private async getObjectMatchNames(name) {
-    const customObject = await this.getCustomObjectByName(name);
+  private async getObjectMatchNames(schemaId) {
+    const customObject = await this.getCustomObjectById(schemaId);
     const names = [];
     if (customObject?.properties) {
       for (const object of customObject.properties) {
@@ -134,12 +103,12 @@ class OptionsHandler {
     return [...new Set(names)];
   }
 
-  private async getCustomObjectByName(name) {
-    if (this.standardObjects.includes(name)) {
-      return await this.getCustomObject(name);
+  private async getCustomObjectById(schemaId) {
+    if (CustomObjectHandler.standardObjects.includes(schemaId)) {
+      return await this.getCustomObject(schemaId);
     }
     for (const object of this.customObjects) {
-      if (object.name === name) {
+      if (object.objectTypeId === schemaId) {
         return object;
       }
     }
