@@ -116,7 +116,7 @@ describe("tasks/model:destroy", () => {
       const reloadedModel = await GrouparooModel.findById(model.id);
       expect(reloadedModel.state).toBe("deleted");
 
-      // remove group
+      // remove record
       await record.destroy();
 
       // run it again
