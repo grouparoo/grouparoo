@@ -55,3 +55,12 @@ grouparoo config
 This will generate a `package.json`, `config` directory, and `.env` file for configuration.
 
 🦘
+
+## :sunglasses: Our Cool Contributor 
+<a href="https://github.com/grouparoo/grouparoo/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=grouparoo/grouparoo" />
+</a>
+
+_**:heart_eyes: Thanks to all our contributor:construction_worker: for the support :full_moon_with_face:.**_
+
+*:heart_eyes: We Welcome :tada: More Open sourcer To work with us :+1:*
