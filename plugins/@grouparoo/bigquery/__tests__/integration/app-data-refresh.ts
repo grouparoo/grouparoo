@@ -42,7 +42,9 @@ describe("integration/runs/bigquery/appDataRefresh", () => {
         appId: app.id,
         refreshQuery: "",
       })
-    ).rejects.toThrow(/A SQL query string is required./);
+    ).rejects.toThrow(
+      /query should start with SELECT, INSERT, UPDATE, or DELETE/
+    );
   });
   test("I show a good error with a query that has too many sql statements", async () => {
     const app = await App.findOne();
@@ -51,8 +53,6 @@ describe("integration/runs/bigquery/appDataRefresh", () => {
         appId: app.id,
         refreshQuery: "SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;",
       })
-    ).rejects.toThrow(
-      /Syntax error: Expected end of input but got keyword SELECT/
-    );
+    ).rejects.toThrow(/only provide a single query/);
   });
 });

@@ -45,7 +45,9 @@ describe("integration/runs/sqlite", () => {
         appId: app.id,
         refreshQuery: "",
       })
-    ).rejects.toThrow(/SQLITE_MISUSE: not an error/);
+    ).rejects.toThrow(
+      /query should start with SELECT, INSERT, UPDATE, or DELETE/
+    );
   });
   test("I show a good error with a query that has too many sql statements", async () => {
     const app = await App.findOne();
@@ -54,6 +56,6 @@ describe("integration/runs/sqlite", () => {
         appId: app.id,
         refreshQuery: "SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;",
       })
-    ).rejects.toThrow(/SQLITE_ERROR: near \"SELECT\": syntax error/);
+    ).rejects.toThrow(/only provide a single query/);
   });
 });

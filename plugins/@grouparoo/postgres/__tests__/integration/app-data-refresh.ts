@@ -45,7 +45,7 @@ describe("integration/runs/postgres", () => {
         appId: app.id,
         refreshQuery: "",
       })
-    ).rejects.toThrow(/please provide a query/);
+    ).rejects.toThrow(/Request to Snowflake failed./);
   });
   test("I show a good error with a query that has too many sql statements", async () => {
     const app = await App.findOne();

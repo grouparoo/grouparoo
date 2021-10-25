@@ -46,7 +46,7 @@ describe("integration/runs/mysql", () => {
         refreshQuery: "",
       })
     ).rejects.toThrow(
-      /error with mysql query: "" - Error: ER_EMPTY_QUERY: Query was empty/
+      /query should start with SELECT, INSERT, UPDATE, or DELETE/
     );
   });
   test("I show a good error with a query that has too many sql statements", async () => {
@@ -56,8 +56,6 @@ describe("integration/runs/mysql", () => {
         appId: app.id,
         refreshQuery: "SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;",
       })
-    ).rejects.toThrow(
-      /error with mysql query: \"SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;\" - Error: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT id FROM demo.users LIMIT 1' at line 1/
-    );
+    ).rejects.toThrow(/only provide a single query/);
   });
 });
