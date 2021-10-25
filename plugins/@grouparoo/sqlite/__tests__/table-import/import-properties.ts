@@ -4,7 +4,12 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { GrouparooRecord, Property, SourceMapping } from "@grouparoo/core";
+import {
+  AggregationMethod,
+  GrouparooRecord,
+  Property,
+  SourceMapping,
+} from "@grouparoo/core";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
 
@@ -16,6 +21,7 @@ const { appOptions, usersTableName, purchasesTableName } = getConfig();
 let record: GrouparooRecord;
 let otherRecord: GrouparooRecord;
 let thirdRecord: GrouparooRecord;
+let fourthRecord: GrouparooRecord;
 let emailProperty: Property;
 let firstNameProperty: Property;
 let lastNameProperty: Property;
@@ -27,15 +33,17 @@ async function getPropertyValues(
     columns,
     sourceMapping,
     aggregationMethod,
+    sortColumn,
   }: {
     columns: string[];
     sourceMapping: SourceMapping;
     aggregationMethod: string;
+    sortColumn?: string;
   },
   usePropertyFilters?
 ) {
   const arrays = await getPropertyArrays(
-    { columns, sourceMapping, aggregationMethod },
+    { columns, sourceMapping, aggregationMethod, sortColumn },
     usePropertyFilters
   );
   return arrays;
@@ -45,10 +53,12 @@ async function getPropertyArrays(
     columns,
     sourceMapping,
     aggregationMethod,
+    sortColumn,
   }: {
     columns: string[];
     sourceMapping: SourceMapping;
     aggregationMethod: string;
+    sortColumn?: string;
   },
   usePropertyFilters?
 ) {
@@ -63,7 +73,8 @@ async function getPropertyArrays(
   for (const property of properties) {
     propertyOptions[property.id] = {
       column: columns[counter],
-      aggregationMethod: aggregationMethod,
+      aggregationMethod,
+      sortColumn,
     };
     counter++;
   }
@@ -75,13 +86,13 @@ async function getPropertyArrays(
   const values = await recordProperties({
     connection: client,
     appOptions,
-    records: [record, otherRecord, thirdRecord],
+    records: [record, otherRecord, thirdRecord, fourthRecord],
     sourceOptions,
     propertyOptions,
     sourceMapping,
     propertyFilters,
     properties,
-    recordIds: [record.id, otherRecord.id, thirdRecord.id],
+    recordIds: [record.id, otherRecord.id, thirdRecord.id, fourthRecord.id],
     source: null,
     sourceId: null,
     app: null,
@@ -128,6 +139,13 @@ describe("sqlite/table/recordProperties", () => {
     await thirdRecord.addOrUpdateProperties({
       userId: [6],
       email: ["another@example.com"],
+      lastName: null,
+    });
+
+    fourthRecord = await helper.factories.record();
+    await fourthRecord.addOrUpdateProperties({
+      userId: [4],
+      email: ["acotesford3@example.com"],
       lastName: null,
     });
   });
@@ -298,6 +316,39 @@ describe("sqlite/table/recordProperties", () => {
     const sourceMapping = { record_id: "userId" };
     beforeAll(() => {
       sourceOptions = { table: purchasesTableName };
+    });
+
+    describe("purchases by date", () => {
+      const columns = ["purchase"];
+      const sortColumn = "stamp";
+
+      test("most recent", async () => {
+        const [values, properties] = await getPropertyValues({
+          columns,
+          sortColumn,
+          sourceMapping,
+          aggregationMethod: AggregationMethod.MostRecentValue,
+        });
+        expect(values[record.id][properties[0].id][0]).toEqual("Orange");
+        expect(values[otherRecord.id][properties[0].id][0]).toEqual("Apple");
+        expect(values[fourthRecord.id][properties[0].id][0]).toEqual(
+          "Watermelon"
+        );
+      });
+
+      test("least recent", async () => {
+        const [values, properties] = await getPropertyValues({
+          columns,
+          sortColumn,
+          sourceMapping,
+          aggregationMethod: AggregationMethod.LeastRecentValue,
+        });
+        expect(values[record.id][properties[0].id][0]).toEqual("Apple");
+        expect(values[otherRecord.id][properties[0].id][0]).toEqual("Pear");
+        expect(values[fourthRecord.id][properties[0].id][0]).toEqual(
+          "Blueberry"
+        );
+      });
     });
 
     describe("numbers", () => {
