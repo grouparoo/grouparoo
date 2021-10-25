@@ -12,7 +12,7 @@ import { Log } from "../../models/Log";
 
 export namespace RunOps {
   /**
-   * Create a Run for this Group
+   * Create a Run for this Group or Model
    */
   export async function run(
     creator: Group | GrouparooModel,

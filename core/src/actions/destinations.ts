@@ -210,7 +210,7 @@ export class DestinationEdit extends AuthenticatedAction {
     }
 
     if (params.triggerExport && !newRun && !oldRun) {
-      newRun = await destination.exportMembers(true);
+      newRun = await destination.exportMembers();
     }
 
     await ConfigWriter.run();
@@ -318,17 +318,12 @@ export class DestinationExport extends AuthenticatedAction {
     this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       id: { required: true },
-      force: {
-        required: false,
-        default: true,
-        formatter: APIData.ensureBoolean,
-      },
     };
   }
 
   async runWithinTransaction({ params }) {
     const destination = await Destination.findById(params.id);
-    await destination.exportMembers(params.force);
+    await destination.exportMembers();
     return { success: true };
   }
 }

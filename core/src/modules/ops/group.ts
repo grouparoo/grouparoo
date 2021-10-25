@@ -10,7 +10,7 @@ import { RecordOps } from "./record";
 
 export namespace GroupOps {
   /**
-   * Given a GrouparooRecord, create an import to recalculate its Group Membership.  Optionally re-import all GrouparooRecord Properties with `force`
+   * Given a GrouparooRecord, create an import to recalculate its Group Membership.
    */
   export async function updateRecords(
     recordIds: string[],

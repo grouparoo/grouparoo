@@ -809,7 +809,7 @@ export class Group extends LoggedModel<Group> {
       );
       await destinationGroupMemberships[i].destroy();
 
-      if (destination) await destination.exportMembers(false);
+      if (destination) await destination.exportMembers();
     }
   }
 
