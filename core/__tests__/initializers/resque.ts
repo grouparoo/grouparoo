@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper, api, task } from "actionhero";
-import { utils } from "actionhero";
 import { Redis } from "ioredis";
 import { ResqueInitializer } from "../../src/initializers/resque";
 import { getCoreVersion } from "../../src/modules/pluginDetails";
