@@ -5,7 +5,12 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { GrouparooRecord, Property } from "@grouparoo/core";
+import {
+  AggregationMethod,
+  GrouparooRecord,
+  Property,
+  SourceMapping,
+} from "@grouparoo/core";
 import { beforeData, afterData, getConfig } from "../utils/data";
 import { getConnection } from "../../src/lib/table-import/connection";
 
@@ -17,22 +22,43 @@ const { appOptions, usersTableName, purchasesTableName, locationsTableName } =
 let record: GrouparooRecord;
 let otherRecord: GrouparooRecord;
 let thirdRecord: GrouparooRecord;
+let fourthRecord: GrouparooRecord;
 let client;
 let sourceOptions;
 
 async function getPropertyValues(
-  { column, sourceMapping, aggregationMethod },
+  {
+    column,
+    sourceMapping,
+    aggregationMethod,
+    sortColumn,
+  }: {
+    column: string;
+    sourceMapping: SourceMapping;
+    aggregationMethod: string;
+    sortColumn?: string;
+  },
   usePropertyFilters?
 ) {
   const arrays = await getPropertyArrays(
-    { column, sourceMapping, aggregationMethod },
+    { column, sourceMapping, aggregationMethod, sortColumn },
     usePropertyFilters
   );
   return arrays;
 }
 
 async function getPropertyArrays(
-  { column, sourceMapping, aggregationMethod },
+  {
+    column,
+    sourceMapping,
+    aggregationMethod,
+    sortColumn,
+  }: {
+    column: string;
+    sourceMapping: SourceMapping;
+    aggregationMethod: string;
+    sortColumn?: string;
+  },
   usePropertyFilters?
 ) {
   const property = await Property.findOne({
@@ -42,6 +68,7 @@ async function getPropertyArrays(
     [property.id]: {
       column,
       aggregationMethod: aggregationMethod,
+      sortColumn,
     },
   };
   const propertyFilters = usePropertyFilters
@@ -51,13 +78,13 @@ async function getPropertyArrays(
   const values = await recordProperties({
     connection: client,
     appOptions,
-    records: [record, otherRecord, thirdRecord],
+    records: [record, otherRecord, thirdRecord, fourthRecord],
     sourceOptions,
     propertyOptions,
     sourceMapping,
     propertyFilters,
     properties: [property],
-    recordIds: [record.id, otherRecord.id, thirdRecord.id],
+    recordIds: [record.id, otherRecord.id, thirdRecord.id, fourthRecord.id],
     source: null,
     sourceId: null,
     app: null,
@@ -99,6 +126,13 @@ describe("mongo/table/recordProperties", () => {
     await thirdRecord.addOrUpdateProperties({
       userId: [6],
       email: ["another@example.com"],
+      lastName: null,
+    });
+
+    fourthRecord = await helper.factories.record();
+    await fourthRecord.addOrUpdateProperties({
+      userId: [4],
+      email: ["acotesford3@example.com"],
       lastName: null,
     });
   });
@@ -247,6 +281,35 @@ describe("mongo/table/recordProperties", () => {
       sourceOptions = {
         table: purchasesTableName,
       };
+    });
+
+    describe("purchases by date", () => {
+      const column = "purchase";
+      const sortColumn = "stamp";
+
+      test("most recent", async () => {
+        const [values, property] = await getPropertyValues({
+          column,
+          sortColumn,
+          sourceMapping,
+          aggregationMethod: AggregationMethod.MostRecentValue,
+        });
+        expect(values[record.id][property.id][0]).toEqual("Orange");
+        expect(values[otherRecord.id][property.id][0]).toEqual("Apple");
+        expect(values[fourthRecord.id][property.id][0]).toEqual("Watermelon");
+      });
+
+      test("least recent", async () => {
+        const [values, property] = await getPropertyValues({
+          column,
+          sortColumn,
+          sourceMapping,
+          aggregationMethod: AggregationMethod.LeastRecentValue,
+        });
+        expect(values[record.id][property.id][0]).toEqual("Apple");
+        expect(values[otherRecord.id][property.id][0]).toEqual("Pear");
+        expect(values[fourthRecord.id][property.id][0]).toEqual("Blueberry");
+      });
     });
 
     describe("numbers", () => {
