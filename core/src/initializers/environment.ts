@@ -39,6 +39,15 @@ export class Environment extends Initializer {
 
     // Special considerations for SQLite
     if (config.sequelize.dialect === "sqlite") {
+      if (
+        env.NODE_ENV === "production" &&
+        ["cli:run", "cli:start", "cli:apply"].includes(env.GROUPAROO_RUN_MODE)
+      ) {
+        throw new Error(
+          "SQLite is intended for development purposes only. When running in production, please use a Postgres database as your DATABASE_URL."
+        );
+      }
+
       log(`Using SQLite database: ${config.sequelize.storage}`);
 
       if (
