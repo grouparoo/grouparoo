@@ -33,6 +33,7 @@ describe("integration/runs/mysql", () => {
     const appDataRefresh = await AppDataRefresh.create({
       appId: app.id,
       refreshQuery: "SELECT 'HI' as name",
+      state: "ready",
     });
     expect(appDataRefresh.lastChangedAt).toBeInstanceOf(Date);
     expect(appDataRefresh.value).toEqual(JSON.stringify({ name: "HI" }));
@@ -44,6 +45,7 @@ describe("integration/runs/mysql", () => {
       AppDataRefresh.create({
         appId: app.id,
         refreshQuery: "",
+        state: "ready",
       })
     ).rejects.toThrow(
       /query should start with SELECT, INSERT, UPDATE, or DELETE/
@@ -55,6 +57,7 @@ describe("integration/runs/mysql", () => {
       AppDataRefresh.create({
         appId: app.id,
         refreshQuery: "SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;",
+        state: "ready",
       })
     ).rejects.toThrow(/only provide a single query/);
   });

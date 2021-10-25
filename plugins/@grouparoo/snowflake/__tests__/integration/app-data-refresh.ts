@@ -31,6 +31,7 @@ describe("integration/runs/snowflake", () => {
     const appDataRefresh = await AppDataRefresh.create({
       appId: app.id,
       refreshQuery: "SELECT 'HI' as name",
+      state: "ready",
     });
     expect(appDataRefresh.lastChangedAt).toBeInstanceOf(Date);
     expect(appDataRefresh.value).toEqual(JSON.stringify({ NAME: "HI" }));
@@ -42,6 +43,7 @@ describe("integration/runs/snowflake", () => {
       AppDataRefresh.create({
         appId: app.id,
         refreshQuery: "",
+        state: "ready",
       })
     ).rejects.toThrow(
       /error with mysql query: "" - Error: ER_EMPTY_QUERY: Query was empty/
@@ -53,6 +55,7 @@ describe("integration/runs/snowflake", () => {
       AppDataRefresh.create({
         appId: app.id,
         refreshQuery: "SELECT 'hi' as name; SELECT id FROM demo.users LIMIT 1;",
+        state: "ready",
       })
     ).rejects.toThrow(
       /Multiple SQL statements in a single API call are not supported; use one API call per statement instead./

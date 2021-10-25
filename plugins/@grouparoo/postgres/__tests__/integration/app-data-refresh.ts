@@ -33,9 +33,11 @@ describe("integration/runs/postgres", () => {
     const appDataRefresh = await AppDataRefresh.create({
       appId: app.id,
       refreshQuery: "SELECT 'HI' as name",
+      state: "ready",
     });
-    expect(appDataRefresh.lastChangedAt).toBeInstanceOf(Date);
+
     expect(appDataRefresh.value).toEqual(JSON.stringify({ name: "HI" }));
+    expect(appDataRefresh.lastChangedAt).toBeInstanceOf(Date);
   });
 
   test("I show a good error with a missing query", async () => {
@@ -44,6 +46,7 @@ describe("integration/runs/postgres", () => {
       AppDataRefresh.create({
         appId: app.id,
         refreshQuery: "",
+        state: "ready",
       })
     ).rejects.toThrow(/Request to Snowflake failed./);
   });
@@ -53,6 +56,7 @@ describe("integration/runs/postgres", () => {
       AppDataRefresh.create({
         appId: app.id,
         refreshQuery: "SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;",
+        state: "ready",
       })
     ).rejects.toThrow(/only provide a single query/);
   });

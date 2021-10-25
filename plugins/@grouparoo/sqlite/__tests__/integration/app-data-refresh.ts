@@ -34,6 +34,8 @@ describe("integration/runs/sqlite", () => {
       appId: app.id,
       refreshQuery: "SELECT 'HI' as name",
     });
+    appDataRefresh.save();
+
     expect(appDataRefresh.lastChangedAt).toBeInstanceOf(Date);
     expect(appDataRefresh.value).toEqual(JSON.stringify({ name: "HI" }));
   });
