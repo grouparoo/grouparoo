@@ -121,7 +121,5 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     );
   }
 
-  console.log(responses);
-
   return responses;
 };

@@ -26,6 +26,7 @@ const { appOptions, usersTableName, purchasesTableName } = getConfig();
 let record: GrouparooRecord;
 let otherRecord: GrouparooRecord;
 let thirdRecord: GrouparooRecord;
+let fourthRecord: GrouparooRecord;
 let emailProperty: Property;
 let firstNameProperty: Property;
 let lastNameProperty: Property;
@@ -90,13 +91,13 @@ async function getPropertyArrays(
   const values = await recordProperties({
     connection: client,
     appOptions,
-    records: [record, otherRecord, thirdRecord],
+    records: [record, otherRecord, thirdRecord, fourthRecord],
     sourceOptions,
     propertyOptions,
     sourceMapping,
     propertyFilters,
     properties,
-    recordIds: [record.id, otherRecord.id, thirdRecord.id],
+    recordIds: [record.id, otherRecord.id, thirdRecord.id, fourthRecord.id],
     source: null,
     sourceId: null,
     app: null,
@@ -142,6 +143,13 @@ describe("postgres/table/recordProperties", () => {
     await thirdRecord.addOrUpdateProperties({
       userId: [6],
       email: ["another@example.com"],
+      lastName: null,
+    });
+
+    fourthRecord = await helper.factories.record();
+    await fourthRecord.addOrUpdateProperties({
+      userId: [4],
+      email: ["fourthmeal@example.com"],
       lastName: null,
     });
   });
@@ -323,13 +331,25 @@ describe("postgres/table/recordProperties", () => {
           sourceMapping,
           aggregationMethod: AggregationMethod.MostRecentValue,
         });
-        expect(values[record.id][properties[0].id][0]).toEqual("Watermelon");
+        expect(values[record.id][properties[0].id][0]).toEqual("Orange");
         expect(values[otherRecord.id][properties[0].id][0]).toEqual("Apple");
-        expect(values[thirdRecord.id][properties[0].id][0]).toEqual(
-          "Strawberry"
+        expect(values[fourthRecord.id][properties[0].id][0]).toEqual(
+          "Watermelon"
         );
+      });
 
-        expect(values).toBe(null);
+      test("least recent", async () => {
+        const [values, properties] = await getPropertyValues({
+          columns,
+          sortColumn,
+          sourceMapping,
+          aggregationMethod: AggregationMethod.LeastRecentValue,
+        });
+        expect(values[record.id][properties[0].id][0]).toEqual("Apple");
+        expect(values[otherRecord.id][properties[0].id][0]).toEqual("Pear");
+        expect(values[fourthRecord.id][properties[0].id][0]).toEqual(
+          "Blueberry"
+        );
       });
     });
 
