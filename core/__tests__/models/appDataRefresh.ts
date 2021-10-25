@@ -14,7 +14,7 @@ describe("appDataRefresh", () => {
     test("an app data refresh can be created with an app", async () => {
       const appDataRefresh = new AppDataRefresh({
         appId: app.id,
-        refreshQuery: "test query",
+        refreshQuery: "SELECT MAX(updated_at) FROM users;",
         state: "ready",
       });
 
@@ -29,6 +29,22 @@ describe("appDataRefresh", () => {
     test("creating an app data refresh creates a log entry", async () => {
       const latestLog = await Log.findOne({
         where: { verb: "create", topic: "appDataRefresh" },
+        order: [["createdAt", "desc"]],
+        limit: 1,
+      });
+      expect(latestLog).toBeTruthy();
+    });
+
+    test("deleting an appDataRefresh creates a log entry", async () => {
+      const appDataRefresh = new AppDataRefresh({
+        appId: app.id,
+        refreshQuery: "SELECT MAX(updated_at) FROM users;",
+        state: "ready",
+      });
+      await appDataRefresh.save();
+      await appDataRefresh.destroy();
+      const latestLog = await Log.findOne({
+        where: { verb: "destroy", topic: "appDataRefresh" },
         order: [["createdAt", "desc"]],
         limit: 1,
       });
@@ -52,26 +68,12 @@ describe("appDataRefresh", () => {
       spy.mockRestore();
     });
 
-    test("associated schedules are run if a new value is saved", async () => {
-      const source = await helper.factories.source(app);
-      await source.setOptions({ table: "test table" });
-      await source.bootstrapUniqueProperty("userId", "integer", "id");
-      await source.setMapping({ id: "userId" });
-      await source.update({ state: "ready" });
-      const schedule = await helper.factories.schedule(source);
-
+    test("trigger schedules method is called if a new 'value' is found from the query", async () => {
       const appDataRefresh = new AppDataRefresh({
         appId: app.id,
         refreshQuery: "SELECT * FROM test;",
       });
       await appDataRefresh.save();
-      console.info(appDataRefresh);
-
-      let runs = await Run.findAll({
-        where: { state: "running", creatorId: schedule.id },
-      });
-      console.info(runs);
-      expect(runs.length).toBe(0);
 
       const spy = jest.spyOn(AppDataRefreshOps, "triggerSchedules");
       await appDataRefresh.update({
@@ -79,15 +81,18 @@ describe("appDataRefresh", () => {
         state: "ready",
       });
       expect(spy).toHaveBeenCalledWith(appDataRefresh);
-
-      runs = await Run.findAll({
-        where: { state: "running", creatorId: schedule.id },
-      });
-      expect(runs.length).toBe(1);
     });
-    test.todo(
-      "an appDataRefresh in the draft state will not trigger schedules"
-    );
-    test.todo("deleting an appDataRefresh creates a log entry");
+    test("an appDataRefresh in the draft state will not run its query", async () => {
+      const spy = jest.spyOn(AppDataRefreshOps, "triggerSchedules");
+
+      const appDataRefresh = new AppDataRefresh({
+        appId: app.id,
+        refreshQuery: "SELECT * FROM test;",
+      });
+      await appDataRefresh.save();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(appDataRefresh.value).toBe(null);
+    });
   });
 });
