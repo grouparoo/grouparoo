@@ -338,8 +338,8 @@ describe("snowflake/table/recordProperties", () => {
     });
 
     describe("purchases by date", () => {
-      const columns = ["purchase"];
-      const sortColumn = "stamp";
+      const columns = ["PURCHASE"];
+      const sortColumn = "STAMP";
       test("most recent", async () => {
         const [values, properties] = await getPropertyValues({
           columns,
@@ -349,9 +349,7 @@ describe("snowflake/table/recordProperties", () => {
         });
         expect(values[record.id][properties[0].id][0]).toEqual("Orange");
         expect(values[otherRecord.id][properties[0].id][0]).toEqual("Apple");
-        expect(values[fourthRecord.id][properties[0].id][0]).toEqual(
-          "Watermelon"
-        );
+        expect(values[fourthRecord.id][properties[0].id][0]).toEqual("Apple");
       });
 
       test("least recent", async () => {
