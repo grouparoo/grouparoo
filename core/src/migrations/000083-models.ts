@@ -14,8 +14,16 @@ export default {
   ) => {
     let codeConfigInUse = false;
     if (
-      (await MigrationUtils.countRows(queryInterface, "sources")) > 0 ||
-      (await MigrationUtils.countRows(queryInterface, "destinations")) > 0
+      (await MigrationUtils.countRows(
+        queryInterface,
+        "sources",
+        '"locked" = "config:code"'
+      )) > 0 ||
+      (await MigrationUtils.countRows(
+        queryInterface,
+        "destinations",
+        '"locked" = "config:code"'
+      )) > 0
     ) {
       codeConfigInUse = true;
     }

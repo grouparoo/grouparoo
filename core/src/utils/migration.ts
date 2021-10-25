@@ -9,10 +9,13 @@ export namespace MigrationUtils {
 
   export async function countRows(
     queryInterface: Sequelize.QueryInterface,
-    table: string
+    table: string,
+    whereClause?: string
   ) {
     const [rows] = await queryInterface.sequelize.query(
-      `SELECT COUNT(*) as c FROM "${table}"`
+      `SELECT COUNT(*) as c FROM "${table}" ${
+        whereClause ? `WHERE ${whereClause}` : ""
+      }`
     );
     return parseInt(rows[0]["c"]);
   }
