@@ -198,7 +198,6 @@ export namespace GroupOps {
     limit = 1000,
     offset = 0,
     highWaterMark: number = null,
-    force = false,
     destinationId?: string
   ) {
     let records: RecordMultipleAssociationShim[];
@@ -267,10 +266,9 @@ export namespace GroupOps {
     const existingGroupMemberRecordIds = groupMembers.map(
       (member) => member.recordId
     );
-    const recordsNeedingGroupMembership =
-      force || destinationId
-        ? records
-        : records.filter((p) => !existingGroupMemberRecordIds.includes(p.id));
+    const recordsNeedingGroupMembership = destinationId
+      ? records
+      : records.filter((p) => !existingGroupMemberRecordIds.includes(p.id));
 
     await updateRecords(
       recordsNeedingGroupMembership.map((p) => p.id),

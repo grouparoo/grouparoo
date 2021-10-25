@@ -427,7 +427,6 @@ export class Group extends LoggedModel<Group> {
     limit = 1000,
     offset = 0,
     highWaterMark: number = null,
-    force = false,
     destinationId?: string
   ) {
     return GroupOps.runAddGroupMembers(
@@ -436,7 +435,6 @@ export class Group extends LoggedModel<Group> {
       limit,
       offset,
       highWaterMark,
-      force,
       destinationId
     );
   }
