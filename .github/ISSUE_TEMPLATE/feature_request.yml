@@ -1,16 +1,12 @@
 name: 🚀 Feature request
-description: As a user,
-about: Suggest an idea for this project,
-labels: 
- [kind/feature]
- enhancement
-assignees:
- Enter Assign Here
+description: As a user...
+about: Suggest an idea for this project
+labels: [enhancement]
 body:
 - type: markdown
   attributes:
-    value: |
-      Thanks for taking the time to request a feature for Grouparoo! Please fill the form in English!
+    value: Thanks for taking the time to request a feature for Grouparoo! Please fill the form in English.
+
 - type: checkboxes
   attributes:
     label: Is there an existing issue for this?
@@ -23,8 +19,7 @@ body:
   attributes:
     label: Is your feature request related to a problem? Please describe.
     description: A concise description of the problem you are facing or the motivetion behind this feature request.
-    placeholder: |
-      I faced a problem due to which ...
+    placeholder: I faced a problem due to which ...
   validations:
     required: true
     
@@ -45,8 +40,7 @@ body:
 - type: textarea
   attributes:
     label: Anything else? (Additional Context)
-    description: |
-      Links? References? Anything that will give us more context about this!
+    description: Links? References? Anything that will give us more context about this!
   validations:
     required: false
 
