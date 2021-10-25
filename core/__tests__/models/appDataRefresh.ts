@@ -92,7 +92,7 @@ describe("appDataRefresh", () => {
       await appDataRefresh.save();
 
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(appDataRefresh.value).toBe(null);
+      expect(appDataRefresh.value).toBeFalsy();
     });
     //this test should be last, it destroys the app
     test("deleting an app deletes its appDataRefresh", async () => {
