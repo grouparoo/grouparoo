@@ -11,6 +11,7 @@ import {
   GrouparooRecord,
   Property,
   SourceMapping,
+  AggregationMethod,
 } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
@@ -21,6 +22,7 @@ const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 let record: GrouparooRecord;
 let otherRecord: GrouparooRecord;
 let thirdRecord: GrouparooRecord;
+let fourthRecord: GrouparooRecord;
 let emailProperty: Property;
 let firstNameProperty: Property;
 let lastNameProperty: Property;
@@ -31,15 +33,17 @@ async function getPropertyValues(
     columns,
     sourceMapping,
     aggregationMethod,
+    sortColumn,
   }: {
     columns: string[];
     sourceMapping: SourceMapping;
     aggregationMethod: string;
+    sortColumn?: string;
   },
   usePropertyFilters?
 ) {
   const arrays = await getPropertyArrays(
-    { columns, sourceMapping, aggregationMethod },
+    { columns, sourceMapping, aggregationMethod, sortColumn },
     usePropertyFilters
   );
   return arrays;
@@ -49,10 +53,12 @@ async function getPropertyArrays(
     columns,
     sourceMapping,
     aggregationMethod,
+    sortColumn,
   }: {
     columns: string[];
     sourceMapping: SourceMapping;
     aggregationMethod: string;
+    sortColumn?: string;
   },
   usePropertyFilters?
 ) {
@@ -67,7 +73,8 @@ async function getPropertyArrays(
   for (const property of properties) {
     propertyOptions[property.id] = {
       column: columns[counter],
-      aggregationMethod: aggregationMethod,
+      aggregationMethod,
+      sortColumn,
     };
     counter++;
   }
@@ -81,13 +88,13 @@ async function getPropertyArrays(
   const values = await recordProperties({
     connection,
     appOptions,
-    records: [record, otherRecord, thirdRecord],
+    records: [record, otherRecord, thirdRecord, fourthRecord],
     sourceOptions,
     propertyOptions,
     sourceMapping,
     propertyFilters,
     properties,
-    recordIds: [record.id, otherRecord.id, thirdRecord.id],
+    recordIds: [record.id, otherRecord.id, thirdRecord.id, fourthRecord.id],
     source: null,
     sourceId: null,
     app: null,
@@ -131,6 +138,13 @@ describe("bigquery/table/recordProperties", () => {
     await thirdRecord.addOrUpdateProperties({
       userId: [6],
       email: ["another@example.com"],
+      lastName: null,
+    });
+
+    fourthRecord = await helper.factories.record();
+    await fourthRecord.addOrUpdateProperties({
+      userId: [4],
+      email: ["acotesford3@example.com"],
       lastName: null,
     });
   });
@@ -299,6 +313,37 @@ describe("bigquery/table/recordProperties", () => {
     const sourceMapping = { profile_id: "userId" };
     beforeAll(() => {
       sourceOptions = { table: "purchases" };
+    });
+
+    describe("purchases by date", () => {
+      const columns = ["purchase"];
+      const sortColumn = "stamp";
+
+      test("most recent", async () => {
+        const [values, properties] = await getPropertyValues({
+          columns,
+          sortColumn,
+          sourceMapping,
+          aggregationMethod: AggregationMethod.MostRecentValue,
+        });
+        expect(values[record.id][properties[0].id][0]).toEqual("Orange");
+        expect(values[otherRecord.id][properties[0].id][0]).toEqual("Apple");
+        expect(values[fourthRecord.id][properties[0].id][0]).toEqual("Apple");
+      });
+
+      test("least recent", async () => {
+        const [values, properties] = await getPropertyValues({
+          columns,
+          sortColumn,
+          sourceMapping,
+          aggregationMethod: AggregationMethod.LeastRecentValue,
+        });
+        expect(values[record.id][properties[0].id][0]).toEqual("Apple");
+        expect(values[otherRecord.id][properties[0].id][0]).toEqual("Pear");
+        expect(values[fourthRecord.id][properties[0].id][0]).toEqual(
+          "Blueberry"
+        );
+      });
     });
 
     describe("numbers", () => {
