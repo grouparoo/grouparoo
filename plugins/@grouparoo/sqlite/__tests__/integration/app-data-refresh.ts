@@ -30,12 +30,12 @@ describe("integration/runs/sqlite", () => {
 
   test("I can query using the appDataRefresh query method", async () => {
     const app = await App.findOne();
-    const adr = await AppDataRefresh.create({
+    const appDataRefresh = await AppDataRefresh.create({
       appId: app.id,
       refreshQuery: "SELECT 'HI' as name",
     });
-    expect(adr.lastChangedAt).toBeInstanceOf(Date);
-    expect(adr.value).toEqual(JSON.stringify({ name: "HI" }));
+    expect(appDataRefresh.lastChangedAt).toBeInstanceOf(Date);
+    expect(appDataRefresh.value).toEqual(JSON.stringify({ name: "HI" }));
   });
 
   test("I show a good error with a missing query", async () => {
