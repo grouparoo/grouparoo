@@ -901,7 +901,6 @@ describe("modules/codeConfig", () => {
         },
       });
       expect(run).toBeTruthy();
-      expect(run.force).toBe(false);
     });
 
     test("destinations are brought back", async () => {
@@ -921,7 +920,6 @@ describe("modules/codeConfig", () => {
         where: { state: "running", destinationId: destinations[0].id },
       });
       expect(runs.length).toBe(1);
-      expect(runs[0].force).toBe(true);
       expect(runs[0].creatorId).toBe("email_group");
     });
 

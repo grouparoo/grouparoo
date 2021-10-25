@@ -394,7 +394,6 @@ describe("models/group", () => {
         });
         expect(runningRuns.length).toBe(1);
         expect(runningRuns[0].destinationId).toBe(destination.id);
-        expect(runningRuns[0].force).toBe(false);
         expect(runningRuns[0].id).not.toBe(newRun.id);
 
         await destination.updateTracking("none");
