@@ -628,7 +628,6 @@ describe("actions/destinations", () => {
           expect.objectContaining({
             destinationId: id,
             creatorId: destination.group.id,
-            force: true,
           })
         );
         expect(newRun.id).toEqual(runningRuns[0].id);
@@ -658,7 +657,7 @@ describe("actions/destinations", () => {
         expect(runningRuns.length).toBe(0);
       });
 
-      test("an administrator can export the members of a destination with a forced group run", async () => {
+      test("an administrator can export the members of a destination with a group run", async () => {
         connection.params = {
           csrfToken,
           id,
@@ -686,7 +685,6 @@ describe("actions/destinations", () => {
           expect.objectContaining({
             destinationId: id,
             creatorId: destination.group.id,
-            force: true,
           })
         );
       });
