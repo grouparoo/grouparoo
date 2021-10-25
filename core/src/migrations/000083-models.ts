@@ -17,12 +17,12 @@ export default {
       (await MigrationUtils.countRows(
         queryInterface,
         "sources",
-        '"locked" = "config:code"'
+        `"locked" = 'config:code'`
       )) > 0 ||
       (await MigrationUtils.countRows(
         queryInterface,
         "destinations",
-        '"locked" = "config:code"'
+        `"locked" = 'config:code'`
       )) > 0
     ) {
       codeConfigInUse = true;
