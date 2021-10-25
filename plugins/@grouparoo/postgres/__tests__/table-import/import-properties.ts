@@ -4,7 +4,12 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { GrouparooRecord, Property, SourceMapping } from "@grouparoo/core";
+import {
+  AggregationMethod,
+  GrouparooRecord,
+  Property,
+  SourceMapping,
+} from "@grouparoo/core";
 
 import {
   beforeData,
@@ -32,15 +37,17 @@ async function getPropertyValues(
     columns,
     sourceMapping,
     aggregationMethod,
+    sortColumn,
   }: {
     columns: string[];
     sourceMapping: SourceMapping;
     aggregationMethod: string;
+    sortColumn?: string;
   },
   usePropertyFilters?
 ) {
   const arrays = await getPropertyArrays(
-    { columns, sourceMapping, aggregationMethod },
+    { columns, sourceMapping, aggregationMethod, sortColumn },
     usePropertyFilters
   );
   return arrays;
@@ -50,10 +57,12 @@ async function getPropertyArrays(
     columns,
     sourceMapping,
     aggregationMethod,
+    sortColumn,
   }: {
     columns: string[];
     sourceMapping: SourceMapping;
     aggregationMethod: string;
+    sortColumn?: string;
   },
   usePropertyFilters?
 ) {
@@ -68,7 +77,8 @@ async function getPropertyArrays(
   for (const property of properties) {
     propertyOptions[property.id] = {
       column: columns[counter],
-      aggregationMethod: aggregationMethod,
+      aggregationMethod,
+      sortColumn,
     };
     counter++;
   }
@@ -301,6 +311,26 @@ describe("postgres/table/recordProperties", () => {
     const sourceMapping = { record_id: "userId" };
     beforeAll(() => {
       sourceOptions = { table: purchasesTableName };
+    });
+
+    describe("purchases by date", () => {
+      const columns = ["purchase"];
+      const sortColumn = "stamp";
+      test("most recent", async () => {
+        const [values, properties] = await getPropertyValues({
+          columns,
+          sortColumn,
+          sourceMapping,
+          aggregationMethod: AggregationMethod.MostRecentValue,
+        });
+        expect(values[record.id][properties[0].id][0]).toEqual("Watermelon");
+        expect(values[otherRecord.id][properties[0].id][0]).toEqual("Apple");
+        expect(values[thirdRecord.id][properties[0].id][0]).toEqual(
+          "Strawberry"
+        );
+
+        expect(values).toBe(null);
+      });
     });
 
     describe("numbers", () => {
