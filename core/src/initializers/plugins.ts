@@ -81,14 +81,16 @@ export class Plugins extends Initializer {
             ? uiPlugins.length - 1
             : 0
         ];
-      this.registerPlugin({
-        name: relevantUiPlugin.name,
-        icon: "/public/@grouparoo/logo.png",
-      });
-      process.env.GROUPAROO_UI_EDITION = relevantUiPlugin.name.replace(
-        "@grouparoo/ui-",
-        ""
-      );
+      if (relevantUiPlugin) {
+        this.registerPlugin({
+          name: relevantUiPlugin.name,
+          icon: "/public/@grouparoo/logo.png",
+        });
+        process.env.GROUPAROO_UI_EDITION = relevantUiPlugin.name.replace(
+          "@grouparoo/ui-",
+          ""
+        );
+      }
     }
   }
 

@@ -306,6 +306,17 @@ describe("modules/status", () => {
           ],
         },
         env: {
+          GROUPAROO_UI_EDITION: [
+            {
+              metric: {
+                aggregation: "exact",
+                collection: "GROUPAROO_UI_EDITION",
+                topic: "env",
+                value: "unknown",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
           NODE_ENV: [
             {
               metric: {
