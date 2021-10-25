@@ -51,13 +51,13 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
       break;
     case AggregationMethod.MostRecentValue:
       if (!sortColumn) throw new Error("Sort Column is needed");
-      orderBy = `"${sortColumn}" DESC`;
+      orderBy = `\`${sortColumn}\` DESC`;
       groupByColumns.push(columnNames[0]);
       groupByColumns.push(sortColumn);
       break;
     case AggregationMethod.LeastRecentValue:
       if (!sortColumn) throw new Error("Sort Column is needed");
-      orderBy = `"${sortColumn}" ASC`;
+      orderBy = `\`${sortColumn}\` ASC`;
       groupByColumns.push(columnNames[0]);
       groupByColumns.push(sortColumn);
       break;
