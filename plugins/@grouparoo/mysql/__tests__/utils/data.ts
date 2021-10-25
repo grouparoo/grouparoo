@@ -74,7 +74,6 @@ CREATE TABLE ${groupsDestinationTableName} (
 
 export const appOptions = {
   user: "root",
-  password: "password",
   database: "grouparoo_test",
 };
 const appId = "app_31bb06e8-0a4e-49c3-ad42-545f2e8662e1";
