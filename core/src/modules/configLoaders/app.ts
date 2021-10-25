@@ -62,7 +62,7 @@ export async function loadApp(
 
   logModel(app, validate ? "validated" : isNew ? "created" : "updated");
 
-  if (configObject.refreshQuery && configObject.refreshQuery !== null) {
+  if (configObject.refreshQuery && configObject.refreshQuery !== "") {
     let appDataRefresh: AppDataRefresh;
 
     appDataRefresh = await AppDataRefresh.findOne({

@@ -45,9 +45,7 @@ describe("integration/runs/snowflake", () => {
         refreshQuery: "",
         state: "ready",
       })
-    ).rejects.toThrow(
-      /error with mysql query: "" - Error: ER_EMPTY_QUERY: Query was empty/
-    );
+    ).rejects.toThrow(/Request to Snowflake failed./);
   });
   test("I show a good error with a query that has too many sql statements", async () => {
     const app = await App.findOne();

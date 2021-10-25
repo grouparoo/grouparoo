@@ -54,7 +54,7 @@ describe("appDataRefresh", () => {
     test("updating a refreshQuery on a ready instance triggers an appDataRefresh check", async () => {
       const appDataRefresh = new AppDataRefresh({
         appId: app.id,
-        refreshQuery: "test query",
+        refreshQuery: "SELECT MAX(updated_at) FROM users;",
         state: "ready",
       });
       await appDataRefresh.save();
