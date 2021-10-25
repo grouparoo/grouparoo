@@ -16,7 +16,6 @@ export namespace RunOps {
    */
   export async function run(
     creator: Group | GrouparooModel,
-    force = false,
     destinationId?: string
   ) {
     if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
@@ -35,7 +34,6 @@ export namespace RunOps {
       creatorType: getCreatorTypeString(creator),
       state: "running",
       destinationId,
-      force,
     });
 
     return run;

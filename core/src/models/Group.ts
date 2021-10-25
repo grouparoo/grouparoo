@@ -393,8 +393,8 @@ export class Group extends LoggedModel<Group> {
     return Moment(this.calculatedAt).add(delayMinutes, "minutes").toDate();
   }
 
-  async run(force = false, destinationId?: string) {
-    return RunOps.run(this, force, destinationId);
+  async run(destinationId?: string) {
+    return RunOps.run(this, destinationId);
   }
 
   async stopPreviousRuns() {

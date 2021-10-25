@@ -49,10 +49,10 @@ export namespace DestinationOps {
       // nothing to do
     } else if (destination.collection === "group") {
       const group = await destination.$get("group");
-      if (group) return group.run(false, destination.id);
+      if (group) return group.run(destination.id);
     } else if (destination.collection === "model") {
       const model = await destination.$get("model");
-      if (model) return model.run(false, destination.id);
+      if (model) return model.run(destination.id);
     } else {
       throw new Error(`cannot export members for a ${destination.collection}`);
     }
@@ -118,10 +118,10 @@ export namespace DestinationOps {
       // nothing to do
     } else if (destination.collection === "group" && destination.groupId) {
       const group = await Group.findById(destination.groupId);
-      if (group) return RunOps.run(group, false, destination.id);
+      if (group) return RunOps.run(group, destination.id);
     } else if (destination.collection === "model") {
       const model = await GrouparooModel.findById(destination.modelId);
-      if (model) return RunOps.run(model, false, destination.id);
+      if (model) return RunOps.run(model, destination.id);
     } else {
       throw new Error(
         `unknown destination collection ${destination.collection}`
