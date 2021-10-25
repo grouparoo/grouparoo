@@ -8,6 +8,11 @@ export default {
       { type: "csv-import-table" },
       { type: "csv-import" }
     );
+    await queryInterface.bulkUpdate(
+      "sources",
+      { type: "csv-import-table" },
+      { type: "csv-remote-import" }
+    );
   },
 
   down: async (queryInterface: Sequelize.QueryInterface) => {
