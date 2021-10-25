@@ -94,5 +94,19 @@ describe("appDataRefresh", () => {
       expect(spy).toHaveBeenCalledTimes(1);
       expect(appDataRefresh.value).toBe(null);
     });
+    //this test should be last, it destroys the app
+    test("deleting an app deletes its appDataRefresh", async () => {
+      const appDataRefresh = new AppDataRefresh({
+        appId: app.id,
+        refreshQuery: "SELECT * FROM test;",
+        state: "ready",
+      });
+      await appDataRefresh.save();
+      await app.destroy();
+
+      const appDataRefreshes = await AppDataRefresh.findAll();
+
+      expect(appDataRefreshes.length).toEqual(0);
+    });
   });
 });
