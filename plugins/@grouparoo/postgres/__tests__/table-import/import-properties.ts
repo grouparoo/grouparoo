@@ -149,7 +149,7 @@ describe("postgres/table/recordProperties", () => {
     fourthRecord = await helper.factories.record();
     await fourthRecord.addOrUpdateProperties({
       userId: [4],
-      email: ["fourthmeal@example.com"],
+      email: ["acotesford3@example.com"],
       lastName: null,
     });
   });
