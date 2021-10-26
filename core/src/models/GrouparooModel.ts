@@ -23,7 +23,7 @@ import { GrouparooRecord } from "./GrouparooRecord";
 import { RunOps } from "../modules/ops/runs";
 import { StateMachine } from "../modules/stateMachine";
 
-export const ModelTypes = ["profile"] as const;
+export const ModelTypes = ["profile", "account", "custom"] as const;
 export type ModelType = typeof ModelTypes[number];
 
 const STATES = ["ready", "deleted"] as const;
@@ -76,6 +76,10 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
     switch (this.type) {
       case "profile":
         return "user";
+      case "account":
+        return "building";
+      case "custom":
+        return "cogs";
       default:
         throw new Error(`no icon for ${this.type} model`);
     }
