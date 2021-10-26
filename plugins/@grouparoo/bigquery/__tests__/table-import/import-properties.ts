@@ -355,19 +355,17 @@ describe("bigquery/table/recordProperties", () => {
         });
         expect(values[record.id][properties[0].id]).toEqual([
           "Apple",
-          "Blueberry",
           "Orange",
+          "Blueberry",
         ]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([
           "Apple",
           "Pear",
         ]);
         expect(values[fourthRecord.id][properties[0].id]).toEqual([
-          "Watermelon",
-          "Blueberry",
-          "Peach",
-          "Pear",
           "Apple",
+          "Blueberry",
+          "Pear",
         ]);
         emailProperty.isArray = isArray;
       });
