@@ -338,7 +338,6 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     const cliEnv = Object.assign({}, process.env, {
       GROUPAROO_LOGS_STDOUT_DISABLE_COLOR: "true",
       GROUPAROO_PARENT_PATH: projectPath,
-      NODE_ENV: process.env.NODE_ENV,
       JEST_WORKER_ID: jestId,
       INIT_CWD: undefined,
       DATABASE_URL: undefined,
