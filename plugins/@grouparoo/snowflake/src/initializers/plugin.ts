@@ -93,7 +93,7 @@ export class Plugins extends Initializer {
               defaultValue: "PUBLIC",
             },
           ],
-          methods: { test, connect, disconnect, query: appQuery },
+          methods: { test, connect, disconnect, appQuery },
         },
       ],
       connections: [getTableConnection(), getQueryConnection()],

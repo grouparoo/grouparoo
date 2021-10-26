@@ -287,12 +287,7 @@ export namespace helper {
                 password: { type: "password" },
               };
             },
-            getConnection: async () => {
-              return {
-                connection: "this is a connection",
-              };
-            },
-            query: async () => {
+            appQuery: async () => {
               return [new Date().getTime()];
             },
           },

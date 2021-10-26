@@ -47,7 +47,7 @@ export interface PluginApp {
     connect?: ConnectPluginAppMethod;
     disconnect?: DisconnectPluginAppMethod;
     test: TestPluginMethod;
-    query?: AppQueryMethod;
+    appQuery?: AppQueryMethod;
     appOptions?: AppOptionsMethod;
     parallelism?: AppParallelismMethod;
   };

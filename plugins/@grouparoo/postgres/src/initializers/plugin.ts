@@ -131,7 +131,7 @@ export class Plugins extends Initializer {
               description: "The ssl certificate authority (CA).",
             },
           ],
-          methods: { test, connect, disconnect, query: appQuery },
+          methods: { test, connect, disconnect, appQuery },
         },
       ],
       connections: [

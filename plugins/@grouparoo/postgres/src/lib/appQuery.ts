@@ -8,6 +8,6 @@ export const appQuery: AppQueryMethod = async ({
 }) => {
   validateQuery(refreshQuery);
 
-  const { rows } = await connection.query(format(refreshQuery)); // return [];
+  const { rows } = await connection.query(format(refreshQuery));
   return rows.length > 0 ? rows[0] : [];
 };

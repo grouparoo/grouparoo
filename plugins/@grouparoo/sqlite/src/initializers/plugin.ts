@@ -72,7 +72,7 @@ export class Plugins extends Initializer {
               placeholder: "/path/to/file.sqlite",
             },
           ],
-          methods: { test, connect, disconnect, query: appQuery },
+          methods: { test, connect, disconnect, appQuery },
         },
       ],
       connections: [

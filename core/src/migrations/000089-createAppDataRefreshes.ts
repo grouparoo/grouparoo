@@ -41,7 +41,6 @@ export default {
       state: {
         type: DataTypes.STRING(191),
         allowNull: false,
-        defaultValue: "draft",
       },
 
       lastChangedAt: {

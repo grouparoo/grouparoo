@@ -4,19 +4,18 @@ import { Schedule } from "../../models/Schedule";
 
 export namespace AppDataRefreshOps {
   export async function checkDataRefreshValue(appDataRefresh: AppDataRefresh) {
-    const { refreshQuery, value } = appDataRefresh;
     const app = await appDataRefresh.$get("app");
     const options = await app.getOptions();
     const { pluginApp } = await app.getPlugin();
     const connection = await app.getConnection();
 
-    if (typeof pluginApp.methods.query !== "function") {
+    if (typeof pluginApp.methods.appQuery !== "function") {
       throw new Error(
         `app ${app.name} (${app.id}) of type ${app.type} cannot use app data refresh`
       );
     }
 
-    const responseRows = await pluginApp.methods.query({
+    const responseRows = await pluginApp.methods.appQuery({
       app,
       appId: app.id,
       appOptions: options,
@@ -26,15 +25,16 @@ export namespace AppDataRefreshOps {
     const sampleValue = JSON.stringify(
       Array.isArray(responseRows) ? responseRows[0] : responseRows
     );
-    if (sampleValue !== value) {
+    const originalValue = appDataRefresh.value;
+
+    if (sampleValue !== originalValue) {
       appDataRefresh.value = sampleValue;
       appDataRefresh.lastChangedAt = new Date();
     }
     appDataRefresh.lastConfirmedAt = new Date();
     await appDataRefresh.save();
 
-    //return true, schedules will be enqueued
-    return true;
+    return sampleValue !== originalValue;
   }
 
   export async function triggerSchedules(appDataRefresh: AppDataRefresh) {

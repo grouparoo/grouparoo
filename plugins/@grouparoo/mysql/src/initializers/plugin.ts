@@ -29,7 +29,6 @@ import {
   QuerySourceTemplate,
   QueryPropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
-import { validateQuery } from "../lib/validateQuery";
 
 const packageJSON = require("./../../package.json");
 
@@ -98,7 +97,7 @@ export class Plugins extends Initializer {
             test,
             connect,
             disconnect,
-            query: appQuery,
+            appQuery,
           },
         },
       ],

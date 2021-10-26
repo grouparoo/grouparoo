@@ -81,7 +81,7 @@ export class Plugins extends Initializer {
               placeholder: "e.g. -----BEGIN PRIVATE KEY-----\nMII ...",
             },
           ],
-          methods: { test, connect, disconnect, query: appQuery },
+          methods: { test, connect, disconnect, appQuery },
         },
       ],
       connections: [getTableConnection(), getQueryConnection()],
