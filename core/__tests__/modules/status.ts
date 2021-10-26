@@ -5,18 +5,14 @@ import {
   FinalSummaryReporters,
 } from "../../src/modules/statusReporters";
 import { Status } from "../../src/modules/status";
-import {
-  Destination,
-  GrouparooRecord,
-  Source,
-  Schedule,
-  GrouparooModel,
-} from "../../src";
+import { Destination, GrouparooRecord, Source, Schedule } from "../../src";
 
 describe("modules/status", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
+    process.env.GROUPAROO_RUN_MODE = "x";
+    process.env.GROUPAROO_TELEMETRY_ENABLED = "false";
     await helper.factories.properties();
   });
 
@@ -309,14 +305,58 @@ describe("modules/status", () => {
             },
           ],
         },
-        node_env: {
-          cluster: [
+        env: {
+          GROUPAROO_UI_EDITION: [
             {
               metric: {
                 aggregation: "exact",
-                collection: "cluster",
-                topic: "node_env",
+                collection: "GROUPAROO_UI_EDITION",
+                topic: "env",
+                value: "unknown",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+          NODE_ENV: [
+            {
+              metric: {
+                aggregation: "exact",
+                collection: "NODE_ENV",
+                topic: "env",
                 value: "test",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+          GROUPAROO_CLOUD: [
+            {
+              metric: {
+                aggregation: "exact",
+                collection: "GROUPAROO_CLOUD",
+                topic: "env",
+                value: "false",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+          GROUPAROO_DISTRIBUTION: [
+            {
+              metric: {
+                aggregation: "exact",
+                collection: "GROUPAROO_DISTRIBUTION",
+                topic: "env",
+                value: "unknown",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+          GROUPAROO_RUN_MODE: [
+            {
+              metric: {
+                aggregation: "exact",
+                collection: "GROUPAROO_RUN_MODE",
+                topic: "env",
+                value: "x",
               },
               timestamp: expect.any(Number),
             },

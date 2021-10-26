@@ -19,6 +19,7 @@ describe("modules/status", () => {
     await api.resque.queue.connection.redis.flushdb();
     config.telemetry.enabled = true;
     process.env.GROUPAROO_RUN_MODE = "x";
+    process.env.GROUPAROO_TELEMETRY_ENABLED = "false";
   });
 
   afterEach(() => {
@@ -34,7 +35,7 @@ describe("modules/status", () => {
       expect(id).toMatch(/^tcs_/);
       expect(trigger).toBe("timer");
 
-      expect(metrics[0]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "cluster",
           topic: "workers",
@@ -42,7 +43,7 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[1]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "cluster",
           topic: "resqueErrors",
@@ -50,7 +51,7 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[2]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "cluster",
           topic: "os",
@@ -58,16 +59,52 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[3]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
-          collection: "cluster",
-          topic: "node_env",
+          collection: "sequelize",
+          topic: "dialect",
+          aggregation: "exact",
+          value: "postgres",
+        })
+      );
+
+      expect(metrics).toContainEqual(
+        expect.objectContaining({
+          collection: "NODE_ENV",
+          topic: "env",
           aggregation: "exact",
           value: "test",
         })
       );
 
-      expect(metrics[4]).toEqual(
+      expect(metrics).toContainEqual(
+        expect.objectContaining({
+          collection: "GROUPAROO_RUN_MODE",
+          topic: "env",
+          aggregation: "exact",
+          value: "x",
+        })
+      );
+
+      expect(metrics).toContainEqual(
+        expect.objectContaining({
+          collection: "GROUPAROO_CLOUD",
+          topic: "env",
+          aggregation: "exact",
+          value: "false",
+        })
+      );
+
+      expect(metrics).toContainEqual(
+        expect.objectContaining({
+          collection: "GROUPAROO_DISTRIBUTION",
+          topic: "env",
+          aggregation: "exact",
+          value: "unknown",
+        })
+      );
+
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "cluster",
           topic: "@grouparoo/core",
@@ -76,7 +113,7 @@ describe("modules/status", () => {
         })
       );
 
-      expect(metrics[5]).toEqual(
+      expect(metrics).toContainEqual(
         expect.objectContaining({
           collection: "totals",
           topic: "App",

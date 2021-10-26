@@ -1,5 +1,5 @@
 import os from "os";
-import { api, env, task } from "actionhero";
+import { api, config, task, env as nodeEnv } from "actionhero";
 import Sequelize from "sequelize";
 import { getCoreVersion, getPluginManifest } from "../modules/pluginDetails";
 import { Op } from "sequelize";
@@ -77,8 +77,8 @@ export namespace StatusReporters {
       }
     }
 
-    export namespace OS {
-      export async function exact(): Promise<StatusMetric> {
+    export namespace Process {
+      export async function platform(): Promise<StatusMetric> {
         return {
           collection: "cluster",
           topic: "os",
@@ -86,20 +86,40 @@ export namespace StatusReporters {
           value: `${process.platform}/${os.release()}`,
         };
       }
-    }
 
-    export namespace NODE_ENV {
-      export async function exact(): Promise<StatusMetric> {
+      export async function env(): Promise<StatusMetric[]> {
+        const metrics: StatusMetric[] = [];
+        const envVars = [
+          ["NODE_ENV", "development"],
+          ["GROUPAROO_CLOUD", "false"],
+          ["GROUPAROO_DISTRIBUTION", "unknown"],
+          ["GROUPAROO_RUN_MODE", "unknown"],
+          ["GROUPAROO_UI_EDITION", "unknown"],
+        ];
+
+        for (const [k, defaultValue] of envVars) {
+          metrics.push({
+            collection: k,
+            topic: "env",
+            aggregation: "exact",
+            value: process.env[k] ?? defaultValue,
+          });
+        }
+
+        return metrics;
+      }
+
+      export async function sequelizeDialect(): Promise<StatusMetric> {
         return {
-          collection: "cluster",
-          topic: "node_env",
+          collection: "sequelize",
+          topic: "dialect",
           aggregation: "exact",
-          value: env,
+          value: config.sequelize.dialect,
         };
       }
     }
 
-    export namespace NOTIFICATIONS {
+    export namespace Notifications {
       export async function unread(): Promise<StatusMetric> {
         return {
           collection: "cluster",
