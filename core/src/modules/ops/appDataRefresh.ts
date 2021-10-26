@@ -46,14 +46,14 @@ export namespace AppDataRefreshOps {
     for (const source of sources) {
       schedulesToRun.push(
         ...(await Schedule.findAll({
-          where: { sourceId: source.id, refreshEnabled: true },
+          where: { sourceId: source.id, refreshEnabled: true, state: "ready" },
         }))
       );
     }
 
     console.info(schedulesToRun);
-    schedulesToRun.forEach((schedule) => {
-      schedule.enqueueRun();
-    });
+    for (const schedule of schedulesToRun) {
+      await schedule.enqueueRun();
+    }
   }
 }

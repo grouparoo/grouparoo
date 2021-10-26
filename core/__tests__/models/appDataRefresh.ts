@@ -87,16 +87,16 @@ describe("appDataRefresh", () => {
       });
       await appDataRefresh.save();
 
-      const spy = jest.spyOn(AppDataRefreshOps, "triggerSchedules");
       await appDataRefresh.update({
         refreshQuery: "SELECT 'hi' AS name;",
         state: "ready",
       });
-      expect(spy).toHaveBeenCalledWith(appDataRefresh);
+
       const runs = await Run.findAll({ where: { creatorType: "schedule" } });
       console.info(`runs: ${runs}`);
       expect(runs.length).toBe(1);
-      await app.destroy();
+
+      await source.destroy();
     });
     test("an appDataRefresh in the draft state will not run its query", async () => {
       const spy = jest.spyOn(AppDataRefreshOps, "triggerSchedules");
@@ -107,9 +107,9 @@ describe("appDataRefresh", () => {
       });
       await appDataRefresh.save();
 
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(appDataRefresh.value).toBeFalsy();
+      expect(spy).toHaveBeenCalledTimes(0);
     });
+
     //this test should be last, it destroys the app
     test("deleting an app deletes its appDataRefresh", async () => {
       const appDataRefresh = new AppDataRefresh({
