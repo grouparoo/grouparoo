@@ -12,7 +12,6 @@ export INIT_CWD=$WORKDIR
 export GROUPAROO_TELEMETRY_ENABLED=false
 
 echo " >>> testing with WORKDIR=$WORKDIR against CORE_VERSION=$CORE_VERSION <<< "
-echo " NODE_ENV=$NODE_ENV"
 
 ## to get around premission issues on CI
 ## https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
