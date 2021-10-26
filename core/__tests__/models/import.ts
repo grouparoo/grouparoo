@@ -34,7 +34,7 @@ describe("models/import", () => {
   });
 
   test("an error can be set", async () => {
-    const _import: Import = await helper.factories.import();
+    const _import = await helper.factories.import();
     await _import.setError(new Error("oh no"), "associate");
     await _import.reload();
 
@@ -47,7 +47,7 @@ describe("models/import", () => {
     await run.afterBatch("complete");
     expect(run.error).toBeFalsy();
 
-    const _import: Import = await helper.factories.import(run);
+    const _import = await helper.factories.import(run);
     await _import.setError(new Error("oh no"), "associate");
 
     await run.reload();
@@ -75,5 +75,32 @@ describe("models/import", () => {
 
     const remaining = await Import.findAll();
     expect(remaining.length).toBe(0);
+  });
+
+  test("apiData works without a Record", async () => {
+    const _import = await Import.create({
+      data: { email: "mario@example.com" },
+      creatorType: "test",
+      creatorId: "",
+    });
+
+    const apiData = await _import.apiData();
+    expect(apiData.id).toEqual(_import.id);
+    expect(apiData.modelId).toBeFalsy();
+  });
+
+  test("apiData works with a Record", async () => {
+    const record = await helper.factories.record();
+
+    const _import = await Import.create({
+      data: { email: "mario@example.com" },
+      creatorType: "test",
+      creatorId: "",
+      recordId: record.id,
+    });
+
+    const apiData = await _import.apiData();
+    expect(apiData.id).toEqual(_import.id);
+    expect(apiData.modelId).toBe(record.modelId);
   });
 });
