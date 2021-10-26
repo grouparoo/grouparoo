@@ -15,7 +15,6 @@ import {
   exportRecordsInBatch,
 } from "@grouparoo/app-templates/dist/destination/batch";
 import { ExportRecordsPluginMethod } from "@grouparoo/core";
-import { HubspotClient } from "../client/client";
 import { connect } from "../connect";
 
 // return an object that you can connect with
@@ -29,20 +28,26 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   client,
   foreignKeys,
   getByForeignKey,
+  config,
 }) => {
-  // const records = await client.objects.searchObjects(foreignKeys);
-  const records = [];
-  for (const foreignKey of foreignKeys) {
-    const user = getByForeignKey(foreignKey);
+  const { schemaId, foreignKey } = config.destinationOptions;
+  const records = await client.objects.searchObjects(
+    schemaId as string,
+    foreignKey as string,
+    foreignKeys
+  );
+  for (const key of foreignKeys) {
+    const user = getByForeignKey(key);
     try {
       const filteredProfiles = records.filter(
-        (p) => p["$distinct_id"] === foreignKey
+        (p) => p["properties"][foreignKey as string] === key
       );
       if (filteredProfiles && filteredProfiles.length > 0) {
-        user.destinationId = filteredProfiles[0]["$distinct_id"];
+        user.destinationId = filteredProfiles[0]["id"];
         user.result = filteredProfiles[0];
       }
     } catch (error) {
+      console.log(error);
       user.error = error;
     }
   }
@@ -52,14 +57,13 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
 const deleteByDestinationIds: BatchMethodDeleteByDestinationIds = async ({
   client,
   users,
+  config,
 }) => {
-  for (const user of users) {
-    // No batch delete available, do one by one
-    try {
-      // await client.ingestion.profile.delete(user.destinationId);
-    } catch (error) {
-      user.error = error;
-    }
+  const { schemaId } = config.destinationOptions;
+  const destinationIds = users.map((user) => user.destinationId);
+  if (destinationIds.length > 0) {
+    const response = await client.objects.delete(schemaId, destinationIds);
+    console.log("delete: ", response);
   }
 };
 
@@ -69,64 +73,54 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
   users,
   config,
 }) => {
+  const { schemaId } = config.destinationOptions;
+  const inputs = [];
   for (const user of users) {
-    try {
-      const { newRecordProperties, oldRecordProperties } = user;
-      const distinctId = newRecordProperties["$distinct_id"];
-      const oldDistinctId = oldRecordProperties["$distinct_id"];
-      if (
-        oldDistinctId &&
-        oldDistinctId !== distinctId &&
-        config.syncOperations
-      ) {
-        await deleteOrCleanGroups(
-          client,
-          oldDistinctId,
-          config.syncOperations.delete
-        );
-      }
-      const result = await updateProfile(client, user);
-      if (result === 0) {
-        throw new Error(`One or more data objects in the profile are invalid.`);
-      }
-    } catch (error) {
-      user.error = error;
-    }
+    inputs.push(buildPayload(user));
+  }
+
+  console.log(inputs);
+
+  if (inputs.length > 0) {
+    const response = await client.objects.update(schemaId, inputs);
+    console.log(response);
   }
 };
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
 const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
-  async ({ client, users }) => {
+  async ({ client, users, config }) => {
+    const { schemaId, foreignKey } = config.destinationOptions;
+    const inputs = [];
     for (const user of users) {
+      inputs.push(buildPayload(user));
+    }
+    if (inputs.length > 0) {
       try {
-        const result = await updateProfile(client, user);
-        if (result === 0) {
-          throw new Error(
-            `One or more data objects in the profile are invalid.`
-          );
+        const response = await client.objects.create(schemaId, inputs);
+        if (response.status === "COMPLETE") {
+          const results = response?.results || [];
+          const destinationIds = {};
+          results.map((record) => {
+            destinationIds[record.properties[foreignKey as string]] = record.id;
+          });
+          for (const user of users) {
+            if (destinationIds[user.foreignKeyValue]) {
+              user.destinationId = destinationIds[user.foreignKeyValue];
+            }
+          }
         } else {
-          user.destinationId = user.foreignKeyValue;
+          // TODO: pending request?
         }
-      } catch (error) {
-        user.error = error;
+      } catch (e) {
+        console.log(e);
       }
     }
   };
 
-async function updateProfile(
-  client: HubspotClient,
-  exportedProfile: BatchExport
-) {
-  const {
-    oldRecordProperties,
-    newRecordProperties,
-    oldGroups,
-    newGroups,
-    foreignKeyValue,
-  } = exportedProfile;
-
-  // create the profile and set properties
+function buildPayload(exportedProfile: BatchExport) {
+  const { oldRecordProperties, newRecordProperties, destinationId } =
+    exportedProfile;
   const deletePropertiesPayload = {};
   const newPropertyKeys = Object.keys(newRecordProperties);
   Object.keys(oldRecordProperties)
@@ -136,58 +130,19 @@ async function updateProfile(
   let payload = Object.assign(newRecordProperties, deletePropertiesPayload);
   const formattedDataFields = {};
   for (const key of Object.keys(payload)) {
-    if (key === "$distinct_id") {
-      continue;
-    }
     formattedDataFields[key] = formatVar(payload[key]);
   }
-  formattedDataFields["groups"] = getGroupsListToExport(
-    exportedProfile,
-    oldGroups,
-    newGroups
-  );
-  // return await client.ingestion.profile.update(
-  //   foreignKeyValue,
-  //   formattedDataFields
-  // );
-  return null;
+  if (destinationId) {
+    return { id: destinationId, properties: formattedDataFields };
+  }
+  return { properties: formattedDataFields };
 }
 
 function formatVar(value) {
   if (value === undefined || value === null) {
-    return null;
+    return "";
   }
   return value;
-}
-
-async function deleteOrCleanGroups(
-  client: HubspotClient,
-  distinctId: string,
-  shouldDelete: boolean
-) {
-  if (shouldDelete) {
-    // await client.ingestion.profile.delete(distinctId);
-  } else {
-    // await client.ingestion.profile.update(distinctId, { groups: [] });
-  }
-}
-
-function getGroupsListToExport(profile, oldGroups, newGroups) {
-  const groups = newGroups;
-  if (profile.destinationId && profile.result) {
-    const removedGroups = [];
-    for (const group of oldGroups) {
-      if (!groups.includes(group)) {
-        removedGroups.push(group);
-      }
-    }
-    for (const group of profile.result["$properties"]["groups"]) {
-      if (!groups.includes(group) && !removedGroups.includes(group)) {
-        groups.push(group);
-      }
-    }
-  }
-  return groups;
 }
 
 const addToGroups: BatchMethodAddToGroups = async () => {
@@ -214,9 +169,15 @@ const normalizeGroupName: BatchMethodNormalizeGroupName = ({ groupName }) => {
   return groupName.toString().trim();
 };
 
-export async function exportBatch({ appOptions, syncOperations, exports }) {
-  const batchSize = 200;
-  const findSize = 200;
+export async function exportBatch({
+  appOptions,
+  destinationOptions,
+  syncOperations,
+  exports,
+}) {
+  const { schemaId, foreignKey } = destinationOptions;
+  const batchSize = schemaId.toLowerCase().trim() === "contact" ? 10 : 100;
+  const findSize = 5;
 
   return exportRecordsInBatch(
     exports,
@@ -227,7 +188,8 @@ export async function exportBatch({ appOptions, syncOperations, exports }) {
       syncMode: BatchSyncMode.Sync,
       syncOperations,
       appOptions,
-      foreignKey: "$distinct_id",
+      destinationOptions,
+      foreignKey,
     },
     {
       getClient,
@@ -245,12 +207,14 @@ export async function exportBatch({ appOptions, syncOperations, exports }) {
 
 export const exportRecords: ExportRecordsPluginMethod = async ({
   appOptions,
+  destinationOptions,
   syncOperations,
   exports: recordsToExport,
 }) => {
   const batchExports = buildBatchExports(recordsToExport);
   return exportBatch({
     appOptions,
+    destinationOptions,
     syncOperations,
     exports: batchExports,
   });

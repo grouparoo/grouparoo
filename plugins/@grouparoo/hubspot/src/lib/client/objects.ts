@@ -23,16 +23,20 @@ export default class Contact {
     });
   }
 
-  searchObjects(
-    objectTypeId: string,
-    recordMatchField: string,
-    foreignKeys: string[]
+  async searchObjects(
+    schemaId: string,
+    foreignKey: string,
+    foreignKeys: string[],
+    properties: string[] = []
   ) {
+    if (!properties.includes(foreignKey)) {
+      properties.push(foreignKey);
+    }
     const filterGroups = foreignKeys.map((key) => {
       return {
         filters: [
           {
-            propertyName: recordMatchField,
+            propertyName: foreignKey,
             operator: "EQ",
             value: key,
           },
@@ -41,35 +45,45 @@ export default class Contact {
     });
     const data = {
       filterGroups,
-      properties: [recordMatchField],
+      properties,
+    };
+    const response = await this.client._request({
+      data,
+      method: "POST",
+      url: `/crm/v3/objects/${schemaId}/search`,
+    });
+    return response?.results || [];
+  }
+
+  async create(schemaId: string, inputs: any[]) {
+    return this.client._request({
+      data: { inputs },
+      method: "POST",
+      url: `/crm/v3/objects/${schemaId}/batch/create`,
+    });
+  }
+
+  async update(schemaId: string, inputs: any[]) {
+    return this.client._request({
+      data: { inputs },
+      method: "POST",
+      url: `/crm/v3/objects/${schemaId}/batch/update`,
+    });
+  }
+
+  async delete(schemaId: string, destinationIds: string[]) {
+    const inputs = destinationIds.map((key) => {
+      return {
+        id: key,
+      };
+    });
+    const data = {
+      inputs,
     };
     return this.client._request({
       data,
       method: "POST",
-      url: `/crm/v3/objects/${objectTypeId}/search`,
-    });
-  }
-
-  create(data: any) {
-    return this.client._request({
-      data,
-      method: "POST",
-      url: `/api/REST/1.0/data/contact`,
-    });
-  }
-
-  update(id: number, data: any) {
-    return this.client._request({
-      data,
-      method: "PUT",
-      url: `/api/REST/1.0/data/contact/${id}`,
-    });
-  }
-
-  delete(id: number) {
-    return this.client._request({
-      method: "DELETE",
-      url: `/api/REST/1.0/data/contact/${id}`,
+      url: `/crm/v3/objects/${schemaId}/batch/archive`,
     });
   }
 }
