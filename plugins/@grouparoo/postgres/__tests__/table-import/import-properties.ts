@@ -8,6 +8,7 @@ import {
   AggregationMethod,
   GrouparooRecord,
   Property,
+  SimplePropertyOptions,
   SourceMapping,
 } from "@grouparoo/core";
 
@@ -74,7 +75,7 @@ async function getPropertyArrays(
   ].filter((p, idx) => columns.length > idx);
 
   let counter = 0;
-  const propertyOptions = {};
+  const propertyOptions: { [key: string]: SimplePropertyOptions } = {};
   for (const property of properties) {
     propertyOptions[property.id] = {
       column: columns[counter],
@@ -350,6 +351,33 @@ describe("postgres/table/recordProperties", () => {
         expect(values[fourthRecord.id][properties[0].id][0]).toEqual(
           "Blueberry"
         );
+      });
+
+      test("Exact + Array works as intended", async () => {
+        const { isArray } = emailProperty;
+        emailProperty.isArray = true;
+        const [values, properties] = await getPropertyValues({
+          columns,
+          sourceMapping,
+          aggregationMethod: AggregationMethod.Exact,
+        });
+        expect(values[record.id][properties[0].id]).toEqual([
+          "Apple",
+          "Blueberry",
+          "Orange",
+        ]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([
+          "Apple",
+          "Pear",
+        ]);
+        expect(values[fourthRecord.id][properties[0].id]).toEqual([
+          "Watermelon",
+          "Blueberry",
+          "Peach",
+          "Pear",
+          "Apple",
+        ]);
+        emailProperty.isArray = isArray;
       });
     });
 

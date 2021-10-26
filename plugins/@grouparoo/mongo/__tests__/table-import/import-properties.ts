@@ -38,11 +38,13 @@ async function getPropertyValues(
     aggregationMethod: string;
     sortColumn?: string;
   },
-  usePropertyFilters?
+  usePropertyFilters?,
+  isArray?: boolean
 ) {
   const arrays = await getPropertyArrays(
     { column, sourceMapping, aggregationMethod, sortColumn },
-    usePropertyFilters
+    usePropertyFilters,
+    isArray
   );
   return arrays;
 }
@@ -59,11 +61,13 @@ async function getPropertyArrays(
     aggregationMethod: string;
     sortColumn?: string;
   },
-  usePropertyFilters?
+  usePropertyFilters?,
+  isArray?: boolean
 ) {
   const property = await Property.findOne({
     where: { key: "email" },
   });
+  property.isArray = !!isArray;
   const propertyOptions = {
     [property.id]: {
       column,
@@ -309,6 +313,41 @@ describe("mongo/table/recordProperties", () => {
         expect(values[record.id][property.id][0]).toEqual("Apple");
         expect(values[otherRecord.id][property.id][0]).toEqual("Pear");
         expect(values[fourthRecord.id][property.id][0]).toEqual("Blueberry");
+      });
+
+      test("Exact + Array works as intended", async () => {
+        const [values, property] = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod: AggregationMethod.Exact,
+          },
+          null,
+          true
+        );
+
+        expect(values[record.id][property.id]).toEqual([
+          "Apple",
+          "Orange",
+          "Blueberry",
+          "Apple",
+          "Blueberry",
+          "Orange",
+        ]);
+        expect(values[otherRecord.id][property.id]).toEqual([
+          "Pear",
+          "Apple",
+          "Apple",
+          "Pear",
+          "Apple",
+        ]);
+        expect(values[fourthRecord.id][property.id]).toEqual([
+          "Blueberry",
+          "Pear",
+          "Apple",
+          "Watermelon",
+          "Peach",
+        ]);
       });
     });
 

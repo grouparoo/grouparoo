@@ -344,6 +344,33 @@ describe("bigquery/table/recordProperties", () => {
           "Blueberry"
         );
       });
+
+      test("Exact + Array works as intended", async () => {
+        const { isArray } = emailProperty;
+        emailProperty.isArray = true;
+        const [values, properties] = await getPropertyValues({
+          columns,
+          sourceMapping,
+          aggregationMethod: AggregationMethod.Exact,
+        });
+        expect(values[record.id][properties[0].id]).toEqual([
+          "Apple",
+          "Blueberry",
+          "Orange",
+        ]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([
+          "Apple",
+          "Pear",
+        ]);
+        expect(values[fourthRecord.id][properties[0].id]).toEqual([
+          "Watermelon",
+          "Blueberry",
+          "Peach",
+          "Pear",
+          "Apple",
+        ]);
+        emailProperty.isArray = isArray;
+      });
     });
 
     describe("numbers", () => {
