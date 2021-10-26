@@ -474,9 +474,9 @@ importers:
 
   plugins/@grouparoo/clickhouse:
     specifiers:
-      '@grouparoo/app-templates': 0.7.0
-      '@grouparoo/core': 0.7.0
-      '@grouparoo/spec-helper': 0.7.0
+      '@grouparoo/app-templates': 0.7.2
+      '@grouparoo/core': 0.7.2
+      '@grouparoo/spec-helper': 0.7.2
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.5
@@ -487,10 +487,10 @@ importers:
       ts-jest: 27.0.5
       typescript: 4.4.3
     dependencies:
-      '@grouparoo/app-templates': 0.7.0
+      '@grouparoo/app-templates': 0.7.2
     devDependencies:
-      '@grouparoo/core': 0.7.0_typescript@4.4.3
-      '@grouparoo/spec-helper': 0.7.0
+      '@grouparoo/core': 0.7.2_typescript@4.4.3
+      '@grouparoo/spec-helper': 0.7.2
       '@types/jest': 27.0.1
       '@types/node': 16.9.1
       actionhero: 27.1.5
@@ -2363,13 +2363,13 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /@grouparoo/app-templates/0.7.0:
-    resolution: {integrity: sha512-++r6o2IjcwaXdhHIdtas7l1zTCBV3XDEdHXB5pxVJ4N8+yw++Be6hs475+miJxxZfiMip+5IOBC+h5+S/2XZlQ==}
+  /@grouparoo/app-templates/0.7.2:
+    resolution: {integrity: sha512-9O8adry0CiBMaHkn+BHy0UVedbem2hfs+ANViBh4+Y3DxSFwq1X3GDZ5uBRzZxzEh5KYAQOEclZYBvVJlLnj1w==}
     engines: {node: '>=12.0.0 <17.0.0'}
     dev: false
 
-  /@grouparoo/core/0.7.0_typescript@4.4.3:
-    resolution: {integrity: sha512-NVNZjkjie9C41OQl4csCIAlsYwJ6MAAvVn+oMK6R8/zNGPUXDuVicRuc6fujgtxb5vLAMBjlVfJqijj4YN/k6Q==}
+  /@grouparoo/core/0.7.2_typescript@4.4.3:
+    resolution: {integrity: sha512-CVlKVSbg8OyIEahQCtgwXoE7xmrzyFCj8DxNSyylT2rZy/5Yg0bceXVf7wWA1bfXbsf9NUdE6Qqj9gBidRBq5A==}
     engines: {node: '>=12.0.0 <17.0.0'}
     dependencies:
       '@types/fs-extra': 9.0.12
@@ -2387,7 +2387,7 @@ packages:
       form-data: 4.0.0
       fs-extra: 10.0.0
       glob: 7.1.7
-      grouparoo: 0.7.0
+      grouparoo: 0.7.2
       ioredis: 4.27.9
       ioredis-mock: 5.6.0_ioredis@4.27.9
       isomorphic-fetch: 3.0.0
@@ -2441,8 +2441,8 @@ packages:
       qs: 6.9.6
     dev: false
 
-  /@grouparoo/spec-helper/0.7.0:
-    resolution: {integrity: sha512-otzC7GmDuwejfnBMhcjYbmEx+ghtNGclkadPsXG3kV9+WN/hCYV7fDHsntB173DL0Nm7ciPW5wMe77JQnCfVHQ==}
+  /@grouparoo/spec-helper/0.7.2:
+    resolution: {integrity: sha512-Q8vcLBbSZ6bMKr7xsaoJfHpXq7m+EIsHUBvVKDnS05KnlXY7JQE6RDOz3o3FuO9xNwvzFi7itPQrBnPe8LtpQw==}
     engines: {node: '>=12.0.0 <17.0.0'}
     dependencies:
       axios: 0.22.0
@@ -8095,8 +8095,8 @@ packages:
   /graceful-fs/4.2.8:
     resolution: {integrity: sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==}
 
-  /grouparoo/0.7.0:
-    resolution: {integrity: sha512-eM3D/aX2oT/R6Cj5LJF4y6JPVPxK/+vcPFRB+0UoWgARIdEGbFV+Y8S7UcvVvyWx6LWYFu8p4yAPAaDv2JLdCw==}
+  /grouparoo/0.7.2:
+    resolution: {integrity: sha512-d8mj0T7xgbuaaTFpp9sNC1MZLh3URlHliXEw2FXx1MkgymCjX8OKrRogeHGCS8P+J2AC+/haHS2w/rt2Eb6REA==}
     engines: {node: '>=12.0.0 <17.0.0'}
     hasBin: true
     dependencies:
@@ -14674,7 +14674,7 @@ packages:
     dependencies:
       emoji-regex: 8.0.0
       is-fullwidth-code-point: 3.0.0
-      strip-ansi: 6.0.0
+      strip-ansi: 6.0.1
 
   /string.prototype.matchall/4.0.5:
     resolution: {integrity: sha512-Z5ZaXO0svs0M2xd/6By3qpeKpLKd9mO4v4q3oMEQrk8Ck4xOD5d5XeBOOjGrmVZZ/AHB1S0CgG4N5r1G9N3E2Q==}
@@ -15238,7 +15238,7 @@ packages:
       '@types/jest': 27.0.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.3.1_ts-node@10.2.1
+      jest: 27.3.1
       jest-util: 27.3.1
       json5: 2.2.0
       lodash.memoize: 4.1.2
