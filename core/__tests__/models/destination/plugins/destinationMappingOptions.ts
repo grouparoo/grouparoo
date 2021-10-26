@@ -157,15 +157,15 @@ describe("models/destination", () => {
       const grouparooType = "string";
       const input = "hello";
       const mapping = [
-        ["float", null],
-        ["integer", null],
+        ["float", input],
+        ["integer", input],
         ["string", input],
-        ["email", null],
-        ["phoneNumber", null],
-        ["boolean", null],
-        ["url", null],
-        ["number", null],
-        ["date", null],
+        ["email", input],
+        ["phoneNumber", input],
+        ["boolean", input],
+        ["url", input],
+        ["number", input],
+        ["date", input],
       ];
 
       mapping.map(([destinationType, output]) =>
@@ -496,9 +496,9 @@ describe("models/destination", () => {
       required = [{ key: "remote-id", type: "integer" }];
 
       await expect(
-        destination.setMapping({ "remote-id": "firstName" })
+        destination.setMapping({ "remote-id": "email" })
       ).rejects.toThrow(
-        "remote-id requires a property of type integer, but a string (firstName) was mapped"
+        "remote-id requires a property of type integer, but a email (email) was mapped"
       );
     });
 

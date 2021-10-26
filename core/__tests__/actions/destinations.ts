@@ -207,7 +207,18 @@ describe("actions/destinations", () => {
         float: ["any", "float", "string", "number"],
         integer: ["any", "float", "integer", "string", "number"],
         phoneNumber: ["any", "string", "phoneNumber"],
-        string: ["any", "string"],
+        string: [
+          "any",
+          "string",
+          "url",
+          "email",
+          "boolean",
+          "date",
+          "float",
+          "integer",
+          "number",
+          "phoneNumber",
+        ],
         url: ["any", "string", "url"],
       });
     });
