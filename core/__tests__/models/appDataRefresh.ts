@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { App, AppDataRefresh, Log, Run } from "../../src";
+import { App, AppDataRefresh, Log, Run, Source } from "../../src";
 import { AppDataRefreshOps } from "../../src/modules/ops/appDataRefresh";
 
 describe("appDataRefresh", () => {
@@ -69,6 +69,18 @@ describe("appDataRefresh", () => {
     });
 
     test("trigger schedules method is called if a new 'value' is found from the query", async () => {
+      let model;
+      ({ model } = await helper.factories.properties());
+      const source = await Source.create({
+        name: "test source",
+        type: "test-plugin-import",
+        appId: app.id,
+        modelId: model.id,
+      });
+      await source.setOptions({ table: "test table" });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
+      const schedule = await helper.factories.schedule(source);
       const appDataRefresh = new AppDataRefresh({
         appId: app.id,
         refreshQuery: "SELECT * FROM test;",
@@ -81,6 +93,10 @@ describe("appDataRefresh", () => {
         state: "ready",
       });
       expect(spy).toHaveBeenCalledWith(appDataRefresh);
+      const runs = await Run.findAll({ where: { creatorType: "schedule" } });
+      console.info(`runs: ${runs}`);
+      expect(runs.length).toBe(1);
+      await app.destroy();
     });
     test("an appDataRefresh in the draft state will not run its query", async () => {
       const spy = jest.spyOn(AppDataRefreshOps, "triggerSchedules");
