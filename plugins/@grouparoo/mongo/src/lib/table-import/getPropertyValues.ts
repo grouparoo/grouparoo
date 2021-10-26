@@ -155,12 +155,12 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     if (rows && rows.length > 0) {
       for (const row of rows) {
         const pk = row.__pk.toString();
-        responses[pk] = {};
+        responses[pk] ??= {};
         if (isUsingResultField) {
           responses[pk][columnNames[0]] = [row["__result"]];
         } else {
           for (const col in row) {
-            responses[pk][col] = [];
+            responses[pk][col] ??= [];
             if (isArray || (responses[pk][col].length === 0 && !isArray)) {
               responses[pk][col].push(row[col]);
             }

@@ -107,9 +107,9 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     } = await connection.query(format(query, ...params));
     for (const row of rows) {
       const pk = row.__pk.toString();
-      responses[pk] = {};
+      responses[pk] ??= {};
       for (const col in row) {
-        responses[pk][col] = [];
+        responses[pk][col] ??= [];
         if (isArray || (responses[pk][col].length === 0 && !isArray)) {
           responses[pk][col].push(row[col]);
         }
