@@ -374,21 +374,19 @@ describe("snowflake/table/recordProperties", () => {
           sourceMapping,
           aggregationMethod: AggregationMethod.Exact,
         });
-        expect(values[record.id][properties[0].id]).toEqual([
+        expect(values[record.id][properties[0].id].sort()).toEqual([
           "Apple",
           "Blueberry",
           "Orange",
         ]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([
+        expect(values[otherRecord.id][properties[0].id].sort()).toEqual([
           "Apple",
           "Pear",
         ]);
-        expect(values[fourthRecord.id][properties[0].id]).toEqual([
-          "Watermelon",
-          "Blueberry",
-          "Peach",
-          "Pear",
+        expect(values[fourthRecord.id][properties[0].id].sort()).toEqual([
           "Apple",
+          "Blueberry",
+          "Pear",
         ]);
         emailProperty.isArray = isArray;
       });
