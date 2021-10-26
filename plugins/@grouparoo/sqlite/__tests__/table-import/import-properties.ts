@@ -368,11 +368,11 @@ describe("sqlite/table/recordProperties", () => {
           "Pear",
         ]);
         expect(values[fourthRecord.id][properties[0].id]).toEqual([
-          "Watermelon",
+          "Apple",
           "Blueberry",
           "Peach",
           "Pear",
-          "Apple",
+          "Watermelon",
         ]);
         emailProperty.isArray = isArray;
       });
