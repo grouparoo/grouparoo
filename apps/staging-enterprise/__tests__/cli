@@ -9,7 +9,7 @@ source ./../../tools/shared/max_bg_procs
 CLI="$PROJECT_PATH/../../cli/dist/grouparoo.js"
 
 # Set needed ENV
-export NODE_ENV="test"
+export GROUPAROO_TELEMETRY_ENABLED=false
 export REDIS_URL="redis://mock"
 export DATABASE_URL="sqlite://grouparoo_test.sqlite"
 export SERVER_TOKEN="ABC123"
