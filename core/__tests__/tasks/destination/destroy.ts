@@ -59,7 +59,7 @@ describe("tasks/destination:destroy", () => {
     await destination.updateTracking("group", group.id);
     await Run.truncate();
 
-    await group.run(undefined, destination.id);
+    await group.run(destination.id);
     await specHelper.runTask("destination:destroy", {
       destinationId: destination.id,
     });
@@ -150,7 +150,7 @@ describe("tasks/destination:destroy", () => {
     await destination.updateTracking("model");
     await Run.truncate();
 
-    await model.run(undefined, destination.id);
+    await model.run(destination.id);
     await specHelper.runTask("destination:destroy", {
       destinationId: destination.id,
     });

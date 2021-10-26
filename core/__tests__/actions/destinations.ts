@@ -324,7 +324,6 @@ describe("actions/destinations", () => {
         expect(error).toBeFalsy();
         expect(destination.group.id).toBe(group.id);
         expect(newRun.creatorId).toBe(group.id);
-        expect(newRun.force).toBe(true);
         expect(newRun.state).toBe("running");
       });
 
@@ -536,7 +535,6 @@ describe("actions/destinations", () => {
         expect(error).toBeFalsy();
 
         expect(oldRun.creatorId).toBe(group.id);
-        expect(oldRun.force).toBe(false);
         expect(oldRun.state).toBe("running");
 
         expect(newRun.creatorId).toBe("mod_profiles");
@@ -563,7 +561,6 @@ describe("actions/destinations", () => {
         expect(error).toBeFalsy();
         expect(newRun).toBeUndefined();
         expect(oldRun.creatorId).toBe("mod_profiles");
-        expect(oldRun.force).toBe(false);
         expect(oldRun.state).toBe("running");
 
         expect(updatedDestination.group).toBe(null);
@@ -592,7 +589,6 @@ describe("actions/destinations", () => {
           expect.objectContaining({
             destinationId: id,
             creatorId: group.id,
-            force: true,
           })
         );
 
@@ -632,7 +628,6 @@ describe("actions/destinations", () => {
           expect.objectContaining({
             destinationId: id,
             creatorId: destination.group.id,
-            force: true,
           })
         );
         expect(newRun.id).toEqual(runningRuns[0].id);
@@ -662,7 +657,7 @@ describe("actions/destinations", () => {
         expect(runningRuns.length).toBe(0);
       });
 
-      test("an administrator can export the members of a destination with a forced group run", async () => {
+      test("an administrator can export the members of a destination with a group run", async () => {
         connection.params = {
           csrfToken,
           id,
@@ -690,7 +685,6 @@ describe("actions/destinations", () => {
           expect.objectContaining({
             destinationId: id,
             creatorId: destination.group.id,
-            force: true,
           })
         );
       });

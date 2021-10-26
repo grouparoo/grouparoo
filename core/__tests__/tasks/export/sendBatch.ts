@@ -70,7 +70,7 @@ describe("tasks/export:sendBatch", () => {
       );
       await destination.update({ state: "ready" });
 
-      await destination.exportMembers(true);
+      await destination.exportMembers();
 
       run = await Run.findOne({
         where: { creatorId: group.id },
