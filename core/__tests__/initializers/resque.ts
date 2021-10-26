@@ -28,6 +28,8 @@ jest.mock("../../src/config/tasks.ts", () => ({
 }));
 
 describe("initializers/resque", () => {
+  let isScheduler = true;
+
   helper.grouparooTestServer({ truncate: true });
   let instance: ResqueInitializer;
 
@@ -35,15 +37,21 @@ describe("initializers/resque", () => {
     await helper.sleep(1000);
     await api.resque.queue.connection.redis.flushdb();
     await helper.sleep(1000);
+
+    Object.defineProperty(api.resque.scheduler, "leader", {
+      get: jest.fn(() => isScheduler),
+      set: jest.fn(),
+    });
   });
 
   beforeEach(async () => (instance = new ResqueInitializer()));
   afterEach(async () => await instance.stop());
 
   test("it will check for missing periodic tasks if the resque leader", async () => {
-    api.resque.scheduler.leader = true;
+    isScheduler = true;
 
     await api.resque.queue.connection.redis.flushdb();
+
     let found = await specHelper.findEnqueuedTasks("status");
     expect(found.length).toBe(0);
 
@@ -54,9 +62,9 @@ describe("initializers/resque", () => {
   });
 
   test("it will not check for missing periodic tasks if not the resque leader", async () => {
-    api.resque.scheduler.leader = false;
-
+    isScheduler = false;
     await api.resque.queue.connection.redis.flushdb();
+
     let found = await specHelper.findEnqueuedTasks("status");
     expect(found.length).toBe(0);
 
