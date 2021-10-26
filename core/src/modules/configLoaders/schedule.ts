@@ -30,7 +30,7 @@ export async function loadSchedule(
     delete configObject["confirmProfiles"];
   }
 
-  validateConfigObjectKeys(Schedule, configObject);
+  validateConfigObjectKeys(Schedule, configObject, ["refreshEnabled"]);
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
   let schedule = await Schedule.scope(null).findOne({
@@ -42,6 +42,7 @@ export async function loadSchedule(
       id: configObject.id,
       locked: ConfigWriter.getLockKey(configObject),
       sourceId: source.id,
+      refreshEnabled: configObject.refreshEnabled,
     });
   }
 

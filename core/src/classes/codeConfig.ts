@@ -92,6 +92,7 @@ export interface ScheduleConfigurationObject extends ConfigurationObject {
   confirmRecords?: boolean;
   options?: { [key: string]: any };
   filters?: PropertyFiltersWithKey[];
+  refreshEnabled?: boolean;
 }
 
 export interface SettingConfigurationObject extends ConfigurationObject {
