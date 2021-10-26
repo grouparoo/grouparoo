@@ -75,7 +75,7 @@ describe("actions/models", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(types).toEqual(["profile"]);
+      expect(types).toEqual(["profile", "account", "custom"]);
     });
 
     test("an administrator can edit a model", async () => {
