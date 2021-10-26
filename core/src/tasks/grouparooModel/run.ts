@@ -4,9 +4,8 @@ import { GrouparooModel } from "../../models/GrouparooModel";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { RecordProperty } from "../../models/RecordProperty";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { Import } from "../../models/Import";
 import { GroupMember } from "../../models/GroupMember";
-import { RecordOps } from "../../modules/ops/record";
+import { GroupOps } from "../../modules/ops/group";
 
 export class RunInternalRun extends CLSTask {
   constructor() {
@@ -46,35 +45,12 @@ export class RunInternalRun extends CLSTask {
     });
 
     if (records.length > 0) {
-      await RecordOps.markPendingByIds(
+      await GroupOps.updateRecords(
         records.map((r) => r.id),
-        false
+        "run",
+        run.id,
+        run.destinationId
       );
-
-      // create imports to track the lineage of the record property values
-      const now = new Date();
-      const bulkImports = [];
-
-      for (const record of records) {
-        const oldRecordProperties = await record.simplifiedProperties();
-        const oldGroupIds = record.groupMembers.map((gm) => gm.groupId);
-        const data = run.destinationId
-          ? { _meta: { destinationId: run.destinationId } }
-          : {};
-
-        bulkImports.push({
-          rawData: data,
-          data: data,
-          recordId: record.id,
-          recordAssociatedAt: now,
-          oldRecordProperties,
-          oldGroupIds,
-          creatorType: "run",
-          creatorId: run.id,
-        });
-      }
-
-      await Import.bulkCreate(bulkImports);
     }
 
     await run.update({
@@ -86,7 +62,7 @@ export class RunInternalRun extends CLSTask {
       where: { groupsUpdatedAt: null },
     });
 
-    // we don't want to denote the group as ready until all the imports are imported
+    // we don't want to denote the run as ready until all the imports are imported
     if (records.length === 0 && pendingImports === 0) {
       await run.afterBatch("complete");
     } else {

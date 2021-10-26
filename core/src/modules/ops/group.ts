@@ -1,11 +1,10 @@
+import Sequelize, { Op } from "sequelize";
 import { Group, GroupRuleWithKey } from "../../models/Group";
 import { GroupMember } from "../../models/GroupMember";
 import { Run } from "../../models/Run";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { RecordMultipleAssociationShim } from "../../models/RecordMultipleAssociationShim";
 import { Import } from "../../models/Import";
-import { Op } from "sequelize";
-import Sequelize from "sequelize";
 import { RecordOps } from "./record";
 
 export namespace GroupOps {
