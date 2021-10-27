@@ -51,7 +51,6 @@ export namespace AppDataRefreshOps {
       );
     }
 
-    console.info(schedulesToRun);
     for (const schedule of schedulesToRun) {
       await schedule.enqueueRun();
     }

@@ -113,6 +113,8 @@ describe("modules/codeConfig", () => {
         expect(appDataRefresh.refreshQuery).toBe(
           "SELECT MAX(updated_at) FROM users"
         );
+        expect(appDataRefresh.state).toBe("ready");
+        expect(appDataRefresh.lastChangedAt).toBeInstanceOf(Date);
         expect(appDataRefresh.value).toBeInstanceOf(Date);
       });
 
@@ -460,7 +462,11 @@ describe("modules/codeConfig", () => {
     });
     test("an updated refreshQuery will trigger a checkDataRefreshValue", async () => {
       const appDataRefresh = await AppDataRefresh.findOne();
-      expect(appDataRefresh.refreshQuery).toBe("SELECT 'hi' AS name;");
+      expect(appDataRefresh.refreshQuery).toBe(
+        "SELECT id, MAX(updated_at) FROM users;"
+      );
+      expect(appDataRefresh.state).toBe("ready");
+
       expect(appDataRefresh.value).toBe('{"name": "hi"}');
     });
   });

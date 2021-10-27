@@ -68,7 +68,7 @@ describe("appDataRefresh", () => {
       spy.mockRestore();
     });
 
-    test("trigger schedules method is called if a new 'value' is found from the query", async () => {
+    test("schedules are enqueued if a new 'value' is found from the query", async () => {
       let model;
       ({ model } = await helper.factories.properties());
       const source = await Source.create({
@@ -81,9 +81,11 @@ describe("appDataRefresh", () => {
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
       const schedule = await helper.factories.schedule(source);
+
       const appDataRefresh = new AppDataRefresh({
         appId: app.id,
         refreshQuery: "SELECT * FROM test;",
+        state: "ready",
       });
       await appDataRefresh.save();
 
@@ -96,6 +98,7 @@ describe("appDataRefresh", () => {
       console.info(`runs: ${runs}`);
       expect(runs.length).toBe(1);
 
+      await schedule.destroy();
       await source.destroy();
     });
     test("an appDataRefresh in the draft state will not run its query", async () => {
