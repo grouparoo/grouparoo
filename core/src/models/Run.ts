@@ -311,7 +311,6 @@ export class Run extends CommonModel<Run> {
   @BeforeCreate
   static async ensureCreatorReady(instance: Run) {
     let ready = true;
-    if (instance.creatorType === "schedule") console.info(instance);
 
     // properties are ok to enqueue if they are in draft at the time.  Options update before state
     if (instance.creatorType === "group") {

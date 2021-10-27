@@ -98,9 +98,10 @@ describe("appDataRefresh", () => {
         refreshQuery: "SELECT 'hi' AS name;",
       });
 
-      const runs = await Run.findAll({ where: { creatorType: "schedule" } });
-      //current behavior does not stop existing runs... one run is from the initial creation, and one from the update
-      expect(runs.length).toBe(2);
+      const runs = await Run.findAll({
+        where: { creatorType: "schedule", state: "running" },
+      });
+      expect(runs.length).toBe(1);
     });
     test("an appDataRefresh in the draft state will not run its query", async () => {
       const spy = jest.spyOn(AppDataRefreshOps, "triggerSchedules");

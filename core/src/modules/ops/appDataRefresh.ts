@@ -1,6 +1,7 @@
 import { Source } from "../../models/Source";
 import { AppDataRefresh } from "../../models/AppDataRefresh";
 import { Schedule } from "../../models/Schedule";
+import { Run } from "../..";
 
 export namespace AppDataRefreshOps {
   export async function checkDataRefreshValue(appDataRefresh: AppDataRefresh) {
@@ -26,7 +27,6 @@ export namespace AppDataRefreshOps {
       Array.isArray(responseRows) ? responseRows[0] : responseRows
     );
     const originalValue = appDataRefresh.value;
-
     if (sampleValue !== originalValue) {
       appDataRefresh.value = sampleValue;
       appDataRefresh.lastChangedAt = new Date();
@@ -52,6 +52,15 @@ export namespace AppDataRefreshOps {
     }
 
     for (const schedule of schedulesToRun) {
+      //stop any existing run on this schedule
+      const existingRuns = await Run.findAll({
+        where: { creatorId: schedule.id },
+      });
+      for (const run of existingRuns) {
+        await run.stop();
+      }
+
+      //begin a new run on this schedule
       await schedule.enqueueRun();
     }
   }

@@ -106,7 +106,9 @@ export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
       instance.state === "ready"
     ) {
       const isUpdated = await AppDataRefreshOps.checkDataRefreshValue(instance);
-      if (isUpdated === true) AppDataRefreshOps.triggerSchedules(instance);
+      if (isUpdated === true) {
+      }
+      await AppDataRefreshOps.triggerSchedules(instance);
     }
   }
 
