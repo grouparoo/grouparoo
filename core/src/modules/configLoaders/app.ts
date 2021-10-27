@@ -62,7 +62,8 @@ export async function loadApp(
 
   logModel(app, validate ? "validated" : isNew ? "created" : "updated");
 
-  if (configObject.refreshQuery && configObject.refreshQuery !== "") {
+  if (configObject.refreshQuery && configObject.refreshQuery.length > 3) {
+    //template placeholder is "..."
     let appDataRefresh: AppDataRefresh;
 
     appDataRefresh = await AppDataRefresh.findOne({
