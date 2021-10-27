@@ -58,14 +58,11 @@ export default function RecordPreview(props) {
   function storeRecordPropertyId(recordId: string = "") {
     setRecordId(recordId);
     let url = `${window.location.pathname}?`;
+    if (recordId) url += `recordId=${recordId}&`;
 
-    if (recordId !== "") {
-      url += `recordId=${recordId}&`;
+    if (url !== `${window.location.pathname}?`) {
+      router.replace(router.route, url, { shallow: true });
     }
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    router[routerMethod](router.route, url, { shallow: true });
   }
 
   async function load(_recordId = "", _sleep = sleep) {
