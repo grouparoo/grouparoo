@@ -246,7 +246,7 @@ function getRowData(
 
 function getUpdatedAt(now: Date, created_at: Date) {
   const creationAgo = now.getTime() - created_at.getTime();
-  const updatedAgo = creationAgo * Math.random();
+  const updatedAgo = creationAgo * 0.5;
   const updatedMilli = now.getTime() - updatedAgo;
   return new Date(updatedMilli);
 }
@@ -280,15 +280,21 @@ function junkifyData(
   rows: Record<string, any>[],
   junkPercent: number
 ) {
+  if (!junkPercent) {
+    return rows;
+  }
+
   let junkCounter = 0;
   // skip the primary key (the first column)
   const keys = Object.keys(rows[0]).slice(1, Object.keys(rows[0]).length - 1);
-  for (const row of rows) {
-    const toJunk = Math.random() < junkPercent / 100;
+  const everyN = Math.round(100.0 / junkPercent);
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const toJunk = i % everyN === 0;
     if (toJunk) {
+      const key = keys[junkCounter % keys.length];
       junkCounter++;
-      const key = keys[Math.floor(Math.random() * keys.length)];
-      row[key] = junkRow(key, row[key]);
+      row[key] = junkRow(key, row[key], junkCounter);
     }
   }
 
@@ -299,23 +305,22 @@ function junkifyData(
   return rows;
 }
 
-function junkRow(column: string, v: string) {
+function junkRow(column: string, v: string, num: number) {
   // don't mess with primary keys
   if (column.match(/_id$/)) return v;
 
+  // predicatable behavior
+  const toggle1 = num % 2 === 0;
+  const toggle2 = num % 3 === 0;
+
   if (v.includes(".") && !isNaN(parseFloat(v))) {
-    v = Math.random() < 0.5 ? `-${v}` : "";
+    v = toggle1 ? `-${v}` : "";
     v = v;
   }
   if (v.includes("@")) {
-    v =
-      Math.random() < 0.5
-        ? ` ${v} `
-        : Math.random() < 0.5
-        ? v.replace("@", "-")
-        : "";
+    v = toggle1 ? ` ${v} ` : toggle2 ? v.replace("@", "-") : "";
   } else {
-    v = Math.random() < 0.5 ? ` ${v} ` : "";
+    v = toggle1 ? ` ${v} ` : "";
   }
 
   return v;
