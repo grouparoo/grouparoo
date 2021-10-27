@@ -47,7 +47,6 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
         user.result = filteredProfiles[0];
       }
     } catch (error) {
-      console.log(error);
       user.error = error;
     }
   }
@@ -63,7 +62,9 @@ const deleteByDestinationIds: BatchMethodDeleteByDestinationIds = async ({
   const destinationIds = users.map((user) => user.destinationId);
   if (destinationIds.length > 0) {
     const response = await client.objects.delete(schemaId, destinationIds);
-    console.log("delete: ", response);
+    if (response?.errors) {
+      attachErrorsToErroneousUsers({ users, errors: response.errors });
+    }
   }
 };
 
@@ -78,12 +79,11 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
   for (const user of users) {
     inputs.push(buildPayload(user));
   }
-
-  console.log(inputs);
-
   if (inputs.length > 0) {
     const response = await client.objects.update(schemaId, inputs);
-    console.log(response);
+    if (response?.errors) {
+      attachErrorsToErroneousUsers({ users, errors: response.errors });
+    }
   }
 };
 
@@ -96,24 +96,19 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
       inputs.push(buildPayload(user));
     }
     if (inputs.length > 0) {
-      try {
-        const response = await client.objects.create(schemaId, inputs);
-        if (response.status === "COMPLETE") {
-          const results = response?.results || [];
-          const destinationIds = {};
-          results.map((record) => {
-            destinationIds[record.properties[foreignKey as string]] = record.id;
-          });
-          for (const user of users) {
-            if (destinationIds[user.foreignKeyValue]) {
-              user.destinationId = destinationIds[user.foreignKeyValue];
-            }
-          }
-        } else {
-          // TODO: pending request?
+      const response = await client.objects.create(schemaId, inputs);
+      const results = response?.results || [];
+      const destinationIds = {};
+      results.map((record) => {
+        destinationIds[record.properties[foreignKey as string]] = record.id;
+      });
+      for (const user of users) {
+        if (destinationIds[user.foreignKeyValue]) {
+          user.destinationId = destinationIds[user.foreignKeyValue];
         }
-      } catch (e) {
-        console.log(e);
+      }
+      if (response?.errors) {
+        attachErrorsToErroneousUsers({ users, errors: response.errors });
       }
     }
   };
@@ -136,6 +131,20 @@ function buildPayload(exportedProfile: BatchExport) {
     return { id: destinationId, properties: formattedDataFields };
   }
   return { properties: formattedDataFields };
+}
+
+function attachErrorsToErroneousUsers({ users, errors }) {
+  const errorsMapping = {};
+  errors.map((error) => {
+    error.context?.ids?.map((id) => {
+      errorsMapping[id] = error.message;
+    });
+  });
+  users.map((user) => {
+    if (errorsMapping[user.destinationId]) {
+      user.error = new Error(errorsMapping[user.destinationId]);
+    }
+  });
 }
 
 function formatVar(value) {
