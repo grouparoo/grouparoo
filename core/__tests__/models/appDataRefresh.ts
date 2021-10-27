@@ -1,6 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { App, AppDataRefresh, Log, Run, Source } from "../../src";
 import { AppDataRefreshOps } from "../../src/modules/ops/appDataRefresh";
+import { RunOps } from "../../src/modules/ops/runs";
 
 describe("appDataRefresh", () => {
   let app: App;
@@ -52,6 +53,7 @@ describe("appDataRefresh", () => {
     });
 
     test("updating a refreshQuery on a ready instance triggers an appDataRefresh check", async () => {
+      Run.truncate();
       const appDataRefresh = new AppDataRefresh({
         appId: app.id,
         refreshQuery: "SELECT MAX(updated_at) FROM users;",
@@ -82,6 +84,8 @@ describe("appDataRefresh", () => {
       await source.update({ state: "ready" });
       const schedule = await helper.factories.schedule(source);
 
+      await schedule.update({ recurring: "true", recurringFrequency: 6000000 });
+
       const appDataRefresh = new AppDataRefresh({
         appId: app.id,
         refreshQuery: "SELECT * FROM test;",
@@ -91,12 +95,11 @@ describe("appDataRefresh", () => {
 
       await appDataRefresh.update({
         refreshQuery: "SELECT 'hi' AS name;",
-        state: "ready",
       });
 
       const runs = await Run.findAll({ where: { creatorType: "schedule" } });
-      console.info(`runs: ${runs}`);
-      expect(runs.length).toBe(1);
+      //current behavior does not stop existing runs... one run is from the initial creation, and one from the update
+      expect(runs.length).toBe(2);
 
       await schedule.destroy();
       await source.destroy();
