@@ -162,7 +162,7 @@ export default function RecordPreview(props) {
       {sleeping ? null : (
         <>
           <Card.Body style={{ textAlign: "center" }}>
-            <strong>{mappingOptions?.labels?.property.plural}</strong>
+            <strong>{mappingOptions?.labels?.property?.plural}</strong>
           </Card.Body>
 
           <ListGroup variant="flush">
@@ -181,7 +181,7 @@ export default function RecordPreview(props) {
           </ListGroup>
 
           <Card.Body style={{ textAlign: "center" }}>
-            <strong>{mappingOptions?.labels?.group.plural}</strong>
+            <strong>{mappingOptions?.labels?.group?.plural}</strong>
           </Card.Body>
 
           <ListGroup variant="flush">
