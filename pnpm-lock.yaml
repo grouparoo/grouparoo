@@ -476,6 +476,7 @@ importers:
     specifiers:
       '@grouparoo/app-templates': 0.7.2
       '@grouparoo/core': 0.7.2
+      '@grouparoo/mysql': 0.7.2
       '@grouparoo/spec-helper': 0.7.2
       '@types/jest': '*'
       '@types/node': '*'
@@ -488,6 +489,7 @@ importers:
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': 0.7.2
+      '@grouparoo/mysql': 0.7.2
     devDependencies:
       '@grouparoo/core': 0.7.2_typescript@4.4.3
       '@grouparoo/spec-helper': 0.7.2
@@ -2427,6 +2429,14 @@ packages:
       - typescript
       - utf-8-validate
     dev: true
+
+  /@grouparoo/mysql/0.7.2:
+    resolution: {integrity: sha512-V/xcyRjWugf0lKn+38S3AfLGaffxHJP780XFxm1KfHA/93NlYTBlk3pvPPkN6FFU4q1B2uoHZzng6RNEn8hthQ==}
+    engines: {node: '>=12.0.0 <17.0.0'}
+    dependencies:
+      '@grouparoo/app-templates': 0.7.2
+      mysql: 2.18.1
+    dev: false
 
   /@grouparoo/node-marketo-rest/0.7.10:
     resolution: {integrity: sha512-mNuixOFLk8JoN2BvaA9U/oCHbg5sNit3/zkAPQ5wTat87xlHi3XRs3EJF4xq3YXIZBoh6UJrqDK5/KGfY14nAg==}
@@ -15238,7 +15248,7 @@ packages:
       '@types/jest': 27.0.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.3.1
+      jest: 27.3.1_ts-node@10.2.1
       jest-util: 27.3.1
       json5: 2.2.0
       lodash.memoize: 4.1.2
