@@ -9,7 +9,7 @@ import parse from "csv-parse/lib/sync";
 import fs from "fs";
 import path from "path";
 import { log } from "actionhero";
-import { TYPES } from "./data";
+import { TYPES, JUNK } from "./data";
 
 interface DataOptions {
   scale?: number;
@@ -280,21 +280,14 @@ function junkifyData(
   rows: Record<string, any>[],
   junkPercent: number
 ) {
-  if (!junkPercent) {
-    return rows;
-  }
-
   let junkCounter = 0;
-  // skip the primary key (the first column)
-  const keys = Object.keys(rows[0]).slice(1, Object.keys(rows[0]).length - 1);
-  const everyN = Math.round(100.0 / junkPercent);
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
-    const toJunk = i % everyN === 0;
+    const bucket = i % 100; // from 0 to 100
+    const toJunk = bucket < junkPercent;
     if (toJunk) {
-      const key = keys[junkCounter % keys.length];
       junkCounter++;
-      row[key] = junkRow(key, row[key], junkCounter);
+      junkifyRow(tableName, row, junkCounter);
     }
   }
 
@@ -305,23 +298,23 @@ function junkifyData(
   return rows;
 }
 
-function junkRow(column: string, v: string, num: number) {
-  // don't mess with primary keys
-  if (column.match(/_id$/)) return v;
-
-  // predicatable behavior
-  const toggle1 = num % 2 === 0;
-  const toggle2 = num % 3 === 0;
-
-  if (v.includes(".") && !isNaN(parseFloat(v))) {
-    v = toggle1 ? `-${v}` : "";
-    v = v;
+function junkifyRow(tableName: string, row: any, num: number) {
+  const columns = JUNK[tableName];
+  if (columns === undefined) {
+    throw new Error(`Junkify unknown table: ${tableName}`);
   }
-  if (v.includes("@")) {
-    v = toggle1 ? ` ${v} ` : toggle2 ? v.replace("@", "-") : "";
+  if (columns.length === 0) {
+    return;
+  }
+  const keys = Object.keys(columns);
+  const key = keys[num % keys.length];
+
+  const empty = num % 3 === 0;
+  const current = row[key];
+  if (empty) {
+    row[key] = "";
   } else {
-    v = toggle1 ? ` ${v} ` : "";
+    const gen = columns[key];
+    row[key] = gen(current, num);
   }
-
-  return v;
 }
