@@ -50,7 +50,7 @@ export default function RecordPreview(props) {
     JSON.stringify(localFilters),
   ]);
 
-  function storeRecordPropertyId(recordId: string) {
+  function storeRecordPropertyId(recordId = "") {
     setRecordId(recordId);
     let url = `${window.location.pathname}?`;
     if (recordId) url += `recordId=${recordId}&`;

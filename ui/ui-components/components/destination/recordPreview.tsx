@@ -55,7 +55,7 @@ export default function RecordPreview(props) {
     JSON.stringify(destination.destinationGroupMemberships),
   ]);
 
-  function storeRecordPropertyId(recordId: string = "") {
+  function storeRecordPropertyId(recordId = "") {
     setRecordId(recordId);
     let url = `${window.location.pathname}?`;
     if (recordId) url += `recordId=${recordId}&`;
