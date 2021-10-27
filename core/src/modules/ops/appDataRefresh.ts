@@ -1,7 +1,7 @@
 import { Source } from "../../models/Source";
 import { AppDataRefresh } from "../../models/AppDataRefresh";
 import { Schedule } from "../../models/Schedule";
-import { Run } from "../..";
+import { Run } from "../../models/Run";
 
 export namespace AppDataRefreshOps {
   export async function checkDataRefreshValue(appDataRefresh: AppDataRefresh) {

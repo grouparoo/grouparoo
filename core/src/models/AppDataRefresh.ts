@@ -98,7 +98,7 @@ export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
-  @BeforeSave
+  @AfterSave
   static async runCheckIfNewQuery(instance: AppDataRefresh) {
     if (
       instance.changed("refreshQuery") &&

@@ -13,7 +13,7 @@ module.exports = async function getConfig() {
       name: "Data Warehouse",
       class: "App",
       type: "test-plugin-app",
-      refreshQuery: "SELECT MAX(updated_at) FROM users",
+      refreshQuery: "SELECT 'hi' AS name;",
       options: {
         fileId: "test-file-path.db",
       },

@@ -110,12 +110,10 @@ describe("modules/codeConfig", () => {
 
       test("appDataRefresh initiates first check", async () => {
         const appDataRefresh = await AppDataRefresh.findOne();
-        expect(appDataRefresh.refreshQuery).toBe(
-          "SELECT MAX(updated_at) FROM users"
-        );
+        expect(appDataRefresh.refreshQuery).toBe("SELECT 'hi' AS name;");
         expect(appDataRefresh.state).toBe("ready");
-        expect(appDataRefresh.lastChangedAt).toBeInstanceOf(Date);
-        expect(appDataRefresh.value).toBeInstanceOf(Date);
+
+        expect(appDataRefresh.value).toBeTruthy();
       });
 
       test("sources are created", async () => {
@@ -460,14 +458,13 @@ describe("modules/codeConfig", () => {
       const apiKeys = await ApiKey.findAll();
       expect(apiKeys[0].apiKey).toBe("def456");
     });
+
     test("an updated refreshQuery will trigger a checkDataRefreshValue", async () => {
       const appDataRefresh = await AppDataRefresh.findOne();
-      expect(appDataRefresh.refreshQuery).toBe(
-        "SELECT id, MAX(updated_at) FROM users;"
-      );
+      expect(appDataRefresh.refreshQuery).toBe("SELECT MAX(stamp) FROM users;");
       expect(appDataRefresh.state).toBe("ready");
 
-      expect(appDataRefresh.value).toBe('{"name": "hi"}');
+      expect(appDataRefresh.value.length).toBe(13);
     });
   });
 

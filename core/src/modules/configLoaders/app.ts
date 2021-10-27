@@ -71,20 +71,22 @@ export async function loadApp(
       },
     });
 
-    if (appDataRefresh === null) {
+    if (!appDataRefresh) {
       appDataRefresh = await AppDataRefresh.create({
         appId: configObject.id,
         refreshQuery: configObject.refreshQuery,
+        locked: ConfigWriter.getLockKey(configObject),
+        state: "ready",
       });
       isNew = true;
+    } else {
+      await appDataRefresh.update({
+        appId: configObject.id,
+        refreshQuery: configObject.refreshQuery,
+        locked: ConfigWriter.getLockKey(configObject),
+        state: "ready",
+      });
     }
-
-    await appDataRefresh.update({
-      appId: configObject.id,
-      refreshQuery: configObject.refreshQuery,
-      locked: ConfigWriter.getLockKey(configObject),
-      state: "ready",
-    });
 
     logModel(
       appDataRefresh,

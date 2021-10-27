@@ -15,7 +15,7 @@ module.exports = async function getConfig() {
       options: {
         fileId: "test-file-path.db",
       },
-      refreshQuery: "SELECT MAX(stamp) FROM users",
+      refreshQuery: "SELECT 'hi' AS name;",
     },
 
     {
