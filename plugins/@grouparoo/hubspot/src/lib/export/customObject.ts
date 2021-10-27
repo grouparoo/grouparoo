@@ -26,7 +26,7 @@ class CustomObjectHandler {
   }
 
   public getProperties() {
-    return this.customObject?.properties || null;
+    return this.customObject?.properties || [];
   }
 }
 

@@ -7,11 +7,6 @@ const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const appId = "app_d2bb07d8-0c4f-49b5-3039-545f2e8662e8";
 
-// recordObject
-// recordMatchField
-// groupObject
-// groupNameField
-
 async function runDestinationOptions({ destinationOptions }) {
   return methodToTest({
     appId,
@@ -25,8 +20,22 @@ async function runDestinationOptions({ destinationOptions }) {
 describe("hubspot/destinationOptions", () => {
   test("can look up objects", async () => {
     const destinationOptions = {};
-
     const result = await runDestinationOptions({ destinationOptions });
-    console.log(result);
+    let option = result.schemaId;
+    expect(option.type).toEqual("list");
+    expect(option.options).toEqual(
+      expect.arrayContaining([
+        "CONTACT",
+        "PRODUCT",
+        "COMPANY",
+        "DEAL",
+        "TICKET",
+        "MARKETING_EVENT",
+        "QUOTE",
+      ])
+    );
+    option = result.primaryKey;
+    expect(option.type).toEqual("pending");
+    expect(option.options).toEqual([]);
   });
 });

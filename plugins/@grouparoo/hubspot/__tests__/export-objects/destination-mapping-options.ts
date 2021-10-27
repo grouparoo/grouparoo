@@ -21,8 +21,8 @@ async function runDestinationMappingOptions({ destinationOptions }) {
 describe("hubspot/destinationMappingOptions", () => {
   test("can load all destinationMappingOptions", async () => {
     const destinationOptions = {
-      recordObject: "CONTACT",
-      recordMatchField: "email",
+      schemaId: "CONTACT",
+      primaryKey: "email",
     };
     const options = await runDestinationMappingOptions({ destinationOptions });
     const { properties } = options;

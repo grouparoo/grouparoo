@@ -87,16 +87,12 @@ class HubspotClient {
   }
 
   async _request(config: AxiosRequestConfig): Promise<any> {
-    try {
-      config["baseURL"] = "https://api.hubapi.com";
-      config["params"] = Object.assign({}, config.params, {
-        hapikey: this.hapikey,
-      });
-      const { data = {} } = await Axios(config);
-      return data;
-    } catch (e) {
-      console.log(e);
-    }
+    config["baseURL"] = "https://api.hubapi.com";
+    config["params"] = Object.assign({}, config.params, {
+      hapikey: this.hapikey,
+    });
+    const { data = {} } = await Axios(config);
+    return data;
   }
 }
 
