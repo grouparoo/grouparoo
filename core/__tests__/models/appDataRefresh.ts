@@ -1,4 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
+import { Schedule } from "../../dist";
 import { App, AppDataRefresh, Log, Run, Source } from "../../src";
 import { AppDataRefreshOps } from "../../src/modules/ops/appDataRefresh";
 import { RunOps } from "../../src/modules/ops/runs";
@@ -100,9 +101,6 @@ describe("appDataRefresh", () => {
       const runs = await Run.findAll({ where: { creatorType: "schedule" } });
       //current behavior does not stop existing runs... one run is from the initial creation, and one from the update
       expect(runs.length).toBe(2);
-
-      await schedule.destroy();
-      await source.destroy();
     });
     test("an appDataRefresh in the draft state will not run its query", async () => {
       const spy = jest.spyOn(AppDataRefreshOps, "triggerSchedules");
@@ -118,12 +116,16 @@ describe("appDataRefresh", () => {
 
     //this test should be last, it destroys the app
     test("deleting an app deletes its appDataRefresh", async () => {
+      await Schedule.truncate();
+      await Source.truncate();
+
       const appDataRefresh = new AppDataRefresh({
         appId: app.id,
         refreshQuery: "SELECT * FROM test;",
         state: "ready",
       });
       await appDataRefresh.save();
+
       await app.destroy();
 
       const appDataRefreshes = await AppDataRefresh.findAll();
