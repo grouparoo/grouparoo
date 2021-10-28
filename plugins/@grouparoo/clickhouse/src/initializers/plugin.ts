@@ -36,8 +36,8 @@ export class Plugins extends Initializer {
         ]),
         new TableSourceTemplate("clickhouse", { getTables, getColumns }),
         new TablePropertyTemplate("clickhouse"),
-        new QuerySourceTemplate("mysql"),
-        new QueryPropertyTemplate("mysql"),
+        new QuerySourceTemplate("clickhouse"),
+        new QueryPropertyTemplate("clickhouse"),
       ],
       apps: [
         {
