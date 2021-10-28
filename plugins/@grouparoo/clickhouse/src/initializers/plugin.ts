@@ -3,9 +3,21 @@ import path from "path";
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
+import {
+  TableSourceTemplate,
+  TablePropertyTemplate,
+} from "@grouparoo/app-templates/dist/source/table";
+import {
+  QuerySourceTemplate,
+  QueryPropertyTemplate,
+} from "@grouparoo/app-templates/dist/source/query";
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { connect } from "@grouparoo/mysql/dist/lib/connect";
 import { disconnect } from "@grouparoo/mysql/dist/lib/disconnect";
+import { getTables } from "@grouparoo/mysql/dist/lib/table-import/getTables";
+import { getColumns } from "@grouparoo/mysql/dist/lib/table-import/getColumns";
+import { getConnection as getTableConnection } from "../lib/table-import/connection";
+import { getConnection as getQueryConnection } from "../lib/query-import/connection";
 import { test } from "@grouparoo/mysql/dist/lib/test";
 
 const packageJSON = require("./../../package.json");
@@ -22,6 +34,10 @@ export class Plugins extends Initializer {
         new AppTemplate("clickhouse", [
           path.join(templateRoot, "app", "*.template"),
         ]),
+        new TableSourceTemplate("clickhouse", { getTables, getColumns }),
+        new TablePropertyTemplate("clickhouse"),
+        new QuerySourceTemplate("mysql"),
+        new QueryPropertyTemplate("mysql"),
       ],
       apps: [
         {
@@ -47,12 +63,14 @@ export class Plugins extends Initializer {
               displayName: "Database",
               required: true,
               description: "The ClickHouse database.",
+              defaultValue: "default",
             },
             {
               key: "user",
               displayName: "User",
               required: false,
               description: "The ClickHouse user.",
+              defaultValue: "default",
             },
             {
               key: "password",
@@ -65,7 +83,7 @@ export class Plugins extends Initializer {
           methods: { test, connect, disconnect },
         },
       ],
-      connections: [],
+      connections: [getTableConnection(), getQueryConnection()],
     });
   }
 
