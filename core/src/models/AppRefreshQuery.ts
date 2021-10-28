@@ -105,7 +105,7 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
       !instance.changed("lastConfirmedAt") &&
       instance.state === "ready"
     ) {
-      const isUpdated = await AppRefreshQueryOps.checkDataRefreshValue(
+      const isUpdated = await AppRefreshQueryOps.checkRefreshQueryValue(
         instance
       );
       if (isUpdated === true) {

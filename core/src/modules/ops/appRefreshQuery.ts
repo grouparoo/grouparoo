@@ -4,7 +4,7 @@ import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 
 export namespace AppRefreshQueryOps {
-  export async function checkDataRefreshValue(
+  export async function checkRefreshQueryValue(
     appRefreshQuery: AppRefreshQuery
   ) {
     const app = await appRefreshQuery.$get("app");
@@ -48,9 +48,14 @@ export namespace AppRefreshQueryOps {
     for (const source of sources) {
       schedulesToRun.push(
         ...(await Schedule.findAll({
-          where: { sourceId: source.id, refreshEnabled: true, state: "ready" },
+          where: {
+            sourceId: source.id,
+            refreshEnabled: true,
+            state: "ready",
+          },
         }))
       );
+      console.log(schedulesToRun);
     }
 
     for (const schedule of schedulesToRun) {
