@@ -85,7 +85,7 @@ export default function Page(props) {
             <th></th>
             <th>Destination Name</th>
             <th>Type</th>
-            <th>Group Tracked</th>
+            <th>Collection Tracked</th>
             <th>App</th>
             <th>State</th>
             <th>Pending Exports</th>
@@ -130,12 +130,19 @@ export default function Page(props) {
                 </td>
                 <td>{destination.connection.displayName}</td>
                 <td>
-                  {destination.group?.id ? (
+                  {destination.collection === "group" ? (
                     <EnterpriseLink
                       href="/model/[modelId]/group/[groupId]/edit"
                       as={`/model/${destination.group.modelId}/group/${destination.group.id}/edit`}
                     >
                       <a>{destination.group.name}</a>
+                    </EnterpriseLink>
+                  ) : destination.collection === "model" ? (
+                    <EnterpriseLink
+                      href="/model/[modelId]/edit"
+                      as={`/model/${destination.modelId}/edit`}
+                    >
+                      <a>{destination.modelName}</a>
                     </EnterpriseLink>
                   ) : (
                     "None"
