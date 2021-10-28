@@ -59,6 +59,15 @@ export const TYPES = {
   },
 };
 
+export const COUNTS = {
+  users: 1000,
+  admins: 25,
+  purchases: 1000,
+  accounts: 50,
+  plans: 4,
+  payments: 1000,
+};
+
 const badEmail = function (val) {
   return val.replace("@", "-");
 };
