@@ -55,26 +55,40 @@ describe("tasks/appRefreshQuery:check", () => {
         where: { creatorId: schedule.id, state: "running" },
       });
       expect(enqueuedRuns.length).toBe(1);
+
+      Run.truncate();
     });
 
     test("does not throw if no appRefreshQueries found", async () => {
       appRefreshQuery.destroy();
 
       await task.enqueue("appRefreshQuery:check", {}); //does not throw
+
+      //also does not enqueue any runs
+      const enqueuedRuns = await Run.findAll({
+        where: { creatorId: schedule.id, state: "running" },
+      });
+      expect(enqueuedRuns.length).toBe(0);
     });
 
     test("does not throw if no app or schedules ready for appRefreshQuery", async () => {
       const anotherApp = await helper.factories.app();
       await anotherApp.update({ state: "deleted" });
 
-      const anotherAppRefreshQuery = new AppRefreshQuery({
+      new AppRefreshQuery({
         appId: app.id,
         refreshQuery: "SELECT 'hi' AS name;",
         state: "ready",
       });
       await appRefreshQuery.save();
 
-      await task.enqueue("appRefreshQuery:check", {});
+      await task.enqueue("appRefreshQuery:check", {}); //does not throw
+
+      //also does not enqueue any runs
+      const enqueuedRuns = await Run.findAll({
+        where: { creatorId: schedule.id, state: "running" },
+      });
+      expect(enqueuedRuns.length).toBe(0);
     });
   });
 });
