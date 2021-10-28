@@ -1,4 +1,4 @@
-export const TYPES = {
+export const TYPES: Readonly<Record<string, Record<string, string>>> = {
   users: {
     id: "INT NOT NULL PRIMARY KEY",
     account_id: "INT",

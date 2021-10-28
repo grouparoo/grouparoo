@@ -123,7 +123,7 @@ export default class MySQL extends Connection {
   async insertRow(
     tableName: string,
     keys: string[],
-    row: { [key: string]: string | number | Date }
+    row: Record<string, string | number | Date | boolean>
   ) {
     const sqlTable = `\`${tableName}\``;
     const columnNames = keys.join(", ");
