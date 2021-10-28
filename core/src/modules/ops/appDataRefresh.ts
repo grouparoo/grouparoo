@@ -54,7 +54,7 @@ export namespace AppDataRefreshOps {
     for (const schedule of schedulesToRun) {
       //stop any existing run on this schedule
       const existingRuns = await Run.findAll({
-        where: { creatorId: schedule.id },
+        where: { creatorId: schedule.id, state: "running" },
       });
       for (const run of existingRuns) {
         await run.stop();
