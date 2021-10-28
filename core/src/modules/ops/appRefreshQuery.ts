@@ -1,11 +1,13 @@
 import { Source } from "../../models/Source";
-import { AppDataRefresh } from "../../models/AppDataRefresh";
+import { AppRefreshQuery } from "../../models/AppRefreshQuery";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 
-export namespace AppDataRefreshOps {
-  export async function checkDataRefreshValue(appDataRefresh: AppDataRefresh) {
-    const app = await appDataRefresh.$get("app");
+export namespace AppRefreshQueryOps {
+  export async function checkDataRefreshValue(
+    appRefreshQuery: AppRefreshQuery
+  ) {
+    const app = await appRefreshQuery.$get("app");
     const options = await app.getOptions();
     const { pluginApp } = await app.getPlugin();
     const connection = await app.getConnection();
@@ -21,25 +23,25 @@ export namespace AppDataRefreshOps {
       appId: app.id,
       appOptions: options,
       connection,
-      refreshQuery: appDataRefresh.refreshQuery,
+      refreshQuery: appRefreshQuery.refreshQuery,
     });
     const sampleValue = JSON.stringify(
       Array.isArray(responseRows) ? responseRows[0] : responseRows
     );
-    const originalValue = appDataRefresh.value;
+    const originalValue = appRefreshQuery.value;
     if (sampleValue !== originalValue) {
-      appDataRefresh.value = sampleValue;
-      appDataRefresh.lastChangedAt = new Date();
+      appRefreshQuery.value = sampleValue;
+      appRefreshQuery.lastChangedAt = new Date();
     }
-    appDataRefresh.lastConfirmedAt = new Date();
-    await appDataRefresh.save();
+    appRefreshQuery.lastConfirmedAt = new Date();
+    await appRefreshQuery.save();
 
     return sampleValue !== originalValue;
   }
 
-  export async function triggerSchedules(appDataRefresh: AppDataRefresh) {
+  export async function triggerSchedules(appRefreshQuery: AppRefreshQuery) {
     const sources: Source[] = await Source.findAll({
-      where: { appId: appDataRefresh.appId },
+      where: { appId: appRefreshQuery.appId },
     });
     const schedulesToRun: Schedule[] = [];
 

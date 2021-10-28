@@ -4,7 +4,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { App, AppDataRefresh } from "@grouparoo/core";
+import { App, AppRefreshQuery } from "@grouparoo/core";
 import { beforeData, afterData, getConfig } from "../utils/data";
 
 const { appOptions } = getConfig();
@@ -28,21 +28,21 @@ describe("integration/runs/mysql", () => {
     await afterData();
   });
 
-  test("I can query using the appDataRefresh query method", async () => {
+  test("I can query using the appRefreshQuery query method", async () => {
     const app = await App.findOne();
-    const appDataRefresh = await AppDataRefresh.create({
+    const appRefreshQuery = await AppRefreshQuery.create({
       appId: app.id,
       refreshQuery: "SELECT 'HI' as name",
       state: "ready",
     });
-    expect(appDataRefresh.lastChangedAt).toBeInstanceOf(Date);
-    expect(appDataRefresh.value).toEqual(JSON.stringify({ name: "HI" }));
+    expect(appRefreshQuery.lastChangedAt).toBeInstanceOf(Date);
+    expect(appRefreshQuery.value).toEqual(JSON.stringify({ name: "HI" }));
   });
 
   test("I show a good error with a missing query", async () => {
     const app = await App.findOne();
     await expect(
-      AppDataRefresh.create({
+      AppRefreshQuery.create({
         appId: app.id,
         refreshQuery: "",
         state: "ready",
@@ -54,7 +54,7 @@ describe("integration/runs/mysql", () => {
   test("I show a good error with a query that has too many sql statements", async () => {
     const app = await App.findOne();
     await expect(
-      AppDataRefresh.create({
+      AppRefreshQuery.create({
         appId: app.id,
         refreshQuery: "SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;",
         state: "ready",

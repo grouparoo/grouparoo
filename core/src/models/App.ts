@@ -26,7 +26,7 @@ import { LockableHelper } from "../modules/lockableHelper";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
 import { AppConfigurationObject } from "../classes/codeConfig";
-import { AppDataRefresh } from "./AppDataRefresh";
+import { AppRefreshQuery } from "./AppRefreshQuery";
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
 
@@ -74,8 +74,8 @@ export class App extends LoggedModel<App> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @HasOne(() => AppDataRefresh)
-  appDataRefresh: AppDataRefresh;
+  @HasOne(() => AppRefreshQuery)
+  appRefreshQuery: AppRefreshQuery;
 
   @HasMany(() => Option, {
     foreignKey: "ownerId",
@@ -376,8 +376,8 @@ export class App extends LoggedModel<App> {
   }
 
   @AfterDestroy
-  static async destroyAppDataRefreshes(instance: App) {
-    return AppDataRefresh.destroy({
+  static async destroyAppRefreshQueries(instance: App) {
+    return AppRefreshQuery.destroy({
       where: {
         appId: instance.id,
       },

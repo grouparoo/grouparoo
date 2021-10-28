@@ -19,7 +19,7 @@ import {
   Team,
   TeamMember,
   GrouparooModel,
-  AppDataRefresh,
+  AppRefreshQuery,
 } from "../../../src";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
@@ -103,17 +103,17 @@ describe("modules/codeConfig", () => {
         expect(options).toEqual({ fileId: "test-file-path.db" });
       });
 
-      test("appDataRefresh is created", async () => {
-        const appDataRefreshes = await AppDataRefresh.findAll();
-        expect(appDataRefreshes.length).toBe(1);
+      test("appRefreshQuery is created", async () => {
+        const appRefreshQueries = await AppRefreshQuery.findAll();
+        expect(appRefreshQueries.length).toBe(1);
       });
 
-      test("appDataRefresh initiates first check", async () => {
-        const appDataRefresh = await AppDataRefresh.findOne();
-        expect(appDataRefresh.refreshQuery).toBe("SELECT 'hi' AS name;");
-        expect(appDataRefresh.state).toBe("ready");
+      test("appRefreshQuery initiates first check", async () => {
+        const appRefreshQuery = await AppRefreshQuery.findOne();
+        expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hi' AS name;");
+        expect(appRefreshQuery.state).toBe("ready");
 
-        expect(appDataRefresh.value).toBeTruthy();
+        expect(appRefreshQuery.value).toBeTruthy();
       });
 
       test("sources are created", async () => {
@@ -460,11 +460,13 @@ describe("modules/codeConfig", () => {
     });
 
     test("an updated refreshQuery will trigger a checkDataRefreshValue", async () => {
-      const appDataRefresh = await AppDataRefresh.findOne();
-      expect(appDataRefresh.refreshQuery).toBe("SELECT MAX(stamp) FROM users;");
-      expect(appDataRefresh.state).toBe("ready");
+      const appRefreshQuery = await AppRefreshQuery.findOne();
+      expect(appRefreshQuery.refreshQuery).toBe(
+        "SELECT MAX(stamp) FROM users;"
+      );
+      expect(appRefreshQuery.state).toBe("ready");
 
-      expect(appDataRefresh.value.length).toBe(13);
+      expect(appRefreshQuery.value.length).toBe(13);
     });
   });
 

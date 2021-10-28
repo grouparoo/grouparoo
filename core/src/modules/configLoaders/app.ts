@@ -10,7 +10,7 @@ import { App } from "../..";
 import { Op } from "sequelize";
 
 import { ConfigWriter } from "../configWriter";
-import { AppDataRefresh } from "../../models/AppDataRefresh";
+import { AppRefreshQuery } from "../../models/AppRefreshQuery";
 
 export async function loadApp(
   configObject: AppConfigurationObject,
@@ -63,16 +63,16 @@ export async function loadApp(
   logModel(app, validate ? "validated" : isNew ? "created" : "updated");
 
   if (configObject.refreshQuery) {
-    let appDataRefresh: AppDataRefresh;
+    let appRefreshQuery: AppRefreshQuery;
 
-    appDataRefresh = await AppDataRefresh.findOne({
+    appRefreshQuery = await AppRefreshQuery.findOne({
       where: {
         appId: configObject.id,
       },
     });
 
-    if (!appDataRefresh) {
-      appDataRefresh = await AppDataRefresh.create({
+    if (!appRefreshQuery) {
+      appRefreshQuery = await AppRefreshQuery.create({
         appId: configObject.id,
         refreshQuery: configObject.refreshQuery,
         locked: ConfigWriter.getLockKey(configObject),
@@ -80,7 +80,7 @@ export async function loadApp(
       });
       isNew = true;
     } else {
-      await appDataRefresh.update({
+      await appRefreshQuery.update({
         appId: configObject.id,
         refreshQuery: configObject.refreshQuery,
         locked: ConfigWriter.getLockKey(configObject),
@@ -89,7 +89,7 @@ export async function loadApp(
     }
 
     logModel(
-      appDataRefresh,
+      appRefreshQuery,
       validate ? "validated" : isNew ? "created" : "updated"
     );
   }

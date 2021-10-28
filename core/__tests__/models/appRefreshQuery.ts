@@ -1,10 +1,10 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Schedule } from "../../dist";
-import { App, AppDataRefresh, Log, Run, Source } from "../../src";
-import { AppDataRefreshOps } from "../../src/modules/ops/appDataRefresh";
+import { App, AppRefreshQuery, Log, Run, Source } from "../../src";
+import { AppRefreshQueryOps } from "../../src/modules/ops/appRefreshQuery";
 import { RunOps } from "../../src/modules/ops/runs";
 
-describe("appDataRefresh", () => {
+describe("appRefreshQuery", () => {
   let app: App;
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
@@ -14,59 +14,59 @@ describe("appDataRefresh", () => {
     });
 
     test("an app data refresh can be created with an app", async () => {
-      const appDataRefresh = new AppDataRefresh({
+      const appRefreshQuery = new AppRefreshQuery({
         appId: app.id,
         refreshQuery: "SELECT MAX(updated_at) FROM users;",
         state: "ready",
       });
 
-      await appDataRefresh.save();
+      await appRefreshQuery.save();
 
-      expect(appDataRefresh.id.length).toBe(40);
-      expect(appDataRefresh.createdAt).toBeTruthy();
-      expect(appDataRefresh.updatedAt).toBeTruthy();
-      expect(appDataRefresh.value).toBeTruthy();
+      expect(appRefreshQuery.id.length).toBe(40);
+      expect(appRefreshQuery.createdAt).toBeTruthy();
+      expect(appRefreshQuery.updatedAt).toBeTruthy();
+      expect(appRefreshQuery.value).toBeTruthy();
     });
 
     test("creating an app data refresh creates a log entry", async () => {
       const latestLog = await Log.findOne({
-        where: { verb: "create", topic: "appDataRefresh" },
+        where: { verb: "create", topic: "appRefreshQuery" },
         order: [["createdAt", "desc"]],
         limit: 1,
       });
       expect(latestLog).toBeTruthy();
     });
 
-    test("deleting an appDataRefresh creates a log entry", async () => {
-      const appDataRefresh = new AppDataRefresh({
+    test("deleting an appRefreshQuery creates a log entry", async () => {
+      const appRefreshQuery = new AppRefreshQuery({
         appId: app.id,
         refreshQuery: "SELECT MAX(updated_at) FROM users;",
         state: "ready",
       });
-      await appDataRefresh.save();
-      await appDataRefresh.destroy();
+      await appRefreshQuery.save();
+      await appRefreshQuery.destroy();
       const latestLog = await Log.findOne({
-        where: { verb: "destroy", topic: "appDataRefresh" },
+        where: { verb: "destroy", topic: "appRefreshQuery" },
         order: [["createdAt", "desc"]],
         limit: 1,
       });
       expect(latestLog).toBeTruthy();
     });
 
-    test("updating a refreshQuery on a ready instance triggers an appDataRefresh check", async () => {
+    test("updating a refreshQuery on a ready instance triggers an appRefreshQuery check", async () => {
       Run.truncate();
-      const appDataRefresh = new AppDataRefresh({
+      const appRefreshQuery = new AppRefreshQuery({
         appId: app.id,
         refreshQuery: "SELECT MAX(updated_at) FROM users;",
         state: "ready",
       });
-      await appDataRefresh.save();
+      await appRefreshQuery.save();
 
-      const spy = jest.spyOn(AppDataRefreshOps, "checkDataRefreshValue");
-      await appDataRefresh.update({
+      const spy = jest.spyOn(AppRefreshQueryOps, "checkDataRefreshValue");
+      await appRefreshQuery.update({
         refreshQuery: "SELECT 'hi' AS name;",
       });
-      expect(spy).toHaveBeenCalledWith(appDataRefresh);
+      expect(spy).toHaveBeenCalledWith(appRefreshQuery);
 
       spy.mockRestore();
     });
@@ -87,14 +87,14 @@ describe("appDataRefresh", () => {
 
       await schedule.update({ recurring: "true", recurringFrequency: 6000000 });
 
-      const appDataRefresh = new AppDataRefresh({
+      const appRefreshQuery = new AppRefreshQuery({
         appId: app.id,
         refreshQuery: "SELECT * FROM test;",
         state: "ready",
       });
-      await appDataRefresh.save();
+      await appRefreshQuery.save();
 
-      await appDataRefresh.update({
+      await appRefreshQuery.update({
         refreshQuery: "SELECT 'hi' AS name;",
       });
 
@@ -103,35 +103,35 @@ describe("appDataRefresh", () => {
       });
       expect(runs.length).toBe(1);
     });
-    test("an appDataRefresh in the draft state will not run its query", async () => {
-      const spy = jest.spyOn(AppDataRefreshOps, "triggerSchedules");
+    test("an appRefreshQuery in the draft state will not run its query", async () => {
+      const spy = jest.spyOn(AppRefreshQueryOps, "triggerSchedules");
 
-      const appDataRefresh = new AppDataRefresh({
+      const appRefreshQuery = new AppRefreshQuery({
         appId: app.id,
         refreshQuery: "SELECT * FROM test;",
       });
-      await appDataRefresh.save();
+      await appRefreshQuery.save();
 
       expect(spy).toHaveBeenCalledTimes(0);
     });
 
     //this test should be last, it destroys the app
-    test("deleting an app deletes its appDataRefresh", async () => {
+    test("deleting an app deletes its appRefreshQuery", async () => {
       await Schedule.truncate();
       await Source.truncate();
 
-      const appDataRefresh = new AppDataRefresh({
+      const appRefreshQuery = new AppRefreshQuery({
         appId: app.id,
         refreshQuery: "SELECT * FROM test;",
         state: "ready",
       });
-      await appDataRefresh.save();
+      await appRefreshQuery.save();
 
       await app.destroy();
 
-      const appDataRefreshes = await AppDataRefresh.findAll();
+      const appRefreshQueries = await AppRefreshQuery.findAll();
 
-      expect(appDataRefreshes.length).toEqual(0);
+      expect(appRefreshQueries.length).toEqual(0);
     });
   });
 });

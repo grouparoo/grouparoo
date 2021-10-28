@@ -5,7 +5,7 @@ export default {
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
-    await queryInterface.createTable("appDataRefreshes", {
+    await queryInterface.createTable("appRefreshQueries", {
       id: {
         type: DataTypes.STRING(191),
         primaryKey: true,
@@ -63,12 +63,12 @@ export default {
       allowNull: false,
     });
 
-    await queryInterface.addIndex("appDataRefreshes", ["appId"], {
+    await queryInterface.addIndex("appRefreshQueries", ["appId"], {
       fields: ["appId"],
     });
   },
 
   down: async (queryInterface: Sequelize.QueryInterface) => {
-    await queryInterface.dropTable("appDataRefreshes");
+    await queryInterface.dropTable("appRefreshQueries");
   },
 };

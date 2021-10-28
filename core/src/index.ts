@@ -48,7 +48,7 @@ export { SetupStep } from "./models/SetupStep";
 export { Source, SimpleSourceOptions, SourceMapping } from "./models/Source";
 export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
-export { AppDataRefresh } from "./models/AppDataRefresh";
+export { AppRefreshQuery } from "./models/AppRefreshQuery";
 
 export { Status } from "./modules/status";
 export { StatusMetric } from "./modules/statusReporters";

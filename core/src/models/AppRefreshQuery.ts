@@ -12,10 +12,10 @@ import {
   Default,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
-import { StateMachine } from "./../modules/stateMachine";
+import { StateMachine } from "../modules/stateMachine";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
-import { AppDataRefreshOps } from "../modules/ops/appDataRefresh";
+import { AppRefreshQueryOps } from "../modules/ops/appRefreshQuery";
 import { App } from "./App";
 
 const STATES = ["draft", "ready"] as const;
@@ -31,8 +31,8 @@ const STATE_TRANSITIONS = [
 @DefaultScope(() => ({
   where: { state: "ready" },
 }))
-@Table({ tableName: "appDataRefreshes", paranoid: false })
-export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
+@Table({ tableName: "appRefreshQueries", paranoid: false })
+export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
   idPrefix() {
     return "adr";
   }
@@ -84,36 +84,38 @@ export class AppDataRefresh extends LoggedModel<AppDataRefresh> {
 
   static async findById(id: string) {
     const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find AppDataRefresh ${id}`);
+    if (!instance) throw new Error(`cannot find AppRefreshQuery ${id}`);
     return instance;
   }
 
   @BeforeSave
-  static async noUpdateIfLocked(instance: AppDataRefresh) {
+  static async noUpdateIfLocked(instance: AppRefreshQuery) {
     await LockableHelper.beforeSave(instance, ["state"]);
   }
 
   @BeforeSave
-  static async updateState(instance: AppDataRefresh) {
+  static async updateState(instance: AppRefreshQuery) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @AfterSave
-  static async runCheckIfNewQuery(instance: AppDataRefresh) {
+  static async runCheckIfNewQuery(instance: AppRefreshQuery) {
     if (
       instance.changed("refreshQuery") &&
       !instance.changed("lastConfirmedAt") &&
       instance.state === "ready"
     ) {
-      const isUpdated = await AppDataRefreshOps.checkDataRefreshValue(instance);
+      const isUpdated = await AppRefreshQueryOps.checkDataRefreshValue(
+        instance
+      );
       if (isUpdated === true) {
       }
-      await AppDataRefreshOps.triggerSchedules(instance);
+      await AppRefreshQueryOps.triggerSchedules(instance);
     }
   }
 
   @BeforeDestroy
-  static async noDestroyIfLocked(instance: AppDataRefresh) {
+  static async noDestroyIfLocked(instance: AppRefreshQuery) {
     await LockableHelper.beforeDestroy(instance);
   }
 }

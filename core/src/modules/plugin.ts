@@ -4,7 +4,7 @@ import { MustacheUtils } from "./mustacheUtils";
 import { APMWrap } from "./apm";
 
 import { App } from "../models/App";
-import { AppDataRefresh } from "../models/AppDataRefresh";
+import { AppRefreshQuery } from "../models/AppRefreshQuery";
 import { ApiKey } from "../models/ApiKey";
 import { Destination } from "../models/Destination";
 import { DestinationGroupMembership } from "../models/DestinationGroupMembership";
@@ -37,7 +37,7 @@ import { ExportProcessor } from "../models/ExportProcessor";
 // the order matters here - the children need to come before the parents (destinationGroup -> destination)
 const models = [
   App,
-  AppDataRefresh,
+  AppRefreshQuery,
   ApiKey,
   Source,
   Schedule,
