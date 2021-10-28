@@ -1,15 +1,10 @@
-import {
-  userCreatedAt,
-  numberOfUsers,
-  accountCreatedAt,
-  numberOfAccounts,
-} from "./shared";
+import { userCreatedAt, accountCreatedAt } from "./shared";
 import Connection from "./connection";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
 import path from "path";
 import { log } from "actionhero";
-import { TYPES } from "./data";
+import { TYPES, COUNTS, JUNK } from "./data";
 
 interface DataOptions {
   scale?: number;
@@ -26,11 +21,11 @@ export async function writeAll(db: Connection, options: DataOptions = {}) {
 }
 
 async function users(db: Connection, options: DataOptions = {}) {
-  await createCsvTable(db, "users", "id", "user", true, true, options);
+  await createCsvTable(db, "users", "id", "users", true, true, options);
 }
 
 async function admins(db: Connection, options: DataOptions = {}) {
-  await createCsvTable(db, "admins", "id", "admin", true, true, options);
+  await createCsvTable(db, "admins", "id", "admins", true, true, options);
 }
 
 async function purchases(db: Connection, options: DataOptions = {}) {
@@ -38,7 +33,7 @@ async function purchases(db: Connection, options: DataOptions = {}) {
     db,
     "purchases",
     "user_id",
-    "user",
+    "users",
     true,
     false,
     options
@@ -46,7 +41,7 @@ async function purchases(db: Connection, options: DataOptions = {}) {
 }
 
 async function accounts(db: Connection, options: DataOptions = {}) {
-  await createCsvTable(db, "accounts", "id", "account", true, true, options);
+  await createCsvTable(db, "accounts", "id", "accounts", true, true, options);
 }
 
 async function payments(db: Connection, options: DataOptions = {}) {
@@ -54,7 +49,7 @@ async function payments(db: Connection, options: DataOptions = {}) {
     db,
     "payments",
     "account_id",
-    "account",
+    "accounts",
     true,
     false,
     options
@@ -80,7 +75,7 @@ async function createCsvTable(
   db: Connection,
   tableName: string,
   typeColumn: string,
-  typeName: string,
+  typeTableName: string,
   createdAt: boolean,
   updatedAt: boolean,
   options: DataOptions = {}
@@ -95,7 +90,7 @@ async function createCsvTable(
     db,
     tableName,
     typeColumn,
-    typeName,
+    typeTableName,
     createdAt,
     updatedAt,
     options.scale,
@@ -108,13 +103,13 @@ async function loadCsvTable(
   db: Connection,
   tableName: string,
   typeColumn: string,
-  typeName: string,
+  typeTableName: string,
   createdAt: boolean,
   updatedAt: boolean,
   scale: number = 0,
   junkPercent: number = 0
 ) {
-  if (!scale || scale < 1) scale = 1;
+  if (!scale || scale < 0) scale = 1;
   if (!junkPercent || junkPercent < 1) junkPercent = 0;
 
   // read from data file
@@ -130,7 +125,7 @@ async function loadCsvTable(
 
   await db.createTable(tableName, typeColumn, keys);
 
-  const fillTable = async function (page: number = 0) {
+  const fillTable = async function (page: number = 0, maxId: number) {
     log(`   Page ${page}`, "debug");
     const perPage = rows.length;
 
@@ -148,16 +143,25 @@ async function loadCsvTable(
         row[key] = parseValue(tableName, key, row[key]);
       }
 
+      const origTypeId = row[typeColumn];
       if (createdAt || updatedAt) {
         // otherwise, not handling times or pagination
         const { created_at, updated_at, myId, typeId } = getRowData(
           tableName,
           row.id,
-          row[typeColumn],
-          typeName,
+          origTypeId,
+          typeTableName,
           page,
           perPage
         );
+
+        if (maxId) {
+          if (!origTypeId || origTypeId > maxId) {
+            // console.log({ no: "", origTypeId, maxId });
+            continue;
+          }
+          // console.log({ yes: "", origTypeId, maxId });
+        }
 
         row.id = myId;
         row[typeColumn] = typeId;
@@ -180,8 +184,21 @@ async function loadCsvTable(
     }
   };
 
-  for (let page = 1; page <= scale; page++) {
-    await fillTable(page);
+  const pages = Math.floor(scale);
+  const remainder = Math.round((scale - pages + Number.EPSILON) * 100) / 100;
+
+  for (let page = 1; page <= pages; page++) {
+    await fillTable(page, null);
+  }
+
+  if (remainder > 0) {
+    const tableCount = COUNTS[typeTableName];
+    if (!tableCount) {
+      throw new Error(`Table count unknown: ${tableName}`);
+    }
+    let maxRootId = Math.floor(tableCount * remainder);
+    if (maxRootId < 1) maxRootId = 1;
+    await fillTable(pages + 1, maxRootId);
   }
 }
 
@@ -189,29 +206,25 @@ function getRowData(
   tableName: string,
   myId: number,
   typeId: number,
-  typeName: string,
+  typeTableName: string,
   page: number,
   perPage: number
 ): { created_at: Date; updated_at: Date; myId: number; typeId: number } {
   let rootCreatedAt;
-  let isRoot;
-  let numOfRoot;
 
   const now = new Date();
-  switch (typeName) {
-    case "user":
-    case "admin":
+  const numOfRoot = COUNTS[typeTableName];
+  const isRoot = tableName === typeTableName;
+  switch (typeTableName) {
+    case "admins":
+    case "users":
       rootCreatedAt = userCreatedAt(typeId);
-      isRoot = ["users", "admins"].includes(tableName);
-      numOfRoot = numberOfUsers;
       break;
-    case "account":
+    case "accounts":
       rootCreatedAt = accountCreatedAt(typeId);
-      isRoot = tableName === "accounts";
-      numOfRoot = numberOfAccounts;
       break;
     default:
-      throw new Error(`unknown typeName: ${typeName}`);
+      throw new Error(`unknown typeTableName: ${typeTableName}`);
   }
 
   if (page > 1) {
@@ -246,7 +259,7 @@ function getRowData(
 
 function getUpdatedAt(now: Date, created_at: Date) {
   const creationAgo = now.getTime() - created_at.getTime();
-  const updatedAgo = creationAgo * Math.random();
+  const updatedAgo = creationAgo * 0.5;
   const updatedMilli = now.getTime() - updatedAgo;
   return new Date(updatedMilli);
 }
@@ -281,14 +294,13 @@ function junkifyData(
   junkPercent: number
 ) {
   let junkCounter = 0;
-  // skip the primary key (the first column)
-  const keys = Object.keys(rows[0]).slice(1, Object.keys(rows[0]).length - 1);
-  for (const row of rows) {
-    const toJunk = Math.random() < junkPercent / 100;
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const bucket = i % 100; // from 0 to 100
+    const toJunk = bucket < junkPercent;
     if (toJunk) {
       junkCounter++;
-      const key = keys[Math.floor(Math.random() * keys.length)];
-      row[key] = junkRow(key, row[key]);
+      junkifyRow(tableName, row, junkCounter);
     }
   }
 
@@ -299,24 +311,23 @@ function junkifyData(
   return rows;
 }
 
-function junkRow(column: string, v: string) {
-  // don't mess with primary keys
-  if (column.match(/_id$/)) return v;
-
-  if (v.includes(".") && !isNaN(parseFloat(v))) {
-    v = Math.random() < 0.5 ? `-${v}` : "";
-    v = v;
+function junkifyRow(tableName: string, row: any, num: number) {
+  const columns = JUNK[tableName];
+  if (columns === undefined) {
+    throw new Error(`Junkify unknown table: ${tableName}`);
   }
-  if (v.includes("@")) {
-    v =
-      Math.random() < 0.5
-        ? ` ${v} `
-        : Math.random() < 0.5
-        ? v.replace("@", "-")
-        : "";
+  if (columns.length === 0) {
+    return;
+  }
+  const keys = Object.keys(columns);
+  const key = keys[num % keys.length];
+
+  const empty = num % 3 === 0;
+  const current = row[key];
+  if (empty) {
+    row[key] = "";
   } else {
-    v = Math.random() < 0.5 ? ` ${v} ` : "";
+    const gen = columns[key];
+    row[key] = gen(current, num);
   }
-
-  return v;
 }

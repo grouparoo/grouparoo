@@ -58,3 +58,57 @@ export const TYPES = {
     created_at: "TIMESTAMP NOT NULL",
   },
 };
+
+export const COUNTS = {
+  users: 1000,
+  admins: 25,
+  purchases: 1000,
+  accounts: 50,
+  plans: 4,
+  payments: 1000,
+};
+
+const badEmail = function (val) {
+  return val.replace("@", "-");
+};
+const badNumber = function (val, num) {
+  if (num % 2 === 0) {
+    return `-${val}`;
+  } else {
+    return "NaN";
+  }
+};
+const emptyValue = function () {
+  return "";
+};
+
+export const JUNK = {
+  users: {
+    first_name: emptyValue,
+    email: badEmail,
+    deactivated: emptyValue,
+  },
+
+  admins: {
+    email: badEmail,
+  },
+
+  purchases: {
+    category: emptyValue,
+    price: badNumber,
+  },
+
+  accounts: {
+    name: emptyValue,
+  },
+
+  plans: {
+    name: emptyValue,
+    seats: badNumber,
+    monthly_rate: badNumber,
+  },
+
+  payments: {
+    amount: badNumber,
+  },
+};
