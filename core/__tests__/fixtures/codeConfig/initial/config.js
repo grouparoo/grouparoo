@@ -7,7 +7,6 @@ module.exports = async function getConfig() {
       key: "cluster-name",
       value: "Test Cluster",
     },
-
     {
       id: "data_warehouse", // id -> `data_warehouse`
       name: "Data Warehouse",
@@ -16,6 +15,7 @@ module.exports = async function getConfig() {
       options: {
         fileId: "test-file-path.db",
       },
+      refreshQuery: "SELECT 'hi' AS name;",
     },
 
     {

@@ -44,6 +44,7 @@ export interface ModelConfigurationObject extends ConfigurationObject {
 export interface AppConfigurationObject extends ConfigurationObject {
   name: string;
   type: string;
+  refreshQuery?: string;
   options?: { [key: string]: any };
 }
 
@@ -91,6 +92,7 @@ export interface ScheduleConfigurationObject extends ConfigurationObject {
   confirmRecords?: boolean;
   options?: { [key: string]: any };
   filters?: PropertyFiltersWithKey[];
+  refreshEnabled?: boolean;
 }
 
 export interface SettingConfigurationObject extends ConfigurationObject {

@@ -22,6 +22,7 @@ import {
   QuerySourceTemplate,
   QueryPropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
+import { appQuery } from "../lib/appQuery";
 
 const packageJSON = require("./../../package.json");
 
@@ -80,7 +81,7 @@ export class Plugins extends Initializer {
               placeholder: "e.g. -----BEGIN PRIVATE KEY-----\nMII ...",
             },
           ],
-          methods: { test, connect, disconnect },
+          methods: { test, connect, disconnect, appQuery },
         },
       ],
       connections: [getTableConnection(), getQueryConnection()],

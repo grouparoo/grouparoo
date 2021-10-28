@@ -58,6 +58,7 @@ const {
 
   // models
   App,
+  AppRefreshQuery,
   ApiKey,
   Source,
   Schedule,
@@ -87,6 +88,7 @@ const {
 
 const models = [
   App,
+  AppRefreshQuery,
   ApiKey,
   Source,
   Schedule,
@@ -284,6 +286,9 @@ export namespace helper {
                 fileId: { type: "list", options: ["a", "b"] },
                 password: { type: "password" },
               };
+            },
+            appQuery: async () => {
+              return [new Date().getTime()];
             },
           },
         },

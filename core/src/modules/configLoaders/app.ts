@@ -10,6 +10,7 @@ import { App } from "../..";
 import { Op } from "sequelize";
 
 import { ConfigWriter } from "../configWriter";
+import { AppRefreshQuery } from "../../models/AppRefreshQuery";
 
 export async function loadApp(
   configObject: AppConfigurationObject,
@@ -17,7 +18,7 @@ export async function loadApp(
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
-  validateConfigObjectKeys(App, configObject);
+  validateConfigObjectKeys(App, configObject, ["refreshQuery"]);
 
   let app = await App.scope(null).findOne({
     where: {
@@ -60,6 +61,38 @@ export async function loadApp(
   await app.update({ state: "ready" }, {});
 
   logModel(app, validate ? "validated" : isNew ? "created" : "updated");
+
+  if (configObject.refreshQuery) {
+    let appRefreshQuery: AppRefreshQuery;
+
+    appRefreshQuery = await AppRefreshQuery.findOne({
+      where: {
+        appId: configObject.id,
+      },
+    });
+
+    if (!appRefreshQuery) {
+      appRefreshQuery = await AppRefreshQuery.create({
+        appId: configObject.id,
+        refreshQuery: configObject.refreshQuery,
+        locked: ConfigWriter.getLockKey(configObject),
+        state: "ready",
+      });
+      isNew = true;
+    } else {
+      await appRefreshQuery.update({
+        appId: configObject.id,
+        refreshQuery: configObject.refreshQuery,
+        locked: ConfigWriter.getLockKey(configObject),
+        state: "ready",
+      });
+    }
+
+    logModel(
+      appRefreshQuery,
+      validate ? "validated" : isNew ? "created" : "updated"
+    );
+  }
 
   return { app: [app.id] };
 }
