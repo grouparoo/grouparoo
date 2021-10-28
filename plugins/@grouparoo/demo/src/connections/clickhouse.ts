@@ -30,7 +30,7 @@ export default class ClickHouse extends MySQL {
         if (columnType.includes("DECIMAL")) {
           // ClickHouse Decimal data type family must have exactly two arguments: precision and scale.
           // https://clickhouse.com/docs/en/sql-reference/data-types/decimal/
-          nextColumnType = nextColumnType.replace("DECIMAL", "Decimal(10, 0)");
+          nextColumnType = nextColumnType.replace("DECIMAL", "Decimal(10, 2)");
         }
 
         if (columnType.includes("TIMESTAMP")) {
