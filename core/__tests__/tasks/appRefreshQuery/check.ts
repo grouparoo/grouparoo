@@ -30,7 +30,7 @@ describe("tasks/appRefreshQuery:check", () => {
     beforeAll(async () => {
       ({ model } = await helper.factories.properties());
       app = await helper.factories.app(model);
-      source = await helper.factories.source();
+      source = await helper.factories.source(app);
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
@@ -46,8 +46,15 @@ describe("tasks/appRefreshQuery:check", () => {
       await appRefreshQuery.save();
     });
 
-    test("can be enqueued", async () => {
+    test("can be enqueued and run", async () => {
       await task.enqueue("appRefreshQuery:check", {}); //does not throw
+
+      await specHelper.runTask("appRefreshQuery:check", {});
+
+      const enqueuedRuns = await Run.findAll({
+        where: { creatorId: schedule.id, state: "running" },
+      });
+      expect(enqueuedRuns.length).toBe(1);
     });
 
     test("does not throw if no appRefreshQueries found", async () => {

@@ -55,7 +55,6 @@ export namespace AppRefreshQueryOps {
           },
         }))
       );
-      console.log(schedulesToRun);
     }
 
     for (const schedule of schedulesToRun) {

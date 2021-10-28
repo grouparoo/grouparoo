@@ -1,5 +1,6 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { App, AppRefreshQuery } from "../..";
+import { App } from "../../models/App";
+import { AppRefreshQuery } from "../../models/AppRefreshQuery";
 import { AppRefreshQueryOps } from "../../modules/ops/appRefreshQuery";
 
 export class AppRefreshQueryCheck extends CLSTask {
@@ -13,17 +14,20 @@ export class AppRefreshQueryCheck extends CLSTask {
     this.inputs = {};
   }
 
-  async runWithinTransaction(params) {
-    0;
+  async runWithinTransaction() {
     const appRefreshQueries = await AppRefreshQuery.findAll();
+
     for (const appRefreshQuery of appRefreshQueries) {
       const app = await App.findOne({
         where: { id: appRefreshQuery.appId, state: "ready" },
       });
+
       if (app) {
-        const isUpdated =
-          AppRefreshQueryOps.checkRefreshQueryValue(appRefreshQuery);
-        if (isUpdated) AppRefreshQueryOps.triggerSchedules(appRefreshQuery);
+        const isUpdated = await AppRefreshQueryOps.checkRefreshQueryValue(
+          appRefreshQuery
+        );
+        if (isUpdated)
+          await AppRefreshQueryOps.triggerSchedules(appRefreshQuery);
       }
     }
   }

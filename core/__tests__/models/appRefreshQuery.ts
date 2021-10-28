@@ -125,9 +125,9 @@ describe("appRefreshQuery", () => {
       const runs = await Run.findAll({
         where: { creatorType: "schedule", state: "running" },
       });
-      console.log(runs);
 
       expect(runs.length).toBe(1);
+      expect(runs[0].creatorId).toBe(schedule.id);
     });
 
     test("an appRefreshQuery in the draft state will not run its query", async () => {
