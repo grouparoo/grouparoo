@@ -119,11 +119,6 @@ export class Run extends CommonModel<Run> {
   @Column
   percentComplete: number;
 
-  @Default(false)
-  @AllowNull(false)
-  @Column
-  force: boolean;
-
   @AllowNull(true)
   @Column
   destinationId: string;
@@ -268,7 +263,6 @@ export class Run extends CommonModel<Run> {
       memberLimit: this.memberLimit,
       memberOffset: this.memberOffset,
       method: this.method,
-      force: this.force,
       destinationId: this.destinationId,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
@@ -317,6 +311,7 @@ export class Run extends CommonModel<Run> {
   @BeforeCreate
   static async ensureCreatorReady(instance: Run) {
     let ready = true;
+
     // properties are ok to enqueue if they are in draft at the time.  Options update before state
     if (instance.creatorType === "group") {
       let creator = await Group.findById(instance.creatorId);

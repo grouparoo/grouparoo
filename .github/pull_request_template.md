@@ -1,12 +1,6 @@
 ## Change description
 
-> Description here
-
-## Related issues
-
-Does this PR fix a Github Issue?
-
-> Fix [#1]()
+Description here
 
 ## Checklists
 
@@ -22,8 +16,6 @@ Does this PR fix a Github Issue?
 - [ ] Possible migration needs considered (model migrations, config migrations, etc.)
 
 Please explain any security, performance, migration, or other impacts if relevant:
-
->
 
 ### Code review
 

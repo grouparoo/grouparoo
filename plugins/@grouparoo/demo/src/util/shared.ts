@@ -2,7 +2,7 @@ import sharedExecSync from "./exec";
 import { api } from "actionhero";
 import path from "path";
 import Database from "./database";
-import { Run } from "@grouparoo/core";
+import { COUNTS } from "./data";
 import { log } from "actionhero";
 
 export async function execSync(command) {
@@ -22,15 +22,15 @@ export async function prettier(fileOrDirPath) {
 }
 
 const START_TIME = new Date();
-export const numberOfUsers = 1000;
 export function userCreatedAt(id: any) {
   // 1000 people in last 3 months, spaced out
   if (!id) {
     return null;
   }
+  const count = COUNTS["users"];
   const secondsBack = 60 * 60 * 24 * 30 * 3;
   const secondsEach = secondsBack / 1000; // for each user
-  const ageNumber = numberOfUsers - parseInt(id);
+  const ageNumber = count - parseInt(id);
   const creationAgo = secondsEach * ageNumber * 1000;
 
   // use that from something specific.
@@ -38,15 +38,15 @@ export function userCreatedAt(id: any) {
   return new Date(epochMilli);
 }
 
-export const numberOfAccounts = 50;
 export function accountCreatedAt(id: any) {
   // 50 people in last 3 months, spaced out
   if (!id) {
     return null;
   }
+  const count = COUNTS["accounts"];
   const secondsBack = 60 * 60 * 24 * 30 * 3;
   const secondsEach = secondsBack / 1000; // for each user
-  const ageNumber = numberOfAccounts - parseInt(id);
+  const ageNumber = count - parseInt(id);
   const creationAgo = secondsEach * ageNumber * 1000;
 
   // use that from something specific.

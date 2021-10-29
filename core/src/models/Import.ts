@@ -162,7 +162,7 @@ export class Import extends CommonModel<Import> {
       creatorType: this.creatorType,
       creatorId: this.creatorId,
       recordId: this.recordId,
-      modelId: record.modelId,
+      modelId: record?.modelId,
 
       //data
       data,

@@ -23,6 +23,14 @@ export const destinationTypeConversions = {
   string: {
     any: (v: string) => v,
     string: (v: string) => v,
+    url: (v: string) => v,
+    email: (v: string) => v,
+    boolean: (v: string) => v,
+    date: (v: string) => v,
+    float: (v: string) => v,
+    integer: (v: string) => v,
+    number: (v: string) => v,
+    phoneNumber: (v: string) => v,
   },
 
   url: {

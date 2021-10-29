@@ -148,7 +148,7 @@ describe("tasks/grouparooModel:run", () => {
 
       it("will record destinationId on the import if run from a destination", async () => {
         let imports = [];
-        await model.run(true, destination.id);
+        await model.run(destination.id);
 
         const run = await Run.findOne({
           where: { state: "running", creatorId: model.id },

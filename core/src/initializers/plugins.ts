@@ -70,14 +70,27 @@ export class Plugins extends Initializer {
     // --- Add the UI pLugin --- //
 
     const pluginManifest = getPluginManifest();
-    const uiPlugin = pluginManifest.plugins.find((p) =>
-      p.name.match(/^@grouparoo\/ui-/)
-    );
-    if (uiPlugin) {
-      this.registerPlugin({
-        name: uiPlugin.name,
-        icon: "/public/@grouparoo/logo.png",
-      });
+    const uiPlugins = pluginManifest.plugins
+      .filter((p) => p.name.match(/^@grouparoo\/ui-/))
+      .sort((p) => (p.name.match("config") ? 1 : -1));
+
+    if (uiPlugins) {
+      const relevantUiPlugin =
+        uiPlugins[
+          process.env.GROUPAROO_RUN_MODE === "ui:config"
+            ? uiPlugins.length - 1
+            : 0
+        ];
+      if (relevantUiPlugin) {
+        this.registerPlugin({
+          name: relevantUiPlugin.name,
+          icon: "/public/@grouparoo/logo.png",
+        });
+        process.env.GROUPAROO_UI_EDITION = relevantUiPlugin.name.replace(
+          "@grouparoo/ui-",
+          ""
+        );
+      }
     }
   }
 

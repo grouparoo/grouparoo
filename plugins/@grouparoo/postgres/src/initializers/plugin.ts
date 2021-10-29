@@ -2,6 +2,7 @@ import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
 import path from "path";
 
+import { appQuery } from "../lib/appQuery";
 import { test } from "./../lib/test";
 import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
@@ -130,7 +131,7 @@ export class Plugins extends Initializer {
               description: "The ssl certificate authority (CA).",
             },
           ],
-          methods: { test, connect, disconnect },
+          methods: { test, connect, disconnect, appQuery },
         },
       ],
       connections: [

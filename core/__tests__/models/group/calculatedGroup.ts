@@ -332,7 +332,7 @@ describe("models/group", () => {
       });
     });
 
-    test("group#run will create imports for every group member when force=true", async () => {
+    test("runUpdateMembers with a destination will create imports for all members and include a destinationId in _meta", async () => {
       await group.update({ type: "manual", state: "ready" });
       await group.addRecord(mario);
       await group.addRecord(luigi);
@@ -341,30 +341,7 @@ describe("models/group", () => {
       expect(imports.length).toBe(2);
       await Import.truncate();
 
-      const run = await group.run(true);
-      await specHelper.runTask("group:run", { runId: run.id });
-
-      imports = await Import.findAll();
-      expect(imports.map((i) => i.recordId).sort()).toEqual(
-        [mario, luigi].map((p) => p.id).sort()
-      );
-
-      expect(imports[0].data).toEqual({});
-      expect(imports[0].rawData).toEqual({});
-      expect(imports[1].data).toEqual({});
-      expect(imports[1].rawData).toEqual({});
-    });
-
-    test("runUpdateMembers will create imports which include a destinationId in _meta if provided", async () => {
-      await group.update({ type: "manual", state: "ready" });
-      await group.addRecord(mario);
-      await group.addRecord(luigi);
-
-      let imports = await Import.findAll();
-      expect(imports.length).toBe(2);
-      await Import.truncate();
-
-      const run = await group.run(true, "abc123");
+      const run = await group.run("abc123");
       await specHelper.runTask("group:run", { runId: run.id });
 
       imports = await Import.findAll();

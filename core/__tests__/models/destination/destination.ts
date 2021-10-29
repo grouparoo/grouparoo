@@ -367,7 +367,6 @@ describe("models/destination", () => {
         });
         expect(runningRuns.length).toBe(1);
         expect(runningRuns[0].destinationId).toBe(destination.id);
-        expect(runningRuns[0].force).toBe(true);
         run = runningRuns[0];
       });
 
@@ -1073,8 +1072,6 @@ describe("models/destination", () => {
           expect(runB.state).toBe("running");
           expect(runA.destinationId).toBe(destination.id);
           expect(runB.destinationId).toBe(destination.id);
-          expect(runA.force).toBe(true);
-          expect(runB.force).toBe(false);
         });
 
         test("when the model being tracked is removed, the previous records should be exported one last time", async () => {
@@ -1088,8 +1085,6 @@ describe("models/destination", () => {
           expect(runB.state).toBe("running");
           expect(runA.destinationId).toBe(destination.id);
           expect(runB.destinationId).toBe(destination.id);
-          expect(runA.force).toBe(true);
-          expect(runB.force).toBe(false);
         });
 
         test("when the group being tracked is changed, the previous group should be exported one last time", async () => {
@@ -1109,8 +1104,6 @@ describe("models/destination", () => {
           expect(runA.state).toBe("running");
           expect(runB.state).toBe("running");
           expect(runB.destinationId).toBe(destination.id);
-          expect(runA.force).toBe(true);
-          expect(runB.force).toBe(true);
 
           await otherGroup.destroy();
         });

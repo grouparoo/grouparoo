@@ -109,7 +109,7 @@ export class Demo extends CLI {
   async run({ params }) {
     try {
       const passed = Object.keys(params).map((k) => k.toLowerCase());
-      const scale = parseInt(params.scale) || 1;
+      const scale = parseFloat(params.scale) || 1;
       const junkPercent = parseInt(params.junkPercent) || 0;
       const seed = passed.includes("seed");
       const config = passed.includes("config");

@@ -51,13 +51,13 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
       break;
     case AggregationMethod.MostRecentValue:
       if (!sortColumn) throw new Error("Sort Column is needed");
-      orderBy = `"${sortColumn}" DESC`;
+      orderBy = `\`${sortColumn}\` DESC`;
       groupByColumns.push(columnNames[0]);
       groupByColumns.push(sortColumn);
       break;
     case AggregationMethod.LeastRecentValue:
       if (!sortColumn) throw new Error("Sort Column is needed");
-      orderBy = `"${sortColumn}" ASC`;
+      orderBy = `\`${sortColumn}\` ASC`;
       groupByColumns.push(columnNames[0]);
       groupByColumns.push(sortColumn);
       break;
@@ -104,9 +104,9 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
 
     for (const row of rows) {
       const pk = row.__pk.toString();
-      responses[pk] = {};
+      responses[pk] ??= {};
       for (const col in row) {
-        responses[pk][col] = [];
+        responses[pk][col] ??= [];
         if (isArray || (responses[pk][col].length === 0 && !isArray)) {
           responses[pk][col].push(row[col]);
         }

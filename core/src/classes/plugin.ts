@@ -47,6 +47,7 @@ export interface PluginApp {
     connect?: ConnectPluginAppMethod;
     disconnect?: DisconnectPluginAppMethod;
     test: TestPluginMethod;
+    appQuery?: AppQueryMethod;
     appOptions?: AppOptionsMethod;
     parallelism?: AppParallelismMethod;
   };
@@ -369,6 +370,19 @@ export interface TestPluginMethod {
     appOptions: SimpleAppOptions;
     connection: any;
   }): Promise<{ success: boolean; message?: string }>;
+}
+
+/**
+ * Method is used to run arbitrary queries against the app.  AppRefreshQuery uses this.  It returns arrays of "rows", whatever that means to the App
+ */
+export interface AppQueryMethod {
+  (argument: {
+    app: App;
+    appId: string;
+    appOptions: SimpleAppOptions;
+    connection: any;
+    refreshQuery: string;
+  }): Promise<Array<unknown>>;
 }
 
 /**

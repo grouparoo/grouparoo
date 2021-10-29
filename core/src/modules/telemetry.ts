@@ -64,8 +64,9 @@ export namespace Telemetry {
     // information about how Grouparoo is being operated
     metrics.push(await StatusReporters.Cluster.Workers.countWorkers());
     metrics.push(await StatusReporters.Cluster.Workers.countErrors());
-    metrics.push(await StatusReporters.Cluster.OS.exact());
-    metrics.push(await StatusReporters.Cluster.NODE_ENV.exact());
+    metrics.push(await StatusReporters.Cluster.Process.platform());
+    metrics.push(await StatusReporters.Cluster.Process.sequelizeDialect());
+    metrics.push(...(await StatusReporters.Cluster.Process.env()));
 
     // versions of the plugins installed
     metrics.push(...(await StatusReporters.Plugins.Versions()));

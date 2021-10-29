@@ -50,14 +50,14 @@ export default function RecordPreview(props) {
     JSON.stringify(localFilters),
   ]);
 
-  function storeRecordPropertyId(recordId: string) {
+  function storeRecordPropertyId(recordId = "") {
     setRecordId(recordId);
     let url = `${window.location.pathname}?`;
-    url += `recordId=${recordId}&`;
+    if (recordId) url += `recordId=${recordId}&`;
 
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    router[routerMethod](router.route, url, { shallow: true });
+    if (url !== `${window.location.pathname}?`) {
+      router.replace(router.route, url, { shallow: true });
+    }
   }
 
   async function load(

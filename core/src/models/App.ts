@@ -10,6 +10,7 @@ import {
   BeforeCreate,
   AfterDestroy,
   HasMany,
+  HasOne,
   DefaultScope,
 } from "sequelize-typescript";
 import { api, redis } from "actionhero";
@@ -25,6 +26,7 @@ import { LockableHelper } from "../modules/lockableHelper";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
 import { AppConfigurationObject } from "../classes/codeConfig";
+import { AppRefreshQuery } from "./AppRefreshQuery";
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
 
@@ -71,6 +73,9 @@ export class App extends LoggedModel<App> {
   @Default("draft")
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
+
+  @HasOne(() => AppRefreshQuery)
+  appRefreshQuery: AppRefreshQuery;
 
   @HasMany(() => Option, {
     foreignKey: "ownerId",
@@ -366,6 +371,15 @@ export class App extends LoggedModel<App> {
       where: {
         ownerId: instance.id,
         ownerType: "app",
+      },
+    });
+  }
+
+  @AfterDestroy
+  static async destroyAppRefreshQueries(instance: App) {
+    return AppRefreshQuery.destroy({
+      where: {
+        appId: instance.id,
       },
     });
   }

@@ -19,6 +19,7 @@ import {
   Team,
   TeamMember,
   GrouparooModel,
+  AppRefreshQuery,
 } from "../../../src";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
@@ -100,6 +101,19 @@ describe("modules/codeConfig", () => {
         expect(apps[0].locked).toBe("config:code");
         const options = await apps[0].getOptions();
         expect(options).toEqual({ fileId: "test-file-path.db" });
+      });
+
+      test("appRefreshQuery is created", async () => {
+        const appRefreshQueries = await AppRefreshQuery.findAll();
+        expect(appRefreshQueries.length).toBe(1);
+      });
+
+      test("appRefreshQuery initiates first check", async () => {
+        const appRefreshQuery = await AppRefreshQuery.findOne();
+        expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hi' AS name;");
+        expect(appRefreshQuery.state).toBe("ready");
+
+        expect(appRefreshQuery.value).toBeTruthy();
       });
 
       test("sources are created", async () => {
@@ -443,6 +457,16 @@ describe("modules/codeConfig", () => {
     test("apiKeys can be updated", async () => {
       const apiKeys = await ApiKey.findAll();
       expect(apiKeys[0].apiKey).toBe("def456");
+    });
+
+    test("an updated refreshQuery will trigger a checkRefreshQueryValue", async () => {
+      const appRefreshQuery = await AppRefreshQuery.findOne();
+      expect(appRefreshQuery.refreshQuery).toBe(
+        "SELECT MAX(stamp) FROM users;"
+      );
+      expect(appRefreshQuery.state).toBe("ready");
+
+      expect(appRefreshQuery.value.length).toBe(13);
     });
   });
 
@@ -901,7 +925,6 @@ describe("modules/codeConfig", () => {
         },
       });
       expect(run).toBeTruthy();
-      expect(run.force).toBe(false);
     });
 
     test("destinations are brought back", async () => {
@@ -921,7 +944,6 @@ describe("modules/codeConfig", () => {
         where: { state: "running", destinationId: destinations[0].id },
       });
       expect(runs.length).toBe(1);
-      expect(runs[0].force).toBe(true);
       expect(runs[0].creatorId).toBe("email_group");
     });
 

@@ -32,7 +32,6 @@ export class RunGroup extends CLSTask {
     });
     if (!group) return;
 
-    const force = run.force || false;
     const destinationId = run.destinationId;
     const method = run.method || "runAddGroupMembers";
     const highWaterMark: number =
@@ -52,7 +51,6 @@ export class RunGroup extends CLSTask {
         limit,
         offset,
         highWaterMark,
-        force,
         destinationId
       );
 
@@ -89,7 +87,6 @@ export class RunGroup extends CLSTask {
       memberOffset: nextOffset,
       highWaterMark: { group: nextHighWaterMark },
       method: nextMethod,
-      force,
     });
 
     const pendingImports = await run.$count("imports", {

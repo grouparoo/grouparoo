@@ -1,0 +1,248 @@
+const nock = require("nock");
+process.env.BIGQUERY_JEST_TIMESTAMP = "1634842676198";
+
+nock("https://www.googleapis.com:443", { encodedQueryParams: true })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "ed",
+      "d3",
+      "4d",
+      "72",
+      "82",
+      "30",
+      "00",
+      "40",
+      "e1",
+      "bb64ed301141a53ba3063584e24f4770c34088a05481241662a7772fd36bd4ef066ff1be41c21897325655c9efe00de8c4740c66907a8a709eefaba36ed725795848419e72d7c66b3a4bc20a226d0e4713e62d338b3b2467349a5d17b019a75e54275016f6295a500a5de27c083d744374dec0709560a4ac5190a14fcc56defbe46b5b6df3a09353b8c77edd6c5a4ac2c6efe6101e1d753ed0f890a9b978ea5dc0f6f4be6b951d2c2babc3d73415e7cebb2171f5795145631baf60a063ef491e398aca76d3a9a2cca63034f96d2e8964a753dfe17ac6cbcbff05068077f54570195ffadb47b6e30cc0dffab1d235efff473c115c809f5f3dd6a52d19040000",
+    ],
+    [
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 21 Oct 2021 18:57:57 GMT",
+      "Server",
+      "scaffolding on HTTPServer2",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000',
+      "Connection",
+      "close",
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query: "SELECT 'HI' as name",
+        defaultDataset: { datasetId: "test" },
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-1-1634842676198",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "52",
+      "d1",
+      "6e",
+      "da4010fc15747dc84bc0068cb191501b112ba142a40593aa4f68efbc762fb17dc6770ea211ffdeb54d68a248094fe666666767779fd9a3cc2336615c26bb0acbc39707c5d925430309bd1a75b7bff9bbfb7e7f7b372cc6834116fd2876fbe99418b25669c88a14bb5a55a5403dd9ac7b49a9aa024aa5ba54a8dbeff6dda1e3390377ecf67d8f641ad37821f34712ff31a6d013cb7ab1ee254a25294221754fa8ecfc6e3d0daca2540f288cb6de3a5a64a2ad0f3dbfa64a80912a9f6ed6e45f692cb798814ca983ffc2887f7b5bb92721eb25447e9202410855e5a6ee8a4a0895c732a9caa62a9b3cb3a6cb571f6c1d2c8259d8b9b89d5f74407772c89074116a23f34615024fb1569c72cddf0fb31680018d2db81ddb2ef43ddbe7311f8bd81b8e786c23e71e1f8f60c86de13be8441c8174a6aedea82057b9e3fb23770091c3b93bf62247f803c7060fa221f8b167dbe0faf628f65d76bc64fb521abc96ba505ab6e9d8afd53c0cb6e16ab39c5d85411323862a35d76d737588d77d1a0a49a40f721d6b542a72aa47355f86c1ea6a16ceef83763b0b4c401cd63bda4f0ca946a2d356c34341f3623f37c1ea376b9f56186389b9f87c8e446e80cf6ef3e552884ab7422edad07f5a9ad0b58728b15d9eccea5ece6afaf559432ecd3bcc736bec7c217545cc3037a740eda5b0e3c9acd267128134f3e57c7943e83f7f2c47aba7030000",
+    ],
+    [
+      "ETag",
+      "toOwGzqJVHO3p722mdPpqw==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 21 Oct 2021 18:57:57 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .get(
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-1-1634842676198"
+  )
+  .query({ location: "US", prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff2d90416f82401085ffcbf40a496929b5261e943415638cc59234693c2c30502c307477d028f1bf77167bd99937fbcdbe971de0a76a7398425a95bf3deaf35d89fc6e9b184d5fb391d2516b101c4056a5909fab244dfd156dc30b3ec5c745b23d8597f96c2684c9beb151301da0a8b0ce0d4cbf06685583b2361607f8dc59b5fb88a3cd9be88672ab37c97a3d5fac5fe1babf3a70a034c60235b619dad73a4d07cc38b2418d6aba1a5d43bdced0c0088f17a5a6be539ac89589ebb95ef0e84ffc87e039f05e26c2d59429aea81534d981b830b1aa633a494cf004d0632b898bf13cca7819d940fb7f767166345b4de26bd05adedfec43b29158a2b2eed1814cc93f2c2bbee9eb1fe4fe113364010000",
+    ],
+    [
+      "ETag",
+      "XJUbb4JoPCze5RvBUPwCzA==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 21 Oct 2021 18:57:58 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query: "SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;",
+        defaultDataset: { datasetId: "test" },
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-2-1634842676198",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "c5",
+      "52",
+      "d1",
+      "6e",
+      "9b",
+      "30",
+      "14",
+      "fd",
+      "15cb7be84b030b6559ca146d51cb24a4345109993655d5e4980b750298d8262babf2efbb2649b7a853f7b80724fbde73cf39be8727ba16554a03ba14f9a601d5be59c9253da760588e55365bf9717f55b483afc95b7ff1737a311ecaf168840861a7342beb027a5a368a830e16732757b2a99992b287443dafd71f5cf843df1bbc1ff42f8738a6a1c826a25ae3f08331b50e5cf728ede452e605b05a6887cbf2b9ee6e3db7567205dc68f754d14511edbeaaf9b1909c1921abd1628efa8d06f51d4a260a74f07b305d7e3a6576042b9d1cc15bc181712e9bca585748c1659589bc511d2b0d9e68e7f28f039d8793f02a21670fe28c304d2a56c2393914454a3ec7b31b9242291deb469349741325a4ff01b953c85853986b6698066339d3fd31b2eb36a00d820ecb885e264077b62ba412c6fa88a649188faf92e84bb87ffa0472c6dbf9061f9fb14203c27165495b03a26f1761fc8dee4b3164a0a0e2602dbca2d781bbc6bf823fc680500c0255b4c1bb36826babc11574ed4494d6cbf3f4d0bff4690756e645ef9de7d97fb54affda3968341d3f2825550c1a976bafa8a63b2fa2dab242a4b75d72272e378752095ab3dcd2cfdbcab047d25105247cac71299012d4273223a2aa1b4396f8e5d29035b43fa44a8fa93343eefa81e7dd5b571d01babafbaf3eeef7ebb184d7b3694877bb5ff612865f0d040000",
+    ],
+    [
+      "ETag",
+      "aOj4R1jly6XT04UzN3A8oA==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 21 Oct 2021 18:57:58 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
