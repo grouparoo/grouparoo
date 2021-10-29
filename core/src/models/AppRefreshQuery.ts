@@ -90,7 +90,12 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
 
   @BeforeSave
   static async noUpdateIfLocked(instance: AppRefreshQuery) {
-    await LockableHelper.beforeSave(instance, ["state"]);
+    await LockableHelper.beforeSave(instance, [
+      "state",
+      "value",
+      "lastChangedAt",
+      "lastConfirmedAt",
+    ]);
   }
 
   @BeforeSave
