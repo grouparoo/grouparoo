@@ -122,7 +122,7 @@ export default function Navigation(props) {
 
   if (!navExpanded && !hasBeenCollapsed) setHasBeenCollapsed(true);
 
-  const uiPlugin = `@grouparoo/ui-${grouparooUiEdition}`;
+  const uiPlugin = `@grouparoo/ui-${grouparooUiEdition()}`;
   return (
     <div
       id="navigation"
