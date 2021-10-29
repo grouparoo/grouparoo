@@ -4,10 +4,6 @@ title: "[Feature]: "
 labels: [enhancement]
 
 body:
-  - type: markdown
-    attributes:
-      value: Thanks for taking the time to request a feature for Grouparoo! Please fill the form in English.
-
   - type: checkboxes
     attributes:
       label: Is there an existing issue for this?

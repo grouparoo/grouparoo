@@ -4,10 +4,6 @@ title: "[Bug]: "
 labels: [bug]
 
 body:
-  - type: markdown
-    attributes:
-      value: Thanks for taking the time to fill out this bug report! Please fill the form in English!
-
   - type: checkboxes
     attributes:
       label: Is there an existing issue for this?
