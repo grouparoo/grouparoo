@@ -62,7 +62,7 @@ describe("appRefreshQuery", () => {
       });
       await appRefreshQuery.save();
 
-      const spy = jest.spyOn(AppRefreshQueryOps, "checkDataRefreshValue");
+      const spy = jest.spyOn(AppRefreshQueryOps, "checkRefreshQueryValue");
       await appRefreshQuery.update({
         refreshQuery: "SELECT 'hi' AS name;",
       });
@@ -71,7 +71,7 @@ describe("appRefreshQuery", () => {
       spy.mockRestore();
     });
 
-    test("schedules are enqueued if a new 'value' is found from the query", async () => {
+    test("schedules marked refreshEnabled are enqueued if a new 'value' is found from the query", async () => {
       let model;
       ({ model } = await helper.factories.properties());
       const source = await Source.create({
@@ -83,10 +83,37 @@ describe("appRefreshQuery", () => {
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
+      const source2 = await Source.create({
+        name: "test source 2",
+        type: "test-plugin-import",
+        appId: app.id,
+        modelId: model.id,
+      });
+
+      await source2.setOptions({ table: "test table" });
+      await source2.setMapping({ id: "userId" });
+      await source2.update({ state: "ready" });
+
+      //two schedules, only one has refreshEnabled
       const schedule = await helper.factories.schedule(source);
+      await schedule.update({
+        recurring: "true",
+        recurringFrequency: 6000000,
+      });
+      const schedule2 = await helper.factories.schedule(source2);
+      await schedule2.update({
+        recurring: "true",
+        recurringFrequency: 6000000,
+        refreshEnabled: false,
+      });
 
-      await schedule.update({ recurring: "true", recurringFrequency: 6000000 });
+      //stop their initial runs
+      const runsToStop = await Run.findAll({
+        where: { creatorType: "schedule", state: "running" },
+      });
+      for (const run of runsToStop) run.stop();
 
+      //make an appRefreshQuery
       const appRefreshQuery = new AppRefreshQuery({
         appId: app.id,
         refreshQuery: "SELECT * FROM test;",
@@ -94,15 +121,15 @@ describe("appRefreshQuery", () => {
       });
       await appRefreshQuery.save();
 
-      await appRefreshQuery.update({
-        refreshQuery: "SELECT 'hi' AS name;",
-      });
-
+      //only one should have started a run
       const runs = await Run.findAll({
         where: { creatorType: "schedule", state: "running" },
       });
+
       expect(runs.length).toBe(1);
+      expect(runs[0].creatorId).toBe(schedule.id);
     });
+
     test("an appRefreshQuery in the draft state will not run its query", async () => {
       const spy = jest.spyOn(AppRefreshQueryOps, "triggerSchedules");
 

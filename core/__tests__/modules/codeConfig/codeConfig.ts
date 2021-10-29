@@ -459,7 +459,7 @@ describe("modules/codeConfig", () => {
       expect(apiKeys[0].apiKey).toBe("def456");
     });
 
-    test("an updated refreshQuery will trigger a checkDataRefreshValue", async () => {
+    test("an updated refreshQuery will trigger a checkRefreshQueryValue", async () => {
       const appRefreshQuery = await AppRefreshQuery.findOne();
       expect(appRefreshQuery.refreshQuery).toBe(
         "SELECT MAX(stamp) FROM users;"
