@@ -2,7 +2,7 @@ import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { Fragment, useEffect, useState } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { Row, Col, ButtonGroup, Alert, Card } from "react-bootstrap";
+import { Row, Col, Button, ButtonGroup, Alert, Card } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import EnterpriseLink from "../enterpriseLink";
@@ -15,7 +15,6 @@ import { ErrorHandler } from "../../utils/errorHandler";
 import { RunsHandler } from "../../utils/runsHandler";
 import { DurationTime } from "../durationTime";
 import { NextPageContext } from "next";
-import LoadingButton from "../loadingButton";
 
 export default function RunsList(props) {
   const {
@@ -91,67 +90,67 @@ export default function RunsList(props) {
         <Col>
           State:{" "}
           <ButtonGroup>
-            <LoadingButton
+            <Button
               size="sm"
               disabled={loading}
               variant={stateFilter === "" ? "secondary" : "info"}
               onClick={() => setFilter({ stateFilter: "" })}
             >
               All
-            </LoadingButton>
-            <LoadingButton
+            </Button>
+            <Button
               size="sm"
               disabled={loading}
               variant={stateFilter === "running" ? "secondary" : "info"}
               onClick={() => setFilter({ stateFilter: "running" })}
             >
               Running
-            </LoadingButton>
-            <LoadingButton
+            </Button>
+            <Button
               size="sm"
               disabled={loading}
               variant={stateFilter === "complete" ? "secondary" : "info"}
               onClick={() => setFilter({ stateFilter: "complete" })}
             >
               Complete
-            </LoadingButton>
-            <LoadingButton
+            </Button>
+            <Button
               size="sm"
               disabled={loading}
               variant={stateFilter === "stopped" ? "secondary" : "info"}
               onClick={() => setFilter({ stateFilter: "stopped" })}
             >
               Stopped
-            </LoadingButton>
+            </Button>
           </ButtonGroup>
         </Col>
         <Col>
           Has Error:{" "}
           <ButtonGroup>
-            <LoadingButton
+            <Button
               size="sm"
               disabled={loading}
               variant={errorFilter === "" ? "secondary" : "info"}
               onClick={() => setFilter({ errorFilter: "" })}
             >
               All
-            </LoadingButton>
-            <LoadingButton
+            </Button>
+            <Button
               size="sm"
               disabled={loading}
               variant={errorFilter === "true" ? "secondary" : "info"}
               onClick={() => setFilter({ errorFilter: "true" })}
             >
               True
-            </LoadingButton>
-            <LoadingButton
+            </Button>
+            <Button
               size="sm"
               disabled={loading}
               variant={errorFilter === "false" ? "secondary" : "info"}
               onClick={() => setFilter({ errorFilter: "false" })}
             >
               False
-            </LoadingButton>
+            </Button>
           </ButtonGroup>
         </Col>
       </Row>

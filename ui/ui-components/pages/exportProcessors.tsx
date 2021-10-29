@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
-import { Alert, ButtonGroup, Col, Row } from "react-bootstrap";
+import { Alert, Button, ButtonGroup, Col, Row } from "react-bootstrap";
 import StateBadge from "../components/badges/stateBadge";
 import LoadingTable from "../components/loadingTable";
 import Pagination from "../components/pagination";
@@ -15,7 +15,6 @@ import { ErrorHandler } from "../utils/errorHandler";
 import { capitalize } from "../utils/languageHelper";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { DurationTime } from "../components/durationTime";
-import LoadingButton from "../components/loadingButton";
 
 const states = ["all", "pending", "failed", "complete"];
 
@@ -99,14 +98,14 @@ export default function Page(props) {
             {states.map((_state) => {
               return (
                 <Fragment key={`export-processor-state-button-${_state}`}>
-                  <LoadingButton
+                  <Button
                     size="sm"
                     disabled={loading}
                     variant={state === _state ? "secondary" : "info"}
                     onClick={() => setState(_state)}
                   >
                     {capitalize(_state)}
-                  </LoadingButton>
+                  </Button>
                 </Fragment>
               );
             })}

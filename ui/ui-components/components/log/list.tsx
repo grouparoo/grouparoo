@@ -5,7 +5,7 @@ import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useRealtimeStream } from "../../hooks/useRealtimeStream";
 import EnterpriseLink from "../enterpriseLink";
 import { useRouter } from "next/router";
-import { ButtonGroup, Alert } from "react-bootstrap";
+import { ButtonGroup, Button, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { Models, Actions } from "../../utils/apiData";
@@ -112,7 +112,7 @@ export default function LogsList(props) {
       <strong>Topics:</strong>
       <br />
       <ButtonGroup id="log-types">
-        <LoadingButton
+        <Button
           size="sm"
           disabled={loading}
           variant={topic ? "info" : "secondary"}
@@ -122,11 +122,11 @@ export default function LogsList(props) {
           }}
         >
           All
-        </LoadingButton>
+        </Button>
         {topics.map((t) => {
           const variant = t === topic ? "secondary" : "info";
           return (
-            <LoadingButton
+            <Button
               key={`topic-${t}`}
               size="sm"
               disabled={loading}
@@ -137,7 +137,7 @@ export default function LogsList(props) {
               }}
             >
               {t}
-            </LoadingButton>
+            </Button>
           );
         })}
       </ButtonGroup>

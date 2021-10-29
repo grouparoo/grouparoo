@@ -4,7 +4,6 @@ import { Form, Row, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import type { NextPageContext } from "next";
-
 import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
@@ -222,7 +221,7 @@ export default function RecordsList(props) {
         <Col>
           States:{" "}
           <ButtonGroup id="record-states">
-            <LoadingButton
+            <Button
               size="sm"
               disabled={loading}
               variant={state ? "info" : "secondary"}
@@ -232,11 +231,11 @@ export default function RecordsList(props) {
               }}
             >
               All
-            </LoadingButton>
+            </Button>
             {states.map((t) => {
               const variant = t === state ? "secondary" : "info";
               return (
-                <LoadingButton
+                <Button
                   key={`state-${t}`}
                   size="sm"
                   disabled={loading}
@@ -247,7 +246,7 @@ export default function RecordsList(props) {
                   }}
                 >
                   {t}
-                </LoadingButton>
+                </Button>
               );
             })}
           </ButtonGroup>
