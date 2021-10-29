@@ -48,7 +48,7 @@ body:
 
 - type: textarea
   attributes:
-    label: Screenshots or Environment ,OS , Grouparoo Version etc
+    label: Environment
     description: |
        - OS: [e.g. OSX, Docker + Ubuntu 18, etc]
        - Browser [e.g. chrome, safari]
