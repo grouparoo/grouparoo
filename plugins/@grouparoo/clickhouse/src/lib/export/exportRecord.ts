@@ -42,10 +42,12 @@ export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
       );
 
       if (existingRecords.length === 1) {
+        const { [primaryKey]: _, ...columnsToUpdate } = newRecordProperties;
+
         // update
         await connection.asyncQuery(`ALTER TABLE ?? UPDATE ? WHERE ?? = ?`, [
           table,
-          newRecordProperties,
+          columnsToUpdate,
           primaryKey,
           newRecordProperties[primaryKey],
         ]);
@@ -53,6 +55,7 @@ export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
         // erase old columns
         const columnsToErase = Object.keys(existingRecords[0]).filter(
           (k) =>
+            k !== primaryKey &&
             (newRecordProperties[k] === null ||
               newRecordProperties[k] === undefined) &&
             (oldRecordProperties[k] !== null ||
