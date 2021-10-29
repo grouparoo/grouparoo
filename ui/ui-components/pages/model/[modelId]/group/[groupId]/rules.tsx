@@ -173,7 +173,7 @@ export default function Page(props) {
         ]}
       />
 
-      {grouparooUiEdition !== "config" && (
+      {grouparooUiEdition()! == "config" && (
         <p>
           Total Records in this group: &nbsp;
           <Badge style={{ fontSize: 16 }} variant="info">
@@ -198,7 +198,7 @@ export default function Page(props) {
                 <th>
                   <strong>Operation</strong>
                 </th>
-                {grouparooUiEdition !== "config" && (
+                {grouparooUiEdition() !== "config" && (
                   <th>
                     <strong># of Records</strong>
                   </th>
@@ -455,7 +455,7 @@ export default function Page(props) {
                       </Form.Group>
                     </td>
 
-                    {grouparooUiEdition !== "config" && (
+                    {grouparooUiEdition() !== "config" && (
                       <td>
                         <Badge variant="info">{componentCounts[idx]}</Badge>
                       </td>

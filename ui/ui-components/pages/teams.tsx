@@ -67,7 +67,7 @@ export default function Page({
         Add Team
       </LinkButton>
 
-      {grouparooUiEdition !== "enterprise" ? (
+      {grouparooUiEdition() !== "enterprise" ? (
         <Alert variant="primary" style={{ textAlign: "center" }}>
           Does your organization need additional Teams with finer-grained
           permissions?{" "}

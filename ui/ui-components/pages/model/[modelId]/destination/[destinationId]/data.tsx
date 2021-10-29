@@ -338,7 +338,7 @@ export default function Page(props) {
                       .map((group) => (
                         <option key={`grp-${group.id}`} value={group.id}>
                           {group.name}
-                          {grouparooUiEdition !== "config" &&
+                          {grouparooUiEdition() !== "config" &&
                             ` (${group.recordsCount} members)`}
                         </option>
                       ))}
