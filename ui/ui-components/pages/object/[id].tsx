@@ -7,6 +7,7 @@ import { Actions } from "../../utils/apiData";
 import { Card } from "react-bootstrap";
 import { singular } from "pluralize";
 import { ErrorHandler } from "../../utils/errorHandler";
+import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function FindObject(props) {
   const router = useRouter();
@@ -42,7 +43,7 @@ export default function FindObject(props) {
       setError(`Cannot find object "${id}"`);
     } else if (
       response.records.length === 1 &&
-      process.env.GROUPAROO_UI_EDITION === "enterprise"
+      grouparooUiEdition === "enterprise"
     ) {
       const table = response.records[0].tableName.toLowerCase();
       const detailPage = detailPages[table] || "edit";
@@ -53,7 +54,7 @@ export default function FindObject(props) {
       }
     } else if (
       response.records.length === 1 &&
-      process.env.GROUPAROO_UI_EDITION === "community"
+      grouparooUiEdition === "community"
     ) {
       const listPage = getListPage(response.records[0].tableName.toLowerCase());
       router.push(listPage);
@@ -152,7 +153,7 @@ export default function FindObject(props) {
                   <td>
                     <Link
                       href={
-                        process.env.GROUPAROO_UI_EDITION === "enterprise" &&
+                        grouparooUiEdition === "enterprise" &&
                         typeof detailPage === "string"
                           ? `/${singular(r)}/${id}/${detailPage}`
                           : getListPage(r)

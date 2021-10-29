@@ -5,6 +5,7 @@ import PageHeader from "../../../../../components/pageHeader";
 import StateBadge from "../../../../../components/badges/stateBadge";
 import LockedBadge from "../../../../../components/badges/lockedBadge";
 import LoadingButton from "../../../../../components/loadingButton";
+import LinkButton from "../../../../../components/linkButton";
 import Link from "next/link";
 import SourceTabs from "../../../../../components/tabs/source";
 import Head from "next/head";
@@ -222,16 +223,13 @@ export default function Page(props) {
 
         <td>
           {existingProperty && existingProperty.sourceId === source.id ? (
-            <Link
-              href={`/model/[modelId]/property/[propertyId]/edit`}
-              as={`/model/${source.modelId}/property/${existingProperty.id}/edit`}
+            <LinkButton
+              variant="outline-info"
+              size="sm"
+              href={`/model/${source.modelId}/property/${existingProperty.id}/edit`}
             >
-              <a>
-                <Button variant="outline-info" size="sm">
-                  View
-                </Button>
-              </a>
-            </Link>
+              View
+            </LinkButton>
           ) : (
             <LoadingButton
               size="sm"

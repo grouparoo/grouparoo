@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Button, Alert } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { UseApi } from "../hooks/useApi";
 import Link from "next/link";
@@ -9,6 +9,8 @@ import LoadingTable from "../components/loadingTable";
 import RecordImageFromEmail from "../components/visualizations/recordImageFromEmail";
 import { Models } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
+import LinkButton from "../components/linkButton";
+import { grouparooUiEdition } from "../utils/uiEdition";
 
 export default function Page({
   teams,
@@ -64,16 +66,11 @@ export default function Page({
         </tbody>
       </LoadingTable>
 
-      {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
-        <Button
-          variant="primary"
-          onClick={() => {
-            router.push("/team/new");
-          }}
-        >
-          Add Team
-        </Button>
-      ) : (
+      <LinkButton variant="primary" href="/team/new" displayOn={["enterprise"]}>
+        Add Team
+      </LinkButton>
+
+      {grouparooUiEdition !== "enterprise" ? (
         <Alert variant="primary" style={{ textAlign: "center" }}>
           Does your organization need additional Teams with finer-grained
           permissions?{" "}
@@ -82,7 +79,7 @@ export default function Page({
           </a>
           .
         </Alert>
-      )}
+      ) : null}
 
       <br />
       <br />
@@ -136,14 +133,9 @@ export default function Page({
         </tbody>
       </LoadingTable>
 
-      <Button
-        variant="primary"
-        onClick={() => {
-          router.push("/teamMember/new");
-        }}
-      >
+      <LinkButton variant="primary" href="/teamMember/new">
         Add Team Member
-      </Button>
+      </LinkButton>
     </>
   );
 }

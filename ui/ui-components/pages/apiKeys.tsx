@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
@@ -11,6 +10,7 @@ import LoadingTable from "../components/loadingTable";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { ErrorHandler } from "../utils/errorHandler";
+import LinkButton from "../components/linkButton";
 
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
@@ -98,16 +98,13 @@ export default function Page(props) {
         onPress={setOffset}
       />
 
-      {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
-        <Button
-          variant="primary"
-          onClick={() => {
-            router.push("/apiKey/new");
-          }}
-        >
-          Add API Key
-        </Button>
-      ) : null}
+      <LinkButton
+        variant="primary"
+        href="/apiKey/new"
+        displayOn={["enterprise"]}
+      >
+        Add API Key
+      </LinkButton>
     </>
   );
 }

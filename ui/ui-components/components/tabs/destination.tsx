@@ -1,5 +1,6 @@
 import Tabs from "../tabs";
 import { Models } from "../../utils/apiData";
+import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function DestinationTabs({
   destination,
@@ -7,7 +8,7 @@ export default function DestinationTabs({
   destination: Models.DestinationType;
 }) {
   let tabs = [];
-  switch (process.env.GROUPAROO_UI_EDITION) {
+  switch (grouparooUiEdition) {
     case "enterprise":
       tabs.push("edit");
       if (destination.state !== "draft") tabs.push("data");

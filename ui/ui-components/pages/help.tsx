@@ -1,5 +1,6 @@
 import Head from "next/head";
-import { Row, Col, Alert, Button } from "react-bootstrap";
+import { Row, Col, Alert } from "react-bootstrap";
+import LinkButton from "../components/linkButton";
 
 export default function Page() {
   const supportPageURL = "https://www.grouparoo.com/support";
@@ -28,44 +29,44 @@ export default function Page() {
       <br />
       <Row style={{ textAlign: "center" }}>
         <Col>
-          <Button
+          <LinkButton
             size="sm"
             variant="outline-primary"
             href="https://www.grouparoo.com/docs"
             target="_blank"
           >
             Documentation
-          </Button>
+          </LinkButton>
         </Col>
         <Col>
-          <Button
+          <LinkButton
             size="sm"
             variant="outline-primary"
             href="https://github.com/grouparoo/grouparoo/issues/new/choose"
             target="_blank"
           >
             Github Issue
-          </Button>
+          </LinkButton>
         </Col>
         <Col>
-          <Button
+          <LinkButton
             size="sm"
             variant="outline-primary"
             href="https://github.com/grouparoo/grouparoo/discussions"
             target="_blank"
           >
             Forum
-          </Button>
+          </LinkButton>
         </Col>
         <Col>
-          <Button
+          <LinkButton
             size="sm"
             variant="outline-primary"
             href="https://www.grouparoo.com/docs/community"
             target="_blank"
           >
             Grouparoo Community
-          </Button>
+          </LinkButton>
         </Col>
       </Row>
       <br /> <br />

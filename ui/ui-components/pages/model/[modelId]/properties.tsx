@@ -2,8 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { NextPageContext } from "next";
-import { Button, Alert } from "react-bootstrap";
-
+import { Alert } from "react-bootstrap";
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
@@ -14,6 +13,7 @@ import StateBadge from "../../../components/badges/stateBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import LinkButton from "../../../components/linkButton";
 
 export default function Page(props) {
   const {
@@ -89,9 +89,9 @@ export default function Page(props) {
           There are no Sources yet.
           <br />
           <br />
-          <Button size="sm" href={`/model/${router.query.modelId}/sources`}>
+          <LinkButton size="sm" href={`/model/${router.query.modelId}/sources`}>
             Add Source
-          </Button>
+          </LinkButton>
         </Alert>
       </>
     );

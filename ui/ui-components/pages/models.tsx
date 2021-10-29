@@ -7,12 +7,12 @@ import { useRouter } from "next/router";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import ModelIcon from "../components/modelIcon";
-import { Button } from "react-bootstrap";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { ErrorHandler } from "../utils/errorHandler";
 import EnterpriseLink from "../components/enterpriseLink";
 import StateBadge from "../components/badges/stateBadge";
+import LinkButton from "../components/linkButton";
 
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
@@ -111,16 +111,9 @@ export default function Page(props) {
 
       <br />
 
-      {process.env.GROUPAROO_UI_EDITION !== "community" ? (
-        <Button
-          variant="primary"
-          onClick={() => {
-            router.push("/model/new");
-          }}
-        >
-          Add Model
-        </Button>
-      ) : null}
+      <LinkButton variant="primary" hideOn={["community"]} href="/model/new">
+        Add Model
+      </LinkButton>
     </>
   );
 }

@@ -9,10 +9,10 @@ import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import AppIcon from "../components/appIcon";
 import StateBadge from "../components/badges/stateBadge";
-import { Button } from "react-bootstrap";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { ErrorHandler } from "../utils/errorHandler";
+import LinkButton from "../components/linkButton";
 
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
@@ -117,16 +117,9 @@ export default function Page(props) {
 
       <br />
 
-      {process.env.GROUPAROO_UI_EDITION !== "community" ? (
-        <Button
-          variant="primary"
-          onClick={() => {
-            router.push("/app/new");
-          }}
-        >
-          Add App
-        </Button>
-      ) : null}
+      <LinkButton variant="primary" href="/app/new" hideOn={["community"]}>
+        Add App
+      </LinkButton>
     </>
   );
 }

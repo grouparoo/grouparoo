@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Models } from "../../utils/apiData";
 import { Accordion, Card, Row, Col, Button, Badge } from "react-bootstrap";
 import LoadingButton from "../loadingButton";
+import LinkButton from "../linkButton";
+import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function SetupStepCard({
   setupStep: step,
@@ -69,7 +71,7 @@ export default function SetupStepCard({
               {step.complete ? null : (
                 <Row>
                   <Col md={6}>
-                    <Button
+                    <LinkButton
                       variant="outline-primary"
                       size="sm"
                       className="m-1"
@@ -77,22 +79,22 @@ export default function SetupStepCard({
                       href={step.helpLink}
                     >
                       Learn More
-                    </Button>
+                    </LinkButton>
                     &nbsp;&nbsp;
-                    {(process.env.GROUPAROO_UI_EDITION !== "community" ||
+                    {(grouparooUiEdition !== "community" ||
                       step.showCtaOnCommunity) &&
                       step.cta && (
-                        <Button
+                        <LinkButton
                           size="sm"
                           className="m-1"
                           href={step.href}
                           disabled={step.disabled}
                         >
                           {step.cta}
-                        </Button>
+                        </LinkButton>
                       )}
                   </Col>
-                  {process.env.GROUPAROO_UI_EDITION === "config" ? null : (
+                  {grouparooUiEdition === "config" ? null : (
                     <Col md={6} style={{ textAlign: "right" }}>
                       {step.skipped ? (
                         <LoadingButton

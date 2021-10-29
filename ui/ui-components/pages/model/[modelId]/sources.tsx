@@ -1,7 +1,6 @@
 import { useState, Fragment } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Button } from "react-bootstrap";
 import type { NextPageContext } from "next";
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
@@ -16,6 +15,8 @@ import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import LoadingButton from "../../../components/loadingButton";
+import LinkButton from "../../../components/linkButton";
+import { grouparooUiEdition } from "../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -179,7 +180,7 @@ export default function Page(props) {
                         {schedule.recurring
                           ? `Every ${recurringFrequencyMinutes} minutes`
                           : "Not recurring"}
-                        {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                        {grouparooUiEdition !== "config" && (
                           <>
                             <br />
                             Last Run:{" "}
@@ -213,28 +214,22 @@ export default function Page(props) {
         onPress={setOffset}
       />
       <br />
-      {process.env.GROUPAROO_UI_EDITION !== "community" ? (
-        <Button
-          variant="primary"
-          onClick={() => {
-            router.push(
-              "/model/[modelId]/source/new",
-              `/model/${router.query.modelId}/source/new`
-            );
-          }}
-        >
-          Add new Source
-        </Button>
-      ) : null}
+      <LinkButton
+        variant="primary"
+        href={`/model/${router.query.modelId}/source/new`}
+        hideOn={["community"]}
+      >
+        Add new Source
+      </LinkButton>
       &nbsp;
-      {process.env.GROUPAROO_UI_EDITION !== "config" ? (
-        <LoadingButton
-          variant="outline-primary"
-          onClick={() => enqueueAllSchedulesRun()}
-        >
-          Run all {modelName} Schedules
-        </LoadingButton>
-      ) : null}
+      <LoadingButton
+        variant="outline-primary"
+        disabled={loading}
+        onClick={() => enqueueAllSchedulesRun()}
+        hideOn={["config"]}
+      >
+        Run all {modelName} Schedules
+      </LoadingButton>
     </>
   );
 }

@@ -2,9 +2,8 @@ import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Button, Badge } from "react-bootstrap";
+import { Badge } from "react-bootstrap";
 import type { NextPageContext } from "next";
-
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
@@ -16,6 +15,8 @@ import StateBadge from "../../../components/badges/stateBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { ErrorHandler } from "../../../utils/errorHandler";
+import LinkButton from "../../../components/linkButton";
+import { grouparooUiEdition } from "../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -142,16 +143,13 @@ export default function Page(props) {
 
       <br />
 
-      {process.env.GROUPAROO_UI_EDITION !== "community" ? (
-        <Button
-          variant="primary"
-          onClick={() => {
-            router.push(`/model/${modelId}/destination/new`);
-          }}
-        >
-          Add new Destination
-        </Button>
-      ) : null}
+      <LinkButton
+        variant="primary"
+        href={`/model/${modelId}/destination/new`}
+        hideOn={["community"]}
+      >
+        Add new Destination
+      </LinkButton>
     </>
   );
 }
@@ -186,12 +184,11 @@ const AppDisplay = ({
       new Date(destination.createdAt).toLocaleString().split(",")[0]
     }`;
 
-  switch (process.env.GROUPAROO_UI_EDITION) {
+  switch (grouparooUiEdition) {
     case "community": {
       return (
         <Link
-          href="/model/[modelId]/destination/[destinationId]/exports"
-          as={`/model/${destination.modelId}/destination/${destination.id}/exports`}
+          href={`/model/${destination.modelId}/destination/${destination.id}/exports`}
         >
           <a>
             <strong>{formattedDestinationName}</strong>
@@ -202,8 +199,7 @@ const AppDisplay = ({
     default: {
       return (
         <EnterpriseLink
-          href="/model/[modelId]/destination/[destinationId]/edit"
-          as={`/model/${destination.modelId}/destination/${destination.id}/edit`}
+          href={`/model/${destination.modelId}/destination/${destination.id}/edit`}
         >
           <a>
             <strong>{formattedDestinationName}</strong>
@@ -223,8 +219,7 @@ const CollectionDisplay = ({
     case "group": {
       return (
         <EnterpriseLink
-          href="/model/[modelId]/group/[groupId]/edit"
-          as={`/model/${destination.group.modelId}/group/${destination.group.id}/edit`}
+          href={`/model/${destination.group.modelId}/group/${destination.group.id}/edit`}
         >
           <a>{destination.group.name}</a>
         </EnterpriseLink>
@@ -232,10 +227,7 @@ const CollectionDisplay = ({
     }
     case "model": {
       return (
-        <EnterpriseLink
-          href="/model/[modelId]/edit"
-          as={`/model/${destination.modelId}/edit`}
-        >
+        <EnterpriseLink href={`/model/${destination.modelId}/edit`}>
           <a>{destination.modelName}</a>
         </EnterpriseLink>
       );

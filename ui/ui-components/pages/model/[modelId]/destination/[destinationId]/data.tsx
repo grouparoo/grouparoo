@@ -16,6 +16,7 @@ import { SuccessHandler } from "../../../../../utils/successHandler";
 import ModelBadge from "../../../../../components/badges/modelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -85,7 +86,7 @@ export default function Page(props) {
     setLoading(false);
     successHandler.set({
       message:
-        process.env.GROUPAROO_UI_EDITION === "config"
+        grouparooUiEdition === "config"
           ? "Destination Updated"
           : "Destination Updated and Records Exporting...",
     });
@@ -337,7 +338,7 @@ export default function Page(props) {
                       .map((group) => (
                         <option key={`grp-${group.id}`} value={group.id}>
                           {group.name}
-                          {process.env.GROUPAROO_UI_EDITION !== "config" &&
+                          {grouparooUiEdition !== "config" &&
                             ` (${group.recordsCount} members)`}
                         </option>
                       ))}

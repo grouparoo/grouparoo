@@ -16,6 +16,8 @@ import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import ModelBadge from "../../../../../components/badges/modelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import LinkButton from "../../../../../components/linkButton";
+import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page({
   errorHandler,
@@ -121,17 +123,17 @@ export default function Page({
             successHandler={successHandler}
             source={source}
           />
-          {process.env.GROUPAROO_UI_EDITION !== "community" &&
-          source.previewAvailable === true ? (
+          {source.previewAvailable === true ? (
             <>
               &nbsp;
-              <Button
+              <LinkButton
                 href={`/model/${source.modelId}/source/${source.id}/multipleProperties`}
                 size="sm"
                 variant="outline-primary"
+                hideOn={["community"]}
               >
                 Add Multiple Properties
-              </Button>
+              </LinkButton>
             </>
           ) : null}
           <hr />
@@ -167,7 +169,7 @@ export default function Page({
                     <StateBadge state={source.schedule.state} />
                   </p>
                 </Col>
-                {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                {grouparooUiEdition !== "config" && (
                   <Col>
                     <Alert variant="success">
                       <strong>Most Recent Run</strong>
@@ -205,7 +207,7 @@ export default function Page({
                     </Alert>
                   </Col>
                 )}
-                {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                {grouparooUiEdition !== "config" && (
                   <Col>
                     <Alert variant="info">
                       <p>
