@@ -1,19 +1,8 @@
-
-name: Bug report
-labels: bug
-description: As a user,
-labels: [kind/Bug]
-assignees:
- Enter Assign Here
-
-
-
 name: 🐞 Bug report
 description: Create a bug report to help us improve Grouparoo
 title: "[Bug]: "
-labels: [kind/bug, ]
-assignees: 
-- 
+labels: bug
+
 body:
 - type: markdown
   attributes:
@@ -48,16 +37,13 @@ body:
 
 - type: textarea
   attributes:
-    label: Steps To Reproduce
-    description: Steps to reproduce the behavior.
+    label: Stack Trace
+    description: If applicable, add the full stack trace you see along with the error.
     placeholder: |
-      1. In this environment...
-      2. With this config...
-      3. Run '...'
-      4. See error...
+      If applicable, add the full stack trace you see along with the error.
     render: markdown
   validations:
-    required: false
+    required: fals
 
 
 - type: textarea
@@ -74,8 +60,10 @@ body:
     
 - type: textarea
   attributes:
-    label: Anything else?(Screenshots or Environment ,OS , Version etv)
+    label: Additional  context
     description: |
-      Links? References? Anything that will give us more context about the issue you are encountering! 
+      Links? References? Anything that will give us more context about the issue you are encountering!
+    placeholder: |
+      Add any other context about the problem here.
   validations:
     required: false
