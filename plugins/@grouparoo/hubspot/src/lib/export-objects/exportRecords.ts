@@ -30,17 +30,17 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   getByForeignKey,
   config,
 }) => {
-  const { schemaId, foreignKey } = config.destinationOptions;
+  const { schemaId, primaryKey } = config.destinationOptions;
   const records = await client.objects.searchObjects(
     schemaId as string,
-    foreignKey as string,
+    primaryKey as string,
     foreignKeys
   );
   for (const key of foreignKeys) {
     const user = getByForeignKey(key);
     try {
       const filteredProfiles = records.filter(
-        (p) => p["properties"][foreignKey as string] === key
+        (p) => p["properties"][primaryKey as string] === key
       );
       if (filteredProfiles && filteredProfiles.length > 0) {
         user.destinationId = filteredProfiles[0]["id"];
@@ -90,7 +90,7 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
 // usually this is creating them. ideally upsert. set the destinationId on each when done
 const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
   async ({ client, users, config }) => {
-    const { schemaId, foreignKey } = config.destinationOptions;
+    const { schemaId, primaryKey } = config.destinationOptions;
     const inputs = [];
     for (const user of users) {
       inputs.push(buildPayload(user));
@@ -100,7 +100,7 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
       const results = response?.results || [];
       const destinationIds = {};
       results.map((record) => {
-        destinationIds[record.properties[foreignKey as string]] = record.id;
+        destinationIds[record.properties[primaryKey as string]] = record.id;
       });
       for (const user of users) {
         if (destinationIds[user.foreignKeyValue]) {
@@ -184,7 +184,7 @@ export async function exportBatch({
   syncOperations,
   exports,
 }) {
-  const { schemaId, foreignKey } = destinationOptions;
+  const { schemaId, primaryKey } = destinationOptions;
   const batchSize = schemaId.toLowerCase().trim() === "contact" ? 10 : 100;
   const findSize = 5;
 
@@ -198,7 +198,7 @@ export async function exportBatch({
       syncOperations,
       appOptions,
       destinationOptions,
-      foreignKey,
+      foreignKey: primaryKey,
     },
     {
       getClient,

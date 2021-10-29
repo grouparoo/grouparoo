@@ -140,7 +140,6 @@ export const exportRecord: ExportRecordPluginMethod = async ({
 
     return { success: true };
   } catch (error) {
-    console.log(error.response?.data);
     if (error?.response?.status === 429) {
       return { error, success: false, retryDelay: 1000 * 11 }; // the most common rate-limit error from hubspot is in 10-second intervals
     } else {

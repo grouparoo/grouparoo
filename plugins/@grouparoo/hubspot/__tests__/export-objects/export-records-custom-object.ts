@@ -9,7 +9,7 @@ const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const destinationOptions = {
   schemaId: "2-3604285",
-  foreignKey: "grouparoo_object_property",
+  primaryKey: "grouparoo_object_property",
 };
 const hugeTime = helper.longTime * 6;
 
@@ -86,10 +86,10 @@ async function cleanUp(suppressErrors: boolean) {
   const emails = [email1, email2, email3, newEmail1];
   await deleteUsers(emails, suppressErrors);
   await helper.waitUntil(newNock, async function () {
-    const { schemaId, foreignKey } = destinationOptions;
+    const { schemaId, primaryKey } = destinationOptions;
     const records = await client.objects.searchObjects(
       schemaId as string,
-      foreignKey,
+      primaryKey,
       emails
     );
     return records.length === 0;
@@ -97,30 +97,30 @@ async function cleanUp(suppressErrors: boolean) {
 }
 
 function getRecord(records: Array<any>, foreignKeyValue: string) {
-  const { foreignKey } = destinationOptions;
+  const { primaryKey } = destinationOptions;
   const filtered = records.filter(
-    (record) => record["properties"][foreignKey] === foreignKeyValue
+    (record) => record["properties"][primaryKey] === foreignKeyValue
   );
   return filtered.length > 0 ? filtered[0] : null;
 }
 
 async function getRecordByForeignKey(key) {
-  const { schemaId, foreignKey } = destinationOptions;
+  const { schemaId, primaryKey } = destinationOptions;
   const records = await client.objects.searchObjects(
     schemaId as string,
-    foreignKey as string,
+    primaryKey as string,
     [key],
     properties
   );
 
-  if (records.length > 0 && records[0].properties[foreignKey] === key) {
+  if (records.length > 0 && records[0].properties[primaryKey] === key) {
     return records[0];
   }
   return null;
 }
 
 async function getRecordsByForeignKeys(keys) {
-  const { schemaId, foreignKey } = destinationOptions;
+  const { schemaId, primaryKey } = destinationOptions;
   const groups: string[][] = [];
   let i = 0;
   while (i < keys.length) {
@@ -131,7 +131,7 @@ async function getRecordsByForeignKeys(keys) {
     records.push(
       ...(await client.objects.searchObjects(
         schemaId as string,
-        foreignKey as string,
+        primaryKey as string,
         group,
         properties
       ))

@@ -28,6 +28,10 @@ class CustomObjectHandler {
   public getProperties() {
     return this.customObject?.properties || [];
   }
+
+  public getRequiredProperties() {
+    return this.customObject?.requiredProperties || [];
+  }
 }
 
 export { CustomObjectHandler };

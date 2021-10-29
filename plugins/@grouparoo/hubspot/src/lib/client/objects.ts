@@ -25,18 +25,18 @@ export default class Contact {
 
   async searchObjects(
     schemaId: string,
-    foreignKey: string,
+    primaryKey: string,
     foreignKeys: string[],
     properties: string[] = []
-  ) {
-    if (!properties.includes(foreignKey)) {
-      properties.push(foreignKey);
+  ): Promise<Array<Record<string, string | number | Date>>> {
+    if (!properties.includes(primaryKey)) {
+      properties.push(primaryKey);
     }
     const filterGroups = foreignKeys.map((key) => {
       return {
         filters: [
           {
-            propertyName: foreignKey,
+            propertyName: primaryKey,
             operator: "EQ",
             value: key,
           },

@@ -47,4 +47,34 @@ describe("hubspot/destinationMappingOptions", () => {
     const readOnlyField = known.find((f) => f.key === "days_to_close");
     expect(readOnlyField).toBe(undefined);
   });
+
+  test("can load all destinationMappingOptions using the custom object", async () => {
+    const destinationOptions = {
+      schemaId: "2-3604285",
+      primaryKey: "grouparoo_object_property",
+    };
+    const options = await runDestinationMappingOptions({ destinationOptions });
+    const { properties } = options;
+    const { required, known } = properties;
+
+    expect(required.length).toBe(1);
+
+    const requiredFieldEmail = required.find(
+      (f) => f.key === "grouparoo_object_property"
+    );
+    expect(requiredFieldEmail.key).toBe("grouparoo_object_property");
+    expect(requiredFieldEmail.type).toBe("string");
+
+    const knownFieldFirstName = known.find((f) => f.key === "first_name");
+    expect(knownFieldFirstName.type).toBe("string");
+    expect(knownFieldFirstName.important).toBe(true);
+
+    const knownFieldLastName = known.find((f) => f.key === "last_name");
+    expect(knownFieldLastName.type).toBe("string");
+    expect(knownFieldLastName.important).toBe(true);
+
+    const knownFieldNumberField = known.find((f) => f.key === "number_field");
+    expect(knownFieldNumberField.type).toBe("float");
+    expect(knownFieldNumberField.important).toBe(false);
+  });
 });

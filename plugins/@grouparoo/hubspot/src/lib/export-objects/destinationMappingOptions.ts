@@ -69,16 +69,19 @@ export const getRequiredFields = (
   key: string;
   type: DestinationMappingOptionsResponseType;
 }> => {
-  const property = customObject.getPropertyByName(primaryKey);
-  if (property) {
-    return [
-      {
-        key: primaryKey,
-        type: mapTypesFromHubspotToGrouparoo(primaryKey, property.type),
-      },
-    ];
+  const requiredFields = customObject.getRequiredProperties();
+  if (!requiredFields.includes(primaryKey)) {
+    requiredFields.push(primaryKey);
   }
-  return [{ key: primaryKey, type: "string" }];
+  const requiredFieldsWithType = [];
+  requiredFields.map((field) => {
+    const property = customObject.getPropertyByName(field);
+    requiredFieldsWithType.push({
+      key: field,
+      type: mapTypesFromHubspotToGrouparoo(field, property.type),
+    });
+  });
+  return requiredFieldsWithType;
 };
 
 const isImportant = (key): Boolean => {

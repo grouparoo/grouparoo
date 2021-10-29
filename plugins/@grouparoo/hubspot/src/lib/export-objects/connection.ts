@@ -16,7 +16,7 @@ export const objectsDestinationConnection: PluginConnection = {
   displayName: "Hubspot Export Objects",
   direction: "export",
   description:
-    "Export Records to Hubspot Custom Objects and associate them with Hubspot standard objects or others custom objects.",
+    "Export Records as Hubspot Custom Objects or Hubspot standard objects.",
   app: "hubspot",
   syncModes: objectsSupportedSyncModes,
   defaultSyncMode: "sync",
