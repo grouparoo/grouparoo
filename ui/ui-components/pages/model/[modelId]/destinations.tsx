@@ -96,57 +96,17 @@ export default function Page(props) {
           {destinations.map((destination) => {
             const pendingExports = destination.exportTotals.pending;
 
-            const formattedDestinationName =
-              destination.name ||
-              `${destination.state} created on ${
-                new Date(destination.createdAt).toLocaleString().split(",")[0]
-              }`;
-
             return (
               <tr key={`destination-${destination.id}`}>
                 <td>
                   <AppIcon src={destination.app?.icon} />
                 </td>
                 <td>
-                  {process.env.GROUPAROO_UI_EDITION !== "community" ? (
-                    <EnterpriseLink
-                      href="/model/[modelId]/destination/[destinationId]/edit"
-                      as={`/model/${destination.modelId}/destination/${destination.id}/edit`}
-                    >
-                      <a>
-                        <strong>{formattedDestinationName}</strong>
-                      </a>
-                    </EnterpriseLink>
-                  ) : (
-                    <Link
-                      href="/model/[modelId]/destination/[destinationId]/exports"
-                      as={`/model/${destination.modelId}/destination/${destination.id}/exports`}
-                    >
-                      <a>
-                        <strong>{formattedDestinationName}</strong>
-                      </a>
-                    </Link>
-                  )}
+                  <AppDisplay destination={destination} />
                 </td>
                 <td>{destination.connection.displayName}</td>
                 <td>
-                  {destination.collection === "group" ? (
-                    <EnterpriseLink
-                      href="/model/[modelId]/group/[groupId]/edit"
-                      as={`/model/${destination.group.modelId}/group/${destination.group.id}/edit`}
-                    >
-                      <a>{destination.group.name}</a>
-                    </EnterpriseLink>
-                  ) : destination.collection === "model" ? (
-                    <EnterpriseLink
-                      href="/model/[modelId]/edit"
-                      as={`/model/${destination.modelId}/edit`}
-                    >
-                      <a>{destination.modelName}</a>
-                    </EnterpriseLink>
-                  ) : (
-                    "None"
-                  )}
+                  <CollectionDisplay destination={destination} />
                 </td>
                 <td>
                   <EnterpriseLink
@@ -213,4 +173,75 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   }
 
   return { destinations, modelName, total };
+};
+
+const AppDisplay = ({
+  destination,
+}: {
+  destination: Models.DestinationType;
+}) => {
+  const formattedDestinationName =
+    destination.name ||
+    `${destination.state} created on ${
+      new Date(destination.createdAt).toLocaleString().split(",")[0]
+    }`;
+
+  switch (process.env.GROUPAROO_UI_EDITION) {
+    case "community": {
+      return (
+        <Link
+          href="/model/[modelId]/destination/[destinationId]/exports"
+          as={`/model/${destination.modelId}/destination/${destination.id}/exports`}
+        >
+          <a>
+            <strong>{formattedDestinationName}</strong>
+          </a>
+        </Link>
+      );
+    }
+    default: {
+      return (
+        <EnterpriseLink
+          href="/model/[modelId]/destination/[destinationId]/edit"
+          as={`/model/${destination.modelId}/destination/${destination.id}/edit`}
+        >
+          <a>
+            <strong>{formattedDestinationName}</strong>
+          </a>
+        </EnterpriseLink>
+      );
+    }
+  }
+};
+
+const CollectionDisplay = ({
+  destination,
+}: {
+  destination: Models.DestinationType;
+}) => {
+  switch (destination.collection) {
+    case "group": {
+      return (
+        <EnterpriseLink
+          href="/model/[modelId]/group/[groupId]/edit"
+          as={`/model/${destination.group.modelId}/group/${destination.group.id}/edit`}
+        >
+          <a>{destination.group.name}</a>
+        </EnterpriseLink>
+      );
+    }
+    case "model": {
+      return (
+        <EnterpriseLink
+          href="/model/[modelId]/edit"
+          as={`/model/${destination.modelId}/edit`}
+        >
+          <a>{destination.modelName}</a>
+        </EnterpriseLink>
+      );
+    }
+    default: {
+      return <>None</>;
+    }
+  }
 };
