@@ -20,7 +20,7 @@ body:
 - type: textarea
   attributes:
     label: Current Behavior
-    description: A concise description of what you're experiencing.
+    description: A concise description of what you're experiencing.  Please include specific steps or a sample project to reproduce the error you are seeing.
     placeholder: |
       When I do <X>, <Y> happens and I see the error message attached below:
       ```...```
