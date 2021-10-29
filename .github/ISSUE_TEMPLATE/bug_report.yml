@@ -43,7 +43,7 @@ body:
       If applicable, add the full stack trace you see along with the error.
     render: markdown
   validations:
-    required: fals
+    required: false
 
 
 - type: textarea
