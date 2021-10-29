@@ -62,7 +62,7 @@ body:
   attributes:
     label: Additional context
     description: |
-      Links? References? Anything that will give us more context about the issue you are encountering!
+      Links? Screenshots? References? Anything that will give us more context about the issue you are encountering!
     placeholder: |
       Add any other context about the problem here.
   validations:
