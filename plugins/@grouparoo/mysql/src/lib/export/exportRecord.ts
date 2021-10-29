@@ -55,8 +55,8 @@ export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
           (k) =>
             (newRecordProperties[k] === null ||
               newRecordProperties[k] === undefined) &&
-            oldRecordProperties[k] !== null &&
-            oldRecordProperties[k] !== undefined
+            (oldRecordProperties[k] !== null ||
+              oldRecordProperties[k] !== undefined)
         );
 
         if (columnsToErase.length > 0) {
