@@ -1,5 +1,5 @@
 import { ExportRecordPluginMethod } from "@grouparoo/core";
-import { MySQLConnection } from "../connect";
+import { MySQLConnection } from "@grouparoo/mysql/dist/lib/connect";
 
 export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
   connection,
@@ -30,7 +30,7 @@ export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
   try {
     // --- Records --- //
     if (toDelete) {
-      await connection.asyncQuery(`DELETE FROM ?? WHERE ?? = ?`, [
+      await connection.asyncQuery(`ALTER TABLE ?? DELETE WHERE ?? = ?`, [
         table,
         primaryKey,
         newRecordProperties[primaryKey],
@@ -43,7 +43,7 @@ export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
 
       if (existingRecords.length === 1) {
         // update
-        await connection.asyncQuery(`UPDATE ?? SET ? WHERE ?? = ?`, [
+        await connection.asyncQuery(`ALTER TABLE ?? UPDATE ? WHERE ?? = ?`, [
           table,
           newRecordProperties,
           primaryKey,
@@ -63,7 +63,7 @@ export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
           const nullData = {};
           columnsToErase.forEach((k) => (nullData[k] = null));
 
-          await connection.asyncQuery(`UPDATE ?? SET ? WHERE ?? = ?`, [
+          await connection.asyncQuery(`ALTER TABLE ?? UPDATE ? WHERE ?? = ?`, [
             table,
             nullData,
             primaryKey,
@@ -72,44 +72,49 @@ export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
         }
       } else {
         // delete & insert
-        await connection.asyncQuery(`DELETE FROM ?? WHERE ?? = ?`, [
+        await connection.asyncQuery(`ALTER TABLE ?? DELETE WHERE ?? = ?`, [
           table,
           primaryKey,
           newRecordProperties[primaryKey],
         ]);
 
-        await connection.asyncQuery(`INSERT INTO ?? SET ?`, [
-          table,
-          newRecordProperties,
-        ]);
+        await connection.asyncQuery(
+          `INSERT INTO ?? (${Object.keys(newRecordProperties).join(
+            ", "
+          )}) FORMAT Values (?)`,
+          [table, Object.values(newRecordProperties)]
+        );
       }
     } else {
       // just insert
-      await connection.asyncQuery(`INSERT INTO ?? SET ?`, [
-        table,
-        newRecordProperties,
-      ]);
+      await connection.asyncQuery(
+        `INSERT INTO ?? (${Object.keys(newRecordProperties).join(
+          ", "
+        )}) FORMAT Values (?)`,
+        [table, Object.values(newRecordProperties)]
+      );
     }
 
     // --- Groups --- //
 
-    await connection.asyncQuery(`DELETE FROM ?? WHERE ?? = ?`, [
+    await connection.asyncQuery(`ALTER TABLE ?? DELETE WHERE ?? = ?`, [
       groupsTable,
       groupForeignKey,
       newRecordProperties[primaryKey],
     ]);
 
-    if (!toDelete) {
-      for (const i in newGroups) {
-        const data = {};
-        data[groupForeignKey] = newRecordProperties[primaryKey];
-        data[groupColumnName] = newGroups[i];
-        await connection.asyncQuery(`INSERT IGNORE INTO ?? SET ?`, [
-          groupsTable,
-          data,
-        ]);
-      }
-    }
+    // TODO: Do we need this in ClickHouse? How do we translate this to ClickHouse?
+    // if (!toDelete) {
+    //   for (const i in newGroups) {
+    //     const data = {};
+    //     data[groupForeignKey] = newRecordProperties[primaryKey];
+    //     data[groupColumnName] = newGroups[i];
+    //     await connection.asyncQuery(`INSERT IGNORE INTO ?? SET ?`, [
+    //       groupsTable,
+    //       data,
+    //     ]);
+    //   }
+    // }
   } catch (e) {
     error = e;
   } finally {

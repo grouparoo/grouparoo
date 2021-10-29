@@ -18,6 +18,7 @@ import { getTables } from "@grouparoo/mysql/dist/lib/table-import/getTables";
 import { getColumns } from "@grouparoo/mysql/dist/lib/table-import/getColumns";
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
+import { getConnection as getExportConnection } from "../lib/export/connection";
 import { test } from "@grouparoo/mysql/dist/lib/test";
 
 const packageJSON = require("./../../package.json");
@@ -83,7 +84,11 @@ export class Plugins extends Initializer {
           methods: { test, connect, disconnect },
         },
       ],
-      connections: [getTableConnection(), getQueryConnection()],
+      connections: [
+        getTableConnection(),
+        getQueryConnection(),
+        getExportConnection(),
+      ],
     });
   }
 

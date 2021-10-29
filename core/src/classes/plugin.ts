@@ -238,9 +238,9 @@ export interface ExportedRecord {
  * Method to export a single record to a destination
  * Should only return a boolean indicating success, or throw an error if something went wrong.
  */
-export interface ExportRecordPluginMethod {
+export interface ExportRecordPluginMethod<Connection = any> {
   (argument: {
-    connection: any;
+    connection: Connection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -339,12 +339,12 @@ export interface AppParallelismMethod {
  * This is useful when your App has a kept-alive wire connection, like mySQL or Postgres, or you need an API token to reuse.
  * The connection itself should be able to handle reconnection attempts, keep-alive, etc,
  */
-export interface ConnectPluginAppMethod {
+export interface ConnectPluginAppMethod<Connection = any> {
   (argument: {
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
-  }): Promise<any>;
+  }): Promise<Connection>;
 }
 
 /**
