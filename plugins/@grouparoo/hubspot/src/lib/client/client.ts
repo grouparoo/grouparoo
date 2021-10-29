@@ -1,66 +1,56 @@
 import Client from "hubspot-api";
 import { SimpleAppOptions } from "@grouparoo/core";
-import Axios from "axios";
-
-export interface HubspotDataResponse {
-  lists?: Array<any>;
-}
+import Objects from "./objects";
+import Axios, { AxiosRequestConfig } from "axios";
 
 class HubspotClient {
   client: Client;
   hapikey: string;
+  objects: Objects;
 
   constructor(appOptions: SimpleAppOptions) {
     this.client = new Client(appOptions);
     this.hapikey = appOptions.hapikey?.toString();
+    this.objects = new Objects(this);
   }
-
   async getLists(): Promise<any> {
     // TODO: This is not paginated, it will need to be
     // https://legacydocs.hubspot.com/docs/methods/lists/get_static_lists
-    const url = `https://api.hubapi.com/contacts/v1/lists/static?hapikey=${this.hapikey}&count=999`;
-    const { data }: { data: HubspotDataResponse } = await Axios({
+    const data = await this._request({
       method: "GET",
-      url,
-      headers: { "Content-Type": "application/json" },
+      url: `/contacts/v1/lists/static`,
+      params: { count: 999 },
     });
     return data.lists;
   }
 
   async deleteList(listId) {
-    await Axios({
+    await this._request({
       method: "DELETE",
-      url: `https://api.hubapi.com/contacts/v1/lists/${listId}?hapikey=${this.hapikey}`,
-      headers: { "Content-Type": "application/json" },
+      url: `/contacts/v1/lists/${listId}`,
     });
   }
 
   async addContactToList(listId, email) {
     try {
-      const url = `https://api.hubapi.com/contacts/v1/lists/${listId}/add?hapikey=${this.hapikey}`;
-      await Axios({
+      await this._request({
         method: "POST",
-        url,
-        headers: { "Content-Type": "application/json" },
+        url: `/contacts/v1/lists/${listId}/add`,
         data: {
           emails: [email],
         },
       });
     } catch (error) {
-      if (error?.response?.data?.errorType === "LIST_EXISTS") {
-        // ok
-      } else {
+      if (error?.response?.data?.errorType !== "LIST_EXISTS") {
         throw error;
       }
     }
   }
 
   async removeContactFromList(listId, email) {
-    const url = `https://api.hubapi.com/contacts/v1/lists/${listId}/remove?hapikey=${this.hapikey}`;
-    await Axios({
+    await this._request({
       method: "POST",
-      url,
-      headers: { "Content-Type": "application/json" },
+      url: `/contacts/v1/lists/${listId}/remove`,
       data: {
         emails: [email],
       },
@@ -94,6 +84,15 @@ class HubspotClient {
 
   async getAllContactsProperties(): Promise<any> {
     return await this.client.contactsProperties.getAllContactsProperties();
+  }
+
+  async _request(config: AxiosRequestConfig): Promise<any> {
+    config["baseURL"] = "https://api.hubapi.com";
+    config["params"] = Object.assign({}, config.params, {
+      hapikey: this.hapikey,
+    });
+    const { data = {} } = await Axios(config);
+    return data;
   }
 }
 

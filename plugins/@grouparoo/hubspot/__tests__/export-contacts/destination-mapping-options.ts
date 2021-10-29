@@ -2,7 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import {
   destinationMappingOptions,
   getUserFields,
-} from "../../src/lib/export/destinationMappingOptions";
+} from "../../src/lib/export-contacts/destinationMappingOptions";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { connect } from "../../src/lib/connect";
 

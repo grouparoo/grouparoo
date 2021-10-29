@@ -1,8 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
-import { exportRecord } from "../../src/lib/export/exportRecord";
+import { exportRecord } from "../../src/lib/export-contacts/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { HubspotClient } from "../../src/lib/client";
+import { HubspotClient } from "../../src/lib/client/client";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 const appId = "app_ds789a789gdf789jh.m678rt90-90-3k";
@@ -233,7 +233,6 @@ describe("hubspot/exportRecord", () => {
         lastname: alternativeLastName,
         mobilephone: newPhoneNumber,
         message,
-        lifetime_value__custom_: ltv,
         closedate: dateField,
         text_field: textField,
         date_field: dateField, //must be midnight: 00:00
@@ -252,9 +251,7 @@ describe("hubspot/exportRecord", () => {
     expect(user["properties"]["closedate"]["value"]).toBe(
       dateField.getTime().toString()
     );
-    expect(user["properties"]["lifetime_value__custom_"]["value"]).toBe(
-      ltv.toString()
-    );
+
     expect(user["properties"]["text_field"]["value"]).toBe(textField);
     expect(user["properties"]["date_field"]["value"]).toBe(
       dateField.getTime().toString()

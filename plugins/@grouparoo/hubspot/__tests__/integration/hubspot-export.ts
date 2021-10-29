@@ -15,8 +15,7 @@ import {
   DestinationEdit,
   DestinationMappingOptions,
 } from "@grouparoo/core/src/actions/destinations";
-import { connect } from "./../../src/lib/connect";
-import { HubspotDataResponse } from "./../../src/lib/client";
+import { connect } from "../../src/lib/connect";
 import Axios from "axios";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 
@@ -58,7 +57,7 @@ async function deleteUsers() {
 async function deleteLists() {
   const lists = [list1];
 
-  const { data }: { data: HubspotDataResponse } = await Axios({
+  const { data }: { data: any } = await Axios({
     method: "GET",
     url: `https://api.hubapi.com/contacts/v1/lists/static?hapikey=${appOptions.hapikey}&count=999`,
     headers: { "Content-Type": "application/json" },

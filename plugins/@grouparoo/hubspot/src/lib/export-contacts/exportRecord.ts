@@ -4,7 +4,7 @@ import {
   SimpleAppOptions,
   DestinationSyncOperations,
 } from "@grouparoo/core";
-import { HubspotClient } from "../client";
+import { HubspotClient } from "../client/client";
 import { connect } from "../connect";
 import { addToList, removeFromList } from "./listMethods";
 
@@ -150,7 +150,7 @@ export const exportRecord: ExportRecordPluginMethod = async ({
 
 function formatVar(value) {
   if (value === undefined || value === null) {
-    return null;
+    return null; // null string clears the value
   }
   if (value instanceof Date) {
     value.setUTCHours(0, 0, 0, 0); //Must be midnight.
