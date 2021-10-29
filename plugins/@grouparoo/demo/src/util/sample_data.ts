@@ -1,4 +1,3 @@
-import { userCreatedAt, accountCreatedAt } from "./shared";
 import Connection from "./connection";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
@@ -210,22 +209,14 @@ function getRowData(
   page: number,
   perPage: number
 ): { created_at: Date; updated_at: Date; myId: number; typeId: number } {
-  let rootCreatedAt;
-
-  const now = new Date();
+  const rootCreatedAt = getCreatedAt(typeId, typeTableName);
   const numOfRoot = COUNTS[typeTableName];
   const isRoot = tableName === typeTableName;
-  switch (typeTableName) {
-    case "admins":
-    case "users":
-      rootCreatedAt = userCreatedAt(typeId);
-      break;
-    case "accounts":
-      rootCreatedAt = accountCreatedAt(typeId);
-      break;
-    default:
-      throw new Error(`unknown typeTableName: ${typeTableName}`);
-  }
+
+  const created_at = isRoot
+    ? rootCreatedAt
+    : getUpdatedAt(myId, tableName, rootCreatedAt);
+  const updated_at = getUpdatedAt(myId, tableName, created_at); // updated sometime after that
 
   if (page > 1) {
     myId = perPage * page + myId;
@@ -237,18 +228,6 @@ function getRowData(
     }
   }
 
-  let created_at;
-  let updated_at;
-  if (rootCreatedAt) {
-    created_at = isRoot ? rootCreatedAt : getUpdatedAt(now, rootCreatedAt);
-  } else if (tableName === "users") {
-    created_at = userCreatedAt(myId);
-  }
-
-  if (created_at) {
-    updated_at = getUpdatedAt(now, created_at); // updated sometime after that
-  }
-
   return {
     created_at,
     updated_at,
@@ -257,11 +236,36 @@ function getRowData(
   };
 }
 
-function getUpdatedAt(now: Date, created_at: Date) {
-  const creationAgo = now.getTime() - created_at.getTime();
-  const updatedAgo = creationAgo * 0.5;
-  const updatedMilli = now.getTime() - updatedAgo;
-  return new Date(updatedMilli);
+function getScaledDate(id: any, typeTableName: string, msStart: number) {
+  // e.g. 1000 records in last 3 months, spaced out
+  if (!id) {
+    return null;
+  }
+  const count = COUNTS[typeTableName];
+  if (!count) {
+    throw new Error(`unknown typeTableName: ${typeTableName}`);
+  }
+  const now = Date.now();
+  const msBack = now - msStart;
+  const msEach = msBack / count; // for each record
+  const ageNumber = count - parseInt(id);
+  const creationAgo = msEach * ageNumber;
+
+  // use that from something specific.
+  const msEpoch = now - creationAgo;
+  return new Date(msEpoch);
+}
+
+function getCreatedAt(id: any, typeTableName: string) {
+  const msMinAge = Date.now() - 60 * 60 * 24 * 30 * 3 * 1000; // 30 days ago
+  return getScaledDate(id, typeTableName, msMinAge);
+}
+
+function getUpdatedAt(myId: number, tableName: string, created_at: Date) {
+  const msDiff = Date.now() - created_at.getTime();
+  const msAgo = Math.round(msDiff * 0.9); // just a bit after
+  const msMinAge = Date.now() - msAgo;
+  return getScaledDate(myId, tableName, msMinAge);
 }
 
 function parseValue(tableName: string, key: string, value: string) {
