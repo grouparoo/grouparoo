@@ -5,7 +5,7 @@ import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
 import EnterpriseLink from "../enterpriseLink";
 import { useRouter } from "next/router";
-import { Row, Col, ButtonGroup, Button, Badge, Alert } from "react-bootstrap";
+import { Row, Col, ButtonGroup, Badge, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { Models, Actions } from "../../utils/apiData";
@@ -15,6 +15,7 @@ import { capitalize } from "../../utils/languageHelper";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import StateBadge from "../badges/stateBadge";
 import { DurationTime } from "../durationTime";
+import LoadingButton from "../loadingButton";
 
 const states = [
   "all",
@@ -108,13 +109,14 @@ export default function ExportsList(props) {
             {states.map((_state) => {
               return (
                 <Fragment key={`export-state-button-${_state}`}>
-                  <Button
+                  <LoadingButton
                     size="sm"
+                    disabled={loading}
                     variant={state === _state ? "secondary" : "info"}
                     onClick={() => setState(_state)}
                   >
                     {capitalize(_state)}
-                  </Button>
+                  </LoadingButton>
                 </Fragment>
               );
             })}

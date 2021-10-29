@@ -1,8 +1,8 @@
 import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { Row, Col, ButtonGroup, Button, Alert, Card } from "react-bootstrap";
+import { Row, Col, ButtonGroup, Alert, Card } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import EnterpriseLink from "../enterpriseLink";
@@ -12,11 +12,17 @@ import RunDurationChart from "../visualizations/runDurations";
 import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
+import { RunsHandler } from "../../utils/runsHandler";
 import { DurationTime } from "../durationTime";
 import { NextPageContext } from "next";
+import LoadingButton from "../loadingButton";
 
 export default function RunsList(props) {
-  const { errorHandler, topic }: { errorHandler: ErrorHandler; topic: string } =
+  const {
+    errorHandler,
+    runsHandler,
+    topic,
+  }: { errorHandler: ErrorHandler; runsHandler: RunsHandler; topic: string } =
     props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
@@ -33,6 +39,13 @@ export default function RunsList(props) {
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
+
+  useEffect(() => {
+    runsHandler.subscribe("runs-list", () => load());
+    return () => {
+      runsHandler.unsubscribe("runs-list");
+    };
+  }, []);
 
   useSecondaryEffect(() => {
     load();
@@ -78,60 +91,67 @@ export default function RunsList(props) {
         <Col>
           State:{" "}
           <ButtonGroup>
-            <Button
+            <LoadingButton
               size="sm"
+              disabled={loading}
               variant={stateFilter === "" ? "secondary" : "info"}
               onClick={() => setFilter({ stateFilter: "" })}
             >
               All
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
               size="sm"
+              disabled={loading}
               variant={stateFilter === "running" ? "secondary" : "info"}
               onClick={() => setFilter({ stateFilter: "running" })}
             >
               Running
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
               size="sm"
+              disabled={loading}
               variant={stateFilter === "complete" ? "secondary" : "info"}
               onClick={() => setFilter({ stateFilter: "complete" })}
             >
               Complete
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
               size="sm"
+              disabled={loading}
               variant={stateFilter === "stopped" ? "secondary" : "info"}
               onClick={() => setFilter({ stateFilter: "stopped" })}
             >
               Stopped
-            </Button>
+            </LoadingButton>
           </ButtonGroup>
         </Col>
         <Col>
           Has Error:{" "}
           <ButtonGroup>
-            <Button
+            <LoadingButton
               size="sm"
+              disabled={loading}
               variant={errorFilter === "" ? "secondary" : "info"}
               onClick={() => setFilter({ errorFilter: "" })}
             >
               All
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
               size="sm"
+              disabled={loading}
               variant={errorFilter === "true" ? "secondary" : "info"}
               onClick={() => setFilter({ errorFilter: "true" })}
             >
               True
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
               size="sm"
+              disabled={loading}
               variant={errorFilter === "false" ? "secondary" : "info"}
               onClick={() => setFilter({ errorFilter: "false" })}
             >
               False
-            </Button>
+            </LoadingButton>
           </ButtonGroup>
         </Col>
       </Row>

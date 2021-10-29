@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { Button } from "react-bootstrap";
 import type { NextPageContext } from "next";
-
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
@@ -16,6 +15,7 @@ import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { ErrorHandler } from "../../../utils/errorHandler";
+import LoadingButton from "../../../components/loadingButton";
 
 export default function Page(props) {
   const {
@@ -74,10 +74,15 @@ export default function Page(props) {
         "post",
         `/schedule/${source.schedule.id}/run`
       );
-      successHandler.set({ message: `run ${response.run.id} enqueued` });
+      if (response.run) {
+        const _runs = Object.assign({}, runs);
+        _runs[source.id] = await loadRun(source, execApi);
+        setRuns(_runs);
+        successHandler.set({ message: `run ${response.run.id} enqueued` });
+      }
     } finally {
+      console.log("FALSE");
       setLoading(false);
-      load();
     }
   }
 
@@ -180,14 +185,14 @@ export default function Page(props) {
                             Last Run:{" "}
                             {run ? formatTimestamp(run?.createdAt) : "Never"}
                             <br />
-                            <Button
+                            <LoadingButton
                               variant="outline-success"
                               size="sm"
-                              disabled={run?.state === "running"}
+                              disabled={loading}
                               onClick={() => enqueueScheduleRun(source)}
                             >
                               Run Now
-                            </Button>
+                            </LoadingButton>
                           </>
                         )}
                       </>
@@ -223,12 +228,12 @@ export default function Page(props) {
       ) : null}
       &nbsp;
       {process.env.GROUPAROO_UI_EDITION !== "config" ? (
-        <Button
+        <LoadingButton
           variant="outline-primary"
           onClick={() => enqueueAllSchedulesRun()}
         >
           Run all {modelName} Schedules
-        </Button>
+        </LoadingButton>
       ) : null}
     </>
   );

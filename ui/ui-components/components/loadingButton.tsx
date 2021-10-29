@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Button } from "react-bootstrap";
 import Loader from "./loader";
 

@@ -222,8 +222,9 @@ export default function RecordsList(props) {
         <Col>
           States:{" "}
           <ButtonGroup id="record-states">
-            <Button
+            <LoadingButton
               size="sm"
+              disabled={loading}
               variant={state ? "info" : "secondary"}
               onClick={() => {
                 setState(null);
@@ -231,13 +232,14 @@ export default function RecordsList(props) {
               }}
             >
               All
-            </Button>
+            </LoadingButton>
             {states.map((t) => {
               const variant = t === state ? "secondary" : "info";
               return (
-                <Button
+                <LoadingButton
                   key={`state-${t}`}
                   size="sm"
+                  disabled={loading}
                   variant={variant}
                   onClick={() => {
                     setState(t);
@@ -245,7 +247,7 @@ export default function RecordsList(props) {
                   }}
                 >
                   {t}
-                </Button>
+                </LoadingButton>
               );
             })}
           </ButtonGroup>

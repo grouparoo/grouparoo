@@ -5,12 +5,13 @@ import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useRealtimeStream } from "../../hooks/useRealtimeStream";
 import EnterpriseLink from "../enterpriseLink";
 import { useRouter } from "next/router";
-import { ButtonGroup, Button, Alert } from "react-bootstrap";
+import { ButtonGroup, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { NextPageContext } from "next";
+import LoadingButton from "../loadingButton";
 
 const getOwnerId = (query: { [key: string]: string | string[] }) => {
   const { id, recordId, propertyId, sourceId, destinationId, groupId } = query;
@@ -115,8 +116,9 @@ export default function LogsList(props) {
       <strong>Topics:</strong>
       <br />
       <ButtonGroup id="log-types">
-        <Button
+        <LoadingButton
           size="sm"
+          disabled={loading}
           variant={topic ? "info" : "secondary"}
           onClick={() => {
             setTopic(null);
@@ -124,13 +126,14 @@ export default function LogsList(props) {
           }}
         >
           All
-        </Button>
+        </LoadingButton>
         {topics.map((t) => {
           const variant = t === topic ? "secondary" : "info";
           return (
-            <Button
+            <LoadingButton
               key={`topic-${t}`}
               size="sm"
+              disabled={loading}
               variant={variant}
               onClick={() => {
                 setTopic(t);
@@ -138,7 +141,7 @@ export default function LogsList(props) {
               }}
             >
               {t}
-            </Button>
+            </LoadingButton>
           );
         })}
       </ButtonGroup>
@@ -160,9 +163,9 @@ export default function LogsList(props) {
       {newLogs > 0 ? (
         <Alert variant="secondary">
           {newLogs} new logs.{" "}
-          <Button size="sm" onClick={load}>
+          <LoadingButton size="sm" onClick={load} disabled={loading}>
             Load
-          </Button>
+          </LoadingButton>
         </Alert>
       ) : null}
 
