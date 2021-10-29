@@ -75,9 +75,9 @@ export default function Page(props) {
           <tr>
             <th>Name</th>
             <th>Type</th>
-            {grouparooUiEdition !== "config" && <th>Records</th>}
+            {grouparooUiEdition() !== "config" && <th>Records</th>}
             <th>State</th>
-            {grouparooUiEdition !== "config" && <th>Calculated At</th>}
+            {grouparooUiEdition() !== "config" && <th>Calculated At</th>}
             <th>Created At</th>
             <th>Updated At</th>
           </tr>
@@ -89,28 +89,26 @@ export default function Page(props) {
                 <td>
                   {group.type === "calculated" ? (
                     <Link
-                      href="/model/[modelId]/group/[groupId]/rules"
-                      as={`/model/${group.modelId}/group/${group.id}/rules`}
+                      href={`/model/${group.modelId}/group/${group.id}/rules`}
                     >
                       <a>{group.name}</a>
                     </Link>
                   ) : (
                     <Link
-                      href="/model/[modelId]/group/[groupId]/edit"
-                      as={`/model/${group.modelId}/group/${group.id}/edit`}
+                      href={`/model/${group.modelId}/group/${group.id}/edit`}
                     >
                       <a>{group.name}</a>
                     </Link>
                   )}
                 </td>
                 <td>{group.type}</td>
-                {grouparooUiEdition !== "config" && (
+                {grouparooUiEdition() !== "config" && (
                   <td>{group.recordsCount}</td>
                 )}
                 <td>
                   <StateBadge state={group.state} />
                 </td>
-                {grouparooUiEdition !== "config" && (
+                {grouparooUiEdition() !== "config" && (
                   <td>
                     {group.calculatedAt
                       ? formatTimestamp(group.calculatedAt)

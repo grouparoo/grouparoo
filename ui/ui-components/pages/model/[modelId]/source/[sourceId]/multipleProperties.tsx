@@ -307,10 +307,7 @@ export default function Page(props) {
         From this page, you can quickly add simple Properties, using default
         options. If you need more control over your Properties, you can create a
         single Property from the{" "}
-        <Link
-          href={`/model/[modelId]/source/[sourceId]/overview`}
-          as={`/model/${source.modelId}/source/${source.id}/overview`}
-        >
+        <Link href={`/model/${source.modelId}/source/${source.id}/overview`}>
           <a>Source Overview page</a>
         </Link>
         .

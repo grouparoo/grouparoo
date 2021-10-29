@@ -143,8 +143,7 @@ export default function Page(props) {
                   </td>
                   <td>
                     <Link
-                      href="/model/[modelId]/source/[sourceId]/overview"
-                      as={`/model/${source.modelId}/source/${source.id}/overview`}
+                      href={`/model/${source.modelId}/source/${source.id}/overview`}
                     >
                       <a>
                         <strong>
@@ -160,10 +159,7 @@ export default function Page(props) {
                   </td>
                   <td>{source.connection.displayName}</td>
                   <td>
-                    <Link
-                      href="/app/[id]/edit"
-                      as={`/app/${source.app.id}/edit`}
-                    >
+                    <Link href={`/app/${source.app.id}/edit`}>
                       <a>
                         <strong>{source.app.name}</strong>
                       </a>
@@ -180,7 +176,7 @@ export default function Page(props) {
                         {schedule.recurring
                           ? `Every ${recurringFrequencyMinutes} minutes`
                           : "Not recurring"}
-                        {grouparooUiEdition !== "config" && (
+                        {grouparooUiEdition() !== "config" && (
                           <>
                             <br />
                             Last Run:{" "}

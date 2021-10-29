@@ -43,7 +43,7 @@ export default function Page(props) {
     if (response?.teamMember) {
       teamMemberHandler.set([response.teamMember]);
       successHandler.set({ message: "Team Member Created" });
-      grouparooUiEdition === "enterprise"
+      grouparooUiEdition() === "enterprise"
         ? router.push(`/team/${response.teamMember.teamId}/members`)
         : router.push(`/teams`);
     } else {

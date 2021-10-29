@@ -10,11 +10,11 @@ export default function LoadingButton(
 ) {
   const { children, displayOn, hideOn, ...buttonProps } = props;
 
-  if (displayOn && !displayOn.includes(grouparooUiEdition)) {
+  if (displayOn && !displayOn.includes(grouparooUiEdition())) {
     return null;
   }
 
-  if (hideOn && hideOn.includes(grouparooUiEdition)) {
+  if (hideOn && hideOn.includes(grouparooUiEdition())) {
     return null;
   }
 

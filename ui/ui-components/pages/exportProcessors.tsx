@@ -140,17 +140,13 @@ export default function Page(props) {
                 <tr>
                   <td>
                     <span>Id</span>:{" "}
-                    <Link
-                      href="/exportProcessor/[id]/edit"
-                      as={`/exportProcessor/${exportProcessor.id}/edit`}
-                    >
+                    <Link href={`/exportProcessor/${exportProcessor.id}/edit`}>
                       <a>{exportProcessor.id}</a>
                     </Link>
                     <br />
                     Destination:{" "}
                     <EnterpriseLink
-                      href="/model/[modelId]/destination/[destinationId]/edit"
-                      as={`/model/${exportProcessor.destination.modelId}/destination/${exportProcessor.destination.id}/edit`}
+                      href={`/model/${exportProcessor.destination.modelId}/destination/${exportProcessor.destination.id}/edit`}
                     >
                       <a>{exportProcessor.destination.name}</a>
                     </EnterpriseLink>

@@ -110,10 +110,7 @@ export default function Page(props) {
                   <CollectionDisplay destination={destination} />
                 </td>
                 <td>
-                  <EnterpriseLink
-                    href="/app/[id]/edit"
-                    as={`/app/${destination.app.id}/edit`}
-                  >
+                  <EnterpriseLink href={`/app/${destination.app.id}/edit`}>
                     <a>
                       <strong>{destination.app.name}</strong>
                     </a>
@@ -184,7 +181,7 @@ const AppDisplay = ({
       new Date(destination.createdAt).toLocaleString().split(",")[0]
     }`;
 
-  switch (grouparooUiEdition) {
+  switch (grouparooUiEdition()) {
     case "community": {
       return (
         <Link

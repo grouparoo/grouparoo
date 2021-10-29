@@ -43,7 +43,7 @@ export default function FindObject(props) {
       setError(`Cannot find object "${id}"`);
     } else if (
       response.records.length === 1 &&
-      grouparooUiEdition === "enterprise"
+      grouparooUiEdition() === "enterprise"
     ) {
       const table = response.records[0].tableName.toLowerCase();
       const detailPage = detailPages[table] || "edit";
@@ -54,7 +54,7 @@ export default function FindObject(props) {
       }
     } else if (
       response.records.length === 1 &&
-      grouparooUiEdition === "community"
+      grouparooUiEdition() === "community"
     ) {
       const listPage = getListPage(response.records[0].tableName.toLowerCase());
       router.push(listPage);
@@ -153,7 +153,7 @@ export default function FindObject(props) {
                   <td>
                     <Link
                       href={
-                        grouparooUiEdition === "enterprise" &&
+                        grouparooUiEdition() === "enterprise" &&
                         typeof detailPage === "string"
                           ? `/${singular(r)}/${id}/${detailPage}`
                           : getListPage(r)

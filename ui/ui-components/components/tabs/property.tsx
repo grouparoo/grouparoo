@@ -11,7 +11,7 @@ export default function PropertyTabs({
 }) {
   let tabs = ["edit"];
 
-  if (grouparooUiEdition === "enterprise") {
+  if (grouparooUiEdition() === "enterprise") {
     tabs.push("records", "groups", "runs", "logs");
   }
 

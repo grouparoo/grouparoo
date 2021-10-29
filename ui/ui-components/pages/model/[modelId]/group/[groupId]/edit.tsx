@@ -106,7 +106,7 @@ export default function Page(props) {
         ]}
       />
 
-      {group.type === "calculated" && grouparooUiEdition !== "config" ? (
+      {group.type === "calculated" && grouparooUiEdition() !== "config" ? (
         <Row>
           <Col>
             <strong>Last Member Calculation</strong>:{" "}
@@ -207,7 +207,7 @@ export default function Page(props) {
                   disabled={loading}
                   size="sm"
                   onClick={() => {
-                    handleDelete(grouparooUiEdition === "config");
+                    handleDelete(grouparooUiEdition() === "config");
                   }}
                 >
                   Delete

@@ -134,8 +134,7 @@ export default function Page(props) {
               <tr key={`property-${rule.id}`}>
                 <td>
                   <Link
-                    href="/model/[modelId]/property/[propertyId]/edit"
-                    as={`/model/${source.modelId}/property/${rule.id}/edit`}
+                    href={`/model/${source.modelId}/property/${rule.id}/edit`}
                   >
                     <a>
                       <strong>
@@ -154,8 +153,7 @@ export default function Page(props) {
                 <td>{rule.isArray ? "✅" : null}</td>
                 <td>
                   <Link
-                    href="/model/[modelId]/source/[sourceId]/overview"
-                    as={`/model/${source.modelId}/source/${source.id}/overview`}
+                    href={`/model/${source.modelId}/source/${source.id}/overview`}
                   >
                     <a>{source.name}</a>
                   </Link>

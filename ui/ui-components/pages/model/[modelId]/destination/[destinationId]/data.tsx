@@ -86,7 +86,7 @@ export default function Page(props) {
     setLoading(false);
     successHandler.set({
       message:
-        grouparooUiEdition === "config"
+        grouparooUiEdition() === "config"
           ? "Destination Updated"
           : "Destination Updated and Records Exporting...",
     });

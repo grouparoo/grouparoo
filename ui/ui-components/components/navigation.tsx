@@ -178,7 +178,7 @@ export default function Navigation(props) {
                 {truncate(clusterName.value, 30)}
               </Badge>
             ) : (
-              <Link href="/settings/[tab]" as="/settings/core">
+              <Link href="/settings/core">
                 <a>
                   <Badge variant="secondary">
                     {clusterName
@@ -352,7 +352,7 @@ export default function Navigation(props) {
           </ul>
         </div>
       </div>
-      <div className={grouparooUiEdition === "config" ? "mb-5" : null}>
+      <div className={grouparooUiEdition() === "config" ? "mb-5" : null}>
         <div
           id="bottomNavigationMenuCTA"
           style={{

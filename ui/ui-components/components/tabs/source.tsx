@@ -11,7 +11,7 @@ export default function SourceTabs({ source }: { source: Models.SourceType }) {
 
   if (source.schedule) {
     tabs.push("schedule");
-    if (grouparooUiEdition === "enterprise") tabs.push("runs");
+    if (grouparooUiEdition() === "enterprise") tabs.push("runs");
   }
 
   return <Tabs name={source.name} draftType={source.type} tabs={tabs} />;

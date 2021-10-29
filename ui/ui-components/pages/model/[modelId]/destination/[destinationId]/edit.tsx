@@ -206,7 +206,7 @@ export default function Page(props) {
 
               <p>
                 <strong>App</strong>:{" "}
-                <Link href="/app/[id]" as={`/app/${destination.app.id}`}>
+                <Link href={`/app/${destination.app.id}`}>
                   <a>{destination.app.name}</a>
                 </Link>
                 <br />
@@ -419,7 +419,7 @@ export default function Page(props) {
                 size="sm"
                 disabled={loading}
                 onClick={() => {
-                  handleDelete(grouparooUiEdition === "config");
+                  handleDelete(grouparooUiEdition() === "config");
                 }}
               >
                 Delete

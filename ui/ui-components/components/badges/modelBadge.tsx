@@ -12,10 +12,7 @@ export default function ModelBadge({
 }) {
   return (
     <Badge style={{ marginBottom: marginBottom ?? 20 }} variant="primary">
-      <EnterpriseLink
-        href="/model/[modelId]/edit"
-        as={`/model/${modelId}/edit`}
-      >
+      <EnterpriseLink href={`/model/${modelId}/edit`}>
         <a style={{ color: "white" }}>{modelName}</a>
       </EnterpriseLink>
     </Badge>

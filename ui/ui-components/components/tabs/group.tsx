@@ -5,7 +5,7 @@ import { grouparooUiEdition } from "../../utils/uiEdition";
 export default function GroupTabs({ group }: { group: Models.GroupType }) {
   let tabs = ["edit", "rules"];
 
-  if (grouparooUiEdition === "enterprise") {
+  if (grouparooUiEdition() === "enterprise") {
     tabs.push("members", "destinations", "runs", "logs");
   }
 

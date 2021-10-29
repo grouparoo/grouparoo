@@ -150,10 +150,7 @@ export default function ExportsList(props) {
                 <tr>
                   <td>
                     <span>Id</span>:{" "}
-                    <Link
-                      href="/export/[id]/edit"
-                      as={`/export/${_export.id}/edit`}
-                    >
+                    <Link href={`/export/${_export.id}/edit`}>
                       <a>{_export.id}</a>
                     </Link>
                     <br />
@@ -164,8 +161,7 @@ export default function ExportsList(props) {
                       <>
                         <span>Processor</span>:{" "}
                         <Link
-                          href="/exportProcessor/[id]/edit"
-                          as={`/exportProcessor/${_export.exportProcessorId}/edit`}
+                          href={`/exportProcessor/${_export.exportProcessorId}/edit`}
                         >
                           <a>{_export.exportProcessorId}</a>
                         </Link>
@@ -174,24 +170,21 @@ export default function ExportsList(props) {
                     ) : null}
                     Record:{" "}
                     <Link
-                      href="/model/[modelId]/record/[recordId]/edit"
-                      as={`/model/${_export.destination.modelId}/record/${_export.recordId}/edit`}
+                      href={`/model/${_export.destination.modelId}/record/${_export.recordId}/edit`}
                     >
                       <a>{_export.recordId}</a>
                     </Link>
                     <br />
                     Destination:{" "}
                     <EnterpriseLink
-                      href="/model/[modelId]/destination/[destinationId]/edit"
-                      as={`/model/${_export.destination.modelId}/destination/${_export.destination.id}/edit`}
+                      href={`/model/${_export.destination.modelId}/destination/${_export.destination.id}/edit`}
                     >
                       <a>{_export.destination.name}</a>
                     </EnterpriseLink>
                     <br />
                     Model:{" "}
                     <EnterpriseLink
-                      href="/model/[modelId]/edit"
-                      as={`/model/${_export.destination.modelId}/edit`}
+                      href={`/model/${_export.destination.modelId}/edit`}
                     >
                       <a>{_export.destination.modelId}</a>
                     </EnterpriseLink>

@@ -42,10 +42,7 @@ export default function Page({
             return (
               <tr key={`team-${team.id}`}>
                 <td>
-                  <EnterpriseLink
-                    href="/team/[id]/edit"
-                    as={`/team/${team.id}/edit`}
-                  >
+                  <EnterpriseLink href={`/team/${team.id}/edit`}>
                     <a>
                       <strong>{team.name}</strong>
                       {/* <br /><span className='text-muted'>{team.id}</span> */}
@@ -109,10 +106,7 @@ export default function Page({
                   />
                 </td>
                 <td>
-                  <Link
-                    href="/teamMember/[id]/edit"
-                    as={`/teamMember/${teamMember.id}/edit`}
-                  >
+                  <Link href={`/teamMember/${teamMember.id}/edit`}>
                     <a>{teamMember.email}</a>
                   </Link>
                 </td>

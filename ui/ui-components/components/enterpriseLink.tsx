@@ -7,7 +7,7 @@ const CommunityLink = function ({ children }) {
   return <span>{children}</span>;
 };
 
-export default grouparooUiEdition === "enterprise" ||
-grouparooUiEdition === "config"
+export default grouparooUiEdition() === "enterprise" ||
+grouparooUiEdition() === "config"
   ? EnterpriseLink
   : CommunityLink;

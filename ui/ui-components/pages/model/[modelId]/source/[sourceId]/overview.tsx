@@ -58,7 +58,7 @@ export default function Page({
         <Col>
           <p>
             <strong>App</strong>:{" "}
-            <Link href="/app/[id]/edit" as={`/app/${source.app.id}/edit`}>
+            <Link href={`/app/${source.app.id}/edit`}>
               <a>{source.app.name}</a>
             </Link>
             <br />
@@ -92,8 +92,7 @@ export default function Page({
                 <tr key={`rule-${rule.id}`}>
                   <td>
                     <Link
-                      href="/model/[modelId]/property/[propertyId]/edit"
-                      as={`/model/${source.modelId}/property/${rule.id}/edit`}
+                      href={`/model/${source.modelId}/property/${rule.id}/edit`}
                     >
                       <a>
                         <strong>
@@ -145,8 +144,7 @@ export default function Page({
                 <Col>
                   <p>
                     <Link
-                      href="/model/[modelId]/source/[sourceId]/schedule"
-                      as={`/model/${source.modelId}/source/${source.id}/schedule`}
+                      href={`/model/${source.modelId}/source/${source.id}/schedule`}
                     >
                       <a>{source.schedule.name}</a>
                     </Link>
@@ -169,7 +167,7 @@ export default function Page({
                     <StateBadge state={source.schedule.state} />
                   </p>
                 </Col>
-                {grouparooUiEdition !== "config" && (
+                {grouparooUiEdition() !== "config" && (
                   <Col>
                     <Alert variant="success">
                       <strong>Most Recent Run</strong>
@@ -193,10 +191,7 @@ export default function Page({
                             <p>Completed {formatTimestamp(run.completedAt)}</p>
                           ) : null}
                           <p>
-                            <Link
-                              href="/run/[id]/edit"
-                              as={`/run/${run.id}/edit`}
-                            >
+                            <Link href={`/run/${run.id}/edit`}>
                               <a>See More</a>
                             </Link>
                           </p>
@@ -207,7 +202,7 @@ export default function Page({
                     </Alert>
                   </Col>
                 )}
-                {grouparooUiEdition !== "config" && (
+                {grouparooUiEdition() !== "config" && (
                   <Col>
                     <Alert variant="info">
                       <p>

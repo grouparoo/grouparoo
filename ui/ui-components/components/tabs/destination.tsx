@@ -8,7 +8,7 @@ export default function DestinationTabs({
   destination: Models.DestinationType;
 }) {
   let tabs = [];
-  switch (grouparooUiEdition) {
+  switch (grouparooUiEdition()) {
     case "enterprise":
       tabs.push("edit");
       if (destination.state !== "draft") tabs.push("data");

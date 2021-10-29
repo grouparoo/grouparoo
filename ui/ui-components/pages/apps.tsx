@@ -83,7 +83,7 @@ export default function Page(props) {
                   <AppIcon src={app.icon} />
                 </td>
                 <td>
-                  <Link href="/app/[id]/edit" as={`/app/${app.id}/edit`}>
+                  <Link href={`/app/${app.id}/edit`}>
                     <a>
                       <strong>
                         {app.name ||

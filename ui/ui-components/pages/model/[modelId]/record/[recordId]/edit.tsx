@@ -247,7 +247,7 @@ export default function Page(props) {
               >
                 Export
               </LoadingButton>
-              {grouparooUiEdition === "config" ? (
+              {grouparooUiEdition() === "config" ? (
                 <>
                   {" "}
                   <LoadingButton
@@ -364,10 +364,9 @@ export default function Page(props) {
                     &nbsp; &nbsp;
                   </>
                 ) : null}
-                {grouparooUiEdition !== "config" ? (
+                {grouparooUiEdition() !== "config" ? (
                   <EnterpriseLink
-                    href="/model/[modelId]/group/[groupId]/members"
-                    as={`/model/${group.modelId}/group/${group.id}/members`}
+                    href={`/model/${group.modelId}/group/${group.id}/members`}
                   >
                     <a>{group.name}</a>
                   </EnterpriseLink>
@@ -379,7 +378,7 @@ export default function Page(props) {
           </ListGroup>
 
           <hr />
-          {grouparooUiEdition === "config" ? null : (
+          {grouparooUiEdition() === "config" ? null : (
             <Form onSubmit={(event) => handleAdd(event)} autoComplete="off">
               <Row>
                 <Col md={9}>

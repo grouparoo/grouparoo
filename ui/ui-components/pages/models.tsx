@@ -81,10 +81,7 @@ export default function Page(props) {
                   <ModelIcon model={model} />
                 </td>
                 <td>
-                  <EnterpriseLink
-                    href="/model/[modelId]/edit"
-                    as={`/model/${model.id}/edit`}
-                  >
+                  <EnterpriseLink href={`/model/${model.id}/edit`}>
                     <a>
                       <strong>{model.name}</strong>
                     </a>

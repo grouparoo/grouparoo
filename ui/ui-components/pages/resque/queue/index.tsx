@@ -45,12 +45,7 @@ export default function ResqueQueue(props) {
             return (
               <tr key={queue}>
                 <td>
-                  <Link
-                    href="/resque/queue/[queue]"
-                    as={`/resque/queue/${queue}`}
-                  >
-                    {queue}
-                  </Link>
+                  <Link href={`/resque/queue/${queue}`}>{queue}</Link>
                 </td>
                 <td>{queues[queue].length} jobs</td>
               </tr>

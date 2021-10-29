@@ -143,10 +143,7 @@ function groupLink(groups: Models.GroupType[], groupId: string) {
 
   if (group) {
     return (
-      <EnterpriseLink
-        href="/model/[modelId]/group/[groupId]/edit"
-        as={`/model/${group.modelId}/group/${group.id}/edit`}
-      >
+      <EnterpriseLink href={`/model/${group.modelId}/group/${group.id}/edit`}>
         <a>{group.name}</a>
       </EnterpriseLink>
     );

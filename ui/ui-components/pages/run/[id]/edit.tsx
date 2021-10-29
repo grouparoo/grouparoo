@@ -54,7 +54,7 @@ export default function Page(props) {
           <h2>Details</h2>
           <p>
             Creator:{" "}
-            <Link href="/object/[id]" as={`/object/${run.creatorId}`}>
+            <Link href={`/object/${run.creatorId}`}>
               <a>
                 {run.creatorType}: {run.creatorName}
               </a>
@@ -96,7 +96,7 @@ export default function Page(props) {
 
           <Row>
             <Col>
-              <Link href="/imports/[creatorId]" as={`/imports/${run.id}`}>
+              <Link href={`/imports/${run.id}`}>
                 <a>Imports Created: {run.importsCreated}</a>
               </Link>
               <br />

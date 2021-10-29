@@ -81,7 +81,7 @@ export default function SetupStepCard({
                       Learn More
                     </LinkButton>
                     &nbsp;&nbsp;
-                    {(grouparooUiEdition !== "community" ||
+                    {(grouparooUiEdition() !== "community" ||
                       step.showCtaOnCommunity) &&
                       step.cta && (
                         <LinkButton
@@ -94,7 +94,7 @@ export default function SetupStepCard({
                         </LinkButton>
                       )}
                   </Col>
-                  {grouparooUiEdition === "config" ? null : (
+                  {grouparooUiEdition() === "config" ? null : (
                     <Col md={6} style={{ textAlign: "right" }}>
                       {step.skipped ? (
                         <LoadingButton

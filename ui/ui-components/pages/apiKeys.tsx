@@ -72,10 +72,7 @@ export default function Page(props) {
             return (
               <tr key={`apiKey-${apiKey.id}`}>
                 <td>
-                  <Link
-                    href="/apiKey/[id]/edit"
-                    as={`/apiKey/${apiKey.id}/edit`}
-                  >
+                  <Link href={`/apiKey/${apiKey.id}/edit`}>
                     <a>
                       <strong>{apiKey.name}</strong>
                     </a>

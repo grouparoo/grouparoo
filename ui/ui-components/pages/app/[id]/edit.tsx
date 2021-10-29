@@ -192,7 +192,7 @@ export default function Page(props) {
                         ))}
                       </p>
                     )}
-                    {grouparooUiEdition === "config" && (
+                    {grouparooUiEdition() === "config" && (
                       <p className="mb-0">
                         <a
                           target="_blank"

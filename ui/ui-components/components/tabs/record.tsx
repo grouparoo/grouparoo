@@ -10,7 +10,7 @@ export default function RecordTabs({
 }) {
   const tabs = ["edit", "imports", "exports", "logs"];
 
-  if (grouparooUiEdition === "config") {
+  if (grouparooUiEdition() === "config") {
     tabs.splice(tabs.indexOf("imports"), 1);
   }
 
