@@ -25,7 +25,6 @@ describe("appRefreshQuery", () => {
       expect(appRefreshQuery.id.length).toBe(40);
       expect(appRefreshQuery.createdAt).toBeTruthy();
       expect(appRefreshQuery.updatedAt).toBeTruthy();
-      expect(appRefreshQuery.value).toBeTruthy();
     });
 
     test("creating an app data refresh creates a log entry", async () => {
@@ -140,6 +139,18 @@ describe("appRefreshQuery", () => {
       await appRefreshQuery.save();
 
       expect(spy).toHaveBeenCalledTimes(0);
+    });
+
+    test("value will only be updated in `cli:run` mode", async () => {
+      process.env.GROUPAROO_RUN_MODE = undefined;
+      const appRefreshQuery = new AppRefreshQuery({
+        appId: app.id,
+        refreshQuery: "SELECT MAX(updated_at) FROM users;",
+        state: "ready",
+      });
+      await appRefreshQuery.save();
+
+      expect(appRefreshQuery.value).toBeFalsy();
     });
 
     //this test should be last, it destroys the app
