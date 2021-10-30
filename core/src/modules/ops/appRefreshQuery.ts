@@ -25,18 +25,20 @@ export namespace AppRefreshQueryOps {
       connection,
       refreshQuery: appRefreshQuery.refreshQuery,
     });
-    const sampleValue = JSON.stringify(
-      Array.isArray(responseRows) ? responseRows[0] : responseRows
-    );
-    const originalValue = appRefreshQuery.value;
-    if (sampleValue !== originalValue) {
-      appRefreshQuery.value = sampleValue;
-      appRefreshQuery.lastChangedAt = new Date();
-    }
-    appRefreshQuery.lastConfirmedAt = new Date();
-    await appRefreshQuery.save();
+    if (process.env.GROUPAROO_RUN_MODE === "cli:run") {
+      const sampleValue = JSON.stringify(
+        Array.isArray(responseRows) ? responseRows[0] : responseRows
+      );
+      const originalValue = appRefreshQuery.value;
+      if (sampleValue !== originalValue) {
+        appRefreshQuery.value = sampleValue;
+        appRefreshQuery.lastChangedAt = new Date();
+      }
+      appRefreshQuery.lastConfirmedAt = new Date();
+      await appRefreshQuery.save();
 
-    return sampleValue !== originalValue;
+      return sampleValue !== originalValue;
+    }
   }
 
   export async function triggerSchedules(appRefreshQuery: AppRefreshQuery) {
