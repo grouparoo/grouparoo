@@ -108,12 +108,12 @@ describe("modules/codeConfig", () => {
         expect(appRefreshQueries.length).toBe(1);
       });
 
-      test("appRefreshQuery initiates first check", async () => {
+      test("appRefreshQuery does not save value/timestamp before a run", async () => {
         const appRefreshQuery = await AppRefreshQuery.findOne();
         expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hi' AS name;");
         expect(appRefreshQuery.state).toBe("ready");
 
-        expect(appRefreshQuery.value).toBeTruthy();
+        expect(appRefreshQuery.value).toBeFalsy();
       });
 
       test("sources are created", async () => {
@@ -459,14 +459,20 @@ describe("modules/codeConfig", () => {
       expect(apiKeys[0].apiKey).toBe("def456");
     });
 
-    test("an updated refreshQuery will trigger a checkRefreshQueryValue", async () => {
+    test("an updated refreshQuery will be saved", async () => {
       const appRefreshQuery = await AppRefreshQuery.findOne();
       expect(appRefreshQuery.refreshQuery).toBe(
         "SELECT MAX(stamp) FROM users;"
       );
       expect(appRefreshQuery.state).toBe("ready");
+    });
 
-      expect(appRefreshQuery.value.length).toBe(13);
+    test("an updated refreshQuery will not save a value before a run", async () => {
+      const appRefreshQuery = await AppRefreshQuery.findOne();
+      expect(appRefreshQuery.refreshQuery).toBe(
+        "SELECT MAX(stamp) FROM users;"
+      );
+      expect(appRefreshQuery.value).toBeFalsy();
     });
   });
 
