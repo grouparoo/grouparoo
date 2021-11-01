@@ -35,7 +35,6 @@
   "dependencies": {
     "@types/fs-extra": "*",
     "@types/node": "*",
-    "@types/semver": "7.3.9",
     "@types/validator": "*",
     "actionhero": "27.2.0",
     "ah-sequelize-plugin": "3.2.0",
@@ -83,6 +82,7 @@
     "@types/jest": "*",
     "@types/pacote": "11.1.1",
     "@types/pluralize": "0.0.29",
+    "@types/semver": "7.3.9",
     "@types/tar": "6.1.0",
     "csv-parse": "4.16.3",
     "jest": "27.3.1",

@@ -290,7 +290,6 @@ importers:
     dependencies:
       '@types/fs-extra': 9.0.12
       '@types/node': 16.9.1
-      '@types/semver': 7.3.9
       '@types/validator': 13.6.3
       actionhero: 27.2.0
       ah-sequelize-plugin: 3.2.0_b922b3d9f25d0bc5323a162241ab534a
@@ -337,6 +336,7 @@ importers:
       '@types/jest': 27.0.1
       '@types/pacote': 11.1.1
       '@types/pluralize': 0.0.29
+      '@types/semver': 7.3.9
       '@types/tar': 6.1.0
       csv-parse: 4.16.3
       jest: 27.3.1_ts-node@10.2.1
@@ -4208,7 +4208,7 @@ packages:
 
   /@types/semver/7.3.9:
     resolution: {integrity: sha512-L/TMpyURfBkf+o/526Zb6kd/tchUP3iBDEPjqjb+U2MAJhVRxxrmr2fwpe08E7QsV7YLcpq0tUaQ9O9x97ZIxQ==}
-    dev: false
+    dev: true
 
   /@types/sqlite3/3.1.7:
     resolution: {integrity: sha512-8FHV/8Uzd7IwdHm5mvmF2Aif4aC/gjrt4axWD9SmfaxITnOjtOhCbOSTuqv/VbH1uq0QrwlaTj9aTz3gmR6u4w==}
