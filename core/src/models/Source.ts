@@ -376,6 +376,10 @@ export class Source extends LoggedModel<Source> {
     return configObject;
   }
 
+  async afterSetMapping() {
+    await Source.updateRuleDirectMappings(this);
+  }
+
   // --- Class Methods --- //
 
   static async findById(id: string) {
