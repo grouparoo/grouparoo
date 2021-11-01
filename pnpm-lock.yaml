@@ -543,7 +543,7 @@ importers:
       '@types/node': '*'
       actionhero: 27.1.5
       axios: 0.22.0
-      customerio-node: 3.0.3
+      customerio-node: 3.1.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
@@ -554,7 +554,7 @@ importers:
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      customerio-node: 3.0.3
+      customerio-node: 3.1.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -611,7 +611,7 @@ importers:
       glob: 7.1.7
       isomorphic-fetch: 3.0.0
       jest: 27.1.0
-      mongodb: 4.1.2
+      mongodb: 4.1.3
       mysql: 2.18.1
       pg: 8.7.1
       prettier: 2.4.1
@@ -626,7 +626,7 @@ importers:
       fs-extra: 10.0.0
       glob: 7.1.7
       isomorphic-fetch: 3.0.0
-      mongodb: 4.1.2
+      mongodb: 4.1.3
       mysql: 2.18.1
       pg: 8.7.1
       prettier: 2.4.1
@@ -1045,14 +1045,14 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.1.0
-      mongodb: 4.1.2
+      mongodb: 4.1.3
       prettier: 2.4.1
       sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      mongodb: 4.1.2
+      mongodb: 4.1.3
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1108,12 +1108,12 @@ importers:
       '@types/node': '*'
       actionhero: 27.1.5
       jest: 27.1.0
-      newrelic: 8.4.0
+      newrelic: 8.5.0
       prettier: 2.4.1
       ts-jest: 27.0.5
       typescript: 4.4.3
     dependencies:
-      newrelic: 8.4.0
+      newrelic: 8.5.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1344,13 +1344,13 @@ importers:
       jest: 27.1.0
       nock: 13.1.3
       prettier: 2.4.1
-      sailthru-client: 3.0.5
+      sailthru-client: 3.0.6
       sequelize: 6.6.2
       ts-jest: 27.0.5
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      sailthru-client: 3.0.5
+      sailthru-client: 3.0.6
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1406,7 +1406,7 @@ importers:
       '@grouparoo/app-templates': 0.7.3-alpha.1
       '@grouparoo/core': 0.7.3-alpha.1
       '@grouparoo/spec-helper': 0.7.3-alpha.1
-      '@sendgrid/client': 7.4.7
+      '@sendgrid/client': 7.5.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.1.5
@@ -1420,7 +1420,7 @@ importers:
       typescript: 4.4.3
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      '@sendgrid/client': 7.4.7
+      '@sendgrid/client': 7.5.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -3349,22 +3349,22 @@ packages:
   /@napi-rs/triples/1.0.3:
     resolution: {integrity: sha512-jDJTpta+P4p1NZTFVLHJ/TLFVYVcOqv6l8xwOeBKNPMgY/zDYH/YH7SJbvrr/h1RcS9GzbPcLKGzpuK9cV56UA==}
 
-  /@newrelic/aws-sdk/4.0.1_newrelic@8.4.0:
+  /@newrelic/aws-sdk/4.0.1_newrelic@8.5.0:
     resolution: {integrity: sha512-6pjPHKODTMItaO6zHDSR3HH7ohvUP9zzQf2pKMKdU4lB/1HV2+Xf6r92X96zPmGQsAnCP9xhgbseUklHD00a1Q==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       newrelic: '>=6.11.0'
     dependencies:
-      newrelic: 8.4.0
+      newrelic: 8.5.0
     dev: false
 
-  /@newrelic/koa/6.0.1_newrelic@8.4.0:
+  /@newrelic/koa/6.0.1_newrelic@8.5.0:
     resolution: {integrity: sha512-LrM0wLBcdngkL6gfAyqlBciqncZJ/Z2DhHCvKQbYSqwG0UxUZ5EZyYqkmU28UIFAdC6ag/6QDEFwYg3PXwJbzQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       newrelic: '>=6.11.0'
     dependencies:
-      newrelic: 8.4.0
+      newrelic: 8.5.0
     dev: false
 
   /@newrelic/native-metrics/7.0.2:
@@ -3377,13 +3377,13 @@ packages:
     dev: false
     optional: true
 
-  /@newrelic/superagent/5.0.1_newrelic@8.4.0:
+  /@newrelic/superagent/5.0.1_newrelic@8.5.0:
     resolution: {integrity: sha512-Efn/G0OohcjDkNEgH/eqiie8boWYMFVT++zxHquIj7I8FdTd2ZoKzcxS2lbkbEAKKXO54o8+cShJTwpptkAdGg==}
     engines: {node: '>=12.0'}
     peerDependencies:
       newrelic: '>=6.11.0'
     dependencies:
-      newrelic: 8.4.0
+      newrelic: 8.5.0
     dev: false
 
   /@next/env/11.1.2:
@@ -3713,18 +3713,18 @@ packages:
     resolution: {integrity: sha512-Myxw//kzromB9yWgS8qYGuGVf91oBUUJpNvy5eM50sqvmKLbKjwLxohJnkWGTeeI9v9IBMtPLxz5Gc60FIfvCA==}
     dev: true
 
-  /@sendgrid/client/7.4.7:
-    resolution: {integrity: sha512-Zh3H/nCyI2+MaAZW9KJpyk6JXfxE27W+mR636Hju/GX95SR7+uymeuLLJ3GtLvtapLTl8l6/0YoHjzlg65xtqg==}
+  /@sendgrid/client/7.5.0:
+    resolution: {integrity: sha512-tu2l3a1Egp65hRsDdX6qUHvpZydZvgEL7PLViQh4uu5DTqztpNCyw0UQYkyPYyXInWJjLax12UOciTG2V/s4OQ==}
     engines: {node: 6.* || 8.* || >=10.*}
     dependencies:
-      '@sendgrid/helpers': 7.4.6
+      '@sendgrid/helpers': 7.5.0
       axios: 0.21.4
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@sendgrid/helpers/7.4.6:
-    resolution: {integrity: sha512-Vvt4d60fkU/DPSwMyxXtlnbw4/B+5Y9eeYnygTxhmw8TNzUhdPphr7SaRSperWJ8P1VeQZzobvQNyMj5E7A3UA==}
+  /@sendgrid/helpers/7.5.0:
+    resolution: {integrity: sha512-uzCzpougTDKifyVksx5obZtMcEypq7UVAon/FLurrGEncGrx/N4bYDGPo4chmEdHAZvN75fpavyfETx3DZYebg==}
     engines: {node: '>= 6.0.0'}
     dependencies:
       deepmerge: 4.2.2
@@ -4426,6 +4426,7 @@ packages:
     engines: {node: '>= 4.0.0'}
     dependencies:
       es6-promisify: 5.0.0
+    dev: true
 
   /agent-base/4.3.0:
     resolution: {integrity: sha512-salcGninV0nPrwpGNn4VTXBb1SOuXQBiqbrNXoeizJsHrsL6ERFM2Ne3JUSBWRE6aeNJI2ROP/WEEIDUiDe3cg==}
@@ -4759,13 +4760,6 @@ packages:
 
   /ast-types/0.13.4:
     resolution: {integrity: sha512-x1FCFnFifvYDDzTaLII71vG5uvDwgtmDTEVWAxrgeiR8VjMONcCXJx7E+USjDtHlwFmt9MysbqgF9b9Vjr6w+w==}
-    engines: {node: '>=4'}
-    dependencies:
-      tslib: 2.3.1
-    dev: false
-
-  /ast-types/0.14.2:
-    resolution: {integrity: sha512-O0yuUDnZeQDL+ncNGlJ78BiO4jnYI3bvMsD5prT0/nsgijG/LpNBIr63gTjVTNsiGkgQhiyCShTgxt8oXOrklA==}
     engines: {node: '>=4'}
     dependencies:
       tslib: 2.3.1
@@ -6067,8 +6061,8 @@ packages:
       nub: 0.0.0
     dev: false
 
-  /customerio-node/3.0.3:
-    resolution: {integrity: sha512-h4AL4A0eMLOYKFZD730RSF8rXwUyq+V/6lmFAtRz7uXLRU08aKyhThtHAcihW17xjlQp7CQMug4plYJNOjE9iQ==}
+  /customerio-node/3.1.0:
+    resolution: {integrity: sha512-aA27xJFUQT4KvDb8ihzNs4mH0GVdopCkBFMC95uFS+/k/LUTHiQcT3A7q+SHGoAvXrApm3fCdCijQiu2BjxABg==}
     dev: false
 
   /d3-array/2.12.1:
@@ -6137,10 +6131,6 @@ packages:
     engines: {node: '>=0.10'}
     dependencies:
       assert-plus: 1.0.0
-
-  /data-uri-to-buffer/1.2.0:
-    resolution: {integrity: sha512-vKQ9DTQPN1FLYiiEEOQ6IBGFqvjCa5rSK3cWMy/Nespm5d/x3dGFT9UBZnkLxCwua/IXBi2TYnwTEpsOvhC4UQ==}
-    dev: false
 
   /data-uri-to-buffer/3.0.1:
     resolution: {integrity: sha512-WboRycPNsVw3B3TL559F7kuBUM4d8CgMEvk6xEJlOp7OBPjt6G7z8WMWlD2rOFZLk6OYfFIUGsCOWzcQH9K2og==}
@@ -6271,14 +6261,6 @@ packages:
     dependencies:
       object-keys: 1.1.1
 
-  /degenerator/1.0.4:
-    resolution: {integrity: sha1-/PSQo37OJmRk2cxDGrmMWBnO0JU=}
-    dependencies:
-      ast-types: 0.14.2
-      escodegen: 1.14.3
-      esprima: 3.1.3
-    dev: false
-
   /degenerator/2.2.0:
     resolution: {integrity: sha512-aiQcQowF01RxFI4ZLFMpzyotbQonhNpBao6dkI8JPk5a+hmSjR5ErHp2CQySmQe8os3VBqLCIh87nDBgZXvsmg==}
     engines: {node: '>= 6'}
@@ -6286,6 +6268,16 @@ packages:
       ast-types: 0.13.4
       escodegen: 1.14.3
       esprima: 4.0.1
+    dev: false
+
+  /degenerator/3.0.1:
+    resolution: {integrity: sha512-LFsIFEeLPlKvAKXu7j3ssIG6RT0TbI7/GhsqrI0DnHASEQjXQ0LUSYcjJteGgRGmZbl1TnMSxpNQIAiJ7Du5TQ==}
+    engines: {node: '>= 6'}
+    dependencies:
+      ast-types: 0.13.4
+      escodegen: 1.14.3
+      esprima: 4.0.1
+      vm2: 3.9.5
     dev: false
 
   /delayed-stream/1.0.0:
@@ -6970,12 +6962,6 @@ packages:
       eslint-visitor-keys: 1.3.0
     dev: true
 
-  /esprima/3.1.3:
-    resolution: {integrity: sha1-/cpRzuYTOJXjyI1TXOSdv/YqRjM=}
-    engines: {node: '>=4'}
-    hasBin: true
-    dev: false
-
   /esprima/4.0.1:
     resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
     engines: {node: '>=4'}
@@ -7219,10 +7205,6 @@ packages:
     dependencies:
       flat-cache: 3.0.4
     dev: true
-
-  /file-uri-to-path/1.0.0:
-    resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
-    dev: false
 
   /file-uri-to-path/2.0.0:
     resolution: {integrity: sha512-hjPFI8oE/2iQPVe4gbrJ73Pp+Xfub2+WI2LlXDbsaJBwT5wuMh35WNWVYYTpnz895shtwfyutMFLFywpQAFdLg==}
@@ -7626,17 +7608,6 @@ packages:
     dependencies:
       call-bind: 1.0.2
       get-intrinsic: 1.1.1
-
-  /get-uri/2.0.4:
-    resolution: {integrity: sha512-v7LT/s8kVjs+Tx0ykk1I+H/rbpzkHvuIq87LmeXptcf5sNWm9uQiwjNAt94SJPA1zOlCntmnOlJvVWKmzsxG8Q==}
-    dependencies:
-      data-uri-to-buffer: 1.2.0
-      debug: 2.6.9
-      extend: 3.0.2
-      file-uri-to-path: 1.0.0
-      ftp: 0.3.10
-      readable-stream: 2.3.7
-    dev: false
 
   /get-uri/3.0.2:
     resolution: {integrity: sha512-+5s0SJbGoyiJTZZ2JTpFPLMPSch72KEqGOTvQsBqg0RBWvwhWUSYZFAtz3TPW0GXJuLBJPts1E241iHg+VRfhg==}
@@ -8080,14 +8051,6 @@ packages:
 
   /http-parser-js/0.5.3:
     resolution: {integrity: sha512-t7hjvef/5HEK7RWTdUzVUhl8zkEu+LlaE0IYzdMuvbSDipxBRpOn4Uhw8ZyECEa808iVT8XCjzo6xmYt4CiLZg==}
-    dev: false
-
-  /http-proxy-agent/2.1.0:
-    resolution: {integrity: sha512-qwHbBLV7WviBl0rQsOzH6o5lwyOIvwp/BdFnvVxXORldu5TmjFfjzBcWUWS5kWAZhmv+JtiDhSuQCp4sBfbIgg==}
-    engines: {node: '>= 4.5.0'}
-    dependencies:
-      agent-base: 4.3.0
-      debug: 3.1.0
     dev: false
 
   /http-proxy-agent/3.0.0:
@@ -10629,8 +10592,8 @@ packages:
       whatwg-url: 9.1.0
     dev: false
 
-  /mongodb/4.1.2:
-    resolution: {integrity: sha512-pHCKDoOy1h6mVurziJmXmTMPatYWOx8pbnyFgSgshja9Y36Q+caHUzTDY6rrIy9HCSrjnbXmx3pCtvNZHmR8xg==}
+  /mongodb/4.1.3:
+    resolution: {integrity: sha512-lHvTqODBiSpuqjpCj48DOyYWS6Iq6ElJNUiH9HWdQtONyOfjgsKzJULipWduMGsSzaNO4nFi/kmlMFCLvjox/Q==}
     engines: {node: '>=12.9.0'}
     dependencies:
       bson: 4.5.2
@@ -10787,26 +10750,21 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
-  /netmask/1.0.6:
-    resolution: {integrity: sha1-ICl+idhvb2QA8lDZ9Pa0wZRfzTU=}
-    engines: {node: '>= 0.4.0'}
-    dev: false
-
   /netmask/2.0.2:
     resolution: {integrity: sha512-dBpDMdxv9Irdq66304OLfEmQ9tbNRFnFTuZiLo+bD+r332bBmMJ8GBLXklIXXgxd3+v9+KUnZaUR5PJMa75Gsg==}
     engines: {node: '>= 0.4.0'}
     dev: false
 
-  /newrelic/8.4.0:
-    resolution: {integrity: sha512-ODXBav4NtBnXgRFkVk4iEk6L6S9kdRGp00dTufb1TY2BivziuPd9CdP596T5Z992bFoZP8SjXYUGoeExNjddpw==}
+  /newrelic/8.5.0:
+    resolution: {integrity: sha512-7A5BysogvdwRb5bAJ1apctVObMG5XyqGPsYbSWA+COUL3iSr6BV0n71VzSEdrqoP+wwf2Cl0G+pb3i1E+J0dBA==}
     engines: {node: '>=12.0.0', npm: '>=6.0.0'}
     hasBin: true
     dependencies:
       '@grpc/grpc-js': 1.3.7
       '@grpc/proto-loader': 0.5.6
-      '@newrelic/aws-sdk': 4.0.1_newrelic@8.4.0
-      '@newrelic/koa': 6.0.1_newrelic@8.4.0
-      '@newrelic/superagent': 5.0.1_newrelic@8.4.0
+      '@newrelic/aws-sdk': 4.0.1_newrelic@8.5.0
+      '@newrelic/koa': 6.0.1_newrelic@8.5.0
+      '@newrelic/superagent': 5.0.1_newrelic@8.5.0
       '@tyriar/fibonacci-heap': 2.0.9
       async: 3.2.1
       concat-stream: 2.0.0
@@ -11765,21 +11723,6 @@ packages:
       p-reduce: 2.1.0
     dev: true
 
-  /pac-proxy-agent/3.0.1:
-    resolution: {integrity: sha512-44DUg21G/liUZ48dJpUSjZnFfZro/0K5JTyFYLBcmh9+T6Ooi4/i4efwUiEy0+4oQusCBqWdhv16XohIj1GqnQ==}
-    dependencies:
-      agent-base: 4.3.0
-      debug: 4.3.2
-      get-uri: 2.0.4
-      http-proxy-agent: 2.1.0
-      https-proxy-agent: 3.0.1
-      pac-resolver: 3.0.0
-      raw-body: 2.4.1
-      socks-proxy-agent: 4.0.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /pac-proxy-agent/4.1.0:
     resolution: {integrity: sha512-ejNgYm2HTXSIYX9eFlkvqFp8hyJ374uDf0Zq5YUAifiSh1D6fo+iBivQZirGvVv8dCYUsLhmLBRhlAYvBKI5+Q==}
     engines: {node: '>= 6'}
@@ -11797,14 +11740,21 @@ packages:
       - supports-color
     dev: false
 
-  /pac-resolver/3.0.0:
-    resolution: {integrity: sha512-tcc38bsjuE3XZ5+4vP96OfhOugrX+JcnpUbhfuc4LuXBLQhoTthOstZeoQJBDnQUDYzYmdImKsbz0xSl1/9qeA==}
+  /pac-proxy-agent/5.0.0:
+    resolution: {integrity: sha512-CcFG3ZtnxO8McDigozwE3AqAw15zDvGH+OjXO4kzf7IkEKkQ4gxQ+3sdF50WmhQ4P/bVusXcqNE2S3XrNURwzQ==}
+    engines: {node: '>= 8'}
     dependencies:
-      co: 4.6.0
-      degenerator: 1.0.4
-      ip: 1.1.5
-      netmask: 1.0.6
-      thunkify: 2.1.2
+      '@tootallnate/once': 1.1.2
+      agent-base: 6.0.2
+      debug: 4.3.2
+      get-uri: 3.0.2
+      http-proxy-agent: 4.0.1
+      https-proxy-agent: 5.0.0
+      pac-resolver: 5.0.0
+      raw-body: 2.4.1
+      socks-proxy-agent: 5.0.1
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /pac-resolver/4.2.0:
@@ -11812,6 +11762,15 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       degenerator: 2.2.0
+      ip: 1.1.5
+      netmask: 2.0.2
+    dev: false
+
+  /pac-resolver/5.0.0:
+    resolution: {integrity: sha512-H+/A6KitiHNNW+bxBKREk2MCGSxljfqRX76NjummWEYIat7ldVXRU3dhRIE3iXZ0nvGBk6smv3nntxKkzRL8NA==}
+    engines: {node: '>= 8'}
+    dependencies:
+      degenerator: 3.0.1
       ip: 1.1.5
       netmask: 2.0.2
     dev: false
@@ -12384,22 +12343,6 @@ packages:
     resolution: {integrity: sha512-IgjKyaUSjsROSO8/D49Ab7hP8mJgTYcqApOqdPhLoPxAplXmkp+zRvsrSQjFn5by0rhm4VH0GAUELIPpx7B1yg==}
     dev: true
 
-  /proxy-agent/3.1.1:
-    resolution: {integrity: sha512-WudaR0eTsDx33O3EJE16PjBRZWcX8GqCEeERw1W3hZJgH/F2a46g7jty6UGty6NeJ4CKQy8ds2CJPMiyeqaTvw==}
-    engines: {node: '>=6'}
-    dependencies:
-      agent-base: 4.3.0
-      debug: 4.3.2
-      http-proxy-agent: 2.1.0
-      https-proxy-agent: 3.0.1
-      lru-cache: 5.1.1
-      pac-proxy-agent: 3.0.1
-      proxy-from-env: 1.1.0
-      socks-proxy-agent: 4.0.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /proxy-agent/4.0.1:
     resolution: {integrity: sha512-ODnQnW2jc/FUVwHHuaZEfN5otg/fMbvMxz9nMSUQfJ9JU7q2SZvSULSsjLloVgJOiv9yhc8GlNMKc4GkFmcVEA==}
     engines: {node: '>=6'}
@@ -12410,6 +12353,22 @@ packages:
       https-proxy-agent: 5.0.0
       lru-cache: 5.1.1
       pac-proxy-agent: 4.1.0
+      proxy-from-env: 1.1.0
+      socks-proxy-agent: 5.0.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /proxy-agent/5.0.0:
+    resolution: {integrity: sha512-gkH7BkvLVkSfX9Dk27W6TyNOWWZWRilRfk1XxGNWOYJ2TuedAv1yFpCaU9QSBmBe716XOTNpYNOzhysyw8xn7g==}
+    engines: {node: '>= 8'}
+    dependencies:
+      agent-base: 6.0.2
+      debug: 4.3.2
+      http-proxy-agent: 4.0.1
+      https-proxy-agent: 5.0.0
+      lru-cache: 5.1.1
+      pac-proxy-agent: 5.0.0
       proxy-from-env: 1.1.0
       socks-proxy-agent: 5.0.1
     transitivePeerDependencies:
@@ -13334,12 +13293,12 @@ packages:
   /safer-buffer/2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  /sailthru-client/3.0.5:
-    resolution: {integrity: sha512-l6qwrVM9IAyuaNwDsL1NT7FS0I4DHJbdRTPVek9pjCjb2pU2Ld5vqreHB/YFddrMw/80c4TM9hX3ADqXGo6ddA==}
+  /sailthru-client/3.0.6:
+    resolution: {integrity: sha512-zjAQKafJacSIGxy36SkT0f4EimgoIyx6yP3SoEZIHSPyxTcD+4XGa5DqCEP7MvhZcgedivbZ1QF5kIlXUC0sMQ==}
     engines: {node: '>=0.4'}
     dependencies:
       grunt-cli: 1.4.3
-      proxy-agent: 3.1.1
+      proxy-agent: 5.0.0
       restler-base: 3.4.6
     transitivePeerDependencies:
       - supports-color
@@ -13837,6 +13796,7 @@ packages:
     dependencies:
       agent-base: 4.2.1
       socks: 2.3.3
+    dev: true
 
   /socks-proxy-agent/5.0.1:
     resolution: {integrity: sha512-vZdmnjb9a2Tz6WEQVIurybSwElwPxMZaIc7PzqbJTrezcKNznv6giT7J7tZDZ1BojVaa1jvO/UiUdhDVB0ACoQ==}
@@ -13864,6 +13824,7 @@ packages:
     dependencies:
       ip: 1.1.5
       smart-buffer: 4.2.0
+    dev: true
 
   /socks/2.6.1:
     resolution: {integrity: sha512-kLQ9N5ucj8uIcxrDwjm0Jsqk06xdpBjGNQtpXy4Q8/QY2k+fY7nZH8CARy+hkbG+SGAovmzzuauCpBlb8FrnBA==}
@@ -14571,10 +14532,6 @@ packages:
     dependencies:
       readable-stream: 3.6.0
     dev: true
-
-  /thunkify/2.1.2:
-    resolution: {integrity: sha1-+qDp0jDFGsyVyhOjYawFyn4EVT0=}
-    dev: false
 
   /timers-browserify/2.0.12:
     resolution: {integrity: sha512-9phl76Cqm6FhSX9Xe1ZUAMLtm1BLkKj2Qd5ApyWkXzsMRaA7dgr81kf4wJmQf/hAvg8EEyJxDo3du/0KlhPiKQ==}
