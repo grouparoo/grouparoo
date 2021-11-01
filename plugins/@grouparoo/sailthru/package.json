@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.7.3-alpha.1",
-    "sailthru-client": "3.0.5"
+    "sailthru-client": "3.0.6"
   },
   "devDependencies": {
     "@grouparoo/core": "0.7.3-alpha.1",
