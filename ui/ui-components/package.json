@@ -29,7 +29,7 @@
     "@fortawesome/fontawesome-svg-core": "1.2.36",
     "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "5.15.4",
-    "@fortawesome/react-fontawesome": "0.1.15",
+    "@fortawesome/react-fontawesome": "0.1.16",
     "@grouparoo/core": "0.7.3-alpha.1",
     "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "12.1.2",
