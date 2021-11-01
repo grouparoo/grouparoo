@@ -608,7 +608,6 @@ describe("models/source", () => {
     });
 
     test("directlyMapped will be updated for source properties after setting the mapping", async () => {
-      // const property1 = await helper.factories.property(source);
       const firstSource = await Source.findOne({
         where: { id: { [Op.ne]: source.id } },
       });
