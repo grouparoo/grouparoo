@@ -24,8 +24,13 @@ export default function SetupStepCard({
     await execApi("put", `/setupStep/${step.id}`, {
       skipped: !step.skipped,
     });
-    await reload();
-    setLoading(false);
+
+    try {
+      await reload();
+    } finally {
+      setLoading(false);
+    }
+
     setActiveKey(step.skipped ? "0" : null);
   }
 

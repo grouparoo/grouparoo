@@ -491,9 +491,7 @@ export default function Page(props) {
             variant="outline-dark"
             size="sm"
             hideOn={["config"]}
-            onClick={async () => {
-              await getCounts(false);
-            }}
+            onClick={() => getCounts(false)}
           >
             Count Potential Group Members
           </LoadingButton>

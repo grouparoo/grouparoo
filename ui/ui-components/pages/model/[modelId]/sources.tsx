@@ -82,7 +82,6 @@ export default function Page(props) {
         successHandler.set({ message: `run ${response.run.id} enqueued` });
       }
     } finally {
-      console.log("FALSE");
       setLoading(false);
     }
   }

@@ -106,7 +106,7 @@ export default function Page(props) {
         ]}
       />
 
-      {group.type === "calculated" && grouparooUiEdition() !== "config" ? (
+      {group.type === "calculated" && grouparooUiEdition() !== "config" && (
         <Row>
           <Col>
             <strong>Last Member Calculation</strong>:{" "}
@@ -126,7 +126,7 @@ export default function Page(props) {
             <br />
           </Col>
         </Row>
-      ) : null}
+      )}
       <Row>
         <Col>
           <Form id="form" onSubmit={submit} autoComplete="off">

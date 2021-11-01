@@ -247,7 +247,7 @@ export default function Page(props) {
               >
                 Export
               </LoadingButton>
-              {grouparooUiEdition() === "config" ? (
+              {grouparooUiEdition() === "config" && (
                 <>
                   {" "}
                   <LoadingButton
@@ -260,7 +260,7 @@ export default function Page(props) {
                     Remove Sample Record
                   </LoadingButton>
                 </>
-              ) : null}
+              )}
             </Col>
           </Row>
         </Col>
@@ -378,7 +378,7 @@ export default function Page(props) {
           </ListGroup>
 
           <hr />
-          {grouparooUiEdition() === "config" ? null : (
+          {grouparooUiEdition() !== "config" && (
             <Form onSubmit={(event) => handleAdd(event)} autoComplete="off">
               <Row>
                 <Col md={9}>

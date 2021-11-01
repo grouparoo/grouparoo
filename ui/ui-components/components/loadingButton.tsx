@@ -4,8 +4,8 @@ import Loader from "./loader";
 
 export default function LoadingButton(
   props: ButtonProps & {
-    displayOn?: Array<GrouparooUIEdition>;
-    hideOn?: Array<GrouparooUIEdition>;
+    displayOn?: GrouparooUIEdition[];
+    hideOn?: GrouparooUIEdition[];
   }
 ) {
   const { children, displayOn, hideOn, ...buttonProps } = props;
