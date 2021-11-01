@@ -237,7 +237,7 @@ importers:
       '@types/node': '*'
       '@types/pacote': 11.1.1
       '@types/pluralize': 0.0.29
-      '@types/tar': 4.0.5
+      '@types/tar': 6.1.0
       '@types/validator': '*'
       actionhero: 27.1.5
       ah-sequelize-plugin: 3.2.0
@@ -335,7 +335,7 @@ importers:
       '@types/jest': 27.0.1
       '@types/pacote': 11.1.1
       '@types/pluralize': 0.0.29
-      '@types/tar': 4.0.5
+      '@types/tar': 6.1.0
       csv-parse: 4.16.3
       jest: 27.1.0_ts-node@10.2.1
       jest-fetch-mock: 3.0.3
@@ -4198,8 +4198,8 @@ packages:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
     dev: true
 
-  /@types/tar/4.0.5:
-    resolution: {integrity: sha512-cgwPhNEabHaZcYIy5xeMtux2EmYBitfqEceBUi2t5+ETy4dW6kswt6WX4+HqLeiiKOo42EXbGiDmVJ2x+vi37Q==}
+  /@types/tar/6.1.0:
+    resolution: {integrity: sha512-uTZKMW7ZkdTJXX4+Bsp0ko9N7B5/NJ5wJRW14XTb6KNN+9i2NPel6iPKp8rTQahMW46BM9tM52dTeMSldB55og==}
     dependencies:
       '@types/minipass': 3.1.0
       '@types/node': 16.9.1
