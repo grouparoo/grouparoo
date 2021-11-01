@@ -25,23 +25,29 @@ export namespace AppRefreshQueryOps {
       connection,
       refreshQuery: appRefreshQuery.refreshQuery,
     });
-    if (process.env.GROUPAROO_RUN_MODE === "cli:run") {
-      const sampleValue = JSON.stringify(
-        Array.isArray(responseRows) ? responseRows[0] : responseRows
-      );
-      const originalValue = appRefreshQuery.value;
-      if (sampleValue !== originalValue) {
-        appRefreshQuery.value = sampleValue;
-        appRefreshQuery.lastChangedAt = new Date();
-      }
-      appRefreshQuery.lastConfirmedAt = new Date();
-      await appRefreshQuery.save();
+    const sampleValue = JSON.stringify(
+      Array.isArray(responseRows) ? responseRows[0] : responseRows
+    );
 
-      return sampleValue !== originalValue;
-    }
+    if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
+    if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
+
+    appRefreshQuery.lastConfirmedAt = new Date();
+    await appRefreshQuery.save();
+
+    return sampleValue;
   }
 
-  export async function triggerSchedules(appRefreshQuery: AppRefreshQuery) {
+  export async function triggerSchedules(
+    appRefreshQuery: AppRefreshQuery,
+    sampleValue
+  ) {
+    if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
+    if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
+
+    appRefreshQuery.value = sampleValue;
+    appRefreshQuery.lastChangedAt = new Date();
+
     const sources: Source[] = await Source.findAll({
       where: { appId: appRefreshQuery.appId },
     });

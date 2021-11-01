@@ -105,17 +105,15 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
 
   @AfterSave
   static async runCheckIfNewQuery(instance: AppRefreshQuery) {
-    if (
-      instance.changed("refreshQuery") &&
-      !instance.changed("lastConfirmedAt") &&
-      instance.state === "ready"
-    ) {
-      const isUpdated = await AppRefreshQueryOps.checkRefreshQueryValue(
+    if (instance.state === "ready") {
+      //should only check, not save anything yet
+      const sampleValue = await AppRefreshQueryOps.checkRefreshQueryValue(
         instance
       );
-      if (isUpdated === true) {
+      if (sampleValue !== instance.value) {
+        //save the thing and (if in run mode not validate or apply)
+        await AppRefreshQueryOps.triggerSchedules(instance, sampleValue);
       }
-      await AppRefreshQueryOps.triggerSchedules(instance);
     }
   }
 
