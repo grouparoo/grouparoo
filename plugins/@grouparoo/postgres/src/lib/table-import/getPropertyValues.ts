@@ -89,7 +89,16 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   query += ` ${inClause}`;
   addAnd = true;
 
-  if (groupByColumns.length > 0) {
+  if (
+    groupByColumns.length &&
+    [
+      AggregationMethod.Sum,
+      AggregationMethod.Count,
+      AggregationMethod.Average,
+      AggregationMethod.Max,
+      AggregationMethod.Min,
+    ].includes(aggregationMethod)
+  ) {
     query += ` GROUP BY %I`;
     params.push(groupByColumns);
   }
