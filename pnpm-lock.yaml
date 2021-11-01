@@ -237,6 +237,7 @@ importers:
       '@types/node': '*'
       '@types/pacote': 11.1.1
       '@types/pluralize': 0.0.29
+      '@types/semver': 7.3.9
       '@types/tar': 6.1.0
       '@types/validator': '*'
       actionhero: 27.2.0
@@ -244,7 +245,6 @@ importers:
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
-      compare-versions: 3.6.0
       csv-parse: 4.16.3
       csv-stringify: 5.6.5
       date-fns: 2.25.0
@@ -272,6 +272,7 @@ importers:
       pluralize: 8.0.0
       prettier: 2.4.1
       reflect-metadata: 0.1.13
+      semver: 7.3.5
       sequelize: 6.9.0
       sequelize-typescript: 2.1.1
       sqlite3: 5.0.2
@@ -289,13 +290,13 @@ importers:
     dependencies:
       '@types/fs-extra': 9.0.12
       '@types/node': 16.9.1
+      '@types/semver': 7.3.9
       '@types/validator': 13.6.3
       actionhero: 27.2.0
       ah-sequelize-plugin: 3.2.0_b922b3d9f25d0bc5323a162241ab534a
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
-      compare-versions: 3.6.0
       csv-stringify: 5.6.5
       date-fns: 2.25.0
       dotenv: 10.0.0
@@ -319,6 +320,7 @@ importers:
       pluralize: 8.0.0
       prettier: 2.4.1
       reflect-metadata: 0.1.13
+      semver: 7.3.5
       sequelize: 6.9.0_98f032adade92d92d5295670c0365597
       sequelize-typescript: 2.1.1_b88a27102474ed3f99b8f661826c7ac1
       sqlite3: 5.0.2
@@ -4204,6 +4206,10 @@ packages:
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
 
+  /@types/semver/7.3.9:
+    resolution: {integrity: sha512-L/TMpyURfBkf+o/526Zb6kd/tchUP3iBDEPjqjb+U2MAJhVRxxrmr2fwpe08E7QsV7YLcpq0tUaQ9O9x97ZIxQ==}
+    dev: false
+
   /@types/sqlite3/3.1.7:
     resolution: {integrity: sha512-8FHV/8Uzd7IwdHm5mvmF2Aif4aC/gjrt4axWD9SmfaxITnOjtOhCbOSTuqv/VbH1uq0QrwlaTj9aTz3gmR6u4w==}
     dependencies:
@@ -5705,10 +5711,6 @@ packages:
       array-ify: 1.0.0
       dot-prop: 5.3.0
     dev: true
-
-  /compare-versions/3.6.0:
-    resolution: {integrity: sha512-W6Af2Iw1z4CB7q4uU4hv646dW9GQuBM+YpC0UvUCWSD8w90SJjp+ujJuXaEMtAXBtSqGfMPuFOVn4/+FlaqfBA==}
-    dev: false
 
   /component-emitter/1.3.0:
     resolution: {integrity: sha512-Rd3se6QB+sO1TwqZjscQrurpEPIfO0/yYnSin6Q/rD3mOutHvUrCAhJub3r90uNb+SESBuE0QYoB90YdfatsRg==}
