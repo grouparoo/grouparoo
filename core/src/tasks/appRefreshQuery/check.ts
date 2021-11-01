@@ -23,11 +23,14 @@ export class AppRefreshQueryCheck extends CLSTask {
       });
 
       if (app) {
-        const isUpdated = await AppRefreshQueryOps.checkRefreshQueryValue(
+        const sampleValue = await AppRefreshQueryOps.checkRefreshQueryValue(
           appRefreshQuery
         );
-        if (isUpdated)
-          await AppRefreshQueryOps.triggerSchedules(appRefreshQuery);
+        if (sampleValue !== appRefreshQuery.value)
+          await AppRefreshQueryOps.triggerSchedules(
+            appRefreshQuery,
+            sampleValue
+          );
       }
     }
   }
