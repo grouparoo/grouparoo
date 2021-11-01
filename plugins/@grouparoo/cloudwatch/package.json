@@ -30,7 +30,7 @@
   "dependencies": {
     "aws-sdk": "2.998.0",
     "winston": "3.3.3",
-    "winston-cloudwatch": "3.0.2"
+    "winston-cloudwatch": "3.1.1"
   },
   "devDependencies": {
     "@grouparoo/core": "0.7.3-alpha.1",
