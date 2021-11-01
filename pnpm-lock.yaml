@@ -279,7 +279,7 @@ importers:
       ts-jest: 27.0.5
       ts-node: 10.2.1
       type-fest: 2.5.2
-      typedoc: 0.22.4
+      typedoc: 0.22.7
       typescript: 4.4.3
       umzug: v3.0.0-beta.5
       uuid: 8.3.2
@@ -342,7 +342,7 @@ importers:
       nock: 13.1.3
       ts-jest: 27.0.5_28c4c718f3fc1d22e44cbdf15a2666ce
       type-fest: 2.5.2
-      typedoc: 0.22.4_typescript@4.4.3
+      typedoc: 0.22.7_typescript@4.4.3
       typescript: 4.4.3
 
   plugins/@grouparoo/app-templates:
@@ -484,11 +484,11 @@ importers:
       type-fest: 2.5.2
       typescript: 4.4.3
       winston: 3.3.3
-      winston-cloudwatch: 3.0.2
+      winston-cloudwatch: 3.1.1
     dependencies:
       aws-sdk: 2.998.0
       winston: 3.3.3
-      winston-cloudwatch: 3.0.2_winston@3.3.3
+      winston-cloudwatch: 3.1.1_winston@3.3.3
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -2580,7 +2580,7 @@ packages:
       chalk: 4.1.2
       collect-v8-coverage: 1.0.1
       exit: 0.1.2
-      glob: 7.1.7
+      glob: 7.2.0
       graceful-fs: 4.2.8
       istanbul-lib-coverage: 3.0.0
       istanbul-lib-instrument: 4.0.3
@@ -8873,7 +8873,7 @@ packages:
       babel-jest: 27.1.1_@babel+core@7.15.5
       chalk: 4.1.2
       deepmerge: 4.2.2
-      glob: 7.1.7
+      glob: 7.2.0
       graceful-fs: 4.2.8
       is-ci: 3.0.0
       jest-circus: 27.1.1
@@ -8910,7 +8910,7 @@ packages:
       babel-jest: 27.1.1_@babel+core@7.15.5
       chalk: 4.1.2
       deepmerge: 4.2.2
-      glob: 7.1.7
+      glob: 7.2.0
       graceful-fs: 4.2.8
       is-ci: 3.0.0
       jest-circus: 27.1.1
@@ -9203,7 +9203,7 @@ packages:
       collect-v8-coverage: 1.0.1
       execa: 5.1.1
       exit: 0.1.2
-      glob: 7.1.7
+      glob: 7.2.0
       graceful-fs: 4.2.8
       jest-haste-map: 27.1.1
       jest-message-util: 27.1.1
@@ -10140,8 +10140,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /marked/3.0.4:
-    resolution: {integrity: sha512-jBo8AOayNaEcvBhNobg6/BLhdsK3NvnKWJg33MAAPbvTWiG4QBn9gpW1+7RssrKu4K1dKlN+0goVQwV41xEfOA==}
+  /marked/3.0.8:
+    resolution: {integrity: sha512-0gVrAjo5m0VZSJb4rpL59K1unJAMb/hm8HRXqasD8VeC8m91ytDPMritgFSlKonfdt+rRYYpP/JfLxgIX8yoSw==}
     engines: {node: '>= 12'}
     hasBin: true
     dev: true
@@ -10980,7 +10980,7 @@ packages:
     requiresBuild: true
     dependencies:
       fstream: 1.0.12
-      glob: 7.1.7
+      glob: 7.2.0
       graceful-fs: 4.2.8
       mkdirp: 0.5.5
       nopt: 3.0.6
@@ -13696,8 +13696,8 @@ packages:
   /shell-quote/1.7.2:
     resolution: {integrity: sha512-mRz/m/JVscCrkMyPqHc/bczi3OQHkLTqXHEFu0zDhK/qfv3UcOA4SVmRCLmos4bhjr9ekVQubj/R7waKapmiQg==}
 
-  /shiki/0.9.11:
-    resolution: {integrity: sha512-tjruNTLFhU0hruCPoJP0y+B9LKOmcqUhTpxn7pcJB3fa+04gFChuEmxmrUfOJ7ZO6Jd+HwMnDHgY3lv3Tqonuw==}
+  /shiki/0.9.12:
+    resolution: {integrity: sha512-VXcROdldv0/Qu0w2XvzU4IrvTeBNs/Kj/FCmtcEXGz7Tic/veQzliJj6tEiAgoKianhQstpYmbPDStHU5Opqcw==}
     dependencies:
       jsonc-parser: 3.0.0
       onigasm: 2.2.5
@@ -14483,7 +14483,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       '@istanbuljs/schema': 0.1.3
-      glob: 7.1.7
+      glob: 7.2.0
       minimatch: 3.0.4
     dev: true
 
@@ -14851,18 +14851,18 @@ packages:
   /typedarray/0.0.6:
     resolution: {integrity: sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=}
 
-  /typedoc/0.22.4_typescript@4.4.3:
-    resolution: {integrity: sha512-M/a8NnPxq3/iZNNVjzFCK5gu4m//HTJIPbSS0JQVbkHJPP9wyepR12agylWTSqeVZe0xsbidVtO26+PP7iD/jw==}
+  /typedoc/0.22.7_typescript@4.4.3:
+    resolution: {integrity: sha512-ndxxp+tU1Wczvdxp4u2/PvT1qjD6hdFdSdehpORHjE+JXmMkl2bftXCR0upHmsnesBG7VCcr8vfgloGHIH8glQ==}
     engines: {node: '>= 12.10.0'}
     hasBin: true
     peerDependencies:
       typescript: 4.0.x || 4.1.x || 4.2.x || 4.3.x || 4.4.x
     dependencies:
-      glob: 7.1.7
+      glob: 7.2.0
       lunr: 2.3.9
-      marked: 3.0.4
+      marked: 3.0.8
       minimatch: 3.0.4
-      shiki: 0.9.11
+      shiki: 0.9.12
       typescript: 4.4.3
     dev: true
 
@@ -15373,8 +15373,8 @@ packages:
     dependencies:
       string-width: 4.2.2
 
-  /winston-cloudwatch/3.0.2_winston@3.3.3:
-    resolution: {integrity: sha512-/fm8Fp3xVV2rtrC0fgRBiCpYZ1GTO36x9cp2W0T3Utco4anxautXNFLantzmbpGmIGYfK9xnjwV97Eq+TXtm8g==}
+  /winston-cloudwatch/3.1.1_winston@3.3.3:
+    resolution: {integrity: sha512-yvqMpgophVm9KCf+bDMNH9JAnD3QoPeoOEE3/xbCo38bT5nzm/MWW0gsxoA7F0/dB9v+3d/DQNb9//znZlOO3A==}
     peerDependencies:
       winston: ^3.0.0
     dependencies:
@@ -15385,7 +15385,7 @@ packages:
       lodash.find: 4.6.0
       lodash.isempty: 4.4.0
       lodash.iserror: 3.1.1
-      proxy-agent: 4.0.1
+      proxy-agent: 5.0.0
       winston: 3.3.3
     transitivePeerDependencies:
       - supports-color
