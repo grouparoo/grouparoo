@@ -979,8 +979,8 @@ describe("models/record", () => {
         modelId: model.id,
       });
       await source.bootstrapUniqueProperty("userId", "integer", "id");
-      await source.setMapping({ id: "userId" });
       await source.setOptions({ table: "users" });
+      await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
       emailProperty = await Property.create({
