@@ -21,55 +21,68 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   primaryKeys,
 }) => {
   let responses: { [key: string]: { [column: string]: DataResponse[] } } = {};
-  let aggSelect = columnNames.map((col) => `"${col}"`).join(", ");
-  let orderBy = "";
-  let groupByColumns = [tablePrimaryKeyCol];
+  const columnList = columnNames.map((col) => `"${col}"`).join(", ");
+  const orderBys = [];
+  const groupByColumns = [];
+  let aggFunc = null;
 
   if (primaryKeys.length === 0) return responses;
 
   switch (aggregationMethod) {
     case AggregationMethod.Exact:
-      groupByColumns.push(...columnNames);
       if (sortColumn) {
-        orderBy = `"${sortColumn}" ASC`;
-        groupByColumns.push(sortColumn);
+        orderBys.push(`"${sortColumn}" ASC`);
       }
       break;
     case AggregationMethod.Average:
-      aggSelect = `COALESCE(AVG(${aggSelect}), 0) as ${aggSelect}`;
+      aggFunc = `COALESCE(AVG(${columnList}), 0) as ${columnList}`;
       break;
     case AggregationMethod.Count:
-      aggSelect = `COUNT(${aggSelect})::integer as ${aggSelect}`;
+      aggFunc = `COUNT(${columnList})::integer as ${columnList}`;
       break;
     case AggregationMethod.Sum:
-      aggSelect = `COALESCE(SUM(${aggSelect}), 0) as ${aggSelect}`;
+      aggFunc = `COALESCE(SUM(${columnList}), 0) as ${columnList}`;
       break;
     case AggregationMethod.Min:
-      aggSelect = `MIN(${aggSelect}) as ${aggSelect}`;
+      aggFunc = `MIN(${columnList}) as ${columnList}`;
       break;
     case AggregationMethod.Max:
-      aggSelect = `MAX(${aggSelect}) as ${aggSelect}`;
+      aggFunc = `MAX(${columnList}) as ${columnList}`;
       break;
     case AggregationMethod.MostRecentValue:
       if (!sortColumn) throw new Error("Sort Column is needed");
-      orderBy = `"${sortColumn}" DESC`;
-      groupByColumns.push(columnNames[0]);
-      groupByColumns.push(sortColumn);
+      orderBys.push(`"${sortColumn}" DESC`);
       break;
     case AggregationMethod.LeastRecentValue:
       if (!sortColumn) throw new Error("Sort Column is needed");
-      orderBy = `"${sortColumn}" ASC`;
-      groupByColumns.push(columnNames[0]);
-      groupByColumns.push(sortColumn);
+      orderBys.push(`"${sortColumn}" ASC`);
       break;
     default:
       throw new Error(`${aggregationMethod} is not a known aggregation method`);
   }
 
-  const params: Array<any> = [tableName];
-  let query = `SELECT ${aggSelect}, "${tablePrimaryKeyCol}" as __pk FROM %I WHERE`;
-  let addAnd = false;
+  const params: Array<any> = [];
 
+  let query = `SELECT`;
+
+  if (aggFunc || isArray) {
+    query += ` "${tablePrimaryKeyCol}" as __pk`;
+  } else {
+    query += ` DISTINCT ON (__pk) "${tablePrimaryKeyCol}" as __pk`;
+    orderBys.unshift(`__pk ASC`);
+  }
+
+  if (aggFunc) {
+    query += `, ${aggFunc}`;
+    groupByColumns.push(tablePrimaryKeyCol);
+  } else {
+    query += `, ${columnList}`;
+  }
+
+  query += ` FROM %I WHERE`;
+  params.push(tableName);
+
+  let addAnd = false;
   for (const condition of matchConditions) {
     const filterClause = makeWhereClause(condition, params);
     if (addAnd) query += ` AND`;
@@ -93,8 +106,8 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     query += ` GROUP BY %I`;
     params.push(groupByColumns);
   }
-  if (orderBy.length > 0) {
-    query += ` ORDER BY ${orderBy}`;
+  if (orderBys.length > 0) {
+    query += ` ORDER BY ${orderBys.join(", ")}`;
   }
 
   validateQuery(query);
