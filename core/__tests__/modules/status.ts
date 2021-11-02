@@ -152,6 +152,39 @@ describe("modules/status", () => {
               timestamp: expect.any(Number),
             },
           ],
+          "1DayDistinct": [
+            {
+              metric: {
+                aggregation: "count",
+                collection: "1DayDistinct",
+                count: 0,
+                topic: "Export",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+          "30DayDistinct": [
+            {
+              metric: {
+                aggregation: "count",
+                collection: "30DayDistinct",
+                count: 0,
+                topic: "Export",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+          "7DayDistinct": [
+            {
+              metric: {
+                aggregation: "count",
+                collection: "7DayDistinct",
+                count: 0,
+                topic: "Export",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
         },
         Group: {
           deleted: [

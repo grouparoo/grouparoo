@@ -12,13 +12,15 @@ const maxSampleLength = 30;
 
 export function BigTotalNumber({
   statusHandler,
-  model,
+  topic,
   title,
+  collection = "totals",
   href = null,
 }: {
   statusHandler: StatusHandler;
-  model: string;
   title: string;
+  topic: string;
+  collection?: string;
   href?: string;
 }) {
   const [total, setTotal] = useState<number>(-1);
@@ -30,7 +32,7 @@ export function BigTotalNumber({
       ({ metric }: { metric: Misc.StatusMetricType }) => {
         setTotal(metric.count);
       },
-      { topic: model, collection: "totals" }
+      { topic, collection }
     );
 
     return () => {
@@ -51,7 +53,53 @@ export function BigTotalNumber({
           )}
         </Card.Title>
 
-        <span style={{ fontSize: 25 }}>{total >= 0 ? total : <Loading />}</span>
+        <h3 style={{ fontWeight: "normal" }}>
+          {total >= 0 ? total : <Loading />}
+        </h3>
+        <br />
+      </Card.Body>
+    </Card>
+  );
+}
+
+export function RecordsExported({
+  statusHandler,
+}: {
+  statusHandler: StatusHandler;
+}) {
+  const [days1, setDays1] = useState<number>(-1);
+  const [days7, setDays7] = useState<number>(-1);
+  const [days30, setDays30] = useState<number>(-1);
+
+  [1, 7, 30].forEach((n, idx) => {
+    useEffect(() => {
+      const subscriptionName = `records-exported-day-${n}`;
+
+      statusHandler.subscribe(
+        subscriptionName,
+        ({ metric }: { metric: Misc.StatusMetricType }) => {
+          if (idx === 0) return setDays1(metric.count);
+          if (idx === 1) return setDays7(metric.count);
+          if (idx === 2) return setDays30(metric.count);
+        },
+        { topic: "Export", collection: `${n}DayDistinct` }
+      );
+
+      return () => {
+        statusHandler.unsubscribe(subscriptionName);
+      };
+    }, []);
+  });
+
+  return (
+    <Card>
+      <Card.Body>
+        <Card.Title>Records Exported</Card.Title>
+        Today: {days1 >= 0 ? days1 : <Loading size="sm" />}
+        <br />
+        This Week: {days7 >= 0 ? days7 : <Loading size="sm" />}
+        <br />
+        This Month: {days30 >= 0 ? days30 : <Loading size="sm" />}
       </Card.Body>
     </Card>
   );

@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Row, Col } from "react-bootstrap";
 import {
   BigTotalNumber,
+  RecordsExported,
   GroupsByNewestMember,
   RunningRuns,
   ScheduleRuns,
@@ -28,7 +29,7 @@ export default function Page(props) {
         <Col>
           <BigTotalNumber
             statusHandler={statusHandler}
-            model="GrouparooRecord"
+            topic="GrouparooRecord"
             title="Records"
           />
         </Col>
@@ -36,9 +37,19 @@ export default function Page(props) {
         <Col>
           <BigTotalNumber
             statusHandler={statusHandler}
-            model="Group"
+            topic="Group"
             title="Groups"
           />
+        </Col>
+
+        <Col>
+          {/* <BigTotalNumber
+            statusHandler={statusHandler}
+            topic="Export"
+            collection="30DayDistinct"
+            title="Records Exported (Past 30 days)"
+          /> */}
+          <RecordsExported statusHandler={statusHandler} />
         </Col>
       </Row>
 

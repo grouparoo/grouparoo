@@ -35,6 +35,7 @@ export namespace Status {
 
     // usage counts (we only care about some of the models)
     async () => StatusReporters.Totals.Models([GrouparooRecord, Group]),
+    async () => StatusReporters.Totals.UniqueRecordsExported(),
 
     // thing in progress
     async () => StatusReporters.Pending.pendingImports(),

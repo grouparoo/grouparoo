@@ -1,6 +1,7 @@
 import os from "os";
-import { api, config, task, env as nodeEnv } from "actionhero";
+import { api, config, task } from "actionhero";
 import Sequelize from "sequelize";
+import Moment from "moment";
 import { getCoreVersion, getPluginManifest } from "../modules/pluginDetails";
 import { Op } from "sequelize";
 import { App } from "../models/App";
@@ -238,6 +239,34 @@ export namespace StatusReporters {
       }
 
       return mergeMetrics(metrics);
+    }
+
+    export async function UniqueRecordsExported(): Promise<StatusMetric[]> {
+      const metrics: StatusMetric[] = [];
+      const days = [1, 7, 30];
+
+      for (const dayCount of days) {
+        const count = await Export.count({
+          distinct: true,
+          col: "recordId",
+          where: {
+            state: "complete",
+            createdAt: {
+              [Op.gte]: Moment().subtract(dayCount, "days").toDate(),
+              [Op.lt]: new Date(),
+            },
+          },
+        });
+
+        metrics.push({
+          collection: `${dayCount}DayDistinct`,
+          topic: "Export",
+          aggregation: "count",
+          count,
+        });
+      }
+
+      return metrics;
     }
   }
 
