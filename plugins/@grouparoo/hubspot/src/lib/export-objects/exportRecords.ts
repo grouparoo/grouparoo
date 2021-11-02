@@ -36,20 +36,13 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
     primaryKey as string,
     foreignKeys
   );
-  for (const key of foreignKeys) {
-    const user = getByForeignKey(key);
-    try {
-      const filteredProfiles = records.filter(
-        (p) => p["properties"][primaryKey as string] === key
-      );
-      if (filteredProfiles && filteredProfiles.length > 0) {
-        user.destinationId = filteredProfiles[0]["id"];
-        user.result = filteredProfiles[0];
-      }
-    } catch (error) {
-      user.error = error;
+  records.map((p) => {
+    const key = p["properties"][primaryKey as string];
+    const found = getByForeignKey(key);
+    if (found) {
+      found.destinationId = p.id;
     }
-  }
+  });
 };
 
 // delete the given destinationIds
@@ -89,7 +82,7 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
 const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
-  async ({ client, users, config }) => {
+  async ({ client, users, config, getByForeignKey }) => {
     const { schemaId, primaryKey } = config.destinationOptions;
     const inputs = [];
     for (const user of users) {
@@ -98,15 +91,13 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
     if (inputs.length > 0) {
       const response = await client.objects.create(schemaId, inputs);
       const results = response?.results || [];
-      const destinationIds = {};
-      results.map((record) => {
-        destinationIds[record.properties[primaryKey as string]] = record.id;
-      });
-      for (const user of users) {
-        if (destinationIds[user.foreignKeyValue]) {
-          user.destinationId = destinationIds[user.foreignKeyValue];
+      results.map((p) => {
+        const key = p["properties"][primaryKey as string];
+        const found = getByForeignKey(key);
+        if (found) {
+          found.destinationId = p.id;
         }
-      }
+      });
       if (response?.errors) {
         attachErrorsToErroneousUsers({ users, errors: response.errors });
       }
@@ -221,10 +212,18 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
   exports: recordsToExport,
 }) => {
   const batchExports = buildBatchExports(recordsToExport);
-  return exportBatch({
-    appOptions,
-    destinationOptions,
-    syncOperations,
-    exports: batchExports,
-  });
+  try {
+    return await exportBatch({
+      appOptions,
+      destinationOptions,
+      syncOperations,
+      exports: batchExports,
+    });
+  } catch (error) {
+    if (error?.response?.status === 429) {
+      const retryIn = Math.floor(Math.random() * 10) + 1;
+      return { error, success: false, retryDelay: 1000 * retryIn };
+    }
+    throw error;
+  }
 };

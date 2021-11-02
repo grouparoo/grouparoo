@@ -1,12 +1,12 @@
 class CustomObjectHandler {
   static standardObjects = [
-    "CONTACT",
-    "PRODUCT",
-    "COMPANY",
     "DEAL",
-    "TICKET",
+    "COMPANY",
+    "CONTACT",
     "MARKETING_EVENT",
+    "PRODUCT",
     "QUOTE",
+    "TICKET",
   ];
   customObject: any;
 

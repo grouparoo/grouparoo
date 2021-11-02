@@ -12,6 +12,7 @@ const importantFields = [
   "lastname",
   "last_name",
   "email",
+  "name",
 ];
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod =
@@ -81,7 +82,7 @@ export const getRequiredFields = (
       type: mapTypesFromHubspotToGrouparoo(field, property.type),
     });
   });
-  return requiredFieldsWithType;
+  return requiredFieldsWithType.sort((a, b) => (a.key > b.key ? 1 : -1));
 };
 
 const isImportant = (key): Boolean => {
@@ -97,12 +98,16 @@ export const getObjectFields = (
   important?: boolean;
 }> => {
   const properties = customObject.getProperties();
+  const requiredFields = customObject.getRequiredProperties();
   const out = [];
   for (const property of properties) {
     if (
       property["name"] !== primaryKey &&
-      !property["archived"] &&
-      !property["calculated"]
+      !property.archived &&
+      !property.calculated &&
+      !property.modificationMetadata.readOnlyValue === true &&
+      !property.modificationMetadata.readOnlyOptions === true &&
+      !requiredFields.includes(property["name"])
     ) {
       const type: DestinationMappingOptionsResponseType =
         mapTypesFromHubspotToGrouparoo(property["name"], property["type"]);
@@ -115,5 +120,5 @@ export const getObjectFields = (
       }
     }
   }
-  return out;
+  return out.sort((a, b) => (a.key > b.key ? 1 : -1));
 };

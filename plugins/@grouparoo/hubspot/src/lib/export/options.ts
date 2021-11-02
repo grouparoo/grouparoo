@@ -45,9 +45,9 @@ class OptionsHandler {
     );
   }
 
-  private async getCustomObject(customObjectIdentifier: string) {
+  private async getSchema(customObjectIdentifier: string) {
     const { appId } = this.cacheData;
-    const cacheKey = "HubspotGetSchema";
+    const cacheKey = `hubspot_get_schema_${customObjectIdentifier.toLowerCase()}`;
     const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
     return objectCache(
       { objectId: appId, cacheKey, cacheDurationMs },
@@ -63,10 +63,20 @@ class OptionsHandler {
       primaryKey: { type: "pending", options: [] },
     };
     const objects = this.customObjects;
+    const objectsToSort = [];
     objects.map((object) => {
-      out.schemaId.options.push(object.objectTypeId);
-      out.schemaId.descriptions.push(object.name);
+      objectsToSort.push({
+        option: object.objectTypeId,
+        description: object.name,
+      });
     });
+    objectsToSort
+      .sort((a, b) => (a.description > b.description ? 1 : -1))
+      .map((object) => {
+        out.schemaId.options.push(object.option);
+        out.schemaId.descriptions.push(object.description);
+      });
+
     CustomObjectHandler.standardObjects.map((object) => {
       out.schemaId.options.push(object);
     });
@@ -94,18 +104,21 @@ class OptionsHandler {
     const names = [];
     if (customObject?.properties) {
       for (const object of customObject.properties) {
-        if (object.name.startsWith("hs_")) {
+        if (
+          object.modificationMetadata.readOnlyValue === true ||
+          object.modificationMetadata.readOnlyOptions === true
+        ) {
           continue;
         }
         names.push(object.name);
       }
     }
-    return [...new Set(names)];
+    return [...new Set(names.sort())];
   }
 
   private async getCustomObjectById(schemaId) {
     if (CustomObjectHandler.standardObjects.includes(schemaId)) {
-      return await this.getCustomObject(schemaId);
+      return await this.getSchema(schemaId);
     }
     for (const object of this.customObjects) {
       if (object.objectTypeId === schemaId) {
