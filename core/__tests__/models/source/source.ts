@@ -632,6 +632,8 @@ describe("models/source", () => {
 
       await emailProperty.reload();
       expect(emailProperty.directlyMapped).toBe(true);
+
+      await firstSource.setMapping({ userId: "userId" });
     });
   });
 
