@@ -1,7 +1,7 @@
 import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Alert, Card, Badge } from "react-bootstrap";
 import Link from "next/link";
-import EnterpriseLink from "../../../components/enterpriseLink";
+import EnterpriseLink from "../../../components/grouparooLink";
 import Head from "next/head";
 import ExportTabs from "../../../components/tabs/export";
 import { Models } from "../../../utils/apiData";

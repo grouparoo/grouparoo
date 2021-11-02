@@ -4,7 +4,7 @@ import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Link from "../components/enterpriseLink";
+import Link from "../components/grouparooLink";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import AppIcon from "../components/appIcon";

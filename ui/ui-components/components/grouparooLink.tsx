@@ -7,7 +7,8 @@ const CommunityLink = function ({ children }) {
   return <span>{children}</span>;
 };
 
-export default grouparooUiEdition() === "enterprise" ||
-grouparooUiEdition() === "config"
+const GrouparooLink = ["enterprise", "config"].includes(grouparooUiEdition())
   ? EnterpriseLink
   : CommunityLink;
+
+export default GrouparooLink;

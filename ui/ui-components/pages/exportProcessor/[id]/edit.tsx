@@ -1,6 +1,6 @@
 import { UseApi } from "../../../hooks/useApi";
 import { Table, Alert, Card } from "react-bootstrap";
-import EnterpriseLink from "../../../components/enterpriseLink";
+import EnterpriseLink from "../../../components/grouparooLink";
 import Head from "next/head";
 import ExportProcessorTabs from "../../../components/tabs/exportProcessor";
 import { Models } from "../../../utils/apiData";

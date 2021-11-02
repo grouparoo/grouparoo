@@ -3,7 +3,7 @@ import { UseApi } from "../../hooks/useApi";
 import { updateURLParams, useOffset } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useRealtimeStream } from "../../hooks/useRealtimeStream";
-import EnterpriseLink from "../enterpriseLink";
+import EnterpriseLink from "../grouparooLink";
 import { useRouter } from "next/router";
 import { ButtonGroup, Button, Alert } from "react-bootstrap";
 import Pagination from "../pagination";

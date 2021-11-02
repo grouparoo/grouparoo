@@ -5,7 +5,7 @@ import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { Row, Col, Button, ButtonGroup, Alert, Card } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import EnterpriseLink from "../enterpriseLink";
+import EnterpriseLink from "../grouparooLink";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import RunDurationChart from "../visualizations/runDurations";

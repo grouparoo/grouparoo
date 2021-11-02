@@ -3,7 +3,7 @@ import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
-import EnterpriseLink from "../enterpriseLink";
+import EnterpriseLink from "../grouparooLink";
 import { useRouter } from "next/router";
 import { Row, Col, Button, ButtonGroup, Badge, Alert } from "react-bootstrap";
 import Pagination from "../pagination";

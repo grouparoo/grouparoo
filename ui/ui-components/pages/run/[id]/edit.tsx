@@ -1,7 +1,7 @@
 import { UseApi } from "../../../hooks/useApi";
 import { useState, Fragment } from "react";
 import { Row, Col, Badge, Alert, Card } from "react-bootstrap";
-import Link from "../../../components/enterpriseLink";
+import Link from "../../../components/grouparooLink";
 import { GrouparooChart } from "../../../components/visualizations/grouparooChart";
 import RunTabs from "../../../components/tabs/run";
 import Head from "next/head";

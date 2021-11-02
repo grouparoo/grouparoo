@@ -10,7 +10,7 @@ import ModelIcon from "../components/modelIcon";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { ErrorHandler } from "../utils/errorHandler";
-import EnterpriseLink from "../components/enterpriseLink";
+import GrouparooLink from "../components/grouparooLink";
 import StateBadge from "../components/badges/stateBadge";
 import LinkButton from "../components/linkButton";
 
@@ -81,11 +81,11 @@ export default function Page(props) {
                   <ModelIcon model={model} />
                 </td>
                 <td>
-                  <EnterpriseLink href={`/model/${model.id}/edit`}>
+                  <GrouparooLink href={`/model/${model.id}/edit`}>
                     <a>
                       <strong>{model.name}</strong>
                     </a>
-                  </EnterpriseLink>
+                  </GrouparooLink>
                 </td>
                 <td>{model.type}</td>
                 <td>

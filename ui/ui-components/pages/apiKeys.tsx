@@ -4,7 +4,7 @@ import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useState } from "react";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import Link from "../components/enterpriseLink";
+import GrouparooLink from "../components/grouparooLink";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import { Models, Actions } from "../utils/apiData";
@@ -72,11 +72,11 @@ export default function Page(props) {
             return (
               <tr key={`apiKey-${apiKey.id}`}>
                 <td>
-                  <Link href={`/apiKey/${apiKey.id}/edit`}>
+                  <GrouparooLink href={`/apiKey/${apiKey.id}/edit`}>
                     <a>
                       <strong>{apiKey.name}</strong>
                     </a>
-                  </Link>
+                  </GrouparooLink>
                 </td>
                 <td>
                   <code>{apiKey.apiKey}</code>

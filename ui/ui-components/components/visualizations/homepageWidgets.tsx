@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import EnterpriseLink from "../enterpriseLink";
+import EnterpriseLink from "../grouparooLink";
 import { Card, Table, ProgressBar } from "react-bootstrap";
 import { Misc, Models } from "../../utils/apiData";
 import Moment from "react-moment";

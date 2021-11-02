@@ -5,7 +5,7 @@ import type { NextPageContext } from "next";
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
-import Link from "../../../components/enterpriseLink";
+import Link from "../../../components/grouparooLink";
 import Pagination from "../../../components/pagination";
 import LoadingTable from "../../../components/loadingTable";
 import AppIcon from "../../../components/appIcon";

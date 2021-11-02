@@ -1,5 +1,5 @@
 import Head from "next/head";
-import EnterpriseLink from "../../../../../components/enterpriseLink";
+import EnterpriseLink from "../../../../../components/grouparooLink";
 import RecordTabs from "../../../../../components/tabs/record";
 import { useState, useEffect } from "react";
 import { UseApi } from "../../../../../hooks/useApi";

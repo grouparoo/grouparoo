@@ -1,5 +1,5 @@
 import { Badge } from "react-bootstrap";
-import EnterpriseLink from "../enterpriseLink";
+import EnterpriseLink from "../grouparooLink";
 
 export default function ModelBadge({
   modelName,

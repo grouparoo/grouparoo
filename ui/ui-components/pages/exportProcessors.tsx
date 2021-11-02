@@ -6,7 +6,7 @@ import { Alert, Button, ButtonGroup, Col, Row } from "react-bootstrap";
 import StateBadge from "../components/badges/stateBadge";
 import LoadingTable from "../components/loadingTable";
 import Pagination from "../components/pagination";
-import EnterpriseLink from "../components/enterpriseLink";
+import EnterpriseLink from "../components/grouparooLink";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { UseApi } from "../hooks/useApi";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";

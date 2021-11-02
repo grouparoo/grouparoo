@@ -6,7 +6,7 @@ import { Alert } from "react-bootstrap";
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
-import Link from "../../../components/enterpriseLink";
+import GrouparooLink from "../../../components/grouparooLink";
 import Pagination from "../../../components/pagination";
 import LoadingTable from "../../../components/loadingTable";
 import StateBadge from "../../../components/badges/stateBadge";
@@ -133,7 +133,7 @@ export default function Page(props) {
             return (
               <tr key={`property-${rule.id}`}>
                 <td>
-                  <Link
+                  <GrouparooLink
                     href={`/model/${source.modelId}/property/${rule.id}/edit`}
                   >
                     <a>
@@ -146,17 +146,17 @@ export default function Page(props) {
                           }`}
                       </strong>
                     </a>
-                  </Link>
+                  </GrouparooLink>
                 </td>
                 <td>{rule.type}</td>
                 <td>{rule.unique ? "✅" : null}</td>
                 <td>{rule.isArray ? "✅" : null}</td>
                 <td>
-                  <Link
+                  <GrouparooLink
                     href={`/model/${source.modelId}/source/${source.id}/overview`}
                   >
                     <a>{source.name}</a>
-                  </Link>
+                  </GrouparooLink>
                 </td>
                 <td>
                   <StateBadge state={rule.state} />

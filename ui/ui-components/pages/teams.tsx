@@ -3,7 +3,7 @@ import { Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { UseApi } from "../hooks/useApi";
 import Link from "next/link";
-import EnterpriseLink from "../components/enterpriseLink";
+import EnterpriseLink from "../components/grouparooLink";
 import { Form } from "react-bootstrap";
 import LoadingTable from "../components/loadingTable";
 import RecordImageFromEmail from "../components/visualizations/recordImageFromEmail";
