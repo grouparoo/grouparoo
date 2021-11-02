@@ -205,7 +205,10 @@ export default function Page(props) {
 
               <p>
                 <strong>App</strong>:{" "}
-                <Link href="/app/[id]" as={`/app/${destination.app.id}`}>
+                <Link
+                  href="/app/[id]/edit"
+                  as={`/app/${destination.app.id}/edit`}
+                >
                   <a>{destination.app.name}</a>
                 </Link>
                 <br />
