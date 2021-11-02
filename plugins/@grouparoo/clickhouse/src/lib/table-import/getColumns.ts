@@ -11,7 +11,9 @@ interface TypeInfo {
 }
 
 const cleanupDataType = (dataType: string): string =>
-  dataType.toUpperCase().replace(/\(.+\)/, "");
+  dataType
+    .toUpperCase()
+    .replace(/((NULLABLE|LOWCARDINALITY)\()?(\w+\d*)(\([^()]*\))?(\))?/, "$3");
 
 const getTypeInfo = (dataType: string): TypeInfo => {
   const ops = [FilterOperation.Equal, FilterOperation.NotEqual];
