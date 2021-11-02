@@ -744,11 +744,4 @@ export class Destination extends LoggedModel<Destination> {
       where: { destinationId: instance.id },
     });
   }
-
-  @AfterDestroy
-  static async destroyExports(instance: Destination) {
-    await Export.destroy({
-      where: { destinationId: instance.id },
-    });
-  }
 }

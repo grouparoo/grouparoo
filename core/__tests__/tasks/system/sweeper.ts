@@ -75,34 +75,7 @@ describe("tasks/sweeper", () => {
       expect(count).toBe(0);
     });
 
-    test("it will delete old exports that have no complete export for the record", async () => {
-      await Export.truncate();
-      const oldExport = await helper.factories.export();
-      const newExport = await helper.factories.export();
-
-      oldExport.set({ createdAt: new Date(0) }, { raw: true });
-      oldExport.changed("createdAt", true);
-      await oldExport.save({
-        silent: true,
-        fields: ["createdAt"],
-      });
-      await oldExport.update({ state: "canceled" });
-
-      await newExport.update({
-        state: "canceled",
-      });
-
-      let count = await Export.count();
-      expect(count).toBe(2);
-
-      await specHelper.runTask("sweeper", {});
-
-      exports = await Export.findAll();
-      expect(exports.length).toBe(1);
-      expect(exports[0].id).toBe(newExport.id);
-    });
-
-    test("it will delete old exports but not the newest one for each record", async () => {
+    test("it will delete old exports but not the newest one for each record or all exports if none is complete", async () => {
       await Export.truncate();
       const recordA = await helper.factories.record();
       const oldExportA = await helper.factories.export(recordA);
@@ -111,6 +84,7 @@ describe("tasks/sweeper", () => {
       const newerExportB = await helper.factories.export(recordB);
       const recordC = await helper.factories.record();
       const oldExportC = await helper.factories.export(recordC);
+      const oldExportD = await helper.factories.export(recordC);
 
       oldExportA.set({ createdAt: new Date(0) }, { raw: true });
       oldExportA.changed("createdAt", true);
@@ -144,17 +118,25 @@ describe("tasks/sweeper", () => {
       });
       await oldExportC.update({ state: "failed" });
 
+      oldExportD.set({ createdAt: new Date(1000 * 60 * 60) }, { raw: true });
+      oldExportD.changed("createdAt", true);
+      await oldExportD.save({
+        silent: true,
+        fields: ["createdAt"],
+      });
+      await oldExportD.update({ state: "canceled" });
+
       let count = await Export.count();
-      expect(count).toBe(4);
+      expect(count).toBe(5);
 
       await specHelper.runTask("sweeper", {});
 
       await newerExportA.reload();
       await newerExportB.reload();
       exports = await Export.findAll();
-      expect(exports.length).toBe(2);
+      expect(exports.length).toBe(4);
       expect(exports.map((e) => e.id).sort()).toEqual(
-        [newerExportA.id, newerExportB.id].sort()
+        [newerExportA.id, newerExportB.id, oldExportC.id, oldExportD.id].sort()
       );
     });
 
