@@ -2,7 +2,7 @@ import { config } from "actionhero";
 import path from "path";
 import pacote from "pacote";
 import { log } from "actionhero";
-import compareVersions from "compare-versions";
+import semver from "semver";
 import { spawnPromise } from "./spawnPromise";
 import {
   getParentPath,
@@ -88,7 +88,7 @@ export namespace Plugins {
           upToDate:
             latestVersion === "unknown"
               ? true
-              : compareVersions(plugin.version, latestVersion) >= 0,
+              : semver.compare(plugin.version, latestVersion) >= 0,
         });
       })
     );
