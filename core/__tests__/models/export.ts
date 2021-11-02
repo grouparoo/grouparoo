@@ -416,22 +416,50 @@ describe("models/export", () => {
 
     test("old complete entries can be swept away, not the newest one for each record + destination", async () => {
       await Export.truncate();
-      const oldExport = await makeOldExport("complete", new Date(0));
-      const oldExportMostRecent = await makeOldExport(
+      const destinationB = await helper.factories.destination();
+      const destinationC = await helper.factories.destination();
+
+      const oldExportDestinationA = await makeOldExport(
+        "complete",
+        new Date(0)
+      );
+      const oldExportMostRecentDestinationA = await makeOldExport(
         "complete",
         new Date(1000 * 61)
       );
 
+      const oldExportDestinationB = await makeOldExport(
+        "complete",
+        new Date(0)
+      );
+      const oldExportMostRecentDestinationB = await makeOldExport(
+        "complete",
+        new Date(1000 * 61)
+      );
+      await oldExportDestinationB.update({ destinationId: destinationB.id });
+      await oldExportMostRecentDestinationB.update({
+        destinationId: destinationB.id,
+      });
+
+      const oldExportDestinationC = await makeOldExport("pending", new Date(0));
+      await oldExportDestinationC.update({ destinationId: destinationC.id });
+
       let count = await Export.count();
-      expect(count).toBe(2);
+      expect(count).toBe(5);
 
       await Export.sweep(1000);
       const remaining = await Export.findAll();
-      expect(remaining.length).toBe(1);
-      expect(remaining[0].id).toBe(oldExportMostRecent.id);
+      expect(remaining.length).toBe(3);
+      expect(remaining.map((e) => e.id).sort()).toEqual(
+        [
+          oldExportMostRecentDestinationA.id,
+          oldExportMostRecentDestinationB.id,
+          oldExportDestinationC.id,
+        ].sort()
+      );
     });
 
-    test("old pending entries will not be swept await that exist alongside a complete export", async () => {
+    test("old pending entries will not be swept away", async () => {
       await Export.truncate();
       const oldExport = await makeOldExport("pending", new Date(0));
       const oldExportMostRecent = await makeOldExport(

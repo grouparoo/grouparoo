@@ -298,7 +298,7 @@ export class Export extends CommonModel<Export> {
     let responseCountWithNoRecord: number;
     let responseCountWithNoDestination: number;
 
-    // 1. Delete Complete Exports for the GrouparooRecord older than the oldest complete Export
+    // 1. Delete Complete Exports for the GrouparooRecord older than the oldest complete Export for this Record+Destination
     const rowsWithCompleteExport: { id: string }[] = await api.sequelize.query(
       `
       DELETE FROM exports
@@ -310,8 +310,9 @@ export class Export extends CommonModel<Export> {
           SELECT MAX("createdAt")
           FROM exports e2
           WHERE
-            e2."recordId" = exports."recordId"
-            AND state = 'complete'
+            state = 'complete'
+            AND e2."recordId" = exports."recordId"
+            AND e2."destinationId" = exports."destinationId"
         )
         LIMIT ${limit}
       )
