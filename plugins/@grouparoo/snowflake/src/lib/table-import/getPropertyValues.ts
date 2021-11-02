@@ -66,7 +66,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   }
 
   const params: Array<any> = [];
-  let query = `SELECT ${aggSelect}, "${tablePrimaryKeyCol}" as "__pk" FROM "${tableName}" WHERE`;
+  let query = `SELECT ${aggSelect}, "${tablePrimaryKeyCol}" as "__PK" FROM "${tableName}" WHERE`;
   let addAnd = false;
 
   for (const condition of matchConditions) {
@@ -103,7 +103,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
       await connection.execute(query, params);
 
     for (const row of rows) {
-      const pk = row.__pk.toString();
+      const pk = row.__PK.toString();
       responses[pk] ??= {};
       for (const col in row) {
         responses[pk][col] ??= [];

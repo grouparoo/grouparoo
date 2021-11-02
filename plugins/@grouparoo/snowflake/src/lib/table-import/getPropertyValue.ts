@@ -55,7 +55,7 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
   }
 
   const params = [];
-  let query = `SELECT ${aggSelect} as "__result" FROM "${tableName}" WHERE`;
+  let query = `SELECT ${aggSelect} as "__RESULT" FROM "${tableName}" WHERE`;
   let addAnd = false;
 
   for (const condition of matchConditions) {
@@ -76,9 +76,9 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
 
     if (rows && rows.length > 0) {
       if (!isArray) {
-        response = [castValue(rows[0].__result)];
+        response = [castValue(rows[0].__RESULT)];
       } else {
-        response = rows.map((row) => castValue(row.__result));
+        response = rows.map((row) => castValue(row.__RESULT));
       }
     }
   } catch (error) {

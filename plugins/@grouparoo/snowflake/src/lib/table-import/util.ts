@@ -66,6 +66,18 @@ export function castRow(row): DataResponseRow {
   return out;
 }
 
+export function castRowWithHighWaterMark(
+  row,
+  tempHighWaterMarkKey: string,
+  highWaterMarkKey: string
+): DataResponseRow {
+  const out = castRow(row);
+  // switch key to expected one
+  out[highWaterMarkKey] = out[tempHighWaterMarkKey];
+  delete out[tempHighWaterMarkKey];
+  return out;
+}
+
 export function castValue(value): DataResponse {
   if (value === null || value === undefined) {
     return null;
