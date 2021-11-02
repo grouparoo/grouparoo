@@ -606,6 +606,35 @@ describe("models/source", () => {
 
       await arrayProperty.destroy();
     });
+
+    test("directlyMapped will be updated for source properties after setting the mapping", async () => {
+      const firstSource = await Source.findOne({
+        where: { id: { [Op.ne]: source.id } },
+      });
+
+      const mapping = await firstSource.getMapping();
+      expect(mapping).toEqual({ userId: "userId" });
+
+      const userIdProperty = await Property.findOne({
+        where: { key: "userId" },
+      });
+      expect(userIdProperty.directlyMapped).toBe(true);
+
+      const emailProperty = await Property.findOne({
+        where: { key: "email" },
+      });
+      expect(emailProperty.directlyMapped).toBe(false);
+
+      await firstSource.setMapping({ email: "email" });
+
+      await userIdProperty.reload();
+      expect(userIdProperty.directlyMapped).toBe(false);
+
+      await emailProperty.reload();
+      expect(emailProperty.directlyMapped).toBe(true);
+
+      await firstSource.setMapping({ userId: "userId" });
+    });
   });
 
   describe("defaultPropertyOptions", () => {
