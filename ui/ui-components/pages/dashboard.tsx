@@ -43,12 +43,6 @@ export default function Page(props) {
         </Col>
 
         <Col>
-          {/* <BigTotalNumber
-            statusHandler={statusHandler}
-            topic="Export"
-            collection="30DayDistinct"
-            title="Records Exported (Past 30 days)"
-          /> */}
           <RecordsExported statusHandler={statusHandler} />
         </Col>
       </Row>

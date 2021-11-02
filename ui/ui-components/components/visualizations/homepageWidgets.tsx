@@ -95,11 +95,13 @@ export function RecordsExported({
     <Card>
       <Card.Body>
         <Card.Title>Records Exported</Card.Title>
-        Today: {days1 >= 0 ? days1 : <Loading size="sm" />}
+        Today: {days1 >= 0 ? <strong>{days1}</strong> : <Loading size="sm" />}
         <br />
-        This Week: {days7 >= 0 ? days7 : <Loading size="sm" />}
+        Last 7 Days:{" "}
+        {days7 >= 0 ? <strong>{days7}</strong> : <Loading size="sm" />}
         <br />
-        This Month: {days30 >= 0 ? days30 : <Loading size="sm" />}
+        Last 30 Days:{" "}
+        {days30 >= 0 ? <strong>{days30}</strong> : <Loading size="sm" />}
       </Card.Body>
     </Card>
   );
