@@ -23,7 +23,10 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
       await client.objects.getSchema(schemaId)
     );
     const required = getRequiredFields(customObject, primaryKey as string);
-    const known = getObjectFields(customObject, primaryKey as string);
+    const requiredFieldsNames = required.map(
+      (requiredField) => requiredField.key
+    );
+    const known = getObjectFields(customObject, requiredFieldsNames);
     return {
       labels: {
         property: {
@@ -92,23 +95,18 @@ const isImportant = (customObject: CustomObjectHandler, key): Boolean => {
 
 export const getObjectFields = (
   customObject: CustomObjectHandler,
-  primaryKey: string
+  requiredFields: string[]
 ): Array<{
   key: string;
   type: DestinationMappingOptionsResponseType;
   important?: boolean;
 }> => {
   const properties = customObject.getProperties();
-  const requiredFields = customObject.getRequiredProperties();
   const out = [];
   for (const property of properties) {
     if (
-      property["name"] !== primaryKey &&
-      !property.archived &&
-      !property.calculated &&
-      !property.modificationMetadata.readOnlyValue &&
-      !property.modificationMetadata.readOnlyOptions &&
-      !requiredFields.includes(property["name"])
+      !requiredFields.includes(property["name"]) &&
+      customObject.shouldShowProperty(property)
     ) {
       const type: DestinationMappingOptionsResponseType =
         mapTypesFromHubspotToGrouparoo(property["name"], property["type"]);

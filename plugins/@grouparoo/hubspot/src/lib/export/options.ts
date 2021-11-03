@@ -100,19 +100,16 @@ class OptionsHandler {
   }
 
   private async getObjectMatchNames(schemaId) {
-    const customObject = await this.getCustomObjectById(schemaId);
+    const customObject = new CustomObjectHandler(
+      await this.getCustomObjectById(schemaId)
+    );
     const names = [];
-    if (customObject?.properties) {
-      for (const object of customObject.properties) {
-        if (
-          object.archived ||
-          object.calculated ||
-          object.modificationMetadata.readOnlyValue === true ||
-          object.modificationMetadata.readOnlyOptions === true
-        ) {
+    if (customObject.getProperties()) {
+      for (const property of customObject.getProperties()) {
+        if (!customObject.shouldShowProperty(property)) {
           continue;
         }
-        names.push(object.name);
+        names.push(property.name);
       }
     }
     return [...new Set(names.sort())];
