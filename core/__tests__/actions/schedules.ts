@@ -243,6 +243,7 @@ describe("actions/schedules", () => {
         await api.resque.queue.connection.redis.flushdb();
         await Run.truncate();
 
+        // first run will succeed
         connection.params = {
           csrfToken,
           id,
@@ -257,6 +258,18 @@ describe("actions/schedules", () => {
         const tasks = await specHelper.findEnqueuedTasks("schedule:run");
         expect(tasks.length).toBe(1);
         expect(tasks[0].args[0].scheduleId).toBe(id);
+
+        // second run will stop first run
+        const { error: secondError, run: secondRun } =
+          await specHelper.runAction<ScheduleRun>("schedule:run", connection);
+        expect(secondError).toBeUndefined();
+        expect(secondRun.id).toBeTruthy();
+        expect(run.id).not.toEqual(secondRun.id);
+
+        const runs = await Run.findAll({
+          where: { creatorId: id, state: "running" },
+        });
+        expect(runs.map((r) => r.id)).toEqual([secondRun.id]);
       });
 
       test("an administrator can request to run all schedules and create new runs", async () => {

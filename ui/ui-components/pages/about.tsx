@@ -1,8 +1,9 @@
 import Head from "next/head";
 import { client } from "../hooks/useApi";
-import { Table, Badge, Alert, Button } from "react-bootstrap";
+import { Table, Badge, Alert } from "react-bootstrap";
 import { UseApi } from "../hooks/useApi";
 import { Actions } from "../utils/apiData";
+import LinkButton from "../components/linkButton";
 
 const upgradeHelpPage =
   "https://www.grouparoo.com/docs/support/upgrading-grouparoo";
@@ -60,14 +61,14 @@ export default function Page({
           date.
           <br />
           <br />
-          <Button
+          <LinkButton
             variant="warning"
             size="sm"
             href={upgradeHelpPage}
             target="_new"
           >
             Learn about upgrading your Grouparoo cluster
-          </Button>
+          </LinkButton>
         </Alert>
       ) : null}
 

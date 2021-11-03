@@ -1,5 +1,6 @@
 import Tabs from "../tabs";
 import { Models } from "../../utils/apiData";
+import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function PropertyTabs({
   property,
@@ -10,7 +11,7 @@ export default function PropertyTabs({
 }) {
   let tabs = ["edit"];
 
-  if (process.env.GROUPAROO_UI_EDITION === "enterprise") {
+  if (grouparooUiEdition() === "enterprise") {
     tabs.push("records", "groups", "runs", "logs");
   }
 

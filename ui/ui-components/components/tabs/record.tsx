@@ -1,6 +1,7 @@
 import Tabs from "../tabs";
 import { Models } from "../../utils/apiData";
 import { getRecordDisplayName } from "../record/getRecordDisplayName";
+import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function RecordTabs({
   record,
@@ -9,7 +10,7 @@ export default function RecordTabs({
 }) {
   const tabs = ["edit", "imports", "exports", "logs"];
 
-  if (process.env.GROUPAROO_UI_EDITION === "config") {
+  if (grouparooUiEdition() === "config") {
     tabs.splice(tabs.indexOf("imports"), 1);
   }
 

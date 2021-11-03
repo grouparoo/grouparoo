@@ -1,14 +1,16 @@
 import Head from "next/head";
-import { Button, Alert } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { UseApi } from "../hooks/useApi";
 import Link from "next/link";
-import EnterpriseLink from "../components/enterpriseLink";
+import EnterpriseLink from "../components/grouparooLink";
 import { Form } from "react-bootstrap";
 import LoadingTable from "../components/loadingTable";
 import RecordImageFromEmail from "../components/visualizations/recordImageFromEmail";
 import { Models } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
+import LinkButton from "../components/linkButton";
+import { grouparooUiEdition } from "../utils/uiEdition";
 
 export default function Page({
   teams,
@@ -40,10 +42,7 @@ export default function Page({
             return (
               <tr key={`team-${team.id}`}>
                 <td>
-                  <EnterpriseLink
-                    href="/team/[id]/edit"
-                    as={`/team/${team.id}/edit`}
-                  >
+                  <EnterpriseLink href={`/team/${team.id}/edit`}>
                     <a>
                       <strong>{team.name}</strong>
                       {/* <br /><span className='text-muted'>{team.id}</span> */}
@@ -64,16 +63,11 @@ export default function Page({
         </tbody>
       </LoadingTable>
 
-      {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
-        <Button
-          variant="primary"
-          onClick={() => {
-            router.push("/team/new");
-          }}
-        >
-          Add Team
-        </Button>
-      ) : (
+      <LinkButton variant="primary" href="/team/new" displayOn={["enterprise"]}>
+        Add Team
+      </LinkButton>
+
+      {grouparooUiEdition() !== "enterprise" && (
         <Alert variant="primary" style={{ textAlign: "center" }}>
           Does your organization need additional Teams with finer-grained
           permissions?{" "}
@@ -112,10 +106,7 @@ export default function Page({
                   />
                 </td>
                 <td>
-                  <Link
-                    href="/teamMember/[id]/edit"
-                    as={`/teamMember/${teamMember.id}/edit`}
-                  >
+                  <Link href={`/teamMember/${teamMember.id}/edit`}>
                     <a>{teamMember.email}</a>
                   </Link>
                 </td>
@@ -136,14 +127,9 @@ export default function Page({
         </tbody>
       </LoadingTable>
 
-      <Button
-        variant="primary"
-        onClick={() => {
-          router.push("/teamMember/new");
-        }}
-      >
+      <LinkButton variant="primary" href="/teamMember/new">
         Add Team Member
-      </Button>
+      </LinkButton>
     </>
   );
 }

@@ -1,10 +1,11 @@
 import Head from "next/head";
 import { useState } from "react";
 import { UseApi } from "../../../../../hooks/useApi";
-import { Form, Alert, Button } from "react-bootstrap";
+import { Form, Alert } from "react-bootstrap";
 import AppSelectorList from "../../../../../components/appSelectorList";
 import { useRouter } from "next/router";
 import { Actions } from "../../../../../utils/apiData";
+import LinkButton from "../../../../../components/linkButton";
 
 export default function Page(props) {
   const {
@@ -38,9 +39,9 @@ export default function Page(props) {
           There are no Apps in the ready state yet.
           <br />
           <br />
-          <Button size="sm" href="/apps">
+          <LinkButton size="sm" href="/apps">
             Add an App
-          </Button>
+          </LinkButton>
         </Alert>
       </>
     );

@@ -20,6 +20,7 @@ import { makeLocal } from "../../../../../utils/makeLocal";
 import ModelBadge from "../../../../../components/badges/modelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -198,7 +199,7 @@ export default function Page(props) {
                       />
                     </Form.Group>
                   </Col>
-                  {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                  {grouparooUiEdition() !== "config" && (
                     <Col>
                       <Alert variant="success">
                         <strong>Most Recent Run</strong>
@@ -226,10 +227,7 @@ export default function Page(props) {
                               </p>
                             ) : null}
                             <p>
-                              <Link
-                                href="/run/[id]/edit"
-                                as={`/run/${run.id}/edit`}
-                              >
+                              <Link href={`/run/${run.id}/edit`}>
                                 <a>See More</a>
                               </Link>
                             </p>
@@ -240,7 +238,7 @@ export default function Page(props) {
                       </Alert>
                     </Col>
                   )}
-                  {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                  {grouparooUiEdition() !== "config" && (
                     <Col>
                       <Alert variant="info">
                         <p>

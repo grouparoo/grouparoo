@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import EnterpriseLink from "../enterpriseLink";
+import EnterpriseLink from "../grouparooLink";
 import { Card, Table, ProgressBar } from "react-bootstrap";
 import { Misc, Models } from "../../utils/apiData";
 import Moment from "react-moment";
@@ -122,10 +122,7 @@ export function GroupsByNewestMember({
               return (
                 <tr key={`group-${group.id}`}>
                   <td>
-                    <EnterpriseLink
-                      href="/object/[id]"
-                      as={`/object/${group.id}`}
-                    >
+                    <EnterpriseLink href={`/object/${group.id}`}>
                       <a>{group.name}</a>
                     </EnterpriseLink>
                   </td>
@@ -224,7 +221,7 @@ export function RunningRuns({
               return (
                 <tr key={`run-${run.id}`}>
                   <td>
-                    <Link href="/run/[id]/edit" as={`/run/${run.id}/edit`}>
+                    <Link href={`/run/${run.id}/edit`}>
                       <a>{run.creatorName}</a>
                     </Link>
                   </td>
@@ -317,10 +314,7 @@ export function ScheduleRuns({
               return (
                 <tr key={`source-${sourceSchedule.id}`}>
                   <td>
-                    <EnterpriseLink
-                      href="/object/[id]"
-                      as={`/object/${sourceSchedule.id}`}
-                    >
+                    <EnterpriseLink href={`/object/${sourceSchedule.id}`}>
                       <a>{sourceSchedule.name}</a>
                     </EnterpriseLink>
                   </td>

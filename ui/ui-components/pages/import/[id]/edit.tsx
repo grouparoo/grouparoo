@@ -45,7 +45,7 @@ export default function Page(props) {
             <br />
             Creator:{" "}
             {_import.creatorType === "run" ? (
-              <Link href="/run/[id]/edit" as={`/run/${_import.creatorId}/edit`}>
+              <Link href={`/run/${_import.creatorId}/edit`}>
                 <a>{_import.creatorId}</a>
               </Link>
             ) : (
@@ -53,7 +53,7 @@ export default function Page(props) {
             )}
             <br />
             Record:{" "}
-            <Link href="/object/[id]" as={`/object/${_import.recordId}`}>
+            <Link href={`/object/${_import.recordId}`}>
               <a>{_import.recordId}</a>
             </Link>
           </p>

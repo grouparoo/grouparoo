@@ -2,18 +2,18 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { NextPageContext } from "next";
-import { Button, Alert } from "react-bootstrap";
-
+import { Alert } from "react-bootstrap";
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
-import Link from "../../../components/enterpriseLink";
+import GrouparooLink from "../../../components/grouparooLink";
 import Pagination from "../../../components/pagination";
 import LoadingTable from "../../../components/loadingTable";
 import StateBadge from "../../../components/badges/stateBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import LinkButton from "../../../components/linkButton";
 
 export default function Page(props) {
   const {
@@ -89,9 +89,9 @@ export default function Page(props) {
           There are no Sources yet.
           <br />
           <br />
-          <Button size="sm" href={`/model/${router.query.modelId}/sources`}>
+          <LinkButton size="sm" href={`/model/${router.query.modelId}/sources`}>
             Add Source
-          </Button>
+          </LinkButton>
         </Alert>
       </>
     );
@@ -133,9 +133,8 @@ export default function Page(props) {
             return (
               <tr key={`property-${rule.id}`}>
                 <td>
-                  <Link
-                    href="/model/[modelId]/property/[propertyId]/edit"
-                    as={`/model/${source.modelId}/property/${rule.id}/edit`}
+                  <GrouparooLink
+                    href={`/model/${source.modelId}/property/${rule.id}/edit`}
                   >
                     <a>
                       <strong>
@@ -147,18 +146,17 @@ export default function Page(props) {
                           }`}
                       </strong>
                     </a>
-                  </Link>
+                  </GrouparooLink>
                 </td>
                 <td>{rule.type}</td>
                 <td>{rule.unique ? "✅" : null}</td>
                 <td>{rule.isArray ? "✅" : null}</td>
                 <td>
-                  <Link
-                    href="/model/[modelId]/source/[sourceId]/overview"
-                    as={`/model/${source.modelId}/source/${source.id}/overview`}
+                  <GrouparooLink
+                    href={`/model/${source.modelId}/source/${source.id}/overview`}
                   >
                     <a>{source.name}</a>
-                  </Link>
+                  </GrouparooLink>
                 </td>
                 <td>
                   <StateBadge state={rule.state} />

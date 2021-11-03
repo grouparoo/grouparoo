@@ -6,7 +6,7 @@ import { Alert, Button, ButtonGroup, Col, Row } from "react-bootstrap";
 import StateBadge from "../components/badges/stateBadge";
 import LoadingTable from "../components/loadingTable";
 import Pagination from "../components/pagination";
-import EnterpriseLink from "../components/enterpriseLink";
+import EnterpriseLink from "../components/grouparooLink";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { UseApi } from "../hooks/useApi";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
@@ -100,6 +100,7 @@ export default function Page(props) {
                 <Fragment key={`export-processor-state-button-${_state}`}>
                   <Button
                     size="sm"
+                    disabled={loading}
                     variant={state === _state ? "secondary" : "info"}
                     onClick={() => setState(_state)}
                   >
@@ -138,17 +139,13 @@ export default function Page(props) {
                 <tr>
                   <td>
                     <span>Id</span>:{" "}
-                    <Link
-                      href="/exportProcessor/[id]/edit"
-                      as={`/exportProcessor/${exportProcessor.id}/edit`}
-                    >
+                    <Link href={`/exportProcessor/${exportProcessor.id}/edit`}>
                       <a>{exportProcessor.id}</a>
                     </Link>
                     <br />
                     Destination:{" "}
                     <EnterpriseLink
-                      href="/model/[modelId]/destination/[destinationId]/edit"
-                      as={`/model/${exportProcessor.destination.modelId}/destination/${exportProcessor.destination.id}/edit`}
+                      href={`/model/${exportProcessor.destination.modelId}/destination/${exportProcessor.destination.id}/edit`}
                     >
                       <a>{exportProcessor.destination.name}</a>
                     </EnterpriseLink>

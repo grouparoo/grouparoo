@@ -1,19 +1,19 @@
 import Head from "next/head";
-import { Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import type { NextPageContext } from "next";
-
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
-import Link from "../../../components/enterpriseLink";
+import Link from "../../../components/grouparooLink";
 import Pagination from "../../../components/pagination";
 import LoadingTable from "../../../components/loadingTable";
 import StateBadge from "../../../components/badges/stateBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { ErrorHandler } from "../../../utils/errorHandler";
+import LinkButton from "../../../components/linkButton";
+import { grouparooUiEdition } from "../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -75,11 +75,9 @@ export default function Page(props) {
           <tr>
             <th>Name</th>
             <th>Type</th>
-            {process.env.GROUPAROO_UI_EDITION !== "config" && <th>Records</th>}
+            {grouparooUiEdition() !== "config" && <th>Records</th>}
             <th>State</th>
-            {process.env.GROUPAROO_UI_EDITION !== "config" && (
-              <th>Calculated At</th>
-            )}
+            {grouparooUiEdition() !== "config" && <th>Calculated At</th>}
             <th>Created At</th>
             <th>Updated At</th>
           </tr>
@@ -91,28 +89,26 @@ export default function Page(props) {
                 <td>
                   {group.type === "calculated" ? (
                     <Link
-                      href="/model/[modelId]/group/[groupId]/rules"
-                      as={`/model/${group.modelId}/group/${group.id}/rules`}
+                      href={`/model/${group.modelId}/group/${group.id}/rules`}
                     >
                       <a>{group.name}</a>
                     </Link>
                   ) : (
                     <Link
-                      href="/model/[modelId]/group/[groupId]/edit"
-                      as={`/model/${group.modelId}/group/${group.id}/edit`}
+                      href={`/model/${group.modelId}/group/${group.id}/edit`}
                     >
                       <a>{group.name}</a>
                     </Link>
                   )}
                 </td>
                 <td>{group.type}</td>
-                {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                {grouparooUiEdition() !== "config" && (
                   <td>{group.recordsCount}</td>
                 )}
                 <td>
                   <StateBadge state={group.state} />
                 </td>
-                {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                {grouparooUiEdition() !== "config" && (
                   <td>
                     {group.calculatedAt
                       ? formatTimestamp(group.calculatedAt)
@@ -134,19 +130,13 @@ export default function Page(props) {
         onPress={setOffset}
       />
 
-      {process.env.GROUPAROO_UI_EDITION !== "community" ? (
-        <Button
-          variant="primary"
-          onClick={() => {
-            router.push(
-              "/model/[modelId]/group/new",
-              `/model/${router.query.modelId}/group/new`
-            );
-          }}
-        >
-          Add Group
-        </Button>
-      ) : null}
+      <LinkButton
+        variant="primary"
+        href={`/model/${router.query.modelId}/group/new`}
+        hideOn={["community"]}
+      >
+        Add Group
+      </LinkButton>
     </>
   );
 }

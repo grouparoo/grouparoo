@@ -4,7 +4,6 @@ import { Form, Row, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import type { NextPageContext } from "next";
-
 import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
@@ -224,6 +223,7 @@ export default function RecordsList(props) {
           <ButtonGroup id="record-states">
             <Button
               size="sm"
+              disabled={loading}
               variant={state ? "info" : "secondary"}
               onClick={() => {
                 setState(null);
@@ -238,6 +238,7 @@ export default function RecordsList(props) {
                 <Button
                   key={`state-${t}`}
                   size="sm"
+                  disabled={loading}
                   variant={variant}
                   onClick={() => {
                     setState(t);
@@ -289,8 +290,7 @@ export default function RecordsList(props) {
               <tr key={`record-${record.id}`}>
                 <td>
                   <Link
-                    href="/model/[modelId]/record/[recordId]/edit"
-                    as={`/model/${record.modelId}/record/${record.id}/edit`}
+                    href={`/model/${record.modelId}/record/${record.id}/edit`}
                   >
                     <a className="text-muted">
                       {identifyingRecordProperty?.key &&

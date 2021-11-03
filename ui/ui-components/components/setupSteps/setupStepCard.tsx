@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Models } from "../../utils/apiData";
 import { Accordion, Card, Row, Col, Button, Badge } from "react-bootstrap";
+import LoadingButton from "../loadingButton";
+import LinkButton from "../linkButton";
+import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function SetupStepCard({
   setupStep: step,
@@ -11,15 +14,23 @@ export default function SetupStepCard({
   execApi: Function;
   reload: Function;
 }) {
+  const [loading, setLoading] = useState(false);
   const [activeKey, setActiveKey] = useState(
     step.skipped || step.complete ? null : "0"
   );
 
   async function skip() {
+    setLoading(true);
     await execApi("put", `/setupStep/${step.id}`, {
       skipped: !step.skipped,
     });
-    reload();
+
+    try {
+      await reload();
+    } finally {
+      setLoading(false);
+    }
+
     setActiveKey(step.skipped ? "0" : null);
   }
 
@@ -65,7 +76,7 @@ export default function SetupStepCard({
               {step.complete ? null : (
                 <Row>
                   <Col md={6}>
-                    <Button
+                    <LinkButton
                       variant="outline-primary"
                       size="sm"
                       className="m-1"
@@ -73,41 +84,43 @@ export default function SetupStepCard({
                       href={step.helpLink}
                     >
                       Learn More
-                    </Button>
+                    </LinkButton>
                     &nbsp;&nbsp;
-                    {(process.env.GROUPAROO_UI_EDITION !== "community" ||
+                    {(grouparooUiEdition() !== "community" ||
                       step.showCtaOnCommunity) &&
                       step.cta && (
-                        <Button
+                        <LinkButton
                           size="sm"
                           className="m-1"
                           href={step.href}
                           disabled={step.disabled}
                         >
                           {step.cta}
-                        </Button>
+                        </LinkButton>
                       )}
                   </Col>
-                  {process.env.GROUPAROO_UI_EDITION === "config" ? null : (
+                  {grouparooUiEdition() === "config" ? null : (
                     <Col md={6} style={{ textAlign: "right" }}>
                       {step.skipped ? (
-                        <Button
+                        <LoadingButton
                           size="sm"
+                          disabled={loading}
                           className="m-1"
                           variant="outline-dark"
                           onClick={() => skip()}
                         >
                           un-skip
-                        </Button>
+                        </LoadingButton>
                       ) : (
-                        <Button
+                        <LoadingButton
                           size="sm"
+                          disabled={loading}
                           className="m-1"
                           variant="outline-dark"
                           onClick={() => skip()}
                         >
                           skip
-                        </Button>
+                        </LoadingButton>
                       )}
                     </Col>
                   )}

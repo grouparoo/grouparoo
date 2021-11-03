@@ -1,5 +1,5 @@
 import Head from "next/head";
-import EnterpriseLink from "../../../../../components/enterpriseLink";
+import EnterpriseLink from "../../../../../components/grouparooLink";
 import RecordTabs from "../../../../../components/tabs/record";
 import { useState, useEffect } from "react";
 import { UseApi } from "../../../../../hooks/useApi";
@@ -19,6 +19,8 @@ import ModelBadge from "../../../../../components/badges/modelBadge";
 import PageHeader from "../../../../../components/pageHeader";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import LinkButton from "../../../../../components/linkButton";
+import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -173,9 +175,12 @@ export default function Page(props) {
           There are no Properties added yet.
           <br />
           <br />
-          <Button size="sm" href={`/model/${router.query.modelId}/properties`}>
+          <LinkButton
+            size="sm"
+            href={`/model/${router.query.modelId}/properties`}
+          >
             Add a Property
-          </Button>
+          </LinkButton>
         </Alert>
       </>
     );
@@ -242,7 +247,7 @@ export default function Page(props) {
               >
                 Export
               </LoadingButton>
-              {process.env.GROUPAROO_UI_EDITION === "config" ? (
+              {grouparooUiEdition() === "config" && (
                 <>
                   {" "}
                   <LoadingButton
@@ -255,7 +260,7 @@ export default function Page(props) {
                     Remove Sample Record
                   </LoadingButton>
                 </>
-              ) : null}
+              )}
             </Col>
           </Row>
         </Col>
@@ -359,10 +364,9 @@ export default function Page(props) {
                     &nbsp; &nbsp;
                   </>
                 ) : null}
-                {process.env.GROUPAROO_UI_EDITION !== "config" ? (
+                {grouparooUiEdition() !== "config" ? (
                   <EnterpriseLink
-                    href="/model/[modelId]/group/[groupId]/members"
-                    as={`/model/${group.modelId}/group/${group.id}/members`}
+                    href={`/model/${group.modelId}/group/${group.id}/members`}
                   >
                     <a>{group.name}</a>
                   </EnterpriseLink>
@@ -374,7 +378,7 @@ export default function Page(props) {
           </ListGroup>
 
           <hr />
-          {process.env.GROUPAROO_UI_EDITION === "config" ? null : (
+          {grouparooUiEdition() !== "config" && (
             <Form onSubmit={(event) => handleAdd(event)} autoComplete="off">
               <Row>
                 <Col md={9}>
