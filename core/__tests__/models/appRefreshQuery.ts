@@ -82,18 +82,6 @@ describe("appRefreshQuery", () => {
       expect(spy).toHaveBeenCalledTimes(0);
     });
 
-    test("value will only be updated in `cli:run` mode", async () => {
-      process.env.GROUPAROO_RUN_MODE = undefined;
-      const appRefreshQuery = new AppRefreshQuery({
-        appId: app.id,
-        refreshQuery: "SELECT MAX(updated_at) FROM users;",
-        state: "ready",
-      });
-      await appRefreshQuery.save();
-
-      expect(appRefreshQuery.value).toBeFalsy();
-    });
-
     //this test should be last, it destroys the app
     test("deleting an app deletes its appRefreshQuery", async () => {
       await Schedule.truncate();

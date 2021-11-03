@@ -108,7 +108,7 @@ describe("modules/codeConfig", () => {
         expect(appRefreshQueries.length).toBe(1);
       });
 
-      test("appRefreshQuery does not save value/timestamp before a run", async () => {
+      test("appRefreshQuery does not save value on creation", async () => {
         const appRefreshQuery = await AppRefreshQuery.findOne();
         expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hi' AS name;");
         expect(appRefreshQuery.state).toBe("ready");
