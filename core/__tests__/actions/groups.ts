@@ -20,11 +20,13 @@ import {
   GroupsRuleOptions,
   GroupView,
 } from "../../src/actions/groups";
+import { ConfigWriter } from "../../src/modules/configWriter";
 
 describe("actions/groups", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let id: string;
   let model: GrouparooModel;
+  const configSpy = jest.spyOn(ConfigWriter, "run");
 
   beforeAll(async () => {
     model = await helper.factories.model();
@@ -35,6 +37,10 @@ describe("actions/groups", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
+  });
+
+  afterEach(() => {
+    configSpy.mockClear();
   });
 
   describe("writer signed in", () => {
@@ -66,6 +72,7 @@ describe("actions/groups", () => {
       expect(group.id).toBeTruthy();
       expect(group.name).toBe("new group");
       expect(group.type).toBe("manual");
+      expect(configSpy).toBeCalledTimes(1);
       id = group.id;
     });
 
@@ -105,6 +112,7 @@ describe("actions/groups", () => {
       expect(error).toBeUndefined();
       expect(group.id).toBeTruthy();
       expect(group.name).toBe("new group name");
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("a writer can view a team", async () => {
@@ -178,6 +186,7 @@ describe("actions/groups", () => {
 
       const group = await Group.findById(id);
       expect(group.state).toBe("deleted");
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("an administrator can force destroy a group", async () => {
@@ -196,6 +205,7 @@ describe("actions/groups", () => {
       expect(destroyResponse.success).toBe(true);
 
       expect(await Group.count({ where: { id: newGroup.id } })).toBe(0);
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     describe("calculated group", () => {

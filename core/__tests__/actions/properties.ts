@@ -16,9 +16,11 @@ import {
   PropertyTest,
   PropertyView,
 } from "../../src/actions/properties";
+import { ConfigWriter } from "../../src/modules/configWriter";
 
 describe("actions/properties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  const configSpy = jest.spyOn(ConfigWriter, "run");
   let id: string;
   let model: GrouparooModel;
   let source: Source;
@@ -39,6 +41,10 @@ describe("actions/properties", () => {
     await source.bootstrapUniqueProperty("userId", "integer", "id");
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
+  });
+
+  afterEach(() => {
+    configSpy.mockClear();
   });
 
   describe("administrator signed in", () => {
@@ -119,6 +125,7 @@ describe("actions/properties", () => {
       expect(property.state).toBe("draft");
       expect(property.sourceId).toBe(source.id);
       expect(pluginOptions[0].key).toBe("column");
+      expect(configSpy).toBeCalledTimes(1);
 
       id = property.id;
     });
@@ -183,6 +190,7 @@ describe("actions/properties", () => {
           relativeMatchUnit: null,
         },
       ]);
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("an administrator can make a rule ready", async () => {
@@ -231,6 +239,7 @@ describe("actions/properties", () => {
       expect(property.options).toEqual({
         column: "userId",
       });
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("options are validated", async () => {
@@ -258,6 +267,7 @@ describe("actions/properties", () => {
         );
       expect(error).toBeFalsy();
       expect(property.identifying).toEqual(true);
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("an administrator can list all the properties with examples", async () => {
@@ -296,6 +306,7 @@ describe("actions/properties", () => {
         connection
       );
       expect(secondRequest.examples).toBeUndefined();
+      expect(configSpy).toBeCalledTimes(0);
 
       await record.destroy();
     });
@@ -364,6 +375,7 @@ describe("actions/properties", () => {
       );
       expect(error).toBeUndefined();
       expect(property.unique).toBe(true);
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("an administrator can see a record preview of a property", async () => {
@@ -400,6 +412,7 @@ describe("actions/properties", () => {
       );
       expect(error).toBeUndefined();
       expect(success).toBe(true);
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     describe("with multiple models", () => {

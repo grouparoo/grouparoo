@@ -15,9 +15,12 @@ import {
   SourceView,
 } from "../../src/actions/sources";
 import { PropertyDestroy } from "../../src/actions/properties";
+import { ConfigWriter } from "../../src/modules/configWriter";
 
 describe("actions/sources", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  const configSpy = jest.spyOn(ConfigWriter, "run");
+
   let model: GrouparooModel;
   let app: App;
   let id: string;
@@ -34,6 +37,10 @@ describe("actions/sources", () => {
     model = await helper.factories.model();
     app = await helper.factories.app();
     await app.update({ name: "test app" });
+  });
+
+  afterEach(() => {
+    configSpy.mockClear();
   });
 
   describe("administrator signed in", () => {
@@ -68,6 +75,7 @@ describe("actions/sources", () => {
       expect(source.app.id).toBe(app.id);
       expect(source.app.name).toBe("test app");
       expect(source.state).toBe("draft");
+      expect(configSpy).toBeCalledTimes(1);
 
       id = source.id;
     });
@@ -242,6 +250,7 @@ describe("actions/sources", () => {
       );
       expect(error).toBeUndefined();
       expect(source.options).toEqual({ table: "users" });
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("a source with options set will return a preview", async () => {
@@ -272,6 +281,7 @@ describe("actions/sources", () => {
       );
       expect(error).toBeUndefined();
       expect(source.mapping).toEqual({ id: "userId" });
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("a source can be made active", async () => {
@@ -314,6 +324,7 @@ describe("actions/sources", () => {
         connection
       );
       expect(editResponse.error).toBeUndefined();
+      expect(configSpy).toBeCalledTimes(1);
 
       connection.params = {
         csrfToken,
@@ -324,6 +335,7 @@ describe("actions/sources", () => {
         connection
       );
       expect(deleteRuleResponse.error).toBeUndefined();
+      expect(configSpy).toBeCalledTimes(2);
 
       connection.params = {
         csrfToken,
@@ -338,6 +350,7 @@ describe("actions/sources", () => {
 
       const count = await Source.count();
       expect(count).toBe(0);
+      expect(configSpy).toBeCalledTimes(3);
     });
   });
 });

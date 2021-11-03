@@ -9,10 +9,12 @@ import {
   ModelsList,
   ModelView,
 } from "../../src/actions/models";
+import { ConfigWriter } from "../../src/modules/configWriter";
 
 describe("actions/models", () => {
   helper.grouparooTestServer({ truncate: true });
   let id: string;
+  const configSpy = jest.spyOn(ConfigWriter, "run");
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
@@ -21,6 +23,10 @@ describe("actions/models", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
+  });
+
+  afterEach(() => {
+    configSpy.mockClear();
   });
 
   describe("administrator signed in", () => {
@@ -51,6 +57,7 @@ describe("actions/models", () => {
       expect(model.id).toBeTruthy();
       expect(model.name).toBe("new model");
       expect(model.type).toBe("profile");
+      expect(configSpy).toBeCalledTimes(1);
       id = model.id;
     });
 
@@ -64,6 +71,7 @@ describe("actions/models", () => {
       );
       expect(error).toBeUndefined();
       expect(models.length).toBe(1);
+      expect(configSpy).toBeCalledTimes(0);
     });
 
     test("an administrator can get the options for a new model", async () => {
@@ -76,6 +84,7 @@ describe("actions/models", () => {
       );
       expect(error).toBeUndefined();
       expect(types).toEqual(["profile", "account", "custom"]);
+      expect(configSpy).toBeCalledTimes(0);
     });
 
     test("an administrator can edit a model", async () => {
@@ -91,6 +100,7 @@ describe("actions/models", () => {
       expect(error).toBeUndefined();
       expect(model.id).toBeTruthy();
       expect(model.name).toBe("new model name");
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("an administrator can view a model", async () => {
@@ -105,6 +115,7 @@ describe("actions/models", () => {
       expect(error).toBeUndefined();
       expect(model.id).toBeTruthy();
       expect(model.name).toBe("new model name");
+      expect(configSpy).toBeCalledTimes(0);
     });
 
     test("an administrator can destroy a model", async () => {
@@ -118,6 +129,7 @@ describe("actions/models", () => {
         connection
       );
       expect(error).toBeUndefined();
+      expect(configSpy).toBeCalledTimes(1);
 
       connection.params = {
         csrfToken,
@@ -129,6 +141,7 @@ describe("actions/models", () => {
       );
       expect(destroyResponse.error).toBeUndefined();
       expect(destroyResponse.success).toBe(true);
+      expect(configSpy).toBeCalledTimes(2);
     });
   });
 });

@@ -13,10 +13,12 @@ import {
   AppView,
 } from "../../src/actions/apps";
 import { ObfuscatedPasswordString } from "../../src/modules/optionHelper";
+import { ConfigWriter } from "../../src/modules/configWriter";
 
 describe("actions/apps", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let id: string;
+  const configSpy = jest.spyOn(ConfigWriter, "run");
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
@@ -25,6 +27,10 @@ describe("actions/apps", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
+  });
+
+  afterEach(() => {
+    configSpy.mockClear();
   });
 
   describe("administrator signed in", () => {
@@ -56,7 +62,7 @@ describe("actions/apps", () => {
       expect(app.id).toBeTruthy();
       expect(app.name).toBe("test app");
       expect(app.options.fileId).toBe("abc123");
-
+      expect(configSpy).toBeCalledTimes(1);
       id = app.id;
     });
 
@@ -184,6 +190,7 @@ describe("actions/apps", () => {
       expect(app.name).toBe("new app name");
       expect(app.options.fileId).toBe("zzz");
       expect(app.options.password).toBe(ObfuscatedPasswordString);
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("an administrator cannot save an obfuscated password", async () => {
@@ -223,6 +230,7 @@ describe("actions/apps", () => {
       expect(app.pluginApp.displayName).toBe("test-plugin-app");
       expect(app.pluginApp.name).toBe("test-plugin-app");
       expect(app.options.password).toBe(ObfuscatedPasswordString);
+      expect(configSpy).toBeCalledTimes(0);
     });
 
     test("an administrator can destroy an app", async () => {
@@ -237,6 +245,7 @@ describe("actions/apps", () => {
         connection
       );
       expect(error).toBeUndefined();
+      expect(configSpy).toBeCalledTimes(1);
 
       connection.params = {
         csrfToken,
@@ -248,6 +257,7 @@ describe("actions/apps", () => {
       );
       expect(destroyResponse.error).toBeUndefined();
       expect(destroyResponse.success).toBe(true);
+      expect(configSpy).toBeCalledTimes(2);
     });
   });
 });
