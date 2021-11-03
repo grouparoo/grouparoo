@@ -76,10 +76,7 @@ export default function Page(props) {
                   />
                 </td>
                 <td>
-                  <Link
-                    href="/teamMember/[id]/edit"
-                    as={`/teamMember/${teamMember.id}/edit`}
-                  >
+                  <Link href={`/teamMember/${teamMember.id}/edit`}>
                     <a>{teamMember.email}</a>
                   </Link>
                 </td>

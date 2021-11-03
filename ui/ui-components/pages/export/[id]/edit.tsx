@@ -1,7 +1,7 @@
 import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Alert, Card, Badge } from "react-bootstrap";
 import Link from "next/link";
-import EnterpriseLink from "../../../components/enterpriseLink";
+import EnterpriseLink from "../../../components/grouparooLink";
 import Head from "next/head";
 import ExportTabs from "../../../components/tabs/export";
 import { Models } from "../../../utils/apiData";
@@ -38,8 +38,7 @@ export default function Page({
             <br />
             Destination:{" "}
             <EnterpriseLink
-              href="/model/[modelId]/destination/[destinationId]/edit"
-              as={`/model/${_export.destination.modelId}/destination/${_export.destination.id}/edit`}
+              href={`/model/${_export.destination.modelId}/destination/${_export.destination.id}/edit`}
             >
               <a>{_export.destination.name}</a>
             </EnterpriseLink>
@@ -48,8 +47,7 @@ export default function Page({
               <>
                 <span>Processor</span>:{" "}
                 <Link
-                  href="/exportProcessor/[id]/edit"
-                  as={`/exportProcessor/${_export.exportProcessorId}/edit`}
+                  href={`/exportProcessor/${_export.exportProcessorId}/edit`}
                 >
                   <a>{_export.exportProcessorId}</a>
                 </Link>
@@ -58,8 +56,7 @@ export default function Page({
             ) : null}
             Record:{" "}
             <Link
-              href="/model/[modelId]/record/[recordId]/edit"
-              as={`/model/${_export.destination.modelId}/record/${_export.recordId}/edit`}
+              href={`/model/${_export.destination.modelId}/record/${_export.recordId}/edit`}
             >
               <a>{_export.recordId}</a>
             </Link>

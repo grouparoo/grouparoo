@@ -1,13 +1,11 @@
 import { useState, Fragment } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Button } from "react-bootstrap";
 import type { NextPageContext } from "next";
-
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
-import Link from "../../../components/enterpriseLink";
+import Link from "../../../components/grouparooLink";
 import Pagination from "../../../components/pagination";
 import LoadingTable from "../../../components/loadingTable";
 import AppIcon from "../../../components/appIcon";
@@ -16,6 +14,9 @@ import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { ErrorHandler } from "../../../utils/errorHandler";
+import LoadingButton from "../../../components/loadingButton";
+import LinkButton from "../../../components/linkButton";
+import { grouparooUiEdition } from "../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -74,10 +75,14 @@ export default function Page(props) {
         "post",
         `/schedule/${source.schedule.id}/run`
       );
-      successHandler.set({ message: `run ${response.run.id} enqueued` });
+      if (response.run) {
+        const _runs = Object.assign({}, runs);
+        _runs[source.id] = await loadRun(source, execApi);
+        setRuns(_runs);
+        successHandler.set({ message: `run ${response.run.id} enqueued` });
+      }
     } finally {
       setLoading(false);
-      load();
     }
   }
 
@@ -137,8 +142,7 @@ export default function Page(props) {
                   </td>
                   <td>
                     <Link
-                      href="/model/[modelId]/source/[sourceId]/overview"
-                      as={`/model/${source.modelId}/source/${source.id}/overview`}
+                      href={`/model/${source.modelId}/source/${source.id}/overview`}
                     >
                       <a>
                         <strong>
@@ -154,10 +158,7 @@ export default function Page(props) {
                   </td>
                   <td>{source.connection.displayName}</td>
                   <td>
-                    <Link
-                      href="/app/[id]/edit"
-                      as={`/app/${source.app.id}/edit`}
-                    >
+                    <Link href={`/app/${source.app.id}/edit`}>
                       <a>
                         <strong>{source.app.name}</strong>
                       </a>
@@ -174,20 +175,20 @@ export default function Page(props) {
                         {schedule.recurring
                           ? `Every ${recurringFrequencyMinutes} minutes`
                           : "Not recurring"}
-                        {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                        {grouparooUiEdition() !== "config" && (
                           <>
                             <br />
                             Last Run:{" "}
                             {run ? formatTimestamp(run?.createdAt) : "Never"}
                             <br />
-                            <Button
+                            <LoadingButton
                               variant="outline-success"
                               size="sm"
-                              disabled={run?.state === "running"}
+                              disabled={loading}
                               onClick={() => enqueueScheduleRun(source)}
                             >
                               Run Now
-                            </Button>
+                            </LoadingButton>
                           </>
                         )}
                       </>
@@ -208,28 +209,22 @@ export default function Page(props) {
         onPress={setOffset}
       />
       <br />
-      {process.env.GROUPAROO_UI_EDITION !== "community" ? (
-        <Button
-          variant="primary"
-          onClick={() => {
-            router.push(
-              "/model/[modelId]/source/new",
-              `/model/${router.query.modelId}/source/new`
-            );
-          }}
-        >
-          Add new Source
-        </Button>
-      ) : null}
+      <LinkButton
+        variant="primary"
+        href={`/model/${router.query.modelId}/source/new`}
+        hideOn={["community"]}
+      >
+        Add new Source
+      </LinkButton>
       &nbsp;
-      {process.env.GROUPAROO_UI_EDITION !== "config" ? (
-        <Button
-          variant="outline-primary"
-          onClick={() => enqueueAllSchedulesRun()}
-        >
-          Run all {modelName} Schedules
-        </Button>
-      ) : null}
+      <LoadingButton
+        variant="outline-primary"
+        disabled={loading}
+        onClick={() => enqueueAllSchedulesRun()}
+        hideOn={["config"]}
+      >
+        Run all {modelName} Schedules
+      </LoadingButton>
     </>
   );
 }

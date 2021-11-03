@@ -1,22 +1,27 @@
 import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { Row, Col, ButtonGroup, Button, Alert, Card } from "react-bootstrap";
+import { Row, Col, Button, ButtonGroup, Alert, Card } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import EnterpriseLink from "../enterpriseLink";
+import EnterpriseLink from "../grouparooLink";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import RunDurationChart from "../visualizations/runDurations";
 import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
+import { RunsHandler } from "../../utils/runsHandler";
 import { DurationTime } from "../durationTime";
 import { NextPageContext } from "next";
 
 export default function RunsList(props) {
-  const { errorHandler, topic }: { errorHandler: ErrorHandler; topic: string } =
+  const {
+    errorHandler,
+    runsHandler,
+    topic,
+  }: { errorHandler: ErrorHandler; runsHandler: RunsHandler; topic: string } =
     props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
@@ -33,6 +38,13 @@ export default function RunsList(props) {
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
+
+  useEffect(() => {
+    runsHandler.subscribe("runs-list", () => load());
+    return () => {
+      runsHandler.unsubscribe("runs-list");
+    };
+  }, []);
 
   useSecondaryEffect(() => {
     load();
@@ -80,6 +92,7 @@ export default function RunsList(props) {
           <ButtonGroup>
             <Button
               size="sm"
+              disabled={loading}
               variant={stateFilter === "" ? "secondary" : "info"}
               onClick={() => setFilter({ stateFilter: "" })}
             >
@@ -87,6 +100,7 @@ export default function RunsList(props) {
             </Button>
             <Button
               size="sm"
+              disabled={loading}
               variant={stateFilter === "running" ? "secondary" : "info"}
               onClick={() => setFilter({ stateFilter: "running" })}
             >
@@ -94,6 +108,7 @@ export default function RunsList(props) {
             </Button>
             <Button
               size="sm"
+              disabled={loading}
               variant={stateFilter === "complete" ? "secondary" : "info"}
               onClick={() => setFilter({ stateFilter: "complete" })}
             >
@@ -101,6 +116,7 @@ export default function RunsList(props) {
             </Button>
             <Button
               size="sm"
+              disabled={loading}
               variant={stateFilter === "stopped" ? "secondary" : "info"}
               onClick={() => setFilter({ stateFilter: "stopped" })}
             >
@@ -113,6 +129,7 @@ export default function RunsList(props) {
           <ButtonGroup>
             <Button
               size="sm"
+              disabled={loading}
               variant={errorFilter === "" ? "secondary" : "info"}
               onClick={() => setFilter({ errorFilter: "" })}
             >
@@ -120,6 +137,7 @@ export default function RunsList(props) {
             </Button>
             <Button
               size="sm"
+              disabled={loading}
               variant={errorFilter === "true" ? "secondary" : "info"}
               onClick={() => setFilter({ errorFilter: "true" })}
             >
@@ -127,6 +145,7 @@ export default function RunsList(props) {
             </Button>
             <Button
               size="sm"
+              disabled={loading}
               variant={errorFilter === "false" ? "secondary" : "info"}
               onClick={() => setFilter({ errorFilter: "false" })}
             >
@@ -177,7 +196,7 @@ export default function RunsList(props) {
                   <tr>
                     <td>
                       id:{" "}
-                      <Link href="/run/[id]/edit" as={`/run/${run.id}/edit`}>
+                      <Link href={`/run/${run.id}/edit`}>
                         <a>{run.id}</a>
                       </Link>
                     </td>
@@ -243,10 +262,7 @@ export default function RunsList(props) {
                       ) : null}
                     </td>
                     <td>
-                      <Link
-                        href="/imports/[creatorId]"
-                        as={`/imports/${run.id}`}
-                      >
+                      <Link href={`/imports/${run.id}`}>
                         <a>Imports Created: {run.importsCreated}</a>
                       </Link>
                       <br />

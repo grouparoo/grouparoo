@@ -1,6 +1,6 @@
 import { UseApi } from "../../../hooks/useApi";
 import { Table, Alert, Card } from "react-bootstrap";
-import EnterpriseLink from "../../../components/enterpriseLink";
+import EnterpriseLink from "../../../components/grouparooLink";
 import Head from "next/head";
 import ExportProcessorTabs from "../../../components/tabs/exportProcessor";
 import { Models } from "../../../utils/apiData";
@@ -31,8 +31,7 @@ export default function Page({
             <br />
             Destination:{" "}
             <EnterpriseLink
-              href="/model/[modelId]/destination/[destinationId]/edit"
-              as={`/model/${exportProcessor.destination.modelId}/destination/${exportProcessor.destination.id}/edit`}
+              href={`/model/${exportProcessor.destination.modelId}/destination/${exportProcessor.destination.id}/edit`}
             >
               <a>{exportProcessor.destination.name}</a>
             </EnterpriseLink>

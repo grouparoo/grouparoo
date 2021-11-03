@@ -83,10 +83,7 @@ export default function Page(props) {
                   )}
                 </td>
                 <td>
-                  <Link
-                    href="/notification/[id]/edit"
-                    as={`/notification/${notification.id}/edit`}
-                  >
+                  <Link href={`/notification/${notification.id}/edit`}>
                     <a>
                       {notification.readAt ? (
                         notification.subject

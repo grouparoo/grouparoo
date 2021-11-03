@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import GroupTabs from "../../../../../components/tabs/group";
 import LoadingButton from "../../../../../components/loadingButton";
-
 import { Models, Actions } from "../../../../../utils/apiData";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import { ErrorHandler } from "../../../../../utils/errorHandler";
@@ -17,6 +16,7 @@ import PageHeader from "../../../../../components/pageHeader";
 import ModelBadge from "../../../../../components/badges/modelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -106,8 +106,7 @@ export default function Page(props) {
         ]}
       />
 
-      {group.type === "calculated" &&
-      process.env.GROUPAROO_UI_EDITION !== "config" ? (
+      {group.type === "calculated" && grouparooUiEdition() !== "config" && (
         <Row>
           <Col>
             <strong>Last Member Calculation</strong>:{" "}
@@ -127,7 +126,7 @@ export default function Page(props) {
             <br />
           </Col>
         </Row>
-      ) : null}
+      )}
       <Row>
         <Col>
           <Form id="form" onSubmit={submit} autoComplete="off">
@@ -208,7 +207,7 @@ export default function Page(props) {
                   disabled={loading}
                   size="sm"
                   onClick={() => {
-                    handleDelete(process.env.GROUPAROO_UI_EDITION === "config");
+                    handleDelete(grouparooUiEdition() === "config");
                   }}
                 >
                   Delete

@@ -41,10 +41,7 @@ export default function GrouparooTabs({
           </Link>
         </li>
         <li className="breadcrumb-item">
-          <Link
-            href={`${pathnameScope}/${topic}/${pathnameId}/${defaultTab}`}
-            as={`${scope}/${topic}/${id}/${defaultTab}`}
-          >
+          <Link href={`${scope}/${topic}/${id}/${defaultTab}`}>
             <a>
               {name !== ""
                 ? name

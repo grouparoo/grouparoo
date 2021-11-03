@@ -12,11 +12,11 @@ import AppTabs from "../../../components/tabs/app";
 import Loader from "../../../components/loader";
 import LoadingButton from "../../../components/loadingButton";
 import LockedBadge from "../../../components/badges/lockedBadge";
-
 import { Actions, Models } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { AppHandler } from "../../../utils/appHandler";
+import { grouparooUiEdition } from "../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -192,7 +192,7 @@ export default function Page(props) {
                         ))}
                       </p>
                     )}
-                    {process.env.GROUPAROO_UI_EDITION === "config" && (
+                    {grouparooUiEdition() === "config" && (
                       <p className="mb-0">
                         <a
                           target="_blank"

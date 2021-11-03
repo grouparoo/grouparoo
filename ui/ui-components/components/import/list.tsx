@@ -87,18 +87,12 @@ export default function ImportList(props) {
                 <tr>
                   <td>
                     id:
-                    <Link
-                      href="/import/[id]/edit"
-                      as={`/import/${_import.id}/edit`}
-                    >
+                    <Link href={`/import/${_import.id}/edit`}>
                       <a> {_import.id}</a>
                     </Link>
                     <br /> Record:{" "}
                     {_import.recordId ? (
-                      <Link
-                        href="/object/[id]"
-                        as={`/object/${_import.recordId}`}
-                      >
+                      <Link href={`/object/${_import.recordId}`}>
                         <a>{_import.recordId}</a>
                       </Link>
                     ) : (
@@ -106,19 +100,13 @@ export default function ImportList(props) {
                     )}
                     <br />
                     Model:{" "}
-                    <Link
-                      href="/model/[modelId]/edit"
-                      as={`/model/${_import.modelId}/edit`}
-                    >
+                    <Link href={`/model/${_import.modelId}/edit`}>
                       <a>{_import.modelId}</a>
                     </Link>
                     <br />
                     Creator:{" "}
                     {_import.creatorType === "run" ? (
-                      <Link
-                        href="/run/[id]/edit"
-                        as={`/run/${_import.creatorId}/edit`}
-                      >
+                      <Link href={`/run/${_import.creatorId}/edit`}>
                         <a>{_import.creatorId}</a>
                       </Link>
                     ) : (

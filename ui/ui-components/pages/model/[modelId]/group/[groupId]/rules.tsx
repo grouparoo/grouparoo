@@ -16,6 +16,7 @@ import PageHeader from "../../../../../components/pageHeader";
 import ModelBadge from "../../../../../components/badges/modelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -172,7 +173,7 @@ export default function Page(props) {
         ]}
       />
 
-      {process.env.GROUPAROO_UI_EDITION !== "config" && (
+      {grouparooUiEdition()! == "config" && (
         <p>
           Total Records in this group: &nbsp;
           <Badge style={{ fontSize: 16 }} variant="info">
@@ -197,7 +198,7 @@ export default function Page(props) {
                 <th>
                   <strong>Operation</strong>
                 </th>
-                {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                {grouparooUiEdition() !== "config" && (
                   <th>
                     <strong># of Records</strong>
                   </th>
@@ -454,7 +455,7 @@ export default function Page(props) {
                       </Form.Group>
                     </td>
 
-                    {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                    {grouparooUiEdition() !== "config" && (
                       <td>
                         <Badge variant="info">{componentCounts[idx]}</Badge>
                       </td>
@@ -485,18 +486,15 @@ export default function Page(props) {
             Add Rule
           </Button>
           &nbsp;
-          {process.env.GROUPAROO_UI_EDITION !== "config" && (
-            <LoadingButton
-              disabled={loading}
-              variant="outline-dark"
-              size="sm"
-              onClick={async () => {
-                await getCounts(false);
-              }}
-            >
-              Count Potential Group Members
-            </LoadingButton>
-          )}
+          <LoadingButton
+            disabled={loading}
+            variant="outline-dark"
+            size="sm"
+            hideOn={["config"]}
+            onClick={() => getCounts(false)}
+          >
+            Count Potential Group Members
+          </LoadingButton>
           <br />
           <br />{" "}
           {group.locked ? (

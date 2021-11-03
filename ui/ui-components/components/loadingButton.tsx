@@ -1,13 +1,23 @@
-import * as React from "react";
-import { Button } from "react-bootstrap";
+import { Button, ButtonProps } from "react-bootstrap";
+import { GrouparooUIEdition, grouparooUiEdition } from "../utils/uiEdition";
 import Loader from "./loader";
 
-export default function LoadingButton(props) {
-  const message = props.disabled ? (
-    <Loader size="sm" />
-  ) : (
-    props.children || "Submit"
-  );
+export default function LoadingButton(
+  props: ButtonProps & {
+    displayOn?: GrouparooUIEdition[];
+    hideOn?: GrouparooUIEdition[];
+  }
+) {
+  const { children, displayOn, hideOn, ...buttonProps } = props;
 
-  return <Button {...props}>{message}</Button>;
+  if (displayOn && !displayOn.includes(grouparooUiEdition())) {
+    return null;
+  }
+
+  if (hideOn && hideOn.includes(grouparooUiEdition())) {
+    return null;
+  }
+
+  const message = props.disabled ? <Loader size="sm" /> : children || "Submit";
+  return <Button {...buttonProps}>{message}</Button>;
 }

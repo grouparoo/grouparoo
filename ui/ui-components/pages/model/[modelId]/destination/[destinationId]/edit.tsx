@@ -18,6 +18,7 @@ import { DestinationHandler } from "../../../../../utils/destinationHandler";
 import ModelBadge from "../../../../../components/badges/modelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -418,7 +419,7 @@ export default function Page(props) {
                 size="sm"
                 disabled={loading}
                 onClick={() => {
-                  handleDelete(process.env.GROUPAROO_UI_EDITION === "config");
+                  handleDelete(grouparooUiEdition() === "config");
                 }}
               >
                 Delete

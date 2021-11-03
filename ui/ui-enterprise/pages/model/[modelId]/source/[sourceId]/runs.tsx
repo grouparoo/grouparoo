@@ -7,11 +7,12 @@ import PageHeader from "@grouparoo/ui-components/components/pageHeader";
 import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
 import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
 import ModelBadge from "@grouparoo/ui-components/components/badges/modelBadge";
-import { Button, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
 import { RunsHandler } from "@grouparoo/ui-components/utils/runsHandler";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 
 export default function Page(props) {
   const {
@@ -35,8 +36,10 @@ export default function Page(props) {
         "post",
         `/schedule/${source.schedule.id}/run`
       );
-      successHandler.set({ message: `run ${response.run.id} enqueued` });
-      runsHandler.set(null);
+      if (response.run) {
+        successHandler.set({ message: `run ${response.run.id} enqueued` });
+        runsHandler.set([response.run]);
+      }
     } finally {
       setLoading(false);
     }
@@ -69,7 +72,7 @@ export default function Page(props) {
 
             <Row>
               <Col>
-                <Button
+                <LoadingButton
                   size="sm"
                   variant="outline-primary"
                   disabled={loading}
@@ -78,7 +81,7 @@ export default function Page(props) {
                   }}
                 >
                   Run Now
-                </Button>
+                </LoadingButton>
                 <br />
                 <br />
               </Col>

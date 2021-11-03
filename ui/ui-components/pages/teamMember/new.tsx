@@ -9,6 +9,7 @@ import { Actions, Models } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { TeamMemberHandler } from "../../utils/teamMembersHandler";
 import { SuccessHandler } from "../../utils/successHandler";
+import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -42,7 +43,7 @@ export default function Page(props) {
     if (response?.teamMember) {
       teamMemberHandler.set([response.teamMember]);
       successHandler.set({ message: "Team Member Created" });
-      process.env.GROUPAROO_UI_EDITION === "enterprise"
+      grouparooUiEdition() === "enterprise"
         ? router.push(`/team/${response.teamMember.teamId}/members`)
         : router.push(`/teams`);
     } else {

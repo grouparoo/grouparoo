@@ -1,5 +1,5 @@
 import { Badge } from "react-bootstrap";
-import EnterpriseLink from "../enterpriseLink";
+import EnterpriseLink from "../grouparooLink";
 
 export default function AppBadge({
   appName,
@@ -12,7 +12,7 @@ export default function AppBadge({
 }) {
   return (
     <Badge style={{ marginBottom: marginBottom ?? 20 }} variant="secondary">
-      <EnterpriseLink href="/app/[id]/edit" as={`/app/${appId}/edit`}>
+      <EnterpriseLink href={`/app/${appId}/edit`}>
         <a style={{ color: "white" }}>{appName}</a>
       </EnterpriseLink>
     </Badge>

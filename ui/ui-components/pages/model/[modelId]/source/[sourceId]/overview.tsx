@@ -16,6 +16,8 @@ import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import ModelBadge from "../../../../../components/badges/modelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import LinkButton from "../../../../../components/linkButton";
+import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page({
   errorHandler,
@@ -56,7 +58,7 @@ export default function Page({
         <Col>
           <p>
             <strong>App</strong>:{" "}
-            <Link href="/app/[id]/edit" as={`/app/${source.app.id}/edit`}>
+            <Link href={`/app/${source.app.id}/edit`}>
               <a>{source.app.name}</a>
             </Link>
             <br />
@@ -90,8 +92,7 @@ export default function Page({
                 <tr key={`rule-${rule.id}`}>
                   <td>
                     <Link
-                      href="/model/[modelId]/property/[propertyId]/edit"
-                      as={`/model/${source.modelId}/property/${rule.id}/edit`}
+                      href={`/model/${source.modelId}/property/${rule.id}/edit`}
                     >
                       <a>
                         <strong>
@@ -121,17 +122,17 @@ export default function Page({
             successHandler={successHandler}
             source={source}
           />
-          {process.env.GROUPAROO_UI_EDITION !== "community" &&
-          source.previewAvailable === true ? (
+          {source.previewAvailable === true ? (
             <>
               &nbsp;
-              <Button
+              <LinkButton
                 href={`/model/${source.modelId}/source/${source.id}/multipleProperties`}
                 size="sm"
                 variant="outline-primary"
+                hideOn={["community"]}
               >
                 Add Multiple Properties
-              </Button>
+              </LinkButton>
             </>
           ) : null}
           <hr />
@@ -143,8 +144,7 @@ export default function Page({
                 <Col>
                   <p>
                     <Link
-                      href="/model/[modelId]/source/[sourceId]/schedule"
-                      as={`/model/${source.modelId}/source/${source.id}/schedule`}
+                      href={`/model/${source.modelId}/source/${source.id}/schedule`}
                     >
                       <a>{source.schedule.name}</a>
                     </Link>
@@ -167,7 +167,7 @@ export default function Page({
                     <StateBadge state={source.schedule.state} />
                   </p>
                 </Col>
-                {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                {grouparooUiEdition() !== "config" && (
                   <Col>
                     <Alert variant="success">
                       <strong>Most Recent Run</strong>
@@ -191,10 +191,7 @@ export default function Page({
                             <p>Completed {formatTimestamp(run.completedAt)}</p>
                           ) : null}
                           <p>
-                            <Link
-                              href="/run/[id]/edit"
-                              as={`/run/${run.id}/edit`}
-                            >
+                            <Link href={`/run/${run.id}/edit`}>
                               <a>See More</a>
                             </Link>
                           </p>
@@ -205,7 +202,7 @@ export default function Page({
                     </Alert>
                   </Col>
                 )}
-                {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                {grouparooUiEdition() !== "config" && (
                   <Col>
                     <Alert variant="info">
                       <p>

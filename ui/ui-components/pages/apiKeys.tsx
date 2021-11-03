@@ -1,16 +1,16 @@
 import Head from "next/head";
-import { Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useState } from "react";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import Link from "../components/enterpriseLink";
+import GrouparooLink from "../components/grouparooLink";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { ErrorHandler } from "../utils/errorHandler";
+import LinkButton from "../components/linkButton";
 
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
@@ -72,14 +72,11 @@ export default function Page(props) {
             return (
               <tr key={`apiKey-${apiKey.id}`}>
                 <td>
-                  <Link
-                    href="/apiKey/[id]/edit"
-                    as={`/apiKey/${apiKey.id}/edit`}
-                  >
+                  <GrouparooLink href={`/apiKey/${apiKey.id}/edit`}>
                     <a>
                       <strong>{apiKey.name}</strong>
                     </a>
-                  </Link>
+                  </GrouparooLink>
                 </td>
                 <td>
                   <code>{apiKey.apiKey}</code>
@@ -98,16 +95,13 @@ export default function Page(props) {
         onPress={setOffset}
       />
 
-      {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
-        <Button
-          variant="primary"
-          onClick={() => {
-            router.push("/apiKey/new");
-          }}
-        >
-          Add API Key
-        </Button>
-      ) : null}
+      <LinkButton
+        variant="primary"
+        href="/apiKey/new"
+        displayOn={["enterprise"]}
+      >
+        Add API Key
+      </LinkButton>
     </>
   );
 }

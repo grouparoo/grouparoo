@@ -78,6 +78,12 @@ export class ScheduleRun extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const schedule = await Schedule.findById(params.id);
+
+    const runningRun = await Run.findOne({
+      where: { creatorId: schedule.id, state: "running" },
+    });
+    if (runningRun) await runningRun.stop();
+
     const run = await schedule.enqueueRun();
     return { run: await run.apiData() };
   }

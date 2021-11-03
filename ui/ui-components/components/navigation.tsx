@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Image, Accordion, Button, Badge, Form, Col } from "react-bootstrap";
+import { Image, Accordion, Button, Badge, Form } from "react-bootstrap";
 import Link from "next/link";
 import {
   FontAwesomeIcon,
@@ -19,6 +19,8 @@ import { SessionHandler } from "../utils/sessionHandler";
 import { StatusHandler } from "../utils/statusHandler";
 import { truncate } from "../utils/truncate";
 import { onChangeModelId } from "../utils/modelHelper";
+import LinkButton from "./linkButton";
+import { grouparooUiEdition } from "../utils/uiEdition";
 
 export const navLiStyle = { marginTop: 20, marginBottom: 20 };
 
@@ -120,7 +122,7 @@ export default function Navigation(props) {
 
   if (!navExpanded && !hasBeenCollapsed) setHasBeenCollapsed(true);
 
-  const uiPlugin = `@grouparoo/ui-${process.env.GROUPAROO_UI_EDITION}`;
+  const uiPlugin = `@grouparoo/ui-${grouparooUiEdition()}`;
   return (
     <div
       id="navigation"
@@ -176,7 +178,7 @@ export default function Navigation(props) {
                 {truncate(clusterName.value, 30)}
               </Badge>
             ) : (
-              <Link href="/settings/[tab]" as="/settings/core">
+              <Link href="/settings/core">
                 <a>
                   <Badge variant="secondary">
                     {clusterName
@@ -350,11 +352,7 @@ export default function Navigation(props) {
           </ul>
         </div>
       </div>
-      <div
-        className={
-          process.env.GROUPAROO_UI_EDITION === "config" ? "mb-5" : null
-        }
-      >
+      <div className={grouparooUiEdition() === "config" ? "mb-5" : null}>
         <div
           id="bottomNavigationMenuCTA"
           style={{
@@ -364,7 +362,7 @@ export default function Navigation(props) {
           }}
           className="mx-auto px-3"
         >
-          <Button
+          <LinkButton
             style={{ color: "white" }}
             variant="outline-light"
             href="https://www.grouparoo.com/chat"
@@ -377,7 +375,7 @@ export default function Navigation(props) {
               size="1x"
             />{" "}
             Join us on Slack
-          </Button>
+          </LinkButton>
         </div>
 
         {navigation?.bottomMenuItems?.length > 0 ? (

@@ -3,7 +3,7 @@ import { UseApi } from "../../hooks/useApi";
 import { updateURLParams, useOffset } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useRealtimeStream } from "../../hooks/useRealtimeStream";
-import EnterpriseLink from "../enterpriseLink";
+import EnterpriseLink from "../grouparooLink";
 import { useRouter } from "next/router";
 import { ButtonGroup, Button, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
@@ -11,6 +11,7 @@ import LoadingTable from "../loadingTable";
 import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { NextPageContext } from "next";
+import LoadingButton from "../loadingButton";
 
 const getOwnerId = (query: { [key: string]: string | string[] }) => {
   const { id, recordId, propertyId, sourceId, destinationId, groupId } = query;
@@ -84,11 +85,7 @@ export default function LogsList(props) {
 
     if (ownerId) {
       return [
-        <EnterpriseLink
-          href="/object/[id]"
-          as={`/object/${ownerId}`}
-          prefetch={false}
-        >
+        <EnterpriseLink href={`/object/${ownerId}`} prefetch={false}>
           <a>{`${topic}`}</a>
         </EnterpriseLink>,
       ];
@@ -117,6 +114,7 @@ export default function LogsList(props) {
       <ButtonGroup id="log-types">
         <Button
           size="sm"
+          disabled={loading}
           variant={topic ? "info" : "secondary"}
           onClick={() => {
             setTopic(null);
@@ -131,6 +129,7 @@ export default function LogsList(props) {
             <Button
               key={`topic-${t}`}
               size="sm"
+              disabled={loading}
               variant={variant}
               onClick={() => {
                 setTopic(t);
@@ -160,9 +159,9 @@ export default function LogsList(props) {
       {newLogs > 0 ? (
         <Alert variant="secondary">
           {newLogs} new logs.{" "}
-          <Button size="sm" onClick={load}>
+          <LoadingButton size="sm" onClick={load} disabled={loading}>
             Load
-          </Button>
+          </LoadingButton>
         </Alert>
       ) : null}
 
@@ -186,10 +185,7 @@ export default function LogsList(props) {
                   {log.ownerId ? (
                     <>
                       <br />
-                      <EnterpriseLink
-                        href="/object/[id]"
-                        as={`/object/${log.ownerId}`}
-                      >
+                      <EnterpriseLink href={`/object/${log.ownerId}`}>
                         <a className="text-muted">{log.ownerId}</a>
                       </EnterpriseLink>
                     </>
