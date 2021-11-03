@@ -32,9 +32,7 @@ describe("integration/runs/snowflake", () => {
       appId: app.id,
       refreshQuery: "SELECT 'HI' as name",
       state: "ready",
-    });
-    expect(appRefreshQuery.lastChangedAt).toBeInstanceOf(Date);
-    expect(appRefreshQuery.value).toEqual(JSON.stringify({ NAME: "HI" }));
+    }); // does not throw
   });
 
   test("I show a good error with a missing query", async () => {
