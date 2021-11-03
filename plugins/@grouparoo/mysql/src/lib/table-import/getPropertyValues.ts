@@ -61,19 +61,19 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   }
 
   const params: Array<any> = [];
-  let query = `SELECT`;
-  if (aggFunc || isArray) {
-    query += ` \`${tablePrimaryKeyCol}\` as __pk`;
-  } else {
-    // TODO: not distinct!
-    query += ` \`${tablePrimaryKeyCol}\` as __pk`;
-  }
+  let ranked = false;
+  let query = `SELECT \`${tablePrimaryKeyCol}\` as __pk`;
 
   if (aggFunc) {
     query += `, ${aggFunc}`;
     groupByColumns.push(tablePrimaryKeyCol);
   } else {
     query += `, ${columnList}`;
+    if (!isArray && orderBys.length > 0) {
+      const order = `ORDER BY ${orderBys.join(", ")}`;
+      query += `, ROW_NUMBER() OVER (PARTITION BY \`${tablePrimaryKeyCol}\` ${order}) AS __rownum`;
+      ranked = true;
+    }
   }
 
   query += ` FROM ?? WHERE`;
@@ -104,13 +104,25 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     query += ` GROUP BY ??`;
     params.push(groupByColumns);
   }
-  if (orderBys.length > 0) {
+  if (!ranked && orderBys.length > 0) {
     query += ` ORDER BY ${orderBys.join(", ")}`;
+  }
+
+  if (ranked) {
+    // -- Ranked example
+    // SELECT * FROM
+    // (SELECT `user_id` as __pk, `created_at`,
+    // ROW_NUMBER() OVER (PARTITION BY `user_id` ORDER BY `created_at` DESC) AS __rownum
+    // FROM purchases
+    // WHERE `state` = 'successful' AND `user_id` IN ('1','2','3','4')
+    // ) AS __ranked
+    // WHERE __ranked.__rownum = 1
+
+    query = `SELECT * FROM (${query}) AS __ranked WHERE __ranked.__rownum = 1`;
   }
 
   validateQuery(query);
 
-  console.log(query);
   try {
     const rows: Array<{ [column: string]: DataResponse }> =
       await connection.asyncQuery(query, params);
