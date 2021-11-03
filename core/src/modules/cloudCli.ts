@@ -42,6 +42,8 @@ export namespace CloudCLI {
 
   export async function push(params: {
     token?: string;
+    message?: string;
+    externalUrl?: string;
     projectId: string;
     archivePath: string;
     apply: boolean | string;
@@ -62,7 +64,9 @@ export namespace CloudCLI {
       const cloud = new CloudClient(params.projectId, cloudToken);
       const { id: configId } = await cloud.createConfiguration(
         tarballPath,
-        toApply
+        toApply,
+        params.message,
+        params.externalUrl
       );
 
       let lastState: string;
@@ -107,6 +111,8 @@ export namespace CloudCLI {
 
   export async function packAndPush(params: {
     token?: string;
+    message?: string;
+    externalUrl?: string;
     projectId: string;
     apply: boolean | string;
   }) {
@@ -123,6 +129,8 @@ export namespace CloudCLI {
       archivePath,
       token: params.token,
       projectId: params.projectId,
+      message: params.message,
+      externalUrl: params.externalUrl,
       apply: params.apply,
     });
 

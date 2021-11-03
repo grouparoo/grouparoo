@@ -102,11 +102,19 @@ export class CloudClient {
     return data;
   }
 
-  async createConfiguration(tarballPath: string, toApply: boolean) {
+  async createConfiguration(
+    tarballPath: string,
+    toApply: boolean,
+    message?: string,
+    externalUrl?: string
+  ) {
     const formData = new FormData();
     formData.append("_file", fs.createReadStream(tarballPath));
     formData.append("projectId", this.projectId);
     formData.append("toApply", toApply.toString());
+
+    if (message) formData.append("message", message);
+    if (externalUrl) formData.append("externalUrl", externalUrl);
 
     const data: { configuration: ConfigurationApiData } = await this.request(
       "/api/v1/configuration",
