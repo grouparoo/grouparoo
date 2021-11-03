@@ -85,8 +85,12 @@ export const getRequiredFields = (
   return requiredFieldsWithType.sort((a, b) => (a.key > b.key ? 1 : -1));
 };
 
-const isImportant = (key): Boolean => {
-  return importantFields.includes(key.toLowerCase());
+const isImportant = (customObject: CustomObjectHandler, key): Boolean => {
+  const searchableProperties = customObject.getSearchableProperties();
+  return (
+    importantFields.includes(key.toLowerCase()) ||
+    searchableProperties.includes(key.toLowerCase())
+  );
 };
 
 export const getObjectFields = (
@@ -115,7 +119,7 @@ export const getObjectFields = (
         out.push({
           key: property["name"],
           type,
-          important: isImportant(property["name"]),
+          important: isImportant(customObject, property["name"]),
         });
       }
     }

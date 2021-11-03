@@ -32,6 +32,10 @@ class CustomObjectHandler {
   public getRequiredProperties() {
     return this.customObject?.requiredProperties || [];
   }
+
+  public getSearchableProperties() {
+    return this.customObject?.searchableProperties || [];
+  }
 }
 
 export { CustomObjectHandler };

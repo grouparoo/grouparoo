@@ -34,15 +34,19 @@ describe("hubspot/destinationMappingOptions", () => {
     expect(requiredFieldEmail.key).toBe("email");
     expect(requiredFieldEmail.type).toBe("email");
 
+    const knownFieldCompany = known.find((f) => f.key === "company");
+    expect(knownFieldCompany.type).toBe("string");
+    expect(knownFieldCompany.important).toBe(true);
+
     const knownFieldPhoneNumber = known.find((f) => f.key === "phone");
     expect(knownFieldPhoneNumber.type).toBe("phoneNumber");
-    expect(knownFieldPhoneNumber.important).toBe(false);
+    expect(knownFieldPhoneNumber.important).toBe(true);
 
     const knownFieldMobilePhoneNumber = known.find(
       (f) => f.key === "mobilephone"
     );
     expect(knownFieldMobilePhoneNumber.type).toBe("phoneNumber");
-    expect(knownFieldMobilePhoneNumber.important).toBe(false);
+    expect(knownFieldMobilePhoneNumber.important).toBe(true);
 
     const readOnlyField = known.find((f) => f.key === "days_to_close");
     expect(readOnlyField).toBe(undefined);
