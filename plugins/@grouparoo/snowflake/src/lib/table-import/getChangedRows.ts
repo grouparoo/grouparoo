@@ -1,4 +1,4 @@
-import { makeWhereClause, castRow } from "./util";
+import { makeWhereClause, castRowWithHighWaterMark } from "./util";
 import { validateQuery } from "../validateQuery";
 import {
   GetChangedRowsMethod,
@@ -17,8 +17,9 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   matchConditions,
   highWaterMarkKey,
 }) => {
+  const tempHighWaterMarkKey = "__SNOWFLAKEHWM";
   const params = [];
-  let query = `SELECT *, CAST("${highWaterMarkAndSortColumnASC}" as STRING) as "${highWaterMarkKey}" FROM "${tableName}"`;
+  let query = `SELECT *, CAST("${highWaterMarkAndSortColumnASC}" as STRING) as "${tempHighWaterMarkKey}" FROM "${tableName}"`;
 
   query += await makeHighwaterWhereClause(highWaterMarkCondition, params);
 
@@ -34,7 +35,9 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   validateQuery(query);
 
   const rows = await connection.execute(query, params);
-  const results: DataResponseRow[] = rows.map((row) => castRow(row));
+  const results: DataResponseRow[] = rows.map((row) =>
+    castRowWithHighWaterMark(row, tempHighWaterMarkKey, highWaterMarkKey)
+  );
   return results;
 };
 
