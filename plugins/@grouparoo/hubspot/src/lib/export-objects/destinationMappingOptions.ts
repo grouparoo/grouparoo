@@ -12,6 +12,7 @@ const importantFields = [
   "lastname",
   "last_name",
   "email",
+  "name",
 ];
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod =
@@ -22,7 +23,10 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
       await client.objects.getSchema(schemaId)
     );
     const required = getRequiredFields(customObject, primaryKey as string);
-    const known = getObjectFields(customObject, primaryKey as string);
+    const requiredFieldsNames = required.map(
+      (requiredField) => requiredField.key
+    );
+    const known = getObjectFields(customObject, requiredFieldsNames);
     return {
       labels: {
         property: {
@@ -81,16 +85,17 @@ export const getRequiredFields = (
       type: mapTypesFromHubspotToGrouparoo(field, property.type),
     });
   });
-  return requiredFieldsWithType;
+  return requiredFieldsWithType.sort((a, b) => a.key.localeCompare(b.key));
 };
 
-const isImportant = (key): Boolean => {
-  return importantFields.includes(key.toLowerCase());
+const isImportant = (customObject: CustomObjectHandler, key): Boolean => {
+  const searchableProperties = customObject.getSearchableProperties();
+  return importantFields.includes(key) || searchableProperties.includes(key);
 };
 
 export const getObjectFields = (
   customObject: CustomObjectHandler,
-  primaryKey: string
+  requiredFields: string[]
 ): Array<{
   key: string;
   type: DestinationMappingOptionsResponseType;
@@ -100,9 +105,8 @@ export const getObjectFields = (
   const out = [];
   for (const property of properties) {
     if (
-      property["name"] !== primaryKey &&
-      !property["archived"] &&
-      !property["calculated"]
+      !requiredFields.includes(property["name"]) &&
+      customObject.shouldShowProperty(property)
     ) {
       const type: DestinationMappingOptionsResponseType =
         mapTypesFromHubspotToGrouparoo(property["name"], property["type"]);
@@ -110,10 +114,10 @@ export const getObjectFields = (
         out.push({
           key: property["name"],
           type,
-          important: isImportant(property["name"]),
+          important: isImportant(customObject, property["name"]),
         });
       }
     }
   }
-  return out;
+  return out.sort((a, b) => a.key.localeCompare(b.key));
 };
