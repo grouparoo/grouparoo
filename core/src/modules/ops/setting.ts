@@ -161,14 +161,6 @@ export namespace SettingOps {
       type: "number",
     },
     {
-      key: "sweeper-delete-old-exports-days",
-      title: "Sweeper: Delete Old Exports Days",
-      defaultValue: 31,
-      description:
-        "How many days should we keep Export records for on the server?  We will keep the most recent export for each Record & Destination.",
-      type: "number",
-    },
-    {
       key: "sweeper-delete-old-logs-days",
       title: "Sweeper: Delete Old Logs Days",
       defaultValue: 7,

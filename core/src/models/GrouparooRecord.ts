@@ -307,11 +307,4 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
       where: { recordId: instance.id },
     });
   }
-
-  @AfterDestroy
-  static async destroyExports(instance: GrouparooRecord) {
-    await Export.destroy({
-      where: { recordId: instance.id },
-    });
-  }
 }

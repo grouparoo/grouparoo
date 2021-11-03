@@ -193,6 +193,7 @@ describe("tasks/export:enqueue", () => {
 
     afterAll(async () => {
       await record.destroy();
+      await Export.truncate();
       await destination.destroy();
       await deletedDestination.destroy();
     });

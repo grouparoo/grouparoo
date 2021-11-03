@@ -221,7 +221,7 @@ describe("tasks/record:destroy", () => {
     await expect(record.reload()).rejects.toThrow(/does not exist anymore/);
   });
 
-  test("all related models are cleaned up", async () => {
+  test("all related models are cleaned up (except for records)", async () => {
     const record = await helper.factories.record();
     const _import = await helper.factories.import(
       undefined,
@@ -253,6 +253,6 @@ describe("tasks/record:destroy", () => {
 
     await expect(record.reload()).rejects.toThrow(/does not exist anymore/);
     await expect(_import.reload()).rejects.toThrow(/does not exist anymore/);
-    await expect(_export.reload()).rejects.toThrow(/does not exist anymore/);
+    await _export.reload(); // does not throw
   });
 });

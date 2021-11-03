@@ -358,7 +358,7 @@ describe("models/export", () => {
   });
 
   test("exports can be marked as having changes or not", async () => {
-    await Export.destroy({ where: { destinationId: destination.id } });
+    await Export.truncate();
     const group = await helper.factories.group();
     await group.addRecord(record);
     await destination.updateTracking("group", group.id);
@@ -391,52 +391,143 @@ describe("models/export", () => {
     await newExport.destroy();
   });
 
-  test("old entries can be swept away, not the newest one for each record + destination", async () => {
-    const oldExport = await Export.create({
-      destinationId: destination.id,
-      recordId: record.id,
-      startedAt: new Date(),
-      oldRecordProperties: {},
-      newRecordProperties: {},
-      oldGroups: [],
-      newGroups: [],
-      state: "pending",
+  describe("sweep", () => {
+    async function makeOldExport(state = "complete", createdAt = new Date(0)) {
+      const _export = await Export.create({
+        destinationId: destination.id,
+        recordId: record.id,
+        startedAt: new Date(),
+        oldRecordProperties: {},
+        newRecordProperties: {},
+        oldGroups: [],
+        newGroups: [],
+        state,
+      });
+
+      _export.set({ createdAt }, { raw: true });
+      _export.changed("createdAt", true);
+      await _export.save({
+        silent: true,
+        fields: ["createdAt"],
+      });
+
+      return _export;
+    }
+
+    test("old complete entries can be swept away, not the newest one for each record + destination", async () => {
+      await Export.truncate();
+      const destinationB = await helper.factories.destination();
+      const destinationC = await helper.factories.destination();
+
+      const oldExportDestinationA = await makeOldExport(
+        "complete",
+        new Date(0)
+      );
+      const oldExportMostRecentDestinationA = await makeOldExport(
+        "complete",
+        new Date(1000 * 61)
+      );
+
+      const oldExportDestinationB = await makeOldExport(
+        "complete",
+        new Date(0)
+      );
+      const oldExportMostRecentDestinationB = await makeOldExport(
+        "complete",
+        new Date(1000 * 61)
+      );
+      await oldExportDestinationB.update({ destinationId: destinationB.id });
+      await oldExportMostRecentDestinationB.update({
+        destinationId: destinationB.id,
+      });
+
+      const oldExportDestinationC = await makeOldExport("pending", new Date(0));
+      await oldExportDestinationC.update({ destinationId: destinationC.id });
+
+      let count = await Export.count();
+      expect(count).toBe(5);
+
+      await Export.sweep(1000);
+      const remaining = await Export.findAll();
+      expect(remaining.length).toBe(3);
+      expect(remaining.map((e) => e.id).sort()).toEqual(
+        [
+          oldExportMostRecentDestinationA.id,
+          oldExportMostRecentDestinationB.id,
+          oldExportDestinationC.id,
+        ].sort()
+      );
     });
 
-    const oldExportMostRecent = await Export.create({
-      destinationId: destination.id,
-      recordId: record.id,
-      startedAt: new Date(),
-      oldRecordProperties: {},
-      newRecordProperties: {},
-      oldGroups: [],
-      newGroups: [],
-      completedAt: new Date(),
-      state: "complete",
+    test("old pending entries will not be swept away", async () => {
+      await Export.truncate();
+      const oldExport = await makeOldExport("pending", new Date(0));
+      const oldExportMostRecent = await makeOldExport(
+        "complete",
+        new Date(1000 * 61)
+      );
+
+      let count = await Export.count();
+      expect(count).toBe(2);
+
+      await Export.sweep(1000);
+      const remaining = await Export.findAll();
+      expect(remaining.length).toBe(2);
     });
 
-    oldExport.set({ createdAt: new Date(0) }, { raw: true });
-    oldExport.changed("createdAt", true);
-    await oldExport.save({
-      silent: true,
-      fields: ["createdAt"],
+    test("if there are no complete exports for the record+destination, old exports will not be swept", async () => {
+      await Export.truncate();
+      const oldExport = await makeOldExport("pending", new Date(0));
+      const oldExportMostRecent = await makeOldExport(
+        "pending",
+        new Date(1000 * 61)
+      );
+
+      let count = await Export.count();
+      expect(count).toBe(2);
+
+      await Export.sweep(1000);
+      const remaining = await Export.findAll();
+      expect(remaining.length).toBe(2);
     });
 
-    oldExportMostRecent.set({ createdAt: new Date(1000 * 61) }, { raw: true });
-    oldExportMostRecent.changed("createdAt", true);
-    await oldExportMostRecent.save({
-      silent: true,
-      fields: ["createdAt"],
+    test("all exports older than 90 days which do not have a record will be swept", async () => {
+      await Export.truncate();
+      const exports = [
+        await makeOldExport("pending", new Date()), // not old enough
+        await makeOldExport("failed", new Date(0)),
+        await makeOldExport("complete", new Date(0)),
+        await makeOldExport("pending", new Date(0)),
+      ];
+      await Promise.all(exports.map((e) => e.update({ recordId: "foo" })));
+
+      let count = await Export.count();
+      expect(count).toBe(4);
+
+      await Export.sweep(1000);
+      const remaining = await Export.findAll();
+      expect(remaining.length).toBe(1);
+      expect(remaining[0].id).toBe(exports[0].id);
     });
 
-    let count = await Export.count();
-    expect(count).toBe(2);
+    test("all exports older than 90 days which do not have a destination will be swept", async () => {
+      await Export.truncate();
+      const exports = [
+        await makeOldExport("pending", new Date()), // not old enough
+        await makeOldExport("failed", new Date(0)),
+        await makeOldExport("complete", new Date(0)),
+        await makeOldExport("pending", new Date(0)),
+      ];
+      await Promise.all(exports.map((e) => e.update({ destinationId: "foo" })));
 
-    await Export.sweep(999);
+      let count = await Export.count();
+      expect(count).toBe(4);
 
-    const remaining = await Export.findAll();
-    expect(remaining.length).toBe(1);
-    expect(remaining[0].id).toBe(oldExportMostRecent.id);
+      await Export.sweep(1000);
+      const remaining = await Export.findAll();
+      expect(remaining.length).toBe(1);
+      expect(remaining[0].id).toBe(exports[0].id);
+    });
   });
 
   describe("errors", () => {

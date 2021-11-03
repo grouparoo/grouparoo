@@ -5,7 +5,15 @@ import {
   FinalSummaryReporters,
 } from "../../src/modules/statusReporters";
 import { Status } from "../../src/modules/status";
-import { Destination, GrouparooRecord, Source, Schedule } from "../../src";
+import {
+  Destination,
+  GrouparooRecord,
+  Source,
+  Schedule,
+  Export,
+} from "../../src";
+import Moment from "moment";
+import { StatusReporters } from "../../dist/modules/statusReporters";
 
 describe("modules/status", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -146,6 +154,39 @@ describe("modules/status", () => {
               metric: {
                 aggregation: "count",
                 collection: "pending",
+                count: 0,
+                topic: "Export",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+          "1DayDistinct": [
+            {
+              metric: {
+                aggregation: "count",
+                collection: "1DayDistinct",
+                count: 0,
+                topic: "Export",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+          "30DayDistinct": [
+            {
+              metric: {
+                aggregation: "count",
+                collection: "30DayDistinct",
+                count: 0,
+                topic: "Export",
+              },
+              timestamp: expect.any(Number),
+            },
+          ],
+          "7DayDistinct": [
+            {
+              metric: {
+                aggregation: "count",
+                collection: "7DayDistinct",
                 count: 0,
                 topic: "Export",
               },
@@ -557,6 +598,93 @@ describe("modules/status", () => {
           expect(destinations[0].exportsComplete).toEqual(1);
         }
       );
+    });
+  });
+
+  describe("exports", () => {
+    async function makeOldExport(
+      destination: Destination,
+      record: GrouparooRecord,
+      createdAt = new Date(0)
+    ) {
+      const _export = await Export.create({
+        destinationId: destination.id,
+        recordId: record.id,
+        startedAt: new Date(),
+        oldRecordProperties: {},
+        newRecordProperties: {},
+        oldGroups: [],
+        newGroups: [],
+        state: "complete",
+      });
+
+      _export.set({ createdAt }, { raw: true });
+      _export.changed("createdAt", true);
+      await _export.save({
+        silent: true,
+        fields: ["createdAt"],
+      });
+
+      return _export;
+    }
+
+    it("counts up unique records exported", async () => {
+      await Destination.truncate();
+      await Export.truncate();
+
+      const recordA = await helper.factories.record();
+      const recordB = await helper.factories.record();
+      const recordC = await helper.factories.record(); // never exported
+      const destinationA = await helper.factories.destination();
+      const destinationB = await helper.factories.destination();
+
+      const oldExportA = await makeOldExport(
+        destinationA,
+        recordA,
+        new Date(0)
+      );
+      const thisMonthExportA = await makeOldExport(
+        destinationA,
+        recordA,
+        Moment().subtract(10, "days").toDate()
+      );
+      const todayExportA = await makeOldExport(
+        destinationB,
+        recordA,
+        Moment().subtract(10, "minutes").toDate()
+      );
+      const thisMonthExportB = await makeOldExport(
+        destinationA,
+        recordB,
+        Moment().subtract(10, "days").toDate()
+      );
+      const thisWeekExportB = await makeOldExport(
+        destinationA,
+        recordB,
+        Moment().subtract(5, "days").toDate()
+      );
+
+      const metrics = await StatusReporters.Totals.UniqueRecordsExported();
+      expect(metrics).toEqual([
+        {
+          collection: "1DayDistinct",
+          topic: "Export",
+          aggregation: "count",
+          count: 1,
+        },
+        {
+          collection: "7DayDistinct",
+          topic: "Export",
+          aggregation: "count",
+          count: 2,
+        },
+        {
+          collection: "30DayDistinct",
+          topic: "Export",
+          aggregation: "count",
+          count: 2,
+        },
+      ]);
     });
   });
 

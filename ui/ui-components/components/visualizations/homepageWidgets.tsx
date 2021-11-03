@@ -12,16 +12,18 @@ const maxSampleLength = 30;
 
 export function BigTotalNumber({
   statusHandler,
-  model,
+  topic,
   title,
+  collection = "totals",
   href = null,
 }: {
   statusHandler: StatusHandler;
-  model: string;
   title: string;
+  topic: string;
+  collection?: string;
   href?: string;
 }) {
-  const [total, setTotal] = useState<number>(-1);
+  const [total, setTotal] = useState<number>();
   const subscriptionName = `big-total-number-${title}`;
 
   useEffect(() => {
@@ -30,7 +32,7 @@ export function BigTotalNumber({
       ({ metric }: { metric: Misc.StatusMetricType }) => {
         setTotal(metric.count);
       },
-      { topic: model, collection: "totals" }
+      { topic, collection }
     );
 
     return () => {
@@ -51,7 +53,54 @@ export function BigTotalNumber({
           )}
         </Card.Title>
 
-        <span style={{ fontSize: 25 }}>{total >= 0 ? total : <Loading />}</span>
+        <h3 style={{ fontWeight: "normal" }}>{total ?? <Loading />}</h3>
+        <br />
+      </Card.Body>
+    </Card>
+  );
+}
+
+export function RecordsExported({
+  statusHandler,
+}: {
+  statusHandler: StatusHandler;
+}) {
+  const [days1, setDays1] = useState<number>(null);
+  const [days7, setDays7] = useState<number>(null);
+  const [days30, setDays30] = useState<number>(null);
+
+  [1, 7, 30].forEach((n, idx) => {
+    useEffect(() => {
+      const subscriptionName = `records-exported-day-${n}`;
+
+      statusHandler.subscribe(
+        subscriptionName,
+        ({ metric }: { metric: Misc.StatusMetricType }) => {
+          if (idx === 0) return setDays1(metric.count);
+          if (idx === 1) return setDays7(metric.count);
+          if (idx === 2) return setDays30(metric.count);
+        },
+        { topic: "Export", collection: `${n}DayDistinct` }
+      );
+
+      return () => {
+        statusHandler.unsubscribe(subscriptionName);
+      };
+    }, []);
+  });
+
+  return (
+    <Card>
+      <Card.Body>
+        <Card.Title>Records Exported</Card.Title>
+        Today:{" "}
+        {days1 !== null ? <strong>{days1}</strong> : <Loading size="sm" />}
+        <br />
+        Last 7 Days:{" "}
+        {days7 !== null ? <strong>{days7}</strong> : <Loading size="sm" />}
+        <br />
+        Last 30 Days:{" "}
+        {days30 !== null ? <strong>{days30}</strong> : <Loading size="sm" />}
       </Card.Body>
     </Card>
   );
@@ -349,7 +398,7 @@ export function PendingImports({
   };
 
   const [sources, setSources] = useState<ImportsBySource[]>([]);
-  const [pendingRecordsCount, setPendingRecordsCount] = useState(-1);
+  const [pendingRecordsCount, setPendingRecordsCount] = useState<number>(null);
   const [chartData, setChartData] = useState<ChartLinData>([]);
   const [pendingImportKeys, setPendingImportKeys] = useState<string[]>([]);
 
@@ -425,7 +474,9 @@ export function PendingImports({
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Pending Records ({pendingRecordsCount})</Card.Title>
+        <Card.Title>
+          Pending Records ({pendingRecordsCount ?? <Loading size="sm" />})
+        </Card.Title>
         <div style={{ height: 300 }}>
           <GrouparooChart
             data={chartData}
@@ -450,7 +501,7 @@ export function PendingExports({
   };
 
   const [destinations, setDestinations] = useState<ExportsByDestination[]>([]);
-  const [pendingExportsCount, setPendingExportsCount] = useState(0);
+  const [pendingExportsCount, setPendingExportsCount] = useState(null);
   const [chartData, setChartData] = useState<ChartLinData>([]);
   const [pendingExportKeys, setPendingExportKeys] = useState<string[]>([]);
 
@@ -529,7 +580,9 @@ export function PendingExports({
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Pending Exports ({pendingExportsCount})</Card.Title>
+        <Card.Title>
+          Pending Exports ({pendingExportsCount ?? <Loading size="sm" />})
+        </Card.Title>
         <div style={{ height: 300 }}>
           <GrouparooChart
             data={chartData}

@@ -80,6 +80,9 @@ export namespace Telemetry {
     // usage by destination
     metrics.push(...(await StatusReporters.Totals.DestinationTotals()));
 
+    // records exported
+    metrics.push(...(await StatusReporters.Totals.UniqueRecordsExported()));
+
     errors.forEach((e, idx) => {
       if (e) {
         metrics.push({

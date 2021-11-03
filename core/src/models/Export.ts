@@ -288,32 +288,31 @@ export class Export extends CommonModel<Export> {
   }
 
   static async sweep(limit: number) {
-    const days = parseInt(
-      (await plugin.readSetting("core", "sweeper-delete-old-exports-days"))
-        .value
-    );
-
+    const days = 90; // keep all exports for at least 90 days
     const whereDate = Moment()
       .subtract(days, "days")
       .format("YYYY-MM-DD HH:mm:ss");
 
     // for SQLite secondary changes queries
     let responseCountWithCompleteExport: number;
-    let responseCountWithNoCompleteExports: number;
+    let responseCountWithNoRecord: number;
+    let responseCountWithNoDestination: number;
 
-    // 1. Delete Exports for the GrouparooRecord older than the oldest complete Export
+    // 1. Delete Complete Exports for the GrouparooRecord older than the oldest complete Export for this Record+Destination
     const rowsWithCompleteExport: { id: string }[] = await api.sequelize.query(
       `
       DELETE FROM exports
       WHERE id IN (
         SELECT id FROM exports
-        WHERE "createdAt" < '${whereDate}'
+        WHERE "state" IN ('complete', 'failed', 'canceled')
+        AND "createdAt" < '${whereDate}'
         AND "createdAt" < (
           SELECT MAX("createdAt")
           FROM exports e2
           WHERE
-            e2."recordId" = exports."recordId"
-            AND state = 'complete'
+            state = 'complete'
+            AND e2."recordId" = exports."recordId"
+            AND e2."destinationId" = exports."destinationId"
         )
         LIMIT ${limit}
       )
@@ -330,42 +329,67 @@ export class Export extends CommonModel<Export> {
       responseCountWithCompleteExport = changesRows[0]["count"];
     }
 
-    // 2. If there are no complete Exports for the GrouparooRecord, any old Exports can be deleted
-    const rowsWithNoCompleteExport: { id: string }[] =
-      await api.sequelize.query(
-        `
+    // 2. Delete exports older than the limit which no longer have a Record
+    const rowsWithNoRecord: { id: string }[] = await api.sequelize.query(
+      `
       DELETE FROM exports
       WHERE id IN (
         SELECT id FROM exports
         WHERE "createdAt" < '${whereDate}'
-        AND 0 = (
-          SELECT COUNT(id)
-          FROM exports e2
-          WHERE
-            e2."recordId" = exports."recordId"
-            AND state = 'complete'
-        )
+        AND (
+          SELECT id
+          FROM records
+          WHERE "records"."id" = "exports"."recordId"
+        ) IS NULL
         LIMIT ${limit}
       )
      ${config.sequelize.dialect === "postgres" ? "RETURNING id" : ""}
       ;`,
-        { type: QueryTypes.SELECT }
-      );
-
+      { type: QueryTypes.SELECT }
+    );
     if (config.sequelize.dialect === "sqlite") {
       const changesRows = await api.sequelize.query(
         "SELECT changes() as count;",
         { type: QueryTypes.SELECT }
       );
-      responseCountWithNoCompleteExports = changesRows[0]["count"];
+      responseCountWithNoRecord = changesRows[0]["count"];
+    }
+
+    // 3. Delete exports older than the limit which no longer have a Destination
+    const rowsWithNoDestination: { id: string }[] = await api.sequelize.query(
+      `
+          DELETE FROM exports
+          WHERE id IN (
+            SELECT id FROM exports
+            WHERE "createdAt" < '${whereDate}'
+            AND (
+              SELECT id
+              FROM destinations
+              WHERE "destinations"."id" = "exports"."destinationId"
+            ) IS NULL
+            LIMIT ${limit}
+          )
+         ${config.sequelize.dialect === "postgres" ? "RETURNING id" : ""}
+          ;`,
+      { type: QueryTypes.SELECT }
+    );
+    if (config.sequelize.dialect === "sqlite") {
+      const changesRows = await api.sequelize.query(
+        "SELECT changes() as count;",
+        { type: QueryTypes.SELECT }
+      );
+      responseCountWithNoDestination = changesRows[0]["count"];
     }
 
     return {
       count:
         config.sequelize.dialect === "postgres"
-          ? rowsWithCompleteExport.length + rowsWithNoCompleteExport.length
+          ? rowsWithCompleteExport.length +
+            rowsWithNoRecord.length +
+            rowsWithNoDestination.length
           : responseCountWithCompleteExport +
-            responseCountWithNoCompleteExports,
+            responseCountWithNoRecord +
+            responseCountWithNoDestination,
       days,
     };
   }
