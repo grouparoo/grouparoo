@@ -23,7 +23,7 @@ export function BigTotalNumber({
   collection?: string;
   href?: string;
 }) {
-  const [total, setTotal] = useState<number>(-1);
+  const [total, setTotal] = useState<number>();
   const subscriptionName = `big-total-number-${title}`;
 
   useEffect(() => {
@@ -53,9 +53,7 @@ export function BigTotalNumber({
           )}
         </Card.Title>
 
-        <h3 style={{ fontWeight: "normal" }}>
-          {total >= 0 ? total : <Loading />}
-        </h3>
+        <h3 style={{ fontWeight: "normal" }}>{total ?? <Loading />}</h3>
         <br />
       </Card.Body>
     </Card>
@@ -67,9 +65,9 @@ export function RecordsExported({
 }: {
   statusHandler: StatusHandler;
 }) {
-  const [days1, setDays1] = useState<number>(-1);
-  const [days7, setDays7] = useState<number>(-1);
-  const [days30, setDays30] = useState<number>(-1);
+  const [days1, setDays1] = useState<number>(null);
+  const [days7, setDays7] = useState<number>(null);
+  const [days30, setDays30] = useState<number>(null);
 
   [1, 7, 30].forEach((n, idx) => {
     useEffect(() => {
@@ -95,13 +93,14 @@ export function RecordsExported({
     <Card>
       <Card.Body>
         <Card.Title>Records Exported</Card.Title>
-        Today: {days1 >= 0 ? <strong>{days1}</strong> : <Loading size="sm" />}
+        Today:{" "}
+        {days1 !== null ? <strong>{days1}</strong> : <Loading size="sm" />}
         <br />
         Last 7 Days:{" "}
-        {days7 >= 0 ? <strong>{days7}</strong> : <Loading size="sm" />}
+        {days7 !== null ? <strong>{days7}</strong> : <Loading size="sm" />}
         <br />
         Last 30 Days:{" "}
-        {days30 >= 0 ? <strong>{days30}</strong> : <Loading size="sm" />}
+        {days30 !== null ? <strong>{days30}</strong> : <Loading size="sm" />}
       </Card.Body>
     </Card>
   );
@@ -399,7 +398,7 @@ export function PendingImports({
   };
 
   const [sources, setSources] = useState<ImportsBySource[]>([]);
-  const [pendingRecordsCount, setPendingRecordsCount] = useState(-1);
+  const [pendingRecordsCount, setPendingRecordsCount] = useState<number>(null);
   const [chartData, setChartData] = useState<ChartLinData>([]);
   const [pendingImportKeys, setPendingImportKeys] = useState<string[]>([]);
 
@@ -475,7 +474,9 @@ export function PendingImports({
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Pending Records ({pendingRecordsCount})</Card.Title>
+        <Card.Title>
+          Pending Records ({pendingRecordsCount ?? <Loading size="sm" />})
+        </Card.Title>
         <div style={{ height: 300 }}>
           <GrouparooChart
             data={chartData}
@@ -500,7 +501,7 @@ export function PendingExports({
   };
 
   const [destinations, setDestinations] = useState<ExportsByDestination[]>([]);
-  const [pendingExportsCount, setPendingExportsCount] = useState(0);
+  const [pendingExportsCount, setPendingExportsCount] = useState(null);
   const [chartData, setChartData] = useState<ChartLinData>([]);
   const [pendingExportKeys, setPendingExportKeys] = useState<string[]>([]);
 
@@ -579,7 +580,9 @@ export function PendingExports({
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Pending Exports ({pendingExportsCount})</Card.Title>
+        <Card.Title>
+          Pending Exports ({pendingExportsCount ?? <Loading size="sm" />})
+        </Card.Title>
         <div style={{ height: 300 }}>
           <GrouparooChart
             data={chartData}
