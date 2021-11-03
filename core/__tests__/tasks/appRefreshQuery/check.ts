@@ -92,7 +92,7 @@ describe("tasks/appRefreshQuery:check", () => {
       await anotherApp.update({ state: "deleted" });
 
       new AppRefreshQuery({
-        appId: app.id,
+        appId: anotherApp.id,
         refreshQuery: "SELECT 'hi' AS name;",
         state: "ready",
       });
@@ -104,6 +104,18 @@ describe("tasks/appRefreshQuery:check", () => {
       const enqueuedRuns = await Run.findAll({
         where: { creatorId: schedule.id, state: "running" },
       });
+      expect(enqueuedRuns.length).toBe(0);
+    });
+
+    test("only schedules marked 'refreshEnabled:true' are triggered", async () => {
+      await schedule.update({ refreshEnabled: false });
+
+      await task.enqueue("appRefreshQuery:check", { appRefreshQuery }); //does not throw
+
+      const enqueuedRuns = await Run.findAll({
+        where: { creatorId: schedule.id, state: "running" },
+      });
+
       expect(enqueuedRuns.length).toBe(0);
     });
   });
