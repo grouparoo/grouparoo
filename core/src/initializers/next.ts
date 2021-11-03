@@ -55,11 +55,16 @@ export class Next extends Initializer {
     const next = await import(
       fs.existsSync(nextWithinPluginPath) ? nextWithinPluginPath : "next"
     );
+    const conf = require(path.join(
+      config.general.paths.next[0],
+      "next.config.js"
+    ));
 
     api.next.app = next.default({
       dev: config.next.dev,
       quiet: config.next.quiet,
       dir: config.general.paths.next[0],
+      conf,
     });
 
     api.next.handle = api.next.app.getRequestHandler();
