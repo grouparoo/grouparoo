@@ -221,7 +221,10 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
     });
   } catch (error) {
     if (error?.response?.status === 429) {
-      const retryIn = Math.floor(Math.random() * 10) + 1;
+      let retryIn = error?.response?.headers["Retry-After"]; // seconds
+      if (!retryIn) {
+        retryIn = Math.floor(Math.random() * 10) + 1;
+      }
       return { error, success: false, retryDelay: 1000 * retryIn };
     }
     throw error;

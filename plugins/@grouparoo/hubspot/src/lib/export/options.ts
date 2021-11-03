@@ -71,7 +71,7 @@ class OptionsHandler {
       });
     });
     objectsToSort
-      .sort((a, b) => (a.description > b.description ? 1 : -1))
+      .sort((a, b) => (a.description.localeCompare(b.description) ? 1 : -1))
       .map((object) => {
         out.schemaId.options.push(object.option);
         out.schemaId.descriptions.push(object.description);
@@ -105,6 +105,8 @@ class OptionsHandler {
     if (customObject?.properties) {
       for (const object of customObject.properties) {
         if (
+          object.archived ||
+          object.calculated ||
           object.modificationMetadata.readOnlyValue === true ||
           object.modificationMetadata.readOnlyOptions === true
         ) {
