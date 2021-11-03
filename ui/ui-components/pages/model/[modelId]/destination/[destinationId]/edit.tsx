@@ -206,7 +206,7 @@ export default function Page(props) {
 
               <p>
                 <strong>App</strong>:{" "}
-                <Link href={`/app/${destination.app.id}`}>
+                <Link href={`/app/${destination.app.id}/edit`}>
                   <a>{destination.app.name}</a>
                 </Link>
                 <br />
