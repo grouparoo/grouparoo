@@ -197,6 +197,9 @@ export class App extends LoggedModel<App> {
     const icon = await this._getIcon();
     const provides = this.provides();
     const { pluginApp } = await this.getPlugin();
+    const appRefreshQuery = await AppRefreshQuery.findOne({
+      where: { appId: this.id },
+    });
 
     return {
       id: this.id,
@@ -210,6 +213,7 @@ export class App extends LoggedModel<App> {
       pluginApp,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
+      appRefreshQuery,
     };
   }
 
