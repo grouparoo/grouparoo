@@ -65,5 +65,29 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
     });
   };
 
-  return Object.assign(pool, { asyncQuery, asyncEnd });
+  const getMajorVersion = async function () {
+    return new Promise((resolve, reject) => {
+      if (pool["cachedMajorVersion"]) {
+        resolve(pool["cachedMajorVersion"]);
+      } else {
+        this.asyncQuery("SELECT VERSION() AS version")
+          .then((rows) => {
+            const row = rows[0];
+            if (row && row.version) {
+              // just the major version number
+              const version = parseInt(row.version);
+              pool["cachedMajorVersion"] = version;
+              resolve(version);
+            } else {
+              resolve(0);
+            }
+          })
+          .catch((err) => {
+            resolve(0);
+          });
+      }
+    });
+  };
+
+  return Object.assign(pool, { asyncQuery, asyncEnd, getMajorVersion });
 };

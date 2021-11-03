@@ -25,6 +25,8 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   const groupByColumns = [];
   let aggFunc = null;
 
+  const mysqlVersion = await connection.getMajorVersion();
+
   if (primaryKeys.length === 0) return responses;
 
   switch (aggregationMethod) {
@@ -69,7 +71,10 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     groupByColumns.push(tablePrimaryKeyCol);
   } else {
     query += `, ${columnList}`;
-    if (!isArray && orderBys.length > 0) {
+    if (!isArray && orderBys.length > 0 && mysqlVersion >= 8) {
+      // windowing function only supported in 8+
+      // when available, this makes it so it only returns one row per primary key
+      // otherwise, it will ORDER BY below and just be less efficient
       const order = `ORDER BY ${orderBys.join(", ")}`;
       query += `, ROW_NUMBER() OVER (PARTITION BY \`${tablePrimaryKeyCol}\` ${order}) AS __rownum`;
       ranked = true;
