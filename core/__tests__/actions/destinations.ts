@@ -24,12 +24,14 @@ import {
   DestinationView,
 } from "../../src/actions/destinations";
 import { SessionCreate } from "../../src/actions/session";
+import { ConfigWriter } from "../../src/modules/configWriter";
 
 describe("actions/destinations", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let app: App;
   let id: string;
   let model: GrouparooModel;
+  const configSpy = jest.spyOn(ConfigWriter, "run");
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
@@ -40,6 +42,10 @@ describe("actions/destinations", () => {
     });
     ({ model } = await helper.factories.properties());
     await api.resque.queue.connection.redis.flushdb();
+  });
+
+  afterEach(() => {
+    configSpy.mockClear();
   });
 
   describe("administrator signed in", () => {
@@ -78,7 +84,7 @@ describe("actions/destinations", () => {
       expect(destination.app.id).toBe(app.id);
       expect(destination.app.name).toBe("test app");
       expect(destination.syncMode).toBe("sync");
-
+      expect(configSpy).toBeCalledTimes(1);
       id = destination.id;
     });
 
@@ -130,6 +136,7 @@ describe("actions/destinations", () => {
       expect(destinations[0].name).toBe("test destination");
       expect(destinations[0].app.name).toBe("test app");
       expect(total).toBe(1);
+      expect(configSpy).toBeCalledTimes(0);
     });
 
     test("an administrator can view a destination", async () => {
@@ -148,6 +155,7 @@ describe("actions/destinations", () => {
       expect(destination.name).toBe("test destination");
       expect(destination.syncMode).toBe("sync");
       expect(destination.app.name).toBe("test app");
+      expect(configSpy).toBeCalledTimes(0);
     });
 
     test("an administrator can see connectionOptions", async () => {
@@ -242,6 +250,7 @@ describe("actions/destinations", () => {
         "primary-id": "userId",
         "something-else": "email",
       });
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("an administrator cannot set the mapping with invalid mappings", async () => {
@@ -303,6 +312,7 @@ describe("actions/destinations", () => {
         );
       expect(error).toBeFalsy();
       expect(destination.syncMode).toBe("enrich");
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     describe("with group", () => {
@@ -336,6 +346,7 @@ describe("actions/destinations", () => {
         expect(destination.group.id).toBe(group.id);
         expect(newRun.creatorId).toBe(group.id);
         expect(newRun.state).toBe("running");
+        expect(configSpy).toBeCalledTimes(1);
       });
 
       test("only one destination can be created for each app with the same options and group", async () => {
@@ -397,6 +408,7 @@ describe("actions/destinations", () => {
             remoteKey: "remote-group-tag",
           },
         ]);
+        expect(configSpy).toBeCalledTimes(1);
       });
 
       test("an administrator can get a preview of a record to be exported to a destination, existing mapping & destinationGroupMemberships + no record", async () => {
@@ -530,6 +542,7 @@ describe("actions/destinations", () => {
         );
         expect(destination.id).toBe(id);
         expect(destination.group.id).toBe(group.id);
+        expect(configSpy).toBeCalledTimes(0);
       });
 
       test("an administrator can track a model", async () => {
@@ -552,6 +565,7 @@ describe("actions/destinations", () => {
 
         expect(destination.collection).toBe("model");
         expect(destination.group).toBe(null);
+        expect(configSpy).toBeCalledTimes(1);
       });
 
       test("an administrator can remove a tracked model", async () => {
@@ -715,6 +729,7 @@ describe("actions/destinations", () => {
 
       expect(error).toBeUndefined();
       expect(destination.group).toBe(null);
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("an administrator can destroy a destination (soft)", async () => {
@@ -734,6 +749,7 @@ describe("actions/destinations", () => {
         where: { id },
       });
       expect(destination.state).toBe("deleted");
+      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("an administrator can destroy a destination (force)", async () => {
@@ -753,6 +769,7 @@ describe("actions/destinations", () => {
         where: { id },
       });
       expect(destination).toBeFalsy();
+      expect(configSpy).toBeCalledTimes(1);
     });
   });
 });

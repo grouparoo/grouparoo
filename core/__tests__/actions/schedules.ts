@@ -12,9 +12,12 @@ import {
   SchedulesList,
   ScheduleView,
 } from "../../src/actions/schedules";
+import { ConfigWriter } from "../../src/modules/configWriter";
 
 describe("actions/schedules", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  const configSpy = jest.spyOn(ConfigWriter, "run");
+
   let id: string;
   let model: GrouparooModel;
   let otherModel: GrouparooModel;
@@ -30,6 +33,10 @@ describe("actions/schedules", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
+  });
+
+  afterEach(() => {
+    configSpy.mockClear();
   });
 
   describe("administrator signed in", () => {
@@ -93,6 +100,7 @@ describe("actions/schedules", () => {
       expect(schedule.id).toBeTruthy();
       expect(schedule.name).toBe("test schedule");
       expect(schedule.confirmRecords).toBe(true);
+      expect(configSpy).toBeCalledTimes(1);
 
       id = schedule.id;
     });
@@ -163,6 +171,7 @@ describe("actions/schedules", () => {
         expect(schedule.name).toBe("new schedule name");
         expect(schedule.state).toBe("draft");
         expect(schedule.confirmRecords).toBe(false);
+        expect(configSpy).toBeCalledTimes(1);
       });
 
       test("an administrator can view a schedule", async () => {
@@ -175,8 +184,8 @@ describe("actions/schedules", () => {
         expect(error).toBeUndefined();
         expect(schedule.id).toBeTruthy();
         expect(schedule.name).toBe("new schedule name");
-
         expect(pluginOptions[0].key).toBe("maxColumn");
+        expect(configSpy).toBeCalledTimes(0);
       });
 
       test("an administrator can view the filter options for a schedule", async () => {
@@ -222,6 +231,7 @@ describe("actions/schedules", () => {
             relativeMatchUnit: null,
           },
         ]);
+        expect(configSpy).toBeCalledTimes(1);
       });
 
       test("an schedule can be made ready", async () => {
@@ -340,7 +350,7 @@ describe("actions/schedules", () => {
         expect(runsAgain.length).toBe(0);
       });
 
-      test("an administrator can destroy a connection", async () => {
+      test("an administrator can destroy a schedule", async () => {
         connection.params = {
           csrfToken,
           id: id,
@@ -353,6 +363,7 @@ describe("actions/schedules", () => {
 
         expect(destroyResponse.error).toBeUndefined();
         expect(destroyResponse.success).toBe(true);
+        expect(configSpy).toBeCalledTimes(1);
       });
     });
   });

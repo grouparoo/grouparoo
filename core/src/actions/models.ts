@@ -103,6 +103,7 @@ export class ModelEdit extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const model = await GrouparooModel.findById(params.id);
     await model.update(params);
+    await ConfigWriter.run();
     return { model: await model.apiData() };
   }
 }
@@ -122,6 +123,7 @@ export class ModelDestroy extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const model = await GrouparooModel.findById(params.id);
     await model.destroy();
+    await ConfigWriter.run();
     return { success: true };
   }
 }
