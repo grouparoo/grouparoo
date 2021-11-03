@@ -71,7 +71,7 @@ class OptionsHandler {
       });
     });
     objectsToSort
-      .sort((a, b) => (a.description.localeCompare(b.description) ? 1 : -1))
+      .sort((a, b) => a.description.localeCompare(b.description))
       .map((object) => {
         out.schemaId.options.push(object.option);
         out.schemaId.descriptions.push(object.description);

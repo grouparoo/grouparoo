@@ -82,9 +82,7 @@ export const getRequiredFields = (
       type: mapTypesFromHubspotToGrouparoo(field, property.type),
     });
   });
-  return requiredFieldsWithType.sort((a, b) =>
-    a.key.localeCompare(b.key) ? 1 : -1
-  );
+  return requiredFieldsWithType.sort((a, b) => a.key.localeCompare(b.key));
 };
 
 const isImportant = (customObject: CustomObjectHandler, key): Boolean => {
@@ -123,5 +121,5 @@ export const getObjectFields = (
       }
     }
   }
-  return out.sort((a, b) => (a.key.localeCompare(b.key) ? 1 : -1));
+  return out.sort((a, b) => a.key.localeCompare(b.key));
 };
