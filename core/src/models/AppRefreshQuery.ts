@@ -103,17 +103,10 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
-  @AfterSave
-  static async runCheckIfNewQuery(instance: AppRefreshQuery) {
+  @BeforeSave
+  static async appQuery(instance: AppRefreshQuery) {
     if (instance.state === "ready") {
-      //should only check, not save anything yet
-      const sampleValue = await AppRefreshQueryOps.checkRefreshQueryValue(
-        instance
-      );
-      if (sampleValue !== instance.value) {
-        //save the thing and (if in run mode not validate or apply)
-        await AppRefreshQueryOps.triggerSchedules(instance, sampleValue);
-      }
+      const sampleValue = await AppRefreshQueryOps.runAppQuery(instance);
     }
   }
 

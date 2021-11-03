@@ -4,9 +4,7 @@ import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 
 export namespace AppRefreshQueryOps {
-  export async function checkRefreshQueryValue(
-    appRefreshQuery: AppRefreshQuery
-  ) {
+  export async function runAppQuery(appRefreshQuery: AppRefreshQuery) {
     const app = await appRefreshQuery.$get("app");
     const options = await app.getOptions();
     const { pluginApp } = await app.getPlugin();
@@ -29,25 +27,10 @@ export namespace AppRefreshQueryOps {
       Array.isArray(responseRows) ? responseRows[0] : responseRows
     );
 
-    if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
-    if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
-
-    appRefreshQuery.lastConfirmedAt = new Date();
-    await appRefreshQuery.save();
-
     return sampleValue;
   }
 
-  export async function triggerSchedules(
-    appRefreshQuery: AppRefreshQuery,
-    sampleValue
-  ) {
-    if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
-    if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
-
-    appRefreshQuery.value = sampleValue;
-    appRefreshQuery.lastChangedAt = new Date();
-
+  export async function triggerSchedules(appRefreshQuery: AppRefreshQuery) {
     const sources: Source[] = await Source.findAll({
       where: { appId: appRefreshQuery.appId },
     });

@@ -7,31 +7,28 @@ export class AppRefreshQueryCheck extends CLSTask {
   constructor() {
     super();
     this.name = "appRefreshQuery:check";
-    this.description = "check all appRefreshQueries and run them if it is time";
-    this.frequency =
-      process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 5; // Run every 5 minutes
+    this.description =
+      "run a single appRefreshQuery and update values/trigger schedules if needed";
+    this.frequency = 0;
     this.queue = "apps";
-    this.inputs = {};
+    this.inputs = { appRefreshQuery: { required: true } };
   }
 
-  async runWithinTransaction() {
-    const appRefreshQueries = await AppRefreshQuery.findAll();
+  async runWithinTransaction(params) {
+    const { appRefreshQuery } = params;
+    //check the query value, update 'confirmedAt'
+    const sampleValue = await AppRefreshQueryOps.runAppQuery(appRefreshQuery);
+    await appRefreshQuery.update({ lastConfirmedAt: new Date() });
 
-    for (const appRefreshQuery of appRefreshQueries) {
-      const app = await App.findOne({
-        where: { id: appRefreshQuery.appId, state: "ready" },
+    if (sampleValue !== appRefreshQuery.value) {
+      // Update changedAt and set value
+      await appRefreshQuery.update({
+        value: sampleValue,
+        lastChangedAt: new Date(),
       });
 
-      if (app) {
-        const sampleValue = await AppRefreshQueryOps.checkRefreshQueryValue(
-          appRefreshQuery
-        );
-        if (sampleValue !== appRefreshQuery.value)
-          await AppRefreshQueryOps.triggerSchedules(
-            appRefreshQuery,
-            sampleValue
-          );
-      }
+      //enqueue schedules
+      await AppRefreshQueryOps.triggerSchedules(appRefreshQuery);
     }
   }
 }
