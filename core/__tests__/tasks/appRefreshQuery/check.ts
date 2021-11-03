@@ -9,6 +9,7 @@ import {
   GrouparooModel,
   AppRefreshQuery,
 } from "../../../src";
+import { RunOps } from "../../../src/modules/ops/runs";
 
 describe("tasks/appRefreshQuery:check", () => {
   let model: GrouparooModel;
@@ -47,9 +48,9 @@ describe("tasks/appRefreshQuery:check", () => {
     });
 
     test("can be enqueued and run", async () => {
-      await task.enqueue("appRefreshQuery:check", {}); //does not throw
+      await task.enqueue("appRefreshQuery:check", { appRefreshQuery }); //does not throw
 
-      await specHelper.runTask("appRefreshQuery:check", {});
+      await specHelper.runTask("appRefreshQuery:check", { appRefreshQuery });
 
       const enqueuedRuns = await Run.findAll({
         where: { creatorId: schedule.id, state: "running" },
@@ -59,10 +60,25 @@ describe("tasks/appRefreshQuery:check", () => {
       Run.truncate();
     });
 
+    test("updates value and timestamps if value is updated", async () => {
+      await task.enqueue("appRefreshQuery:check", { appRefreshQuery }); //does not throw
+
+      await specHelper.runTask("appRefreshQuery:check", { appRefreshQuery });
+
+      appRefreshQuery.reload();
+
+      //test plugin always returns a timestamp
+      expect(appRefreshQuery.value.length).toBe(13);
+      expect(appRefreshQuery.lastChangedAt).toBeTruthy();
+      expect(appRefreshQuery.lastConfirmedAt).toBeTruthy();
+
+      Run.truncate();
+    });
+
     test("does not throw if no appRefreshQueries found", async () => {
       appRefreshQuery.destroy();
 
-      await task.enqueue("appRefreshQuery:check", {}); //does not throw
+      await task.enqueue("appRefreshQuery:check", { appRefreshQuery }); //does not throw
 
       //also does not enqueue any runs
       const enqueuedRuns = await Run.findAll({
@@ -82,7 +98,7 @@ describe("tasks/appRefreshQuery:check", () => {
       });
       await appRefreshQuery.save();
 
-      await task.enqueue("appRefreshQuery:check", {}); //does not throw
+      await task.enqueue("appRefreshQuery:check", { appRefreshQuery }); //does not throw
 
       //also does not enqueue any runs
       const enqueuedRuns = await Run.findAll({
