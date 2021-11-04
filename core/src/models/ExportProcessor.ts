@@ -97,8 +97,11 @@ export class ExportProcessor extends LoggedModel<ExportProcessor> {
     return ExportProcessorOps.setError(this, error, retryDelay);
   }
 
-  async retry(retryDelay: number = config.tasks.timeout) {
-    return ExportProcessorOps.retry(this, retryDelay);
+  async retry(
+    retryDelay: number = config.tasks.timeout,
+    skipCount: boolean = false
+  ) {
+    return ExportProcessorOps.retry(this, retryDelay, skipCount);
   }
 
   async complete() {

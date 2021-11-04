@@ -1,5 +1,5 @@
 import { HubspotClient } from "./client";
-import { CustomObjectHandler } from "../export/customObject";
+import { utils } from "actionhero";
 
 export default class Contact {
   client: HubspotClient;
@@ -46,13 +46,34 @@ export default class Contact {
     const data = {
       filterGroups,
       properties,
+      limit: 100,
     };
-    const response = await this.client._request({
-      data,
-      method: "POST",
-      url: `/crm/v3/objects/${schemaId}/search`,
-    });
-    return response?.results || [];
+
+    // search has a low rate limit. only 4 allowed per second.
+    // so try a few times and wait random amounts
+    // we also limit parallelism to 4 for this reason
+    let attempt = 0;
+    let lastError = new Error("Hubspot search issue");
+    while (attempt < 8) {
+      attempt++;
+      try {
+        const response = await this.client._request({
+          data,
+          method: "POST",
+          url: `/crm/v3/objects/${schemaId}/search`,
+        });
+        return response?.results || [];
+      } catch (error) {
+        if (error?.response?.status === 429) {
+          const waitMs = Math.floor(Math.random() * 500) + 1000; // wait about a second or more
+          lastError = error;
+          await utils.sleep(waitMs);
+        } else {
+          throw error;
+        }
+      }
+    }
+    throw lastError;
   }
 
   async create(schemaId: string, inputs: any[]) {

@@ -204,12 +204,15 @@ export class Export extends CommonModel<Export> {
     return this.save();
   }
 
-  async retry(retryDelay: number = config.tasks.timeout) {
+  async retry(
+    retryDelay: number = config.tasks.timeout,
+    skipCount: boolean = false
+  ) {
     const maxExportAttempts = parseInt(
       (await plugin.readSetting("core", "exports-max-retries-count")).value
     );
 
-    this.retryCount++;
+    if (!skipCount) this.retryCount++;
     if (this.retryCount >= maxExportAttempts) {
       this.state = "failed";
       this.sendAt = null;

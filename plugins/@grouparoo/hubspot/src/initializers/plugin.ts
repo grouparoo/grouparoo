@@ -1,7 +1,7 @@
 import path from "path";
 import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
-
+import { parallelism } from "../lib/parallelism";
 import { test } from "../lib/test";
 
 import {
@@ -61,7 +61,7 @@ export class Plugins extends Initializer {
               description: "Hubspot hapikey (api) key.",
             },
           ],
-          methods: { test },
+          methods: { test, parallelism },
         },
       ],
       connections: [

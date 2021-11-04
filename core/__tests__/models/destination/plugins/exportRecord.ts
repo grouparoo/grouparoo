@@ -920,7 +920,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
       expect(_export.completedAt).toBeFalsy();
       expect(_export.errorMessage).toBeFalsy();
       expect(_export.sendAt.getTime()).toBeGreaterThan(new Date().getTime());
-      expect(_export.retryCount).toBe(1);
+      expect(_export.retryCount).toBe(0);
 
       await _export.update({ sendAt: new Date() });
 
