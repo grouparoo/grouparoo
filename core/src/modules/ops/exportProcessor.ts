@@ -109,14 +109,15 @@ export namespace ExportProcessorOps {
 
   export async function retry(
     instance: ExportProcessor,
-    retryDelay: number = config.tasks.timeout
+    retryDelay: number = config.tasks.timeout,
+    skipCount: boolean = false
   ) {
     const maxAttempts = parseInt(
       (await plugin.readSetting("core", "export-processors-max-retries-count"))
         .value
     );
 
-    instance.retryCount++;
+    if (!skipCount) instance.retryCount++;
     if (instance.retryCount >= maxAttempts) {
       instance.state = "failed";
       instance.processAt = null;

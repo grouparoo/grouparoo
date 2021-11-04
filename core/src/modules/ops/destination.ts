@@ -854,7 +854,7 @@ export namespace DestinationOps {
       const error = new Error(`parallelism limit reached for ${app.type}`);
 
       const outRetryDelay = config.tasks.timeout + 1;
-      await exportProcessor.retry(outRetryDelay);
+      await exportProcessor.retry(outRetryDelay, true);
 
       return {
         success: false,
@@ -959,7 +959,7 @@ export namespace DestinationOps {
 
       const outRetryDelay = config.tasks.timeout + 1;
       for (const _export of _exports) {
-        await _export.retry(outRetryDelay);
+        await _export.retry(outRetryDelay, true);
       }
 
       return {
