@@ -23,7 +23,6 @@ const nextConfig = {
   env: {
     GROUPAROO_UI_EDITION: "community",
   },
-  // webpack5: true,
   productionBrowserSourceMaps: true,
   webpack: (config, options) => {
     // There may be different version of these core packages in our dependency tree.  We need to pick only one version (our version).
