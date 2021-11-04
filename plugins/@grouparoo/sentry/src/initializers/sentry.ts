@@ -32,9 +32,12 @@ export class SentryInitializer extends Initializer {
 
     Sentry.init({
       dsn: process.env.SENTRY_DSN,
-      environment: env,
+      environment: process.env.SENTRY_ENVIRONMENT ?? env,
       tracesSampleRate: parseFloat(process.env.SENTRY_TRACE_SAMPLE_RATE),
       release: packageJSON.version,
+      serverName: process.env.WEB_URL
+        ? new URL(process.env.WEB_URL).hostname
+        : undefined,
       integrations: [
         new Sentry.Integrations.Http({ tracing: true }),
         new Tracing.Integrations.Postgres(),
