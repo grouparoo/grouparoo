@@ -1,6 +1,6 @@
 {
   "class": "Destination",
-  "id": "salesforce",
+  "id": "salesforce_contacts",
   "modelId": "users",
   "name": "Salesforce",
   "type": "salesforce-export-objects",
