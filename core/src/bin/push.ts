@@ -1,6 +1,5 @@
 import { CLI } from "actionhero";
 import { GrouparooCLI } from "../modules/cli";
-import { CloudClient } from "../modules/cloud";
 import { CloudCLI } from "../modules/cloudCli";
 
 export class Push extends CLI {
@@ -34,6 +33,16 @@ export class Push extends CLI {
         description: "Should the changes be applied?",
         letter: "a",
       },
+      message: {
+        required: false,
+        description: "Optional message to describe the Configuration.",
+        letter: "m",
+      },
+      externalUrl: {
+        required: false,
+        description: "Optional external url attached to the Configuration.",
+        letter: "u",
+      },
     };
 
     GrouparooCLI.timestampOption(this);
@@ -44,24 +53,13 @@ export class Push extends CLI {
     GrouparooCLI.setNextDevelopmentMode();
   }
 
-  async logJob(cloud: CloudClient, jobId: string) {
-    if (jobId) {
-      const job = await cloud.getJob(jobId);
-      GrouparooCLI.logger.log(
-        GrouparooCLI.logger.cyanBold(
-          `\nLogging output for ${job.type} job (${jobId})\n`
-        )
-      );
-      GrouparooCLI.logger.log(job.logs);
-      GrouparooCLI.logger.log("");
-    }
-  }
-
   async run({
     params,
   }: {
     params: {
       token?: string;
+      message?: string;
+      externalUrl?: string;
       projectId: string;
       archivePath: string;
       apply: boolean | string;

@@ -1,7 +1,4 @@
-import os from "os";
 import { CLI } from "actionhero";
-import { remove, mkdtemp } from "fs-extra";
-import path from "path";
 import { GrouparooCLI } from "../modules/cli";
 import { CloudCLI } from "../modules/cloudCli";
 
@@ -22,6 +19,16 @@ export class CI extends CLI {
           "Grouparoo Cloud Organization Token. This can also be set by using the GROUPAROO_CLOUD_API_TOKEN environment variable.",
         letter: "t",
       },
+      message: {
+        required: false,
+        description: "Optional message to describe the Configuration.",
+        letter: "m",
+      },
+      externalUrl: {
+        required: false,
+        description: "Optional external url attached to the Configuration.",
+        letter: "u",
+      },
     };
 
     GrouparooCLI.timestampOption(this);
@@ -37,6 +44,8 @@ export class CI extends CLI {
   }: {
     params: {
       token?: string;
+      message?: string;
+      externalUrl?: string;
       projectId: string;
     };
   }) {
