@@ -1,6 +1,5 @@
 const path = require("path");
 const fs = require("fs");
-const withSourceMaps = require("@zeit/next-source-maps");
 const { getParentPath } = require("@grouparoo/core/dist/modules/pluginDetails");
 
 function getPluginPath(pluginName) {
@@ -24,7 +23,7 @@ const nextConfig = {
   env: {
     GROUPAROO_UI_EDITION: "config",
   },
-  webpack5: true,
+  productionBrowserSourceMaps: true,
   webpack: (config, options) => {
     // There may be different version of these core packages in our dependency tree.  We need to pick only one version (our version).
     ["react", "react-dom", "next"].forEach((_package) => {
@@ -68,4 +67,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withSourceMaps(nextConfig);
+module.exports = nextConfig;
