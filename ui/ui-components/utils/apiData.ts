@@ -5,6 +5,7 @@ import { AsyncReturnType } from "type-fest";
 import {
   ApiKey,
   App,
+  AppRefreshQuery,
   Destination,
   DestinationGroupMembership,
   Export,
@@ -33,6 +34,9 @@ import {
 export namespace Models {
   export type ApiKeyType = Partial<AsyncReturnType<ApiKey["apiData"]>>;
   export type AppType = Partial<AsyncReturnType<App["apiData"]>>;
+  export type AppRefreshQueryType = Partial<
+    AsyncReturnType<AppRefreshQuery["apiData"]>
+  >;
   export type DestinationType = Partial<
     AsyncReturnType<Destination["apiData"]>
   >;
@@ -106,6 +110,14 @@ import {
   AppView,
   AppsList,
 } from "@grouparoo/core/src/actions/apps";
+import {
+  AppRefreshQueryCreate,
+  AppRefreshQueryDestroy,
+  AppRefreshQueryEdit,
+  AppRefreshQueriesList,
+  AppRefreshQueryTest,
+  AppRefreshQueryView,
+} from "@grouparoo/core/src/actions/appRefreshQuery";
 import {
   ResetCluster,
   ResetData,
@@ -326,6 +338,24 @@ export namespace Actions {
     typeof AppsList.prototype.runWithinTransaction
   >;
 
+  export type AppRefreshQueryCreate = AsyncReturnType<
+    typeof AppRefreshQueryCreate.prototype.runWithinTransaction
+  >;
+  export type AppRefreshQueryDestroy = AsyncReturnType<
+    typeof AppRefreshQueryDestroy.prototype.runWithinTransaction
+  >;
+  export type AppRefreshQueryEdit = AsyncReturnType<
+    typeof AppRefreshQueryEdit.prototype.runWithinTransaction
+  >;
+  export type AppRefreshQueryView = AsyncReturnType<
+    typeof AppRefreshQueryView.prototype.runWithinTransaction
+  >;
+  export type AppRefreshQueriesList = AsyncReturnType<
+    typeof AppRefreshQueriesList.prototype.runWithinTransaction
+  >;
+  export type AppRefreshQueryTest = AsyncReturnType<
+    typeof AppRefreshQueryTest.prototype.runWithinTransaction
+  >;
   export type AccountView = AsyncReturnType<
     typeof AccountView.prototype.runWithinTransaction
   >;

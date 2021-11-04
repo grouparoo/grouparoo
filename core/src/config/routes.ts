@@ -13,6 +13,8 @@ export const DEFAULT = {
         { path: "/v:apiVersion/app/:id", action: "app:view" },
         { path: "/v:apiVersion/app/:id/options", action: "app:options" },
         { path: "/v:apiVersion/apps", action: "apps:list" },
+        { path: "/v:apiVersion/appRefreshQueries", action: "appRefreshQueries:list" },
+        { path: "/v:apiVersion/appRefreshQuery/:id", action: "appRefreshQuery:view" },
         { path: "/v:apiVersion/destinations", action: "destinations:list" },
         { path: "/v:apiVersion/destination/:id", action: "destination:view" },
         { path: "/v:apiVersion/destination/:id/connectionOptions", action: "destination:connectionOptions" },
@@ -83,6 +85,7 @@ export const DEFAULT = {
       post: [
         { path: "/v:apiVersion/apiKey", action: "apiKey:create" },
         { path: "/v:apiVersion/app", action: "app:create" },
+        { path: "/v:apiVersion/appRefreshQuery", action: "appRefreshQuery:create" },
         { path: "/v:apiVersion/config/apply", action: "config:apply" },
         { path: "/v:apiVersion/config/generate", action: "config:generate" },
         { path: "/v:apiVersion/config/user", action: "config:user:create" },
@@ -113,6 +116,8 @@ export const DEFAULT = {
         { path: "/v:apiVersion/apiKey/:id", action: "apiKey:edit" },
         { path: "/v:apiVersion/app/:id", action: "app:edit" },
         { path: "/v:apiVersion/app/:id/test", action: "app:test" },
+        { path: "/v:apiVersion/appRefreshQuery/:id", action: "appRefreshQuery:edit" },
+        { path: "/v:apiVersion/appRefreshQuery/:id/test", action: "appRefreshQuery:test" },
         { path: "/v:apiVersion/destination/:id", action: "destination:edit" },
         { path: "/v:apiVersion/group/:id", action: "group:edit" },
         { path: "/v:apiVersion/group/:id/add", action: "group:addRecord" },
@@ -135,6 +140,7 @@ export const DEFAULT = {
       delete: [
         { path: "/v:apiVersion/apiKey/:id", action: "apiKey:destroy" },
         { path: "/v:apiVersion/app/:id", action: "app:destroy" },
+        { path: "/v:apiVersion/appRefreshQuery/:id", action: "appRefreshQuery:destroy" },
         { path: "/v:apiVersion/destination/:id", action: "destination:destroy" },
         { path: "/v:apiVersion/group/:id", action: "group:destroy" },
         { path: "/v:apiVersion/model/:id", action: "model:destroy" },
