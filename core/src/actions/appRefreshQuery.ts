@@ -5,6 +5,7 @@ import { GrouparooPlugin, PluginApp } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
+import { AppRefreshQueryOps } from "../modules/ops/appRefreshQuery";
 
 export class AppRefreshQueriesList extends AuthenticatedAction {
   constructor() {
@@ -105,9 +106,64 @@ export class AppRefreshQueryEdit extends AuthenticatedAction {
 }
 
 export class AppRefreshQueryTest extends AuthenticatedAction {
-    constructor(){
-        super();
-        this.name = "appRefreshQuery:test";
-        this.description = 
-    }
+  constructor() {
+    super();
+    this.name = "appRefreshQuery:test";
+    this.description = "test the query for a given appRefreshQuery";
+    this.outputExample = {};
+    this.inputs = {
+      id: { required: true },
+    };
+  }
+
+  async runWithinTransaction({ params }) {
+    const appRefreshQuery = await AppRefreshQuery.findById(params.id);
+    //does this need to be a try/catch to catch the error?
+    const sampleValue =
+      AppRefreshQueryOps.checkRefreshQueryValue(appRefreshQuery);
+    return {
+      sampleValue,
+      appRefreshQuery: await appRefreshQuery.apiData(),
+    };
+  }
+}
+
+export class AppRefreshQueryView extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "appRefreshQuery:view";
+    this.description = "view an app refresh query";
+    this.outputExample = {};
+    this.permission = { topic: "app", mode: "read" };
+    this.inputs = {
+      id: { required: true },
+    };
+  }
+
+  async runWithinTransaction({ params }) {
+    const appRefreshQuery = await AppRefreshQuery.findById(params.id);
+    return { appRefreshQuery: await appRefreshQuery.apiData() };
+  }
+}
+
+export class AppRefreshQueryDestroy extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "appRefreshQuery:destroy";
+    this.description = "destroy an appRefreshQuery";
+    this.outputExample = {};
+    this.permission = { topic: "app", mode: "write" };
+    this.inputs = {
+      id: { required: true },
+    };
+  }
+
+  async runWithinTransaction({ params }) {
+    const appRefreshQuery = await AppRefreshQuery.findById(params.id);
+    await appRefreshQuery.destroy();
+
+    await ConfigWriter.run();
+
+    return { success: true };
+  }
 }
