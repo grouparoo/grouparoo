@@ -146,13 +146,11 @@ function formatVar(value) {
 }
 
 const addToGroups: BatchMethodAddToGroups = async () => {
-  // We're adding to groups by setting properties in the upsert payload
-  // No need to add to groups separately
+  // This destination doesn't do groups
 };
 
 const removeFromGroups: BatchMethodRemoveFromGroups = async () => {
-  // We're removing from groups by setting properties in the upsert payload
-  // No need to remove from groups separately
+  // This destination doesn't do groups
 };
 
 // mess with the keys (lowercase emails, for example)
@@ -223,8 +221,13 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
     if (error?.response?.status === 429) {
       // hubspot generally limited by 10 second blocks
       const retryIn = Math.floor(Math.random() * 10) + 5; // seconds
-      console.log({ hubspot: "429", response: error.response, retryIn });
-      return { error, success: false, retryDelay: 1000 * retryIn };
+      // TODO: need a better way to return a general error
+      //       we can't throw because we want the retryDelay
+      //       but also don't ahve individual ones for each record
+      return { success: false, retryDelay: 1000 * retryIn };
+    }
+    if (error?.response?.data?.message) {
+      error.message = `${error.message}: ${error?.response?.data?.message}`;
     }
     throw error;
   }
