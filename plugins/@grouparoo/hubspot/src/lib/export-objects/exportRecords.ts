@@ -221,10 +221,9 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
     });
   } catch (error) {
     if (error?.response?.status === 429) {
-      let retryIn = error?.response?.headers["Retry-After"]; // seconds
-      if (!retryIn) {
-        retryIn = Math.floor(Math.random() * 10) + 1;
-      }
+      // hubspot generally limited by 10 second blocks
+      const retryIn = Math.floor(Math.random() * 10) + 5; // seconds
+      console.log({ hubspot: "429", response: error.response, retryIn });
       return { error, success: false, retryDelay: 1000 * retryIn };
     }
     throw error;
