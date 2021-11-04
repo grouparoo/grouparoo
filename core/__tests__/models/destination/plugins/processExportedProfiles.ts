@@ -750,7 +750,7 @@ describe("models/destination - with custom processExportedRecords", () => {
       // export processor retried and marked with error
       await exportProcessor.reload();
       expect(exportProcessor.state).toBe("pending");
-      expect(exportProcessor.retryCount).toBe(1);
+      expect(exportProcessor.retryCount).toBe(0);
       expect(exportProcessor.completedAt).toBeFalsy();
       expect(exportProcessor.errorMessage).toBeNull();
 
@@ -771,7 +771,7 @@ describe("models/destination - with custom processExportedRecords", () => {
       expect(exportProcessor.state).toBe("complete");
       expect(exportProcessor.completedAt).toBeTruthy();
       expect(exportProcessor.errorMessage).toBeNull();
-      expect(exportProcessor.retryCount).toBe(1);
+      expect(exportProcessor.retryCount).toBe(0);
 
       // exports are complete
       await export1.reload();

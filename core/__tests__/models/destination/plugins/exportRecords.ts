@@ -725,7 +725,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       await record.destroy();
     });
 
-    test("exportRecord can handle parallelsims export:sendBatch and the export can be retried", async () => {
+    test("exportRecords can handle parallelsims export:sendBatch and the export can be retried", async () => {
       parallelismResponse = 0;
 
       const group = await helper.factories.group();
@@ -759,7 +759,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(_export.errorLevel).toBeNull();
       expect(_export.completedAt).toBeFalsy();
       expect(_export.state).toBe("pending");
-      expect(_export.retryCount).toBe(1);
+      expect(_export.retryCount).toBe(0);
 
       // when the parallelism is back to OK...
       parallelismResponse = Infinity;
