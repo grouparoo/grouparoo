@@ -1,0 +1,20 @@
+{
+  "class": "Destination",
+  "id": "hubspot_companies",
+  "modelId": "accounts",
+  "name": "Hubspot Companies",
+  "type": "hubspot-export-objects",
+  "appId": "hubspot",
+  "collection": "none",
+  "syncMode": "sync",
+  "options": {
+    "primaryKey": "name",
+    "schemaId": "COMPANY"
+  },
+  "mapping": {
+    "annualrevenue": "account_value",
+    "domain": "domain",
+    "name": "account_name"
+  },
+  "destinationGroupMemberships": {}
+}

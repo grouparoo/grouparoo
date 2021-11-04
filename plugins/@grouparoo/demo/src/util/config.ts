@@ -71,6 +71,10 @@ class Config {
       case "mysql":
         this.setDb(type);
         break;
+      case "models":
+        this.addSource("users");
+        this.addSource("accounts");
+        break;
       case "b2c":
         this.addSource("users");
         this.addSource("admins");
@@ -86,6 +90,7 @@ class Config {
       case "accounts":
         this.addSource("accounts");
         break;
+      case "hubspot":
       case "mailchimp":
       case "salesforce":
         this.addDestination(type);
@@ -113,7 +118,7 @@ class Config {
       db = new Postgres();
     }
     if (this.sources.length === 0) {
-      this.add("b2c");
+      this.add("models");
     }
 
     return {

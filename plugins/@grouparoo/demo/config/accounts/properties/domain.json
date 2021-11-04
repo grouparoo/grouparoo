@@ -1,0 +1,15 @@
+{
+  "class": "Property",
+  "id": "domain",
+  "type": "string",
+  "key": "domain",
+  "sourceId": "demo_accounts",
+  "unique": false,
+  "identifying": true,
+  "isArray": false,
+  "options": {
+    "aggregationMethod": "exact",
+    "column": "domain"
+  },
+  "filters": []
+}

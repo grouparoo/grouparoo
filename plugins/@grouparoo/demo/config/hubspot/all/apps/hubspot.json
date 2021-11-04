@@ -1,0 +1,9 @@
+{
+  "class": "App",
+  "id": "hubspot",
+  "name": "Hubspot",
+  "type": "hubspot",
+  "options": {
+    "hapikey": "HUBSPOT_API_KEY"
+  }
+}
