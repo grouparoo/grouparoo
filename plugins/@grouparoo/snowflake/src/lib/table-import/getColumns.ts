@@ -9,8 +9,9 @@ export const getColumns: GetColumnDefinitionsMethod = async ({
   connection,
   tableName,
 }) => {
-  const query = `SELECT COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = :1`;
-  const params = [tableName];
+  const schema = connection.schemaName;
+  const query = `SELECT COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = :1 AND TABLE_NAME = :2`;
+  const params = [schema, tableName];
 
   // Run the query
   const rows = await connection.execute(query, params);
