@@ -74,6 +74,7 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
       refreshQuery: this.refreshQuery,
       value: this.value,
       locked: this.locked,
+      state: this.state,
       lastChangedAt: APIData.formatDate(this.lastChangedAt),
       lastConfirmedAt: APIData.formatDate(this.lastConfirmedAt),
       createdAt: APIData.formatDate(this.createdAt),

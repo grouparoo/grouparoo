@@ -21,12 +21,15 @@ import LockedBadge from "../../../components/badges/lockedBadge";
 import SourceBadge from "../../../components/badges/sourceBadge";
 import StateBadge from "../../../components/badges/stateBadge";
 import AppRefreshQueryStats from "../../../components/app/appRefreshQueryStats";
+import AppRefreshScheduleList from "../../../components/app/appRefreshSchedulesList";
 import { Actions, Models } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { AppHandler } from "../../../utils/appHandler";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 import { AppRefreshQuery } from "@grouparoo/core";
+import AppRefreshQueryScheduleList from "../../../components/app/appRefreshSchedulesList";
+import { updateURLParams } from "../../../hooks/URLParams";
 
 export default function Page(props) {
   const {
@@ -48,7 +51,7 @@ export default function Page(props) {
   const { execApi } = UseApi(props, errorHandler);
   const [app, setApp] = useState<Models.AppType>(props.app);
   const [appRefreshQuery, setAppRefreshQuery] =
-    useState<Models.AppRefreshQueryType>(props.app.appRefreshQuery);
+    useState<Models.AppRefreshQueryType>(props.appRefreshQuery);
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
   const [testLoading, setTestLoading] = useState(false);
@@ -59,56 +62,69 @@ export default function Page(props) {
   }>({ success: null, error: null, message: null });
   const [ranTest, setRanTest] = useState(false);
   const { id } = router.query;
+  const { schedules, runs } = props;
+  const disabled =
+    app.locked !== null || appRefreshQuery.locked !== null || loading;
 
-  console.log(app);
-  // async function create(event) {
-  //   event.preventDefault();
-  //   setLoading(true);
+  async function create(event) {
+    event.preventDefault();
+    setLoading(true);
 
-  //   const appRefreshQuery = { appId: app.id };
+    const appRefreshQuery = { appId: app.id };
 
-  //   const response: Actions.AppRefreshQueryCreate = await execApi(
-  //     "post",
-  //     `/appRefreshQuery/`,
-  //     appRefreshQuery
-  //   );
+    const response: Actions.AppRefreshQueryCreate = await execApi(
+      "post",
+      `/appRefreshQuery/`,
+      appRefreshQuery
+    );
 
-  //   if (response?.appRefreshQuery) {
-  //     //i think this is where we already are though...
-  //     router.push(
-  //       "/app/[id]/appRefreshQuery",
-  //       `/app/${response.appRefreshQuery.appId}/appRefreshQuery`
-  //     );
-  //   }
-  // }
+    if (response?.appRefreshQuery) {
+      //i think this is where we already are though...
+      router.push(
+        "/app/[id]/appRefreshQuery",
+        `/app/${response.appRefreshQuery.appId}/appRefreshQuery`
+      );
+    }
+  }
 
-  // async function edit(event) {
-  //   event.preventDefault();
-  //   setLoading(true);
-  //   const response: Actions.AppRefreshQueryEdit = await execApi(
-  //     "put",
-  //     `/appRefreshQuery/${appRefreshQuery.id}`,
-  //     appRefreshQuery
-  //   );
+  async function update(event) {
+    const _appRefreshQuery = Object.assign({}, appRefreshQuery);
+    _appRefreshQuery[event.target.id] = event.target.value;
+    setAppRefreshQuery(_appRefreshQuery);
+  }
 
-  //   //do what after updated?
-  // }
+  async function edit(event) {
+    event.preventDefault();
+    setLoading(true);
+    const response: Actions.AppRefreshQueryEdit = await execApi(
+      "put",
+      `/appRefreshQuery/${appRefreshQuery.id}`,
+      appRefreshQuery
+    );
+    if (response?.appRefreshQuery) {
+      //I don't think we need to redirect like we do after creating an app...
+      setLoading(false);
+      successHandler.set({ message: "App Refresh Query Updated" });
+      setAppRefreshQuery(response.appRefreshQuery);
+      //do we need an appRefreshQuery handler?  What do those guys _do_?
+    }
+  }
 
-  // async function handleDelete() {
-  //   if (window.confirm("are you sure?")) {
-  //     setLoading(true);
-  //     const response: Actions.AppRefreshQueryDestroy = await execApi(
-  //       "delete",
-  //       `/appRefreshQuery/${appRefreshQuery.id}`
-  //     );
-  //     if (response?.success) {
-  //       successHandler.set({ message: "App Refresh Query Deleted" });
-  //       router.push(`/app/${id}`);
-  //     } else {
-  //       setLoading(false);
-  //     }
-  //   }
-  // }
+  async function handleDelete() {
+    if (window.confirm("are you sure?")) {
+      setLoading(true);
+      const response: Actions.AppRefreshQueryDestroy = await execApi(
+        "delete",
+        `/appRefreshQuery/${appRefreshQuery.id}`
+      );
+      if (response?.success) {
+        successHandler.set({ message: "App Refresh Query Deleted" });
+        router.push(`/app/${id}`);
+      } else {
+        setLoading(false);
+      }
+    }
+  }
 
   if (appRefreshQuery === null) {
     return (
@@ -149,27 +165,64 @@ export default function Page(props) {
             <StateBadge state={app.state} />,
           ]}
         />
+        <hr />
         <Container>
           <Row>
-            <Col className="col-md-9 border">
-              <Row>QUERY STUFF HERE</Row>
-              <Row>SCHEDULES STUFF HERE</Row>
-              <Row>
+            <Col className="col-md-8">
+              <strong>Query</strong>
+
+              <p>What query should we run to check for new data?</p>
+              <Form
+                className="col-12 mx-auto mt-4"
+                id="form"
+                onSubmit={edit}
+                autoComplete="off"
+              >
+                <Form.Group controlId="query">
+                  <Form.Control
+                    required
+                    as="textarea"
+                    disabled={disabled}
+                    rows={6}
+                    value={appRefreshQuery.refreshQuery}
+                    onChange={(e) => update(e)}
+                    placeholder="select statement to check app for new data"
+                    style={{
+                      fontFamily:
+                        'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                      color: "#e83e8c",
+                    }}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Key is required
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Form>
+              <Row className="mt-3">
+                <AppRefreshQueryScheduleList
+                  app={app}
+                  schedules={schedules}
+                  runs={runs}
+                />
+              </Row>
+              <Row className="ml-5 my-2">
                 <Button>Test Query</Button>
               </Row>
-              <Row>
+              <Row className="ml-5 my-3">
                 <Button>Update</Button>
               </Row>
-              <Row>
+              <Row className="ml-5 my-2">
                 <Button variant="danger">Delete</Button>
               </Row>
             </Col>
 
-            <Col className="col-md-3 border">
-              {/* <AppRefreshQueryStats
-                app={props.app.app}
-                appRefreshQuery={props.appRefreshQuery}
-              /> */}
+            <Col className="col-md-4">
+              <Row className="mx-auto mt-4">
+                <AppRefreshQueryStats
+                  app={app}
+                  appRefreshQuery={appRefreshQuery}
+                />
+              </Row>
             </Col>
           </Row>
         </Container>
@@ -196,8 +249,34 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
   const { execApi } = UseApi(ctx);
-  const app = await execApi("get", `/app/${id}`);
+  const { app } = await execApi("get", `/app/${id}`);
+  //todo: handle when app.appRefreshQuery is null
+  const { appRefreshQuery } = await execApi(
+    "get",
+    `/appRefreshQuery/${app.appRefreshQuery?.id}`
+  );
+  const { sources } = await execApi("get", `/sources`);
 
-  // console.log(app);
-  return { app };
+  const schedules = sources
+    .filter(
+      (source) =>
+        (source.appId = app.id && source.schedule?.refreshEnabled == true)
+    )
+    .map((source) => source.schedule);
+
+  let scheduleRuns = [];
+  for (const schedule of schedules) {
+    const { runs } = await execApi("get", `/runs`, {
+      creatorId: schedule.id,
+      limit: 1,
+    });
+    scheduleRuns.push(runs[0]);
+  }
+
+  return {
+    app,
+    appRefreshQuery,
+    schedules,
+    runs: scheduleRuns || null,
+  };
 };

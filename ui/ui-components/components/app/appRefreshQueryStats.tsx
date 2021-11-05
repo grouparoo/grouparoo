@@ -1,5 +1,6 @@
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col, ListGroup } from "react-bootstrap";
 import { Models } from "../../utils/apiData";
+import { formatTimestamp } from "../../utils/formatTimestamp";
 
 export default function AppRefreshQueryStats({
   app,
@@ -10,15 +11,26 @@ export default function AppRefreshQueryStats({
 }) {
   return (
     <>
-      <Card bg="light">
-        <Card.Body style={{ textAlign: "center", color: "white" }}>
-          <Card.Title>{app.name} Refresh Query</Card.Title>
-          <Col>
-            <Row>Last Confirmed At: {appRefreshQuery.lastConfirmedAt}</Row>
-            <Row>Last Changed At: {appRefreshQuery.lastChangedAt}</Row>
-            <Row>Stored Value: {appRefreshQuery.value}</Row>
-          </Col>
-        </Card.Body>
+      <Card bg="light" className="mx-auto">
+        <Card.Header>
+          {" "}
+          <Card.Title className="mx-auto text-center mt-1">
+            {app.name} Refresh Query
+          </Card.Title>
+        </Card.Header>
+        <ListGroup variant="flush">
+          <ListGroup.Item variant="light" className="px-4">
+            <strong>Last Confirmed:</strong>{" "}
+            {formatTimestamp(appRefreshQuery.lastConfirmedAt)}
+          </ListGroup.Item>
+          <ListGroup.Item variant="light" className="px-4">
+            <strong>Last Changed:</strong>{" "}
+            {formatTimestamp(appRefreshQuery.lastChangedAt)}
+          </ListGroup.Item>
+          <ListGroup.Item variant="light" className="px-4">
+            <strong>Stored Value:</strong> {appRefreshQuery.value}
+          </ListGroup.Item>
+        </ListGroup>
       </Card>
     </>
   );
