@@ -127,7 +127,11 @@ async function updateDatabase(db: Connection, configDir) {
   // update with app options
   const appPath = path.join(configDir, "apps", "demo_db.json");
   if (fs.existsSync(appPath)) {
-    const appOptions = db.getAppOptions();
+    const appOptions = {};
+    const params = db.getAppOptions();
+    for (const key of Object.keys(params).sort()) {
+      appOptions[key] = params[key];
+    }
     const contents = fs.readJSONSync(appPath);
     const app = contents;
     app.options = appOptions;
