@@ -38,6 +38,7 @@ describe("demo accounts", () => {
       "account_name",
       "account_value",
       "contact_email",
+      "domain",
     ]);
 
     const schedules = (await Schedule.findAll()).map((o) => o.id).sort();
