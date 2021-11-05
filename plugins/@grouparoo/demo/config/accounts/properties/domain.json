@@ -5,7 +5,7 @@
   "key": "domain",
   "sourceId": "demo_accounts",
   "unique": false,
-  "identifying": true,
+  "identifying": false,
   "isArray": false,
   "options": {
     "aggregationMethod": "exact",

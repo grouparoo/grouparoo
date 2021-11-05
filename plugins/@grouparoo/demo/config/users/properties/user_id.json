@@ -5,7 +5,7 @@
   "key": "userId",
   "sourceId": "demo_users",
   "unique": true,
-  "identifying": true,
+  "identifying": false,
   "isArray": false,
   "options": {
     "aggregationMethod": "exact",

@@ -3,7 +3,7 @@
   "id": "account_users",
   "modelId": "accounts",
   "name": "Account Users",
-  "type": "DBNAME-import-table",
+  "type": "postgres-import-table",
   "appId": "demo_db",
   "options": {
     "table": "users"

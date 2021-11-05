@@ -2,9 +2,9 @@
   {
     "class": "Source",
     "id": "demo_admins",
+    "modelId": "admins",
     "name": "Demo Admins",
     "type": "DBNAME-import-table",
-    "modelId": "admins",
     "appId": "demo_db",
     "options": {
       "table": "admins"

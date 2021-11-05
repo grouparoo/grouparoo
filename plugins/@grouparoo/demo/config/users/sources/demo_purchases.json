@@ -1,10 +1,10 @@
 {
   "class": "Source",
   "id": "demo_purchases",
+  "modelId": "users",
   "name": "Product Purchases",
   "type": "DBNAME-import-table",
   "appId": "demo_db",
-  "modelId": "users",
   "options": {
     "table": "purchases"
   },

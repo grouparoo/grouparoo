@@ -2,8 +2,8 @@
   "id": "spanish_speakers",
   "class": "Group",
   "type": "calculated",
-  "name": "Spanish Speakers",
   "modelId": "users",
+  "name": "Spanish Speakers",
   "rules": [
     {
       "propertyId": "language",
