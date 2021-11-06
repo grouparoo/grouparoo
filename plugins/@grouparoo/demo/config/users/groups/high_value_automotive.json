@@ -2,8 +2,8 @@
   "id": "high_value_automotive",
   "class": "Group",
   "type": "calculated",
-  "name": "High Value with Recent Automotive Purchase",
   "modelId": "users",
+  "name": "High Value with Recent Automotive Purchase",
   "rules": [
     {
       "propertyId": "ltv",

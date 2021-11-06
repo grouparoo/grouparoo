@@ -1,15 +1,15 @@
 {
   "class": "Property",
-  "id": "user_id",
-  "type": "integer",
-  "key": "userId",
-  "sourceId": "demo_users",
-  "unique": true,
+  "id": "domain",
+  "type": "string",
+  "key": "domain",
+  "sourceId": "demo_accounts",
+  "unique": false,
   "identifying": false,
   "isArray": false,
   "options": {
     "aggregationMethod": "exact",
-    "column": "id"
+    "column": "domain"
   },
   "filters": []
 }

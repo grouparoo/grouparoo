@@ -2,8 +2,8 @@
   "id": "nobody",
   "class": "Group",
   "type": "calculated",
-  "name": "Nobody",
   "modelId": "users",
+  "name": "Nobody",
   "rules": [
     {
       "propertyId": "user_id",

@@ -2,10 +2,10 @@
   {
     "class": "Source",
     "id": "demo_accounts",
+    "modelId": "accounts",
     "name": "Accounts",
     "type": "DBNAME-import-table",
     "appId": "demo_db",
-    "modelId": "accounts",
     "options": {
       "table": "accounts"
     },

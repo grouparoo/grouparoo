@@ -13,7 +13,8 @@ import Connection from "../../../util/connection";
 
 const TYPES = {
   setup: "only create the login Team Member",
-  b2c: "(default) loads users and admins models",
+  models: "loads users and accounts models",
+  b2c: "loads users and admins models",
   b2b: "loads account model",
   users: "includes users model with purchases",
   accounts: "includes accounts model with with payments",
@@ -23,6 +24,7 @@ const TYPES = {
   mysql: "load specified source data into local MySQL database",
   snowflake: "assumes a Snowflake instance with data already present",
   bigquery: "assumes a BigQuery instance with data already present",
+  hubspot: "create Hubspot destination for data",
   mailchimp: "create Mailchimp destination for data",
   salesforce: "create Salesforce destination for data",
 };
@@ -119,7 +121,7 @@ export class Demo extends CLI {
 
       const validTypes = Object.keys(TYPES);
       let types = passed.filter((k) => validTypes.includes(k));
-      if (types.length === 0) types = ["b2c"];
+      if (types.length === 0) types = ["models"];
 
       const { db, sources, destinations } = getConfig(types);
 

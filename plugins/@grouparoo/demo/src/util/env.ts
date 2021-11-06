@@ -26,6 +26,7 @@ const ENV_VARIABLES = {
     "SNOWFLAKE_DATABASE",
     "SNOWFLAKE_SCHEMA",
   ],
+  hubspot: ["HUBSPOT_API_KEY"],
 };
 
 export async function updateEnvVariables(configDir: string) {

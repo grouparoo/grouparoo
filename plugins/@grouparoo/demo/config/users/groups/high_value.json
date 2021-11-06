@@ -2,8 +2,8 @@
   "id": "high_value",
   "class": "Group",
   "type": "calculated",
-  "name": "High Value",
   "modelId": "users",
+  "name": "High Value",
   "rules": [
     {
       "propertyId": "ltv",
