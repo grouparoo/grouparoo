@@ -358,31 +358,30 @@ describe("postgres/table/recordProperties", () => {
         emailProperty.isArray = true;
         const [values, properties] = await getPropertyValues({
           columns,
-          sortColumn,
           sourceMapping,
           aggregationMethod: AggregationMethod.Exact,
         });
-        expect(values[record.id][properties[0].id].sort()).toEqual([
+        expect(values[record.id][properties[0].id]).toEqual([
           "Apple",
-          "Apple",
+          "Orange",
           "Blueberry",
+          "Apple",
           "Blueberry",
           "Orange",
-          "Orange",
         ]);
-        expect(values[otherRecord.id][properties[0].id].sort()).toEqual([
-          "Apple",
+        expect(values[otherRecord.id][properties[0].id]).toEqual([
+          "Pear",
           "Apple",
           "Apple",
           "Pear",
-          "Pear",
-        ]);
-        expect(values[fourthRecord.id][properties[0].id].sort()).toEqual([
           "Apple",
+        ]);
+        expect(values[fourthRecord.id][properties[0].id]).toEqual([
           "Blueberry",
-          "Peach",
           "Pear",
+          "Apple",
           "Watermelon",
+          "Peach",
         ]);
         emailProperty.isArray = isArray;
       });
