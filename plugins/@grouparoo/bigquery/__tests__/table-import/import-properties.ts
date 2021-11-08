@@ -355,17 +355,28 @@ describe("bigquery/table/recordProperties", () => {
           sourceMapping,
           aggregationMethod: AggregationMethod.Exact,
         });
+        // Bigquery note: it seems to put them next to each other automatically
+        //                as opposed to other that are the insert order
+        //    This seems ok as the order is actually unspecified in "exact" for now
         expect(values[record.id][properties[0].id]).toEqual([
           "Apple",
+          "Apple",
           "Orange",
+          "Orange",
+          "Blueberry",
           "Blueberry",
         ]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([
           "Apple",
+          "Apple",
+          "Apple",
+          "Pear",
           "Pear",
         ]);
         expect(values[fourthRecord.id][properties[0].id]).toEqual([
           "Apple",
+          "Watermelon",
+          "Peach",
           "Blueberry",
           "Pear",
         ]);
