@@ -17,9 +17,10 @@ describe("tasks/appRefreshQuery:query", () => {
   let schedule: Schedule;
 
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
-
-  beforeAll(async () => {});
+  beforeEach(async () => {
+    await api.resque.queue.connection.redis.flushdb();
+    await Run.truncate();
+  });
 
   describe("appRefreshQuery:query", () => {
     let model: GrouparooModel;
@@ -60,8 +61,6 @@ describe("tasks/appRefreshQuery:query", () => {
         where: { creatorId: schedule.id, state: "running" },
       });
       expect(enqueuedRuns.length).toBe(1);
-
-      Run.truncate();
     });
 
     test("updates value and timestamps if value is updated", async () => {
@@ -79,8 +78,6 @@ describe("tasks/appRefreshQuery:query", () => {
       expect(appRefreshQuery.value.length).toBe(13);
       expect(appRefreshQuery.lastChangedAt).toBeTruthy();
       expect(appRefreshQuery.lastConfirmedAt).toBeTruthy();
-
-      Run.truncate();
     });
 
     test("does not throw if no appRefreshQueries found", async () => {
