@@ -366,7 +366,7 @@ describe("snowflake/table/recordProperties", () => {
         );
       });
 
-      test("Exact + Array works as intended", async () => {
+      test.only("Exact + Array works as intended", async () => {
         const { isArray } = emailProperty;
         emailProperty.isArray = true;
         const [values, properties] = await getPropertyValues({
@@ -374,19 +374,27 @@ describe("snowflake/table/recordProperties", () => {
           sourceMapping,
           aggregationMethod: AggregationMethod.Exact,
         });
-        expect(values[record.id][properties[0].id].sort()).toEqual([
+        expect(values[record.id][properties[0].id]).toEqual([
+          "Apple",
+          "Orange",
+          "Blueberry",
           "Apple",
           "Blueberry",
           "Orange",
         ]);
-        expect(values[otherRecord.id][properties[0].id].sort()).toEqual([
+        expect(values[otherRecord.id][properties[0].id]).toEqual([
+          "Pear",
+          "Apple",
           "Apple",
           "Pear",
-        ]);
-        expect(values[fourthRecord.id][properties[0].id].sort()).toEqual([
           "Apple",
+        ]);
+        expect(values[fourthRecord.id][properties[0].id]).toEqual([
           "Blueberry",
           "Pear",
+          "Apple",
+          "Watermelon",
+          "Peach",
         ]);
         emailProperty.isArray = isArray;
       });
