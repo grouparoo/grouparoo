@@ -29,7 +29,8 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   const spy = jest.spyOn(BigQuery.prototype, "createJob");
   spy.mockImplementation(function () {
     const options = arguments[0];
-    jobIdIncrement++; // might be better to use options.query?
+    // const query = options.configuration.query.query || "unknown"; // might be better to use sha of this?
+    jobIdIncrement++;
     options.jobId = `grouparoo-job-${jobIdIncrement}-${process.env.BIGQUERY_JEST_TIMESTAMP}`;
     origCreateJob.apply(this, arguments);
   });

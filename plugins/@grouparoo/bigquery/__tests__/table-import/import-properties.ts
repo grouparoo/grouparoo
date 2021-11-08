@@ -153,7 +153,7 @@ describe("bigquery/table/recordProperties", () => {
     let aggregationMethod = "exact";
 
     beforeAll(() => {
-      sourceOptions = { table: "profiles" };
+      sourceOptions = { table: "records" };
     });
 
     for (const { type, sourceMapping } of [
@@ -285,7 +285,7 @@ describe("bigquery/table/recordProperties", () => {
             "2020-02-01T12:13:14.000Z"
           );
           expect(values[otherRecord.id][properties[0].id][0]).toEqual(
-            "2020-02-02T12:13:14.000Z"
+            "2020-02-02T12:13:14.500Z"
           );
         });
 
@@ -300,7 +300,7 @@ describe("bigquery/table/recordProperties", () => {
             "2020-02-01T12:13:14.000Z"
           );
           expect(values[otherRecord.id][properties[0].id][0]).toEqual(
-            "2020-02-02T12:13:14.000Z"
+            "2020-02-02T12:13:14.500Z"
           );
           expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
           expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
@@ -310,7 +310,7 @@ describe("bigquery/table/recordProperties", () => {
   });
 
   describe("secondary tables", () => {
-    const sourceMapping = { profile_id: "userId" };
+    const sourceMapping = { record_id: "userId" };
     beforeAll(() => {
       sourceOptions = { table: "purchases" };
     });
@@ -328,7 +328,9 @@ describe("bigquery/table/recordProperties", () => {
         });
         expect(values[record.id][properties[0].id][0]).toEqual("Orange");
         expect(values[otherRecord.id][properties[0].id][0]).toEqual("Apple");
-        expect(values[fourthRecord.id][properties[0].id][0]).toEqual("Apple");
+        expect(values[fourthRecord.id][properties[0].id][0]).toEqual(
+          "Watermelon"
+        );
       });
 
       test("least recent", async () => {
@@ -474,7 +476,7 @@ describe("bigquery/table/recordProperties", () => {
   });
 
   describe("filters", () => {
-    const sourceMapping = { profile_id: "userId" };
+    const sourceMapping = { record_id: "userId" };
     const columns = ["amount"];
     const aggregationMethod = "count";
     beforeAll(() => {

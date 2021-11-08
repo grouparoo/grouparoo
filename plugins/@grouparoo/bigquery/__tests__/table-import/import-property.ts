@@ -74,7 +74,7 @@ describe("bigquery/table/recordProperty", () => {
   describe("exact primary tables", () => {
     let aggregationMethod = "exact";
     beforeAll(() => {
-      sourceOptions = { table: "profiles" };
+      sourceOptions = { table: "records" };
     });
     describe("integer mapping", () => {
       const sourceMapping = { id: "userId" };
@@ -176,7 +176,7 @@ describe("bigquery/table/recordProperty", () => {
   });
 
   describe("secondary tables", () => {
-    const sourceMapping = { profile_id: "userId" };
+    const sourceMapping = { record_id: "userId" };
     beforeAll(() => {
       sourceOptions = { table: "purchases" };
     });
@@ -255,7 +255,7 @@ describe("bigquery/table/recordProperty", () => {
   });
 
   describe("filters", () => {
-    const sourceMapping = { profile_id: "userId" };
+    const sourceMapping = { record_id: "userId" };
     const column = "amount";
     const aggregationMethod = "count";
     beforeAll(() => {
@@ -773,7 +773,7 @@ describe("bigquery/table/recordProperty", () => {
 
   describe("edge cases", () => {
     beforeAll(() => {
-      sourceOptions = { table: "profiles" };
+      sourceOptions = { table: "records" };
     });
     test("unknown record property", async () => {
       const value = await getPropertyValue({
