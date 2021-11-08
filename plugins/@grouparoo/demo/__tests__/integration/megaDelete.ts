@@ -144,7 +144,7 @@ describe("create and delete", () => {
     await spawnPromise(bin, ["demo", "-c", "--scale", "0.1"]);
   });
 
-  it(
+  it.only(
     "can run 'grouparoo run' to completion with config",
     async () => {
       const { stdout } = await spawnPromise(bin, ["run"]);
@@ -158,7 +158,7 @@ describe("create and delete", () => {
     await spawnPromise("rm", ["-rf", "config"]);
   });
 
-  it.only(
+  it(
     "can run 'grouparoo run' to completion without config",
     async () => {
       const { stdout } = await spawnPromise(bin, ["run"]);
@@ -181,20 +181,26 @@ export async function spawnPromise(
 
     if (typeof args === "string") args = [args];
 
-    // console.log(`--> `, `${command} ${args.join(" ")}`);
+    console.log(`--> `, `${command} ${args.join(" ")}`);
     const spawnProcess = spawn(command, args, {
       cwd,
-      env: { ...process.env, NODE_ENV: undefined },
+      env: {
+        ...process.env,
+        NODE_ENV: undefined,
+        PWD: undefined,
+        ACTIONHERO_CONFIG: undefined,
+        GROUPAROO_SPEC_HELPER: undefined,
+      },
     });
 
     spawnProcess.stdout.on("data", (data) => {
       stdout += String(data);
-      // console.log(data.toString());
+      console.log(data.toString());
     });
 
     spawnProcess.stderr.on("data", (data) => {
       stderr += String(data);
-      // console.error(data.toString());
+      console.error(data.toString());
     });
 
     spawnProcess.on("close", (code) => {
