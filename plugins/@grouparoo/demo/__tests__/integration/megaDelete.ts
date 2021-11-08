@@ -77,20 +77,7 @@ const packageJSON = `
 }
 `;
 
-// if (fs.existsSync(tmpDir)) fs.rmdirSync(tmpDir, { recursive: true });
-// fs.mkdirSync(tmpDir, { recursive: true });
-
 console.log(`testing @ ${tmpDir}`);
-// process.chdir(tmpDir);
-// process.env.PWD = tmpDir;
-// process.env.ACTIONHERO_CONFIG = path.join(
-//   tmpDir,
-//   "node_modules",
-//   "@grouparoo",
-//   "code",
-//   "dist",
-//   "config"
-// );
 
 // we pack up this plugin to install it locally, rather than from npm
 
@@ -144,7 +131,7 @@ describe("create and delete", () => {
     await spawnPromise(bin, ["demo", "-c", "--scale", "0.1"]);
   });
 
-  it.only(
+  it(
     "can run 'grouparoo run' to completion with config",
     async () => {
       const { stdout } = await spawnPromise(bin, ["run"]);
