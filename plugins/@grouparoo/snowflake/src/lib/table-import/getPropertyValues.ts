@@ -20,53 +20,64 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   primaryKeys,
 }) => {
   let responses: { [key: string]: { [column: string]: DataResponse[] } } = {};
-  let aggSelect = columnNames.map((col) => `"${col}"`).join(", ");
-  let orderBy = "";
-  let groupByColumns = [tablePrimaryKeyCol];
+  let columnList = columnNames.map((col) => `"${col}"`).join(", ");
+  const orderBys = [];
+  let groupByColumns = [];
+  let aggFunc = null;
 
   if (primaryKeys.length === 0) return responses;
 
   switch (aggregationMethod) {
     case AggregationMethod.Exact:
-      groupByColumns.push(...columnNames);
       if (sortColumn) {
-        orderBy = `"${sortColumn}" ASC`;
-        groupByColumns.push(sortColumn);
+        orderBys.push(`"${sortColumn}" ASC`);
       }
       break;
     case AggregationMethod.Average:
-      aggSelect = `COALESCE(AVG(${aggSelect}), 0) as ${aggSelect}`;
+      aggFunc = `COALESCE(AVG(${columnList}), 0) as ${columnList}`;
       break;
     case AggregationMethod.Count:
-      aggSelect = `COUNT(${aggSelect}) as ${aggSelect}`;
+      aggFunc = `COUNT(${columnList}) as ${columnList}`;
       break;
     case AggregationMethod.Sum:
-      aggSelect = `COALESCE(SUM(${aggSelect}), 0) as ${aggSelect}`;
+      aggFunc = `COALESCE(SUM(${columnList}), 0) as ${columnList}`;
       break;
     case AggregationMethod.Min:
-      aggSelect = `MIN(${aggSelect}) as ${aggSelect}`;
+      aggFunc = `MIN(${columnList}) as ${columnList}`;
       break;
     case AggregationMethod.Max:
-      aggSelect = `MAX(${aggSelect}) as ${aggSelect}`;
+      aggFunc = `MAX(${columnList}) as ${columnList}`;
       break;
     case AggregationMethod.MostRecentValue:
       if (!sortColumn) throw new Error("Sort Column is needed");
-      orderBy = `"${sortColumn}" DESC`;
-      groupByColumns.push(columnNames[0]);
-      groupByColumns.push(sortColumn);
+      orderBys.push(`"${sortColumn}" DESC`);
       break;
     case AggregationMethod.LeastRecentValue:
       if (!sortColumn) throw new Error("Sort Column is needed");
-      orderBy = `"${sortColumn}" ASC`;
-      groupByColumns.push(columnNames[0]);
-      groupByColumns.push(sortColumn);
+      orderBys.push(`"${sortColumn}" ASC`);
       break;
     default:
       throw new Error(`${aggregationMethod} is not a known aggregation method`);
   }
 
   const params: Array<any> = [];
-  let query = `SELECT ${aggSelect}, "${tablePrimaryKeyCol}" as "__PK" FROM "${tableName}" WHERE`;
+  let ranked = false;
+  let query = `SELECT "${tablePrimaryKeyCol}" as "__PK"`;
+
+  if (aggFunc) {
+    query += `, ${aggFunc}`;
+    groupByColumns.push(tablePrimaryKeyCol);
+  } else {
+    query += `, ${columnList}`;
+    if (!isArray && orderBys.length > 0) {
+      const order = `ORDER BY ${orderBys.join(", ")}`;
+      query += `, ROW_NUMBER() OVER (PARTITION BY "${tablePrimaryKeyCol}" ${order}) AS __ROWNUM`;
+      ranked = true;
+    }
+  }
+
+  query += ` FROM "${tableName}" WHERE`;
+
   let addAnd = false;
 
   for (const condition of matchConditions) {
@@ -91,9 +102,21 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   if (groupByColumns.length > 0) {
     query += ` GROUP BY ${groupByColumns.map((c) => `"${c}"`).join(", ")}`;
   }
+  if (!ranked && orderBys.length > 0) {
+    query += ` ORDER BY ${orderBys.join(", ")}`;
+  }
 
-  if (orderBy.length > 0) {
-    query += ` ORDER BY ${orderBy}`;
+  if (ranked) {
+    // -- Ranked example
+    // SELECT * FROM
+    //  (SELECT  "USER_ID" as "__PK", "CREATED_AT",
+    //              ROW_NUMBER() OVER (PARTITION BY "USER_ID" ORDER BY "created_at" DESC) AS __ROWNUM
+    //        FROM demo.purchases
+    //        WHERE  "STATE" = 'successful' AND "USER_ID" IN ('1','2','3','4')
+    //   ) AS __RANKED
+    // WHERE __RANKED.__ROWNUM = 1;
+
+    query = `SELECT * FROM (${query}) AS __RANKED WHERE __RANKED.__ROWNUM = 1`;
   }
 
   validateQuery(query);

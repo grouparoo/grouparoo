@@ -304,7 +304,7 @@ describe("snowflake/table/recordProperties", () => {
             values[otherRecord.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
-          ).toEqual(["2020-02-02T12:13:14.000Z"]);
+          ).toEqual(["2020-02-02T12:13:14.500Z"]);
         });
 
         test("to get multiple values with a timestamp", async () => {
@@ -323,7 +323,7 @@ describe("snowflake/table/recordProperties", () => {
             values[otherRecord.id][properties[0].id].map((v) =>
               (<Date>v).toISOString()
             )
-          ).toEqual(["2020-02-02T12:13:14.000Z"]);
+          ).toEqual(["2020-02-02T12:13:14.500Z"]);
           expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
           expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
@@ -349,7 +349,9 @@ describe("snowflake/table/recordProperties", () => {
         });
         expect(values[record.id][properties[0].id][0]).toEqual("Orange");
         expect(values[otherRecord.id][properties[0].id][0]).toEqual("Apple");
-        expect(values[fourthRecord.id][properties[0].id][0]).toEqual("Apple");
+        expect(values[fourthRecord.id][properties[0].id][0]).toEqual(
+          "Watermelon"
+        );
       });
 
       test("least recent", async () => {
@@ -374,19 +376,27 @@ describe("snowflake/table/recordProperties", () => {
           sourceMapping,
           aggregationMethod: AggregationMethod.Exact,
         });
-        expect(values[record.id][properties[0].id].sort()).toEqual([
+        expect(values[record.id][properties[0].id]).toEqual([
+          "Apple",
+          "Orange",
+          "Blueberry",
           "Apple",
           "Blueberry",
           "Orange",
         ]);
-        expect(values[otherRecord.id][properties[0].id].sort()).toEqual([
+        expect(values[otherRecord.id][properties[0].id]).toEqual([
+          "Pear",
+          "Apple",
           "Apple",
           "Pear",
-        ]);
-        expect(values[fourthRecord.id][properties[0].id].sort()).toEqual([
           "Apple",
+        ]);
+        expect(values[fourthRecord.id][properties[0].id]).toEqual([
           "Blueberry",
           "Pear",
+          "Apple",
+          "Watermelon",
+          "Peach",
         ]);
         emailProperty.isArray = isArray;
       });

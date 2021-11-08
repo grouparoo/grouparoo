@@ -38,8 +38,8 @@ describe("bigquery/table/sourceFilters", () => {
       "amount",
       "date",
       "id",
-      "profile_id",
       "purchase",
+      "record_id",
       "stamp",
     ]); // leaves out
     expect(columns.length).toBe(6);
@@ -78,7 +78,11 @@ describe("bigquery/table/sourceFilters", () => {
       ],
     });
     expect(columns[3]).toMatchObject({
-      key: "profile_id",
+      key: "purchase",
+      ops: ["equals", "does not equal", "contains", "does not contain"],
+    });
+    expect(columns[4]).toMatchObject({
+      key: "record_id",
       ops: [
         "equals",
         "does not equal",
@@ -87,10 +91,6 @@ describe("bigquery/table/sourceFilters", () => {
         "less than",
         "less than or equal to",
       ],
-    });
-    expect(columns[4]).toMatchObject({
-      key: "purchase",
-      ops: ["equals", "does not equal", "contains", "does not contain"],
     });
     expect(columns[5]).toMatchObject({
       key: "stamp",

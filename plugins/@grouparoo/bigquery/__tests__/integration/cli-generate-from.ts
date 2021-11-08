@@ -12,7 +12,7 @@ import { SimpleAppOptions } from "@grouparoo/core";
 
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
-const usersTableName = "profiles";
+const usersTableName = "records";
 
 import { api } from "actionhero";
 import { Generate } from "@grouparoo/core/src/bin/generate";

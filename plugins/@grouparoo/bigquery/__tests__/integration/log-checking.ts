@@ -57,14 +57,14 @@ describe("bigquery/integration/log-checking", () => {
   });
 
   it("should correctly do debug logging for bigquery queries", async () => {
-    const sql = "SELECT first_name FROM test.profiles WHERE id = {{ userId }}";
+    const sql = "SELECT first_name FROM test.records WHERE id = {{ userId }}";
     const value = await getPropertyValue(sql);
     expect(value).toEqual(["Erie"]);
 
     expect(
       logMock.mock.calls.filter((c) => c[0].includes("bigquery")).pop()
     ).toEqual([
-      "[ bigquery ] SELECT first_name FROM test.profiles WHERE id = 1",
+      "[ bigquery ] SELECT first_name FROM test.records WHERE id = 1",
       "debug",
       undefined,
     ]);

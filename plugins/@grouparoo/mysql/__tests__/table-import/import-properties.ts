@@ -362,19 +362,25 @@ describe("mysql/table/recordProperties", () => {
         });
         expect(values[record.id][properties[0].id]).toEqual([
           "Apple",
+          "Orange",
+          "Blueberry",
+          "Apple",
           "Blueberry",
           "Orange",
         ]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([
+          "Pear",
+          "Apple",
           "Apple",
           "Pear",
+          "Apple",
         ]);
         expect(values[fourthRecord.id][properties[0].id]).toEqual([
-          "Apple",
           "Blueberry",
-          "Peach",
           "Pear",
+          "Apple",
           "Watermelon",
+          "Peach",
         ]);
         emailProperty.isArray = isArray;
       });
