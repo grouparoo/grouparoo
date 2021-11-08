@@ -10,6 +10,7 @@ const {
 const corePath: string = getCoreRootPath();
 process.chdir(corePath);
 process.env.ACTIONHERO_CONFIG = `${corePath}/${loadPath}/config`;
+process.env.GROUPAROO_SPEC_HELPER = "true";
 
 if (
   corePath.includes("node_modules") &&

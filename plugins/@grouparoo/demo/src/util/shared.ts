@@ -1,6 +1,8 @@
 import sharedExecSync from "./exec";
 import { api } from "actionhero";
-import path from "path";
+import glob from "glob";
+import fs from "fs";
+import Prettier from "prettier";
 import Database from "./database";
 import { log } from "actionhero";
 
@@ -9,15 +11,17 @@ export async function execSync(command) {
   await sharedExecSync(command);
 }
 
-export async function prettier(fileOrDirPath) {
-  // prettier format
-  const pCmd = path.resolve(
-    path.join(__dirname, "..", "..", "node_modules", ".bin", "prettier")
-  );
-  const pConfig = path.resolve(
-    path.join(__dirname, "..", "..", "..", "..", "..", ".prettierrc")
-  );
-  await execSync(`'${pCmd}' --config '${pConfig}' --write '${fileOrDirPath}'`);
+export async function prettier(fileOrDirPath: string) {
+  const stats = fs.statSync(fileOrDirPath);
+  if (stats.isDirectory) {
+    const files = glob.sync(`${fileOrDirPath}/**/*.{json,js}`);
+    for (const file of files) await prettier(file);
+  } else {
+    const text = fs.readFileSync(fileOrDirPath).toString();
+    const pOptions = await Prettier.resolveConfig(process.cwd());
+    const formatted = Prettier.format(text, pOptions);
+    fs.writeFileSync(fileOrDirPath, formatted);
+  }
 }
 
 interface InitOptions {

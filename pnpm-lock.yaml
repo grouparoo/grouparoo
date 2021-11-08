@@ -604,6 +604,7 @@ importers:
     specifiers:
       '@grouparoo/core': 0.7.4-alpha.1
       '@grouparoo/spec-helper': 0.7.4-alpha.1
+      '@types/glob': 7.2.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.2.0
@@ -638,6 +639,7 @@ importers:
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
+      '@types/glob': 7.2.0
       '@types/jest': 27.0.1
       '@types/node': 16.9.1
       actionhero: 27.2.0
@@ -4070,6 +4072,13 @@ packages:
     resolution: {integrity: sha512-I+bsBr67CurCGnSenZZ7v94gd3tc3+Aj2taxMT4yu4ABLuOgOjeFxX3dokG24ztSRg5tnT00sL8BszO7gSMoIw==}
     dependencies:
       '@types/node': 16.9.1
+
+  /@types/glob/7.2.0:
+    resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
+    dependencies:
+      '@types/minimatch': 3.0.5
+      '@types/node': 16.9.1
+    dev: true
 
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
