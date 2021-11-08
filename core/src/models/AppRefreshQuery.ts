@@ -106,7 +106,7 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
   @BeforeSave
   static async appQuery(instance: AppRefreshQuery) {
     if (instance.state === "ready") {
-      const sampleValue = await AppRefreshQueryOps.runAppQuery(instance);
+      await AppRefreshQueryOps.runAppQuery(instance);
     }
   }
 
