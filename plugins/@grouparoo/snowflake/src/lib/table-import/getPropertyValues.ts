@@ -119,7 +119,6 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     query = `SELECT * FROM (${query}) AS __RANKED WHERE __RANKED.__ROWNUM = 1`;
   }
 
-  console.log(query);
   validateQuery(query);
 
   try {
