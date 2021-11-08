@@ -195,12 +195,12 @@ export async function spawnPromise(
 
     spawnProcess.stdout.on("data", (data) => {
       stdout += String(data);
-      console.log(data.toString());
+      process.stdout.write(data);
     });
 
     spawnProcess.stderr.on("data", (data) => {
       stderr += String(data);
-      console.error(data.toString());
+      process.stdout.write(data);
     });
 
     spawnProcess.on("close", (code) => {
