@@ -80,8 +80,6 @@ export default function Page(props) {
     );
 
     if (response?.appRefreshQuery) {
-      //i think this is where we already are though...
-
       setAppRefreshQuery(response.appRefreshQuery);
 
       router.push(
@@ -99,6 +97,10 @@ export default function Page(props) {
 
   async function edit(event) {
     event.preventDefault();
+    //should this state transition be done somewhere else?
+    if (appRefreshQuery.refreshQuery.length > 1) {
+      appRefreshQuery.state = "ready";
+    }
     setLoading(true);
     const response: Actions.AppRefreshQueryEdit = await execApi(
       "put",
@@ -111,6 +113,24 @@ export default function Page(props) {
       successHandler.set({ message: "App Refresh Query Updated" });
       setAppRefreshQuery(response.appRefreshQuery);
       //do we need an appRefreshQuery handler?  What do those guys _do_?
+    }
+  }
+
+  async function test() {
+    setTestLoading(true);
+    setRanTest(false);
+    setTestResult({ success: null, message: null, error: null });
+    const response: Actions.AppRefreshQueryTest = await execApi(
+      "put",
+      `/appQueryRefresh/${id}/test`
+    );
+    if (response?.sampleValue) {
+      setRanTest(true);
+      setTestResult({
+        success: null,
+        error: null,
+        message: response?.sampleValue,
+      });
     }
   }
 
@@ -184,7 +204,7 @@ export default function Page(props) {
                 onSubmit={edit}
                 autoComplete="off"
               >
-                <Form.Group controlId="query">
+                <Form.Group controlId="refreshQuery">
                   <Form.Control
                     required
                     as="textarea"
@@ -203,23 +223,26 @@ export default function Page(props) {
                     Key is required
                   </Form.Control.Feedback>
                 </Form.Group>
+                <Row className="mt-3">
+                  <AppRefreshQueryScheduleList
+                    app={app}
+                    schedules={schedules}
+                    runs={runs}
+                  />
+                </Row>
+                <Row className="ml-5 my-2">
+                  <Button>Test Query</Button>
+                </Row>
+
+                <Row className="ml-5 my-3">
+                  <Button variant="primary" type="submit" disabled={loading}>
+                    Update
+                  </Button>
+                </Row>
+                <Row className="ml-5 my-2">
+                  <Button variant="danger">Delete</Button>
+                </Row>
               </Form>
-              <Row className="mt-3">
-                <AppRefreshQueryScheduleList
-                  app={app}
-                  schedules={schedules}
-                  runs={runs}
-                />
-              </Row>
-              <Row className="ml-5 my-2">
-                <Button>Test Query</Button>
-              </Row>
-              <Row className="ml-5 my-3">
-                <Button>Update</Button>
-              </Row>
-              <Row className="ml-5 my-2">
-                <Button variant="danger">Delete</Button>
-              </Row>
             </Col>
 
             <Col className="col-md-4">
