@@ -10,7 +10,6 @@ export default function AppTabs({ app }: { app: Models.AppType }) {
   return (
     <div>
       <Tabs name={app.name} draftType={app.type} tabs={tabs} />
-      {JSON.stringify(app.pluginApp)}
     </div>
   );
 }

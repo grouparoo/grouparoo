@@ -197,9 +197,7 @@ export class App extends LoggedModel<App> {
     const icon = await this._getIcon();
     const provides = this.provides();
     const { pluginApp } = await this.getPlugin();
-    const appRefreshQuery = await AppRefreshQuery.findOne({
-      where: { appId: this.id },
-    });
+    const appRefreshQuery = await this.$get("appRefreshQuery", { scope: null });
 
     return {
       id: this.id,

@@ -23,6 +23,7 @@ import StateBadge from "../../../components/badges/stateBadge";
 import AppRefreshQueryStats from "../../../components/app/appRefreshQueryStats";
 import AppRefreshScheduleList from "../../../components/app/appRefreshSchedulesList";
 import { Actions, Models } from "../../../utils/apiData";
+// import { AppRefreshQueryHandler } from "../../../utils/appRefreshQueryHandler"; ??
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { AppHandler } from "../../../utils/appHandler";
@@ -80,9 +81,12 @@ export default function Page(props) {
 
     if (response?.appRefreshQuery) {
       //i think this is where we already are though...
+
+      setAppRefreshQuery(response.appRefreshQuery);
+
       router.push(
-        "/app/[id]/appRefreshQuery",
-        `/app/${response.appRefreshQuery.appId}/appRefreshQuery`
+        "/app/[id]/refresh",
+        `/app/${response.appRefreshQuery.appId}/refresh`
       );
     }
   }
@@ -143,8 +147,10 @@ export default function Page(props) {
           ]}
         />
         <Container>
-          This app has no App Refresh Query.
-          <Button className="mx-auto">Add One</Button>
+          <p>{app.name} has no App Refresh Query.</p>
+          <Button onClick={create} className="mx-auto">
+            Add an App Refresh Query
+          </Button>
         </Container>
       </>
     );
@@ -182,7 +188,7 @@ export default function Page(props) {
                   <Form.Control
                     required
                     as="textarea"
-                    disabled={disabled}
+                    disabled={appRefreshQuery.locked !== null}
                     rows={6}
                     value={appRefreshQuery.refreshQuery}
                     onChange={(e) => update(e)}
@@ -250,11 +256,17 @@ Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { app } = await execApi("get", `/app/${id}`);
-  //todo: handle when app.appRefreshQuery is null
-  const { appRefreshQuery } = await execApi(
-    "get",
-    `/appRefreshQuery/${app.appRefreshQuery?.id}`
-  );
+
+  let foundAppRefreshQuery;
+
+  if (app.appRefreshQuery !== null) {
+    const { appRefreshQuery } = await execApi(
+      "get",
+      `/appRefreshQuery/${app.appRefreshQuery.id}`
+    );
+    foundAppRefreshQuery = appRefreshQuery;
+  }
+
   const { sources } = await execApi("get", `/sources`);
 
   const schedules = sources
@@ -275,7 +287,7 @@ Page.getInitialProps = async (ctx) => {
 
   return {
     app,
-    appRefreshQuery,
+    appRefreshQuery: foundAppRefreshQuery || null,
     schedules,
     runs: scheduleRuns || null,
   };

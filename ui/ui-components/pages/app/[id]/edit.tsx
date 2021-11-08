@@ -111,7 +111,6 @@ export default function Page(props) {
     _app.options[optKey] = optValue;
     setApp(_app);
   };
-  // console.log(app);
   return (
     <>
       <Head>
