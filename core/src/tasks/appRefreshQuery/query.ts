@@ -18,12 +18,11 @@ export class AppRefreshQueryQuery extends CLSTask {
   }: {
     appRefreshQueryId: string;
   }) {
-    const appRefreshQuery = await AppRefreshQuery.findOne({
+    const appRefreshQuery = await AppRefreshQuery.scope(null).findOne({
       where: { id: appRefreshQueryId },
     });
 
-    if (!appRefreshQuery)
-      throw new Error(`No app refresh query ${appRefreshQueryId} found.`);
+    if (!appRefreshQuery) return;
 
     //check the query value, update 'confirmedAt'
     const sampleValue = await AppRefreshQueryOps.runAppQuery(appRefreshQuery);

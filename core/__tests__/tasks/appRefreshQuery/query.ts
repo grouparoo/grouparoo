@@ -114,9 +114,6 @@ describe("tasks/appRefreshQuery:query", () => {
     test("schedules marked 'refreshEnabled=false' are not triggered", async () => {
       await schedule.update({ refreshEnabled: false });
 
-      await task.enqueue("appRefreshQuery:query", {
-        appRefreshQueryId: appRefreshQuery.id,
-      }); //does not throw
       await specHelper.runTask("appRefreshQuery:query", {
         appRefreshQueryId: appRefreshQuery.id,
       });

@@ -12,6 +12,9 @@ describe("appRefreshQuery", () => {
     beforeAll(async () => {
       app = await helper.factories.app();
     });
+    beforeEach(async () => {
+      AppRefreshQuery.truncate();
+    });
 
     test("an app data refresh can be created with an app", async () => {
       const appRefreshQuery = new AppRefreshQuery({
