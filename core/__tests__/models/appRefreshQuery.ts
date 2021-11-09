@@ -13,7 +13,7 @@ describe("appRefreshQuery", () => {
       app = await helper.factories.app();
     });
     beforeEach(async () => {
-      AppRefreshQuery.truncate();
+      await AppRefreshQuery.truncate();
     });
 
     test("an app data refresh can be created with an app", async () => {

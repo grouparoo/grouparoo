@@ -25,6 +25,10 @@ describe("integration/runs/bigquery/appRefreshQuery", () => {
     await app.update({ state: "ready" });
   });
 
+  afterEach(async () => {
+    await AppRefreshQuery.truncate();
+  });
+
   test("I can query using the appRefreshQuery query method", async () => {
     const app = await App.findOne();
     await AppRefreshQuery.create({
