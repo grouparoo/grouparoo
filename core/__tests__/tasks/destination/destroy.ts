@@ -127,8 +127,6 @@ describe("tasks/destination:destroy", () => {
 
     // can delete (time has passed)
     await utils.sleep(3000);
-
-    // can delete (not enough time has passed)
     await specHelper.runTask("destination:destroy", {
       destinationId: destination.id,
     });
