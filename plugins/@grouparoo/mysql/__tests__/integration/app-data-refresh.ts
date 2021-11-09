@@ -30,13 +30,11 @@ describe("integration/runs/mysql", () => {
 
   test("I can query using the appRefreshQuery query method", async () => {
     const app = await App.findOne();
-    const appRefreshQuery = await AppRefreshQuery.create({
+    await AppRefreshQuery.create({
       appId: app.id,
       refreshQuery: "SELECT 'HI' as name",
       state: "ready",
-    });
-    expect(appRefreshQuery.lastChangedAt).toBeInstanceOf(Date);
-    expect(appRefreshQuery.value).toEqual(JSON.stringify({ name: "HI" }));
+    }); //does not throw
   });
 
   test("I show a good error with a missing query", async () => {

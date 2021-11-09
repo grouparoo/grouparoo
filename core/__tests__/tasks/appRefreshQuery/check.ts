@@ -5,22 +5,17 @@ import {
   Schedule,
   App,
   Run,
-  plugin,
   GrouparooModel,
   AppRefreshQuery,
 } from "../../../src";
 
-describe("tasks/appRefreshQuery:check", () => {
-  let model: GrouparooModel;
-  let source: Source;
-  let schedule: Schedule;
-
+describe("tasks/appRefreshQueries:check", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
 
   beforeAll(async () => {});
 
-  describe("appRefreshQuery:run", () => {
+  describe("appRefreshQueries:check", () => {
     let model: GrouparooModel;
     let app: App;
     let source: Source;
@@ -47,22 +42,31 @@ describe("tasks/appRefreshQuery:check", () => {
     });
 
     test("can be enqueued and run", async () => {
-      await task.enqueue("appRefreshQuery:check", {}); //does not throw
+      await task.enqueue("appRefreshQueries:check", {}); //does not throw
 
-      await specHelper.runTask("appRefreshQuery:check", {});
+      await specHelper.runTask("appRefreshQueries:check", {});
 
-      const enqueuedRuns = await Run.findAll({
-        where: { creatorId: schedule.id, state: "running" },
-      });
-      expect(enqueuedRuns.length).toBe(1);
+      const found = await specHelper.findEnqueuedTasks(
+        "appRefreshQueries:check"
+      );
+      expect(found.length).toEqual(1);
+    });
 
-      Run.truncate();
+    test("enqueues appRefreshQuery:query", async () => {
+      await task.enqueue("appRefreshQueries:check", {}); //does not throw
+
+      await specHelper.runTask("appRefreshQueries:check", {});
+
+      const foundChildren = await specHelper.findEnqueuedTasks(
+        "appRefreshQuery:query"
+      );
+      expect(foundChildren.length).toEqual(1);
     });
 
     test("does not throw if no appRefreshQueries found", async () => {
       appRefreshQuery.destroy();
 
-      await task.enqueue("appRefreshQuery:check", {}); //does not throw
+      await task.enqueue("appRefreshQueries:check", {}); //does not throw
 
       //also does not enqueue any runs
       const enqueuedRuns = await Run.findAll({
@@ -71,7 +75,7 @@ describe("tasks/appRefreshQuery:check", () => {
       expect(enqueuedRuns.length).toBe(0);
     });
 
-    test("does not throw if no app or schedules ready for appRefreshQuery", async () => {
+    test("does not throw if no app or schedules ready for appRefreshQueries", async () => {
       const anotherApp = await helper.factories.app();
       await anotherApp.update({ state: "deleted" });
 
@@ -82,7 +86,7 @@ describe("tasks/appRefreshQuery:check", () => {
       });
       await appRefreshQuery.save();
 
-      await task.enqueue("appRefreshQuery:check", {}); //does not throw
+      await task.enqueue("appRefreshQueries:check", {}); //does not throw
 
       //also does not enqueue any runs
       const enqueuedRuns = await Run.findAll({

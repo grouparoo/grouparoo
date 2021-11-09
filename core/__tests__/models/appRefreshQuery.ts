@@ -25,7 +25,6 @@ describe("appRefreshQuery", () => {
       expect(appRefreshQuery.id.length).toBe(40);
       expect(appRefreshQuery.createdAt).toBeTruthy();
       expect(appRefreshQuery.updatedAt).toBeTruthy();
-      expect(appRefreshQuery.value).toBeTruthy();
     });
 
     test("creating an app data refresh creates a log entry", async () => {
@@ -53,7 +52,7 @@ describe("appRefreshQuery", () => {
       expect(latestLog).toBeTruthy();
     });
 
-    test("updating a refreshQuery on a ready instance triggers an appRefreshQuery check", async () => {
+    test("an updated query is checked", async () => {
       Run.truncate();
       const appRefreshQuery = new AppRefreshQuery({
         appId: app.id,
@@ -62,72 +61,13 @@ describe("appRefreshQuery", () => {
       });
       await appRefreshQuery.save();
 
-      const spy = jest.spyOn(AppRefreshQueryOps, "checkRefreshQueryValue");
+      const spy = jest.spyOn(AppRefreshQueryOps, "runAppQuery");
       await appRefreshQuery.update({
         refreshQuery: "SELECT 'hi' AS name;",
       });
       expect(spy).toHaveBeenCalledWith(appRefreshQuery);
 
       spy.mockRestore();
-    });
-
-    test("schedules marked refreshEnabled are enqueued if a new 'value' is found from the query", async () => {
-      let model;
-      ({ model } = await helper.factories.properties());
-      const source = await Source.create({
-        name: "test source",
-        type: "test-plugin-import",
-        appId: app.id,
-        modelId: model.id,
-      });
-      await source.setOptions({ table: "test table" });
-      await source.setMapping({ id: "userId" });
-      await source.update({ state: "ready" });
-      const source2 = await Source.create({
-        name: "test source 2",
-        type: "test-plugin-import",
-        appId: app.id,
-        modelId: model.id,
-      });
-
-      await source2.setOptions({ table: "test table" });
-      await source2.setMapping({ id: "userId" });
-      await source2.update({ state: "ready" });
-
-      //two schedules, only one has refreshEnabled
-      const schedule = await helper.factories.schedule(source);
-      await schedule.update({
-        recurring: "true",
-        recurringFrequency: 6000000,
-      });
-      const schedule2 = await helper.factories.schedule(source2);
-      await schedule2.update({
-        recurring: "true",
-        recurringFrequency: 6000000,
-        refreshEnabled: false,
-      });
-
-      //stop their initial runs
-      const runsToStop = await Run.findAll({
-        where: { creatorType: "schedule", state: "running" },
-      });
-      for (const run of runsToStop) run.stop();
-
-      //make an appRefreshQuery
-      const appRefreshQuery = new AppRefreshQuery({
-        appId: app.id,
-        refreshQuery: "SELECT * FROM test;",
-        state: "ready",
-      });
-      await appRefreshQuery.save();
-
-      //only one should have started a run
-      const runs = await Run.findAll({
-        where: { creatorType: "schedule", state: "running" },
-      });
-
-      expect(runs.length).toBe(1);
-      expect(runs[0].creatorId).toBe(schedule.id);
     });
 
     test("an appRefreshQuery in the draft state will not run its query", async () => {

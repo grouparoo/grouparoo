@@ -1,12 +1,12 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { App } from "../../models/App";
 import { AppRefreshQuery } from "../../models/AppRefreshQuery";
-import { AppRefreshQueryOps } from "../../modules/ops/appRefreshQuery";
+import { CLS } from "../../modules/cls";
 
-export class AppRefreshQueryCheck extends CLSTask {
+export class AppRefreshQueriesCheck extends CLSTask {
   constructor() {
     super();
-    this.name = "appRefreshQuery:check";
+    this.name = "appRefreshQueries:check";
     this.description = "check all appRefreshQueries and run them if it is time";
     this.frequency =
       process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 5; // Run every 5 minutes
@@ -23,11 +23,9 @@ export class AppRefreshQueryCheck extends CLSTask {
       });
 
       if (app) {
-        const isUpdated = await AppRefreshQueryOps.checkRefreshQueryValue(
-          appRefreshQuery
-        );
-        if (isUpdated)
-          await AppRefreshQueryOps.triggerSchedules(appRefreshQuery);
+        await CLS.enqueueTask("appRefreshQuery:query", {
+          appRefreshQueryId: appRefreshQuery.id,
+        });
       }
     }
   }

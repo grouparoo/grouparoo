@@ -4,9 +4,7 @@ import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 
 export namespace AppRefreshQueryOps {
-  export async function checkRefreshQueryValue(
-    appRefreshQuery: AppRefreshQuery
-  ) {
+  export async function runAppQuery(appRefreshQuery: AppRefreshQuery) {
     const app = await appRefreshQuery.$get("app");
     const options = await app.getOptions();
     const { pluginApp } = await app.getPlugin();
@@ -28,15 +26,8 @@ export namespace AppRefreshQueryOps {
     const sampleValue = JSON.stringify(
       Array.isArray(responseRows) ? responseRows[0] : responseRows
     );
-    const originalValue = appRefreshQuery.value;
-    if (sampleValue !== originalValue) {
-      appRefreshQuery.value = sampleValue;
-      appRefreshQuery.lastChangedAt = new Date();
-    }
-    appRefreshQuery.lastConfirmedAt = new Date();
-    await appRefreshQuery.save();
 
-    return sampleValue !== originalValue;
+    return sampleValue;
   }
 
   export async function triggerSchedules(appRefreshQuery: AppRefreshQuery) {
