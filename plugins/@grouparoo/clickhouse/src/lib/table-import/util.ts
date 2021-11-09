@@ -30,9 +30,11 @@ const castValue = (value: DataResponse, type: ColumnType, dataType: string) => {
       return String(value).toLowerCase();
 
     case "date":
-      return dataType.indexOf("DateTime") >= 0
-        ? `toDateTime('${value}')`
-        : `to${dataType}('${value}')`;
+      // https://clickhouse.com/docs/en/sql-reference/data-types/datetime64/
+      // https://clickhouse.com/docs/en/sql-reference/data-types/datetime64/
+      return `to${dataType}('${value}'${
+        dataType.indexOf("DateTime64") >= 0 ? ", 3" : ""
+      })`;
 
     default:
       return value;
