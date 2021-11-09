@@ -87,6 +87,7 @@ export default function Page(props) {
         `/app/${response.appRefreshQuery.appId}/refresh`
       );
     }
+    setLoading(false);
   }
 
   async function update(event) {
@@ -108,11 +109,12 @@ export default function Page(props) {
       appRefreshQuery
     );
     if (response?.appRefreshQuery) {
-      //I don't think we need to redirect like we do after creating an app...
       setLoading(false);
       successHandler.set({ message: "App Refresh Query Updated" });
       setAppRefreshQuery(response.appRefreshQuery);
       //do we need an appRefreshQuery handler?  What do those guys _do_?
+    } else {
+      setLoading(false);
     }
   }
 
@@ -120,18 +122,36 @@ export default function Page(props) {
     setTestLoading(true);
     setRanTest(false);
     setTestResult({ success: null, message: null, error: null });
+
+    //to do: this test only works after save, not before!
     const response: Actions.AppRefreshQueryTest = await execApi(
       "put",
-      `/appQueryRefresh/${id}/test`
+      `/appRefreshQuery/${appRefreshQuery.id}/test`
     );
-    if (response?.sampleValue) {
+    if (response?.test) {
       setRanTest(true);
-      setTestResult({
-        success: null,
-        error: null,
-        message: response?.sampleValue,
+      setTestResult(response.test);
+    }
+    setTestLoading(false);
+  }
+
+  async function runQuery() {
+    //also runs based off of the SAVED value not necessarily the current value on the screen... probably should change
+    setLoading(true);
+    const response: Actions.AppRefreshQueryQuery = await execApi(
+      "post",
+      `/appRefreshQuery/${appRefreshQuery.id}/query`
+    );
+    if (response?.valueUpdated == true) {
+      successHandler.set({
+        message: `Query returned ${response.appRefreshQuery.value}. Enqueueing Schedules.`,
+      });
+    } else {
+      successHandler.set({
+        message: `Query returned ${response.appRefreshQuery.value}. No schedules enqueued.`,
       });
     }
+    setLoading(false);
   }
 
   async function handleDelete() {
@@ -143,7 +163,7 @@ export default function Page(props) {
       );
       if (response?.success) {
         successHandler.set({ message: "App Refresh Query Deleted" });
-        router.push(`/app/${id}`);
+        router.push(`/app/${id}/edit`);
       } else {
         setLoading(false);
       }
@@ -230,46 +250,81 @@ export default function Page(props) {
                     runs={runs}
                   />
                 </Row>
-                <Row className="ml-5 my-2">
-                  <Button>Test Query</Button>
+                <Row className="ml-5">
+                  <Col className="ml-0 pl-0 ">
+                    <LoadingButton
+                      variant="outline-secondary"
+                      onClick={test}
+                      size="sm"
+                      disabled={testLoading}
+                    >
+                      Test Query
+                    </LoadingButton>
+                  </Col>
+                  <Col>
+                    {testResult.success !== null &&
+                    testResult.success !== false &&
+                    testResult.success !== undefined &&
+                    !testResult.error ? (
+                      <Alert variant="success">
+                        <strong>Test Passed. </strong>Sample Value ={" "}
+                        {testResult.message}
+                      </Alert>
+                    ) : ranTest ? (
+                      <Alert variant="warning">
+                        <strong>Test Failed</strong> {testResult.error}
+                      </Alert>
+                    ) : null}
+                    {loading ? <Loader /> : null}
+                  </Col>
                 </Row>
-
-                <Row className="ml-5 my-3">
-                  <Button variant="primary" type="submit" disabled={loading}>
-                    Update
-                  </Button>
-                </Row>
-                <Row className="ml-5 my-2">
-                  <Button variant="danger">Delete</Button>
-                </Row>
+                <fieldset
+                // disabled={appRefreshQuery.locked !== null}
+                >
+                  <Row className="ml-5 my-3">
+                    <LoadingButton
+                      variant="primary"
+                      type="submit"
+                      size="sm"
+                      disabled={loading}
+                    >
+                      Update
+                    </LoadingButton>
+                  </Row>
+                  <Row className="ml-5 my-3">
+                    <LoadingButton
+                      variant="danger"
+                      size="sm"
+                      onClick={handleDelete}
+                      disabled={loading}
+                    >
+                      Delete
+                    </LoadingButton>
+                  </Row>
+                </fieldset>
               </Form>
             </Col>
 
-            <Col className="col-md-4">
+            <Col className="col-md-4 mt-4">
               <Row className="mx-auto mt-4">
                 <AppRefreshQueryStats
                   app={app}
                   appRefreshQuery={appRefreshQuery}
                 />
               </Row>
+              <Row>
+                <LoadingButton
+                  className="m-3 mx-auto"
+                  variant="success"
+                  onClick={runQuery}
+                  disabled={loading}
+                >
+                  Run Refresh Query
+                </LoadingButton>
+              </Row>
             </Col>
           </Row>
         </Container>
-        {/* {editing == true ? (
-          <Row>
-            <Col>
-              <Form id="form" onSubmit={edit} autoComplete="off">
-                <fieldset disabled={appRefreshQuery.locked !== null}></fieldset>
-              </Form>
-            </Col>
-          </Row>
-        ) : (
-          <Row>
-            <Col>
-              <Button></Button>
-            </Col>
-          </Row>
-        )} */}
       </>
     );
   }

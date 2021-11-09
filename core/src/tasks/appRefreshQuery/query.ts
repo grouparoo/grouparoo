@@ -22,7 +22,8 @@ export class AppRefreshQueryQuery extends CLSTask {
       where: { id: appRefreshQueryId },
     });
 
-    if (!appRefreshQuery) return;
+    if (!appRefreshQuery)
+      throw new Error(`No app refresh query ${appRefreshQueryId} found.`);
 
     //check the query value, update 'confirmedAt'
     const sampleValue = await AppRefreshQueryOps.runAppQuery(appRefreshQuery);

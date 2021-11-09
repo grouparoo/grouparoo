@@ -1,11 +1,9 @@
-import { api } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { AppRefreshQuery } from "../models/AppRefreshQuery";
-import { GrouparooPlugin, PluginApp } from "../classes/plugin";
-import { OptionHelper } from "../modules/optionHelper";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
 import { AppRefreshQueryOps } from "../modules/ops/appRefreshQuery";
+import { CLS } from "../modules/cls";
 
 export class AppRefreshQueriesList extends AuthenticatedAction {
   constructor() {
@@ -50,6 +48,39 @@ export class AppRefreshQueriesList extends AuthenticatedAction {
         })
       ),
     };
+  }
+}
+
+export class AppRefreshQueryQuery extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "appRefreshQuery:query";
+    this.description =
+      "run an appRefreshQuery to check for new data and enqueue schedules if needed";
+    this.outputExample = {};
+    this.permission = { topic: "app", mode: "write" };
+    this.inputs = { id: { required: true } };
+  }
+  async runWithinTransaction({ params }) {
+    //should this actually implement the methods rather than enqueueing the task?
+    //that makes sense from a time/awaiting perspective!
+    let valueUpdated: Boolean = false;
+    const appRefreshQuery = await AppRefreshQuery.findById(params.id);
+    if (!appRefreshQuery)
+      throw new Error(`No app refresh query ${params.id} founds`);
+
+    const sampleValue = await AppRefreshQueryOps.runAppQuery(appRefreshQuery);
+    await appRefreshQuery.update({ lastConfirmedAt: new Date() });
+
+    if (sampleValue !== appRefreshQuery.value) {
+      await appRefreshQuery.update({
+        value: sampleValue,
+        lastChangedAt: new Date(),
+      });
+      await AppRefreshQueryOps.triggerSchedules(appRefreshQuery);
+      valueUpdated = true;
+    }
+    return { valueUpdated, appRefreshQuery: await appRefreshQuery.apiData() };
   }
 }
 
@@ -110,6 +141,7 @@ export class AppRefreshQueryTest extends AuthenticatedAction {
     super();
     this.name = "appRefreshQuery:test";
     this.description = "test the query for a given appRefreshQuery";
+    this.permission = { topic: "app", mode: "write" };
     this.outputExample = {};
     this.inputs = {
       id: { required: true },
@@ -118,11 +150,17 @@ export class AppRefreshQueryTest extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const appRefreshQuery = await AppRefreshQuery.findById(params.id);
+    if (!appRefreshQuery) {
+      throw new Error(`cannot find an appRefreshQuery ${params.id}`);
+    }
+
     //does this need to be a try/catch to catch the error?
-    const sampleValue =
-      AppRefreshQueryOps.checkRefreshQueryValue(appRefreshQuery);
+    const test = await appRefreshQuery.test();
+    if (test.error) test.error = String(test.error);
+
+    console.log(test);
     return {
-      sampleValue,
+      test,
       appRefreshQuery: await appRefreshQuery.apiData(),
     };
   }

@@ -111,10 +111,11 @@ import {
   AppsList,
 } from "@grouparoo/core/src/actions/apps";
 import {
+  AppRefreshQueriesList,
   AppRefreshQueryCreate,
   AppRefreshQueryDestroy,
   AppRefreshQueryEdit,
-  AppRefreshQueriesList,
+  AppRefreshQueryQuery,
   AppRefreshQueryTest,
   AppRefreshQueryView,
 } from "@grouparoo/core/src/actions/appRefreshQuery";
@@ -279,6 +280,7 @@ import {
 } from "@grouparoo/core/src/actions/teams";
 import { TotalsAction } from "@grouparoo/core/src/actions/totals";
 import { ObjectFind } from "@grouparoo/core/src/actions/object";
+import { version } from "prettier";
 
 export namespace Actions {
   export type ModelCreate = AsyncReturnType<
@@ -337,7 +339,9 @@ export namespace Actions {
   export type AppsList = AsyncReturnType<
     typeof AppsList.prototype.runWithinTransaction
   >;
-
+  export type AppRefreshQueriesList = AsyncReturnType<
+    typeof AppRefreshQueriesList.prototype.runWithinTransaction
+  >;
   export type AppRefreshQueryCreate = AsyncReturnType<
     typeof AppRefreshQueryCreate.prototype.runWithinTransaction
   >;
@@ -350,8 +354,9 @@ export namespace Actions {
   export type AppRefreshQueryView = AsyncReturnType<
     typeof AppRefreshQueryView.prototype.runWithinTransaction
   >;
-  export type AppRefreshQueriesList = AsyncReturnType<
-    typeof AppRefreshQueriesList.prototype.runWithinTransaction
+
+  export type AppRefreshQueryQuery = AsyncReturnType<
+    typeof AppRefreshQueryQuery.prototype.runWithinTransaction
   >;
   export type AppRefreshQueryTest = AsyncReturnType<
     typeof AppRefreshQueryTest.prototype.runWithinTransaction

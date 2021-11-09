@@ -61,4 +61,25 @@ export namespace AppRefreshQueryOps {
       await schedule.enqueueRun();
     }
   }
+
+  export async function test(appRefreshQuery: AppRefreshQuery) {
+    let success = false;
+    let message: string;
+    let error;
+
+    //does this need to be a try/catch to catch the error?
+    try {
+      const sampleValue = await AppRefreshQueryOps.runAppQuery(appRefreshQuery);
+      message = sampleValue;
+      success = true;
+    } catch (err) {
+      error = err.message;
+      success = false;
+    }
+    return {
+      success,
+      message,
+      error,
+    };
+  }
 }

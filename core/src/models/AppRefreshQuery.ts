@@ -82,6 +82,10 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
     };
   }
 
+  async test() {
+    return AppRefreshQueryOps.test(this);
+  }
+
   // --- Class Methods --- //
 
   static async findById(id: string) {
