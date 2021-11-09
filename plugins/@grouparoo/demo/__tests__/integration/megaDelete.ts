@@ -1,126 +1,21 @@
 import { spawn } from "child_process";
-import { tmpdir } from "os";
 import path from "path";
 import fs from "fs";
 
-const bin = path.join(
-  __dirname,
-  "..",
-  "..",
-  "..",
-  "..",
-  "..",
-  "cli",
-  "dist",
-  "grouparoo.js"
+const monorepoRoot = path.join(__dirname, "..", "..", "..", "..", "..");
+const bin = path.join(monorepoRoot, "cli", "dist", "grouparoo.js");
+const dir = path.normalize(
+  path.join(monorepoRoot, "apps", "staging-enterprise")
 );
-const tmpDir = path.join(tmpdir(), "grouparoo", "mega-delete-test");
-const version: string = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "..", "..", "package.json")).toString()
-).version;
 
-const packageJSON = `
-{
-  "author": "Your Name <email@example.com>",
-  "name": "mega-delete-test",
-  "description": "A Grouparoo Deployment",
-  "version": "0.0.1",
-  "engines": {
-    "node": ">=12.0.0 <17.0.0"
-  },
-  "dependencies": {
-    "@grouparoo/core": "file:${path.join(
-      __dirname,
-      "..",
-      "..",
-      "..",
-      "..",
-      "..",
-      "core",
-      `grouparoo-core-${version}.tgz`
-    )}",
-    "@grouparoo/demo": "file:${path.join(
-      __dirname,
-      "..",
-      "..",
-      "..",
-      "demo",
-      `grouparoo-demo-${version}.tgz`
-    )}",
-    "@grouparoo/calculated-property": "file:${path.join(
-      __dirname,
-      "..",
-      "..",
-      "..",
-      "calculated-property",
-      `grouparoo-calculated-property-${version}.tgz`
-    )}",
-    "@grouparoo/postgres": "file:${path.join(
-      __dirname,
-      "..",
-      "..",
-      "..",
-      "postgres",
-      `grouparoo-postgres-${version}.tgz`
-    )}"
-  },
-  "scripts": {
-    "start": "cd node_modules/@grouparoo/core && ./bin/start"
-  },
-  "grouparoo": {
-    "plugins": [
-      "@grouparoo/demo",
-      "@grouparoo/calculated-property",
-      "@grouparoo/postgres"
-    ]
-  }
+console.log(`testing @ ${dir}`);
+
+if (fs.existsSync(path.join(dir, "config"))) {
+  throw new Error(`not testing as ${dir}/config already exists`);
 }
-`;
-
-console.log(`testing @ ${tmpDir}`);
-
-// we pack up this plugin to install it locally, rather than from npm
 
 describe("create and delete", () => {
   let packName: string;
-
-  it("can pack up core", async () => {
-    const { stdout } = await spawnPromise(
-      "npm",
-      "pack",
-      path.join(__dirname, "..", "..", "..", "..", "..", "core")
-    );
-    packName = path.join(__dirname, "..", "..", stdout);
-    expect(packName).toMatch(/grouparoo-core-.*.tgz/);
-  }, 30000);
-
-  it.each(["demo", "calculated-property", "postgres"])(
-    "can pack up the %s plugin",
-    async (plugin) => {
-      const cwd = path.resolve(path.join(__dirname, "..", "..", "..", plugin));
-      const { stdout } = await spawnPromise("npm", "pack", cwd);
-      packName = path.join(__dirname, "..", "..", stdout);
-      expect(packName).toMatch(/grouparoo-.*.tgz/);
-    },
-    60 * 1000
-  );
-
-  it(
-    "can install the demo plugin",
-    async () => {
-      fs.writeFileSync(path.join(tmpDir, "package.json"), packageJSON);
-      await spawnPromise("npm", ["install"]);
-    },
-    60 * 1000
-  );
-
-  it(
-    "can generate a new project",
-    async () => {
-      await spawnPromise(bin, ["init", "."]);
-    },
-    60 * 1000
-  );
 
   it("loads demo commands", async () => {
     const { stdout } = await spawnPromise(bin, ["help"]);
@@ -128,7 +23,7 @@ describe("create and delete", () => {
   });
 
   it("can generate demo config", async () => {
-    await spawnPromise(bin, ["demo", "-c", "--scale", "0.1"]);
+    await spawnPromise(bin, ["demo", "-cl", "--scale", "0.1"]); // include the logger destination as well so there are exports
   });
 
   it(
@@ -136,7 +31,7 @@ describe("create and delete", () => {
     async () => {
       const { stdout } = await spawnPromise(bin, ["run"]);
       expect(stdout).toContain("created Property `fullName`");
-      expect(stdout).toContain("All Tasks Complete!");
+      expect(stdout).toContain("All Tasks Complete");
     },
     60 * 1000 * 5
   );
@@ -151,7 +46,7 @@ describe("create and delete", () => {
       const { stdout } = await spawnPromise(bin, ["run"]);
       expect(stdout).toContain("deleted GrouparooModel `Users`");
       expect(stdout).toContain("deleted GrouparooModel `Admins`");
-      expect(stdout).toContain("All Tasks Complete!");
+      expect(stdout).toContain("All Tasks Complete");
     },
     60 * 1000 * 5
   );
@@ -160,7 +55,7 @@ describe("create and delete", () => {
 export async function spawnPromise(
   command: string,
   args: Array<string> | string = [],
-  cwd: string = tmpDir
+  cwd: string = dir
 ): Promise<{ exitCode: number; stderr: string; stdout: string }> {
   return new Promise((resolve, reject) => {
     let stdout = "",
@@ -168,7 +63,10 @@ export async function spawnPromise(
 
     if (typeof args === "string") args = [args];
 
-    console.log(`--> `, `${command} ${args.join(" ")}`);
+    log(`--- Running Command ---`, true);
+    log(`--> ${command} ${args.join(" ")}`, true);
+    log("", true);
+
     const spawnProcess = spawn(command, args, {
       cwd,
       env: {
@@ -182,12 +80,12 @@ export async function spawnPromise(
 
     spawnProcess.stdout.on("data", (data) => {
       stdout += String(data);
-      process.stdout.write(data);
+      log(data);
     });
 
     spawnProcess.stderr.on("data", (data) => {
       stderr += String(data);
-      process.stdout.write(data);
+      log(data);
     });
 
     spawnProcess.on("close", (code) => {
@@ -195,4 +93,9 @@ export async function spawnPromise(
       return resolve({ stdout, stderr, exitCode: code });
     });
   });
+}
+
+function log(message: string, lineBreak = false) {
+  if (lineBreak) message += "\r\n";
+  process.stdout.write(message);
 }
