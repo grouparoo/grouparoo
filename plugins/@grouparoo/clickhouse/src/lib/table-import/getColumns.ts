@@ -4,16 +4,12 @@ import {
   FilterOperation,
   ColumnType,
 } from "@grouparoo/app-templates/dist/source/table";
+import { cleanupDataType } from "./util";
 
 interface TypeInfo {
   type: ColumnType;
   filterOperations: FilterOperation[];
 }
-
-const cleanupDataType = (dataType: string): string =>
-  dataType
-    .toUpperCase()
-    .replace(/((NULLABLE|LOWCARDINALITY)\()?(\w+\d*)(\([^()]*\))?(\))?/, "$3");
 
 const getTypeInfo = (dataType: string): TypeInfo => {
   const ops = [FilterOperation.Equal, FilterOperation.NotEqual];
@@ -22,7 +18,7 @@ const getTypeInfo = (dataType: string): TypeInfo => {
   let contains = false;
 
   // https://content.clickhouse.com/docs/en/sql-reference/data-types/
-  switch (cleanupDataType(dataType)) {
+  switch (cleanupDataType(dataType).toUpperCase()) {
     // numeric
     case "INT16":
     case "INT32":
