@@ -93,6 +93,7 @@ class Config {
       case "hubspot":
       case "mailchimp":
       case "salesforce":
+      case "logger":
         this.addDestination(type);
         break;
       default:

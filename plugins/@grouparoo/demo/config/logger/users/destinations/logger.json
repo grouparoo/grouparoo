@@ -1,0 +1,15 @@
+{
+  "class": "Destination",
+  "id": "logger_destination",
+  "modelId": "users",
+  "name": "Logger Destination",
+  "type": "logger-export-records",
+  "appId": "logger",
+  "collection": "model",
+  "options": {},
+  "mapping": {
+    "primary id": "email",
+    "secondary id": "user_id"
+  },
+  "destinationGroupMemberships": {}
+}
