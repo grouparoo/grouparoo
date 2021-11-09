@@ -24,12 +24,10 @@ import {
 import { destinationTypeConversions } from "../destinationTypeConversions";
 import { GroupMember } from "../../models/GroupMember";
 import { ExportProcessor } from "../../models/ExportProcessor";
-import { GrouparooModel } from "../../models/GrouparooModel";
 import { Run } from "../../models/Run";
 import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
-import { RunOps } from "./runs";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -103,30 +101,14 @@ export namespace DestinationOps {
       }
     }
 
-    oldRun = await runDestinationCollection(destination); // old collection
+    oldRun = await exportMembers(destination); // old collection
     await destination.update({
       collection,
       groupId: collection !== "group" ? null : collectionId,
     });
-    newRun = await runDestinationCollection(destination); // new collection
+    newRun = await exportMembers(destination); // new collection
 
     return { oldRun, newRun };
-  }
-
-  async function runDestinationCollection(destination: Destination) {
-    if (destination.collection === "none") {
-      // nothing to do
-    } else if (destination.collection === "group" && destination.groupId) {
-      const group = await Group.findById(destination.groupId);
-      if (group) return RunOps.run(group, destination.id);
-    } else if (destination.collection === "model") {
-      const model = await GrouparooModel.findById(destination.modelId);
-      if (model) return RunOps.run(model, destination.id);
-    } else {
-      throw new Error(
-        `unknown destination collection ${destination.collection}`
-      );
-    }
   }
 
   /**
