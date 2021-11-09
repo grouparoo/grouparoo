@@ -5,7 +5,8 @@ import fs from "fs";
 
 const dirPath = path.resolve(path.join(__dirname, ".."));
 const realPath = path.join(dirPath, ".env");
-const parsed = dotenv.parse(fs.readFileSync(realPath));
+let parsed: Record<string, string>;
+if (fs.existsSync(realPath)) parsed = dotenv.parse(fs.readFileSync(realPath));
 if (!process.env.REDSHIFT_URL && !parsed.REDSHIFT_URL) {
   throw new Error(`process.env.REDSHIFT_URL is required`);
 }
