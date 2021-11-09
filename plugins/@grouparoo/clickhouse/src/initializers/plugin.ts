@@ -12,6 +12,7 @@ import {
   QueryPropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
+import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 import { connect } from "@grouparoo/mysql/dist/lib/connect";
 import { disconnect } from "@grouparoo/mysql/dist/lib/disconnect";
 import { getTables } from "@grouparoo/mysql/dist/lib/table-import/getTables";
@@ -39,6 +40,9 @@ export class Plugins extends Initializer {
         new TablePropertyTemplate("clickhouse"),
         new QuerySourceTemplate("clickhouse"),
         new QueryPropertyTemplate("clickhouse"),
+        new DestinationTemplate("clickhouse", [
+          path.join(templateRoot, "destination", "*.template"),
+        ]),
       ],
       apps: [
         {
