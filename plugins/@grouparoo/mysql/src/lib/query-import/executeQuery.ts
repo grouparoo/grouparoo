@@ -2,8 +2,9 @@ import {
   ExecuteQueryMethod,
   DataResponseRow,
 } from "@grouparoo/app-templates/dist/source/query";
+import { MySQLConnection } from "../connect";
 
-export const executeQuery: ExecuteQueryMethod = async ({
+export const executeQuery: ExecuteQueryMethod<MySQLConnection> = async ({
   connection,
   query,
 }) => {
