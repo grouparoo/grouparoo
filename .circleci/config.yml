@@ -1502,10 +1502,6 @@ jobs:
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
-      - image: yandex/clickhouse-client
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - restore_cache:
@@ -1540,6 +1536,9 @@ jobs:
       - run:
           name: create test databases
           command: cd core && ./bin/create_test_databases
+      - run:
+          name: install ClickHouse client
+          command: sudo apt install -y clickhouse-client
       - run:
           name: create ClickHouse test database
           command: clickhouse-client --query "CREATE DATABASE IF NOT EXISTS grouparoo_test"
