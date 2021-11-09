@@ -71,6 +71,7 @@ export async function spawnPromise(
       cwd,
       env: {
         ...process.env,
+        WORKERS: "5",
         NODE_ENV: undefined,
         PWD: undefined,
         ACTIONHERO_CONFIG: undefined,
