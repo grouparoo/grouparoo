@@ -3,7 +3,7 @@ import fs from "fs-extra";
 import { spawn, spawnSync } from "child_process";
 import os from "os";
 
-const timeout = 1000 * 10;
+const timeout = 1000 * 30;
 
 export namespace CLISpecHelper {
   const jestId = parseInt(process.env.JEST_WORKER_ID || "1");
