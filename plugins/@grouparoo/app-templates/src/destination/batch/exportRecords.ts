@@ -86,6 +86,7 @@ function verifyAllProcessed(exports: BatchExport[]) {
 
 function verifyProcessed(exportedRecord: BatchExport) {
   const {
+    recordId,
     destinationId,
     processed,
     error,
@@ -111,13 +112,13 @@ function verifyProcessed(exportedRecord: BatchExport) {
 
   if (needProcessed && !processed) {
     throw new Error(
-      `record has not processed: ${exportedRecord.foreignKeyValue}`
+      `record (${recordId}) has not processed: ${exportedRecord.foreignKeyValue}`
     );
   }
 
   if (needDestinationId && !destinationId) {
     throw new Error(
-      `record does not have a destination id: ${exportedRecord.foreignKeyValue}`
+      `record (${recordId}) does not have a destination id: ${exportedRecord.foreignKeyValue}`
     );
   }
 }
@@ -315,7 +316,7 @@ async function updateByIds(
     }
     if (!exportedRecord.destinationId) {
       throw new Error(
-        `cannot update without destinationId: ${exportedRecord.foreignKeyValue}`
+        `cannot update without destinationId: ${exportedRecord.foreignKeyValue} for record ${exportedRecord.recordId}`
       );
     }
 
