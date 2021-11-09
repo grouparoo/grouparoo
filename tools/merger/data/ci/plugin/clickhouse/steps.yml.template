@@ -1,0 +1,3 @@
+      - run:
+          name: create ClickHouse test database
+          command: clickhouse-client --query "CREATE DATABASE IF NOT EXISTS grouparoo_test"
