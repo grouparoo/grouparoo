@@ -81,21 +81,19 @@ export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
           newRecordProperties[primaryKey],
         ]);
 
-        await connection.asyncQuery(
-          `INSERT INTO ?? (${Object.keys(newRecordProperties).join(
-            ", "
-          )}) FORMAT Values (?)`,
-          [table, Object.values(newRecordProperties)]
-        );
+        await connection.asyncQuery(`INSERT INTO ?? (??) VALUES (?)`, [
+          table,
+          Object.keys(newRecordProperties),
+          Object.values(newRecordProperties),
+        ]);
       }
     } else {
       // just insert
-      await connection.asyncQuery(
-        `INSERT INTO ?? (${Object.keys(newRecordProperties).join(
-          ", "
-        )}) FORMAT Values (?)`,
-        [table, Object.values(newRecordProperties)]
-      );
+      await connection.asyncQuery(`INSERT INTO ?? (??) VALUES (?)`, [
+        table,
+        Object.keys(newRecordProperties),
+        Object.values(newRecordProperties),
+      ]);
     }
 
     // --- Groups --- //
@@ -106,18 +104,31 @@ export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
       newRecordProperties[primaryKey],
     ]);
 
-    // TODO: Do we need this in ClickHouse? How do we translate this to ClickHouse?
-    // if (!toDelete) {
-    //   for (const i in newGroups) {
-    //     const data = {};
-    //     data[groupForeignKey] = newRecordProperties[primaryKey];
-    //     data[groupColumnName] = newGroups[i];
-    //     await connection.asyncQuery(`INSERT IGNORE INTO ?? SET ?`, [
-    //       groupsTable,
-    //       data,
-    //     ]);
-    //   }
-    // }
+    if (toDelete) {
+      return;
+    }
+
+    for (const i in newGroups) {
+      const data = {
+        [groupForeignKey]: newRecordProperties[primaryKey],
+        [groupColumnName]: newGroups[i],
+      };
+
+      const query = `INSERT INTO ?? (??) SELECT ? WHERE NOT EXISTS (SELECT ?? FROM ?? WHERE ?? = ? AND ?? = ?)`;
+      const params = [
+        groupsTable,
+        Object.keys(data),
+        Object.values(data),
+        groupForeignKey,
+        groupsTable,
+        groupForeignKey,
+        data[groupForeignKey],
+        groupColumnName,
+        data[groupColumnName],
+      ];
+
+      await connection.asyncQuery(query, params);
+    }
   } catch (e) {
     error = e;
   } finally {
