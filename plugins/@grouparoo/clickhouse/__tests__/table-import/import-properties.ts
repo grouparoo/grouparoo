@@ -974,7 +974,6 @@ describe("clickhouse/table/recordProperties", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        console.log(values, properties[0].id);
         expect(values[record.id][properties[0].id]).toEqual([2]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
