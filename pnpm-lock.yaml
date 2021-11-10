@@ -484,13 +484,13 @@ importers:
       '@grouparoo/spec-helper': 0.7.4-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 27.1.5
+      actionhero: 27.2.0
       csv-parse: 4.16.3
       jest: 27.1.0
       prettier: 2.4.1
-      sequelize: 6.6.2
-      ts-jest: 27.0.5
-      typescript: 4.4.3
+      sequelize: 6.9.0
+      ts-jest: 27.0.7
+      typescript: 4.4.4
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
       '@grouparoo/mysql': link:../mysql
@@ -499,13 +499,13 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 27.0.1
       '@types/node': 16.9.1
-      actionhero: 27.1.5
+      actionhero: 27.2.0
       csv-parse: 4.16.3
       jest: 27.1.0
       prettier: 2.4.1
-      sequelize: 6.6.2
-      ts-jest: 27.0.5_28c4c718f3fc1d22e44cbdf15a2666ce
-      typescript: 4.4.3
+      sequelize: 6.9.0
+      ts-jest: 27.0.7_062352e94e27c52570f1480e79dd78a7
+      typescript: 4.4.4
 
   plugins/@grouparoo/cloudwatch:
     specifiers:
@@ -4496,35 +4496,6 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  /actionhero/27.1.5:
-    resolution: {integrity: sha512-6eD+1sPtT2AjeZ8kVQbOrI7Cx07lRTtCIKA5sbdvdDYOGGelDcDoyqbcO9o7Yy3q/ov9uR256pU3f2qGceEthg==}
-    engines: {node: '>=12.0.0'}
-    hasBin: true
-    requiresBuild: true
-    dependencies:
-      '@types/ioredis': 4.27.5
-      browser_fingerprint: 2.0.3
-      commander: 8.3.0
-      dot-prop: 6.0.1
-      etag: 1.8.1
-      formidable: 1.2.2
-      glob: 7.2.0
-      ioredis: 4.28.0
-      is-running: 2.1.0
-      mime: 2.5.2
-      node-resque: 9.1.1
-      primus: 8.0.5
-      qs: 6.10.1
-      uuid: 8.3.2
-      winston: 3.3.3
-      ws: 8.2.2
-      yargs: 17.2.1
-    transitivePeerDependencies:
-      - bufferutil
-      - supports-color
-      - utf-8-validate
-    dev: true
-
   /actionhero/27.2.0:
     resolution: {integrity: sha512-CX0u8tFdvsv6hYxN3xiSV5tpQn768f0aOBEJcFN4CqECMkgY1zg8y7goUZS3u9rX0m2kL6XSX3Q3kYXDfeXUUA==}
     engines: {node: '>=12.0.0'}
@@ -8360,11 +8331,6 @@ packages:
 
   /infer-owner/1.0.4:
     resolution: {integrity: sha512-IClj+Xz94+d7irH5qRyfJonOdfTzuDaifE6ZPWfx0N0+/ATZCbuTPq2prFl526urkQd90WyUKIh1DfBQ2hMz9A==}
-
-  /inflection/1.12.0:
-    resolution: {integrity: sha1-ogCTVlbW9fa8TcdQLhrstwMihBY=}
-    engines: {'0': node >= 0.4.0}
-    dev: true
 
   /inflection/1.13.1:
     resolution: {integrity: sha512-dldYtl2WlN0QDkIDtg8+xFwOS2Tbmp12t1cHa5/YClU6ZQjTFm7B66UcVbh9NQB+HvT5BAd2t5+yKsBkw5pcqA==}
@@ -13614,47 +13580,6 @@ packages:
       sequelize: 6.9.0_98f032adade92d92d5295670c0365597
     dev: false
 
-  /sequelize/6.6.2:
-    resolution: {integrity: sha512-H/zrzmTK+tis9PJaSigkuXI57nKBvNCtPQol0yxCvau1iWLzSOuq8t3tMOVeQ+Ep8QH2HoD9/+FCCIAqzUr/BQ==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      mariadb: '*'
-      mysql2: '*'
-      pg: '*'
-      pg-hstore: '*'
-      sqlite3: '*'
-      tedious: '*'
-    peerDependenciesMeta:
-      mariadb:
-        optional: true
-      mysql2:
-        optional: true
-      pg:
-        optional: true
-      pg-hstore:
-        optional: true
-      sqlite3:
-        optional: true
-      tedious:
-        optional: true
-    dependencies:
-      debug: 4.3.2
-      dottie: 2.0.2
-      inflection: 1.12.0
-      lodash: 4.17.21
-      moment: 2.29.1
-      moment-timezone: 0.5.33
-      retry-as-promised: 3.2.0
-      semver: 7.3.5
-      sequelize-pool: 6.1.0
-      toposort-class: 1.0.1
-      uuid: 8.3.2
-      validator: 10.11.0
-      wkx: 0.5.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /sequelize/6.9.0:
     resolution: {integrity: sha512-tFROh9T9GgyY6aTV2+aGdfVNvrppuTOo1EFln9AtV8wXJTOOr7Nan7pZum5oLy87CGWl0YeHzAwg99tz04OqNA==}
     engines: {node: '>=10.0.0'}
@@ -14897,8 +14822,8 @@ packages:
       yargs-parser: 20.2.9
     dev: true
 
-  /ts-jest/27.0.5_28c4c718f3fc1d22e44cbdf15a2666ce:
-    resolution: {integrity: sha512-lIJApzfTaSSbtlksfFNHkWOzLJuuSm4faFAfo5kvzOiRAuoN4/eKxVJ2zEAho8aecE04qX6K1pAzfH5QHL1/8w==}
+  /ts-jest/27.0.7_062352e94e27c52570f1480e79dd78a7:
+    resolution: {integrity: sha512-O41shibMqzdafpuP+CkrOL7ykbmLh+FqQrXEmV9CydQ5JBk0Sj0uAEF5TNNe94fZWKm3yYvWa/IbyV4Yg1zK2Q==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
     peerDependencies:
@@ -14921,10 +14846,10 @@ packages:
       jest: 27.1.0
       jest-util: 27.3.1
       json5: 2.2.0
-      lodash: 4.17.21
+      lodash.memoize: 4.1.2
       make-error: 1.3.6
       semver: 7.3.5
-      typescript: 4.4.3
+      typescript: 4.4.4
       yargs-parser: 20.2.9
     dev: true
 
@@ -15105,12 +15030,6 @@ packages:
       minimatch: 3.0.4
       shiki: 0.9.12
       typescript: 4.4.4
-    dev: true
-
-  /typescript/4.4.3:
-    resolution: {integrity: sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==}
-    engines: {node: '>=4.2.0'}
-    hasBin: true
     dev: true
 
   /typescript/4.4.4:
@@ -15406,11 +15325,6 @@ packages:
     resolution: {integrity: sha1-X6kS2B630MdK/BQN5zF/DKffQ34=}
     dependencies:
       builtins: 1.0.3
-
-  /validator/10.11.0:
-    resolution: {integrity: sha512-X/p3UZerAIsbBfN/IwahhYaBbY68EN/UQBWHtsbXGT5bfrH/p4NQzUCG1kF/rtKaNpnJ7jAu6NGTdSNtyNIXMw==}
-    engines: {node: '>= 0.10'}
-    dev: true
 
   /validator/13.7.0:
     resolution: {integrity: sha512-nYXQLCBkpJ8X6ltALua9dRrZDHVYxjJ1wgskNt1lH9fzGjs3tgojGSCBjmEPwkWS1y29+DrizMTW19Pr9uB2nw==}
