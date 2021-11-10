@@ -1,29 +1,33 @@
-CREATE TABLE purchases (
-  "id" integer PRIMARY KEY,
-  "profile_id" integer,
-  "purchase" text,
-  "amount" double precision,
-  "date" date,
-  "stamp" timestamp
+CREATE TABLE test.purchases (
+    id integer PRIMARY KEY,
+    record_id integer,
+    purchase character varying(256),
+    amount double precision,
+    date date,
+    stamp timestamp without time zone
 );
 
-INSERT INTO purchases VALUES (1,1,'Apple',1.54,'2020/02/01','2020/02/01 12:13:14');
-INSERT INTO purchases VALUES (2,2,'Pear',0.78,'2020/02/02','2020/02/02 12:13:14');
-INSERT INTO purchases VALUES (3,3,'Strawberry',2,'2020/02/03','2020/02/03 12:13:14');
-INSERT INTO purchases VALUES (4,4,'Blueberry',2.23,'2020/02/04','2020/02/04 12:13:14');
-INSERT INTO purchases VALUES (5,5,'Apple',3.14,'2020/02/05','2020/02/05 12:13:14');
-INSERT INTO purchases VALUES (6,1,'Orange',1.42,'2020/02/06','2020/02/06 12:13:14');
-INSERT INTO purchases VALUES (7,2,'Apple',1.54,'2020/02/07','2020/02/07 12:13:14');
-INSERT INTO purchases VALUES (8,3,'Apple',1.54,'2020/02/08','2020/02/08 12:13:14');
-INSERT INTO purchases VALUES (9,4,'Pear',0.78,'2020/02/09','2020/02/09 12:13:14');
-INSERT INTO purchases VALUES (10,5,'Strawberry',2,'2020/02/10','2020/02/10 12:13:14');
-INSERT INTO purchases VALUES (11,1,'Blueberry',2.23,'2020/02/11','2020/02/11 12:13:14');
-INSERT INTO purchases VALUES (12,2,'Apple',3.14,'2020/02/12','2020/02/12 12:13:14');
-INSERT INTO purchases VALUES (13,3,'Orange',1.42,'2020/02/13','2020/02/13 12:13:14');
-INSERT INTO purchases VALUES (14,4,'Apple',1.54,'2020/02/14','2020/02/14 12:13:14');
-INSERT INTO purchases VALUES (15,1,'Apple',1.54,'2020/02/15','2020/02/15 12:13:14');
-INSERT INTO purchases VALUES (16,2,'Pear',0.78,'2020/02/16','2020/02/16 12:13:14');
-INSERT INTO purchases VALUES (17,3,'Strawberry',2,'2020/02/17','2020/02/17 12:13:14');
-INSERT INTO purchases VALUES (18,1,'Blueberry',2.23,'2020/02/18','2020/02/18 12:13:14');
-INSERT INTO purchases VALUES (19,2,'Apple',3.14,'2020/02/19','2020/02/19 12:13:14');
-INSERT INTO purchases VALUES (20,1,'Orange',1.42,'2020/02/20','2020/02/20 12:13:14');
+INSERT INTO "test"."purchases"("id","record_id","purchase","amount","date","stamp")
+VALUES
+(1,1,E'Apple',1.54,E'2020-02-01',E'2020-02-01 12:13:14'),
+(2,2,E'Pear',0.78,E'2020-02-02',E'2020-02-02 12:13:14'),
+(3,3,E'Strawberry',2,E'2020-02-03',E'2020-02-03 12:13:14.50'),
+(4,4,E'Blueberry',2.23,E'2020-02-04',E'2020-02-04 12:13:14.56'),
+(5,5,E'Apple',3.14,E'2020-02-05',E'2020-02-05 12:13:14.567'),
+(6,1,E'Orange',1.42,E'2020-02-06',E'2020-02-06 12:13:14.5678'),
+(7,2,E'Apple',1.54,E'2020-02-07',E'2020-02-07 12:13:14.56789'),
+(8,3,E'Apple',1.54,E'2020-02-08',E'2020-02-08 12:13:14'),
+(9,4,E'Pear',0.78,E'2020-02-09',E'2020-02-09 12:13:14'),
+(10,5,E'Strawberry',2,E'2020-02-10',E'2020-02-10 12:13:14'),
+(11,1,E'Blueberry',2.23,E'2020-02-11',E'2020-02-11 12:13:14'),
+(12,2,E'Apple',3.14,E'2020-02-12',E'2020-02-12 12:13:14'),
+(13,3,E'Orange',1.42,E'2020-02-13',E'2020-02-13 12:13:14'),
+(14,4,E'Apple',1.54,E'2020-02-14',E'2020-02-14 12:13:14'),
+(15,1,E'Apple',1.54,E'2020-02-15',E'2020-02-15 12:13:14'),
+(16,2,E'Pear',0.78,E'2020-02-16',E'2020-02-16 12:13:14'),
+(17,3,E'Strawberry',2,E'2020-02-17',E'2020-02-17 12:13:14'),
+(18,1,E'Blueberry',2.23,E'2020-02-18',E'2020-02-18 12:13:14'),
+(19,2,E'Apple',3.14,E'2020-02-19',E'2020-02-19 12:13:14'),
+(20,1,E'Orange',1.42,E'2020-02-20',E'2020-02-20 12:13:14'),
+(21,4,E'Watermelon',1.42,E'2020-02-21',E'2020-02-21 12:13:15'),
+(22,4,E'Peach',1.42,E'2020-02-20',E'2020-02-20 12:13:15');

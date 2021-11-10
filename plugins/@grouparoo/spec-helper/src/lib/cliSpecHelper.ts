@@ -3,6 +3,8 @@ import fs from "fs-extra";
 import { spawn, spawnSync } from "child_process";
 import os from "os";
 
+const timeout = 1000 * 30;
+
 export namespace CLISpecHelper {
   const jestId = parseInt(process.env.JEST_WORKER_ID || "1");
 
@@ -408,49 +410,57 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
       const appMatcher = new RegExp(appPrefix);
 
       describe(`${app}`, () => {
-        test(`generate app ${app}`, async () => {
-          const { exitCode, stdout, stderr } = await runCliCommand(
-            `generate ${app} app_${buildId(appPrefix)}`
-          );
-          expect(exitCode).toBe(0);
-          testStdErr(projectPath, stdout, stderr);
-          triedGenerators.push(app);
-        });
+        test(
+          `generate app ${app}`,
+          async () => {
+            const { exitCode, stdout, stderr } = await runCliCommand(
+              `generate ${app} app_${buildId(appPrefix)}`
+            );
+            expect(exitCode).toBe(0);
+            testStdErr(projectPath, stdout, stderr);
+            triedGenerators.push(app);
+          },
+          timeout
+        );
 
         sources.forEach((source) => {
           const sourcePrefix = buildPrefix(source);
           const sourceMatcher = new RegExp(sourcePrefix);
 
           if (source.match(appMatcher)) {
-            test(`generate source ${source}`, async () => {
-              if (!modelCreated) {
-                await CLISpecHelper.generateModel(runCliCommand);
-                modelCreated = true;
-              }
+            test(
+              `generate source ${source}`,
+              async () => {
+                if (!modelCreated) {
+                  await CLISpecHelper.generateModel(runCliCommand);
+                  modelCreated = true;
+                }
 
-              const sourceId = `source_${buildId(sourcePrefix)}`;
-              const { exitCode, stdout, stderr } = await runCliCommand(
-                `generate ${source} ${sourceId} --parent app_${buildId(
-                  appPrefix
-                )}`
-              );
-              expect(exitCode).toBe(0);
-              testStdErr(projectPath, stdout, stderr);
-
-              // Generate the bootstrapped property
-              if (!source.match(/:query:/)) {
-                await CLISpecHelper.generatePropertyToBootstrap(
-                  runCliCommand,
-                  projectPath,
-                  "user_id",
-                  sourceId,
-                  source,
-                  properties
+                const sourceId = `source_${buildId(sourcePrefix)}`;
+                const { exitCode, stdout, stderr } = await runCliCommand(
+                  `generate ${source} ${sourceId} --parent app_${buildId(
+                    appPrefix
+                  )}`
                 );
-              }
+                expect(exitCode).toBe(0);
+                testStdErr(projectPath, stdout, stderr);
 
-              triedGenerators.push(source);
-            });
+                // Generate the bootstrapped property
+                if (!source.match(/:query:/)) {
+                  await CLISpecHelper.generatePropertyToBootstrap(
+                    runCliCommand,
+                    projectPath,
+                    "user_id",
+                    sourceId,
+                    source,
+                    properties
+                  );
+                }
+
+                triedGenerators.push(source);
+              },
+              timeout
+            );
 
             properties.forEach((property) => {
               const propertyPrefix = buildPrefix(property);
@@ -459,18 +469,22 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
                 property.match(sourceMatcher) || // it's a property matching this source
                 property.split(":").length < 3 // it's a generic property for either source
               ) {
-                test(`generate property ${property}`, async () => {
-                  const { exitCode, stdout, stderr } = await runCliCommand(
-                    `generate ${property} property_${buildId(
-                      sourcePrefix
-                    )}_${buildId(propertyPrefix)} --parent source_${buildId(
-                      sourcePrefix
-                    )}`
-                  );
-                  expect(exitCode).toBe(0);
-                  testStdErr(projectPath, stdout, stderr);
-                  triedGenerators.push(property);
-                });
+                test(
+                  `generate property ${property}`,
+                  async () => {
+                    const { exitCode, stdout, stderr } = await runCliCommand(
+                      `generate ${property} property_${buildId(
+                        sourcePrefix
+                      )}_${buildId(propertyPrefix)} --parent source_${buildId(
+                        sourcePrefix
+                      )}`
+                    );
+                    expect(exitCode).toBe(0);
+                    testStdErr(projectPath, stdout, stderr);
+                    triedGenerators.push(property);
+                  },
+                  timeout
+                );
               }
             });
           }
@@ -480,49 +494,57 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
           const destinationPrefix = buildPrefix(destination);
 
           if (destination.match(appMatcher)) {
-            test(`generate destination ${destination}`, async () => {
-              if (!modelCreated) {
-                await CLISpecHelper.generateModel(runCliCommand);
-                modelCreated = true;
-              }
+            test(
+              `generate destination ${destination}`,
+              async () => {
+                if (!modelCreated) {
+                  await CLISpecHelper.generateModel(runCliCommand);
+                  modelCreated = true;
+                }
 
-              if (idx === 0) await generateGroup(runCliCommand); // make a group to send to the destination
-              if (idx === 0 && properties.length === 0) {
-                await generateUserSourceToPropertyProperty(
+                if (idx === 0) await generateGroup(runCliCommand); // make a group to send to the destination
+                if (idx === 0 && properties.length === 0) {
+                  await generateUserSourceToPropertyProperty(
+                    projectPath,
+                    runCliCommand
+                  ); // if we have no properties, we will need at least one property
+                }
+
+                const { exitCode, stdout, stderr } = await runCliCommand(
+                  `generate ${destination} destination_${buildId(
+                    destinationPrefix
+                  )} --parent app_${buildId(appPrefix)}`
+                );
+                expect(exitCode).toBe(0);
+                testStdErr(projectPath, stdout, stderr);
+
+                CLISpecHelper.prepareDestinationTemplate(
                   projectPath,
-                  runCliCommand
-                ); // if we have no properties, we will need at least one property
-              }
+                  `destination_${buildId(destinationPrefix)}`
+                );
 
-              const { exitCode, stdout, stderr } = await runCliCommand(
-                `generate ${destination} destination_${buildId(
-                  destinationPrefix
-                )} --parent app_${buildId(appPrefix)}`
-              );
-              expect(exitCode).toBe(0);
-              testStdErr(projectPath, stdout, stderr);
-
-              CLISpecHelper.prepareDestinationTemplate(
-                projectPath,
-                `destination_${buildId(destinationPrefix)}`
-              );
-
-              triedGenerators.push(destination);
-            });
+                triedGenerators.push(destination);
+              },
+              timeout
+            );
           }
         });
       });
     });
 
     describe("validation", () => {
-      test("the generated config files can be locally validated", async () => {
-        const { stdout, stderr, exitCode } = await runCliCommand(
-          "validate --local"
-        );
-        expect(exitCode).toBe(0);
-        testStdErr(projectPath, stdout, stderr);
-        expect(stdout).toContain("Validation succeeded");
-      });
+      test(
+        "the generated config files can be locally validated",
+        async () => {
+          const { stdout, stderr, exitCode } = await runCliCommand(
+            "validate --local"
+          );
+          expect(exitCode).toBe(0);
+          testStdErr(projectPath, stdout, stderr);
+          expect(stdout).toContain("Validation succeeded");
+        },
+        timeout
+      );
     });
 
     describe("everything was tested", () => {
