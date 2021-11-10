@@ -239,7 +239,7 @@ export default function Page(props) {
                   variant="primary"
                   size="sm"
                   className="my-2"
-                  disabled={loading}
+                  disabled={disabled}
                   hidden={editing}
                   onClick={editMode}
                 >
@@ -265,7 +265,7 @@ export default function Page(props) {
                         type="submit"
                         size="sm"
                         className="my-2 ml-2"
-                        disabled={loading}
+                        disabled={disabled}
                         hidden={!editing}
                       >
                         Update
@@ -275,7 +275,7 @@ export default function Page(props) {
                         variant="outline-danger"
                         size="sm"
                         className="my-2 ml-2"
-                        disabled={loading}
+                        disabled={disabled}
                         hidden={!editing}
                         onClick={cancelEdit}
                       >
@@ -342,7 +342,7 @@ export default function Page(props) {
                 variant="danger"
                 size="sm"
                 onClick={handleDelete}
-                disabled={loading}
+                disabled={disabled}
               >
                 Delete
               </LoadingButton>
