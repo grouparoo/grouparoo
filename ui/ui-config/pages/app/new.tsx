@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Form, Modal, Spinner, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 
-import AppSelectorList from "@grouparoo/ui-components/components/appSelectorList";
+import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 import { EventDispatcher } from "@grouparoo/ui-components/utils/eventDispatcher";
 

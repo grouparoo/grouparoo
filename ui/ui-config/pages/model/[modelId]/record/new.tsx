@@ -4,7 +4,7 @@ import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form, Button, Alert } from "react-bootstrap";
-import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 import { NextPageContext } from "next";

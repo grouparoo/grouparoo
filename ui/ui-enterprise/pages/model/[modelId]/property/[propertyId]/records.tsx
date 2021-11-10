@@ -1,12 +1,12 @@
 import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import Head from "next/head";
-import PropertyTabs from "@grouparoo/ui-components/components/tabs/property";
-import RecordsList from "@grouparoo/ui-components/components/record/list";
-import PageHeader from "@grouparoo/ui-components/components/pageHeader";
-import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
-import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
+import PropertyTabs from "@grouparoo/ui-components/components/tabs/Property";
+import RecordsList from "@grouparoo/ui-components/components/record/List";
+import PageHeader from "@grouparoo/ui-components/components/PageHeader";
+import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
+import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge";
 import { Models } from "@grouparoo/ui-components/utils/apiData";
-import ModelBadge from "@grouparoo/ui-components/components/badges/modelBadge";
+import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import { NextPageContext } from "next";
 
 export default function Page(props) {

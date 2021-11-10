@@ -2,18 +2,18 @@ import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useOffset } from "@grouparoo/ui-components/hooks/URLParams";
 import { useSecondaryEffect } from "@grouparoo/ui-components/hooks/useSecondaryEffect";
 import Head from "next/head";
-import GroupTabs from "@grouparoo/ui-components/components/tabs/group";
+import GroupTabs from "@grouparoo/ui-components/components/tabs/Group";
 import { useState } from "react";
 import Link from "next/link";
-import LoadingTable from "@grouparoo/ui-components/components/loadingTable";
-import AppIcon from "@grouparoo/ui-components/components/appIcon";
+import LoadingTable from "@grouparoo/ui-components/components/LoadingTable";
+import AppIcon from "@grouparoo/ui-components/components/AppIcon";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 import { formatTimestamp } from "@grouparoo/ui-components/utils/formatTimestamp";
-import PageHeader from "@grouparoo/ui-components/components/pageHeader";
-import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
-import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
-import ModelBadge from "@grouparoo/ui-components/components/badges/modelBadge";
+import PageHeader from "@grouparoo/ui-components/components/PageHeader";
+import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge";
+import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
+import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import { NextPageContext } from "next";
 
 export default function Page(props) {
