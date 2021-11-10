@@ -375,12 +375,12 @@ export interface TestPluginMethod<AppConnection = any> {
 /**
  * Method is used to run arbitrary queries against the app.  AppRefreshQuery uses this.  It returns arrays of "rows", whatever that means to the App
  */
-export interface AppQueryMethod {
+export interface AppQueryMethod<AppConnection = any> {
   (argument: {
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
-    connection: any;
+    connection: AppConnection;
     refreshQuery: string;
   }): Promise<Array<unknown>>;
 }
