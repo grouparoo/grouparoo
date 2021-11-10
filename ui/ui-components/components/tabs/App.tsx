@@ -3,7 +3,7 @@ import { Models } from "../../utils/apiData";
 
 export default function AppTabs({ app }: { app: Models.AppType }) {
   const tabs = ["edit"];
-  if (app.pluginApp.methods.hasOwnProperty("appQuery")) {
+  if (app.appRefreshQuery !== null) {
     tabs.push("refresh");
   }
   return (

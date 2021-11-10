@@ -197,9 +197,6 @@ export class App extends LoggedModel<App> {
     const icon = await this._getIcon();
     const provides = this.provides();
     const { pluginApp } = await this.getPlugin();
-    for (const method in pluginApp.methods) {
-      pluginApp["methods"][method] = true;
-    }
 
     const appRefreshQuery: AppRefreshQuery = await this.$get(
       "appRefreshQuery",

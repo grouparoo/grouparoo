@@ -59,7 +59,7 @@ export default function Page(props) {
   const { id } = router.query;
   const { schedules, runs, sources } = props;
   const disabled =
-    app.locked !== null || appRefreshQuery.locked !== null || loading;
+    editing === false || appRefreshQuery.locked !== null || loading;
 
   async function create(event) {
     event.preventDefault();
@@ -90,6 +90,10 @@ export default function Page(props) {
     setAppRefreshQuery(_appRefreshQuery);
   }
 
+  async function editMode() {
+    setEditing(true);
+  }
+
   async function edit(event) {
     event.preventDefault();
     if (appRefreshQuery.refreshQuery.length > 1) {
@@ -108,6 +112,12 @@ export default function Page(props) {
     } else {
       setLoading(false);
     }
+    setEditing(false);
+  }
+
+  async function cancelEdit() {
+    setAppRefreshQuery(props.appRefreshQuery);
+    setEditing(false);
   }
 
   async function test() {
@@ -130,8 +140,7 @@ export default function Page(props) {
   async function runQuery(e) {
     e.preventDefault();
     setLoading(true);
-    console.log(`now i'm ${JSON.stringify(appRefreshQuery, null, 2)}`);
-    await edit(e);
+
     try {
       const response: Actions.AppRefreshQueryQuery = await execApi(
         "post",
@@ -225,7 +234,7 @@ export default function Page(props) {
                 <Form.Control
                   required
                   as="textarea"
-                  disabled={appRefreshQuery.locked !== null}
+                  disabled={disabled}
                   rows={6}
                   value={appRefreshQuery.refreshQuery}
                   onChange={(e) => update(e)}
@@ -236,6 +245,71 @@ export default function Page(props) {
                     color: "#e83e8c",
                   }}
                 />
+                <LoadingButton
+                  variant="primary"
+                  size="sm"
+                  className="my-2"
+                  disabled={loading}
+                  hidden={editing}
+                  onClick={editMode}
+                >
+                  Edit
+                </LoadingButton>
+                <Row>
+                  <Col className="mx-0 px-0">
+                    <LoadingButton
+                      variant="success"
+                      onClick={test}
+                      size="sm"
+                      className="my-2 ml-3"
+                      disabled={testLoading}
+                      hidden={!editing}
+                    >
+                      Test Query
+                    </LoadingButton>
+                  </Col>
+                  <Col className="mx-0 px-0">
+                    <Row className="justify-content-end w-100">
+                      <LoadingButton
+                        variant="primary"
+                        type="submit"
+                        size="sm"
+                        className="my-2 ml-2"
+                        disabled={loading}
+                        hidden={!editing}
+                      >
+                        Update
+                      </LoadingButton>
+
+                      <LoadingButton
+                        variant="outline-danger"
+                        size="sm"
+                        className="my-2 ml-2"
+                        disabled={loading}
+                        hidden={!editing}
+                        onClick={cancelEdit}
+                      >
+                        Cancel
+                      </LoadingButton>
+                    </Row>
+                  </Col>
+                </Row>
+                <Col>
+                  {testResult.success !== null &&
+                  testResult.success !== false &&
+                  testResult.success !== undefined &&
+                  !testResult.error ? (
+                    <Alert variant="success">
+                      <strong>Test Passed. </strong>Sample Value ={" "}
+                      {testResult.message}
+                    </Alert>
+                  ) : ranTest ? (
+                    <Alert variant="warning">
+                      <strong>Test Failed</strong> {testResult.error}
+                    </Alert>
+                  ) : null}
+                  {loading ? <Loader /> : null}
+                </Col>
               </Form.Group>{" "}
             </Col>
 
@@ -252,6 +326,7 @@ export default function Page(props) {
                   variant="success"
                   onClick={runQuery}
                   disabled={loading}
+                  hidden={editing}
                 >
                   Run Refresh Query
                 </LoadingButton>
@@ -270,45 +345,8 @@ export default function Page(props) {
             runs={runs}
             sources={sources}
           />
-          <Row className="ml-2">
-            <Col className="ml-0 pl-0 ">
-              <LoadingButton
-                variant="outline-secondary"
-                onClick={test}
-                size="sm"
-                disabled={testLoading}
-              >
-                Test Query
-              </LoadingButton>
-            </Col>
-            <Col>
-              {testResult.success !== null &&
-              testResult.success !== false &&
-              testResult.success !== undefined &&
-              !testResult.error ? (
-                <Alert variant="success">
-                  <strong>Test Passed. </strong>Sample Value ={" "}
-                  {testResult.message}
-                </Alert>
-              ) : ranTest ? (
-                <Alert variant="warning">
-                  <strong>Test Failed</strong> {testResult.error}
-                </Alert>
-              ) : null}
-              {loading ? <Loader /> : null}
-            </Col>
-          </Row>
           <fieldset disabled={appRefreshQuery.locked !== null}>
-            <Row className="ml-2 my-3">
-              <LoadingButton
-                variant="primary"
-                type="submit"
-                size="sm"
-                disabled={loading}
-              >
-                Update
-              </LoadingButton>
-            </Row>
+            <Row className="ml-2 my-3"></Row>
             <Row className="ml-2 my-3">
               <LoadingButton
                 variant="danger"
