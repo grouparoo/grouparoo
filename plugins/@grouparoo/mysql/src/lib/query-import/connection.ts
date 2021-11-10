@@ -4,7 +4,7 @@ import { getChangedRows } from "./getChangedRows";
 
 export function getConnection() {
   return buildConnection({
-    app: "mysql",
+    apps: ["mysql"],
     name: "mysql-import-query",
     displayName: "MySQL Query Import",
     description: "Import or update Records via a custom MySQL query.",

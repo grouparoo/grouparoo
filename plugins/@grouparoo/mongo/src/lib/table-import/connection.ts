@@ -9,7 +9,7 @@ import { getChangedRowCount } from "./getChangedRowCount";
 
 export function getConnection() {
   return buildConnection({
-    app: "mongo",
+    apps: ["mongo"],
     name: "mongo-import-table",
     displayName: "MongoDB Table Import",
     description:

@@ -3,7 +3,7 @@ import { executeQuery } from "@grouparoo/postgres/dist/lib/query-import/executeQ
 
 export function getConnection() {
   return buildConnection({
-    app: "redshift",
+    apps: ["redshift"],
     name: "redshift-import-query",
     displayName: "Redshift Query Import",
     description: "Import or update Records via a custom Redshift query.",
