@@ -8,3 +8,6 @@ Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/plugins](https://w
 
 In your Grouparoo project, run `grouparoo install @grouparoo/clickhouse`.
 
+## Attribution
+
+The ClickHouse icon used in this plugin is from https://clickhouse.com/images/logo.svg
