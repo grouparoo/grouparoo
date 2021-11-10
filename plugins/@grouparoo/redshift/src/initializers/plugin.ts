@@ -142,7 +142,7 @@ export class Plugins extends Initializer {
           direction: "export",
           description:
             "Export Records to a Redshift table.  Groups will be exported to a secondary table linked by a foreign key.",
-          app: "redshift",
+          apps: ["redshift"],
           syncModes,
           defaultSyncMode,
           options: [

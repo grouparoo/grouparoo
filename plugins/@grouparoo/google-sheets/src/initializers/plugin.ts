@@ -63,7 +63,7 @@ export class Plugins extends Initializer {
           displayName: "Google Sheets Import",
           direction: "import",
           description: "Import or update Records from a Google Sheet.",
-          app: "google-sheets",
+          apps: ["google-sheets"],
           options: [
             {
               key: "sheet_url",

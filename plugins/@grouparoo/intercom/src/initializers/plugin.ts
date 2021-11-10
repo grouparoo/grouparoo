@@ -60,7 +60,7 @@ export class Plugins extends Initializer {
           displayName: "Intercom Export Contacts",
           direction: "export",
           description: "Export Records to contacts in an Intercom account.",
-          app: "intercom",
+          apps: ["intercom"],
           syncModes,
           options: [
             {

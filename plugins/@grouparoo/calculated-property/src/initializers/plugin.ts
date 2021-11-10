@@ -43,7 +43,7 @@ export class Plugins extends Initializer {
           direction: "import",
           description:
             "Import and calculate Calculated Properties from other sources",
-          app: "calculated-property",
+          apps: ["calculated-property"],
           groupAggregations: [],
           options: [],
           methods: {

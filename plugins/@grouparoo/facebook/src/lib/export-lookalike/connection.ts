@@ -11,7 +11,7 @@ export function buildConnection(): PluginConnection {
     displayName: "Facebook Export Audiences Lookalike",
     direction: "export",
     description: "Adds users to Facebook Lookalike Audiences.",
-    app: "facebook",
+    apps: ["facebook"],
     options: [
       {
         key: "primaryKey",

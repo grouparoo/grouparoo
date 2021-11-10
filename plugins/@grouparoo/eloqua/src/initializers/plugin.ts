@@ -74,7 +74,7 @@ export class Plugins extends Initializer {
           displayName: "Eloqua Export Contacts",
           direction: "export",
           description: "Export records to Eloqua as Contacts",
-          app: "eloqua",
+          apps: ["eloqua"],
           syncModes,
           defaultSyncMode,
           options: [],

@@ -45,7 +45,7 @@ export class Plugins extends Initializer {
           displayName: "CSV Table Import",
           direction: "import",
           description: "Import or update Records from a remote CSV.",
-          app: "csv",
+          apps: ["csv"],
           groupAggregations: [AggregationMethod.Exact],
           options: [
             {

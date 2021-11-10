@@ -73,7 +73,7 @@ export class Plugins extends Initializer {
           displayName: "Customer.io Export Customers",
           direction: "export",
           description: "Export records to customer.io as Customers",
-          app: "customerio",
+          apps: ["customerio"],
           syncModes,
           defaultSyncMode,
           options: [],

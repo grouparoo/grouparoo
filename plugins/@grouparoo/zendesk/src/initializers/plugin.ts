@@ -73,7 +73,7 @@ export class Plugins extends Initializer {
           displayName: "Zendesk Export Users",
           direction: "export",
           description: "Export Records to a Zendesk account.",
-          app: "zendesk",
+          apps: ["zendesk"],
           syncModes,
           defaultSyncMode,
           options: [],

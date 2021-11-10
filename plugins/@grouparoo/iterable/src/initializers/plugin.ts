@@ -62,7 +62,7 @@ export class Plugins extends Initializer {
           direction: "export",
           description:
             "Export records to Iterable as Users and put them in static Lists.",
-          app: "iterable",
+          apps: ["iterable"],
           syncModes,
           defaultSyncMode,
           options: [],

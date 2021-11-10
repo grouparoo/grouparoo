@@ -70,7 +70,7 @@ export class Plugins extends Initializer {
           direction: "export",
           description:
             "Export Users to Braze and add them to Subscription Groups.",
-          app: "braze",
+          apps: ["braze"],
           syncModes,
           defaultSyncMode,
           options: [],

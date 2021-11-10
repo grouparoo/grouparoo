@@ -13,7 +13,7 @@ export const idDestinationConnection: PluginConnection = {
   direction: "export",
   description:
     "Updates existing contacts in a Mailchimp list based on a known Mailchimp ID.",
-  app: "mailchimp",
+  apps: ["mailchimp"],
   syncModes: idSupportedSyncModes,
   defaultSyncMode: "enrich",
   options: [

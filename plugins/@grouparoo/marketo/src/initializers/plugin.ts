@@ -82,7 +82,7 @@ export class Plugins extends Initializer {
           displayName: "Marketo Export Leads",
           direction: "export",
           description: "Export Records to a Marketo account.",
-          app: "marketo",
+          apps: ["marketo"],
           syncModes,
           defaultSyncMode,
           options: [],

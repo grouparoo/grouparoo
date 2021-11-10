@@ -61,7 +61,7 @@ export class Plugins extends Initializer {
           displayName: "Pipedrive Export Persons",
           direction: "export",
           description: "Export records to Pipedrive as Person contacts",
-          app: "pipedrive",
+          apps: ["pipedrive"],
           syncModes,
           defaultSyncMode,
           options: [],

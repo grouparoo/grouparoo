@@ -110,7 +110,7 @@ export class Plugins extends Initializer {
           direction: "export",
           description:
             "Export Records to a MySQL table.  Groups will be exported to a secondary table linked by a foreign key.",
-          app: "mysql",
+          apps: ["mysql"],
           options: [
             {
               key: "table",

@@ -62,7 +62,7 @@ export class Plugins extends Initializer {
           direction: "export",
           description:
             "Export records to Sendgrid marketing as Contacts and put them in static Lists.",
-          app: "sendgrid",
+          apps: ["sendgrid"],
           syncModes,
           defaultSyncMode,
           options: [],

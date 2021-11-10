@@ -120,7 +120,7 @@ export const buildConnection: BuildConnectionMethod = ({
     displayName,
     direction: "import",
     description,
-    app,
+    apps: [app],
     options,
     groupAggregations: [AggregationMethod.Exact],
     methods: {
