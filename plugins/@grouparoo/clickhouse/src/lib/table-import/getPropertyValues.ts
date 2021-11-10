@@ -161,10 +161,10 @@ export const getPropertyValues: ClickHouseGetPropertyValuesMethod = async ({
 
     for (const row of rows) {
       const pk = row.__pk.toString();
-      responses[pk] = {};
+      responses[pk] ??= {};
       for (const col in row) {
         const responseCol = col.replace(AGG_COL_SUFFIX, "");
-        responses[pk][responseCol] = [];
+        responses[pk][responseCol] ??= [];
         if (isArray || (responses[pk][responseCol].length === 0 && !isArray)) {
           responses[pk][responseCol].push(row[col]);
         }
