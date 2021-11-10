@@ -135,9 +135,9 @@ export type PluginOptionType =
  * Only returns the nextHighWaterMark and a count of how many records were imported.
  * Within this method you should call plugin.createImport()
  */
-export interface RecordsPluginMethod<Connection = any> {
+export interface RecordsPluginMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     schedule: Schedule;
     scheduleId: string;
     scheduleOptions: SimpleScheduleOptions;
@@ -168,9 +168,9 @@ export interface RecordsPluginMethodResponse {
  * Method to load a single record property for a single record.
  * It returns a key/value hash for the new Record Property values
  */
-export interface RecordPropertyPluginMethod<Connection = any> {
+export interface RecordPropertyPluginMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -195,9 +195,9 @@ export type RecordPropertyPluginMethodResponse = Array<
  * Method to load many record properties for a many records.
  * It returns an array of key/value hashes for the new Record Property values, ordered by the record inputs
  */
-export interface RecordPropertiesPluginMethod<Connection = any> {
+export interface RecordPropertiesPluginMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -238,9 +238,9 @@ export interface ExportedRecord {
  * Method to export a single record to a destination
  * Should only return a boolean indicating success, or throw an error if something went wrong.
  */
-export interface ExportRecordPluginMethod<Connection = any> {
+export interface ExportRecordPluginMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -272,9 +272,9 @@ export interface ExportRecordsPluginMethodResponse {
  * Errors is an Array of Error objects with an additional `recordId` property so we can link the error to the specific export that caused the error.
  * If there's a general error with the batch, just throw a single error.
  */
-export interface ExportRecordsPluginMethod<Connection = any> {
+export interface ExportRecordsPluginMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -293,9 +293,9 @@ export interface ExportRecordsPluginMethod<Connection = any> {
  * Errors is an Array of Error objects with an additional `recordId` property so we can link the error to the specific export that caused the error.
  * If there's a general error with the export processor, just throw a single error
  */
-export interface ProcessExportedRecordsPluginMethod<Connection = any> {
+export interface ProcessExportedRecordsPluginMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -339,23 +339,23 @@ export interface AppParallelismMethod {
  * This is useful when your App has a kept-alive wire connection, like mySQL or Postgres, or you need an API token to reuse.
  * The connection itself should be able to handle reconnection attempts, keep-alive, etc,
  */
-export interface ConnectPluginAppMethod<Connection = any> {
+export interface ConnectPluginAppMethod<AppConnection = any> {
   (argument: {
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
-  }): Promise<Connection>;
+  }): Promise<AppConnection>;
 }
 
 /**
  * Disconnect this app's persistent connection
  */
-export interface DisconnectPluginAppMethod<Connection = any> {
+export interface DisconnectPluginAppMethod<AppConnection = any> {
   (argument: {
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
-    connection: Connection;
+    connection: AppConnection;
   }): Promise<void>;
 }
 
@@ -363,12 +363,12 @@ export interface DisconnectPluginAppMethod<Connection = any> {
  * Method is used to test the connection options for the app.  Returns either a boolean or throws an error to be displayed to the user.
  * The test method will disconnect and connect before use, if those methods are present for this app type.
  */
-export interface TestPluginMethod<Connection = any> {
+export interface TestPluginMethod<AppConnection = any> {
   (argument: {
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
-    connection: Connection;
+    connection: AppConnection;
   }): Promise<{ success: boolean; message?: string }>;
 }
 
@@ -389,9 +389,9 @@ export interface AppQueryMethod {
  * Method to return the options available to this source.
  * Returns a collection of data to display to the user.
  */
-export interface SourceOptionsMethod<Connection = any> {
+export interface SourceOptionsMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -412,9 +412,9 @@ export interface SourceOptionsMethodResponse {
  * The response should be an array of objects where each object is a record record with the keys matching that of the source, ie:
  * [{id: 1, firstName: "Mario"}, {id: 2, firstName: "Luigi"}]
  */
-export interface SourcePreviewMethod<Connection = any> {
+export interface SourcePreviewMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -432,9 +432,9 @@ export interface SourcePreviewMethodResponseRow {
  * Return a list of things that this property can be filtered by
  * [{key: createdAt, ops: ['greater than', 'less than'], canHaveRelativeMatch: true}]
  */
-export interface SourceFilterMethod<Connection = any> {
+export interface SourceFilterMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -460,9 +460,9 @@ export interface SourceFilterMethodResponseRow {
 /**
  * Return a percentage (0-100) for the completion status of this run
  */
-export interface SourceRunPercentCompleteMethod<Connection = any> {
+export interface SourceRunPercentCompleteMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -506,7 +506,7 @@ export interface PropertyOptionsMethod {
  * Metadata and methods to return the options a Property for this connection/app.
  * Options is a method which will poll the source for available options to select (ie: names of tables or columns)
  */
-export interface PluginConnectionPropertyOption<Connection = any> {
+export interface PluginConnectionPropertyOption<AppConnection = any> {
   key: string;
   displayName?: string;
   required: boolean;
@@ -514,7 +514,7 @@ export interface PluginConnectionPropertyOption<Connection = any> {
   type: PluginOptionType;
   primary?: boolean;
   options: (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -537,9 +537,9 @@ export interface PluginConnectionPropertyOption<Connection = any> {
 /**
  * If a Property is created within the source creation workflow, what default options should that new rule get?
  */
-export interface UniquePropertyBootstrapOptions<Connection = any> {
+export interface UniquePropertyBootstrapOptions<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -554,9 +554,9 @@ export interface UniquePropertyBootstrapOptions<Connection = any> {
  * Method to return the options available to this destination.
  * Returns a collection of data to display to the user.
  */
-export interface DestinationOptionsMethod<Connection = any> {
+export interface DestinationOptionsMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -575,9 +575,9 @@ export interface DestinationOptionsMethodResponse {
 /**
  * Method to return the details of how this destination wants to map it's property
  */
-export interface DestinationMappingOptionsMethod<Connection = any> {
+export interface DestinationMappingOptionsMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
@@ -626,9 +626,9 @@ export interface DestinationMappingOptionsMethodResponse {
  * Method to return the list of destination record properties which can accept array values.
  * '*' can be used as a wildcard to accept all properties as arrays
  */
-export interface ExportArrayPropertiesMethod<Connection = any> {
+export interface ExportArrayPropertiesMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
