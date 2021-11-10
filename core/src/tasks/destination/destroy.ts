@@ -25,6 +25,7 @@ export class DestinationDestroy extends CLSTask {
     // the destination may have been force-deleted
     if (!destination) return;
 
+    // Are there any running runs for this destination in progress?  We should let them finish.
     const run = await Run.scope(null).findOne({
       where: { destinationId: destination.id },
       order: [["updatedAt", "desc"]],
@@ -40,12 +41,14 @@ export class DestinationDestroy extends CLSTask {
     try {
       await Destination.waitForPendingExports(destination);
     } catch (error) {
-      if (error.message.match(/cannot delete destination until/)) {
+      if (error.message.match(/cannot delete destination/)) {
         return;
       } else throw error;
     }
 
     // wait an appropriate amount of time to ensure that there are no more exports being created in another thread
+    const wait = config.tasks.timeout * 5;
+
     const latestExport = await Export.findOne({
       where: { destinationId: destination.id },
       order: [["updatedAt", "desc"]],
@@ -53,19 +56,13 @@ export class DestinationDestroy extends CLSTask {
     });
 
     if (run) {
-      if (
-        run.updatedAt.getTime() + config.tasks.timeout * 5 >
-        new Date().getTime()
-      ) {
+      if (run.updatedAt.getTime() + wait > new Date().getTime()) {
         return;
       }
     }
 
     if (latestExport) {
-      if (
-        latestExport.updatedAt.getTime() + config.tasks.timeout * 5 >
-        new Date().getTime()
-      ) {
+      if (latestExport.updatedAt.getTime() + wait > new Date().getTime()) {
         return;
       }
     }

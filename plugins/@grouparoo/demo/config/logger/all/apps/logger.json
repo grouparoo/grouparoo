@@ -1,0 +1,10 @@
+{
+  "class": "App",
+  "id": "logger",
+  "name": "Logger",
+  "type": "logger",
+  "options": {
+    "filename": "log.log",
+    "stdout": true
+  }
+}

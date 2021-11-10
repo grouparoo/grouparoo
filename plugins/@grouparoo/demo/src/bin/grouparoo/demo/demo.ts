@@ -27,6 +27,7 @@ const TYPES = {
   hubspot: "create Hubspot destination for data",
   mailchimp: "create Mailchimp destination for data",
   salesforce: "create Salesforce destination for data",
+  logger: "create Logger destination for data",
 };
 
 const LETTERS = {
@@ -35,6 +36,7 @@ const LETTERS = {
   config: "c",
   mailchimp: "m",
   salesforce: "s",
+  logger: "l",
   users: "u",
 };
 

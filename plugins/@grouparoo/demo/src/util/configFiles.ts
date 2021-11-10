@@ -3,7 +3,7 @@ import fs from "fs-extra";
 import os from "os";
 import replaceInFiles from "replace-in-files";
 import glob from "glob";
-import { api, config, log } from "actionhero";
+import { api, log } from "actionhero";
 import { loadConfigDirectory } from "@grouparoo/core/dist/modules/configLoaders";
 import { getConfigDir } from "@grouparoo/core/dist/modules/pluginDetails";
 import { prettier } from "./shared";
@@ -19,10 +19,10 @@ export async function writeConfigFiles(
   db: Connection,
   setup: boolean,
   sources: string[],
-  destinatons: string[]
+  destinations: string[]
 ) {
   const configDir = await getConfigDir(true);
-  await generateConfig(db, configDir, setup, sources, destinatons);
+  await generateConfig(db, configDir, setup, sources, destinations);
   await prettier(configDir);
 }
 
@@ -92,7 +92,7 @@ function copySource(configDir, sourceName: string) {
 }
 
 function copyDestination(
-  configDir,
+  configDir: string,
   destinationName: string,
   sources: string[]
 ) {
@@ -102,7 +102,7 @@ function copyDestination(
   }
 }
 
-function copyDir(configDir, one: string, two?: string) {
+function copyDir(configDir: string, one: string, two?: string) {
   const rootPath = path.resolve(path.join(__dirname, "..", "..", "config"));
   fs.mkdirpSync(configDir);
 

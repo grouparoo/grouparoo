@@ -1,7 +1,6 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
-import { api, specHelper, utils } from "actionhero";
+import { api, specHelper, utils, config } from "actionhero";
 import {
-  Group,
   Destination,
   Export,
   GrouparooModel,
@@ -126,9 +125,7 @@ describe("tasks/destination:destroy", () => {
     expect(await Destination.unscoped().count()).toEqual(1);
 
     // can delete (time has passed)
-    await utils.sleep(3000);
-
-    // can delete (not enough time has passed)
+    await utils.sleep(config.tasks.timeout * 5);
     await specHelper.runTask("destination:destroy", {
       destinationId: destination.id,
     });
