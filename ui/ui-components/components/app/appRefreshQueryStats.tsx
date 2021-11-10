@@ -1,4 +1,4 @@
-import { Card, Row, Col, ListGroup } from "react-bootstrap";
+import { Card, ListGroup } from "react-bootstrap";
 import { Models } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 

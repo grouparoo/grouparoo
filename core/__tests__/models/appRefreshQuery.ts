@@ -2,7 +2,6 @@ import { helper } from "@grouparoo/spec-helper";
 import { Schedule } from "../../dist";
 import { App, AppRefreshQuery, Log, Run, Source } from "../../src";
 import { AppRefreshQueryOps } from "../../src/modules/ops/appRefreshQuery";
-import { RunOps } from "../../src/modules/ops/runs";
 
 describe("appRefreshQuery", () => {
   let app: App;
@@ -11,9 +10,6 @@ describe("appRefreshQuery", () => {
   describe("with app", () => {
     beforeAll(async () => {
       app = await helper.factories.app();
-    });
-    beforeEach(async () => {
-      await AppRefreshQuery.truncate();
     });
 
     test("an app data refresh can be created with an app", async () => {
@@ -28,35 +24,30 @@ describe("appRefreshQuery", () => {
       expect(appRefreshQuery.id.length).toBe(40);
       expect(appRefreshQuery.createdAt).toBeTruthy();
       expect(appRefreshQuery.updatedAt).toBeTruthy();
+      appRefreshQuery.destroy();
     });
 
     test("creating an app data refresh creates a log entry", async () => {
-      const latestLog = await Log.findOne({
+      const latestCreateLog = await Log.findOne({
         where: { verb: "create", topic: "appRefreshQuery" },
         order: [["createdAt", "desc"]],
         limit: 1,
       });
-      expect(latestLog).toBeTruthy();
+      expect(latestCreateLog).toBeTruthy();
     });
 
     test("deleting an appRefreshQuery creates a log entry", async () => {
-      const appRefreshQuery = new AppRefreshQuery({
-        appId: app.id,
-        refreshQuery: "SELECT MAX(updated_at) FROM users;",
-        state: "ready",
-      });
-      await appRefreshQuery.save();
-      await appRefreshQuery.destroy();
-      const latestLog = await Log.findOne({
+      const latestDestroyLog = await Log.findOne({
         where: { verb: "destroy", topic: "appRefreshQuery" },
         order: [["createdAt", "desc"]],
         limit: 1,
       });
-      expect(latestLog).toBeTruthy();
+      expect(latestDestroyLog).toBeTruthy();
     });
 
     test("an updated query is checked", async () => {
       Run.truncate();
+
       const appRefreshQuery = new AppRefreshQuery({
         appId: app.id,
         refreshQuery: "SELECT MAX(updated_at) FROM users;",
@@ -71,6 +62,7 @@ describe("appRefreshQuery", () => {
       expect(spy).toHaveBeenCalledWith(appRefreshQuery);
 
       spy.mockRestore();
+      appRefreshQuery.destroy();
     });
 
     test("an appRefreshQuery in the draft state will not run its query", async () => {
@@ -83,6 +75,7 @@ describe("appRefreshQuery", () => {
       await appRefreshQuery.save();
 
       expect(spy).toHaveBeenCalledTimes(0);
+      appRefreshQuery.destroy();
     });
 
     //this test should be last, it destroys the app

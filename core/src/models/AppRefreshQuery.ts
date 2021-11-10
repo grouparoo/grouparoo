@@ -82,8 +82,8 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
     };
   }
 
-  async test() {
-    return AppRefreshQueryOps.test(this);
+  async test(refreshQuery?: string) {
+    return AppRefreshQueryOps.test(this, refreshQuery);
   }
 
   // --- Class Methods --- //

@@ -11,7 +11,6 @@ import {
   Button,
   Container,
 } from "react-bootstrap";
-import { Typeahead } from "react-bootstrap-typeahead";
 import { useRouter } from "next/router";
 import PageHeader from "../../../components/pageHeader";
 import AppTabs from "../../../components/tabs/app";
@@ -21,16 +20,11 @@ import LockedBadge from "../../../components/badges/lockedBadge";
 import SourceBadge from "../../../components/badges/sourceBadge";
 import StateBadge from "../../../components/badges/stateBadge";
 import AppRefreshQueryStats from "../../../components/app/appRefreshQueryStats";
-import AppRefreshScheduleList from "../../../components/app/appRefreshSchedulesList";
 import { Actions, Models } from "../../../utils/apiData";
-// import { AppRefreshQueryHandler } from "../../../utils/appRefreshQueryHandler"; ??
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { AppHandler } from "../../../utils/appHandler";
-import { grouparooUiEdition } from "../../../utils/uiEdition";
-import { AppRefreshQuery } from "@grouparoo/core";
 import AppRefreshQueryScheduleList from "../../../components/app/appRefreshSchedulesList";
-import { updateURLParams } from "../../../hooks/URLParams";
 
 export default function Page(props) {
   const {
@@ -63,7 +57,7 @@ export default function Page(props) {
   }>({ success: null, error: null, message: null });
   const [ranTest, setRanTest] = useState(false);
   const { id } = router.query;
-  const { schedules, runs } = props;
+  const { schedules, runs, sources } = props;
   const disabled =
     app.locked !== null || appRefreshQuery.locked !== null || loading;
 
@@ -98,7 +92,6 @@ export default function Page(props) {
 
   async function edit(event) {
     event.preventDefault();
-    //should this state transition be done somewhere else?
     if (appRefreshQuery.refreshQuery.length > 1) {
       appRefreshQuery.state = "ready";
     }
@@ -112,7 +105,6 @@ export default function Page(props) {
       setLoading(false);
       successHandler.set({ message: "App Refresh Query Updated" });
       setAppRefreshQuery(response.appRefreshQuery);
-      //do we need an appRefreshQuery handler?  What do those guys _do_?
     } else {
       setLoading(false);
     }
@@ -123,10 +115,10 @@ export default function Page(props) {
     setRanTest(false);
     setTestResult({ success: null, message: null, error: null });
 
-    //to do: this test only works after save, not before!
     const response: Actions.AppRefreshQueryTest = await execApi(
       "put",
-      `/appRefreshQuery/${appRefreshQuery.id}/test`
+      `/appRefreshQuery/${appRefreshQuery.id}/test`,
+      { refreshQuery: appRefreshQuery.refreshQuery }
     );
     if (response?.test) {
       setRanTest(true);
@@ -135,23 +127,29 @@ export default function Page(props) {
     setTestLoading(false);
   }
 
-  async function runQuery() {
-    //also runs based off of the SAVED value not necessarily the current value on the screen... probably should change
+  async function runQuery(e) {
+    e.preventDefault();
     setLoading(true);
-    const response: Actions.AppRefreshQueryQuery = await execApi(
-      "post",
-      `/appRefreshQuery/${appRefreshQuery.id}/query`
-    );
-    if (response?.valueUpdated == true) {
-      successHandler.set({
-        message: `Query returned ${response.appRefreshQuery.value}. Enqueueing Schedules.`,
-      });
-    } else {
-      successHandler.set({
-        message: `Query returned ${response.appRefreshQuery.value}. No schedules enqueued.`,
-      });
+    console.log(`now i'm ${JSON.stringify(appRefreshQuery, null, 2)}`);
+    await edit(e);
+    try {
+      const response: Actions.AppRefreshQueryQuery = await execApi(
+        "post",
+        `/appRefreshQuery/${appRefreshQuery.id}/query`
+      );
+      if (response?.valueUpdated == true) {
+        successHandler.set({
+          message: `Query returned ${response.appRefreshQuery.value}. Enqueueing Schedules.`,
+        });
+      } else {
+        successHandler.set({
+          message: `Query returned ${response.appRefreshQuery.value}. No schedules enqueued.`,
+        });
+      }
+      setAppRefreshQuery(response.appRefreshQuery);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   async function handleDelete() {
@@ -199,7 +197,6 @@ export default function Page(props) {
       <>
         <Head>
           <title>Grouparoo: {`${app.name} Refresh Query`}</title>
-          <title>hi</title>
         </Head>
         <AppTabs app={app} />
         <PageHeader
@@ -212,101 +209,38 @@ export default function Page(props) {
           ]}
         />
         <hr />
-        <Container>
+
+        <Form
+          className="col-12 mx-auto mt-4 pl-0"
+          id="form"
+          onSubmit={edit}
+          autoComplete="off"
+        >
+          {" "}
           <Row>
             <Col className="col-md-8">
               <strong>Query</strong>
-
               <p>What query should we run to check for new data?</p>
-              <Form
-                className="col-12 mx-auto mt-4"
-                id="form"
-                onSubmit={edit}
-                autoComplete="off"
-              >
-                <Form.Group controlId="refreshQuery">
-                  <Form.Control
-                    required
-                    as="textarea"
-                    disabled={appRefreshQuery.locked !== null}
-                    rows={6}
-                    value={appRefreshQuery.refreshQuery}
-                    onChange={(e) => update(e)}
-                    placeholder="select statement to check app for new data"
-                    style={{
-                      fontFamily:
-                        'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                      color: "#e83e8c",
-                    }}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Key is required
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Row className="mt-3">
-                  <AppRefreshQueryScheduleList
-                    app={app}
-                    schedules={schedules}
-                    runs={runs}
-                  />
-                </Row>
-                <Row className="ml-5">
-                  <Col className="ml-0 pl-0 ">
-                    <LoadingButton
-                      variant="outline-secondary"
-                      onClick={test}
-                      size="sm"
-                      disabled={testLoading}
-                    >
-                      Test Query
-                    </LoadingButton>
-                  </Col>
-                  <Col>
-                    {testResult.success !== null &&
-                    testResult.success !== false &&
-                    testResult.success !== undefined &&
-                    !testResult.error ? (
-                      <Alert variant="success">
-                        <strong>Test Passed. </strong>Sample Value ={" "}
-                        {testResult.message}
-                      </Alert>
-                    ) : ranTest ? (
-                      <Alert variant="warning">
-                        <strong>Test Failed</strong> {testResult.error}
-                      </Alert>
-                    ) : null}
-                    {loading ? <Loader /> : null}
-                  </Col>
-                </Row>
-                <fieldset
-                // disabled={appRefreshQuery.locked !== null}
-                >
-                  <Row className="ml-5 my-3">
-                    <LoadingButton
-                      variant="primary"
-                      type="submit"
-                      size="sm"
-                      disabled={loading}
-                    >
-                      Update
-                    </LoadingButton>
-                  </Row>
-                  <Row className="ml-5 my-3">
-                    <LoadingButton
-                      variant="danger"
-                      size="sm"
-                      onClick={handleDelete}
-                      disabled={loading}
-                    >
-                      Delete
-                    </LoadingButton>
-                  </Row>
-                </fieldset>
-              </Form>
+              <Form.Group controlId="refreshQuery" className="col-9">
+                <Form.Control
+                  required
+                  as="textarea"
+                  disabled={appRefreshQuery.locked !== null}
+                  rows={6}
+                  value={appRefreshQuery.refreshQuery}
+                  onChange={(e) => update(e)}
+                  placeholder="select statement to check app for new data"
+                  style={{
+                    fontFamily:
+                      'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                    color: "#e83e8c",
+                  }}
+                />
+              </Form.Group>{" "}
             </Col>
 
-            <Col className="col-md-4 mt-4">
-              <Row className="mx-auto mt-4">
+            <Col className="col-md-4 ">
+              <Row className="mx-auto">
                 <AppRefreshQueryStats
                   app={app}
                   appRefreshQuery={appRefreshQuery}
@@ -324,7 +258,69 @@ export default function Page(props) {
               </Row>
             </Col>
           </Row>
-        </Container>
+          <hr />
+          {/* <Row className="mt-3"> */}
+          <strong>Schedules:</strong>
+          <p>
+            The following schedules will be triggered by this App Refresh Query.
+          </p>
+          <AppRefreshQueryScheduleList
+            app={app}
+            schedules={schedules}
+            runs={runs}
+            sources={sources}
+          />
+          <Row className="ml-2">
+            <Col className="ml-0 pl-0 ">
+              <LoadingButton
+                variant="outline-secondary"
+                onClick={test}
+                size="sm"
+                disabled={testLoading}
+              >
+                Test Query
+              </LoadingButton>
+            </Col>
+            <Col>
+              {testResult.success !== null &&
+              testResult.success !== false &&
+              testResult.success !== undefined &&
+              !testResult.error ? (
+                <Alert variant="success">
+                  <strong>Test Passed. </strong>Sample Value ={" "}
+                  {testResult.message}
+                </Alert>
+              ) : ranTest ? (
+                <Alert variant="warning">
+                  <strong>Test Failed</strong> {testResult.error}
+                </Alert>
+              ) : null}
+              {loading ? <Loader /> : null}
+            </Col>
+          </Row>
+          <fieldset disabled={appRefreshQuery.locked !== null}>
+            <Row className="ml-2 my-3">
+              <LoadingButton
+                variant="primary"
+                type="submit"
+                size="sm"
+                disabled={loading}
+              >
+                Update
+              </LoadingButton>
+            </Row>
+            <Row className="ml-2 my-3">
+              <LoadingButton
+                variant="danger"
+                size="sm"
+                onClick={handleDelete}
+                disabled={loading}
+              >
+                Delete
+              </LoadingButton>
+            </Row>
+          </fieldset>
+        </Form>
       </>
     );
   }
@@ -366,6 +362,7 @@ Page.getInitialProps = async (ctx) => {
   return {
     app,
     appRefreshQuery: foundAppRefreshQuery || null,
+    sources,
     schedules,
     runs: scheduleRuns || null,
   };

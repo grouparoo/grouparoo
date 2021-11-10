@@ -31,6 +31,7 @@ export class AppRefreshQueriesList extends AuthenticatedAction {
     const where = {};
 
     if (params.state) where["state"] = params.state;
+
     const total = await AppRefreshQuery.scope(null).count({ where });
 
     const appRefreshQueries = await AppRefreshQuery.scope(null).findAll({
@@ -43,8 +44,8 @@ export class AppRefreshQueriesList extends AuthenticatedAction {
     return {
       total,
       appRefreshQueries: await Promise.all(
-        appRefreshQueries.map(async (appRefreshQuery) => {
-          appRefreshQuery.apiData();
+        appRefreshQueries.map((appRefreshQuery) => {
+          return appRefreshQuery.apiData();
         })
       ),
     };
@@ -62,8 +63,6 @@ export class AppRefreshQueryQuery extends AuthenticatedAction {
     this.inputs = { id: { required: true } };
   }
   async runWithinTransaction({ params }) {
-    //should this actually implement the methods rather than enqueueing the task?
-    //that makes sense from a time/awaiting perspective!
     let valueUpdated: Boolean = false;
     const appRefreshQuery = await AppRefreshQuery.findById(params.id);
     if (!appRefreshQuery)
@@ -145,6 +144,7 @@ export class AppRefreshQueryTest extends AuthenticatedAction {
     this.outputExample = {};
     this.inputs = {
       id: { required: true },
+      refreshQuery: { required: false },
     };
   }
 
@@ -154,11 +154,9 @@ export class AppRefreshQueryTest extends AuthenticatedAction {
       throw new Error(`cannot find an appRefreshQuery ${params.id}`);
     }
 
-    //does this need to be a try/catch to catch the error?
-    const test = await appRefreshQuery.test();
+    const test = await appRefreshQuery.test(params.refreshQuery);
     if (test.error) test.error = String(test.error);
 
-    console.log(test);
     return {
       test,
       appRefreshQuery: await appRefreshQuery.apiData(),

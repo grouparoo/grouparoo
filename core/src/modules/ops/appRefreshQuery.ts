@@ -62,11 +62,15 @@ export namespace AppRefreshQueryOps {
     }
   }
 
-  export async function test(appRefreshQuery: AppRefreshQuery) {
+  export async function test(
+    appRefreshQuery: AppRefreshQuery,
+    refreshQuery?: string
+  ) {
     let success = false;
     let message: string;
     let error;
 
+    if (refreshQuery) appRefreshQuery.refreshQuery = refreshQuery;
     //does this need to be a try/catch to catch the error?
     try {
       const sampleValue = await AppRefreshQueryOps.runAppQuery(appRefreshQuery);
