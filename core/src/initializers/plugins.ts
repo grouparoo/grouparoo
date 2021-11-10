@@ -167,29 +167,29 @@ export class Plugins extends Initializer {
             `a plugin connection named ${connection.name} is already registered`
           );
         }
-        if (!connection.app) {
+        if (!connection.apps || connection.apps.length < 1) {
           errors.push(
-            `connection.app is required for a Grouparoo Plugin Connection`
+            `connection.apps is required for a Grouparoo Plugin Connection (${connection.name})`
           );
         }
         if (!connection.description) {
           errors.push(
-            `connection.description is required for a Grouparoo Plugin Connection`
+            `connection.description is required for a Grouparoo Plugin Connection (${connection.name})`
           );
         }
         if (!connection.direction) {
           errors.push(
-            `connection.direction is required for a Grouparoo Plugin Connection`
+            `connection.direction is required for a Grouparoo Plugin Connection (${connection.name})`
           );
         }
         if (!connection.options) {
           errors.push(
-            `connection.options is required for a Grouparoo Plugin Connection`
+            `connection.options is required for a Grouparoo Plugin Connection (${connection.name})`
           );
         }
         if (!["import", "export"].includes(connection.direction)) {
           errors.push(
-            `connection.direction must be either import or export for a Grouparoo Plugin Connection`
+            `connection.direction must be either import or export for a Grouparoo Plugin Connection (${connection.name})`
           );
         }
         if (
@@ -199,7 +199,7 @@ export class Plugins extends Initializer {
           !connection.methods.recordProperties
         ) {
           errors.push(
-            `import connections must provide a way to import records`
+            `import connections must provide a way to import records (${connection.name})`
           );
         }
         if (
@@ -208,7 +208,7 @@ export class Plugins extends Initializer {
           !connection.methods.exportRecords
         ) {
           errors.push(
-            `export connections must provide either connection.methods.exportRecord or connection.methods.exportRecords`
+            `export connections must provide either connection.methods.exportRecord or connection.methods.exportRecords (${connection.name})`
           );
         }
       });

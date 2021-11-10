@@ -93,7 +93,7 @@ describe("models/destination - with custom processExportedRecords", () => {
           name: "export-from-test-template-app",
           displayName: "export-from-test-template-app",
           description: "a test app connection",
-          app: "test-template-app",
+          apps: ["test-template-app"],
           direction: "export",
           syncModes: ["sync", "enrich", "additive"],
           options: [],

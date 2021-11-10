@@ -1613,7 +1613,7 @@ describe("modules/codeConfig", () => {
             name: "source-no-options",
             displayName: "source-no-options",
             description: "a test source",
-            app: "app-no-options",
+            apps: ["app-no-options"],
             direction: "import",
             options: [],
             methods: {

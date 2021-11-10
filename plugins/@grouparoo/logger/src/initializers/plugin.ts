@@ -63,7 +63,7 @@ export class Plugins extends Initializer {
           displayName: "Logger Export Records",
           direction: "export",
           description: "Export Records to a log file as JSON.",
-          app: "logger",
+          apps: ["logger"],
           options: [],
           methods: {
             exportRecords,

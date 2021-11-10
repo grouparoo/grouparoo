@@ -124,7 +124,7 @@ describe("actions/sources", () => {
         );
       expect(error).toBeUndefined();
       expect(connectionApps[0].app.id).toBe(app.id);
-      expect(connectionApps[0].connection.app).toBe("test-plugin-app");
+      expect(connectionApps[0].connection.apps).toEqual(["test-plugin-app"]);
     });
 
     describe("options from environment variables", () => {

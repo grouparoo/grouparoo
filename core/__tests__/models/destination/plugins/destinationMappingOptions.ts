@@ -380,7 +380,7 @@ describe("models/destination", () => {
             name: "destinationMapping-test-connection",
             displayName: "destinationMapping-test-connection",
             description: "a test app connection",
-            app: "test-destinationMapping-app",
+            apps: ["test-destinationMapping-app"],
             direction: "export",
             syncModes: ["sync", "additive", "enrich"],
             options: [],

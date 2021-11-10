@@ -4,7 +4,7 @@ import { getChangedRows } from "./getChangedRows";
 
 export function getConnection() {
   return buildConnection({
-    app: "bigquery",
+    apps: ["bigquery"],
     name: "bigquery-import-query",
     displayName: "BigQuery Query Import",
     description: "Import or update records via a custom Bigquery query.",

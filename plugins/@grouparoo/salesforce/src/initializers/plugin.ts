@@ -80,7 +80,7 @@ export class Plugins extends Initializer {
           direction: "export",
           description:
             "Export Records and Groups to Salesforce sales cloud objects.",
-          app: "salesforce",
+          apps: ["salesforce"],
           syncModes,
           options: [
             {

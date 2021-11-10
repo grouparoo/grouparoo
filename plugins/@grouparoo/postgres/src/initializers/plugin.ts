@@ -143,7 +143,7 @@ export class Plugins extends Initializer {
           direction: "export",
           description:
             "Export Records to a Postgres table.  Groups will be exported to a secondary table linked by a foreign key.",
-          app: "postgres",
+          apps: ["postgres"],
           syncModes,
           defaultSyncMode,
           options: [

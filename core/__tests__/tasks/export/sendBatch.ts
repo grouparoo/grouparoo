@@ -164,7 +164,7 @@ describe("tasks/export:sendBatch", () => {
               name: "export-from-test-app",
               displayName: "export-from-test-app",
               description: "a test app connection",
-              app: "test-template-app",
+              apps: ["test-template-app"],
               direction: "export",
               options: [],
               methods: {

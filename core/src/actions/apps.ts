@@ -77,7 +77,7 @@ export class AppOptions extends AuthenticatedAction {
           const app = plugin.apps[j];
           const source = api.plugins.plugins.find((p) =>
             p?.connections?.find(
-              (c) => c.app === app.name && c.direction === "import"
+              (c) => c.apps.includes(app.name) && c.direction === "import"
             )
           )
             ? true
@@ -85,7 +85,7 @@ export class AppOptions extends AuthenticatedAction {
 
           const destination = api.plugins.plugins.find((p) =>
             p?.connections?.find(
-              (c) => c.app === app.name && c.direction === "export"
+              (c) => c.apps.includes(app.name) && c.direction === "export"
             )
           )
             ? true

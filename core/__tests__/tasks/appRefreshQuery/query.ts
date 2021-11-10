@@ -5,18 +5,13 @@ import {
   Schedule,
   App,
   Run,
-  plugin,
   GrouparooModel,
   AppRefreshQuery,
 } from "../../../src";
-import { RunOps } from "../../../src/modules/ops/runs";
 
 describe("tasks/appRefreshQuery:query", () => {
-  let model: GrouparooModel;
-  let source: Source;
-  let schedule: Schedule;
-
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+
   beforeEach(async () => {
     await api.resque.queue.connection.redis.flushdb();
     await Run.truncate();

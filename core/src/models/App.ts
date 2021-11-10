@@ -219,7 +219,7 @@ export class App extends LoggedModel<App> {
   provides() {
     const source = api.plugins.plugins.find((p) =>
       p?.connections?.find(
-        (c) => c.app === this.type && c.direction === "import"
+        (c) => c.apps.includes(this.type) && c.direction === "import"
       )
     )
       ? true
@@ -227,7 +227,7 @@ export class App extends LoggedModel<App> {
 
     const destination = api.plugins.plugins.find((p) =>
       p?.connections?.find(
-        (c) => c.app === this.type && c.direction === "export"
+        (c) => c.apps.includes(this.type) && c.direction === "export"
       )
     )
       ? true

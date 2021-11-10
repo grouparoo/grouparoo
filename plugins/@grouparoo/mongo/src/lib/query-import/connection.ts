@@ -6,7 +6,7 @@ import { validateQuery } from "./validateQuery";
 
 export function getConnection() {
   return buildConnection({
-    app: "mongo",
+    apps: ["mongo"],
     name: "mongo-import-query",
     displayName: "MongoDB Query Import",
     description:

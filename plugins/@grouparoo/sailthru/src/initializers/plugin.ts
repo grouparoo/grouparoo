@@ -66,7 +66,7 @@ export class Plugins extends Initializer {
           displayName: "SailThru Export Users",
           direction: "export",
           description: "Export Records to Sailthru.",
-          app: "sailthru",
+          apps: ["sailthru"],
           syncModes,
           defaultSyncMode,
           options: [],

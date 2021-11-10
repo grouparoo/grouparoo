@@ -9,7 +9,7 @@ import { getChangedRowCount } from "./getChangedRowCount";
 
 export function getConnection() {
   return buildConnection({
-    app: "sqlite",
+    apps: ["sqlite"],
     name: "sqlite-import-table",
     displayName: "SQLite Table Import",
     description: "Import or update Records from a SQLite database table.",

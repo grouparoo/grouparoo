@@ -4,7 +4,7 @@ import { getChangedRows } from "./getChangedRows";
 
 export function getConnection() {
   return buildConnection({
-    app: "sqlite",
+    apps: ["sqlite"],
     name: "sqlite-import-query",
     displayName: "SQLite Query Import",
     description: "Import or update Records via a custom SQLite query.",

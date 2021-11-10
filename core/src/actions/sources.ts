@@ -74,22 +74,28 @@ export class SourceConnectionApps extends AuthenticatedAction {
       connection: PluginConnection;
     }> = [];
 
-    let importConnections = [];
+    let importConnections: PluginConnection[] = [];
     api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
       if (plugin.connections) {
         plugin.connections
           .filter((c) => c.direction === "import")
-          .filter((c) => existingAppTypes.includes(c.app))
+          .filter((c) => {
+            let match = false;
+            for (const app of c.apps) {
+              if (existingAppTypes.includes(app)) match = true;
+            }
+            return match;
+          })
           .map((c) => importConnections.push(c));
       }
     });
 
-    for (const i in apps) {
-      for (const j in importConnections) {
-        if (apps[i].type === importConnections[j].app) {
+    for (const app of apps) {
+      for (const connection of importConnections) {
+        if (connection.apps.includes(app.type)) {
           connectionApps.push({
-            app: await apps[i].apiData(),
-            connection: importConnections[j],
+            app: await app.apiData(),
+            connection,
           });
         }
       }

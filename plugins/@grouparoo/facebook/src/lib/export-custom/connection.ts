@@ -12,7 +12,7 @@ export function buildConnection(): PluginConnection {
     displayName: "Facebook Export Custom Audiences",
     direction: "export",
     description: "Export to Facebook Custom Audiences",
-    app: "facebook",
+    apps: ["facebook"],
     syncModes: supportedSyncModes,
     options: [
       {

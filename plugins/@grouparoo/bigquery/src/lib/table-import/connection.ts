@@ -9,7 +9,7 @@ import { getChangedRowCount } from "./getChangedRowCount";
 
 export function getConnection() {
   return buildConnection({
-    app: "bigquery",
+    apps: ["bigquery"],
     name: "bigquery-import-table",
     displayName: "BigQuery Table Import",
     description: "Import or update Records from a Bigquery database table.",

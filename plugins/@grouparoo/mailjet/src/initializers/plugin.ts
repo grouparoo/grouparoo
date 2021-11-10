@@ -69,7 +69,7 @@ export class Plugins extends Initializer {
           direction: "export",
           description:
             "Export Records to Mailjet and add them to Contact Lists.",
-          app: "mailjet",
+          apps: ["mailjet"],
           syncModes,
           defaultSyncMode,
           options: [],

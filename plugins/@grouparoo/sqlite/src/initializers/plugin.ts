@@ -84,7 +84,7 @@ export class Plugins extends Initializer {
           direction: "export",
           description:
             "Export Records to a SQLite table. Groups will be exported to a secondary table linked by a foreign key.",
-          app: "sqlite",
+          apps: ["sqlite"],
           syncModes,
           defaultSyncMode,
           options: [

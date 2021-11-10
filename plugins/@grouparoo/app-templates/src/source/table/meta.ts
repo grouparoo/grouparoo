@@ -37,7 +37,7 @@ export interface BuildConnectionMethod {
     name: string;
     displayName: string;
     description: string;
-    app: string;
+    apps: string[];
     tableOptionDescription?: string;
     tableOptionDisplayName?: string;
     sourceOptions?: SourceOptionsExtra;
@@ -55,7 +55,7 @@ export const buildConnection: BuildConnectionMethod = ({
   name,
   displayName,
   description,
-  app,
+  apps,
   tableOptionDescription = null,
   tableOptionDisplayName = null,
   sourceOptions: additionalOptions,
@@ -120,7 +120,7 @@ export const buildConnection: BuildConnectionMethod = ({
     displayName,
     direction: "import",
     description,
-    app,
+    apps,
     options,
     groupAggregations: [AggregationMethod.Exact],
     methods: {

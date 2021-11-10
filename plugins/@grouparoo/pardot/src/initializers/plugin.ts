@@ -97,7 +97,7 @@ export class Plugins extends Initializer {
           direction: "export",
           description:
             "Export Records and Groups to Pardot as Prospects and Lists",
-          app: "pardot",
+          apps: ["pardot"],
           syncModes,
           defaultSyncMode,
           options: [],

@@ -17,7 +17,7 @@ export const contactsDestinationConnection: PluginConnection = {
   direction: "export",
   description:
     "Export Records as Hubspot Contacts and add them to Contact Lists.",
-  app: "hubspot",
+  apps: ["hubspot"],
   syncModes: contactsSupportedSyncModes,
   defaultSyncMode: "sync",
   options: [],
