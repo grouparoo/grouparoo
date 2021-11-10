@@ -33,7 +33,7 @@ describe("models/destination", () => {
               name: "import-from-test-template-app",
               displayName: "import-from-test-template-app",
               description: "a test app connection",
-              app: "test-template-app",
+              apps: ["test-template-app"],
               direction: "export",
               syncModes: ["sync", "additive", "enrich"],
               options: [],

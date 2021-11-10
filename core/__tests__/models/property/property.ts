@@ -303,7 +303,7 @@ describe("models/property", () => {
           name: "source-no-options",
           displayName: "source-no-options",
           description: "a test source",
-          app: "app-no-options",
+          apps: ["app-no-options"],
           direction: "import",
           options: [],
           methods: {
@@ -674,7 +674,7 @@ describe("models/property", () => {
             name: "import-from-test-app",
             displayName: "import-from-test-app",
             description: "a test app",
-            app: "test-template-app",
+            apps: ["test-template-app"],
             direction: "import",
             options: [],
             methods: {

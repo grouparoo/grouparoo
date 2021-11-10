@@ -312,7 +312,7 @@ describe("models/schedule", () => {
               name: "test-plugin-source-no-schedule",
               displayName: "test-plugin-source-no-schedule",
               description: "a test connection",
-              app: "test-plugin-app-no-schedule",
+              apps: ["test-plugin-app-no-schedule"],
               direction: "import",
               options: [],
               methods: {
@@ -675,7 +675,7 @@ describe("models/schedule", () => {
             name: "import-from-test-template-app",
             displayName: "import-from-test-template-app",
             description: "a test app connection",
-            app: "test-template-app",
+            apps: ["test-template-app"],
             direction: "import" as "import",
             options: [],
             methods: {

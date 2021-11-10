@@ -34,7 +34,7 @@ describe("modules/plugin", () => {
             displayName: "sample-plugin-import",
             direction: "import",
             description: "import or update records from an uploaded file",
-            app: "sample-plugin-app",
+            apps: ["sample-plugin-app"],
             options: [],
             methods: {
               sourceOptions: async ({ sourceOptions }) => {
@@ -92,7 +92,7 @@ describe("modules/plugin", () => {
               displayName: "sample-plugin-export",
               direction: "export",
               description: "export stuff",
-              app: "sample-plugin-app",
+              apps: ["sample-plugin-app"],
               options: [],
               methods: {},
             },

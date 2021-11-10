@@ -78,7 +78,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
           name: "export-from-test-app",
           displayName: "export-from-test-app",
           description: "a test app connection",
-          app: "test-template-app",
+          apps: ["test-template-app"],
           direction: "export",
           options: [],
           syncModes: ["sync", "enrich", "additive"],

@@ -452,7 +452,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
               name: "test-non-unique-connection",
               displayName: "test-non-unique-connection",
               description: "a test app",
-              app: "test-non-unique-app",
+              apps: ["test-non-unique-app"],
               direction: "import",
               options: [],
               groupAggregations: [AggregationMethod.Exact],

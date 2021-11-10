@@ -937,7 +937,7 @@ describe("models/record", () => {
             name: "import-from-test-template-app",
             displayName: "import-from-test-template-app",
             description: "a test app connection",
-            app: "test-template-app",
+            apps: ["test-template-app"],
             direction: "import" as "import",
             options: [{ key: "table", required: true }],
             methods: {

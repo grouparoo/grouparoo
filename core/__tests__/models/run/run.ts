@@ -626,7 +626,7 @@ describe("models/run", () => {
             name: "test-error-connection",
             displayName: "test-error-connection",
             description: "a test app",
-            app: "test-error-app",
+            apps: ["test-error-app"],
             direction: "import",
             options: [{ key: "query", required: true }],
             methods: {

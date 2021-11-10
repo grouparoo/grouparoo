@@ -487,7 +487,7 @@ describe("actions/properties", () => {
               name: "dynamic-property-options-source",
               displayName: "dynamic-property-options-source",
               description: "a test app connection",
-              app: "test-dynamic-app",
+              apps: ["test-dynamic-app"],
               direction: "import",
               options: [],
               methods: {

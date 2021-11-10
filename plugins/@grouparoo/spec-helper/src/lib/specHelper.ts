@@ -299,7 +299,7 @@ export namespace helper {
           displayName: "test-plugin-import",
           direction: "import",
           description: "import or update records from a table",
-          app: "test-plugin-app",
+          apps: ["test-plugin-app"],
           options: [
             { key: "table", required: true },
             { key: "where", required: false },
@@ -410,7 +410,7 @@ export namespace helper {
           displayName: "test-plugin-export",
           direction: "export",
           description: "export records to nowhere",
-          app: "test-plugin-app",
+          apps: ["test-plugin-app"],
           syncModes: ["sync", "enrich", "additive"],
           options: [
             { key: "table", required: true },
@@ -466,7 +466,7 @@ export namespace helper {
           displayName: "test-plugin-export-batch",
           direction: "export",
           description: "export records to nowhere",
-          app: "test-plugin-app",
+          apps: ["test-plugin-app"],
           syncModes: ["sync", "enrich", "additive"],
           defaultSyncMode: "additive",
           options: [
