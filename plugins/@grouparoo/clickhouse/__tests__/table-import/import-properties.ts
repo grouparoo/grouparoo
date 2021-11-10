@@ -376,11 +376,14 @@ describe("clickhouse/table/recordProperties", () => {
           "Pear",
           "Apple",
         ]);
-        expect(values[fourthRecord.id][properties[0].id]).toEqual([
-          "Peach",
-          "Blueberry",
-          "Pear",
+        // It seems that ClickHouse does not guarantee order
+        // when there is no specific order by in the select statement
+        // So, we deep equal check against the sorted values
+        expect(values[fourthRecord.id][properties[0].id].sort()).toEqual([
           "Apple",
+          "Blueberry",
+          "Peach",
+          "Pear",
           "Watermelon",
         ]);
         emailProperty.isArray = isArray;
@@ -531,7 +534,7 @@ describe("clickhouse/table/recordProperties", () => {
         expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
-      test("string is not case sensitive", async () => {
+      test("string is case sensitive", async () => {
         const [values, properties] = await getPropertyValues(
           {
             columns,
@@ -540,8 +543,8 @@ describe("clickhouse/table/recordProperties", () => {
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([2]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
+        expect(values[record.id][properties[0].id]).toEqual([0]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("date", async () => {
@@ -622,8 +625,8 @@ describe("clickhouse/table/recordProperties", () => {
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([4]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("date", async () => {
@@ -851,7 +854,7 @@ describe("clickhouse/table/recordProperties", () => {
         expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
-      test("string is not case sensitive", async () => {
+      test("string is case sensitive", async () => {
         const [values, properties] = await getPropertyValues(
           {
             columns,
@@ -860,8 +863,8 @@ describe("clickhouse/table/recordProperties", () => {
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([2]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
+        expect(values[record.id][properties[0].id]).toEqual([0]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("date", async () => {
@@ -933,17 +936,17 @@ describe("clickhouse/table/recordProperties", () => {
         expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
-      // test("string is case sensitive", async () => {
-      //   const [values, properties] = await getPropertyValues(
-      //     {
-      //       columns,
-      //       sourceMapping,
-      //       aggregationMethod,
-      //     },
-      //     [{ op, key: "purchase", match: "apple" }]
-      //   );
-      //   expect(values[record.id][properties[0].id]).toBeUndefined(); // unpredictable ascii math
-      // });
+      test("string is case sensitive", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "apple" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([0]);
+      });
       test("date", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -1013,19 +1016,17 @@ describe("clickhouse/table/recordProperties", () => {
         expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
-      // test("string is case sensitive", async () => {
-      //   const [values, properties] = await getPropertyValues(
-      //     {
-      //       columns,
-      //       sourceMapping,
-      //       aggregationMethod,
-      //     },
-      //     [{ op, key: "purchase", match: "apple" }]
-      //   );
-      //   expect(values[record.id][0][properties[0].id]).toBeGreaterThanOrEqual(
-      //     0
-      //   ); // unpredictable ascii math
-      // });
+      test("string is case sensitive", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "apple" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+      });
       test("date", async () => {
         const [values, properties] = await getPropertyValues(
           {

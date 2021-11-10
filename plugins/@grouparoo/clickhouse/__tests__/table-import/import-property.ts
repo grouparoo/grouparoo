@@ -311,7 +311,7 @@ describe("clickhouse/table/recordProperty", () => {
         );
         expect(value).toEqual(2);
       });
-      test("string is not case sensitive", async () => {
+      test("string is case sensitive", async () => {
         const value = await getPropertyValue(
           {
             column,
@@ -320,7 +320,7 @@ describe("clickhouse/table/recordProperty", () => {
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(value).toEqual(2);
+        expect(value).toEqual(0);
       });
       test("date", async () => {
         const value = await getPropertyValue(
@@ -390,7 +390,7 @@ describe("clickhouse/table/recordProperty", () => {
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(value).toEqual(4);
+        expect(value).toEqual(6);
       });
       test("date", async () => {
         const value = await getPropertyValue(
@@ -452,7 +452,7 @@ describe("clickhouse/table/recordProperty", () => {
         );
         expect(value).toEqual(2);
       });
-      test("string is not case sensitive", async () => {
+      test("string is case sensitive", async () => {
         const value = await getPropertyValue(
           {
             column,
@@ -526,7 +526,7 @@ describe("clickhouse/table/recordProperty", () => {
         );
         expect(value).toEqual(4);
       });
-      test("string is not case sensitive", async () => {
+      test("string is case sensitive", async () => {
         const value = await getPropertyValue(
           {
             column,
@@ -599,7 +599,7 @@ describe("clickhouse/table/recordProperty", () => {
         );
         expect(value).toEqual(2);
       });
-      test("string is not case sensitive", async () => {
+      test("string is case sensitive", async () => {
         const value = await getPropertyValue(
           {
             column,
@@ -608,7 +608,7 @@ describe("clickhouse/table/recordProperty", () => {
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(value).toEqual(2);
+        expect(value).toEqual(0);
       });
       test("date", async () => {
         const value = await getPropertyValue(
@@ -669,7 +669,7 @@ describe("clickhouse/table/recordProperty", () => {
         );
         expect(value).toEqual(4);
       });
-      test("string is not case sensitive", async () => {
+      test("string is case sensitive", async () => {
         const value = await getPropertyValue(
           {
             column,
@@ -678,7 +678,7 @@ describe("clickhouse/table/recordProperty", () => {
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(value).toEqual(4); // weird ascii math
+        expect(value).toEqual(0);
       });
       test("date", async () => {
         const value = await getPropertyValue(
@@ -739,7 +739,7 @@ describe("clickhouse/table/recordProperty", () => {
         );
         expect(value).toEqual(0);
       });
-      test("string is not case sensitive", async () => {
+      test("string is case sensitive", async () => {
         const value = await getPropertyValue(
           {
             column,
@@ -748,7 +748,7 @@ describe("clickhouse/table/recordProperty", () => {
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(value).toEqual(0); // weird ascii math
+        expect(value).toEqual(6);
       });
       test("date", async () => {
         const value = await getPropertyValue(

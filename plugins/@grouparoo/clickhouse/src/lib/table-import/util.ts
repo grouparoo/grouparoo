@@ -27,7 +27,7 @@ const castValue = (value: DataResponse, type: ColumnType, dataType: string) => {
       return Number(value);
 
     case "string":
-      return String(value).toLowerCase();
+      return String(value);
 
     case "date":
       // https://clickhouse.com/docs/en/sql-reference/data-types/datetime64/
@@ -100,10 +100,6 @@ export function makeWhereClause(
   }
 
   if (!transform) {
-    if (type === "string") {
-      transform = "LOWER";
-    }
-
     match = values
       ? values.map((v) => castValue(v, type, dataType))
       : castValue(value, type, dataType);
