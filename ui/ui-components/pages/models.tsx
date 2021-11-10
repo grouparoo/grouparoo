@@ -4,15 +4,15 @@ import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Pagination from "../components/pagination";
-import LoadingTable from "../components/loadingTable";
-import ModelIcon from "../components/modelIcon";
+import Pagination from "../components/Pagination";
+import LoadingTable from "../components/LoadingTable";
+import ModelIcon from "../components/ModelIcon";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { ErrorHandler } from "../utils/errorHandler";
-import GrouparooLink from "../components/grouparooLink";
-import StateBadge from "../components/badges/stateBadge";
-import LinkButton from "../components/linkButton";
+import GrouparooLink from "../components/GrouparooLink";
+import StateBadge from "../components/badges/StateBadge";
+import LinkButton from "../components/LinkButton";
 
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;

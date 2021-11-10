@@ -3,9 +3,8 @@ import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
-import AppSelectorList from "@grouparoo/ui-components/components/appSelectorList";
+import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
-
 import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {

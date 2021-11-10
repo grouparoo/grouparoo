@@ -5,18 +5,18 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { useRouter } from "next/router";
 
 import { UseApi } from "../../../../../hooks/useApi";
-import SourceTabs from "../../../../../components/tabs/source";
-import PageHeader from "../../../../../components/pageHeader";
-import StateBadge from "../../../../../components/badges/stateBadge";
-import LockedBadge from "../../../../../components/badges/lockedBadge";
+import SourceTabs from "../../../../../components/tabs/Source";
+import PageHeader from "../../../../../components/PageHeader";
+import StateBadge from "../../../../../components/badges/StateBadge";
+import LockedBadge from "../../../../../components/badges/LockedBadge";
 import { Models, Actions } from "../../../../../utils/apiData";
-import LoadingTable from "../../../../../components/loadingTable";
-import LoadingButton from "../../../../../components/loadingButton";
-import Loader from "../../../../../components/loader";
+import LoadingTable from "../../../../../components/LoadingTable";
+import LoadingButton from "../../../../../components/LoadingButton";
+import Loader from "../../../../../components/Loader";
 import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { SuccessHandler } from "../../../../../utils/successHandler";
 import { SourceHandler } from "../../../../../utils/sourceHandler";
-import ModelBadge from "../../../../../components/badges/modelBadge";
+import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 

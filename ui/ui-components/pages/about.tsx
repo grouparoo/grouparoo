@@ -3,7 +3,7 @@ import { client } from "../hooks/useApi";
 import { Table, Badge, Alert } from "react-bootstrap";
 import { UseApi } from "../hooks/useApi";
 import { Actions } from "../utils/apiData";
-import LinkButton from "../components/linkButton";
+import LinkButton from "../components/LinkButton";
 
 const upgradeHelpPage =
   "https://www.grouparoo.com/docs/support/upgrading-grouparoo";

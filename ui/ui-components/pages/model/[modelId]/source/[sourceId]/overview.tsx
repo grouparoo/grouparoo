@@ -1,22 +1,22 @@
 import { UseApi } from "../../../../../hooks/useApi";
 import { Row, Col, Table, Badge, Alert, Button } from "react-bootstrap";
-import PageHeader from "../../../../../components/pageHeader";
-import StateBadge from "../../../../../components/badges/stateBadge";
-import LockedBadge from "../../../../../components/badges/lockedBadge";
+import PageHeader from "../../../../../components/PageHeader";
+import StateBadge from "../../../../../components/badges/StateBadge";
+import LockedBadge from "../../../../../components/badges/LockedBadge";
 import Link from "next/link";
 import Moment from "react-moment";
-import ScheduleAddButton from "../../../../../components/schedule/add";
-import PropertyAddButton from "../../../../../components/property/add";
-import SourceTabs from "../../../../../components/tabs/source";
+import ScheduleAddButton from "../../../../../components/schedule/Add";
+import PropertyAddButton from "../../../../../components/property/Add";
+import SourceTabs from "../../../../../components/tabs/Source";
 import Head from "next/head";
 import { Models } from "../../../../../utils/apiData";
 import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { SuccessHandler } from "../../../../../utils/successHandler";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
-import ModelBadge from "../../../../../components/badges/modelBadge";
+import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
-import LinkButton from "../../../../../components/linkButton";
+import LinkButton from "../../../../../components/LinkButton";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page({

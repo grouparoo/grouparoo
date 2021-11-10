@@ -1,11 +1,11 @@
 import Head from "next/head";
 import { UseApi } from "../../../../../hooks/useApi";
-import ExportsList from "../../../../../components/export/list";
-import DestinationTabs from "../../../../../components/tabs/destination";
-import PageHeader from "../../../../../components/pageHeader";
-import StateBadge from "../../../../../components/badges/stateBadge";
-import LockedBadge from "../../../../../components/badges/lockedBadge";
-import ModelBadge from "../../../../../components/badges/modelBadge";
+import ExportsList from "../../../../../components/export/List";
+import DestinationTabs from "../../../../../components/tabs/Destination";
+import PageHeader from "../../../../../components/PageHeader";
+import StateBadge from "../../../../../components/badges/StateBadge";
+import LockedBadge from "../../../../../components/badges/LockedBadge";
+import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { NextPageContext } from "next";
 

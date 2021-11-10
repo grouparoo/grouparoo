@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { UseApi } from "../../hooks/useApi";
 import { Table, Row, Col } from "react-bootstrap";
 import Head from "next/head";
-import ResqueTabs from "../../components/tabs/resque";
-import LoadingButton from "../../components/loadingButton";
+import ResqueTabs from "../../components/tabs/Resque";
+import LoadingButton from "../../components/LoadingButton";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { SuccessHandler } from "../../utils/successHandler";
 

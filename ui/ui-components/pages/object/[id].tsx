@@ -1,6 +1,6 @@
-import Loader from "../../components/loader";
+import Loader from "../../components/Loader";
 import { useEffect, useState } from "react";
-import Link from "../../components/grouparooLink";
+import Link from "../../components/GrouparooLink";
 import { useRouter } from "next/router";
 import { UseApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";

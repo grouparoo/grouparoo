@@ -1,20 +1,20 @@
 import { Fragment, useState } from "react";
 import { UseApi } from "../../../../../hooks/useApi";
 import { Alert, Row, Col, Table, Form, Button } from "react-bootstrap";
-import PageHeader from "../../../../../components/pageHeader";
-import StateBadge from "../../../../../components/badges/stateBadge";
-import LockedBadge from "../../../../../components/badges/lockedBadge";
-import LoadingButton from "../../../../../components/loadingButton";
-import LinkButton from "../../../../../components/linkButton";
+import PageHeader from "../../../../../components/PageHeader";
+import StateBadge from "../../../../../components/badges/StateBadge";
+import LockedBadge from "../../../../../components/badges/LockedBadge";
+import LoadingButton from "../../../../../components/LoadingButton";
+import LinkButton from "../../../../../components/LinkButton";
 import Link from "next/link";
-import SourceTabs from "../../../../../components/tabs/source";
+import SourceTabs from "../../../../../components/tabs/Source";
 import Head from "next/head";
 import { Models, Actions } from "../../../../../utils/apiData";
 import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { SuccessHandler } from "../../../../../utils/successHandler";
 import { generateId } from "../../../../../utils/generateId";
-import PropertyAddButton from "../../../../../components/property/add";
-import ModelBadge from "../../../../../components/badges/modelBadge";
+import PropertyAddButton from "../../../../../components/property/Add";
+import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import GroupTabs from "@grouparoo/ui-components/components/tabs/group";
+import GroupTabs from "@grouparoo/ui-components/components/tabs/Group";
 import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { NextPageContext } from "next";
 

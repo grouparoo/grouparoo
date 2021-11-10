@@ -3,10 +3,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { Alert, Button, ButtonGroup, Col, Row } from "react-bootstrap";
-import StateBadge from "../components/badges/stateBadge";
-import LoadingTable from "../components/loadingTable";
-import Pagination from "../components/pagination";
-import EnterpriseLink from "../components/grouparooLink";
+import StateBadge from "../components/badges/StateBadge";
+import LoadingTable from "../components/LoadingTable";
+import Pagination from "../components/Pagination";
+import EnterpriseLink from "../components/GrouparooLink";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { UseApi } from "../hooks/useApi";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
@@ -14,7 +14,7 @@ import { Models, Actions } from "../utils/apiData";
 import { ErrorHandler } from "../utils/errorHandler";
 import { capitalize } from "../utils/languageHelper";
 import { formatTimestamp } from "../utils/formatTimestamp";
-import { DurationTime } from "../components/durationTime";
+import { DurationTime } from "../components/DurationTime";
 
 const states = ["all", "pending", "failed", "complete"];
 

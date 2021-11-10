@@ -3,13 +3,13 @@ import { Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { UseApi } from "../hooks/useApi";
 import Link from "next/link";
-import EnterpriseLink from "../components/grouparooLink";
+import EnterpriseLink from "../components/GrouparooLink";
 import { Form } from "react-bootstrap";
-import LoadingTable from "../components/loadingTable";
-import RecordImageFromEmail from "../components/visualizations/recordImageFromEmail";
+import LoadingTable from "../components/LoadingTable";
+import RecordImageFromEmail from "../components/visualizations/RecordImageFromEmail";
 import { Models } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
-import LinkButton from "../components/linkButton";
+import LinkButton from "../components/LinkButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 
 export default function Page({

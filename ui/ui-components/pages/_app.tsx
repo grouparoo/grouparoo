@@ -4,11 +4,11 @@ import type { AppContext } from "next/app";
 
 import { UseApi } from "../hooks/useApi";
 
-import Injection from "../components/componentInjection";
-import Layout from "../components/layouts/main";
-import PageTransition from "../components/pageTransition";
-import StatusSubscription from "../components/statusSubscription";
-import "../components/icons";
+import Injection from "../components/ComponentInjection";
+import Layout from "../components/layouts/Main";
+import PageTransition from "../components/PageTransition";
+import StatusSubscription from "../components/StatusSubscription";
+import "../components/Icons";
 
 import { Actions } from "../utils/apiData";
 

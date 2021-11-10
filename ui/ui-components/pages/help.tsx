@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { Row, Col, Alert } from "react-bootstrap";
-import LinkButton from "../components/linkButton";
+import LinkButton from "../components/LinkButton";
 
 export default function Page() {
   const supportPageURL = "https://www.grouparoo.com/support";

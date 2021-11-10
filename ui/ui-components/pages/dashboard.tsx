@@ -8,7 +8,7 @@ import {
   ScheduleRuns,
   PendingImports,
   PendingExports,
-} from "../components/visualizations/homepageWidgets";
+} from "../components/visualizations/HomepageWidgets";
 import { StatusHandler } from "../utils/statusHandler";
 
 export default function Page(props) {

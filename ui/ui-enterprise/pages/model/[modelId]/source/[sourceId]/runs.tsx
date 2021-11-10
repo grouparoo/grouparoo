@@ -1,18 +1,18 @@
 import Head from "next/head";
-import RunsList from "@grouparoo/ui-components/components/runs/list";
+import RunsList from "@grouparoo/ui-components/components/runs/List";
 import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState } from "react";
-import SourceTabs from "@grouparoo/ui-components/components/tabs/source";
-import PageHeader from "@grouparoo/ui-components/components/pageHeader";
-import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
-import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
-import ModelBadge from "@grouparoo/ui-components/components/badges/modelBadge";
+import SourceTabs from "@grouparoo/ui-components/components/tabs/Source";
+import PageHeader from "@grouparoo/ui-components/components/PageHeader";
+import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
+import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge";
+import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import { Row, Col } from "react-bootstrap";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
 import { RunsHandler } from "@grouparoo/ui-components/utils/runsHandler";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
-import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
 
 export default function Page(props) {
   const {

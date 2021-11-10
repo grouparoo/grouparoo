@@ -5,7 +5,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
-import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
 import { ErrorHandler } from "../../../ui-components/utils/errorHandler";
 
 export default function SignInPage(props) {

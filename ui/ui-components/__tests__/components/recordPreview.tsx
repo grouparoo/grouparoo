@@ -1,4 +1,4 @@
-import RecordPreview from "../../components/property/recordPreview";
+import RecordPreview from "../../components/property/RecordPreview";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { renderAndWait } from "../__utils__/renderAndWait";
 import testRecord from "./test-record.json";

@@ -1,18 +1,18 @@
 import { UseApi } from "../../../../../hooks/useApi";
-import SourceTabs from "../../../../../components/tabs/source";
+import SourceTabs from "../../../../../components/tabs/Source";
 import Head from "next/head";
 import { useState } from "react";
 import { Row, Col, Table, Form, Button } from "react-bootstrap";
-import { createSchedule } from "../../../../../components/schedule/add";
-import LoadingButton from "../../../../../components/loadingButton";
-import PageHeader from "../../../../../components/pageHeader";
-import StateBadge from "../../../../../components/badges/stateBadge";
-import LockedBadge from "../../../../../components/badges/lockedBadge";
+import { createSchedule } from "../../../../../components/schedule/Add";
+import LoadingButton from "../../../../../components/LoadingButton";
+import PageHeader from "../../../../../components/PageHeader";
+import StateBadge from "../../../../../components/badges/StateBadge";
+import LockedBadge from "../../../../../components/badges/LockedBadge";
 import { useRouter } from "next/router";
 import { Actions, Models } from "../../../../../utils/apiData";
 import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { SuccessHandler } from "../../../../../utils/successHandler";
-import ModelBadge from "../../../../../components/badges/modelBadge";
+import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { NextPageContext } from "next";
 

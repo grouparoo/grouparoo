@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { Actions, Models } from "../../utils/apiData";
-import LoadingButton from "../../components/loadingButton";
+import LoadingButton from "../../components/LoadingButton";
 
 export default function Page(props) {
   const {

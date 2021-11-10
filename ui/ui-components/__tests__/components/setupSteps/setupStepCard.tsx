@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import SetupStepCard from "../../../components/setupSteps/setupStepCard";
+import SetupStepCard from "../../../components/setupSteps/SetupStepCard";
 import { Models } from "../../../utils/apiData";
 
 describe("<setupStepCard />", () => {

@@ -3,12 +3,12 @@ import { UseApi } from "../../../../../hooks/useApi";
 import {
   getRecordDisplayName,
   getRecordPageTitle,
-} from "../../../../../components/record/getRecordDisplayName";
-import RecordTabs from "../../../../../components/tabs/record";
-import ImportList from "../../../../../components/import/list";
-import PageHeader from "../../../../../components/pageHeader";
-import StateBadge from "../../../../../components/badges/stateBadge";
-import ModelBadge from "../../../../../components/badges/modelBadge";
+} from "../../../../../components/record/GetRecordDisplayName";
+import RecordTabs from "../../../../../components/tabs/Record";
+import ImportList from "../../../../../components/import/List";
+import PageHeader from "../../../../../components/PageHeader";
+import StateBadge from "../../../../../components/badges/StateBadge";
+import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { Models } from "../../../../../utils/apiData";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";

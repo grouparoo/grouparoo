@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Component from "../../components/navigation/setupStepsNavProgressBar";
+import Component from "../../components/navigation/SetupStepsNavProgressBar";
 import mockAxios from "jest-mock-axios";
 import { Actions } from "../../utils/apiData";
 import { UseApi } from "../../hooks/useApi";

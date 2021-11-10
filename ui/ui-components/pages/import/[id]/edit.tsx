@@ -1,4 +1,4 @@
-import ImportTabs from "../../../components/tabs/import";
+import ImportTabs from "../../../components/tabs/Import";
 import Head from "next/head";
 import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Alert, Card } from "react-bootstrap";
@@ -7,8 +7,8 @@ import { Models } from "../../../utils/apiData";
 import {
   ImportRecordPropertiesDiff,
   ImportGroupsDiff,
-} from "../../../components/import/diff";
-import { DurationTime } from "../../../components/durationTime";
+} from "../../../components/import/Diff";
+import { DurationTime } from "../../../components/DurationTime";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page(props) {

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { UseApi } from "../../../hooks/useApi";
-import LoadingButton from "../../../components/loadingButton";
+import LoadingButton from "../../../components/LoadingButton";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import LoadingTable from "../../../components/loadingTable";
-import RecordImageFromEmail from "../../../components/visualizations/recordImageFromEmail";
+import LoadingTable from "../../../components/LoadingTable";
+import RecordImageFromEmail from "../../../components/visualizations/RecordImageFromEmail";
 import { Models, Actions } from "../../../utils/apiData";
-import TeamTabs from "../../../components/tabs/team";
+import TeamTabs from "../../../components/tabs/Team";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { formatTimestamp } from "../../../utils/formatTimestamp";

@@ -5,17 +5,17 @@ import type { NextPageContext } from "next";
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
-import Link from "../../../components/grouparooLink";
-import Pagination from "../../../components/pagination";
-import LoadingTable from "../../../components/loadingTable";
-import AppIcon from "../../../components/appIcon";
-import StateBadge from "../../../components/badges/stateBadge";
+import Link from "../../../components/GrouparooLink";
+import Pagination from "../../../components/Pagination";
+import LoadingTable from "../../../components/LoadingTable";
+import AppIcon from "../../../components/AppIcon";
+import StateBadge from "../../../components/badges/StateBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { ErrorHandler } from "../../../utils/errorHandler";
-import LoadingButton from "../../../components/loadingButton";
-import LinkButton from "../../../components/linkButton";
+import LoadingButton from "../../../components/LoadingButton";
+import LinkButton from "../../../components/LinkButton";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 
 export default function Page(props) {

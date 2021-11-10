@@ -3,9 +3,9 @@ import { useState } from "react";
 import { Form, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { UseApi } from "../../../../../hooks/useApi";
-import AppSelectorList from "../../../../../components/appSelectorList";
+import AppSelectorList from "../../../../../components/AppSelectorList";
 import { Actions } from "../../../../../utils/apiData";
-import LinkButton from "../../../../../components/linkButton";
+import LinkButton from "../../../../../components/LinkButton";
 
 export default function Page(props) {
   const {

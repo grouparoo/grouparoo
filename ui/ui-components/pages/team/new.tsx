@@ -4,7 +4,7 @@ import { UseApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
-import LoadingButton from "../../components/loadingButton";
+import LoadingButton from "../../components/LoadingButton";
 import { Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 

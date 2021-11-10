@@ -3,7 +3,7 @@ import { UseApi } from "../../ui-components/hooks/useApi";
 import Head from "next/head";
 import { Row, Col, Image, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import Loader from "../../ui-components/components/loader";
+import Loader from "../../ui-components/components/Loader";
 
 export default function Page(props) {
   const router = useRouter();

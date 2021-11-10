@@ -1,5 +1,5 @@
 import Head from "next/head";
-import ImportList from "@grouparoo/ui-components/components/import/list";
+import ImportList from "@grouparoo/ui-components/components/import/List";
 import { useRouter } from "next/router";
 
 export default function Page(props) {

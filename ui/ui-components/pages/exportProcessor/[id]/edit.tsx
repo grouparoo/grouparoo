@@ -1,11 +1,11 @@
 import { UseApi } from "../../../hooks/useApi";
 import { Table, Alert, Card } from "react-bootstrap";
-import EnterpriseLink from "../../../components/grouparooLink";
+import EnterpriseLink from "../../../components/GrouparooLink";
 import Head from "next/head";
-import ExportProcessorTabs from "../../../components/tabs/exportProcessor";
+import ExportProcessorTabs from "../../../components/tabs/ExportProcessor";
 import { Models } from "../../../utils/apiData";
-import StateBadge from "../../../components/badges/stateBadge";
-import { DurationTime } from "../../../components/durationTime";
+import StateBadge from "../../../components/badges/StateBadge";
+import { DurationTime } from "../../../components/DurationTime";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page({

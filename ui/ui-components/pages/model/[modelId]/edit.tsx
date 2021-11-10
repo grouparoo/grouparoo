@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
 import { useRouter } from "next/router";
-import PageHeader from "../../../components/pageHeader";
+import PageHeader from "../../../components/PageHeader";
 
-import ModelTabs from "../../../components/tabs/model";
-import LoadingButton from "../../../components/loadingButton";
+import ModelTabs from "../../../components/tabs/Model";
+import LoadingButton from "../../../components/LoadingButton";
 
 import { Actions, Models } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
