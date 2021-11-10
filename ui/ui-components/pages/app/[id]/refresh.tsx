@@ -1,16 +1,7 @@
 import Head from "next/head";
 import { useState } from "react";
 import { UseApi } from "../../../hooks/useApi";
-import {
-  Row,
-  Col,
-  Form,
-  Badge,
-  Alert,
-  Card,
-  Button,
-  Container,
-} from "react-bootstrap";
+import { Row, Col, Form, Alert, Button, Container } from "react-bootstrap";
 import { useRouter } from "next/router";
 import PageHeader from "../../../components/pageHeader";
 import AppTabs from "../../../components/tabs/app";
@@ -30,10 +21,6 @@ export default function Page(props) {
   const {
     errorHandler,
     successHandler,
-    appHandler,
-    types,
-    environmentVariableOptions,
-    optionOptions,
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
@@ -59,7 +46,10 @@ export default function Page(props) {
   const { id } = router.query;
   const { schedules, runs, sources } = props;
   const disabled =
-    editing === false || appRefreshQuery.locked !== null || loading;
+    editing === false ||
+    app.locked !== null ||
+    appRefreshQuery.locked !== null ||
+    loading;
 
   async function create(event) {
     event.preventDefault();
@@ -195,7 +185,7 @@ export default function Page(props) {
         />
         <Container>
           <p>{app.name} has no App Refresh Query.</p>
-          <Button onClick={create} className="mx-auto">
+          <Button onClick={create} disabled={disabled} className="mx-auto">
             Add an App Refresh Query
           </Button>
         </Container>
