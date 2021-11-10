@@ -1,5 +1,5 @@
 import { ContainerWidthSizer } from "../../utils/ContainerWidthSizer";
-import { ChartColors } from "./chartColors";
+import { ChartColors } from "./ChartColors";
 import {
   LineChart,
   Line,
@@ -9,7 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import Loader from "../loader";
+import Loader from "../Loader";
 
 export type ChartLinData = { x: number; y: number }[][];
 

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { UseApi } from "../../hooks/useApi";
 import { Card, ListGroup } from "react-bootstrap";
-import Loader from "../loader";
-import RecordImageFromEmail from "../visualizations/recordImageFromEmail";
+import Loader from "../Loader";
+import RecordImageFromEmail from "../visualizations/RecordImageFromEmail";
 import { useRouter } from "next/router";
 import { Actions } from "../../utils/apiData";
 

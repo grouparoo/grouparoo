@@ -3,18 +3,18 @@ import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
-import EnterpriseLink from "../grouparooLink";
+import EnterpriseLink from "../GrouparooLink";
 import { useRouter } from "next/router";
 import { Row, Col, Button, ButtonGroup, Badge, Alert } from "react-bootstrap";
-import Pagination from "../pagination";
-import LoadingTable from "../loadingTable";
+import Pagination from "../Pagination";
+import LoadingTable from "../LoadingTable";
 import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
-import { ExportGroupsDiff, ExportRecordPropertiesDiff } from "./diff";
+import { ExportGroupsDiff, ExportRecordPropertiesDiff } from "./Diff";
 import { capitalize } from "../../utils/languageHelper";
 import { formatTimestamp } from "../../utils/formatTimestamp";
-import StateBadge from "../badges/stateBadge";
-import { DurationTime } from "../durationTime";
+import StateBadge from "../badges/StateBadge";
+import { DurationTime } from "../DurationTime";
 
 const states = [
   "all",

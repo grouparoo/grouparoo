@@ -3,15 +3,15 @@ import { UseApi } from "../../hooks/useApi";
 import { updateURLParams, useOffset } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useRealtimeStream } from "../../hooks/useRealtimeStream";
-import EnterpriseLink from "../grouparooLink";
+import EnterpriseLink from "../GrouparooLink";
 import { useRouter } from "next/router";
 import { ButtonGroup, Button, Alert } from "react-bootstrap";
-import Pagination from "../pagination";
-import LoadingTable from "../loadingTable";
+import Pagination from "../Pagination";
+import LoadingTable from "../LoadingTable";
 import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { NextPageContext } from "next";
-import LoadingButton from "../loadingButton";
+import LoadingButton from "../LoadingButton";
 
 const getOwnerId = (query: { [key: string]: string | string[] }) => {
   const { id, recordId, propertyId, sourceId, destinationId, groupId } = query;

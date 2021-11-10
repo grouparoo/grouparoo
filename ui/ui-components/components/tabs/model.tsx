@@ -1,4 +1,4 @@
-import Tabs from "../tabs";
+import Tabs from "../Tabs";
 import { Models } from "../../utils/apiData";
 
 export default function AppTabs({

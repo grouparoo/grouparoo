@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { ButtonToolbar, Button, Table, Modal, Row, Col } from "react-bootstrap";
-import Pagination from "../../components/pagination";
+import Pagination from "../../components/Pagination";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import ResqueTabs from "../../components/tabs/resque";
-import LoadingButton from "../../components/loadingButton";
+import ResqueTabs from "../../components/tabs/Resque";
+import LoadingButton from "../../components/LoadingButton";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { SuccessHandler } from "../../utils/successHandler";
 

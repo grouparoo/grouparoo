@@ -3,7 +3,7 @@ import { UseApi } from "../../../hooks/useApi";
 import { Table } from "react-bootstrap";
 import Head from "next/head";
 import Link from "next/link";
-import ResqueTabs from "../../../components/tabs/resque";
+import ResqueTabs from "../../../components/tabs/Resque";
 import { ErrorHandler } from "../../../utils/errorHandler";
 
 export default function ResqueQueue(props) {

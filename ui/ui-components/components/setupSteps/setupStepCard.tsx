@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Models } from "../../utils/apiData";
 import { Accordion, Card, Row, Col, Button, Badge } from "react-bootstrap";
-import LoadingButton from "../loadingButton";
-import LinkButton from "../linkButton";
+import LoadingButton from "../LoadingButton";
+import LinkButton from "../LinkButton";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function SetupStepCard({

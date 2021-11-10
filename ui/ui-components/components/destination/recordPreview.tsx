@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { UseApi } from "../../hooks/useApi";
 import { Card, ListGroup } from "react-bootstrap";
-import Loader from "../loader";
+import Loader from "../Loader";
 import { useRouter } from "next/router";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { Models, Actions } from "../../utils/apiData";

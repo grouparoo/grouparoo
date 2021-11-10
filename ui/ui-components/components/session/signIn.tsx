@@ -2,7 +2,7 @@ import React from "react"; // needed because this is also used by a plugin
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
-import LoadingButton from "../loadingButton";
+import LoadingButton from "../LoadingButton";
 import { useForm } from "react-hook-form";
 import { Actions } from "../../utils/apiData";
 import { SessionHandler } from "../../utils/sessionHandler";

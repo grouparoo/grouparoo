@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { UseApi } from "../../hooks/useApi";
 import { useRouter } from "next/router";
-import LoadingButton from "../loadingButton";
+import LoadingButton from "../LoadingButton";
 import { Actions } from "../../utils/apiData";
 
 export default function AddRecord(props) {

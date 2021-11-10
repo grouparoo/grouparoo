@@ -1,25 +1,25 @@
 import Head from "next/head";
-import EnterpriseLink from "../../../../../components/grouparooLink";
-import RecordTabs from "../../../../../components/tabs/record";
+import EnterpriseLink from "../../../../../components/GrouparooLink";
+import RecordTabs from "../../../../../components/tabs/Record";
 import { useState, useEffect } from "react";
 import { UseApi } from "../../../../../hooks/useApi";
 import { Row, Col, Form, ListGroup, Alert, Button } from "react-bootstrap";
-import LoadingButton from "../../../../../components/loadingButton";
+import LoadingButton from "../../../../../components/LoadingButton";
 import { useRouter } from "next/router";
-import LoadingTable from "../../../../../components/loadingTable";
-import { getRecordPageTitle } from "../../../../../components/record/getRecordDisplayName";
-import ArrayRecordPropertyList from "../../../../../components/record/arrayRecordPropertyList";
+import LoadingTable from "../../../../../components/LoadingTable";
+import { getRecordPageTitle } from "../../../../../components/record/GetRecordDisplayName";
+import ArrayRecordPropertyList from "../../../../../components/record/ArrayRecordPropertyList";
 import { Models, Actions } from "../../../../../utils/apiData";
 import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { SuccessHandler } from "../../../../../utils/successHandler";
 import { RecordHandler } from "../../../../../utils/recordHandler";
-import StateBadge from "../../../../../components/badges/stateBadge";
+import StateBadge from "../../../../../components/badges/StateBadge";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
-import ModelBadge from "../../../../../components/badges/modelBadge";
-import PageHeader from "../../../../../components/pageHeader";
+import ModelBadge from "../../../../../components/badges/ModelBadge";
+import PageHeader from "../../../../../components/PageHeader";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
-import LinkButton from "../../../../../components/linkButton";
+import LinkButton from "../../../../../components/LinkButton";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {

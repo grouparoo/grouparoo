@@ -1,6 +1,6 @@
 import Head from "next/head";
-import LogsStream from "../../components/log/stream";
-import LogsTabs from "../../components/tabs/logs";
+import LogsStream from "../../components/log/Stream";
+import LogsTabs from "../../components/tabs/Logs";
 
 export default function Page(props) {
   return (

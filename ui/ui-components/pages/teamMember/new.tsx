@@ -3,7 +3,7 @@ import { useState } from "react";
 import { UseApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { Form } from "react-bootstrap";
-import LoadingButton from "../../components/loadingButton";
+import LoadingButton from "../../components/LoadingButton";
 import { useRouter } from "next/router";
 import { Actions, Models } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";

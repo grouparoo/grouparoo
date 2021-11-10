@@ -1,8 +1,8 @@
 import { Fragment } from "react";
-import AppIcon from "./appIcon";
-import ModelIcon from "./modelIcon";
-import GroupIcon from "./groupIcon";
-import RecordImageFromEmail from "./visualizations/recordImageFromEmail";
+import AppIcon from "./AppIcon";
+import ModelIcon from "./ModelIcon";
+import GroupIcon from "./GroupIcon";
+import RecordImageFromEmail from "./visualizations/RecordImageFromEmail";
 
 export default function PageHeader({
   title,

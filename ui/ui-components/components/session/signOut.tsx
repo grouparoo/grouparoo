@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import Loader from "../loader";
+import Loader from "../Loader";
 import { UseApi } from "../../hooks/useApi";
 import { disconnectWebsocket } from "../../hooks/useRealtimeStream";
 import { ErrorHandler } from "../../utils/errorHandler";

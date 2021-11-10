@@ -1,10 +1,10 @@
 import Head from "next/head";
 import { UseApi } from "../../../hooks/useApi";
-import ExportsList from "../../../components/export/list";
-import ExportProcessorTabs from "../../../components/tabs/exportProcessor";
-import PageHeader from "../../../components/pageHeader";
-import StateBadge from "../../../components/badges/stateBadge";
-import LockedBadge from "../../../components/badges/lockedBadge";
+import ExportsList from "../../../components/export/List";
+import ExportProcessorTabs from "../../../components/tabs/ExportProcessor";
+import PageHeader from "../../../components/PageHeader";
+import StateBadge from "../../../components/badges/StateBadge";
+import LockedBadge from "../../../components/badges/LockedBadge";
 
 export default function Page(props) {
   const { exportProcessor } = props;

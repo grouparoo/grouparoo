@@ -2,15 +2,15 @@ import Head from "next/head";
 import { useState, Fragment } from "react";
 import { UseApi } from "../../../../../hooks/useApi";
 import { Row, Col, Card } from "react-bootstrap";
-import LoadingButton from "../../../../../components/loadingButton";
-import AppIcon from "../../../../../components/appIcon";
+import LoadingButton from "../../../../../components/LoadingButton";
+import AppIcon from "../../../../../components/AppIcon";
 import { useRouter } from "next/router";
 import { humanizePluginName } from "../../../../../utils/languageHelper";
 import { Actions } from "../../../../../utils/apiData";
 import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { NextPageContext } from "next";
-import ModelBadge from "../../../../../components/badges/modelBadge";
-import AppBadge from "../../../../../components/badges/appBadge";
+import ModelBadge from "../../../../../components/badges/ModelBadge";
+import AppBadge from "../../../../../components/badges/AppBadge";
 
 export default function Page(props) {
   const {

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { UseApi } from "../../../hooks/useApi";
 import { Form } from "react-bootstrap";
-import LoadingButton from "../../../components/loadingButton";
-import PermissionsList from "../../../components/permissions";
+import LoadingButton from "../../../components/LoadingButton";
+import PermissionsList from "../../../components/Permissions";
 import { useRouter } from "next/router";
 import { Models, Actions } from "../../../utils/apiData";
-import TeamTabs from "../../../components/tabs/team";
-import LockedBadge from "../../../components/badges/lockedBadge";
+import TeamTabs from "../../../components/tabs/Team";
+import LockedBadge from "../../../components/badges/LockedBadge";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { TeamHandler } from "../../../utils/teamHandler";
 import { SuccessHandler } from "../../../utils/successHandler";

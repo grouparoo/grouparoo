@@ -7,12 +7,12 @@ import type { NextPageContext } from "next";
 import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import Pagination from "../pagination";
-import LoadingTable from "../loadingTable";
-import LoadingButton from "../loadingButton";
+import Pagination from "../Pagination";
+import LoadingTable from "../LoadingTable";
+import LoadingButton from "../LoadingButton";
 import { Models, Actions } from "../../utils/apiData";
-import ArrayRecordPropertyList from "./arrayRecordPropertyList";
-import StateBadge from "../badges/stateBadge";
+import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
+import StateBadge from "../badges/StateBadge";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
 

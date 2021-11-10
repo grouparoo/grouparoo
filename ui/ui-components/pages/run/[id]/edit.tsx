@@ -1,16 +1,16 @@
 import { UseApi } from "../../../hooks/useApi";
 import { useState, Fragment } from "react";
 import { Row, Col, Badge, Alert, Card } from "react-bootstrap";
-import Link from "../../../components/grouparooLink";
-import { GrouparooChart } from "../../../components/visualizations/grouparooChart";
-import RunTabs from "../../../components/tabs/run";
+import Link from "../../../components/GrouparooLink";
+import { GrouparooChart } from "../../../components/visualizations/GrouparooChart";
+import RunTabs from "../../../components/tabs/Run";
 import Head from "next/head";
-import LoadingButton from "../../../components/loadingButton";
+import LoadingButton from "../../../components/LoadingButton";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { ErrorHandler } from "../../../utils/errorHandler";
-import { DurationTime } from "../../../components/durationTime";
+import { DurationTime } from "../../../components/DurationTime";
 
 export default function Page(props) {
   const {

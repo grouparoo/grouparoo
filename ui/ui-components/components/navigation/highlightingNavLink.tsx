@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { navIconStyle, navLiStyle, iconConstrainedStyle } from "../navigation";
+import { navIconStyle, navLiStyle, iconConstrainedStyle } from "../Navigation";
 
 export default function HighlightingNavLink({
   href,

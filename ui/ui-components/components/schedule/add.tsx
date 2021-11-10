@@ -1,7 +1,7 @@
 import { UseApi } from "../../hooks/useApi";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import LoadingButton from "../loadingButton";
+import LoadingButton from "../LoadingButton";
 import { Actions, Models } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 

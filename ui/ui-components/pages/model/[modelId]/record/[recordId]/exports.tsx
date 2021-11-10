@@ -1,15 +1,15 @@
 import Head from "next/head";
 import { UseApi } from "../../../../../hooks/useApi";
-import ExportsList from "../../../../../components/export/list";
+import ExportsList from "../../../../../components/export/List";
 import {
   getRecordDisplayName,
   getRecordPageTitle,
-} from "../../../../../components/record/getRecordDisplayName";
-import RecordTabs from "../../../../../components/tabs/record";
+} from "../../../../../components/record/GetRecordDisplayName";
+import RecordTabs from "../../../../../components/tabs/Record";
 import { Models } from "../../../../../utils/apiData";
-import PageHeader from "../../../../../components/pageHeader";
-import ModelBadge from "../../../../../components/badges/modelBadge";
-import StateBadge from "../../../../../components/badges/stateBadge";
+import PageHeader from "../../../../../components/PageHeader";
+import ModelBadge from "../../../../../components/badges/ModelBadge";
+import StateBadge from "../../../../../components/badges/StateBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 

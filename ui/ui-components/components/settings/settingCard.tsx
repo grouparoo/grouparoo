@@ -1,8 +1,8 @@
 import { Models } from "../../utils/apiData";
 import { Form, Card } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import LockedBadge from "../badges/lockedBadge";
-import LoadingButton from "../loadingButton";
+import LockedBadge from "../badges/LockedBadge";
+import LoadingButton from "../LoadingButton";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 
 export default function SettingCard({

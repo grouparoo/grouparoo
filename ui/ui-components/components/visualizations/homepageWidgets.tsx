@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import EnterpriseLink from "../grouparooLink";
+import EnterpriseLink from "../GrouparooLink";
 import { Card, Table, ProgressBar } from "react-bootstrap";
 import { Misc, Models } from "../../utils/apiData";
 import Moment from "react-moment";
-import { GrouparooChart, ChartLinData } from "../visualizations/grouparooChart";
+import { GrouparooChart, ChartLinData } from "./GrouparooChart";
 import { StatusHandler } from "../../utils/statusHandler";
-import Loading from "../loader";
+import Loading from "../Loader";
 
 const maxSampleLength = 30;
 

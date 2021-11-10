@@ -2,10 +2,10 @@ import Head from "next/head";
 import { useState } from "react";
 import { UseApi } from "../../../../../hooks/useApi";
 import { Form, Alert } from "react-bootstrap";
-import AppSelectorList from "../../../../../components/appSelectorList";
+import AppSelectorList from "../../../../../components/AppSelectorList";
 import { useRouter } from "next/router";
 import { Actions } from "../../../../../utils/apiData";
-import LinkButton from "../../../../../components/linkButton";
+import LinkButton from "../../../../../components/LinkButton";
 
 export default function Page(props) {
   const {

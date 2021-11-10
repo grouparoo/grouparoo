@@ -5,15 +5,15 @@ import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { Row, Col, Button, ButtonGroup, Alert, Card } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import EnterpriseLink from "../grouparooLink";
-import Pagination from "../pagination";
-import LoadingTable from "../loadingTable";
-import RunDurationChart from "../visualizations/runDurations";
+import EnterpriseLink from "../GrouparooLink";
+import Pagination from "../Pagination";
+import LoadingTable from "../LoadingTable";
+import RunDurationChart from "../visualizations/RunDurations";
 import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { RunsHandler } from "../../utils/runsHandler";
-import { DurationTime } from "../durationTime";
+import { DurationTime } from "../DurationTime";
 import { NextPageContext } from "next";
 
 export default function RunsList(props) {

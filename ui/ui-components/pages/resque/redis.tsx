@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { UseApi } from "../../hooks/useApi";
 import { Table, Row, Col } from "react-bootstrap";
 import Head from "next/head";
-import ResqueTabs from "../../components/tabs/resque";
+import ResqueTabs from "../../components/tabs/Resque";
 import { ErrorHandler } from "../../utils/errorHandler";
 
 export default function ResqueRedis(props) {

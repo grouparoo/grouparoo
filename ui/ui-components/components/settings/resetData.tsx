@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { UseApi } from "../../hooks/useApi";
 import { Card } from "react-bootstrap";
-import LoadingButton from "../loadingButton";
+import LoadingButton from "../LoadingButton";
 import { Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { SuccessHandler } from "../../utils/successHandler";

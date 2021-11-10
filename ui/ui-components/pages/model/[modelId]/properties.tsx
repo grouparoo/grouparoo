@@ -6,14 +6,14 @@ import { Alert } from "react-bootstrap";
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
-import GrouparooLink from "../../../components/grouparooLink";
-import Pagination from "../../../components/pagination";
-import LoadingTable from "../../../components/loadingTable";
-import StateBadge from "../../../components/badges/stateBadge";
+import GrouparooLink from "../../../components/GrouparooLink";
+import Pagination from "../../../components/Pagination";
+import LoadingTable from "../../../components/LoadingTable";
+import StateBadge from "../../../components/badges/StateBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
-import LinkButton from "../../../components/linkButton";
+import LinkButton from "../../../components/LinkButton";
 
 export default function Page(props) {
   const {

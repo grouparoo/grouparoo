@@ -1,4 +1,4 @@
-import Selector, { BadgeProp } from "./selector";
+import Selector, { BadgeProp } from "./Selector";
 import { CardDeck } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { Actions } from "../utils/apiData";

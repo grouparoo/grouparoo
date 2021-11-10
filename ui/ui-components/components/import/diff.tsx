@@ -1,5 +1,5 @@
 import { Badge } from "react-bootstrap";
-import EnterpriseLink from "../grouparooLink";
+import EnterpriseLink from "../GrouparooLink";
 import { Models } from "../../utils/apiData";
 
 function onlyUnique(value, index, self) {

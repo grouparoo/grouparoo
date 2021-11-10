@@ -4,13 +4,13 @@ import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Pagination from "../pagination";
-import LoadingTable from "../loadingTable";
+import Pagination from "../Pagination";
+import LoadingTable from "../LoadingTable";
 import { Alert } from "react-bootstrap";
 import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
-import { ImportRecordPropertiesDiff, ImportGroupsDiff } from "./diff";
+import { ImportRecordPropertiesDiff, ImportGroupsDiff } from "./Diff";
 
 export default function ImportList(props) {
   const {

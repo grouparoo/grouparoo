@@ -5,12 +5,12 @@ import { Tabs, Tab, Row, Col } from "react-bootstrap";
 import { capitalize } from "../../utils/languageHelper";
 import { useRouter } from "next/router";
 import { Models, Actions } from "../../utils/apiData";
-import SettingCard from "../../components/settings/settingCard";
-import ImportAndUpdateAllRecords from "../../components/settings/importAndUpdate";
-import IdentifyingProperty from "../../components/settings/identifyingProperty";
-import ResetCluster from "../../components/settings/resetCluster";
-import ResetData from "../../components/settings/resetData";
-import ResetCache from "../../components/settings/resetCache";
+import SettingCard from "../../components/settings/SettingCard";
+import ImportAndUpdateAllRecords from "../../components/settings/ImportAndUpdate";
+import IdentifyingProperty from "../../components/settings/IdentifyingProperty";
+import ResetCluster from "../../components/settings/ResetCluster";
+import ResetData from "../../components/settings/ResetData";
+import ResetCache from "../../components/settings/ResetCache";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { SuccessHandler } from "../../utils/successHandler";
 

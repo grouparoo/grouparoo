@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { UseApi } from "../../hooks/useApi";
-import LoadingButton from "../loadingButton";
+import LoadingButton from "../LoadingButton";
 import { useRouter } from "next/router";
 import { Actions, Models } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";

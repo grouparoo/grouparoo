@@ -1,4 +1,4 @@
-import NotificationTabs from "../../../components/tabs/notification";
+import NotificationTabs from "../../../components/tabs/Notification";
 import Head from "next/head";
 import { UseApi } from "../../../hooks/useApi";
 import { Button } from "react-bootstrap";

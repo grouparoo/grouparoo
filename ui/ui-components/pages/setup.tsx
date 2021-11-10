@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { UseApi } from "../hooks/useApi";
 import { Actions, Models } from "../utils/apiData";
 import { Row, Col, ProgressBar, Alert } from "react-bootstrap";
-import SetupStepCard from "../components/setupSteps/setupStepCard";
+import SetupStepCard from "../components/setupSteps/SetupStepCard";
 import { ErrorHandler } from "../utils/errorHandler";
 import { SetupStepHandler } from "../utils/setupStepsHandler";
-import Loader from "../components/loader";
+import Loader from "../components/Loader";
 
 export default function Page(props) {
   const {

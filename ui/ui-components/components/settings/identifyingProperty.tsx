@@ -2,7 +2,7 @@ import { UseApi } from "../../hooks/useApi";
 import { Card, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { Models } from "../../utils/apiData";
-import LoadingButton from "../loadingButton";
+import LoadingButton from "../LoadingButton";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { SuccessHandler } from "../../utils/successHandler";
 

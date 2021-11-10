@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import PropertyTab from "../../components/tabs/property";
-import AppTab from "../../components/tabs/app";
+import PropertyTab from "../../components/tabs/Property";
+import AppTab from "../../components/tabs/App";
 
 describe("<PropertyTab />", () => {
   const useRouter = jest.spyOn(require("next/router"), "useRouter");

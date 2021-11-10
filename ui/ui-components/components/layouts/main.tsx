@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import { Row, Col } from "react-bootstrap";
 import { isBrowser } from "../../utils/isBrowser";
-import SuccessAlert from "../alerts/success";
-import ErrorAlert from "../alerts/error";
-import Navigation from "../navigation";
+import SuccessAlert from "../alerts/Success";
+import ErrorAlert from "../alerts/Error";
+import Navigation from "../Navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import HydrationError from "../alerts/hydrationError";
+import HydrationError from "../alerts/HydrationError";
 import { SuccessHandler } from "../../utils/successHandler";
 import { ErrorHandler } from "../../utils/errorHandler";
 

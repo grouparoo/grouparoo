@@ -1,5 +1,5 @@
 import Head from "next/head";
-import RunsList from "../components/runs/list";
+import RunsList from "../components/runs/List";
 
 export default function Page(props) {
   return (

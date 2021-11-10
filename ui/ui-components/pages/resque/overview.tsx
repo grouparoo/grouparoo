@@ -6,9 +6,9 @@ import { Row, Col, Card, Table, Alert } from "react-bootstrap";
 import {
   GrouparooChart,
   ChartLinData,
-} from "../../components/visualizations/grouparooChart";
+} from "../../components/visualizations/GrouparooChart";
 import Head from "next/head";
-import ResqueTabs from "../../components/tabs/resque";
+import ResqueTabs from "../../components/tabs/Resque";
 
 const maxSampleLength = 30;
 const DELAY = 1000 * 3;
