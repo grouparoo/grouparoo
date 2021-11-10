@@ -44,8 +44,11 @@ describe("create and delete", () => {
     "can run 'grouparoo run' to completion without config",
     async () => {
       const { stdout } = await spawnPromise(bin, ["run"]);
-      expect(stdout).toContain("deleted GrouparooModel `Users`");
-      expect(stdout).toContain("deleted GrouparooModel `Admins`");
+      expect(stdout).toContain("deleted GrouparooModel");
+      expect(stdout).toContain("class=record:destroy");
+      expect(stdout).toContain("class=source:destroy");
+      expect(stdout).toContain("class=app:destroy");
+      expect(stdout).toContain("class=destination:destroy");
       expect(stdout).toContain("All Tasks Complete");
     },
     60 * 1000 * 5
