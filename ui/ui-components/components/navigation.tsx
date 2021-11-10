@@ -7,11 +7,11 @@ import {
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
 import { UseApi } from "../hooks/useApi";
-import SetupStepsNavProgressBar from "./navigation/setupStepsNavProgressBar";
-import RunningRunsBadge from "./navigation/runningRunsBadge";
-import ResqueFailedCountBadge from "./navigation/resqueFailedBadgeCount";
-import UnreadNotificationsBadge from "./navigation/unreadNotificationsBadge";
-import HighlightingNavLink from "./navigation/highlightingNavLink";
+import SetupStepsNavProgressBar from "./navigation/SetupStepsNavProgressBar";
+import RunningRunsBadge from "./navigation/RunningRunsBadge";
+import ResqueFailedCountBadge from "./navigation/ResqueFailedBadgeCount";
+import UnreadNotificationsBadge from "./navigation/UnreadNotificationsBadge";
+import HighlightingNavLink from "./navigation/HighlightingNavLink";
 import { Actions } from "../utils/apiData";
 import { ErrorHandler } from "../utils/errorHandler";
 import { SetupStepHandler } from "../utils/setupStepsHandler";
@@ -19,7 +19,7 @@ import { SessionHandler } from "../utils/sessionHandler";
 import { StatusHandler } from "../utils/statusHandler";
 import { truncate } from "../utils/truncate";
 import { onChangeModelId } from "../utils/modelHelper";
-import LinkButton from "./linkButton";
+import LinkButton from "./LinkButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 
 export const navLiStyle = { marginTop: 20, marginBottom: 20 };

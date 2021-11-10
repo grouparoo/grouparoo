@@ -1,5 +1,5 @@
 import Head from "next/head";
-import ImportList from "../components/import/list";
+import ImportList from "../components/import/List";
 
 export default function Page(props) {
   return (

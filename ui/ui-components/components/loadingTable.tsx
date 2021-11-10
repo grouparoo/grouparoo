@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Table } from "react-bootstrap";
-import Loader from "./loader";
+import Loader from "./Loader";
 
 interface Props {
   loading: boolean;

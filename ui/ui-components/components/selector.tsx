@@ -1,4 +1,4 @@
-import AppIcon from "./appIcon";
+import AppIcon from "./AppIcon";
 import { Row, Col, Badge } from "react-bootstrap";
 
 export interface BadgeProp {

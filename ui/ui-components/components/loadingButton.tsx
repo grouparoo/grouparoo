@@ -1,6 +1,6 @@
 import { Button, ButtonProps } from "react-bootstrap";
 import { GrouparooUIEdition, grouparooUiEdition } from "../utils/uiEdition";
-import Loader from "./loader";
+import Loader from "./Loader";
 
 export default function LoadingButton(
   props: ButtonProps & {

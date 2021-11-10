@@ -1,4 +1,4 @@
-import Loader from "./loader";
+import Loader from "./Loader";
 import { Table, Form, Button } from "react-bootstrap";
 import { Models } from "../utils/apiData";
 

@@ -1,4 +1,4 @@
-import { GrouparooChart, ChartLinData } from "../visualizations/grouparooChart";
+import { GrouparooChart, ChartLinData } from "./GrouparooChart";
 import { Models } from "../../utils/apiData";
 
 export default function RunDurationChart({ runs }: { runs: Models.RunType[] }) {
