@@ -164,7 +164,7 @@ export class Plugins extends Initializer {
             .includes(connection.name)
         ) {
           errors.push(
-            `a plugin connection named ${connection.name} is already registered (${connection.name})`
+            `a plugin connection named ${connection.name} is already registered`
           );
         }
         if (!connection.apps || connection.apps.length < 1) {
