@@ -9,7 +9,7 @@ import { getChangedRowCount } from "./getChangedRowCount";
 
 export function getConnection() {
   return buildConnection({
-    apps: ["snowflake"],
+    apps: ["snowflake", "snowflake-keypair"],
     name: "snowflake-import-table",
     displayName: "Snowflake Table Import",
     description: "Import or update Records from a Snowflake database table.",
