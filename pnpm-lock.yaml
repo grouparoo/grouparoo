@@ -620,6 +620,7 @@ importers:
       prettier: 2.4.1
       replace-in-files: 3.0.0
       sequelize: 6.9.0
+      sqlite3: 5.0.2
       ts-jest: 27.0.7
       typescript: 4.4.4
       uuid: 8.3.2
@@ -634,7 +635,8 @@ importers:
       pg: 8.7.1
       prettier: 2.4.1
       replace-in-files: 3.0.0
-      sequelize: 6.9.0_pg@8.7.1
+      sequelize: 6.9.0_pg@8.7.1+sqlite3@5.0.2
+      sqlite3: 5.0.2
       uuid: 8.3.2
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -13649,7 +13651,7 @@ packages:
       - supports-color
     dev: true
 
-  /sequelize/6.9.0_pg@8.7.1:
+  /sequelize/6.9.0_pg@8.7.1+sqlite3@5.0.2:
     resolution: {integrity: sha512-tFROh9T9GgyY6aTV2+aGdfVNvrppuTOo1EFln9AtV8wXJTOOr7Nan7pZum5oLy87CGWl0YeHzAwg99tz04OqNA==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
@@ -13683,6 +13685,7 @@ packages:
       retry-as-promised: 3.2.0
       semver: 7.3.5
       sequelize-pool: 6.1.0
+      sqlite3: 5.0.2
       toposort-class: 1.0.1
       uuid: 8.3.2
       validator: 13.7.0
@@ -14784,7 +14787,7 @@ packages:
       '@types/jest': 27.0.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.3.1
+      jest: 27.3.1_ts-node@10.2.1
       jest-util: 27.3.1
       json5: 2.2.0
       lodash.memoize: 4.1.2

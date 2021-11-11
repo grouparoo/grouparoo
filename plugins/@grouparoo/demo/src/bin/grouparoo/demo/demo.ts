@@ -22,6 +22,7 @@ const TYPES = {
   postgres: "(default) load source data into local Postgres database",
   mongo: "load specified source data into local MongoDB database",
   mysql: "load specified source data into local MySQL database",
+  sqlite: "load specified source data into local SQLite database",
   redshift: "assumes a Redshift instance with data already present",
   snowflake: "assumes a Snowflake instance with data already present",
   bigquery: "assumes a BigQuery instance with data already present",
