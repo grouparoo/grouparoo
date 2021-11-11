@@ -535,23 +535,21 @@ export namespace helper {
     opts: { saveExports?: boolean } = { saveExports: false }
   ) {
     const arrayedArgs = {};
-    let foundDirectlyMapped = false;
-    const directlyMappedProperties = await Property.findAll({
+    let foundPrimaryKeyProperty = false;
+    const primaryKeyProperties = await Property.findAll({
       where: { isPrimaryKey: true },
     });
 
-    const directlyMappedPropertyKeys = directlyMappedProperties.map(
-      (p) => p.key
-    );
+    const primaryKeyPropertyKeys = primaryKeyProperties.map((p) => p.key);
 
     for (const k in args) {
-      if (directlyMappedPropertyKeys.includes(k)) foundDirectlyMapped = true;
+      if (primaryKeyPropertyKeys.includes(k)) foundPrimaryKeyProperty = true;
       arrayedArgs[k] = [args[k]];
     }
 
-    if (!foundDirectlyMapped) {
+    if (!foundPrimaryKeyProperty) {
       throw new Error(
-        `The arguments provided must contain key/value pairs for one of the following: ${directlyMappedPropertyKeys.join(
+        `The arguments provided must contain key/value pairs for one of the following: ${primaryKeyPropertyKeys.join(
           ", "
         )}`
       );
