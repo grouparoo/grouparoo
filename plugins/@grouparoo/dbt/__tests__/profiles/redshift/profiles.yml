@@ -1,4 +1,4 @@
-test_grouparoo_record:
+test_grouparoo_profile:
   target: dev
   outputs:
     password:
@@ -25,7 +25,7 @@ test_grouparoo_record:
       cluster_id: [cluster_id]
       host: hostname.region.redshift.amazonaws.com
       user: alice
-      iam_record: data_engineer # optional
+      iam_profile: data_engineer # optional
       iam_duration_seconds: 900 # optional
       autocreate: true # optional
       db_groups: ["analysts"] # optional

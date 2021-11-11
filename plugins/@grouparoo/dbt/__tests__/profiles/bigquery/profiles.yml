@@ -1,4 +1,4 @@
-test_grouparoo_record:
+test_grouparoo_profile:
   target: dev
   outputs:
     oauth:

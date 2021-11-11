@@ -5,8 +5,8 @@ name: "default_name"
 version: "1.0.0"
 config-version: 2
 
-# This setting configures which "record" dbt uses for this project.
-record: "test_grouparoo_record"
+# This setting configures which "profile" dbt uses for this project.
+profile: "test_grouparoo_profile"
 
 # These configurations specify where dbt should look for different types of files.
 # The `source-paths` config, for example, states that models in this project can be
