@@ -13,10 +13,10 @@ import {
 } from "@grouparoo/app-templates/dist/source/query";
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
-import { connect } from "@grouparoo/mysql/dist/lib/connect";
 import { disconnect } from "@grouparoo/mysql/dist/lib/disconnect";
 import { getTables } from "@grouparoo/mysql/dist/lib/table-import/getTables";
 import { getColumns } from "@grouparoo/mysql/dist/lib/table-import/getColumns";
+import { connect } from "../lib/connect";
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
 import { getConnection as getExportConnection } from "../lib/export/connection";
@@ -60,8 +60,8 @@ export class Plugins extends Initializer {
               key: "port",
               displayName: "Port",
               required: false,
-              description: "The ClickHouse MySQL interface port.",
-              defaultValue: 9004,
+              description: "The ClickHouse HTTP interface port.",
+              defaultValue: 8123,
             },
             {
               key: "database",

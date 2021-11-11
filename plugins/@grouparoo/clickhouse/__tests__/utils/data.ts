@@ -1,9 +1,10 @@
 import { SimpleAppOptions } from "@grouparoo/core";
-import { connect } from "@grouparoo/mysql/dist/lib/connect";
 import path from "path";
 import fs from "fs";
-import parse from "csv-parse/lib/sync";
 import { CastingFunction } from "csv-parse";
+import parse from "csv-parse/lib/sync";
+
+import { connect } from "../../src/lib/connect";
 
 export const usersTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
 export const purchasesTableName = `purchases_${
@@ -82,9 +83,7 @@ PRIMARY KEY (\`id\`)
 // UNIQUE KEY userId_group (\`userId\`, \`group\`)
 
 export const appOptions: SimpleAppOptions = {
-  user: "default",
   database: "grouparoo_test",
-  port: 9004,
 };
 const appId = "app_31bb06e8-0a4e-49c3-ad42-545f2e8662e1";
 
@@ -103,7 +102,7 @@ export async function getClient() {
 
 export async function endClient() {
   if (client) {
-    await client.end();
+    await client.asyncEnd();
     client = null;
   }
 }

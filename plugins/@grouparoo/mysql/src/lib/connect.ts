@@ -6,12 +6,13 @@ export type QueryResultObject = Record<string, any>;
 
 export type ColumnValue = string | number;
 
-export interface MySQLConnection extends mysql.Pool {
+export interface MySQLConnection {
   asyncQuery: (
     query: string,
     replacementValues?: Record<string, any> | (ColumnValue | ColumnValue[])[]
   ) => Promise<QueryResultObject[]>;
   asyncEnd: () => Promise<void>;
+  getMajorVersion: () => Promise<number>;
 }
 
 export const connect: ConnectPluginAppMethod<MySQLConnection> = async ({
@@ -75,29 +76,30 @@ export const connect: ConnectPluginAppMethod<MySQLConnection> = async ({
     });
   };
 
-  const getMajorVersion = async function () {
-    return new Promise((resolve, reject) => {
-      if (pool["cachedMajorVersion"]) {
-        resolve(pool["cachedMajorVersion"]);
-      } else {
-        this.asyncQuery("SELECT VERSION() AS version")
-          .then((rows) => {
-            const row = rows[0];
-            if (row && row.version) {
-              // just the major version number
-              const version = parseInt(row.version);
-              pool["cachedMajorVersion"] = version;
-              resolve(version);
-            } else {
+  const getMajorVersion: MySQLConnection["getMajorVersion"] =
+    async function () {
+      return new Promise((resolve, reject) => {
+        if (pool["cachedMajorVersion"]) {
+          resolve(pool["cachedMajorVersion"]);
+        } else {
+          this.asyncQuery("SELECT VERSION() AS version")
+            .then((rows) => {
+              const row = rows[0];
+              if (row && row.version) {
+                // just the major version number
+                const version = parseInt(row.version);
+                pool["cachedMajorVersion"] = version;
+                resolve(version);
+              } else {
+                resolve(0);
+              }
+            })
+            .catch((err) => {
               resolve(0);
-            }
-          })
-          .catch((err) => {
-            resolve(0);
-          });
-      }
-    });
-  };
+            });
+        }
+      });
+    };
 
   return Object.assign(pool, { asyncQuery, asyncEnd, getMajorVersion });
 };
