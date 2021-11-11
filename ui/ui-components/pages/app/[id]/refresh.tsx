@@ -45,11 +45,7 @@ export default function Page(props) {
   const [ranTest, setRanTest] = useState(false);
   const { id } = router.query;
   const { schedules, runs, sources } = props;
-  const disabled =
-    editing === false ||
-    app.locked !== null ||
-    appRefreshQuery.locked !== null ||
-    loading;
+  const disabled = app?.locked !== null || appRefreshQuery?.locked !== null;
 
   async function create(event) {
     event.preventDefault();
@@ -82,6 +78,7 @@ export default function Page(props) {
 
   async function editMode() {
     setEditing(true);
+    setLoading(false);
   }
 
   async function edit(event) {
@@ -185,7 +182,11 @@ export default function Page(props) {
         />
         <Container>
           <p>{app.name} has no App Refresh Query.</p>
-          <Button onClick={create} disabled={disabled} className="mx-auto">
+          <Button
+            onClick={create}
+            disabled={app.locked !== null}
+            className="mx-auto"
+          >
             Add an App Refresh Query
           </Button>
         </Container>
@@ -224,7 +225,7 @@ export default function Page(props) {
                 <Form.Control
                   required
                   as="textarea"
-                  disabled={disabled}
+                  disabled={disabled || !editing}
                   rows={6}
                   value={appRefreshQuery.refreshQuery}
                   onChange={(e) => update(e)}
@@ -371,27 +372,31 @@ Page.getInitialProps = async (ctx) => {
 
   const { sources } = await execApi("get", `/sources`);
 
-  const schedules = sources
-    .filter(
-      (source) =>
-        (source.appId = app.id && source.schedule?.refreshEnabled == true)
-    )
-    .map((source) => source.schedule);
-
   let scheduleRuns = [];
-  for (const schedule of schedules) {
-    const { runs } = await execApi("get", `/runs`, {
-      creatorId: schedule.id,
-      limit: 1,
-    });
-    scheduleRuns.push(runs[0]);
+  let schedules = [];
+
+  if (sources) {
+    schedules = sources
+      .filter(
+        (source) =>
+          (source.appId = app.id && source.schedule?.refreshEnabled == true)
+      )
+      .map((source) => source.schedule);
+
+    for (const schedule of schedules) {
+      const { runs } = await execApi("get", `/runs`, {
+        creatorId: schedule.id,
+        limit: 1,
+      });
+      scheduleRuns.push(runs[0]);
+    }
   }
 
   return {
     app,
     appRefreshQuery: foundAppRefreshQuery || null,
-    sources,
-    schedules,
+    sources: sources || null,
+    schedules: schedules || null,
     runs: scheduleRuns || null,
   };
 };

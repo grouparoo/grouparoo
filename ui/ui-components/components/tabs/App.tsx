@@ -3,9 +3,11 @@ import { Models } from "../../utils/apiData";
 
 export default function AppTabs({ app }: { app: Models.AppType }) {
   const tabs = ["edit"];
-  if (app.appRefreshQuery !== null) {
+
+  if (app.refreshQueryAvailable == true) {
     tabs.push("refresh");
   }
+
   return (
     <div>
       <Tabs name={app.name} draftType={app.type} tabs={tabs} />

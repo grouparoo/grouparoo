@@ -198,6 +198,7 @@ export class App extends LoggedModel<App> {
     const provides = this.provides();
     const { pluginApp } = await this.getPlugin();
 
+    const refreshQueryAvailable = await this.refreshQueryAvailable();
     const appRefreshQuery: AppRefreshQuery = await this.$get(
       "appRefreshQuery",
       { scope: null }
@@ -213,10 +214,19 @@ export class App extends LoggedModel<App> {
       options,
       provides,
       pluginApp,
+      refreshQueryAvailable,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
       appRefreshQuery: appRefreshQuery ? await appRefreshQuery.apiData() : null,
     };
+  }
+
+  async refreshQueryAvailable() {
+    const { pluginApp } = await this.getPlugin();
+    if (typeof pluginApp?.methods?.appQuery !== "function") {
+      return false;
+    }
+    return true;
   }
 
   /**
