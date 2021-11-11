@@ -105,6 +105,7 @@ export default function Page({
                         </strong>
                       </a>
                     </Link>
+                    {rule.isPrimaryKey && " (primary)"}
                   </td>
                   <td>{rule.type}</td>
                   <td>

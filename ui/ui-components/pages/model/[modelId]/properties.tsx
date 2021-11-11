@@ -147,6 +147,7 @@ export default function Page(props) {
                       </strong>
                     </a>
                   </GrouparooLink>
+                  {rule.isPrimaryKey && " (primary)"}
                 </td>
                 <td>{rule.type}</td>
                 <td>{rule.unique ? "✅" : null}</td>
