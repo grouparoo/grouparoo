@@ -1,0 +1,16 @@
+{
+  "class": "Property",
+  "id": "purchase_list_reverse",
+  "type": "string",
+  "key": "purchaseListRecent",
+  "sourceId": "demo_purchases",
+  "unique": false,
+  "identifying": false,
+  "isArray": true,
+  "options": {
+    "aggregationMethod": "most recent value",
+    "column": "category",
+    "sortColumn": "created_at"
+  },
+  "filters": []
+}

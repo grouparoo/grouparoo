@@ -45,6 +45,8 @@ describe("demo users", () => {
       "last_purchase_date",
       "ltv",
       "purchase_count",
+      "purchase_list",
+      "purchase_list_reverse",
       "user_id",
     ]);
 

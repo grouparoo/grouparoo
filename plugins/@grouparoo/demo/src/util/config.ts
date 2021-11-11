@@ -1,8 +1,10 @@
 import Postgres from "../connections/postgres";
 import Mongo from "../connections/mongo";
 import BigQuery from "../connections/bigquery";
+import Redshift from "../connections/redshift";
 import Snowflake from "../connections/snowflake";
 import MySQL from "../connections/mysql";
+import SQLite from "../connections/sqlite";
 import Connection from "./connection";
 
 class Config {
@@ -36,11 +38,17 @@ class Config {
       case "bigquery":
         this.db = new BigQuery();
         break;
+      case "redshift":
+        this.db = new Redshift();
+        break;
       case "snowflake":
         this.db = new Snowflake();
         break;
       case "mysql":
         this.db = new MySQL();
+        break;
+      case "sqlite":
+        this.db = new SQLite();
         break;
       default:
         throw new Error(`Unknown db type: ${name}`);
@@ -66,9 +74,11 @@ class Config {
         break;
       case "mongo":
       case "bigquery":
-      case "snowflake":
-      case "postgres":
       case "mysql":
+      case "postgres":
+      case "redshift":
+      case "snowflake":
+      case "sqlite":
         this.setDb(type);
         break;
       case "models":

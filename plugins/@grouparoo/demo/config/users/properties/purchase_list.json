@@ -1,0 +1,16 @@
+{
+  "class": "Property",
+  "id": "purchase_list",
+  "type": "string",
+  "key": "purchaseList",
+  "sourceId": "demo_purchases",
+  "unique": false,
+  "identifying": false,
+  "isArray": true,
+  "options": {
+    "aggregationMethod": "least recent value",
+    "column": "category",
+    "sortColumn": "created_at"
+  },
+  "filters": []
+}

@@ -1,10 +1,10 @@
 import sharedExecSync from "./exec";
-import { api } from "actionhero";
+import { api, log } from "actionhero";
 import glob from "glob";
 import fs from "fs";
+import path from "path";
 import Prettier from "prettier";
 import Database from "./database";
-import { log } from "actionhero";
 
 export async function execSync(command) {
   log("    Running: " + command, "debug");
@@ -13,14 +13,28 @@ export async function execSync(command) {
 
 export async function prettier(fileOrDirPath: string) {
   const stats = fs.statSync(fileOrDirPath);
-  if (stats.isDirectory) {
-    const files = glob.sync(`${fileOrDirPath}/**/*.{json,js}`);
+  if (stats.isDirectory()) {
+    const files = glob.sync(`${fileOrDirPath}/**/*`);
     for (const file of files) await prettier(file);
   } else {
-    const text = fs.readFileSync(fileOrDirPath).toString();
-    const pOptions = await Prettier.resolveConfig(process.cwd());
-    const formatted = Prettier.format(text, pOptions);
-    fs.writeFileSync(fileOrDirPath, formatted);
+    const ext = path.extname(fileOrDirPath);
+    let parser = null;
+    switch (ext) {
+      case ".json":
+        parser = "json";
+        break;
+      case ".js":
+        parser = "babel";
+        break;
+      default:
+        log(`Unknown prettier file type: ${fileOrDirPath}`);
+        break;
+    }
+    if (parser) {
+      const text = fs.readFileSync(fileOrDirPath).toString();
+      const formatted = Prettier.format(text, { parser });
+      fs.writeFileSync(fileOrDirPath, formatted);
+    }
   }
 }
 

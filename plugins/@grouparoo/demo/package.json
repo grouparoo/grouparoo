@@ -39,6 +39,7 @@
     "prettier": "2.4.1",
     "replace-in-files": "3.0.0",
     "sequelize": "6.9.0",
+    "sqlite3": "5.0.2",
     "uuid": "8.3.2"
   },
   "devDependencies": {
