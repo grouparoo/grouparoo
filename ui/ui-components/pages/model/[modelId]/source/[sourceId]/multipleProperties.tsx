@@ -51,8 +51,6 @@ export default function Page(props) {
     return { key: dpo.key, defaultValue: defaultOpt.key };
   });
 
-  console.log(optionWithDefaultOptionDefaults);
-
   async function loadProperties() {
     const response: Actions.PropertiesList = await execApi(
       "get",

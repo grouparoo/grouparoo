@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useState } from "react";
 import { Form, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
+import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { UseApi } from "../../../../../hooks/useApi";
 import AppSelectorList from "../../../../../components/AppSelectorList";
 import { Actions } from "../../../../../utils/apiData";
@@ -9,9 +10,17 @@ import LinkButton from "../../../../../components/LinkButton";
 
 export default function Page(props) {
   const {
+    errorHandler,
     connectionApps,
-  }: { connectionApps: Actions.SourceConnectionApps["connectionApps"] } = props;
+    model,
+  }: {
+    errorHandler: ErrorHandler;
+    connectionApps: Actions.SourceConnectionApps["connectionApps"];
+    model: Actions.ModelView["model"];
+  } = props;
   const router = useRouter();
+  const { execApi } = UseApi(props, errorHandler);
+  const [loading, setLoading] = useState(false);
   const [app, setApp] = useState({ id: null });
 
   const apps = [];
@@ -21,12 +30,33 @@ export default function Page(props) {
     }
   });
 
-  function updateApp({ id }) {
-    setApp({ id });
-    router.push(
-      `/model/[modelId]/source/new/[appId]`,
-      `/model/${router.query.modelId}/source/new/${id}`
+  async function updateApp(
+    connectionApp: Actions.SourceConnectionApps["connectionApps"][number]["app"]
+  ) {
+    setApp({ id: connectionApp.id });
+    const matchingApps = connectionApps.filter(
+      (a) => a.app.id === connectionApp.id
     );
+
+    if (matchingApps.length > 1) {
+      router.push(`/model/${model.id}/source/new/${connectionApp.id}`);
+    } else {
+      if (loading) return;
+
+      setLoading(true);
+      const response: Actions.SourceCreate = await execApi("post", `/source`, {
+        appId: connectionApp.id,
+        modelId: model.id,
+        type: matchingApps[0].connection.name,
+      });
+      if (response?.source) {
+        router.push(
+          `/model/${response.source.modelId}/source/${response.source.id}/edit`
+        );
+      } else {
+        setLoading(false);
+      }
+    }
   }
 
   if (apps.length === 0) {
@@ -66,6 +96,8 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
+  const { modelId } = ctx.query;
   const { connectionApps } = await execApi("get", `/sources/connectionApps`);
-  return { connectionApps };
+  const { model } = await execApi("get", `/model/${modelId}`);
+  return { connectionApps, model };
 };

@@ -3,12 +3,10 @@ import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState, useEffect } from "react";
 import { Form, Modal, Spinner, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
-
 import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 import { EventDispatcher } from "@grouparoo/ui-components/utils/eventDispatcher";
-
-import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 class CustomErrorHandler extends EventDispatcher<{ error: string }> {
   error: Error | string | any;
@@ -35,17 +33,19 @@ class CustomErrorHandler extends EventDispatcher<{ error: string }> {
 export default function Page(props) {
   const {
     errorHandler,
-    apps,
-    plugins,
+    availablePlugins,
+    installedPlugins,
   }: {
     errorHandler: ErrorHandler;
-    apps: Actions.AppOptions["types"];
-    plugins: Actions.PluginsAvailableList["plugins"];
+    installedPlugins: Actions.AppOptions["plugins"];
+    availablePlugins: Actions.PluginsAvailableList["plugins"];
   } = props;
 
   const router = useRouter();
   const { execApi } = UseApi(props, new CustomErrorHandler(errorHandler));
-  const [app, setApp] = useState<Models.AppType>({ type: "" });
+  const [plugin, setPlugin] = useState<
+    Partial<Actions.AppOptions["plugins"][number]>
+  >({ name: "" });
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showSpinner, setShowSpinner] = useState(true);
@@ -55,73 +55,105 @@ export default function Page(props) {
   ] = useState(false);
 
   async function resetPluginsAndApps() {
-    const { types }: Actions.AppOptions = await execApi("get", `/appOptions`);
-    const { plugins } = await execApi("get", `/plugins/available`);
-    const apps = types.filter((app) => app.addible !== false);
-    prepareCards(apps, plugins);
+    const { plugins: _installedPlugins }: Actions.AppOptions = await execApi(
+      "get",
+      `/appOptions`
+    );
+    const { plugins: _availablePlugins }: Actions.PluginsAvailableList =
+      await execApi("get", `/plugins/available`);
+    prepareCards(_installedPlugins, _availablePlugins);
   }
 
-  function prepareCards(apps, plugins) {
-    const pluginList = plugins
-      .filter((plugin) => !plugin.installed)
-      .map((plugin) => {
-        return {
-          name: plugin.name,
-          plugin: {
-            icon: plugin.imageUrl,
-            name: plugin.packageName,
-            installed: plugin.installed,
-          },
-          provides: {
-            source: plugin.source,
-            destination: plugin.destination,
-          },
-        };
-      });
-    const appList = apps
-      .sort((a, b) => (a.name > b.name ? 1 : -1))
-      .map((app) => ({
-        ...app,
-        plugin: { ...app.plugin, installed: true },
-      }));
-    setCards(appList.concat(pluginList));
+  function prepareCards(
+    _installedPlugins: Actions.AppOptions["plugins"],
+    _availablePlugins: Actions.PluginsAvailableList["plugins"]
+  ) {
+    // const availableList = _availablePlugins
+    //   .filter((plugin) => !plugin.installed)
+    //   .map((plugin) => {
+    //     return {
+    //       name: plugin.name,
+    //       plugin: {
+    //         icon: plugin.imageUrl,
+    //         name: plugin.packageName,
+    //         installed: plugin.installed,
+    //       },
+    //       provides: {
+    //         source: plugin.source,
+    //         destination: plugin.destination,
+    //       },
+    //     };
+    //   });
+    // const installedList = _installedPlugins
+    //   .sort((a, b) => (a.name > b.name ? 1 : -1))
+    //   .map((plugin) => ({
+    //     ...app,
+    //     plugin: { ...plugin, installed: true },
+    //   }));
+    setCards(
+      []
+        .concat(
+          _installedPlugins.map((p) => {
+            return { ...p, installed: true };
+          }),
+          _availablePlugins.filter((plugin) => !plugin.installed)
+        )
+        .sort((a, b) => (a.name > b.name ? 1 : -1))
+    );
   }
 
   useEffect(() => {
-    prepareCards(apps, plugins);
-  }, [apps, plugins]);
+    prepareCards(installedPlugins, availablePlugins);
+  }, [installedPlugins, availablePlugins]);
 
-  async function handleClick(card) {
+  async function handleClick(plugin: Actions.AppOptions["plugins"][number]) {
     if (loading) return;
+    // @ts-ignore
+    if (!plugin.installed) return installPlugin(plugin);
 
-    const { name: type } = card;
-
-    if (!card.plugin.installed) return installPlugin(card);
-
-    setApp({ type });
-    setLoading(true);
-    const response: Actions.AppCreate = await execApi("post", `/app`, {
-      type,
-    });
-    if (response?.app) {
-      return router.push("/app/[id]/edit", `/app/${response.app.id}/edit`);
+    setPlugin(plugin);
+    if (plugin.apps?.length === 1) {
+      setLoading(true);
+      const response: Actions.AppCreate = await execApi("post", `/app`, {
+        type: plugin.apps[0].name,
+      });
+      if (response?.app) {
+        return router.push("/app/[id]/edit", `/app/${response.app.id}/edit`);
+      } else {
+        setLoading(false);
+      }
     } else {
-      setLoading(false);
+      router.push(`/app/new/${plugin.name}`);
     }
+
+    // router.push(`/app/new/${app.pluginApp.name}`);
+
+    // setApp({ type });
+    // setLoading(true);
+    // const response: Actions.AppCreate = await execApi("post", `/app`, {
+    //   type,
+    // });
+    // if (response?.app) {
+    //   return router.push("/app/[id]/edit", `/app/${response.app.id}/edit`);
+    // } else {
+    //   setLoading(false);
+    // }
   }
 
   function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  async function installPlugin(plugin) {
+  async function installPlugin(
+    plugin: Actions.PluginsAvailableList["plugins"][number]
+  ) {
     setLoading(true);
-    setInstallingMessage(`Installing plugin ${plugin.plugin.name} ...`);
+    setInstallingMessage(`Installing plugin ${plugin.name} ...`);
     const response: Actions.PluginInstall = await execApi(
       "post",
       `/plugin/install`,
       {
-        plugin: plugin.plugin.name,
+        plugin: plugin.name,
         restart: true,
       }
     );
@@ -133,7 +165,7 @@ export default function Page(props) {
       await waitForServer(failTime);
 
       //we only want the plugin type, not the '@grouparoo/'
-      const pluginName = plugin.plugin.name.substring(11);
+      const pluginName = plugin.name.substring(11);
       const newApp: Actions.AppCreate = await execApi("post", `/app`, {
         type: pluginName,
       });
@@ -216,8 +248,8 @@ export default function Page(props) {
       <Form id="form">
         <AppSelectorList
           onClick={handleClick}
-          selectedItem={app}
           items={cards}
+          selectedItem={plugin}
         />
       </Form>
     </>
@@ -226,7 +258,13 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { types }: Actions.AppOptions = await execApi("get", `/appOptions`);
-  const { plugins } = await execApi("get", `/plugins/available`);
-  return { plugins, apps: types.filter((app) => app.addible !== false) };
+  const { plugins: installedPlugins }: Actions.AppOptions = await execApi(
+    "get",
+    `/appOptions`
+  );
+  const { plugins: availablePlugins } = await execApi(
+    "get",
+    `/plugins/available`
+  );
+  return { installedPlugins, availablePlugins };
 };

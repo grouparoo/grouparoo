@@ -40,7 +40,6 @@ export default function Page(props) {
     });
     if (response?.source) {
       router.push(
-        "/model/[modelId]/source/[sourceId]/edit",
         `/model/${response.source.modelId}/source/${response.source.id}/edit`
       );
     } else {

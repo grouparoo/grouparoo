@@ -23,14 +23,14 @@ export default function Page(props) {
     errorHandler,
     successHandler,
     appHandler,
-    types,
+    plugins,
     environmentVariableOptions,
     optionOptions,
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     appHandler: AppHandler;
-    types: Actions.AppOptions["types"];
+    plugins: Actions.AppOptions["plugins"];
     environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
     optionOptions: Actions.AppOptionOptions["options"];
   } = props;
@@ -100,12 +100,9 @@ export default function Page(props) {
     setTestLoading(false);
   }
 
-  let typeOptions = [];
-  types.forEach((type) => {
-    if (app.type === type.name) {
-      typeOptions = type.options;
-    }
-  });
+  const typeOptions = plugins
+    .find((p) => p.apps?.map((a) => a.name).includes(app.type))
+    .apps.find((a) => a.name === app.type).options;
 
   const update = async (event) => {
     const _app = Object.assign({}, app);
@@ -165,9 +162,7 @@ export default function Page(props) {
                   onChange={(e) => update(e)}
                   disabled
                 >
-                  {types.map((type) => (
-                    <option key={`type-${type.name}`}>{type.name}</option>
-                  ))}
+                  <option>{app.type}</option>
                 </Form.Control>
               </Form.Group>
 
@@ -417,10 +412,10 @@ Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { app } = await execApi("get", `/app/${id}`);
-  const { types, environmentVariableOptions } = await execApi(
+  const { plugins, environmentVariableOptions } = await execApi(
     "get",
     `/appOptions`
   );
   const { options } = await execApi("get", `/app/${id}/optionOptions`);
-  return { app, types, environmentVariableOptions, optionOptions: options };
+  return { app, plugins, environmentVariableOptions, optionOptions: options };
 };

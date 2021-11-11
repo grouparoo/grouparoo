@@ -10,25 +10,32 @@ import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
 export default function Page(props) {
   const {
     errorHandler,
-    types,
-  }: { errorHandler: ErrorHandler; types: Actions.AppOptions["types"] } = props;
+    plugins,
+  }: { errorHandler: ErrorHandler; plugins: Actions.AppOptions["plugins"] } =
+    props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
-  const [app, setApp] = useState<Models.AppType>({ type: "" });
+  const [plugin, setPlugin] = useState<
+    Partial<Actions.AppOptions["plugins"][number]>
+  >({ name: "" });
   const [loading, setLoading] = useState(false);
 
-  async function submit({ name: type }) {
+  async function submit(plugin: Actions.AppOptions["plugins"][number]) {
     if (loading) return;
+    setPlugin(plugin);
 
-    setApp({ type });
-    setLoading(true);
-    const response: Actions.AppCreate = await execApi("post", `/app`, {
-      type,
-    });
-    if (response?.app) {
-      return router.push("/app/[id]/edit", `/app/${response.app.id}/edit`);
+    if (plugin.apps?.length === 1) {
+      setLoading(true);
+      const response: Actions.AppCreate = await execApi("post", `/app`, {
+        type: plugin.apps[0].name,
+      });
+      if (response?.app) {
+        return router.push("/app/[id]/edit", `/app/${response.app.id}/edit`);
+      } else {
+        setLoading(false);
+      }
     } else {
-      setLoading(false);
+      router.push(`/app/new/${plugin.name}`);
     }
   }
 
@@ -41,7 +48,11 @@ export default function Page(props) {
       <h1>Add App</h1>
 
       <Form id="form">
-        <AppSelectorList onClick={submit} selectedItem={app} items={types} />
+        <AppSelectorList
+          onClick={submit}
+          selectedItem={plugin}
+          items={plugins}
+        />
       </Form>
     </>
   );
@@ -49,6 +60,6 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { types }: Actions.AppOptions = await execApi("get", `/appOptions`);
-  return { types: types.filter((app) => app.addible !== false) };
+  const { plugins }: Actions.AppOptions = await execApi("get", `/appOptions`);
+  return { plugins };
 };

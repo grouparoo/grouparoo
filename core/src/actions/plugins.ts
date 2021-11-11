@@ -38,13 +38,17 @@ export class PluginsAvailableList extends OptionallyAuthenticatedAction {
     let availablePlugins = await Plugins.availableGrouparooPlugins();
     const installedPlugins = await Plugins.installedPluginVersions();
     const installedPluginNames = installedPlugins.map((plugin) => plugin.name);
-    availablePlugins = availablePlugins.map((plugin) => {
+    const availablePluginsWithInstallStatus: Array<
+      Plugins.GrouparooManifestPackage & {
+        installed?: boolean;
+      }
+    > = availablePlugins.map((plugin) => {
       return {
         ...plugin,
         installed: installedPluginNames.includes(plugin.packageName),
       };
     });
-    return { plugins: availablePlugins };
+    return { plugins: availablePluginsWithInstallStatus };
   }
 }
 
