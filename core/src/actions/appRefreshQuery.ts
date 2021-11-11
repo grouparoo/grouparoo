@@ -1,56 +1,7 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { AppRefreshQuery } from "../models/AppRefreshQuery";
 import { ConfigWriter } from "../modules/configWriter";
-import { APIData } from "../modules/apiData";
 import { AppRefreshQueryOps } from "../modules/ops/appRefreshQuery";
-import { CLS } from "../modules/cls";
-
-export class AppRefreshQueriesList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "appRefreshQueries:list";
-    this.description = "list all the appRefreshQueries";
-    this.permission = { topic: "app", mode: "read" };
-    this.outputExample = {};
-    this.inputs = {
-      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
-      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-      state: { required: false },
-      order: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: [
-          ["appId", "desc"],
-          ["createdAt", "desc"],
-        ],
-      },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const where = {};
-
-    if (params.state) where["state"] = params.state;
-
-    const total = await AppRefreshQuery.scope(null).count({ where });
-
-    const appRefreshQueries = await AppRefreshQuery.scope(null).findAll({
-      where,
-      limit: params.limit,
-      offset: params.offset,
-      order: params.order,
-    });
-
-    return {
-      total,
-      appRefreshQueries: await Promise.all(
-        appRefreshQueries.map((appRefreshQuery) => {
-          return appRefreshQuery.apiData();
-        })
-      ),
-    };
-  }
-}
 
 export class AppRefreshQueryQuery extends AuthenticatedAction {
   constructor() {

@@ -18,7 +18,7 @@ export class AppRefreshQueryQuery extends CLSTask {
   }: {
     appRefreshQueryId: string;
   }) {
-    const appRefreshQuery = await AppRefreshQuery.scope(null).findOne({
+    const appRefreshQuery = await AppRefreshQuery.findOne({
       where: { id: appRefreshQueryId },
     });
 

@@ -4,7 +4,10 @@ import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 
 export namespace AppRefreshQueryOps {
-  export async function runAppQuery(appRefreshQuery: AppRefreshQuery) {
+  export async function runAppQuery(
+    appRefreshQuery: AppRefreshQuery,
+    testQuery?: string
+  ) {
     const app = await appRefreshQuery.$get("app");
     const options = await app.getOptions();
     const { pluginApp } = await app.getPlugin();
@@ -21,7 +24,7 @@ export namespace AppRefreshQueryOps {
       appId: app.id,
       appOptions: options,
       connection,
-      refreshQuery: appRefreshQuery.refreshQuery,
+      refreshQuery: testQuery || appRefreshQuery.refreshQuery,
     });
     const sampleValue = JSON.stringify(
       Array.isArray(responseRows) ? responseRows[0] : responseRows
@@ -64,16 +67,17 @@ export namespace AppRefreshQueryOps {
 
   export async function test(
     appRefreshQuery: AppRefreshQuery,
-    refreshQuery?: string
+    testQuery?: string
   ) {
     let success = false;
     let message: string;
     let error;
 
-    if (refreshQuery) appRefreshQuery.refreshQuery = refreshQuery;
-    //does this need to be a try/catch to catch the error?
     try {
-      const sampleValue = await AppRefreshQueryOps.runAppQuery(appRefreshQuery);
+      const sampleValue = await AppRefreshQueryOps.runAppQuery(
+        appRefreshQuery,
+        testQuery
+      );
       message = sampleValue;
       success = true;
     } catch (err) {

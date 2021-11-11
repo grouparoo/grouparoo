@@ -215,7 +215,7 @@ export class App extends LoggedModel<App> {
       pluginApp,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
-      appRefreshQuery: await appRefreshQuery.apiData(),
+      appRefreshQuery: appRefreshQuery ? await appRefreshQuery.apiData() : null,
     };
   }
 

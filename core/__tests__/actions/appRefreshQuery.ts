@@ -3,7 +3,6 @@ import { specHelper } from "actionhero";
 import { App, Run } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
-  AppRefreshQueriesList,
   AppRefreshQueryCreate,
   AppRefreshQueryDestroy,
   AppRefreshQueryEdit,
@@ -84,17 +83,6 @@ describe("actions/appRefreshQuery", () => {
       id = appRefreshQuery.id;
     });
     describe("with appRefreshQuery", () => {
-      test("an administrator can list all the appRefreshQueries", async () => {
-        connection.params = { csrfToken };
-        const { error, appRefreshQueries, total } =
-          await specHelper.runAction<AppRefreshQueriesList>(
-            "appRefreshQueries:list",
-            connection
-          );
-        expect(error).toBeUndefined();
-        expect(appRefreshQueries.length).toBe(1);
-        expect(appRefreshQueries[0].refreshQuery).toBe("SELECT 'hi' AS name");
-      });
       test("an administrator can edit an appRefreshQuery", async () => {
         connection.params = {
           csrfToken,
