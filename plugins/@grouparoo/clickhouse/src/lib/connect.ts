@@ -45,10 +45,9 @@ class ClickHouseHTTPConnection implements MySQLConnection {
     // Nothing to do!
   }
 
-  public async getMajorVersion(): Promise<number> {
+  public async getMajorVersion(): Promise<never> {
     // Not used in plugin
     throw new Error("Not implemented!");
-    return 0;
   }
 }
 
