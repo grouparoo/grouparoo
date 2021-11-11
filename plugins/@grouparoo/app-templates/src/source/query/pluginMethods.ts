@@ -6,9 +6,9 @@ export { DataResponse, DataResponseRow };
 
 export const queryKey = "query";
 
-export interface ExecuteQueryMethod<Connection = any> {
+export interface ExecuteQueryMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;

@@ -41,9 +41,9 @@ export interface ColumnDefinition {
 export interface ColumnDefinitionMap {
   [columnName: string]: ColumnDefinition;
 }
-export interface GetColumnDefinitionsMethod<Connection = any> {
+export interface GetColumnDefinitionsMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
@@ -51,18 +51,18 @@ export interface GetColumnDefinitionsMethod<Connection = any> {
   }): Promise<ColumnDefinitionMap>;
 }
 
-export interface GetSampleRowsMethod<Connection = any> {
+export interface GetSampleRowsMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
   }): Promise<DataResponseRow[]>;
 }
-export interface GetPropertyValueMethod<Connection = any> {
+export interface GetPropertyValueMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
@@ -102,16 +102,16 @@ export interface TableDefinition {
 export interface TableDefinitionMap {
   [tableName: string]: TableDefinition;
 }
-export interface GetTablesMethod<Connection = any> {
+export interface GetTablesMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     appOptions: SimpleAppOptions;
     appId: string;
   }): Promise<TableDefinitionMap>;
 }
-export interface GetChangedRowsMethod<Connection = any> {
+export interface GetChangedRowsMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
@@ -126,9 +126,9 @@ export interface GetChangedRowsMethod<Connection = any> {
   }): Promise<DataResponseRow[]>;
 }
 
-export interface GetChangedRowCountMethod<Connection = any> {
+export interface GetChangedRowCountMethod<AppConnection = any> {
   (argument: {
-    connection: Connection;
+    connection: AppConnection;
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
