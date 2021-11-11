@@ -116,7 +116,7 @@ describe("tasks/destroy", () => {
           expect(userIdProperty.isPrimaryKey).toBe(true);
         });
 
-        test("it will enqueue destroy task for records with a directlyMapped property set to null", async () => {
+        test("it will enqueue destroy task for records with a primary key property set to null", async () => {
           const record: GrouparooRecord = await helper.factories.record();
           await record.addOrUpdateProperties({
             userId: [null],
@@ -182,7 +182,7 @@ describe("tasks/destroy", () => {
             await model2.destroy();
           });
 
-          test("it will only destroy records from the correct model when there is a null directlyMapped property", async () => {
+          test("it will only destroy records from the correct model when there is a null primary key property", async () => {
             const record: GrouparooRecord = await helper.factories.record({
               modelId: "mod_profiles",
             });
@@ -225,7 +225,7 @@ describe("tasks/destroy", () => {
               await userIdProperty.update({ isPrimaryKey: true });
             });
 
-            test("it will enqueue destroy task by model for records when there is no directlyMapped property", async () => {
+            test("it will enqueue destroy task by model for records when there is no primary key property", async () => {
               const record: GrouparooRecord = await helper.factories.record({
                 modelId: model.id,
               });

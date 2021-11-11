@@ -112,7 +112,7 @@ describe("tasks/source:destroy", () => {
       await source.setMapping({ id: "myUserId" });
       await source.update({ state: "ready" });
 
-      await Property.determineDirectlyMapped(myUserIdProp);
+      await Property.determineIsPrimaryKey(myUserIdProp);
       expect(myUserIdProp.isPrimaryKey).toBe(true);
 
       await source.update({ state: "deleted" });

@@ -33,23 +33,21 @@ export async function loadRecord(
 
   const nonNullProperties = extractNonNullParts(configObject, "properties");
 
-  const directlyMappedProperties = (
-    await Property.findAllWithCache(record.modelId)
-  )
+  const primaryKeyProperties = (await Property.findAllWithCache(record.modelId))
     .filter((p) => p.isPrimaryKey === true)
     .map((p) => p.id);
 
-  let hasDirectlyMapped = false;
+  let hasPrimaryKeyProperty = false;
   for (const propertyId in nonNullProperties) {
-    if (directlyMappedProperties.includes(propertyId)) {
-      hasDirectlyMapped = true;
+    if (primaryKeyProperties.includes(propertyId)) {
+      hasPrimaryKeyProperty = true;
       break;
     }
   }
 
   const serializedProps = JSON.stringify(nonNullProperties);
 
-  if (!hasDirectlyMapped) {
+  if (!hasPrimaryKeyProperty) {
     throw new Error(
       `there are no directly mapped record properties provided in ${serializedProps}`
     );

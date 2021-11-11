@@ -432,7 +432,7 @@ export class Source extends LoggedModel<Source> {
     const properties = await instance.$get("properties");
     for (const i in properties) {
       const property = properties[i];
-      await Property.determineDirectlyMapped(property);
+      await Property.determineIsPrimaryKey(property);
       if (property.changed()) await property.save();
     }
   }
@@ -455,13 +455,13 @@ export class Source extends LoggedModel<Source> {
   }
 
   @BeforeDestroy
-  static async ensureDirectlyMappedPropertyNotInUse(instance: Source) {
-    const directlyMappedProperty = await Property.findOne({
+  static async ensurePrimaryKeyPropertyNotInUse(instance: Source) {
+    const primaryKeyProperty = await Property.findOne({
       where: { sourceId: instance.id, isPrimaryKey: true },
     });
 
-    if (directlyMappedProperty) {
-      await Property.ensureNotInUse(directlyMappedProperty, [instance.id]);
+    if (primaryKeyProperty) {
+      await Property.ensureNotInUse(primaryKeyProperty, [instance.id]);
     }
   }
 
@@ -485,13 +485,13 @@ export class Source extends LoggedModel<Source> {
   }
 
   @AfterDestroy
-  static async destroyDirectlyMappedProperty(instance: Source) {
-    const directlyMappedProperty = await Property.findOne({
+  static async destroyPrimaryKeyProperty(instance: Source) {
+    const primaryKeyProperty = await Property.findOne({
       where: { sourceId: instance.id, isPrimaryKey: true },
     });
 
-    if (directlyMappedProperty) {
-      await directlyMappedProperty.destroy();
+    if (primaryKeyProperty) {
+      await primaryKeyProperty.destroy();
     }
   }
 }

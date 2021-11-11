@@ -624,7 +624,7 @@ describe("models/property", () => {
     await source.destroy();
   });
 
-  describe("directlyMapped", () => {
+  describe("isPrimaryKey", () => {
     let userIdProperty: Property;
     let emailProperty: Property;
 
@@ -637,7 +637,7 @@ describe("models/property", () => {
       });
     });
 
-    test("directlyMapping will be determined as on save", async () => {
+    test("isPrimaryKey will be determined as on save", async () => {
       expect(userIdProperty.isPrimaryKey).toBe(true);
       expect(emailProperty.isPrimaryKey).toBe(false);
     });

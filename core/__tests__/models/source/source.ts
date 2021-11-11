@@ -435,7 +435,7 @@ describe("models/source", () => {
       await foreignOption.destroy();
     });
 
-    test("deleting a source deleted its directly mapped property", async () => {
+    test("deleting a source deleted its primary key property", async () => {
       const source: Source = await helper.factories.source();
       await source.bootstrapUniqueProperty("myUserId", "integer", "id");
       await source.setOptions({ table: "some table" });
@@ -443,10 +443,10 @@ describe("models/source", () => {
       await source.update({ state: "ready" });
 
       await source.destroy();
-      const directlyMappedCount = await Property.count({
+      const primaryKeyPropertyCount = await Property.count({
         where: { sourceId: source.id, isPrimaryKey: true },
       });
-      expect(directlyMappedCount).toBe(0);
+      expect(primaryKeyPropertyCount).toBe(0);
     });
   });
 
@@ -607,7 +607,7 @@ describe("models/source", () => {
       await arrayProperty.destroy();
     });
 
-    test("directlyMapped will be updated for source properties after setting the mapping", async () => {
+    test("isPrimaryKey will be updated for source properties after setting the mapping", async () => {
       const firstSource = await Source.findOne({
         where: { id: { [Op.ne]: source.id } },
       });

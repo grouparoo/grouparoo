@@ -375,11 +375,13 @@ export namespace DestinationOps {
 
     // We want to be able to delete records that have been removed from their source
     // (new properties would be set to null, so we need the old values to reference them)
-    const directlyMapped = Object.values(newRecordProperties).find(
+    const primaryKeyRecordProperties = Object.values(newRecordProperties).find(
       (p) => p.isPrimaryKey
     );
     const forceOldPropertyValues =
-      toDelete && directlyMapped && directlyMapped.values[0] === null;
+      toDelete &&
+      primaryKeyRecordProperties &&
+      primaryKeyRecordProperties.values[0] === null;
 
     for (const k in mapping) {
       const property = properties.find((r) => r.key === mapping[k]);

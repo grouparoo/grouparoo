@@ -384,7 +384,7 @@ export class Property extends LoggedModel<Property> {
 
   @BeforeUpdate
   @BeforeCreate
-  static async determineDirectlyMapped(instance: Property) {
+  static async determineIsPrimaryKey(instance: Property) {
     if (instance.state === "draft") return;
 
     const source = await instance.$get("source", { scope: null });

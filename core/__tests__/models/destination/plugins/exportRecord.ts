@@ -328,7 +328,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
       await record.destroy();
     });
 
-    test("if the directlyMapped property has been removed, newRecordProperties will use oldRecordProperties values in the export", async () => {
+    test("if the primary key property has been removed, newRecordProperties will use oldRecordProperties values in the export", async () => {
       await destination.setMapping({
         is_vip: "isVIP",
         customer_email: "email",
