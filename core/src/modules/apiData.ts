@@ -3,7 +3,7 @@ import { Api } from "actionhero";
 export namespace APIData {
   export function ensureObject(
     param: { [key: string]: any } | string,
-    api: Api,
+    api?: Api,
     recursing = false
   ) {
     if (!param) {

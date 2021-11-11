@@ -89,6 +89,11 @@ describe("apiDAta", () => {
       expect(APIData.ensureObject(JSON.stringify(obj))).toEqual(obj);
     });
 
+    test("it works for stringified arrays", () => {
+      const obj = "[a,b,1,2]";
+      expect(APIData.ensureObject(JSON.stringify(obj))).toEqual(obj);
+    });
+
     test("it works for partially stringified arrays", () => {
       const obj = [
         JSON.stringify({ a: 1, b: 2, c: "three" }),
