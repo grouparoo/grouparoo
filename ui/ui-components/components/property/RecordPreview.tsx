@@ -119,10 +119,10 @@ export default function RecordPreview(props) {
   let email: string;
   for (const key in record.properties) {
     if (
-      record?.properties[key]?.type === "email" &&
-      record.properties[key]?.values?.length > 0
+      record.properties[key].type === "email" &&
+      record.properties[key].values.length > 0
     ) {
-      email = record.properties[key].values[0] as string;
+      email = record.properties[key].values[0]?.toString();
     }
   }
 

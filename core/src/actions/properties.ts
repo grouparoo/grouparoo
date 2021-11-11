@@ -371,12 +371,13 @@ export class PropertyRecordPreview extends AuthenticatedAction {
     let newPropertyValues: Array<string | number | boolean | Date> = [];
     let errorMessage: string;
     try {
-      newPropertyValues = await source.importRecordProperty(
-        record,
-        property,
-        params.options,
-        params.filters
-      );
+      newPropertyValues =
+        (await source.importRecordProperty(
+          record,
+          property,
+          params.options,
+          params.filters
+        )) ?? [];
     } catch (error) {
       errorMessage = error.toString();
     }
