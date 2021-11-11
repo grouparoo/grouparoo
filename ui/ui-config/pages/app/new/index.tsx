@@ -68,28 +68,6 @@ export default function Page(props) {
     _installedPlugins: Actions.AppOptions["plugins"],
     _availablePlugins: Actions.PluginsAvailableList["plugins"]
   ) {
-    // const availableList = _availablePlugins
-    //   .filter((plugin) => !plugin.installed)
-    //   .map((plugin) => {
-    //     return {
-    //       name: plugin.name,
-    //       plugin: {
-    //         icon: plugin.imageUrl,
-    //         name: plugin.packageName,
-    //         installed: plugin.installed,
-    //       },
-    //       provides: {
-    //         source: plugin.source,
-    //         destination: plugin.destination,
-    //       },
-    //     };
-    //   });
-    // const installedList = _installedPlugins
-    //   .sort((a, b) => (a.name > b.name ? 1 : -1))
-    //   .map((plugin) => ({
-    //     ...app,
-    //     plugin: { ...plugin, installed: true },
-    //   }));
     setCards(
       []
         .concat(
@@ -125,19 +103,6 @@ export default function Page(props) {
     } else {
       router.push(`/app/new/${plugin.name}`);
     }
-
-    // router.push(`/app/new/${app.pluginApp.name}`);
-
-    // setApp({ type });
-    // setLoading(true);
-    // const response: Actions.AppCreate = await execApi("post", `/app`, {
-    //   type,
-    // });
-    // if (response?.app) {
-    //   return router.push("/app/[id]/edit", `/app/${response.app.id}/edit`);
-    // } else {
-    //   setLoading(false);
-    // }
   }
 
   function sleep(ms) {
@@ -243,7 +208,7 @@ export default function Page(props) {
         </Modal>
       )}
 
-      <h1>Add App</h1>
+      <h1>Add New App</h1>
 
       <Form id="form">
         <AppSelectorList

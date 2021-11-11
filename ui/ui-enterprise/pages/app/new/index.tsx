@@ -45,7 +45,7 @@ export default function Page(props) {
         <title>Grouparoo: New App</title>
       </Head>
 
-      <h1>Add App</h1>
+      <h1>Add New App</h1>
 
       <Form id="form">
         <AppSelectorList

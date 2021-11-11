@@ -5,8 +5,8 @@ import { Alert, Badge, Card, Col, Form, Row } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { Actions } from "../../../utils/apiData";
-import AppIcon from "../../../components/AppIcon";
 import LoadingButton from "../../../components/LoadingButton";
+import PageHeader from "../../../components/PageHeader";
 
 export default function Page(props) {
   const {
@@ -50,22 +50,22 @@ export default function Page(props) {
         <title>Grouparoo: New {pluginName} App</title>
       </Head>
 
-      <Row>
-        <Col md={1}>
-          <AppIcon src={plugin.icon} fluid size={100} />
-        </Col>
-        <Col>
-          <h1>
+      <PageHeader
+        icon={plugin.icon}
+        title={[
+          <span>
             Add new <code>{plugin.name}</code> App
-          </h1>
-          {plugin?.connections.find((c) => c.direction === "import") ? (
+          </span>,
+        ]}
+        badges={[
+          plugin?.connections.find((c) => c.direction === "import") ? (
             <Badge variant="primary">Source</Badge>
-          ) : null}{" "}
-          {plugin?.connections.find((c) => c.direction === "export") ? (
+          ) : null,
+          plugin?.connections.find((c) => c.direction === "export") ? (
             <Badge variant="primary">Destination</Badge>
-          ) : null}
-        </Col>
-      </Row>
+          ) : null,
+        ]}
+      />
 
       <br />
 
