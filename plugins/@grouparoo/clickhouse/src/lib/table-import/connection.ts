@@ -10,7 +10,7 @@ import { getChangedRowCount } from "./getChangedRowCount";
 
 export function getConnection() {
   return buildConnection({
-    app: "clickhouse",
+    apps: ["clickhouse"],
     name: "clickhouse-import-table",
     displayName: "ClickHouse Table Import",
     description: "Import or update Records from a ClickHouse database table.",

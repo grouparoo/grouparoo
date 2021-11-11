@@ -4,7 +4,7 @@ import { getChangedRows } from "@grouparoo/mysql/dist/lib/query-import/getChange
 
 export function getConnection() {
   return buildConnection({
-    app: "clickhouse",
+    apps: ["clickhouse"],
     name: "clickhouse-import-query",
     displayName: "ClickHouse Query Import",
     description: "Import or update Records via a custom ClickHouse query.",

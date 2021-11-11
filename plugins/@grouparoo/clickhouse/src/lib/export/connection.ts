@@ -12,7 +12,7 @@ export const getConnection = (): PluginConnection => ({
   direction: "export",
   description:
     "Export Records to a ClickHouse table.  Groups will be exported to a secondary table linked by a foreign key.",
-  app: "clickhouse",
+  apps: ["clickhouse"],
   options: [
     {
       key: "table",
