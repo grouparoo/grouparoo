@@ -1,6 +1,7 @@
 import Postgres from "../connections/postgres";
 import Mongo from "../connections/mongo";
 import BigQuery from "../connections/bigquery";
+import Redshift from "../connections/redshift";
 import Snowflake from "../connections/snowflake";
 import MySQL from "../connections/mysql";
 import Connection from "./connection";
@@ -36,6 +37,9 @@ class Config {
       case "bigquery":
         this.db = new BigQuery();
         break;
+      case "redshift":
+        this.db = new Redshift();
+        break;
       case "snowflake":
         this.db = new Snowflake();
         break;
@@ -66,9 +70,10 @@ class Config {
         break;
       case "mongo":
       case "bigquery":
-      case "snowflake":
-      case "postgres":
       case "mysql":
+      case "postgres":
+      case "redshift":
+      case "snowflake":
         this.setDb(type);
         break;
       case "models":
