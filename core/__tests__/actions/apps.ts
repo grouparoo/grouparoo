@@ -70,29 +70,29 @@ describe("actions/apps", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, types } = await specHelper.runAction<AppOptions>(
+      const { error, plugins } = await specHelper.runAction<AppOptions>(
         "app:options",
         connection
       );
       expect(error).toBeUndefined();
-      expect(types.length).toBeGreaterThanOrEqual(1);
-      const names = types.map((t) => t.name);
-      expect(names).toContain("test-plugin-app");
-      const displayNames = types.map((t) => t.displayName);
-      expect(displayNames).toContain("test-plugin-app");
+      expect(plugins.length).toBeGreaterThanOrEqual(1);
+      const apps = plugins
+        .filter((p) => p.apps)
+        .map((p) => p.apps)
+        .flat();
+      expect(apps.map((a) => a.name)).toContain("test-plugin-app");
+      expect(apps.map((a) => a.displayName)).toContain("test-plugin-app");
 
-      const pluginTestAppType = types.find((t) => t.name === "test-plugin-app");
-      expect(pluginTestAppType.options).toEqual([
+      console.log(plugins);
+
+      const pluginTestApp = plugins
+        .find((p) => p.apps.map((a) => a.name).includes("test-plugin-app"))
+        .apps.find((a) => a.name === "test-plugin-app");
+      expect(pluginTestApp.options).toEqual([
         { key: "fileId", required: true },
         { key: "password", required: false },
         { key: "_failRemoteValidation", required: false },
       ]);
-      expect(pluginTestAppType.plugin).toEqual({
-        name: "@grouparoo/test-plugin",
-        icon: "/path/to/icon.png",
-      });
-      expect(pluginTestAppType.provides.source).toBe(true);
-      expect(pluginTestAppType.provides.destination).toBe(true);
     });
 
     describe("options from environment variables", () => {
