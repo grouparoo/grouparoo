@@ -26,7 +26,7 @@ export default function Page(props) {
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
-    types: Actions.AppOptions["types"];
+    types: Actions.PropertiesOptions["types"];
     scheduleCount: number;
     hydrationError: Error;
   } = props;
