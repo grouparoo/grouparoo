@@ -444,7 +444,7 @@ describe("models/source", () => {
 
       await source.destroy();
       const directlyMappedCount = await Property.count({
-        where: { sourceId: source.id, directlyMapped: true },
+        where: { sourceId: source.id, isPrimaryKey: true },
       });
       expect(directlyMappedCount).toBe(0);
     });
@@ -618,20 +618,20 @@ describe("models/source", () => {
       const userIdProperty = await Property.findOne({
         where: { key: "userId" },
       });
-      expect(userIdProperty.directlyMapped).toBe(true);
+      expect(userIdProperty.isPrimaryKey).toBe(true);
 
       const emailProperty = await Property.findOne({
         where: { key: "email" },
       });
-      expect(emailProperty.directlyMapped).toBe(false);
+      expect(emailProperty.isPrimaryKey).toBe(false);
 
       await firstSource.setMapping({ email: "email" });
 
       await userIdProperty.reload();
-      expect(userIdProperty.directlyMapped).toBe(false);
+      expect(userIdProperty.isPrimaryKey).toBe(false);
 
       await emailProperty.reload();
-      expect(emailProperty.directlyMapped).toBe(true);
+      expect(emailProperty.isPrimaryKey).toBe(true);
 
       await firstSource.setMapping({ userId: "userId" });
     });

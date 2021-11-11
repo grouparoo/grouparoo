@@ -446,7 +446,7 @@ export class Source extends LoggedModel<Source> {
 
     const properties = await instance.$get("properties", {
       scope: null,
-      where: { directlyMapped: false },
+      where: { isPrimaryKey: false },
     });
 
     if (properties.length > 0) {
@@ -457,7 +457,7 @@ export class Source extends LoggedModel<Source> {
   @BeforeDestroy
   static async ensureDirectlyMappedPropertyNotInUse(instance: Source) {
     const directlyMappedProperty = await Property.findOne({
-      where: { sourceId: instance.id, directlyMapped: true },
+      where: { sourceId: instance.id, isPrimaryKey: true },
     });
 
     if (directlyMappedProperty) {
@@ -487,7 +487,7 @@ export class Source extends LoggedModel<Source> {
   @AfterDestroy
   static async destroyDirectlyMappedProperty(instance: Source) {
     const directlyMappedProperty = await Property.findOne({
-      where: { sourceId: instance.id, directlyMapped: true },
+      where: { sourceId: instance.id, isPrimaryKey: true },
     });
 
     if (directlyMappedProperty) {

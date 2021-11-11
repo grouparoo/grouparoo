@@ -638,15 +638,15 @@ describe("models/property", () => {
     });
 
     test("directlyMapping will be determined as on save", async () => {
-      expect(userIdProperty.directlyMapped).toBe(true);
-      expect(emailProperty.directlyMapped).toBe(false);
+      expect(userIdProperty.isPrimaryKey).toBe(true);
+      expect(emailProperty.isPrimaryKey).toBe(false);
     });
 
     test("properties include if they are directly mapped", async () => {
       const rules = await Property.findAll();
 
-      expect(rules.find((r) => r.key === "userId").directlyMapped).toBe(true);
-      expect(rules.find((r) => r.key === "email").directlyMapped).toBe(false);
+      expect(rules.find((r) => r.key === "userId").isPrimaryKey).toBe(true);
+      expect(rules.find((r) => r.key === "email").isPrimaryKey).toBe(false);
     });
   });
 

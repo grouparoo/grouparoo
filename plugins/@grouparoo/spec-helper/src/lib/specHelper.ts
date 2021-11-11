@@ -537,7 +537,7 @@ export namespace helper {
     const arrayedArgs = {};
     let foundDirectlyMapped = false;
     const directlyMappedProperties = await Property.findAll({
-      where: { directlyMapped: true },
+      where: { isPrimaryKey: true },
     });
 
     const directlyMappedPropertyKeys = directlyMappedProperties.map(

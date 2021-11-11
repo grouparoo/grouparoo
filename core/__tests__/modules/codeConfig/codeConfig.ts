@@ -130,7 +130,7 @@ describe("modules/codeConfig", () => {
 
       test("the bootstrapped property is created", async () => {
         const property = await Property.findOne({
-          where: { directlyMapped: true },
+          where: { isPrimaryKey: true },
         });
         expect(property.id).toBe("user_id");
         expect(property.key).toBe("userId");
@@ -809,7 +809,7 @@ describe("modules/codeConfig", () => {
 
     test("the bootstrapped property is brought back", async () => {
       const property = await Property.findOne({
-        where: { directlyMapped: true },
+        where: { isPrimaryKey: true },
       });
       expect(property.id).toBe("user_id");
       expect(property.key).toBe("userId");

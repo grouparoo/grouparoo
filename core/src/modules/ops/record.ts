@@ -36,7 +36,7 @@ export interface RecordPropertyType {
     configId: ReturnType<Property["getConfigId"]>;
     type: Property["type"];
     unique: Property["unique"];
-    directlyMapped: Property["directlyMapped"];
+    isPrimaryKey: Property["isPrimaryKey"];
     isArray: Property["isArray"];
     identifying: Property["identifying"];
     valueChangedAt: RecordProperty["valueChangedAt"];
@@ -84,7 +84,7 @@ export namespace RecordOps {
           configId: property.getConfigId(),
           type: property.type,
           unique: property.unique,
-          directlyMapped: property.directlyMapped,
+          isPrimaryKey: property.isPrimaryKey,
           isArray: property.isArray,
           identifying: property.identifying,
           valueChangedAt: recordProperties[i].valueChangedAt,
@@ -830,7 +830,7 @@ export namespace RecordOps {
       );
 
       const directlyMapped = propertiesByModel.filter((property) => {
-        return property.directlyMapped == true;
+        return property.isPrimaryKey == true;
       });
 
       if (directlyMapped.length === 0) {
@@ -858,7 +858,7 @@ export namespace RecordOps {
       SELECT DISTINCT("recordId") FROM "recordProperties"
       JOIN properties ON "properties"."id"="recordProperties"."propertyId"
       WHERE
-        "properties"."directlyMapped"=true
+        "properties"."isPrimaryKey"=true
         AND "rawValue" IS NULL
     )
     LIMIT ${limit};
@@ -880,10 +880,10 @@ export namespace RecordOps {
   ) {
     const directlyMapped = sourceId
       ? await Property.findAll({
-          where: { directlyMapped: true, sourceId },
+          where: { isPrimaryKey: true, sourceId },
         })
       : await Property.findAll({
-          where: { directlyMapped: true },
+          where: { isPrimaryKey: true },
         });
 
     const recordProperties = await RecordProperty.findAll({

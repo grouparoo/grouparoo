@@ -237,7 +237,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
 
     for (const k in properties) {
       const property = properties[k];
-      if (property.directlyMapped && property.values.length > 0) {
+      if (property.isPrimaryKey && property.values.length > 0) {
         directlyMappedProps[property.configId] = property.values;
       }
     }

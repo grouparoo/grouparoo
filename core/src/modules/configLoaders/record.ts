@@ -36,7 +36,7 @@ export async function loadRecord(
   const directlyMappedProperties = (
     await Property.findAllWithCache(record.modelId)
   )
-    .filter((p) => p.directlyMapped === true)
+    .filter((p) => p.isPrimaryKey === true)
     .map((p) => p.id);
 
   let hasDirectlyMapped = false;

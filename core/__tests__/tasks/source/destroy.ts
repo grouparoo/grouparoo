@@ -113,7 +113,7 @@ describe("tasks/source:destroy", () => {
       await source.update({ state: "ready" });
 
       await Property.determineDirectlyMapped(myUserIdProp);
-      expect(myUserIdProp.directlyMapped).toBe(true);
+      expect(myUserIdProp.isPrimaryKey).toBe(true);
 
       await source.update({ state: "deleted" });
       await task.enqueue("source:destroy", { sourceId: source.id });

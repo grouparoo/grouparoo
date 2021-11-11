@@ -27,7 +27,7 @@ export default async (props?: { [key: string]: any }, properties = {}) => {
 
   const { Property } = await import(`@grouparoo/core/${loadPath}`);
   const allProperties = await Property.findAllWithCache(record.modelId);
-  const directlyMappedProperty = allProperties.find((p) => p.directlyMapped);
+  const directlyMappedProperty = allProperties.find((p) => p.isPrimaryKey);
 
   if (directlyMappedProperty) {
     properties[directlyMappedProperty.key] = faker.unique(

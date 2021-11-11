@@ -113,7 +113,7 @@ describe("tasks/destroy", () => {
         let userIdProperty: Property;
         beforeAll(async () => {
           userIdProperty = await Property.findOne({ where: { key: "userId" } });
-          expect(userIdProperty.directlyMapped).toBe(true);
+          expect(userIdProperty.isPrimaryKey).toBe(true);
         });
 
         test("it will enqueue destroy task for records with a directlyMapped property set to null", async () => {
@@ -222,7 +222,7 @@ describe("tasks/destroy", () => {
                 "integer",
                 "id"
               );
-              await userIdProperty.update({ directlyMapped: true });
+              await userIdProperty.update({ isPrimaryKey: true });
             });
 
             test("it will enqueue destroy task by model for records when there is no directlyMapped property", async () => {
