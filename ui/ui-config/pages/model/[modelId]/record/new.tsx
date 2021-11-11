@@ -60,8 +60,8 @@ export default function NewRecord(props) {
     }
   }
 
-  const uniqueDirectlyMappedRecordProperties = properties.filter(
-    (rule) => rule.unique && rule.directlyMapped
+  const propertiesWithPrimaryKey = properties.filter(
+    (property) => property.unique && property.isPrimaryKey
   );
 
   return (
@@ -81,7 +81,7 @@ export default function NewRecord(props) {
             ref={register}
             disabled={loading ? true : false}
           >
-            {uniqueDirectlyMappedRecordProperties.map((rule) => (
+            {propertiesWithPrimaryKey.map((rule) => (
               <option key={`rule-${rule.key}`}>{rule.key}</option>
             ))}
           </Form.Control>
