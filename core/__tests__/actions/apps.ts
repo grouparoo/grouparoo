@@ -83,8 +83,6 @@ describe("actions/apps", () => {
       expect(apps.map((a) => a.name)).toContain("test-plugin-app");
       expect(apps.map((a) => a.displayName)).toContain("test-plugin-app");
 
-      console.log(plugins);
-
       const pluginTestApp = plugins
         .find((p) => p.apps.map((a) => a.name).includes("test-plugin-app"))
         .apps.find((a) => a.name === "test-plugin-app");
