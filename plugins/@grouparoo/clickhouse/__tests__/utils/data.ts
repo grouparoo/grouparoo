@@ -84,6 +84,7 @@ PRIMARY KEY (\`id\`)
 
 export const appOptions: SimpleAppOptions = {
   database: "grouparoo_test",
+  user: "default",
 };
 const appId = "app_31bb06e8-0a4e-49c3-ad42-545f2e8662e1";
 
