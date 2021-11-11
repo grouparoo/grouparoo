@@ -31,7 +31,7 @@ export class Plugins extends Initializer {
   async initialize() {
     plugin.registerPlugin({
       name: packageJSON.name,
-      icon: "/public/@grouparoo/clickhouse/clickhouse.svg",
+      icon: "/public/@grouparoo/clickhouse/clickhouse.png",
       templates: [
         new AppTemplate("clickhouse", [
           path.join(templateRoot, "app", "*.template"),
