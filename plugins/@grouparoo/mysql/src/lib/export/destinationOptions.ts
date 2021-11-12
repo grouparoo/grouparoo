@@ -9,10 +9,11 @@ export const destinationOptions: DestinationOptionsMethod = async ({
   destinationOptions,
 }) => {
   async function getColumns(tableName: string) {
-    const colRows = await connection.asyncQuery(
-      `SELECT column_name AS column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND table_name = ?`,
-      [appOptions.database, tableName]
-    );
+    const colRows: Record<"column_name", string>[] =
+      await connection.asyncQuery(
+        `SELECT column_name AS column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND table_name = ?`,
+        [appOptions.database, tableName]
+      );
 
     return colRows.map((row) => row.column_name).sort();
   }
@@ -25,9 +26,9 @@ export const destinationOptions: DestinationOptionsMethod = async ({
     groupColumnName: { type: "pending", options: [] },
   };
 
-  const tables = [];
+  const tables: string[] = [];
 
-  const rows = await connection.asyncQuery(
+  const rows: Record<"table_name", string>[] = await connection.asyncQuery(
     `SELECT table_name AS table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = ?`,
     [appOptions.database]
   );

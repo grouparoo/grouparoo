@@ -1,3 +1,4 @@
+import ClickHouse from "../connections/clickhouse";
 import Postgres from "../connections/postgres";
 import Mongo from "../connections/mongo";
 import BigQuery from "../connections/bigquery";
@@ -50,6 +51,9 @@ class Config {
       case "sqlite":
         this.db = new SQLite();
         break;
+      case "clickhouse":
+        this.db = new ClickHouse();
+        break;
       default:
         throw new Error(`Unknown db type: ${name}`);
     }
@@ -79,6 +83,7 @@ class Config {
       case "redshift":
       case "snowflake":
       case "sqlite":
+      case "clickhouse":
         this.setDb(type);
         break;
       case "models":

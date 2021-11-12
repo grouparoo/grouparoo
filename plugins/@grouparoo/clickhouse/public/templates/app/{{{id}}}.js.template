@@ -1,0 +1,17 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}",
+      options: {
+        host: "localhost", // The ClickHouse host
+        port: 8123, // The ClickHouse HTTP interface port
+        database: "...", // The database name - e.g. `database: "data_warehouse"`
+        user: "...", // The user to connect to the database - e.g. `user: "grouparoo_user"`.  If you are connecting to localhost, leave as `undefined`.
+        password: "...", // The database password - e.g. `password: "P@assword"`.  If you don't have a password, leave as `undefined`.
+      }
+    },
+  ];
+};

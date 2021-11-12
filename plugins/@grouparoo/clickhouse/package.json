@@ -1,0 +1,49 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/clickhouse",
+  "description": "The Grouparoo ClickHouse plugin",
+  "version": "0.7.4-alpha.2",
+  "license": "MPL-2.0",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=12.0.0 <17.0.0"
+  },
+  "homepage": "https://www.grouparoo.com",
+  "bugs": {
+    "url": "https://github.com/grouparoo/grouparoo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grouparoo/grouparoo.git",
+    "directory": "plugins/@grouparoo/clickhouse"
+  },
+  "scripts": {
+    "prepare": "rm -rf dist && tsc --declaration",
+    "test": "jest",
+    "pretest": "npm run lint && npm run prepare",
+    "lint": "prettier --check src __tests__",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "@grouparoo/app-templates": "0.7.4-alpha.2",
+    "@grouparoo/mysql": "0.7.4-alpha.2",
+    "clickhouse": "2.4.2",
+    "mysql": "2.18.1"
+  },
+  "devDependencies": {
+    "@grouparoo/core": "0.7.4-alpha.2",
+    "@grouparoo/spec-helper": "0.7.4-alpha.2",
+    "@types/jest": "*",
+    "@types/node": "*",
+    "actionhero": "27.2.0",
+    "csv-parse": "4.16.3",
+    "jest": "27.3.1",
+    "prettier": "2.4.1",
+    "sequelize": "6.9.0",
+    "ts-jest": "27.0.7",
+    "typescript": "4.4.4"
+  }
+}

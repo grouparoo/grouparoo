@@ -1,0 +1,6 @@
+      - run:
+          name: install ClickHouse client
+          command: sudo apt install -y clickhouse-client
+      - run:
+          name: create ClickHouse test database
+          command: clickhouse-client --query "CREATE DATABASE IF NOT EXISTS grouparoo_test"

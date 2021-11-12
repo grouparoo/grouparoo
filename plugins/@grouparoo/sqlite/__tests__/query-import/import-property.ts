@@ -105,7 +105,7 @@ describe("sqlite/query/recordProperty", () => {
     expect(value).toEqual(["2020/02/01 12:13:14"]);
   });
 
-  test("returns undefined when data is not avilable", async () => {
+  test("returns undefined when data is not available", async () => {
     const sql = `SELECT ios_app FROM "${usersTableName}" WHERE email = '{{ badName }}'`;
     const value = await getPropertyValue(sql);
     expect(value).toEqual(undefined);

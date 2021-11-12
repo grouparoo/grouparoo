@@ -85,7 +85,7 @@ describe("snowflake/query/recordProperty", () => {
     expect(value).toEqual([true]);
   });
 
-  test("returns undefined when data is not avilable", async () => {
+  test("returns undefined when data is not available", async () => {
     const sql = `SELECT ios_app FROM profiles WHERE email = '{{ badName }}'`;
     const value = await getPropertyValue(sql);
     expect(value).toEqual(undefined);

@@ -1,11 +1,11 @@
 import { ExportRecordPluginMethod } from "@grouparoo/core";
+import { MySQLConnection } from "../connect";
 
-export const exportRecord: ExportRecordPluginMethod = async ({
+export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
   connection,
   destination,
   export: { newRecordProperties, oldRecordProperties, newGroups, toDelete },
 }) => {
-  let success = false;
   let error;
 
   let { table, primaryKey, groupsTable, groupForeignKey, groupColumnName } =
@@ -55,8 +55,8 @@ export const exportRecord: ExportRecordPluginMethod = async ({
           (k) =>
             (newRecordProperties[k] === null ||
               newRecordProperties[k] === undefined) &&
-            oldRecordProperties[k] !== null &&
-            oldRecordProperties[k] !== undefined
+            (oldRecordProperties[k] !== null ||
+              oldRecordProperties[k] !== undefined)
         );
 
         if (columnsToErase.length > 0) {
@@ -110,8 +110,6 @@ export const exportRecord: ExportRecordPluginMethod = async ({
         ]);
       }
     }
-
-    success = true;
   } catch (e) {
     error = e;
   } finally {

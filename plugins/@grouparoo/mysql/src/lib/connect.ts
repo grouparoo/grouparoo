@@ -2,11 +2,22 @@ import { ConnectPluginAppMethod } from "@grouparoo/core";
 import { log } from "actionhero";
 import mysql from "mysql";
 
-export interface QueryResultObject {
-  [key: string]: any;
+export type QueryResultObject = Record<string, any>;
+
+export type ColumnValue = string | number;
+
+export interface MySQLConnection {
+  asyncQuery: (
+    query: string,
+    replacementValues?: Record<string, any> | (ColumnValue | ColumnValue[])[]
+  ) => Promise<QueryResultObject[]>;
+  asyncEnd: () => Promise<void>;
+  getMajorVersion: () => Promise<number>;
 }
 
-export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
+export const connect: ConnectPluginAppMethod<MySQLConnection> = async ({
+  appOptions,
+}) => {
   const { host, port, database, user, password } = appOptions;
 
   const config = {
@@ -23,10 +34,10 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   // @ts-ignore datestrings supports array but it's not in the types
   const pool = mysql.createPool(config);
 
-  const asyncQuery = function (
-    query: string,
-    replacementValues: { [key: string]: any } | Array<string | number> = []
-  ): Promise<Array<QueryResultObject>> {
+  const asyncQuery: MySQLConnection["asyncQuery"] = function (
+    query,
+    replacementValues = []
+  ) {
     log(`[ mysql ] ${query}`, "debug", replacementValues);
     return new Promise((resolve, reject) => {
       this.getConnection(function (acquireError, connection) {
@@ -56,7 +67,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
     });
   };
 
-  const asyncEnd = async function () {
+  const asyncEnd: MySQLConnection["asyncEnd"] = async function () {
     return new Promise((resolve, reject) => {
       pool.end((error) => {
         if (error) return reject(error);
@@ -65,29 +76,30 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
     });
   };
 
-  const getMajorVersion = async function () {
-    return new Promise((resolve, reject) => {
-      if (pool["cachedMajorVersion"]) {
-        resolve(pool["cachedMajorVersion"]);
-      } else {
-        this.asyncQuery("SELECT VERSION() AS version")
-          .then((rows) => {
-            const row = rows[0];
-            if (row && row.version) {
-              // just the major version number
-              const version = parseInt(row.version);
-              pool["cachedMajorVersion"] = version;
-              resolve(version);
-            } else {
+  const getMajorVersion: MySQLConnection["getMajorVersion"] =
+    async function () {
+      return new Promise((resolve, reject) => {
+        if (pool["cachedMajorVersion"]) {
+          resolve(pool["cachedMajorVersion"]);
+        } else {
+          this.asyncQuery("SELECT VERSION() AS version")
+            .then((rows) => {
+              const row = rows[0];
+              if (row && row.version) {
+                // just the major version number
+                const version = parseInt(row.version);
+                pool["cachedMajorVersion"] = version;
+                resolve(version);
+              } else {
+                resolve(0);
+              }
+            })
+            .catch((err) => {
               resolve(0);
-            }
-          })
-          .catch((err) => {
-            resolve(0);
-          });
-      }
-    });
-  };
+            });
+        }
+      });
+    };
 
   return Object.assign(pool, { asyncQuery, asyncEnd, getMajorVersion });
 };
