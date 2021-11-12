@@ -107,8 +107,6 @@ export default function Page(props) {
           <br />
         </Fragment>
       ))}
-
-      <Form id="form"></Form>
     </>
   );
 }
