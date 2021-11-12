@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { NextPageContext } from "next";
-import { Alert } from "react-bootstrap";
+import { Alert, Badge } from "react-bootstrap";
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
@@ -147,7 +147,11 @@ export default function Page(props) {
                       </strong>
                     </a>
                   </GrouparooLink>
-                  {rule.isPrimaryKey && " (primary)"}
+                  {rule.isPrimaryKey && (
+                    <>
+                      &nbsp;<Badge variant="info">primary</Badge>
+                    </>
+                  )}
                 </td>
                 <td>{rule.type}</td>
                 <td>{rule.unique ? "✅" : null}</td>
