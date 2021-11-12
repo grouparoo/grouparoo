@@ -14,7 +14,7 @@ export default function Page(props) {
     plugins,
   }: {
     errorHandler: ErrorHandler;
-    plugins: Actions.AppOptions["plugins"];
+    plugins: Actions.PluginsList["plugins"];
   } = props;
   const router = useRouter();
   const pluginName = router.asPath.replace(`/app/new/`, "");
@@ -22,7 +22,7 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
 
   const create = async (
-    app: Actions.AppOptions["plugins"][number]["apps"][number]
+    app: Actions.PluginsList["plugins"][number]["apps"][number]
   ) => {
     setLoading(true);
     const response: Actions.AppCreate = await execApi("post", `/app`, {
@@ -58,10 +58,8 @@ export default function Page(props) {
           </span>,
         ]}
         badges={[
-          plugin?.connections.find((c) => c.direction === "import") ? (
-            <Badge variant="primary">Source</Badge>
-          ) : null,
-          plugin?.connections.find((c) => c.direction === "export") ? (
+          plugin.source ? <Badge variant="primary">Source</Badge> : null,
+          plugin.destination ? (
             <Badge variant="primary">Destination</Badge>
           ) : null,
         ]}
@@ -113,6 +111,10 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { plugins }: Actions.AppOptions = await execApi("get", `/appOptions`);
+  const { plugins }: Actions.PluginsList = await execApi("get", `/plugins`, {
+    includeInstalled: true,
+    includeAvailable: false,
+    includeVersions: false,
+  });
   return { plugins };
 };

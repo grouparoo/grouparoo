@@ -3,20 +3,11 @@ import { CardDeck } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { Actions } from "../utils/apiData";
 
-type SelectablePlugin = Actions.AppOptions["plugins"][number];
-type SelectablePackage = Actions.PluginsAvailableList["plugins"][number];
+type SelectablePlugin = Actions.PluginsList["plugins"][number];
 type SelectableApp = Actions.AppsList["apps"][number];
 
-function isSelectablePlugin(item: any): item is SelectablePlugin {
-  return (
-    item.name !== undefined &&
-    item.icon !== undefined &&
-    item.pluginApp === undefined
-  );
-}
-
-function isSelectablePackage(item: any): item is SelectablePackage {
-  return item.npmUrl !== undefined;
+function isSelectableApp(item: any): item is SelectableApp {
+  return item.installed === undefined;
 }
 
 export default function AppSelectorList({
@@ -26,7 +17,7 @@ export default function AppSelectorList({
   displayAddAppButton = false,
 }: {
   onClick: Function;
-  items: SelectablePlugin[] | SelectablePackage[] | SelectableApp[];
+  items: SelectablePlugin[] | SelectableApp[];
   selectedItem: any;
   displayAddAppButton?: boolean;
 }) {
@@ -34,97 +25,82 @@ export default function AppSelectorList({
 
   return (
     <CardDeck>
-      {items.map(
-        (
-          item: SelectablePlugin | SelectablePackage | SelectableApp,
-          idx: number
-        ) => {
-          let src: string;
-          let title: string;
-          let subheading: string;
-          let description: string;
-          let className: string;
-          let metaBadge: BadgeProp;
-          let badges: BadgeProp[] = [];
+      {items.map((item: SelectablePlugin | SelectableApp, idx: number) => {
+        let src: string;
+        let title: string;
+        let subheading: string;
+        let description: string;
+        let className: string;
+        let metaBadge: BadgeProp;
+        let badges: BadgeProp[] = [];
 
-          if (isSelectablePlugin(item)) {
-            // these items are plugins
-            src = item.icon;
-            title = item.name.replace("@grouparoo/", "");
-            className =
-              item.name === selectedItem.type
-                ? "selector-list-selected"
-                : "selector-list";
+        if (isSelectableApp(item)) {
+          // these items are apps
+          src = item.icon;
+          title = item.name.replace("@grouparoo/", "");
+          className =
+            item.name === selectedItem.type
+              ? "selector-list-selected"
+              : "selector-list";
 
-            if (
-              item.connections.filter((c) => c.direction === "import").length >
-              0
-            ) {
-              badges.push({ message: "source", variant: "primary" });
-            } else {
-              badges.push({});
-            }
-
-            if (
-              item.connections.filter((c) => c.direction === "export").length >
-              0
-            ) {
-              badges.push({ message: "destination", variant: "info" });
-            } else {
-              badges.push({});
-            }
-
-            if (item["installed"]) {
-              metaBadge = { message: "installed", variant: "warning" };
-            }
-          } else if (isSelectablePackage(item)) {
-            // these items are from the plugin manifest on www.grouparoo.com
-            src = item.imageUrl;
-            title = item.name;
-            className =
-              item.name === selectedItem.type
-                ? "selector-list-selected"
-                : "selector-list";
-
-            if (item.source) {
-              badges.push({ message: "source", variant: "primary" });
-            } else {
-              badges.push({});
-            }
-
-            if (item.destination) {
-              badges.push({ message: "destination", variant: "info" });
-            } else {
-              badges.push({});
-            }
+          if (item.provides.source) {
+            badges.push({ message: "source", variant: "primary" });
           } else {
-            // these are apps extracted from connectionApps
-            src = item.icon;
-            title = item.pluginApp.displayName;
-            subheading = item.name;
-            className =
-              item.id === selectedItem.id
-                ? "selector-list-selected"
-                : "selector-list";
+            badges.push({});
           }
 
-          return (
-            <Selector
-              src={src}
-              title={title}
-              subheading={subheading}
-              description={description}
-              size={120}
-              className={className}
-              iconClassName="card-img"
-              badges={badges}
-              metaBadge={metaBadge}
-              onClick={() => onClick(item)}
-              key={`card-${idx}`}
-            />
-          );
+          if (item.provides.destination) {
+            badges.push({ message: "destination", variant: "info" });
+          } else {
+            badges.push({});
+          }
+
+          if (item["installed"]) {
+            metaBadge = { message: "installed", variant: "warning" };
+          }
+        } else {
+          // these items are plugins
+          src = item.icon;
+          title = item.name.replace("@grouparoo/", "");
+
+          if (item.source) {
+            badges.push({ message: "source", variant: "primary" });
+          } else {
+            badges.push({});
+          }
+
+          if (item.destination) {
+            badges.push({ message: "destination", variant: "info" });
+          } else {
+            badges.push({});
+          }
+
+          if (item.installed) {
+            metaBadge = { message: "installed", variant: "warning" };
+          }
+
+          className =
+            item.name === selectedItem.name
+              ? "selector-list-selected"
+              : "selector-list";
         }
-      )}
+
+        return (
+          <Selector
+            src={src}
+            title={title}
+            subheading={subheading}
+            description={description}
+            size={120}
+            className={className}
+            iconClassName="card-img"
+            badges={badges}
+            metaBadge={metaBadge}
+            onClick={() => onClick(item)}
+            key={`card-${idx}`}
+          />
+        );
+      })}
 
       {displayAddAppButton ? (
         <div

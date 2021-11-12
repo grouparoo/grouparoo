@@ -21,7 +21,7 @@ function formatUrl(s = "unknown", label: string) {
 export default function Page({
   plugins,
 }: {
-  plugins: Actions.PluginsInstalledList["plugins"];
+  plugins: Actions.PluginsList["plugins"];
 }) {
   const hasOutOfDatePlugin = plugins.find((p) => !p.upToDate) ? true : false;
 
@@ -84,7 +84,7 @@ export default function Page({
           </tr>
         </thead>
         <tbody>
-          {plugins.map((plugin, idx) => (
+          {plugins.map((plugin) => (
             <tr key={`plugin-${plugin.name}`}>
               <td>{plugin.name}</td>
               <td>
@@ -109,6 +109,9 @@ export default function Page({
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { plugins } = await execApi("get", `/plugins/installed`);
+  const { plugins }: Actions.PluginsList = await execApi("get", `/plugins`, {
+    includeInstalled: true,
+    includeAvailable: false,
+  });
   return { plugins };
 };

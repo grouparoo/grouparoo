@@ -5,22 +5,22 @@ import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
 import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
-import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const {
     errorHandler,
     plugins,
-  }: { errorHandler: ErrorHandler; plugins: Actions.AppOptions["plugins"] } =
+  }: { errorHandler: ErrorHandler; plugins: Actions.PluginsList["plugins"] } =
     props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [plugin, setPlugin] = useState<
-    Partial<Actions.AppOptions["plugins"][number]>
+    Partial<Actions.PluginsList["plugins"][number]>
   >({ name: "" });
   const [loading, setLoading] = useState(false);
 
-  async function submit(plugin: Actions.AppOptions["plugins"][number]) {
+  async function submit(plugin: Actions.PluginsList["plugins"][number]) {
     if (loading) return;
     setPlugin(plugin);
 
@@ -51,7 +51,9 @@ export default function Page(props) {
         <AppSelectorList
           onClick={submit}
           selectedItem={plugin}
-          items={plugins}
+          items={plugins.map((p) => {
+            return { ...p, installed: null };
+          })}
         />
       </Form>
     </>
@@ -60,6 +62,14 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { plugins }: Actions.AppOptions = await execApi("get", `/appOptions`);
-  return { plugins };
+  const { plugins }: Actions.PluginsList = await execApi("get", `/plugins`, {
+    includeInstalled: true,
+    includeAvailable: false,
+    includeVersions: false,
+  });
+  return {
+    plugins: plugins
+      .filter((p) => p.apps?.length > 0)
+      .sort((a, b) => (a.name > b.name ? 1 : -1)),
+  };
 };
