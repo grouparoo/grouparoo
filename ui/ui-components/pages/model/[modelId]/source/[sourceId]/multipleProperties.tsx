@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { UseApi } from "../../../../../hooks/useApi";
-import { Alert, Row, Col, Table, Form, Button } from "react-bootstrap";
+import { Alert, Row, Col, Table, Form } from "react-bootstrap";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
@@ -51,8 +51,6 @@ export default function Page(props) {
     return { key: dpo.key, defaultValue: defaultOpt.key };
   });
 
-  console.log(optionWithDefaultOptionDefaults);
-
   async function loadProperties() {
     const response: Actions.PropertiesList = await execApi(
       "get",
@@ -79,7 +77,7 @@ export default function Page(props) {
       if (property.filters?.length > 0) continue;
 
       let optMatch = true;
-      for (const key of Object.keys(property.options)) {
+      for (const [key, value] of Object.entries(property.options)) {
         if (key === primaryOptionKey) continue;
         if (!optionWithDefaults.map((dpo) => dpo.key).includes(key)) {
           optMatch = false;
@@ -87,10 +85,7 @@ export default function Page(props) {
         let defaultValue = optionWithDefaultOptionDefaults.find(
           (o) => o.key === key
         );
-        if (
-          defaultValue &&
-          defaultValue.defaultValue !== property.options[key]
-        ) {
+        if (defaultValue && defaultValue.defaultValue !== value) {
           optMatch = false;
         }
       }
@@ -148,9 +143,10 @@ export default function Page(props) {
       );
       if (response.property) {
         successHandler.set({ message: "Property Created!" });
-        await loadProperties();
+        loadProperties();
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     }
 
     return (
