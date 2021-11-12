@@ -1,13 +1,16 @@
+import { Api } from "actionhero";
+
 export namespace APIData {
   export function ensureObject(
     param: { [key: string]: any } | string,
+    api?: Api,
     recursing = false
   ) {
     if (!param) {
       return null;
     } else if (Array.isArray(param)) {
       try {
-        return param.map((row) => APIData.ensureObject(row, true));
+        return param.map((row) => APIData.ensureObject(row, api, true));
       } catch (error) {
         throw new Error(
           `${param} cannot be converted to JSON object (${error})`
