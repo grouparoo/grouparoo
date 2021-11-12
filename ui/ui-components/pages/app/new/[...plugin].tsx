@@ -29,7 +29,7 @@ export default function Page(props) {
       type: app.name,
     });
     if (response?.app) {
-      return router.push("/app/[id]/edit", `/app/${response.app.id}/edit`);
+      return router.push(`/app/${response.app.id}/edit`);
     } else {
       setLoading(false);
     }
