@@ -89,7 +89,7 @@ export class CloudClient {
 
   async request(url: string, options?: RequestInit) {
     const fetchUrl = new URL(url, this.baseUrl);
-    fetchUrl.searchParams.append("apiKey", this.token);
+    fetchUrl.searchParams.append("apiToken", this.token);
 
     const res = await fetch(fetchUrl.toString(), options);
     const data = await res.json();
