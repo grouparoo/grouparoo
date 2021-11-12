@@ -17,7 +17,7 @@ export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
   groupForeignKey = groupForeignKey?.toString();
   groupColumnName = groupColumnName?.toString();
 
-  if (Object.keys(newRecordProperties).length === 0) {
+  if (!Object.keys(newRecordProperties).length) {
     return { success: true };
   }
 
@@ -62,7 +62,7 @@ export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
               oldRecordProperties[k] !== undefined)
         );
 
-        if (columnsToErase.length > 0) {
+        if (columnsToErase.length) {
           const nullData = {};
           columnsToErase.forEach((k) => (nullData[k] = null));
 

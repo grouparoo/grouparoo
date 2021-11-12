@@ -1,15 +1,15 @@
 import { validateQuery } from "@grouparoo/mysql/dist/lib/validateQuery";
 import {
   GetChangedRowsMethod,
-  DataResponseRow,
   MatchCondition,
 } from "@grouparoo/app-templates/dist/source/table";
 import { ColumnDefinitionMap } from "@grouparoo/app-templates/dist/source/table";
+import { MySQLConnection } from "@grouparoo/mysql/dist/lib/connect";
 
 import { makeWhereClause } from "./util";
 import { getColumns } from "./getColumns";
 
-export const getChangedRows: GetChangedRowsMethod = async ({
+export const getChangedRows: GetChangedRowsMethod<MySQLConnection> = async ({
   connection,
   appOptions,
   appId,
@@ -54,11 +54,7 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   params.push(sourceOffset);
 
   validateQuery(query);
-
-  const out: DataResponseRow[] = [];
-  const rows = await connection.asyncQuery(query, params);
-  rows.forEach((row) => out.push(row));
-  return out;
+  return await connection.asyncQuery(query, params);
 };
 
 export async function makeHighwaterWhereClause(
