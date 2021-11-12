@@ -14,7 +14,7 @@ class ClickHouseHTTPConnection implements MySQLConnection {
     const { host, port, database, user, password } = appOptions;
 
     let url = host as String;
-    if (url && !url.match(/^localhost/i) && !url.match(/^https?/)) {
+    if (url && !url.match(/^(localhost|https?)/i)) {
       url = `https://${url}`;
     }
 
