@@ -69,7 +69,7 @@ Page.getInitialProps = async (ctx) => {
   });
   return {
     plugins: plugins
-      .filter((p) => p.source || p.destination)
+      .filter((p) => p.apps?.length > 0)
       .sort((a, b) => (a.name > b.name ? 1 : -1)),
   };
 };

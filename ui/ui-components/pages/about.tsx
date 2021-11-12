@@ -4,7 +4,6 @@ import { Table, Badge, Alert } from "react-bootstrap";
 import { UseApi } from "../hooks/useApi";
 import { Actions } from "../utils/apiData";
 import LinkButton from "../components/LinkButton";
-import { plugin } from "@grouparoo/core";
 
 const upgradeHelpPage =
   "https://www.grouparoo.com/docs/support/upgrading-grouparoo";

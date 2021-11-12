@@ -100,12 +100,6 @@ export default function Page(props) {
     setTestLoading(false);
   }
 
-  // const typeOptions = plugins
-  //   .find((p) => p.apps?.map((a) => a.name).includes(app.type))
-  //   .apps.find((a) => a.name === app.type).options;
-
-  // const typeOptions = Object.keys(optionOptions);
-
   const update = async (event) => {
     const _app = Object.assign({}, app);
     _app[event.target.id] = event.target.value;

@@ -3,17 +3,12 @@ import { CardDeck } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { Actions } from "../utils/apiData";
 
-// type SelectablePlugin = Actions.AppOptions["plugins"][number];
 type SelectablePlugin = Actions.PluginsList["plugins"][number];
 type SelectableApp = Actions.AppsList["apps"][number];
 
 function isSelectableApp(item: any): item is SelectableApp {
   return item.installed === undefined;
 }
-
-// function isSelectablePackage(item: any): item is SelectablePackage {
-//   return item.npmUrl !== undefined;
-// }
 
 export default function AppSelectorList({
   onClick,
