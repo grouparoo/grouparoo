@@ -1204,7 +1204,6 @@ jobs:
           command: cd apps/staging-community && ./__tests__/integration
           environment:
             PORT: 3000
-            GROUPAROO_TELEMETRY_ENABLED: "false"
             WEB_SERVER: "true"
             WORKERS: 1
   test-staging-enterprise:
@@ -1265,7 +1264,6 @@ jobs:
           command: cd apps/staging-enterprise && ./__tests__/integration
           environment:
             PORT: 3000
-            GROUPAROO_TELEMETRY_ENABLED: "false"
             WEB_SERVER: "true"
             WORKERS: 1
   test-plugin-app-templates:
