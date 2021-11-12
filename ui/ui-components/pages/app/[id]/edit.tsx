@@ -23,16 +23,16 @@ export default function Page(props) {
     errorHandler,
     successHandler,
     appHandler,
-    types,
     environmentVariableOptions,
-    optionOptions,
+    options,
+    pluginOptions,
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     appHandler: AppHandler;
-    types: Actions.AppOptions["types"];
     environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
-    optionOptions: Actions.AppOptionOptions["options"];
+    options: Actions.AppOptions["options"];
+    pluginOptions: Actions.AppOptions["pluginOptions"];
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
@@ -100,13 +100,6 @@ export default function Page(props) {
     setTestLoading(false);
   }
 
-  let typeOptions = [];
-  types.forEach((type) => {
-    if (app.type === type.name) {
-      typeOptions = type.options;
-    }
-  });
-
   const update = async (event) => {
     const _app = Object.assign({}, app);
     _app[event.target.id] = event.target.value;
@@ -165,13 +158,11 @@ export default function Page(props) {
                   onChange={(e) => update(e)}
                   disabled
                 >
-                  {types.map((type) => (
-                    <option key={`type-${type.name}`}>{type.name}</option>
-                  ))}
+                  <option>{app.type}</option>
                 </Form.Control>
               </Form.Group>
 
-              {typeOptions.length > 0 ? (
+              {pluginOptions.length > 0 ? (
                 <>
                   <div className="mb-3">
                     <hr />
@@ -206,7 +197,7 @@ export default function Page(props) {
                     )}
                   </div>
 
-                  {typeOptions.map((opt) => {
+                  {pluginOptions.map((opt) => {
                     return (
                       <Form.Group key={`opt-${opt.key}`} controlId={opt.key}>
                         <Form.Label>
@@ -218,7 +209,7 @@ export default function Page(props) {
                           <code>{opt.displayName || opt.key}</code>
                         </Form.Label>
                         {(() => {
-                          if (optionOptions[opt.key]?.type === "typeahead") {
+                          if (options[opt.key]?.type === "typeahead") {
                             return (
                               <>
                                 <Typeahead
@@ -228,12 +219,12 @@ export default function Page(props) {
                                   onChange={(selected) => {
                                     updateOption(opt.key, selected[0]?.key);
                                   }}
-                                  options={optionOptions[opt.key]?.options.map(
+                                  options={options[opt.key]?.options.map(
                                     (k, idx) => {
                                       return {
                                         key: k,
                                         descriptions:
-                                          optionOptions[k]?.descriptions[idx],
+                                          options[k]?.descriptions[idx],
                                       };
                                     }
                                   )}
@@ -270,7 +261,7 @@ export default function Page(props) {
                                 </Form.Text>
                               </>
                             );
-                          } else if (optionOptions[opt.key]?.type === "list") {
+                          } else if (options[opt.key]?.type === "list") {
                             return (
                               <>
                                 <Form.Control
@@ -287,34 +278,27 @@ export default function Page(props) {
                                   <option value={""} disabled>
                                     Select an option
                                   </option>
-                                  {optionOptions[opt.key].options.map(
-                                    (o, idx) => (
-                                      <option
-                                        key={`opt~${opt.key}-${o}`}
-                                        value={o}
-                                      >
-                                        {o}{" "}
-                                        {optionOptions[opt.key]?.descriptions &&
-                                        optionOptions[opt.key]?.descriptions[
-                                          idx
-                                        ]
-                                          ? ` | ${
-                                              optionOptions[opt.key]
-                                                ?.descriptions[idx]
-                                            }`
-                                          : null}
-                                      </option>
-                                    )
-                                  )}
+                                  {options[opt.key].options.map((o, idx) => (
+                                    <option
+                                      key={`opt~${opt.key}-${o}`}
+                                      value={o}
+                                    >
+                                      {o}{" "}
+                                      {options[opt.key]?.descriptions &&
+                                      options[opt.key]?.descriptions[idx]
+                                        ? ` | ${
+                                            options[opt.key]?.descriptions[idx]
+                                          }`
+                                        : null}
+                                    </option>
+                                  ))}
                                 </Form.Control>
                                 <Form.Text className="text-muted">
                                   {opt.description}
                                 </Form.Text>
                               </>
                             );
-                          } else if (
-                            optionOptions[opt.key]?.type === "pending"
-                          ) {
+                          } else if (options[opt.key]?.type === "pending") {
                             return (
                               <>
                                 <Form.Control
@@ -331,7 +315,7 @@ export default function Page(props) {
                                 <Form.Control
                                   required={opt.required}
                                   type={
-                                    optionOptions[opt.key]?.type === "password"
+                                    options[opt.key]?.type === "password"
                                       ? "password"
                                       : "text" // textarea not supported here
                                   }
@@ -417,10 +401,15 @@ Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { app } = await execApi("get", `/app/${id}`);
-  const { types, environmentVariableOptions } = await execApi(
-    "get",
-    `/appOptions`
-  );
-  const { options } = await execApi("get", `/app/${id}/optionOptions`);
-  return { app, types, environmentVariableOptions, optionOptions: options };
+  const {
+    options,
+    pluginOptions,
+    environmentVariableOptions,
+  }: Actions.AppOptions = await execApi("get", `/app/${id}/options`);
+  return {
+    app,
+    options,
+    pluginOptions,
+    environmentVariableOptions,
+  };
 };

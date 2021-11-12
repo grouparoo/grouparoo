@@ -52,76 +52,6 @@ export class AppOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "app:options";
-    this.description = "enumerate the options for creating a new app";
-    this.outputExample = {};
-    this.permission = { topic: "app", mode: "read" };
-    this.inputs = {};
-  }
-
-  async runWithinTransaction() {
-    const types: Array<{
-      name: string;
-      displayName: string;
-      maxInstances: number;
-      minInstances: number;
-      addible: boolean;
-      options: PluginApp["options"];
-      plugin: { name: string; icon: string };
-      provides: { source: boolean; destination: boolean };
-    }> = [];
-
-    for (const i in api.plugins.plugins) {
-      const plugin = api.plugins.plugins[i];
-      if (plugin.apps) {
-        for (const j in plugin.apps) {
-          const app = plugin.apps[j];
-          const source = api.plugins.plugins.find((p) =>
-            p?.connections?.find(
-              (c) => c.apps.includes(app.name) && c.direction === "import"
-            )
-          )
-            ? true
-            : false;
-
-          const destination = api.plugins.plugins.find((p) =>
-            p?.connections?.find(
-              (c) => c.apps.includes(app.name) && c.direction === "export"
-            )
-          )
-            ? true
-            : false;
-
-          const appsOfThisType = await App.count({ where: { type: app.name } });
-          let addible = true;
-          if (app.maxInstances && app.maxInstances === appsOfThisType) {
-            addible = false;
-          }
-
-          types.push({
-            name: app.name,
-            displayName: app.displayName,
-            maxInstances: app.maxInstances,
-            minInstances: app.minInstances,
-            addible,
-            options: app.options,
-            plugin: { name: plugin.name, icon: plugin.icon },
-            provides: { source, destination },
-          });
-        }
-      }
-    }
-
-    const environmentVariableOptions =
-      OptionHelper.getEnvironmentVariableOptionsForTopic("app");
-
-    return { environmentVariableOptions, types };
-  }
-}
-
-export class AppOptionOptions extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "app:optionOptions";
     this.description = "return option choices from this app";
     this.outputExample = {};
     this.permission = { topic: "app", mode: "read" };
@@ -131,8 +61,16 @@ export class AppOptionOptions extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
+    const environmentVariableOptions =
+      OptionHelper.getEnvironmentVariableOptionsForTopic("app");
     const app = await App.findById(params.id);
-    return { options: await app.appOptions() };
+    const { pluginApp } = await app.getPlugin();
+    const pluginOptions = pluginApp.options;
+    return {
+      options: await app.appOptions(),
+      pluginOptions,
+      environmentVariableOptions,
+    };
   }
 }
 

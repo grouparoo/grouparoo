@@ -85,6 +85,6 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { types }: Actions.AppOptions = await execApi("get", `/modelOptions`);
+  const { types }: Actions.ModelOptions = await execApi("get", `/modelOptions`);
   return { types };
 };

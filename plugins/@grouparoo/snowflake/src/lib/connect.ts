@@ -1,5 +1,6 @@
 import { ConnectPluginAppMethod } from "@grouparoo/core";
 import { log } from "actionhero";
+import crypto from "crypto";
 import { Snowflake } from "snowflake-promise";
 import SnowflakeLogger from "snowflake-sdk/lib/logger";
 import SnowflakeUtil from "snowflake-sdk/lib/util";
@@ -8,6 +9,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   const account = appOptions.account?.toString();
   const username = appOptions.username?.toString();
   const password = appOptions.password?.toString();
+  const private_key = appOptions.private_key?.toString();
   const warehouse = appOptions.warehouse?.toString();
   const database = appOptions.database?.toString();
   const schema = appOptions.schema?.toString() || "PUBLIC";
@@ -15,14 +17,37 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   const logger = SnowflakeLogger.getInstance();
   SnowflakeLogger.setInstance(logToActionhero(logger));
 
-  const client = new Snowflake({
+  let client: Snowflake;
+  const commonConnectionOptions = {
     account,
     username,
-    password,
     database,
     schema,
     warehouse,
-  });
+  };
+  if (private_key) {
+    const privateKeyObject = crypto
+      .createPrivateKey({
+        key: private_key.replace(/\\n/g, "\n"),
+        format: "pem",
+      })
+      .export({
+        format: "pem",
+        type: "pkcs8",
+      })
+      .toString();
+
+    client = new Snowflake({
+      ...commonConnectionOptions,
+      authenticator: "SNOWFLAKE_JWT",
+      privateKey: privateKeyObject,
+    });
+  } else {
+    client = new Snowflake({
+      ...commonConnectionOptions,
+      password,
+    });
+  }
 
   client["schemaName"] = schema;
 

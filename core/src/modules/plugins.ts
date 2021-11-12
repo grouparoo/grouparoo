@@ -1,4 +1,4 @@
-import { config } from "actionhero";
+import { config, api } from "actionhero";
 import path from "path";
 import pacote from "pacote";
 import { log } from "actionhero";
@@ -10,36 +10,22 @@ import {
   getPluginManifest,
 } from "../modules/pluginDetails";
 import "isomorphic-fetch";
+import { PluginApp } from "../classes/plugin";
 
 export namespace Plugins {
-  export interface PluginWithVersions {
+  export interface PluginWithVersion {
     name: string;
+    description: string;
+    icon: string;
     currentVersion: string;
     latestVersion: string;
     upToDate: boolean;
     license: string;
     url: string;
-  }
-
-  export interface PluginWithVersion {
-    name: string;
-    version: string;
-    license: string;
-    url: string;
-  }
-
-  export interface NPMPackage {
-    name: string;
-    scope: string;
-    version: string;
-    description: string;
-    date: string;
-    links: {
-      npm: string;
-      homepage: string;
-      repository: string;
-      bugs: string;
-    };
+    installed: boolean;
+    source: boolean;
+    destination: boolean;
+    apps: PluginApp[];
   }
 
   export type GrouparooManifestPackage = {
@@ -53,55 +39,103 @@ export namespace Plugins {
     docsUrl?: string;
   };
 
-  export async function installedPluginVersions() {
+  export async function listPlugins(
+    includeInstalled = true,
+    includeAvailable = true,
+    includeVersions = true
+  ) {
+    const plugins: PluginWithVersion[] = [];
     const pluginManifest = getPluginManifest();
     const coreVersion = getCoreVersion();
-
-    const plugins: PluginWithVersion[] = [
-      {
-        name: "@grouparoo/core",
-        version: coreVersion,
-        license: "MPL-2.0",
-        url: "https://github.com/grouparoo/grouparoo",
-      },
-    ].concat(pluginManifest.plugins);
-
-    const pluginResponse: PluginWithVersions[] = [];
+    const installedPlugins = includeInstalled
+      ? [
+          {
+            name: "@grouparoo/core",
+            version: coreVersion,
+            license: "MPL-2.0",
+            url: "https://github.com/grouparoo/grouparoo",
+          },
+        ].concat(pluginManifest.plugins)
+      : [];
+    const availableGrouparooPlugins = includeAvailable
+      ? await getAvailableGrouparooPlugins()
+      : [];
 
     await Promise.all(
-      plugins.map(async (plugin) => {
-        let latestVersion = "unknown";
+      installedPlugins.map(async (plugin) => {
+        const latestVersion = includeVersions
+          ? await getLatestNPMVersion(plugin.name)
+          : "unknown";
+        const loadedPlugin = api.plugins.plugins.find(
+          (p) => p.name === plugin.name
+        );
 
-        try {
-          const manifest = await getLatestNPMVersion(plugin);
-          latestVersion = manifest.version;
-        } catch (error) {
-          log(error.toString(), "info");
-        }
-
-        pluginResponse.push({
+        plugins.push({
           name: plugin.name,
+          description: plugin.name,
+          icon: loadedPlugin?.icon,
           currentVersion: plugin.version,
-          license: plugin.license,
-          url: plugin.url,
           latestVersion,
           upToDate:
             latestVersion === "unknown"
               ? true
               : semver.compare(plugin.version, latestVersion) >= 0,
+          url: plugin.url,
+          license: plugin.license,
+          installed: true,
+          source: loadedPlugin?.connections?.find(
+            (c) => c.direction === "import"
+          )
+            ? true
+            : false,
+          destination: loadedPlugin?.connections?.find(
+            (c) => c.direction === "export"
+          )
+            ? true
+            : false,
+          apps: loadedPlugin?.apps,
         });
       })
     );
 
-    return pluginResponse;
+    await Promise.all(
+      availableGrouparooPlugins.map(async (plugin) => {
+        if (!plugins.find((p) => p.name === plugin.packageName)) {
+          const latestVersion = includeVersions
+            ? await getLatestNPMVersion(plugin.name)
+            : "unknown";
+          plugins.push({
+            name: plugin.packageName,
+            description: plugin.description,
+            icon: plugin.imageUrl,
+            currentVersion: undefined,
+            latestVersion,
+            upToDate: false,
+            url: plugin.npmUrl,
+            license: undefined,
+            installed: false,
+            source: plugin.source,
+            destination: plugin.destination,
+            apps: [],
+          });
+        }
+      })
+    );
+
+    return plugins;
   }
 
-  export async function availableGrouparooPlugins() {
+  export async function getAvailableGrouparooPlugins() {
     const pluginManifestUrl = config.pluginManifestUrl;
-    const pluginManifest: GrouparooManifestPackage[] = await fetch(
-      pluginManifestUrl
-    ).then((r) => r.json());
-    return pluginManifest;
+    try {
+      const pluginManifest: GrouparooManifestPackage[] = await fetch(
+        pluginManifestUrl
+      ).then((r) => r.json());
+      return pluginManifest;
+    } catch (error) {
+      log(error.toString(), "info");
+      return [];
+    }
   }
 
   export async function install(pluginName: string) {
@@ -112,11 +146,17 @@ export namespace Plugins {
     return spawnPromise(getCli(), ["uninstall", pluginName]);
   }
 
-  async function getLatestNPMVersion(
-    plugin: PluginWithVersion,
-    tag = "latest"
-  ) {
-    return pacote.manifest(`${plugin.name}@${tag}`);
+  async function getLatestNPMVersion(pluginName: string, tag = "latest") {
+    let latestVersion = "unknown";
+
+    try {
+      const manifest = await pacote.manifest(`${pluginName}@${tag}`);
+      latestVersion = manifest.version;
+    } catch (error) {
+      log(error.toString(), "info");
+    }
+
+    return latestVersion;
   }
 
   function getCli() {

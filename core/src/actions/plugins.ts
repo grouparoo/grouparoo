@@ -8,43 +8,46 @@ import { APIData } from "../modules/apiData";
 
 const restartSleepTime = 100;
 
-export class PluginsInstalledList extends OptionallyAuthenticatedAction {
+export class PluginsList extends OptionallyAuthenticatedAction {
   constructor() {
     super();
-    this.name = "plugins:installed:list";
+    this.name = "plugins:list";
     this.description =
-      "I will return information about the active plugins on this server";
+      "I will return a list of the installed and available grouparoo plugins";
     this.permission = { topic: "system", mode: "read" };
+    this.inputs = {
+      includeInstalled: {
+        required: false,
+        formatter: APIData.ensureBoolean,
+      },
+      includeAvailable: {
+        required: false,
+        formatter: APIData.ensureBoolean,
+      },
+      includeVersions: {
+        required: false,
+        formatter: APIData.ensureBoolean,
+      },
+    };
     this.outputExample = {};
   }
 
-  async runWithinTransaction() {
-    const plugins = await Plugins.installedPluginVersions();
-    return { plugins };
-  }
-}
-
-export class PluginsAvailableList extends OptionallyAuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "plugins:available:list";
-    this.description =
-      "I will return a list of the available grouparoo plugins";
-    this.permission = { topic: "system", mode: "read" };
-    this.outputExample = {};
-  }
-
-  async runWithinTransaction() {
-    let availablePlugins = await Plugins.availableGrouparooPlugins();
-    const installedPlugins = await Plugins.installedPluginVersions();
-    const installedPluginNames = installedPlugins.map((plugin) => plugin.name);
-    availablePlugins = availablePlugins.map((plugin) => {
-      return {
-        ...plugin,
-        installed: installedPluginNames.includes(plugin.packageName),
-      };
-    });
-    return { plugins: availablePlugins };
+  async runWithinTransaction({
+    params,
+  }: {
+    params: {
+      includeInstalled: boolean;
+      includeAvailable: boolean;
+      includeVersions: boolean;
+    };
+  }) {
+    return {
+      plugins: await Plugins.listPlugins(
+        params.includeInstalled,
+        params.includeAvailable,
+        params.includeVersions
+      ),
+    };
   }
 }
 

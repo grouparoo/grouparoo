@@ -44,7 +44,6 @@ export default function Page(props) {
     );
     if (response?.destination) {
       router.push(
-        "/model/[modelId]/destination/[destinationId]/edit",
         `/model/${response.destination.modelId}/destination/${response.destination.id}/edit`
       );
     } else {
