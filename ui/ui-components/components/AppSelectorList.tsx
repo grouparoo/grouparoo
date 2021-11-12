@@ -62,7 +62,6 @@ export default function AppSelectorList({
           // these items are plugins
           src = item.icon;
           title = item.name.replace("@grouparoo/", "");
-          // subheading = item.description; // this is kind of long
 
           if (item.source) {
             badges.push({ message: "source", variant: "primary" });
