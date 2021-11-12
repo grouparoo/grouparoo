@@ -42,7 +42,11 @@ export namespace CLISpecHelper {
 
       const spawnProcess = spawn(command, args, {
         cwd,
-        env,
+        env: {
+          ...env,
+          GROUPAROO_TELEMETRY_DISABLED:
+            process.env.GROUPAROO_TELEMETRY_DISABLED,
+        },
       });
 
       spawnProcess.stdout.on("data", (data) => {
@@ -68,7 +72,10 @@ export namespace CLISpecHelper {
   ): { exitCode: number; stderr: string; stdout: string } {
     const syncResponse = spawnSync(command, args, {
       cwd,
-      env,
+      env: {
+        ...env,
+        GROUPAROO_TELEMETRY_DISABLED: process.env.GROUPAROO_TELEMETRY_DISABLED,
+      },
     });
     const stdout = syncResponse.stdout.toString();
     const stderr = syncResponse.stderr.toString();
