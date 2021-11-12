@@ -145,28 +145,6 @@ describe("actions/appRefreshQuery", () => {
         expect(appRefreshQuery.value.length).toBe(13);
         expect(valueUpdated).toBeTruthy();
       });
-      test("querying with an appRefreshQuery triggers associated schedule runs", async () => {
-        connection.params = {
-          csrfToken,
-          refreshQuery: "SELECT 'aloha' AS name", //update to trigger schedules
-          id,
-        };
-        const { error, appRefreshQuery, valueUpdated } =
-          await specHelper.runAction<AppRefreshQueryQuery>(
-            "appRefreshQuery:query",
-            connection
-          );
-        expect(error).toBeUndefined();
-        expect(appRefreshQuery.id).toBeTruthy();
-        expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hello' AS name");
-        expect(appRefreshQuery.value.length).toBe(13);
-        expect(valueUpdated).toBeTruthy();
-
-        const runs = await Run.findAll({
-          where: { creatorId: schedule.id, state: "running" },
-        });
-        expect(runs.length).toBe(1);
-      });
       test("an administrator can destroy an appQueryRefresh", async () => {
         connection.params = { csrfToken, id };
         const destroyResponse =

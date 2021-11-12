@@ -101,9 +101,6 @@ export class AppRefreshQueryTest extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const appRefreshQuery = await AppRefreshQuery.findById(params.id);
-    if (!appRefreshQuery) {
-      throw new Error(`cannot find an appRefreshQuery ${params.id}`);
-    }
 
     const test = await appRefreshQuery.test(params.refreshQuery);
     if (test.error) test.error = String(test.error);

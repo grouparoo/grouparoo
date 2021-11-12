@@ -4,7 +4,7 @@ import { Models } from "../../utils/apiData";
 export default function AppTabs({ app }: { app: Models.AppType }) {
   const tabs = ["edit"];
 
-  if (app.refreshQueryAvailable == true) {
+  if (app.refreshQueryAvailable === true) {
     tabs.push("refresh");
   }
 
