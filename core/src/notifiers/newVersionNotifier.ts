@@ -9,7 +9,7 @@ export class NewVersionNotifier extends Notifier {
   }
 
   async buildNotification() {
-    const plugins = await Plugins.installedPluginVersions();
+    const plugins = await Plugins.listPlugins();
     const core = plugins.find((p) => p.name === "@grouparoo/core");
     const otherPluginsWithUpdates = plugins
       .filter((p) => p.name !== "@grouparoo/core")

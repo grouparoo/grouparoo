@@ -33,18 +33,16 @@ class CustomErrorHandler extends EventDispatcher<{ error: string }> {
 export default function Page(props) {
   const {
     errorHandler,
-    availablePlugins,
-    installedPlugins,
+    plugins,
   }: {
     errorHandler: ErrorHandler;
-    installedPlugins: Actions.AppOptions["plugins"];
-    availablePlugins: Actions.PluginsAvailableList["plugins"];
+    plugins: Actions.PluginsList["plugins"];
   } = props;
 
   const router = useRouter();
   const { execApi } = UseApi(props, new CustomErrorHandler(errorHandler));
   const [plugin, setPlugin] = useState<
-    Partial<Actions.AppOptions["plugins"][number]>
+    Partial<Actions.PluginsList["plugins"][number]>
   >({ name: "" });
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -55,36 +53,31 @@ export default function Page(props) {
   ] = useState(false);
 
   async function resetPluginsAndApps() {
-    const { plugins: _installedPlugins }: Actions.AppOptions = await execApi(
+    const { plugins: _plugins }: Actions.PluginsList = await execApi(
       "get",
-      `/appOptions`
+      `/plugins`
     );
-    const { plugins: _availablePlugins }: Actions.PluginsAvailableList =
-      await execApi("get", `/plugins/available`);
-    prepareCards(_installedPlugins, _availablePlugins);
+    prepareCards(_plugins);
   }
 
-  function prepareCards(
-    _installedPlugins: Actions.AppOptions["plugins"],
-    _availablePlugins: Actions.PluginsAvailableList["plugins"]
-  ) {
+  function prepareCards(_plugins: Actions.PluginsList["plugins"]) {
     setCards(
-      []
-        .concat(
-          _installedPlugins.map((p) => {
-            return { ...p, installed: true };
-          }),
-          _availablePlugins.filter((plugin) => !plugin.installed)
-        )
+      _plugins
+        .filter((p) => p.source || p.destination)
         .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .sort((a, b) => {
+          if (a.installed === b.installed) return 0;
+          if (a.installed) return -1;
+          return 1;
+        })
     );
   }
 
   useEffect(() => {
-    prepareCards(installedPlugins, availablePlugins);
-  }, [installedPlugins, availablePlugins]);
+    prepareCards(plugins);
+  }, [plugins]);
 
-  async function handleClick(plugin: Actions.AppOptions["plugins"][number]) {
+  async function handleClick(plugin: Actions.PluginsList["plugins"][number]) {
     if (loading) return;
     // @ts-ignore
     if (!plugin.installed) return installPlugin(plugin);
@@ -109,9 +102,7 @@ export default function Page(props) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  async function installPlugin(
-    plugin: Actions.PluginsAvailableList["plugins"][number]
-  ) {
+  async function installPlugin(plugin: Actions.PluginsList["plugins"][number]) {
     setLoading(true);
     setInstallingMessage(`Installing plugin ${plugin.name} ...`);
     const response: Actions.PluginInstall = await execApi(
@@ -223,13 +214,10 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { plugins: installedPlugins }: Actions.AppOptions = await execApi(
-    "get",
-    `/appOptions`
-  );
-  const { plugins: availablePlugins } = await execApi(
-    "get",
-    `/plugins/available`
-  );
-  return { installedPlugins, availablePlugins };
+  const { plugins }: Actions.PluginsList = await execApi("get", `/plugins`, {
+    includeInstalled: true,
+    includeAvailable: true,
+    includeVersions: false,
+  });
+  return { plugins };
 };

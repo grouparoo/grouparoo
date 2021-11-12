@@ -52,26 +52,6 @@ export class AppOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "app:options";
-    this.description = "enumerate the options for creating a new app";
-    this.outputExample = {};
-    this.permission = { topic: "app", mode: "read" };
-    this.inputs = {};
-  }
-
-  async runWithinTransaction() {
-    const plugins: GrouparooPlugin[] = api.plugins.plugins.filter(
-      (p) => p.apps?.length > 0
-    );
-    const environmentVariableOptions =
-      OptionHelper.getEnvironmentVariableOptionsForTopic("app");
-    return { environmentVariableOptions, plugins };
-  }
-}
-
-export class AppOptionOptions extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "app:optionOptions";
     this.description = "return option choices from this app";
     this.outputExample = {};
     this.permission = { topic: "app", mode: "read" };
@@ -81,8 +61,16 @@ export class AppOptionOptions extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
+    const environmentVariableOptions =
+      OptionHelper.getEnvironmentVariableOptionsForTopic("app");
     const app = await App.findById(params.id);
-    return { options: await app.appOptions() };
+    const { pluginApp } = await app.getPlugin();
+    const pluginOptions = pluginApp.options;
+    return {
+      options: await app.appOptions(),
+      pluginOptions,
+      environmentVariableOptions,
+    };
   }
 }
 

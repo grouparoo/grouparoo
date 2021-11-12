@@ -6,7 +6,6 @@ import {
   AppCreate,
   AppDestroy,
   AppEdit,
-  AppOptionOptions,
   AppOptions,
   AppsList,
   AppTest,
@@ -66,42 +65,16 @@ describe("actions/apps", () => {
       id = app.id;
     });
 
-    test("an administrator can get the options for a new app and how they can be used", async () => {
-      connection.params = {
-        csrfToken,
-      };
-      const { error, plugins } = await specHelper.runAction<AppOptions>(
-        "app:options",
-        connection
-      );
-      expect(error).toBeUndefined();
-      expect(plugins.length).toBeGreaterThanOrEqual(1);
-      const apps = plugins
-        .filter((p) => p.apps)
-        .map((p) => p.apps)
-        .flat();
-      expect(apps.map((a) => a.name)).toContain("test-plugin-app");
-      expect(apps.map((a) => a.displayName)).toContain("test-plugin-app");
-
-      const pluginTestApp = plugins
-        .find((p) => p.apps.map((a) => a.name).includes("test-plugin-app"))
-        .apps.find((a) => a.name === "test-plugin-app");
-      expect(pluginTestApp.options).toEqual([
-        { key: "fileId", required: true },
-        { key: "password", required: false },
-        { key: "_failRemoteValidation", required: false },
-      ]);
-    });
-
     describe("options from environment variables", () => {
       beforeAll(() => {
         process.env.GROUPAROO_OPTION__APP__TEST_OPTION = "abc123";
       });
 
       test("options for a new app will include the names of options included in environment variables", async () => {
-        connection.params = { csrfToken };
-        const { environmentVariableOptions } =
+        connection.params = { csrfToken, id };
+        const { environmentVariableOptions, error } =
           await specHelper.runAction<AppOptions>("app:options", connection);
+        expect(error).toBeUndefined();
         expect(environmentVariableOptions).toEqual(["TEST_OPTION"]);
       });
 
@@ -110,16 +83,16 @@ describe("actions/apps", () => {
       });
     });
 
-    test("an administrator can get the options for the app options", async () => {
-      connection.params = {
-        csrfToken,
-        id,
-      };
-      const { error, options } = await specHelper.runAction<AppOptionOptions>(
-        "app:optionOptions",
-        connection
-      );
+    test("an administrator can get the options for the app", async () => {
+      connection.params = { csrfToken, id };
+      const { error, options, pluginOptions } =
+        await specHelper.runAction<AppOptions>("app:options", connection);
       expect(error).toBeUndefined();
+      expect(pluginOptions).toEqual([
+        { key: "fileId", required: true },
+        { key: "password", required: false },
+        { key: "_failRemoteValidation", required: false },
+      ]);
       expect(options).toEqual({
         fileId: { options: ["a", "b"], type: "list" },
         password: { type: "password" },

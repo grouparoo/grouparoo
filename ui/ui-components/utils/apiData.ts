@@ -101,7 +101,6 @@ import {
   AppCreate,
   AppDestroy,
   AppEdit,
-  AppOptionOptions,
   AppOptions,
   AppTest,
   AppView,
@@ -156,8 +155,7 @@ import {
 } from "@grouparoo/core/src/actions/notifications";
 import { NavigationList } from "@grouparoo/core/src/actions/navigation";
 import {
-  PluginsInstalledList,
-  PluginsAvailableList,
+  PluginsList,
   PluginInstall,
   PluginUninstall,
 } from "@grouparoo/core/src/actions/plugins";
@@ -315,9 +313,6 @@ export namespace Actions {
   export type AppEdit = AsyncReturnType<
     typeof AppEdit.prototype.runWithinTransaction
   >;
-  export type AppOptionOptions = AsyncReturnType<
-    typeof AppOptionOptions.prototype.runWithinTransaction
-  >;
   export type AppOptions = AsyncReturnType<
     typeof AppOptions.prototype.runWithinTransaction
   >;
@@ -458,11 +453,8 @@ export namespace Actions {
     typeof NavigationList.prototype.runWithinTransaction
   >;
 
-  export type PluginsInstalledList = AsyncReturnType<
-    typeof PluginsInstalledList.prototype.runWithinTransaction
-  >;
-  export type PluginsAvailableList = AsyncReturnType<
-    typeof PluginsAvailableList.prototype.runWithinTransaction
+  export type PluginsList = AsyncReturnType<
+    typeof PluginsList.prototype.runWithinTransaction
   >;
   export type PluginInstall = AsyncReturnType<
     typeof PluginInstall.prototype.runWithinTransaction
