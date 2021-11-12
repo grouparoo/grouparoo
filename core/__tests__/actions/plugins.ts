@@ -1,6 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { PluginsList } from "../../src/actions/plugins";
+import { getCoreVersion } from "../../src/modules/pluginDetails";
 
 helper.useNock(__filename, {});
 
@@ -17,7 +18,7 @@ describe("actions/plugins", () => {
     expect(plugins.length).toBeGreaterThanOrEqual(1);
     expect(plugins[0]).toEqual({
       apps: undefined,
-      currentVersion: expect.any(String),
+      currentVersion: getCoreVersion(),
       description: "@grouparoo/core",
       destination: false,
       icon: "/public/@grouparoo/logo.png",
@@ -47,8 +48,7 @@ describe("actions/plugins", () => {
       expect.objectContaining({
         apps: [],
         currentVersion: undefined,
-        description:
-          "Grouparoo's Postgres integration allows you to sync all of your customer data that lives in your Postgres DB with various destinations such as CRMs, Customer Support Tools, and Marketing Tools.",
+        description: expect.stringContaining("Postgres integration"),
         destination: true,
         icon: "https://www.grouparoo.com/images/home/integrations/postgres/postgres.png",
         installed: false,
@@ -79,7 +79,7 @@ describe("actions/plugins", () => {
     expect(postgresPlugin).toEqual(
       expect.objectContaining({
         apps: undefined,
-        currentVersion: "0.7.4-alpha.1",
+        currentVersion: getCoreVersion(),
         description: "@grouparoo/core",
         destination: false,
         icon: "/public/@grouparoo/logo.png",
