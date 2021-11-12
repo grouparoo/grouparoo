@@ -68,7 +68,7 @@ export namespace AppRefreshQueryOps {
         await run.stop();
       }
 
-      //begin a new run on this schedule
+      //begin a new run on this schedule, mark the run as triggered with the app refresh query id
       await schedule.enqueueRun(appRefreshQuery.id);
     }
   }
