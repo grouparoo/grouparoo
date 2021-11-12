@@ -44,8 +44,7 @@ export namespace CLISpecHelper {
         cwd,
         env: {
           ...env,
-          GROUPAROO_TELEMETRY_DISABLED:
-            process.env.GROUPAROO_TELEMETRY_DISABLED,
+          GROUPAROO_TELEMETRY_ENABLED: process.env.GROUPAROO_TELEMETRY_ENABLED,
         },
       });
 
@@ -74,7 +73,7 @@ export namespace CLISpecHelper {
       cwd,
       env: {
         ...env,
-        GROUPAROO_TELEMETRY_DISABLED: process.env.GROUPAROO_TELEMETRY_DISABLED,
+        GROUPAROO_TELEMETRY_ENABLED: process.env.GROUPAROO_TELEMETRY_ENABLED,
       },
     });
     const stdout = syncResponse.stdout.toString();
