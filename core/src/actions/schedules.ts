@@ -201,6 +201,7 @@ export class ScheduleEdit extends AuthenticatedAction {
       name: { required: false },
       sourceId: { required: false },
       recurring: { required: false, formatter: APIData.ensureBoolean },
+      refreshEnabled: { required: false, formatter: APIData.ensureBoolean },
       confirmRecords: {
         required: false,
         formatter: APIData.ensureBoolean,
@@ -229,6 +230,7 @@ export class ScheduleEdit extends AuthenticatedAction {
       state: params.state,
       name: params.name,
       confirmRecords: params.confirmRecords,
+      refreshEnabled: params.refreshEnabled,
     });
 
     await ConfigWriter.run();

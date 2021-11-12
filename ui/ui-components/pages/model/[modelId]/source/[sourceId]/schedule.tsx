@@ -58,6 +58,11 @@ export default function Page(props) {
       _schedule.recurringFrequency = recurringFrequencyMinutes * (60 * 1000);
     }
 
+    let thing = Object.assign({}, _schedule, {
+      filters: localFilters,
+      state: "ready",
+    });
+
     const response: Actions.ScheduleEdit = await execApi(
       "put",
       `/schedule/${schedule.id}`,
@@ -137,7 +142,6 @@ export default function Page(props) {
   }
 
   let rowChanges = false;
-
   return (
     <>
       <Head>
@@ -178,6 +182,15 @@ export default function Page(props) {
                   label="Recurring"
                   disabled={loading}
                   checked={schedule.recurring}
+                  onChange={(e) => update(e)}
+                />
+              </Form.Group>
+              <Form.Group controlId="refreshEnabled">
+                <Form.Check
+                  type="checkbox"
+                  label="Refresh Enabled?"
+                  disabled={loading}
+                  checked={schedule.refreshEnabled}
                   onChange={(e) => update(e)}
                 />
               </Form.Group>
