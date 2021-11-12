@@ -224,11 +224,12 @@ export class Schedule extends LoggedModel<Schedule> {
     };
   }
 
-  async enqueueRun() {
+  async enqueueRun(triggeredBy?: string) {
     const run = await Run.create({
       creatorId: this.id,
       creatorType: "schedule",
       state: "running",
+      triggeredBy: triggeredBy,
     });
 
     await CLS.enqueueTask(

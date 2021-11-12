@@ -123,6 +123,10 @@ export class Run extends CommonModel<Run> {
   @Column
   destinationId: string;
 
+  @AllowNull(true)
+  @Column
+  triggeredBy: string;
+
   @BelongsTo(() => Schedule)
   schedule: Schedule;
 
