@@ -15,9 +15,16 @@ export WEB_SERVER="true"
 printf "*** Starting Server ***\r\n"
 npm run start &
 
-sleep 10
+echo "Waiting Grouparoo to launch on $PORT..."
 
-printf "*** checking status ***\r\n"
+for EXPONENTIAL_BACKOFF in {1..10}; do
+    nc -w 1 -z localhost $PORT && break;
+    DELAY=$((2**$EXPONENTIAL_BACKOFF))
+    echo "port $PORT not yet available, sleeping for $DELAY seconds"
+    sleep $DELAY
+done
+
+printf "*** Grouparoo Launched, Checking status ***\r\n"
 curl http://localhost:3000/api/v1/status/public
 curl http://localhost:3000/api/v1/status/private
 
