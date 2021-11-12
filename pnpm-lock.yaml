@@ -487,7 +487,7 @@ importers:
       actionhero: 27.2.0
       clickhouse: 2.4.2
       csv-parse: 4.16.3
-      jest: 27.1.0
+      jest: 27.3.1
       mysql: 2.18.1
       prettier: 2.4.1
       sequelize: 6.9.0
@@ -505,10 +505,10 @@ importers:
       '@types/node': 16.9.1
       actionhero: 27.2.0
       csv-parse: 4.16.3
-      jest: 27.1.0
+      jest: 27.3.1
       prettier: 2.4.1
       sequelize: 6.9.0
-      ts-jest: 27.0.7_062352e94e27c52570f1480e79dd78a7
+      ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
 
   plugins/@grouparoo/cloudwatch:
@@ -9460,27 +9460,6 @@ packages:
       supports-color: 8.1.1
     dev: true
 
-  /jest/27.1.0:
-    resolution: {integrity: sha512-pSQDVwRSwb109Ss13lcMtdfS9r8/w2Zz8+mTUA9VORD66GflCdl8nUFCqM96geOD2EBwWCNURrNAfQsLIDNBdg==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    hasBin: true
-    peerDependencies:
-      node-notifier: ^8.0.1 || ^9.0.0 || ^10.0.0
-    peerDependenciesMeta:
-      node-notifier:
-        optional: true
-    dependencies:
-      '@jest/core': 27.3.1
-      import-local: 3.0.2
-      jest-cli: 27.3.1
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: true
-
   /jest/27.3.1:
     resolution: {integrity: sha512-U2AX0AgQGd5EzMsiZpYt8HyZ+nSVIh5ujQ9CPp9EQZJMjXIiSZpJNweZl0swatKRoqHWgGKM3zaSwm4Zaz87ng==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
@@ -14885,37 +14864,6 @@ packages:
       lodash: 4.17.21
       make-error: 1.3.6
       mkdirp: 1.0.4
-      semver: 7.3.5
-      typescript: 4.4.4
-      yargs-parser: 20.2.9
-    dev: true
-
-  /ts-jest/27.0.7_062352e94e27c52570f1480e79dd78a7:
-    resolution: {integrity: sha512-O41shibMqzdafpuP+CkrOL7ykbmLh+FqQrXEmV9CydQ5JBk0Sj0uAEF5TNNe94fZWKm3yYvWa/IbyV4Yg1zK2Q==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    hasBin: true
-    peerDependencies:
-      '@babel/core': '>=7.0.0-beta.0 <8'
-      '@types/jest': ^27.0.0
-      babel-jest: '>=27.0.0 <28'
-      jest: ^27.0.0
-      typescript: '>=3.8 <5.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/jest':
-        optional: true
-      babel-jest:
-        optional: true
-    dependencies:
-      '@types/jest': 27.0.1
-      bs-logger: 0.2.6
-      fast-json-stable-stringify: 2.1.0
-      jest: 27.1.0
-      jest-util: 27.3.1
-      json5: 2.2.0
-      lodash.memoize: 4.1.2
-      make-error: 1.3.6
       semver: 7.3.5
       typescript: 4.4.4
       yargs-parser: 20.2.9
