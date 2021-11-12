@@ -1,4 +1,6 @@
   test-{{{type}}}-{{{test_section}}}:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: {{{docker_image}}}
         auth:

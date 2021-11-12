@@ -168,6 +168,8 @@ jobs:
             - ui/ui-config/.next
             - ui/ui-enterprise/.next
   license-checker:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -202,6 +204,8 @@ jobs:
           name: license-checker
           command: ./tools/license-checker/check
   spell-checker:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -236,6 +240,8 @@ jobs:
           name: spell-checker
           command: ./tools/spell-checker/check
   linter:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -270,6 +276,8 @@ jobs:
           name: linter
           command: pnpm run lint
   test-core-actions:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -323,6 +331,8 @@ jobs:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/actions --ci --maxWorkers 2
   test-core-bin:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -376,6 +386,8 @@ jobs:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/bin --ci --maxWorkers 2
   test-core-classes:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -429,6 +441,8 @@ jobs:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/classes --ci --maxWorkers 2
   test-core-initializers:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -482,6 +496,8 @@ jobs:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/initializers --ci --maxWorkers 2
   test-core-integration:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -535,6 +551,8 @@ jobs:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/integration --ci --maxWorkers 2
   test-core-models:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -588,6 +606,8 @@ jobs:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/models --ci --maxWorkers 2
   test-core-modules:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -641,6 +661,8 @@ jobs:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/modules --ci --maxWorkers 2
   test-core-notifiers:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -694,6 +716,8 @@ jobs:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/notifiers --ci --maxWorkers 2
   test-core-snapshots:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -747,6 +771,8 @@ jobs:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/snapshots --ci --maxWorkers 2
   test-core-tasks:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -800,6 +826,8 @@ jobs:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/tasks --ci --maxWorkers 2
   test-core-local-models:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -837,6 +865,8 @@ jobs:
           environment:
             DB_DIALECT: sqlite
   test-core-local-actions:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -874,6 +904,8 @@ jobs:
           environment:
             DB_DIALECT: sqlite
   test-core-local-tasks:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -911,6 +943,8 @@ jobs:
           environment:
             DB_DIALECT: sqlite
   test-ui-components:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -970,6 +1004,8 @@ jobs:
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-ui-community:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1029,6 +1065,8 @@ jobs:
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-ui-enterprise:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1088,6 +1126,8 @@ jobs:
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-ui-config:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1147,6 +1187,8 @@ jobs:
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-staging-community:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1207,6 +1249,8 @@ jobs:
             WEB_SERVER: "true"
             WORKERS: 1
   test-staging-enterprise:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1267,6 +1311,8 @@ jobs:
             WEB_SERVER: "true"
             WORKERS: 1
   test-plugin-app-templates:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1320,6 +1366,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/app-templates && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-bigquery:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1373,6 +1421,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/bigquery && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-braze:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1426,6 +1476,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/braze && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-calculated-property:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1479,6 +1531,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/calculated-property && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-cloudwatch:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1532,6 +1586,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/cloudwatch && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-csv:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1585,6 +1641,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/csv && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-customerio:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1638,6 +1696,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/customerio && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-dbt:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1691,6 +1751,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/dbt && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-demo:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1744,6 +1806,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/demo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-eloqua:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1797,6 +1861,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/eloqua && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-facebook:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1850,6 +1916,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/facebook && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-google-sheets:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1903,6 +1971,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/google-sheets && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-hubspot:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1956,6 +2026,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/hubspot && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-intercom:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2009,6 +2081,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/intercom && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-iterable:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2062,6 +2136,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/iterable && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-logger:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2115,6 +2191,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/logger && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-mailchimp:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2168,6 +2246,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/mailchimp && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-mailjet:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2221,6 +2301,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/mailjet && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-marketo:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2274,6 +2356,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/marketo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-mixpanel:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2327,6 +2411,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/mixpanel && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-mongo:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2384,6 +2470,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/mongo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-mysql:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2449,6 +2537,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/mysql && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-newrelic:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2502,6 +2592,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/newrelic && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-onesignal:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2555,6 +2647,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/onesignal && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-pardot:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2608,6 +2702,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/pardot && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-pipedrive:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2661,6 +2757,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/pipedrive && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-postgres:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2714,6 +2812,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/postgres && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-prometheus:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2767,6 +2867,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/prometheus && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-redshift:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2820,6 +2922,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/redshift && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-sailthru:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2873,6 +2977,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/sailthru && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-salesforce:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2926,6 +3032,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/salesforce && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-sendgrid:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -2979,6 +3087,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/sendgrid && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-sentry:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -3032,6 +3142,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/sentry && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-snowflake:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -3085,6 +3197,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/snowflake && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-spec-helper:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -3138,6 +3252,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/spec-helper && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-sqlite:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -3191,6 +3307,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/sqlite && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-zendesk:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -3244,6 +3362,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/zendesk && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-cli:
+    environment:
+      GROUPAROO_TELEMETRY_DISABLED: "true"
     docker:
       - image: circleci/node:16.8.0
         auth:
