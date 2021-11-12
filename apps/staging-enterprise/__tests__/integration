@@ -5,7 +5,6 @@ set -e
 cd "`dirname "$0"`/.."
 
 # Set needed ENV
-export GROUPAROO_TELEMETRY_ENABLED=false
 export REDIS_URL="redis://mock"
 export DATABASE_URL="sqlite://grouparoo_test.sqlite"
 export SERVER_TOKEN="ABC123"
