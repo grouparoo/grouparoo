@@ -6,12 +6,12 @@ export interface dbtConnectionResponse {
 }
 
 export interface dbtConnectionRequest {
-  record?: string; // Which record to load. Overrides setting in dbt_project.yml.
-  target?: string; // Which target to load for the given record. Overrides default in records.yml
+  profile?: string; // Which profile to load. Overrides setting in dbt_project.yml.
+  target?: string; // Which target to load for the given profile. Overrides default in profiles.yml
   projectDirRelativePath?: string;
-  recordDirRelativePath?: string;
+  profileDirRelativePath?: string;
   projectDirFullPath?: string;
-  recordDirFullPath?: string;
+  profileDirFullPath?: string;
 }
 
 export interface dbtConnectionMethod {
@@ -19,19 +19,19 @@ export interface dbtConnectionMethod {
 }
 
 const dbtConnection: dbtConnectionMethod = async ({
-  record,
+  profile,
   projectDirRelativePath,
-  recordDirRelativePath,
+  profileDirRelativePath,
   projectDirFullPath,
-  recordDirFullPath,
+  profileDirFullPath,
 }) => {
   let cmd = "dbt debug";
 
   if (projectDirFullPath) {
     cmd += ` --project-dir '${projectDirFullPath}'`;
   }
-  if (recordDirFullPath) {
-    cmd += ` --records-dir '${recordDirFullPath}'`;
+  if (profileDirFullPath) {
+    cmd += ` --profiles-dir '${profileDirFullPath}'`;
   }
 
   const response = await runCommand(cmd);
@@ -46,17 +46,17 @@ function parseCommandResponse(
   //    stderr: '/bin/sh: dbst: command not found\n',
   //    err: truthy
 
-  // if record not found
+  // if profile not found
   //    stdout: 'Running with dbt=0.19.0\n' +
   //    'dbt version: 0.19.0\n' +
   //    'python version: 3.7.9\n' +
   //    'python path: /Users/brian/.pyenv/versions/3.7.9/bin/python\n' +
   //    'os info: Darwin-20.3.0-x86_64-i386-64bit\n' +
-  //    'Using records.yml file at /Users/brian/grouparoo/x64_grouparoo/plugins/@grouparoo/dbt/__tests__/projects/postgresx/records.yml\n' +
+  //    'Using profiles.yml file at /Users/brian/grouparoo/x64_grouparoo/plugins/@grouparoo/dbt/__tests__/projects/postgresx/profiles.yml\n' +
   //    'Using dbt_project.yml file at /Users/brian/grouparoo/x64_grouparoo/plugins/@grouparoo/dbt/__tests__/projects/default/dbt_project.yml\n' +
   //    '\n' +
   //    'Configuration:\n' +
-  //    '  records.yml file [ERROR not found]\n' +
+  //    '  profiles.yml file [ERROR not found]\n' +
   //    '  dbt_project.yml file [OK found and valid]\n' +
   //    '\n' +
   //    error: falsy
@@ -67,11 +67,11 @@ function parseCommandResponse(
   //    'python version: 3.7.9\n' +
   //    'python path: /Users/brian/.pyenv/versions/3.7.9/bin/python\n' +
   //    'os info: Darwin-20.3.0-x86_64-i386-64bit\n' +
-  //    'Using records.yml file at /Users/brian/grouparoo/x64_grouparoo/plugins/@grouparoo/dbt/__tests__/projects/postgres/records.yml\n' +
+  //    'Using profiles.yml file at /Users/brian/grouparoo/x64_grouparoo/plugins/@grouparoo/dbt/__tests__/projects/postgres/profiles.yml\n' +
   //    'Using dbt_project.yml file at /Users/brian/grouparoo/x64_grouparoo/plugins/@grouparoo/dbt/__tests__/projects/defaultx/dbt_project.yml\n' +
   //    '\n' +
   //    'Configuration:\n' +
-  //    '  records.yml file [OK found and valid]\n' +
+  //    '  profiles.yml file [OK found and valid]\n' +
   //    '  dbt_project.yml file [ERROR not found]\n' +
   //    '\n' +
   //    'Required dependencies:\n' +
