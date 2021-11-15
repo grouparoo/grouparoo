@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/app-templates",
   "description": "Common patterns for Grouparoo plugins that contribute apps",
-  "version": "0.7.4-alpha.2",
+  "version": "0.7.4",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,8 +28,8 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.4-alpha.2",
-    "@grouparoo/spec-helper": "0.7.4-alpha.2",
+    "@grouparoo/core": "0.7.4",
+    "@grouparoo/spec-helper": "0.7.4",
     "@types/jest": "*",
     "@types/node": "*",
     "@types/uuid": "*",
