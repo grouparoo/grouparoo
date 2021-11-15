@@ -1,12 +1,14 @@
-import { TYPES } from "../util/data";
+import mysql from "mysql";
 import { log } from "actionhero";
-import MySQL from "./mysql";
+import Connection from "../util/connection";
+import { promisify } from "util";
+import { TYPES } from "../util/data";
 
 function findConfig(): any {
   let connectionURL = process.env.DEMO_CLICKHOUSE_URL;
   if (!connectionURL) {
     // return the default
-    connectionURL = "clickhouse://default:@localhost:9004/grouparoo_demo";
+    connectionURL = "clickhouse://default:@localhost:8123/grouparoo_demo";
     log(`Using default local Clickhouse database: ${connectionURL}`);
     log(`Set your own via DEMO_CLICKHOUSE_URL env variable`);
   }
@@ -35,7 +37,9 @@ function findConfig(): any {
   return clientConfig;
 }
 
-export default class ClickHouse extends MySQL {
+export default class ClickHouse extends Connection {
+  client: any;
+  config: { [key: string]: any };
   constructor() {
     super();
     this.config = Object.assign({}, findConfig());
@@ -44,6 +48,42 @@ export default class ClickHouse extends MySQL {
 
   name() {
     return "clickhouse";
+  }
+
+  getAppOptions() {
+    const { host, port, database, user, password } = this.config;
+    const appOptions = { host, port, database, user, password };
+    for (const key in appOptions) {
+      appOptions[key] = (appOptions[key] || "").toString();
+    }
+    return appOptions;
+  }
+
+  async disconnect() {
+    if (this.client) {
+      await this.client.end();
+      this.client = null;
+    }
+  }
+  async connect() {
+    if (this.client) {
+      return this.client;
+    }
+
+    // connects over sql, not http
+    const sqlConn = Object.assign({}, this.config, { port: 9004 });
+
+    const conn = mysql.createConnection(sqlConn);
+    const connect = promisify(conn.connect).bind(conn);
+    const query = promisify(conn.query).bind(conn);
+    const end = promisify(conn.end).bind(conn);
+
+    const client = { connect, query, end };
+
+    await client.connect();
+
+    this.client = client;
+    return this.client;
   }
 
   async createTable(tableName: string, typeColumn: string, keys: string[]) {
@@ -108,7 +148,7 @@ export default class ClickHouse extends MySQL {
     keys: string[],
     row: Record<string, string | number | Date | boolean>
   ) {
-    const compatibleRow = keys.reduce((acc, key) => {
+    row = keys.reduce((acc, key) => {
       const value = row[key];
 
       // ClickHouse BOOLEAN is an Int8. The compatible values are 1 and 0
@@ -118,6 +158,21 @@ export default class ClickHouse extends MySQL {
       return acc;
     }, {});
 
-    super.insertRow(tableName, keys, compatibleRow);
+    const sqlTable = `\`${tableName}\``;
+    const columnNames = keys.join(", ");
+    const variables = keys.map((key, index) => "?");
+    const insertQuery = `INSERT INTO ${sqlTable} (${columnNames}) VALUES (${variables})`;
+
+    const values: Array<any> = keys.map((key) => row[key]);
+    await this.query(2, insertQuery, values);
+  }
+
+  async query(level, sql, params = null) {
+    log("query", "debug", { level, sql, params });
+    const client = await this.connect();
+    if (params) {
+      return client.query(sql, params);
+    }
+    return client.query(sql);
   }
 }
