@@ -60,18 +60,17 @@ export default function Page(props) {
     if (response?.appRefreshQuery) {
       setAppRefreshQuery(response.appRefreshQuery);
 
-      router.push(
-        "/app/[id]/refresh",
-        `/app/${response.appRefreshQuery.appId}/refresh`
-      );
+      router.push(`/app/${response.appRefreshQuery.appId}/refresh`);
     }
     setLoading(false);
   }
 
   async function update(event) {
-    const _appRefreshQuery = Object.assign({}, appRefreshQuery);
-    _appRefreshQuery[event.target.id] = event.target.value;
-    setAppRefreshQuery(_appRefreshQuery);
+    event.preventDefault();
+    setAppRefreshQuery({
+      ...appRefreshQuery,
+      [event.target.id]: event.target.value,
+    });
   }
 
   async function editMode() {
@@ -178,16 +177,18 @@ export default function Page(props) {
             <StateBadge state={app.state} />,
           ]}
         />
-        <Container>
-          <p>{app.name} has no App Refresh Query.</p>
-          <Button
-            onClick={create}
-            disabled={app.locked !== null}
-            className="mx-auto"
-          >
-            Add an App Refresh Query
-          </Button>
-        </Container>
+        <Row>
+          <Col>
+            <p>{app.name} has no App Refresh Query.</p>
+            <Button
+              onClick={create}
+              disabled={app.locked !== null}
+              className="mx-auto"
+            >
+              Add an App Refresh Query
+            </Button>
+          </Col>
+        </Row>
       </>
     );
   } else {

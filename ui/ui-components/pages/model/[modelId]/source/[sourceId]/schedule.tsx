@@ -58,11 +58,6 @@ export default function Page(props) {
       _schedule.recurringFrequency = recurringFrequencyMinutes * (60 * 1000);
     }
 
-    let thing = Object.assign({}, _schedule, {
-      filters: localFilters,
-      state: "ready",
-    });
-
     const response: Actions.ScheduleEdit = await execApi(
       "put",
       `/schedule/${schedule.id}`,

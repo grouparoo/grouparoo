@@ -157,6 +157,7 @@ export class ScheduleCreate extends AuthenticatedAction {
         formatter: APIData.ensureBoolean,
       },
       state: { required: false },
+      refreshEnabled: { required: false, formatter: APIData.ensureBoolean },
       options: { required: false, formatter: APIData.ensureObject },
       recurringFrequency: {
         required: true,
