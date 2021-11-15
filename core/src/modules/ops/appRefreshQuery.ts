@@ -34,14 +34,6 @@ export namespace AppRefreshQueryOps {
   }
 
   export async function triggerSchedules(appRefreshQuery: AppRefreshQuery) {
-    //if there are runs that were triggered by this that are still running, don't save anything and don't trigger anything
-    const activeRuns = await Run.findAll({
-      where: { state: "running", triggeredBy: appRefreshQuery.id },
-    });
-
-    if (activeRuns.length > 0) return;
-
-    //otherwise, do the things
     const sources: Source[] = await Source.findAll({
       where: { appId: appRefreshQuery.appId },
     });
