@@ -1,8 +1,51 @@
 import { TYPES } from "../util/data";
-
+import { log } from "actionhero";
 import MySQL from "./mysql";
 
+function findConfig(): any {
+  let connectionURL = process.env.DEMO_CLICKHOUSE_URL;
+  if (!connectionURL) {
+    // return the default
+    connectionURL = "clickhouse://default:@127.0.0.1:3306/grouparoo_demo";
+    log(`Using default local Clickhouse database: ${connectionURL}`);
+    log(`Set your own via DEMO_CLICKHOUSE_URL env variable`);
+  }
+
+  let dialect = null;
+  const clientConfig = {
+    user: null,
+    password: null,
+    host: null,
+    database: null,
+    port: null,
+  };
+  const parsed = new URL(connectionURL);
+  if (parsed.protocol) dialect = parsed.protocol.slice(0, -1);
+  if (parsed.username) clientConfig.user = parsed.username;
+  if (parsed.password) clientConfig.password = parsed.password;
+  if (parsed.hostname) clientConfig.host = parsed.hostname;
+  if (parsed.port) clientConfig.port = parsed.port;
+  if (parsed.pathname) clientConfig.database = parsed.pathname.substring(1);
+
+  log(`Clickhouse config: ${JSON.stringify(clientConfig)}`, "debug");
+  if (dialect !== "mysql" && dialect !== "clickhouse") {
+    throw new Error("Set DEMO_CLICKHOUSE_URL to a Clickhouse database.");
+  }
+
+  return clientConfig;
+}
+
 export default class ClickHouse extends MySQL {
+  constructor() {
+    super();
+    this.config = Object.assign({}, findConfig());
+    this.client = null;
+  }
+
+  name() {
+    return "clickhouse";
+  }
+
   async createTable(tableName: string, typeColumn: string, keys: string[]) {
     const sqlTable = tableName;
 
