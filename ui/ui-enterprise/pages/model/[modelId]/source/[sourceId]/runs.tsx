@@ -34,7 +34,8 @@ export default function Page(props) {
     try {
       const response: Actions.ScheduleRun = await execApi(
         "post",
-        `/schedule/${source.schedule.id}/run`
+        `/schedule/${source.schedule.id}/run`,
+        { triggeredBy: "UI" }
       );
       if (response.run) {
         successHandler.set({ message: `run ${response.run.id} enqueued` });

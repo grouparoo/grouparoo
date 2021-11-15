@@ -73,6 +73,7 @@ export class ScheduleRun extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       id: { required: true },
+      triggeredBy: { required: true, default: "API" },
     };
   }
 
@@ -84,7 +85,7 @@ export class ScheduleRun extends AuthenticatedAction {
     });
     if (runningRun) await runningRun.stop();
 
-    const run = await schedule.enqueueRun();
+    const run = await schedule.enqueueRun(params.triggeredBy);
     return { run: await run.apiData() };
   }
 }
@@ -99,13 +100,14 @@ export class SchedulesRun extends AuthenticatedAction {
     this.inputs = {
       scheduleIds: { required: false, formatter: APIData.ensureObject },
       modelId: { required: false },
+      triggeredBy: { required: true, default: "API" },
     };
   }
 
   async runWithinTransaction({
     params,
   }: {
-    params: { scheduleIds?: string[]; modelId?: string };
+    params: { scheduleIds?: string[]; modelId?: string; triggeredBy: string };
   }) {
     const runs: Run[] = [];
 
@@ -133,7 +135,7 @@ export class SchedulesRun extends AuthenticatedAction {
 
       if (runningRun) await runningRun.stop();
 
-      const newRun = await schedule.enqueueRun();
+      const newRun = await schedule.enqueueRun(params.triggeredBy);
       runs.push(newRun);
     }
 
