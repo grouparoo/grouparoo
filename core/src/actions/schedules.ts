@@ -157,6 +157,7 @@ export class ScheduleCreate extends AuthenticatedAction {
         formatter: APIData.ensureBoolean,
       },
       state: { required: false },
+      refreshEnabled: { required: false, formatter: APIData.ensureBoolean },
       options: { required: false, formatter: APIData.ensureObject },
       recurringFrequency: {
         required: true,
@@ -177,6 +178,8 @@ export class ScheduleCreate extends AuthenticatedAction {
     });
 
     if (params.options) await schedule.setOptions(params.options);
+    if (params.refreshEnabled)
+      await schedule.update({ refreshEnabled: params.refreshEnabled });
     if (params.filters) await schedule.setFilters(params.filters);
     if (params.state) await schedule.update({ state: params.state });
 
@@ -201,6 +204,7 @@ export class ScheduleEdit extends AuthenticatedAction {
       name: { required: false },
       sourceId: { required: false },
       recurring: { required: false, formatter: APIData.ensureBoolean },
+      refreshEnabled: { required: false, formatter: APIData.ensureBoolean },
       confirmRecords: {
         required: false,
         formatter: APIData.ensureBoolean,
@@ -224,6 +228,8 @@ export class ScheduleEdit extends AuthenticatedAction {
 
     if (params.options) await schedule.setOptions(params.options);
     if (params.filters) await schedule.setFilters(params.filters);
+    if (params.refreshEnabled)
+      await schedule.update({ refreshEnabled: params.refreshEnabled });
 
     await schedule.update({
       state: params.state,

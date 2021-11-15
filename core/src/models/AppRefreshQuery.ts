@@ -3,6 +3,7 @@ import {
   Column,
   AllowNull,
   ForeignKey,
+  BeforeCreate,
   BeforeSave,
   DataType,
   BeforeDestroy,
@@ -42,7 +43,6 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
   @Column
   appId: string;
 
-  @AllowNull(false)
   @Column
   refreshQuery: string;
 
@@ -73,11 +73,17 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
       appId: this.appId,
       refreshQuery: this.refreshQuery,
       value: this.value,
+      locked: this.locked,
+      state: this.state,
       lastChangedAt: APIData.formatDate(this.lastChangedAt),
       lastConfirmedAt: APIData.formatDate(this.lastConfirmedAt),
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
     };
+  }
+
+  async test(refreshQuery?: string) {
+    return AppRefreshQueryOps.test(this, refreshQuery);
   }
 
   // --- Class Methods --- //
@@ -87,7 +93,18 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
     if (!instance) throw new Error(`cannot find AppRefreshQuery ${id}`);
     return instance;
   }
+  @BeforeCreate
+  static async ensureOnePerApp(instance: AppRefreshQuery) {
+    const existingCount = await AppRefreshQuery.scope(null).count({
+      where: {
+        appId: instance.appId,
+      },
+    });
 
+    if (existingCount > 0) {
+      throw new Error(`app ${instance.appId} already has an app refresh query`);
+    }
+  }
   @BeforeSave
   static async noUpdateIfLocked(instance: AppRefreshQuery) {
     await LockableHelper.beforeSave(instance, [

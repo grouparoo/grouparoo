@@ -137,7 +137,6 @@ export default function Page(props) {
   }
 
   let rowChanges = false;
-
   return (
     <>
       <Head>
@@ -178,6 +177,15 @@ export default function Page(props) {
                   label="Recurring"
                   disabled={loading}
                   checked={schedule.recurring}
+                  onChange={(e) => update(e)}
+                />
+              </Form.Group>
+              <Form.Group controlId="refreshEnabled">
+                <Form.Check
+                  type="checkbox"
+                  label="Refresh Enabled?"
+                  disabled={loading}
+                  checked={schedule.refreshEnabled}
                   onChange={(e) => update(e)}
                 />
               </Form.Group>

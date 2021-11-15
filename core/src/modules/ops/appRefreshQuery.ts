@@ -4,7 +4,10 @@ import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 
 export namespace AppRefreshQueryOps {
-  export async function runAppQuery(appRefreshQuery: AppRefreshQuery) {
+  export async function runAppQuery(
+    appRefreshQuery: AppRefreshQuery,
+    testQuery?: string
+  ) {
     const app = await appRefreshQuery.$get("app");
     const options = await app.getOptions();
     const { pluginApp } = await app.getPlugin();
@@ -12,7 +15,7 @@ export namespace AppRefreshQueryOps {
 
     if (typeof pluginApp.methods.appQuery !== "function") {
       throw new Error(
-        `app ${app.name} (${app.id}) of type ${app.type} cannot use app data refresh`
+        `app ${app.name} (${app.id}) of type ${app.type} cannot use app refresh query`
       );
     }
 
@@ -21,7 +24,7 @@ export namespace AppRefreshQueryOps {
       appId: app.id,
       appOptions: options,
       connection,
-      refreshQuery: appRefreshQuery.refreshQuery,
+      refreshQuery: testQuery || appRefreshQuery.refreshQuery,
     });
     const sampleValue = JSON.stringify(
       Array.isArray(responseRows) ? responseRows[0] : responseRows
@@ -60,5 +63,31 @@ export namespace AppRefreshQueryOps {
       //begin a new run on this schedule
       await schedule.enqueueRun();
     }
+  }
+
+  export async function test(
+    appRefreshQuery: AppRefreshQuery,
+    testQuery?: string
+  ) {
+    let success = false;
+    let message: string;
+    let error;
+
+    try {
+      const sampleValue = await AppRefreshQueryOps.runAppQuery(
+        appRefreshQuery,
+        testQuery
+      );
+      message = sampleValue;
+      success = true;
+    } catch (err) {
+      error = err.message;
+      success = false;
+    }
+    return {
+      success,
+      message,
+      error,
+    };
   }
 }

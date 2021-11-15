@@ -1,15 +1,15 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/mysql": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/sqlite": { path: path.join(__dirname, "..", "..") },
 });
 
 import { helper } from "@grouparoo/spec-helper";
 import { App, AppRefreshQuery } from "@grouparoo/core";
 import { beforeData, afterData, getConfig } from "../utils/data";
 
-const { appOptions } = getConfig();
+const { usersTableName, appOptions } = getConfig();
 
-describe("integration/runs/mysql", () => {
+describe("integration/runs/sqlite", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: false });
 
   let app: App;
@@ -18,10 +18,14 @@ describe("integration/runs/mysql", () => {
     await beforeData();
     app = await App.create({
       name: "test app",
-      type: "mysql",
+      type: "sqlite",
     });
     await app.setOptions(appOptions);
     await app.update({ state: "ready" });
+  });
+
+  afterEach(async () => {
+    await AppRefreshQuery.truncate();
   });
 
   afterAll(async () => {
@@ -30,11 +34,12 @@ describe("integration/runs/mysql", () => {
 
   test("I can query using the appRefreshQuery query method", async () => {
     const app = await App.findOne();
-    await AppRefreshQuery.create({
+    const appRefreshQuery = await AppRefreshQuery.create({
       appId: app.id,
       refreshQuery: "SELECT 'HI' as name",
       state: "ready",
-    }); //does not throw
+    });
+    appRefreshQuery.save(); // does not throw
   });
 
   test("I show a good error with a missing query", async () => {
