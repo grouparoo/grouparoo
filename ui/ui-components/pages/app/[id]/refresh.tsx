@@ -23,9 +23,6 @@ export default function Page(props) {
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
-    types: Actions.AppOptions["types"];
-    environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
-    optionOptions: Actions.AppOptionOptions["options"];
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
@@ -192,6 +189,7 @@ export default function Page(props) {
       </>
     );
   } else {
+    console.log(loading);
     return (
       <>
         <Head>
@@ -235,7 +233,7 @@ export default function Page(props) {
                     color: "#e83e8c",
                   }}
                 />
-                <LoadingButton
+                <Button
                   variant="primary"
                   size="sm"
                   className="my-2"
@@ -244,10 +242,10 @@ export default function Page(props) {
                   onClick={editMode}
                 >
                   Edit
-                </LoadingButton>
+                </Button>
                 <Row>
                   <Col className="mx-0 px-0">
-                    <LoadingButton
+                    <Button
                       variant="success"
                       onClick={test}
                       size="sm"
@@ -256,34 +254,35 @@ export default function Page(props) {
                       hidden={!editing}
                     >
                       Test Query
-                    </LoadingButton>
+                    </Button>
                   </Col>
                   <Col className="mx-0 px-0">
                     <Row className="justify-content-end w-100">
-                      <LoadingButton
+                      <Button
                         variant="primary"
                         type="submit"
                         size="sm"
                         className="my-2 ml-2"
-                        disabled={disabled}
+                        // disabled={disabled}
                         hidden={!editing}
                       >
                         Update
-                      </LoadingButton>
+                      </Button>
 
-                      <LoadingButton
+                      <Button
                         variant="outline-danger"
                         size="sm"
                         className="my-2 ml-2"
-                        disabled={disabled}
+                        // disabled={disabled}
                         hidden={!editing}
                         onClick={cancelEdit}
                       >
                         Cancel
-                      </LoadingButton>
+                      </Button>
                     </Row>
                   </Col>
-                </Row>
+                </Row>{" "}
+                {/* </fieldset> */}
                 <Col>
                   {testResult.success !== null &&
                   testResult.success !== false &&
@@ -324,7 +323,6 @@ export default function Page(props) {
             </Col>
           </Row>
           <hr />
-          {/* <Row className="mt-3"> */}
           <strong>Schedules:</strong>
           <p>
             The following schedules will be triggered by this App Refresh Query.
@@ -338,14 +336,14 @@ export default function Page(props) {
           <fieldset disabled={appRefreshQuery.locked !== null}>
             <Row className="ml-2 my-3"></Row>
             <Row className="ml-2 my-3">
-              <LoadingButton
+              <Button
                 variant="danger"
                 size="sm"
                 onClick={handleDelete}
                 disabled={disabled}
               >
                 Delete
-              </LoadingButton>
+              </Button>
             </Row>
           </fieldset>
         </Form>
