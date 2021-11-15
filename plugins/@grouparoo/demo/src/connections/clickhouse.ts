@@ -6,7 +6,7 @@ function findConfig(): any {
   let connectionURL = process.env.DEMO_CLICKHOUSE_URL;
   if (!connectionURL) {
     // return the default
-    connectionURL = "clickhouse://default:@127.0.0.1:3306/grouparoo_demo";
+    connectionURL = "clickhouse://default:@localhost:9004/grouparoo_demo";
     log(`Using default local Clickhouse database: ${connectionURL}`);
     log(`Set your own via DEMO_CLICKHOUSE_URL env variable`);
   }
