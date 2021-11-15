@@ -704,4 +704,23 @@ describe("zendesk/exportRecord", () => {
     });
     expect(nonexistentUser).toBe(null);
   });
+
+  test("cannot create an user with bad email address", async () => {
+    await expect(
+      runExport({
+        oldRecordProperties: {},
+        newRecordProperties: {
+          email: "badmail",
+          name: "William Bad",
+          external_id: "badmail",
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/is not properly formatted/);
+
+    const user = await searchForUser(client, { email: "badmail" });
+    expect(user).toBe(null);
+  });
 });
