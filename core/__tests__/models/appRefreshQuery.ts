@@ -12,7 +12,7 @@ describe("appRefreshQuery", () => {
       app = await helper.factories.app();
     });
 
-    test("an app data refresh can be created with an app", async () => {
+    test("an app refresh query can be created with an app", async () => {
       const appRefreshQuery = new AppRefreshQuery({
         appId: app.id,
         refreshQuery: "SELECT MAX(updated_at) FROM users;",
@@ -27,7 +27,7 @@ describe("appRefreshQuery", () => {
       appRefreshQuery.destroy();
     });
 
-    test("creating an app data refresh creates a log entry", async () => {
+    test("creating an app refresh query creates a log entry", async () => {
       const latestCreateLog = await Log.findOne({
         where: { verb: "create", topic: "appRefreshQuery" },
         order: [["createdAt", "desc"]],

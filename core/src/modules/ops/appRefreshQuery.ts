@@ -15,7 +15,7 @@ export namespace AppRefreshQueryOps {
 
     if (typeof pluginApp.methods.appQuery !== "function") {
       throw new Error(
-        `app ${app.name} (${app.id}) of type ${app.type} cannot use app data refresh`
+        `app ${app.name} (${app.id}) of type ${app.type} cannot use app refresh query`
       );
     }
 
