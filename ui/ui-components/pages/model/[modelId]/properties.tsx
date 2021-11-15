@@ -149,7 +149,8 @@ export default function Page(props) {
                   </GrouparooLink>
                   {rule.isPrimaryKey && (
                     <>
-                      &nbsp;<Badge variant="info">primary</Badge>
+                      {" "}
+                      <Badge variant="info">primary</Badge>
                     </>
                   )}
                 </td>

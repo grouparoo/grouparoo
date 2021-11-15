@@ -1,8 +1,8 @@
 import { UseApi } from "../../../../../hooks/useApi";
 import SourceTabs from "../../../../../components/tabs/Source";
 import Head from "next/head";
-import { useState } from "react";
-import { Row, Col, Table, Form, Button } from "react-bootstrap";
+import { useMemo, useState } from "react";
+import { Row, Col, Table, Form, Button, Badge } from "react-bootstrap";
 import { createSchedule } from "../../../../../components/schedule/Add";
 import LoadingButton from "../../../../../components/LoadingButton";
 import PageHeader from "../../../../../components/PageHeader";
@@ -16,47 +16,44 @@ import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { NextPageContext } from "next";
 
-export default function Page(props) {
-  const {
-    errorHandler,
-    successHandler,
-    types,
-    scheduleCount,
-    hydrationError,
-  }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
-    types: Actions.PropertiesOptions["types"];
-    scheduleCount: number;
-    hydrationError: Error;
-  } = props;
+interface Props {
+  errorHandler: ErrorHandler;
+  successHandler: SuccessHandler;
+  types: Actions.PropertiesOptions["types"];
+  scheduleCount: number;
+  hydrationError: Error;
+  source: Models.SourceType;
+  properties: Models.PropertyType[];
+  preview: Actions.SourcePreview["preview"];
+  propertyExamples: Actions.PropertiesList["examples"];
+}
+
+export default function Page(props: Props & NextPageContext) {
+  const { errorHandler, successHandler, types, scheduleCount, hydrationError } =
+    props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [newMappingKey, setNewMappingKey] = useState(
-    Object.keys(props.source.mapping)[0]
-      ? Object.keys(props.source.mapping)[0]
-      : ""
+    () => (Object.keys(props.source.mapping)[0] as string) || ""
   );
   const [newMappingValue, setNewMappingValue] = useState(
-    Object.values(props.source.mapping)[0]
-      ? Object.values(props.source.mapping)[0]
-      : ""
+    () => (Object.values(props.source.mapping)[0] as string) || ""
   );
-  const [properties, setProperties] = useState<Models.PropertyType[]>(
-    props.properties
+  const [properties, setProperties] = useState(props.properties);
+  const [preview, setPreview] = useState(props.preview || []);
+  const [propertyExamples, setPropertyExamples] = useState(
+    props.propertyExamples
   );
-  const [preview, setPreview] = useState<Actions.SourcePreview["preview"]>(
-    props.preview || []
-  );
-  const [propertyExamples, setPropertyExamples] = useState<
-    Actions.PropertiesList["examples"]
-  >(props.propertyExamples);
   const [newProperty, setNewProperty] = useState({
     key: "",
     type: "",
   });
-  const [source, setSource] = useState<Models.SourceType>(props.source);
+  const [source, setSource] = useState(props.source);
+  const hasPrimaryKeyProperty = useMemo(
+    () => !!properties?.find((p) => p.isPrimaryKey),
+    [properties]
+  );
 
   if (hydrationError) errorHandler.set({ error: hydrationError });
 
@@ -195,7 +192,9 @@ export default function Page(props) {
         <fieldset disabled={source.locked !== null}>
           <Row>
             <Col>
-              <p>What column identifies the user?</p>
+              <p>
+                <strong>What column identifies the user?</strong>
+              </p>
               <fieldset>
                 <Table bordered striped size="sm">
                   <thead>
@@ -260,7 +259,9 @@ export default function Page(props) {
             <Col>
               {properties.length > 0 ? (
                 <>
-                  <p>Choose the Grouparoo Record Property:</p>
+                  <p>
+                    <strong>Choose the Grouparoo Record Property:</strong>
+                  </p>
                   <fieldset>
                     <Table bordered striped size="sm">
                       <thead>
@@ -301,7 +302,15 @@ export default function Page(props) {
                                 />
                               </td>
                               <td>
-                                <strong>{property.key}</strong>
+                                <strong>
+                                  {property.key}
+                                  {property.isPrimaryKey && (
+                                    <>
+                                      {" "}
+                                      <Badge variant="info">primary</Badge>
+                                    </>
+                                  )}
+                                </strong>
                               </td>
                               <td>
                                 <input
@@ -402,7 +411,7 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx: NextPageContext) => {
+Page.getInitialProps = async (ctx) => {
   const { sourceId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { source } = await execApi("get", `/source/${sourceId}`);

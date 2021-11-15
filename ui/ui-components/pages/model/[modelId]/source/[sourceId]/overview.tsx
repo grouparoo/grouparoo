@@ -107,7 +107,8 @@ export default function Page({
                     </Link>
                     {rule.isPrimaryKey && (
                       <>
-                        &nbsp;<Badge variant="info">primary</Badge>
+                        {" "}
+                        <Badge variant="info">primary</Badge>
                       </>
                     )}
                   </td>
