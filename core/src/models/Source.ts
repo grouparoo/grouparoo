@@ -377,7 +377,7 @@ export class Source extends LoggedModel<Source> {
   }
 
   async afterSetMapping() {
-    await Source.updateRuleDirectMappings(this);
+    await Source.determinePrimaryKeyProperty(this);
   }
 
   // --- Class Methods --- //
@@ -428,13 +428,43 @@ export class Source extends LoggedModel<Source> {
   }
 
   @AfterSave
-  static async updateRuleDirectMappings(instance: Source) {
+  static async determinePrimaryKeyProperty(instance: Source) {
+    const source = await Source.findById(instance.id);
+    if (source.state === "deleted") return;
+
+    const primaryKeyProperty = await Property.findOne({
+      include: {
+        model: Source,
+        required: true,
+        where: {
+          modelId: instance.modelId,
+        },
+      },
+      where: {
+        isPrimaryKey: true,
+      },
+    });
+
+    // Do nothing if there is already a primary key for the grouparoo model
+    if (primaryKeyProperty) return;
+
+    // Assign primary key to a property in this source
     const properties = await instance.$get("properties");
-    for (const i in properties) {
-      const property = properties[i];
-      await Property.determineIsPrimaryKey(property);
-      if (property.changed()) await property.save();
+    if (!properties.length) return;
+
+    const mapping = await instance.getMapping();
+    const mappingValues = Object.values(mapping);
+
+    for (const property of properties) {
+      if (mappingValues.includes(property.key)) {
+        await property.update({ isPrimaryKey: true });
+        return;
+      }
     }
+
+    throw new Error(
+      `could not assign primary key to source ${instance.id} - check your mapping`
+    );
   }
 
   @BeforeDestroy

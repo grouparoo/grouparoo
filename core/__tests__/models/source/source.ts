@@ -291,20 +291,59 @@ describe("models/source", () => {
       await source.destroy();
     });
 
-    test("a source with a directly mapped property that's being used cannot be deleted", async () => {
-      const source: Source = await helper.factories.source();
-      await source.bootstrapUniqueProperty("myUserId", "integer", "id");
-      await source.setOptions({ table: "some table" });
-      await source.setMapping({ id: "myUserId" });
-      await source.update({ state: "ready" });
+    describe("primary key validations", () => {
+      let model: GrouparooModel;
 
-      const destination: Destination = await helper.factories.destination();
-      await destination.setMapping({ "primary-id": "myUserId" });
+      beforeAll(async () => {
+        model = await helper.factories.model({
+          name: "PrimaryKey_Profiles",
+        });
+      });
 
-      await expect(source.destroy()).rejects.toThrow(/cannot delete property/);
+      afterAll(async () => {
+        await model.destroy();
+      });
 
-      await destination.destroy();
-      await source.destroy();
+      test("a source with a primary key property that's being used cannot be deleted", async () => {
+        const source = await helper.factories.source(app, {
+          modelId: model.id,
+        });
+        await source.bootstrapUniqueProperty("myUserId", "integer", "id");
+        await source.setOptions({ table: "some table" });
+        await source.setMapping({ id: "myUserId" });
+        await source.update({ state: "ready" });
+
+        const destination: Destination = await helper.factories.destination(
+          app,
+          {
+            modelId: model.id,
+          }
+        );
+        await destination.setMapping({ "primary-id": "myUserId" });
+
+        await expect(source.destroy()).rejects.toThrow(
+          /cannot delete property/
+        );
+
+        await destination.destroy();
+        await source.destroy();
+      });
+
+      test("deleting a source deleted its primary key property", async () => {
+        const source = await helper.factories.source(app, {
+          modelId: model.id,
+        });
+        await source.bootstrapUniqueProperty("myUserId", "integer", "id");
+        await source.setOptions({ table: "some table" });
+        await source.setMapping({ id: "myUserId" });
+        await source.update({ state: "ready" });
+
+        await source.destroy();
+        const primaryKeyPropertyCount = await Property.count({
+          where: { sourceId: source.id, isPrimaryKey: true },
+        });
+        expect(primaryKeyPropertyCount).toBe(0);
+      });
     });
 
     test("__options only includes options for sources", async () => {
@@ -384,6 +423,10 @@ describe("models/source", () => {
     });
 
     test("deleting a source deleted the options", async () => {
+      const model: GrouparooModel = await helper.factories.model({
+        name: "Users",
+      });
+
       const source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
@@ -433,20 +476,6 @@ describe("models/source", () => {
       expect(options[0].key).toBe("someKey");
 
       await foreignOption.destroy();
-    });
-
-    test("deleting a source deleted its primary key property", async () => {
-      const source: Source = await helper.factories.source();
-      await source.bootstrapUniqueProperty("myUserId", "integer", "id");
-      await source.setOptions({ table: "some table" });
-      await source.setMapping({ id: "myUserId" });
-      await source.update({ state: "ready" });
-
-      await source.destroy();
-      const primaryKeyPropertyCount = await Property.count({
-        where: { sourceId: source.id, isPrimaryKey: true },
-      });
-      expect(primaryKeyPropertyCount).toBe(0);
     });
   });
 
@@ -607,7 +636,7 @@ describe("models/source", () => {
       await arrayProperty.destroy();
     });
 
-    test("isPrimaryKey will be updated for source properties after setting the mapping", async () => {
+    test("isPrimaryKey will not be updated for source properties after setting the mapping", async () => {
       const firstSource = await Source.findOne({
         where: { id: { [Op.ne]: source.id } },
       });
@@ -628,12 +657,12 @@ describe("models/source", () => {
       await firstSource.setMapping({ email: "email" });
 
       await userIdProperty.reload();
-      expect(userIdProperty.isPrimaryKey).toBe(false);
+      expect(userIdProperty.isPrimaryKey).toBe(true);
 
       await emailProperty.reload();
-      expect(emailProperty.isPrimaryKey).toBe(true);
+      expect(emailProperty.isPrimaryKey).toBe(false);
 
-      await firstSource.setMapping({ userId: "userId" });
+      await firstSource.setMapping({ myUserId: "userId" });
     });
   });
 

@@ -10,8 +10,8 @@ describe("tasks/source:destroy", () => {
       await api.resque.queue.connection.redis.flushdb();
     });
 
-    beforeAll(async () => {
-      await helper.factories.properties();
+    afterEach(async () => {
+      await helper.truncate();
     });
 
     test("can be enqueued", async () => {
@@ -22,6 +22,8 @@ describe("tasks/source:destroy", () => {
     });
 
     test("will delete source immediately if it's not being used", async () => {
+      await helper.factories.properties();
+
       const source = await helper.factories.source();
       await source.setOptions({ table: "some table" });
       await source.setMapping({ id: "userId" });
@@ -38,6 +40,8 @@ describe("tasks/source:destroy", () => {
     });
 
     test("will wait for property to be deleted if it depends on the source", async () => {
+      await helper.factories.properties();
+
       const source = await helper.factories.source();
       await source.setOptions({ table: "some table" });
       await source.setMapping({ id: "userId" });
@@ -69,7 +73,7 @@ describe("tasks/source:destroy", () => {
       );
     });
 
-    test("will not destroy until directly mapped property is not in use elsewhere", async () => {
+    test("will not destroy until primary key is not in use elsewhere", async () => {
       const source: Source = await helper.factories.source();
       await source.bootstrapUniqueProperty("myUserId", "integer", "id");
       await source.setOptions({ table: "some table" });
@@ -101,7 +105,7 @@ describe("tasks/source:destroy", () => {
       );
     });
 
-    test("will destroy its directly mapped property if not used elsewhere", async () => {
+    test("will destroy its primary key property if not used elsewhere", async () => {
       const source: Source = await helper.factories.source();
       const myUserIdProp = await source.bootstrapUniqueProperty(
         "myUserId",
@@ -112,7 +116,7 @@ describe("tasks/source:destroy", () => {
       await source.setMapping({ id: "myUserId" });
       await source.update({ state: "ready" });
 
-      await Property.determineIsPrimaryKey(myUserIdProp);
+      await myUserIdProp.reload();
       expect(myUserIdProp.isPrimaryKey).toBe(true);
 
       await source.update({ state: "deleted" });

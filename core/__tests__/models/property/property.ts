@@ -624,32 +624,6 @@ describe("models/property", () => {
     await source.destroy();
   });
 
-  describe("isPrimaryKey", () => {
-    let userIdProperty: Property;
-    let emailProperty: Property;
-
-    beforeAll(async () => {
-      userIdProperty = await Property.findOne({
-        where: { key: "userId" },
-      });
-      emailProperty = await Property.findOne({
-        where: { key: "email" },
-      });
-    });
-
-    test("isPrimaryKey will be determined as on save", async () => {
-      expect(userIdProperty.isPrimaryKey).toBe(true);
-      expect(emailProperty.isPrimaryKey).toBe(false);
-    });
-
-    test("properties include if they are directly mapped", async () => {
-      const rules = await Property.findAll();
-
-      expect(rules.find((r) => r.key === "userId").isPrimaryKey).toBe(true);
-      expect(rules.find((r) => r.key === "email").isPrimaryKey).toBe(false);
-    });
-  });
-
   describe("with plugin", () => {
     let app: App;
     let source: Source;

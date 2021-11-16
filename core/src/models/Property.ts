@@ -382,17 +382,6 @@ export class Property extends LoggedModel<Property> {
     return instance;
   }
 
-  @BeforeUpdate
-  @BeforeCreate
-  static async determineIsPrimaryKey(instance: Property) {
-    if (instance.state === "draft") return;
-
-    const source = await instance.$get("source", { scope: null });
-    const mapping = await source.getMapping();
-    const mappingValues = Object.values(mapping);
-    instance.isPrimaryKey = mappingValues.includes(instance.key);
-  }
-
   @BeforeSave
   static async ensureUniqueKey(instance: Property) {
     const count = await Property.count({
