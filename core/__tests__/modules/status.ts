@@ -20,7 +20,6 @@ describe("modules/status", () => {
 
   beforeAll(async () => {
     process.env.GROUPAROO_RUN_MODE = "x";
-    process.env.GROUPAROO_TELEMETRY_ENABLED = "false";
     await helper.factories.properties();
   });
 

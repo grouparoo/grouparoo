@@ -9,7 +9,6 @@ CORE_VERSION=`cat lerna.json | jq --raw-output '.version'`
 cd "./cli/__tests__"
 WORKDIR="/tmp/grouparoo-$TIME"
 export INIT_CWD=$WORKDIR
-export GROUPAROO_TELEMETRY_ENABLED=false
 
 echo " >>> testing with WORKDIR=$WORKDIR against CORE_VERSION=$CORE_VERSION <<< "
 
