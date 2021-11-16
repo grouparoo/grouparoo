@@ -148,6 +148,8 @@ export const exportRecord: ExportRecordPluginMethod = async ({
 
     return { success: true };
   } catch (error) {
+    const errorMessage = error?.result?.toString();
+    error.message = errorMessage || error.message;
     // https://develop.zendesk.com/hc/en-us/articles/360001074328-Best-practices-for-avoiding-rate-limiting
 
     // headers
