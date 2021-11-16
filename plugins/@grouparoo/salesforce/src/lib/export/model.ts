@@ -32,8 +32,7 @@ export function getSalesforceModel(
 
   const modelKeys = Object.keys(model);
   const refKeys = modelKeys.filter((k) => k.indexOf("Reference") > 0);
-  // refKeys are optional
-  const requiredKeys = modelKeys.filter((k) => !refKeys.includes(k));
+  const requiredKeys = ["recordObject", "recordMatchField"];
 
   const destKeys = Object.keys(destinationOptions);
   for (const key of modelKeys) {
