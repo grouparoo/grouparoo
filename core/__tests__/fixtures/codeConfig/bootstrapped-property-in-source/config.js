@@ -15,7 +15,7 @@ module.exports = async function getConfig() {
       type: "test-plugin-app",
       refreshQuery: {
         query: "SELECT 'hi' AS name;",
-        interval: 90000,
+        recurringFrequency: 90000,
       },
       options: {
         fileId: "test-file-path.db",

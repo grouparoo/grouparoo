@@ -65,7 +65,7 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
   lastConfirmedAt: Date;
 
   @Column
-  interval: number;
+  recurringFrequency: number;
 
   @BelongsTo(() => App)
   app: App;
@@ -80,6 +80,7 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
       state: this.state,
       lastChangedAt: APIData.formatDate(this.lastChangedAt),
       lastConfirmedAt: APIData.formatDate(this.lastConfirmedAt),
+      recurringFrequency: this.recurringFrequency,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
     };

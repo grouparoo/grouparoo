@@ -17,7 +17,7 @@ module.exports = async function getConfig() {
       },
       refreshQuery: {
         query: "SELECT 'hi' AS name;",
-        interval: 90000,
+        recurringFrequency: 90000,
       },
     },
 

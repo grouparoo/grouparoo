@@ -15,7 +15,7 @@ module.exports = async function getConfig() {
       type: "test-plugin-app",
       refreshQuery: {
         query: "SELECT MAX(stamp) FROM users;",
-        interval: 90000,
+        recurringFrequency: 90000,
       },
       options: {
         fileId: "new-file-path.db",

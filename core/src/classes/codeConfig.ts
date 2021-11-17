@@ -44,7 +44,7 @@ export interface ModelConfigurationObject extends ConfigurationObject {
 export interface AppConfigurationObject extends ConfigurationObject {
   name: string;
   type: string;
-  refreshQuery?: { query: string; interval: number };
+  refreshQuery?: { query: string; recurringFrequency: number };
   options?: { [key: string]: any };
 }
 

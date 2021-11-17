@@ -75,7 +75,7 @@ export async function loadApp(
       appRefreshQuery = await AppRefreshQuery.create({
         appId: configObject.id,
         refreshQuery: configObject.refreshQuery.query,
-        interval: configObject.refreshQuery.interval,
+        recurringFrequency: configObject.refreshQuery.recurringFrequency,
         locked: ConfigWriter.getLockKey(configObject),
         state: "ready",
       });
@@ -84,7 +84,7 @@ export async function loadApp(
       await appRefreshQuery.update({
         appId: configObject.id,
         refreshQuery: configObject.refreshQuery.query,
-        interval: configObject.refreshQuery.interval,
+        recurringFrequency: configObject.refreshQuery.recurringFrequency,
         locked: ConfigWriter.getLockKey(configObject),
         state: "ready",
       });
