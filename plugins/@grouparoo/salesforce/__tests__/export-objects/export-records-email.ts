@@ -38,6 +38,10 @@ const email3 = "brian3@demo.com";
 const id3 = "pro3";
 let userId3 = null;
 
+const email4 = "caio@demo.com";
+const id4 = "pro4";
+let userId4 = null;
+
 const group1 = "(test) High Value1";
 let groupId1 = null;
 
@@ -50,7 +54,7 @@ let accountId1 = null;
 const account2 = "(test) Small Account1";
 let accountId2 = null;
 
-const deleteRecordValues = [email1, email2, email3, newEmail1];
+const deleteRecordValues = [email1, email2, email3, newEmail1, email4];
 const deleteGroupValues = [group1, group2];
 const deleteReferenceValues = [account1, account2];
 const {
@@ -1022,5 +1026,43 @@ describe("salesforce/sales-cloud/export-records/email", () => {
 
     const referenced = await getReferencedUserIds(accountId1);
     expect(referenced.sort()).toEqual([userId1, userId3].sort());
+  });
+
+  test("can create record on Salesforce with simple destination options", async () => {
+    userId4 = await findId(email4);
+    expect(userId4).toBe(null);
+
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      destinationOptions: {
+        recordObject: "Contact",
+        recordMatchField: "Email",
+      },
+      syncOperations,
+      exports: [
+        {
+          recordId: id4,
+          oldRecordProperties: {},
+          newRecordProperties: {
+            Email: email4,
+            LastName: "Silveira",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          record: null,
+        },
+      ],
+    });
+
+    expect(errors).toBeNull();
+    expect(success).toBe(true);
+    userId4 = await findId(email4);
+    expect(userId4).toBeTruthy();
+    const user = await getUser(userId4);
+    expect(user.Email).toBe(email4);
+    expect(user.LastName).toBe("Silveira");
+    expect(user.FirstName).toBe(null);
   });
 });

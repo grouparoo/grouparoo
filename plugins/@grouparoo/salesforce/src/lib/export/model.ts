@@ -31,7 +31,11 @@ export function getSalesforceModel(
   };
 
   const modelKeys = Object.keys(model);
-  const refKeys = modelKeys.filter((k) => k.indexOf("Reference") > 0);
+  const refKeys = [
+    "recordReferenceField",
+    "recordReferenceObject",
+    "recordReferenceMatchField",
+  ];
   const groupKeys = [
     "groupObject",
     "groupNameField",
@@ -56,12 +60,12 @@ export function getSalesforceModel(
       throw new Error(`Missing Salesforce model data: ${key}`);
     }
   }
-  checkModelIntegrity(model, refKeys);
-  checkModelIntegrity(model, groupKeys);
+  checkModelIntegrity(model, refKeys, "Reference");
+  checkModelIntegrity(model, groupKeys, "Group");
   return model;
 }
 
-function checkModelIntegrity(model, keys) {
+function checkModelIntegrity(model, keys, type) {
   // needs either zero or all keys
   let count = 0;
   for (const key of keys) {
@@ -75,11 +79,9 @@ function checkModelIntegrity(model, keys) {
   }
   if (count > 0) {
     if (keys.length !== count) {
-      const message =
-        keys[0].indexOf("Reference") > 0
-          ? `All Salesforce reference model data is required`
-          : `To enable Group data syncing, all related options must be set.`;
-      throw new Error(message);
+      throw new Error(
+        `To enable ${type} data syncing, all related options must be set.`
+      );
     }
   }
 }
