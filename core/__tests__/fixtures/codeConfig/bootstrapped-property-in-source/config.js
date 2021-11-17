@@ -13,7 +13,10 @@ module.exports = async function getConfig() {
       name: "Data Warehouse",
       class: "App",
       type: "test-plugin-app",
-      refreshQuery: "SELECT 'hi' AS name;",
+      refreshQuery: {
+        query: "SELECT 'hi' AS name;",
+        interval: 90000,
+      },
       options: {
         fileId: "test-file-path.db",
       },

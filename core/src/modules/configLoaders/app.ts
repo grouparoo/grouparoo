@@ -74,7 +74,8 @@ export async function loadApp(
     if (!appRefreshQuery) {
       appRefreshQuery = await AppRefreshQuery.create({
         appId: configObject.id,
-        refreshQuery: configObject.refreshQuery,
+        refreshQuery: configObject.refreshQuery.query,
+        interval: configObject.refreshQuery.interval,
         locked: ConfigWriter.getLockKey(configObject),
         state: "ready",
       });
@@ -82,7 +83,8 @@ export async function loadApp(
     } else {
       await appRefreshQuery.update({
         appId: configObject.id,
-        refreshQuery: configObject.refreshQuery,
+        refreshQuery: configObject.refreshQuery.query,
+        interval: configObject.refreshQuery.interval,
         locked: ConfigWriter.getLockKey(configObject),
         state: "ready",
       });
