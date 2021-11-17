@@ -214,11 +214,25 @@ export default function ResqueOverview(props) {
                     return (
                       <tr key={name}>
                         <td>
-                          <span
-                            className={worker.delta > 0 ? "text-success" : ""}
+                          <Link
+                            href={
+                              "/resque/workers#" +
+                              `${worker.host}:${worker.id}`.replace(
+                                /[\W_-]/g,
+                                "-"
+                              )
+                            }
                           >
-                            {name}
-                          </span>
+                            <a>
+                              <span
+                                className={
+                                  worker.delta > 0 ? "text-success" : ""
+                                }
+                              >
+                                {name}
+                              </span>
+                            </a>
+                          </Link>
                         </td>
                         <td>
                           <span
@@ -253,35 +267,36 @@ function formatWorkersForDisplay(
 ) {
   const response: {
     [workerName: string]: {
+      host: string;
+      id: string;
       status: string;
       delta: number;
     };
   } = {};
 
-  Object.keys(_workers).forEach((workerName) => {
-    const worker = _workers[workerName];
-    if (typeof worker === "string") {
-      response[workerName] = {
-        status: worker,
-        delta: 0,
-      };
-    } else {
-      const delta = Math.ceil(
-        (new Date().getTime() - new Date(worker.run_at).getTime()) / 1000
-      );
-      response[workerName] = {
-        delta,
-        status:
-          "working on " +
+  for (const [name, worker] of Object.entries(_workers)) {
+    const delta = Math.ceil(
+      (new Date().getTime() - new Date(worker.run_at).getTime()) / 1000
+    );
+    const nameParts = name.split(":");
+    const id = nameParts.pop();
+    const host = nameParts.join(":");
+
+    response[name] = {
+      host,
+      id,
+      delta,
+      status: worker.payload
+        ? "working on " +
           worker.queue +
           "#" +
           worker.payload.class +
           " for " +
           delta +
-          "s",
-      };
-    }
-  });
+          "s"
+        : "pending",
+    };
+  }
 
   return response;
 }

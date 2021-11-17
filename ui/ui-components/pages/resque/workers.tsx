@@ -1,11 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { UseApi } from "../../hooks/useApi";
-import { Table, Row, Col } from "react-bootstrap";
+import { Table, Row, Col, Accordion, Button } from "react-bootstrap";
 import Head from "next/head";
+import Link from "next/link";
 import ResqueTabs from "../../components/tabs/Resque";
 import LoadingButton from "../../components/LoadingButton";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { SuccessHandler } from "../../utils/successHandler";
+import { Actions } from "../../utils/apiData";
+
+type DisplayedWorker = {
+  id: string;
+  name: string;
+  host: string;
+  queues: string[];
+  status: "working" | "pending";
+  job: string;
+  args: any[];
+  delta: number;
+};
 
 export default function ResqueWorkersList(props) {
   const {
@@ -13,8 +26,7 @@ export default function ResqueWorkersList(props) {
     successHandler,
   }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const { execApi } = UseApi(props, errorHandler);
-  const [workers, setWorkers] = useState({});
-  const [workerQueues, setWorkerQueues] = useState([]);
+  const [workers, setWorkers] = useState<DisplayedWorker[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -23,7 +35,7 @@ export default function ResqueWorkersList(props) {
 
   async function load() {
     setLoading(true);
-    const { resqueDetails } = await execApi(
+    const { resqueDetails }: Actions.ResqueResqueDetails = await execApi(
       "get",
       `/resque/resqueDetails`,
       {},
@@ -31,64 +43,39 @@ export default function ResqueWorkersList(props) {
       null,
       false
     );
-    const { workerQueues: _workerQueues } = await execApi(
-      "get",
-      `/resque/loadWorkerQueues`,
-      {},
-      null,
-      null,
-      false
-    );
+    const { workerQueues: workerQueues }: Actions.ResqueLoadWorkerQueues =
+      await execApi("get", `/resque/loadWorkerQueues`, {}, null, null, false);
     setLoading(false);
 
-    const _workers = resqueDetails.workers;
-    const builtWorkerQueues = [];
+    const _workers: DisplayedWorker[] = [];
 
-    Object.keys(_workers).forEach((workerName) => {
-      const worker = _workers[workerName];
+    for (const [workerName, worker] of Object.entries(resqueDetails.workers)) {
+      const nameParts = workerName.split(":");
+      const id = nameParts.pop();
+      const host = nameParts.join(":");
 
-      if (typeof worker === "string") {
-        _workers[workerName] = {
-          status: worker,
-          statusString: worker,
-        };
-      } else {
-        worker.delta = Math.round(
+      _workers.push({
+        id,
+        name: workerName,
+        host,
+        queues: workerQueues[workerName]?.split(",") ?? [],
+        status: worker.payload ? "working" : "pending",
+        job: worker.payload?.class,
+        args: worker.payload?.args,
+        delta: Math.round(
           (new Date().getTime() - new Date(worker.run_at).getTime()) / 1000
-        );
-        worker.statusString =
-          "working on " +
-          worker.queue +
-          "#" +
-          worker.payload.class +
-          " for " +
-          worker.delta +
-          "s";
-      }
-    });
-
-    Object.keys(_workerQueues).forEach((workerName) => {
-      const parts = workerName.split(":");
-      const id = parts.pop();
-      const host = parts.join(":");
-      const queues = _workerQueues[workerName].split(",");
-
-      let worker = {};
-      if (_workers[workerName]) {
-        worker = _workers[workerName];
-      }
-
-      builtWorkerQueues.push({
-        id: id,
-        host: host,
-        queues: queues,
-        worker: worker,
-        workerName: workerName,
+        ),
       });
-    });
+    }
 
     setWorkers(_workers);
-    setWorkerQueues(builtWorkerQueues);
+
+    setTimeout(() => {
+      if (window.location.hash) {
+        const element = document.querySelector(window.location.hash);
+        if (element) element.scrollIntoView();
+      }
+    }, 100);
   }
 
   async function forceCleanWorker(workerName) {
@@ -116,10 +103,10 @@ export default function ResqueWorkersList(props) {
             <thead>
               <tr>
                 <td>
-                  <strong>ID</strong>
+                  <strong>Host</strong>
                 </td>
                 <td>
-                  <strong>Host</strong>
+                  <strong>ID</strong>
                 </td>
                 <td>
                   <strong>Queues</strong>
@@ -127,38 +114,64 @@ export default function ResqueWorkersList(props) {
                 <td>
                   <strong>Status</strong>
                 </td>
+                <td>
+                  <strong>Job</strong>
+                </td>
+                <td>
+                  <strong>Args</strong>
+                </td>
                 <td>&nbsp;</td>
               </tr>
             </thead>
             <tbody>
-              {workerQueues.map((w) => {
+              {workers.map((worker) => {
                 return (
-                  <tr key={w.workerName}>
-                    <td>{w.id}</td>
-                    <td>{w.host}</td>
+                  <tr key={`${worker.host}:${worker.id}`}>
+                    <td
+                      id={`${worker.host}:${worker.id}`.replace(/[\W_-]/g, "-")}
+                    >
+                      {worker.host}
+                    </td>
+                    <td>{worker.id}</td>
                     <td>
-                      <ul>
-                        {w.queues.map((q) => {
-                          return (
-                            <li key={`${w}-${q}`}>
-                              <a href={`/resque/queue/${q}`}>{q}</a>
-                            </li>
-                          );
-                        })}
-                      </ul>
+                      <Accordion>
+                        <Accordion.Toggle
+                          as={Button}
+                          variant="link"
+                          eventKey="0"
+                        >
+                          <small>{worker.queues.length} queues</small>
+                        </Accordion.Toggle>
+                        <Accordion.Collapse eventKey="0">
+                          <small>
+                            {worker.queues.map((q, idx, arr) => (
+                              <Fragment key={`${worker}-${q}`}>
+                                {idx + 1}.{" "}
+                                <Link href={`/resque/queue/${q}`}>
+                                  <a>{q}</a>
+                                </Link>
+                                {idx < arr.length ? <br /> : ""}
+                              </Fragment>
+                            ))}
+                          </small>
+                        </Accordion.Collapse>
+                      </Accordion>
                     </td>
                     <td>
-                      <span
-                        className={w.worker.delta > 0 ? "text-success" : ""}
-                      >
-                        {w.worker.statusString}
+                      <span className={worker.delta > 0 ? "text-success" : ""}>
+                        {worker.status}{" "}
+                        {worker.delta ? `(${worker.delta}s)` : null}
                       </span>
+                    </td>
+                    <td>{worker.job}</td>
+                    <td>
+                      <code>{JSON.stringify(worker.args, null, 2)}</code>
                     </td>
                     <td>
                       <LoadingButton
                         disabled={loading}
                         onClick={() => {
-                          forceCleanWorker(w.workerName);
+                          forceCleanWorker(worker.name);
                         }}
                         variant="danger"
                         size="sm"
