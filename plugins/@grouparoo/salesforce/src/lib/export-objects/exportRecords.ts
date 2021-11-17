@@ -33,6 +33,19 @@ export const exportBatch: MyBatchMethod = async ({
   syncOperations,
   exports,
 }) => {
+  exports.map((currentExport) => {
+    if (
+      !destinationOptions.groupObject ||
+      !destinationOptions.groupNameField ||
+      !destinationOptions.membershipObject ||
+      !destinationOptions.membershipRecordField ||
+      !destinationOptions.membershipGroupField
+    ) {
+      currentExport.oldGroups = [];
+      currentExport.newGroups = [];
+    }
+  });
+
   return exportSalesforceBatch({
     appId,
     appOptions,

@@ -1027,42 +1027,4 @@ describe("salesforce/sales-cloud/export-records/email", () => {
     const referenced = await getReferencedUserIds(accountId1);
     expect(referenced.sort()).toEqual([userId1, userId3].sort());
   });
-
-  test("can create record on Salesforce with simple destination options", async () => {
-    userId4 = await findId(email4);
-    expect(userId4).toBe(null);
-
-    const { success, errors } = await exportBatch({
-      appId,
-      appOptions,
-      destinationOptions: {
-        recordObject: "Contact",
-        recordMatchField: "Email",
-      },
-      syncOperations,
-      exports: [
-        {
-          recordId: id4,
-          oldRecordProperties: {},
-          newRecordProperties: {
-            Email: email4,
-            LastName: "Silveira",
-          },
-          oldGroups: [],
-          newGroups: [],
-          toDelete: false,
-          record: null,
-        },
-      ],
-    });
-
-    expect(errors).toBeNull();
-    expect(success).toBe(true);
-    userId4 = await findId(email4);
-    expect(userId4).toBeTruthy();
-    const user = await getUser(userId4);
-    expect(user.Email).toBe(email4);
-    expect(user.LastName).toBe("Silveira");
-    expect(user.FirstName).toBe(null);
-  });
 });

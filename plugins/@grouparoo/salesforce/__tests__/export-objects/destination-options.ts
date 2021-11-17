@@ -2,16 +2,10 @@ import "@grouparoo/spec-helper";
 import { destinationOptions as methodToTest } from "../../src/lib/export-objects/destinationOptions";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "@grouparoo/spec-helper";
-import { exportBatch } from "../../src/lib/export-objects/exportRecords";
-import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
-const syncOperations = DestinationSyncModeData.sync.operations;
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const appId = "app_d2bb07d8-0c4f-49b5-ad42-545f2e8662e8";
-
-const custom1 = "1refid";
-const id1 = "pro1";
 
 // recordObject
 // recordMatchField
@@ -315,69 +309,5 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
     const result = await runDestinationOptions({ destinationOptions });
     expectFullResult(result);
     expectLeadTopicResult(result, 2);
-  });
-
-  test("cannot sync if only one Reference option is set", async () => {
-    const badDestinationOptions = {
-      recordObject: "Contact",
-      recordMatchField: "Custom_External_ID__c",
-      recordReferenceField: "AccountId",
-    };
-
-    await expect(
-      exportBatch({
-        appId,
-        appOptions,
-        destinationOptions: badDestinationOptions,
-        syncOperations,
-        exports: [
-          {
-            recordId: id1,
-            oldRecordProperties: {},
-            newRecordProperties: {
-              Custom_External_ID__c: custom1,
-              LastName: "Smith",
-            },
-            oldGroups: [],
-            newGroups: [],
-            toDelete: false,
-            record: null,
-          },
-        ],
-      })
-    ).rejects.toThrow(
-      /Reference data syncing, all related options must be set/
-    );
-  });
-
-  test("cannot sync if only one Group option is set", async () => {
-    const badDestinationOptions = {
-      recordObject: "Contact",
-      recordMatchField: "Custom_External_ID__c",
-      groupObject: "Campaign",
-    };
-
-    await expect(
-      exportBatch({
-        appId,
-        appOptions,
-        destinationOptions: badDestinationOptions,
-        syncOperations,
-        exports: [
-          {
-            recordId: id1,
-            oldRecordProperties: {},
-            newRecordProperties: {
-              Custom_External_ID__c: custom1,
-              LastName: "Smith",
-            },
-            oldGroups: [],
-            newGroups: [],
-            toDelete: false,
-            record: null,
-          },
-        ],
-      })
-    ).rejects.toThrow(/Group data syncing, all related options must be set/);
   });
 });
