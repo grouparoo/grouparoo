@@ -75,9 +75,11 @@ function checkModelIntegrity(model, keys) {
   }
   if (count > 0) {
     if (keys.length !== count) {
-      const type =
-        keys[0].indexOf("Reference") > 0 ? "reference" : "groups related";
-      throw new Error(`All Salesforce ${type} model data is required`);
+      const message =
+        keys[0].indexOf("Reference") > 0
+          ? `All Salesforce reference model data is required`
+          : `To enable Group data syncing, all related options must be set.`;
+      throw new Error(message);
     }
   }
 }
