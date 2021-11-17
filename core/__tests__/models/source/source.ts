@@ -300,11 +300,29 @@ describe("models/source", () => {
         });
       });
 
+      afterEach(async () => {
+        const sources = await Source.scope(null).findAll({
+          where: { modelId: model.id },
+          order: [["createdAt", "DESC"]],
+        });
+
+        for (const source of sources) {
+          const properties = await Property.scope(null).findAll({
+            where: { sourceId: source.id, isPrimaryKey: false },
+            order: [["createdAt", "DESC"]],
+          });
+          for (const property of properties) {
+            await property.destroy({ force: true });
+          }
+          await source.destroy({ force: true });
+        }
+      });
+
       afterAll(async () => {
         await model.destroy();
       });
 
-      test("a source with a primary key property that's being used cannot be deleted", async () => {
+      test("a source with a primary key property that's being used cannot be destroyed", async () => {
         const source = await helper.factories.source(app, {
           modelId: model.id,
         });
@@ -329,7 +347,7 @@ describe("models/source", () => {
         await source.destroy();
       });
 
-      test("deleting a source deleted its primary key property", async () => {
+      test("destroying a source deleted its primary key property", async () => {
         const source = await helper.factories.source(app, {
           modelId: model.id,
         });
@@ -343,6 +361,42 @@ describe("models/source", () => {
           where: { sourceId: source.id, isPrimaryKey: true },
         });
         expect(primaryKeyPropertyCount).toBe(0);
+      });
+
+      test("destroying a source mapped to a primary key of another source does not delete the primary key property", async () => {
+        const sourceWithPK = await helper.factories.source(app, {
+          modelId: model.id,
+        });
+        await sourceWithPK.bootstrapUniqueProperty("myUserId", "integer", "id");
+        await sourceWithPK.setOptions({ table: "some table" });
+        await sourceWithPK.setMapping({ id: "myUserId" });
+        await sourceWithPK.update({ state: "ready" });
+
+        const source = await helper.factories.source(app, {
+          modelId: model.id,
+        });
+        await source.setOptions({ table: "some table 2" });
+        await source.setMapping({ id: "myUserId" });
+        await source.update({ state: "ready" });
+
+        await source.destroy();
+        const primaryKeyPropertyCount = await Property.count({
+          where: { sourceId: sourceWithPK.id, isPrimaryKey: true },
+        });
+        expect(primaryKeyPropertyCount).toBe(1);
+      });
+
+      test("determining the primary key without setting a mapping throws error", async () => {
+        const source = await helper.factories.source(app, {
+          modelId: model.id,
+        });
+        await source.bootstrapUniqueProperty("myUserId", "integer", "id");
+        await source.setOptions({ table: "some table" });
+
+        const promise = Source.determinePrimaryKeyProperty(source);
+        await expect(promise).rejects.toThrow(
+          /could not assign primary key to source/
+        );
       });
     });
 
@@ -636,7 +690,7 @@ describe("models/source", () => {
       await arrayProperty.destroy();
     });
 
-    test("isPrimaryKey will not be updated for source properties after setting the mapping", async () => {
+    test("isPrimaryKey will not be updated for source properties after setting the first mapping", async () => {
       const firstSource = await Source.findOne({
         where: { id: { [Op.ne]: source.id } },
       });

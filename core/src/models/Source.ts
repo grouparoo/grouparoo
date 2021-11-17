@@ -428,7 +428,7 @@ export class Source extends LoggedModel<Source> {
   }
 
   @AfterSave
-  static async determinePrimaryKeyProperty(instance: Source) {
+  static async determinePrimaryKeyProperty(instance: Source): Promise<void> {
     const source = await Source.findById(instance.id);
     if (source.state === "deleted") return;
 
