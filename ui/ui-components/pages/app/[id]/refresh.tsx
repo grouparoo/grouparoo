@@ -141,7 +141,7 @@ export default function Page(props) {
     setLoading(true);
 
     try {
-      const response: Actions.AppRefreshQueryQuery = await execApi(
+      const response: Actions.AppRefreshQueryRun = await execApi(
         "post",
         `/appRefreshQuery/${appRefreshQuery.id}/query`
       );

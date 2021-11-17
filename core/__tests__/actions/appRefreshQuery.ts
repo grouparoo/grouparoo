@@ -6,7 +6,7 @@ import {
   AppRefreshQueryCreate,
   AppRefreshQueryDestroy,
   AppRefreshQueryEdit,
-  AppRefreshQueryQuery,
+  AppRefreshQueryRun,
   AppRefreshQueryTest,
   AppRefreshQueryView,
 } from "../../src/actions/appRefreshQuery";
@@ -129,13 +129,13 @@ describe("actions/appRefreshQuery", () => {
         expect(test.message.length).toBe(13); //test plugin queries return a unix timestamp
         expect(appRefreshQuery.value).toBeFalsy(); //tests shouldn't save any values
       });
-      test("an administrator can query with an appRefreshQuery", async () => {
+      test("an administrator can run an appRefreshQuery", async () => {
         connection.params = {
           csrfToken,
           id,
         };
         const { error, appRefreshQuery, valueUpdated } =
-          await specHelper.runAction<AppRefreshQueryQuery>(
+          await specHelper.runAction<AppRefreshQueryRun>(
             "appRefreshQuery:query",
             connection
           );

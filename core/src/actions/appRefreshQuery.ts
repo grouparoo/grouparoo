@@ -3,10 +3,10 @@ import { AppRefreshQuery } from "../models/AppRefreshQuery";
 import { ConfigWriter } from "../modules/configWriter";
 import { AppRefreshQueryOps } from "../modules/ops/appRefreshQuery";
 
-export class AppRefreshQueryQuery extends AuthenticatedAction {
+export class AppRefreshQueryRun extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "appRefreshQuery:query";
+    this.name = "appRefreshQuery:run";
     this.description =
       "run an appRefreshQuery to check for new data and enqueue schedules if needed";
     this.outputExample = {};
