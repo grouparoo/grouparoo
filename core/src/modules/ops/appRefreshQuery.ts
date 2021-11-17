@@ -1,6 +1,7 @@
 import { Source } from "../../models/Source";
 import { AppRefreshQuery } from "../../models/AppRefreshQuery";
 import { Schedule } from "../../models/Schedule";
+import { Run } from "../..";
 
 export namespace AppRefreshQueryOps {
   export async function runAppQuery(
@@ -32,7 +33,10 @@ export namespace AppRefreshQueryOps {
     return sampleValue;
   }
 
-  export async function triggerSchedules(appRefreshQuery: AppRefreshQuery) {
+  export async function triggerSchedules(
+    appRefreshQuery: AppRefreshQuery,
+    stopRuns: Boolean
+  ) {
     const sources: Source[] = await Source.findAll({
       where: { appId: appRefreshQuery.appId },
     });
@@ -51,6 +55,12 @@ export namespace AppRefreshQueryOps {
     }
 
     for (const schedule of schedulesToRun) {
+      if (stopRuns === true) {
+        const runningRun = await Run.findOne({
+          where: { creatorId: schedule.id, state: "running" },
+        });
+        if (runningRun) await runningRun.stop;
+      }
       await schedule.enqueueRun();
     }
   }

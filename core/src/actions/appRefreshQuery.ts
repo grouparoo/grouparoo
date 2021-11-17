@@ -1,3 +1,4 @@
+import { Run } from "..";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { AppRefreshQuery } from "../models/AppRefreshQuery";
 import { ConfigWriter } from "../modules/configWriter";
@@ -19,7 +20,7 @@ export class AppRefreshQueryRun extends AuthenticatedAction {
     if (!appRefreshQuery)
       throw new Error(`No app refresh query ${params.id} founds`);
 
-    const sampleValue = await AppRefreshQueryOps.runAppQuery(appRefreshQuery);
+    const sampleValue = await appRefreshQuery.query();
     await appRefreshQuery.update({ lastConfirmedAt: new Date() });
 
     if (sampleValue !== appRefreshQuery.value) {
@@ -27,7 +28,7 @@ export class AppRefreshQueryRun extends AuthenticatedAction {
         value: sampleValue,
         lastChangedAt: new Date(),
       });
-      await AppRefreshQueryOps.triggerSchedules(appRefreshQuery);
+      await appRefreshQuery.triggerSchedules(true);
       valueUpdated = true;
     }
     return { valueUpdated, appRefreshQuery: await appRefreshQuery.apiData() };
