@@ -1,4 +1,3 @@
-import { Run } from "../..";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { App } from "../../models/App";
 import { AppRefreshQuery } from "../../models/AppRefreshQuery";
@@ -24,15 +23,9 @@ export class AppRefreshQueriesCheck extends CLSTask {
       });
 
       if (app) {
-        const activeRuns = await Run.count({
-          where: { state: "running", triggeredBy: appRefreshQuery.id },
+        await CLS.enqueueTask("appRefreshQuery:query", {
+          appRefreshQueryId: appRefreshQuery.id,
         });
-
-        if (activeRuns === 0) {
-          await CLS.enqueueTask("appRefreshQuery:query", {
-            appRefreshQueryId: appRefreshQuery.id,
-          });
-        }
       }
     }
   }

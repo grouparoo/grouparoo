@@ -30,7 +30,7 @@ export class ScheduleEnqueueRuns extends CLSTask {
         ignoreDeltas,
         runIfNotRecurring,
       });
-      if (shouldRun) await schedule.enqueueRun(`timer`);
+      if (shouldRun) await schedule.enqueueRun();
     }
   }
 }

@@ -73,7 +73,6 @@ export class ScheduleRun extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       id: { required: true },
-      triggeredBy: { required: true, default: "API" },
     };
   }
 
@@ -85,7 +84,7 @@ export class ScheduleRun extends AuthenticatedAction {
     });
     if (runningRun) await runningRun.stop();
 
-    const run = await schedule.enqueueRun(params.triggeredBy);
+    const run = await schedule.enqueueRun();
     return { run: await run.apiData() };
   }
 }
@@ -135,7 +134,7 @@ export class SchedulesRun extends AuthenticatedAction {
 
       if (runningRun) await runningRun.stop();
 
-      const newRun = await schedule.enqueueRun(params.triggeredBy);
+      const newRun = await schedule.enqueueRun();
       runs.push(newRun);
     }
 

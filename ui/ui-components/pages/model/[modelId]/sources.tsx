@@ -73,8 +73,7 @@ export default function Page(props) {
     try {
       const response: Actions.ScheduleRun = await execApi(
         "post",
-        `/schedule/${source.schedule.id}/run`,
-        { triggeredBy: "UI" }
+        `/schedule/${source.schedule.id}/run`
       );
       if (response.run) {
         const _runs = Object.assign({}, runs);
@@ -93,7 +92,7 @@ export default function Page(props) {
       const response: Actions.SchedulesRun = await execApi(
         "post",
         `/schedules/run`,
-        { modelId, triggeredBy: "UI" }
+        { modelId }
       );
       successHandler.set({ message: `${response.runs.length} runs enqueued` });
     } finally {

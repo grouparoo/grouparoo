@@ -52,16 +52,7 @@ export namespace AppRefreshQueryOps {
     }
 
     for (const schedule of schedulesToRun) {
-      //stop any existing run on this schedule
-      const existingRuns = await Run.findAll({
-        where: { creatorId: schedule.id, state: "running" },
-      });
-      for (const run of existingRuns) {
-        await run.stop();
-      }
-
-      //begin a new run on this schedule, mark the run as triggered with the app refresh query id
-      await schedule.enqueueRun(appRefreshQuery.id);
+      await schedule.enqueueRun();
     }
   }
 
