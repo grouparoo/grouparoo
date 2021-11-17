@@ -312,9 +312,9 @@ describe("models/source", () => {
             order: [["createdAt", "DESC"]],
           });
           for (const property of properties) {
-            await property.destroy({ force: true });
+            await property.destroy();
           }
-          await source.destroy({ force: true });
+          await source.destroy();
         }
       });
 
@@ -641,6 +641,13 @@ describe("models/source", () => {
     });
 
     afterAll(async () => {
+      const properties = await Property.scope(null).findAll({
+        where: { sourceId: source.id, isPrimaryKey: false },
+        order: [["createdAt", "DESC"]],
+      });
+      for (const property of properties) {
+        await property.destroy();
+      }
       await source.destroy();
     });
 
@@ -652,7 +659,7 @@ describe("models/source", () => {
       });
     });
 
-    test("it throws an error if the mapping does not include the key of a recordPropertyRyle", async () => {
+    test("it throws an error if the mapping does not include the key of a recordPropertyRule", async () => {
       await expect(
         source.setMapping({
           local_user_id: "TheUserID",
@@ -704,6 +711,26 @@ describe("models/source", () => {
       expect(emailProperty.isPrimaryKey).toBe(true);
 
       await firstSource.setMapping({ myUserId: "userId" });
+    });
+
+    test("isPrimaryKey will not be updated for source across model when updating mapping in other source", async () => {
+      await source.bootstrapUniqueProperty("myEmail", "email", "my_email");
+      await source.setMapping({ email: "myEmail" });
+
+      const mapping = await source.getMapping();
+      expect(mapping).toEqual({ email: "myEmail" });
+
+      const userIdProperty = await Property.findOne({
+        where: { key: "userId" },
+      });
+      expect(userIdProperty.isPrimaryKey).toBe(true);
+
+      const myEmailProperty = await Property.findOne({
+        where: { key: "myEmail" },
+      });
+      expect(myEmailProperty.isPrimaryKey).toBe(false);
+
+      await source.setMapping({ userId: "userId" });
     });
   });
 
