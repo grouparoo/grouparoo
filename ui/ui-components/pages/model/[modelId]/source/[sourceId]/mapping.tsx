@@ -40,7 +40,20 @@ export default function Page(props: Props & NextPageContext) {
   const [newMappingValue, setNewMappingValue] = useState(
     () => (Object.values(props.source.mapping)[0] as string) || ""
   );
-  const [properties, setProperties] = useState(props.properties);
+  const [properties, setProperties] = useState(() => {
+    const isPrimaryKeyInSource =
+      props.source &&
+      props.properties.find(
+        (property) =>
+          property.isPrimaryKey && property.sourceId === props.source.id
+      );
+
+    return isPrimaryKeyInSource
+      ? props.properties.filter(
+          (property) => property.sourceId === props.source.id
+        )
+      : props.properties;
+  });
   const [preview, setPreview] = useState(props.preview || []);
   const [propertyExamples, setPropertyExamples] = useState(
     props.propertyExamples
@@ -50,11 +63,6 @@ export default function Page(props: Props & NextPageContext) {
     type: "",
   });
   const [source, setSource] = useState(props.source);
-  const hasPrimaryKeyProperty = useMemo(
-    () => !!properties?.find((p) => p.isPrimaryKey),
-    [properties]
-  );
-
   if (hydrationError) errorHandler.set({ error: hydrationError });
 
   const bootstrapUniqueProperty = async () => {
@@ -125,6 +133,16 @@ export default function Page(props: Props & NextPageContext) {
         setSource(response.source);
         successHandler.set({ message: "Source updated" });
         setLoading(false);
+      }
+
+      if (response.source.mapping) {
+        const mappingValues = Object.values(response.source.mapping);
+        setProperties((properties) =>
+          properties.map((property) => ({
+            ...property,
+            isPrimaryKey: mappingValues.includes(property.key),
+          }))
+        );
       }
     } else {
       setLoading(false);
@@ -414,13 +432,19 @@ export default function Page(props: Props & NextPageContext) {
 Page.getInitialProps = async (ctx) => {
   const { sourceId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
-  const { source } = await execApi("get", `/source/${sourceId}`);
-  ensureMatchingModel("Source", source.modelId, modelId.toString());
-  const { properties, examples: propertyExamples } = await execApi(
+  const { source } = await execApi<{ source: Models.SourceType }>(
     "get",
-    `/properties`,
-    { includeExamples: true, state: "ready", modelId: source?.modelId }
+    `/source/${sourceId}`
   );
+  ensureMatchingModel("Source", source.modelId, modelId.toString());
+  const { properties, examples: propertyExamples } = await execApi<{
+    properties: Models.PropertyType[];
+    examples: Actions.PropertiesList["examples"];
+  }>("get", `/properties`, {
+    includeExamples: true,
+    state: "ready",
+    modelId: source?.modelId,
+  });
   const { types } = await execApi("get", `/propertyOptions`);
 
   const { total: scheduleCount } = await execApi("get", `/schedules`, {
