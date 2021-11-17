@@ -1,8 +1,6 @@
-import { Run } from "..";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { AppRefreshQuery } from "../models/AppRefreshQuery";
 import { ConfigWriter } from "../modules/configWriter";
-import { AppRefreshQueryOps } from "../modules/ops/appRefreshQuery";
 
 export class AppRefreshQueryRun extends AuthenticatedAction {
   constructor() {
