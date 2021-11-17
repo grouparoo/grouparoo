@@ -136,7 +136,7 @@ describe("actions/appRefreshQuery", () => {
         };
         const { error, appRefreshQuery, valueUpdated } =
           await specHelper.runAction<AppRefreshQueryRun>(
-            "appRefreshQuery:query",
+            "appRefreshQuery:run",
             connection
           );
         expect(error).toBeUndefined();
