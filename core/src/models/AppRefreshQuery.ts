@@ -139,6 +139,18 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
     }
   }
 
+  @BeforeSave
+  static async checkRecurringFrequency(instance: AppRefreshQuery) {
+    // we cannot use the @Min validator as null is also allowed
+    if (instance.recurringFrequency) {
+      if (instance.recurringFrequency < 1000 * 60) {
+        throw new Error(
+          "recurring frequency is required to be one minute or greater"
+        );
+      }
+    }
+  }
+
   @BeforeDestroy
   static async noDestroyIfLocked(instance: AppRefreshQuery) {
     await LockableHelper.beforeDestroy(instance);

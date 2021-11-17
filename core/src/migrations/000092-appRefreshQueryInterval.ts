@@ -7,17 +7,8 @@ export default {
   ) => {
     await queryInterface.addColumn("appRefreshQueries", "recurringFrequency", {
       type: DataTypes.BIGINT,
-      defaultValue: 60000,
-      allowNull: false,
+      allowNull: true,
     });
-    await queryInterface.changeColumn(
-      "appRefreshQueries",
-      "recurringFrequency",
-      {
-        type: DataTypes.BIGINT,
-        allowNull: true,
-      }
-    );
   },
 
   down: async (queryInterface: Sequelize.QueryInterface) => {
