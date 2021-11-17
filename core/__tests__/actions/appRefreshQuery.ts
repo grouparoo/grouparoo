@@ -12,7 +12,6 @@ import {
 } from "../../src/actions/appRefreshQuery";
 import { ConfigWriter } from "../../src/modules/configWriter";
 import { GrouparooModel, Schedule, Source } from "../../dist";
-import { Connections } from "actionhero/dist/initializers/connections";
 
 describe("actions/appRefreshQuery", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

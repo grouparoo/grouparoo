@@ -64,6 +64,9 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
   @Column
   lastConfirmedAt: Date;
 
+  @Column
+  interval: number;
+
   @BelongsTo(() => App)
   app: App;
 
