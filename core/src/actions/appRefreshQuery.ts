@@ -72,12 +72,24 @@ export class AppRefreshQueryEdit extends AuthenticatedAction {
       id: { required: true },
       appId: { required: false },
       refreshQuery: { required: false },
+      recurringFrequency: { required: false },
       state: { required: false },
     };
   }
   async runWithinTransaction({ params }) {
     const appRefreshQuery = await AppRefreshQuery.findById(params.id);
     await appRefreshQuery.update(params);
+
+    const sampleValue = await appRefreshQuery.query();
+    await appRefreshQuery.update({ lastConfirmedAt: new Date() });
+
+    if (sampleValue !== appRefreshQuery.value) {
+      await appRefreshQuery.update({
+        value: sampleValue,
+        lastChangedAt: new Date(),
+      });
+      await appRefreshQuery.triggerSchedules(true);
+    }
 
     await ConfigWriter.run();
 

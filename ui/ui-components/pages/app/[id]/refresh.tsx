@@ -38,6 +38,11 @@ export default function Page(props) {
     message: string;
   }>({ success: null, error: null, message: null });
   const [ranTest, setRanTest] = useState(false);
+  const [recurringFrequencyMinutes, setRecurringFrequencyMinutes] = useState(
+    appRefreshQuery && appRefreshQuery.recurringFrequency
+      ? appRefreshQuery.recurringFrequency / (60 * 1000)
+      : 1
+  );
   const { id } = router.query;
   const { schedules, runs, sources } = props;
   const disabled = app?.locked !== null || appRefreshQuery?.locked !== null;
@@ -77,10 +82,17 @@ export default function Page(props) {
 
   async function edit(event) {
     event.preventDefault();
+
+    if (recurringFrequencyMinutes) {
+      appRefreshQuery.recurringFrequency =
+        recurringFrequencyMinutes * (60 * 1000);
+    }
+
     if (appRefreshQuery.refreshQuery.length > 1) {
       appRefreshQuery.state = "ready";
     }
     setLoading(true);
+    console.log(appRefreshQuery);
     const response: Actions.AppRefreshQueryEdit = await execApi(
       "put",
       `/appRefreshQuery/${appRefreshQuery.id}`,
@@ -88,10 +100,14 @@ export default function Page(props) {
     );
     if (response?.appRefreshQuery) {
       setLoading(false);
+      successHandler.set({ message: "App Refresh Query Updated" });
+      setRecurringFrequencyMinutes(
+        response.appRefreshQuery.recurringFrequency / (60 * 1000)
+      );
       setAppRefreshQuery(response.appRefreshQuery);
 
       try {
-        const response: Actions.AppRefreshQueryQuery = await execApi(
+        const response: Actions.AppRefreshQueryRun = await execApi(
           "post",
           `/appRefreshQuery/${appRefreshQuery.id}/query`
         );
@@ -143,7 +159,7 @@ export default function Page(props) {
     try {
       const response: Actions.AppRefreshQueryRun = await execApi(
         "post",
-        `/appRefreshQuery/${appRefreshQuery.id}/query`
+        `/appRefreshQuery/${appRefreshQuery.id}/run`
       );
       if (response?.valueUpdated == true) {
         successHandler.set({
@@ -207,7 +223,7 @@ export default function Page(props) {
       </>
     );
   } else {
-    console.log(loading);
+    console.log(editing);
     return (
       <>
         <Head>
@@ -234,9 +250,30 @@ export default function Page(props) {
           {" "}
           <Row>
             <Col className="col-md-8">
-              <strong>Query</strong>
-              <p>What query should we run to check for new data?</p>
+              <Form.Group
+                controlId="recurringFrequencyMinutes"
+                className="col-9"
+              >
+                <Form.Label>
+                  <strong>Recurring Frequency</strong> <p>In minutes</p>
+                </Form.Label>
+                <Form.Control
+                  required
+                  type="number"
+                  min={1}
+                  placeholder="Recurring Frequency"
+                  disabled={!editing}
+                  value={recurringFrequencyMinutes.toString()}
+                  onChange={(e) =>
+                    setRecurringFrequencyMinutes(parseInt(e.target.value))
+                  }
+                />
+              </Form.Group>
               <Form.Group controlId="refreshQuery" className="col-9">
+                <Form.Label>
+                  <strong>Query</strong>
+                  <p>What query should we run to check for new data?</p>
+                </Form.Label>
                 <Form.Control
                   required
                   as="textarea"

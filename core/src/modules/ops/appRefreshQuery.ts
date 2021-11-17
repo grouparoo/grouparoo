@@ -1,7 +1,7 @@
 import { Source } from "../../models/Source";
 import { AppRefreshQuery } from "../../models/AppRefreshQuery";
 import { Schedule } from "../../models/Schedule";
-import { Run } from "../..";
+import { Run } from "../../models/Run";
 
 export namespace AppRefreshQueryOps {
   export async function runAppQuery(
