@@ -385,19 +385,6 @@ describe("models/source", () => {
         });
         expect(primaryKeyPropertyCount).toBe(1);
       });
-
-      test("determining the primary key without setting a mapping throws error", async () => {
-        const source = await helper.factories.source(app, {
-          modelId: model.id,
-        });
-        await source.bootstrapUniqueProperty("myUserId", "integer", "id");
-        await source.setOptions({ table: "some table" });
-
-        const promise = Source.determinePrimaryKeyProperty(source);
-        await expect(promise).rejects.toThrow(
-          /could not assign primary key to source/
-        );
-      });
     });
 
     test("__options only includes options for sources", async () => {
@@ -690,7 +677,7 @@ describe("models/source", () => {
       await arrayProperty.destroy();
     });
 
-    test("isPrimaryKey will not be updated for source properties after setting the first mapping", async () => {
+    test("isPrimaryKey will be updated for source properties after setting the first mapping", async () => {
       const firstSource = await Source.findOne({
         where: { id: { [Op.ne]: source.id } },
       });
@@ -711,10 +698,10 @@ describe("models/source", () => {
       await firstSource.setMapping({ email: "email" });
 
       await userIdProperty.reload();
-      expect(userIdProperty.isPrimaryKey).toBe(true);
+      expect(userIdProperty.isPrimaryKey).toBe(false);
 
       await emailProperty.reload();
-      expect(emailProperty.isPrimaryKey).toBe(false);
+      expect(emailProperty.isPrimaryKey).toBe(true);
 
       await firstSource.setMapping({ myUserId: "userId" });
     });

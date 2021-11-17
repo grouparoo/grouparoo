@@ -427,12 +427,10 @@ export class Source extends LoggedModel<Source> {
     await LockableHelper.beforeSave(instance, ["state"]);
   }
 
-  @AfterSave
   static async determinePrimaryKeyProperty(instance: Source): Promise<void> {
-    const source = await Source.findById(instance.id);
-    if (source.state === "deleted") return;
+    if (instance.state === "deleted") return;
 
-    const primaryKeyProperty = await Property.findOne({
+    const otherSourcePrimaryKey = await Property.findOne({
       include: {
         model: Source,
         required: true,
@@ -442,13 +440,18 @@ export class Source extends LoggedModel<Source> {
       },
       where: {
         isPrimaryKey: true,
+        sourceId: {
+          [Op.ne]: instance.id,
+        },
       },
     });
 
-    // Do nothing if there is already a primary key for the grouparoo model
-    if (primaryKeyProperty) return;
+    // Do nothing unless we own the current primary key
+    if (otherSourcePrimaryKey) {
+      return;
+    }
 
-    // Assign primary key to a property in this source
+    // Assign the primary key to a property in this source
     const properties = await instance.$get("properties");
     if (!properties.length) return;
 
@@ -456,15 +459,11 @@ export class Source extends LoggedModel<Source> {
     const mappingValues = Object.values(mapping);
 
     for (const property of properties) {
-      if (mappingValues.includes(property.key)) {
-        await property.update({ isPrimaryKey: true });
-        return;
+      const isPrimaryKey = mappingValues.includes(property.key);
+      if (property.isPrimaryKey !== isPrimaryKey) {
+        await property.update({ isPrimaryKey });
       }
     }
-
-    throw new Error(
-      `could not assign primary key to source ${instance.id} - check your mapping`
-    );
   }
 
   @BeforeDestroy
