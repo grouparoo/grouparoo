@@ -1533,6 +1533,8 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/calculated-property && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-clickhouse:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
       - image: circleci/node:16.8.0
         auth:
