@@ -1,5 +1,6 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { AppRefreshQuery } from "../models/AppRefreshQuery";
+import { Run } from "../models/Run";
 import { ConfigWriter } from "../modules/configWriter";
 
 export class AppRefreshQueryRun extends AuthenticatedAction {
@@ -16,20 +17,28 @@ export class AppRefreshQueryRun extends AuthenticatedAction {
     let valueUpdated: Boolean = false;
     const appRefreshQuery = await AppRefreshQuery.findById(params.id);
     if (!appRefreshQuery)
-      throw new Error(`No app refresh query ${params.id} founds`);
+      throw new Error(`No app refresh query ${params.id} found`);
 
     const sampleValue = await appRefreshQuery.query();
     await appRefreshQuery.update({ lastConfirmedAt: new Date() });
+
+    let runs: Run[] = [];
 
     if (sampleValue !== appRefreshQuery.value) {
       await appRefreshQuery.update({
         value: sampleValue,
         lastChangedAt: new Date(),
       });
-      await appRefreshQuery.triggerSchedules(true);
+
+      runs = await appRefreshQuery.triggerSchedules(true);
       valueUpdated = true;
     }
-    return { valueUpdated, appRefreshQuery: await appRefreshQuery.apiData() };
+
+    return {
+      valueUpdated,
+      appRefreshQuery: await appRefreshQuery.apiData(),
+      runs,
+    };
   }
 }
 

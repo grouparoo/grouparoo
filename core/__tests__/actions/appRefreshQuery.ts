@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { specHelper, api } from "actionhero";
 import { SessionCreate } from "../../src/actions/session";
 import {
   AppRefreshQueryCreate,
@@ -16,6 +16,7 @@ import {
   Source,
   AppRefreshQuery,
   App,
+  Run,
 } from "../../src";
 
 describe("actions/appRefreshQuery", () => {
@@ -177,6 +178,27 @@ describe("actions/appRefreshQuery", () => {
         expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hello' AS name");
         expect(appRefreshQuery.value.length).toBe(13);
         expect(valueUpdated).toBeTruthy();
+      });
+      test("running an appRefreshQuery will cancel any existing runs on the schedule(s)", async () => {
+        await api.resque.queue.connection.redis.flushdb();
+        await Run.truncate();
+        const run = await Run.create({
+          state: "running",
+          creatorType: "schedule",
+          creatorId: schedule.id,
+        });
+
+        connection.params = { csrfToken, id };
+        const { runs, appRefreshQuery } =
+          await specHelper.runAction<AppRefreshQueryRun>(
+            "appRefreshQuery:run",
+            connection
+          );
+
+        expect(runs.length).toBe(1);
+        expect(runs[0].id).not.toEqual(run.id);
+        await run.reload();
+        expect(run.state).toBe("stopped");
       });
       test("an administrator can destroy an appQueryRefresh", async () => {
         connection.params = { csrfToken, id };

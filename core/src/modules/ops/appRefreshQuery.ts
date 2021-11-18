@@ -54,15 +54,19 @@ export namespace AppRefreshQueryOps {
       );
     }
 
+    let runs: Run[] = [];
     for (const schedule of schedulesToRun) {
       if (stopRuns === true) {
         const runningRun = await Run.findOne({
           where: { creatorId: schedule.id, state: "running" },
         });
-        if (runningRun) await runningRun.stop;
+
+        if (runningRun) await runningRun.stop();
       }
-      await schedule.enqueueRun();
+      const run = await schedule.enqueueRun();
+      runs.push(run);
     }
+    return runs;
   }
 
   export async function test(
