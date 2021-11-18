@@ -42,6 +42,7 @@ export default function SuccessAlert({
       show={show}
       onClose={() => setShow(false)}
       variant="success"
+      className="text-break"
     >
       {message}
     </Alert>

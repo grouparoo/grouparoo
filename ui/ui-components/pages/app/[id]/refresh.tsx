@@ -304,7 +304,7 @@ export default function Page(props) {
                   testResult.success !== false &&
                   testResult.success !== undefined &&
                   !testResult.error ? (
-                    <Alert variant="success">
+                    <Alert variant="success" className="text-break">
                       <strong>Test Passed. </strong>Sample Value ={" "}
                       {testResult.message}
                     </Alert>
@@ -313,6 +313,7 @@ export default function Page(props) {
                       <strong>Test Failed</strong> {testResult.error}
                     </Alert>
                   ) : null}
+
                   {loading ? <Loader /> : null}
                 </Col>
               </Form.Group>{" "}
