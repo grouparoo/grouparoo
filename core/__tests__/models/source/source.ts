@@ -684,7 +684,7 @@ describe("models/source", () => {
       await arrayProperty.destroy();
     });
 
-    test("isPrimaryKey will be updated for source properties after setting the first mapping", async () => {
+    test("isPrimaryKey will be updated for source properties after setting the mapping", async () => {
       const firstSource = await Source.findOne({
         where: { id: { [Op.ne]: source.id } },
       });
