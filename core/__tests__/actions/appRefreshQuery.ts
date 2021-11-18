@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { App, Run } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   AppRefreshQueryCreate,
@@ -11,7 +10,13 @@ import {
   AppRefreshQueryView,
 } from "../../src/actions/appRefreshQuery";
 import { ConfigWriter } from "../../src/modules/configWriter";
-import { GrouparooModel, Schedule, Source } from "../../dist";
+import {
+  GrouparooModel,
+  Schedule,
+  Source,
+  AppRefreshQuery,
+  App,
+} from "../../src";
 
 describe("actions/appRefreshQuery", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -113,7 +118,36 @@ describe("actions/appRefreshQuery", () => {
         expect(error).toBeUndefined();
         expect(appRefreshQuery.state).toBe("ready");
       });
+      test("an administrator can view an appRefreshQuery", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+        };
+
+        const { error, appRefreshQuery } =
+          await specHelper.runAction<AppRefreshQueryView>(
+            "appRefreshQuery:view",
+            connection
+          );
+
+        expect(appRefreshQuery.id).toEqual(id);
+        expect(appRefreshQuery.value.length).toBe(13);
+        expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hello' AS name");
+        expect(error).toBeFalsy();
+      });
       test("an administrator can test an appRefreshQuery", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+        };
+
+        const oldAppRefreshQuery = (
+          await specHelper.runAction<AppRefreshQueryView>(
+            "appRefreshQuery:view",
+            connection
+          )
+        ).appRefreshQuery;
+
         connection.params = {
           csrfToken,
           id,
@@ -126,7 +160,7 @@ describe("actions/appRefreshQuery", () => {
         expect(error).toBeUndefined();
         expect(test.success).toBeTruthy();
         expect(test.message.length).toBe(13); //test plugin queries return a unix timestamp
-        expect(appRefreshQuery.value).toBeFalsy(); //tests shouldn't save any values
+        expect(appRefreshQuery).toEqual(oldAppRefreshQuery); //tests shouldn't change any columns
       });
       test("an administrator can run an appRefreshQuery", async () => {
         connection.params = {
