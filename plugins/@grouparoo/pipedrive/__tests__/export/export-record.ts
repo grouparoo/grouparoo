@@ -34,7 +34,7 @@ const appOptions = loadAppOptions(newNock);
 const appId = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8762f9";
 
 async function findFilter(name: string) {
-  let filters = await client.getAllPersonFilters();
+  let filters = await client.persons.filters.getAll();
   filters = filters.filter((f) => f.name === name);
 
   if (filters.length === 0) return null;
@@ -47,12 +47,12 @@ async function cleanUp() {
   for (let email of [email1, email2, email3, email4, nonexistentEmail]) {
     const id = await client.findPersonIdByEmail(email);
     if (id) {
-      await client.deletePerson(id);
+      await client.persons.delete(id);
     }
   }
 
   // Clear created group fields
-  const fields = await client.getAllPersonFields();
+  const fields = await client.persons.fields.getAll();
   const testGroupFieldIds = fields
     .filter((f) =>
       [groupOneField, groupTwoField, groupThreeField].includes(f.name)
@@ -60,11 +60,11 @@ async function cleanUp() {
     .map((f) => f.id);
 
   if (testGroupFieldIds.length > 0) {
-    await client.bulkDeletePersonFields(testGroupFieldIds);
+    await client.persons.fields.bulkDelete(testGroupFieldIds);
   }
 
   // Clear created filters
-  const filters = await client.getAllPersonFilters();
+  const filters = await client.persons.filters.getAll();
   const testFilterIds = filters
     .filter((f) =>
       [groupOneField, groupTwoField, groupThreeField].includes(f.name)
@@ -72,7 +72,7 @@ async function cleanUp() {
     .map((f) => f.id);
 
   if (testFilterIds.length > 0) {
-    await client.bulkDeleteFilters(testFilterIds);
+    await client.persons.filters.bulkDelete(testFilterIds);
   }
 }
 
@@ -135,7 +135,7 @@ describe("pipedrive/exportRecord", () => {
     expect(newPersonId).toBeTruthy();
 
     personId = newPersonId;
-    const data = await client.getPerson(personId);
+    const data = await client.persons.getById(personId);
     expect(data.name).toBe("John Doe");
     expect(data.email[0].value).toBe(email1);
   });
@@ -191,7 +191,7 @@ describe("pipedrive/exportRecord", () => {
       toDelete: false,
     });
 
-    const data = await client.getPerson(personId);
+    const data = await client.persons.getById(personId);
     expect(data.name).toBe("John Doe");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email1);
@@ -226,7 +226,7 @@ describe("pipedrive/exportRecord", () => {
       })
     ).rejects.toThrow(/sync mode does not update/);
 
-    const data = await client.getPerson(personId);
+    const data = await client.persons.getById(personId);
     expect(data[fieldMap.text_field]).toBe("Some text"); // no change
   });
 
@@ -257,7 +257,7 @@ describe("pipedrive/exportRecord", () => {
       toDelete: false,
     });
 
-    const data = await client.getPerson(personId);
+    const data = await client.persons.getById(personId);
     expect(data.name).toBe("Johnny Doe");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email1);
@@ -302,7 +302,7 @@ describe("pipedrive/exportRecord", () => {
       toDelete: false,
     });
 
-    const data = await client.getPerson(personId);
+    const data = await client.persons.getById(personId);
     expect(data.name).toBe("Johnny Doe");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email1);
@@ -346,7 +346,7 @@ describe("pipedrive/exportRecord", () => {
     const filterTwo = await findFilter(groupTwoField);
     expect(filterTwo).toBeTruthy();
 
-    const data = await client.getPerson(personId);
+    const data = await client.persons.getById(personId);
     expect(data[groupOneKey]).toBeTruthy();
     expect(data[groupTwoKey]).toBeTruthy();
   });
@@ -360,7 +360,7 @@ describe("pipedrive/exportRecord", () => {
       toDelete: false,
     });
 
-    const data = await client.getPerson(personId);
+    const data = await client.persons.getById(personId);
     expect(data[groupOneKey]).toBeTruthy();
     expect(data[groupTwoKey]).toBeFalsy();
   });
@@ -376,7 +376,7 @@ describe("pipedrive/exportRecord", () => {
 
     await indexUsers(newNock);
 
-    const data = await client.getPerson(personId);
+    const data = await client.persons.getById(personId);
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email2);
   });
@@ -420,7 +420,7 @@ describe("pipedrive/exportRecord", () => {
     personId2 = await client.findPersonIdByEmail(email3);
     expect(personId2).toBeTruthy();
 
-    const data = await client.getPerson(personId2);
+    const data = await client.persons.getById(personId2);
     expect(data.name).toBe("Bobby");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email3);
@@ -438,13 +438,13 @@ describe("pipedrive/exportRecord", () => {
     await indexUsers(newNock);
 
     // Leave the old one untouched
-    let data = await client.getPerson(personId2);
+    let data = await client.persons.getById(personId2);
     expect(data.name).toBe("Bobby");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email3);
 
     // Update the new one
-    data = await client.getPerson(personId);
+    data = await client.persons.getById(personId);
     expect(data.name).toBe("Bobby Jones");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email2);
@@ -473,7 +473,7 @@ describe("pipedrive/exportRecord", () => {
     ).rejects.toThrow(/sync mode does not delete/);
 
     // no effect
-    const data = await client.getPerson(personId);
+    const data = await client.persons.getById(personId);
     expect(data[groupOneKey]).toBeTruthy();
     expect(data.name).toBe("Bobby Jones");
   });
@@ -493,7 +493,7 @@ describe("pipedrive/exportRecord", () => {
       toDelete: true,
     });
 
-    const data = await client.getPerson(personId);
+    const data = await client.persons.getById(personId);
     expect(data.active_flag).toBe(false);
   });
 
@@ -506,7 +506,7 @@ describe("pipedrive/exportRecord", () => {
       toDelete: true,
     });
 
-    const data = await client.getPerson(personId2);
+    const data = await client.persons.getById(personId2);
     expect(data.active_flag).toBe(false);
   });
 
@@ -536,7 +536,7 @@ describe("pipedrive/exportRecord", () => {
     personId3 = await client.findPersonIdByEmail(email4);
     expect(personId3).toBeTruthy();
 
-    const data = await client.getPerson(personId3);
+    const data = await client.persons.getById(personId3);
     expect(data.name).toBe("Jill");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email4);
@@ -568,13 +568,13 @@ describe("pipedrive/exportRecord", () => {
     });
 
     // email1 is deleted
-    let data = await client.getPerson(newPersonId);
+    let data = await client.persons.getById(newPersonId);
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email1);
     expect(data.active_flag).toBe(false);
 
     // email4 is untouched
-    data = await client.getPerson(personId3);
+    data = await client.persons.getById(personId3);
     expect(data.name).toBe("Jill");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email4);
@@ -589,7 +589,7 @@ describe("pipedrive/exportRecord", () => {
       toDelete: true,
     });
 
-    const data = await client.getPerson(personId3);
+    const data = await client.persons.getById(personId3);
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email4); // does not get updated
     expect(data.active_flag).toBe(false);
