@@ -56,15 +56,14 @@ async function ensureFieldAndFilter(
   // need to create it
   if (!createIfNotExists) return null;
 
-  const { data } = await client.createPersonField({
+  const { data } = await client.persons.fields.create({
     name: fieldName,
     field_type: "varchar",
   });
 
   // automatically create the filter too
-  await client.createFilter({
+  await client.persons.filters.create({
     name: fieldName,
-    type: "people",
     conditions: {
       glue: "and",
       conditions: [

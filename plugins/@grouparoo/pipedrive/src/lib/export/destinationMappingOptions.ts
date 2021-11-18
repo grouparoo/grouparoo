@@ -139,7 +139,7 @@ export const fetchKnownPersonFields = async (
   // The keys for these are like cd77a9b30948242ef1ef57acbe28c0aa054b8fde_until
   const subfieldsRegex = /(_until|_currency)$/;
 
-  const fields = await client.getAllPersonFields();
+  const fields = await client.persons.fields.getAll();
 
   const out: KnownPersonField[] = [];
 

@@ -58,7 +58,7 @@ const handleProfileChanges: ExportRecordPluginMethod = async ({
     }
 
     if (foundId) {
-      await client.deletePerson(foundId);
+      await client.persons.delete(foundId);
     }
 
     return { success: true };
@@ -89,7 +89,7 @@ const handleProfileChanges: ExportRecordPluginMethod = async ({
       );
     }
 
-    await client.updatePerson(foundId, payload);
+    await client.persons.update(foundId, payload);
   } else {
     if (!syncOperations.create) {
       throw new Errors.InfoError(
@@ -97,7 +97,7 @@ const handleProfileChanges: ExportRecordPluginMethod = async ({
       );
     }
     // Create new Person
-    await client.createPerson(payload);
+    await client.persons.create(payload);
   }
 
   return { success: true };
