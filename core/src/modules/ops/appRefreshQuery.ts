@@ -4,6 +4,9 @@ import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 
 export namespace AppRefreshQueryOps {
+  /**
+   * Query the app
+   */
   export async function runAppQuery(
     appRefreshQuery: AppRefreshQuery,
     testQuery?: string
@@ -32,6 +35,11 @@ export namespace AppRefreshQueryOps {
 
     return sampleValue;
   }
+
+  /**
+   * Trigger all schedules for all sources associated with this app.
+   * Optionally, cancel existing runs on those schedules (used by actions)
+   */
 
   export async function triggerSchedules(
     appRefreshQuery: AppRefreshQuery,
@@ -68,6 +76,24 @@ export namespace AppRefreshQueryOps {
     }
     return runs;
   }
+
+  /**
+   * Determine if it is time to run
+   */
+
+  export async function shouldRun(appRefreshQuery: AppRefreshQuery) {
+    if (appRefreshQuery.state !== "ready") return false;
+
+    if (appRefreshQuery.lastConfirmedAt == null) return true;
+
+    const delta =
+      new Date().getTime() - appRefreshQuery.lastConfirmedAt.getTime();
+    return delta > appRefreshQuery.recurringFrequency;
+  }
+
+  /**
+   * Test the appRefreshQuery and return the sample value
+   */
 
   export async function test(
     appRefreshQuery: AppRefreshQuery,

@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Schedule } from "../../dist";
-import { App, AppRefreshQuery, Log, Run, Source } from "../../src";
+import { App, AppRefreshQuery, Log, Run, Schedule, Source } from "../../src";
 import { AppRefreshQueryOps } from "../../src/modules/ops/appRefreshQuery";
 
 describe("appRefreshQuery", () => {

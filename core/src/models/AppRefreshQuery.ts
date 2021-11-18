@@ -94,6 +94,10 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
     return await AppRefreshQueryOps.runAppQuery(this);
   }
 
+  async shouldRun() {
+    return AppRefreshQueryOps.shouldRun(this);
+  }
+
   async triggerSchedules(stopRuns?: Boolean) {
     return await AppRefreshQueryOps.triggerSchedules(this, stopRuns);
   }

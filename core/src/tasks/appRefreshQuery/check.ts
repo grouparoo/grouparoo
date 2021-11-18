@@ -18,14 +18,18 @@ export class AppRefreshQueriesCheck extends CLSTask {
     const appRefreshQueries = await AppRefreshQuery.findAll();
 
     for (const appRefreshQuery of appRefreshQueries) {
-      const app = await App.findOne({
-        where: { id: appRefreshQuery.appId, state: "ready" },
-      });
+      const shouldRun = await appRefreshQuery.shouldRun();
 
-      if (app) {
-        await CLS.enqueueTask("appRefreshQuery:query", {
-          appRefreshQueryId: appRefreshQuery.id,
+      if (shouldRun) {
+        const app = await App.findOne({
+          where: { id: appRefreshQuery.appId, state: "ready" },
         });
+
+        if (app) {
+          await CLS.enqueueTask("appRefreshQuery:run", {
+            appRefreshQueryId: appRefreshQuery.id,
+          });
+        }
       }
     }
   }

@@ -8,8 +8,9 @@ import {
   GrouparooModel,
   AppRefreshQuery,
 } from "../../../src";
+import { RunOps } from "../../../src/modules/ops/runs";
 
-describe("tasks/appRefreshQuery:query", () => {
+describe("tasks/appRefreshQuery:run", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeEach(async () => {
@@ -17,7 +18,7 @@ describe("tasks/appRefreshQuery:query", () => {
     await Run.truncate();
   });
 
-  describe("appRefreshQuery:query", () => {
+  describe("appRefreshQuery:run", () => {
     let model: GrouparooModel;
     let app: App;
     let source: Source;
@@ -44,11 +45,11 @@ describe("tasks/appRefreshQuery:query", () => {
     });
 
     test("can be enqueued and run", async () => {
-      await task.enqueue("appRefreshQuery:query", {
+      await task.enqueue("appRefreshQuery:run", {
         appRefreshQueryId: appRefreshQuery.id,
       }); //does not throw
 
-      await specHelper.runTask("appRefreshQuery:query", {
+      await specHelper.runTask("appRefreshQuery:run", {
         appRefreshQueryId: appRefreshQuery.id,
       });
 
@@ -59,11 +60,11 @@ describe("tasks/appRefreshQuery:query", () => {
     });
 
     test("updates value and timestamps if value is updated", async () => {
-      await task.enqueue("appRefreshQuery:query", {
+      await task.enqueue("appRefreshQuery:run", {
         appRefreshQueryId: appRefreshQuery.id,
       }); //does not throw
 
-      await specHelper.runTask("appRefreshQuery:query", {
+      await specHelper.runTask("appRefreshQuery:run", {
         appRefreshQueryId: appRefreshQuery.id,
       });
 
@@ -78,7 +79,7 @@ describe("tasks/appRefreshQuery:query", () => {
     test("does not throw if no appRefreshQueries found", async () => {
       appRefreshQuery.destroy();
 
-      await task.enqueue("appRefreshQuery:query", {
+      await task.enqueue("appRefreshQuery:run", {
         appRefreshQueryId: appRefreshQuery.id,
       }); //does not throw
 
@@ -100,7 +101,7 @@ describe("tasks/appRefreshQuery:query", () => {
       });
       await appRefreshQuery.save();
 
-      await task.enqueue("appRefreshQuery:query", {
+      await task.enqueue("appRefreshQuery:run", {
         appRefreshQueryId: appRefreshQuery.id,
       }); //does not throw
 
@@ -114,7 +115,7 @@ describe("tasks/appRefreshQuery:query", () => {
     test("schedules marked 'refreshEnabled=false' are not triggered", async () => {
       await schedule.update({ refreshEnabled: false });
 
-      await specHelper.runTask("appRefreshQuery:query", {
+      await specHelper.runTask("appRefreshQuery:run", {
         appRefreshQueryId: appRefreshQuery.id,
       });
 
@@ -127,10 +128,10 @@ describe("tasks/appRefreshQuery:query", () => {
     test("schedules marked 'refreshEnabled=true' are triggered", async () => {
       await schedule.update({ refreshEnabled: true });
 
-      await task.enqueue("appRefreshQuery:query", {
+      await task.enqueue("appRefreshQuery:run", {
         appRefreshQueryId: appRefreshQuery.id,
       }); //does not throw
-      await specHelper.runTask("appRefreshQuery:query", {
+      await specHelper.runTask("appRefreshQuery:run", {
         appRefreshQueryId: appRefreshQuery.id,
       });
 
@@ -138,6 +139,27 @@ describe("tasks/appRefreshQuery:query", () => {
         where: { creatorId: schedule.id, state: "running" },
       });
       expect(enqueuedRuns.length).toBe(0);
+    });
+
+    test("schedules that are already running are not enqueued", async () => {
+      await Run.truncate();
+
+      const run = await Run.create({
+        creatorType: "schedule",
+        creatorId: schedule.id,
+        state: "running",
+      });
+
+      await specHelper.runTask("appRefreshQuery:run", {
+        appRefreshQueryId: appRefreshQuery.id,
+      });
+
+      const runs = await Run.findAll({
+        where: { state: "running", creatorId: schedule.id },
+      });
+
+      expect(runs.length).toBe(1);
+      expect(runs[0].id).toBe(run.id);
     });
   });
 });

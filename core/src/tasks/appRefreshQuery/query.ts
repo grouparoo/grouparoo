@@ -1,10 +1,10 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { AppRefreshQuery } from "../../models/AppRefreshQuery";
 
-export class AppRefreshQueryQuery extends CLSTask {
+export class AppRefreshQueryRun extends CLSTask {
   constructor() {
     super();
-    this.name = "appRefreshQuery:query";
+    this.name = "appRefreshQuery:run";
     this.description =
       "run a single appRefreshQuery and update values/trigger schedules if needed";
     this.frequency = 0;

@@ -52,13 +52,13 @@ describe("tasks/appRefreshQueries:check", () => {
       expect(found.length).toEqual(1);
     });
 
-    test("enqueues appRefreshQuery:query", async () => {
+    test("enqueues appRefreshQuery:run", async () => {
       await task.enqueue("appRefreshQueries:check", {}); //does not throw
 
       await specHelper.runTask("appRefreshQueries:check", {});
 
       const foundChildren = await specHelper.findEnqueuedTasks(
-        "appRefreshQuery:query"
+        "appRefreshQuery:run"
       );
       expect(foundChildren.length).toEqual(1);
     });
