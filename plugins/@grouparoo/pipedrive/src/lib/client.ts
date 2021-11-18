@@ -1,10 +1,10 @@
 import axios, { AxiosInstance } from "axios";
 
-type Entity = 'persons' | 'organizations';
-type EntityField = 'personFields' | 'organizationFields';
-type FilterType = 'people' | 'org';
+type Entity = "persons" | "organizations";
+type EntityField = "personFields" | "organizationFields";
+type FilterType = "people" | "org";
 
-const EntityFieldMapping: Record<Entity,  EntityField> = {
+const EntityFieldMapping: Record<Entity, EntityField> = {
   persons: "personFields",
   organizations: "organizationFields",
 };
@@ -25,18 +25,21 @@ class EntityCalls {
 
   async getById(id: number): Promise<Record<string, any>> {
     const { data } = await this.client.request.get<Record<string, any>>(
-      `/${this.entity}/${id}`);
+      `/${this.entity}/${id}`
+    );
     return data.data;
   }
 
-  async create(
-    payload: Record<string, any>
-  ): Promise<Record<string, any>> {
-    const { data } = await this.client.request.post(`/${this.entity}`, payload, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  async create(payload: Record<string, any>): Promise<Record<string, any>> {
+    const { data } = await this.client.request.post(
+      `/${this.entity}`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     return data;
   }
@@ -45,26 +48,30 @@ class EntityCalls {
     id: number,
     payload: Record<string, any>
   ): Promise<Record<string, any>> {
-    const { data } = await this.client.request.put(`/${this.entity}/${id}`, payload, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const { data } = await this.client.request.put(
+      `/${this.entity}/${id}`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     return data;
   }
 
-  async delete(
-    id: number
-  ): Promise<Record<string, any>> {
+  async delete(id: number): Promise<Record<string, any>> {
     const { data } = await this.client.request.delete(`/${this.entity}/${id}`);
     return data;
   }
 }
 
 class FieldCalls {
-  constructor(private client: PipedriveClient, private entityField: EntityField) {
-  }
+  constructor(
+    private client: PipedriveClient,
+    private entityField: EntityField
+  ) {}
 
   async getAll(): Promise<Record<string, any>[]> {
     const { data } = await this.client.request.get<Record<string, any>>(
@@ -73,21 +80,21 @@ class FieldCalls {
     return data.data;
   }
 
-  async create(
-    payload: Record<string, any>
-  ): Promise<Record<string, any>> {
-    const { data } = await this.client.request.post(`/${(this.entityField)}`, payload, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  async create(payload: Record<string, any>): Promise<Record<string, any>> {
+    const { data } = await this.client.request.post(
+      `/${this.entityField}`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     return data;
   }
 
-  async bulkDelete(
-    ids: number[]
-  ): Promise<Record<string, any>> {
+  async bulkDelete(ids: number[]): Promise<Record<string, any>> {
     const { data } = await this.client.request.delete(`/${this.entityField}`, {
       params: { ids: ids.join(",") },
     });
@@ -97,25 +104,34 @@ class FieldCalls {
 }
 
 class FilterCalls {
-  constructor(private client: PipedriveClient, private filterType: FilterType) {
-  }
+  constructor(
+    private client: PipedriveClient,
+    private filterType: FilterType
+  ) {}
 
   async getAll(): Promise<Record<string, any>[]> {
-    const { data } = await this.client.request.get<Record<string, any>>("/filters", {
-      params: { type: this.filterType },
-    });
+    const { data } = await this.client.request.get<Record<string, any>>(
+      "/filters",
+      {
+        params: { type: this.filterType },
+      }
+    );
     return data.data;
   }
 
   async create(payload: Record<string, any>) {
-    const { data } = await this.client.request.post(`/filters`, {
-      ...payload,
-      type: this.filterType,
-    }, {
-      headers: {
-        "Content-Type": "application/json",
+    const { data } = await this.client.request.post(
+      `/filters`,
+      {
+        ...payload,
+        type: this.filterType,
       },
-    });
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     return data;
   }
@@ -143,8 +159,8 @@ export class PipedriveClient {
       },
     });
 
-    this.persons = new EntityCalls(this, 'persons');
-    this.organizations = new EntityCalls(this, 'organizations');
+    this.persons = new EntityCalls(this, "persons");
+    this.organizations = new EntityCalls(this, "organizations");
   }
 
   async getCurrentUser(): Promise<Record<string, any>> {
