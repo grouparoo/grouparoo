@@ -5,7 +5,10 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       type: "{{{__pluginName}}}",
-      //refreshQuery: "...", // Optional: How will Grouparoo know to trigger a Data Refresh? ie: `SELECT MAX(updated_at) FROM users`;
+      //refreshQuery: {
+      //  query: "..."
+      //  interval: 6000 
+      //}, // Optional: How will Grouparoo know to trigger a Data Refresh? ie: `SELECT MAX(updated_at) FROM users`;
       options: {
         project_id: "...", // Project ID from Google - e.g. `project_id: "data_warehouse"`
         dataset: "...", // Default dataset ID to use for sources - e.g. `dataset: "dataset"`
