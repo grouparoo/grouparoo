@@ -38,10 +38,6 @@ const email3 = "brian3@demo.com";
 const id3 = "pro3";
 let userId3 = null;
 
-const email4 = "caio@demo.com";
-const id4 = "pro4";
-let userId4 = null;
-
 const group1 = "(test) High Value1";
 let groupId1 = null;
 
@@ -54,7 +50,7 @@ let accountId1 = null;
 const account2 = "(test) Small Account1";
 let accountId2 = null;
 
-const deleteRecordValues = [email1, email2, email3, newEmail1, email4];
+const deleteRecordValues = [email1, email2, email3, newEmail1];
 const deleteGroupValues = [group1, group2];
 const deleteReferenceValues = [account1, account2];
 const {
