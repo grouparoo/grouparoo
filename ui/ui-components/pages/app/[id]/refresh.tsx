@@ -88,8 +88,26 @@ export default function Page(props) {
     );
     if (response?.appRefreshQuery) {
       setLoading(false);
-      successHandler.set({ message: "App Refresh Query Updated" });
       setAppRefreshQuery(response.appRefreshQuery);
+
+      try {
+        const response: Actions.AppRefreshQueryQuery = await execApi(
+          "post",
+          `/appRefreshQuery/${appRefreshQuery.id}/query`
+        );
+        if (response?.valueUpdated == true) {
+          successHandler.set({
+            message: `App Refresh Query updated. Returned ${response.appRefreshQuery.value}. Enqueueing Schedules.`,
+          });
+        } else {
+          successHandler.set({
+            message: `App Refresh Query updated. Query returned ${response.appRefreshQuery.value}. No schedules enqueued.`,
+          });
+        }
+        setAppRefreshQuery(response.appRefreshQuery);
+      } finally {
+        setLoading(false);
+      }
     } else {
       setLoading(false);
     }
@@ -273,7 +291,6 @@ export default function Page(props) {
                         variant="outline-danger"
                         size="sm"
                         className="my-2 ml-2"
-                        // disabled={disabled}
                         hidden={!editing}
                         onClick={cancelEdit}
                       >
@@ -282,13 +299,12 @@ export default function Page(props) {
                     </Row>
                   </Col>
                 </Row>{" "}
-                {/* </fieldset> */}
                 <Col>
                   {testResult.success !== null &&
                   testResult.success !== false &&
                   testResult.success !== undefined &&
                   !testResult.error ? (
-                    <Alert variant="success">
+                    <Alert variant="success" className="text-break">
                       <strong>Test Passed. </strong>Sample Value ={" "}
                       {testResult.message}
                     </Alert>
@@ -297,30 +313,33 @@ export default function Page(props) {
                       <strong>Test Failed</strong> {testResult.error}
                     </Alert>
                   ) : null}
+
                   {loading ? <Loader /> : null}
                 </Col>
               </Form.Group>{" "}
             </Col>
-
-            <Col className="col-md-4 ">
-              <Row className="mx-auto">
-                <AppRefreshQueryStats
-                  app={app}
-                  appRefreshQuery={appRefreshQuery}
-                />
-              </Row>
-              <Row>
-                <LoadingButton
-                  className="m-3 mx-auto"
-                  variant="success"
-                  onClick={runQuery}
-                  disabled={loading}
-                  hidden={editing}
-                >
-                  Run Refresh Query
-                </LoadingButton>
-              </Row>
-            </Col>
+            {appRefreshQuery?.refreshQuery?.length > 1 &&
+              appRefreshQuery?.state === "ready" && (
+                <Col className="col-md-4 ">
+                  <Row className="mx-auto">
+                    <AppRefreshQueryStats
+                      app={app}
+                      appRefreshQuery={appRefreshQuery}
+                    />
+                  </Row>
+                  <Row>
+                    <LoadingButton
+                      className="m-3 mx-auto"
+                      variant="success"
+                      onClick={runQuery}
+                      disabled={loading}
+                      hidden={editing}
+                    >
+                      Run Refresh Query
+                    </LoadingButton>
+                  </Row>
+                </Col>
+              )}
           </Row>
           <hr />
           <strong>Schedules:</strong>
