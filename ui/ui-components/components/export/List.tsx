@@ -94,6 +94,22 @@ export default function ExportsList(props) {
     );
   }
 
+  function getExportDelayRow(_export: Models.ExportType) {
+    if (!_export.sendAt || _export.sendAt <= new Date().getTime()) {
+      return null;
+    }
+
+    return (
+      <tr>
+        <td colSpan={7} style={{ border: 0 }}>
+          <Alert variant={"info"}>
+            Export delayed until {formatTimestamp(_export.sendAt)}
+          </Alert>
+        </td>
+      </tr>
+    );
+  }
+
   return (
     <>
       {props.header ? props.header : <h1>Exports</h1>}
@@ -241,6 +257,7 @@ export default function ExportsList(props) {
                 </tr>
 
                 {getErrorRow(_export)}
+                {getExportDelayRow(_export)}
               </Fragment>
             );
           })}

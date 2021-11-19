@@ -569,7 +569,7 @@ export namespace DestinationOps {
       }
 
       return {
-        errors: outErrors.length === 0 ? undefined : outErrors,
+        errors: outErrors.length === 0 || outRetryDelay ? null : outErrors,
         retryDelay: outRetryDelay,
         success: outSuccess,
       };
@@ -701,7 +701,7 @@ export namespace DestinationOps {
       }
       return {
         success: false,
-        error: combinedError,
+        error: exportResult?.retryDelay ? null : combinedError,
         retryexportIds,
         retryDelay: exportResult?.retryDelay,
       };
@@ -796,7 +796,7 @@ export namespace DestinationOps {
     }
     return {
       success: false,
-      error: combinedError,
+      error: exportResult?.retryDelay ? undefined : combinedError,
       retryexportIds,
       retryDelay: exportResult?.retryDelay,
     };
@@ -840,7 +840,7 @@ export namespace DestinationOps {
 
       return {
         success: false,
-        error,
+        error: outRetryDelay ? null : error,
         retryDelay: outRetryDelay,
         retryexportIds: _exports.map((e) => e.id),
       };
@@ -946,7 +946,7 @@ export namespace DestinationOps {
 
       return {
         success: false,
-        error,
+        error: outRetryDelay ? null : error,
         retryDelay: outRetryDelay,
         retryexportIds: _exports.map((e) => e.id),
       };
