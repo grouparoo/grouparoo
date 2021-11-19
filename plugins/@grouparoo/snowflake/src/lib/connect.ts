@@ -10,6 +10,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   const username = appOptions.username?.toString();
   const password = appOptions.password?.toString();
   const private_key = appOptions.private_key?.toString();
+  const private_key_passphrase = appOptions.private_key_passphrase?.toString();
   const warehouse = appOptions.warehouse?.toString();
   const database = appOptions.database?.toString();
   const schema = appOptions.schema?.toString() || "PUBLIC";
@@ -30,6 +31,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
       .createPrivateKey({
         key: private_key.replace(/\\n/g, "\n"),
         format: "pem",
+        passphrase: private_key_passphrase,
       })
       .export({
         format: "pem",
