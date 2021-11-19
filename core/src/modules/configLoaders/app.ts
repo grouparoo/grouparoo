@@ -62,7 +62,7 @@ export async function loadApp(
 
   logModel(app, validate ? "validated" : isNew ? "created" : "updated");
 
-  if (configObject.refreshQuery) {
+  if (configObject.refreshQuery?.query.length > 1) {
     let appRefreshQuery: AppRefreshQuery;
 
     appRefreshQuery = await AppRefreshQuery.findOne({
@@ -74,7 +74,8 @@ export async function loadApp(
     if (!appRefreshQuery) {
       appRefreshQuery = await AppRefreshQuery.create({
         appId: configObject.id,
-        refreshQuery: configObject.refreshQuery,
+        refreshQuery: configObject.refreshQuery?.query,
+        recurringFrequency: configObject.refreshQuery?.recurringFrequency,
         locked: ConfigWriter.getLockKey(configObject),
         state: "ready",
       });
@@ -82,7 +83,8 @@ export async function loadApp(
     } else {
       await appRefreshQuery.update({
         appId: configObject.id,
-        refreshQuery: configObject.refreshQuery,
+        refreshQuery: configObject.refreshQuery?.query,
+        recurringFrequency: configObject.refreshQuery?.recurringFrequency,
         locked: ConfigWriter.getLockKey(configObject),
         state: "ready",
       });

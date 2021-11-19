@@ -49,7 +49,6 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
   @Column
   value: string;
 
-  @AllowNull(true)
   @Column
   locked: string;
 
@@ -64,6 +63,9 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
   @Column
   lastConfirmedAt: Date;
 
+  @Column
+  recurringFrequency: number;
+
   @BelongsTo(() => App)
   app: App;
 
@@ -77,13 +79,26 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
       state: this.state,
       lastChangedAt: APIData.formatDate(this.lastChangedAt),
       lastConfirmedAt: APIData.formatDate(this.lastConfirmedAt),
+      recurringFrequency: this.recurringFrequency,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 
   async test(refreshQuery?: string) {
-    return AppRefreshQueryOps.test(this, refreshQuery);
+    return await AppRefreshQueryOps.test(this, refreshQuery);
+  }
+
+  async query() {
+    return await AppRefreshQueryOps.runAppQuery(this);
+  }
+
+  async shouldRun() {
+    return AppRefreshQueryOps.shouldRun(this);
+  }
+
+  async triggerSchedules(stopRuns?: Boolean) {
+    return await AppRefreshQueryOps.triggerSchedules(this, stopRuns);
   }
 
   // --- Class Methods --- //
@@ -124,6 +139,18 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
   static async appQuery(instance: AppRefreshQuery) {
     if (instance.state === "ready") {
       await AppRefreshQueryOps.runAppQuery(instance);
+    }
+  }
+
+  @BeforeSave
+  static async checkRecurringFrequency(instance: AppRefreshQuery) {
+    // we cannot use the @Min validator as null is also allowed
+    if (instance.recurringFrequency) {
+      if (instance.recurringFrequency < 1000 * 60) {
+        throw new Error(
+          "recurring frequency is required to be one minute or greater"
+        );
+      }
     }
   }
 

@@ -4,6 +4,9 @@ import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 
 export namespace AppRefreshQueryOps {
+  /**
+   * Query the app
+   */
   export async function runAppQuery(
     appRefreshQuery: AppRefreshQuery,
     testQuery?: string
@@ -33,7 +36,15 @@ export namespace AppRefreshQueryOps {
     return sampleValue;
   }
 
-  export async function triggerSchedules(appRefreshQuery: AppRefreshQuery) {
+  /**
+   * Trigger all schedules for all sources associated with this app.
+   * Optionally, cancel existing runs on those schedules (used by actions)
+   */
+
+  export async function triggerSchedules(
+    appRefreshQuery: AppRefreshQuery,
+    stopRuns: Boolean
+  ) {
     const sources: Source[] = await Source.findAll({
       where: { appId: appRefreshQuery.appId },
     });
@@ -51,19 +62,38 @@ export namespace AppRefreshQueryOps {
       );
     }
 
+    let runs: Run[] = [];
     for (const schedule of schedulesToRun) {
-      //stop any existing run on this schedule
-      const existingRuns = await Run.findAll({
-        where: { creatorId: schedule.id, state: "running" },
-      });
-      for (const run of existingRuns) {
-        await run.stop();
-      }
+      if (stopRuns === true) {
+        const runningRun = await Run.findOne({
+          where: { creatorId: schedule.id, state: "running" },
+        });
 
-      //begin a new run on this schedule
-      await schedule.enqueueRun();
+        if (runningRun) await runningRun.stop();
+      }
+      const run = await schedule.enqueueRun();
+      runs.push(run);
     }
+    return runs;
   }
+
+  /**
+   * Determine if it is time to run
+   */
+
+  export async function shouldRun(appRefreshQuery: AppRefreshQuery) {
+    if (appRefreshQuery.state !== "ready") return false;
+
+    if (appRefreshQuery.lastConfirmedAt == null) return true;
+
+    const delta =
+      new Date().getTime() - appRefreshQuery.lastConfirmedAt.getTime();
+    return delta > appRefreshQuery.recurringFrequency;
+  }
+
+  /**
+   * Test the appRefreshQuery and return the sample value
+   */
 
   export async function test(
     appRefreshQuery: AppRefreshQuery,

@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Schedule } from "../../dist";
-import { App, AppRefreshQuery, Log, Run, Source } from "../../src";
+import { App, AppRefreshQuery, Log, Run, Schedule, Source } from "../../src";
 import { AppRefreshQueryOps } from "../../src/modules/ops/appRefreshQuery";
 
 describe("appRefreshQuery", () => {
@@ -25,6 +24,20 @@ describe("appRefreshQuery", () => {
       expect(appRefreshQuery.createdAt).toBeTruthy();
       expect(appRefreshQuery.updatedAt).toBeTruthy();
       appRefreshQuery.destroy();
+    });
+
+    test("an app refresh query's recurring frequency must be > 6000", async () => {
+      const appRefreshQuery = new AppRefreshQuery({
+        appId: app.id,
+        refreshQuery: "SELECT MAX(updated_at) FROM users;",
+        recurringFrequency: 20,
+        state: "ready",
+      });
+
+      // expect(2 + 2).toBe(4);
+      await expect(appRefreshQuery.save()).rejects.toThrow(
+        /recurring frequency is required to be one minute or greater/
+      );
     });
 
     test("creating an app refresh query creates a log entry", async () => {

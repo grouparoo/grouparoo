@@ -1,11 +1,10 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { AppRefreshQuery } from "../../models/AppRefreshQuery";
-import { AppRefreshQueryOps } from "../../modules/ops/appRefreshQuery";
 
-export class AppRefreshQueryQuery extends CLSTask {
+export class AppRefreshQueryRun extends CLSTask {
   constructor() {
     super();
-    this.name = "appRefreshQuery:query";
+    this.name = "appRefreshQuery:run";
     this.description =
       "run a single appRefreshQuery and update values/trigger schedules if needed";
     this.frequency = 0;
@@ -25,7 +24,7 @@ export class AppRefreshQueryQuery extends CLSTask {
     if (!appRefreshQuery) return;
 
     //check the query value, update 'confirmedAt'
-    const sampleValue = await AppRefreshQueryOps.runAppQuery(appRefreshQuery);
+    const sampleValue = await appRefreshQuery.query();
     await appRefreshQuery.update({ lastConfirmedAt: new Date() });
 
     if (sampleValue !== appRefreshQuery.value) {
@@ -35,8 +34,8 @@ export class AppRefreshQueryQuery extends CLSTask {
         lastChangedAt: new Date(),
       });
 
-      //enqueue schedules
-      await AppRefreshQueryOps.triggerSchedules(appRefreshQuery);
+      //trigger enqueues for all related schedules
+      await appRefreshQuery.triggerSchedules();
     }
   }
 }

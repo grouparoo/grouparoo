@@ -114,7 +114,7 @@ import {
   AppRefreshQueryCreate,
   AppRefreshQueryDestroy,
   AppRefreshQueryEdit,
-  AppRefreshQueryQuery,
+  AppRefreshQueryRun,
   AppRefreshQueryTest,
   AppRefreshQueryView,
 } from "@grouparoo/core/src/actions/appRefreshQuery";
@@ -350,8 +350,8 @@ export namespace Actions {
     typeof AppRefreshQueryView.prototype.runWithinTransaction
   >;
 
-  export type AppRefreshQueryQuery = AsyncReturnType<
-    typeof AppRefreshQueryQuery.prototype.runWithinTransaction
+  export type AppRefreshQueryRun = AsyncReturnType<
+    typeof AppRefreshQueryRun.prototype.runWithinTransaction
   >;
   export type AppRefreshQueryTest = AsyncReturnType<
     typeof AppRefreshQueryTest.prototype.runWithinTransaction
