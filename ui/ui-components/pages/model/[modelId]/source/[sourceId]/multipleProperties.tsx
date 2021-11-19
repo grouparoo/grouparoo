@@ -71,6 +71,8 @@ export default function Page(props) {
     });
 
     let existingProperty: Models.PropertyType;
+    let otherProperties: Models.PropertyType[] = [];
+
     for (const property of properties) {
       if (property.sourceId !== source.id) continue;
       if (property.options[primaryOptionKey] !== column) continue;
@@ -93,6 +95,8 @@ export default function Page(props) {
       if (optMatch) {
         existingProperty = property;
         break;
+      } else {
+        otherProperties.push(property);
       }
     }
 
@@ -150,24 +154,25 @@ export default function Page(props) {
     }
 
     return (
-      <tr>
-        <td>
-          <Fragment>
-            {Object.keys(options)
-              .filter((opt) => !hiddenOptions.includes(opt))
-              .sort()
-              .map((opt) => (
-                <Form.Group as={Col} key={`opt-${column}-${opt}`}>
-                  <Form.Row>
-                    <Col md={3}>
-                      <code>
-                        <Form.Label>{opt}: </Form.Label>
-                      </code>
-                    </Col>
-                    <Col>
-                      <strong>{options[opt].toString()}</strong>
-                      {/* We actually don't want to allow changes to the provided source options? */}
-                      {/* <Form.Control
+      <>
+        <tr>
+          <td>
+            <Fragment>
+              {Object.keys(options)
+                .filter((opt) => !hiddenOptions.includes(opt))
+                .sort()
+                .map((opt) => (
+                  <Form.Group as={Col} key={`opt-${column}-${opt}`}>
+                    <Form.Row>
+                      <Col md={3}>
+                        <code>
+                          <Form.Label>{opt}: </Form.Label>
+                        </code>
+                      </Col>
+                      <Col>
+                        <strong>{options[opt].toString()}</strong>
+                        {/* We actually don't want to allow changes to the provided source options? */}
+                        {/* <Form.Control
                         size="sm"
                         type="text"
                         value={options[opt].toString()}
@@ -178,65 +183,85 @@ export default function Page(props) {
                           setOptions(_options);
                         }}
                       /> */}
-                    </Col>
-                  </Form.Row>
-                </Form.Group>
+                      </Col>
+                    </Form.Row>
+                  </Form.Group>
+                ))}
+            </Fragment>
+          </td>
+          <td>➡</td>
+          <td>
+            <Form.Control
+              size="sm"
+              type="text"
+              value={key}
+              onChange={(e) => setKey(e.target.value)}
+              disabled={disabled}
+            />
+          </td>
+          <td>
+            <Form.Control
+              size="sm"
+              as="select"
+              value={type}
+              onChange={(e) =>
+                setType(e.target.value as typeof existingProperty["type"])
+              }
+              disabled={disabled}
+            >
+              {types.map((v) => (
+                <option key={`types-opt-${v}`}>{v}</option>
               ))}
-          </Fragment>
-        </td>
-        <td>➡</td>
-        <td>
-          <Form.Control
-            size="sm"
-            type="text"
-            value={key}
-            onChange={(e) => setKey(e.target.value)}
-            disabled={disabled}
-          />
-        </td>
-        <td>
-          <Form.Control
-            size="sm"
-            as="select"
-            value={type}
-            onChange={(e) =>
-              setType(e.target.value as typeof existingProperty["type"])
-            }
-            disabled={disabled}
-          >
-            {types.map((v) => (
-              <option key={`types-opt-${v}`}>{v}</option>
-            ))}
-          </Form.Control>
-        </td>
-        <td>
-          <Form.Check
-            checked={unique}
-            onChange={(e) => setUnique(e.target.checked)}
-            disabled={disabled}
-          />
-        </td>
-
-        <td>
-          {existingProperty && existingProperty.sourceId === source.id ? (
-            <LinkButton
-              variant="outline-info"
-              size="sm"
-              href={`/model/${source.modelId}/property/${existingProperty.id}/edit`}
-            >
-              View
-            </LinkButton>
-          ) : (
-            <LoadingButton
-              size="sm"
-              disabled={loading}
-              onClick={() => createProperty()}
-            >
-              Create
-            </LoadingButton>
-          )}
-        </td>
-      </tr>
+            </Form.Control>
+          </td>
+          <td>
+            <Form.Check
+              checked={unique}
+              onChange={(e) => setUnique(e.target.checked)}
+              disabled={disabled}
+            />
+          </td>
+          <td>
+            {existingProperty && existingProperty.sourceId === source.id ? (
+              <LinkButton
+                variant="outline-info"
+                size="sm"
+                href={`/model/${source.modelId}/property/${existingProperty.id}/edit`}
+              >
+                View
+              </LinkButton>
+            ) : (
+              <LoadingButton
+                size="sm"
+                disabled={loading}
+                onClick={() => createProperty()}
+              >
+                Create
+              </LoadingButton>
+            )}
+          </td>
+        </tr>
+        {otherProperties.map((otherProperty) => (
+          <tr key={`otherProperty-${otherProperty.id}`}>
+            <td style={{ border: 0 }} />
+            <td style={{ border: 0 }}>➡</td>
+            <td style={{ border: 0 }}>
+              <strong>{otherProperty.key}</strong>
+            </td>
+            <td style={{ border: 0 }} />
+            <td style={{ border: 0 }} />
+            <td style={{ border: 0 }}>
+              <LinkButton
+                variant="outline-info"
+                size="sm"
+                href={`/model/${source.modelId}/property/${otherProperty.id}/edit`}
+              >
+                View
+              </LinkButton>
+            </td>
+          </tr>
+        ))}
+      </>
     );
   }
 
@@ -349,7 +374,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     "get",
     `/source/${sourceId}/defaultPropertyOptions`
   );
-  const { properties } = await execApi("get", `/properties`);
+  const { properties } = await execApi("get", `/properties`, { modelId });
   const { types } = await execApi("get", `/propertyOptions`);
 
   return {

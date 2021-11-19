@@ -66,7 +66,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { recordId, modelId } = ctx.query;
   const { record } = await execApi("get", `/record/${recordId}`);
   ensureMatchingModel("Record", record?.modelId, modelId.toString());
-  const { properties } = await execApi("get", `/properties`);
+  const { properties } = await execApi("get", `/properties`, { modelId });
   const importListInitialProps = await ImportList.hydrate(ctx);
   return { record, properties, ...importListInitialProps };
 };
