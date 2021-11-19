@@ -127,8 +127,7 @@ export class Plugins extends Initializer {
               displayName: "Private Key Passphrase",
               type: "password",
               required: false,
-              description:
-                "Does your private key requires a passphrase to use?",
+              description: "Does your private key require a passphrase to use?",
             },
             {
               key: "warehouse",
