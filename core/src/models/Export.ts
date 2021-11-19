@@ -179,7 +179,7 @@ export class Export extends CommonModel<Export> {
   @BelongsTo(() => GrouparooRecord)
   record: GrouparooRecord;
 
-  async setError(error: Error, retryDelay: number = config.tasks.timeout) {
+  async setError(error: Error, retryDelay?: number) {
     const maxExportAttempts = parseInt(
       (await plugin.readSetting("core", "exports-max-retries-count")).value
     );
