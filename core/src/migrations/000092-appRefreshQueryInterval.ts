@@ -8,7 +8,7 @@ export default {
     await queryInterface.addColumn("appRefreshQueries", "recurringFrequency", {
       type: DataTypes.BIGINT,
       allowNull: false,
-      defaultValue: 6000,
+      defaultValue: 60 * 1000,
     });
     await queryInterface.changeColumn(
       "appRefreshQueries",

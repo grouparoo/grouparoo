@@ -72,6 +72,7 @@ describe("actions/appRefreshQuery", () => {
       connection.params = {
         csrfToken,
         refreshQuery: "SELECT 'hi' AS name",
+        recurringFrequency: 90000,
         appId: app.id,
         type: "test-plugin-import",
       };
@@ -83,6 +84,7 @@ describe("actions/appRefreshQuery", () => {
       expect(error).toBeUndefined();
       expect(appRefreshQuery.id).toBeTruthy();
       expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hi' AS name");
+      expect(appRefreshQuery.recurringFrequency).toBe(90000);
       expect(configSpy).toBeCalledTimes(1);
 
       id = appRefreshQuery.id;
@@ -102,6 +104,7 @@ describe("actions/appRefreshQuery", () => {
         expect(error).toBeUndefined();
         expect(appRefreshQuery.id).toBeTruthy();
         expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hello' AS name");
+        expect(appRefreshQuery.recurringFrequency).toBe(90000);
         expect(appRefreshQuery.state).toBe("draft");
         expect(configSpy).toBeCalledTimes(1);
       });
@@ -134,6 +137,7 @@ describe("actions/appRefreshQuery", () => {
         expect(appRefreshQuery.id).toEqual(id);
         expect(appRefreshQuery.value.length).toBe(13);
         expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hello' AS name");
+        expect(appRefreshQuery.recurringFrequency).toBe(90000);
         expect(error).toBeFalsy();
       });
       test("an administrator can test an appRefreshQuery", async () => {
@@ -177,9 +181,10 @@ describe("actions/appRefreshQuery", () => {
         expect(appRefreshQuery.id).toBeTruthy();
         expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hello' AS name");
         expect(appRefreshQuery.value.length).toBe(13);
+        expect(appRefreshQuery.recurringFrequency).toBe(90000);
         expect(valueUpdated).toBeTruthy();
       });
-      test("running an appRefreshQuery will cancel any existing runs on the schedule(s)", async () => {
+      test("running appRefreshQuery:run will cancel any existing runs on the schedule(s)", async () => {
         await api.resque.queue.connection.redis.flushdb();
         await Run.truncate();
         const run = await Run.create({
