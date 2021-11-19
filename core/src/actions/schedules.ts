@@ -99,14 +99,13 @@ export class SchedulesRun extends AuthenticatedAction {
     this.inputs = {
       scheduleIds: { required: false, formatter: APIData.ensureObject },
       modelId: { required: false },
-      triggeredBy: { required: true, default: "API" },
     };
   }
 
   async runWithinTransaction({
     params,
   }: {
-    params: { scheduleIds?: string[]; modelId?: string; triggeredBy: string };
+    params: { scheduleIds?: string[]; modelId?: string };
   }) {
     const runs: Run[] = [];
 

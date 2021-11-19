@@ -49,7 +49,6 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
   @Column
   value: string;
 
-  @AllowNull(true)
   @Column
   locked: string;
 

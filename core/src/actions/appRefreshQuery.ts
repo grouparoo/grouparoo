@@ -52,6 +52,7 @@ export class AppRefreshQueryCreate extends AuthenticatedAction {
     this.inputs = {
       appId: { required: true },
       refreshQuery: { required: false },
+      recurringFrequency: { required: false },
       state: { required: false },
     };
   }
@@ -62,6 +63,10 @@ export class AppRefreshQueryCreate extends AuthenticatedAction {
     });
     if (params.refreshQuery)
       await appRefreshQuery.update({ refreshQuery: params.refreshQuery });
+    if (params.recurringFrequency)
+      await appRefreshQuery.update({
+        recurringFrequency: params.recurringFrequency,
+      });
     if (params.state) await appRefreshQuery.update({ state: params.state });
 
     await ConfigWriter.run();
