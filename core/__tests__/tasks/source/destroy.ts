@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
+import { Op } from "sequelize";
 import {
   App,
   GrouparooModel,
@@ -30,19 +31,33 @@ describe("tasks/source:destroy", () => {
   });
 
   afterEach(async () => {
+    const destinations = await Destination.scope(null).findAll({
+      where: { modelId: model.id },
+      order: [["createdAt", "DESC"]],
+    });
+
+    for (const destination of destinations) {
+      await destination.destroy();
+    }
+
     const sources = await Source.scope(null).findAll({
       where: { modelId: model.id },
       order: [["createdAt", "DESC"]],
     });
 
+    const properties = await Property.scope(null).findAll({
+      where: {
+        sourceId: { [Op.in]: sources.map(({ id }) => id) },
+        isPrimaryKey: false,
+      },
+      order: [["createdAt", "DESC"]],
+    });
+
+    for (const property of properties) {
+      await property.destroy();
+    }
+
     for (const source of sources) {
-      const properties = await Property.scope(null).findAll({
-        where: { sourceId: source.id, isPrimaryKey: false },
-        order: [["createdAt", "DESC"]],
-      });
-      for (const property of properties) {
-        await property.destroy();
-      }
       await source.destroy();
     }
   });

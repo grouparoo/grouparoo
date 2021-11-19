@@ -434,19 +434,33 @@ describe("models/source", () => {
     });
 
     afterEach(async () => {
+      const destinations = await Destination.scope(null).findAll({
+        where: { modelId: model.id },
+        order: [["createdAt", "DESC"]],
+      });
+
+      for (const destination of destinations) {
+        await destination.destroy();
+      }
+
       const sources = await Source.scope(null).findAll({
         where: { modelId: model.id },
         order: [["createdAt", "DESC"]],
       });
 
+      const properties = await Property.scope(null).findAll({
+        where: {
+          sourceId: { [Op.in]: sources.map(({ id }) => id) },
+          isPrimaryKey: false,
+        },
+        order: [["createdAt", "DESC"]],
+      });
+
+      for (const property of properties) {
+        await property.destroy();
+      }
+
       for (const source of sources) {
-        const properties = await Property.scope(null).findAll({
-          where: { sourceId: source.id, isPrimaryKey: false },
-          order: [["createdAt", "DESC"]],
-        });
-        for (const property of properties) {
-          await property.destroy();
-        }
         await source.destroy();
       }
     });
@@ -470,9 +484,6 @@ describe("models/source", () => {
       await destination.setMapping({ "primary-id": "myUserId" });
 
       await expect(source.destroy()).rejects.toThrow(/cannot delete property/);
-
-      await destination.destroy();
-      await source.destroy();
     });
 
     test("destroying a source deleted its primary key property", async () => {
