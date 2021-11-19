@@ -123,6 +123,13 @@ export class Plugins extends Initializer {
                 "The Private Key used to connect to your warehouse.  Likely generated as rsa_key.p8, e.g. -----BEGIN PRIVATE KEY-----\nMII ...",
             },
             {
+              key: "private_key_passphrase",
+              displayName: "Private Key Passphrase",
+              type: "password",
+              required: false,
+              description: "Does your private key require a passphrase to use?",
+            },
+            {
               key: "warehouse",
               displayName: "Warehouse",
               required: true,

@@ -31,9 +31,22 @@ export function getSalesforceModel(
   };
 
   const modelKeys = Object.keys(model);
-  const refKeys = modelKeys.filter((k) => k.indexOf("Reference") > 0);
+  const refKeys = [
+    "recordReferenceField",
+    "recordReferenceObject",
+    "recordReferenceMatchField",
+  ];
+  const groupKeys = [
+    "groupObject",
+    "groupNameField",
+    "membershipObject",
+    "membershipRecordField",
+    "membershipGroupField",
+  ];
   // refKeys are optional
-  const requiredKeys = modelKeys.filter((k) => !refKeys.includes(k));
+  const requiredKeys = modelKeys.filter(
+    (k) => !refKeys.includes(k) && !groupKeys.includes(k)
+  );
 
   const destKeys = Object.keys(destinationOptions);
   for (const key of modelKeys) {
@@ -47,10 +60,15 @@ export function getSalesforceModel(
       throw new Error(`Missing Salesforce model data: ${key}`);
     }
   }
+  checkModelIntegrity(model, refKeys, "Reference");
+  checkModelIntegrity(model, groupKeys, "Group");
+  return model;
+}
 
-  // needs either zero or all refKeys
+function checkModelIntegrity(model, keys, type) {
+  // needs either zero or all keys
   let count = 0;
-  for (const key of refKeys) {
+  for (const key of keys) {
     const value = (model[key] || "").toString().trim();
     if (value.length > 0) {
       model[key] = value;
@@ -60,10 +78,10 @@ export function getSalesforceModel(
     }
   }
   if (count > 0) {
-    if (refKeys.length !== count) {
-      throw new Error(`All Salesforce reference model data is required`);
+    if (keys.length !== count) {
+      throw new Error(
+        `To enable ${type} data syncing, all related options must be set.`
+      );
     }
   }
-
-  return model;
 }
