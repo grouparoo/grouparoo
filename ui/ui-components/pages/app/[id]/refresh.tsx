@@ -109,7 +109,7 @@ export default function Page(props) {
       try {
         const response: Actions.AppRefreshQueryRun = await execApi(
           "post",
-          `/appRefreshQuery/${appRefreshQuery.id}/query`
+          `/appRefreshQuery/${appRefreshQuery.id}/run`
         );
         if (response?.valueUpdated == true) {
           successHandler.set({
