@@ -387,6 +387,8 @@ describe("models/source", () => {
         where: { ownerId: source.id },
       });
       expect(optionsCount).toBe(0);
+
+      await model.destroy();
     });
 
     test("deleting a schedule does not delete options for other models with the same id", async () => {
