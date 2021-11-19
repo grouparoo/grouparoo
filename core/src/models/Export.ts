@@ -187,7 +187,7 @@ export class Export extends CommonModel<Export> {
     this.errorMessage = error.message || error.toString();
     if (error["errorLevel"]) this.errorLevel = error["errorLevel"];
 
-    this.retryCount++;
+    if (!retryDelay) this.retryCount++;
 
     if (this.retryCount >= maxExportAttempts) {
       this.state = "failed";
@@ -197,7 +197,9 @@ export class Export extends CommonModel<Export> {
     } else {
       this.state = "pending";
       this.exportProcessorId = null;
-      this.sendAt = Moment().add(retryDelay, "ms").toDate();
+      this.sendAt = Moment()
+        .add(retryDelay ?? config.tasks.timeout, "ms")
+        .toDate();
       this.startedAt = null;
     }
 

@@ -77,33 +77,30 @@ export default function ExportsList(props) {
   }
 
   function getErrorRow(_export: Models.ExportType) {
-    if (!_export.errorMessage) {
-      return null;
-    }
+    if (!_export.errorMessage) return null;
+
+    const delayMessage =
+      ["pending", "processing"].includes(_export.state) &&
+      _export.sendAt > new Date().getTime()
+        ? `Export will be retried after ${formatTimestamp(_export.sendAt)}`
+        : null;
 
     let level = "warning";
-    if (_export.errorLevel === "info") {
+    if (_export.errorLevel === "info" || delayMessage) {
       level = "info";
     }
-    return (
-      <tr>
-        <td colSpan={7} style={{ border: 0 }}>
-          <Alert variant={level}>{_export.errorMessage}</Alert>
-        </td>
-      </tr>
-    );
-  }
-
-  function getExportDelayRow(_export: Models.ExportType) {
-    if (!_export.sendAt || _export.sendAt <= new Date().getTime()) {
-      return null;
-    }
 
     return (
       <tr>
         <td colSpan={7} style={{ border: 0 }}>
-          <Alert variant={"info"}>
-            Export delayed until {formatTimestamp(_export.sendAt)}
+          <Alert variant={level}>
+            {_export.errorMessage}
+            {delayMessage ? (
+              <>
+                <br />
+                <small>{delayMessage}</small>
+              </>
+            ) : null}
           </Alert>
         </td>
       </tr>
@@ -257,7 +254,6 @@ export default function ExportsList(props) {
                 </tr>
 
                 {getErrorRow(_export)}
-                {getExportDelayRow(_export)}
               </Fragment>
             );
           })}
