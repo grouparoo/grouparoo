@@ -37,7 +37,9 @@ export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMe
     const referenceInfo = recordReferenceField
       ? await describeObject(conn, cacheData, recordReferenceObject, true)
       : null;
-    const groupInfo = await describeObject(conn, cacheData, groupObject, true);
+    const groupInfo = groupObject
+      ? await describeObject(conn, cacheData, groupObject, true)
+      : null;
     const { known, required } = getFields(
       recordInfo,
       recordMatchField,
@@ -52,10 +54,12 @@ export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMe
           singular: `Salesforce ${recordInfo.label || recordObject} Field`,
           plural: `Salesforce ${recordInfo.label || recordObject} Fields`,
         },
-        group: {
-          singular: `Salesforce ${groupInfo.label || groupObject}`,
-          plural: `Salesforce ${groupInfo.labelPlural || groupObject}`,
-        },
+        group: groupInfo
+          ? {
+              singular: `Salesforce ${groupInfo.label || groupObject}`,
+              plural: `Salesforce ${groupInfo.labelPlural || groupObject}`,
+            }
+          : undefined,
       },
       properties: {
         required,

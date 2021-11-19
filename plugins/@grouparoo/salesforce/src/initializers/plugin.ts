@@ -100,35 +100,35 @@ export class Plugins extends Initializer {
             {
               key: "groupObject",
               displayName: "Group Object",
-              required: true,
+              required: false,
               description:
                 "Which object in Salesforce represents a Grouparoo group?",
             },
             {
               key: "groupNameField",
               displayName: "Group Name Field",
-              required: true,
+              required: false,
               description:
                 "Which field in the group Object is used for the name of a Grouparoo group?",
             },
             {
               key: "membershipObject",
               displayName: "Membership Object",
-              required: true,
+              required: false,
               description:
                 "Which object in Salesforce maps the record object to the group object?",
             },
             {
               key: "membershipRecordField",
               displayName: "Membership Record Field",
-              required: true,
+              required: false,
               description:
                 "Which field in the membership Object is the reference to the record?",
             },
             {
               key: "membershipGroupField",
               displayName: "Membership Group Field",
-              required: true,
+              required: false,
               description:
                 "Which field in the membership Object is the reference to the group?",
             },
