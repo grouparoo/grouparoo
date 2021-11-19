@@ -94,7 +94,6 @@ export default function Page(props) {
 
       if (optMatch) {
         existingProperty = property;
-        break;
       } else {
         otherProperties.push(property);
       }
