@@ -291,102 +291,6 @@ describe("models/source", () => {
       await source.destroy();
     });
 
-    describe("primary key validations", () => {
-      let model: GrouparooModel;
-
-      beforeAll(async () => {
-        model = await helper.factories.model({
-          name: "PrimaryKey_Profiles",
-        });
-      });
-
-      afterEach(async () => {
-        const sources = await Source.scope(null).findAll({
-          where: { modelId: model.id },
-          order: [["createdAt", "DESC"]],
-        });
-
-        for (const source of sources) {
-          const properties = await Property.scope(null).findAll({
-            where: { sourceId: source.id, isPrimaryKey: false },
-            order: [["createdAt", "DESC"]],
-          });
-          for (const property of properties) {
-            await property.destroy();
-          }
-          await source.destroy();
-        }
-      });
-
-      afterAll(async () => {
-        await model.destroy();
-      });
-
-      test("a source with a primary key property that's being used cannot be destroyed", async () => {
-        const source = await helper.factories.source(app, {
-          modelId: model.id,
-        });
-        await source.bootstrapUniqueProperty("myUserId", "integer", "id");
-        await source.setOptions({ table: "some table" });
-        await source.setMapping({ id: "myUserId" });
-        await source.update({ state: "ready" });
-
-        const destination: Destination = await helper.factories.destination(
-          app,
-          {
-            modelId: model.id,
-          }
-        );
-        await destination.setMapping({ "primary-id": "myUserId" });
-
-        await expect(source.destroy()).rejects.toThrow(
-          /cannot delete property/
-        );
-
-        await destination.destroy();
-        await source.destroy();
-      });
-
-      test("destroying a source deleted its primary key property", async () => {
-        const source = await helper.factories.source(app, {
-          modelId: model.id,
-        });
-        await source.bootstrapUniqueProperty("myUserId", "integer", "id");
-        await source.setOptions({ table: "some table" });
-        await source.setMapping({ id: "myUserId" });
-        await source.update({ state: "ready" });
-
-        await source.destroy();
-        const primaryKeyPropertyCount = await Property.count({
-          where: { sourceId: source.id, isPrimaryKey: true },
-        });
-        expect(primaryKeyPropertyCount).toBe(0);
-      });
-
-      test("destroying a source mapped to a primary key of another source does not delete the primary key property", async () => {
-        const sourceWithPK = await helper.factories.source(app, {
-          modelId: model.id,
-        });
-        await sourceWithPK.bootstrapUniqueProperty("myUserId", "integer", "id");
-        await sourceWithPK.setOptions({ table: "some table" });
-        await sourceWithPK.setMapping({ id: "myUserId" });
-        await sourceWithPK.update({ state: "ready" });
-
-        const source = await helper.factories.source(app, {
-          modelId: model.id,
-        });
-        await source.setOptions({ table: "some table 2" });
-        await source.setMapping({ id: "myUserId" });
-        await source.update({ state: "ready" });
-
-        await source.destroy();
-        const primaryKeyPropertyCount = await Property.count({
-          where: { sourceId: sourceWithPK.id, isPrimaryKey: true },
-        });
-        expect(primaryKeyPropertyCount).toBe(1);
-      });
-    });
-
     test("__options only includes options for sources", async () => {
       const source = await Source.create({
         id: "mySourceId",
@@ -517,6 +421,97 @@ describe("models/source", () => {
       expect(options[0].key).toBe("someKey");
 
       await foreignOption.destroy();
+    });
+  });
+
+  describe("validations: primary key", () => {
+    let model: GrouparooModel;
+
+    beforeAll(async () => {
+      model = await helper.factories.model({
+        name: "PrimaryKey_Profiles",
+      });
+    });
+
+    afterEach(async () => {
+      const sources = await Source.scope(null).findAll({
+        where: { modelId: model.id },
+        order: [["createdAt", "DESC"]],
+      });
+
+      for (const source of sources) {
+        const properties = await Property.scope(null).findAll({
+          where: { sourceId: source.id, isPrimaryKey: false },
+          order: [["createdAt", "DESC"]],
+        });
+        for (const property of properties) {
+          await property.destroy();
+        }
+        await source.destroy();
+      }
+    });
+
+    afterAll(async () => {
+      await model.destroy();
+    });
+
+    test("a source with a primary key property that's being used cannot be destroyed", async () => {
+      const source = await helper.factories.source(app, {
+        modelId: model.id,
+      });
+      await source.bootstrapUniqueProperty("myUserId", "integer", "id");
+      await source.setOptions({ table: "some table" });
+      await source.setMapping({ id: "myUserId" });
+      await source.update({ state: "ready" });
+
+      const destination: Destination = await helper.factories.destination(app, {
+        modelId: model.id,
+      });
+      await destination.setMapping({ "primary-id": "myUserId" });
+
+      await expect(source.destroy()).rejects.toThrow(/cannot delete property/);
+
+      await destination.destroy();
+      await source.destroy();
+    });
+
+    test("destroying a source deleted its primary key property", async () => {
+      const source = await helper.factories.source(app, {
+        modelId: model.id,
+      });
+      await source.bootstrapUniqueProperty("myUserId", "integer", "id");
+      await source.setOptions({ table: "some table" });
+      await source.setMapping({ id: "myUserId" });
+      await source.update({ state: "ready" });
+
+      await source.destroy();
+      const primaryKeyPropertyCount = await Property.count({
+        where: { sourceId: source.id, isPrimaryKey: true },
+      });
+      expect(primaryKeyPropertyCount).toBe(0);
+    });
+
+    test("destroying a source mapped to a primary key of another source does not delete the primary key property", async () => {
+      const sourceWithPK = await helper.factories.source(app, {
+        modelId: model.id,
+      });
+      await sourceWithPK.bootstrapUniqueProperty("myUserId", "integer", "id");
+      await sourceWithPK.setOptions({ table: "some table" });
+      await sourceWithPK.setMapping({ id: "myUserId" });
+      await sourceWithPK.update({ state: "ready" });
+
+      const source = await helper.factories.source(app, {
+        modelId: model.id,
+      });
+      await source.setOptions({ table: "some table 2" });
+      await source.setMapping({ id: "myUserId" });
+      await source.update({ state: "ready" });
+
+      await source.destroy();
+      const primaryKeyPropertyCount = await Property.count({
+        where: { sourceId: sourceWithPK.id, isPrimaryKey: true },
+      });
+      expect(primaryKeyPropertyCount).toBe(1);
     });
   });
 
