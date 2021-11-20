@@ -47,6 +47,8 @@ export async function packageConfig(
   return tarballPath;
 }
 
+const maxAttempts = 5;
+
 export interface ConfigurationApiData {
   id: string;
   state: string;
@@ -87,19 +89,25 @@ export class CloudClient {
       process.env.GROUPAROO_CLOUD_API_URL ?? "https://cloud.grouparoo.com";
   }
 
-  async request(url: string, options?: RequestInit) {
+  async request(url: string, options?: RequestInit, attempts = 0) {
     const fetchUrl = new URL(url, this.baseUrl);
     fetchUrl.searchParams.append("apiToken", this.token);
 
-    const res = await fetch(fetchUrl.toString(), options);
-    const data = await res.json();
+    try {
+      const res = await fetch(fetchUrl.toString(), options);
+      const data = await res.json();
 
-    if (res.status !== 200) {
-      if (data.error) throw new CloudError(data.error);
-      throw new Error(await res.text());
+      if (res.status !== 200) {
+        if (data.error) throw new CloudError(data.error);
+        throw new Error(await res.text());
+      }
+
+      return data;
+    } catch (error) {
+      if (error.toString().match("ETIMEDOUT") && attempts < maxAttempts) {
+        return this.request(url, options, attempts + 1);
+      } else throw error;
     }
-
-    return data;
   }
 
   async createConfiguration(
