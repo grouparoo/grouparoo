@@ -493,7 +493,9 @@ export class Property extends LoggedModel<Property> {
 
   @BeforeSave
   static async validateReservedKeys(instance: Property) {
-    const reservedKeys = TopLevelGroupRules.map((tlgr) => tlgr.key);
+    const reservedKeys = ["_meta"].concat(
+      TopLevelGroupRules.map((tlgr) => tlgr.key)
+    );
     if (reservedKeys.includes(instance.key)) {
       throw new Error(
         `${instance.key} is a reserved key and cannot be used as a property`

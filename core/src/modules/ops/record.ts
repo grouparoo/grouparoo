@@ -303,7 +303,7 @@ export namespace RecordOps {
 
         const keys = Object.keys(recordProperties[recordOffset]);
         checkKeys: for (const key of keys) {
-          if (key === "id") continue checkKeys;
+          // this special, internal-ony key is used to send extra information though an Import.  `_meta` is prevented from being a valid Property key
           if (key === "_meta") continue checkKeys;
 
           const h: { [key: string]: Array<string | number | boolean | Date> } =
