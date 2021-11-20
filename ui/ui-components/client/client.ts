@@ -88,6 +88,15 @@ export class Client {
           res.end();
         }
       }
+    } else if (code === "NO_TEAMS_ERROR") {
+      if (isBrowser()) {
+        window.location.href = `/`;
+      } else {
+        if (req && res) {
+          res.writeHead(302, { Location: `/` });
+          res.end();
+        }
+      }
     } else if (code === "AUTHORIZATION_ERROR") {
       // ok, it will be rendered on the page
     }
