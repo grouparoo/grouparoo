@@ -164,7 +164,7 @@ describe("models/property", () => {
     });
 
     test("keys cannot be from the reserved list of keys", async () => {
-      const reservedKeys = ["grouparooId", "grouparooCreatedAt"];
+      const reservedKeys = ["grouparooId", "grouparooCreatedAt", "_meta"];
       for (const i in reservedKeys) {
         const key = reservedKeys[i];
         await expect(
@@ -175,6 +175,15 @@ describe("models/property", () => {
           })
         ).rejects.toThrow(/is a reserved key and cannot be used/);
       }
+    });
+
+    test("`id` is a valid property key", async () => {
+      const property = await Property.create({
+        sourceId: source.id,
+        type: "string",
+        key: "id",
+      }); // does not throw
+      await property.destroy();
     });
 
     test("a property can be isArray", async () => {

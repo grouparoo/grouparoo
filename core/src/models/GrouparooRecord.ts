@@ -242,7 +242,13 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
       }
     }
 
-    if (!modelId) {
+    if (!modelId) return;
+    if (
+      Object.keys(directlyMappedProps).length === 0 ||
+      Object.values(directlyMappedProps)
+        .flat()
+        .filter((v) => v !== undefined && v !== null).length === 0
+    ) {
       return;
     }
 

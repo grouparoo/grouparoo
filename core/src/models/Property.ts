@@ -336,7 +336,7 @@ export class Property extends LoggedModel<Property> {
     }
 
     CachedProperties.properties = await Property.findAll({
-      include: [{ model: Source, required: false }],
+      include: [{ model: Source.unscoped(), required: false }],
     });
     CachedProperties.expires = now + CACHE_TTL;
     return modelId
@@ -353,7 +353,7 @@ export class Property extends LoggedModel<Property> {
     if (!property) {
       property = await Property.findOne({
         where: { [key]: value },
-        include: [{ model: Source, required: false }],
+        include: [{ model: Source.unscoped(), required: false }],
       });
       if (!property) await Property.invalidateCache();
     }
@@ -493,7 +493,9 @@ export class Property extends LoggedModel<Property> {
 
   @BeforeSave
   static async validateReservedKeys(instance: Property) {
-    const reservedKeys = TopLevelGroupRules.map((tlgr) => tlgr.key);
+    const reservedKeys = ["_meta"].concat(
+      TopLevelGroupRules.map((tlgr) => tlgr.key)
+    );
     if (reservedKeys.includes(instance.key)) {
       throw new Error(
         `${instance.key} is a reserved key and cannot be used as a property`

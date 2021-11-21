@@ -52,7 +52,15 @@ async function authenticateTeamMemberFromSession(
       const session = await api.session.load(data.connection);
       if (!session && optional) return;
       if (!session || !session.id) {
-        throw new Errors.AuthenticationError("Please log in to continue");
+        const teamsCount = await Team.count();
+        if (teamsCount === 0) {
+          throw new Errors.AuthenticationError(
+            "Please create the first team",
+            "NO_TEAMS_ERROR"
+          );
+        } else {
+          throw new Errors.AuthenticationError("Please log in to continue");
+        }
       } else if (
         (data.params.csrfToken && data.params.csrfToken !== session.id) ||
         (!data.params.csrfToken &&

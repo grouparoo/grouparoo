@@ -26,6 +26,7 @@ export class SentryInitializer extends Initializer {
       // skip reporting some types of errors
       if (error?.code === "AUTHENTICATION_ERROR") return null;
       if (error?.code === "AUTHORIZATION_ERROR") return null;
+      if (error?.code === "NO_TEAMS_ERROR") return null;
 
       return event;
     }
