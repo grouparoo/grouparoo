@@ -19,6 +19,7 @@ import { formatSchedule } from "../../../utils/formatSchedule";
 import { IconProp, SizeProp } from "@fortawesome/fontawesome-svg-core";
 import { Group } from "@grouparoo/core";
 import StateBadge from "../../../components/badges/StateBadge";
+import { useMemo } from "react";
 
 interface SourceOrDestinationItemContainerProps {
   app: Models.AppType;
@@ -196,6 +197,58 @@ const ModelGroupOverview: React.FC<{ groups: Models.GroupType[] }> = ({
   );
 };
 
+const ScheduleItem: React.FC<{
+  schedule: Models.ScheduleType;
+  source?: Models.SourceType;
+}> = ({ schedule, source }) => {
+  return (
+    <div>
+      <div>
+        {schedule.name} <StateBadge state={schedule.state} />
+      </div>
+      <div>Source: {(source && source.name) || "Unknown"}</div>
+      <div>Schedule: {formatSchedule(schedule)}</div>
+    </div>
+  );
+};
+
+const ModelSchedulesOverview: React.FC<{
+  schedules: Models.ScheduleType[];
+  sources?: Models.SourceType[];
+}> = ({ schedules, sources }) => {
+  const sourcesById = useMemo<Record<string, Models.SourceType>>(() => {
+    const result: Record<string, Models.SourceType> = {};
+
+    if (!sources) return result;
+
+    return sources.reduce((acc, source) => {
+      acc[source.id] = source;
+      return acc;
+    }, result);
+  }, [sources]);
+
+  return (
+    <SectionContainer
+      title="Schedules"
+      icon="sync-alt"
+      description="Checks for new data from your Sources."
+    >
+      {schedules.length > 0 && (
+        <ListGroup className="list-group-flush">
+          {schedules.map((group, index) => (
+            <ListGroupItem key={index}>
+              <ScheduleItem
+                schedule={group}
+                source={sourcesById[group.sourceId]}
+              />
+            </ListGroupItem>
+          ))}
+        </ListGroup>
+      )}
+    </SectionContainer>
+  );
+};
+
 interface ModelOverviewDestinationsProps {
   destinations?: Models.DestinationType[];
 }
@@ -241,6 +294,7 @@ interface Props {
   primarySource?: Models.SourceType;
   secondarySources: Models.SourceType[];
   groups: Models.GroupType[];
+  schedules: Models.ScheduleType[];
   destinations?: Models.DestinationType[];
 }
 
@@ -249,9 +303,14 @@ const Page: NextPage<Props> = ({
   primarySource,
   secondarySources,
   groups,
+  schedules,
   destinations,
 }) => {
-  console.log("groups", groups);
+  const sources = useMemo(
+    () => [primarySource, ...secondarySources],
+    [primarySource, secondarySources]
+  );
+
   return (
     <>
       <Head>
@@ -282,6 +341,13 @@ const Page: NextPage<Props> = ({
 
                 <ListGroupItem>
                   <ModelGroupOverview groups={groups} />
+                </ListGroupItem>
+
+                <ListGroupItem>
+                  <ModelSchedulesOverview
+                    schedules={schedules}
+                    sources={sources}
+                  />
                 </ListGroupItem>
               </ListGroup>
             </ModelOverviewCard>
@@ -338,6 +404,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     modelId,
   });
 
+  const { schedules } = await execApi<Actions.SchedulesList>(
+    "get",
+    `/schedules`,
+    {
+      modelId,
+      limit,
+      offset,
+    }
+  );
+
   const primaryKeyProperty = properties.find((p) => p.isPrimaryKey);
   const primarySource = primaryKeyProperty
     ? sources.find(({ id }) => id === primaryKeyProperty.sourceId)
@@ -359,6 +435,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
       primarySource,
       secondarySources,
       groups,
+      schedules,
       destinations,
     },
   };
