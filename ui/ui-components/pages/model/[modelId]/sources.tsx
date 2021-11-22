@@ -17,6 +17,7 @@ import { ErrorHandler } from "../../../utils/errorHandler";
 import LoadingButton from "../../../components/LoadingButton";
 import LinkButton from "../../../components/LinkButton";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
+import { formatSchedule } from "../../../utils/formatSchedule";
 
 export default function Page(props) {
   const {
@@ -129,9 +130,6 @@ export default function Page(props) {
         <tbody>
           {sources.map((source) => {
             const schedule = source.schedule;
-            const recurringFrequencyMinutes = schedule?.recurringFrequency
-              ? schedule.recurringFrequency / (60 * 1000)
-              : null;
             const run = runs[source.id];
 
             return (
@@ -171,10 +169,7 @@ export default function Page(props) {
                   <td>
                     {schedule ? (
                       <>
-                        Frequency:{" "}
-                        {schedule.recurring
-                          ? `Every ${recurringFrequencyMinutes} minutes`
-                          : "Not recurring"}
+                        Frequency: {formatSchedule(schedule)}
                         {grouparooUiEdition() !== "config" && (
                           <>
                             <br />
