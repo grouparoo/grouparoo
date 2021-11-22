@@ -18,6 +18,7 @@ import { ErrorHandler } from "../../../utils/errorHandler";
 import LinkButton from "../../../components/LinkButton";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 import { formatName } from "../../../utils/formatName";
+import DestinationCollectionLink from "../../../components/destination/DestinationCollectionLink";
 
 export default function Page(props) {
   const {
@@ -108,7 +109,7 @@ export default function Page(props) {
                 </td>
                 <td>{destination.connection.displayName}</td>
                 <td>
-                  <CollectionDisplay destination={destination} />
+                  <DestinationCollectionLink destination={destination} />
                 </td>
                 <td>
                   <EnterpriseLink href={`/app/${destination.app.id}/edit`}>
@@ -200,34 +201,6 @@ const AppDisplay = ({
           {formattedName}
         </EnterpriseLink>
       );
-    }
-  }
-};
-
-const CollectionDisplay = ({
-  destination,
-}: {
-  destination: Models.DestinationType;
-}) => {
-  switch (destination.collection) {
-    case "group": {
-      return (
-        <EnterpriseLink
-          href={`/model/${destination.group.modelId}/group/${destination.group.id}/edit`}
-        >
-          <a>{destination.group.name}</a>
-        </EnterpriseLink>
-      );
-    }
-    case "model": {
-      return (
-        <EnterpriseLink href={`/model/${destination.modelId}/edit`}>
-          <a>{destination.modelName}</a>
-        </EnterpriseLink>
-      );
-    }
-    default: {
-      return <>None</>;
     }
   }
 };

@@ -1,5 +1,6 @@
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
+import DestinationCollectionLink from "../../destination/DestinationCollectionLink";
 import EntitySummaryContainer from "./EntitySummaryContainer";
 import EntitySummaryHeading from "./EntitySummaryHeading";
 
@@ -13,7 +14,10 @@ const DestinationSummary: React.FC<{ destination: Models.DestinationType }> = ({
       <EntitySummaryHeading entity={destination} />
       <div>{connection?.displayName}</div>
       <div>Pending Exports: {exportTotals.pending}</div>
-      <div>Syncing: TODO</div>
+      <div>
+        Collection Tracked:{" "}
+        <DestinationCollectionLink destination={destination} />
+      </div>
     </EntitySummaryContainer>
   );
 };
