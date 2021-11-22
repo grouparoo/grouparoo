@@ -11,24 +11,30 @@ import {
   Media,
   Row,
 } from "react-bootstrap";
+import PageHeader from "../../../components/PageHeader";
 import AppIcon from "../../../components/AppIcon";
 import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
 import { formatSchedule } from "../../../utils/formatSchedule";
+import { IconProp, SizeProp } from "@fortawesome/fontawesome-svg-core";
+import { Group } from "@grouparoo/core";
+import StateBadge from "../../../components/badges/StateBadge";
 
 interface SourceOrDestinationItemContainerProps {
   app: Models.AppType;
 }
 
-const SourceOrDestinationItemContainer: React.FC<SourceOrDestinationItemContainerProps> =
-  ({ app, children }) => {
-    return (
-      <Media>
-        <AppIcon src={app.icon} size={50} className="mr-3" />
-        <Media.Body>{children}</Media.Body>
-      </Media>
-    );
-  };
+const ItemContainer: React.FC<SourceOrDestinationItemContainerProps> = ({
+  app,
+  children,
+}) => {
+  return (
+    <Media>
+      <AppIcon src={app.icon} size={50} className="mr-3" />
+      <Media.Body>{children}</Media.Body>
+    </Media>
+  );
+};
 
 const renderMapping = (mapping: Record<string, string>): React.ReactNode => {
   const keys = Object.keys(mapping);
@@ -43,12 +49,12 @@ const SourceItem: React.FC<{
   const { name, app, connection, schedule, mapping } = item;
 
   return (
-    <SourceOrDestinationItemContainer app={app}>
+    <ItemContainer app={app}>
       <div>{name}</div>
       <div>{connection?.displayName}</div>
       {isPrimarySource && <div>Primary Key: {renderMapping(mapping)}</div>}
       <div>Schedule: {formatSchedule(schedule)}</div>
-    </SourceOrDestinationItemContainer>
+    </ItemContainer>
   );
 };
 
@@ -58,86 +64,137 @@ const DestinationItem: React.FC<{ item: Models.DestinationType }> = ({
   const { name, app, connection, exportTotals } = item;
 
   return (
-    <SourceOrDestinationItemContainer app={app}>
+    <ItemContainer app={app}>
       <div>{name}</div>
       <div>{connection?.displayName}</div>
       <div>Pending Exports: {exportTotals.pending}</div>
       <div>Syncing: TODO</div>
-    </SourceOrDestinationItemContainer>
+    </ItemContainer>
   );
 };
 
-interface ModelOverviewSourcesProps {
-  primarySource?: Models.SourceType;
-  secondarySources: Models.SourceType[];
+interface SectionContainerProps {
+  title: string;
+  description: string;
+  icon: IconProp;
+  iconSize?: SizeProp;
+  iconMarginRight?: number;
 }
 
-const ModelOverviewData: React.FC<ModelOverviewSourcesProps> = ({
-  primarySource,
-  secondarySources,
+const SectionContainer: React.FC<SectionContainerProps> = ({
+  title,
+  icon,
+  iconSize = "3x",
+  iconMarginRight = 3,
+  description,
+  children,
 }) => {
   return (
-    <>
-      <ListGroup className="list-group-flush">
-        <ListGroupItem>
-          <Media>
-            <FontAwesomeIcon icon="file-import" size="3x" className="mr-3" />
-            <Media.Body>
-              <h6>Primary Source</h6>
-              <p>
-                The primary source defines the core properties and primary key
-                for your records.
-              </p>
-              <p>
-                <Button variant="outline-primary" size="sm">
-                  Learn more
-                </Button>{" "}
-                <Button variant="primary" size="sm">
-                  Add primary source
-                </Button>
-              </p>
-              {primarySource && (
-                <ListGroup className="list-group-flush">
-                  <ListGroupItem>
-                    <SourceItem item={primarySource} isPrimarySource />
-                  </ListGroupItem>
-                </ListGroup>
-              )}
-            </Media.Body>
-          </Media>
-        </ListGroupItem>
-        <ListGroupItem>
-          <Media>
-            <FontAwesomeIcon icon="file-import" size="2x" className="mr-4" />
-            <Media.Body>
-              <h6>Secondary Sources</h6>
-              <p>
-                Secondary sources can be used to enrich your records with
-                additional data.
-              </p>
-              <p>
-                <Button variant="outline-primary" size="sm">
-                  Add secondary source
-                </Button>
-              </p>
-              {secondarySources.length > 0 && (
-                <ListGroup className="list-group-flush">
-                  {secondarySources.map((source, index) => (
-                    <ListGroupItem key={index}>
-                      <SourceItem item={source} />
-                    </ListGroupItem>
-                  ))}
-                </ListGroup>
-              )}
-            </Media.Body>
-          </Media>
-        </ListGroupItem>
-      </ListGroup>
-    </>
+    <Media>
+      <FontAwesomeIcon
+        icon={icon}
+        size={iconSize}
+        className={`mr-${iconMarginRight}`}
+      />
+      <Media.Body>
+        <h6>{title}</h6>
+        <p>{description}</p>
+        {children}
+      </Media.Body>
+    </Media>
   );
 };
 
-const ModelOverviewSampleRecord: React.FC = () => <>TODO: Sample Records</>;
+const PrimarySourceOverview: React.FC<{ source: Models.SourceType }> = ({
+  source,
+}) => {
+  return (
+    <SectionContainer
+      title="Primary Source"
+      icon="file-import"
+      description="The primary source defines the core properties and primary key for your records."
+    >
+      <p>
+        <Button variant="outline-primary" size="sm">
+          Learn more
+        </Button>{" "}
+        <Button variant="primary" size="sm">
+          Add primary source
+        </Button>
+      </p>
+      {source && (
+        <ListGroup className="list-group-flush">
+          <ListGroupItem>
+            <SourceItem item={source} isPrimarySource />
+          </ListGroupItem>
+        </ListGroup>
+      )}
+    </SectionContainer>
+  );
+};
+
+const SecondarySourcesOverview: React.FC<{ sources: Models.SourceType[] }> = ({
+  sources,
+}) => {
+  return (
+    <SectionContainer
+      title="Secondary Sources"
+      icon="file-import"
+      description="Secondary sources can be used to enrich your records with additional data."
+      iconSize="2x"
+      iconMarginRight={4}
+    >
+      <p>
+        <Button variant="outline-primary" size="sm">
+          Add secondary source
+        </Button>
+      </p>
+      {sources.length > 0 && (
+        <ListGroup className="list-group-flush">
+          {sources.map((source, index) => (
+            <ListGroupItem key={index}>
+              <SourceItem item={source} />
+            </ListGroupItem>
+          ))}
+        </ListGroup>
+      )}
+    </SectionContainer>
+  );
+};
+
+const GroupItem: React.FC<{ group: Models.GroupType }> = ({ group }) => {
+  return (
+    <div>
+      <div>
+        {group.name} <StateBadge state={group.state} />
+      </div>
+      <div>{group.type}</div>
+      <div>Records: {group.recordsCount || 0}</div>
+    </div>
+  );
+};
+
+const ModelGroupOverview: React.FC<{ groups: Models.GroupType[] }> = ({
+  groups,
+}) => {
+  return (
+    <SectionContainer
+      title="Groups"
+      icon="users"
+      description="Segment your data using groups to enrich your destinations."
+    >
+      {groups.length > 0 && (
+        <ListGroup className="list-group-flush">
+          {groups.map((group, index) => (
+            <ListGroupItem key={index}>
+              <GroupItem group={group} />
+            </ListGroupItem>
+          ))}
+        </ListGroup>
+      )}
+    </SectionContainer>
+  );
+};
 
 interface ModelOverviewDestinationsProps {
   destinations?: Models.DestinationType[];
@@ -180,7 +237,7 @@ const ModelOverviewCard: React.FC<ModelOverviewCardProps> = ({
 };
 
 interface Props {
-  modelName: string;
+  model: Models.GrouparooModelType;
   primarySource?: Models.SourceType;
   secondarySources: Models.SourceType[];
   groups: Models.GroupType[];
@@ -188,7 +245,7 @@ interface Props {
 }
 
 const Page: NextPage<Props> = ({
-  modelName,
+  model,
   primarySource,
   secondarySources,
   groups,
@@ -198,35 +255,38 @@ const Page: NextPage<Props> = ({
   return (
     <>
       <Head>
-        <title>Grouparoo: Model {modelName}</title>
+        <title>Grouparoo: {model.name}</title>
       </Head>
 
       <Container>
-        <h1>
-          <FontAwesomeIcon icon="user" /> {modelName}
-        </h1>
+        <PageHeader
+          iconType="grouparooModel"
+          icon={model.icon}
+          title={model.name}
+        />
         <p>
-          Define your {modelName} model here with sources, groups, and
+          Define your {model.name} model here with sources, groups, and
           destinations.
         </p>
         <Row>
           <Col>
             <ModelOverviewCard title="Model Data">
-              <ModelOverviewData
-                primarySource={primarySource}
-                secondarySources={secondarySources}
-              />
-              <pre>{JSON.stringify(groups, null, 2)}</pre>
+              <ListGroup className="list-group-flush">
+                <ListGroupItem>
+                  <PrimarySourceOverview source={primarySource} />
+                </ListGroupItem>
+
+                <ListGroupItem>
+                  <SecondarySourcesOverview sources={secondarySources} />
+                </ListGroupItem>
+
+                <ListGroupItem>
+                  <ModelGroupOverview groups={groups} />
+                </ListGroupItem>
+              </ListGroup>
             </ModelOverviewCard>
           </Col>
         </Row>
-        {/* <Row>
-          <Col>
-            <ModelOverviewCard title="Sample Record">
-              <ModelOverviewSampleRecord />
-            </ModelOverviewCard>
-          </Col>
-        </Row> */}
         <Row>
           <Col>
             <ModelOverviewCard title="Destinations">
@@ -286,16 +346,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     ? sources.filter(({ id }) => id !== primarySource.id)
     : sources;
 
-  let modelName: string = sources?.[0]?.modelName ?? undefined;
-  if (!modelName) {
-    ({
-      model: { modelName },
-    } = await execApi("get", `/model/${modelId}`));
-  }
+  // TODO: Need whole model for icon
+
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
 
   return {
     props: {
-      modelName,
+      model,
       primarySource,
       secondarySources,
       groups,

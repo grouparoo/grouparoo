@@ -4,21 +4,23 @@ import ModelIcon from "./ModelIcon";
 import GroupIcon from "./GroupIcon";
 import RecordImageFromEmail from "./visualizations/RecordImageFromEmail";
 
+interface Props {
+  title: React.ReactNode;
+  icon?: string;
+  badges?: any[];
+  iconType?: "grouparooRecord" | "grouparooModel" | "group" | "app";
+  loading?: boolean;
+  email?: string;
+}
+
 export default function PageHeader({
   title,
   icon,
   badges,
-  iconType,
+  iconType = "app",
   loading,
   email,
-}: {
-  title: string | JSX.Element[];
-  icon?: string;
-  badges?: any[];
-  iconType?: string;
-  loading?: boolean;
-  email?: string;
-}) {
+}: Props) {
   return (
     <>
       <table>
@@ -32,7 +34,7 @@ export default function PageHeader({
                   email={email}
                 />
               ) : iconType === "grouparooModel" ? (
-                <ModelIcon model={{ icon }} size="7x" />
+                <ModelIcon model={{ icon }} size="3x" />
               ) : iconType === "group" ? (
                 <GroupIcon size="7x" />
               ) : (
