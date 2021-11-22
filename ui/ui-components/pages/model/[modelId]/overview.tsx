@@ -1,6 +1,8 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import { useMemo } from "react";
 import {
   Button,
   Card,
@@ -13,27 +15,37 @@ import {
 } from "react-bootstrap";
 import PageHeader from "../../../components/PageHeader";
 import AppIcon from "../../../components/AppIcon";
+import StateBadge from "../../../components/badges/StateBadge";
 import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
+import { formatName } from "../../../utils/formatName";
 import { formatSchedule } from "../../../utils/formatSchedule";
-import { IconProp, SizeProp } from "@fortawesome/fontawesome-svg-core";
-import { Group } from "@grouparoo/core";
-import StateBadge from "../../../components/badges/StateBadge";
-import { useMemo } from "react";
 
-interface SourceOrDestinationItemContainerProps {
-  app: Models.AppType;
+interface ItemTitleProps {
+  item: Parameters<typeof formatName>[0];
 }
 
-const ItemContainer: React.FC<SourceOrDestinationItemContainerProps> = ({
-  app,
-  children,
-}) => {
+const ItemTitle: React.FC<ItemTitleProps> = ({ item }) => {
   return (
+    <div>
+      <strong>{formatName(item)}</strong>{" "}
+      <StateBadge state={item.state} marginBottom={0} />
+    </div>
+  );
+};
+
+interface ItemContainerProps {
+  app?: Models.AppType;
+}
+
+const ItemContainer: React.FC<ItemContainerProps> = ({ app, children }) => {
+  return app && app.icon ? (
     <Media>
-      <AppIcon src={app.icon} size={50} className="mr-3" />
+      <AppIcon src={app.icon} size={42} className="mr-3" />
       <Media.Body>{children}</Media.Body>
     </Media>
+  ) : (
+    <>{children}</>
   );
 };
 
@@ -44,14 +56,14 @@ const renderMapping = (mapping: Record<string, string>): React.ReactNode => {
 };
 
 const SourceItem: React.FC<{
-  item: Models.SourceType;
+  source: Models.SourceType;
   isPrimarySource?: boolean;
-}> = ({ item, isPrimarySource }) => {
-  const { name, app, connection, schedule, mapping } = item;
+}> = ({ source, isPrimarySource }) => {
+  const { app, connection, schedule, mapping } = source;
 
   return (
-    <ItemContainer app={app}>
-      <div>{name}</div>
+    <ItemContainer app={isPrimarySource ? undefined : app}>
+      <ItemTitle item={source} />
       <div>{connection?.displayName}</div>
       {isPrimarySource && <div>Primary Key: {renderMapping(mapping)}</div>}
       <div>Schedule: {formatSchedule(schedule)}</div>
@@ -59,14 +71,14 @@ const SourceItem: React.FC<{
   );
 };
 
-const DestinationItem: React.FC<{ item: Models.DestinationType }> = ({
-  item,
+const DestinationItem: React.FC<{ destination: Models.DestinationType }> = ({
+  destination,
 }) => {
-  const { name, app, connection, exportTotals } = item;
+  const { app, connection, exportTotals } = destination;
 
   return (
     <ItemContainer app={app}>
-      <div>{name}</div>
+      <ItemTitle item={destination} />
       <div>{connection?.displayName}</div>
       <div>Pending Exports: {exportTotals.pending}</div>
       <div>Syncing: TODO</div>
@@ -77,26 +89,26 @@ const DestinationItem: React.FC<{ item: Models.DestinationType }> = ({
 interface SectionContainerProps {
   title: string;
   description: string;
-  icon: IconProp;
-  iconSize?: SizeProp;
-  iconMarginRight?: number;
+  iconType?: "app" | "icon";
+  icon: string | IconProp;
 }
 
 const SectionContainer: React.FC<SectionContainerProps> = ({
   title,
+  iconType,
   icon,
-  iconSize = "3x",
-  iconMarginRight = 3,
   description,
   children,
 }) => {
   return (
     <Media>
-      <FontAwesomeIcon
-        icon={icon}
-        size={iconSize}
-        className={`mr-${iconMarginRight}`}
-      />
+      {icon && iconType === "app" ? (
+        <AppIcon src={icon as string} size={42} className="mr-3" />
+      ) : (
+        icon && (
+          <FontAwesomeIcon icon={icon as IconProp} size="3x" className="mr-3" />
+        )
+      )}
       <Media.Body>
         <h6>{title}</h6>
         <p>{description}</p>
@@ -112,7 +124,8 @@ const PrimarySourceOverview: React.FC<{ source: Models.SourceType }> = ({
   return (
     <SectionContainer
       title="Primary Source"
-      icon="file-import"
+      iconType="app"
+      icon={source.app?.icon}
       description="The primary source defines the core properties and primary key for your records."
     >
       <p>
@@ -126,7 +139,7 @@ const PrimarySourceOverview: React.FC<{ source: Models.SourceType }> = ({
       {source && (
         <ListGroup className="list-group-flush">
           <ListGroupItem>
-            <SourceItem item={source} isPrimarySource />
+            <SourceItem source={source} isPrimarySource />
           </ListGroupItem>
         </ListGroup>
       )}
@@ -142,8 +155,6 @@ const SecondarySourcesOverview: React.FC<{ sources: Models.SourceType[] }> = ({
       title="Secondary Sources"
       icon="file-import"
       description="Secondary sources can be used to enrich your records with additional data."
-      iconSize="2x"
-      iconMarginRight={4}
     >
       <p>
         <Button variant="outline-primary" size="sm">
@@ -154,7 +165,7 @@ const SecondarySourcesOverview: React.FC<{ sources: Models.SourceType[] }> = ({
         <ListGroup className="list-group-flush">
           {sources.map((source, index) => (
             <ListGroupItem key={index}>
-              <SourceItem item={source} />
+              <SourceItem source={source} />
             </ListGroupItem>
           ))}
         </ListGroup>
@@ -166,9 +177,7 @@ const SecondarySourcesOverview: React.FC<{ sources: Models.SourceType[] }> = ({
 const GroupItem: React.FC<{ group: Models.GroupType }> = ({ group }) => {
   return (
     <div>
-      <div>
-        {group.name} <StateBadge state={group.state} />
-      </div>
+      <ItemTitle item={group} />
       <div>{group.type}</div>
       <div>Records: {group.recordsCount || 0}</div>
     </div>
@@ -203,10 +212,8 @@ const ScheduleItem: React.FC<{
 }> = ({ schedule, source }) => {
   return (
     <div>
-      <div>
-        {schedule.name} <StateBadge state={schedule.state} />
-      </div>
-      <div>Source: {(source && source.name) || "Unknown"}</div>
+      <ItemTitle item={schedule} />
+      <div>Source: {formatName(source)}</div>
       <div>Schedule: {formatSchedule(schedule)}</div>
     </div>
   );
@@ -265,7 +272,7 @@ const ModelOverviewDestinations: React.FC<ModelOverviewDestinationsProps> = ({
       <ListGroup className="list-group-flush">
         {destinations.map((destination, index) => (
           <ListGroupItem key={index}>
-            <DestinationItem item={destination} />
+            <DestinationItem destination={destination} />
           </ListGroupItem>
         ))}
       </ListGroup>

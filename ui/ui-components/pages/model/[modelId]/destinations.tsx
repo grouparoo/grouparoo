@@ -17,6 +17,7 @@ import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import LinkButton from "../../../components/LinkButton";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
+import { formatName } from "../../../utils/formatName";
 
 export default function Page(props) {
   const {
@@ -175,11 +176,11 @@ const AppDisplay = ({
 }: {
   destination: Models.DestinationType;
 }) => {
-  const formattedDestinationName =
-    destination.name ||
-    `${destination.state} created on ${
-      new Date(destination.createdAt).toLocaleString().split(",")[0]
-    }`;
+  const formattedName = (
+    <a>
+      <strong>{formatName(destination)}</strong>
+    </a>
+  );
 
   switch (grouparooUiEdition()) {
     case "community": {
@@ -187,9 +188,7 @@ const AppDisplay = ({
         <Link
           href={`/model/${destination.modelId}/destination/${destination.id}/exports`}
         >
-          <a>
-            <strong>{formattedDestinationName}</strong>
-          </a>
+          {formattedName}
         </Link>
       );
     }
@@ -198,9 +197,7 @@ const AppDisplay = ({
         <EnterpriseLink
           href={`/model/${destination.modelId}/destination/${destination.id}/edit`}
         >
-          <a>
-            <strong>{formattedDestinationName}</strong>
-          </a>
+          {formattedName}
         </EnterpriseLink>
       );
     }

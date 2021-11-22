@@ -13,6 +13,7 @@ import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { ErrorHandler } from "../utils/errorHandler";
 import LinkButton from "../components/LinkButton";
+import { formatName } from "../utils/formatName";
 
 export default function Page(props) {
   const { errorHandler }: { errorHandler: ErrorHandler } = props;
@@ -85,14 +86,7 @@ export default function Page(props) {
                 <td>
                   <Link href={`/app/${app.id}/edit`}>
                     <a>
-                      <strong>
-                        {app.name ||
-                          `${app.state} created ${
-                            new Date(app.createdAt)
-                              .toLocaleString()
-                              .split(",")[0]
-                          }`}
-                      </strong>
+                      <strong>{formatName(app)}</strong>
                     </a>
                   </Link>
                 </td>

@@ -18,6 +18,7 @@ import LoadingButton from "../../../components/LoadingButton";
 import LinkButton from "../../../components/LinkButton";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 import { formatSchedule } from "../../../utils/formatSchedule";
+import { formatName } from "../../../utils/formatName";
 
 export default function Page(props) {
   const {
@@ -143,14 +144,7 @@ export default function Page(props) {
                       href={`/model/${source.modelId}/source/${source.id}/overview`}
                     >
                       <a>
-                        <strong>
-                          {source.name ||
-                            `${source.state} created on ${
-                              new Date(source.createdAt)
-                                .toLocaleString()
-                                .split(",")[0]
-                            }`}
-                        </strong>
+                        <strong>{formatName(source)}</strong>
                       </a>
                     </Link>
                   </td>
