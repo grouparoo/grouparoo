@@ -2,6 +2,7 @@ import path from "path";
 import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
+import { appQuery } from "@grouparoo/postgres/dist/lib/appQuery";
 import { test } from "@grouparoo/postgres/dist/lib/test";
 import { connect } from "@grouparoo/postgres/dist/lib/connect";
 import { disconnect } from "@grouparoo/postgres/dist/lib/disconnect";
@@ -130,7 +131,7 @@ export class Plugins extends Initializer {
               description: "The ssl certificate authority (CA).",
             },
           ],
-          methods: { test, connect, disconnect },
+          methods: { test, connect, disconnect, appQuery },
         },
       ],
       connections: [

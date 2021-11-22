@@ -9,7 +9,7 @@ import { beforeData, afterData, getConfig } from "../utils/data";
 
 const { appOptions } = getConfig();
 
-describe("integration/runs/mysql", () => {
+describe("integration/refreshQuery/mysql", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: false });
 
   let app: App;

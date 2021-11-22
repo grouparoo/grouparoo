@@ -11,7 +11,7 @@ import { SimpleAppOptions } from "@grouparoo/core";
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
-describe("integration/runs/bigquery/appRefreshQuery", () => {
+describe("integration/refreshQuery/bigquery", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: false });
 
   let app: App;

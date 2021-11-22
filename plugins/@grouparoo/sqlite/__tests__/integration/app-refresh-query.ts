@@ -9,7 +9,7 @@ import { beforeData, afterData, getConfig } from "../utils/data";
 
 const { usersTableName, appOptions } = getConfig();
 
-describe("integration/runs/sqlite", () => {
+describe("integration/refreshQuery/sqlite", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: false });
 
   let app: App;
