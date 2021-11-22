@@ -904,7 +904,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(_export.errorLevel).toMatch("error");
       expect(_export.completedAt).toBeFalsy();
       expect(_export.state).toBe("pending");
-      expect(_export.retryCount).toBe(1);
+      expect(_export.retryCount).toBe(0);
 
       // when the response is back to success
       exportProfilesResponse = {

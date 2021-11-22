@@ -993,7 +993,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
       expect(_export.errorLevel).toBe("error");
       expect(_export.completedAt).toBeFalsy();
       expect(_export.state).toBe("pending");
-      expect(_export.retryCount).toBe(1);
+      expect(_export.retryCount).toBe(0);
 
       // when the response is back to success
       exportProfileResponse = {
@@ -1046,7 +1046,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
       expect(_export.completedAt).toBeFalsy();
       expect(_export.state).toBe("pending");
       expect(_export.sendAt.getTime()).toBeGreaterThan(new Date().getTime());
-      expect(_export.retryCount).toBe(1);
+      expect(_export.retryCount).toBe(0);
 
       // when the response is back to success
       exportProfileResponse = {
