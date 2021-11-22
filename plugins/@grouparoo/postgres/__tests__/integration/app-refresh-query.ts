@@ -32,7 +32,7 @@ describe("integration/refreshQuery/postgres", () => {
     await afterData();
   });
 
-  test("I can query using the appRefreshQuery query method", async () => {
+  it("can query using the appRefreshQuery query method", async () => {
     const app = await App.findOne();
     const appRefreshQuery = await AppRefreshQuery.create({
       appId: app.id,
@@ -41,7 +41,7 @@ describe("integration/refreshQuery/postgres", () => {
     }); //does not throw
   });
 
-  test("I show a good error with a missing query", async () => {
+  it("shows a good error with a missing query", async () => {
     const app = await App.findOne();
     await expect(
       AppRefreshQuery.create({
@@ -51,7 +51,7 @@ describe("integration/refreshQuery/postgres", () => {
       })
     ).rejects.toThrow(/please provide a query/);
   });
-  test("I show a good error with a query that has too many sql statements", async () => {
+  it("shows a good error with a query that has too many sql statements", async () => {
     const app = await App.findOne();
     await expect(
       AppRefreshQuery.create({
