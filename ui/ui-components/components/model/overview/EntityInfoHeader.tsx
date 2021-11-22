@@ -1,5 +1,5 @@
 import Link from "next/link";
-import EnterpriseLink from "../../../components/GrouparooLink";
+import EnterpriseLink from "../../GrouparooLink";
 import { formatName } from "../../../utils/formatName";
 import StateBadge from "../../badges/StateBadge";
 
@@ -11,7 +11,7 @@ interface Props {
   linkComponent?: typeof Link | typeof EnterpriseLink;
 }
 
-const EntityInfoHeading: React.FC<Props> = ({
+const EntityInfoHeader: React.FC<Props> = ({
   entity,
   href,
   linkComponent: LinkComponent = Link,
@@ -32,4 +32,4 @@ const EntityInfoHeading: React.FC<Props> = ({
   );
 };
 
-export default EntityInfoHeading;
+export default EntityInfoHeader;

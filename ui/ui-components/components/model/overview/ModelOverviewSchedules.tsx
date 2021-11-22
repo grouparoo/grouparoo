@@ -5,7 +5,7 @@ import { formatName } from "../../../utils/formatName";
 import { formatSchedule } from "../../../utils/formatSchedule";
 import SectionContainer from "./SectionContainer";
 import EntityInfoContainer from "./EntityInfoContainer";
-import EntityInfoHeading from "./EntityInfoHeading";
+import EntityInfoHeader from "./EntityInfoHeader";
 
 const ScheduleInfo: React.FC<{
   schedule: Models.ScheduleType;
@@ -13,7 +13,7 @@ const ScheduleInfo: React.FC<{
 }> = ({ schedule, source }) => {
   return (
     <EntityInfoContainer app={source.app}>
-      <EntityInfoHeading
+      <EntityInfoHeader
         entity={schedule}
         href={`/model/${source.modelId}/source/${source.id}/schedule`}
       />

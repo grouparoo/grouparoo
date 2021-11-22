@@ -2,12 +2,12 @@ import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import SectionContainer from "./SectionContainer";
 import EntityInfoContainer from "./EntityInfoContainer";
-import EntityInfoHeading from "./EntityInfoHeading";
+import EntityInfoHeader from "./EntityInfoHeader";
 
 const GroupInfo: React.FC<{ group: Models.GroupType }> = ({ group }) => {
   return (
     <EntityInfoContainer>
-      <EntityInfoHeading
+      <EntityInfoHeader
         entity={group}
         href={`/model/${group.modelId}/group/${group.id}/${
           group.type === "calculated" ? "rules" : "edit"

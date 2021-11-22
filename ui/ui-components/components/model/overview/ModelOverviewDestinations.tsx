@@ -3,7 +3,7 @@ import { Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 import DestinationCollectionLink from "../../destination/DestinationCollectionLink";
 import EntityInfoContainer from "./EntityInfoContainer";
-import EntityInfoHeading from "./EntityInfoHeading";
+import EntityInfoHeader from "./EntityInfoHeader";
 import Link from "next/link";
 import EnterpriseLink from "../../../components/GrouparooLink";
 
@@ -19,10 +19,10 @@ const DestinationInfo: React.FC<{ destination: Models.DestinationType }> = ({
 
   return (
     <EntityInfoContainer app={app}>
-      <EntityInfoHeading
+      <EntityInfoHeader
         entity={destination}
         href={href}
-        LinkComponent={LinkComponent}
+        linkComponent={LinkComponent}
       />
       <div>{connection?.displayName}</div>
       <div>Pending Exports: {exportTotals.pending}</div>

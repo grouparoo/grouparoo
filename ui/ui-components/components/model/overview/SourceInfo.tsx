@@ -1,7 +1,7 @@
 import { Models } from "../../../utils/apiData";
 import { formatSchedule } from "../../../utils/formatSchedule";
 import EntityInfoContainer from "./EntityInfoContainer";
-import EntityInfoHeading from "./EntityInfoHeading";
+import EntityInfoHeader from "./EntityInfoHeader";
 
 const renderMapping = (mapping: Record<string, string>): React.ReactNode => {
   const keys = Object.keys(mapping);
@@ -17,7 +17,7 @@ const SourceInfo: React.FC<{
 
   return (
     <EntityInfoContainer app={isPrimarySource ? undefined : app}>
-      <EntityInfoHeading
+      <EntityInfoHeader
         entity={source}
         href={`/model/${source.modelId}/source/${source.id}/overview`}
       />
