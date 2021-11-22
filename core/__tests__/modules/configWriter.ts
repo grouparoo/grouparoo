@@ -1050,7 +1050,7 @@ describe("modules/configWriter", () => {
       });
     });
 
-    test("record without a directlyMapped property value will not be persisted", async () => {
+    test("record without a primary key property value will not be persisted", async () => {
       const record: GrouparooRecord = await helper.factories.record();
       const properties = { [bootstrapPropertyId]: [null] };
       await record.addOrUpdateProperties(properties);
