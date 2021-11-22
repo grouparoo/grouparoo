@@ -307,6 +307,13 @@ describe("modules/plugin", () => {
             source.modelId
           )
         ).rejects.toThrow('missing mustache key "otherUserId"');
+
+        // cleanup
+        await otherSource.setMapping({});
+        await otherProperty.destroy();
+        await otherSource.destroy();
+        await otherApp.destroy();
+        await otherModel.destroy();
       });
     });
 
