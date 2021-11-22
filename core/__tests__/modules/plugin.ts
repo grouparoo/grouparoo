@@ -279,6 +279,35 @@ describe("modules/plugin", () => {
           )
         ).toEqual(initialString);
       });
+
+      test("only properties from the same model can be used in mustache replacement", async () => {
+        const otherModel = await helper.factories.model({ name: "otherModel" });
+        const otherApp = await helper.factories.app();
+        const otherSource = await helper.factories.source(otherApp, {
+          modelId: otherModel.id,
+        });
+        await otherSource.setOptions({ table: "foo" });
+        const otherProperty = await otherSource.bootstrapUniqueProperty(
+          "otherUserId",
+          "integer",
+          "otherId"
+        );
+        await otherSource.setMapping({ otherUserId: "otherUserId" });
+        await otherSource.update({ state: "ready" });
+
+        const property = await Property.findOne({
+          where: { key: "userId" },
+        });
+        const source = await property.$get("source");
+        const initialString = `select * from users where id = {{ ${otherProperty.key} }}`;
+
+        await expect(
+          plugin.replaceTemplateRecordPropertyKeysWithRecordPropertyId(
+            initialString,
+            source.modelId
+          )
+        ).rejects.toThrow('missing mustache key "otherUserId"');
+      });
     });
 
     describe("createImport", () => {
