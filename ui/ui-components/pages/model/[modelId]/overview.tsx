@@ -21,24 +21,27 @@ import { Actions, Models } from "../../../utils/apiData";
 import { formatName } from "../../../utils/formatName";
 import { formatSchedule } from "../../../utils/formatSchedule";
 
-interface ItemTitleProps {
-  item: Parameters<typeof formatName>[0];
+interface SummaryHeadingProps {
+  entity: Parameters<typeof formatName>[0];
 }
 
-const ItemTitle: React.FC<ItemTitleProps> = ({ item }) => {
+const SummaryHeading: React.FC<SummaryHeadingProps> = ({ entity }) => {
   return (
     <div>
-      <strong>{formatName(item)}</strong>{" "}
-      <StateBadge state={item.state} marginBottom={0} />
+      <strong>{formatName(entity)}</strong>{" "}
+      <StateBadge state={entity.state} marginBottom={0} />
     </div>
   );
 };
 
-interface ItemContainerProps {
+interface SummaryContainerProps {
   app?: Models.AppType;
 }
 
-const ItemContainer: React.FC<ItemContainerProps> = ({ app, children }) => {
+const SummaryContainer: React.FC<SummaryContainerProps> = ({
+  app,
+  children,
+}) => {
   return app && app.icon ? (
     <Media>
       <AppIcon src={app.icon} size={42} className="mr-3" />
@@ -55,34 +58,34 @@ const renderMapping = (mapping: Record<string, string>): React.ReactNode => {
   return `${keys} → ${mapping[keys[0]]}`;
 };
 
-const SourceItem: React.FC<{
+const SourceSummary: React.FC<{
   source: Models.SourceType;
   isPrimarySource?: boolean;
 }> = ({ source, isPrimarySource }) => {
   const { app, connection, schedule, mapping } = source;
 
   return (
-    <ItemContainer app={isPrimarySource ? undefined : app}>
-      <ItemTitle item={source} />
+    <SummaryContainer app={isPrimarySource ? undefined : app}>
+      <SummaryHeading entity={source} />
       <div>{connection?.displayName}</div>
       {isPrimarySource && <div>Primary Key: {renderMapping(mapping)}</div>}
       <div>Schedule: {formatSchedule(schedule)}</div>
-    </ItemContainer>
+    </SummaryContainer>
   );
 };
 
-const DestinationItem: React.FC<{ destination: Models.DestinationType }> = ({
+const DestinationSummary: React.FC<{ destination: Models.DestinationType }> = ({
   destination,
 }) => {
   const { app, connection, exportTotals } = destination;
 
   return (
-    <ItemContainer app={app}>
-      <ItemTitle item={destination} />
+    <SummaryContainer app={app}>
+      <SummaryHeading entity={destination} />
       <div>{connection?.displayName}</div>
       <div>Pending Exports: {exportTotals.pending}</div>
       <div>Syncing: TODO</div>
-    </ItemContainer>
+    </SummaryContainer>
   );
 };
 
@@ -139,7 +142,7 @@ const PrimarySourceOverview: React.FC<{ source: Models.SourceType }> = ({
       {source && (
         <ListGroup className="list-group-flush">
           <ListGroupItem>
-            <SourceItem source={source} isPrimarySource />
+            <SourceSummary source={source} isPrimarySource />
           </ListGroupItem>
         </ListGroup>
       )}
@@ -165,7 +168,7 @@ const SecondarySourcesOverview: React.FC<{ sources: Models.SourceType[] }> = ({
         <ListGroup className="list-group-flush">
           {sources.map((source, index) => (
             <ListGroupItem key={index}>
-              <SourceItem source={source} />
+              <SourceSummary source={source} />
             </ListGroupItem>
           ))}
         </ListGroup>
@@ -174,13 +177,13 @@ const SecondarySourcesOverview: React.FC<{ sources: Models.SourceType[] }> = ({
   );
 };
 
-const GroupItem: React.FC<{ group: Models.GroupType }> = ({ group }) => {
+const GroupSummary: React.FC<{ group: Models.GroupType }> = ({ group }) => {
   return (
-    <div>
-      <ItemTitle item={group} />
+    <SummaryContainer>
+      <SummaryHeading entity={group} />
       <div>{group.type}</div>
       <div>Records: {group.recordsCount || 0}</div>
-    </div>
+    </SummaryContainer>
   );
 };
 
@@ -197,7 +200,7 @@ const ModelGroupOverview: React.FC<{ groups: Models.GroupType[] }> = ({
         <ListGroup className="list-group-flush">
           {groups.map((group, index) => (
             <ListGroupItem key={index}>
-              <GroupItem group={group} />
+              <GroupSummary group={group} />
             </ListGroupItem>
           ))}
         </ListGroup>
@@ -206,16 +209,16 @@ const ModelGroupOverview: React.FC<{ groups: Models.GroupType[] }> = ({
   );
 };
 
-const ScheduleItem: React.FC<{
+const ScheduleSummary: React.FC<{
   schedule: Models.ScheduleType;
   source?: Models.SourceType;
 }> = ({ schedule, source }) => {
   return (
-    <div>
-      <ItemTitle item={schedule} />
+    <SummaryContainer app={source.app}>
+      <SummaryHeading entity={schedule} />
       <div>Source: {formatName(source)}</div>
       <div>Schedule: {formatSchedule(schedule)}</div>
-    </div>
+    </SummaryContainer>
   );
 };
 
@@ -244,7 +247,7 @@ const ModelSchedulesOverview: React.FC<{
         <ListGroup className="list-group-flush">
           {schedules.map((group, index) => (
             <ListGroupItem key={index}>
-              <ScheduleItem
+              <ScheduleSummary
                 schedule={group}
                 source={sourcesById[group.sourceId]}
               />
@@ -272,7 +275,7 @@ const ModelOverviewDestinations: React.FC<ModelOverviewDestinationsProps> = ({
       <ListGroup className="list-group-flush">
         {destinations.map((destination, index) => (
           <ListGroupItem key={index}>
-            <DestinationItem destination={destination} />
+            <DestinationSummary destination={destination} />
           </ListGroupItem>
         ))}
       </ListGroup>
