@@ -1,7 +1,7 @@
 import { Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import SectionContainer from "./SectionContainer";
-import SourceSummary from "./SourceSummary";
+import SourceInfo from "./SourceInfo";
 
 const ModelOverviewPrimarySource: React.FC<{ source: Models.SourceType }> = ({
   source,
@@ -24,7 +24,7 @@ const ModelOverviewPrimarySource: React.FC<{ source: Models.SourceType }> = ({
       {source && (
         <ListGroup className="list-group-flush">
           <ListGroupItem>
-            <SourceSummary source={source} isPrimarySource />
+            <SourceInfo source={source} isPrimarySource />
           </ListGroupItem>
         </ListGroup>
       )}

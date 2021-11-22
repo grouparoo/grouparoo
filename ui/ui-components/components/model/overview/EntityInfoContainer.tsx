@@ -2,14 +2,11 @@ import { Media } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import AppIcon from "../../AppIcon";
 
-interface SummaryContainerProps {
+interface Props {
   app?: Models.AppType;
 }
 
-const EntitySummaryContainer: React.FC<SummaryContainerProps> = ({
-  app,
-  children,
-}) => {
+const EntityInfoContainer: React.FC<Props> = ({ app, children }) => {
   return app && app.icon ? (
     <Media>
       <AppIcon src={app.icon} size={42} className="mr-3" />
@@ -20,4 +17,4 @@ const EntitySummaryContainer: React.FC<SummaryContainerProps> = ({
   );
 };
 
-export default EntitySummaryContainer;
+export default EntityInfoContainer;

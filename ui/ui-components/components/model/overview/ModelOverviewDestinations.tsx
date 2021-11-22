@@ -1,24 +1,24 @@
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import DestinationCollectionLink from "../../destination/DestinationCollectionLink";
-import EntitySummaryContainer from "./EntitySummaryContainer";
-import EntitySummaryHeading from "./EntitySummaryHeading";
+import EntityInfoContainer from "./EntityInfoContainer";
+import EntityInfoHeading from "./EntityInfoHeading";
 
-const DestinationSummary: React.FC<{ destination: Models.DestinationType }> = ({
+const DestinationInfo: React.FC<{ destination: Models.DestinationType }> = ({
   destination,
 }) => {
   const { app, connection, exportTotals } = destination;
 
   return (
-    <EntitySummaryContainer app={app}>
-      <EntitySummaryHeading entity={destination} />
+    <EntityInfoContainer app={app}>
+      <EntityInfoHeading entity={destination} />
       <div>{connection?.displayName}</div>
       <div>Pending Exports: {exportTotals.pending}</div>
       <div>
         Collection Tracked:{" "}
         <DestinationCollectionLink destination={destination} />
       </div>
-    </EntitySummaryContainer>
+    </EntityInfoContainer>
   );
 };
 
@@ -37,7 +37,7 @@ const ModelOverviewDestinations: React.FC<ModelOverviewDestinationsProps> = ({
     <ListGroup className="list-group-flush">
       {destinations.map((destination, index) => (
         <ListGroupItem key={index}>
-          <DestinationSummary destination={destination} />
+          <DestinationInfo destination={destination} />
         </ListGroupItem>
       ))}
     </ListGroup>

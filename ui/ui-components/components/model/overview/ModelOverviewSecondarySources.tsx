@@ -1,7 +1,7 @@
 import { Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import SectionContainer from "./SectionContainer";
-import SourceSummary from "./SourceSummary";
+import SourceInfo from "./SourceInfo";
 
 const ModelOverviewSecondarySources: React.FC<{
   sources: Models.SourceType[];
@@ -21,7 +21,7 @@ const ModelOverviewSecondarySources: React.FC<{
         <ListGroup className="list-group-flush">
           {sources.map((source, index) => (
             <ListGroupItem key={index}>
-              <SourceSummary source={source} />
+              <SourceInfo source={source} />
             </ListGroupItem>
           ))}
         </ListGroup>

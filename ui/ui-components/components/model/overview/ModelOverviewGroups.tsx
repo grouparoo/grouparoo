@@ -1,16 +1,16 @@
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import SectionContainer from "./SectionContainer";
-import EntitySummaryContainer from "./EntitySummaryContainer";
-import EntitySummaryHeading from "./EntitySummaryHeading";
+import EntityInfoContainer from "./EntityInfoContainer";
+import EntityInfoHeading from "./EntityInfoHeading";
 
-const GroupSummary: React.FC<{ group: Models.GroupType }> = ({ group }) => {
+const GroupInfo: React.FC<{ group: Models.GroupType }> = ({ group }) => {
   return (
-    <EntitySummaryContainer>
-      <EntitySummaryHeading entity={group} />
+    <EntityInfoContainer>
+      <EntityInfoHeading entity={group} />
       <div>{group.type}</div>
       <div>Records: {group.recordsCount || 0}</div>
-    </EntitySummaryContainer>
+    </EntityInfoContainer>
   );
 };
 
@@ -27,7 +27,7 @@ const ModelOverviewGroups: React.FC<{ groups: Models.GroupType[] }> = ({
         <ListGroup className="list-group-flush">
           {groups.map((group, index) => (
             <ListGroupItem key={index}>
-              <GroupSummary group={group} />
+              <GroupInfo group={group} />
             </ListGroupItem>
           ))}
         </ListGroup>

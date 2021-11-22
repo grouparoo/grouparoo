@@ -4,19 +4,19 @@ import { Models } from "../../../utils/apiData";
 import { formatName } from "../../../utils/formatName";
 import { formatSchedule } from "../../../utils/formatSchedule";
 import SectionContainer from "./SectionContainer";
-import EntitySummaryContainer from "./EntitySummaryContainer";
-import EntitySummaryHeading from "./EntitySummaryHeading";
+import EntityInfoContainer from "./EntityInfoContainer";
+import EntityInfoHeading from "./EntityInfoHeading";
 
-const ScheduleSummary: React.FC<{
+const ScheduleInfo: React.FC<{
   schedule: Models.ScheduleType;
   source?: Models.SourceType;
 }> = ({ schedule, source }) => {
   return (
-    <EntitySummaryContainer app={source.app}>
-      <EntitySummaryHeading entity={schedule} />
+    <EntityInfoContainer app={source.app}>
+      <EntityInfoHeading entity={schedule} />
       <div>Source: {formatName(source)}</div>
       <div>Schedule: {formatSchedule(schedule)}</div>
-    </EntitySummaryContainer>
+    </EntityInfoContainer>
   );
 };
 
@@ -45,7 +45,7 @@ const ModelOverviewSchedules: React.FC<{
         <ListGroup className="list-group-flush">
           {schedules.map((group, index) => (
             <ListGroupItem key={index}>
-              <ScheduleSummary
+              <ScheduleInfo
                 schedule={group}
                 source={sourcesById[group.sourceId]}
               />

@@ -1,11 +1,11 @@
 import { formatName } from "../../../utils/formatName";
 import StateBadge from "../../badges/StateBadge";
 
-interface SummaryHeadingProps {
+interface Props {
   entity: Parameters<typeof formatName>[0];
 }
 
-const EntitySummaryHeading: React.FC<SummaryHeadingProps> = ({ entity }) => {
+const EntityInfoHeading: React.FC<Props> = ({ entity }) => {
   return (
     <div>
       <strong>{formatName(entity)}</strong>{" "}
@@ -14,4 +14,4 @@ const EntitySummaryHeading: React.FC<SummaryHeadingProps> = ({ entity }) => {
   );
 };
 
-export default EntitySummaryHeading;
+export default EntityInfoHeading;
