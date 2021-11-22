@@ -245,8 +245,8 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
 
     if (!modelId) return;
     if (
-      Object.keys(directlyMappedProps).length === 0 ||
-      Object.values(directlyMappedProps)
+      Object.keys(primaryKeyProperties).length === 0 ||
+      Object.values(primaryKeyProperties)
         .flat()
         .filter((v) => v !== undefined && v !== null).length === 0
     ) {
