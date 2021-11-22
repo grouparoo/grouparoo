@@ -1,4 +1,5 @@
-import { NextPageContext } from "next";
+import { AxiosRequestConfig, Method } from "axios";
+import { GetServerSidePropsContext, NextPageContext } from "next";
 import { Client } from "../client/client";
 import { ErrorHandler } from "../utils/errorHandler";
 import { UploadHandler } from "../utils/uploadHandler";
@@ -6,21 +7,21 @@ import { UploadHandler } from "../utils/uploadHandler";
 export const client = new Client();
 
 export function UseApi(
-  ctx: NextPageContext,
+  ctx: GetServerSidePropsContext | NextPageContext,
   errorHandler?: ErrorHandler,
   uploadHandler?: UploadHandler
 ) {
   async function execApi<T extends {} = any>(
-    verb = "get",
+    verb: Method = "get",
     path: string,
-    data = {},
-    setter?: Function,
+    data: AxiosRequestConfig["data"] = {},
+    setter?: (response: T) => void,
     setterKey?: string,
     useCache = process.env.NODE_ENV === "test" ? false : true
   ): Promise<T> {
     if (data === null || data === undefined) data = {};
 
-    let apiResponse;
+    let apiResponse: T;
     try {
       apiResponse = await client.action(
         verb,

@@ -1,4 +1,11 @@
-import Axios, { AxiosRequestConfig, Method } from "axios";
+import Axios, {
+  AxiosRequestConfig,
+  AxiosRequestHeaders,
+  AxiosResponse,
+  Method,
+} from "axios";
+import type { IncomingMessage, ServerResponse } from "http";
+
 import { isBrowser } from "../utils/isBrowser";
 import PackageJSON from "../package.json";
 import { UploadHandler } from "../utils/uploadHandler";
@@ -108,16 +115,16 @@ export class Client {
     }
   }
 
-  async action(
-    verb = "get",
-    path,
+  async action<Response = any>(
+    verb: Method = "get",
+    path: string,
     data: AxiosRequestConfig["data"] = {},
     useCache = true,
     uploadHandler?: UploadHandler,
-    req?,
-    res?
-  ) {
-    const headers = {
+    req?: IncomingMessage,
+    res?: ServerResponse
+  ): Promise<Response> {
+    const headers: AxiosRequestHeaders = {
       Accept: "application/json",
       "Content-Type": "application/json",
       "X-Grouparoo-Client": `${PackageJSON.name}-v${PackageJSON.version}`,
@@ -129,7 +136,7 @@ export class Client {
       useCache = false; // do not ever cache responses on the server
     }
 
-    const options: AxiosRequestConfig = {
+    const config: AxiosRequestConfig = {
       params: null,
       data: null,
       url: `${this.webUrl}/api/${this.apiVersion}${path}`, // path comes with a leading "/"
@@ -154,7 +161,7 @@ export class Client {
       }
 
       if (data.file || data._file) {
-        delete options.headers;
+        delete config.headers;
         let dataForm = new FormData();
         for (const i in data) {
           dataForm.append(i, data[i]);
@@ -162,17 +169,17 @@ export class Client {
         data = dataForm;
       }
 
-      if (options.method === "get") {
-        options.params = data;
+      if (config.method === "get") {
+        config.params = data;
       } else {
-        options.data = data;
+        config.data = data;
       }
     }
 
     let unlock: Function;
-    if (options.method === "get" && useCache) {
+    if (config.method === "get" && useCache) {
       const { cacheData, unlock: _unlock } = await this.cache.get(
-        options.url + JSON.stringify(data)
+        config.url + JSON.stringify(data)
       );
       unlock = _unlock;
       if (cacheData) {
@@ -183,7 +190,9 @@ export class Client {
     }
 
     try {
-      const response: Record<string, any> = await Axios(options);
+      const response: AxiosResponse<Response & { error?: Error }> = await Axios(
+        config
+      );
 
       if (unlock) {
         unlock(response.data);
