@@ -7,7 +7,12 @@ import EntityInfoHeading from "./EntityInfoHeading";
 const GroupInfo: React.FC<{ group: Models.GroupType }> = ({ group }) => {
   return (
     <EntityInfoContainer>
-      <EntityInfoHeading entity={group} />
+      <EntityInfoHeading
+        entity={group}
+        href={`/model/${group.modelId}/group/${group.id}/${
+          group.type === "calculated" ? "rules" : "edit"
+        }`}
+      />
       <div>{group.type}</div>
       <div>Records: {group.recordsCount || 0}</div>
     </EntityInfoContainer>

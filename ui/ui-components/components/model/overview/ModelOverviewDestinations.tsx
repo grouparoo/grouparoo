@@ -1,17 +1,29 @@
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
+import { grouparooUiEdition } from "../../../utils/uiEdition";
 import DestinationCollectionLink from "../../destination/DestinationCollectionLink";
 import EntityInfoContainer from "./EntityInfoContainer";
 import EntityInfoHeading from "./EntityInfoHeading";
+import Link from "next/link";
+import EnterpriseLink from "../../../components/GrouparooLink";
 
 const DestinationInfo: React.FC<{ destination: Models.DestinationType }> = ({
   destination,
 }) => {
   const { app, connection, exportTotals } = destination;
+  const isCommunityUI = grouparooUiEdition() === "community";
+  const href = `/model/${destination.modelId}/destination/${destination.id}/${
+    isCommunityUI ? "exports" : "edit"
+  }`;
+  const LinkComponent = isCommunityUI ? Link : EnterpriseLink;
 
   return (
     <EntityInfoContainer app={app}>
-      <EntityInfoHeading entity={destination} />
+      <EntityInfoHeading
+        entity={destination}
+        href={href}
+        LinkComponent={LinkComponent}
+      />
       <div>{connection?.displayName}</div>
       <div>Pending Exports: {exportTotals.pending}</div>
       <div>

@@ -13,7 +13,10 @@ const ScheduleInfo: React.FC<{
 }> = ({ schedule, source }) => {
   return (
     <EntityInfoContainer app={source.app}>
-      <EntityInfoHeading entity={schedule} />
+      <EntityInfoHeading
+        entity={schedule}
+        href={`/model/${source.modelId}/source/${source.id}/schedule`}
+      />
       <div>Source: {formatName(source)}</div>
       <div>Schedule: {formatSchedule(schedule)}</div>
     </EntityInfoContainer>

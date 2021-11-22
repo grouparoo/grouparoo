@@ -1,15 +1,33 @@
+import Link from "next/link";
+import EnterpriseLink from "../../../components/GrouparooLink";
 import { formatName } from "../../../utils/formatName";
 import StateBadge from "../../badges/StateBadge";
 
+type Entity = Parameters<typeof formatName>[0];
+
 interface Props {
-  entity: Parameters<typeof formatName>[0];
+  entity: Entity;
+  href?: string;
+  linkComponent?: typeof Link | typeof EnterpriseLink;
 }
 
-const EntityInfoHeading: React.FC<Props> = ({ entity }) => {
+const EntityInfoHeading: React.FC<Props> = ({
+  entity,
+  href,
+  linkComponent: LinkComponent = Link,
+}) => {
+  const nameElement = <strong>{formatName(entity)}</strong>;
+  const nameLink = href ? (
+    <LinkComponent href={href}>
+      <a>{nameElement}</a>
+    </LinkComponent>
+  ) : (
+    nameElement
+  );
+
   return (
     <div>
-      <strong>{formatName(entity)}</strong>{" "}
-      <StateBadge state={entity.state} marginBottom={0} />
+      {nameLink} <StateBadge state={entity.state} marginBottom={0} />
     </div>
   );
 };

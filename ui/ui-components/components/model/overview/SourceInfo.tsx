@@ -17,7 +17,10 @@ const SourceInfo: React.FC<{
 
   return (
     <EntityInfoContainer app={isPrimarySource ? undefined : app}>
-      <EntityInfoHeading entity={source} />
+      <EntityInfoHeading
+        entity={source}
+        href={`/model/${source.modelId}/source/${source.id}/overview`}
+      />
       <div>{connection?.displayName}</div>
       {isPrimarySource && <div>Primary Key: {renderMapping(mapping)}</div>}
       <div>Schedule: {formatSchedule(schedule)}</div>
