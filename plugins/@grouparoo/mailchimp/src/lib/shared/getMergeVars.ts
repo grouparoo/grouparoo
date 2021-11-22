@@ -59,6 +59,8 @@ function toGrouparooDestinationType(field: MailchimpMergeField) {
       return { type: "url", important: true };
     case "url":
       return { type: "url", important: true };
+    case "website":
+      return { type: "url", important: true };
     default:
       return { type: null, important: false };
   }
