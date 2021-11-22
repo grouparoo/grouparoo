@@ -633,32 +633,6 @@ describe("models/property", () => {
     await source.destroy();
   });
 
-  describe("directlyMapped", () => {
-    let userIdProperty: Property;
-    let emailProperty: Property;
-
-    beforeAll(async () => {
-      userIdProperty = await Property.findOne({
-        where: { key: "userId" },
-      });
-      emailProperty = await Property.findOne({
-        where: { key: "email" },
-      });
-    });
-
-    test("directlyMapping will be determined as on save", async () => {
-      expect(userIdProperty.directlyMapped).toBe(true);
-      expect(emailProperty.directlyMapped).toBe(false);
-    });
-
-    test("properties include if they are directly mapped", async () => {
-      const rules = await Property.findAll();
-
-      expect(rules.find((r) => r.key === "userId").directlyMapped).toBe(true);
-      expect(rules.find((r) => r.key === "email").directlyMapped).toBe(false);
-    });
-  });
-
   describe("with plugin", () => {
     let app: App;
     let source: Source;

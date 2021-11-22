@@ -23,7 +23,7 @@ describe("tasks/record:destroy", () => {
 
   beforeAll(async () => {
     userIdProperty = await Property.findOne({ where: { key: "userId" } });
-    expect(userIdProperty.directlyMapped).toBe(true);
+    expect(userIdProperty.isPrimaryKey).toBe(true);
   });
 
   test("can be enqueued", async () => {

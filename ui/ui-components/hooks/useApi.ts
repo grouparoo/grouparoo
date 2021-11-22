@@ -10,14 +10,14 @@ export function UseApi(
   errorHandler?: ErrorHandler,
   uploadHandler?: UploadHandler
 ) {
-  async function execApi(
+  async function execApi<T extends {} = any>(
     verb = "get",
     path: string,
     data = {},
     setter?: Function,
     setterKey?: string,
     useCache = process.env.NODE_ENV === "test" ? false : true
-  ) {
+  ): Promise<T> {
     if (data === null || data === undefined) data = {};
 
     let apiResponse;
@@ -44,7 +44,7 @@ export function UseApi(
     } catch (error) {
       if (errorHandler) {
         errorHandler.set({ error: error });
-        return {};
+        return {} as any;
       } else {
         throw error;
       }

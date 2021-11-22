@@ -291,22 +291,6 @@ describe("models/source", () => {
       await source.destroy();
     });
 
-    test("a source with a directly mapped property that's being used cannot be deleted", async () => {
-      const source: Source = await helper.factories.source();
-      await source.bootstrapUniqueProperty("myUserId", "integer", "id");
-      await source.setOptions({ table: "some table" });
-      await source.setMapping({ id: "myUserId" });
-      await source.update({ state: "ready" });
-
-      const destination: Destination = await helper.factories.destination();
-      await destination.setMapping({ "primary-id": "myUserId" });
-
-      await expect(source.destroy()).rejects.toThrow(/cannot delete property/);
-
-      await destination.destroy();
-      await source.destroy();
-    });
-
     test("__options only includes options for sources", async () => {
       const source = await Source.create({
         id: "mySourceId",
@@ -384,6 +368,10 @@ describe("models/source", () => {
     });
 
     test("deleting a source deleted the options", async () => {
+      const model: GrouparooModel = await helper.factories.model({
+        name: "Users",
+      });
+
       const source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
@@ -399,6 +387,8 @@ describe("models/source", () => {
         where: { ownerId: source.id },
       });
       expect(optionsCount).toBe(0);
+
+      await model.destroy();
     });
 
     test("deleting a schedule does not delete options for other models with the same id", async () => {
@@ -434,19 +424,107 @@ describe("models/source", () => {
 
       await foreignOption.destroy();
     });
+  });
 
-    test("deleting a source deleted its directly mapped property", async () => {
-      const source: Source = await helper.factories.source();
+  describe("validations: primary key", () => {
+    let model: GrouparooModel;
+
+    beforeAll(async () => {
+      model = await helper.factories.model({
+        name: "PrimaryKey_Profiles",
+      });
+    });
+
+    afterEach(async () => {
+      const destinations = await Destination.scope(null).findAll({
+        where: { modelId: model.id },
+        order: [["createdAt", "DESC"]],
+      });
+
+      for (const destination of destinations) {
+        await destination.destroy();
+      }
+
+      const sources = await Source.scope(null).findAll({
+        where: { modelId: model.id },
+        order: [["createdAt", "DESC"]],
+      });
+
+      const properties = await Property.scope(null).findAll({
+        where: {
+          sourceId: { [Op.in]: sources.map(({ id }) => id) },
+          isPrimaryKey: false,
+        },
+        order: [["createdAt", "DESC"]],
+      });
+
+      for (const property of properties) {
+        await property.destroy();
+      }
+
+      for (const source of sources) {
+        await source.destroy();
+      }
+    });
+
+    afterAll(async () => {
+      await model.destroy();
+    });
+
+    test("a source with a primary key property that's being used cannot be destroyed", async () => {
+      const source = await helper.factories.source(app, {
+        modelId: model.id,
+      });
+      await source.bootstrapUniqueProperty("myUserId", "integer", "id");
+      await source.setOptions({ table: "some table" });
+      await source.setMapping({ id: "myUserId" });
+      await source.update({ state: "ready" });
+
+      const destination: Destination = await helper.factories.destination(app, {
+        modelId: model.id,
+      });
+      await destination.setMapping({ "primary-id": "myUserId" });
+
+      await expect(source.destroy()).rejects.toThrow(/cannot delete property/);
+    });
+
+    test("destroying a source deleted its primary key property", async () => {
+      const source = await helper.factories.source(app, {
+        modelId: model.id,
+      });
       await source.bootstrapUniqueProperty("myUserId", "integer", "id");
       await source.setOptions({ table: "some table" });
       await source.setMapping({ id: "myUserId" });
       await source.update({ state: "ready" });
 
       await source.destroy();
-      const directlyMappedCount = await Property.count({
-        where: { sourceId: source.id, directlyMapped: true },
+      const primaryKeyPropertyCount = await Property.count({
+        where: { sourceId: source.id, isPrimaryKey: true },
       });
-      expect(directlyMappedCount).toBe(0);
+      expect(primaryKeyPropertyCount).toBe(0);
+    });
+
+    test("destroying a source mapped to a primary key of another source does not delete the primary key property", async () => {
+      const sourceWithPK = await helper.factories.source(app, {
+        modelId: model.id,
+      });
+      await sourceWithPK.bootstrapUniqueProperty("myUserId", "integer", "id");
+      await sourceWithPK.setOptions({ table: "some table" });
+      await sourceWithPK.setMapping({ id: "myUserId" });
+      await sourceWithPK.update({ state: "ready" });
+
+      const source = await helper.factories.source(app, {
+        modelId: model.id,
+      });
+      await source.setOptions({ table: "some table 2" });
+      await source.setMapping({ id: "myUserId" });
+      await source.update({ state: "ready" });
+
+      await source.destroy();
+      const primaryKeyPropertyCount = await Property.count({
+        where: { sourceId: sourceWithPK.id, isPrimaryKey: true },
+      });
+      expect(primaryKeyPropertyCount).toBe(1);
     });
   });
 
@@ -571,6 +649,13 @@ describe("models/source", () => {
     });
 
     afterAll(async () => {
+      const properties = await Property.scope(null).findAll({
+        where: { sourceId: source.id, isPrimaryKey: false },
+        order: [["createdAt", "DESC"]],
+      });
+      for (const property of properties) {
+        await property.destroy();
+      }
       await source.destroy();
     });
 
@@ -582,7 +667,7 @@ describe("models/source", () => {
       });
     });
 
-    test("it throws an error if the mapping does not include the key of a recordPropertyRyle", async () => {
+    test("it throws an error if the mapping does not include the key of a recordPropertyRule", async () => {
       await expect(
         source.setMapping({
           local_user_id: "TheUserID",
@@ -607,7 +692,7 @@ describe("models/source", () => {
       await arrayProperty.destroy();
     });
 
-    test("directlyMapped will be updated for source properties after setting the mapping", async () => {
+    test("isPrimaryKey will be updated for source properties after setting the mapping", async () => {
       const firstSource = await Source.findOne({
         where: { id: { [Op.ne]: source.id } },
       });
@@ -618,22 +703,42 @@ describe("models/source", () => {
       const userIdProperty = await Property.findOne({
         where: { key: "userId" },
       });
-      expect(userIdProperty.directlyMapped).toBe(true);
+      expect(userIdProperty.isPrimaryKey).toBe(true);
 
       const emailProperty = await Property.findOne({
         where: { key: "email" },
       });
-      expect(emailProperty.directlyMapped).toBe(false);
+      expect(emailProperty.isPrimaryKey).toBe(false);
 
       await firstSource.setMapping({ email: "email" });
 
       await userIdProperty.reload();
-      expect(userIdProperty.directlyMapped).toBe(false);
+      expect(userIdProperty.isPrimaryKey).toBe(false);
 
       await emailProperty.reload();
-      expect(emailProperty.directlyMapped).toBe(true);
+      expect(emailProperty.isPrimaryKey).toBe(true);
 
-      await firstSource.setMapping({ userId: "userId" });
+      await firstSource.setMapping({ myUserId: "userId" });
+    });
+
+    test("isPrimaryKey will not be updated for source across model when updating mapping in other source", async () => {
+      await source.bootstrapUniqueProperty("myEmail", "email", "my_email");
+      await source.setMapping({ email: "myEmail" });
+
+      const mapping = await source.getMapping();
+      expect(mapping).toEqual({ email: "myEmail" });
+
+      const userIdProperty = await Property.findOne({
+        where: { key: "userId" },
+      });
+      expect(userIdProperty.isPrimaryKey).toBe(true);
+
+      const myEmailProperty = await Property.findOne({
+        where: { key: "myEmail" },
+      });
+      expect(myEmailProperty.isPrimaryKey).toBe(false);
+
+      await source.setMapping({ userId: "userId" });
     });
   });
 

@@ -377,7 +377,7 @@ export class Source extends LoggedModel<Source> {
   }
 
   async afterSetMapping() {
-    await Source.updateRuleDirectMappings(this);
+    await Source.determinePrimaryKeyProperty(this);
   }
 
   // --- Class Methods --- //
@@ -427,13 +427,42 @@ export class Source extends LoggedModel<Source> {
     await LockableHelper.beforeSave(instance, ["state"]);
   }
 
-  @AfterSave
-  static async updateRuleDirectMappings(instance: Source) {
+  static async determinePrimaryKeyProperty(instance: Source): Promise<void> {
+    if (instance.state === "deleted") return;
+
+    const otherSourcePrimaryKey = await Property.findOne({
+      include: {
+        model: Source,
+        required: true,
+        where: {
+          modelId: instance.modelId,
+        },
+      },
+      where: {
+        isPrimaryKey: true,
+        sourceId: {
+          [Op.ne]: instance.id,
+        },
+      },
+    });
+
+    // Do nothing unless we own the current primary key
+    if (otherSourcePrimaryKey) {
+      return;
+    }
+
+    // Assign the primary key to a property in this source
     const properties = await instance.$get("properties");
-    for (const i in properties) {
-      const property = properties[i];
-      await Property.determineDirectlyMapped(property);
-      if (property.changed()) await property.save();
+    if (!properties.length) return;
+
+    const mapping = await instance.getMapping();
+    const mappingValues = Object.values(mapping);
+
+    for (const property of properties) {
+      const isPrimaryKey = mappingValues.includes(property.key);
+      if (property.isPrimaryKey !== isPrimaryKey) {
+        await property.update({ isPrimaryKey });
+      }
     }
   }
 
@@ -446,7 +475,7 @@ export class Source extends LoggedModel<Source> {
 
     const properties = await instance.$get("properties", {
       scope: null,
-      where: { directlyMapped: false },
+      where: { isPrimaryKey: false },
     });
 
     if (properties.length > 0) {
@@ -455,13 +484,13 @@ export class Source extends LoggedModel<Source> {
   }
 
   @BeforeDestroy
-  static async ensureDirectlyMappedPropertyNotInUse(instance: Source) {
-    const directlyMappedProperty = await Property.findOne({
-      where: { sourceId: instance.id, directlyMapped: true },
+  static async ensurePrimaryKeyPropertyNotInUse(instance: Source) {
+    const primaryKeyProperty = await Property.findOne({
+      where: { sourceId: instance.id, isPrimaryKey: true },
     });
 
-    if (directlyMappedProperty) {
-      await Property.ensureNotInUse(directlyMappedProperty, [instance.id]);
+    if (primaryKeyProperty) {
+      await Property.ensureNotInUse(primaryKeyProperty, [instance.id]);
     }
   }
 
@@ -485,13 +514,13 @@ export class Source extends LoggedModel<Source> {
   }
 
   @AfterDestroy
-  static async destroyDirectlyMappedProperty(instance: Source) {
-    const directlyMappedProperty = await Property.findOne({
-      where: { sourceId: instance.id, directlyMapped: true },
+  static async destroyPrimaryKeyProperty(instance: Source) {
+    const primaryKeyProperty = await Property.findOne({
+      where: { sourceId: instance.id, isPrimaryKey: true },
     });
 
-    if (directlyMappedProperty) {
-      await directlyMappedProperty.destroy();
+    if (primaryKeyProperty) {
+      await primaryKeyProperty.destroy();
     }
   }
 }

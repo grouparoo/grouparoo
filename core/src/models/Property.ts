@@ -145,7 +145,7 @@ export class Property extends LoggedModel<Property> {
   @AllowNull(false)
   @Default(false)
   @Column
-  directlyMapped: boolean;
+  isPrimaryKey: boolean;
 
   @AllowNull(false)
   @Default(false)
@@ -279,7 +279,7 @@ export class Property extends LoggedModel<Property> {
       state: this.state,
       unique: this.unique,
       identifying: this.identifying,
-      directlyMapped: this.directlyMapped,
+      isPrimaryKey: this.isPrimaryKey,
       locked: this.locked,
       options,
       filters,
@@ -380,17 +380,6 @@ export class Property extends LoggedModel<Property> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
-  }
-
-  @BeforeUpdate
-  @BeforeCreate
-  static async determineDirectlyMapped(instance: Property) {
-    if (instance.state === "draft") return;
-
-    const source = await instance.$get("source", { scope: null });
-    const mapping = await source.getMapping();
-    const mappingValues = Object.values(mapping);
-    instance.directlyMapped = mappingValues.includes(instance.key);
   }
 
   @BeforeSave
@@ -531,7 +520,7 @@ export class Property extends LoggedModel<Property> {
 
   @BeforeSave
   static async noUpdateIfLocked(instance: Property) {
-    await LockableHelper.beforeSave(instance, ["state", "directlyMapped"]);
+    await LockableHelper.beforeSave(instance, ["state", "isPrimaryKey"]);
   }
 
   @BeforeSave
