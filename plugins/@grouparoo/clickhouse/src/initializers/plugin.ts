@@ -21,6 +21,7 @@ import { getConnection as getTableConnection } from "../lib/table-import/connect
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
 import { getConnection as getExportConnection } from "../lib/export/connection";
 import { test } from "@grouparoo/mysql/dist/lib/test";
+import { appQuery } from "@grouparoo/mysql/dist/lib/appQuery";
 
 const packageJSON = require("./../../package.json");
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
@@ -85,7 +86,7 @@ export class Plugins extends Initializer {
               description: "The ClickHouse user's password.",
             },
           ],
-          methods: { test, connect, disconnect },
+          methods: { test, connect, disconnect, appQuery },
         },
       ],
       connections: [
