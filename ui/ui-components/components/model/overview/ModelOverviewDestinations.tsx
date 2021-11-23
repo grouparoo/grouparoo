@@ -6,7 +6,7 @@ import EntityInfoContainer from "./EntityInfoContainer";
 import EntityInfoHeader from "./EntityInfoHeader";
 import Link from "next/link";
 import EnterpriseLink from "../../../components/GrouparooLink";
-import { useGrouparooModelContext } from "../../../contexts/GrouparooModelContext";
+import { useGrouparooModelContext } from "../../../contexts/grouparooModelContext";
 import LinkButton from "../../LinkButton";
 
 const DestinationInfo: React.FC<{ destination: Models.DestinationType }> = ({

@@ -4,7 +4,7 @@ import SectionContainer from "./SectionContainer";
 import EntityInfoContainer from "./EntityInfoContainer";
 import EntityInfoHeader from "./EntityInfoHeader";
 import LinkButton from "../../LinkButton";
-import { useGrouparooModelContext } from "../../../contexts/GrouparooModelContext";
+import { useGrouparooModelContext } from "../../../contexts/grouparooModelContext";
 
 const GroupInfo: React.FC<{ group: Models.GroupType }> = ({ group }) => {
   return (
