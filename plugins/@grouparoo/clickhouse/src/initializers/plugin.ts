@@ -53,7 +53,7 @@ export class Plugins extends Initializer {
               key: "host",
               displayName: "Host",
               required: false,
-              description: "The ClickHouse host.",
+              description: "The ClickHouse HTTP host.",
               placeholder: "localhost",
             },
             {
@@ -68,7 +68,6 @@ export class Plugins extends Initializer {
               displayName: "Database",
               required: true,
               description: "The ClickHouse database.",
-              defaultValue: "default",
             },
             {
               key: "user",
