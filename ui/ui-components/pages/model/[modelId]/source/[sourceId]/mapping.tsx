@@ -48,16 +48,19 @@ export default function Page(props: Props & NextPageContext) {
   const [properties, setProperties] = useState(() => {
     const isPrimaryKeyInSource =
       props.source &&
-      props.properties.find(
+      props.properties.filter(
         (property) =>
           property.isPrimaryKey && property.sourceId === props.source.id
-      );
+      ).length > 0;
 
-    return isPrimaryKeyInSource
-      ? props.properties.filter(
-          (property) => property.sourceId === props.source.id
-        )
-      : props.properties;
+    // Properties rules:
+    // Include properties in own source if it has the primary key or the primary key has not been defined
+    // Otherwise, show properties from other sources
+    return props.properties.filter((property) =>
+      isPrimaryKeyInSource || !hasPrimaryKeyProperty
+        ? property.sourceId === props.source.id
+        : property.sourceId !== props.source.id
+    );
   });
   const [preview, setPreview] = useState(props.preview || []);
   const [propertyExamples, setPropertyExamples] = useState(
@@ -335,13 +338,7 @@ export default function Page(props: Props & NextPageContext) {
                                   )}
                                 </strong>
                               </td>
-                              <td>
-                                <input
-                                  type="checkbox"
-                                  disabled={true}
-                                  checked={property.unique}
-                                />
-                              </td>
+                              <td>{property.unique ? "✅" : null}</td>
                               <td>
                                 {propertyExamples[property.id]
                                   ? propertyExamples[property.id]
