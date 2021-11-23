@@ -185,4 +185,23 @@ export class PipedriveClient {
     if (data.data.items.length == 0) return null;
     return data.data.items[0].item.id;
   }
+
+  async findOrganizationIdByName(name: string): Promise<number> {
+    name = name.trim();
+
+    if (!name) return null;
+
+    const { data } = await this.request.get<Record<string, any>>(
+      "/organizations/search",
+      {
+        params: {
+          term: name,
+          fields: "name",
+        },
+      }
+    );
+
+    if (data.data.items.length == 0) return null;
+    return data.data.items[0].item.id;
+  }
 }

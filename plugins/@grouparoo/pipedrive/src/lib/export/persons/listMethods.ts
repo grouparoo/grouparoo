@@ -1,5 +1,5 @@
 import { objectCache } from "@grouparoo/core";
-import { PipedriveClient } from "../client";
+import { PipedriveClient } from "../../client";
 import {
   getKnownPersonFieldMap,
   PipedriveCacheData,

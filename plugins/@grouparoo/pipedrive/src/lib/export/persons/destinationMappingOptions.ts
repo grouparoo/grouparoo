@@ -5,9 +5,10 @@ import {
   objectCache,
 } from "@grouparoo/core";
 
-import { connect } from "../connect";
-import { PipedriveClient } from "../client";
+import { connect } from "../../connect";
+import { PipedriveClient } from "../../client";
 import { GROUP_FIELD_PREFIX } from "./listMethods";
+import { log } from "actionhero";
 
 export interface PipedriveCacheData {
   appId: string;
@@ -140,6 +141,8 @@ export const fetchKnownPersonFields = async (
   const subfieldsRegex = /(_until|_currency)$/;
 
   const fields = await client.persons.fields.getAll();
+
+  log(JSON.stringify(fields, null, 4), "notice");
 
   const out: KnownPersonField[] = [];
 

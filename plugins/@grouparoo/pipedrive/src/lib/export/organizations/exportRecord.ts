@@ -1,9 +1,9 @@
 import { ExportRecordPluginMethod, Errors } from "@grouparoo/core";
-import { PipedriveClient } from "../client";
-import { connect } from "../connect";
+import { PipedriveClient } from "../../client";
+import { connect } from "../../connect";
 import {
   PipedriveCacheData,
-  getKnownPersonFieldMap,
+  getKnownOrganizationFieldMap,
 } from "./destinationMappingOptions";
 import { getGroupFieldKey } from "./listMethods";
 
@@ -39,14 +39,14 @@ const handleProfileChanges: ExportRecordPluginMethod = async ({
   const client = await connect(appOptions);
   const cacheData: PipedriveCacheData = { appId, appOptions };
 
-  const newEmail = newRecordProperties["Email"];
-  const oldEmail = oldRecordProperties["Email"];
+  const newName = newRecordProperties["Name"];
+  const oldName = oldRecordProperties["Name"];
 
-  const newFoundId = await client.findPersonIdByEmail(newEmail);
+  const newFoundId = await client.findOrganizationIdByName(newName);
 
   let oldFoundId = null;
-  if (oldEmail && oldEmail !== newEmail) {
-    oldFoundId = await client.findPersonIdByEmail(oldEmail);
+  if (oldName && oldName !== newName) {
+    oldFoundId = await client.findOrganizationIdByName(oldName);
   }
 
   const foundId = newFoundId || oldFoundId;
@@ -58,14 +58,10 @@ const handleProfileChanges: ExportRecordPluginMethod = async ({
     }
 
     if (foundId) {
-      await client.persons.delete(foundId);
+      await client.organizations.delete(foundId);
     }
 
     return { success: true };
-  }
-
-  if (!newRecordProperties["Email"]) {
-    throw new Error(`newRecordProperties[Email] is a required mapping`);
   }
 
   if (!newRecordProperties["Name"]) {
@@ -89,7 +85,7 @@ const handleProfileChanges: ExportRecordPluginMethod = async ({
       );
     }
 
-    await client.persons.update(foundId, payload);
+    await client.organizations.update(foundId, payload);
   } else {
     if (!syncOperations.create) {
       throw new Errors.InfoError(
@@ -97,7 +93,7 @@ const handleProfileChanges: ExportRecordPluginMethod = async ({
       );
     }
     // Create new Person
-    await client.persons.create(payload);
+    await client.organizations.create(payload);
   }
 
   return { success: true };
@@ -123,7 +119,7 @@ async function makePayload(
   const allFields = new Set([...newFields, ...oldFields]);
 
   // get fields
-  const fieldKeys = await getKnownPersonFieldMap(client, cacheData);
+  const fieldKeys = await getKnownOrganizationFieldMap(client, cacheData);
 
   for (const fieldName of allFields) {
     const value = newRecordProperties[fieldName];
