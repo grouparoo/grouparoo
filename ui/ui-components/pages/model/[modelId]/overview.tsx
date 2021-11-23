@@ -115,49 +115,29 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
 ) => {
   const { modelId, limit, offset } = context.query;
   const { execApi } = UseApi(context);
-  const { sources, total } = await execApi<Actions.SourcesList>(
-    "get",
-    `/sources`,
-    {
-      limit,
-      offset,
-      modelId,
-    }
-  );
 
-  const { destinations } = await execApi<Actions.DestinationsList>(
-    "get",
-    `/destinations`,
-    {
-      limit,
-      offset,
-      modelId,
-    }
-  );
-
-  const { properties } = await execApi<Actions.PropertiesList>(
-    "get",
-    `/properties`,
-    {
-      modelId,
-    }
-  );
-
-  const { groups } = await execApi<Actions.GroupsList>("get", `/groups`, {
+  const params = {
     limit,
     offset,
     modelId,
-  });
+  };
 
-  const { schedules } = await execApi<Actions.SchedulesList>(
-    "get",
-    `/schedules`,
-    {
-      modelId,
-      limit,
-      offset,
-    }
-  );
+  // TODO: Create a single api call that requests all data for the model overview page.
+  const [
+    { sources },
+    { destinations },
+    { properties },
+    { groups },
+    { schedules },
+    { model },
+  ] = await Promise.all([
+    execApi<Actions.SourcesList>("get", `/sources`, params),
+    execApi<Actions.DestinationsList>("get", `/destinations`, params),
+    execApi<Actions.PropertiesList>("get", `/properties`, params),
+    execApi<Actions.GroupsList>("get", `/groups`, params),
+    execApi<Actions.SchedulesList>("get", `/schedules`, params),
+    execApi<Actions.ModelView>("get", `/model/${modelId}`),
+  ]);
 
   const primaryKeyProperty = properties.find((p) => p.isPrimaryKey);
   const primarySource = primaryKeyProperty
@@ -166,13 +146,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const secondarySources = primarySource
     ? sources.filter(({ id }) => id !== primarySource.id)
     : sources;
-
-  // TODO: Need whole model for icon
-
-  const { model } = await execApi<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
 
   return {
     props: {
