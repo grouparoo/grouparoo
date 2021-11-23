@@ -41,6 +41,7 @@ const mapTypesFromMarketoToGrouparoo = (marketoType) => {
     phone: "phoneNumber",
     float: "float",
     datetime: "date",
+    date: "date",
     score: "integer",
     currency: "float",
     url: "url",
@@ -50,8 +51,6 @@ const mapTypesFromMarketoToGrouparoo = (marketoType) => {
     // unhandled:
     lead_function: null,
     formula: null,
-    // TODO:
-    date: null, // like birthday (just date)
   };
 
   const grouparooType = map[marketoType];

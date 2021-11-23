@@ -49,6 +49,10 @@ function toGrouparooDestinationType(field: MailchimpMergeField) {
       return { type: "string", important: true };
     case "address":
       return { type: "string", important: true };
+    case "date":
+      return { type: "date", important: true };
+    case "birthday":
+      return { type: "date", important: true };
     case "number":
       return { type: "number", important: true };
     case "phone":

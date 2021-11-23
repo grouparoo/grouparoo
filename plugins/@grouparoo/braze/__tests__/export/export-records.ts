@@ -212,6 +212,7 @@ describe("braze/exportRecords", () => {
               external_id: email1,
               first_name: "John",
               last_name: "Doe",
+              dob: new Date("1980-12-21"),
             },
             oldGroups: [],
             newGroups: [],
@@ -250,6 +251,7 @@ describe("braze/exportRecords", () => {
       expect(user1["external_id"]).toBe(email1);
       expect(user1["first_name"]).toBe("John");
       expect(user1["last_name"]).toBe("Doe");
+      expect(user1["dob"]).toBe(new Date("1980-12-21").toISOString());
 
       user2 = await client.users.getOne(email2);
       expect(user2).not.toBe(null);
