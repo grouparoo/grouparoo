@@ -11,41 +11,8 @@ import StatusSubscription from "../components/StatusSubscription";
 import "../components/Icons";
 
 import { Actions } from "../utils/apiData";
-
-import { ErrorHandler } from "../utils/errorHandler";
-import { SuccessHandler } from "../utils/successHandler";
-import { AppHandler } from "../utils/appHandler";
-import { DestinationHandler } from "../utils/destinationHandler";
-import { GroupHandler } from "../utils/groupHandler";
-import { RecordHandler } from "../utils/recordHandler";
-import { PropertiesHandler } from "../utils/propertiesHandler";
-import { RunsHandler } from "../utils/runsHandler";
-import { ScheduleHandler } from "../utils/scheduleHandler";
-import { SessionHandler } from "../utils/sessionHandler";
-import { SetupStepHandler } from "../utils/setupStepsHandler";
-import { StatusHandler } from "../utils/statusHandler";
-import { SourceHandler } from "../utils/sourceHandler";
-import { TeamHandler } from "../utils/teamHandler";
-import { TeamMemberHandler } from "../utils/teamMembersHandler";
-import { UploadHandler } from "../utils/uploadHandler";
+import * as eventHandlers from "../utils/eventHandlers";
 import { getModelFromUrlOrCookie, setModelCookie } from "../utils/modelHelper";
-
-const successHandler = new SuccessHandler();
-const errorHandler = new ErrorHandler();
-const appHandler = new AppHandler();
-const destinationHandler = new DestinationHandler();
-const groupHandler = new GroupHandler();
-const recordHandler = new RecordHandler();
-const propertiesHandler = new PropertiesHandler();
-const runsHandler = new RunsHandler();
-const scheduleHandler = new ScheduleHandler();
-const sessionHandler = new SessionHandler();
-const setupStepHandler = new SetupStepHandler();
-const statusHandler = new StatusHandler();
-const sourceHandler = new SourceHandler();
-const teamHandler = new TeamHandler();
-const teamMemberHandler = new TeamMemberHandler();
-const uploadHandler = new UploadHandler();
 
 export default function GrouparooWebApp(props) {
   const { Component, pageProps, err, hydrationError } = props;
@@ -56,22 +23,7 @@ export default function GrouparooWebApp(props) {
     navigationModel: props.navigationModel,
     clusterName: props.clusterName,
     currentTeamMember: props.currentTeamMember,
-    successHandler,
-    errorHandler,
-    appHandler,
-    destinationHandler,
-    groupHandler,
-    recordHandler,
-    propertiesHandler,
-    runsHandler,
-    scheduleHandler,
-    sessionHandler,
-    setupStepHandler,
-    statusHandler,
-    sourceHandler,
-    teamHandler,
-    teamMemberHandler,
-    uploadHandler,
+    ...eventHandlers,
   });
 
   return (

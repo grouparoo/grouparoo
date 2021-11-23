@@ -6,7 +6,7 @@ import { UploadHandler } from "../utils/uploadHandler";
 
 export const client = new Client();
 
-export interface UseApiHook {
+export interface ApiHook {
   execApi: <T extends {} = any>(
     verb: Method,
     path: string,
@@ -21,7 +21,7 @@ export function UseApi(
   ctx: GetServerSidePropsContext | NextPageContext,
   errorHandler?: ErrorHandler,
   uploadHandler?: UploadHandler
-): UseApiHook {
+): ApiHook {
   async function execApi<T extends {} = any>(
     verb: Method,
     path: string,

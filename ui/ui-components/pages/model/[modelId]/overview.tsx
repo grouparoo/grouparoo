@@ -44,7 +44,9 @@ interface Props {
   destinations?: Models.DestinationType[];
 }
 
-const Page: NextPage<Props> = ({
+const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
+  ctx,
+  errorHandler,
   model,
   primarySource,
   secondarySources,
@@ -52,6 +54,7 @@ const Page: NextPage<Props> = ({
   schedules,
   destinations,
 }) => {
+  const { execApi } = UseApi(ctx, errorHandler);
   const sources = useMemo(
     () => [primarySource, ...secondarySources],
     [primarySource, secondarySources]
@@ -94,6 +97,7 @@ const Page: NextPage<Props> = ({
                   <ModelOverviewSchedules
                     schedules={schedules}
                     sources={sources}
+                    execApi={execApi}
                   />
                 </ListGroupItem>
               </ListGroup>
