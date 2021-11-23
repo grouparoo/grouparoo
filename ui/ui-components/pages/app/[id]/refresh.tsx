@@ -62,7 +62,6 @@ export default function Page(props) {
 
     if (response?.appRefreshQuery) {
       setAppRefreshQuery(response.appRefreshQuery);
-
       router.push(`/app/${response.appRefreshQuery.appId}/refresh`);
     }
     setLoading(false);
@@ -98,6 +97,7 @@ export default function Page(props) {
       `/appRefreshQuery/${appRefreshQuery.id}`,
       appRefreshQuery
     );
+
     if (response?.appRefreshQuery) {
       setLoading(false);
       successHandler.set({ message: "App Refresh Query Updated" });
@@ -223,7 +223,11 @@ export default function Page(props) {
       </>
     );
   } else {
-    console.log(editing);
+    console.log(`editing? ${editing}`);
+    console.log(`disabled? ${disabled}`);
+    console.log(`locked app? ${app.locked}`);
+    console.log(`locked appRefreshQuery? ${appRefreshQuery.locked}`);
+
     return (
       <>
         <Head>
@@ -337,16 +341,20 @@ export default function Page(props) {
                   </Col>
                 </Row>{" "}
                 <Col>
-                  {testResult.success && editing && !testResult.error ? (
-                    <Alert variant="success" className="text-break">
-                      <strong>Test Passed. </strong>Sample Value ={" "}
-                      {testResult.message}
-                    </Alert>
-                  ) : ranTest ? (
-                    <Alert variant="warning">
-                      <strong>Test Failed</strong> {testResult.error}
-                    </Alert>
-                  ) : null}
+                  {editing && (
+                    <>
+                      {testResult.success && !testResult.error ? (
+                        <Alert variant="success" className="text-break">
+                          <strong>Test Passed. </strong>Sample Value ={" "}
+                          {testResult.message}
+                        </Alert>
+                      ) : ranTest ? (
+                        <Alert variant="warning">
+                          <strong>Test Failed</strong> {testResult.error}
+                        </Alert>
+                      ) : null}
+                    </>
+                  )}
 
                   {loading ? <Loader /> : null}
                 </Col>

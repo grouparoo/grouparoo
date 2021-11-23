@@ -91,6 +91,7 @@ export class AppRefreshQueryEdit extends AuthenticatedAction {
     };
   }
   async runWithinTransaction({ params }) {
+    console.log(params);
     const appRefreshQuery = await AppRefreshQuery.findById(params.id);
     await appRefreshQuery.update(params);
 

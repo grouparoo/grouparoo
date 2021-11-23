@@ -261,6 +261,10 @@ export class App extends LoggedModel<App> {
 
     const options = await this.getOptions(false);
 
+    const appRefreshQuery: AppRefreshQuery = await AppRefreshQuery.findOne({
+      where: { appId: this.id },
+    });
+
     if (!name) return;
 
     return {
@@ -269,6 +273,12 @@ export class App extends LoggedModel<App> {
       name,
       type,
       options,
+      refresh: appRefreshQuery
+        ? {
+            query: appRefreshQuery.refreshQuery,
+            recurringFrequency: appRefreshQuery.recurringFrequency,
+          }
+        : undefined,
     };
   }
 
