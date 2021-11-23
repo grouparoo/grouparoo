@@ -40,7 +40,7 @@ export async function getMergeVars(
 }
 
 function toGrouparooDestinationType(field: MailchimpMergeField) {
-  // currently unsupported: birthday, radio, drop down
+  // currently unsupported: radio, drop down
 
   switch (field.type) {
     case "email":

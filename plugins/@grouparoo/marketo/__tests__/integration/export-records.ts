@@ -51,6 +51,7 @@ async function getUser(id) {
     "integer_field",
     "float_field",
     "datetime_field",
+    "date_field",
     "score_field",
     "percent_field",
     "currency_field",
@@ -611,6 +612,7 @@ describe("marketo/exportRecords", () => {
             integer_field: 5,
             float_field: 5.4,
             datetime_field: new Date(1598766588 * 1000),
+            date_field: new Date(1598766588 * 1000),
             score_field: 10,
             percent_field: 99,
             currency_field: 34.66,
@@ -631,6 +633,7 @@ describe("marketo/exportRecords", () => {
     expect(userId2).toBeTruthy();
 
     user = await getUser(userId2);
+
     expect(user.email).toEqual(email2);
     expect(user.firstName).toEqual("Evan");
     expect(user.textarea_field).toEqual("text is here");
@@ -639,6 +642,7 @@ describe("marketo/exportRecords", () => {
     expect(user.integer_field).toEqual(5);
     expect(user.float_field).toEqual(5.4);
     expect(user.datetime_field).toEqual("2020-08-30T05:49:48Z");
+    expect(user.date_field).toEqual("2020-08-30");
     expect(user.score_field).toEqual(10);
     expect(user.percent_field).toEqual(99);
     expect(user.currency_field).toEqual(34.66);
