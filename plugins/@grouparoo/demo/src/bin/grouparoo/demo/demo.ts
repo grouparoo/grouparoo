@@ -29,6 +29,7 @@ const TYPES = {
   bigquery: "assumes a BigQuery instance with data already present",
   hubspot: "create Hubspot destination for data",
   mailchimp: "create Mailchimp destination for data",
+  pipedrive: "create Pipedrive destination for data",
   salesforce: "create Salesforce destination for data",
   logger: "create Logger destination for data",
 };
