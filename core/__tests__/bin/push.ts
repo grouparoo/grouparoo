@@ -240,7 +240,6 @@ describe("bin/push", () => {
     expect(happyNock.isDone()).toBe(true);
 
     const output = messages.join(" ");
-    console.log(output);
     expect(output).toContain(
       "The configuration has been successfully validated"
     );
@@ -265,7 +264,6 @@ describe("bin/push", () => {
     expect(toStop).toBe(true);
 
     const output = messages.join(" ");
-    console.log(output);
     expect(output).toContain("❌");
     expect(output).toContain("timeout!");
   });
