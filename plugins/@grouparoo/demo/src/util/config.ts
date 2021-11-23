@@ -107,6 +107,7 @@ class Config {
         break;
       case "hubspot":
       case "mailchimp":
+      case "pipedrive":
       case "salesforce":
       case "logger":
         this.addDestination(type);

@@ -1,0 +1,9 @@
+{
+  "class": "App",
+  "id": "pipedrive",
+  "name": "Pipedrive",
+  "type": "pipedrive",
+  "options": {
+    "apiToken": "PIPEDRIVE_API_TOKEN"
+  }
+}
