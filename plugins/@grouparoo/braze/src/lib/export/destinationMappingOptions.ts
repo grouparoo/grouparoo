@@ -22,9 +22,9 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
           { key: "phone", type: "phoneNumber", important: false },
           { key: "gender", type: "string", important: false },
           { key: "country", type: "string", important: false },
-          { key: "date_of_first_session", type: "date", important: true },
-          { key: "date_of_last_session", type: "date", important: true },
-          { key: "dob", type: "date", important: true },
+          { key: "date_of_first_session", type: "string", important: true },
+          { key: "date_of_last_session", type: "string", important: true },
+          { key: "dob", type: "string", important: true },
           { key: "email_subscribe", type: "string", important: false },
           {
             key: "email_open_tracking_disabled",

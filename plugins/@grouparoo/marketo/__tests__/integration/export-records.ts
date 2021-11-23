@@ -612,7 +612,7 @@ describe("marketo/exportRecords", () => {
             integer_field: 5,
             float_field: 5.4,
             datetime_field: new Date(1598766588 * 1000),
-            date_field: new Date(1598766588 * 1000),
+            date_field: "2020-08-30",
             score_field: 10,
             percent_field: 99,
             currency_field: 34.66,

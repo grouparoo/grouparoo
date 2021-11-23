@@ -103,7 +103,7 @@ describe("salesforce/sales-cloud/export-records/email", () => {
             LastName: "Smith",
             "Account.Name": account1,
             number_field__c: 24,
-            date_field__c: new Date("1980-12-21"),
+            date_field__c: "1980-12-21",
           },
           oldGroups: [],
           newGroups: [],

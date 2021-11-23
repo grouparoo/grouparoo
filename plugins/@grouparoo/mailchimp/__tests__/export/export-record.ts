@@ -289,7 +289,7 @@ describe("mailchimp/exportRecord", () => {
         LNAME: last_name,
         PHONE: newPhoneNumber,
         LTV: numberField,
-        JOINED_AT: new Date("1980-12-21"),
+        JOINED_AT: "1980-12-21",
       },
       oldGroups: [],
       newGroups: [],

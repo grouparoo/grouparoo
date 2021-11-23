@@ -89,7 +89,7 @@ const supportedTypeMap = {
   masterrecord: "string", // When records are merged, the ID of the record that is saved
   reference: "string", // Cross-references to a different object. Analogous to a foreign key field in SQL.
   base64: "string", // Base 64-encoded binary data.
-  date: "date",
+  date: "string",
   //TODO:
   address: null, //A compound data type that contains address field data.
   time: null,

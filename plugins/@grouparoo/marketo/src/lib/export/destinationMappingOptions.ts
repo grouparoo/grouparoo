@@ -41,7 +41,7 @@ const mapTypesFromMarketoToGrouparoo = (marketoType) => {
     phone: "phoneNumber",
     float: "float",
     datetime: "date",
-    date: "date",
+    date: "string",
     score: "integer",
     currency: "float",
     url: "url",
