@@ -357,7 +357,7 @@ export default function Page(props) {
             </Col>
             {appRefreshQuery?.refreshQuery?.length > 1 &&
               appRefreshQuery?.state === "ready" &&
-              grouparooUiEdition()! == "config" && (
+              grouparooUiEdition() !== "config" && (
                 <Col className="col-md-4 ">
                   <Row className="mx-auto">
                     <AppRefreshQueryStats
