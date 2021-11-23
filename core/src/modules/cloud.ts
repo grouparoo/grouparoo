@@ -5,6 +5,7 @@ import fs from "fs";
 import FormData from "form-data";
 import fetch from "isomorphic-fetch";
 import { mkdtemp, copy, remove } from "fs-extra";
+import { utils } from "actionhero";
 
 export class CloudError extends Error {
   code: string;
@@ -89,12 +90,25 @@ export class CloudClient {
       process.env.GROUPAROO_CLOUD_API_URL ?? "https://cloud.grouparoo.com";
   }
 
-  async request(url: string, options?: RequestInit, attempts = 0) {
+  async request(
+    url: string,
+    options?: RequestInit & { _buildFormData?: () => FormData },
+    attempts = 0
+  ) {
     const fetchUrl = new URL(url, this.baseUrl);
     fetchUrl.searchParams.append("apiToken", this.token);
 
+    // when retrying a form based on a readStream, we need to restart the stream on every attempt
+    if (typeof options?._buildFormData === "function") {
+      const formData = options._buildFormData.bind(this)();
+      //@ts-ignore typings are incorrectly not allowing FormData to be set as body
+      options.body = formData;
+      options.headers = formData.getHeaders();
+    }
+
     try {
-      const res = await fetch(fetchUrl.toString(), options);
+      const optionsToSend = { ...options, _buildFormData: undefined };
+      const res = await fetch(fetchUrl.toString(), optionsToSend);
       const data = await res.json();
 
       if (res.status !== 200) {
@@ -104,7 +118,11 @@ export class CloudClient {
 
       return data;
     } catch (error) {
-      if (error.toString().match("ETIMEDOUT") && attempts < maxAttempts) {
+      if (
+        (error?.code === "ETIMEDOUT" || error.toString().match("ETIMEDOUT")) &&
+        attempts < maxAttempts - 1
+      ) {
+        await utils.sleep(100);
         return this.request(url, options, attempts + 1);
       } else throw error;
     }
@@ -116,21 +134,21 @@ export class CloudClient {
     message?: string,
     externalUrl?: string
   ) {
-    const formData = new FormData();
-    formData.append("_file", fs.createReadStream(tarballPath));
-    formData.append("projectId", this.projectId);
-    formData.append("toApply", toApply.toString());
-
-    if (message) formData.append("message", message);
-    if (externalUrl) formData.append("externalUrl", externalUrl);
+    function _buildFormData() {
+      const formData = new FormData();
+      formData.append("_file", fs.createReadStream(tarballPath));
+      formData.append("projectId", this.projectId);
+      formData.append("toApply", toApply.toString());
+      if (message) formData.append("message", message);
+      if (externalUrl) formData.append("externalUrl", externalUrl);
+      return formData;
+    }
 
     const data: { configuration: ConfigurationApiData } = await this.request(
       "/api/v1/configuration",
       {
         method: "POST",
-        //@ts-ignore typings are incorrectly not allowing FormData to be set as body
-        body: formData,
-        headers: formData.getHeaders(),
+        _buildFormData,
       }
     );
     return data.configuration;
