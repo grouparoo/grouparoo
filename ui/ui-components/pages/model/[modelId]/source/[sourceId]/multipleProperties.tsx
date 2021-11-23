@@ -70,15 +70,16 @@ export default function Page(props) {
       defaultOptions[propertyOption.key] = defaultOption.key;
     });
 
-    let existingProperty: Models.PropertyType;
+    let exactProperty: Models.PropertyType;
     let otherProperties: Models.PropertyType[] = [];
 
     for (const property of properties) {
       if (property.sourceId !== source.id) continue;
       if (property.options[primaryOptionKey] !== column) continue;
-      if (property.filters?.length > 0) continue;
 
       let optMatch = true;
+      if (property.filters?.length > 0) optMatch = false;
+
       for (const [key, value] of Object.entries(property.options)) {
         if (key === primaryOptionKey) continue;
         if (!optionWithDefaults.map((dpo) => dpo.key).includes(key)) {
@@ -93,38 +94,36 @@ export default function Page(props) {
       }
 
       if (optMatch) {
-        existingProperty = property;
+        exactProperty = property;
       } else {
         otherProperties.push(property);
       }
     }
 
-    const disabled = existingProperty
-      ? existingProperty.sourceId === source.id
+    const disabled = exactProperty
+      ? exactProperty.sourceId === source.id
       : false;
 
     const [key, setKey] = useState(
-      existingProperty && existingProperty.sourceId === source.id
-        ? existingProperty.key
-        : existingProperty && existingProperty.sourceId !== source.id
+      exactProperty && exactProperty.sourceId === source.id
+        ? exactProperty.key
+        : exactProperty && exactProperty.sourceId !== source.id
         ? generateId(`${source.name}-${column}`)
         : generateId(column)
     );
-    const [type, setType] = useState<typeof existingProperty["type"]>(
-      existingProperty && existingProperty.sourceId === source.id
-        ? existingProperty.type
+    const [type, setType] = useState<typeof exactProperty["type"]>(
+      exactProperty && exactProperty.sourceId === source.id
+        ? exactProperty.type
         : columnSpeculation[column].type
     );
     const [unique, setUnique] = useState(
-      existingProperty
-        ? existingProperty.unique
-        : columnSpeculation[column].isUnique
+      exactProperty ? exactProperty.unique : columnSpeculation[column].isUnique
     );
 
     const hiddenOptions = optionWithDefaults.map((o) => o.key);
     const [options, setOptions] = useState(
-      existingProperty && existingProperty.sourceId === source.id
-        ? existingProperty.options
+      exactProperty && exactProperty.sourceId === source.id
+        ? exactProperty.options
         : defaultOptions
     );
 
@@ -204,7 +203,7 @@ export default function Page(props) {
               as="select"
               value={type}
               onChange={(e) =>
-                setType(e.target.value as typeof existingProperty["type"])
+                setType(e.target.value as typeof exactProperty["type"])
               }
               disabled={disabled}
             >
@@ -221,11 +220,11 @@ export default function Page(props) {
             />
           </td>
           <td>
-            {existingProperty && existingProperty.sourceId === source.id ? (
+            {exactProperty && exactProperty.sourceId === source.id ? (
               <LinkButton
                 variant="outline-info"
                 size="sm"
-                href={`/model/${source.modelId}/property/${existingProperty.id}/edit`}
+                href={`/model/${source.modelId}/property/${exactProperty.id}/edit`}
               >
                 View
               </LinkButton>
