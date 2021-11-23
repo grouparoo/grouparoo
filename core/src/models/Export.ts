@@ -179,7 +179,7 @@ export class Export extends CommonModel<Export> {
   @BelongsTo(() => GrouparooRecord)
   record: GrouparooRecord;
 
-  async setError(error: Error, retryDelay: number = config.tasks.timeout) {
+  async setError(error: Error, retryDelay?: number) {
     const maxExportAttempts = parseInt(
       (await plugin.readSetting("core", "exports-max-retries-count")).value
     );
@@ -187,7 +187,7 @@ export class Export extends CommonModel<Export> {
     this.errorMessage = error.message || error.toString();
     if (error["errorLevel"]) this.errorLevel = error["errorLevel"];
 
-    this.retryCount++;
+    if (!retryDelay) this.retryCount++;
 
     if (this.retryCount >= maxExportAttempts) {
       this.state = "failed";
@@ -197,7 +197,9 @@ export class Export extends CommonModel<Export> {
     } else {
       this.state = "pending";
       this.exportProcessorId = null;
-      this.sendAt = Moment().add(retryDelay, "ms").toDate();
+      this.sendAt = Moment()
+        .add(retryDelay ?? config.tasks.timeout, "ms")
+        .toDate();
       this.startedAt = null;
     }
 

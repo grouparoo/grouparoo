@@ -19,12 +19,12 @@ describe("tasks/records:confirm", () => {
     disableTestPluginImport: true,
   });
 
-  let directlyMappedProperty: Property;
+  let primaryKeyProperty: Property;
 
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => {
     await helper.factories.properties();
-    directlyMappedProperty = await Property.findOne({
+    primaryKeyProperty = await Property.findOne({
       where: { key: "userId" },
     });
   });
@@ -39,7 +39,7 @@ describe("tasks/records:confirm", () => {
     expect(found.length).toEqual(1);
   });
 
-  test("marks records and directlyMapped pending if they haven't been confirmed in a while", async () => {
+  test("marks records and primary key record property pending if they haven't been confirmed in a while", async () => {
     const staleRecord: GrouparooRecord = await helper.factories.record();
     const recentRecord: GrouparooRecord = await helper.factories.record();
 
@@ -93,7 +93,7 @@ describe("tasks/records:confirm", () => {
     });
     expect(pendingRecordProperties.length).toBe(1);
     expect(pendingRecordProperties[0].propertyId).toBe(
-      directlyMappedProperty.id // only the directlyMapped is marked pending
+      primaryKeyProperty.id // only the property with isPrimaryKey is marked pending
     );
     expect(pendingRecordProperties[0].recordId).toBe(staleRecord.id);
 
@@ -140,9 +140,7 @@ describe("tasks/records:confirm", () => {
     });
 
     expect(pendingRecordProperties.length).toBe(1);
-    expect(pendingRecordProperties[0].propertyId).toBe(
-      directlyMappedProperty.id
-    );
+    expect(pendingRecordProperties[0].propertyId).toBe(primaryKeyProperty.id);
 
     await record.destroy();
   });
@@ -182,7 +180,7 @@ describe("tasks/records:confirm", () => {
     await record.destroy();
   });
 
-  test("marks records and directlyMapped pending that haven't been confirmed if the schedule has run and it's marked as confirmRecords=true", async () => {
+  test("marks records and primary key record property pending that haven't been confirmed if the schedule has run and it's marked as confirmRecords=true", async () => {
     await plugin.updateSetting("core", "confirm-records-days", 0);
 
     const source = await Source.findOne();
@@ -222,9 +220,7 @@ describe("tasks/records:confirm", () => {
     });
 
     expect(pendingRecordProperties.length).toBe(1);
-    expect(pendingRecordProperties[0].propertyId).toBe(
-      directlyMappedProperty.id
-    );
+    expect(pendingRecordProperties[0].propertyId).toBe(primaryKeyProperty.id);
 
     await record.destroy();
     await schedule.destroy();

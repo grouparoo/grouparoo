@@ -1,0 +1,19 @@
+{
+  "class": "Destination",
+  "id": "pipedrive_persons",
+  "modelId": "users",
+  "name": "Persons",
+  "type": "pipedrive-export-persons",
+  "appId": "pipedrive",
+  "collection": "none",
+  "syncMode": "sync",
+  "options": {},
+  "mapping": {
+    "Email": "email",
+    "Name": "full_name"
+  },
+  "destinationGroupMemberships": {
+    "High Value": "high_value",
+    "Spanish Speakers": "spanish_speakers"
+  }
+}

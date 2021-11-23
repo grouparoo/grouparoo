@@ -29,7 +29,7 @@ export async function loadProperty(
   });
 
   // don't process bootstrapped properties again
-  if (property && property.directlyMapped) return {};
+  if (property && property.isPrimaryKey) return {};
 
   if (!property) {
     isNew = true;

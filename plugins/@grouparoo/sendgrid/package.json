@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/sendgrid",
   "description": "The Grouparoo Sendgrid Plugin",
-  "version": "0.7.5-alpha.0",
+  "version": "0.7.5",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,12 +28,12 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.7.5-alpha.0",
+    "@grouparoo/app-templates": "0.7.5",
     "@sendgrid/client": "7.5.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.5-alpha.0",
-    "@grouparoo/spec-helper": "0.7.5-alpha.0",
+    "@grouparoo/core": "0.7.5",
+    "@grouparoo/spec-helper": "0.7.5",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "27.2.0",

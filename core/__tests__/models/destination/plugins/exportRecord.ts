@@ -328,7 +328,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
       await record.destroy();
     });
 
-    test("if the directlyMapped property has been removed, newRecordProperties will use oldRecordProperties values in the export", async () => {
+    test("if the primary key property has been removed, newRecordProperties will use oldRecordProperties values in the export", async () => {
       await destination.setMapping({
         is_vip: "isVIP",
         customer_email: "email",
@@ -993,7 +993,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
       expect(_export.errorLevel).toBe("error");
       expect(_export.completedAt).toBeFalsy();
       expect(_export.state).toBe("pending");
-      expect(_export.retryCount).toBe(1);
+      expect(_export.retryCount).toBe(0);
 
       // when the response is back to success
       exportProfileResponse = {
@@ -1046,7 +1046,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
       expect(_export.completedAt).toBeFalsy();
       expect(_export.state).toBe("pending");
       expect(_export.sendAt.getTime()).toBeGreaterThan(new Date().getTime());
-      expect(_export.retryCount).toBe(1);
+      expect(_export.retryCount).toBe(0);
 
       // when the response is back to success
       exportProfileResponse = {

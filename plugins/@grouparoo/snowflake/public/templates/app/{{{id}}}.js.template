@@ -5,8 +5,10 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       type: "{{{__pluginName}}}",
-      //refreshQuery: "...", // Optional: How will Grouparoo know to trigger a Data Refresh? ie: `SELECT MAX(updated_at) FROM users`;
-
+      //refreshQuery: {
+      //  query: "..."
+      //  interval: 6000 
+      //}, // Optional: How will Grouparoo know to trigger a Data Refresh? ie: `SELECT MAX(updated_at) FROM users`;
       options: {
         account: "xxx.us-east-1 or xxx.us-east-2.aws", // The full name of the account (provided by Snowflake). It is the subdomain you use to access Snowflake
         username: "...", // Snowflake user login name to connect with

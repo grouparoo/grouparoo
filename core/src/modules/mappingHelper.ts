@@ -15,7 +15,7 @@ export namespace MappingHelper {
     instance: Source | Destination,
     propertyColumn?: "key" | "id"
   ) {
-    const MappingObject: Mappings = {};
+    const mappingObject: Mappings = {};
     const mappings =
       instance.mappings ??
       (await Mapping.findAll({
@@ -36,14 +36,14 @@ export namespace MappingHelper {
           `cannot find property or this source/destination not ready (remoteKey: ${mapping.remoteKey}, propertyId: ${mapping.propertyId})`
         );
       }
-      MappingObject[mapping.remoteKey] = property[propertyColumn || "key"];
+      mappingObject[mapping.remoteKey] = property[propertyColumn || "key"];
     }
 
-    return MappingObject;
+    return mappingObject;
   }
 
   export async function getConfigMapping(instance: Source | Destination) {
-    const MappingObject: Mappings = {};
+    const mappingObject: Mappings = {};
 
     const mappings = await Mapping.findAll({
       where: { ownerId: instance.id },
@@ -57,10 +57,10 @@ export namespace MappingHelper {
           `cannot find property or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
         );
       }
-      MappingObject[mapping.remoteKey] = property.getConfigId();
+      mappingObject[mapping.remoteKey] = property.getConfigId();
     }
 
-    return MappingObject;
+    return mappingObject;
   }
 
   export async function setMapping(

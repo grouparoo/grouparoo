@@ -285,7 +285,7 @@ describe("tasks/export:sendBatch", () => {
         expect(_export.errorLevel).toBe("error");
         expect(_export.completedAt).toBeFalsy();
         expect(_export.state).toBe("pending");
-        expect(_export.retryCount).toBe(1);
+        expect(_export.retryCount).toBe(0);
       });
 
       test("if the export fails without a retryDelay, the export will have the error message appended", async () => {

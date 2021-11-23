@@ -5,8 +5,10 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       type: "{{{__pluginName}}}",
-      //refreshQuery: "...", // Optional: How will Grouparoo know to trigger a Data Refresh? ie: `SELECT MAX(updated_at) FROM users`;
-
+      //refreshQuery: {
+      //  query: "..."
+      //  interval: 6000 
+      //}, // Optional: How will Grouparoo know to trigger a Data Refresh? ie: `SELECT MAX(updated_at) FROM users`;
       options: {
         file: "...", // Path to your SQLite database. It can be an absolute path (e.g. `/path/tpo/mydb.sqlite`) or relative to the root of this project (e.g. `mydb.sqlite`).
       }

@@ -73,6 +73,7 @@ export class RunCLI extends CLI {
 
   async runTasks(params) {
     const tasks = {
+      "appRefreshQueries:check": {},
       "schedules:enqueueRuns": {
         ignoreDeltas: true,
         runIfNotRecurring: true,

@@ -551,7 +551,7 @@ describe("models/destination - with custom processExportedRecords", () => {
       expect(export1.errorMessage).toBe("oh no!");
       expect(export1.errorLevel).toBe("error");
       expect(export1.exportProcessorId).toBeNull(); // cleared
-      expect(export1.retryCount).toBe(1);
+      expect(export1.retryCount).toBe(0);
 
       await export1.destroy();
       await record1.destroy();

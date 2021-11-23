@@ -12,6 +12,7 @@ const ENV_VARIABLES = {
     "GOOGLE_SERVICE_PRIVATE_KEY",
   ],
   mailchimp: ["MAILCHIMP_DESTINATION_LIST_ID", "MAILCHIMP_API_KEY"],
+  pipedrive: ["PIPEDRIVE_API_TOKEN"],
   redshift: [
     "REDSHIFT_PASSWORD",
     "REDSHIFT_USER",

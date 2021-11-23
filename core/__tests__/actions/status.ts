@@ -6,6 +6,7 @@ import { ConfigUser } from "../../src/modules/configUser";
 import { Status } from "../../src/modules/status";
 import { PrivateStatus, PublicStatus } from "../../src/actions/status";
 import { SessionCreate } from "../../src/actions/session";
+import { Team } from "../../src";
 
 const workerId = process.env.JEST_WORKER_ID;
 const configDir = `${os.tmpdir()}/test/${workerId}/configUser/config`;
@@ -14,6 +15,15 @@ process.env.GROUPAROO_CONFIG_DIR = configDir;
 
 describe("actions/status", () => {
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
+
+  beforeAll(async () => {
+    await specHelper.runAction("team:initialize", {
+      firstName: "Mario",
+      lastName: "Mario",
+      password: "P@ssw0rd!",
+      email: "mario@example.com",
+    });
+  });
 
   describe("signed out", () => {
     describe("status:public", () => {

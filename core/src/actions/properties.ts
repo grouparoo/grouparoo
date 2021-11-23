@@ -391,7 +391,7 @@ export class PropertyRecordPreview extends AuthenticatedAction {
       configId: property.getConfigId(),
       type: property.type,
       unique: property.unique,
-      directlyMapped: property.directlyMapped,
+      isPrimaryKey: property.isPrimaryKey,
       isArray: property.isArray,
       identifying: property.identifying,
       valueChangedAt: null,

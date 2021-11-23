@@ -1,18 +1,23 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
-import { App, Run } from "../../src";
+import { specHelper, api } from "actionhero";
 import { SessionCreate } from "../../src/actions/session";
 import {
   AppRefreshQueryCreate,
   AppRefreshQueryDestroy,
   AppRefreshQueryEdit,
-  AppRefreshQueryQuery,
+  AppRefreshQueryRun,
   AppRefreshQueryTest,
   AppRefreshQueryView,
 } from "../../src/actions/appRefreshQuery";
 import { ConfigWriter } from "../../src/modules/configWriter";
-import { GrouparooModel, Schedule, Source } from "../../dist";
-import { Connections } from "actionhero/dist/initializers/connections";
+import {
+  GrouparooModel,
+  Schedule,
+  Source,
+  AppRefreshQuery,
+  App,
+  Run,
+} from "../../src";
 
 describe("actions/appRefreshQuery", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -67,6 +72,7 @@ describe("actions/appRefreshQuery", () => {
       connection.params = {
         csrfToken,
         refreshQuery: "SELECT 'hi' AS name",
+        recurringFrequency: 90000,
         appId: app.id,
         type: "test-plugin-import",
       };
@@ -78,6 +84,7 @@ describe("actions/appRefreshQuery", () => {
       expect(error).toBeUndefined();
       expect(appRefreshQuery.id).toBeTruthy();
       expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hi' AS name");
+      expect(appRefreshQuery.recurringFrequency).toBe(90000);
       expect(configSpy).toBeCalledTimes(1);
 
       id = appRefreshQuery.id;
@@ -97,6 +104,7 @@ describe("actions/appRefreshQuery", () => {
         expect(error).toBeUndefined();
         expect(appRefreshQuery.id).toBeTruthy();
         expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hello' AS name");
+        expect(appRefreshQuery.recurringFrequency).toBe(90000);
         expect(appRefreshQuery.state).toBe("draft");
         expect(configSpy).toBeCalledTimes(1);
       });
@@ -114,7 +122,37 @@ describe("actions/appRefreshQuery", () => {
         expect(error).toBeUndefined();
         expect(appRefreshQuery.state).toBe("ready");
       });
+      test("an administrator can view an appRefreshQuery", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+        };
+
+        const { error, appRefreshQuery } =
+          await specHelper.runAction<AppRefreshQueryView>(
+            "appRefreshQuery:view",
+            connection
+          );
+
+        expect(appRefreshQuery.id).toEqual(id);
+        expect(appRefreshQuery.value.length).toBe(13);
+        expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hello' AS name");
+        expect(appRefreshQuery.recurringFrequency).toBe(90000);
+        expect(error).toBeFalsy();
+      });
       test("an administrator can test an appRefreshQuery", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+        };
+
+        const oldAppRefreshQuery = (
+          await specHelper.runAction<AppRefreshQueryView>(
+            "appRefreshQuery:view",
+            connection
+          )
+        ).appRefreshQuery;
+
         connection.params = {
           csrfToken,
           id,
@@ -127,23 +165,45 @@ describe("actions/appRefreshQuery", () => {
         expect(error).toBeUndefined();
         expect(test.success).toBeTruthy();
         expect(test.message.length).toBe(13); //test plugin queries return a unix timestamp
-        expect(appRefreshQuery.value).toBeFalsy(); //tests shouldn't save any values
+        expect(appRefreshQuery).toEqual(oldAppRefreshQuery); //tests shouldn't change any columns
       });
-      test("an administrator can query with an appRefreshQuery", async () => {
+      test("an administrator can run an appRefreshQuery", async () => {
         connection.params = {
           csrfToken,
           id,
         };
         const { error, appRefreshQuery, valueUpdated } =
-          await specHelper.runAction<AppRefreshQueryQuery>(
-            "appRefreshQuery:query",
+          await specHelper.runAction<AppRefreshQueryRun>(
+            "appRefreshQuery:run",
             connection
           );
         expect(error).toBeUndefined();
         expect(appRefreshQuery.id).toBeTruthy();
         expect(appRefreshQuery.refreshQuery).toBe("SELECT 'hello' AS name");
         expect(appRefreshQuery.value.length).toBe(13);
+        expect(appRefreshQuery.recurringFrequency).toBe(90000);
         expect(valueUpdated).toBeTruthy();
+      });
+      test("running appRefreshQuery:run will cancel any existing runs on the schedule(s)", async () => {
+        await api.resque.queue.connection.redis.flushdb();
+        await Run.truncate();
+        const run = await Run.create({
+          state: "running",
+          creatorType: "schedule",
+          creatorId: schedule.id,
+        });
+
+        connection.params = { csrfToken, id };
+        const { runs, appRefreshQuery } =
+          await specHelper.runAction<AppRefreshQueryRun>(
+            "appRefreshQuery:run",
+            connection
+          );
+
+        expect(runs.length).toBe(1);
+        expect(runs[0].id).not.toEqual(run.id);
+        await run.reload();
+        expect(run.state).toBe("stopped");
       });
       test("an administrator can destroy an appQueryRefresh", async () => {
         connection.params = { csrfToken, id };

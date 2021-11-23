@@ -36,7 +36,7 @@ export interface RecordPropertyType {
     configId: ReturnType<Property["getConfigId"]>;
     type: Property["type"];
     unique: Property["unique"];
-    directlyMapped: Property["directlyMapped"];
+    isPrimaryKey: Property["isPrimaryKey"];
     isArray: Property["isArray"];
     identifying: Property["identifying"];
     valueChangedAt: RecordProperty["valueChangedAt"];
@@ -84,7 +84,7 @@ export namespace RecordOps {
           configId: property.getConfigId(),
           type: property.type,
           unique: property.unique,
-          directlyMapped: property.directlyMapped,
+          isPrimaryKey: property.isPrimaryKey,
           isArray: property.isArray,
           identifying: property.identifying,
           valueChangedAt: recordProperties[i].valueChangedAt,
@@ -303,7 +303,7 @@ export namespace RecordOps {
 
         const keys = Object.keys(recordProperties[recordOffset]);
         checkKeys: for (const key of keys) {
-          if (key === "id") continue checkKeys;
+          // this special, internal-ony key is used to send extra information though an Import.  `_meta` is prevented from being a valid Property key
           if (key === "_meta") continue checkKeys;
 
           const h: { [key: string]: Array<string | number | boolean | Date> } =
@@ -815,7 +815,7 @@ export namespace RecordOps {
   }
 
   /**
-   * Look for records by model that don't have a directlyMapped property and are done importing/exporting.
+   * Look for records by model that don't have a primary key property and are done importing/exporting.
    */
 
   export async function getRecordsToDestroy() {
@@ -829,11 +829,11 @@ export namespace RecordOps {
         model.id
       );
 
-      const directlyMapped = propertiesByModel.filter((property) => {
-        return property.directlyMapped == true;
+      const primaryKeyProperties = propertiesByModel.filter((property) => {
+        return property.isPrimaryKey == true;
       });
 
-      if (directlyMapped.length === 0) {
+      if (primaryKeyProperties.length === 0) {
         modelIdsToClear.push(model.id);
       }
     }
@@ -858,7 +858,7 @@ export namespace RecordOps {
       SELECT DISTINCT("recordId") FROM "recordProperties"
       JOIN properties ON "properties"."id"="recordProperties"."propertyId"
       WHERE
-        "properties"."directlyMapped"=true
+        "properties"."isPrimaryKey"=true
         AND "rawValue" IS NULL
     )
     LIMIT ${limit};
@@ -871,19 +871,19 @@ export namespace RecordOps {
   }
 
   /**
-   * Import records whose directlyMapped property has not been confirmed after a certain date.
+   * Import records whose primary key property has not been confirmed after a certain date.
    */
   export async function confirmExistence(
     limit: number,
     fromDate: Date,
     sourceId?: string
   ) {
-    const directlyMapped = sourceId
+    const primaryKeyProperties = sourceId
       ? await Property.findAll({
-          where: { directlyMapped: true, sourceId },
+          where: { isPrimaryKey: true, sourceId },
         })
       : await Property.findAll({
-          where: { directlyMapped: true },
+          where: { isPrimaryKey: true },
         });
 
     const recordProperties = await RecordProperty.findAll({
@@ -895,14 +895,14 @@ export namespace RecordOps {
         rawValue: {
           [Op.ne]: null,
         },
-        propertyId: directlyMapped.map((p) => p.id),
+        propertyId: primaryKeyProperties.map((p) => p.id),
       },
       limit,
     });
 
     const recordIds = recordProperties.map((pp) => pp.recordId);
 
-    // Only mark record and directlyMapped property pending
+    // Only mark record and primary key property pending
     await markPendingByIds(recordIds, false);
     await RecordProperty.update(
       { state: "pending", startedAt: null },

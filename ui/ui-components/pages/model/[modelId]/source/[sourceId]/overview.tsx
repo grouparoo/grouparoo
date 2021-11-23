@@ -105,6 +105,12 @@ export default function Page({
                         </strong>
                       </a>
                     </Link>
+                    {rule.isPrimaryKey && (
+                      <>
+                        {" "}
+                        <Badge variant="info">primary</Badge>
+                      </>
+                    )}
                   </td>
                   <td>{rule.type}</td>
                   <td>

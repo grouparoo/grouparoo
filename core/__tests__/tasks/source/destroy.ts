@@ -1,19 +1,68 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Property, Source, Destination } from "./../../../src";
+import { Op } from "sequelize";
+import {
+  App,
+  GrouparooModel,
+  Property,
+  Source,
+  Destination,
+} from "./../../../src";
 
 describe("tasks/source:destroy", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let app: App;
+  let model: GrouparooModel;
+
+  const createSource = () =>
+    helper.factories.source(app, { modelId: model.id });
+
+  const createProperties = () => helper.factories.properties(model.id);
+
+  beforeAll(async () => {
+    app = await helper.factories.app();
+    model = await helper.factories.model({
+      name: "test__source_destroy",
+    });
+  });
+
+  beforeEach(async () => {
+    await api.resque.queue.connection.redis.flushdb();
+  });
+
+  afterEach(async () => {
+    const destinations = await Destination.scope(null).findAll({
+      where: { modelId: model.id },
+      order: [["createdAt", "DESC"]],
+    });
+
+    for (const destination of destinations) {
+      await destination.destroy();
+    }
+
+    const sources = await Source.scope(null).findAll({
+      where: { modelId: model.id },
+      order: [["createdAt", "DESC"]],
+    });
+
+    const properties = await Property.scope(null).findAll({
+      where: {
+        sourceId: { [Op.in]: sources.map(({ id }) => id) },
+        isPrimaryKey: false,
+      },
+      order: [["createdAt", "DESC"]],
+    });
+
+    for (const property of properties) {
+      await property.destroy();
+    }
+
+    for (const source of sources) {
+      await source.destroy();
+    }
+  });
 
   describe("source:destroy", () => {
-    beforeEach(async () => {
-      await api.resque.queue.connection.redis.flushdb();
-    });
-
-    beforeAll(async () => {
-      await helper.factories.properties();
-    });
-
     test("can be enqueued", async () => {
       await task.enqueue("source:destroy", { sourceId: "abc123" });
       const found = await specHelper.findEnqueuedTasks("source:destroy");
@@ -22,7 +71,9 @@ describe("tasks/source:destroy", () => {
     });
 
     test("will delete source immediately if it's not being used", async () => {
-      const source = await helper.factories.source();
+      await createProperties();
+
+      const source = await createSource();
       await source.setOptions({ table: "some table" });
       await source.setMapping({ id: "userId" });
 
@@ -38,7 +89,9 @@ describe("tasks/source:destroy", () => {
     });
 
     test("will wait for property to be deleted if it depends on the source", async () => {
-      const source = await helper.factories.source();
+      await createProperties();
+
+      const source = await createSource();
       await source.setOptions({ table: "some table" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
@@ -69,8 +122,8 @@ describe("tasks/source:destroy", () => {
       );
     });
 
-    test("will not destroy until directly mapped property is not in use elsewhere", async () => {
-      const source: Source = await helper.factories.source();
+    test("will not destroy until primary key is not in use elsewhere", async () => {
+      const source: Source = await createSource();
       await source.bootstrapUniqueProperty("myUserId", "integer", "id");
       await source.setOptions({ table: "some table" });
       await source.setMapping({ id: "myUserId" });
@@ -101,8 +154,8 @@ describe("tasks/source:destroy", () => {
       );
     });
 
-    test("will destroy its directly mapped property if not used elsewhere", async () => {
-      const source: Source = await helper.factories.source();
+    test("will destroy its primary key property if not used elsewhere", async () => {
+      const source: Source = await createSource();
       const myUserIdProp = await source.bootstrapUniqueProperty(
         "myUserId",
         "string",
@@ -112,8 +165,8 @@ describe("tasks/source:destroy", () => {
       await source.setMapping({ id: "myUserId" });
       await source.update({ state: "ready" });
 
-      await Property.determineDirectlyMapped(myUserIdProp);
-      expect(myUserIdProp.directlyMapped).toBe(true);
+      await myUserIdProp.reload();
+      expect(myUserIdProp.isPrimaryKey).toBe(true);
 
       await source.update({ state: "deleted" });
       await task.enqueue("source:destroy", { sourceId: source.id });

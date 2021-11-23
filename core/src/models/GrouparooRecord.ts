@@ -231,18 +231,25 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
     this.model = await this.$get("model");
     const modelId = this.model?.getConfigId();
     const properties = await this.getProperties();
-    const directlyMappedProps: {
-      [key: string]: Array<string | boolean | number | Date>;
-    } = {};
+    const primaryKeyProperties: Record<
+      string,
+      (string | boolean | number | Date)[]
+    > = {};
 
     for (const k in properties) {
       const property = properties[k];
-      if (property.directlyMapped && property.values.length > 0) {
-        directlyMappedProps[property.configId] = property.values;
+      if (property.isPrimaryKey && property.values.length > 0) {
+        primaryKeyProperties[property.configId] = property.values;
       }
     }
 
-    if (!modelId) {
+    if (!modelId) return;
+    if (
+      Object.keys(primaryKeyProperties).length === 0 ||
+      Object.values(primaryKeyProperties)
+        .flat()
+        .filter((v) => v !== undefined && v !== null).length === 0
+    ) {
       return;
     }
 
@@ -250,7 +257,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
       id: this.id,
       class: "Record",
       modelId,
-      properties: directlyMappedProps,
+      properties: primaryKeyProperties,
     };
   }
 

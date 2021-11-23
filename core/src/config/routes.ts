@@ -86,7 +86,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/apiKey", action: "apiKey:create" },
         { path: "/v:apiVersion/app", action: "app:create" },
         { path: "/v:apiVersion/appRefreshQuery", action: "appRefreshQuery:create" },
-        { path: "/v:apiVersion/appRefreshQuery/:id/query", action: "appRefreshQuery:query" },
+        { path: "/v:apiVersion/appRefreshQuery/:id/run", action: "appRefreshQuery:run" },
         { path: "/v:apiVersion/config/apply", action: "config:apply" },
         { path: "/v:apiVersion/config/generate", action: "config:generate" },
         { path: "/v:apiVersion/config/user", action: "config:user:create" },

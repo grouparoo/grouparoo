@@ -1,0 +1,20 @@
+{
+  "class": "Destination",
+  "id": "salesforce_accounts",
+  "modelId": "accounts",
+  "name": "Accounts",
+  "type": "salesforce-export-objects",
+  "appId": "salesforce",
+  "collection": "none",
+  "syncMode": "sync",
+  "options": {
+    "recordMatchField": "AccountNumber",
+    "recordObject": "Account"
+  },
+  "mapping": {
+    "AccountNumber": "account_id",
+    "AnnualRevenue": "account_value",
+    "Name": "account_name"
+  },
+  "destinationGroupMemberships": {}
+}

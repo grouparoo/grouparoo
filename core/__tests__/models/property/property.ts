@@ -164,7 +164,7 @@ describe("models/property", () => {
     });
 
     test("keys cannot be from the reserved list of keys", async () => {
-      const reservedKeys = ["grouparooId", "grouparooCreatedAt"];
+      const reservedKeys = ["grouparooId", "grouparooCreatedAt", "_meta"];
       for (const i in reservedKeys) {
         const key = reservedKeys[i];
         await expect(
@@ -175,6 +175,15 @@ describe("models/property", () => {
           })
         ).rejects.toThrow(/is a reserved key and cannot be used/);
       }
+    });
+
+    test("`id` is a valid property key", async () => {
+      const property = await Property.create({
+        sourceId: source.id,
+        type: "string",
+        key: "id",
+      }); // does not throw
+      await property.destroy();
     });
 
     test("a property can be isArray", async () => {
@@ -622,32 +631,6 @@ describe("models/property", () => {
 
     await foreignOption.destroy();
     await source.destroy();
-  });
-
-  describe("directlyMapped", () => {
-    let userIdProperty: Property;
-    let emailProperty: Property;
-
-    beforeAll(async () => {
-      userIdProperty = await Property.findOne({
-        where: { key: "userId" },
-      });
-      emailProperty = await Property.findOne({
-        where: { key: "email" },
-      });
-    });
-
-    test("directlyMapping will be determined as on save", async () => {
-      expect(userIdProperty.directlyMapped).toBe(true);
-      expect(emailProperty.directlyMapped).toBe(false);
-    });
-
-    test("properties include if they are directly mapped", async () => {
-      const rules = await Property.findAll();
-
-      expect(rules.find((r) => r.key === "userId").directlyMapped).toBe(true);
-      expect(rules.find((r) => r.key === "email").directlyMapped).toBe(false);
-    });
   });
 
   describe("with plugin", () => {
