@@ -10,11 +10,12 @@ import LoadingButton from "../../../components/LoadingButton";
 import LockedBadge from "../../../components/badges/LockedBadge";
 import SourceBadge from "../../../components/badges/SourceBadge";
 import StateBadge from "../../../components/badges/StateBadge";
+import AppRefreshQueryScheduleList from "../../../components/app/AppRefreshSchedulesList";
 import AppRefreshQueryStats from "../../../components/app/AppRefreshQueryStats";
 import { Actions, Models } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
-import AppRefreshQueryScheduleList from "../../../components/app/AppRefreshSchedulesList";
+import { grouparooUiEdition } from "../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -92,7 +93,6 @@ export default function Page(props) {
       appRefreshQuery.state = "ready";
     }
     setLoading(true);
-    console.log(appRefreshQuery);
     const response: Actions.AppRefreshQueryEdit = await execApi(
       "put",
       `/appRefreshQuery/${appRefreshQuery.id}`,
@@ -356,7 +356,8 @@ export default function Page(props) {
               </Form.Group>{" "}
             </Col>
             {appRefreshQuery?.refreshQuery?.length > 1 &&
-              appRefreshQuery?.state === "ready" && (
+              appRefreshQuery?.state === "ready" &&
+              grouparooUiEdition()! == "config" && (
                 <Col className="col-md-4 ">
                   <Row className="mx-auto">
                     <AppRefreshQueryStats
