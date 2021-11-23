@@ -40,6 +40,11 @@ export default function Page(props: Props & NextPageContext) {
   const [newMappingValue, setNewMappingValue] = useState(
     () => (Object.values(props.source.mapping)[0] as string) || ""
   );
+  const hasPrimaryKeyProperty = useMemo(
+    () =>
+      props.properties.filter(({ isPrimaryKey }) => isPrimaryKey).length > 0,
+    [props.properties]
+  );
   const [properties, setProperties] = useState(() => {
     const isPrimaryKeyInSource =
       props.source &&
@@ -352,7 +357,7 @@ export default function Page(props: Props & NextPageContext) {
                 </>
               ) : null}
 
-              {newMappingValue === "" ? (
+              {!hasPrimaryKeyProperty && newMappingValue === "" ? (
                 <>
                   <hr />
                   <p>
