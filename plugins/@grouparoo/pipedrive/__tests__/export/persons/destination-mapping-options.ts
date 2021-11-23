@@ -4,9 +4,9 @@ import { helper } from "@grouparoo/spec-helper";
 import {
   destinationMappingOptions,
   fetchKnownPersonFields,
-} from "../../src/lib/export/destinationMappingOptions";
-import { connect } from "../../src/lib/connect";
-import { loadAppOptions, updater } from "../utils/nockHelper";
+} from "../../../src/lib/export/persons/destinationMappingOptions";
+import { connect } from "../../../src/lib/connect";
+import { loadAppOptions, updater } from "../../utils/nockHelper";
 
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);

@@ -1,12 +1,12 @@
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import { exportRecord } from "../../src/lib/export/exportRecord";
-import { connect } from "../../src/lib/connect";
-import { loadAppOptions, updater } from "../utils/nockHelper";
-import { indexUsers } from "../utils/shared";
-import { getKnownPersonFieldMap } from "../../src/lib/export/destinationMappingOptions";
-import { PipedriveClient } from "../../src/lib/client";
+import { exportRecord } from "../../../src/lib/export/persons/exportRecord";
+import { connect } from "../../../src/lib/connect";
+import { loadAppOptions, updater } from "../../utils/nockHelper";
+import { indexUsers } from "../../utils/shared";
+import { getKnownPersonFieldMap } from "../../../src/lib/export/persons/destinationMappingOptions";
+import { PipedriveClient } from "../../../src/lib/client";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 let client: PipedriveClient;
