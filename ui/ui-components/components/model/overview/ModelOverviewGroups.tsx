@@ -3,6 +3,8 @@ import { Models } from "../../../utils/apiData";
 import SectionContainer from "./SectionContainer";
 import EntityInfoContainer from "./EntityInfoContainer";
 import EntityInfoHeader from "./EntityInfoHeader";
+import LinkButton from "../../LinkButton";
+import { useGrouparooModelContext } from "../../../contexts/GrouparooModelContext";
 
 const GroupInfo: React.FC<{ group: Models.GroupType }> = ({ group }) => {
   return (
@@ -22,6 +24,7 @@ const GroupInfo: React.FC<{ group: Models.GroupType }> = ({ group }) => {
 const ModelOverviewGroups: React.FC<{ groups: Models.GroupType[] }> = ({
   groups,
 }) => {
+  const model = useGrouparooModelContext();
   return (
     <SectionContainer
       title="Groups"
@@ -37,6 +40,14 @@ const ModelOverviewGroups: React.FC<{ groups: Models.GroupType[] }> = ({
           ))}
         </ListGroup>
       )}
+      <LinkButton
+        variant="outline-primary"
+        size="sm"
+        href={`/model/${model.id}/group/new`}
+        hideOn={["community"]}
+      >
+        Add new Group
+      </LinkButton>
     </SectionContainer>
   );
 };

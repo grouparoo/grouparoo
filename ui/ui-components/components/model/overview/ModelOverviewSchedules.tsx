@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import { formatName } from "../../../utils/formatName";
@@ -6,6 +6,7 @@ import { formatSchedule } from "../../../utils/formatSchedule";
 import SectionContainer from "./SectionContainer";
 import EntityInfoContainer from "./EntityInfoContainer";
 import EntityInfoHeader from "./EntityInfoHeader";
+import LoadingButton from "../../LoadingButton";
 
 const ScheduleInfo: React.FC<{
   schedule: Models.ScheduleType;
@@ -27,6 +28,8 @@ const ModelOverviewSchedules: React.FC<{
   schedules: Models.ScheduleType[];
   sources?: Models.SourceType[];
 }> = ({ schedules, sources }) => {
+  const [isRunningSchedules, setIsRunningSchedules] = useState(false);
+
   const sourcesById = useMemo<Record<string, Models.SourceType>>(() => {
     const result: Record<string, Models.SourceType> = {};
 
@@ -56,6 +59,15 @@ const ModelOverviewSchedules: React.FC<{
           ))}
         </ListGroup>
       )}
+      <LoadingButton
+        variant="outline-primary"
+        size="sm"
+        disabled={isRunningSchedules}
+        // onClick={() => enqueueAllSchedulesRun()}
+        hideOn={["config"]}
+      >
+        Run all Schedules
+      </LoadingButton>
     </SectionContainer>
   );
 };

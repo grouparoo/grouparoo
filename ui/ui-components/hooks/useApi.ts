@@ -6,13 +6,24 @@ import { UploadHandler } from "../utils/uploadHandler";
 
 export const client = new Client();
 
+export interface UseApiHook {
+  execApi: <T extends {} = any>(
+    verb: Method,
+    path: string,
+    data?: AxiosRequestConfig["data"],
+    setter?: (response: T) => void,
+    setterKey?: string,
+    useCache?: boolean
+  ) => Promise<T>;
+}
+
 export function UseApi(
   ctx: GetServerSidePropsContext | NextPageContext,
   errorHandler?: ErrorHandler,
   uploadHandler?: UploadHandler
-) {
+): UseApiHook {
   async function execApi<T extends {} = any>(
-    verb: Method = "get",
+    verb: Method,
     path: string,
     data: AxiosRequestConfig["data"] = {},
     setter?: (response: T) => void,

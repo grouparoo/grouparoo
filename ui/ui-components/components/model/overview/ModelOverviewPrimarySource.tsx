@@ -1,32 +1,39 @@
-import { Button, ListGroup, ListGroupItem } from "react-bootstrap";
+import { ListGroup, ListGroupItem } from "react-bootstrap";
+import { useGrouparooModelContext } from "../../../contexts/GrouparooModelContext";
 import { Models } from "../../../utils/apiData";
+import LinkButton from "../../LinkButton";
 import SectionContainer from "./SectionContainer";
 import SourceInfo from "./SourceInfo";
 
-const ModelOverviewPrimarySource: React.FC<{ source: Models.SourceType }> = ({
+const ModelOverviewPrimarySource: React.FC<{ source?: Models.SourceType }> = ({
   source,
 }) => {
+  const model = useGrouparooModelContext();
+
   return (
     <SectionContainer
       title="Primary Source"
-      iconType="app"
-      icon={source.app?.icon}
+      iconType={source ? "app" : "icon"}
+      icon={source ? source.app?.icon : "file-import"}
       description="The primary source defines the core properties and primary key for your records."
     >
-      <p>
-        <Button variant="outline-primary" size="sm">
-          Learn more
-        </Button>{" "}
-        <Button variant="primary" size="sm">
-          Add primary source
-        </Button>
-      </p>
-      {source && (
+      {source ? (
         <ListGroup className="list-group-flush">
           <ListGroupItem>
             <SourceInfo source={source} isPrimarySource />
           </ListGroupItem>
         </ListGroup>
+      ) : (
+        <div>
+          <LinkButton
+            variant="primary"
+            size="sm"
+            href={`/model/${model.id}/source/new`}
+            hideOn={["community"]}
+          >
+            Create primary Source
+          </LinkButton>
+        </div>
       )}
     </SectionContainer>
   );

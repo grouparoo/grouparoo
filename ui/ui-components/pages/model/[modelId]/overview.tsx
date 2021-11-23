@@ -15,6 +15,7 @@ import ModelOverviewPrimarySource from "../../../components/model/overview/Model
 import ModelOverviewSchedules from "../../../components/model/overview/ModelOverviewSchedules";
 import ModelOverviewSecondarySources from "../../../components/model/overview/ModelOverviewSecondarySources";
 import PageHeader from "../../../components/PageHeader";
+import { GrouparooModelContextProvider } from "../../../contexts/GrouparooModelContext";
 import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
 
@@ -57,7 +58,7 @@ const Page: NextPage<Props> = ({
   );
 
   return (
-    <>
+    <GrouparooModelContextProvider model={model}>
       <Head>
         <title>Grouparoo: {model.name}</title>
       </Head>
@@ -72,6 +73,7 @@ const Page: NextPage<Props> = ({
           Define your {model.name} model here with sources, groups, and
           destinations.
         </p>
+
         <Row className="mb-4">
           <Col>
             <ModelOverviewCard title="Model Data">
@@ -106,7 +108,7 @@ const Page: NextPage<Props> = ({
           </Col>
         </Row>
       </Container>
-    </>
+    </GrouparooModelContextProvider>
   );
 };
 

@@ -6,6 +6,8 @@ import EntityInfoContainer from "./EntityInfoContainer";
 import EntityInfoHeader from "./EntityInfoHeader";
 import Link from "next/link";
 import EnterpriseLink from "../../../components/GrouparooLink";
+import { useGrouparooModelContext } from "../../../contexts/GrouparooModelContext";
+import LinkButton from "../../LinkButton";
 
 const DestinationInfo: React.FC<{ destination: Models.DestinationType }> = ({
   destination,
@@ -34,25 +36,35 @@ const DestinationInfo: React.FC<{ destination: Models.DestinationType }> = ({
   );
 };
 
-interface ModelOverviewDestinationsProps {
+interface Props {
   destinations?: Models.DestinationType[];
 }
 
-const ModelOverviewDestinations: React.FC<ModelOverviewDestinationsProps> = ({
-  destinations,
-}) => {
-  if (!destinations || !destinations.length) {
-    return null;
-  }
+const ModelOverviewDestinations: React.FC<Props> = ({ destinations }) => {
+  const model = useGrouparooModelContext();
 
   return (
-    <ListGroup className="list-group-flush">
-      {destinations.map((destination, index) => (
-        <ListGroupItem key={index}>
-          <DestinationInfo destination={destination} />
-        </ListGroupItem>
-      ))}
-    </ListGroup>
+    <>
+      {destinations && (
+        <ListGroup className="list-group-flush">
+          {destinations.map((destination, index) => (
+            <ListGroupItem key={index}>
+              <DestinationInfo destination={destination} />
+            </ListGroupItem>
+          ))}
+        </ListGroup>
+      )}
+      <div>
+        <LinkButton
+          variant="outline-primary"
+          size="sm"
+          href={`/model/${model.id}/destination/new`}
+          hideOn={["community"]}
+        >
+          Add new Destination
+        </LinkButton>
+      </div>
+    </>
   );
 };
 
