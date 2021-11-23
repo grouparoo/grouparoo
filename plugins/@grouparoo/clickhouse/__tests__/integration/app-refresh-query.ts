@@ -1,6 +1,6 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/mysql": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/clickhouse": { path: path.join(__dirname, "..", "..") },
 });
 
 import { helper } from "@grouparoo/spec-helper";
@@ -9,7 +9,7 @@ import { beforeData, afterData, getConfig } from "../utils/data";
 
 const { appOptions } = getConfig();
 
-describe("integration/refreshQuery/mysql", () => {
+describe("integration/refreshQuery/clickhouse", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: false });
 
   let app: App;
@@ -18,7 +18,7 @@ describe("integration/refreshQuery/mysql", () => {
     await beforeData();
     app = await App.create({
       name: "test app",
-      type: "mysql",
+      type: "clickhouse",
     });
     await app.setOptions(appOptions);
     await app.update({ state: "ready" });
