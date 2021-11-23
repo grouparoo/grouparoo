@@ -337,10 +337,7 @@ export default function Page(props) {
                   </Col>
                 </Row>{" "}
                 <Col>
-                  {testResult.success !== null &&
-                  testResult.success !== false &&
-                  testResult.success !== undefined &&
-                  !testResult.error ? (
+                  {testResult.success && editing && !testResult.error ? (
                     <Alert variant="success" className="text-break">
                       <strong>Test Passed. </strong>Sample Value ={" "}
                       {testResult.message}
