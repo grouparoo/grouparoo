@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { Actions, Models } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 
-export default function AddPropertyForm(props) {
+export default function PropertyAddButton(props) {
   const {
     errorHandler,
     source,
@@ -42,7 +42,7 @@ export default function AddPropertyForm(props) {
   if (source.state === "draft") {
     return (
       <p>
-        <small>Source is not ready, cannot add Property</small>
+        <small>Source is not ready, cannot add Properties</small>
       </p>
     );
   }
