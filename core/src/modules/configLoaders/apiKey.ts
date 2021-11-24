@@ -15,7 +15,7 @@ export async function loadApiKey(
 ): Promise<IdsByClass> {
   let isNew = false;
 
-  validateConfigObjectKeys(ApiKey, configObject);
+  validateConfigObjectKeys(ApiKey, configObject, ["options", "permissions"]);
 
   let apiKey = await ApiKey.scope(null).findOne({
     where: { locked: getCodeConfigLockKey(), id: configObject.id },

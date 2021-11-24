@@ -30,7 +30,7 @@ export async function loadSchedule(
     delete configObject["confirmProfiles"];
   }
 
-  validateConfigObjectKeys(Schedule, configObject);
+  validateConfigObjectKeys(Schedule, configObject, ["options", "filters"]);
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
   let schedule = await Schedule.scope(null).findOne({

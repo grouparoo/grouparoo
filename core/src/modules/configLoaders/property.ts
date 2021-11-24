@@ -21,7 +21,12 @@ export async function loadProperty(
   let isNew = false;
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
-  validateConfigObjectKeys(Property, configObject, ["name", "identifying"]);
+  validateConfigObjectKeys(Property, configObject, [
+    "options",
+    "filters",
+    "name",
+    "identifying", // deprecated
+  ]);
 
   let property = await Property.scope(null).findOne({
     where: {
@@ -56,10 +61,7 @@ export async function loadProperty(
     await property.setFilters(configObject.filters, externallyValidate);
   }
 
-  if (
-    configObject["identifying"] !== null &&
-    configObject["identifying"] !== undefined
-  ) {
+  if (!!configObject["identifying"]) {
     Deprecation.warnRemoved("config", "Property", "identifying");
   }
 

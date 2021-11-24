@@ -51,37 +51,6 @@ describe("classes/codeConfig", () => {
       expect(providedIds).toEqual(["source:users_table"]);
     });
 
-    describe("with bootstrapped property included in source", () => {
-      let manualConfigObjects: AnyConfigurationObject[];
-
-      beforeAll(async () => {
-        const dir = path.join(
-          __dirname,
-          "..",
-          "fixtures",
-          "codeConfig",
-          "bootstrapped-property-in-source"
-        );
-        manualConfigObjects = await loadConfigObjects(dir);
-      });
-
-      test("includes the value of bootstrapped properties included in source", async () => {
-        const source = manualConfigObjects.find(
-          ({ id }) => id === "users_table"
-        );
-        const { prerequisiteIds, providedIds } = await getParentIds(
-          source,
-          manualConfigObjects.filter((c) => c.id !== source.id)
-        );
-        expect(prerequisiteIds).toEqual([
-          "app:data_warehouse",
-          "model:mod_profiles",
-          "property:user_id",
-        ]);
-        expect(providedIds).toEqual(["source:users_table", "property:user_id"]);
-      });
-    });
-
     describe("query source", () => {
       const source = {
         class: "source",

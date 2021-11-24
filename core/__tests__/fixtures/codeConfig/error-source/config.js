@@ -38,7 +38,6 @@ module.exports = async function getConfig() {
       mapping: {
         id: "user_id",
       },
-      bootstrappedProperty: {},
     },
   ];
 };

@@ -18,7 +18,7 @@ export async function loadGroup(
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
-  validateConfigObjectKeys(Group, configObject);
+  validateConfigObjectKeys(Group, configObject, ["rules"]);
 
   let group = await Group.scope(null).findOne({
     where: {
