@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ButtonProps } from "react-bootstrap";
 import { ApiHook } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
 import { successHandler } from "../../utils/eventHandlers";
@@ -7,17 +8,26 @@ import LoadingButton from "../LoadingButton";
 interface Props {
   execApi: ApiHook["execApi"];
   modelId: string;
+  disabled?: boolean;
+  size?: ButtonProps["size"];
+  onStart?: () => void;
+  onSuccess?: () => void;
   onComplete?: () => void;
 }
 
 const RunAllSchedulesButton: React.FC<Props> = ({
   execApi,
   modelId,
+  disabled,
+  size,
+  onStart,
+  onSuccess,
   onComplete,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   async function enqueueAllSchedulesRun() {
+    onStart?.();
     setIsLoading(true);
     try {
       const { runs } = await execApi<Actions.SchedulesRun>(
@@ -26,17 +36,18 @@ const RunAllSchedulesButton: React.FC<Props> = ({
         { modelId }
       );
       successHandler.set({ message: `${runs.length} runs enqueued` });
-      onComplete?.();
+      onSuccess?.();
     } finally {
       setIsLoading(false);
+      onComplete?.();
     }
   }
 
   return (
     <LoadingButton
       variant="outline-primary"
-      size="sm"
-      disabled={isLoading}
+      size={size}
+      disabled={isLoading || disabled}
       onClick={() => enqueueAllSchedulesRun()}
       hideOn={["config"]}
     >

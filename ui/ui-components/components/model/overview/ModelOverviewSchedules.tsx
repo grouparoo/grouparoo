@@ -62,7 +62,7 @@ const ModelOverviewSchedules: React.FC<{
           ))}
         </ListGroup>
       )}
-      <RunAllSchedulesButton modelId={model.id} execApi={execApi} />
+      <RunAllSchedulesButton size="sm" modelId={model.id} execApi={execApi} />
     </SectionContainer>
   );
 };

@@ -7,7 +7,6 @@ import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
 import Link from "../../../components/GrouparooLink";
 import Pagination from "../../../components/Pagination";
-import LoadingTable from "../../../components/LoadingTable";
 import AppIcon from "../../../components/AppIcon";
 import StateBadge from "../../../components/badges/StateBadge";
 import { Models, Actions } from "../../../utils/apiData";
@@ -19,6 +18,7 @@ import LinkButton from "../../../components/LinkButton";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 import { formatSchedule } from "../../../utils/formatSchedule";
 import { formatName } from "../../../utils/formatName";
+import RunAllSchedulesButton from "../../../components/schedule/RunAllSchedulesButton";
 
 export default function Page(props) {
   const {
@@ -38,7 +38,7 @@ export default function Page(props) {
     props.runs
   );
   const [total, setTotal] = useState(props.total);
-  const { modelId } = router.query;
+  const modelId = router.query.modelId as string;
 
   // pagination
   const limit = 100;
@@ -88,21 +88,6 @@ export default function Page(props) {
     }
   }
 
-  async function enqueueAllSchedulesRun() {
-    setLoading(true);
-    try {
-      const response: Actions.SchedulesRun = await execApi(
-        "post",
-        `/schedules/run`,
-        { modelId }
-      );
-      successHandler.set({ message: `${response.runs.length} runs enqueued` });
-    } finally {
-      setLoading(false);
-      load();
-    }
-  }
-
   return (
     <>
       <Head>
@@ -116,7 +101,7 @@ export default function Page(props) {
         offset={offset}
         onPress={setOffset}
       />
-      <LoadingTable loading={loading}>
+      <table>
         <thead>
           <tr>
             <th></th>
@@ -190,7 +175,7 @@ export default function Page(props) {
             );
           })}
         </tbody>
-      </LoadingTable>
+      </table>
       <Pagination
         total={total}
         limit={limit}
@@ -206,14 +191,16 @@ export default function Page(props) {
         Add new Source
       </LinkButton>
       &nbsp;
-      <LoadingButton
-        variant="outline-primary"
+      <RunAllSchedulesButton
+        modelId={modelId}
+        execApi={execApi}
         disabled={loading}
-        onClick={() => enqueueAllSchedulesRun()}
-        hideOn={["config"]}
-      >
-        Run all {modelName} Schedules
-      </LoadingButton>
+        onStart={() => setLoading(true)}
+        onComplete={() => {
+          setLoading(false);
+          load();
+        }}
+      />
     </>
   );
 }
