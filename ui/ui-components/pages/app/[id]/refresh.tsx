@@ -66,6 +66,7 @@ export default function Page(props) {
       router.push(`/app/${response.appRefreshQuery.appId}/refresh`);
     }
     setLoading(false);
+    setEditing(true);
   }
 
   async function update(event) {
