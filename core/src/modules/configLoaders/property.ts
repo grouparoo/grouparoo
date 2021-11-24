@@ -56,7 +56,10 @@ export async function loadProperty(
     await property.setFilters(configObject.filters, externallyValidate);
   }
 
-  if (configObject["identifying"] !== null) {
+  if (
+    configObject["identifying"] !== null &&
+    configObject["identifying"] !== undefined
+  ) {
     Deprecation.warnRemoved("config", "Property", "identifying");
   }
 
