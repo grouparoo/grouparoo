@@ -232,11 +232,6 @@ export default function Page(props) {
       </>
     );
   } else {
-    console.log(`editing? ${editing}`);
-    console.log(`disabled? ${disabled}`);
-    console.log(`locked app? ${app.locked}`);
-    console.log(`locked appRefreshQuery? ${appRefreshQuery.locked}`);
-
     return (
       <>
         <Head>
