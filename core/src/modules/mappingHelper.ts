@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { Mapping } from "../models/Mapping";
 import { Property } from "../models/Property";
 import { Source } from "./../models/Source";
@@ -7,9 +8,7 @@ import { LoggedModel } from "../classes/loggedModel";
 import { modelName } from "./modelName";
 
 export namespace MappingHelper {
-  export interface Mappings {
-    [remoteKey: string]: any;
-  }
+  export type Mappings = Record<string, string>;
 
   export async function getMapping(
     instance: Source | Destination,
@@ -74,6 +73,25 @@ export namespace MappingHelper {
       where: { ownerId: instance.id, ownerType: modelName(instance) },
     });
 
+    const otherSourcePrimaryKey =
+      instance instanceof Source
+        ? await Property.findOne({
+            include: {
+              model: Source,
+              required: true,
+              where: {
+                modelId: instance.modelId,
+              },
+            },
+            where: {
+              isPrimaryKey: true,
+              sourceId: {
+                [Op.ne]: instance.id,
+              },
+            },
+          })
+        : undefined;
+
     let newMappings: Mapping[] = [];
     const keys = Object.keys(mappings);
     for (const i in keys) {
@@ -94,6 +112,12 @@ export namespace MappingHelper {
       if (source.modelId !== instance.modelId) {
         throw new Error(
           `cannot map a ${instance.modelId} model to a ${source.modelId} property (${source.name})`
+        );
+      }
+
+      if (otherSourcePrimaryKey && property.sourceId === instance.id) {
+        throw new Error(
+          `'${instance.name}' cannot map '${remoteKey}' to own Property '${key}'. '${source.name}' must map to a Property from primary Source '${otherSourcePrimaryKey.source.name}'.`
         );
       }
 
