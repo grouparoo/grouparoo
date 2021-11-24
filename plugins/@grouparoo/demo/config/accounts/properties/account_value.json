@@ -5,7 +5,6 @@
   "key": "accountValue",
   "sourceId": "demo_payments",
   "unique": false,
-  "identifying": false,
   "isArray": false,
   "options": {
     "aggregationMethod": "sum",

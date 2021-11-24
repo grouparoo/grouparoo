@@ -21,7 +21,7 @@ export async function loadSchedule(
   let isNew = false;
 
   if (configObject.hasOwnProperty("confirmProfiles")) {
-    Deprecation.warn(
+    Deprecation.warnChanged(
       "config",
       "schedule.confirmProfiles",
       "schedule.confirmRecords"

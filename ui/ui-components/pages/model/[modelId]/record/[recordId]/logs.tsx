@@ -2,10 +2,7 @@ import Head from "next/head";
 import { UseApi } from "../../../../../hooks/useApi";
 import LogsList from "../../../../../components/log/List";
 import RecordTabs from "../../../../../components/tabs/Record";
-import {
-  getRecordDisplayName,
-  getRecordPageTitle,
-} from "../../../../../components/record/GetRecordDisplayName";
+import { getRecordDisplayName } from "../../../../../components/record/GetRecordDisplayName";
 import { Models } from "../../../../../utils/apiData";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -35,7 +32,7 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: {getRecordPageTitle(record)}</title>
+        <title>Grouparoo: {getRecordDisplayName(record)}</title>
       </Head>
 
       <RecordTabs record={record} />

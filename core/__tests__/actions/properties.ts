@@ -10,7 +10,6 @@ import {
   PropertyEdit,
   PropertyFilterOptions,
   PropertyGroups,
-  PropertyMakeIdentifying,
   PropertyPluginOptions,
   PropertyRecordPreview,
   PropertyTest,
@@ -253,21 +252,6 @@ describe("actions/properties", () => {
       const { error } = await specHelper.runAction("property:edit", connection);
 
       expect(error.message).toMatch("column is required");
-    });
-
-    test("a rule can be made identifying", async () => {
-      connection.params = {
-        csrfToken,
-        id,
-      };
-      const { error, property } =
-        await specHelper.runAction<PropertyMakeIdentifying>(
-          "property:makeIdentifying",
-          connection
-        );
-      expect(error).toBeFalsy();
-      expect(property.identifying).toEqual(true);
-      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("an administrator can list all the properties with examples", async () => {

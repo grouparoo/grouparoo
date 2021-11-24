@@ -831,15 +831,7 @@ describe("models/source", () => {
       await model.destroy();
     });
 
-    test("it can remove identifying from other properties", async () => {
-      const property = await Property.findOne({
-        where: { identifying: true },
-      });
-      property.identifying = false;
-      await property.save();
-    });
-
-    test("bootstrapUniqueProperty will create a new identifying property", async () => {
+    test("bootstrapUniqueProperty will create a new unique property", async () => {
       const property = await source.bootstrapUniqueProperty(
         "uniqueId",
         "integer",
@@ -849,7 +841,6 @@ describe("models/source", () => {
       expect(property.key).toBe("uniqueId");
       expect(property.type).toBe("integer");
       expect(property.isArray).toBe(false);
-      expect(property.identifying).toBe(true);
       expect(property.state).toBe("ready");
       expect(property.unique).toBe(true);
 

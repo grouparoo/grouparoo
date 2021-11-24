@@ -77,7 +77,6 @@ export interface PropertyConfigurationObject extends ConfigurationObject {
   key: string;
   type: string;
   sourceId: string;
-  identifying?: boolean;
   unique?: boolean;
   isArray?: boolean;
   options?: { [key: string]: any };
@@ -412,7 +411,7 @@ export async function getParentIds(
   }
 
   const objectContainers = ["options", "source", "destination"];
-  const validContainerKeys = ["identifyingPropertyId", "propertyId"];
+  const validContainerKeys = ["propertyId"];
   objectContainers.map((_container) => {
     if (configObject[_container]) {
       const containerKeys = Object.keys(configObject[_container]);

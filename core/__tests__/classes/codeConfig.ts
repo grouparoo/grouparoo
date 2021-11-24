@@ -97,7 +97,6 @@ describe("classes/codeConfig", () => {
         sourceId: "query_source",
         type: "float",
         unique: false,
-        identifying: false,
         isArray: false,
         options: {
           query: "SELECT SUM(price) from purchases where user_id = {{userId}}",

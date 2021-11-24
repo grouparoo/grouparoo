@@ -5,7 +5,6 @@
   "key": "fullName",
   "sourceId": "demo_calculated_property_source",
   "unique": false,
-  "identifying": false,
   "isArray": false,
   "options": {
     "customFunction": "() => \"{{ firstName }} {{ lastName }}\""

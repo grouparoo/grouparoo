@@ -147,15 +147,4 @@ export namespace PropertyOps {
       (v, i, a) => a.findIndex((t) => t.id === v.id) === i
     );
   }
-
-  /** Make this rule identifying */
-  export async function makeIdentifying(p: Property) {
-    if (p.identifying === true) return;
-
-    await Property.update(
-      { identifying: false },
-      { where: { id: { [Op.ne]: p.id } } }
-    );
-    await p.update({ identifying: true });
-  }
 }

@@ -136,7 +136,6 @@ describe("modules/codeConfig", () => {
         expect(property.key).toBe("userId");
         expect(property.type).toBe("integer");
         expect(property.unique).toBe(true);
-        expect(property.identifying).toBe(true);
         expect(property.state).toBe("ready");
         expect(property.locked).toBe("config:code");
       });
@@ -815,7 +814,6 @@ describe("modules/codeConfig", () => {
       expect(property.key).toBe("userId");
       expect(property.type).toBe("integer");
       expect(property.unique).toBe(true);
-      expect(property.identifying).toBe(true);
       expect(property.state).toBe("ready");
       expect(property.locked).toBe("config:code");
     });
