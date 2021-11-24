@@ -261,9 +261,7 @@ export class App extends LoggedModel<App> {
 
     const options = await this.getOptions(false);
 
-    const appRefreshQuery: AppRefreshQuery = await AppRefreshQuery.findOne({
-      where: { appId: this.id },
-    });
+const appRefreshQuery = await this.$get('appRefreshQuery')
 
     if (!name) return;
 
