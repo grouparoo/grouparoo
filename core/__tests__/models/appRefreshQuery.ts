@@ -78,14 +78,14 @@ describe("appRefreshQuery", () => {
     });
 
     test("an updated query on a ready appRefreshQuery enqueues a run", async () => {
-      await api.resque.queue.connection.redis.flushdb();
-
       const appRefreshQuery = new AppRefreshQuery({
         appId: app.id,
         refreshQuery: "SELECT MAX(updated_at) FROM users;",
         state: "ready",
       });
       await appRefreshQuery.save();
+
+      await api.resque.queue.connection.redis.flushdb();
 
       await appRefreshQuery.update({ refreshQuery: "SELECT 'hi' AS name;" });
 
