@@ -181,7 +181,6 @@ import {
   PropertyCreate,
   PropertyDestroy,
   PropertyEdit,
-  PropertyMakeIdentifying,
   PropertyFilterOptions,
   PropertyGroups,
   PropertyPluginOptions,
@@ -514,9 +513,6 @@ export namespace Actions {
   >;
   export type PropertyEdit = AsyncReturnType<
     typeof PropertyEdit.prototype.runWithinTransaction
-  >;
-  export type PropertyMakeIdentifying = AsyncReturnType<
-    typeof PropertyMakeIdentifying.prototype.runWithinTransaction
   >;
   export type PropertyFilterOptions = AsyncReturnType<
     typeof PropertyFilterOptions.prototype.runWithinTransaction
