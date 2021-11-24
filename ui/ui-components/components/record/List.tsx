@@ -113,8 +113,8 @@ export default function RecordsList(props) {
 
   const primaryProperty = properties.find((property) => property.isPrimaryKey);
   const uniqueRecordPropertyKeys = properties
-    .filter((property) =>
-      !primaryProperty || propery.id !== primaryProperty.id
+    .filter(
+      (property) => !primaryProperty || property.id !== primaryProperty.id
     )
     .filter((rule) => rule.unique)
     .map((rule) => rule.key);
