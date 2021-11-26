@@ -1,25 +1,25 @@
 import {
-  ErrorWithRecordId,
-  SimpleAppOptions,
-  objectCache,
   DestinationSyncOperations,
+  ErrorWithRecordId,
+  objectCache,
+  SimpleAppOptions,
 } from "@grouparoo/core";
 import { connect } from "../connect";
 import { getFieldMap, SalesforceCacheData } from "../objects";
 import {
-  exportRecordsInBatch,
   BatchConfig,
   BatchExport,
   BatchGroupMode,
-  BatchMethodGetClient,
-  BatchMethodFindAndSetDestinationIds,
-  BatchMethodDeleteByDestinationIds,
-  BatchMethodUpdateByDestinationIds,
-  BatchMethodCreateByForeignKeyAndSetDestinationIds,
   BatchMethodAddToGroups,
-  BatchMethodRemoveFromGroups,
+  BatchMethodCreateByForeignKeyAndSetDestinationIds,
+  BatchMethodDeleteByDestinationIds,
+  BatchMethodFindAndSetDestinationIds,
+  BatchMethodGetClient,
   BatchMethodNormalizeForeignKeyValue,
   BatchMethodNormalizeGroupName,
+  BatchMethodRemoveFromGroups,
+  BatchMethodUpdateByDestinationIds,
+  exportRecordsInBatch,
 } from "@grouparoo/app-templates/dist/destination/batch";
 import { SalesforceModel } from "./model";
 import { parseFieldName } from "./mapping";
@@ -35,6 +35,7 @@ const getClient: BatchMethodGetClient = async ({ config }) => {
 // use the getByForeignKey to lookup results
 const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   client,
+  users,
   foreignKeys,
   getByForeignKey,
   config,
@@ -42,7 +43,11 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   // search for these using the foreign key
   const { recordObject, recordMatchField } = config.data;
   const idType = "Id";
-  const query = { [recordMatchField]: foreignKeys };
+
+  const foreignKeyType = getForeignKeyType(users, recordMatchField);
+  const parsedForeignKeys = parseForeignKeys(foreignKeys, foreignKeyType);
+
+  const query = { [recordMatchField]: parsedForeignKeys };
   const fields = [idType, recordMatchField];
   const records = await client
     .sobject(recordObject)
@@ -335,6 +340,25 @@ function buildUserPayload(
   }
 
   return { row, referenceData };
+}
+
+function getForeignKeyType(users: BatchExport[], recordMatchField: string) {
+  if (users.length > 0) {
+    return typeof users[0].newRecordProperties[recordMatchField];
+  }
+  return null;
+}
+
+function parseForeignKeys(
+  foreignKeys: string[],
+  type: string
+): Array<number | string> {
+  if (!type) {
+    return foreignKeys;
+  }
+  return foreignKeys.map((foreignKey) => {
+    return type === "number" ? Number(foreignKey) : foreignKey;
+  });
 }
 
 function formatAndDefaultValue(value, field) {
