@@ -42,7 +42,6 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   // search for these using the foreign key
   const { recordObject, recordMatchField } = config.data;
   const idType = "Id";
-
   const query = { [recordMatchField]: foreignKeys };
   const fields = [idType, recordMatchField];
   const records = await client
