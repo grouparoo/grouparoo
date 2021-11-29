@@ -1,5 +1,5 @@
 import { ListGroup, ListGroupItem } from "react-bootstrap";
-import { useGrouparooModelContext } from "../../../contexts/grouparooModelContext";
+import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 import { Models } from "../../../utils/apiData";
 import LinkButton from "../../LinkButton";
 import SectionContainer from "./SectionContainer";

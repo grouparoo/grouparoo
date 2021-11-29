@@ -6,7 +6,7 @@ import EntityInfoContainer from "./EntityInfoContainer";
 import EntityInfoHeader from "./EntityInfoHeader";
 import Link from "next/link";
 import EnterpriseLink from "../../../components/GrouparooLink";
-import { useGrouparooModelContext } from "../../../contexts/grouparooModelContext";
+import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 import LinkButton from "../../LinkButton";
 import ModelOverviewCard from "./ModelOverviewCard";
 

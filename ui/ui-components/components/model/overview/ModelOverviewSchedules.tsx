@@ -8,7 +8,7 @@ import EntityInfoContainer from "./EntityInfoContainer";
 import EntityInfoHeader from "./EntityInfoHeader";
 import RunAllSchedulesButton from "../../schedule/RunAllSchedulesButton";
 import { ApiHook } from "../../../hooks/useApi";
-import { useGrouparooModelContext } from "../../../contexts/grouparooModelContext";
+import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 
 const ScheduleInfo: React.FC<{
   schedule: Models.ScheduleType;

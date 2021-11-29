@@ -9,7 +9,7 @@ import ModelOverviewPrimarySource from "../../../components/model/overview/Model
 import ModelOverviewSchedules from "../../../components/model/overview/ModelOverviewSchedules";
 import ModelOverviewSecondarySources from "../../../components/model/overview/ModelOverviewSecondarySources";
 import PageHeader from "../../../components/PageHeader";
-import { GrouparooModelContextProvider } from "../../../contexts/grouparooModelContext";
+import { GrouparooModelContextProvider } from "../../../contexts/grouparooModel";
 import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
 
