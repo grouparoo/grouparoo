@@ -64,7 +64,7 @@ export default function Page(props) {
     );
 
     if (response?.appRefreshQuery) {
-      setAppRefreshQuery({ ...response.appRefreshQuery });
+      setAppRefreshQuery(response.appRefreshQuery);
       router.push(`/app/${response.appRefreshQuery.appId}/refresh`);
     }
     setLoading(false);
@@ -328,7 +328,7 @@ export default function Page(props) {
                         type="submit"
                         size="sm"
                         className="my-2 ml-2"
-                        // disabled={disabled}
+                        disabled={disabled}
                         hidden={!editing}
                       >
                         Update
