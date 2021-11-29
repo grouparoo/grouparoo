@@ -30,6 +30,16 @@ const ModelOverviewGroups: React.FC<{ groups: Models.GroupType[] }> = ({
       title="Groups"
       icon="users"
       description="Segment your data using groups to enrich your destinations."
+      actionButtons={
+        <LinkButton
+          variant="outline-primary"
+          size="sm"
+          href={`/model/${model.id}/group/new`}
+          hideOn={["community"]}
+        >
+          Add new Group
+        </LinkButton>
+      }
     >
       {groups.length > 0 && (
         <ListGroup className="list-group-flush">
@@ -40,14 +50,6 @@ const ModelOverviewGroups: React.FC<{ groups: Models.GroupType[] }> = ({
           ))}
         </ListGroup>
       )}
-      <LinkButton
-        variant="outline-primary"
-        size="sm"
-        href={`/model/${model.id}/group/new`}
-        hideOn={["community"]}
-      >
-        Add new Group
-      </LinkButton>
     </SectionContainer>
   );
 };

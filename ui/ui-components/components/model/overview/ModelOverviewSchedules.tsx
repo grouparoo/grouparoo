@@ -49,6 +49,9 @@ const ModelOverviewSchedules: React.FC<{
       title="Schedules"
       icon="sync-alt"
       description="Checks for new data from your Sources."
+      actionButtons={
+        <RunAllSchedulesButton size="sm" modelId={model.id} execApi={execApi} />
+      }
     >
       {schedules.length > 0 && (
         <ListGroup className="list-group-flush">
@@ -62,7 +65,6 @@ const ModelOverviewSchedules: React.FC<{
           ))}
         </ListGroup>
       )}
-      <RunAllSchedulesButton size="sm" modelId={model.id} execApi={execApi} />
     </SectionContainer>
   );
 };

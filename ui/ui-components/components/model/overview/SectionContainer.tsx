@@ -1,6 +1,6 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Media } from "react-bootstrap";
+import { Col, Media, Row } from "react-bootstrap";
 import AppIcon from "../../AppIcon";
 
 interface SectionContainerProps {
@@ -8,9 +8,11 @@ interface SectionContainerProps {
   description: string;
   iconType?: "app" | "icon";
   icon: string | IconProp;
+  actionButtons?: React.ReactNode;
 }
 
 const SectionContainer: React.FC<SectionContainerProps> = ({
+  actionButtons,
   title,
   iconType,
   icon,
@@ -27,8 +29,17 @@ const SectionContainer: React.FC<SectionContainerProps> = ({
         )
       )}
       <Media.Body>
-        <h6>{title}</h6>
-        <p>{description}</p>
+        <Row>
+          <Col md={actionButtons ? 8 : 12}>
+            <h6>{title}</h6>
+            <p>{description}</p>
+          </Col>
+          {actionButtons && (
+            <Col className="text-right" md="4">
+              {actionButtons}
+            </Col>
+          )}
+        </Row>
         {children}
       </Media.Body>
     </Media>

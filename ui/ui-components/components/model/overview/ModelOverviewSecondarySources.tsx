@@ -15,6 +15,16 @@ const ModelOverviewSecondarySources: React.FC<{
       title="Secondary Sources"
       icon="file-import"
       description="Secondary sources can be used to enrich your records with additional data."
+      actionButtons={
+        <LinkButton
+          variant="outline-primary"
+          size="sm"
+          href={`/model/${model.id}/source/new`}
+          hideOn={["community"]}
+        >
+          Add new Source
+        </LinkButton>
+      }
     >
       {sources.length > 0 && (
         <ListGroup className="list-group-flush">
@@ -25,16 +35,6 @@ const ModelOverviewSecondarySources: React.FC<{
           ))}
         </ListGroup>
       )}
-      <div>
-        <LinkButton
-          variant="outline-primary"
-          size="sm"
-          href={`/model/${model.id}/source/new`}
-          hideOn={["community"]}
-        >
-          Add new Source
-        </LinkButton>
-      </div>
     </SectionContainer>
   );
 };

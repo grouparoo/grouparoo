@@ -14,11 +14,11 @@ const ModelOverviewCard: React.FC<Props> = ({
     <Card>
       <Card.Header>
         <Row>
-          <Col md="4">
-            <h5>{title}</h5>
+          <Col md={actionButtons ? 8 : 12}>
+            <h5 className="my-1">{title}</h5>
           </Col>
           {actionButtons && (
-            <Col className="text-right" md={{ span: 4, offset: 4 }}>
+            <Col className="text-right" md="4">
               {actionButtons}
             </Col>
           )}
