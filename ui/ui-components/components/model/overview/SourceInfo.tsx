@@ -6,7 +6,11 @@ import EntityInfoHeader from "./EntityInfoHeader";
 const renderMapping = (mapping: Record<string, string>): React.ReactNode => {
   const keys = Object.keys(mapping);
   if (!keys.length) return null;
-  return `${keys} → ${mapping[keys[0]]}`;
+  return (
+    <>
+      <code>{keys[0]}</code> → <code>{mapping[keys[0]]}</code>
+    </>
+  );
 };
 
 const SourceInfo: React.FC<{
