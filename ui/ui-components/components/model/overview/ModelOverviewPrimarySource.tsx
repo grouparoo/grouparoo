@@ -14,7 +14,7 @@ const ModelOverviewPrimarySource: React.FC<{ source?: Models.SourceType }> = ({
     <SectionContainer
       title="Primary Source"
       iconType={source ? "app" : "icon"}
-      icon={source ? source.app?.icon : "file-import"}
+      icon={source?.app?.icon ?? "file-import"}
       description="The Primary Source defines the core properties and primary key for your Records."
       actionButtons={
         !source ? (

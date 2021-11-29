@@ -23,8 +23,8 @@ const SectionContainer: React.FC<SectionContainerProps> = ({
 }) => {
   return (
     <Media className={disabled ? "text-muted" : null}>
-      {icon && iconType === "app" ? (
-        <AppIcon src={icon as string} size={42} className="mr-3" />
+      {typeof icon === "string" && iconType === "app" ? (
+        <AppIcon src={icon} size={42} className="mr-3" />
       ) : (
         icon && (
           <FontAwesomeIcon
