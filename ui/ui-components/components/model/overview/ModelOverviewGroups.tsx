@@ -33,7 +33,7 @@ const ModelOverviewGroups: React.FC<Props> = ({ groups, disabled }) => {
     <SectionContainer
       title="Groups"
       icon="users"
-      description="Segment your data using groups to enrich your destinations."
+      description="Groups are used to segment your Records before syncing to your Destinations."
       disabled={disabled}
       actionButtons={
         <LinkButton

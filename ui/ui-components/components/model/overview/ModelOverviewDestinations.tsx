@@ -77,7 +77,7 @@ const ModelOverviewDestinations: React.FC<Props> = ({
             <SectionContainer
               iconType="icon"
               icon="file-export"
-              description={`Use Destinations to sync your ${model.name} records to other apps.`}
+              description={`Use Destinations to sync your ${model.name} Model Records to other apps.`}
             ></SectionContainer>
           </ListGroupItem>
         )}

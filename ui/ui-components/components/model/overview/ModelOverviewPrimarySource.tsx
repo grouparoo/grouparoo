@@ -15,7 +15,7 @@ const ModelOverviewPrimarySource: React.FC<{ source?: Models.SourceType }> = ({
       title="Primary Source"
       iconType={source ? "app" : "icon"}
       icon={source ? source.app?.icon : "file-import"}
-      description="The primary source defines the core properties and primary key for your records."
+      description="The Primary Source defines the core properties and primary key for your Records."
       actionButtons={
         !source ? (
           <LinkButton
@@ -24,7 +24,7 @@ const ModelOverviewPrimarySource: React.FC<{ source?: Models.SourceType }> = ({
             href={`/model/${model.id}/source/new`}
             hideOn={["community"]}
           >
-            Create primary Source
+            Create Primary Source
           </LinkButton>
         ) : undefined
       }

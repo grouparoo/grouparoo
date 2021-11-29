@@ -20,7 +20,7 @@ const ModelOverviewSecondarySources: React.FC<Props> = ({
     <SectionContainer
       title="Secondary Sources"
       icon="file-import"
-      description="Secondary sources can be used to enrich your records with additional data."
+      description="Secondary Sources enrich your Records with additional data."
       disabled={disabled}
       actionButtons={
         <LinkButton

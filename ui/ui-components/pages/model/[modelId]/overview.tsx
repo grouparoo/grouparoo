@@ -54,8 +54,8 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
           title={model.name}
         />
         <p>
-          Define your {model.name} model here with sources, groups, and
-          destinations.
+          Define your {model.name} Model here with Sources, Groups, and
+          Destinations.
         </p>
 
         <Row className="mb-4">

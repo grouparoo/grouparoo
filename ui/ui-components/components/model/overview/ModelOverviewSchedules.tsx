@@ -56,7 +56,7 @@ const ModelOverviewSchedules: React.FC<Props> = ({
     <SectionContainer
       title="Schedules"
       icon="sync-alt"
-      description="Checks for new data from your Sources."
+      description="Schedules check for new and updated data from your Sources."
       disabled={disabled}
       actionButtons={
         <RunAllSchedulesButton
