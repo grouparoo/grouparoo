@@ -5,7 +5,7 @@ export const formatSchedule = (
   schedule?: Models.ScheduleType
 ): React.ReactNode => {
   if (!schedule) {
-    return "None";
+    return "Not set";
   }
 
   const recurringFrequencyMinutes = schedule.recurringFrequency
