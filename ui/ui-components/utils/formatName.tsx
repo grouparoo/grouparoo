@@ -2,12 +2,7 @@ import React from "react";
 import { Models } from "./apiData";
 
 export const formatName = (
-  entity?:
-    | Models.AppType
-    | Models.SourceType
-    | Models.DestinationType
-    | Models.ScheduleType
-    | Models.GroupType
+  entity?: Models.GrouparooEntityTypes
 ): React.ReactNode => {
   return (
     <>

@@ -1,12 +1,11 @@
 import Link from "next/link";
+import { Models } from "../../../utils/apiData";
 import EnterpriseLink from "../../GrouparooLink";
 import { formatName } from "../../../utils/formatName";
 import StateBadge from "../../badges/StateBadge";
 
-type Entity = Parameters<typeof formatName>[0];
-
 interface Props {
-  entity: Entity;
+  entity: Models.GrouparooEntityTypes;
   href?: string;
   linkComponent?: typeof Link | typeof EnterpriseLink;
 }
