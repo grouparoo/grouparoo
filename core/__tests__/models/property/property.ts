@@ -634,7 +634,6 @@ describe("models/property", () => {
   });
 
   describe("with plugin", () => {
-    // let model: GrouparooModel;
     let app: App;
     let source: Source;
     let queryCounter = 0;

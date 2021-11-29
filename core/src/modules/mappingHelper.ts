@@ -117,7 +117,9 @@ export namespace MappingHelper {
 
       if (otherSourcePrimaryKey && property.sourceId === instance.id) {
         throw new Error(
-          `'${instance.name}' cannot map '${remoteKey}' to own Property '${key}'. '${source.name}' must map to a Property from primary Source '${otherSourcePrimaryKey.source.name}'.`
+          `'${instance.name}' cannot map '${remoteKey}' to own Property '${key}'.
+          '${otherSourcePrimaryKey.source.name}' is the primary Source for Model
+          ${instance.modelId} and '${instance.name}' requires a mapping back to '${otherSourcePrimaryKey.source.name}.'`
         );
       }
 
