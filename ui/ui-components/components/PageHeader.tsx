@@ -12,6 +12,7 @@ interface Props {
   iconType?: "grouparooRecord" | "grouparooModel" | "group" | "app";
   loading?: boolean;
   email?: string;
+  actions?: React.ReactNode[];
 }
 
 const PageHeader: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const PageHeader: React.FC<Props> = ({
   iconType = "app",
   loading,
   email,
+  actions,
 }) => {
   const iconNode = useMemo<React.ReactNode>(() => {
     switch (iconType) {
@@ -71,11 +73,23 @@ const PageHeader: React.FC<Props> = ({
         ))
       : null;
 
+  const actionsNode: React.ReactNode =
+    actions && !!actions.length
+      ? actions.map((action, idx) => (
+          <Fragment key={`header_action_${idx}`}>{action} </Fragment>
+        ))
+      : null;
+
   return (
     <Media className="mb-3">
       {iconNode}
       <Media.Body>
-        <h1>{titleNode}</h1>
+        <div>
+          <h1 style={{ display: "inline" }} className="mr-3">
+            {titleNode}
+          </h1>
+          {actionsNode}
+        </div>
         {badgesNode}
       </Media.Body>
     </Media>

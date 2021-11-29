@@ -53,6 +53,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
           iconType="grouparooModel"
           icon={model.icon}
           title={model.name}
+          actions={[<Link href={`/model/${model.id}/edit`}>Edit</Link>]}
         />
         <p>
           Define your {model.name} Model here with Sources, Groups, and
