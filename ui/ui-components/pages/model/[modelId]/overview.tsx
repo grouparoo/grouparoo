@@ -33,10 +33,13 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
   destinations,
 }) => {
   const { execApi } = UseApi(ctx, errorHandler);
-  const sources = useMemo(
-    () => [primarySource, ...secondarySources],
-    [primarySource, secondarySources]
-  );
+  const sources = useMemo(() => {
+    const result = [...secondarySources];
+    if (primarySource) {
+      result.splice(0, 0, primarySource);
+    }
+    return result;
+  }, [primarySource, secondarySources]);
 
   return (
     <GrouparooModelContextProvider model={model}>
@@ -64,11 +67,17 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
                 </ListGroupItem>
 
                 <ListGroupItem>
-                  <ModelOverviewSecondarySources sources={secondarySources} />
+                  <ModelOverviewSecondarySources
+                    sources={secondarySources}
+                    disabled={!primarySource}
+                  />
                 </ListGroupItem>
 
                 <ListGroupItem>
-                  <ModelOverviewGroups groups={groups} />
+                  <ModelOverviewGroups
+                    groups={groups}
+                    disabled={!sources.length}
+                  />
                 </ListGroupItem>
 
                 <ListGroupItem>
@@ -84,7 +93,10 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
         </Row>
         <Row>
           <Col>
-            <ModelOverviewDestinations destinations={destinations} />
+            <ModelOverviewDestinations
+              destinations={destinations}
+              disabled={!destinations.length && !groups.length}
+            />
           </Col>
         </Row>
       </Container>
@@ -124,7 +136,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const primaryKeyProperty = properties.find((p) => p.isPrimaryKey);
   const primarySource = primaryKeyProperty
     ? sources.find(({ id }) => id === primaryKeyProperty.sourceId)
-    : undefined;
+    : null;
   const secondarySources = primarySource
     ? sources.filter(({ id }) => id !== primarySource.id)
     : sources;

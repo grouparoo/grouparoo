@@ -26,11 +26,17 @@ const ScheduleInfo: React.FC<{
   );
 };
 
-const ModelOverviewSchedules: React.FC<{
+interface Props {
   schedules: Models.ScheduleType[];
   sources?: Models.SourceType[];
   execApi: ApiHook["execApi"];
-}> = ({ schedules, sources, execApi }) => {
+}
+
+const ModelOverviewSchedules: React.FC<Props> = ({
+  schedules,
+  sources,
+  execApi,
+}) => {
   const model = useGrouparooModelContext();
 
   const sourcesById = useMemo<Record<string, Models.SourceType>>(() => {
@@ -44,13 +50,21 @@ const ModelOverviewSchedules: React.FC<{
     }, result);
   }, [sources]);
 
+  const disabled = !schedules.length;
+
   return (
     <SectionContainer
       title="Schedules"
       icon="sync-alt"
       description="Checks for new data from your Sources."
+      disabled={disabled}
       actionButtons={
-        <RunAllSchedulesButton size="sm" modelId={model.id} execApi={execApi} />
+        <RunAllSchedulesButton
+          size="sm"
+          modelId={model.id}
+          execApi={execApi}
+          disabled={disabled}
+        />
       }
     >
       {schedules.length > 0 && (

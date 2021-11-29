@@ -21,21 +21,27 @@ const GroupInfo: React.FC<{ group: Models.GroupType }> = ({ group }) => {
   );
 };
 
-const ModelOverviewGroups: React.FC<{ groups: Models.GroupType[] }> = ({
-  groups,
-}) => {
+interface Props {
+  groups: Models.GroupType[];
+  disabled?: boolean;
+}
+
+const ModelOverviewGroups: React.FC<Props> = ({ groups, disabled }) => {
   const model = useGrouparooModelContext();
+
   return (
     <SectionContainer
       title="Groups"
       icon="users"
       description="Segment your data using groups to enrich your destinations."
+      disabled={disabled}
       actionButtons={
         <LinkButton
           variant="outline-primary"
           size="sm"
           href={`/model/${model.id}/group/new`}
           hideOn={["community"]}
+          disabled={disabled}
         >
           Add new Group
         </LinkButton>

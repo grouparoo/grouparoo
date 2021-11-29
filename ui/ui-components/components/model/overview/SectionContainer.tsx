@@ -4,11 +4,12 @@ import { Col, Media, Row } from "react-bootstrap";
 import AppIcon from "../../AppIcon";
 
 interface SectionContainerProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   iconType?: "app" | "icon";
   icon: string | IconProp;
   actionButtons?: React.ReactNode;
+  disabled?: boolean;
 }
 
 const SectionContainer: React.FC<SectionContainerProps> = ({
@@ -17,22 +18,28 @@ const SectionContainer: React.FC<SectionContainerProps> = ({
   iconType,
   icon,
   description,
+  disabled,
   children,
 }) => {
   return (
-    <Media>
+    <Media className={disabled ? "text-muted" : null}>
       {icon && iconType === "app" ? (
         <AppIcon src={icon as string} size={42} className="mr-3" />
       ) : (
         icon && (
-          <FontAwesomeIcon icon={icon as IconProp} size="3x" className="mr-3" />
+          <FontAwesomeIcon
+            icon={icon as IconProp}
+            size="3x"
+            className="mr-3"
+            fixedWidth
+          />
         )
       )}
       <Media.Body>
         <Row>
           <Col md={actionButtons ? 8 : 12}>
-            <h6>{title}</h6>
-            <p>{description}</p>
+            {title && <h6>{title}</h6>}
+            {description && <div>{description}</div>}
           </Col>
           {actionButtons && (
             <Col className="text-right" md="4">

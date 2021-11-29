@@ -5,9 +5,15 @@ import LinkButton from "../../LinkButton";
 import SectionContainer from "./SectionContainer";
 import SourceInfo from "./SourceInfo";
 
-const ModelOverviewSecondarySources: React.FC<{
+interface Props {
   sources: Models.SourceType[];
-}> = ({ sources }) => {
+  disabled?: boolean;
+}
+
+const ModelOverviewSecondarySources: React.FC<Props> = ({
+  sources,
+  disabled,
+}) => {
   const model = useGrouparooModelContext();
 
   return (
@@ -15,12 +21,14 @@ const ModelOverviewSecondarySources: React.FC<{
       title="Secondary Sources"
       icon="file-import"
       description="Secondary sources can be used to enrich your records with additional data."
+      disabled={disabled}
       actionButtons={
         <LinkButton
           variant="outline-primary"
           size="sm"
           href={`/model/${model.id}/source/new`}
           hideOn={["community"]}
+          disabled={disabled}
         >
           Add new Source
         </LinkButton>

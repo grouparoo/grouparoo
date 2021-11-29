@@ -3,15 +3,17 @@ import { Card, Col, Row } from "react-bootstrap";
 interface Props {
   title: string;
   actionButtons?: React.ReactNode;
+  disabled?: boolean;
 }
 
 const ModelOverviewCard: React.FC<Props> = ({
   title,
   actionButtons,
+  disabled,
   children,
 }) => {
   return (
-    <Card>
+    <Card className={disabled ? "text-muted" : undefined}>
       <Card.Header>
         <Row>
           <Col md={actionButtons ? 8 : 12}>

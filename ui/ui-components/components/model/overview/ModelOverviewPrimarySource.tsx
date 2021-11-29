@@ -16,15 +16,8 @@ const ModelOverviewPrimarySource: React.FC<{ source?: Models.SourceType }> = ({
       iconType={source ? "app" : "icon"}
       icon={source ? source.app?.icon : "file-import"}
       description="The primary source defines the core properties and primary key for your records."
-    >
-      {source ? (
-        <ListGroup className="list-group-flush">
-          <ListGroupItem>
-            <SourceInfo source={source} isPrimarySource />
-          </ListGroupItem>
-        </ListGroup>
-      ) : (
-        <div>
+      actionButtons={
+        !source ? (
           <LinkButton
             variant="primary"
             size="sm"
@@ -33,7 +26,15 @@ const ModelOverviewPrimarySource: React.FC<{ source?: Models.SourceType }> = ({
           >
             Create primary Source
           </LinkButton>
-        </div>
+        ) : undefined
+      }
+    >
+      {source && (
+        <ListGroup className="list-group-flush">
+          <ListGroupItem>
+            <SourceInfo source={source} isPrimarySource />
+          </ListGroupItem>
+        </ListGroup>
       )}
     </SectionContainer>
   );

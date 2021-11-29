@@ -1,4 +1,4 @@
-import { ListGroup, ListGroupItem } from "react-bootstrap";
+import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 import DestinationCollectionLink from "../../destination/DestinationCollectionLink";
@@ -9,10 +9,11 @@ import EnterpriseLink from "../../../components/GrouparooLink";
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 import LinkButton from "../../LinkButton";
 import ModelOverviewCard from "./ModelOverviewCard";
+import SectionContainer from "./SectionContainer";
 
-const DestinationInfo: React.FC<{ destination: Models.DestinationType }> = ({
-  destination,
-}) => {
+const DestinationInfo: React.FC<{
+  destination: Models.DestinationType;
+}> = ({ destination }) => {
   const { app, connection, exportTotals } = destination;
   const isCommunityUI = grouparooUiEdition() === "community";
   const href = `/model/${destination.modelId}/destination/${destination.id}/${
@@ -39,34 +40,48 @@ const DestinationInfo: React.FC<{ destination: Models.DestinationType }> = ({
 
 interface Props {
   destinations?: Models.DestinationType[];
+  disabled?: boolean;
 }
 
-const ModelOverviewDestinations: React.FC<Props> = ({ destinations }) => {
+const ModelOverviewDestinations: React.FC<Props> = ({
+  destinations,
+  disabled,
+}) => {
   const model = useGrouparooModelContext();
 
   return (
     <ModelOverviewCard
       title="Destinations"
+      disabled={disabled}
       actionButtons={
         <LinkButton
           variant="outline-primary"
           size="sm"
           href={`/model/${model.id}/destination/new`}
           hideOn={["community"]}
+          disabled={disabled}
         >
           Add new Destination
         </LinkButton>
       }
     >
-      {destinations && (
-        <ListGroup className="list-group-flush">
-          {destinations.map((destination, index) => (
+      <ListGroup className="list-group-flush">
+        {destinations && !!destinations.length ? (
+          destinations.map((destination, index) => (
             <ListGroupItem key={index}>
               <DestinationInfo destination={destination} />
             </ListGroupItem>
-          ))}
-        </ListGroup>
-      )}
+          ))
+        ) : (
+          <ListGroupItem>
+            <SectionContainer
+              iconType="icon"
+              icon="file-export"
+              description={`Use Destinations to sync your ${model.name} records to other apps.`}
+            ></SectionContainer>
+          </ListGroupItem>
+        )}
+      </ListGroup>
     </ModelOverviewCard>
   );
 };

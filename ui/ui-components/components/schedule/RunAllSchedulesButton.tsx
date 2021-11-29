@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { ButtonProps } from "react-bootstrap";
+import { Button, ButtonProps } from "react-bootstrap";
 import { ApiHook } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
 import { successHandler } from "../../utils/eventHandlers";
+import { grouparooUiEdition } from "../../utils/uiEdition";
 import LoadingButton from "../LoadingButton";
 
 interface Props {
@@ -25,6 +26,19 @@ const RunAllSchedulesButton: React.FC<Props> = ({
   onComplete,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const hide = grouparooUiEdition() === "config";
+
+  if (hide) {
+    return null;
+  }
+
+  if (disabled && !isLoading) {
+    return (
+      <Button variant="outline-primary" disabled={disabled} size={size}>
+        Run all Schedules
+      </Button>
+    );
+  }
 
   async function enqueueAllSchedulesRun() {
     onStart?.();
@@ -47,7 +61,7 @@ const RunAllSchedulesButton: React.FC<Props> = ({
     <LoadingButton
       variant="outline-primary"
       size={size}
-      disabled={isLoading || disabled}
+      disabled={isLoading}
       onClick={() => enqueueAllSchedulesRun()}
       hideOn={["config"]}
     >
