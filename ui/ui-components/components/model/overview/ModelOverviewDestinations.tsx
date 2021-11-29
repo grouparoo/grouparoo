@@ -8,6 +8,7 @@ import Link from "next/link";
 import EnterpriseLink from "../../../components/GrouparooLink";
 import { useGrouparooModelContext } from "../../../contexts/grouparooModelContext";
 import LinkButton from "../../LinkButton";
+import ModelOverviewCard from "./ModelOverviewCard";
 
 const DestinationInfo: React.FC<{ destination: Models.DestinationType }> = ({
   destination,
@@ -44,7 +45,19 @@ const ModelOverviewDestinations: React.FC<Props> = ({ destinations }) => {
   const model = useGrouparooModelContext();
 
   return (
-    <>
+    <ModelOverviewCard
+      title="Destinations"
+      actionButtons={
+        <LinkButton
+          variant="outline-primary"
+          size="sm"
+          href={`/model/${model.id}/destination/new`}
+          hideOn={["community"]}
+        >
+          Add new Destination
+        </LinkButton>
+      }
+    >
       {destinations && (
         <ListGroup className="list-group-flush">
           {destinations.map((destination, index) => (
@@ -54,17 +67,7 @@ const ModelOverviewDestinations: React.FC<Props> = ({ destinations }) => {
           ))}
         </ListGroup>
       )}
-      <div>
-        <LinkButton
-          variant="outline-primary"
-          size="sm"
-          href={`/model/${model.id}/destination/new`}
-          hideOn={["community"]}
-        >
-          Add new Destination
-        </LinkButton>
-      </div>
-    </>
+    </ModelOverviewCard>
   );
 };
 

@@ -84,9 +84,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
         </Row>
         <Row>
           <Col>
-            <ModelOverviewCard title="Destinations">
-              <ModelOverviewDestinations destinations={destinations} />
-            </ModelOverviewCard>
+            <ModelOverviewDestinations destinations={destinations} />
           </Col>
         </Row>
       </Container>
