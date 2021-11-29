@@ -1,14 +1,8 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useMemo } from "react";
-import {
-  Card,
-  Col,
-  Container,
-  ListGroup,
-  ListGroupItem,
-  Row,
-} from "react-bootstrap";
+import { Col, Container, ListGroup, ListGroupItem, Row } from "react-bootstrap";
+import ModelOverviewCard from "../../../components/model/overview/ModelOverviewCard";
 import ModelOverviewDestinations from "../../../components/model/overview/ModelOverviewDestinations";
 import ModelOverviewGroups from "../../../components/model/overview/ModelOverviewGroups";
 import ModelOverviewPrimarySource from "../../../components/model/overview/ModelOverviewPrimarySource";
@@ -18,22 +12,6 @@ import PageHeader from "../../../components/PageHeader";
 import { GrouparooModelContextProvider } from "../../../contexts/grouparooModelContext";
 import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
-
-interface ModelOverviewCardProps {
-  title: string;
-}
-
-const ModelOverviewCard: React.FC<ModelOverviewCardProps> = ({
-  title,
-  children,
-}) => {
-  return (
-    <Card>
-      <Card.Header as="h5">{title}</Card.Header>
-      {children}
-    </Card>
-  );
-};
 
 interface Props {
   model: Models.GrouparooModelType;
