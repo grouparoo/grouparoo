@@ -637,6 +637,14 @@ describe("models/property", () => {
     let app: App;
     let source: Source;
     let queryCounter = 0;
+
+    const propertiesToMoveKeys = Object.freeze([
+      "userId",
+      "firstName",
+      "lastName",
+    ]);
+    const prevSourceIds: string[] = [];
+
     beforeAll(async () => {
       plugin.registerPlugin({
         name: "test-plugin",
@@ -732,29 +740,43 @@ describe("models/property", () => {
         appId: app.id,
         modelId: model.id,
       });
-      await source.setMapping({ id: "userId" });
+
       await source.update({ state: "ready" });
 
-      const firstNameProperty = await Property.findOne({
-        where: { key: "firstName" },
-      });
-
-      firstNameProperty.sourceId = source.id;
-      await firstNameProperty.save();
-
-      const lastNameProperty = await Property.findOne({
-        where: { key: "lastName" },
-      });
-      lastNameProperty.sourceId = source.id;
-      await lastNameProperty.save();
+      for (const key of propertiesToMoveKeys) {
+        const propertyToMove = await Property.findOne({
+          where: { key },
+        });
+        prevSourceIds.push(propertyToMove.sourceId);
+        propertyToMove.sourceId = source.id;
+        await propertyToMove.save();
+      }
     });
 
     beforeEach(() => {
       queryCounter = 0;
     });
 
+    afterAll(async () => {
+      for (const key of propertiesToMoveKeys) {
+        const prevSourceId = prevSourceIds.shift();
+        const propertyToMove = await Property.findOne({
+          where: { key },
+        });
+        propertyToMove.sourceId = prevSourceId;
+        await propertyToMove.save();
+      }
+    });
+
     describe("mapped though a non-unique property", () => {
       let property: Property;
+
+      const updateUserIdPropertyUnique = async (unique: boolean) => {
+        const userIdProperty = await Property.scope(null).findOne({
+          where: { key: "userId" },
+        });
+        await userIdProperty.update({ unique });
+      };
 
       beforeAll(async () => {
         property = await helper.factories.property(
@@ -768,9 +790,13 @@ describe("models/property", () => {
         await property.update({ unique: false, isArray: false });
       });
 
+      afterEach(async () => {
+        await source.setMapping({});
+        await updateUserIdPropertyUnique(true);
+      });
+
       afterAll(async () => {
         await property.destroy();
-        await source.setMapping({ id: "userId" });
       });
 
       test("properties mapped through unique properties can be unique", async () => {
@@ -786,16 +812,18 @@ describe("models/property", () => {
       });
 
       test("properties mapped through non-unique properties cannot be unique", async () => {
-        await source.setMapping({ id: "lastName" });
+        await updateUserIdPropertyUnique(false);
+        await source.setMapping({ last_name: "lastName" });
         await expect(property.update({ unique: true })).rejects.toThrow(
-          /A unique Property cannot be mapped through a non-unique Property/
+          /Unique Property .+ cannot be mapped through a non-unique Property/
         );
       });
 
       test("properties mapped through non-unique properties cannot be arrays", async () => {
-        await source.setMapping({ id: "lastName" });
+        await updateUserIdPropertyUnique(false);
+        await source.setMapping({ last_name: "lastName" });
         await expect(property.update({ isArray: true })).rejects.toThrow(
-          /An array Property cannot be mapped through a non-unique Property/
+          /Array Property .+ cannot be mapped through a non-unique Property/
         );
       });
     });

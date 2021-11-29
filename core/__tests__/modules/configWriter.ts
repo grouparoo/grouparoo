@@ -732,9 +732,15 @@ describe("modules/configWriter", () => {
     });
 
     test("sources with a nameless schedule provide a single object", async () => {
-      const source = await helper.factories.source();
+      const model: GrouparooModel = await GrouparooModel.create({
+        type: "profile",
+        name: "People",
+        id: "mod_" + uuid.v4(),
+      });
+      const app = await helper.factories.app();
+      const source = await helper.factories.source(app, { modelId: model.id });
       await source.setOptions({ table: "test-table-05" });
-      await source.bootstrapUniqueProperty("uId05", "integer", "id", "uid05");
+      await source.bootstrapUniqueProperty("uId05", "integer", "id");
       await source.setMapping({ id: "uId05" });
       await source.update({ state: "ready" });
       property = await helper.factories.property(
@@ -748,14 +754,13 @@ describe("modules/configWriter", () => {
       const config = await source.getConfigObject();
 
       const { name, type } = source;
-      const app = await source.$get("app");
       const options = await source.getOptions();
       const mapping = await MappingHelper.getConfigMapping(source);
 
       expect(config).toEqual({
         class: "Source",
         id: source.getConfigId(),
-        modelId: "profiles",
+        modelId: "people",
         name,
         type,
         appId: app.getConfigId(),

@@ -723,10 +723,10 @@ describe("models/source", () => {
 
     test("isPrimaryKey will not be updated for source across model when updating mapping in other source", async () => {
       await source.bootstrapUniqueProperty("myEmail", "email", "my_email");
-      await source.setMapping({ email: "myEmail" });
+      await source.setMapping({ email: "userId" });
 
       const mapping = await source.getMapping();
-      expect(mapping).toEqual({ email: "myEmail" });
+      expect(mapping).toEqual({ email: "userId" });
 
       const userIdProperty = await Property.findOne({
         where: { key: "userId" },
@@ -739,6 +739,12 @@ describe("models/source", () => {
       expect(myEmailProperty.isPrimaryKey).toBe(false);
 
       await source.setMapping({ userId: "userId" });
+    });
+
+    test("will throw error when mapping to own property and primary key is owned by other source", async () => {
+      await expect(source.setMapping({ email: "myEmail" })).rejects.toThrow(
+        /cannot map 'email' to own Property 'myEmail'/
+      );
     });
   });
 
@@ -795,8 +801,12 @@ describe("models/source", () => {
 
   describe("bootstrapUniqueProperty", () => {
     let source: Source;
+    let model: GrouparooModel;
 
     beforeAll(async () => {
+      model = await helper.factories.model({
+        name: "BootstrappedProperties",
+      });
       source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
@@ -806,8 +816,19 @@ describe("models/source", () => {
       await source.setOptions({ table: "some table" });
     });
 
+    afterEach(async () => {
+      const properties = await Property.scope(null).findAll({
+        where: { sourceId: source.id },
+        order: [["createdAt", "DESC"]],
+      });
+      for (const property of properties) {
+        await property.destroy();
+      }
+    });
+
     afterAll(async () => {
       await source.destroy();
+      await model.destroy();
     });
 
     test("it can remove identifying from other properties", async () => {
@@ -890,8 +911,12 @@ describe("models/source", () => {
 
   describe("edge cases: bootstrapUniqueProperty", () => {
     let source: Source;
+    let model: GrouparooModel;
 
     beforeAll(async () => {
+      model = await helper.factories.model({
+        name: "BootstrappedProperties",
+      });
       source = await Source.create({
         type: "test-plugin-import",
         name: "test source 2",
@@ -901,8 +926,19 @@ describe("models/source", () => {
       await source.setOptions({ table: "some table" });
     });
 
+    afterEach(async () => {
+      const properties = await Property.scope(null).findAll({
+        where: { sourceId: source.id },
+        order: [["createdAt", "DESC"]],
+      });
+      for (const property of properties) {
+        await property.destroy();
+      }
+    });
+
     afterAll(async () => {
       await source.destroy();
+      await model.destroy();
     });
 
     test("it can make a property identifying", async () => {

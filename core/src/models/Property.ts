@@ -509,12 +509,12 @@ export class Property extends LoggedModel<Property> {
 
     if (instance.unique)
       throw new Error(
-        `A unique Property cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
+        `Unique Property ${instance.key} (${instance.id}) cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
       );
 
     if (instance.isArray)
       throw new Error(
-        `An array Property cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
+        `Array Property ${instance.key} (${instance.id}) cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
       );
   }
 
