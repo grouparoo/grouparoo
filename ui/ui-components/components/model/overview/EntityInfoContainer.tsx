@@ -9,7 +9,7 @@ interface Props {
 const EntityInfoContainer: React.FC<Props> = ({ app, children }) => {
   return app?.icon ? (
     <Media>
-      <AppIcon src={app.icon} size={42} className="mr-3" />
+      <AppIcon src={app.icon} size={52.5} className="mr-3" />
       <Media.Body>{children}</Media.Body>
     </Media>
   ) : (
