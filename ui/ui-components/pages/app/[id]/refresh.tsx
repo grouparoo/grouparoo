@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Alert, Button, Container } from "react-bootstrap";
 import { useRouter } from "next/router";
@@ -46,8 +46,10 @@ export default function Page(props) {
   );
   const { id } = router.query;
   const { schedules, runs, sources } = props;
-  const disabled =
-    app?.locked?.length > 1 || appRefreshQuery?.locked?.length > 1;
+  const disabled = useMemo(
+    () => app?.locked !== null || appRefreshQuery?.locked !== null,
+    [app, appRefreshQuery]
+  );
 
   async function create(event) {
     event.preventDefault();
@@ -62,7 +64,7 @@ export default function Page(props) {
     );
 
     if (response?.appRefreshQuery) {
-      setAppRefreshQuery(response.appRefreshQuery);
+      setAppRefreshQuery({ ...response.appRefreshQuery });
       router.push(`/app/${response.appRefreshQuery.appId}/refresh`);
     }
     setLoading(false);
@@ -118,7 +120,7 @@ export default function Page(props) {
           successHandler.set({
             message: `App Refresh Query updated. Returned ${
               response.appRefreshQuery.value
-            }.${grouparooUiEdition() !== "config" ?? " Enqueieing Schedules"}`,
+            }.${grouparooUiEdition() !== "config" ?? " Enqueueing Schedules"}`,
           });
         } else {
           successHandler.set({
