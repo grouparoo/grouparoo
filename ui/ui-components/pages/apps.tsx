@@ -12,10 +12,16 @@ import StateBadge from "../components/badges/StateBadge";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { ErrorHandler } from "../utils/errorHandler";
+import { SuccessHandler } from "../utils/successHandler";
 import LinkButton from "../components/LinkButton";
+import LoadingButton from "../components/LoadingButton";
+import { grouparooUiEdition } from "../utils/uiEdition";
 
 export default function Page(props) {
-  const { errorHandler }: { errorHandler: ErrorHandler } = props;
+  const {
+    errorHandler,
+    successHandler,
+  }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [apps, setApps] = useState<Models.AppType[]>(props.apps);
@@ -48,6 +54,27 @@ export default function Page(props) {
     }
   }
 
+  async function runRefreshQuery(app) {
+    setLoading(true);
+    const appRefreshQuery = app.appRefreshQuery;
+    try {
+      const response: Actions.AppRefreshQueryRun = await execApi(
+        "post",
+        `/appRefreshQuery/${appRefreshQuery.id}/run`
+      );
+      if (response?.valueUpdated == true) {
+        successHandler.set({
+          message: `Query returned ${response.appRefreshQuery.value}. Enqueueing Schedules.`,
+        });
+      } else {
+        successHandler.set({
+          message: `Query returned ${response.appRefreshQuery.value}. No schedules enqueued.`,
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
     <>
       <Head>
@@ -73,10 +100,13 @@ export default function Page(props) {
             <th>State</th>
             <th>Created At</th>
             <th>Updated At</th>
+            <th>Refresh</th>
           </tr>
         </thead>
         <tbody>
           {apps.map((app) => {
+            const recurringFrequencyMinutes =
+              app.appRefreshQuery?.recurringFrequency / (60 * 1000);
             return (
               <tr key={`model-${app.id}`}>
                 <td>
@@ -102,6 +132,36 @@ export default function Page(props) {
                 </td>
                 <td>{formatTimestamp(app.createdAt)}</td>
                 <td>{formatTimestamp(app.updatedAt)}</td>
+                <td>
+                  {app.appRefreshQuery ? (
+                    <>
+                      Query: {app.appRefreshQuery.refreshQuery}
+                      <br />
+                      Value: {app.appRefreshQuery.value}
+                      <br />
+                      Last Checked:{" "}
+                      {formatTimestamp(app.appRefreshQuery.lastConfirmedAt)}
+                      <br />
+                      Frequency: Every{" "}
+                      {recurringFrequencyMinutes > 1 ??
+                        recurringFrequencyMinutes}{" "}
+                      Minute{recurringFrequencyMinutes > 1 ?? "s"}
+                      <br />
+                      {grouparooUiEdition() !== "config" && (
+                        <LoadingButton
+                          variant="outline-success"
+                          size="sm"
+                          disabled={loading}
+                          onClick={() => runRefreshQuery(app)}
+                        >
+                          Run Now
+                        </LoadingButton>
+                      )}
+                    </>
+                  ) : (
+                    "No Refresh"
+                  )}
+                </td>
               </tr>
             );
           })}
