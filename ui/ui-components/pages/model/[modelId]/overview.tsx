@@ -1,5 +1,6 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { useMemo } from "react";
 import { Col, Container, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import ModelOverviewCard from "../../../components/model/overview/ModelOverviewCard";

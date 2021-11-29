@@ -7,12 +7,13 @@ import {
 export default function AppIcon({
   model,
   size,
+  ...props
 }: {
   model: Models.GrouparooModelType;
-  size?: FontAwesomeIconProps["size"];
-}) {
+} & Omit<FontAwesomeIconProps, "icon">) {
   return (
     <FontAwesomeIcon
+      {...props}
       icon={model.icon as FontAwesomeIconProps["icon"]}
       size={size ?? "lg"}
     />
