@@ -68,6 +68,9 @@ describe("pipedrive/destinationMappingOptions", () => {
     const dateRange = fields.find((f) => f.key === "date_range_field");
     expect(dateRange.type).toBe("date");
 
+    const time = fields.find((f) => f.key === "time_field");
+    expect(time.type).toBe("string");
+
     const dateRangeEnd = fields.find(
       (f) => f.key === "End date of date_range_field"
     );
@@ -82,9 +85,6 @@ describe("pipedrive/destinationMappingOptions", () => {
       (f) => f.key === "multiple_option_field"
     );
     expect(multipleOption).toBeUndefined();
-
-    const time = fields.find((f) => f.key === "time_field");
-    expect(time).toBe(undefined);
 
     const timeRange = fields.find((f) => f.key === "time_range_field");
     expect(timeRange).toBe(undefined);

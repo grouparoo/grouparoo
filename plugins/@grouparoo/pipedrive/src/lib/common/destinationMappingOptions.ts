@@ -92,9 +92,9 @@ export const mapTypesToGrouparoo = (
     date: "date",
     address: "string",
     daterange: "date",
+    time: "string",
 
     // TODO
-    time: null, // time in the format of "00:00:00"
     timerange: null,
     set: null, // multiple options
   };
