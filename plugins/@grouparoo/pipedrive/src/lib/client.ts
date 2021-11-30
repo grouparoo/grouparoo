@@ -159,6 +159,21 @@ export class PipedriveClient {
       },
     });
 
+    this.request.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.code === "ECONNRESET") {
+          // console.log("ECONNRESET, retry after 2 seconds...");
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(this.request.request(error.config));
+            }, 2000);
+          });
+        }
+        return Promise.reject(error);
+      }
+    );
+
     this.persons = new EntityCalls(this, "persons");
     this.organizations = new EntityCalls(this, "organizations");
   }
@@ -187,7 +202,7 @@ export class PipedriveClient {
   }
 
   async findOrganizationIdByName(name: string): Promise<number> {
-    name = name.trim();
+    name = name?.trim();
 
     if (!name) return null;
 
