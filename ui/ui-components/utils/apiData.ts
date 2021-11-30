@@ -75,6 +75,12 @@ export namespace Models {
   export type SourceType = Partial<AsyncReturnType<Source["apiData"]>>;
   export type TeamType = Partial<AsyncReturnType<Team["apiData"]>>;
   export type TeamMemberType = Partial<AsyncReturnType<TeamMember["apiData"]>>;
+  export type EntityTypes =
+    | AppType
+    | SourceType
+    | DestinationType
+    | ScheduleType
+    | GroupType;
 }
 
 // -----------------------------------------

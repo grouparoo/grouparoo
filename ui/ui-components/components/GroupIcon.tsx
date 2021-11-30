@@ -5,8 +5,7 @@ import {
 
 export default function AppIcon({
   size,
-}: {
-  size?: FontAwesomeIconProps["size"];
-}) {
-  return <FontAwesomeIcon icon={"users"} size={size ?? "lg"} />;
+  ...props
+}: Omit<FontAwesomeIconProps, "icon">) {
+  return <FontAwesomeIcon {...props} icon={"users"} size={size ?? "lg"} />;
 }
