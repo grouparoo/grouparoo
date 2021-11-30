@@ -2,6 +2,7 @@ import { useState } from "react";
 import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
+import { useCallback } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "../components/GrouparooLink";
@@ -54,27 +55,31 @@ export default function Page(props) {
     }
   }
 
-  async function runRefreshQuery(app) {
-    setLoading(true);
-    const appRefreshQuery = app.appRefreshQuery;
-    try {
-      const response: Actions.AppRefreshQueryRun = await execApi(
-        "post",
-        `/appRefreshQuery/${appRefreshQuery.id}/run`
-      );
-      if (response?.valueUpdated == true) {
-        successHandler.set({
-          message: `Query returned ${response.appRefreshQuery.value}. Enqueueing Schedules.`,
-        });
-      } else {
-        successHandler.set({
-          message: `Query returned ${response.appRefreshQuery.value}. No schedules enqueued.`,
-        });
+  const runRefreshQuery = useCallback(
+    async (app: typeof apps[number]) => {
+      setLoading(true);
+      const appRefreshQuery = app.appRefreshQuery;
+      try {
+        const response: Actions.AppRefreshQueryRun = await execApi(
+          "post",
+          `/appRefreshQuery/${appRefreshQuery.id}/run`
+        );
+        if (response?.valueUpdated == true) {
+          successHandler.set({
+            message: `Query returned ${response.appRefreshQuery.value}. Enqueueing Schedules.`,
+          });
+        } else {
+          successHandler.set({
+            message: `Query returned ${response.appRefreshQuery.value}. No schedules enqueued.`,
+          });
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
-  }
+    },
+    [execApi, successHandler]
+  );
+
   return (
     <>
       <Head>
