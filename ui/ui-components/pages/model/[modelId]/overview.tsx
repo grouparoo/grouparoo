@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useMemo } from "react";
 import { Col, Container, ListGroup, ListGroupItem, Row } from "react-bootstrap";
-import ModelOverviewCard from "../../../components/model/overview/ModelOverviewCard";
+import ManagedCard from "../../../components/lib/ManagedCard";
 import ModelOverviewDestinations from "../../../components/model/overview/ModelOverviewDestinations";
 import ModelOverviewGroups from "../../../components/model/overview/ModelOverviewGroups";
 import ModelOverviewPrimarySource from "../../../components/model/overview/ModelOverviewPrimarySource";
@@ -62,7 +62,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
 
         <Row className="mb-4">
           <Col>
-            <ModelOverviewCard title="Model Data">
+            <ManagedCard title="Model Data">
               <ListGroup className="list-group-flush">
                 <ListGroupItem>
                   <ModelOverviewPrimarySource source={primarySource} />
@@ -90,7 +90,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
                   />
                 </ListGroupItem>
               </ListGroup>
-            </ModelOverviewCard>
+            </ManagedCard>
           </Col>
         </Row>
         <Row>
@@ -118,7 +118,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     modelId,
   };
 
-  // TODO: Create a single api call that requests all data for the model overview page.
   const [
     { sources },
     { destinations },

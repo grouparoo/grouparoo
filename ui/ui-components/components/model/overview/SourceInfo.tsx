@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Models } from "../../../utils/apiData";
 import { formatSchedule } from "../../../utils/formatSchedule";
 import StateBadge from "../../badges/StateBadge";
-import EntityInfoContainer from "./EntityInfoContainer";
-import EntityInfoHeader from "./EntityInfoHeader";
+import EntityInfoContainer from "../../lib/entity/EntityInfoContainer";
+import EntityInfoHeader from "../../lib/entity/EntityInfoHeader";
 
 const renderMapping = (mapping: Record<string, string>): React.ReactNode => {
   const keys = Object.keys(mapping);

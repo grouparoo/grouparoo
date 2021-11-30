@@ -6,7 +6,7 @@ interface Props {
   disabled?: boolean;
 }
 
-const ModelOverviewCard: React.FC<Props> = ({
+const ManagedCard: React.FC<Props> = ({
   title,
   actionButtons,
   disabled,
@@ -31,4 +31,4 @@ const ModelOverviewCard: React.FC<Props> = ({
   );
 };
 
-export default ModelOverviewCard;
+export default ManagedCard;

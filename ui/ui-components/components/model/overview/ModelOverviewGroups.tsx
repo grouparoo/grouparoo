@@ -1,10 +1,10 @@
 import { Models } from "../../../utils/apiData";
-import SectionContainer from "./SectionContainer";
-import EntityInfoContainer from "./EntityInfoContainer";
-import EntityInfoHeader from "./EntityInfoHeader";
+import SectionContainer from "../../lib/SectionContainer";
+import EntityInfoContainer from "../../lib/entity/EntityInfoContainer";
+import EntityInfoHeader from "../../lib/entity/EntityInfoHeader";
 import LinkButton from "../../LinkButton";
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
-import EntityList from "./EntityList";
+import EntityList from "../../lib/entity/EntityList";
 
 const GroupInfo: React.FC<{ group: Models.GroupType }> = ({ group }) => {
   return (

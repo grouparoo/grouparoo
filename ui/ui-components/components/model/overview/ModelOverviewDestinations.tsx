@@ -2,20 +2,21 @@ import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 import DestinationCollectionLink from "../../destination/DestinationCollectionLink";
-import EntityInfoContainer from "./EntityInfoContainer";
-import EntityInfoHeader from "./EntityInfoHeader";
+import EntityInfoContainer from "../../lib/entity/EntityInfoContainer";
+import EntityInfoHeader from "../../lib/entity/EntityInfoHeader";
 import Link from "next/link";
 import EnterpriseLink from "../../../components/GrouparooLink";
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 import LinkButton from "../../LinkButton";
-import ModelOverviewCard from "./ModelOverviewCard";
-import SectionContainer from "./SectionContainer";
+import ManagedCard from "../../lib/ManagedCard";
+import SectionContainer from "../../lib/SectionContainer";
+
+const isCommunityUI = grouparooUiEdition() === "community";
 
 const DestinationInfo: React.FC<{
   destination: Models.DestinationType;
 }> = ({ destination }) => {
   const { app, connection, exportTotals } = destination;
-  const isCommunityUI = grouparooUiEdition() === "community";
   const href = `/model/${destination.modelId}/destination/${destination.id}/${
     isCommunityUI ? "exports" : "edit"
   }`;
@@ -50,7 +51,7 @@ const ModelOverviewDestinations: React.FC<Props> = ({
   const model = useGrouparooModelContext();
 
   return (
-    <ModelOverviewCard
+    <ManagedCard
       title="Destinations"
       disabled={disabled}
       actionButtons={
@@ -82,7 +83,7 @@ const ModelOverviewDestinations: React.FC<Props> = ({
           </ListGroupItem>
         )}
       </ListGroup>
-    </ModelOverviewCard>
+    </ManagedCard>
   );
 };
 

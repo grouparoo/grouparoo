@@ -4,6 +4,7 @@ import ModelIcon from "./ModelIcon";
 import GroupIcon from "./GroupIcon";
 import RecordImageFromEmail from "./visualizations/RecordImageFromEmail";
 import { Media } from "react-bootstrap";
+import SeparatedItems from "./lib/SeparatedItems";
 
 interface Props {
   title: React.ReactNode;
@@ -66,20 +67,6 @@ const PageHeader: React.FC<Props> = ({
     [title]
   );
 
-  const badgesNode: React.ReactNode =
-    badges && !!badges.length
-      ? badges.map((badge, idx) => (
-          <Fragment key={`header_badge_${idx}`}>{badge} </Fragment>
-        ))
-      : null;
-
-  const actionsNode: React.ReactNode =
-    actions && !!actions.length
-      ? actions.map((action, idx) => (
-          <Fragment key={`header_action_${idx}`}>{action} </Fragment>
-        ))
-      : null;
-
   return (
     <Media className="mb-3">
       {iconNode}
@@ -88,9 +75,9 @@ const PageHeader: React.FC<Props> = ({
           <h1 style={{ display: "inline" }} className="mr-3">
             {titleNode}
           </h1>
-          {actionsNode}
+          <SeparatedItems items={actions} />
         </div>
-        {badgesNode}
+        <SeparatedItems items={badges} />
       </Media.Body>
     </Media>
   );

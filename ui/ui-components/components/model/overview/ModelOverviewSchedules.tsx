@@ -2,13 +2,13 @@ import { useMemo } from "react";
 import { Models } from "../../../utils/apiData";
 import { formatName } from "../../../utils/formatName";
 import { formatSchedule } from "../../../utils/formatSchedule";
-import SectionContainer from "./SectionContainer";
-import EntityInfoContainer from "./EntityInfoContainer";
-import EntityInfoHeader from "./EntityInfoHeader";
+import SectionContainer from "../../lib/SectionContainer";
+import EntityInfoContainer from "../../lib/entity/EntityInfoContainer";
+import EntityInfoHeader from "../../lib/entity/EntityInfoHeader";
 import RunAllSchedulesButton from "../../schedule/RunAllSchedulesButton";
 import { ApiHook } from "../../../hooks/useApi";
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
-import EntityList from "./EntityList";
+import EntityList from "../../lib/entity/EntityList";
 
 const ScheduleInfo: React.FC<{
   schedule: Models.ScheduleType;

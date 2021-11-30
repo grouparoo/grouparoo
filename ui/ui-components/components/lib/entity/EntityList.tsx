@@ -13,13 +13,13 @@ import {
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 import { Models } from "../../../utils/apiData";
 import { formatName } from "../../../utils/formatName";
+import SeparatedItems from "../SeparatedItems";
 
 const renderNameList = function <T extends Models.EntityTypes>(
   items: T[],
   itemType: string,
   model: Models.GrouparooModelType
 ): React.ReactNode {
-  const lastIndex = items.length - 1;
   const page =
     itemType === "schedule"
       ? "schedule"
@@ -28,20 +28,19 @@ const renderNameList = function <T extends Models.EntityTypes>(
       : "edit";
   const itemPath = itemType === "schedule" ? "source" : itemType;
 
-  return items.map((item, index) => {
+  const links = items.map((item, index) => {
     const itemId =
       itemType === "schedule"
         ? (item as Models.ScheduleType).sourceId
         : item.id;
     return (
-      <Fragment key={index}>
-        <Link href={`/model/${model.id}/${itemPath}/${itemId}/${page}`}>
-          <a>{formatName(item)}</a>
-        </Link>
-        {index === lastIndex ? "" : ", "}
-      </Fragment>
+      <Link href={`/model/${model.id}/${itemPath}/${itemId}/${page}`}>
+        <a>{formatName(item)}</a>
+      </Link>
     );
   });
+
+  return <SeparatedItems items={links} separator="," />;
 };
 
 interface Props<T extends Models.EntityTypes> {

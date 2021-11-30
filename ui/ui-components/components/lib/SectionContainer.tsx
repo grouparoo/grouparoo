@@ -1,7 +1,7 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Col, Media, Row } from "react-bootstrap";
-import AppIcon from "../../AppIcon";
+import AppIcon from "../AppIcon";
 
 interface SectionContainerProps {
   title?: string;
