@@ -58,14 +58,14 @@ const ModelOverviewSchedules: React.FC<Props> = ({
       icon="sync-alt"
       description="Schedules check for new and updated data from your Sources."
       disabled={disabled}
-      actionButtons={
+      actions={[
         <RunAllSchedulesButton
           size="sm"
           modelId={model.id}
           execApi={execApi}
           disabled={disabled}
-        />
-      }
+        />,
+      ]}
     >
       <EntityList
         items={schedules}

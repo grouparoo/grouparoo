@@ -22,7 +22,7 @@ const ModelOverviewSecondarySources: React.FC<Props> = ({
       icon="file-import"
       description="Secondary Sources enrich your Records with additional data."
       disabled={disabled}
-      actionButtons={
+      actions={[
         <LinkButton
           variant="outline-primary"
           size="sm"
@@ -31,8 +31,8 @@ const ModelOverviewSecondarySources: React.FC<Props> = ({
           disabled={disabled}
         >
           Add new Source
-        </LinkButton>
-      }
+        </LinkButton>,
+      ]}
     >
       <EntityList
         items={sources}

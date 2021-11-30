@@ -35,7 +35,7 @@ const ModelOverviewGroups: React.FC<Props> = ({ groups, disabled }) => {
       icon="users"
       description="Groups are used to segment your Records before syncing to your Destinations."
       disabled={disabled}
-      actionButtons={
+      actions={[
         <LinkButton
           variant="outline-primary"
           size="sm"
@@ -44,8 +44,8 @@ const ModelOverviewGroups: React.FC<Props> = ({ groups, disabled }) => {
           disabled={disabled}
         >
           Add new Group
-        </LinkButton>
-      }
+        </LinkButton>,
+      ]}
     >
       <EntityList
         items={groups}

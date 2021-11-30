@@ -1,34 +1,33 @@
 import { Card, Col, Row } from "react-bootstrap";
+import SeparatedItems from "./SeparatedItems";
 
 interface Props {
   title: string;
-  actionButtons?: React.ReactNode;
+  actions: React.ReactNode[];
   disabled?: boolean;
 }
 
 const ManagedCard: React.FC<Props> = ({
   title,
-  actionButtons,
+  actions,
   disabled,
   children,
-}) => {
-  return (
-    <Card className={disabled ? "text-muted" : undefined}>
-      <Card.Header>
-        <Row>
-          <Col md={actionButtons ? 8 : 12}>
-            <h5 className="my-1">{title}</h5>
+}) => (
+  <Card className={disabled ? "text-muted" : undefined}>
+    <Card.Header>
+      <Row>
+        <Col md={actions ? 8 : 12}>
+          <h5 className="my-1">{title}</h5>
+        </Col>
+        {actions && (
+          <Col className="text-right" md="4">
+            <SeparatedItems items={actions} />
           </Col>
-          {actionButtons && (
-            <Col className="text-right" md="4">
-              {actionButtons}
-            </Col>
-          )}
-        </Row>
-      </Card.Header>
-      {children}
-    </Card>
-  );
-};
+        )}
+      </Row>
+    </Card.Header>
+    {children}
+  </Card>
+);
 
 export default ManagedCard;

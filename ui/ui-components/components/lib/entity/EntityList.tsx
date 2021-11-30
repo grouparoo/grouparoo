@@ -61,7 +61,7 @@ const EntityList = function <T extends Models.EntityTypes>({
 
   return (
     <Row>
-      <Col md={10}>
+      <Col md={9}>
         <Collapse in={expanded}>
           <ListGroup className="list-group-flush">
             {items.map((item, index) => (
@@ -77,7 +77,7 @@ const EntityList = function <T extends Models.EntityTypes>({
           </div>
         </Fade>
       </Col>
-      <Col md={2} className="text-right">
+      <Col md={3} className="text-right">
         <Button
           variant="link"
           size="sm"

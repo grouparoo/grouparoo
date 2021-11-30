@@ -54,7 +54,7 @@ const ModelOverviewDestinations: React.FC<Props> = ({
     <ManagedCard
       title="Destinations"
       disabled={disabled}
-      actionButtons={
+      actions={[
         <LinkButton
           variant="outline-primary"
           size="sm"
@@ -63,8 +63,8 @@ const ModelOverviewDestinations: React.FC<Props> = ({
           disabled={disabled}
         >
           Add new Destination
-        </LinkButton>
-      }
+        </LinkButton>,
+      ]}
     >
       <ListGroup className="list-group-flush">
         {destinations && !!destinations.length ? (
