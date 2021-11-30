@@ -14,7 +14,7 @@ import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 import { Models } from "../../../utils/apiData";
 import { formatName } from "../../../utils/formatName";
 
-const renderNameList = function <T extends Models.GrouparooEntityTypes>(
+const renderNameList = function <T extends Models.EntityTypes>(
   items: T[],
   itemType: string,
   model: Models.GrouparooModelType
@@ -44,13 +44,13 @@ const renderNameList = function <T extends Models.GrouparooEntityTypes>(
   });
 };
 
-interface Props<T extends Models.GrouparooEntityTypes> {
+interface Props<T extends Models.EntityTypes> {
   items: T[];
   itemType: "source" | "destinaton" | "schedule" | "group";
   renderItem: (item: T, index: number) => React.ReactNode;
 }
 
-const EntityList = function <T extends Models.GrouparooEntityTypes>({
+const EntityList = function <T extends Models.EntityTypes>({
   items,
   itemType,
   renderItem,

@@ -5,7 +5,7 @@ import { formatName } from "../../../utils/formatName";
 import StateBadge from "../../badges/StateBadge";
 
 interface Props {
-  entity: Models.GrouparooEntityTypes;
+  entity: Models.EntityTypes;
   href?: string;
   linkComponent?: typeof Link | typeof EnterpriseLink;
 }

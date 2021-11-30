@@ -1,9 +1,7 @@
 import React from "react";
 import { Models } from "./apiData";
 
-export const formatName = (
-  entity?: Models.GrouparooEntityTypes
-): React.ReactNode => {
+export const formatName = (entity?: Models.EntityTypes): React.ReactNode => {
   return (
     <>
       {entity
