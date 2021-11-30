@@ -5,7 +5,6 @@
   "key": "purchaseList",
   "sourceId": "demo_purchases",
   "unique": false,
-  "identifying": false,
   "isArray": true,
   "options": {
     "aggregationMethod": "least recent value",

@@ -5,7 +5,6 @@
   "key": "Language",
   "sourceId": "demo_users",
   "unique": false,
-  "identifying": false,
   "isArray": false,
   "options": {
     "aggregationMethod": "exact",

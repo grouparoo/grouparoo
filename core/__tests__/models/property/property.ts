@@ -236,31 +236,6 @@ describe("models/property", () => {
       await recordC.destroy();
       await property.destroy();
     });
-
-    test("only one property can be identifying", async () => {
-      // the bootstrapped property is already identifying
-
-      await expect(
-        Property.create({
-          type: "string",
-          sourceId: source.id,
-          identifying: true,
-        })
-      ).rejects.toThrow(/only one property can be identifying/);
-    });
-
-    test("the identifying property can be changed", async () => {
-      const property = await Property.create({
-        key: "New Rule",
-        type: "string",
-        sourceId: source.id,
-      });
-      expect(property.identifying).toBe(false);
-
-      await property.makeIdentifying();
-      expect(property.identifying).toBe(true);
-      await property.destroy();
-    });
   });
 
   test("updating a property with new options enqueued an internalRun and update groups relying on it", async () => {

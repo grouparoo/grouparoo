@@ -817,7 +817,7 @@ describe("modules/configWriter", () => {
       const config = await property.getConfigObject();
       expect(config.id).toBeTruthy();
 
-      const { key, type, unique, identifying, isArray } = property;
+      const { key, type, unique, isArray } = property;
 
       const options = await property.$get("__options");
       expect(options.length).toEqual(1);
@@ -829,7 +829,6 @@ describe("modules/configWriter", () => {
         key,
         sourceId: source.getConfigId(),
         unique,
-        identifying,
         isArray,
         options: Object.fromEntries(options.map((o) => [o.key, o.value])),
         filters: [

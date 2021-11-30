@@ -5,7 +5,6 @@
   "key": "lastPurchaseDate",
   "sourceId": "demo_purchases",
   "unique": false,
-  "identifying": false,
   "isArray": false,
   "options": {
     "aggregationMethod": "most recent value",

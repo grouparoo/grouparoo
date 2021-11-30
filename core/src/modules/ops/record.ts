@@ -38,7 +38,6 @@ export interface RecordPropertyType {
     unique: Property["unique"];
     isPrimaryKey: Property["isPrimaryKey"];
     isArray: Property["isArray"];
-    identifying: Property["identifying"];
     valueChangedAt: RecordProperty["valueChangedAt"];
     confirmedAt: RecordProperty["confirmedAt"];
     stateChangedAt: RecordProperty["stateChangedAt"];
@@ -86,7 +85,6 @@ export namespace RecordOps {
           unique: property.unique,
           isPrimaryKey: property.isPrimaryKey,
           isArray: property.isArray,
-          identifying: property.identifying,
           valueChangedAt: recordProperties[i].valueChangedAt,
           confirmedAt: recordProperties[i].confirmedAt,
           stateChangedAt: recordProperties[i].stateChangedAt,

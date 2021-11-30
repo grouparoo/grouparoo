@@ -306,7 +306,7 @@ export async function processConfigObjects(
           );
           break;
         case "profile":
-          Deprecation.warn("config", "Profile", "Record");
+          Deprecation.warnChanged("config", "Profile", "Record");
           ids = await loadRecord(
             configObject as RecordConfigurationObject,
             externallyValidate,

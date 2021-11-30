@@ -18,7 +18,7 @@ export async function loadApp(
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
-  validateConfigObjectKeys(App, configObject, ["refreshQuery"]);
+  validateConfigObjectKeys(App, configObject, ["options", "refresh"]);
 
   let app = await App.scope(null).findOne({
     where: {

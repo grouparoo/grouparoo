@@ -56,19 +56,6 @@ export namespace MustacheUtils {
         .filter((c) => c.class.toLowerCase() === "property")
         .map((c) => {
           return { id: c.id, key: c["key"] || c["name"] };
-        }),
-      configObjects
-        .filter((c) => c.class.toLowerCase() === "source")
-        .filter(
-          (c) => c["bootstrappedProperty"] && c["bootstrappedProperty"]["id"]
-        )
-        .map((c) => {
-          return {
-            id: c["bootstrappedProperty"]["id"],
-            key:
-              c["bootstrappedProperty"]["key"] ||
-              c["bootstrappedProperty"]["name"],
-          };
         })
     );
 

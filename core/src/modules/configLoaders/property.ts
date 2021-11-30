@@ -9,6 +9,7 @@ import {
 } from "../../classes/codeConfig";
 import { Property, Source } from "../..";
 import { Op } from "sequelize";
+import { Deprecation } from "../deprecation";
 
 import { ConfigWriter } from "../configWriter";
 
@@ -20,7 +21,12 @@ export async function loadProperty(
   let isNew = false;
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
-  validateConfigObjectKeys(Property, configObject, ["name"]);
+  validateConfigObjectKeys(Property, configObject, [
+    "options",
+    "filters",
+    "name",
+    "identifying", // deprecated
+  ]);
 
   let property = await Property.scope(null).findOne({
     where: {
@@ -55,8 +61,8 @@ export async function loadProperty(
     await property.setFilters(configObject.filters, externallyValidate);
   }
 
-  if (configObject.identifying === true) {
-    await property.makeIdentifying();
+  if (!!configObject["identifying"]) {
+    Deprecation.warnRemoved("config", "Property", "identifying");
   }
 
   await property.update({ state: "ready" });

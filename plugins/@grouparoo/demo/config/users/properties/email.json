@@ -5,7 +5,6 @@
   "key": "email",
   "sourceId": "demo_users",
   "unique": true,
-  "identifying": false,
   "isArray": false,
   "options": {
     "aggregationMethod": "exact",

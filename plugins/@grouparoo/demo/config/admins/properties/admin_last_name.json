@@ -5,7 +5,6 @@
   "key": "admin_last_name",
   "sourceId": "demo_admins",
   "unique": false,
-  "identifying": false,
   "isArray": false,
   "options": {
     "aggregationMethod": "exact",
