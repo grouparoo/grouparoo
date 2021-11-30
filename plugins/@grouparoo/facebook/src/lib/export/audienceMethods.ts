@@ -32,28 +32,28 @@ export async function getAudienceId(
   return listId;
 }
 
-async function getAllAudiences(client: Client) {
-  // could do extra caching here id needed
-  const adAccount = client.adAccount();
-  const fields = ["id", "name", "subtype"];
-  const params = {};
-  const result = await adAccount.getCustomAudiences(fields, params);
-  const out = [];
-  for (const audience of result) {
-    const { id, name, subtype } = audience;
-    out.push({ id, name, subtype });
-  }
-  return out;
-}
 async function findAudienceByName(
   client: Client,
-  subtype: AudienceSubtype,
+  useSubtype: AudienceSubtype,
   audienceName: string
 ): Promise<string> {
-  const audiences = await getAllAudiences(client);
-  for (const audience of audiences) {
-    if (audienceName === audience.name && subtype === audience.subtype) {
-      return audience.id;
+  const adAccount = client.adAccount();
+  const fields = ["id", "name", "subtype"];
+  const params = { limit: 500 };
+
+  const compareName = audienceName.toLowerCase().trim();
+
+  let result = await adAccount.getCustomAudiences(fields, params);
+  while (result.hasNext()) {
+    result = await result.next();
+    for (const audience of result) {
+      const { id, name, subtype } = audience;
+      if (useSubtype === audience.subtype) {
+        const normalized = name.toLowerCase().trim();
+        if (compareName === normalized) {
+          return id;
+        }
+      }
     }
   }
   return null;
