@@ -56,7 +56,7 @@ const EntityList = function <T extends Models.EntityTypes>({
   renderItem,
 }: React.PropsWithChildren<Props<T>>): JSX.Element {
   const model = useGrouparooModelContext();
-  const [expanded, isExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   if (!items?.length) return null;
 
@@ -83,7 +83,7 @@ const EntityList = function <T extends Models.EntityTypes>({
           variant="link"
           size="sm"
           className="p-0"
-          onClick={() => isExpanded(!expanded)}
+          onClick={() => setExpanded(!expanded)}
         >
           {expanded ? "Less" : "More"} details{" "}
           <FontAwesomeIcon icon={`caret-${expanded ? "up" : "down"}`} />
