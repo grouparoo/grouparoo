@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import { formatName } from "../../../utils/formatName";
 import { formatSchedule } from "../../../utils/formatSchedule";
@@ -9,6 +8,7 @@ import EntityInfoHeader from "./EntityInfoHeader";
 import RunAllSchedulesButton from "../../schedule/RunAllSchedulesButton";
 import { ApiHook } from "../../../hooks/useApi";
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
+import EntityList from "./EntityList";
 
 const ScheduleInfo: React.FC<{
   schedule: Models.ScheduleType;
@@ -67,18 +67,16 @@ const ModelOverviewSchedules: React.FC<Props> = ({
         />
       }
     >
-      {schedules.length > 0 && (
-        <ListGroup className="list-group-flush">
-          {schedules.map((group, index) => (
-            <ListGroupItem key={index}>
-              <ScheduleInfo
-                schedule={group}
-                source={sourcesById[group.sourceId]}
-              />
-            </ListGroupItem>
-          ))}
-        </ListGroup>
-      )}
+      <EntityList
+        items={schedules}
+        itemType="schedule"
+        renderItem={(schedule) => (
+          <ScheduleInfo
+            schedule={schedule}
+            source={sourcesById[schedule.sourceId]}
+          />
+        )}
+      />
     </SectionContainer>
   );
 };

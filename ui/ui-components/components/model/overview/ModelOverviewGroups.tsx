@@ -1,10 +1,10 @@
-import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import SectionContainer from "./SectionContainer";
 import EntityInfoContainer from "./EntityInfoContainer";
 import EntityInfoHeader from "./EntityInfoHeader";
 import LinkButton from "../../LinkButton";
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
+import EntityList from "./EntityList";
 
 const GroupInfo: React.FC<{ group: Models.GroupType }> = ({ group }) => {
   return (
@@ -47,15 +47,11 @@ const ModelOverviewGroups: React.FC<Props> = ({ groups, disabled }) => {
         </LinkButton>
       }
     >
-      {groups.length > 0 && (
-        <ListGroup className="list-group-flush">
-          {groups.map((group, index) => (
-            <ListGroupItem key={index}>
-              <GroupInfo group={group} />
-            </ListGroupItem>
-          ))}
-        </ListGroup>
-      )}
+      <EntityList
+        items={groups}
+        itemType="group"
+        renderItem={(group) => <GroupInfo group={group} />}
+      />
     </SectionContainer>
   );
 };

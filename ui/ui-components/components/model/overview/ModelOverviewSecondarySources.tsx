@@ -1,7 +1,7 @@
-import { Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 import { Models } from "../../../utils/apiData";
 import LinkButton from "../../LinkButton";
+import EntityList from "./EntityList";
 import SectionContainer from "./SectionContainer";
 import SourceInfo from "./SourceInfo";
 
@@ -34,15 +34,11 @@ const ModelOverviewSecondarySources: React.FC<Props> = ({
         </LinkButton>
       }
     >
-      {sources.length > 0 && (
-        <ListGroup className="list-group-flush">
-          {sources.map((source, index) => (
-            <ListGroupItem key={index}>
-              <SourceInfo source={source} />
-            </ListGroupItem>
-          ))}
-        </ListGroup>
-      )}
+      <EntityList
+        items={sources}
+        itemType="source"
+        renderItem={(source) => <SourceInfo source={source} />}
+      />
     </SectionContainer>
   );
 };

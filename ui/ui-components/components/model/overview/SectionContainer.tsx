@@ -39,7 +39,7 @@ const SectionContainer: React.FC<SectionContainerProps> = ({
         <Row>
           <Col md={actionButtons ? 8 : 12}>
             {title && <h6>{title}</h6>}
-            {description && <div>{description}</div>}
+            {description && <p>{description}</p>}
           </Col>
           {actionButtons && (
             <Col className="text-right" md="4">

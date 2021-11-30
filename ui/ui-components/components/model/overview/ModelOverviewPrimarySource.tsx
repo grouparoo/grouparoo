@@ -1,7 +1,7 @@
-import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 import { Models } from "../../../utils/apiData";
 import LinkButton from "../../LinkButton";
+import EntityList from "./EntityList";
 import SectionContainer from "./SectionContainer";
 import SourceInfo from "./SourceInfo";
 
@@ -30,11 +30,13 @@ const ModelOverviewPrimarySource: React.FC<{ source?: Models.SourceType }> = ({
       }
     >
       {source && (
-        <ListGroup className="list-group-flush">
-          <ListGroupItem>
+        <EntityList
+          items={[source]}
+          itemType="source"
+          renderItem={(source) => (
             <SourceInfo source={source} isPrimarySource />
-          </ListGroupItem>
-        </ListGroup>
+          )}
+        />
       )}
     </SectionContainer>
   );
