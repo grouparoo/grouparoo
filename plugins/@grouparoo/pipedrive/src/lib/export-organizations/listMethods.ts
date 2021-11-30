@@ -1,7 +1,7 @@
 import { objectCache } from "@grouparoo/core";
-import { PipedriveClient } from "../../client";
+import { PipedriveClient } from "../client";
 import {
-  getKnownPersonFieldMap,
+  getKnownOrganizationFieldMap,
   PipedriveCacheData,
 } from "./destinationMappingOptions";
 
@@ -40,14 +40,18 @@ async function ensureFieldAndFilter(
   const fieldName = makeGroupFieldName(groupName);
 
   // see if it's already there
-  let pipedriveFieldMap = await getKnownPersonFieldMap(client, cacheData);
+  let pipedriveFieldMap = await getKnownOrganizationFieldMap(client, cacheData);
   let fieldKey = pipedriveFieldMap[fieldName];
   if (fieldKey) {
     return fieldKey;
   }
 
   // maybe it's just not cached yet
-  pipedriveFieldMap = await getKnownPersonFieldMap(client, cacheData, true);
+  pipedriveFieldMap = await getKnownOrganizationFieldMap(
+    client,
+    cacheData,
+    true
+  );
   fieldKey = pipedriveFieldMap[fieldName];
   if (fieldKey) {
     return fieldKey;
@@ -56,13 +60,13 @@ async function ensureFieldAndFilter(
   // need to create it
   if (!createIfNotExists) return null;
 
-  const { data } = await client.persons.fields.create({
+  const { data } = await client.organizations.fields.create({
     name: fieldName,
     field_type: "varchar",
   });
 
   // automatically create the filter too
-  await client.persons.filters.create({
+  await client.organizations.filters.create({
     name: fieldName,
     conditions: {
       glue: "and",
@@ -71,7 +75,7 @@ async function ensureFieldAndFilter(
           glue: "and",
           conditions: [
             {
-              object: "person",
+              object: "organization",
               field_id: data.id,
               operator: "=",
               value: "true",

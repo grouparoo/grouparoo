@@ -4,7 +4,7 @@ import { helper } from "@grouparoo/spec-helper";
 import {
   destinationMappingOptions,
   fetchKnownOrganizationFields,
-} from "../../src/lib/export/organizations/destinationMappingOptions";
+} from "../../src/lib/export-organizations/destinationMappingOptions";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 

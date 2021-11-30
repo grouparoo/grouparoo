@@ -1,11 +1,11 @@
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import { exportRecord } from "../../src/lib/export/organizations/exportRecord";
+import { exportRecord } from "../../src/lib/export-organizations/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexUsers } from "../utils/shared";
-import { getKnownOrganizationFieldMap } from "../../src/lib/export/organizations/destinationMappingOptions";
+import { getKnownOrganizationFieldMap } from "../../src/lib/export-organizations/destinationMappingOptions";
 import { PipedriveClient } from "../../src/lib/client";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 

@@ -1,6 +1,6 @@
 import { ExportRecordPluginMethod, Errors } from "@grouparoo/core";
-import { PipedriveClient } from "../../client";
-import { connect } from "../../connect";
+import { PipedriveClient } from "../client";
+import { connect } from "../connect";
 import {
   PipedriveCacheData,
   getKnownPersonFieldMap,

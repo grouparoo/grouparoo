@@ -5,8 +5,8 @@ import {
   objectCache,
 } from "@grouparoo/core";
 
-import { connect } from "../../connect";
-import { PipedriveClient } from "../../client";
+import { connect } from "../connect";
+import { PipedriveClient } from "../client";
 import { GROUP_FIELD_PREFIX } from "./listMethods";
 
 export interface PipedriveCacheData {

@@ -6,15 +6,15 @@ import { test } from "./../lib/test";
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 
-import { exportRecord as personExportRecord } from "../lib/export/persons/exportRecord";
-import { destinationOptions as personDestinationOptions } from "../lib/export/persons/destinationOptions";
-import { destinationMappingOptions as personDestinationMappingOptions } from "../lib/export/persons/destinationMappingOptions";
-import { exportArrayProperties as personExportArrayProperties } from "../lib/export/persons/exportArrayProperties";
+import { exportRecord as personExportRecord } from "../lib/export-persons/exportRecord";
+import { destinationOptions as personDestinationOptions } from "../lib/export-persons/destinationOptions";
+import { destinationMappingOptions as personDestinationMappingOptions } from "../lib/export-persons/destinationMappingOptions";
+import { exportArrayProperties as personExportArrayProperties } from "../lib/export-persons/exportArrayProperties";
 
-import { exportRecord as orgExportRecord } from "../lib/export/organizations/exportRecord";
-import { destinationOptions as orgDestinationOptions } from "../lib/export/organizations/destinationOptions";
-import { destinationMappingOptions as orgDestinationMappingOptions } from "../lib/export/organizations/destinationMappingOptions";
-import { exportArrayProperties as orgExportArrayProperties } from "../lib/export/organizations/exportArrayProperties";
+import { exportRecord as orgExportRecord } from "../lib/export-organizations/exportRecord";
+import { destinationOptions as orgDestinationOptions } from "../lib/export-organizations/destinationOptions";
+import { destinationMappingOptions as orgDestinationMappingOptions } from "../lib/export-organizations/destinationMappingOptions";
+import { exportArrayProperties as orgExportArrayProperties } from "../lib/export-organizations/exportArrayProperties";
 
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 
@@ -81,7 +81,7 @@ export class Plugins extends Initializer {
           name: "pipedrive-export-organizations",
           displayName: "Pipedrive Export Organizations",
           direction: "export",
-          description: "Export records to Pipedrive as Organization contacts",
+          description: "Export records to Pipedrive as Organization",
           apps: ["pipedrive"],
           syncModes,
           defaultSyncMode,
