@@ -77,7 +77,7 @@ export class Plugins extends Initializer {
           name: "pipedrive-export-organizations",
           displayName: "Pipedrive Export Organizations",
           direction: "export",
-          description: "Export records to Pipedrive as Organization",
+          description: "Export records to Pipedrive as Organizations",
           apps: ["pipedrive"],
           syncModes,
           defaultSyncMode,
