@@ -43,7 +43,6 @@ async function findFilter(name: string) {
 
 async function cleanUp() {
   // Clear created people
-  const ids = [];
   for (let name of [name1, name2, name3, name4, nonexistentName]) {
     const id = await client.findOrganizationIdByName(name);
     if (id) {

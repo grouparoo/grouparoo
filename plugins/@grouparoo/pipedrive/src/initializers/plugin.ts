@@ -2,7 +2,7 @@ import path from "path";
 import { Initializer } from "actionhero";
 import { plugin, DestinationSyncMode } from "@grouparoo/core";
 
-import { test } from "./../lib/test";
+import { test } from "../lib/test";
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 

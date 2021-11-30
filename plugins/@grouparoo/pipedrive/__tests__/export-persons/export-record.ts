@@ -43,7 +43,6 @@ async function findFilter(name: string) {
 
 async function cleanUp() {
   // Clear created people
-  const ids = [];
   for (let email of [email1, email2, email3, email4, nonexistentEmail]) {
     const id = await client.findPersonIdByEmail(email);
     if (id) {
