@@ -3,10 +3,10 @@ import { helper } from "@grouparoo/spec-helper";
 
 import {
   destinationMappingOptions,
-  fetchKnownPersonFields,
-} from "../../../src/lib/export/persons/destinationMappingOptions";
-import { connect } from "../../../src/lib/connect";
-import { loadAppOptions, updater } from "../../utils/nockHelper";
+  fetchKnownOrganizationFields,
+} from "../../src/lib/export/organizations/destinationMappingOptions";
+import { connect } from "../../src/lib/connect";
+import { loadAppOptions, updater } from "../utils/nockHelper";
 
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
@@ -25,9 +25,9 @@ async function runDestinationMappingOptions({}) {
 }
 
 describe("pipedrive/destinationMappingOptions", () => {
-  test("can fetch custom Person fields", async () => {
+  test("can fetch custom Organization fields", async () => {
     const client = await connect(appOptions);
-    const fields = await fetchKnownPersonFields(client);
+    const fields = await fetchKnownOrganizationFields(client);
 
     const text = fields.find((f) => f.key === "text_field");
     expect(text.type).toBe("string");
@@ -74,9 +74,9 @@ describe("pipedrive/destinationMappingOptions", () => {
     expect(dateRangeEnd.type).toBe("date");
   });
 
-  test("does not fetch unsupported custom Person fields", async () => {
+  test("does not fetch unsupported custom Organization fields", async () => {
     const client = await connect(appOptions);
-    const fields = await fetchKnownPersonFields(client);
+    const fields = await fetchKnownOrganizationFields(client);
 
     const multipleOption = fields.find(
       (f) => f.key === "multiple_option_field"
@@ -95,30 +95,17 @@ describe("pipedrive/destinationMappingOptions", () => {
     const { properties } = options;
     const { required, known } = properties;
 
-    expect(required.length).toBe(2);
-
-    const email = required.find((f) => f.key === "Email");
-    expect(email.type).toBe("email");
+    expect(required.length).toBe(1);
 
     const name = required.find((f) => f.key === "Name");
     expect(name.type).toBe("string");
 
     // Built-in default fields
-    const phone = known.find((f) => f.key === "Phone");
-    expect(phone.type).toBe("phoneNumber");
-    expect(phone.important).toBeFalsy();
-
     const label = known.find((f) => f.key === "Label");
     expect(label.type).toBe("integer");
     expect(label.important).toBeFalsy();
 
     // Internally set built-in fields should not be included
-    const firstName = known.find((f) => f.key === "First name");
-    expect(firstName).toBeUndefined();
-
-    const lastName = known.find((f) => f.key === "Last name");
-    expect(lastName).toBeUndefined();
-
     const updateTime = known.find((f) => f.key === "Update time");
     expect(updateTime).toBeUndefined();
 
