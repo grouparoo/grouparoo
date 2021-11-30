@@ -261,6 +261,8 @@ export class App extends LoggedModel<App> {
 
     const options = await this.getOptions(false);
 
+    const appRefreshQuery = await this.$get("appRefreshQuery");
+
     if (!name) return;
 
     return {
@@ -269,6 +271,12 @@ export class App extends LoggedModel<App> {
       name,
       type,
       options,
+      refresh: appRefreshQuery
+        ? {
+            query: appRefreshQuery.refreshQuery,
+            recurringFrequency: appRefreshQuery.recurringFrequency,
+          }
+        : undefined,
     };
   }
 

@@ -18,6 +18,7 @@ import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 import { AppRefreshQueryOps } from "../modules/ops/appRefreshQuery";
 import { App } from "./App";
+import { CLS } from "../modules/cls";
 
 const STATES = ["draft", "ready"] as const;
 
@@ -137,8 +138,15 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
 
   @BeforeSave
   static async appQuery(instance: AppRefreshQuery) {
+    //run the query to make sure it's valid
     if (instance.state === "ready") {
       await AppRefreshQueryOps.runAppQuery(instance);
+    }
+    //query and run if the query has changed
+    if (instance.changed("refreshQuery")) {
+      await CLS.enqueueTask("appRefreshQuery:run", {
+        appRefreshQueryId: instance.id,
+      });
     }
   }
 

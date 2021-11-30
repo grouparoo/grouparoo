@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Alert, Button, Container } from "react-bootstrap";
 import { useRouter } from "next/router";
@@ -10,11 +10,12 @@ import LoadingButton from "../../../components/LoadingButton";
 import LockedBadge from "../../../components/badges/LockedBadge";
 import SourceBadge from "../../../components/badges/SourceBadge";
 import StateBadge from "../../../components/badges/StateBadge";
+import AppRefreshQueryScheduleList from "../../../components/app/AppRefreshSchedulesList";
 import AppRefreshQueryStats from "../../../components/app/AppRefreshQueryStats";
 import { Actions, Models } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
-import AppRefreshQueryScheduleList from "../../../components/app/AppRefreshSchedulesList";
+import { grouparooUiEdition } from "../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -45,7 +46,10 @@ export default function Page(props) {
   );
   const { id } = router.query;
   const { schedules, runs, sources } = props;
-  const disabled = app?.locked !== null || appRefreshQuery?.locked !== null;
+  const disabled = useMemo(
+    () => app?.locked !== null || appRefreshQuery?.locked !== null,
+    [app, appRefreshQuery]
+  );
 
   async function create(event) {
     event.preventDefault();
@@ -61,10 +65,10 @@ export default function Page(props) {
 
     if (response?.appRefreshQuery) {
       setAppRefreshQuery(response.appRefreshQuery);
-
       router.push(`/app/${response.appRefreshQuery.appId}/refresh`);
     }
     setLoading(false);
+    setEditing(true);
   }
 
   async function update(event) {
@@ -76,6 +80,7 @@ export default function Page(props) {
   }
 
   async function editMode() {
+    setRanTest(false);
     setEditing(true);
     setLoading(false);
   }
@@ -92,12 +97,12 @@ export default function Page(props) {
       appRefreshQuery.state = "ready";
     }
     setLoading(true);
-    console.log(appRefreshQuery);
     const response: Actions.AppRefreshQueryEdit = await execApi(
       "put",
       `/appRefreshQuery/${appRefreshQuery.id}`,
       appRefreshQuery
     );
+
     if (response?.appRefreshQuery) {
       setLoading(false);
       successHandler.set({ message: "App Refresh Query Updated" });
@@ -113,11 +118,17 @@ export default function Page(props) {
         );
         if (response?.valueUpdated == true) {
           successHandler.set({
-            message: `App Refresh Query updated. Returned ${response.appRefreshQuery.value}. Enqueueing Schedules.`,
+            message: `App Refresh Query updated. Returned ${
+              response.appRefreshQuery.value
+            }.${grouparooUiEdition() !== "config" ?? " Enqueueing Schedules"}`,
           });
         } else {
           successHandler.set({
-            message: `App Refresh Query updated. Query returned ${response.appRefreshQuery.value}. No schedules enqueued.`,
+            message: `App Refresh Query updated. Query returned ${
+              response.appRefreshQuery.value
+            }.${
+              grouparooUiEdition() !== "config" ?? " No schedules enqueued."
+            }`,
           });
         }
         setAppRefreshQuery(response.appRefreshQuery);
@@ -223,7 +234,6 @@ export default function Page(props) {
       </>
     );
   } else {
-    console.log(editing);
     return (
       <>
         <Head>
@@ -318,7 +328,7 @@ export default function Page(props) {
                         type="submit"
                         size="sm"
                         className="my-2 ml-2"
-                        // disabled={disabled}
+                        disabled={disabled}
                         hidden={!editing}
                       >
                         Update
@@ -337,26 +347,28 @@ export default function Page(props) {
                   </Col>
                 </Row>{" "}
                 <Col>
-                  {testResult.success !== null &&
-                  testResult.success !== false &&
-                  testResult.success !== undefined &&
-                  !testResult.error ? (
-                    <Alert variant="success" className="text-break">
-                      <strong>Test Passed. </strong>Sample Value ={" "}
-                      {testResult.message}
-                    </Alert>
-                  ) : ranTest ? (
-                    <Alert variant="warning">
-                      <strong>Test Failed</strong> {testResult.error}
-                    </Alert>
-                  ) : null}
+                  {editing && (
+                    <>
+                      {testResult.success && !testResult.error && ranTest ? (
+                        <Alert variant="success" className="text-break">
+                          <strong>Test Passed. </strong>Sample Value ={" "}
+                          {testResult.message}
+                        </Alert>
+                      ) : ranTest ? (
+                        <Alert variant="warning">
+                          <strong>Test Failed</strong> {testResult.error}
+                        </Alert>
+                      ) : null}
+                    </>
+                  )}
 
                   {loading ? <Loader /> : null}
                 </Col>
               </Form.Group>{" "}
             </Col>
             {appRefreshQuery?.refreshQuery?.length > 1 &&
-              appRefreshQuery?.state === "ready" && (
+              appRefreshQuery?.state === "ready" &&
+              grouparooUiEdition() !== "config" && (
                 <Col className="col-md-4 ">
                   <Row className="mx-auto">
                     <AppRefreshQueryStats

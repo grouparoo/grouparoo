@@ -13,7 +13,7 @@ module.exports = async function getConfig() {
       name: "Data Warehouse",
       class: "App",
       type: "test-plugin-app",
-      refreshQuery: {
+      refresh: {
         query: "SELECT 'hi' AS name;",
         recurringFrequency: 90000,
       },
