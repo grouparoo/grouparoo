@@ -118,7 +118,7 @@ export function getSupportedSalesforceTypes(grouparooTypes = null): string[] {
   return out;
 }
 
-const mapTypesToGrouparoo = (type) => {
+export function mapTypesToGrouparoo(type) {
   // https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/primitive_data_types.htm
   // https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/field_types.htm
 
@@ -128,7 +128,7 @@ const mapTypesToGrouparoo = (type) => {
     return null;
   }
   return grouparooType;
-};
+}
 
 const importantFieldNames = ["FirstName", "LastName", "Email"];
 const isFieldImportant = function (field: any): Boolean {

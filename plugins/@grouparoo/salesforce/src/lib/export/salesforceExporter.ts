@@ -5,7 +5,8 @@ import {
   SimpleAppOptions,
 } from "@grouparoo/core";
 import { connect } from "../connect";
-import { getFieldMap, SalesforceCacheData } from "../objects";
+import { describeObject, getFieldMap, SalesforceCacheData } from "../objects";
+import { mapTypesToGrouparoo, parseFieldName } from "./mapping";
 import {
   BatchConfig,
   BatchExport,
@@ -22,7 +23,6 @@ import {
   exportRecordsInBatch,
 } from "@grouparoo/app-templates/dist/destination/batch";
 import { SalesforceModel } from "./model";
-import { parseFieldName } from "./mapping";
 
 const idType = "Id";
 
@@ -41,10 +41,16 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   config,
 }) => {
   // search for these using the foreign key
-  const { recordObject, recordMatchField } = config.data;
+  const { recordObject, recordMatchField, cacheData } = config.data;
   const idType = "Id";
 
-  const foreignKeyType = getForeignKeyType(users, recordMatchField);
+  const foreignKeyType = await getForeignKeyType(
+    client,
+    cacheData,
+    recordObject,
+    recordMatchField
+  );
+
   const parsedForeignKeys = parseForeignKeys(foreignKeys, foreignKeyType);
 
   const query = { [recordMatchField]: parsedForeignKeys };
@@ -342,9 +348,22 @@ function buildUserPayload(
   return { row, referenceData };
 }
 
-function getForeignKeyType(users: BatchExport[], recordMatchField: string) {
-  if (users.length > 0) {
-    return typeof users[0].newRecordProperties[recordMatchField];
+async function getForeignKeyType(
+  client: any,
+  cacheData: SalesforceCacheData,
+  recordObject: string,
+  recordMatchField: string
+) {
+  const recordInfo = await describeObject(
+    client,
+    cacheData,
+    recordObject,
+    true
+  );
+  for (const field of recordInfo.fields) {
+    if (recordMatchField === field.name) {
+      return mapTypesToGrouparoo(field.type);
+    }
   }
   return null;
 }
@@ -357,7 +376,9 @@ function parseForeignKeys(
     return foreignKeys;
   }
   return foreignKeys.map((foreignKey) => {
-    return type === "number" ? Number(foreignKey) : foreignKey;
+    return ["float", "integer"].includes(type)
+      ? Number(foreignKey)
+      : foreignKey;
   });
 }
 
