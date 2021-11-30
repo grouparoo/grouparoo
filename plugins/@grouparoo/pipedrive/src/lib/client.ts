@@ -14,7 +14,7 @@ const FilterTypeMapping: Record<Entity, FilterType> = {
   organizations: "org",
 };
 
-class EntityCalls {
+export class EntityCalls {
   fields: FieldCalls;
   filters: FilterCalls;
 
@@ -67,7 +67,7 @@ class EntityCalls {
   }
 }
 
-class FieldCalls {
+export class FieldCalls {
   constructor(
     private client: PipedriveClient,
     private entityField: EntityField
@@ -103,7 +103,7 @@ class FieldCalls {
   }
 }
 
-class FilterCalls {
+export class FilterCalls {
   constructor(
     private client: PipedriveClient,
     private filterType: FilterType

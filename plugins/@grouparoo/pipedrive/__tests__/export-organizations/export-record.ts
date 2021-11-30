@@ -1,13 +1,14 @@
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import { exportRecord } from "../../src/lib/export-organizations/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexUsers } from "../utils/shared";
-import { getKnownOrganizationFieldMap } from "../../src/lib/export-organizations/destinationMappingOptions";
 import { PipedriveClient } from "../../src/lib/client";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
+import { getExportRecord } from "../../src/lib/common/exportRecord";
+import { handleOrganizationChanges } from "../../src/lib/export-organizations/exportRecord";
+import { getKnownFieldMap } from "../../src/lib/common/destinationMappingOptions";
 
 let client: PipedriveClient;
 let fieldMap: { [fieldName: string]: string };
@@ -83,7 +84,7 @@ async function runExport({
   newGroups,
   toDelete,
 }) {
-  return exportRecord({
+  return getExportRecord(handleOrganizationChanges)({
     appOptions,
     appId,
     connection: null,
@@ -107,8 +108,9 @@ async function runExport({
 describe("pipedrive/exportRecord", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
-    fieldMap = await getKnownOrganizationFieldMap(
+    fieldMap = await getKnownFieldMap(
       client,
+      "organization",
       { appId, appOptions },
       true
     );
@@ -291,8 +293,9 @@ describe("pipedrive/exportRecord", () => {
       toDelete: false,
     });
 
-    fieldMap = await getKnownOrganizationFieldMap(
+    fieldMap = await getKnownFieldMap(
       client,
+      "organization",
       { appId, appOptions },
       true
     );
@@ -355,8 +358,9 @@ describe("pipedrive/exportRecord", () => {
 
     await indexUsers(newNock);
 
-    fieldMap = await getKnownOrganizationFieldMap(
+    fieldMap = await getKnownFieldMap(
       client,
+      "organization",
       { appId, appOptions },
       true
     );
@@ -474,8 +478,9 @@ describe("pipedrive/exportRecord", () => {
 
     await indexUsers(newNock);
 
-    fieldMap = await getKnownOrganizationFieldMap(
+    fieldMap = await getKnownFieldMap(
       client,
+      "organization",
       { appId, appOptions },
       true
     );

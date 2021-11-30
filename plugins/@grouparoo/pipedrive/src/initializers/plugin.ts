@@ -1,20 +1,16 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin, DestinationSyncMode } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "../lib/test";
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 
-import { exportRecord as personExportRecord } from "../lib/export-persons/exportRecord";
-import { destinationOptions as personDestinationOptions } from "../lib/export-persons/destinationOptions";
-import { destinationMappingOptions as personDestinationMappingOptions } from "../lib/export-persons/destinationMappingOptions";
-import { exportArrayProperties as personExportArrayProperties } from "../lib/export-persons/exportArrayProperties";
-
-import { exportRecord as orgExportRecord } from "../lib/export-organizations/exportRecord";
-import { destinationOptions as orgDestinationOptions } from "../lib/export-organizations/destinationOptions";
-import { destinationMappingOptions as orgDestinationMappingOptions } from "../lib/export-organizations/destinationMappingOptions";
-import { exportArrayProperties as orgExportArrayProperties } from "../lib/export-organizations/exportArrayProperties";
+import { destinationOptions } from "../lib/common/destinationOptions";
+import { exportArrayProperties } from "../lib/common/exportArrayProperties";
+import { getDestinationMappingOptions } from "../lib/common/destinationMappingOptions";
+import { getExportRecord } from "../lib/common/exportRecord";
+import { handlePersonChanges } from "../lib/export-persons/exportRecord";
 
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 
@@ -71,10 +67,10 @@ export class Plugins extends Initializer {
           defaultSyncMode,
           options: [],
           methods: {
-            exportRecord: personExportRecord,
-            destinationOptions: personDestinationOptions,
-            destinationMappingOptions: personDestinationMappingOptions,
-            exportArrayProperties: personExportArrayProperties,
+            exportRecord: getExportRecord(handlePersonChanges),
+            destinationOptions,
+            destinationMappingOptions: getDestinationMappingOptions("person"),
+            exportArrayProperties,
           },
         },
         {
@@ -87,10 +83,11 @@ export class Plugins extends Initializer {
           defaultSyncMode,
           options: [],
           methods: {
-            exportRecord: orgExportRecord,
-            destinationOptions: orgDestinationOptions,
-            destinationMappingOptions: orgDestinationMappingOptions,
-            exportArrayProperties: orgExportArrayProperties,
+            exportRecord: getExportRecord(handlePersonChanges),
+            destinationOptions,
+            destinationMappingOptions:
+              getDestinationMappingOptions("organization"),
+            exportArrayProperties,
           },
         },
       ],

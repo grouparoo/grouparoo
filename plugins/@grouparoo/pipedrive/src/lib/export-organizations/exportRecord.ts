@@ -1,26 +1,9 @@
-import { ExportRecordPluginMethod, Errors } from "@grouparoo/core";
-import { PipedriveClient } from "../client";
+import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
-import {
-  PipedriveCacheData,
-  getKnownOrganizationFieldMap,
-} from "./destinationMappingOptions";
-import { getGroupFieldKey } from "./listMethods";
+import { PipedriveCacheData } from "../common/destinationMappingOptions";
+import { makePayload } from "../common/exportRecord";
 
-export const exportRecord: ExportRecordPluginMethod = async (args) => {
-  try {
-    return await handleProfileChanges(args);
-  } catch (error) {
-    // look for the rate limit exceeded status code.
-    if (error?.response?.status === 429) {
-      const retryIn = Math.floor(Math.random() * 10) + 1;
-      return { error, success: false, retryDelay: 1000 * retryIn };
-    }
-    throw error;
-  }
-};
-
-const handleProfileChanges: ExportRecordPluginMethod = async ({
+export const handleOrganizationChanges: ExportRecordPluginMethod = async ({
   appId,
   appOptions,
   syncOperations,
@@ -70,6 +53,7 @@ const handleProfileChanges: ExportRecordPluginMethod = async ({
 
   const payload = await makePayload(
     client,
+    "organization",
     cacheData,
     oldRecordProperties,
     newRecordProperties,
@@ -98,66 +82,3 @@ const handleProfileChanges: ExportRecordPluginMethod = async ({
 
   return { success: true };
 };
-
-async function makePayload(
-  client: PipedriveClient,
-  cacheData: PipedriveCacheData,
-  oldRecordProperties: {
-    [key: string]: any;
-  },
-  newRecordProperties: {
-    [key: string]: any;
-  },
-  oldGroups: string[],
-  newGroups: string[]
-) {
-  const payload: any = {};
-
-  // set record properties, including old ones
-  const newFields = Object.keys(newRecordProperties);
-  const oldFields = Object.keys(oldRecordProperties);
-  const allFields = new Set([...newFields, ...oldFields]);
-
-  // get fields
-  const fieldKeys = await getKnownOrganizationFieldMap(client, cacheData);
-
-  for (const fieldName of allFields) {
-    const value = newRecordProperties[fieldName];
-    const pipedriveKey = fieldKeys[fieldName];
-
-    if (!pipedriveKey) {
-      continue; // unknown key
-    }
-
-    payload[pipedriveKey] = formatVar(value);
-  }
-
-  // Set group fields
-  for (const group of newGroups) {
-    const groupKey = await getGroupFieldKey(client, cacheData, group, true);
-    payload[groupKey] = "true";
-  }
-
-  for (const group of oldGroups) {
-    if (!newGroups.includes(group)) {
-      const groupKey = await getGroupFieldKey(client, cacheData, group);
-      if (groupKey) {
-        payload[groupKey] = null;
-      }
-    }
-  }
-
-  return payload;
-}
-
-function formatVar(value) {
-  if (value === undefined) {
-    return null;
-  }
-
-  if (value instanceof Date) {
-    return value.toISOString();
-  }
-
-  return value;
-}

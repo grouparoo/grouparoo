@@ -1,19 +1,19 @@
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import {
-  destinationMappingOptions,
-  fetchKnownOrganizationFields,
-} from "../../src/lib/export-organizations/destinationMappingOptions";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
+import {
+  fetchKnownFields,
+  getDestinationMappingOptions,
+} from "../../src/lib/common/destinationMappingOptions";
 
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const appId = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8762f9";
 
 async function runDestinationMappingOptions({}) {
-  return destinationMappingOptions({
+  return getDestinationMappingOptions("organization")({
     appOptions,
     appId,
     app: null,
@@ -27,7 +27,7 @@ async function runDestinationMappingOptions({}) {
 describe("pipedrive/destinationMappingOptions", () => {
   test("can fetch custom Organization fields", async () => {
     const client = await connect(appOptions);
-    const fields = await fetchKnownOrganizationFields(client);
+    const fields = await fetchKnownFields("organization", client);
 
     const text = fields.find((f) => f.key === "text_field");
     expect(text.type).toBe("string");
@@ -76,7 +76,7 @@ describe("pipedrive/destinationMappingOptions", () => {
 
   test("does not fetch unsupported custom Organization fields", async () => {
     const client = await connect(appOptions);
-    const fields = await fetchKnownOrganizationFields(client);
+    const fields = await fetchKnownFields("organization", client);
 
     const multipleOption = fields.find(
       (f) => f.key === "multiple_option_field"

@@ -1,13 +1,14 @@
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import { exportRecord } from "../../src/lib/export-persons/exportRecord";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexUsers } from "../utils/shared";
-import { getKnownPersonFieldMap } from "../../src/lib/export-persons/destinationMappingOptions";
 import { PipedriveClient } from "../../src/lib/client";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
+import { getExportRecord } from "../../src/lib/common/exportRecord";
+import { getKnownFieldMap } from "../../src/lib/common/destinationMappingOptions";
+import { handlePersonChanges } from "../../src/lib/export-persons/exportRecord";
 
 let client: PipedriveClient;
 let fieldMap: { [fieldName: string]: string };
@@ -83,7 +84,7 @@ async function runExport({
   newGroups,
   toDelete,
 }) {
-  return exportRecord({
+  return getExportRecord(handlePersonChanges)({
     appOptions,
     appId,
     connection: null,
@@ -107,8 +108,9 @@ async function runExport({
 describe("pipedrive/exportRecord", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
-    fieldMap = await getKnownPersonFieldMap(
+    fieldMap = await getKnownFieldMap(
       client,
+      "person",
       { appId, appOptions },
       true
     );
@@ -328,8 +330,9 @@ describe("pipedrive/exportRecord", () => {
       toDelete: false,
     });
 
-    fieldMap = await getKnownPersonFieldMap(
+    fieldMap = await getKnownFieldMap(
       client,
+      "person",
       { appId, appOptions },
       true
     );
@@ -391,8 +394,9 @@ describe("pipedrive/exportRecord", () => {
 
     await indexUsers(newNock);
 
-    fieldMap = await getKnownPersonFieldMap(
+    fieldMap = await getKnownFieldMap(
       client,
+      "person",
       { appId, appOptions },
       true
     );
@@ -520,8 +524,9 @@ describe("pipedrive/exportRecord", () => {
 
     await indexUsers(newNock);
 
-    fieldMap = await getKnownPersonFieldMap(
+    fieldMap = await getKnownFieldMap(
       client,
+      "person",
       { appId, appOptions },
       true
     );
