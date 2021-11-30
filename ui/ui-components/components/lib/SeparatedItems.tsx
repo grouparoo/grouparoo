@@ -5,7 +5,7 @@ interface Props {
   separator?: string;
 }
 
-const SeparatedItems: React.FC<Props> = ({ items, separator }) => {
+const SeparatedItems: React.FC<Props> = ({ items, separator = " " }) => {
   if (!items?.length) {
     return null;
   }
