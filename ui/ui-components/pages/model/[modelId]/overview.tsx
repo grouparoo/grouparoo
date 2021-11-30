@@ -37,7 +37,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
   const sources = useMemo(() => {
     const result = [...secondarySources];
     if (primarySource) {
-      result.splice(0, 0, primarySource);
+      result.unshift(primarySource);
     }
     return result;
   }, [primarySource, secondarySources]);

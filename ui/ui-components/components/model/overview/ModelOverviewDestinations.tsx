@@ -67,7 +67,7 @@ const ModelOverviewDestinations: React.FC<Props> = ({
       ]}
     >
       <ListGroup className="list-group-flush">
-        {destinations && !!destinations.length ? (
+        {destinations?.length ? (
           destinations.map((destination, index) => (
             <ListGroupItem key={index}>
               <DestinationInfo destination={destination} />
