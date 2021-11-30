@@ -61,37 +61,35 @@ const EntityList = function <T extends Models.EntityTypes>({
   if (!items?.length) return null;
 
   return (
-    <>
-      <Row>
-        <Col md={10}>
-          <Collapse in={expanded}>
-            <ListGroup className="list-group-flush">
-              {items.map((item, index) => (
-                <ListGroupItem key={index} className="px-0">
-                  {renderItem(item, index)}
-                </ListGroupItem>
-              ))}
-            </ListGroup>
-          </Collapse>
-          <Fade in={!expanded}>
-            <div style={{ position: expanded ? "absolute" : "relative" }}>
-              {renderNameList(items, itemType, model)}
-            </div>
-          </Fade>
-        </Col>
-        <Col md={2} className="text-right">
-          <Button
-            variant="link"
-            size="sm"
-            className="p-0"
-            onClick={() => isExpanded(!expanded)}
-          >
-            {expanded ? "Less" : "More"} details{" "}
-            <FontAwesomeIcon icon={`caret-${expanded ? "up" : "down"}`} />
-          </Button>
-        </Col>
-      </Row>
-    </>
+    <Row>
+      <Col md={10}>
+        <Collapse in={expanded}>
+          <ListGroup className="list-group-flush">
+            {items.map((item, index) => (
+              <ListGroupItem key={index} className="px-0">
+                {renderItem(item, index)}
+              </ListGroupItem>
+            ))}
+          </ListGroup>
+        </Collapse>
+        <Fade in={!expanded}>
+          <div style={{ position: expanded ? "absolute" : "relative" }}>
+            {renderNameList(items, itemType, model)}
+          </div>
+        </Fade>
+      </Col>
+      <Col md={2} className="text-right">
+        <Button
+          variant="link"
+          size="sm"
+          className="p-0"
+          onClick={() => isExpanded(!expanded)}
+        >
+          {expanded ? "Less" : "More"} details{" "}
+          <FontAwesomeIcon icon={`caret-${expanded ? "up" : "down"}`} />
+        </Button>
+      </Col>
+    </Row>
   );
 };
 
