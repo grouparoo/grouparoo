@@ -18,7 +18,7 @@ export async function loadApp(
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
-  validateConfigObjectKeys(App, configObject, ["refreshQuery"]);
+  validateConfigObjectKeys(App, configObject, ["options", "refresh"]);
 
   let app = await App.scope(null).findOne({
     where: {
@@ -62,7 +62,7 @@ export async function loadApp(
 
   logModel(app, validate ? "validated" : isNew ? "created" : "updated");
 
-  if (configObject.refreshQuery?.query.length > 1) {
+  if (configObject.refresh?.query.length > 1) {
     let appRefreshQuery: AppRefreshQuery;
 
     appRefreshQuery = await AppRefreshQuery.findOne({
@@ -74,8 +74,8 @@ export async function loadApp(
     if (!appRefreshQuery) {
       appRefreshQuery = await AppRefreshQuery.create({
         appId: configObject.id,
-        refreshQuery: configObject.refreshQuery?.query,
-        recurringFrequency: configObject.refreshQuery?.recurringFrequency,
+        refreshQuery: configObject.refresh?.query,
+        recurringFrequency: configObject.refresh?.recurringFrequency,
         locked: ConfigWriter.getLockKey(configObject),
         state: "ready",
       });
@@ -83,8 +83,8 @@ export async function loadApp(
     } else {
       await appRefreshQuery.update({
         appId: configObject.id,
-        refreshQuery: configObject.refreshQuery?.query,
-        recurringFrequency: configObject.refreshQuery?.recurringFrequency,
+        refreshQuery: configObject.refresh?.query,
+        recurringFrequency: configObject.refresh?.recurringFrequency,
         locked: ConfigWriter.getLockKey(configObject),
         state: "ready",
       });

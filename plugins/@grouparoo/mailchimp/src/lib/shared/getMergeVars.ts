@@ -40,7 +40,7 @@ export async function getMergeVars(
 }
 
 function toGrouparooDestinationType(field: MailchimpMergeField) {
-  // currently unsupported: birthday, radio, drop down
+  // currently unsupported: radio, drop down
 
   switch (field.type) {
     case "email":
@@ -48,6 +48,10 @@ function toGrouparooDestinationType(field: MailchimpMergeField) {
     case "text":
       return { type: "string", important: true };
     case "address":
+      return { type: "string", important: true };
+    case "date":
+      return { type: "string", important: true };
+    case "birthday":
       return { type: "string", important: true };
     case "number":
       return { type: "number", important: true };
@@ -58,6 +62,8 @@ function toGrouparooDestinationType(field: MailchimpMergeField) {
     case "imageurl":
       return { type: "url", important: true };
     case "url":
+      return { type: "url", important: true };
+    case "website":
       return { type: "url", important: true };
     default:
       return { type: null, important: false };

@@ -103,6 +103,7 @@ describe("salesforce/sales-cloud/export-records/email", () => {
             LastName: "Smith",
             "Account.Name": account1,
             number_field__c: 24,
+            date_field__c: "1980-12-21",
           },
           oldGroups: [],
           newGroups: [],
@@ -121,6 +122,7 @@ describe("salesforce/sales-cloud/export-records/email", () => {
     expect(user.LastName).toBe("Smith");
     expect(user.FirstName).toBe(null);
     expect(user.number_field__c).toBe(24);
+    expect(user.date_field__c).toBe("1980-12-21");
 
     accountId1 = await findReferenceId(account1);
     expect(accountId1).toBeTruthy();

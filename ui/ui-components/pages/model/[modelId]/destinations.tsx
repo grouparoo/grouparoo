@@ -17,6 +17,8 @@ import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import LinkButton from "../../../components/LinkButton";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
+import { formatName } from "../../../utils/formatName";
+import DestinationCollectionLink from "../../../components/destination/DestinationCollectionLink";
 
 export default function Page(props) {
   const {
@@ -107,7 +109,7 @@ export default function Page(props) {
                 </td>
                 <td>{destination.connection.displayName}</td>
                 <td>
-                  <CollectionDisplay destination={destination} />
+                  <DestinationCollectionLink destination={destination} />
                 </td>
                 <td>
                   <EnterpriseLink href={`/app/${destination.app.id}/edit`}>
@@ -175,11 +177,11 @@ const AppDisplay = ({
 }: {
   destination: Models.DestinationType;
 }) => {
-  const formattedDestinationName =
-    destination.name ||
-    `${destination.state} created on ${
-      new Date(destination.createdAt).toLocaleString().split(",")[0]
-    }`;
+  const formattedName = (
+    <a>
+      <strong>{formatName(destination)}</strong>
+    </a>
+  );
 
   switch (grouparooUiEdition()) {
     case "community": {
@@ -187,9 +189,7 @@ const AppDisplay = ({
         <Link
           href={`/model/${destination.modelId}/destination/${destination.id}/exports`}
         >
-          <a>
-            <strong>{formattedDestinationName}</strong>
-          </a>
+          {formattedName}
         </Link>
       );
     }
@@ -198,39 +198,9 @@ const AppDisplay = ({
         <EnterpriseLink
           href={`/model/${destination.modelId}/destination/${destination.id}/edit`}
         >
-          <a>
-            <strong>{formattedDestinationName}</strong>
-          </a>
+          {formattedName}
         </EnterpriseLink>
       );
-    }
-  }
-};
-
-const CollectionDisplay = ({
-  destination,
-}: {
-  destination: Models.DestinationType;
-}) => {
-  switch (destination.collection) {
-    case "group": {
-      return (
-        <EnterpriseLink
-          href={`/model/${destination.group.modelId}/group/${destination.group.id}/edit`}
-        >
-          <a>{destination.group.name}</a>
-        </EnterpriseLink>
-      );
-    }
-    case "model": {
-      return (
-        <EnterpriseLink href={`/model/${destination.modelId}/edit`}>
-          <a>{destination.modelName}</a>
-        </EnterpriseLink>
-      );
-    }
-    default: {
-      return <>None</>;
     }
   }
 };

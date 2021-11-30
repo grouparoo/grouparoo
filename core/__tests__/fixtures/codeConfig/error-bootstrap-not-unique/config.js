@@ -39,7 +39,6 @@ module.exports = async function getConfig() {
       type: "integer",
       unique: false, // NOT UNIQUE!!!
       isArray: false,
-      identifying: true,
       sourceId: "users_table", // sourceId -> `users_table`
       options: {
         column: "id",

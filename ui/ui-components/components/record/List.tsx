@@ -111,15 +111,10 @@ export default function RecordsList(props) {
     setSearchLoading(false);
   }
 
-  const identifyingRecordProperty = properties.filter(
-    (rule) => rule.identifying
-  )[0];
-
+  const primaryProperty = properties.find((property) => property.isPrimaryKey);
   const uniqueRecordPropertyKeys = properties
-    .filter((rule) =>
-      identifyingRecordProperty
-        ? rule.id !== identifyingRecordProperty.id
-        : rule
+    .filter(
+      (property) => !primaryProperty || property.id !== primaryProperty.id
     )
     .filter((rule) => rule.unique)
     .map((rule) => rule.key);
@@ -293,39 +288,44 @@ export default function RecordsList(props) {
                     href={`/model/${record.modelId}/record/${record.id}/edit`}
                   >
                     <a className="text-muted">
-                      {identifyingRecordProperty?.key &&
-                      record.properties[identifyingRecordProperty.key] &&
-                      searchKey !== identifyingRecordProperty.key ? (
+                      {primaryProperty?.key &&
+                      record.properties[primaryProperty.key] &&
+                      searchKey !== primaryProperty.key ? (
                         <>
-                          {identifyingRecordProperty.key}:{" "}
-                          {record.properties[
-                            identifyingRecordProperty.key
-                          ].values.join(", ")}{" "}
+                          {primaryProperty.key}:{" "}
+                          {record.properties[primaryProperty.key].values.join(
+                            ", "
+                          )}{" "}
                           <br />
                         </>
                       ) : null}
-                      <span>Grouparoo id: {record.id}</span>
                     </a>
                   </Link>
 
                   {searchKey === "" ? null : (
                     <div key={`key-${record.id}-${searchKey}`}>
                       <span className="text-muted">
-                        <strong>{searchKey}</strong>:{" "}
-                        {record.properties[searchKey] ? (
-                          <Badge variant="info">
-                            <ArrayRecordPropertyList
-                              type={record.properties[searchKey].type}
-                              values={record.properties[searchKey].values}
-                              invalidValue={
-                                record.properties[searchKey].invalidValue
-                              }
-                              invalidReason={
-                                record.properties[searchKey].invalidReason
-                              }
-                            />
-                          </Badge>
-                        ) : null}
+                        <Link
+                          href={`/model/${record.modelId}/record/${record.id}/edit`}
+                        >
+                          <a className="text-muted">
+                            <strong>{searchKey}</strong>:{" "}
+                            {record.properties[searchKey] ? (
+                              <Badge variant="info">
+                                <ArrayRecordPropertyList
+                                  type={record.properties[searchKey].type}
+                                  values={record.properties[searchKey].values}
+                                  invalidValue={
+                                    record.properties[searchKey].invalidValue
+                                  }
+                                  invalidReason={
+                                    record.properties[searchKey].invalidReason
+                                  }
+                                />
+                              </Badge>
+                            ) : null}
+                          </a>
+                        </Link>
                       </span>
                       <br />
                     </div>

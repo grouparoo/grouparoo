@@ -518,11 +518,6 @@ export namespace SourceOps {
     local = false,
     propertyOptions?: { [key: string]: any }
   ) {
-    const existingIdentifying = await Property.findOne({
-      where: { identifying: true },
-    });
-    const identifying = existingIdentifying ? false : true; // if there isn't one already, make this one identifying
-
     const property = Property.build({
       id: id ?? ConfigWriter.generateId(key),
       key,
@@ -531,7 +526,6 @@ export namespace SourceOps {
       unique: true,
       sourceId: source.id,
       isArray: false,
-      identifying,
     });
 
     try {
@@ -539,7 +533,6 @@ export namespace SourceOps {
       Property.generateId(property);
       await Property.ensureUniqueKey(property);
       await Property.ensureNonArrayAndUnique(property);
-      await Property.ensureOneIdentifyingProperty(property);
 
       // danger zone!
       await LoggedModel.logCreate(property);

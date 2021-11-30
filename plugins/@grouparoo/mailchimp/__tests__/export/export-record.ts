@@ -289,18 +289,21 @@ describe("mailchimp/exportRecord", () => {
         LNAME: last_name,
         PHONE: newPhoneNumber,
         LTV: numberField,
+        JOINED_AT: "1980-12-21",
       },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
     });
     user = await getUser(emails["email"]);
+
     expect(user).not.toBe(null);
     expect(user["email_address"]).toBe(emails["email"]);
     expect(user["merge_fields"]["FNAME"]).toBe(alternativeName);
     expect(user["merge_fields"]["LNAME"]).toBe(last_name);
     expect(user["merge_fields"]["PHONE"]).toBe(newPhoneNumber);
     expect(user["merge_fields"]["LTV"]).toBe(numberField);
+    expect(user["merge_fields"]["JOINED_AT"]).toBe("1980-12-21");
   });
 
   test("can try to change user variables using invalid data", async () => {

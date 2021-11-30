@@ -14,7 +14,7 @@ export async function loadRecord(
 ) {
   if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
 
-  validateConfigObjectKeys(GrouparooRecord, configObject);
+  validateConfigObjectKeys(GrouparooRecord, configObject, ["properties"]);
 
   let record = await GrouparooRecord.scope(null).findOne({
     where: { id: configObject.id },

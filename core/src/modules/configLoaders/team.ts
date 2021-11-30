@@ -15,7 +15,7 @@ export async function loadTeam(
 ): Promise<IdsByClass> {
   let isNew = false;
 
-  validateConfigObjectKeys(Team, configObject);
+  validateConfigObjectKeys(Team, configObject, ["options", "permissions"]);
 
   let team = await Team.scope(null).findOne({
     where: { locked: getCodeConfigLockKey(), id: configObject.id },

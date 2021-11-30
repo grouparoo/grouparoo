@@ -37,7 +37,6 @@ module.exports = async function getConfig() {
       name: "userId",
       class: "Property",
       type: "integer",
-      identifying: true,
       unique: true,
       isArray: false,
       sourceId: "users_table", // sourceId -> `users_table`

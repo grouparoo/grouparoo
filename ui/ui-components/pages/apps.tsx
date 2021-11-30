@@ -17,6 +17,7 @@ import { SuccessHandler } from "../utils/successHandler";
 import LinkButton from "../components/LinkButton";
 import LoadingButton from "../components/LoadingButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
+import { formatName } from "../utils/formatName";
 
 export default function Page(props) {
   const {
@@ -120,14 +121,7 @@ export default function Page(props) {
                 <td>
                   <Link href={`/app/${app.id}/edit`}>
                     <a>
-                      <strong>
-                        {app.name ||
-                          `${app.state} created ${
-                            new Date(app.createdAt)
-                              .toLocaleString()
-                              .split(",")[0]
-                          }`}
-                      </strong>
+                      <strong>{formatName(app)}</strong>
                     </a>
                   </Link>
                 </td>

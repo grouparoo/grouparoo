@@ -18,7 +18,7 @@ export async function loadTeamMember(
 
   const team: Team = await getParentByName(Team, configObject.teamId);
 
-  validateConfigObjectKeys(TeamMember, configObject);
+  validateConfigObjectKeys(TeamMember, configObject, ["options"]);
 
   let teamMember = await TeamMember.scope(null).findOne({
     where: { locked: getCodeConfigLockKey(), id: configObject.id },

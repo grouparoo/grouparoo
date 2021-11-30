@@ -21,7 +21,11 @@ export async function loadDestination(
 
   const app: App = await getParentByName(App, configObject.appId);
 
-  validateConfigObjectKeys(Destination, configObject);
+  validateConfigObjectKeys(Destination, configObject, [
+    "options",
+    "mapping",
+    "destinationGroupMemberships",
+  ]);
 
   let destination = await Destination.scope(null).findOne({
     where: {
