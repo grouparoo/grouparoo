@@ -341,8 +341,6 @@ describe("pipedrive/exportRecord", () => {
 
     await indexUsers(newNock);
 
-    Promise.resolve(); // TODO: check this
-
     const data = await client.organizations.getById(orgId);
     expect(data.name).toBe(name2);
   });
