@@ -3,7 +3,7 @@ import SeparatedItems from "./SeparatedItems";
 
 interface Props {
   title: string;
-  actions: React.ReactNode[];
+  actions?: React.ReactNode[];
   disabled?: boolean;
 }
 
