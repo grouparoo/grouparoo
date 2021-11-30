@@ -38,19 +38,19 @@ const mapTypesFromMarketoToGrouparoo = (marketoType) => {
     integer: "integer",
     boolean: "boolean",
     email: "email",
+    phone: "phoneNumber",
     float: "float",
     datetime: "date",
+    date: "string",
     score: "integer",
     currency: "float",
+    url: "url",
+    percent: "integer",
+    reference: "string",
+
     // unhandled:
     lead_function: null,
-    reference: null,
     formula: null,
-    // TODO:
-    date: null, // like birthday (just date)
-    phone: null,
-    url: null,
-    percent: "integer", // 0 to 100 (should we more specific?)
   };
 
   const grouparooType = map[marketoType];
