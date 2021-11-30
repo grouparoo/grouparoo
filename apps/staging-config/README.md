@@ -20,7 +20,7 @@ This command will delete and recreate your SQLite config database. But it will l
 You can pre-populate a set of configuration files using our demo command. First, ensure the `DEMO_DATABASE_URL` environment variable is set in your `.env` file in this project and points to a local Postgres database. Here's an example:
 
 ```bash
-DEMO_DATABASE_URL="postgresql://localhost:5432/grouparoo_development"
+DEMO_DATABASE_URL="postgresql://username:password@localhost:5432/grouparoo_development"
 ```
 
 Assuming this database exists, you can then run the `demo` script to populate the database with some examples.
