@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button, Card, Col, Row, Table } from "react-bootstrap";
 import useSWR from "swr";
 import { useGrouparooModelContext } from "../../contexts/grouparooModel";
@@ -30,13 +29,15 @@ interface RecordRow {
 const isConfigUI = grouparooUiEdition() === "config";
 
 const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
-  const router = useRouter();
   const model = useGrouparooModelContext();
 
   const [importing, setImporting] = useState(false);
   const [addingRecord, setAddingRecord] = useState(false);
   const [recordId, setRecordId] = useState(() => {
-    return router.query.recordId;
+    if (typeof window !== "undefined") {
+      return window.localStorage.getItem(`sampleRecord:${model.id}`);
+    }
+    return undefined;
   });
 
   const { data: record, mutate: mutateRecord } = useSWR(
@@ -56,6 +57,12 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
       }).then((data) => data?.records?.[0]);
     }
   );
+
+  useEffect(() => {
+    if (record) {
+      window.localStorage.setItem(`sampleRecord:${model.id}`, record.id);
+    }
+  }, [record]);
 
   const recordRows = useMemo<RecordRow[]>(() => {
     if (!record?.properties) return [];
