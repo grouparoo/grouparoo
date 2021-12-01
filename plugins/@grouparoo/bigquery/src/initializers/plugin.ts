@@ -85,7 +85,7 @@ export class Plugins extends Initializer {
               displayName: "Location",
               required: false,
               description:
-                "Region or multi-region code of your dataset.  Required for datasets outside the US.",
+                'Region or multi-region code of your dataset. ("US", "EU", "asia-east1", etc.) Required for datasets outside the US.',
               placeholder: "e.g. EU",
             },
           ],
