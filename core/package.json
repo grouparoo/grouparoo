@@ -48,7 +48,7 @@
     "fs-extra": "10.0.0",
     "glob": "7.2.0",
     "grouparoo": "0.7.6-alpha.0",
-    "ioredis": "4.28.0",
+    "ioredis": "4.28.2",
     "ioredis-mock": "5.8.1",
     "isomorphic-fetch": "3.0.0",
     "json5": "2.2.0",
