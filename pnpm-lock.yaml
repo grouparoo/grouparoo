@@ -9,14 +9,14 @@ importers:
       lerna-changelog: 2.1.0
       license-checker: github:grouparoo/license-checker
       npm-check-updates: 11.8.4
-      prettier: 2.4.1
+      prettier: 2.5.0
     devDependencies:
       glob: 7.2.0
       lerna: 4.0.0
       lerna-changelog: 2.1.0
       license-checker: github.com/grouparoo/license-checker/1054593024d6f7e50ad47feb3b61d52c9506c274
       npm-check-updates: 11.8.4
-      prettier: 2.4.1
+      prettier: 2.5.0
 
   apps/staging-community:
     specifiers:
@@ -212,7 +212,7 @@ importers:
       isomorphic-fetch: 3.0.0
       npm-check-updates: 11.8.4
       ora: 5.4.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       semver: 7.3.5
       ts-node: 10.2.1
       typescript: 4.4.4
@@ -228,7 +228,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 9.0.12
       '@types/node': 16.9.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-node: 10.2.1_e3a6d03856ea4ec83bf2e0c3b647a57e
       typescript: 4.4.4
 
@@ -274,7 +274,7 @@ importers:
       pg: 8.7.1
       pg-hstore: 2.3.4
       pluralize: 8.0.0
-      prettier: 2.4.1
+      prettier: 2.5.0
       reflect-metadata: 0.1.13
       semver: 7.3.5
       sequelize: 6.9.0
@@ -321,7 +321,7 @@ importers:
       pg: 8.7.1
       pg-hstore: 2.3.4
       pluralize: 8.0.0
-      prettier: 2.4.1
+      prettier: 2.5.0
       reflect-metadata: 0.1.13
       semver: 7.3.5
       sequelize: 6.9.0_98f032adade92d92d5295670c0365597
@@ -361,7 +361,7 @@ importers:
       actionhero: 27.2.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.7
       typescript: 4.4.4
       uuid: 8.3.2
@@ -374,7 +374,7 @@ importers:
       actionhero: 27.2.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
       uuid: 8.3.2
@@ -392,7 +392,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -409,7 +409,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -427,7 +427,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       type-fest: 2.7.0
@@ -445,7 +445,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       type-fest: 2.7.0
@@ -459,7 +459,7 @@ importers:
       '@types/node': '*'
       actionhero: 27.2.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.4
       typescript: 4.4.4
       vm2: 3.9.5
@@ -472,7 +472,7 @@ importers:
       '@types/node': 16.9.1
       actionhero: 27.2.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.4_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
 
@@ -489,7 +489,7 @@ importers:
       csv-parse: 4.16.3
       jest: 27.3.1
       mysql: 2.18.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -506,7 +506,7 @@ importers:
       actionhero: 27.2.0
       csv-parse: 4.16.3
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -520,7 +520,7 @@ importers:
       actionhero: 27.2.0
       aws-sdk: 2.1040.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.7
       type-fest: 2.7.0
       typescript: 4.4.4
@@ -537,7 +537,7 @@ importers:
       '@types/node': 16.9.1
       actionhero: 27.2.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       type-fest: 2.7.0
       typescript: 4.4.4
@@ -553,7 +553,7 @@ importers:
       csv-parser: 3.0.0
       fs-extra: 10.0.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       type-fest: 2.7.0
@@ -569,7 +569,7 @@ importers:
       '@types/node': 16.9.1
       actionhero: 27.2.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       type-fest: 2.7.0
@@ -589,7 +589,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -607,7 +607,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -622,7 +622,7 @@ importers:
       jest: 27.3.1
       js-yaml: 4.1.0
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.7
       typescript: 4.4.4
     dependencies:
@@ -635,7 +635,7 @@ importers:
       actionhero: 27.2.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
 
@@ -656,7 +656,7 @@ importers:
       mongodb: 4.1.3
       mysql: 2.18.1
       pg: 8.7.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       replace-in-files: 3.0.0
       sequelize: 6.9.0
       sqlite3: 5.0.2
@@ -672,7 +672,7 @@ importers:
       mongodb: 4.1.3
       mysql: 2.18.1
       pg: 8.7.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       replace-in-files: 3.0.0
       sequelize: 6.9.0_pg@8.7.1+sqlite3@5.0.2
       sqlite3: 5.0.2
@@ -701,7 +701,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -718,7 +718,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -739,7 +739,7 @@ importers:
       jest: 27.3.1
       js-sha256: 0.9.0
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -759,7 +759,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -776,7 +776,7 @@ importers:
       google-spreadsheet: 3.2.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.7
       type-fest: 2.7.0
       typescript: 4.4.4
@@ -792,7 +792,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       type-fest: 2.7.0
       typescript: 4.4.4
@@ -811,7 +811,7 @@ importers:
       hubspot-api: 2.15.3
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       type-fest: 2.7.0
@@ -830,7 +830,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       type-fest: 2.7.0
@@ -849,7 +849,7 @@ importers:
       intercom-client: 2.11.2
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -866,7 +866,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -884,7 +884,7 @@ importers:
       jest: 27.3.1
       nock: 13.2.1
       node-iterable-api: 1.0.4
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -901,7 +901,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -915,7 +915,7 @@ importers:
       '@types/node': '*'
       actionhero: 27.2.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -928,7 +928,7 @@ importers:
       '@types/node': 16.9.1
       actionhero: 27.2.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -946,7 +946,7 @@ importers:
       jest: 27.3.1
       mailchimp-api-v3: 1.15.0
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       type-fest: 2.7.0
@@ -964,7 +964,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       type-fest: 2.7.0
@@ -984,7 +984,7 @@ importers:
       jest: 27.3.1
       nock: 13.2.1
       node-mailjet: 3.3.4
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       type-fest: 2.7.0
@@ -1003,7 +1003,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       type-fest: 2.7.0
@@ -1022,7 +1022,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -1039,7 +1039,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1057,7 +1057,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -1074,7 +1074,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1091,7 +1091,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       mongodb: 4.1.3
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -1107,7 +1107,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1124,7 +1124,7 @@ importers:
       csv-parse: 4.16.3
       jest: 27.3.1
       mysql: 2.18.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -1140,7 +1140,7 @@ importers:
       actionhero: 27.2.0
       csv-parse: 4.16.3
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1154,7 +1154,7 @@ importers:
       actionhero: 27.2.0
       jest: 27.3.1
       newrelic: 8.5.0
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.7
       typescript: 4.4.4
     dependencies:
@@ -1166,7 +1166,7 @@ importers:
       '@types/node': 16.9.1
       actionhero: 27.2.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
 
@@ -1183,7 +1183,7 @@ importers:
       jest: 27.3.1
       nock: 13.2.1
       onesignal-node: 3.3.0
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -1200,7 +1200,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1220,7 +1220,7 @@ importers:
       jest: 27.3.1
       jsforce: 1.10.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -1239,7 +1239,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1257,7 +1257,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -1274,7 +1274,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1295,7 +1295,7 @@ importers:
       pg-format: 1.0.4
       pg-hstore: 2.3.4
       postgres-date: 2.0.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -1315,7 +1315,7 @@ importers:
       csv-parse: 4.16.3
       fs-extra: 10.0.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0_pg-hstore@2.3.4+pg@8.7.1
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1357,7 +1357,7 @@ importers:
       actionhero: 27.2.0
       dotenv: 10.0.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -1373,7 +1373,7 @@ importers:
       actionhero: 27.2.0
       dotenv: 10.0.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1390,7 +1390,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sailthru-client: 3.0.6
       sequelize: 6.9.0
       ts-jest: 27.0.7
@@ -1408,7 +1408,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1426,7 +1426,7 @@ importers:
       jest: 27.3.1
       jsforce: 1.10.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -1443,7 +1443,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1461,7 +1461,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -1478,7 +1478,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1493,7 +1493,7 @@ importers:
       '@types/node': '*'
       actionhero: 27.2.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.7
       typescript: 4.4.4
     dependencies:
@@ -1506,7 +1506,7 @@ importers:
       '@types/node': 16.9.1
       actionhero: 27.2.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
 
@@ -1522,7 +1522,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       snowflake-promise: 4.5.0
       snowflake-sdk: 1.6.0
@@ -1542,7 +1542,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1559,7 +1559,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -1569,7 +1569,7 @@ importers:
       faker: 5.5.3
       fs-extra: 10.0.0
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       uuid: 8.3.2
     devDependencies:
@@ -1595,7 +1595,7 @@ importers:
       csv-parse: 4.16.3
       fs-extra: 10.0.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       sqlite3: 5.0.2
       ts-jest: 27.0.7
@@ -1615,7 +1615,7 @@ importers:
       csv-parse: 4.16.3
       fs-extra: 10.0.0
       jest: 27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0_sqlite3@5.0.2
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       type-fest: 2.7.0
@@ -1634,7 +1634,7 @@ importers:
       jest: 27.3.1
       nock: 13.2.1
       node-zendesk: 2.1.0
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7
       typescript: 4.4.4
@@ -1651,7 +1651,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.3.1
       nock: 13.2.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       sequelize: 6.9.0
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1672,7 +1672,7 @@ importers:
       jest: 27.3.1
       jest-environment-webdriver: grouparoo/jest-webdriver#jest-v27-webdriver
       next: 12.0.2
-      prettier: 2.4.1
+      prettier: 2.5.0
       prop-types: 15.7.2
       react: 17.0.2
       react-bootstrap: 1.6.4
@@ -1700,7 +1700,7 @@ importers:
       eslint-config-next: 11.1.2_dab3f5c43e355cb46f2bd42affbfbcdd
       jest: 27.3.1
       jest-environment-webdriver: github.com/grouparoo/jest-webdriver/3fa07db08cc6901e740d1e927a20db55f9406398_jest@27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       prop-types: 15.7.2
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1728,7 +1728,7 @@ importers:
       next: 12.0.2
       nprogress: 0.2.0
       pluralize: 8.0.0
-      prettier: 2.4.1
+      prettier: 2.5.0
       prop-types: 15.7.2
       react: 17.0.2
       react-bootstrap: 1.6.4
@@ -1769,7 +1769,7 @@ importers:
       next: 12.0.2_0c41f19aae22112e9f1896e888ec7296
       nprogress: 0.2.0
       pluralize: 8.0.0
-      prettier: 2.4.1
+      prettier: 2.5.0
       prop-types: 15.7.2
       react: 17.0.2
       react-bootstrap: 1.6.4_react-dom@17.0.2+react@17.0.2
@@ -1804,7 +1804,7 @@ importers:
       jest-environment-webdriver: grouparoo/jest-webdriver#jest-v27-webdriver
       next: 12.0.2
       open: 8.4.0
-      prettier: 2.4.1
+      prettier: 2.5.0
       prop-types: 15.7.2
       react: 17.0.2
       react-bootstrap: 1.6.4
@@ -1834,7 +1834,7 @@ importers:
       eslint-config-next: 11.1.2_dab3f5c43e355cb46f2bd42affbfbcdd
       jest: 27.3.1
       jest-environment-webdriver: github.com/grouparoo/jest-webdriver/3fa07db08cc6901e740d1e927a20db55f9406398_jest@27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       prop-types: 15.7.2
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -1855,7 +1855,7 @@ importers:
       jest: 27.3.1
       jest-environment-webdriver: grouparoo/jest-webdriver#jest-v27-webdriver
       next: 12.0.2
-      prettier: 2.4.1
+      prettier: 2.5.0
       prop-types: 15.7.2
       react: 17.0.2
       react-bootstrap: 1.6.4
@@ -1883,7 +1883,7 @@ importers:
       eslint-config-next: 11.1.2_dab3f5c43e355cb46f2bd42affbfbcdd
       jest: 27.3.1
       jest-environment-webdriver: github.com/grouparoo/jest-webdriver/3fa07db08cc6901e740d1e927a20db55f9406398_jest@27.3.1
-      prettier: 2.4.1
+      prettier: 2.5.0
       prop-types: 15.7.2
       ts-jest: 27.0.7_a8d9d00a9d5463c7381bea76967776f9
       typescript: 4.4.4
@@ -12352,8 +12352,8 @@ packages:
     resolution: {integrity: sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=}
     engines: {node: '>=4'}
 
-  /prettier/2.4.1:
-    resolution: {integrity: sha512-9fbDAXSBcc6Bs1mZrDYb3XKzDLm4EXXL9sC1LqKP5rZkT6KRr/rf9amVUcODVXgguK/isJz0d0hP72WeaKWsvA==}
+  /prettier/2.5.0:
+    resolution: {integrity: sha512-FM/zAKgWTxj40rH03VxzIPdXmj39SwSjwG0heUcNFwI+EMZJnY93yAiKXM3dObIKAM5TA88werc8T/EwhB45eg==}
     engines: {node: '>=10.13.0'}
     hasBin: true
 
