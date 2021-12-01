@@ -702,18 +702,18 @@ export class Group extends LoggedModel<Group> {
     }
 
     let configObject: {
-      id: string;
       class: string;
-      type: string;
-      name: string;
+      id: string;
       modelId: string;
+      name: string;
+      type: string;
       rules?: any[];
     } = {
-      id: this.getConfigId(),
       class: "Group",
-      type,
+      id: this.getConfigId(),
       modelId,
       name,
+      type,
     };
 
     if (type === "calculated") {
