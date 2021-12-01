@@ -290,7 +290,7 @@ importers:
       uuid: 8.3.2
       validator: 13.7.0
       winston: 3.3.3
-      ws: 8.2.2
+      ws: 8.3.0
     dependencies:
       '@types/fs-extra': 9.0.12
       '@types/node': 16.9.1
@@ -333,7 +333,7 @@ importers:
       uuid: 8.3.2
       validator: 13.7.0
       winston: 3.3.3
-      ws: 8.2.2
+      ws: 8.3.0
     devDependencies:
       '@grouparoo/spec-helper': link:../plugins/@grouparoo/spec-helper
       '@types/isomorphic-fetch': 0.0.35
@@ -518,7 +518,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 27.2.0
-      aws-sdk: 2.998.0
+      aws-sdk: 2.1040.0
       jest: 27.3.1
       prettier: 2.4.1
       ts-jest: 27.0.7
@@ -527,7 +527,7 @@ importers:
       winston: 3.3.3
       winston-cloudwatch: 3.1.1
     dependencies:
-      aws-sdk: 2.998.0
+      aws-sdk: 2.1040.0
       winston: 3.3.3
       winston-cloudwatch: 3.1.1_winston@3.3.3
     devDependencies:
@@ -4529,7 +4529,7 @@ packages:
       qs: 6.10.1
       uuid: 8.3.2
       winston: 3.3.3
-      ws: 8.2.2
+      ws: 8.3.0
       yargs: 17.2.1
     transitivePeerDependencies:
       - bufferutil
@@ -4929,10 +4929,9 @@ packages:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
 
-  /aws-sdk/2.998.0:
-    resolution: {integrity: sha512-jenbMcGxOg9AeH6p1m0vbsJYNaeJXBnOM58GXsaKecPgRnCm/IykTPlB6aQKfNDk0WQnw5BHDcy7iQPnEjEkUQ==}
-    engines: {node: '>= 0.8.0'}
-    requiresBuild: true
+  /aws-sdk/2.1040.0:
+    resolution: {integrity: sha512-xGKYoVNFA46gphJZ5jRykxT96L3YNMO/STmjdW/cl36n61ENfTvH61OO5v2ReoAoReddAV7F0WMXfkzwjYc5Jw==}
+    engines: {node: '>= 10.0.0'}
     dependencies:
       buffer: 4.9.2
       events: 1.1.1
@@ -13555,7 +13554,7 @@ packages:
       jszip: 3.7.1
       rimraf: 3.0.2
       tmp: 0.2.1
-      ws: 8.2.2
+      ws: 8.3.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -15663,8 +15662,8 @@ packages:
         optional: true
     dev: true
 
-  /ws/8.2.2:
-    resolution: {integrity: sha512-Q6B6H2oc8QY3llc3cB8kVmQ6pnJWVQbP7Q5algTcIxx7YEpc0oU4NBVHlztA7Ekzfhw2r0rPducMUiCGWKQRzw==}
+  /ws/8.3.0:
+    resolution: {integrity: sha512-Gs5EZtpqZzLvmIM59w4igITU57lrtYVFneaa434VROv4thzJyV6UjIL3D42lslWlI+D4KzLYnxSwtfuiO79sNw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
