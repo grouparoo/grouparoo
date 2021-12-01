@@ -371,7 +371,7 @@ export default function Page(props) {
                           onChange={(e) =>
                             updateOption(opt.key, e.target["value"])
                           }
-                          placeholder="select statement with mustache template"
+                          placeholder="select statement to look for new data"
                           style={{
                             fontFamily:
                               'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',

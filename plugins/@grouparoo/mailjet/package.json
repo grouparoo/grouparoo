@@ -41,11 +41,11 @@
     "dotenv": "10.0.0",
     "fs-extra": "10.0.0",
     "jest": "27.3.1",
-    "nock": "13.1.4",
-    "prettier": "2.4.1",
+    "nock": "13.2.1",
+    "prettier": "2.5.0",
     "sequelize": "6.9.0",
     "ts-jest": "27.0.7",
-    "type-fest": "2.5.2",
+    "type-fest": "2.7.0",
     "typescript": "4.4.4"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"

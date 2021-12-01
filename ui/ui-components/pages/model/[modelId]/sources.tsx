@@ -19,6 +19,7 @@ import { grouparooUiEdition } from "../../../utils/uiEdition";
 import { formatSchedule } from "../../../utils/formatSchedule";
 import { formatName } from "../../../utils/formatName";
 import RunAllSchedulesButton from "../../../components/schedule/RunAllSchedulesButton";
+import { Table } from "react-bootstrap";
 
 export default function Page(props) {
   const {
@@ -101,7 +102,7 @@ export default function Page(props) {
         offset={offset}
         onPress={setOffset}
       />
-      <table>
+      <Table>
         <thead>
           <tr>
             <th></th>
@@ -175,7 +176,7 @@ export default function Page(props) {
             );
           })}
         </tbody>
-      </table>
+      </Table>
       <Pagination
         total={total}
         limit={limit}
