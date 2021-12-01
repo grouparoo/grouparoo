@@ -1329,11 +1329,11 @@ importers:
       actionhero: 27.2.0
       axios: 0.24.0
       jest: 27.3.1
-      prom-client: 14.0.0
+      prom-client: 14.0.1
       ts-jest: 27.0.7
       typescript: 4.4.4
     dependencies:
-      prom-client: 14.0.0
+      prom-client: 14.0.1
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -12403,8 +12403,8 @@ packages:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
 
-  /prom-client/14.0.0:
-    resolution: {integrity: sha512-etPa4SMO4j6qTn2uaSZy7+uahGK0kXUZwO7WhoDpTf3yZ837I3jqUDYmG6N0caxuU6cyqrg0xmOxh+yneczvyA==}
+  /prom-client/14.0.1:
+    resolution: {integrity: sha512-HxTArb6fkOntQHoRGvv4qd/BkorjliiuO2uSWC2KC17MUTKYttWdDoXX/vxOhQdkoECEM9BBH0pj2l8G8kev6w==}
     engines: {node: '>=10'}
     dependencies:
       tdigest: 0.1.1
