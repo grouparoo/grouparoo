@@ -250,7 +250,7 @@ importers:
       cls-hooked: 4.2.2
       colors: 1.4.0
       csv-parse: 4.16.3
-      csv-stringify: 5.6.5
+      csv-stringify: 6.0.4
       date-fns: 2.25.0
       dotenv: 10.0.0
       form-data: 4.0.0
@@ -300,7 +300,7 @@ importers:
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
-      csv-stringify: 5.6.5
+      csv-stringify: 6.0.4
       date-fns: 2.25.0
       dotenv: 10.0.0
       form-data: 4.0.0
@@ -6171,8 +6171,8 @@ packages:
       lodash.get: 4.4.2
     dev: false
 
-  /csv-stringify/5.6.5:
-    resolution: {integrity: sha512-PjiQ659aQ+fUTQqSrd1XEDnOr52jh30RBurfzkscaE2tPaFsDH5wOAHJiw8XAHphRknCwMUE9KRayc4K/NbO8A==}
+  /csv-stringify/6.0.4:
+    resolution: {integrity: sha512-Z3EbRQWwkOV3Qc2fQnJmfjrxRgAwH9AncnNK2jmtTvBvFjj/hESZUGm42YvTh9kMw2OOGPHQn5Yt0EbqoRtUVQ==}
     dev: false
 
   /currency-codes/1.5.1:
