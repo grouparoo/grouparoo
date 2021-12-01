@@ -3,9 +3,9 @@ exports.default = async function buildConfig() {
     {
       class: "group",
       id: {{{id}}},
+      modelId: {{{modelId}}}, // The id of the Model that the Records in this Group belong to
       name: {{{id}}},
       type: "calculated",
-      modelId: {{{modelId}}}, // The id of the Model that the Records in this Group belong to
 
       /**
        The Rules for this group is an array. Here are some examples.

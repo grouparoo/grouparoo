@@ -212,6 +212,7 @@ export namespace ConfigWriter {
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     const stringifyFilter = (k, v) => (v === null ? undefined : v);
     const content = JSON.stringify(object, stringifyFilter, 2);
+    console.log(content);
     await fs.writeFileSync(
       configFilePath,
       prettier.format(content, { parser: "json" })
