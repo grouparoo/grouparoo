@@ -42,7 +42,6 @@
     "cls-hooked": "4.2.2",
     "colors": "1.4.0",
     "csv-stringify": "5.6.5",
-    "date-fns": "2.25.0",
     "dotenv": "10.0.0",
     "form-data": "4.0.0",
     "fs-extra": "10.0.0",
