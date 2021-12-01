@@ -14,7 +14,7 @@ const excludePackages = [
   "@newrelic/native-metrics@5.2.0",
   "@newrelic/superagent@2.0.1",
   "emitter-component@1.1.1",
-  "facebook-nodejs-business-sdk@12.0.0",
+  "facebook-nodejs-business-sdk@12.0.1",
 ];
 
 const onlyAllow = [
