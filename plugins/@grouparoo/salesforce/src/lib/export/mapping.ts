@@ -90,6 +90,7 @@ const supportedTypeMap = {
   reference: "string", // Cross-references to a different object. Analogous to a foreign key field in SQL.
   base64: "string", // Base 64-encoded binary data.
   date: "string",
+  number: "float",
   //TODO:
   address: null, //A compound data type that contains address field data.
   time: null,
@@ -117,7 +118,7 @@ export function getSupportedSalesforceTypes(grouparooTypes = null): string[] {
   return out;
 }
 
-const mapTypesToGrouparoo = (type) => {
+export function mapTypesToGrouparoo(type) {
   // https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/primitive_data_types.htm
   // https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/field_types.htm
 
@@ -127,7 +128,7 @@ const mapTypesToGrouparoo = (type) => {
     return null;
   }
   return grouparooType;
-};
+}
 
 const importantFieldNames = ["FirstName", "LastName", "Email"];
 const isFieldImportant = function (field: any): Boolean {
