@@ -1,4 +1,4 @@
-import { SimpleDestinationOptions } from "@grouparoo/core";
+import { DestinationSyncMode, SimpleDestinationOptions } from "@grouparoo/core";
 
 export interface SalesforceModel {
   recordObject: string;
@@ -13,8 +13,14 @@ export interface SalesforceModel {
   recordReferenceMatchField: string;
 }
 
+export const SALES_FORCE_DESTINATIONS = {
+  object: "salesforce-export-objects",
+  contact: "salesforce-export-contact",
+} as const;
+
 export function getSalesforceModel(
   destinationOptions: SimpleDestinationOptions,
+  destination: string,
   defaults: { [key: string]: string } = {}
 ): SalesforceModel {
   const model: SalesforceModel = {
@@ -29,6 +35,15 @@ export function getSalesforceModel(
     recordReferenceObject: null,
     recordReferenceMatchField: null,
   };
+
+  let destinationOptionsMapping = destinationOptions;
+  switch (destination) {
+    case SALES_FORCE_DESTINATIONS.object:
+      // explicit default
+      break;
+    case SALES_FORCE_DESTINATIONS.contact:
+      destinationOptionsMapping = getObjectsMapping(destinationOptions);
+  }
 
   const modelKeys = Object.keys(model);
   const refKeys = [
@@ -48,10 +63,10 @@ export function getSalesforceModel(
     (k) => !refKeys.includes(k) && !groupKeys.includes(k)
   );
 
-  const destKeys = Object.keys(destinationOptions);
+  const destKeys = Object.keys(destinationOptionsMapping);
   for (const key of modelKeys) {
     if (destKeys.includes(key)) {
-      model[key] = destinationOptions[key];
+      model[key] = destinationOptionsMapping[key];
     } else {
       model[key] = defaults[key];
     }
@@ -62,7 +77,26 @@ export function getSalesforceModel(
   }
   checkModelIntegrity(model, refKeys, "Reference");
   checkModelIntegrity(model, groupKeys, "Group");
+
   return model;
+}
+
+function getObjectsMapping(destinationOptions: SimpleDestinationOptions) {
+  const mapping = {};
+  if (destinationOptions.primaryKey) {
+    Object.assign(mapping, {
+      recordObject: "Contact",
+      recordMatchField: destinationOptions.primaryKey,
+    });
+  }
+  if (destinationOptions.accountKey) {
+    Object.assign(mapping, {
+      recordReferenceField: "AccountId",
+      recordReferenceObject: "Account",
+      recordReferenceMatchField: destinationOptions.accountKey,
+    });
+  }
+  return mapping;
 }
 
 function checkModelIntegrity(model, keys, type) {
