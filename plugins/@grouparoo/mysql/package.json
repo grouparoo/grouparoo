@@ -38,7 +38,7 @@
     "@types/mysql": "*",
     "@types/node": "*",
     "actionhero": "27.2.0",
-    "csv-parse": "4.16.3",
+    "csv-parse": "5.0.3",
     "jest": "27.3.1",
     "prettier": "2.5.0",
     "sequelize": "6.11.0",
