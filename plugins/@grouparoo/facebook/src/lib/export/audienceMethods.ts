@@ -44,16 +44,20 @@ async function findAudienceByName(
   const compareName = audienceName.toLowerCase().trim();
 
   let result = await adAccount.getCustomAudiences(fields, params);
-  while (result.hasNext()) {
-    result = await result.next();
+  while (result) {
     for (const audience of result) {
       const { id, name, subtype } = audience;
-      if (useSubtype === audience.subtype) {
+      if (useSubtype === subtype) {
         const normalized = name.toLowerCase().trim();
         if (compareName === normalized) {
           return id;
         }
       }
+    }
+    if (result.hasNext()) {
+      result = await result.next();
+    } else {
+      result = null;
     }
   }
   return null;
