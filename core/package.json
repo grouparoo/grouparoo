@@ -81,7 +81,7 @@
     "@types/pacote": "11.1.1",
     "@types/pluralize": "0.0.29",
     "@types/semver": "7.3.9",
-    "@types/tar": "6.1.0",
+    "@types/tar": "6.1.1",
     "csv-parse": "4.16.3",
     "jest": "27.3.1",
     "jest-fetch-mock": "3.0.3",
