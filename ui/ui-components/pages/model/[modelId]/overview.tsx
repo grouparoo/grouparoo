@@ -19,6 +19,7 @@ interface Props {
   model: Models.GrouparooModelType;
   primarySource?: Models.SourceType;
   secondarySources: Models.SourceType[];
+  properties: Models.PropertyType[];
   groups: Models.GroupType[];
   schedules: Models.ScheduleType[];
   destinations?: Models.DestinationType[];
@@ -30,6 +31,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
   model,
   primarySource,
   secondarySources,
+  properties,
   groups,
   schedules,
   destinations,
@@ -96,7 +98,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
         </Row>
         <Row className="mb-4">
           <Col>
-            <SampleRecordCard execApi={execApi} />
+            <SampleRecordCard properties={properties} execApi={execApi} />
           </Col>
         </Row>
         <Row>
@@ -153,6 +155,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
       model,
       primarySource,
       secondarySources,
+      properties,
       groups,
       schedules,
       destinations,

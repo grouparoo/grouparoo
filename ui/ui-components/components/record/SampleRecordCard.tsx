@@ -12,9 +12,11 @@ import ManagedCard from "../lib/ManagedCard";
 import SeparatedItems from "../lib/SeparatedItems";
 import LinkButton from "../LinkButton";
 import LoadingButton from "../LoadingButton";
+import AddSampleRecordModal from "./AddSampleRecordModal";
 
 interface Props {
   execApi: ApiHook["execApi"];
+  properties: Models.PropertyType[];
 }
 
 interface RecordRow {
@@ -26,10 +28,11 @@ interface RecordRow {
 
 const isConfigUI = grouparooUiEdition() === "config";
 
-const SampleRecordCard: React.FC<Props> = ({ execApi }) => {
+const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
   const model = useGrouparooModelContext();
 
   const [importing, setImporting] = useState(false);
+  const [addingRecord, setAddingRecord] = useState(false);
 
   const { data: record, mutate: mutateRecord } = useSWR("sample-record", () => {
     return execApi<Actions.RecordsList>("get", "/records", {
@@ -91,13 +94,13 @@ const SampleRecordCard: React.FC<Props> = ({ execApi }) => {
 
   if (isConfigUI) {
     actions.push(
-      <LinkButton
-        href={`/model/${model.id}/record/new`}
+      <Button
         size="sm"
         variant="outline-primary"
+        onClick={() => setAddingRecord(true)}
       >
         Add sample Record
-      </LinkButton>
+      </Button>
     );
   }
 
@@ -178,6 +181,14 @@ const SampleRecordCard: React.FC<Props> = ({ execApi }) => {
           </Col>
         </Row>
       </Card.Body>
+      {isConfigUI && (
+        <AddSampleRecordModal
+          properties={properties}
+          execApi={execApi}
+          show={addingRecord}
+          onHide={() => setAddingRecord(false)}
+        />
+      )}
     </ManagedCard>
   );
 };
