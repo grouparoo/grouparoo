@@ -109,7 +109,13 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
     >
       Import Record data
     </LoadingButton>,
-    <Button size="sm" variant="outline-primary">
+    <Button
+      size="sm"
+      variant="outline-primary"
+      onClick={() => {
+        setRecordId(undefined);
+      }}
+    >
       Switch to random Record
     </Button>,
   ];
