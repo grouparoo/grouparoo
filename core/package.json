@@ -62,7 +62,7 @@
     "pg": "8.7.1",
     "pg-hstore": "2.3.4",
     "pluralize": "8.0.0",
-    "prettier": "2.4.1",
+    "prettier": "2.5.0",
     "reflect-metadata": "0.1.13",
     "semver": "7.3.5",
     "sequelize": "6.9.0",
