@@ -43,7 +43,7 @@
   "devDependencies": {
     "@types/fs-extra": "*",
     "@types/node": "*",
-    "prettier": "2.4.1",
+    "prettier": "2.5.0",
     "ts-node": "10.2.1",
     "typescript": "4.4.4"
   },

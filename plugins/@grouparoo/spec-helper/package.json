@@ -33,7 +33,7 @@
     "faker": "5.5.3",
     "fs-extra": "10.0.0",
     "nock": "13.2.1",
-    "prettier": "2.4.1",
+    "prettier": "2.5.0",
     "sequelize": "6.9.0",
     "uuid": "8.3.2"
   },
