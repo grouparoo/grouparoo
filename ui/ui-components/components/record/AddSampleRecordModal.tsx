@@ -1,9 +1,12 @@
-import { Modal, ModalProps } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { ApiHook } from "../../hooks/useApi";
 import { Models } from "../../utils/apiData";
 import AddSampleRecordForm from "./AddSampleRecordForm";
 
-interface Props extends Pick<ModalProps, "show" | "onHide"> {
+interface Props {
+  show: boolean;
+  onRecordCreated: (record: any) => void;
+  onHide: () => void;
   execApi: ApiHook["execApi"];
   properties: Models.PropertyType[];
 }
@@ -12,14 +15,9 @@ const AddSampleRecordModal: React.FC<Props> = ({
   properties,
   show,
   onHide,
+  onRecordCreated,
   execApi,
 }) => {
-  const onFormSubmitComplete = (record) => {
-    if (record) {
-      onHide();
-    }
-  };
-
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
@@ -29,7 +27,12 @@ const AddSampleRecordModal: React.FC<Props> = ({
         <AddSampleRecordForm
           properties={properties}
           execApi={execApi}
-          onSubmitComplete={onFormSubmitComplete}
+          onSubmitComplete={(record) => {
+            if (record) {
+              onRecordCreated(record);
+              onHide();
+            }
+          }}
         />
       </Modal.Body>
     </Modal>

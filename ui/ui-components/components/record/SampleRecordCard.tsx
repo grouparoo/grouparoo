@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Fragment, useMemo, useState } from "react";
+import { useRouter } from "next/router";
+import { useMemo, useState } from "react";
 import { Button, Card, Col, Row, Table } from "react-bootstrap";
 import useSWR from "swr";
 import { useGrouparooModelContext } from "../../contexts/grouparooModel";
@@ -29,18 +30,32 @@ interface RecordRow {
 const isConfigUI = grouparooUiEdition() === "config";
 
 const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
+  const router = useRouter();
   const model = useGrouparooModelContext();
 
   const [importing, setImporting] = useState(false);
   const [addingRecord, setAddingRecord] = useState(false);
-
-  const { data: record, mutate: mutateRecord } = useSWR("sample-record", () => {
-    return execApi<Actions.RecordsList>("get", "/records", {
-      limit: 1,
-      offset: 0,
-      modelId: model.id,
-    }).then((data) => data?.records?.[0]);
+  const [recordId, setRecordId] = useState(() => {
+    return router.query.recordId;
   });
+
+  const { data: record, mutate: mutateRecord } = useSWR(
+    ["sample-record", recordId],
+    () => {
+      if (recordId) {
+        return execApi<Actions.RecordView>("get", `/record/${recordId}`).then(
+          ({ record }) => record
+        );
+      }
+
+      return execApi<Actions.RecordsList>("get", "/records", {
+        limit: 1,
+        offset: 0,
+        modelId: model.id,
+        recordId,
+      }).then((data) => data?.records?.[0]);
+    }
+  );
 
   const recordRows = useMemo<RecordRow[]>(() => {
     if (!record?.properties) return [];
@@ -188,7 +203,12 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
           properties={properties}
           execApi={execApi}
           show={addingRecord}
-          onHide={() => setAddingRecord(false)}
+          onRecordCreated={(record) => {
+            setRecordId(record.id);
+          }}
+          onHide={() => {
+            setAddingRecord(false);
+          }}
         />
       )}
     </ManagedCard>
