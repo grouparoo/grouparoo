@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Fragment, useMemo, useState } from "react";
-import { Button, Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Row, Table } from "react-bootstrap";
 import useSWR from "swr";
 import { useGrouparooModelContext } from "../../contexts/grouparooModel";
 import { ApiHook, UseApi } from "../../hooks/useApi";
@@ -17,7 +17,7 @@ interface Props {
   execApi: ApiHook["execApi"];
 }
 
-interface RecordProp {
+interface RecordRow {
   propertyKey: string;
   propertyId: string;
   propertyState: Models.PropertyType["state"];
@@ -39,7 +39,7 @@ const SampleRecordCard: React.FC<Props> = ({ execApi }) => {
     }).then((data) => data?.records?.[0]);
   });
 
-  const recordProps = useMemo<RecordProp[]>(() => {
+  const recordRows = useMemo<RecordRow[]>(() => {
     if (!record?.properties) return [];
 
     const values = [];
@@ -124,34 +124,36 @@ const SampleRecordCard: React.FC<Props> = ({ execApi }) => {
     >
       <Card.Body>
         <Row>
-          <Col md={8}>
-            <Row>
-              <Col md={6}>
-                <strong>Property</strong>
-              </Col>
-              <Col md={6}>
-                <strong>Value</strong>
-              </Col>
-            </Row>
-            <Row>
-              {recordProps.map((recordProperty) => (
-                <Fragment key={recordProperty.propertyKey}>
-                  <Col md={6}>
-                    <Link
-                      href={`/model/${model.id}/property/${recordProperty.propertyId}/edit`}
-                    >
-                      <a>{recordProperty.propertyKey}</a>
-                    </Link>
-                    {recordProperty.propertyState !== "ready" && (
-                      <StateBadge state={recordProperty.propertyState} />
-                    )}
-                  </Col>
-                  <Col md={6}>{recordProperty.value}</Col>
-                </Fragment>
-              ))}
-            </Row>
+          <Col md={9}>
+            <Table bordered>
+              <thead>
+                <th>
+                  <strong>Property</strong>
+                </th>
+                <th>
+                  <strong>Value</strong>
+                </th>
+              </thead>
+              <tbody>
+                {recordRows.map((row) => (
+                  <tr key={row.propertyKey}>
+                    <td>
+                      <Link
+                        href={`/model/${model.id}/property/${row.propertyId}/edit`}
+                      >
+                        <a>{row.propertyKey}</a>
+                      </Link>
+                      {row.propertyState !== "ready" && (
+                        <StateBadge state={row.propertyState} />
+                      )}
+                    </td>
+                    <td>{row.value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
           </Col>
-          <Col md={4} className={"text-center"}>
+          <Col md={3} className={"text-center"}>
             <p>
               <strong>Groups</strong>
               <br />
