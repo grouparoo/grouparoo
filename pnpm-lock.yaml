@@ -1795,7 +1795,7 @@ importers:
       '@types/react': '*'
       '@types/react-dom': '*'
       actionhero: 27.2.0
-      ansi-to-html: 0.7.1
+      ansi-to-html: 0.7.2
       dotenv: 10.0.0
       enzyme: 3.11.0
       eslint: 7.32.0
@@ -1813,7 +1813,7 @@ importers:
       ts-jest: 27.0.7
       typescript: 4.4.4
     dependencies:
-      ansi-to-html: 0.7.1
+      ansi-to-html: 0.7.2
       dotenv: 10.0.0
       next: 12.0.2_react-dom@17.0.2+react@17.0.2
       open: 8.4.0
@@ -4680,8 +4680,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /ansi-to-html/0.7.1:
-    resolution: {integrity: sha512-PPpOy/TeLE6xERG5CNNpm1cLTIW1IeWULleeVc089paF45zfz5gzNPXeSQyxt1sUiKVIYZlY86AYx3fsMdIr5w==}
+  /ansi-to-html/0.7.2:
+    resolution: {integrity: sha512-v6MqmEpNlxF+POuyhKkidusCHWWkaLcGRURzivcU3I9tv7k4JVhFcnukrM5Rlk2rUywdZuzYAZ+kbZqWCnfN3g==}
     engines: {node: '>=8.0.0'}
     hasBin: true
     dependencies:
