@@ -6,6 +6,7 @@ import { useGrouparooModelContext } from "../../contexts/grouparooModel";
 import { ApiHook, UseApi } from "../../hooks/useApi";
 import { Actions, Models } from "../../utils/apiData";
 import { successHandler } from "../../utils/eventHandlers";
+import { grouparooUiEdition } from "../../utils/uiEdition";
 import StateBadge from "../badges/StateBadge";
 import ManagedCard from "../lib/ManagedCard";
 import SeparatedItems from "../lib/SeparatedItems";
@@ -22,6 +23,8 @@ interface RecordProp {
   propertyState: Models.PropertyType["state"];
   value: string | number | boolean;
 }
+
+const isConfigUI = grouparooUiEdition() === "config";
 
 const SampleRecordCard: React.FC<Props> = ({ execApi }) => {
   const model = useGrouparooModelContext();
@@ -69,6 +72,34 @@ const SampleRecordCard: React.FC<Props> = ({ execApi }) => {
     }
     setImporting(false);
   };
+
+  const actions = [
+    <LoadingButton
+      disabled={importing}
+      onClick={() => {
+        importRecord();
+      }}
+      size="sm"
+      variant="outline-success"
+    >
+      Import Record data
+    </LoadingButton>,
+    <Button size="sm" variant="outline-primary">
+      Switch to random Record
+    </Button>,
+  ];
+
+  if (isConfigUI) {
+    actions.push(
+      <LinkButton
+        href={`/model/${model.id}/record/new`}
+        size="sm"
+        variant="outline-primary"
+      >
+        Add sample Record
+      </LinkButton>
+    );
+  }
 
   return (
     <ManagedCard
@@ -141,30 +172,7 @@ const SampleRecordCard: React.FC<Props> = ({ execApi }) => {
         </Row>
         <Row>
           <Col>
-            <SeparatedItems
-              items={[
-                <LoadingButton
-                  disabled={importing}
-                  onClick={() => {
-                    importRecord();
-                  }}
-                  size="sm"
-                  variant="outline-success"
-                >
-                  Import Record data
-                </LoadingButton>,
-                <Button size="sm" variant="outline-primary">
-                  Switch to random Record
-                </Button>,
-                <LinkButton
-                  href={`/model/${model.id}/record/new`}
-                  size="sm"
-                  variant="outline-primary"
-                >
-                  Add sample Record
-                </LinkButton>,
-              ]}
-            />
+            <SeparatedItems items={actions} />
           </Col>
         </Row>
       </Card.Body>
