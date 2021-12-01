@@ -358,7 +358,7 @@ async function getForeignKeyType(
     client,
     cacheData,
     recordObject,
-    true
+    false
   );
   for (const field of recordInfo.fields) {
     if (recordMatchField === field.name) {
