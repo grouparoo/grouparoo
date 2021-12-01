@@ -266,7 +266,7 @@ importers:
       moment: 2.29.1
       mustache: 4.2.0
       nock: 13.2.1
-      node-resque: 9.1.1
+      node-resque: 9.1.2
       nodemon: 2.0.15
       pacote: 12.0.2
       pg: 8.7.1
@@ -311,7 +311,7 @@ importers:
       libphonenumber-js: 1.9.43
       moment: 2.29.1
       mustache: 4.2.0
-      node-resque: 9.1.1
+      node-resque: 9.1.2
       nodemon: 2.0.15
       pacote: 12.0.2
       pg: 8.7.1
@@ -4476,7 +4476,7 @@ packages:
       ioredis: 4.28.2
       is-running: 2.1.0
       mime: 2.5.2
-      node-resque: 9.1.1
+      node-resque: 9.1.2
       primus: 8.0.5
       qs: 6.10.1
       uuid: 8.3.2
@@ -11073,8 +11073,8 @@ packages:
   /node-releases/1.1.75:
     resolution: {integrity: sha512-Qe5OUajvqrqDSy6wrWFmMwfJ0jVgwiw4T3KqmbTcZ62qW0gQkheXYhcFM1+lOVcGUoRxcEcfyvFMAnDgaF1VWw==}
 
-  /node-resque/9.1.1:
-    resolution: {integrity: sha512-+S5sB9247x8bsTKGzpANux9K2zBBdwlMzINtXU59JOca8D7AVdGfSwbJWt42yFkfu8klX5Z7xwM0oiWbjnYL2A==}
+  /node-resque/9.1.2:
+    resolution: {integrity: sha512-BWBEf7NL7i8eZ6uPsBgDFIKVhbZwLkAGWN5maRltjYkIkuoNE70FQsL3BCu2CxPXmRSPGDJDsOz17p3ostOQGA==}
     engines: {node: '>=12.0.0'}
     dependencies:
       ioredis: 4.28.2
