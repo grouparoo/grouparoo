@@ -10,6 +10,7 @@ import ModelOverviewPrimarySource from "../../../components/model/overview/Model
 import ModelOverviewSchedules from "../../../components/model/overview/ModelOverviewSchedules";
 import ModelOverviewSecondarySources from "../../../components/model/overview/ModelOverviewSecondarySources";
 import PageHeader from "../../../components/PageHeader";
+import SampleRecordCard from "../../../components/record/SampleRecordCard";
 import { GrouparooModelContextProvider } from "../../../contexts/grouparooModel";
 import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
@@ -91,6 +92,11 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
                 </ListGroupItem>
               </ListGroup>
             </ManagedCard>
+          </Col>
+        </Row>
+        <Row className="mb-4">
+          <Col>
+            <SampleRecordCard execApi={execApi} />
           </Col>
         </Row>
         <Row>
