@@ -130,12 +130,14 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
           <Col md={9}>
             <Table bordered>
               <thead>
-                <th>
-                  <strong>Property</strong>
-                </th>
-                <th>
-                  <strong>Value</strong>
-                </th>
+                <tr>
+                  <th>
+                    <strong>Property</strong>
+                  </th>
+                  <th>
+                    <strong>Value</strong>
+                  </th>
+                </tr>
               </thead>
               <tbody>
                 {recordRows.map((row) => (
