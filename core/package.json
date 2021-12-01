@@ -54,7 +54,7 @@
     "libphonenumber-js": "1.9.43",
     "moment": "2.29.1",
     "mustache": "4.2.0",
-    "node-resque": "9.1.1",
+    "node-resque": "9.1.2",
     "nodemon": "2.0.15",
     "pacote": "12.0.2",
     "pg": "8.7.1",
