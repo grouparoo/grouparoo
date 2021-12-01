@@ -269,7 +269,7 @@ importers:
       mustache: 4.2.0
       nock: 13.2.1
       node-resque: 9.1.1
-      nodemon: 2.0.14
+      nodemon: 2.0.15
       pacote: 12.0.2
       pg: 8.7.1
       pg-hstore: 2.3.4
@@ -316,7 +316,7 @@ importers:
       moment: 2.29.1
       mustache: 4.2.0
       node-resque: 9.1.1
-      nodemon: 2.0.14
+      nodemon: 2.0.15
       pacote: 12.0.2
       pg: 8.7.1
       pg-hstore: 2.3.4
@@ -11280,8 +11280,8 @@ packages:
       request: 2.88.2
     dev: false
 
-  /nodemon/2.0.14:
-    resolution: {integrity: sha512-frcpDx+PviKEQRSYzwhckuO2zoHcBYLHI754RE9z5h1RGtrngerc04mLpQQCPWBkH/2ObrX7We9YiwVSYZpFJQ==}
+  /nodemon/2.0.15:
+    resolution: {integrity: sha512-gdHMNx47Gw7b3kWxJV64NI+Q5nfl0y5DgDbiVtShiwa7Z0IZ07Ll4RLFo6AjrhzMtoEZn5PDE3/c2AbVsiCkpA==}
     engines: {node: '>=8.10.0'}
     hasBin: true
     requiresBuild: true
@@ -11294,7 +11294,7 @@ packages:
       semver: 5.7.1
       supports-color: 5.5.0
       touch: 3.1.0
-      undefsafe: 2.0.3
+      undefsafe: 2.0.5
       update-notifier: 5.1.0
     dev: false
 
@@ -15110,10 +15110,8 @@ packages:
       react: 17.0.2
       react-lifecycles-compat: 3.0.4
 
-  /undefsafe/2.0.3:
-    resolution: {integrity: sha512-nrXZwwXrD/T/JXeygJqdCO6NZZ1L66HrxM/Z7mIq2oPanoN0F1nLx3lwJMu6AwJY69hdixaFQOuoYsMjE5/C2A==}
-    dependencies:
-      debug: 2.6.9
+  /undefsafe/2.0.5:
+    resolution: {integrity: sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==}
     dev: false
 
   /underscore/1.13.1:
