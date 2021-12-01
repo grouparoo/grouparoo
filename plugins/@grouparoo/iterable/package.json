@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.7.6-alpha.0",
-    "node-iterable-api": "1.0.4"
+    "node-iterable-api": "1.1.0"
   },
   "devDependencies": {
     "@grouparoo/core": "0.7.6-alpha.0",
