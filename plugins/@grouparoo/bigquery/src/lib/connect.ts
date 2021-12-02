@@ -6,6 +6,9 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   const projectId = appOptions.project_id?.toString() || "";
   const dataset = appOptions.dataset?.toString() || "";
   const client_email = appOptions.client_email?.toString() || "";
+  const datasetOptions = appOptions.location
+    ? { location: appOptions.location?.toString() }
+    : {};
   const private_key = (appOptions.private_key || "")
     .toString()
     .replace(/\\n/g, "\n");
@@ -14,7 +17,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
     credentials: { client_email, private_key },
   });
 
-  const bqClient = client.dataset(dataset);
+  const bqClient = client.dataset(dataset, datasetOptions);
   const queryShim: typeof bqClient.query = bqClient.query.bind(bqClient);
   (bqClient as any).query = (
     options: Parameters<typeof bqClient.query>[0],
