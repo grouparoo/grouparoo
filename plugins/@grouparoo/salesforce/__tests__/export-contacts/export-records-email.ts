@@ -16,7 +16,6 @@ const destinationOptions = {
   accountKey: "Name",
 };
 const model = destinationModel(destinationOptions);
-console.log(model);
 
 const email1 = "brian@demo.com";
 const id1 = "pro1";
@@ -625,9 +624,7 @@ describe("salesforce/sales-cloud/export-records/email", () => {
           },
         ],
       });
-      console.log(success, errors);
     } catch (error) {
-      console.log(error.message);
       expect(error.message).toContain("boolean");
     }
 
