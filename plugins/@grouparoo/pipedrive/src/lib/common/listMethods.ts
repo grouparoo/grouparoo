@@ -7,6 +7,7 @@ import { configMapping, EntityType } from "./configMapping";
 import { objectCache } from "@grouparoo/core";
 
 export const GROUP_FIELD_PREFIX = "In Group:";
+
 function makeGroupFieldName(groupName: string) {
   return `${GROUP_FIELD_PREFIX} ${groupName}`;
 }
