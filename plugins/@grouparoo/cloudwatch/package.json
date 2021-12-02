@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/cloudwatch",
   "description": "The Grouparoo Cloudwatch Plugin",
-  "version": "0.7.5",
+  "version": "0.7.6-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,21 +28,21 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "aws-sdk": "2.998.0",
+    "aws-sdk": "2.1040.0",
     "winston": "3.3.3",
     "winston-cloudwatch": "3.1.1"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.5",
-    "@grouparoo/spec-helper": "0.7.5",
+    "@grouparoo/core": "0.7.6-alpha.0",
+    "@grouparoo/spec-helper": "0.7.6-alpha.0",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "27.2.0",
     "jest": "27.3.1",
-    "prettier": "2.4.1",
+    "prettier": "2.5.0",
     "ts-jest": "27.0.7",
-    "type-fest": "2.5.2",
-    "typescript": "4.4.4"
+    "type-fest": "2.8.0",
+    "typescript": "4.5.2"
   },
   "grouparoo": {
     "env": {

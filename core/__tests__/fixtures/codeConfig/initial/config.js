@@ -15,7 +15,7 @@ module.exports = async function getConfig() {
       options: {
         fileId: "test-file-path.db",
       },
-      refreshQuery: {
+      refresh: {
         query: "SELECT 'hi' AS name;",
         recurringFrequency: 90000,
       },
@@ -63,7 +63,6 @@ module.exports = async function getConfig() {
       type: "integer",
       unique: true,
       isArray: false,
-      identifying: true,
       sourceId: "users_table", // sourceId -> `users_table`
       options: {
         column: "id",

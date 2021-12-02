@@ -75,6 +75,12 @@ export namespace Models {
   export type SourceType = Partial<AsyncReturnType<Source["apiData"]>>;
   export type TeamType = Partial<AsyncReturnType<Team["apiData"]>>;
   export type TeamMemberType = Partial<AsyncReturnType<TeamMember["apiData"]>>;
+  export type EntityTypes =
+    | AppType
+    | SourceType
+    | DestinationType
+    | ScheduleType
+    | GroupType;
 }
 
 // -----------------------------------------
@@ -181,7 +187,6 @@ import {
   PropertyCreate,
   PropertyDestroy,
   PropertyEdit,
-  PropertyMakeIdentifying,
   PropertyFilterOptions,
   PropertyGroups,
   PropertyPluginOptions,
@@ -514,9 +519,6 @@ export namespace Actions {
   >;
   export type PropertyEdit = AsyncReturnType<
     typeof PropertyEdit.prototype.runWithinTransaction
-  >;
-  export type PropertyMakeIdentifying = AsyncReturnType<
-    typeof PropertyMakeIdentifying.prototype.runWithinTransaction
   >;
   export type PropertyFilterOptions = AsyncReturnType<
     typeof PropertyFilterOptions.prototype.runWithinTransaction

@@ -44,7 +44,7 @@ export interface ModelConfigurationObject extends ConfigurationObject {
 export interface AppConfigurationObject extends ConfigurationObject {
   name: string;
   type: string;
-  refreshQuery?: { query: string; recurringFrequency: number };
+  refresh?: { query: string; recurringFrequency: number };
   options?: { [key: string]: any };
 }
 
@@ -77,7 +77,6 @@ export interface PropertyConfigurationObject extends ConfigurationObject {
   key: string;
   type: string;
   sourceId: string;
-  identifying?: boolean;
   unique?: boolean;
   isArray?: boolean;
   options?: { [key: string]: any };
@@ -108,9 +107,6 @@ export interface SourceConfigurationObject extends ConfigurationObject {
   type: string;
   options?: { [key: string]: any };
   mapping?: { [key: string]: any };
-  bootstrappedProperty?: PropertyConfigurationObject & {
-    options: { [key: string]: any };
-  };
 }
 
 export interface TeamConfigurationObject extends ConfigurationObject {
@@ -169,7 +165,7 @@ export async function getParentByName(model: any, parentId: string) {
 
 export function validateConfigObjectKeys(
   model: any,
-  configObject,
+  configObject: AnyConfigurationObject,
   additionalAllowedKeys: string[] = []
 ) {
   const errors: string[] = [];
@@ -179,7 +175,6 @@ export function validateConfigObjectKeys(
   let idFound = false;
   const configKeys = Object.keys(configObject)
     .filter((k) => k !== "class")
-    .filter((k) => typeof configObject[k] !== "object")
     .map((k) => {
       if (k === "id") {
         idFound = true;
@@ -371,15 +366,6 @@ export async function getParentIds(
   providedIds.push(`${cleanClass(configObject)}:${configObject.id}`);
 
   // special cases
-  // - Bootstrapped property
-  if (
-    cleanClass(configObject) === "source" &&
-    configObject["bootstrappedProperty"] !== undefined &&
-    configObject["bootstrappedProperty"]["id"]
-  ) {
-    providedIds.push(`property:${configObject["bootstrappedProperty"].id}`);
-  }
-
   // - property with mustache dependency
 
   if (configObject["options"]) {
@@ -412,7 +398,7 @@ export async function getParentIds(
   }
 
   const objectContainers = ["options", "source", "destination"];
-  const validContainerKeys = ["identifyingPropertyId", "propertyId"];
+  const validContainerKeys = ["propertyId"];
   objectContainers.map((_container) => {
     if (configObject[_container]) {
       const containerKeys = Object.keys(configObject[_container]);
@@ -447,12 +433,10 @@ export async function getParentIds(
   });
 
   if (configObject["mapping"]) {
-    const autoBootstrappedProperty =
-      !configObject["bootstrappedProperty"] &&
-      getAutoBootstrappedProperty(
-        configObject as SourceConfigurationObject,
-        otherConfigObjects
-      );
+    const autoBootstrappedProperty = getAutoBootstrappedProperty(
+      configObject as SourceConfigurationObject,
+      otherConfigObjects
+    );
     const mappingValues = Object.values(configObject["mapping"]);
     for (const value of mappingValues) {
       if (!autoBootstrappedProperty || value !== autoBootstrappedProperty.id)
@@ -498,10 +482,7 @@ export function sortConfigObjectsWithIds(
     const [_class, id] = typeAndId.split(":");
 
     const parent = configObjectsWithIds.find(
-      (o) =>
-        (cleanClass(o.configObject) === _class && o.configObject.id === id) ||
-        (o.configObject["bootstrappedProperty"] &&
-          o.configObject["bootstrappedProperty"]["id"] === id)
+      (o) => cleanClass(o.configObject) === _class && o.configObject.id === id
     );
 
     if (parent) {

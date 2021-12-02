@@ -719,13 +719,11 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { propertyId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
 
-  const { properties } = await execApi("get", `/properties`, {
-    state: "ready",
-  });
   const { sources } = await execApi("get", "/sources");
   const { types } = await execApi("get", `/propertyOptions`);
 
   let property: Models.PropertyType = {};
+  let properties = [];
   let pluginOptions = [];
   let filterOptions = {};
   let hydrationError: Error;
@@ -738,6 +736,12 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
       (s: Models.SourceType) => s.id === property.sourceId
     );
     ensureMatchingModel("Property", source.modelId, modelId.toString());
+
+    const propertiesResponse = await execApi("get", `/properties`, {
+      state: "ready",
+      modelId: source.modelId,
+    });
+    properties = propertiesResponse.properties;
 
     const pluginOptionsResponse = await execApi(
       "get",

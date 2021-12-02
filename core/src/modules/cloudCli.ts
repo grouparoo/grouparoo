@@ -119,11 +119,11 @@ export namespace CloudCLI {
     const tempPath = await mkdtemp(path.join(os.tmpdir(), "grouparoo-cli-"));
     const archivePath = path.join(tempPath, "grouparoo.tar.gz");
 
-    GrouparooCLI.logger.log("Building config archive...\n");
+    GrouparooCLI.logger.log("\n🛠 Building config archive...\n");
 
     await CloudCLI.pack(archivePath);
 
-    GrouparooCLI.logger.log("\nUploading config...\n");
+    GrouparooCLI.logger.log("\n☁️ Uploading config...\n");
 
     await CloudCLI.push({
       archivePath,

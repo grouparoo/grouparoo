@@ -7,7 +7,6 @@ import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
 import Link from "../../../components/GrouparooLink";
 import Pagination from "../../../components/Pagination";
-import LoadingTable from "../../../components/LoadingTable";
 import AppIcon from "../../../components/AppIcon";
 import StateBadge from "../../../components/badges/StateBadge";
 import { Models, Actions } from "../../../utils/apiData";
@@ -17,6 +16,10 @@ import { ErrorHandler } from "../../../utils/errorHandler";
 import LoadingButton from "../../../components/LoadingButton";
 import LinkButton from "../../../components/LinkButton";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
+import { formatSchedule } from "../../../utils/formatSchedule";
+import { formatName } from "../../../utils/formatName";
+import RunAllSchedulesButton from "../../../components/schedule/RunAllSchedulesButton";
+import { Table } from "react-bootstrap";
 
 export default function Page(props) {
   const {
@@ -36,7 +39,7 @@ export default function Page(props) {
     props.runs
   );
   const [total, setTotal] = useState(props.total);
-  const { modelId } = router.query;
+  const modelId = router.query.modelId as string;
 
   // pagination
   const limit = 100;
@@ -86,21 +89,6 @@ export default function Page(props) {
     }
   }
 
-  async function enqueueAllSchedulesRun() {
-    setLoading(true);
-    try {
-      const response: Actions.SchedulesRun = await execApi(
-        "post",
-        `/schedules/run`,
-        { modelId }
-      );
-      successHandler.set({ message: `${response.runs.length} runs enqueued` });
-    } finally {
-      setLoading(false);
-      load();
-    }
-  }
-
   return (
     <>
       <Head>
@@ -114,7 +102,7 @@ export default function Page(props) {
         offset={offset}
         onPress={setOffset}
       />
-      <LoadingTable loading={loading}>
+      <Table>
         <thead>
           <tr>
             <th></th>
@@ -129,9 +117,6 @@ export default function Page(props) {
         <tbody>
           {sources.map((source) => {
             const schedule = source.schedule;
-            const recurringFrequencyMinutes = schedule?.recurringFrequency
-              ? schedule.recurringFrequency / (60 * 1000)
-              : null;
             const run = runs[source.id];
 
             return (
@@ -145,14 +130,7 @@ export default function Page(props) {
                       href={`/model/${source.modelId}/source/${source.id}/overview`}
                     >
                       <a>
-                        <strong>
-                          {source.name ||
-                            `${source.state} created on ${
-                              new Date(source.createdAt)
-                                .toLocaleString()
-                                .split(",")[0]
-                            }`}
-                        </strong>
+                        <strong>{formatName(source)}</strong>
                       </a>
                     </Link>
                   </td>
@@ -171,10 +149,7 @@ export default function Page(props) {
                   <td>
                     {schedule ? (
                       <>
-                        Frequency:{" "}
-                        {schedule.recurring
-                          ? `Every ${recurringFrequencyMinutes} minutes`
-                          : "Not recurring"}
+                        Frequency: {formatSchedule(schedule)}
                         {grouparooUiEdition() !== "config" && (
                           <>
                             <br />
@@ -201,7 +176,7 @@ export default function Page(props) {
             );
           })}
         </tbody>
-      </LoadingTable>
+      </Table>
       <Pagination
         total={total}
         limit={limit}
@@ -217,14 +192,16 @@ export default function Page(props) {
         Add new Source
       </LinkButton>
       &nbsp;
-      <LoadingButton
-        variant="outline-primary"
+      <RunAllSchedulesButton
+        modelId={modelId}
+        execApi={execApi}
         disabled={loading}
-        onClick={() => enqueueAllSchedulesRun()}
-        hideOn={["config"]}
-      >
-        Run all {modelName} Schedules
-      </LoadingButton>
+        onStart={() => setLoading(true)}
+        onComplete={() => {
+          setLoading(false);
+          load();
+        }}
+      />
     </>
   );
 }

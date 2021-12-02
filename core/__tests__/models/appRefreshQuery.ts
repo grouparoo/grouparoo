@@ -1,4 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
+import { specHelper, api } from "actionhero";
 import { App, AppRefreshQuery, Log, Run, Schedule, Source } from "../../src";
 import { AppRefreshQueryOps } from "../../src/modules/ops/appRefreshQuery";
 
@@ -33,8 +34,6 @@ describe("appRefreshQuery", () => {
         recurringFrequency: 20,
         state: "ready",
       });
-
-      // expect(2 + 2).toBe(4);
       await expect(appRefreshQuery.save()).rejects.toThrow(
         /recurring frequency is required to be one minute or greater/
       );
@@ -75,6 +74,28 @@ describe("appRefreshQuery", () => {
       expect(spy).toHaveBeenCalledWith(appRefreshQuery);
 
       spy.mockRestore();
+      appRefreshQuery.destroy();
+    });
+
+    test("an updated query on a ready appRefreshQuery enqueues a run", async () => {
+      const appRefreshQuery = new AppRefreshQuery({
+        appId: app.id,
+        refreshQuery: "SELECT MAX(updated_at) FROM users;",
+        state: "ready",
+      });
+      await appRefreshQuery.save();
+
+      await api.resque.queue.connection.redis.flushdb();
+
+      await appRefreshQuery.update({ refreshQuery: "SELECT 'hi' AS name;" });
+
+      let foundTasks = await specHelper.findEnqueuedTasks(
+        "appRefreshQuery:run"
+      );
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0]).toEqual({
+        appRefreshQueryId: appRefreshQuery.id,
+      });
       appRefreshQuery.destroy();
     });
 

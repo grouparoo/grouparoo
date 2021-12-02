@@ -25,7 +25,7 @@ export async function loadSource(
 
   const app: App = await getParentByName(App, configObject.appId);
 
-  validateConfigObjectKeys(Source, configObject);
+  validateConfigObjectKeys(Source, configObject, ["options", "mapping"]);
 
   let source = await Source.scope(null).findOne({
     where: {
@@ -77,12 +77,10 @@ export async function loadSource(
     }
   }
 
-  const bootstrappedPropertyConfig =
-    configObject.bootstrappedProperty ||
-    getAutoBootstrappedProperty(
-      configObject,
-      configObjects.filter((o) => o.id !== configObject.id)
-    );
+  const bootstrappedPropertyConfig = getAutoBootstrappedProperty(
+    configObject,
+    configObjects.filter((o) => o.id !== configObject.id)
+  );
 
   try {
     await setMapping();
@@ -136,13 +134,6 @@ export async function loadSource(
       bootstrappedProperty,
       validate ? "validated" : isNew ? "created" : "updated"
     );
-
-    if (configObject.bootstrappedProperty) {
-      log(
-        `source.bootstrappedProperty is deprecated. Please generate a config file for the Property by using \`grouparoo generate\`. (${configObject.id})`,
-        "warning"
-      );
-    }
   }
 
   return {

@@ -54,6 +54,7 @@ const mapTypesFromIterableToGrouparoo = (fieldKey, iterableType) => {
     long: "integer",
     date: "date",
     boolean: "boolean",
+    double: "float",
   };
   const grouparooType = map[iterableType];
   if (grouparooType) {

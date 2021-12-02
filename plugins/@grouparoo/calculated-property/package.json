@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/calculated-property",
   "description": "The Grouparoo Calculated Property Plugin",
-  "version": "0.7.5",
+  "version": "0.7.6-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,15 +28,15 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.5",
-    "@grouparoo/spec-helper": "0.7.5",
+    "@grouparoo/core": "0.7.6-alpha.0",
+    "@grouparoo/spec-helper": "0.7.6-alpha.0",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "27.2.0",
     "jest": "27.3.1",
-    "prettier": "2.4.1",
+    "prettier": "2.5.0",
     "ts-jest": "27.0.4",
-    "typescript": "4.4.4"
+    "typescript": "4.5.2"
   },
   "dependencies": {
     "vm2": "3.9.5"

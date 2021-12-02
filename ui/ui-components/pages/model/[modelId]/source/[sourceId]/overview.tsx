@@ -7,6 +7,7 @@ import Link from "next/link";
 import Moment from "react-moment";
 import ScheduleAddButton from "../../../../../components/schedule/Add";
 import PropertyAddButton from "../../../../../components/property/Add";
+import PropertyAddMultipleButton from "../../../../../components/property/AddMultiple";
 import SourceTabs from "../../../../../components/tabs/Source";
 import Head from "next/head";
 import { Models } from "../../../../../utils/apiData";
@@ -124,23 +125,11 @@ export default function Page({
             </tbody>
           </Table>
           <PropertyAddButton
+            source={source}
             errorHandler={errorHandler}
             successHandler={successHandler}
-            source={source}
           />
-          {source.previewAvailable === true ? (
-            <>
-              &nbsp;
-              <LinkButton
-                href={`/model/${source.modelId}/source/${source.id}/multipleProperties`}
-                size="sm"
-                variant="outline-primary"
-                hideOn={["community"]}
-              >
-                Add Multiple Properties
-              </LinkButton>
-            </>
-          ) : null}
+          <PropertyAddMultipleButton source={source} />
           <hr />
           <h2>Schedule</h2>
           <br />

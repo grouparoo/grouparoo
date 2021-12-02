@@ -21,7 +21,7 @@ export async function loadSchedule(
   let isNew = false;
 
   if (configObject.hasOwnProperty("confirmProfiles")) {
-    Deprecation.warn(
+    Deprecation.warnChanged(
       "config",
       "schedule.confirmProfiles",
       "schedule.confirmRecords"
@@ -30,7 +30,7 @@ export async function loadSchedule(
     delete configObject["confirmProfiles"];
   }
 
-  validateConfigObjectKeys(Schedule, configObject);
+  validateConfigObjectKeys(Schedule, configObject, ["options", "filters"]);
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
   let schedule = await Schedule.scope(null).findOne({

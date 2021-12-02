@@ -2,7 +2,6 @@ import { api } from "actionhero";
 import fs from "fs";
 import path from "path";
 import prettier from "prettier";
-
 import { App } from "../models/App";
 import { GrouparooModel } from "../models/GrouparooModel";
 import { Destination } from "../models/Destination";

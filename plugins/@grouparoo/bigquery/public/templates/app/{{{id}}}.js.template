@@ -5,7 +5,7 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       type: "{{{__pluginName}}}",
-      //refreshQuery: {
+      //refresh: {
       //  query: "..."
       //  interval: 6000 
       //}, // Optional: How will Grouparoo know to trigger a Data Refresh? ie: `SELECT MAX(updated_at) FROM users`;
@@ -14,6 +14,7 @@ exports.default = async function buildConfig() {
         dataset: "...", // Default dataset ID to use for sources - e.g. `dataset: "dataset"`
         client_email: "xxx@xxx.iam.gserviceaccount.com", // Client Email Address
         private_key: "-----BEGIN PRIVATE KEY-----\n...", // Private key of service account
+        //location: "..." // Optional: If your dataset is located outside of the US, you'll need to provide the region or multi-region location: https://cloud.google.com/bigquery/docs/locations 
       }
     },
   ];

@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/postgres",
   "description": "The Grouparoo postgres Plugin",
-  "version": "0.7.5",
+  "version": "0.7.6-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,15 +28,15 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.7.5",
+    "@grouparoo/app-templates": "0.7.6-alpha.0",
     "pg": "8.7.1",
     "pg-format": "1.0.4",
     "pg-hstore": "2.3.4",
     "postgres-date": "2.0.1"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.5",
-    "@grouparoo/spec-helper": "0.7.5",
+    "@grouparoo/core": "0.7.6-alpha.0",
+    "@grouparoo/spec-helper": "0.7.6-alpha.0",
     "@types/jest": "*",
     "@types/node": "*",
     "@types/pg": "*",
@@ -44,10 +44,10 @@
     "csv-parse": "4.16.3",
     "fs-extra": "10.0.0",
     "jest": "27.3.1",
-    "prettier": "2.4.1",
-    "sequelize": "6.9.0",
+    "prettier": "2.5.0",
+    "sequelize": "6.11.0",
     "ts-jest": "27.0.7",
-    "typescript": "4.4.4"
+    "typescript": "4.5.2"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }

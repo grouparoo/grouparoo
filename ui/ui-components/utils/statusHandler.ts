@@ -91,7 +91,7 @@ export class StatusHandler extends EventDispatcher<
   }
 
   async afterSubscribe(
-    name,
+    name: string,
     handler: Function,
     matcher: { topic: string; collection: string }
   ) {
@@ -113,7 +113,7 @@ export class StatusHandler extends EventDispatcher<
 
         if (match && !debounce) {
           debounce = true;
-          await handler(latestMetrics[0]);
+          handler(latestMetrics[0]);
         }
       }
     }

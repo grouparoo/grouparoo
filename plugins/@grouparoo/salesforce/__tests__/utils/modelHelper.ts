@@ -4,7 +4,7 @@ import { connect } from "../../src/lib/connect";
 
 export interface ModelHelperFunctions {
   getClient: { (): Promise<any> };
-  findId: { (value: string): Promise<any> };
+  findId: { (value: string | number): Promise<any> };
   getUser: { (id: string): Promise<any> };
   cleanUp: { (suppressErrors: boolean): Promise<void> };
   findGroupId: { (value: string): Promise<string> };

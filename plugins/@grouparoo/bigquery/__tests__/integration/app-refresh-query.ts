@@ -11,7 +11,7 @@ import { SimpleAppOptions } from "@grouparoo/core";
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
-describe("integration/runs/bigquery/appRefreshQuery", () => {
+describe("integration/refreshQuery/bigquery", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: false });
 
   let app: App;
@@ -29,7 +29,7 @@ describe("integration/runs/bigquery/appRefreshQuery", () => {
     await AppRefreshQuery.truncate();
   });
 
-  test("I can query using the appRefreshQuery query method", async () => {
+  it("can query using the appRefreshQuery query method", async () => {
     const app = await App.findOne();
     await AppRefreshQuery.create({
       appId: app.id,
@@ -38,7 +38,7 @@ describe("integration/runs/bigquery/appRefreshQuery", () => {
     }); // does not throw
   });
 
-  test("I show a good error with a missing query", async () => {
+  it("shows a good error with a missing query", async () => {
     const app = await App.findOne();
     await expect(
       AppRefreshQuery.create({
@@ -50,7 +50,7 @@ describe("integration/runs/bigquery/appRefreshQuery", () => {
       /query should start with SELECT, INSERT, UPDATE, or DELETE/
     );
   });
-  test("I show a good error with a query that has too many sql statements", async () => {
+  it("shows a good error with a query that has too many sql statements", async () => {
     const app = await App.findOne();
     await expect(
       AppRefreshQuery.create({

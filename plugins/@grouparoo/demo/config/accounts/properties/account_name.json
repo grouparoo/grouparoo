@@ -5,7 +5,6 @@
   "key": "accountName",
   "sourceId": "demo_accounts",
   "unique": false,
-  "identifying": true,
   "isArray": false,
   "options": {
     "aggregationMethod": "exact",

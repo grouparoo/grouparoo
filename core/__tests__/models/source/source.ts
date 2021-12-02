@@ -723,10 +723,10 @@ describe("models/source", () => {
 
     test("isPrimaryKey will not be updated for source across model when updating mapping in other source", async () => {
       await source.bootstrapUniqueProperty("myEmail", "email", "my_email");
-      await source.setMapping({ email: "myEmail" });
+      await source.setMapping({ email: "userId" });
 
       const mapping = await source.getMapping();
-      expect(mapping).toEqual({ email: "myEmail" });
+      expect(mapping).toEqual({ email: "userId" });
 
       const userIdProperty = await Property.findOne({
         where: { key: "userId" },
@@ -739,6 +739,12 @@ describe("models/source", () => {
       expect(myEmailProperty.isPrimaryKey).toBe(false);
 
       await source.setMapping({ userId: "userId" });
+    });
+
+    test("will throw error when mapping to own property and primary key is owned by other source", async () => {
+      await expect(source.setMapping({ email: "myEmail" })).rejects.toThrow(
+        /cannot map 'email' to own Property 'myEmail'/
+      );
     });
   });
 
@@ -795,8 +801,12 @@ describe("models/source", () => {
 
   describe("bootstrapUniqueProperty", () => {
     let source: Source;
+    let model: GrouparooModel;
 
     beforeAll(async () => {
+      model = await helper.factories.model({
+        name: "BootstrappedProperties",
+      });
       source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
@@ -806,19 +816,22 @@ describe("models/source", () => {
       await source.setOptions({ table: "some table" });
     });
 
+    afterEach(async () => {
+      const properties = await Property.scope(null).findAll({
+        where: { sourceId: source.id },
+        order: [["createdAt", "DESC"]],
+      });
+      for (const property of properties) {
+        await property.destroy();
+      }
+    });
+
     afterAll(async () => {
       await source.destroy();
+      await model.destroy();
     });
 
-    test("it can remove identifying from other properties", async () => {
-      const property = await Property.findOne({
-        where: { identifying: true },
-      });
-      property.identifying = false;
-      await property.save();
-    });
-
-    test("bootstrapUniqueProperty will create a new identifying property", async () => {
+    test("bootstrapUniqueProperty will create a new unique property", async () => {
       const property = await source.bootstrapUniqueProperty(
         "uniqueId",
         "integer",
@@ -828,7 +841,6 @@ describe("models/source", () => {
       expect(property.key).toBe("uniqueId");
       expect(property.type).toBe("integer");
       expect(property.isArray).toBe(false);
-      expect(property.identifying).toBe(true);
       expect(property.state).toBe("ready");
       expect(property.unique).toBe(true);
 
@@ -885,65 +897,6 @@ describe("models/source", () => {
 
       await blockingProperty.destroy();
       await otherSource.destroy();
-    });
-  });
-
-  describe("edge cases: bootstrapUniqueProperty", () => {
-    let source: Source;
-
-    beforeAll(async () => {
-      source = await Source.create({
-        type: "test-plugin-import",
-        name: "test source 2",
-        appId: app.id,
-        modelId: model.id,
-      });
-      await source.setOptions({ table: "some table" });
-    });
-
-    afterAll(async () => {
-      await source.destroy();
-    });
-
-    test("it can make a property identifying", async () => {
-      const property = await Property.findOne({
-        where: { identifying: true },
-      });
-      if (!property) {
-        // make sure it really has one
-        const userId = await Property.findOne({
-          where: { key: "userId" },
-        });
-        userId.identifying = true;
-        await userId.save();
-      }
-    });
-
-    test("bootstrapUniqueProperty will create a new non-identifying property", async () => {
-      // there is already an identifying property
-      const property = await source.bootstrapUniqueProperty(
-        "uniqueId",
-        "integer",
-        "id"
-      );
-
-      expect(property.key).toBe("uniqueId");
-      expect(property.type).toBe("integer");
-      expect(property.isArray).toBe(false);
-      expect(property.identifying).toBe(false);
-      expect(property.state).toBe("ready");
-      expect(property.unique).toBe(true);
-
-      // can it be changed even though source is not ready
-      await property.update({ name: "changed" });
-      // can get the source ready
-      await source.setMapping({ uniqueId: "uniqueId" });
-      await source.update({ state: "ready" });
-      // and still change
-      await property.update({ name: "changed again" });
-
-      await source.setMapping({});
-      await property.destroy();
     });
   });
 

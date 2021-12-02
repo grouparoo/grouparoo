@@ -253,26 +253,6 @@ export class PropertyEdit extends AuthenticatedAction {
   }
 }
 
-export class PropertyMakeIdentifying extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "property:makeIdentifying";
-    this.description = "make a property identifying for the cluster";
-    this.outputExample = {};
-    this.permission = { topic: "property", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const property = await Property.findById(params.id);
-    await property.makeIdentifying();
-    await ConfigWriter.run();
-    return { property: await property.apiData() };
-  }
-}
-
 export class PropertyFilterOptions extends AuthenticatedAction {
   constructor() {
     super();
@@ -393,7 +373,6 @@ export class PropertyRecordPreview extends AuthenticatedAction {
       unique: property.unique,
       isPrimaryKey: property.isPrimaryKey,
       isArray: property.isArray,
-      identifying: property.identifying,
       valueChangedAt: null,
       confirmedAt: null,
       stateChangedAt: null,

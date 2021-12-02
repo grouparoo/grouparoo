@@ -7,12 +7,13 @@ import { useRouter } from "next/router";
 import { Models, Actions } from "../../utils/apiData";
 import SettingCard from "../../components/settings/SettingCard";
 import ImportAndUpdateAllRecords from "../../components/settings/ImportAndUpdate";
-import IdentifyingProperty from "../../components/settings/IdentifyingProperty";
 import ResetCluster from "../../components/settings/ResetCluster";
 import ResetData from "../../components/settings/ResetData";
 import ResetCache from "../../components/settings/ResetCache";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { SuccessHandler } from "../../utils/successHandler";
+
+const settingsWhichTriggerInterfaceReload = [["core", "cluster-name"]];
 
 export default function Page(props) {
   const {
@@ -36,7 +37,7 @@ export default function Page(props) {
     setActiveTab(tab);
   }, [tab]);
 
-  async function updateSetting(setting) {
+  async function updateSetting(setting: Models.SettingType) {
     setLoading(true);
     const response: Actions.SettingEdit = await execApi(
       "put",
@@ -52,9 +53,13 @@ export default function Page(props) {
         }
       }
       setSettings(_settings);
-
       successHandler.set({ message: "Setting Updated" });
-      window.location.reload(); // we want to hard-reload here because maybe the setting you just changed modifies the interface
+
+      const shouldReload = settingsWhichTriggerInterfaceReload.find(
+        ([pluginName, key]) =>
+          setting.pluginName === pluginName && setting.key === key
+      );
+      if (shouldReload) window.location.reload();
     }
   }
 
@@ -75,7 +80,7 @@ export default function Page(props) {
 
       <Tabs
         activeKey={activeTab}
-        onSelect={(k) => router.push("/settings/[tab]", `/settings/${k}`)}
+        onSelect={(k) => router.push(`/settings/${k}`)}
       >
         <Tab eventKey="actions" title="Actions">
           <ActionsTab
@@ -93,30 +98,21 @@ export default function Page(props) {
             <br />
             <h2>{capitalize(pluginName)}</h2>
 
-            {/* Special Settings */}
-            {pluginName === "interface" ? (
-              <InterfaceTab
-                errorHandler={errorHandler}
-                successHandler={successHandler}
-              />
-            ) : null}
-
             {/* Regular Settings organized by Plugin */}
             {settings
+              .filter((setting) => setting.pluginName === pluginName)
               .sort((a, b) => {
                 if (a.key > b.key) return 1;
                 if (a.key < b.key) return -1;
               })
-              .map((setting) =>
-                setting.pluginName === pluginName ? (
-                  <SettingCard
-                    key={`team-${setting.id}`}
-                    setting={setting}
-                    loading={loading}
-                    updateSetting={updateSetting}
-                  />
-                ) : null
-              )}
+              .map((setting) => (
+                <SettingCard
+                  key={`team-${setting.id}`}
+                  setting={setting}
+                  loading={loading}
+                  updateSetting={updateSetting}
+                />
+              ))}
           </Tab>
         ))}
       </Tabs>
@@ -162,18 +158,6 @@ function ActionsTab({ errorHandler, successHandler }) {
           <br />
         </Col>
       </Row>
-    </>
-  );
-}
-
-function InterfaceTab({ errorHandler, successHandler }) {
-  return (
-    <>
-      <IdentifyingProperty
-        errorHandler={errorHandler}
-        successHandler={successHandler}
-      />
-      <br />
     </>
   );
 }

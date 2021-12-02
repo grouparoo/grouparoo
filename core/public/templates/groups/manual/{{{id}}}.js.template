@@ -3,9 +3,9 @@ exports.default = async function buildConfig() {
     {
       class: "group",
       id: {{{id}}},
+      modelId: {{{modelId}}}, // The id of the Model that the Records in this Group belong to
       name: {{{id}}},
       type: "manual",
-      modelId: {{{modelId}}}, // The id of the Model that the Records in this Group belong to
     },
   ];
 };

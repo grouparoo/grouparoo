@@ -140,11 +140,6 @@ export class Property extends LoggedModel<Property> {
   @AllowNull(false)
   @Default(false)
   @Column
-  identifying: boolean;
-
-  @AllowNull(false)
-  @Default(false)
-  @Column
   isPrimaryKey: boolean;
 
   @AllowNull(false)
@@ -263,10 +258,6 @@ export class Property extends LoggedModel<Property> {
     return FilterHelper.validateFilters(this, filters);
   }
 
-  async makeIdentifying() {
-    return PropertyOps.makeIdentifying(this);
-  }
-
   async apiData() {
     const options = await this.getOptions();
     const filters = await this.getFilters();
@@ -278,7 +269,6 @@ export class Property extends LoggedModel<Property> {
       type: this.type,
       state: this.state,
       unique: this.unique,
-      identifying: this.identifying,
       isPrimaryKey: this.isPrimaryKey,
       locked: this.locked,
       options,
@@ -297,7 +287,7 @@ export class Property extends LoggedModel<Property> {
   }
 
   async getConfigObject(): Promise<PropertyConfigurationObject> {
-    const { key, type, unique, identifying, isArray } = this;
+    const { key, type, unique, isArray } = this;
 
     this.source = await this.$get("source");
     const sourceId = this.source?.getConfigId();
@@ -313,7 +303,6 @@ export class Property extends LoggedModel<Property> {
       key,
       sourceId,
       unique,
-      identifying,
       isArray,
       options,
       filters,
@@ -441,19 +430,6 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
-  static async ensureOneIdentifyingProperty(instance: Property) {
-    if (instance.identifying) {
-      const otherIdentifyingRulesCount = await Property.count({
-        where: { identifying: true, id: { [Op.ne]: instance.id } },
-      });
-
-      if (otherIdentifyingRulesCount > 0) {
-        throw new Error("only one property can be identifying");
-      }
-    }
-  }
-
-  @BeforeSave
   static async ensureSourceReady(instance: Property) {
     const source = await Source.findById(instance.sourceId);
     if (source.state !== "ready") {
@@ -509,12 +485,12 @@ export class Property extends LoggedModel<Property> {
 
     if (instance.unique)
       throw new Error(
-        `A unique Property cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
+        `Unique Property ${instance.key} (${instance.id}) cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
       );
 
     if (instance.isArray)
       throw new Error(
-        `An array Property cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
+        `Array Property ${instance.key} (${instance.id}) cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
       );
   }
 

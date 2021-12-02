@@ -7,7 +7,7 @@ import { Row, Col, Form, ListGroup, Alert, Button } from "react-bootstrap";
 import LoadingButton from "../../../../../components/LoadingButton";
 import { useRouter } from "next/router";
 import LoadingTable from "../../../../../components/LoadingTable";
-import { getRecordPageTitle } from "../../../../../components/record/GetRecordDisplayName";
+import { getRecordDisplayName } from "../../../../../components/record/GetRecordDisplayName";
 import ArrayRecordPropertyList from "../../../../../components/record/ArrayRecordPropertyList";
 import { Models, Actions } from "../../../../../utils/apiData";
 import { ErrorHandler } from "../../../../../utils/errorHandler";
@@ -186,37 +186,42 @@ export default function Page(props) {
     );
   }
 
-  const uniqueRecordProperties = [];
+  const uniqueRecordProperties: Models.PropertyType[] = [];
   let email: string;
-  properties.forEach((rule) => {
-    if (rule.unique) {
-      uniqueRecordProperties.push(rule.key);
-    }
-
-    if (rule.type === "email" && record.properties[rule.key]) {
-      email = record.properties[rule.key].values.join(", ");
+  properties.forEach((property) => {
+    if (property.unique) uniqueRecordProperties.push(property);
+    if (property.type === "email" && record.properties[property.key]) {
+      email = record.properties[property.key].values.join(", ");
     }
   });
 
   return (
     <>
       <Head>
-        <title>Grouparoo: {getRecordPageTitle(record)}</title>
+        <title>Grouparoo: {getRecordDisplayName(record)}</title>
       </Head>
 
       <RecordTabs record={record} />
 
       <PageHeader
-        title={uniqueRecordProperties.map((key) => {
-          return (
-            <>
-              <span className="text-muted">{key}: </span>
-              {record.properties[key]
-                ? record.properties[key].values.join(", ")
-                : null}
-            </>
-          );
-        })}
+        title={uniqueRecordProperties
+          .sort((a, b) => {
+            if (a.isPrimaryKey) return -1;
+            if (b.isPrimaryKey) return 1;
+            return 0;
+          })
+          .map((property, idx) => {
+            return (
+              <>
+                <span className={idx === 0 ? "" : "text-muted"}>
+                  {property.key}:{" "}
+                </span>
+                {record.properties[property.key]
+                  ? record.properties[property.key].values.join(", ")
+                  : null}
+              </>
+            );
+          })}
         iconType="grouparooRecord"
         loading={loading}
         email={email}

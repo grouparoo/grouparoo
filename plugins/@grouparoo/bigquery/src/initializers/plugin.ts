@@ -80,6 +80,14 @@ export class Plugins extends Initializer {
               description: "Private key of service account.",
               placeholder: "e.g. -----BEGIN PRIVATE KEY-----\nMII ...",
             },
+            {
+              key: "location",
+              displayName: "Location",
+              required: false,
+              description:
+                'Region or multi-region code of your dataset. ("US", "EU", "asia-east1", etc.) Required for datasets outside the US.',
+              placeholder: "e.g. EU",
+            },
           ],
           methods: { test, connect, disconnect, appQuery },
         },

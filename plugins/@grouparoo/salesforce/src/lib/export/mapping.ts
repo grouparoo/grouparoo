@@ -76,7 +76,7 @@ const supportedTypeMap = {
   textarea: "string",
   datetime: "date",
   boolean: "boolean",
-  phone: "phone",
+  phone: "phoneNumber",
   url: "url",
   percent: "integer",
   encryptedstring: "string",
@@ -86,22 +86,23 @@ const supportedTypeMap = {
   id: "string",
   picklist: "string",
   currency: "float",
+  masterrecord: "string", // When records are merged, the ID of the record that is saved
+  reference: "string", // Cross-references to a different object. Analogous to a foreign key field in SQL.
+  base64: "string", // Base 64-encoded binary data.
+  date: "string",
+  number: "float",
   //TODO:
-  address: null,
-  date: null,
+  address: null, //A compound data type that contains address field data.
   time: null,
   multipicklist: null, // TODO: maybe array
   location: null, // lat and lng things
-  base64: null,
   byte: null,
   anyType: null, // can be several things, but never seen in wild yet
-  reference: null,
   JunctionIdList: null, // is this the real name? maybe array
   junctionidlist: null,
   DataCategoryGroupReference: null, // Reference to a data category group or a category unique name.
   datacategorygroupreference: null,
   calculated: null, // Fields that are defined by a formula. See Calculated Field Type.
-  masterrecord: null, // something about deleting
 };
 
 export function getSupportedSalesforceTypes(grouparooTypes = null): string[] {
@@ -117,7 +118,7 @@ export function getSupportedSalesforceTypes(grouparooTypes = null): string[] {
   return out;
 }
 
-const mapTypesToGrouparoo = (type) => {
+export function mapTypesToGrouparoo(type) {
   // https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/primitive_data_types.htm
   // https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/field_types.htm
 
@@ -127,7 +128,7 @@ const mapTypesToGrouparoo = (type) => {
     return null;
   }
   return grouparooType;
-};
+}
 
 const importantFieldNames = ["FirstName", "LastName", "Email"];
 const isFieldImportant = function (field: any): Boolean {

@@ -182,6 +182,92 @@ describe("bin/push", () => {
     );
   });
 
+  test("can retry if there is a timeout reached", async () => {
+    const timeoutNock = nock("https://cloud.grouparoo.com")
+      .post("/api/v1/configuration")
+      .query(true)
+      .times(4)
+      .replyWithError({ message: "timeout!", code: "ETIMEDOUT" });
+
+    const happyNock = nock("https://cloud.grouparoo.com")
+      .post("/api/v1/configuration")
+      .query(true)
+      .reply(200, {
+        configuration: { id: "config-id" },
+      });
+
+    nock("https://cloud.grouparoo.com")
+      .get("/api/v1/configuration/config-id")
+      .query(true)
+      .reply(200, {
+        configuration: {
+          validateJobId: "validate-id",
+          state: "validated",
+        },
+      });
+
+    nock("https://cloud.grouparoo.com")
+      .get("/api/v1/configuration/config-id")
+      .query(true)
+      .reply(200, {
+        configuration: {
+          state: "finished",
+        },
+      });
+
+    nock("https://cloud.grouparoo.com")
+      .get("/api/v1/job/validate-id")
+      .query(true)
+      .reply(200, {
+        job: {
+          type: "validate",
+          logs: "validate job logs go here",
+        },
+      });
+
+    const command = new Push();
+    const toStop = await command.run({
+      params: {
+        archivePath,
+        projectId: "my-project",
+        token: "some-token",
+        apply: false,
+      },
+    });
+    expect(toStop).toBe(true);
+
+    expect(timeoutNock.isDone()).toBe(true);
+    expect(happyNock.isDone()).toBe(true);
+
+    const output = messages.join(" ");
+    expect(output).toContain(
+      "The configuration has been successfully validated"
+    );
+  });
+
+  test("it will only retry 5 times", async () => {
+    nock("https://cloud.grouparoo.com")
+      .post("/api/v1/configuration")
+      .query(true)
+      .times(5)
+      .replyWithError({ message: "timeout!", code: "ETIMEDOUT" });
+
+    const command = new Push();
+    const toStop = await command.run({
+      params: {
+        archivePath,
+        projectId: "my-project",
+        token: "some-token",
+        apply: false,
+      },
+    });
+    expect(toStop).toBe(true);
+
+    const output = messages.join(" ");
+    expect(output).toContain("❌");
+    expect(output).toContain("timeout!");
+  });
+
   test("logs error if an error was attached to the configuration", async () => {
     nock("https://cloud.grouparoo.com")
       .post("/api/v1/configuration")

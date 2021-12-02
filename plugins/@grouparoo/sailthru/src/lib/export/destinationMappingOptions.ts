@@ -15,7 +15,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
       },
       properties: {
         required: [{ key: "email", type: "email" }],
-        known: [{ key: "extid", type: "any", important: true }],
+        known: [{ key: "extid", type: "string", important: true }],
         allowOptionalFromProperties: true,
       },
     };
