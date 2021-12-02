@@ -2,7 +2,6 @@ import { EntityCalls, PipedriveClient } from "../client";
 
 interface EntityConfig {
   getEntityCalls: (client: PipedriveClient) => EntityCalls;
-  cacheKey: string;
   requiredFields: string[];
   allowedFields: string[];
 }
@@ -12,7 +11,6 @@ export const configMapping = {
     getEntityCalls(client) {
       return client.persons;
     },
-    cacheKey: "getKnownPersonFields",
     requiredFields: ["name", "email"],
     allowedFields: ["name", "email", "phone", "label"],
   },
@@ -20,7 +18,6 @@ export const configMapping = {
     getEntityCalls(client) {
       return client.organizations;
     },
-    cacheKey: "getKnownOrganizationFields",
     requiredFields: ["name"],
     allowedFields: ["name", "label"],
   },

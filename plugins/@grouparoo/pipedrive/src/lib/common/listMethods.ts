@@ -7,13 +7,12 @@ import { configMapping, EntityType } from "./configMapping";
 import { objectCache } from "@grouparoo/core";
 
 export const GROUP_FIELD_PREFIX = "In Group:";
-
-export function makeGroupFieldName(groupName: string) {
+function makeGroupFieldName(groupName: string) {
   return `${GROUP_FIELD_PREFIX} ${groupName}`;
 }
 
 // gets called if the group field key is not cached
-export async function ensureFieldAndFilter(
+async function ensureFieldAndFilter(
   client: PipedriveClient,
   type: EntityType,
   cacheData: PipedriveCacheData,
@@ -81,7 +80,7 @@ export async function getGroupFieldKey(
 
   const { appId, appOptions } = cacheData;
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
-  const cacheKey = ["getGroupFieldKey", groupName, appOptions];
+  const cacheKey = ["getGroupFieldKey", type, groupName, appOptions];
   const write = createIfNotExists; // don't cache nulls
   return objectCache(
     { objectId: appId, cacheKey, cacheDurationMs, write },

@@ -14,7 +14,7 @@ export interface PipedriveCacheData {
   appOptions: SimpleAppOptions;
 }
 
-export type KnownPipedriveField = {
+type KnownPipedriveField = {
   key: string;
   pipedriveKey: string;
   type: DestinationMappingOptionsResponseType;
@@ -65,7 +65,7 @@ export const fetchKnownFields = async (
   return out;
 };
 
-export const mapTypesToGrouparoo = (
+const mapTypesToGrouparoo = (
   pipedriveType: string,
   fieldName: string
 ): DestinationMappingOptionsResponseType => {
@@ -73,7 +73,6 @@ export const mapTypesToGrouparoo = (
 
   const overrides: Record<string, DestinationMappingOptionsResponseType> = {
     Email: "email",
-    Name: "string",
   };
 
   if (overrides[fieldName]) return overrides[fieldName];
@@ -107,7 +106,7 @@ export const mapTypesToGrouparoo = (
   return null;
 };
 
-export const getKnownFields = async (
+const getKnownFields = async (
   client: PipedriveClient,
   type: EntityType,
   cacheData: PipedriveCacheData,
@@ -115,7 +114,7 @@ export const getKnownFields = async (
 ): Promise<KnownPipedriveField[]> => {
   const { appId, appOptions } = cacheData;
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
-  const cacheKey = [configMapping[type].cacheKey, appOptions];
+  const cacheKey = ["getKnownFields", type, appOptions];
   const read = !update; // if updating, skip the read from cache. still write.
   return objectCache(
     { objectId: appId, cacheKey, cacheDurationMs, read },
