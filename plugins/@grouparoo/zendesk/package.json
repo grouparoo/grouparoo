@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/zendesk",
   "description": "The Grouparoo zendesk Plugin",
-  "version": "0.7.6-alpha.0",
+  "version": "0.7.6",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,12 +28,12 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.7.6-alpha.0",
+    "@grouparoo/app-templates": "0.7.6",
     "node-zendesk": "2.1.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.6-alpha.0",
-    "@grouparoo/spec-helper": "0.7.6-alpha.0",
+    "@grouparoo/core": "0.7.6",
+    "@grouparoo/spec-helper": "0.7.6",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "27.2.0",
