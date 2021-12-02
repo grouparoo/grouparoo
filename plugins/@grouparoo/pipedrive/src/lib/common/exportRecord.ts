@@ -7,19 +7,20 @@ import { getGroupFieldKey } from "./listMethods";
 import { EntityType } from "./configMapping";
 import { ExportRecordPluginMethod } from "@grouparoo/core";
 
-export const getExportRecord: (callback: Function) => ExportRecordPluginMethod =
-  (callback: Function) => async (args) => {
-    try {
-      return await callback(args);
-    } catch (error) {
-      // look for the rate limit exceeded status code.
-      if (error?.response?.status === 429) {
-        const retryIn = Math.floor(Math.random() * 10) + 1;
-        return { error, success: false, retryDelay: 1000 * retryIn };
-      }
-      throw error;
+export const getExportRecord: (
+  callback: Function
+) => ExportRecordPluginMethod = (callback: Function) => async (args) => {
+  try {
+    return await callback(args);
+  } catch (error) {
+    // look for the rate limit exceeded status code.
+    if (error?.response?.status === 429) {
+      const retryIn = Math.floor(Math.random() * 10) + 1;
+      return { error, success: false, retryDelay: 1000 * retryIn };
     }
-  };
+    throw error;
+  }
+};
 
 export async function makePayload(
   client: PipedriveClient,
