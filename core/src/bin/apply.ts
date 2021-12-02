@@ -38,7 +38,8 @@ export class Apply extends CLI {
     GrouparooCLI.logCLI(this.name);
 
     const configDir = await getConfigDir(true);
-    const configObjects = await loadConfigObjects(configDir);
+    const { configObjects, errors } = await loadConfigObjects(configDir);
+    if (errors.length > 0) throw new Error(errors.join("; "));
 
     const response = await CLS.wrap(
       async () => {

@@ -39,6 +39,7 @@ import { ConfigWriter } from "../configWriter";
 import { loadRecord } from "./record";
 import Sequelize from "sequelize";
 import { Deprecation } from "../deprecation";
+import pluralize from "pluralize";
 
 const freshIdsByClass: () => IdsByClass = () => ({
   model: [],
@@ -77,7 +78,12 @@ export async function loadConfigDirectory(
   let errors: string[] = [];
 
   if (configDir) {
-    const configObjects = await loadConfigObjects(configDir);
+    const { configObjects, errors: loadErrors } = await loadConfigObjects(
+      configDir
+    );
+    if (loadErrors.length > 0) {
+      return { errors: loadErrors, seenIds, deletedIds };
+    }
 
     ({ errors, seenIds, deletedIds } = await processConfigObjects(
       configObjects,
@@ -90,20 +96,33 @@ export async function loadConfigDirectory(
 
 export async function loadConfigObjects(
   configDir: string | false
-): Promise<AnyConfigurationObject[]> {
-  if (!configDir) return [];
+): Promise<{ configObjects: AnyConfigurationObject[]; errors: string[] }> {
+  if (!configDir) return { configObjects: [], errors: [] };
 
   const globSearch = path.join(configDir, "**", "+(*.json|*.js)");
   const configFiles = glob.sync(globSearch);
   let configObjects: AnyConfigurationObject[] = [];
-  for (const i in configFiles) {
-    configObjects = configObjects.concat(await loadConfigFile(configFiles[i]));
+  let errors: string[] = [];
+  for (const file of configFiles) {
+    const objects = await loadConfigFile(file);
+
+    const nullishObjects = objects.filter((o) => o === null || o === undefined);
+    if (nullishObjects.length > 0) {
+      errors.push(
+        `The file \`${file}\` has ${
+          nullishObjects.length
+        } null or undefined top-level config ${pluralize("object")}`
+      );
+    }
+    configObjects = configObjects
+      .concat(objects)
+      .filter((o) => o && Object.keys(o).length > 0); // skip empty objects
   }
-  configObjects = configObjects.filter((o) => Object.keys(o).length > 0); // skip empty files
-  return configObjects;
+
+  return { configObjects, errors };
 }
 
-async function loadConfigFile(file: string): Promise<AnyConfigurationObject> {
+async function loadConfigFile(file: string): Promise<AnyConfigurationObject[]> {
   let payload: { [key: string]: any } = {};
   if (file.match(/\.json$/)) {
     const contents = fs.readFileSync(file).toString();
@@ -124,7 +143,7 @@ async function loadConfigFile(file: string): Promise<AnyConfigurationObject> {
   const objects = Array.isArray(payload) ? payload : [payload];
   ConfigWriter.cacheConfigFile({ absFilePath: file, objects });
 
-  return payload as AnyConfigurationObject;
+  return objects as AnyConfigurationObject[];
 }
 
 export async function shouldExternallyValidate(

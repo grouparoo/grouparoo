@@ -42,7 +42,11 @@ export class Validate extends CLI {
 
     // Can we read the config directory?  Is the JSON/JS valid?
     try {
-      configObjects = await loadConfigObjects(configDir);
+      const loadResponse = await loadConfigObjects(configDir);
+      if (loadResponse.errors.length > 0) {
+        throw new Error(loadResponse.errors.join("; "));
+      }
+      configObjects = loadResponse.configObjects;
     } catch (error) {
       return GrouparooCLI.logger.fatal(
         `Error loading config from ${configDir}: \r\n\r\n${error.stack}`

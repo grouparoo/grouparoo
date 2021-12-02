@@ -17,7 +17,7 @@ describe("classes/codeConfig", () => {
 
   beforeAll(async () => {
     const dir = path.join(__dirname, "..", "fixtures", "codeConfig", "initial");
-    configObjects = await loadConfigObjects(dir);
+    ({ configObjects } = await loadConfigObjects(dir));
   });
 
   describe("#getParentIds", () => {
@@ -222,7 +222,7 @@ describe("classes/codeConfig", () => {
         "codeConfig",
         "multiple-sources"
       );
-      const _configObjects = await loadConfigObjects(dir);
+      const { configObjects: _configObjects } = await loadConfigObjects(dir);
       const source = _configObjects.find(
         (o) => o.id === "purchases_table"
       ) as SourceConfigurationObject;
@@ -242,7 +242,7 @@ describe("classes/codeConfig", () => {
         "codeConfig",
         "error-bootstrap-not-unique"
       );
-      const _configObjects = await loadConfigObjects(dir);
+      const { configObjects: _configObjects } = await loadConfigObjects(dir);
       const source = _configObjects.find(
         (o) => o.id === "users_table"
       ) as SourceConfigurationObject;
@@ -260,7 +260,7 @@ describe("classes/codeConfig", () => {
         "codeConfig",
         "error-bootstrap-is-array"
       );
-      const _configObjects = await loadConfigObjects(dir);
+      const { configObjects: _configObjects } = await loadConfigObjects(dir);
       const source = _configObjects.find(
         (o) => o.id === "users_table"
       ) as SourceConfigurationObject;

@@ -43,7 +43,8 @@ export default {
       // OK, we don't have any records we need to worry about updating
     } else if (codeConfigInUse === true) {
       const configDir = await getConfigDir();
-      const configObjects = await loadConfigObjects(configDir);
+      const { configObjects, errors } = await loadConfigObjects(configDir);
+      if (errors.length > 0) throw new Error(errors.join("; "));
       const modelConfigObjects = configObjects.filter(
         (o) => o.class === "Model"
       ) as Required<ModelConfigurationObject>[];

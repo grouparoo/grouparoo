@@ -63,7 +63,7 @@ describe("modules/codeConfig", () => {
         "initial"
       );
 
-      const configObjects = await loadConfigObjects(dir);
+      const { configObjects } = await loadConfigObjects(dir);
 
       await expect(
         api.sequelize.transaction(async () => {
@@ -111,7 +111,7 @@ describe("modules/codeConfig", () => {
         "error-group"
       );
 
-      const configObjects = await loadConfigObjects(dir);
+      const { configObjects } = await loadConfigObjects(dir);
 
       await expect(
         api.sequelize.transaction(async () => {
@@ -144,7 +144,7 @@ describe("modules/codeConfig", () => {
         "error-group"
       );
 
-      const configObjects = await loadConfigObjects(dir);
+      const { configObjects } = await loadConfigObjects(dir);
 
       await expect(
         api.sequelize.transaction(async () => {
@@ -177,7 +177,7 @@ describe("modules/codeConfig", () => {
         "error-app-remote"
       );
 
-      const configObjects = await loadConfigObjects(dir);
+      const { configObjects } = await loadConfigObjects(dir);
 
       await expect(
         api.sequelize.transaction(async () => {
@@ -213,7 +213,7 @@ describe("modules/codeConfig", () => {
         "error-app-remote"
       );
 
-      const configObjects = await loadConfigObjects(dir);
+      const { configObjects } = await loadConfigObjects(dir);
 
       await expect(
         api.sequelize.transaction(async () => {
@@ -243,7 +243,7 @@ describe("modules/codeConfig", () => {
         "error-app-remote"
       );
 
-      const configObjects = await loadConfigObjects(dir);
+      const { configObjects } = await loadConfigObjects(dir);
 
       await expect(
         api.sequelize.transaction(async () => {
@@ -276,7 +276,7 @@ describe("modules/codeConfig", () => {
         "error-app-destination-remote"
       );
 
-      const configObjects = await loadConfigObjects(dir);
+      const { configObjects } = await loadConfigObjects(dir);
 
       await expect(
         api.sequelize.transaction(async () => {
