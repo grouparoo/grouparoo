@@ -281,7 +281,7 @@ importers:
       tar: 6.1.11
       ts-jest: 27.0.7
       ts-node: 10.4.0
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typedoc: 0.22.7
       typescript: 4.5.2
       umzug: v3.0.0-beta.5
@@ -343,7 +343,7 @@ importers:
       jest-fetch-mock: 3.0.3
       nock: 13.2.1
       ts-jest: 27.0.7_b58915ecea3d44b00b9623a2fe0db5f0
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typedoc: 0.22.7_typescript@4.5.2
       typescript: 4.5.2
 
@@ -426,7 +426,7 @@ importers:
       prettier: 2.5.0
       sequelize: 6.11.0
       ts-jest: 27.0.7
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -444,7 +444,7 @@ importers:
       prettier: 2.5.0
       sequelize: 6.11.0
       ts-jest: 27.0.7_b58915ecea3d44b00b9623a2fe0db5f0
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
 
   plugins/@grouparoo/calculated-property:
@@ -518,7 +518,7 @@ importers:
       jest: 27.3.1
       prettier: 2.5.0
       ts-jest: 27.0.7
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
       winston: 3.3.3
       winston-cloudwatch: 3.1.1
@@ -535,7 +535,7 @@ importers:
       jest: 27.3.1
       prettier: 2.5.0
       ts-jest: 27.0.7_b58915ecea3d44b00b9623a2fe0db5f0
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
 
   plugins/@grouparoo/csv:
@@ -552,7 +552,7 @@ importers:
       prettier: 2.5.0
       sequelize: 6.11.0
       ts-jest: 27.0.7
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
     dependencies:
       axios: 0.24.0
@@ -568,7 +568,7 @@ importers:
       prettier: 2.5.0
       sequelize: 6.11.0
       ts-jest: 27.0.7_b58915ecea3d44b00b9623a2fe0db5f0
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
 
   plugins/@grouparoo/customerio:
@@ -649,7 +649,7 @@ importers:
       glob: 7.2.0
       isomorphic-fetch: 3.0.0
       jest: 27.3.1
-      mongodb: 4.1.3
+      mongodb: 4.2.1
       mysql: 2.18.1
       pg: 8.7.1
       prettier: 2.5.0
@@ -665,7 +665,7 @@ importers:
       fs-extra: 10.0.0
       glob: 7.2.0
       isomorphic-fetch: 3.0.0
-      mongodb: 4.1.3
+      mongodb: 4.2.1
       mysql: 2.18.1
       pg: 8.7.1
       prettier: 2.5.0
@@ -774,7 +774,7 @@ importers:
       nock: 13.2.1
       prettier: 2.5.0
       ts-jest: 27.0.7
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
     dependencies:
       google-spreadsheet: 3.2.0
@@ -790,7 +790,7 @@ importers:
       nock: 13.2.1
       prettier: 2.5.0
       ts-jest: 27.0.7_b58915ecea3d44b00b9623a2fe0db5f0
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
 
   plugins/@grouparoo/hubspot:
@@ -810,7 +810,7 @@ importers:
       prettier: 2.5.0
       sequelize: 6.11.0
       ts-jest: 27.0.7
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -829,7 +829,7 @@ importers:
       prettier: 2.5.0
       sequelize: 6.11.0
       ts-jest: 27.0.7_b58915ecea3d44b00b9623a2fe0db5f0
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
 
   plugins/@grouparoo/intercom:
@@ -945,7 +945,7 @@ importers:
       prettier: 2.5.0
       sequelize: 6.11.0
       ts-jest: 27.0.7
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -963,7 +963,7 @@ importers:
       prettier: 2.5.0
       sequelize: 6.11.0
       ts-jest: 27.0.7_b58915ecea3d44b00b9623a2fe0db5f0
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
 
   plugins/@grouparoo/mailjet:
@@ -983,7 +983,7 @@ importers:
       prettier: 2.5.0
       sequelize: 6.11.0
       ts-jest: 27.0.7
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -1002,7 +1002,7 @@ importers:
       prettier: 2.5.0
       sequelize: 6.11.0
       ts-jest: 27.0.7_b58915ecea3d44b00b9623a2fe0db5f0
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
 
   plugins/@grouparoo/marketo:
@@ -1086,14 +1086,14 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.3.1
-      mongodb: 4.1.3
+      mongodb: 4.2.1
       prettier: 2.5.0
       sequelize: 6.11.0
       ts-jest: 27.0.7
       typescript: 4.5.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      mongodb: 4.1.3
+      mongodb: 4.2.1
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1595,7 +1595,7 @@ importers:
       sequelize: 6.11.0
       sqlite3: 5.0.2
       ts-jest: 27.0.7
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -1614,7 +1614,7 @@ importers:
       prettier: 2.5.0
       sequelize: 6.11.0_sqlite3@5.0.2
       ts-jest: 27.0.7_b58915ecea3d44b00b9623a2fe0db5f0
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
 
   plugins/@grouparoo/zendesk:
@@ -1735,9 +1735,9 @@ importers:
       recharts: 2.1.6
       sass: 1.44.0
       stacktrace-js: 2.0.2
-      swagger-ui-dist: 3.52.5
+      swagger-ui-dist: 4.1.2
       ts-jest: 27.0.7
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
       universal-cookie: 4.0.4
     dependencies:
@@ -1775,9 +1775,9 @@ importers:
       recharts: 2.1.6_9bdd65c2b60ce8638444b80b396a481b
       sass: 1.44.0
       stacktrace-js: 2.0.2
-      swagger-ui-dist: 3.52.5
+      swagger-ui-dist: 4.1.2
       ts-jest: 27.0.7_b58915ecea3d44b00b9623a2fe0db5f0
-      type-fest: 2.7.0
+      type-fest: 2.8.0
       typescript: 4.5.2
 
   ui/ui-config:
@@ -5243,8 +5243,8 @@ packages:
       node-int64: 0.4.0
     dev: true
 
-  /bson/4.5.2:
-    resolution: {integrity: sha512-8CEMJpwc7qlQtrn2rney38jQSEeMar847lz0LyitwRmVknAW8iHXrzW4fTjHfyWm0E3sukyD/zppdH+QU1QefA==}
+  /bson/4.6.0:
+    resolution: {integrity: sha512-8jw1NU1hglS+Da1jDOUYuNcBJ4cNHCFIqzlwoFNnsTOg2R/ox0aTYcTiBN4dzRa9q7Cvy6XErh3L8ReTEb9AQQ==}
     engines: {node: '>=6.9.0'}
     dependencies:
       buffer: 5.7.1
@@ -10565,20 +10565,20 @@ packages:
   /moment/2.29.1:
     resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
 
-  /mongodb-connection-string-url/2.0.0:
-    resolution: {integrity: sha512-M0I1vyLoq5+HQTuPSJWbt+hIXsMCfE8sS1fS5mvP9R2DOMoi2ZD32yWqgBIITyu0dFu4qtS50erxKjvUeBiyog==}
+  /mongodb-connection-string-url/2.2.0:
+    resolution: {integrity: sha512-U0cDxLUrQrl7DZA828CA+o69EuWPWEJTwdMPozyd7cy/dbtncUZczMw7wRHcwMD7oKOn0NM2tF9jdf5FFVW9CA==}
     dependencies:
       '@types/whatwg-url': 8.2.1
-      whatwg-url: 9.1.0
+      whatwg-url: 11.0.0
     dev: false
 
-  /mongodb/4.1.3:
-    resolution: {integrity: sha512-lHvTqODBiSpuqjpCj48DOyYWS6Iq6ElJNUiH9HWdQtONyOfjgsKzJULipWduMGsSzaNO4nFi/kmlMFCLvjox/Q==}
+  /mongodb/4.2.1:
+    resolution: {integrity: sha512-nDC+ulM/Ea3Q2VG5eemuGfB7T4ORwrtKegH2XW9OLlUBgQF6OTNrzFCS1Z3SJGVA+T0Sr1xBYV6DMnp0A7us0g==}
     engines: {node: '>=12.9.0'}
     dependencies:
-      bson: 4.5.2
+      bson: 4.6.0
       denque: 2.0.1
-      mongodb-connection-string-url: 2.0.0
+      mongodb-connection-string-url: 2.2.0
     optionalDependencies:
       saslprep: 1.0.3
     dev: false
@@ -14319,8 +14319,8 @@ packages:
       supports-color: 7.2.0
     dev: true
 
-  /swagger-ui-dist/3.52.5:
-    resolution: {integrity: sha512-8z18eX8G/jbTXYzyNIaobrnD7PSN7yU/YkSasMmajrXtw0FGS64XjrKn5v37d36qmU3o1xLeuYnktshRr7uIFw==}
+  /swagger-ui-dist/4.1.2:
+    resolution: {integrity: sha512-Pj960coj9L0nAQPE1vgBzHulKGPNw1ifn/1GTIv/mlV9V3PoRM0uTcE0uhTiizx6aHg+vnFFmbA2J1gjFekOaQ==}
     dev: true
 
   /symbol-tree/3.2.4:
@@ -14567,6 +14567,14 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       punycode: 2.1.1
+    dev: true
+
+  /tr46/3.0.0:
+    resolution: {integrity: sha512-l7FvfAHlcmulp8kr+flpQZmVwtu7nfRV7NZujtN0OqES8EL4O4e0qqzL0DC5gAvx/ZC/9lk6rhcUwYvkBnBnYA==}
+    engines: {node: '>=12'}
+    dependencies:
+      punycode: 2.1.1
+    dev: false
 
   /treeify/1.1.0:
     resolution: {integrity: sha512-1m4RA7xVAJrSGrrXGs0L3YTwyvBs2S8PbRHaLZAkFw7JR8oIFwYtysxlBZhYIa7xSyiYJKZ3iGrrk55cGA3i9A==}
@@ -14768,8 +14776,8 @@ packages:
     resolution: {integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==}
     engines: {node: '>=8'}
 
-  /type-fest/2.7.0:
-    resolution: {integrity: sha512-gmfzrsfDuoQUpqteXPE1X8D2GdtEAhP+X9pdXj3xBbg86OO8ZtSTtJ9BVopDyWtdNuwbOXAYdluX4o/O65qebA==}
+  /type-fest/2.8.0:
+    resolution: {integrity: sha512-O+V9pAshf9C6loGaH0idwsmugI2LxVNR7DtS40gVo2EXZVYFgz9OuNtOhgHLdHdapOEWNdvz9Ob/eeuaWwwlxA==}
     engines: {node: '>=12.20'}
     dev: true
 
@@ -15184,6 +15192,12 @@ packages:
   /webidl-conversions/6.1.0:
     resolution: {integrity: sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==}
     engines: {node: '>=10.4'}
+    dev: true
+
+  /webidl-conversions/7.0.0:
+    resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
+    engines: {node: '>=12'}
+    dev: false
 
   /websocket-driver/0.7.4:
     resolution: {integrity: sha512-b17KeDIQVjvb0ssuSDF2cYXSg2iztliJ4B9WdsuB6J952qCPKmnVq4DyW5motImXHDC1cBT/1UezrJVsKw5zjg==}
@@ -15212,6 +15226,14 @@ packages:
     resolution: {integrity: sha512-M4yMwr6mAnQz76TbJm914+gPpB/nCwvZbJU28cUD6dR004SAxDLOOSUaB1JDRqLtaOV/vi0IC5lEAGFgrjGv/g==}
     dev: true
 
+  /whatwg-url/11.0.0:
+    resolution: {integrity: sha512-RKT8HExMpoYx4igMiVMY83lN6UeITKJlBQ+vR/8ZJ8OCdSiN3RwCq+9gH0+Xzj0+5IrM6i4j/6LuvzbZIQgEcQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      tr46: 3.0.0
+      webidl-conversions: 7.0.0
+    dev: false
+
   /whatwg-url/7.1.0:
     resolution: {integrity: sha512-WUu7Rg1DroM7oQvGWfOiAK21n74Gg+T4elXEQYkOhtyLeWiJFoOGLXPKI/9gzIie9CtwVLm8wtw6YJdKyxSjeg==}
     dependencies:
@@ -15227,14 +15249,6 @@ packages:
       tr46: 2.1.0
       webidl-conversions: 6.1.0
     dev: true
-
-  /whatwg-url/9.1.0:
-    resolution: {integrity: sha512-CQ0UcrPHyomtlOCot1TL77WyMIm/bCwrJ2D6AOKGwEczU9EpyoqAokfqrf/MioU9kHcMsmJZcg1egXix2KYEsA==}
-    engines: {node: '>=12'}
-    dependencies:
-      tr46: 2.1.0
-      webidl-conversions: 6.1.0
-    dev: false
 
   /when/3.7.8:
     resolution: {integrity: sha1-xxMLan6gRpPoQs3J56Hyqjmjn4I=}
