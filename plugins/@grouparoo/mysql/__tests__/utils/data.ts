@@ -1,7 +1,7 @@
 import { connect } from "../../src/lib/connect";
 import path from "path";
 import fs from "fs";
-import parse from "csv-parse/lib/sync";
+import { parse } from "csv-parse/lib/sync";
 
 export const usersTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
 export const purchasesTableName = `purchases_${

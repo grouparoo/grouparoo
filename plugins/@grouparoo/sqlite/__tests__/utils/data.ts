@@ -2,7 +2,7 @@ import { connect } from "../../src/lib/connect";
 import path from "path";
 import fs from "fs";
 import os from "os";
-import parse from "csv-parse/lib/sync";
+import { parse } from "csv-parse/lib/sync";
 import { config } from "actionhero";
 import { ConfigWriter } from "@grouparoo/core/dist/modules/configWriter";
 
