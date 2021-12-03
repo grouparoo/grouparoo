@@ -23,14 +23,11 @@ export class AppRefreshQueryRun extends CLSTask {
 
     if (!appRefreshQuery) return;
 
-    //check the query value, update 'confirmedAt'
     const sampleValue = await appRefreshQuery.query();
 
     if (sampleValue !== appRefreshQuery.value) {
-      //trigger enqueues for all related schedules
       await appRefreshQuery.triggerSchedules();
 
-      // Update changedAt and set value
       await appRefreshQuery.update({
         value: sampleValue,
         lastChangedAt: new Date(),
