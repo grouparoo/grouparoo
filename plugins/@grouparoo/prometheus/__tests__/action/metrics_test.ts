@@ -28,7 +28,7 @@ describe("integration/endpoint/prometheus", () => {
         name: "metrics",
       });
       apiKey.setPermissions([{ topic: "system", read: true, write: false }]);
-      url = `http://localhost:${config.servers.web.port}/api/v1/prometheus/metrics?apiKey=${apiKey.apiKey}`;
+      url = `http://localhost:${config.web.port}/api/v1/prometheus/metrics?apiKey=${apiKey.apiKey}`;
     });
 
     beforeEach(async () => {
