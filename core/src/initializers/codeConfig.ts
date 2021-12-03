@@ -34,7 +34,8 @@ export class CodeConfig extends Initializer {
         process.env.GROUPAROO_RUN_MODE === "cli:config"
       );
       const { errors } = await loadConfigDirectory(configDir);
-      if (errors.length > 0) throw new Error("code config error: " + errors.join("; "));
+      if (errors.length > 0)
+        throw new Error("code config error: " + errors.join("; "));
     });
 
     api.codeConfig.allowLockedModelChanges = false; // after this point in the Actionhero boot lifecycle, locked models cannot be changed
