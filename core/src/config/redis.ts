@@ -1,7 +1,15 @@
 import { URL } from "url";
 
+const namespace = "redis";
+
+declare module "actionhero" {
+  export interface ActionheroConfigInterface {
+    [namespace]: ReturnType<typeof DEFAULT[typeof namespace]>;
+  }
+}
+
 export const DEFAULT = {
-  redis: () =>
+  [namespace]: () =>
     process.env.REDIS_URL === "redis://mock" || process.env.REDIS_URL === "mock"
       ? MockRedisConfig()
       : RealRedisConfig(),
