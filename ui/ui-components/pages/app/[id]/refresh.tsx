@@ -289,7 +289,7 @@ export default function Page(props) {
                   as="textarea"
                   disabled={disabled || !editing}
                   rows={6}
-                  value={appRefreshQuery.refreshQuery}
+                  value={appRefreshQuery.refreshQuery || ""}
                   onChange={(e) => update(e)}
                   placeholder="select statement to check app for new data"
                   style={{
