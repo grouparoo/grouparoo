@@ -99,6 +99,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/plugin/uninstall", action: "plugin:uninstall" },
         { path: "/v:apiVersion/property", action: "property:create" },
         { path: "/v:apiVersion/record", action: "record:create" },
+        { path: "/v:apiVersion/records/:modelId/import", action: "records:import" },
         { path: "/v:apiVersion/record/:id/export", action: "record:export" },
         { path: "/v:apiVersion/record/:id/import", action: "record:import" },
         { path: "/v:apiVersion/schedule", action: "schedule:create" },

@@ -1,7 +1,10 @@
-import { api } from "actionhero";
+import { api, log, Initializer } from "actionhero";
 import { loadConfigDirectory } from "../modules/configLoaders";
 import { getConfigDir } from "../modules/pluginDetails";
-import { CLSInitializer } from "../classes/initializers/clsInitializer";
+import { GrouparooModel } from "../models/GrouparooModel";
+import { GrouparooRecord } from "../models/GrouparooRecord";
+import { RecordOps } from "../modules/ops/record";
+import { CLS } from "../modules/cls";
 
 declare module "actionhero" {
   export interface Api {
@@ -11,7 +14,7 @@ declare module "actionhero" {
   }
 }
 
-export class CodeConfig extends CLSInitializer {
+export class CodeConfig extends Initializer {
   constructor() {
     super();
     this.name = "codeConfig";
@@ -19,22 +22,49 @@ export class CodeConfig extends CLSInitializer {
     this.startPriority = 10;
   }
 
-  async initializeWithinTransaction() {
+  async initialize() {
     api.codeConfig = {
       allowLockedModelChanges: true,
     };
   }
 
-  async startWithinTransaction() {
-    const configDir = await getConfigDir(
-      process.env.GROUPAROO_RUN_MODE === "cli:config"
-    );
+  async start() {
+    await CLS.wrap(async () => {
+      const configDir = await getConfigDir(
+        process.env.GROUPAROO_RUN_MODE === "cli:config"
+      );
+      const { errors } = await loadConfigDirectory(configDir);
+      if (errors.length > 0) throw new Error("code config error");
+    });
 
-    const { errors } = await loadConfigDirectory(configDir);
-
-    if (errors.length > 0) throw new Error("code config error");
     api.codeConfig.allowLockedModelChanges = false; // after this point in the Actionhero boot lifecycle, locked models cannot be changed
+    differedSampleProfileLoad(); // we are choosing **not** to await here to move this work to the "background"
   }
 
-  async stopWithinTransaction() {}
+  async stop() {}
+}
+
+async function differedSampleProfileLoad() {
+  if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
+
+  const models = await GrouparooModel.findAll();
+  for (const model of models) {
+    const records = await GrouparooRecord.findAll({
+      where: { modelId: model.id },
+    });
+    const responses = await RecordOps.importAndUpdateInline(records);
+    log(
+      `imported ${responses.filter((r) => r.success).length}/${
+        records.length
+      } sample records from the ${model.name} model`
+    );
+    for (const { recordId, success, error } of responses) {
+      if (!success) {
+        log(
+          `  - error importing sample record ${recordId} - ${error}`,
+          "error"
+        );
+      }
+    }
+  }
 }

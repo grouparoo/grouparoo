@@ -417,5 +417,5 @@ RecordsList.hydrate = async (
     }
   }
 
-  return { records, total, properties, modelName };
+  return { records, total, properties, modelName, modelId };
 };
