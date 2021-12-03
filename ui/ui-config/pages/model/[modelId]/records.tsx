@@ -4,6 +4,7 @@ import RecordsPage from "@grouparoo/ui-components/pages/model/[modelId]/records"
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
+import { RecordsHandler } from "@grouparoo/ui-components/utils/recordsHandler";
 import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState } from "react";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
@@ -13,10 +14,12 @@ export default function Page(props) {
     modelId,
     errorHandler,
     successHandler,
+    recordsHandler,
   }: {
     modelId: string;
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
+    recordsHandler: RecordsHandler;
   } = props;
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -25,12 +28,16 @@ export default function Page(props) {
   async function importAllRecords() {
     setLoading(true);
     successHandler.set({ message: "enqueued for import..." });
-    const response: Actions.RecordImport = await execApi(
+    const response: Actions.RecordsImport = await execApi(
       "post",
       `/records/${modelId}/import`
     );
     if (response) {
-      console.log(response);
+      recordsHandler.publish(
+        response.responses.map((r) => {
+          return { id: r.recordId };
+        })
+      );
       successHandler.set({ message: "Import Complete!" });
     }
     setLoading(false);
