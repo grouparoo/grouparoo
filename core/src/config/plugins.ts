@@ -4,10 +4,16 @@ import { getPluginManifest } from "../modules/pluginDetails";
 import InjectedPlugins from "./pluginInjection";
 
 const namespace = "plugins";
+const pluginManifestNamespace = "pluginManifest";
 
 declare module "actionhero" {
   export interface ActionheroConfigInterface {
     [namespace]: ReturnType<typeof DEFAULT[typeof namespace]>;
+  }
+  export interface ActionheroConfigInterface {
+    [pluginManifestNamespace]: ReturnType<
+      typeof DEFAULT[typeof pluginManifestNamespace]
+    >;
   }
 }
 
@@ -40,7 +46,11 @@ export const DEFAULT = {
 
     return plugins;
   },
-  pluginManifestUrl:
-    process.env.GROUPAROO_PLUGIN_MANIFEST_URL ||
-    "https://www.grouparoo.com/plugins/v1/manifest.json",
+  pluginManifest: () => {
+    return {
+      url:
+        process.env.GROUPAROO_PLUGIN_MANIFEST_URL ||
+        "https://www.grouparoo.com/plugins/v1/manifest.json",
+    };
+  },
 };

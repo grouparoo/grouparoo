@@ -34,7 +34,7 @@ export class Next extends Initializer {
   }
 
   async start() {
-    if (config.servers.web.enabled !== true) return;
+    if (config.web.enabled !== true) return;
 
     if (!config.next.enabled) {
       log("next disabled");
@@ -69,7 +69,7 @@ export class Next extends Initializer {
     api.next.handle = api.next.app.getRequestHandler();
     await api.next.app.prepare();
 
-    if (config.servers.web.enabled === true) {
+    if (config.web.enabled === true) {
       route.registerRoute("get", "/", "next:render", null, true);
     }
   }

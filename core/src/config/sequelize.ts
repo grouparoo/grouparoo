@@ -177,6 +177,7 @@ export const DEFAULT = {
         backoffBase: dialect === "sqlite" ? 1000 : 100,
         backoffExponent: dialect === "sqlite" ? 1.5 : 1.1,
         max: 5,
+        timeout: undefined as number,
       },
     };
   },

@@ -126,7 +126,7 @@ export namespace Plugins {
   }
 
   export async function getAvailableGrouparooPlugins() {
-    const pluginManifestUrl = config.pluginManifestUrl;
+    const pluginManifestUrl = config.pluginManifest.url;
     try {
       const pluginManifest: GrouparooManifestPackage[] = await fetch(
         pluginManifestUrl
