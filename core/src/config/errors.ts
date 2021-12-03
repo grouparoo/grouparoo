@@ -50,7 +50,7 @@ export const DEFAULT = {
       },
 
       // user requested an unknown action
-      unknownAction: (data: ActionProcessor<any>) => {
+      unknownAction: () => {
         return `unknown action or invalid apiVersion`;
       },
 
@@ -60,13 +60,13 @@ export const DEFAULT = {
       },
 
       // action failed because server is mid-shutdown
-      serverShuttingDown: (data: ActionProcessor<any>) => {
+      serverShuttingDown: () => {
         return `the server is shutting down`;
       },
 
       // action failed because this client already has too many pending actions
       // limit defined in api.config.general.simultaneousActions
-      tooManyPendingActions: (data: ActionProcessor<any>) => {
+      tooManyPendingActions: () => {
         return `you have too many pending requests`;
       },
 
@@ -86,12 +86,12 @@ export const DEFAULT = {
 
       // The body message to accompany 404 (file not found) errors regarding flat files
       // You may want to load in the content of 404.html or similar
-      fileNotFound: (connection: Connection) => {
+      fileNotFound: () => {
         return `that file is not found`;
       },
 
       // user didn't request a file
-      fileNotProvided: (connection: Connection) => {
+      fileNotProvided: () => {
         return `file is a required param to send a file`;
       },
 
@@ -112,7 +112,7 @@ export const DEFAULT = {
         return `verb not found or not allowed (${verb})`;
       },
 
-      connectionRoomAndMessage: (connection: Connection) => {
+      connectionRoomAndMessage: () => {
         return `both room and message are required`;
       },
 
@@ -124,15 +124,15 @@ export const DEFAULT = {
         return `connection already in this room (${room})`;
       },
 
-      connectionRoomHasBeenDeleted: (room: string) => {
+      connectionRoomHasBeenDeleted: () => {
         return "this room has been deleted";
       },
 
-      connectionRoomNotExist: (room: string) => {
+      connectionRoomNotExist: () => {
         return "room does not exist";
       },
 
-      connectionRoomExists: (room: string) => {
+      connectionRoomExists: () => {
         return "room exists";
       },
 
