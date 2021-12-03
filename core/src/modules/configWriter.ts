@@ -98,7 +98,7 @@ export namespace ConfigWriter {
   }
 
   export async function getConfigObjects(): Promise<WritableConfigObject[]> {
-    let objects = [];
+    let objects: Array<{ filePath: string; object: any }> = [];
 
     const queryParams = { where: { locked: null } };
     let queries = {
@@ -108,6 +108,7 @@ export namespace ConfigWriter {
       properties: await Property.findAll(queryParams),
       groups: await Group.findAll(queryParams),
       destinations: await Destination.findAll(queryParams),
+      records: await GrouparooRecord.findAll({ include: [GrouparooModel] }),
     };
 
     const clusterNameSetting: Setting = await Setting.findOne({
@@ -126,23 +127,21 @@ export namespace ConfigWriter {
         }
         // Don't process objects that have missing id values.
         if (!Array.isArray(object) && !object?.id) continue;
-        const filePath = generateFilePath(
-          object as AnyConfigurationObject,
-          type
-        );
-        objects.push({ filePath, object });
-      }
-    }
 
-    const records = await GrouparooRecord.findAll();
-    const recordObjects = await Promise.all(
-      records.map((p) => p.getConfigObject())
-    );
-    if (recordObjects.length > 0) {
-      objects.push({
-        filePath: "development/records.json",
-        object: recordObjects,
-      });
+        const filePath =
+          instance instanceof GrouparooRecord
+            ? `development/${(
+                await instance.$get("model")
+              ).getConfigId()}/records.json`
+            : generateFilePath(object as AnyConfigurationObject, type);
+
+        const index = objects.findIndex((obj) => obj.filePath === filePath);
+        if (index >= 0) {
+          objects[index].object = [objects[index].object, object].flat();
+        } else {
+          objects.push({ filePath, object });
+        }
+      }
     }
 
     return objects;

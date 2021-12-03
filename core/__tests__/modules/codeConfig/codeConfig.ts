@@ -1104,6 +1104,26 @@ describe("modules/codeConfig", () => {
         });
       });
 
+      test("null record objects should provides a useful error", async () => {
+        await helper.truncate();
+
+        const { errors } = await loadConfigDirectory(
+          path.join(
+            __dirname,
+            "..",
+            "..",
+            "fixtures",
+            "codeConfig",
+            "error-null-objects"
+          )
+        );
+        expect(errors.length).toEqual(1);
+        expect(errors[0]).toMatch(
+          /has 2 null or undefined top-level config objects/
+        );
+        expect(errors[0]).toMatch("error-null-objects/config.js");
+      });
+
       test("records are loaded in cli:config mode", async () => {
         await helper.truncate();
 
