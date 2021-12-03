@@ -38,13 +38,13 @@ export class CodeConfig extends Initializer {
     });
 
     api.codeConfig.allowLockedModelChanges = false; // after this point in the Actionhero boot lifecycle, locked models cannot be changed
-    differedSampleProfileLoad(); // we are choosing **not** to await here to move this work to the "background"
+    await loadSampleProfiles();
   }
 
   async stop() {}
 }
 
-async function differedSampleProfileLoad() {
+async function loadSampleProfiles() {
   if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
 
   const models = await GrouparooModel.findAll();
