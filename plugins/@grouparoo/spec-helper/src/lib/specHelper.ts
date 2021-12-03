@@ -52,12 +52,6 @@ import {
   DestinationOptionsMethodResponse,
   AggregationMethod,
 } from "@grouparoo/core";
-import "@grouparoo/core/dist/config/api";
-import "@grouparoo/core/dist/config/batchSize";
-import "@grouparoo/core/dist/config/errors";
-import "@grouparoo/core/dist/config/logger";
-import "@grouparoo/core/dist/config/sequelize";
-import "@grouparoo/core/dist/config/tasks";
 
 const {
   // modules
