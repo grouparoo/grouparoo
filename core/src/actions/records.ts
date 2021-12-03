@@ -2,6 +2,7 @@ import { Action, config } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
+import { GrouparooModel } from "../models/GrouparooModel";
 import { Group } from "../models/Group";
 import { internalRun } from "../modules/internalRun";
 import { Op } from "sequelize";
@@ -170,8 +171,7 @@ export class RecordImport extends Action {
     };
   }
 
-  // This action needs custom transaction handling to handle problems with each source/recordProperty
-  async run({ params }) {
+  async run({ params }: { params: { id: string } }) {
     let record: GrouparooRecord;
     let response: {
       success: boolean;
@@ -181,18 +181,13 @@ export class RecordImport extends Action {
 
     await CLS.wrap(async () => {
       record = await GrouparooRecord.findById(params.id);
-      await record.buildNullProperties();
-      await record.markPending();
     });
 
-    // this method should not be wrapped in a transaction because we want to allow multiple sources to throw and recover their imports
-    await record.import();
+    const responses = await RecordOps.importAndUpdateInline([record]);
+    if (!responses[0].success) throw new Error(responses[0].error);
 
     await CLS.wrap(async () => {
-      await RecordOps.computeRecordsValidity([record]);
       await record.reload({ include: [RecordProperty] });
-      await record.update({ state: "ready" });
-      await record.updateGroupMembership();
       const groups = await record.$get("groups");
 
       response = {
@@ -203,6 +198,40 @@ export class RecordImport extends Action {
     });
 
     return response;
+  }
+}
+
+export class RecordsImport extends Action {
+  permission: {
+    topic: ActionPermissionTopic;
+    mode: ActionPermissionMode;
+  };
+
+  constructor() {
+    super();
+    this.name = "records:import";
+    this.description = "fully import all records associated with a model";
+    this.outputExample = {};
+    this.permission = { topic: "record", mode: "write" };
+    this.middleware = ["authenticated-action"];
+    this.inputs = {
+      modelId: { required: true },
+    };
+  }
+
+  async run({ params }: { params: { modelId: string } }) {
+    let model: GrouparooModel;
+    let records: GrouparooRecord[];
+
+    await CLS.wrap(async () => {
+      model = await GrouparooModel.findById(params.modelId);
+      records = await GrouparooRecord.findAll({
+        where: { modelId: model.id },
+      });
+    });
+
+    const responses = await RecordOps.importAndUpdateInline(records);
+    return { responses };
   }
 }
 

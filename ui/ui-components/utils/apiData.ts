@@ -201,6 +201,7 @@ import {
   RecordCreate,
   RecordDestroy,
   RecordImport,
+  RecordsImport,
   RecordExport,
   RecordView,
   RecordsImportAndUpdate,
@@ -555,6 +556,9 @@ export namespace Actions {
     typeof RecordDestroy.prototype.runWithinTransaction
   >;
   export type RecordImport = AsyncReturnType<typeof RecordImport.prototype.run>;
+  export type RecordsImport = AsyncReturnType<
+    typeof RecordsImport.prototype.run
+  >;
   export type RecordExport = AsyncReturnType<
     typeof RecordExport.prototype.runWithinTransaction
   >;

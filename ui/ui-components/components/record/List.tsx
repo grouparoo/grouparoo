@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { Form, Row, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
 import { useRouter } from "next/router";
@@ -15,14 +15,17 @@ import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 import StateBadge from "../badges/StateBadge";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
+import { RecordsHandler } from "../../utils/recordsHandler";
 
 export default function RecordsList(props) {
   const {
     errorHandler,
+    recordsHandler,
     properties,
     modelName,
   }: {
     errorHandler: ErrorHandler;
+    recordsHandler: RecordsHandler;
     properties: Models.PropertyType[];
     modelName?: string;
   } = props;
@@ -56,6 +59,16 @@ export default function RecordsList(props) {
   useSecondaryEffect(() => {
     load();
   }, [offset, limit, state, modelId, caseSensitive]);
+
+  useEffect(() => {
+    recordsHandler.subscribe("records:list", () => {
+      load();
+    });
+
+    return () => {
+      recordsHandler.unsubscribe("records:list");
+    };
+  }, []);
 
   async function load(event?) {
     if (event) event.preventDefault();
@@ -417,5 +430,5 @@ RecordsList.hydrate = async (
     }
   }
 
-  return { records, total, properties, modelName };
+  return { records, total, properties, modelName, modelId };
 };

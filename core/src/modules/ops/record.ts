@@ -680,6 +680,60 @@ export namespace RecordOps {
   }
 
   /**
+   * This is used for manually importing Records from the UI
+   *
+   * **WARNING**: This method expects NOT to be used within a CLS-wrapped context
+   */
+  export async function importAndUpdateInline(records: GrouparooRecord[]) {
+    const response: { recordId: string; error: string; success: boolean }[] =
+      [];
+
+    if (records.length === 0) return response;
+
+    await CLS.wrap(async () => {
+      await RecordOps.buildNullProperties(records);
+      await RecordOps.markPendingByIds(records.map((r) => r.id));
+    });
+
+    // This method should not be wrapped in a transaction because we want to allow multiple sources to throw and recover their imports
+    // We cannot Promise.all because SQLite cannot write in parallel
+    for (const record of records) {
+      let errorMessage: string;
+      try {
+        await record.import();
+      } catch (error) {
+        errorMessage = error.message;
+      } finally {
+        response.push({
+          recordId: record.id,
+          success: errorMessage ? false : true,
+          error: errorMessage,
+        });
+      }
+    }
+
+    await CLS.wrap(async () => {
+      const successfulRecordIds = response
+        .filter((r) => r.success)
+        .map((r) => r.recordId);
+      const successfulRecords = records.filter((r) =>
+        successfulRecordIds.includes(r.id)
+      );
+
+      if (successfulRecords.length > 0) {
+        await RecordOps.computeRecordsValidity(successfulRecords);
+        await GrouparooRecord.update(
+          { state: "ready" },
+          { where: { id: successfulRecords.map((r) => r.id) } }
+        );
+        await RecordOps.updateGroupMemberships(successfulRecords);
+      }
+    });
+
+    return response;
+  }
+
+  /**
    * The method you'll be using to create records with arbitrary data.
    * Hash looks like {email: "person@example.com", id: 123}
    *

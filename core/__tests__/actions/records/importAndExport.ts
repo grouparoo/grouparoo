@@ -14,6 +14,7 @@ import {
   RecordCreate,
   RecordExport,
   RecordImport,
+  RecordsImport,
 } from "../../../src/actions/records";
 import { SessionCreate } from "../../../src/actions/session";
 
@@ -128,7 +129,6 @@ describe("actions/records", () => {
 
     test("an invalid record can be imported, and can also be fixed", async () => {
       const luigi = await GrouparooRecord.findOne();
-
       connection.params = {
         csrfToken,
         id: luigi.id,
@@ -155,6 +155,54 @@ describe("actions/records", () => {
       ));
       expect(error).toBeUndefined();
       expect(record.invalid).toBe(false);
+    });
+
+    test("multiple records can be imported", async () => {
+      const mario = await helper.factories.record();
+      const peach = await helper.factories.record();
+      const luigi = await GrouparooRecord.findOne();
+      await RecordProperty.destroy({
+        where: { recordId: luigi.id, propertyId: { [Op.ne]: "userid" } },
+      });
+
+      jest
+        .spyOn(testPluginConnection.methods, "recordProperty")
+        .mockImplementation(({ property, record }: any): any => {
+          if (record.id === mario.id) throw new Error("oh no"); // mario will have invalid data
+          if (property.key !== "purchaseAmounts") {
+            return helper.recordResponseData(record, property.key);
+          }
+          return 22;
+        });
+
+      connection.params = {
+        csrfToken,
+        modelId: model.id,
+      };
+      let { responses, error } = await specHelper.runAction<RecordsImport>(
+        "records:import",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(responses.length).toEqual(3);
+      expect(responses.find((r) => r.recordId === luigi.id)).toEqual({
+        error: undefined,
+        recordId: luigi.id,
+        success: true,
+      });
+      expect(responses.find((r) => r.recordId === peach.id)).toEqual({
+        error: undefined,
+        recordId: peach.id,
+        success: true,
+      });
+      expect(responses.find((r) => r.recordId === mario.id)).toEqual({
+        error: "oh no",
+        recordId: mario.id,
+        success: false,
+      });
+
+      await mario.destroy();
+      await peach.destroy();
     });
 
     test("a record can be exported", async () => {
