@@ -1,7 +1,155 @@
 import axios, { AxiosInstance } from "axios";
 
+type Entity = "persons" | "organizations";
+type EntityField = "personFields" | "organizationFields";
+type FilterType = "people" | "org";
+
+const EntityFieldMapping: Record<Entity, EntityField> = {
+  persons: "personFields",
+  organizations: "organizationFields",
+};
+
+const FilterTypeMapping: Record<Entity, FilterType> = {
+  persons: "people",
+  organizations: "org",
+};
+
+export class EntityCalls {
+  fields: FieldCalls;
+  filters: FilterCalls;
+
+  constructor(private client: PipedriveClient, private entity: Entity) {
+    this.fields = new FieldCalls(client, EntityFieldMapping[entity]);
+    this.filters = new FilterCalls(client, FilterTypeMapping[entity]);
+  }
+
+  async getById(id: number): Promise<Record<string, any>> {
+    const { data } = await this.client.request.get<Record<string, any>>(
+      `/${this.entity}/${id}`
+    );
+    return data.data;
+  }
+
+  async create(payload: Record<string, any>): Promise<Record<string, any>> {
+    const { data } = await this.client.request.post(
+      `/${this.entity}`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return data;
+  }
+
+  async update(
+    id: number,
+    payload: Record<string, any>
+  ): Promise<Record<string, any>> {
+    const { data } = await this.client.request.put(
+      `/${this.entity}/${id}`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return data;
+  }
+
+  async delete(id: number): Promise<Record<string, any>> {
+    const { data } = await this.client.request.delete(`/${this.entity}/${id}`);
+    return data;
+  }
+}
+
+export class FieldCalls {
+  constructor(
+    private client: PipedriveClient,
+    private entityField: EntityField
+  ) {}
+
+  async getAll(): Promise<Record<string, any>[]> {
+    const { data } = await this.client.request.get<Record<string, any>>(
+      `/${this.entityField}`
+    );
+    return data.data;
+  }
+
+  async create(payload: Record<string, any>): Promise<Record<string, any>> {
+    const { data } = await this.client.request.post(
+      `/${this.entityField}`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return data;
+  }
+
+  async bulkDelete(ids: number[]): Promise<Record<string, any>> {
+    const { data } = await this.client.request.delete(`/${this.entityField}`, {
+      params: { ids: ids.join(",") },
+    });
+
+    return data;
+  }
+}
+
+export class FilterCalls {
+  constructor(
+    private client: PipedriveClient,
+    private filterType: FilterType
+  ) {}
+
+  async getAll(): Promise<Record<string, any>[]> {
+    const { data } = await this.client.request.get<Record<string, any>>(
+      "/filters",
+      {
+        params: { type: this.filterType },
+      }
+    );
+    return data.data;
+  }
+
+  async create(payload: Record<string, any>) {
+    const { data } = await this.client.request.post(
+      `/filters`,
+      {
+        ...payload,
+        type: this.filterType,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return data;
+  }
+
+  async bulkDelete(ids: number[]): Promise<Record<string, any>> {
+    const { data } = await this.client.request.delete(`/filters`, {
+      params: { ids: ids.join(",") },
+    });
+
+    return data;
+  }
+}
+
 export class PipedriveClient {
   request: AxiosInstance;
+
+  persons: EntityCalls;
+  organizations: EntityCalls;
 
   constructor(apiToken: string) {
     this.request = axios.create({
@@ -10,6 +158,24 @@ export class PipedriveClient {
         api_token: apiToken,
       },
     });
+
+    this.request.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.code === "ECONNRESET") {
+          // console.log("ECONNRESET, retry after 2 seconds...");
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(this.request.request(error.config));
+            }, 2000);
+          });
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    this.persons = new EntityCalls(this, "persons");
+    this.organizations = new EntityCalls(this, "organizations");
   }
 
   async getCurrentUser(): Promise<Record<string, any>> {
@@ -35,92 +201,22 @@ export class PipedriveClient {
     return data.data.items[0].item.id;
   }
 
-  async getPerson(id: number): Promise<Record<string, any>> {
+  async findOrganizationIdByName(name: string): Promise<number> {
+    name = name?.trim();
+
+    if (!name) return null;
+
     const { data } = await this.request.get<Record<string, any>>(
-      `/persons/${id}`
+      "/organizations/search",
+      {
+        params: {
+          term: name,
+          fields: "name",
+        },
+      }
     );
-    return data.data;
-  }
 
-  async createPerson(
-    payload: Record<string, any>
-  ): Promise<Record<string, any>> {
-    const { data } = await this.request.post(`/persons`, payload, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    return data;
-  }
-
-  async updatePerson(
-    id: number,
-    payload: Record<string, any>
-  ): Promise<Record<string, any>> {
-    const { data } = await this.request.put(`/persons/${id}`, payload, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    return data;
-  }
-
-  async deletePerson(id: number): Promise<Record<string, any>> {
-    const { data } = await this.request.delete(`/persons/${id}`);
-    return data;
-  }
-
-  async getAllPersonFields(): Promise<Record<string, any>[]> {
-    const { data } = await this.request.get<Record<string, any>>(
-      "/personFields"
-    );
-    return data.data;
-  }
-
-  async createPersonField(
-    payload: Record<string, any>
-  ): Promise<Record<string, any>> {
-    const { data } = await this.request.post(`/personFields`, payload, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    return data;
-  }
-
-  async bulkDeletePersonFields(ids: number[]): Promise<Record<string, any>> {
-    const { data } = await this.request.delete(`/personFields`, {
-      params: { ids: ids.join(",") },
-    });
-
-    return data;
-  }
-
-  async getAllPersonFilters(): Promise<Record<string, any>[]> {
-    const { data } = await this.request.get<Record<string, any>>("/filters", {
-      params: { type: "people" },
-    });
-    return data.data;
-  }
-
-  async createFilter(payload: Record<string, any>) {
-    const { data } = await this.request.post(`/filters`, payload, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    return data;
-  }
-
-  async bulkDeleteFilters(ids: number[]): Promise<Record<string, any>> {
-    const { data } = await this.request.delete(`/filters`, {
-      params: { ids: ids.join(",") },
-    });
-
-    return data;
+    if (data.data.items.length == 0) return null;
+    return data.data.items[0].item.id;
   }
 }

@@ -434,15 +434,15 @@ describe("modules/configWriter", () => {
           object: await property.getConfigObject(),
         },
         {
-          filePath: `settings/${setting.getConfigId()}.json`,
-          object: await setting.getConfigObject(),
-        },
-        {
-          filePath: `development/records.json`,
+          filePath: `development/${model.getConfigId()}/records.json`,
           object: [
             await record.getConfigObject(),
             await record2.getConfigObject(),
           ],
+        },
+        {
+          filePath: `settings/${setting.getConfigId()}.json`,
+          object: await setting.getConfigObject(),
         },
       ]);
     });

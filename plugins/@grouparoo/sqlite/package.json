@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/sqlite",
   "description": "The Grouparoo SQLite Plugin",
-  "version": "0.7.6",
+  "version": "0.7.7-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,13 +28,13 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.7.6",
+    "@grouparoo/app-templates": "0.7.7-alpha.0",
     "@types/sqlite3": "3.1.7",
     "sqlite3": "5.0.2"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.6",
-    "@grouparoo/spec-helper": "0.7.6",
+    "@grouparoo/core": "0.7.7-alpha.0",
+    "@grouparoo/spec-helper": "0.7.7-alpha.0",
     "@types/jest": "*",
     "@types/node": "*",
     "@types/pg": "*",
