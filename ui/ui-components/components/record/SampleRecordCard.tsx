@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Button, Card, Col, Row, Table } from "react-bootstrap";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { useGrouparooModelContext } from "../../contexts/grouparooModel";
-import { ApiHook, UseApi } from "../../hooks/useApi";
+import { ApiHook } from "../../hooks/useApi";
 import { Actions, Models } from "../../utils/apiData";
 import { successHandler } from "../../utils/eventHandlers";
 import { grouparooUiEdition } from "../../utils/uiEdition";
@@ -11,7 +11,6 @@ import StateBadge from "../badges/StateBadge";
 import ManagedCard from "../lib/ManagedCard";
 import SeparatedItems from "../lib/SeparatedItems";
 import LinkButton from "../LinkButton";
-import LoadingButton from "../LoadingButton";
 import AddSampleRecordModal from "./AddSampleRecordModal";
 
 interface Props {
@@ -34,8 +33,13 @@ const getCachedSampleRecordId = (modelId: string): string => {
 };
 
 const setCachedSampleRecordId = (modelId: string, recordId: string): void => {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || !recordId) return;
   window.localStorage.setItem(`sampleRecord:${modelId}`, recordId);
+};
+
+const clearCachedSampleRecordId = (modelId: string): void => {
+  if (typeof window === "undefined") return;
+  window.localStorage.removeItem(`sampleRecord:${modelId}`);
 };
 
 const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
@@ -47,35 +51,49 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
     getCachedSampleRecordId(model.id)
   );
 
-  const { data: record, mutate: mutateRecord } = useSWR(
-    ["sample-record", recordId],
-    () => {
-      if (recordId) {
-        return execApi<Actions.RecordView>("get", `/record/${recordId}`).then(
-          ({ record }) => record
-        );
-      }
+  const {
+    data: record,
+    mutate: mutateRecord,
+    isValidating,
+  } = useSWR(["sample-record", recordId], async () => {
+    let record: Actions.RecordView["record"];
 
-      return execApi<Actions.RecordsList>("get", "/records", {
+    if (recordId) {
+      record = await execApi<Actions.RecordView>(
+        "get",
+        `/record/${recordId}`
+      ).then(({ record }) => record);
+    } else {
+      record = await execApi<Actions.RecordsList>("get", "/records", {
         limit: 25,
         offset: 0,
         modelId: model.id,
-        recordId,
       }).then((data) => {
         if (data?.records?.length) {
           const record =
             data.records[Math.floor(Math.random() * data.records.length)];
-          console.log({ record });
           return record;
         }
         return undefined;
       });
     }
-  );
+
+    if (record.id) {
+      if (!recordId) {
+        await mutate(["sample-record", record.id], record, false);
+      }
+      return record;
+    } else {
+      // Got an invalid record. Let's clear this and start over.
+      clearCachedSampleRecordId(model.id);
+      return undefined;
+    }
+  });
 
   useEffect(() => {
     if (record) {
       setCachedSampleRecordId(model.id, record.id);
+      setRecordId(record.id);
     }
   }, [record]);
 
@@ -91,7 +109,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
         propertyKey,
         propertyId: property.id,
         propertyState: property.state,
-        value: property.values[0],
+        value: property.values.slice(0, 10).join(", "),
       });
     }
 
@@ -113,9 +131,11 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
     setImporting(false);
   };
 
+  const loading = !record || isValidating;
+
   const actions = [
-    <LoadingButton
-      disabled={importing}
+    <Button
+      disabled={importing || loading}
       onClick={() => {
         importRecord();
       }}
@@ -123,13 +143,14 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
       variant="outline-success"
     >
       Import Record data
-    </LoadingButton>,
+    </Button>,
     <Button
+      disabled={loading}
       size="sm"
       variant="outline-primary"
       onClick={() => {
         setRecordId(undefined);
-        mutateRecord();
+        mutate(["sample-record", undefined], true);
       }}
     >
       Switch to random Record
@@ -139,6 +160,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
   if (isConfigUI) {
     actions.push(
       <Button
+        disabled={loading}
         size="sm"
         variant="outline-primary"
         onClick={() => setAddingRecord(true)}
