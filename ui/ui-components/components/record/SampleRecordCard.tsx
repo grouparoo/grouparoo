@@ -28,17 +28,24 @@ interface RecordRow {
 
 const isConfigUI = grouparooUiEdition() === "config";
 
+const getCachedSampleRecordId = (modelId: string): string => {
+  if (typeof window === "undefined") return undefined;
+  return window.localStorage.getItem(`sampleRecord:${modelId}`);
+};
+
+const setCachedSampleRecordId = (modelId: string, recordId: string): void => {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(`sampleRecord:${modelId}`, recordId);
+};
+
 const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
   const model = useGrouparooModelContext();
 
   const [importing, setImporting] = useState(false);
   const [addingRecord, setAddingRecord] = useState(false);
-  const [recordId, setRecordId] = useState(() => {
-    if (typeof window !== "undefined") {
-      return window.localStorage.getItem(`sampleRecord:${model.id}`);
-    }
-    return undefined;
-  });
+  const [recordId, setRecordId] = useState(() =>
+    getCachedSampleRecordId(model.id)
+  );
 
   const { data: record, mutate: mutateRecord } = useSWR(
     ["sample-record", recordId],
@@ -50,17 +57,25 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
       }
 
       return execApi<Actions.RecordsList>("get", "/records", {
-        limit: 1,
+        limit: 25,
         offset: 0,
         modelId: model.id,
         recordId,
-      }).then((data) => data?.records?.[0]);
+      }).then((data) => {
+        if (data?.records?.length) {
+          const record =
+            data.records[Math.floor(Math.random() * data.records.length)];
+          console.log({ record });
+          return record;
+        }
+        return undefined;
+      });
     }
   );
 
   useEffect(() => {
     if (record) {
-      window.localStorage.setItem(`sampleRecord:${model.id}`, record.id);
+      setCachedSampleRecordId(model.id, record.id);
     }
   }, [record]);
 
@@ -114,6 +129,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
       variant="outline-primary"
       onClick={() => {
         setRecordId(undefined);
+        mutateRecord();
       }}
     >
       Switch to random Record
