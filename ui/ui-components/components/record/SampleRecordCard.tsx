@@ -78,7 +78,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
       });
     }
 
-    if (record.id) {
+    if (record?.id) {
       if (!recordId) {
         await mutate(["sample-record", record.id], record, false);
       }
@@ -131,7 +131,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
     setImporting(false);
   };
 
-  const loading = !record || isValidating;
+  const loading = isValidating;
 
   const actions = [
     <Button
