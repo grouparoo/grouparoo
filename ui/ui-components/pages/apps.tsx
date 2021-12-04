@@ -74,6 +74,8 @@ export default function Page(props) {
             message: `Query returned ${response.appRefreshQuery.value}. No schedules enqueued.`,
           });
         }
+        const { apps }: Actions.AppsList = await execApi("get", `/apps`);
+        setApps(apps);
       } finally {
         setLoading(false);
       }
@@ -112,7 +114,9 @@ export default function Page(props) {
         <tbody>
           {apps.map((app) => {
             const recurringFrequencyMinutes =
-              app.appRefreshQuery?.recurringFrequency / (60 * 1000);
+              Math.round(
+                app.appRefreshQuery?.recurringFrequency / (60 * 1000)
+              ) || null;
             return (
               <tr key={`model-${app.id}`}>
                 <td>
@@ -142,9 +146,9 @@ export default function Page(props) {
                       {formatTimestamp(app.appRefreshQuery.lastConfirmedAt)}
                       <br />
                       Frequency: Every{" "}
-                      {recurringFrequencyMinutes > 1 ??
+                      {recurringFrequencyMinutes > 1 &&
                         recurringFrequencyMinutes}{" "}
-                      Minute{recurringFrequencyMinutes > 1 ?? "s"}
+                      Minute{recurringFrequencyMinutes > 1 && "s"}
                       <br />
                       {grouparooUiEdition() !== "config" && (
                         <LoadingButton
