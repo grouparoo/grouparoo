@@ -89,7 +89,7 @@ export default function Page(props) {
       <Row>
         <Col>
           <Form id="form" onSubmit={edit} autoComplete="off">
-            <fieldset disabled={model.locked !== null}>
+            <fieldset disabled={Boolean(model.locked)}>
               <Form.Group controlId="name">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
@@ -119,8 +119,7 @@ export default function Page(props) {
                 </Form.Control>
               </Form.Group>
             </fieldset>
-
-            <fieldset disabled={model.locked !== null}>
+            <fieldset disabled={Boolean(model.locked)}>
               <LoadingButton variant="primary" type="submit" loading={loading}>
                 Update
               </LoadingButton>

@@ -97,7 +97,7 @@ export default function Page(props) {
       <h1>{apiKey.name}</h1>
       <LockedBadge object={apiKey} />
       <Form id="form" onSubmit={updateApiKey} autoComplete="off">
-        <fieldset disabled={apiKey.locked !== null}>
+        <fieldset disabled={Boolean(apiKey.locked)}>
           <Form.Group>
             <Form.Label>Name</Form.Label>
             <Form.Control

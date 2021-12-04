@@ -159,7 +159,7 @@ export default function Page(props) {
       />
 
       <Form id="form" onSubmit={edit} autoComplete="off">
-        <fieldset disabled={schedule.locked !== null}>
+        <fieldset disabled={Boolean(schedule.locked)}>
           <Row>
             <Col>
               <Form.Group controlId="confirmRecords">

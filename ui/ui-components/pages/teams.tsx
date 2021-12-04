@@ -54,7 +54,7 @@ export default function Page({
                   <Form.Check
                     type="checkbox"
                     disabled
-                    checked={team.locked !== null}
+                    checked={Boolean(team.locked)}
                   />
                 </td>
               </tr>

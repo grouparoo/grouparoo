@@ -187,7 +187,7 @@ export default function Page(props) {
         of these rules.
       </p>
       <Form inline autoComplete="off">
-        <fieldset disabled={group.locked !== null}>
+        <fieldset disabled={Boolean(group.locked)}>
           <Table bordered size="sm">
             <thead>
               <tr>

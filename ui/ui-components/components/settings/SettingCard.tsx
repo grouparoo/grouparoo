@@ -34,7 +34,7 @@ export default function SettingCard({
           <LockedBadge object={setting} />
 
           <Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-            <fieldset disabled={setting.locked !== null}>
+            <fieldset disabled={Boolean(setting.locked)}>
               <Form.Group>
                 {setting.type === "string" ? (
                   <Form.Control
