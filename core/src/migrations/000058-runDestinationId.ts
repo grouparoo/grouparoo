@@ -8,7 +8,6 @@ export default {
     await queryInterface.addColumn("runs", "destinationId", {
       type: DataTypes.STRING(40),
       allowNull: true,
-      defaultValue: null,
     });
   },
 

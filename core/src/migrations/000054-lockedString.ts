@@ -24,7 +24,6 @@ export default {
       await queryInterface.changeColumn(table, "locked", {
         type: DataTypes.STRING(191),
         allowNull: true,
-        defaultValue: null,
       });
       if (table !== "teams") {
         await queryInterface.sequelize.query(

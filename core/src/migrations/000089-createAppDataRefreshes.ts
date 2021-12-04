@@ -36,6 +36,7 @@ export default {
 
       locked: {
         type: DataTypes.STRING(191),
+        allowNull: true,
       },
 
       state: {
