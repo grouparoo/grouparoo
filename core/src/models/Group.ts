@@ -134,6 +134,7 @@ export class Group extends LoggedModel<Group> {
   state: typeof STATES[number];
 
   @AllowNull(true)
+  @Default(null)
   @Column
   locked: string;
 

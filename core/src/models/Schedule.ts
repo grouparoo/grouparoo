@@ -103,6 +103,7 @@ export class Schedule extends LoggedModel<Schedule> {
   state: typeof STATES[number];
 
   @AllowNull(true)
+  @Default(null)
   @Column
   locked: string;
 

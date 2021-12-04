@@ -64,6 +64,7 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
   type: ModelType;
 
   @AllowNull(true)
+  @Default(null)
   @Column
   locked: string;
 

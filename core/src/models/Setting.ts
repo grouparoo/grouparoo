@@ -1,6 +1,7 @@
 import {
   Table,
   Column,
+  Default,
   AllowNull,
   BeforeSave,
   DataType,
@@ -54,6 +55,7 @@ export class Setting extends LoggedModel<Setting> {
   type: typeof settingTypes[number];
 
   @AllowNull(true)
+  @Default(null)
   @Column
   locked: string;
 

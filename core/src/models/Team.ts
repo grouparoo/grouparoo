@@ -3,6 +3,7 @@ import {
   Column,
   AllowNull,
   Length,
+  Default,
   AfterSave,
   BeforeDestroy,
   HasMany,
@@ -33,6 +34,7 @@ export class Team extends LoggedModel<Team> {
   name: string;
 
   @AllowNull(true)
+  @Default(null)
   @Column
   locked: string;
 

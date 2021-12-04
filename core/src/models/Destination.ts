@@ -151,6 +151,7 @@ export class Destination extends LoggedModel<Destination> {
   type: string;
 
   @AllowNull(true)
+  @Default(null)
   @Column
   locked: string;
 

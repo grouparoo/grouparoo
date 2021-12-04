@@ -3,6 +3,7 @@ import {
   Column,
   AllowNull,
   IsEmail,
+  Default,
   BelongsTo,
   BeforeSave,
   ForeignKey,
@@ -30,6 +31,7 @@ export class TeamMember extends LoggedModel<TeamMember> {
   teamId: string;
 
   @AllowNull(true)
+  @Default(null)
   @Column
   locked: string;
 

@@ -100,6 +100,7 @@ export class Source extends LoggedModel<Source> {
   state: typeof STATES[number];
 
   @AllowNull(true)
+  @Default(null)
   @Column
   locked: string;
 

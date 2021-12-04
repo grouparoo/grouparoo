@@ -66,6 +66,7 @@ export class App extends LoggedModel<App> {
   type: string;
 
   @AllowNull(true)
+  @Default(null)
   @Column
   locked: string;
 

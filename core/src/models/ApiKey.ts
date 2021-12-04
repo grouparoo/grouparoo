@@ -6,6 +6,7 @@ import {
   HasMany,
   AfterSave,
   AfterDestroy,
+  Default,
   BeforeValidate,
   BeforeSave,
   BeforeDestroy,
@@ -37,6 +38,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
   apiKey: string;
 
   @AllowNull(true)
+  @Default(null)
   @Column
   locked: string;
 

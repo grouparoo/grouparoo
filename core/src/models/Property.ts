@@ -134,6 +134,7 @@ export class Property extends LoggedModel<Property> {
   state: typeof STATES[number];
 
   @AllowNull(true)
+  @Default(null)
   @Column
   locked: string;
 
