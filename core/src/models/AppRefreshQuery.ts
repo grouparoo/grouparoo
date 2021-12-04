@@ -142,8 +142,11 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
     if (instance.state === "ready") {
       await AppRefreshQueryOps.runAppQuery(instance);
     }
-    //query and run if the query has changed
+    //if the query has been changed, reset it and enqueue run.
     if (instance.changed("refreshQuery")) {
+      instance.lastConfirmedAt = null;
+      instance.lastChangedAt = null;
+      instance.value = null;
       await CLS.enqueueTask("appRefreshQuery:run", {
         appRefreshQueryId: instance.id,
       });

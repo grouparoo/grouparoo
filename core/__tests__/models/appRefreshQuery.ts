@@ -77,7 +77,7 @@ describe("appRefreshQuery", () => {
       appRefreshQuery.destroy();
     });
 
-    test("an updated query on a ready appRefreshQuery enqueues a run", async () => {
+    test("an updated query on a ready appRefreshQuery clears values and enqueues a run", async () => {
       const appRefreshQuery = new AppRefreshQuery({
         appId: app.id,
         refreshQuery: "SELECT MAX(updated_at) FROM users;",
@@ -88,6 +88,11 @@ describe("appRefreshQuery", () => {
       await api.resque.queue.connection.redis.flushdb();
 
       await appRefreshQuery.update({ refreshQuery: "SELECT 'hi' AS name;" });
+
+      await appRefreshQuery.reload();
+      expect(appRefreshQuery.lastChangedAt).toBeFalsy();
+      expect(appRefreshQuery.lastConfirmedAt).toBeFalsy();
+      expect(appRefreshQuery.value).toBeFalsy();
 
       let foundTasks = await specHelper.findEnqueuedTasks(
         "appRefreshQuery:run"
