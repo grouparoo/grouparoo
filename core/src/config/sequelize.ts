@@ -3,21 +3,27 @@ import { URL } from "url";
 import { join, isAbsolute } from "path";
 import { getParentPath, getPluginManifest } from "../modules/pluginDetails";
 import { log } from "actionhero";
-
 import cls from "cls-hooked";
 import Sequelize from "sequelize";
 
+const namespace = "sequelize";
+
+declare module "actionhero" {
+  export interface ActionheroConfigInterface {
+    [namespace]: ReturnType<typeof DEFAULT[typeof namespace]>;
+  }
+}
+
 // Opt Into CLS
 // Learn more @ https://sequelize.org/master/manual/transactions.html and https://github.com/Jeff-Lewis/cls-hooked
-const namespace = cls.createNamespace("grouparoo-cls");
 // @ts-ignore
-Sequelize.useCLS(namespace);
+Sequelize.useCLS(cls.createNamespace("grouparoo-cls"));
 
 // we want BIGINTs to be returned as JS integer types
 require("pg").defaults.parseInt8 = true;
 
 export const DEFAULT = {
-  sequelize: (config) => {
+  [namespace]: (config) => {
     const env = process.env.NODE_ENV ?? "development";
     let storage: string; //only for sqlite
     let dialect = process.env.DB_DIALECT;
@@ -171,6 +177,7 @@ export const DEFAULT = {
         backoffBase: dialect === "sqlite" ? 1000 : 100,
         backoffExponent: dialect === "sqlite" ? 1.5 : 1.1,
         max: 5,
+        timeout: undefined as number,
       },
     };
   },

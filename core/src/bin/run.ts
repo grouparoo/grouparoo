@@ -1,6 +1,7 @@
 import { GrouparooCLI } from "../modules/cli";
 import { CLI, Task, api, config } from "actionhero";
 import { Reset } from "../modules/reset";
+import { Worker } from "node-resque";
 
 export class RunCLI extends CLI {
   constructor() {
@@ -85,7 +86,7 @@ export class RunCLI extends CLI {
     for (const name in tasks) {
       const args = tasks[name];
       const task: Task = api.tasks.tasks[name];
-      await task.run(args, {});
+      await task.run(args, {} as Worker);
     }
   }
 }

@@ -30,7 +30,7 @@ describe("integration", () => {
   });
 
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
-  beforeAll(() => (url = `http://localhost:${config.servers.web.port}`));
+  beforeAll(() => (url = `http://localhost:${config.web.port}`));
   beforeAll(async () => {
     const setupSteps = await SetupStep.findAll();
     for (const step of setupSteps) {

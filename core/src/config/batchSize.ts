@@ -1,5 +1,13 @@
+const namespace = "batchSize";
+
+declare module "actionhero" {
+  export interface ActionheroConfigInterface {
+    [namespace]: ReturnType<typeof DEFAULT[typeof namespace]>;
+  }
+}
+
 export const DEFAULT = {
-  batchSize: () => {
+  [namespace]: () => {
     // prettier-ignore
     return {
       // How many Imports and should a Run enqueue in each batch before deferring to associate those Imports already enqueued?

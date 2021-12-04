@@ -1,3 +1,4 @@
+// exports
 export { plugin } from "./modules/plugin";
 export * from "./classes/plugin";
 export * from "./classes/configTemplate";
@@ -58,3 +59,20 @@ export { waitForLock } from "./modules/locks";
 export { Errors } from "./modules/errors";
 export * from "./modules/cache";
 export * from "./modules/tableSpeculation";
+
+// ensure config types are loaded
+import "./config/api";
+import "./config/batchSize";
+import "./config/environment";
+import "./config/errors";
+import "./config/logger";
+import "./config/next";
+import "./config/pluginInjection";
+import "./config/plugins";
+import "./config/redis";
+import "./config/routes";
+import "./config/sequelize";
+import "./config/tasks";
+import "./config/telemetry";
+import "./config/web";
+import "./config/websocket";

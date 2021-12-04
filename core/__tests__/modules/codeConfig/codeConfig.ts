@@ -22,6 +22,7 @@ import {
   AppRefreshQuery,
 } from "../../../src";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
+import { GroupDestroy } from "../../../src/tasks/group/destroy";
 
 describe("modules/codeConfig", () => {
   helper.grouparooTestServer({
@@ -711,9 +712,12 @@ describe("modules/codeConfig", () => {
         groupId: "high_value",
       });
 
-      previousGroupRun = await specHelper.runTask("group:destroy", {
-        groupId: "high_value",
-      });
+      previousGroupRun = await specHelper.runTask<GroupDestroy>(
+        "group:destroy",
+        {
+          groupId: "high_value",
+        }
+      );
       expect(previousGroupRun).toBeTruthy();
       expect(previousGroupRun.state).toBe("running");
 

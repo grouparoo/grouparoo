@@ -1,6 +1,21 @@
+import { PluginConfig } from "actionhero";
 import path from "path";
 import { getPluginManifest } from "../modules/pluginDetails";
 import InjectedPlugins from "./pluginInjection";
+
+const namespace = "plugins";
+const pluginManifestNamespace = "pluginManifest";
+
+declare module "actionhero" {
+  export interface ActionheroConfigInterface {
+    [namespace]: ReturnType<typeof DEFAULT[typeof namespace]>;
+  }
+  export interface ActionheroConfigInterface {
+    [pluginManifestNamespace]: ReturnType<
+      typeof DEFAULT[typeof pluginManifestNamespace]
+    >;
+  }
+}
 
 function getPluginPath(pluginName: string) {
   return path.join(
@@ -11,7 +26,7 @@ function getPluginPath(pluginName: string) {
 }
 
 const pluginManifest = getPluginManifest();
-const parentPlugins = {};
+const parentPlugins: Record<string, { path: string }> = {};
 pluginManifest.plugins.map((p) => {
   parentPlugins[p.name] = { path: p.path };
 });
@@ -20,7 +35,7 @@ pluginManifest.missingPlugins.map((p) => {
 });
 
 export const DEFAULT = {
-  plugins: () => {
+  [namespace]: () => {
     const plugins = Object.assign(
       {
         "ah-sequelize-plugin": { path: getPluginPath("ah-sequelize-plugin") },
@@ -31,7 +46,11 @@ export const DEFAULT = {
 
     return plugins;
   },
-  pluginManifestUrl:
-    process.env.GROUPAROO_PLUGIN_MANIFEST_URL ||
-    "https://www.grouparoo.com/plugins/v1/manifest.json",
+  pluginManifest: () => {
+    return {
+      url:
+        process.env.GROUPAROO_PLUGIN_MANIFEST_URL ||
+        "https://www.grouparoo.com/plugins/v1/manifest.json",
+    };
+  },
 };

@@ -1,5 +1,14 @@
-export const DEFAULT = {
-  routes: () => {
+import { RoutesConfig } from "actionhero";
+
+const namespace = "routes";
+
+declare module "actionhero" {
+  export interface ActionheroConfigInterface {
+    [namespace]: ReturnType<typeof DEFAULT[typeof namespace]>;
+  }
+}
+export const DEFAULT: { [namespace]: () => RoutesConfig } = {
+  [namespace]: () => {
     // prettier-ignore
     return {
       head: [

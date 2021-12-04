@@ -1,12 +1,20 @@
-import { api } from "actionhero";
+import { ActionheroLogLevel, api } from "actionhero";
+import { MultiWorker, Queue, Scheduler } from "node-resque";
+
+const namespace = "tasks";
+
+declare module "actionhero" {
+  export interface ActionheroConfigInterface {
+    [namespace]: ReturnType<typeof DEFAULT[typeof namespace]>;
+  }
+}
 
 export const DEFAULT = {
-  tasks: () => {
+  [namespace]: () => {
     return {
       _toExpand: false,
 
-      // Run node as a scheduler to promote delayed tasks if there is at least
-      // one worker.
+      // Should this node run a scheduler to promote delayed tasks?
       scheduler: (process.env.WORKERS ? parseInt(process.env.WORKERS) : 0) > 0,
       // what queues should the taskProcessors work?
       queues: async () => {
@@ -26,29 +34,29 @@ export const DEFAULT = {
             "default",
           ]
         );
-      },
-      // Logging levels of task workers
+      }, // Logging levels of task workers
       workerLogging: {
-        failure: "error", // task failure
-        success: "info", // task success
-        start: "info",
-        end: "info",
-        cleaning_worker: "info",
-        poll: "debug",
-        job: "debug",
-        pause: "debug",
-        internalError: "error",
-        multiWorkerAction: "debug",
+        failure: "error" as ActionheroLogLevel, // task failure
+        success: "info" as ActionheroLogLevel, // task success
+        start: "info" as ActionheroLogLevel,
+        end: "info" as ActionheroLogLevel,
+        cleaning_worker: "info" as ActionheroLogLevel,
+        poll: "debug" as ActionheroLogLevel,
+        job: "debug" as ActionheroLogLevel,
+        pause: "debug" as ActionheroLogLevel,
+        reEnqueue: "debug" as ActionheroLogLevel,
+        internalError: "error" as ActionheroLogLevel,
+        multiWorkerAction: "debug" as ActionheroLogLevel,
       },
       // Logging levels of the task scheduler
       schedulerLogging: {
-        start: "info",
-        end: "info",
-        poll: "debug",
-        enqueue: "debug",
-        reEnqueue: "debug",
-        working_timestamp: "debug",
-        transferred_job: "debug",
+        start: "info" as ActionheroLogLevel,
+        end: "info" as ActionheroLogLevel,
+        poll: "debug" as ActionheroLogLevel,
+        enqueue: "debug" as ActionheroLogLevel,
+        working_timestamp: "debug" as ActionheroLogLevel,
+        reEnqueue: "debug" as ActionheroLogLevel,
+        transferred_job: "debug" as ActionheroLogLevel,
       },
       // how long to sleep between jobs / scheduler checks
       timeout: 2500,
@@ -71,9 +79,9 @@ export const DEFAULT = {
       retryStuckJobs: true,
       // Customize Resque primitives, replace null with required replacement.
       resque_overrides: {
-        queue: null,
-        multiWorker: null,
-        scheduler: null,
+        queue: null as Queue,
+        multiWorker: null as MultiWorker,
+        scheduler: null as Scheduler,
       },
       connectionOptions: {
         tasks: {},
@@ -83,7 +91,7 @@ export const DEFAULT = {
 };
 
 export const test = {
-  tasks: (config) => {
+  [namespace]: () => {
     return {
       queues: [
         "imports",

@@ -23,7 +23,7 @@ const companyName = "Mario Bros. Plumbing";
 
 describe("integration", () => {
   helper.grouparooTestServer({ truncate: true });
-  beforeAll(() => (url = `http://localhost:${config.servers.web.port}`));
+  beforeAll(() => (url = `http://localhost:${config.web.port}`));
 
   test(
     "it renders the home page",

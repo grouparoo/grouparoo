@@ -435,7 +435,7 @@ describe("session", () => {
         let cookie: string;
 
         beforeAll(() => {
-          url = `http://localhost:${config.servers.web.port}`;
+          url = `http://localhost:${config.web.port}`;
         });
 
         async function buildSessionAndCookie() {
@@ -506,7 +506,7 @@ describe("session", () => {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              "X-GROUPAROO-SERVER-TOKEN": config.general.serverToken,
+              "X-GROUPAROO-SERVER-TOKEN": config.general.serverToken as string,
             },
           }).then((r) => r.json());
           expect(response.error.code).toBe("AUTHENTICATION_ERROR");
@@ -520,7 +520,7 @@ describe("session", () => {
             headers: {
               "Content-Type": "application/json",
               Cookie: cookie,
-              "X-GROUPAROO-SERVER-TOKEN": config.general.serverToken,
+              "X-GROUPAROO-SERVER-TOKEN": config.general.serverToken as string,
             },
           }).then((r) => r.json());
           expect(response.teamMember.id).toBeTruthy();

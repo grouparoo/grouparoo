@@ -1,6 +1,3 @@
-//import { Connection, Action, config, log, utils, api, action } from 'actionhero';
-//import * as dotProp from "dot-prop";
-
 import { ActionProcessor, Connection, api, action } from "actionhero";
 import { TeamMember, ApiKey } from "@grouparoo/core";
 
@@ -25,6 +22,7 @@ export async function runAction(
       remoteIP: "demo",
       remoteAddress: "demo",
       params: Object.assign({}, input, { action: actionName }),
+      canChat: false,
     };
 
     const connection = new Connection(data);

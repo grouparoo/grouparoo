@@ -1,25 +1,34 @@
-import path from "path";
+import * as path from "path";
+import * as fs from "fs";
+import { PackageJson } from "type-fest";
+import { ActionheroLogLevel, api } from "actionhero";
 import { getParentPath } from "../modules/pluginDetails";
-import { api } from "actionhero";
+
+const namespace = "general";
+
+declare module "actionhero" {
+  export interface ActionheroConfigInterface {
+    [namespace]: ReturnType<typeof DEFAULT[typeof namespace]>;
+  }
+}
 
 export const DEFAULT = {
-  general: (config) => {
-    const packageJSON = require(path.join(
-      __dirname,
-      "..",
-      "..",
-      "package.json"
-    ));
+  [namespace]: (config) => {
+    const packageJSON: PackageJson = JSON.parse(
+      fs
+        .readFileSync(path.join(__dirname, "..", "..", "package.json"))
+        .toString()
+    );
 
     return {
-      _toExpand: false,
-
       apiVersion: packageJSON.version,
       serverName: packageJSON.name,
+      // you can manually set the server id (not recommended)
+      id: undefined as string,
       welcomeMessage: `Welcome to the ${packageJSON.name} api`,
       // A unique token to your application that servers will use to authenticate to each other
       serverToken: process.env.SERVER_TOKEN ? process.env.SERVER_TOKEN : null,
-      // the redis prefix for actionhero's cache objects
+      // the redis prefix for Actionhero cache objects
       cachePrefix: "grouparoo:cache:",
       // the redis prefix for actionhero's cache/lock objects
       lockPrefix: "grouparoo:lock:",
@@ -29,12 +38,11 @@ export const DEFAULT = {
       simultaneousActions: 5,
       // allow connections to be created without remoteIp and remotePort (they will be set to 0)
       enforceConnectionProperties: true,
-      // disables the allowing/filtering of client params
+      // disables the showing of client params
       disableParamScrubbing: false,
       // enable action response to logger
       enableResponseLogging: false,
-      // params you would like hidden from any logs
-      // api.plugins.plugins.map(p => p.apps).filter(a => a).flat().map(a => a.options).flat().filter(o => o.required).map(o => o.key)
+      // params you would like hidden from any logs. Can be an array of strings or a method that returns an array of strings.
       filteredParams: function () {
         const filteredParams = [
           "password",
@@ -56,20 +64,20 @@ export const DEFAULT = {
         return [].concat(filteredParams, requiredAppOptions);
       },
       // responses you would like hidden from any logs. Can be an array of strings or a method that returns an array of strings.
-      filteredResponse: [],
+      filteredResponse: [] as string[] | (() => string[]),
       // values that signify missing params
       missingParamChecks: [null, "", undefined],
       // The default filetype to server when a user requests a directory
       directoryFileType: "index.html",
       // What log-level should we use for file requests?
-      fileRequestLogLevel: "info",
+      fileRequestLogLevel: "info" as ActionheroLogLevel,
       // The default priority level given to middleware of all types (action, connection, say, and task)
       defaultMiddlewarePriority: 100,
       // Which channel to use on redis pub/sub for RPC communication
       channel: "actionhero",
       // How long to wait for an RPC call before considering it a failure
       rpcTimeout: 5000,
-      // should CLI methods and help include internal ActionHero CLI methods?
+      // should CLI methods and help include internal Actionhero CLI methods?
       cliIncludeInternal: false,
       // configuration for your actionhero project structure
       paths: {
@@ -105,24 +113,21 @@ export const DEFAULT = {
 };
 
 export const test = {
-  general: (config) => {
+  [namespace]: () => {
     return {
-      developmentMode: true,
       startingChatRooms: {
         defaultRoom: {},
         otherRoom: {},
       },
-
       rpcTimeout: 3000,
     };
   },
 };
 
 export const production = {
-  general: (config) => {
+  [namespace]: () => {
     return {
       fileRequestLogLevel: "debug",
-      developmentMode: false,
     };
   },
 };

@@ -1,5 +1,12 @@
+const namespace = "telemetry";
+
+declare module "actionhero" {
+  export interface ActionheroConfigInterface {
+    [namespace]: ReturnType<typeof DEFAULT[typeof namespace]>;
+  }
+}
 export const DEFAULT = {
-  telemetry: () => {
+  [namespace]: () => {
     return {
       enabled:
         ["false", "FALSE", "0", "off"].includes(

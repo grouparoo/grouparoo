@@ -10,6 +10,7 @@ import {
   Run,
   GrouparooModel,
 } from "./../../../src";
+import { GroupDestroy } from "../../../src/tasks/group/destroy";
 
 describe("tasks/group:destroy", () => {
   let model: GrouparooModel;
@@ -67,7 +68,7 @@ describe("tasks/group:destroy", () => {
         modelId: model.id,
       });
 
-      let run: Run = await specHelper.runTask("group:destroy", {
+      let run: Run = await specHelper.runTask<GroupDestroy>("group:destroy", {
         groupId: group.id,
       });
       expect(run).toBeFalsy();
@@ -86,7 +87,7 @@ describe("tasks/group:destroy", () => {
 
       await group.update({ state: "deleted" }); // mark group as deleted
 
-      let run: Run = await specHelper.runTask("group:destroy", {
+      let run: Run = await specHelper.runTask<GroupDestroy>("group:destroy", {
         groupId: group.id,
       });
       expect(run).toBeFalsy();
@@ -107,7 +108,7 @@ describe("tasks/group:destroy", () => {
 
       await group.update({ state: "deleted" }); // mark group as deleted
 
-      let run: Run = await specHelper.runTask("group:destroy", {
+      let run: Run = await specHelper.runTask<GroupDestroy>("group:destroy", {
         groupId: group.id,
       });
 
@@ -144,7 +145,7 @@ describe("tasks/group:destroy", () => {
       await group.update({ state: "deleted" }); // mark group as deleted
 
       // remove the records
-      let run: Run = await specHelper.runTask("group:destroy", {
+      let run: Run = await specHelper.runTask<GroupDestroy>("group:destroy", {
         groupId: group.id,
       });
 
@@ -170,7 +171,9 @@ describe("tasks/group:destroy", () => {
       expect(groupMemberCount).toBe(0);
 
       // remove the group
-      run = await specHelper.runTask("group:destroy", { groupId: group.id });
+      run = await specHelper.runTask<GroupDestroy>("group:destroy", {
+        groupId: group.id,
+      });
       expect(run).toBeNull();
 
       await expect(group.reload()).rejects.toThrow(/does not exist anymore/);
@@ -198,7 +201,7 @@ describe("tasks/group:destroy", () => {
       await group.update({ state: "deleted" }); // mark group as deleted
 
       // wait for run kicked off by setRules to complete
-      let run: Run = await specHelper.runTask("group:destroy", {
+      let run: Run = await specHelper.runTask<GroupDestroy>("group:destroy", {
         groupId: group.id,
       });
       expect(run).toBeNull();
@@ -209,7 +212,9 @@ describe("tasks/group:destroy", () => {
       await group.stopPreviousRuns(); // force stop it to continue tests...
 
       // remove the records
-      run = await specHelper.runTask("group:destroy", { groupId: group.id });
+      run = await specHelper.runTask<GroupDestroy>("group:destroy", {
+        groupId: group.id,
+      });
 
       reloadedGroup = await Group.findById(group.id);
       expect(reloadedGroup.state).toBe("deleted");
@@ -233,7 +238,9 @@ describe("tasks/group:destroy", () => {
       expect(groupMemberCount).toBe(0);
 
       // remove the group and end the run
-      run = await specHelper.runTask("group:destroy", { groupId: group.id });
+      run = await specHelper.runTask<GroupDestroy>("group:destroy", {
+        groupId: group.id,
+      });
       expect(run).toBeNull();
 
       await expect(group.reload()).rejects.toThrow(/does not exist anymore/);
