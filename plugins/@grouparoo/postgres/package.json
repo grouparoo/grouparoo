@@ -40,7 +40,7 @@
     "@types/jest": "*",
     "@types/node": "*",
     "@types/pg": "*",
-    "actionhero": "28.0.1",
+    "actionhero": "28.0.2",
     "csv-parse": "4.16.3",
     "fs-extra": "10.0.0",
     "jest": "27.3.1",
