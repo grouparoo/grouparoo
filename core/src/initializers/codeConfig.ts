@@ -53,6 +53,8 @@ async function loadSampleProfiles() {
     const records = await GrouparooRecord.findAll({
       where: { modelId: model.id },
     });
+    if (records.length === 0) continue;
+
     log(
       `importing ${records.length} sample records from the ${model.name} model`
     );
