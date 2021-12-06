@@ -98,7 +98,11 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
         </Row>
         <Row className="mb-4">
           <Col>
-            <SampleRecordCard properties={properties} execApi={execApi} />
+            <SampleRecordCard
+              properties={properties}
+              execApi={execApi}
+              disabled={!sources.length}
+            />
           </Col>
         </Row>
         <Row>

@@ -16,6 +16,7 @@ import AddSampleRecordModal from "./AddSampleRecordModal";
 interface Props {
   execApi: ApiHook["execApi"];
   properties: Models.PropertyType[];
+  disabled: boolean;
 }
 
 interface RecordRow {
@@ -40,7 +41,11 @@ const clearCachedSampleRecordId = (modelId: string): void => {
   globalThis.localStorage?.removeItem(`sampleRecord:${modelId}`);
 };
 
-const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
+const SampleRecordCard: React.FC<Props> = ({
+  properties,
+  execApi,
+  disabled,
+}) => {
   const model = useGrouparooModelContext();
   const prevModelId = usePrevious(model.id);
 
@@ -199,7 +204,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
   if (isConfigUI) {
     actions.push(
       <Button
-        disabled={loading}
+        disabled={loading || disabled}
         size="sm"
         variant="outline-primary"
         onClick={() => setAddingRecord(true)}
@@ -285,9 +290,10 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
   return (
     <ManagedCard
       title="Sample Record"
+      disabled={disabled}
       actions={[
         <LinkButton
-          disabled={!record}
+          disabled={!record || disabled}
           href={record ? `/model/${model.id}/record/${record.id}/edit` : "#"}
           size="sm"
           variant="outline-primary"
@@ -295,6 +301,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
           View Record
         </LinkButton>,
         <LinkButton
+          disabled={disabled}
           href={`/model/${model.id}/records`}
           size="sm"
           variant="outline-primary"
