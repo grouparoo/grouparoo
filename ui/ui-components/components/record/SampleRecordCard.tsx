@@ -122,6 +122,7 @@ const SampleRecordCard: React.FC<Props> = ({
     } else {
       // Got an invalid record. Let's clear this and start over.
       clearCachedSampleRecordId(model.id);
+      setRecordId(undefined);
     }
 
     setLoading(false);
