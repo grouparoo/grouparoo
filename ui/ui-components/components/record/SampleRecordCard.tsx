@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Card, Col, Row, Table } from "react-bootstrap";
+import EnterpriseLink from "../../components/GrouparooLink";
 import { useGrouparooModelContext } from "../../contexts/grouparooModel";
 import { ApiHook } from "../../hooks/useApi";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -55,15 +56,17 @@ const SampleRecordCard: React.FC<Props> = ({
   const [hasRecords, setHasRecords] = useState(true);
   const [record, setRecord] = useState<Models.GrouparooRecordType>();
   const [groups, setGroups] = useState<Models.GroupType[]>();
+  const [destinations, setDestinations] = useState<Models.DestinationType[]>();
   const [recordId, setRecordId] = useState(() =>
     getCachedSampleRecordId(model.id)
   );
 
   const saveRecord = useCallback(
-    (record, groups = undefined) => {
+    (record, groups = undefined, destinations = undefined) => {
       setLoading(true);
       setRecord(record);
       setGroups(groups);
+      setDestinations(destinations);
       setRecordId(record.id);
       setHasRecords(true);
       setLoading(false);
@@ -78,14 +81,15 @@ const SampleRecordCard: React.FC<Props> = ({
 
     let record: Models.GrouparooRecordType;
     let groups: Models.GroupType[];
+    let destinations: Models.DestinationType[];
 
     if (recordId) {
-      ({ record, groups } = await execApi<Actions.RecordView>(
+      ({ record, groups, destinations } = await execApi<Actions.RecordView>(
         "get",
         `/record/${recordId}`
       ));
     } else {
-      ({ record, groups } = await execApi<Actions.RecordsList>(
+      ({ record, groups, destinations } = await execApi<Actions.RecordsList>(
         "get",
         "/records",
         {
@@ -111,12 +115,16 @@ const SampleRecordCard: React.FC<Props> = ({
           }
         }
 
-        return { record: undefined, groups: undefined };
+        return {
+          record: undefined,
+          groups: undefined,
+          destinations: undefined,
+        };
       }));
     }
 
     if (record?.id) {
-      saveRecord(record, groups);
+      saveRecord(record, groups, destinations);
     } else {
       // Got an invalid record. Let's clear this and start over.
       clearCachedSampleRecordId(model.id);
@@ -132,6 +140,7 @@ const SampleRecordCard: React.FC<Props> = ({
       setRecordId(getCachedSampleRecordId(model.id));
       setRecord(undefined);
       setGroups(undefined);
+      setDestinations(undefined);
       setHasRecords(true);
       setLoading(false);
     }
@@ -257,7 +266,7 @@ const SampleRecordCard: React.FC<Props> = ({
           <p>
             {groups?.map((group) => {
               return (
-                <Fragment key={group.id}>
+                <Fragment key={`group-${group.id}`}>
                   <Link
                     href={`/model/${group.modelId}/group/${group.id}/${
                       group.type === "calculated" ? "rules" : "edit"
@@ -269,6 +278,29 @@ const SampleRecordCard: React.FC<Props> = ({
                 </Fragment>
               );
             }) || "None"}
+          </p>
+        }
+        <h6>Destinations</h6>
+        {
+          <p>
+            {destinations?.length
+              ? destinations.map((destination) => {
+                  return (
+                    <Fragment key={`destination-${destination.id}`}>
+                      {isConfigUI ? (
+                        destination.name
+                      ) : (
+                        <EnterpriseLink
+                          href={`/model/${destination.modelId}/destination/${destination.id}/data`}
+                        >
+                          <a>{destination.name}</a>
+                        </EnterpriseLink>
+                      )}
+                      <br />
+                    </Fragment>
+                  );
+                })
+              : "None"}
           </p>
         }
       </Col>
