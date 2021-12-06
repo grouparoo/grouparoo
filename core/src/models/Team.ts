@@ -3,7 +3,6 @@ import {
   Column,
   AllowNull,
   Length,
-  Default,
   AfterSave,
   BeforeDestroy,
   HasMany,

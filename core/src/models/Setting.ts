@@ -1,7 +1,6 @@
 import {
   Table,
   Column,
-  Default,
   AllowNull,
   BeforeSave,
   DataType,

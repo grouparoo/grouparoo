@@ -6,7 +6,6 @@ import {
   HasMany,
   AfterSave,
   AfterDestroy,
-  Default,
   BeforeValidate,
   BeforeSave,
   BeforeDestroy,

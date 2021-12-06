@@ -3,7 +3,6 @@ import {
   Column,
   AllowNull,
   IsEmail,
-  Default,
   BelongsTo,
   BeforeSave,
   ForeignKey,
