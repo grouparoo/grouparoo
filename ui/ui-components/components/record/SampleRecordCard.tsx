@@ -204,7 +204,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
         variant="outline-primary"
         onClick={() => setAddingRecord(true)}
       >
-        Add sample Record
+        Add Sample Record
       </Button>
     );
   }
@@ -233,6 +233,55 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
     return <p>None</p>;
   };
 
+  const content = record ? (
+    <Row>
+      <Col md={9}>
+        <Table bordered>
+          <thead>
+            <tr>
+              <th>
+                <strong>Property</strong>
+              </th>
+              <th>
+                <strong>Value</strong>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {recordRows.map((row) => (
+              <tr key={row.propertyKey}>
+                <td>
+                  <Link
+                    href={`/model/${model.id}/property/${row.propertyId}/edit`}
+                  >
+                    <a>{row.propertyKey}</a>
+                  </Link>
+                  {row.propertyState !== "ready" && (
+                    <StateBadge state={row.propertyState} marginBottom={0} />
+                  )}
+                </td>
+                <td>{row.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Col>
+      <Col md={3} className={"text-center"}>
+        <h6>Groups</h6>
+        {renderGroups()}
+      </Col>
+    </Row>
+  ) : (
+    <Row>
+      <Col>
+        <p>
+          A Sample Record can be used to validate your configuration is
+          importing the correct data to Groups and Destinations.
+        </p>
+      </Col>
+    </Row>
+  );
+
   return (
     <ManagedCard
       title="Sample Record"
@@ -255,46 +304,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
       ]}
     >
       <Card.Body>
-        <Row>
-          <Col md={9}>
-            <Table bordered>
-              <thead>
-                <tr>
-                  <th>
-                    <strong>Property</strong>
-                  </th>
-                  <th>
-                    <strong>Value</strong>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {recordRows.map((row) => (
-                  <tr key={row.propertyKey}>
-                    <td>
-                      <Link
-                        href={`/model/${model.id}/property/${row.propertyId}/edit`}
-                      >
-                        <a>{row.propertyKey}</a>
-                      </Link>
-                      {row.propertyState !== "ready" && (
-                        <StateBadge
-                          state={row.propertyState}
-                          marginBottom={0}
-                        />
-                      )}
-                    </td>
-                    <td>{row.value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Col>
-          <Col md={3} className={"text-center"}>
-            <h6>Groups</h6>
-            {renderGroups()}
-          </Col>
-        </Row>
+        {content}
         <Row>
           <Col>
             <SeparatedItems items={actions} />
