@@ -76,17 +76,30 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
         `/record/${recordId}`
       ));
     } else {
-      record = await execApi<Actions.RecordsList>("get", "/records", {
-        limit: 25,
-        offset: 0,
-        modelId: model.id,
-      }).then((response) => {
-        return response?.records?.length
+      ({ record, groups } = await execApi<Actions.RecordsList>(
+        "get",
+        "/records",
+        {
+          limit: 25,
+          offset: 0,
+          modelId: model.id,
+        }
+      ).then((response) => {
+        const randomRecord = response?.records?.length
           ? response.records[
               Math.floor(Math.random() * response.records.length)
             ]
           : undefined;
-      });
+
+        if (randomRecord?.id) {
+          return execApi<Actions.RecordView>(
+            "get",
+            `/record/${randomRecord.id}`
+          );
+        }
+
+        return undefined;
+      }));
     }
 
     if (record?.id) {
@@ -177,7 +190,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
   }
 
   const renderGroups = () => {
-    if (groups) {
+    if (groups?.length) {
       return (
         <p>
           {groups.map((group) => {
