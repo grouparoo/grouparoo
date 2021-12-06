@@ -23,6 +23,7 @@ export default {
       const table = tables[i];
       await queryInterface.changeColumn(table, "locked", {
         type: DataTypes.STRING(191),
+        defaultValue: null, // normally the default value of a string column is null, but since we are migrating from a boolean, we need to re-set the default
         allowNull: true,
       });
       if (table !== "teams") {
