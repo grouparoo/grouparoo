@@ -264,20 +264,22 @@ const SampleRecordCard: React.FC<Props> = ({
         <h6>Groups</h6>
         {
           <p>
-            {groups?.map((group) => {
-              return (
-                <Fragment key={`group-${group.id}`}>
-                  <Link
-                    href={`/model/${group.modelId}/group/${group.id}/${
-                      group.type === "calculated" ? "rules" : "edit"
-                    }`}
-                  >
-                    {group.name}
-                  </Link>
-                  <br />
-                </Fragment>
-              );
-            }) || "None"}
+            {groups?.length
+              ? groups.map((group) => {
+                  return (
+                    <Fragment key={`group-${group.id}`}>
+                      <Link
+                        href={`/model/${group.modelId}/group/${group.id}/${
+                          group.type === "calculated" ? "rules" : "edit"
+                        }`}
+                      >
+                        {group.name}
+                      </Link>
+                      <br />
+                    </Fragment>
+                  );
+                })
+              : "None"}
           </p>
         }
         <h6>Destinations</h6>
