@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Card, Col, Row, Table } from "react-bootstrap";
 import { useGrouparooModelContext } from "../../contexts/grouparooModel";
 import { ApiHook } from "../../hooks/useApi";
@@ -46,14 +46,16 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
   const [importing, setImporting] = useState(false);
   const [addingRecord, setAddingRecord] = useState(false);
   const [record, setRecord] = useState<Actions.RecordView["record"]>();
+  const [groups, setGroups] = useState<Actions.RecordView["groups"]>();
   const [recordId, setRecordId] = useState(() =>
     getCachedSampleRecordId(model.id)
   );
 
   const saveRecord = useCallback(
-    (record) => {
+    (record, groups = undefined) => {
       setLoading(true);
       setRecord(record);
+      setGroups(groups);
       setRecordId(record.id);
       setLoading(false);
 
@@ -66,12 +68,13 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
     setLoading(true);
 
     let record: Actions.RecordView["record"];
+    let groups: Actions.RecordView["groups"];
 
     if (recordId) {
-      record = await execApi<Actions.RecordView>(
+      ({ record, groups } = await execApi<Actions.RecordView>(
         "get",
         `/record/${recordId}`
-      ).then(({ record }) => record);
+      ));
     } else {
       record = await execApi<Actions.RecordsList>("get", "/records", {
         limit: 25,
@@ -87,7 +90,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
     }
 
     if (record?.id) {
-      saveRecord(record);
+      saveRecord(record, groups);
     } else {
       // Got an invalid record. Let's clear this and start over.
       clearCachedSampleRecordId(model.id);
@@ -116,9 +119,10 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
   }, [record]);
 
   useEffect(() => {
-    if (loading || (record && record.id === recordId)) return;
-    loadRecord();
-  }, [record, recordId, loading]);
+    if (!loading && (!record || record.id !== recordId)) {
+      loadRecord();
+    }
+  }, [record, recordId, loading, loadRecord]);
 
   const importRecord = async () => {
     setImporting(true);
@@ -128,6 +132,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
     );
     if (response?.record) {
       setRecord(response.record);
+      setGroups(response.groups);
       successHandler.set({ message: "Import Complete!" });
     } else {
       loadRecord(); // we may have done a partial import
@@ -137,7 +142,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
 
   const actions = [
     <Button
-      disabled={importing || loading}
+      disabled={!record || importing || loading}
       onClick={() => {
         importRecord();
       }}
@@ -171,13 +176,37 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
     );
   }
 
+  const renderGroups = () => {
+    if (groups) {
+      return (
+        <p>
+          {groups.map((group) => {
+            return (
+              <Fragment key={group.id}>
+                <Link
+                  href={`/model/${group.modelId}/group/${group.id}/${
+                    group.type === "calculated" ? "rules" : "edit"
+                  }`}
+                >
+                  {group.name}
+                </Link>
+                <br />
+              </Fragment>
+            );
+          })}
+        </p>
+      );
+    }
+    return <p>None</p>;
+  };
+
   return (
     <ManagedCard
       title="Sample Record"
       actions={[
         <LinkButton
           disabled={!record}
-          href={record ? `/model/${model.id}/record/${record.id}/edit` : ""}
+          href={record ? `/model/${model.id}/record/${record.id}/edit` : "#"}
           size="sm"
           variant="outline-primary"
         >
@@ -229,22 +258,8 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
             </Table>
           </Col>
           <Col md={3} className={"text-center"}>
-            <p>
-              <strong>Groups</strong>
-              <br />
-              All Emails
-              <br />
-              High Value
-              <br />
-            </p>
-            <p>
-              <strong>Destinations</strong>
-              <br />
-              All Emails
-              <br />
-              High Value
-              <br />
-            </p>
+            <h6>Groups</h6>
+            {renderGroups()}
           </Col>
         </Row>
         <Row>
