@@ -98,7 +98,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
           );
         }
 
-        return undefined;
+        return { record: undefined, groups: undefined };
       }));
     }
 
@@ -110,7 +110,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
     }
 
     setLoading(false);
-  }, [recordId, saveRecord, execApi]);
+  }, [recordId, saveRecord, execApi, model]);
 
   const recordRows = useMemo<RecordRow[]>(() => {
     if (!record?.properties) return [];
@@ -130,6 +130,17 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
 
     return values;
   }, [record]);
+
+  useEffect(() => {
+    // Switched to another model
+    if (record && record.modelId !== model.id) {
+      setLoading(true);
+      setRecordId(getCachedSampleRecordId(model.id));
+      setRecord(undefined);
+      setGroups(undefined);
+      loadRecord();
+    }
+  }, [record, model]);
 
   useEffect(() => {
     if (!loading && (!record || record.id !== recordId)) {
