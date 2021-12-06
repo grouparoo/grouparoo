@@ -53,8 +53,8 @@ const SampleRecordCard: React.FC<Props> = ({
   const [importing, setImporting] = useState(false);
   const [addingRecord, setAddingRecord] = useState(false);
   const [hasRecords, setHasRecords] = useState(true);
-  const [record, setRecord] = useState<Actions.RecordView["record"]>();
-  const [groups, setGroups] = useState<Actions.RecordView["groups"]>();
+  const [record, setRecord] = useState<Models.GrouparooRecordType>();
+  const [groups, setGroups] = useState<Models.GroupType[]>();
   const [recordId, setRecordId] = useState(() =>
     getCachedSampleRecordId(model.id)
   );
@@ -76,8 +76,8 @@ const SampleRecordCard: React.FC<Props> = ({
   const loadRecord = useCallback(async () => {
     setLoading(true);
 
-    let record: Actions.RecordView["record"];
-    let groups: Actions.RecordView["groups"];
+    let record: Models.GrouparooRecordType;
+    let groups: Models.GroupType[];
 
     if (recordId) {
       ({ record, groups } = await execApi<Actions.RecordView>(

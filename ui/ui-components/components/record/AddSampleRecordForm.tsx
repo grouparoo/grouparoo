@@ -8,7 +8,7 @@ import LoadingButton from "../LoadingButton";
 
 interface Props {
   properties: Models.PropertyType[];
-  onSubmitComplete: (record?: any) => void;
+  onSubmitComplete: (record?: Models.GrouparooRecordType) => void;
   execApi: ApiHook["execApi"];
 }
 

@@ -5,7 +5,7 @@ import AddSampleRecordForm from "./AddSampleRecordForm";
 
 interface Props {
   show: boolean;
-  onRecordCreated: (record: any) => void;
+  onRecordCreated: (record: Models.GrouparooRecordType) => void;
   onHide: () => void;
   execApi: ApiHook["execApi"];
   properties: Models.PropertyType[];
