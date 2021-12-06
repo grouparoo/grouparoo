@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Card, Col, Row, Table } from "react-bootstrap";
-import useSWR, { mutate } from "swr";
 import { useGrouparooModelContext } from "../../contexts/grouparooModel";
 import { ApiHook } from "../../hooks/useApi";
 import { Actions, Models } from "../../utils/apiData";
@@ -45,18 +44,32 @@ const clearCachedSampleRecordId = (modelId: string): void => {
 const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
   const model = useGrouparooModelContext();
 
+  const [loading, setLoading] = useState(false);
   const [importing, setImporting] = useState(false);
   const [addingRecord, setAddingRecord] = useState(false);
+  const [record, setRecord] = useState<Actions.RecordView["record"]>();
   const [recordId, setRecordId] = useState(() =>
     getCachedSampleRecordId(model.id)
   );
 
-  const {
-    data: record,
-    mutate: mutateRecord,
-    isValidating,
-  } = useSWR(["sample-record", recordId], async () => {
+  const saveRecord = useCallback(
+    (record) => {
+      setLoading(true);
+      setRecord(record);
+      setRecordId(record.id);
+      setLoading(false);
+
+      setCachedSampleRecordId(model.id, record.id);
+    },
+    [model]
+  );
+
+  const loadRecord = useCallback(async () => {
+    setLoading(true);
+
     let record: Actions.RecordView["record"];
+
+    console.log(recordId);
 
     if (recordId) {
       record = await execApi<Actions.RecordView>(
@@ -68,34 +81,24 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
         limit: 25,
         offset: 0,
         modelId: model.id,
-      }).then((data) => {
-        if (data?.records?.length) {
-          const record =
-            data.records[Math.floor(Math.random() * data.records.length)];
-          return record;
-        }
-        return undefined;
+      }).then((response) => {
+        return response?.records?.length
+          ? response.records[
+              Math.floor(Math.random() * response.records.length)
+            ]
+          : undefined;
       });
     }
 
     if (record?.id) {
-      if (!recordId) {
-        await mutate(["sample-record", record.id], record, false);
-      }
-      return record;
+      saveRecord(record);
     } else {
       // Got an invalid record. Let's clear this and start over.
       clearCachedSampleRecordId(model.id);
-      return undefined;
     }
-  });
 
-  useEffect(() => {
-    if (record) {
-      setCachedSampleRecordId(model.id, record.id);
-      setRecordId(record.id);
-    }
-  }, [record]);
+    setLoading(false);
+  }, [recordId, saveRecord, execApi]);
 
   const recordRows = useMemo<RecordRow[]>(() => {
     if (!record?.properties) return [];
@@ -116,6 +119,11 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
     return values;
   }, [record]);
 
+  useEffect(() => {
+    if (loading || (record && record.id === recordId)) return;
+    loadRecord();
+  }, [record, recordId, loading]);
+
   const importRecord = async () => {
     setImporting(true);
     const response = await execApi<Actions.RecordImport>(
@@ -123,15 +131,13 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
       `/record/${record.id}/import`
     );
     if (response?.record) {
-      mutateRecord(response.record, false);
+      setRecord(response.record);
       successHandler.set({ message: "Import Complete!" });
     } else {
-      mutateRecord(); // we may have done a partial import
+      loadRecord(); // we may have done a partial import
     }
     setImporting(false);
   };
-
-  const loading = isValidating;
 
   const actions = [
     <Button
@@ -150,7 +156,6 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
       variant="outline-primary"
       onClick={() => {
         setRecordId(undefined);
-        mutate(["sample-record", undefined], true);
       }}
     >
       Switch to random Record
@@ -215,7 +220,10 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
                         <a>{row.propertyKey}</a>
                       </Link>
                       {row.propertyState !== "ready" && (
-                        <StateBadge state={row.propertyState} />
+                        <StateBadge
+                          state={row.propertyState}
+                          marginBottom={0}
+                        />
                       )}
                     </td>
                     <td>{row.value}</td>
@@ -254,9 +262,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
           properties={properties}
           execApi={execApi}
           show={addingRecord}
-          onRecordCreated={(record) => {
-            setRecordId(record.id);
-          }}
+          onRecordCreated={saveRecord}
           onHide={() => {
             setAddingRecord(false);
           }}

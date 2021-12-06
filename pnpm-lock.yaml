@@ -1736,13 +1736,11 @@ importers:
       sass: 1.44.0
       stacktrace-js: 2.0.2
       swagger-ui-dist: 4.1.2
-      swr: 1.1.0
       ts-jest: 27.1.1
       type-fest: 2.8.0
       typescript: 4.5.2
       universal-cookie: 4.0.4
     dependencies:
-      swr: 1.1.0_react@17.0.2
       universal-cookie: 4.0.4
     devDependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.36
@@ -14345,14 +14343,6 @@ packages:
   /swagger-ui-dist/4.1.2:
     resolution: {integrity: sha512-Pj960coj9L0nAQPE1vgBzHulKGPNw1ifn/1GTIv/mlV9V3PoRM0uTcE0uhTiizx6aHg+vnFFmbA2J1gjFekOaQ==}
     dev: true
-
-  /swr/1.1.0_react@17.0.2:
-    resolution: {integrity: sha512-MFL3mkl752Uap81nLA1tEu7vQmikPamSziW+6dBidYKAo4oLOlUx/x5GZy4ZCkCwfZe2uedylkz1UMGnatUX4g==}
-    peerDependencies:
-      react: ^16.11.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      react: 17.0.2
-    dev: false
 
   /symbol-tree/3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
