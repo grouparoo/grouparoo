@@ -8,6 +8,17 @@ export namespace Deprecation {
     );
   }
 
+  export function warnReplaced(
+    topic: string,
+    oldName: string,
+    newName: string
+  ) {
+    log(
+      `[${topic}] - deprecation warning: \`${oldName}\` command has been replaced by ${newName} and will be removed in a future release.  `,
+      "warning"
+    );
+  }
+
   export function warnRemoved(
     topic: string,
     container: string,
