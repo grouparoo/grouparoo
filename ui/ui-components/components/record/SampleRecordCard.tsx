@@ -27,18 +27,16 @@ interface RecordRow {
 const isConfigUI = grouparooUiEdition() === "config";
 
 const getCachedSampleRecordId = (modelId: string): string => {
-  if (typeof window === "undefined") return undefined;
-  return window.localStorage.getItem(`sampleRecord:${modelId}`);
+  return globalThis.localStorage?.getItem(`sampleRecord:${modelId}`);
 };
 
 const setCachedSampleRecordId = (modelId: string, recordId: string): void => {
-  if (typeof window === "undefined" || !recordId) return;
-  window.localStorage.setItem(`sampleRecord:${modelId}`, recordId);
+  recordId &&
+    globalThis.localStorage?.setItem(`sampleRecord:${modelId}`, recordId);
 };
 
 const clearCachedSampleRecordId = (modelId: string): void => {
-  if (typeof window === "undefined") return;
-  window.localStorage.removeItem(`sampleRecord:${modelId}`);
+  globalThis.localStorage?.removeItem(`sampleRecord:${modelId}`);
 };
 
 const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
