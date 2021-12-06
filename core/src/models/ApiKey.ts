@@ -37,16 +37,12 @@ export class ApiKey extends LoggedModel<ApiKey> {
   @Column
   apiKey: string;
 
-  @AllowNull(true)
-  @Default(null)
   @Column
   locked: string;
 
-  @AllowNull(true)
   @Column
   permissionAllRead: boolean;
 
-  @AllowNull(true)
   @Column
   permissionAllWrite: boolean;
 

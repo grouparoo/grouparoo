@@ -119,7 +119,6 @@ export class Run extends CommonModel<Run> {
   @Column
   percentComplete: number;
 
-  @AllowNull(true)
   @Column
   destinationId: string;
 

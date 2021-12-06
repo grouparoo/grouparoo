@@ -68,7 +68,6 @@ export class RecordProperty extends CommonModel<RecordProperty> {
   @Column
   unique: boolean;
 
-  @AllowNull(true)
   @Column
   valueChangedAt: Date;
 
@@ -77,11 +76,9 @@ export class RecordProperty extends CommonModel<RecordProperty> {
   @Column
   stateChangedAt: Date;
 
-  @AllowNull(true)
   @Column
   confirmedAt: Date;
 
-  @AllowNull(true)
   @Column
   startedAt: Date;
 

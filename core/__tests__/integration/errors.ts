@@ -48,7 +48,7 @@ describe("errors", () => {
       message: "name must be unique",
       code: "unique violation",
       fields: ["name"],
-      sql: 'INSERT INTO "teams" ("id","name","locked","permissionAllRead","permissionAllWrite","createdAt","updatedAt") VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING "id","name","locked","permissionAllRead","permissionAllWrite","createdAt","updatedAt";',
+      sql: 'INSERT INTO "teams" ("id","name","permissionAllRead","permissionAllWrite","createdAt","updatedAt") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "id","name","locked","permissionAllRead","permissionAllWrite","createdAt","updatedAt";',
     });
   });
 });

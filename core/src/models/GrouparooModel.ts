@@ -63,8 +63,6 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
   @Column(DataType.ENUM(...ModelTypes))
   type: ModelType;
 
-  @AllowNull(true)
-  @Default(null)
   @Column
   locked: string;
 

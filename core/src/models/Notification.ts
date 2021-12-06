@@ -20,15 +20,12 @@ export class Notification extends LoggedModel<Notification> {
   @Column
   body: string;
 
-  @AllowNull(true)
   @Column
   cta: string;
 
-  @AllowNull(true)
   @Column
   ctaLink: string;
 
-  @AllowNull(true)
   @Column
   readAt: Date;
 

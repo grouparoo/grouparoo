@@ -103,7 +103,6 @@ export class Group extends LoggedModel<Group> {
     return "grp";
   }
 
-  @AllowNull(true)
   @Length({ min: 0, max: 191 })
   @Default("")
   @Column
@@ -133,8 +132,6 @@ export class Group extends LoggedModel<Group> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @AllowNull(true)
-  @Default(null)
   @Column
   locked: string;
 

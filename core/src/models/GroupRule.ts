@@ -22,12 +22,10 @@ export class GroupRule extends CommonModel<GroupRule> {
   @Column
   groupId: string;
 
-  @AllowNull(true)
   @ForeignKey(() => Property)
   @Column
   propertyId: string;
 
-  @AllowNull(true)
   @Column
   recordColumn: string;
 

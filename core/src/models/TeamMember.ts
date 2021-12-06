@@ -30,8 +30,6 @@ export class TeamMember extends LoggedModel<TeamMember> {
   @ForeignKey(() => Team)
   teamId: string;
 
-  @AllowNull(true)
-  @Default(null)
   @Column
   locked: string;
 
