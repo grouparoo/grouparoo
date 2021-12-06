@@ -6,6 +6,16 @@ import { ApiHook } from "../../hooks/useApi";
 import { Actions, Models } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
 
+const getInputType = (type?: Models.PropertyType["type"]): string => {
+  switch (type) {
+    case "float":
+    case "integer":
+      return "number";
+    default:
+      return "text";
+  }
+};
+
 interface Props {
   properties: Models.PropertyType[];
   onSubmitComplete: (record?: Models.GrouparooRecordType) => void;
@@ -27,6 +37,23 @@ const AddSampleRecordForm: React.FC<Props> = ({
     [properties]
   );
 
+  const [selectedUniquePropertyValue, setSelectedUniquePropertyValue] =
+    useState(() => {
+      return propertiesWithPrimaryKey?.[0]?.key || "";
+    });
+
+  const selectedUniqueProperty = useMemo(() => {
+    return propertiesWithPrimaryKey?.find(
+      ({ key }) => key === selectedUniquePropertyValue
+    );
+  }, [selectedUniquePropertyValue]);
+
+  const onSelectUniqueProperty: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    setSelectedUniquePropertyValue(event.target.value);
+  };
+
   const onSubmit: Parameters<typeof handleSubmit>[0] = async (data) => {
     setSubmitting(true);
     const response = await execApi<Actions.RecordCreate>("post", `/record`, {
@@ -46,9 +73,13 @@ const AddSampleRecordForm: React.FC<Props> = ({
           as="select"
           ref={register}
           disabled={submitting}
+          value={selectedUniquePropertyValue}
+          onChange={onSelectUniqueProperty}
         >
           {propertiesWithPrimaryKey.map((rule) => (
-            <option key={`rule-${rule.key}`}>{rule.key}</option>
+            <option key={`rule-${rule.key}`} value={rule.key}>
+              {rule.key}
+            </option>
           ))}
         </Form.Control>
       </Form.Group>
@@ -57,7 +88,7 @@ const AddSampleRecordForm: React.FC<Props> = ({
         <Form.Control
           autoFocus
           required
-          type="text"
+          type={getInputType(selectedUniqueProperty?.type)}
           name="value"
           ref={register}
           disabled={submitting}
