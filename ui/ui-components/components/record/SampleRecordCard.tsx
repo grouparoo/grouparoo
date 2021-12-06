@@ -242,6 +242,10 @@ const SampleRecordCard: React.FC<Props> = ({
     <Row>
       <Col md={9}>
         <Table bordered>
+          <colgroup>
+            <col span={1} style={{ width: "35%" }} />
+            <col span={1} style={{ width: "65%" }} />
+          </colgroup>
           <thead>
             <tr>
               <th>
