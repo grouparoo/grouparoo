@@ -214,30 +214,6 @@ const SampleRecordCard: React.FC<Props> = ({
     );
   }
 
-  const renderGroups = () => {
-    if (groups?.length) {
-      return (
-        <p>
-          {groups.map((group) => {
-            return (
-              <Fragment key={group.id}>
-                <Link
-                  href={`/model/${group.modelId}/group/${group.id}/${
-                    group.type === "calculated" ? "rules" : "edit"
-                  }`}
-                >
-                  {group.name}
-                </Link>
-                <br />
-              </Fragment>
-            );
-          })}
-        </p>
-      );
-    }
-    return <p>None</p>;
-  };
-
   const content = record ? (
     <Row>
       <Col md={9}>
@@ -277,7 +253,24 @@ const SampleRecordCard: React.FC<Props> = ({
       </Col>
       <Col md={3} className={"text-center"}>
         <h6>Groups</h6>
-        {renderGroups()}
+        {
+          <p>
+            {groups?.map((group) => {
+              return (
+                <Fragment key={group.id}>
+                  <Link
+                    href={`/model/${group.modelId}/group/${group.id}/${
+                      group.type === "calculated" ? "rules" : "edit"
+                    }`}
+                  >
+                    {group.name}
+                  </Link>
+                  <br />
+                </Fragment>
+              );
+            }) || "None"}
+          </p>
+        }
       </Col>
     </Row>
   ) : (
