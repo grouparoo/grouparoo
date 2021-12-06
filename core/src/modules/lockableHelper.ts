@@ -6,7 +6,10 @@ export namespace LockableHelper {
     instance,
     allowedColumnsThatCanChangeWhenLocked: string[] = []
   ) {
-    if (instance.locked === null || instance.locked === undefined) return;
+    // because of the strange way that SQLite handles undefined values, we need to convert any `undefined` to `null`
+    if (instance.locked === undefined) instance.locked = null;
+
+    if (!Boolean(instance.locked)) return;
     if (api?.codeConfig?.allowLockedModelChanges !== false) return;
     if (instance.isNewRecord) return;
 
