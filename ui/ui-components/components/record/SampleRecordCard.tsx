@@ -69,8 +69,6 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
 
     let record: Actions.RecordView["record"];
 
-    console.log(recordId);
-
     if (recordId) {
       record = await execApi<Actions.RecordView>(
         "get",
