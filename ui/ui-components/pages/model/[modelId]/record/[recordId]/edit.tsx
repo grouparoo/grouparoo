@@ -45,6 +45,9 @@ export default function Page(props) {
     props.record
   );
   const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);
+  const [destinations, setDestinations] = useState<Models.DestinationType[]>(
+    props.destinations
+  );
   const [recordProperties, setRecordProperties] = useState<
     Models.GrouparooRecordType["properties"]
   >(props.record.properties);
@@ -104,6 +107,7 @@ export default function Page(props) {
       setRecord(response.record);
       setRecordProperties(response.record.properties);
       if (response["groups"]) setGroups(response["groups"]);
+      if (response["destinations"]) setDestinations(response["destinations"]);
     }
     setLoading(false);
   }
@@ -422,6 +426,31 @@ export default function Page(props) {
             </Form>
           )}
         </Col>
+
+        <Col>
+          <h3>Destinations</h3>
+
+          {destinations.length > 0 ? null : <p>None</p>}
+
+          <ListGroup>
+            {destinations.map((destination) => (
+              <ListGroup.Item
+                key={`destination-${destination.id}`}
+                variant="info"
+              >
+                {grouparooUiEdition() !== "config" ? (
+                  <EnterpriseLink
+                    href={`/model/${destination.modelId}/destination/${destination.id}/data`}
+                  >
+                    <a>{destination.name}</a>
+                  </EnterpriseLink>
+                ) : (
+                  <span>{destination.name}</span>
+                )}
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Col>
       </Row>
     </>
   );
@@ -430,7 +459,10 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { recordId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
-  const { record, groups } = await execApi("get", `/record/${recordId}`);
+  const { record, groups, destinations } = await execApi(
+    "get",
+    `/record/${recordId}`
+  );
   ensureMatchingModel("Record", record?.modelId, modelId.toString());
   const { properties } = await execApi("get", `/properties`, {
     modelId: record?.modelId,
@@ -438,5 +470,5 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { groups: allGroups } = await execApi("get", `/groups`);
   const { apps } = await execApi("get", `/apps`);
   const { sources } = await execApi("get", `/sources`);
-  return { record, properties, groups, allGroups, sources, apps };
+  return { record, properties, groups, allGroups, destinations, sources, apps };
 };
