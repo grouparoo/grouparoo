@@ -17,6 +17,7 @@ import {
 import { CLSAction } from "../classes/actions/clsAction";
 import { CLS } from "../modules/cls";
 import { AsyncReturnType } from "type-fest";
+import { DestinationOps } from "../modules/ops/destination";
 
 export class RecordsList extends AuthenticatedAction {
   constructor() {
@@ -143,12 +144,16 @@ export class RecordCreate extends AuthenticatedAction {
       await record.addOrUpdateProperties(params.properties);
     }
     const groups = await record.$get("groups");
+    const destinations = await DestinationOps.relevantFor(record, groups);
 
     await ConfigWriter.run();
 
     return {
       record: await record.apiData(),
       groups: await Promise.all(groups.map((group) => group.apiData())),
+      destinations: await Promise.all(
+        destinations.map((destination) => destination.apiData(false, false))
+      ),
     };
   }
 }
@@ -282,9 +287,13 @@ export class RecordView extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const record = await GrouparooRecord.findById(params.id);
     const groups = await record.$get("groups");
+    const destinations = await DestinationOps.relevantFor(record, groups);
     return {
       record: await record.apiData(),
       groups: await Promise.all(groups.map((group) => group.apiData())),
+      destinations: await Promise.all(
+        destinations.map((destination) => destination.apiData(false, false))
+      ),
     };
   }
 }

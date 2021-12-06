@@ -10,6 +10,7 @@ import {
   Run,
   RecordProperty,
   GrouparooModel,
+  Destination,
 } from "../../../src";
 import { SessionCreate } from "../../../src/actions/session";
 import {
@@ -79,10 +80,8 @@ describe("actions/records", () => {
           lastName: "Mario",
         },
       };
-      const { error, record } = await specHelper.runAction<RecordCreate>(
-        "record:create",
-        connection
-      );
+      const { error, record, groups, destinations } =
+        await specHelper.runAction<RecordCreate>("record:create", connection);
       expect(error).toBeUndefined();
       expect(record.id).toBeTruthy();
       expect(record.state).toBe("pending");
@@ -101,6 +100,9 @@ describe("actions/records", () => {
       expect(record.properties["userId"].state).toBe("ready");
       expect(record.properties["email"].state).toBe("ready");
       expect(record.properties["purchases"].state).toBe("pending");
+
+      expect(groups).toEqual([]);
+      expect(destinations).toEqual([]);
 
       id = record.id;
     });
@@ -362,8 +364,8 @@ describe("actions/records", () => {
     });
 
     describe("groups", () => {
-      let group;
-      let record;
+      let group: Group;
+      let record: GrouparooRecord;
 
       beforeAll(async () => {
         group = new Group({
@@ -472,6 +474,42 @@ describe("actions/records", () => {
           await specHelper.runAction<RecordView>("record:view", connection);
         expect(removeError).toBeUndefined();
         expect(groups.length).toBe(0);
+      });
+    });
+
+    describe("destinations", () => {
+      let destination: Destination;
+      let record: GrouparooRecord;
+
+      beforeAll(async () => {
+        destination = await helper.factories.destination();
+        await destination.updateTracking("model");
+        await destination.update({ state: "ready" });
+      });
+
+      beforeAll(async () => {
+        record = new GrouparooRecord({ modelId: model.id });
+        await record.save();
+      });
+
+      afterAll(async () => {
+        await destination.destroy();
+        await record.destroy();
+      });
+
+      test("the record lists destinations", async () => {
+        connection.params = {
+          csrfToken,
+          id: record.id,
+        };
+        const { error, destinations } = await specHelper.runAction<RecordView>(
+          "record:view",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(destinations.length).toBe(1);
+        expect(destinations[0].id).toBeTruthy();
+        expect(destinations[0].name).toBe(destination.name);
       });
     });
 
