@@ -3,6 +3,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Card, Col, Row, Table } from "react-bootstrap";
 import { useGrouparooModelContext } from "../../contexts/grouparooModel";
 import { ApiHook } from "../../hooks/useApi";
+import { usePrevious } from "../../hooks/usePrevious";
 import { Actions, Models } from "../../utils/apiData";
 import { successHandler } from "../../utils/eventHandlers";
 import { grouparooUiEdition } from "../../utils/uiEdition";
@@ -41,10 +42,12 @@ const clearCachedSampleRecordId = (modelId: string): void => {
 
 const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
   const model = useGrouparooModelContext();
+  const prevModelId = usePrevious(model.id);
 
   const [loading, setLoading] = useState(false);
   const [importing, setImporting] = useState(false);
   const [addingRecord, setAddingRecord] = useState(false);
+  const [hasRecords, setHasRecords] = useState(true);
   const [record, setRecord] = useState<Actions.RecordView["record"]>();
   const [groups, setGroups] = useState<Actions.RecordView["groups"]>();
   const [recordId, setRecordId] = useState(() =>
@@ -57,6 +60,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
       setRecord(record);
       setGroups(groups);
       setRecordId(record.id);
+      setHasRecords(true);
       setLoading(false);
 
       setCachedSampleRecordId(model.id, record.id);
@@ -85,17 +89,21 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
           modelId: model.id,
         }
       ).then((response) => {
-        const randomRecord = response?.records?.length
-          ? response.records[
-              Math.floor(Math.random() * response.records.length)
-            ]
-          : undefined;
+        if (response.total === 0) {
+          setHasRecords(false);
+        } else {
+          const randomRecord = response?.records?.length
+            ? response.records[
+                Math.floor(Math.random() * response.records.length)
+              ]
+            : undefined;
 
-        if (randomRecord?.id) {
-          return execApi<Actions.RecordView>(
-            "get",
-            `/record/${randomRecord.id}`
-          );
+          if (randomRecord?.id) {
+            return execApi<Actions.RecordView>(
+              "get",
+              `/record/${randomRecord.id}`
+            );
+          }
         }
 
         return { record: undefined, groups: undefined };
@@ -114,20 +122,21 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
 
   useEffect(() => {
     // Switched to another model
-    if (record && record.modelId !== model.id) {
+    if (prevModelId && prevModelId !== model.id) {
       setLoading(true);
       setRecordId(getCachedSampleRecordId(model.id));
       setRecord(undefined);
       setGroups(undefined);
-      loadRecord();
+      setHasRecords(true);
+      setLoading(false);
     }
   }, [record, model]);
 
   useEffect(() => {
-    if (!loading && (!record || record.id !== recordId)) {
+    if (!loading && hasRecords && (!record || record.id !== recordId)) {
       loadRecord();
     }
-  }, [record, recordId, loading, loadRecord]);
+  }, [record, recordId, loading, loadRecord, hasRecords]);
 
   const recordRows = useMemo<RecordRow[]>(() => {
     if (!record?.properties) return [];
@@ -176,7 +185,7 @@ const SampleRecordCard: React.FC<Props> = ({ properties, execApi }) => {
       Import Record data
     </Button>,
     <Button
-      disabled={loading}
+      disabled={loading || !hasRecords}
       size="sm"
       variant="outline-primary"
       onClick={() => {
