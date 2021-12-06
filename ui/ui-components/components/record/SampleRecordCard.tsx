@@ -13,18 +13,12 @@ import ManagedCard from "../lib/ManagedCard";
 import SeparatedItems from "../lib/SeparatedItems";
 import LinkButton from "../LinkButton";
 import AddSampleRecordModal from "./AddSampleRecordModal";
+import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 
 interface Props {
   execApi: ApiHook["execApi"];
   properties: Models.PropertyType[];
   disabled: boolean;
-}
-
-interface RecordRow {
-  propertyKey: string;
-  propertyId: string;
-  propertyState: Models.PropertyType["state"];
-  value: string | number | boolean;
 }
 
 const isConfigUI = grouparooUiEdition() === "config";
@@ -152,25 +146,6 @@ const SampleRecordCard: React.FC<Props> = ({
     }
   }, [record, recordId, loading, loadRecord, hasRecords]);
 
-  const recordRows = useMemo<RecordRow[]>(() => {
-    if (!record?.properties) return [];
-
-    const values = [];
-    const propertyKeys = Object.keys(record.properties).sort();
-
-    for (const propertyKey of propertyKeys) {
-      const property = record.properties[propertyKey];
-      values.push({
-        propertyKey,
-        propertyId: property.id,
-        propertyState: property.state,
-        value: property.values.slice(0, 10).join(", "),
-      });
-    }
-
-    return values;
-  }, [record]);
-
   const importRecord = async () => {
     setImporting(true);
     const response = await execApi<Actions.RecordImport>(
@@ -242,21 +217,32 @@ const SampleRecordCard: React.FC<Props> = ({
             </tr>
           </thead>
           <tbody>
-            {recordRows.map((row) => (
-              <tr key={row.propertyKey}>
-                <td>
-                  <Link
-                    href={`/model/${model.id}/property/${row.propertyId}/edit`}
-                  >
-                    <a>{row.propertyKey}</a>
-                  </Link>
-                  {row.propertyState !== "ready" && (
-                    <StateBadge state={row.propertyState} marginBottom={0} />
-                  )}
-                </td>
-                <td>{row.value}</td>
-              </tr>
-            ))}
+            {record.properties &&
+              Object.keys(record.properties).map((key) => {
+                const property = record.properties[key];
+                return (
+                  <tr key={key}>
+                    <td>
+                      <Link
+                        href={`/model/${model.id}/property/${property.id}/edit`}
+                      >
+                        <a>{key}</a>
+                      </Link>
+                      {property.state !== "ready" && (
+                        <StateBadge state={property.state} marginBottom={0} />
+                      )}
+                    </td>
+                    <td>
+                      <ArrayRecordPropertyList
+                        type={property.type}
+                        values={property.values}
+                        invalidValue={property.invalidValue}
+                        invalidReason={property.invalidReason}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </Table>
       </Col>
