@@ -76,6 +76,7 @@ async function getRecordOptions(
     "NetworkMember",
     "MessagingEndUser",
     "Account",
+    "Opportunity",
   ];
   const specialFields = ["Email"];
 

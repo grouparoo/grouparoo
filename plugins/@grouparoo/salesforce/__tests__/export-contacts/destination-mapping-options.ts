@@ -43,7 +43,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     expect(field.important).toBe(true);
 
     field = known.find((f) => f.key === "MobilePhone");
-    expect(field.type).toBe("phone");
+    expect(field.type).toBe("phoneNumber");
     expect(field.important).toBe(false);
 
     field = known.find((f) => f.key === "Title");
@@ -87,7 +87,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     expect(field.important).toBe(true);
 
     field = known.find((f) => f.key === "MobilePhone");
-    expect(field.type).toBe("phone");
+    expect(field.type).toBe("phoneNumber");
     expect(field.important).toBe(false);
 
     field = known.find((f) => f.key === "Title");

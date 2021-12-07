@@ -14,8 +14,9 @@ export interface SalesforceModel {
 }
 
 export const SALES_FORCE_DESTINATIONS = {
+  accounts: "salesforce-export-accounts",
+  contact: "salesforce-export-contacts",
   object: "salesforce-export-objects",
-  contact: "salesforce-export-contact",
 } as const;
 
 export function getSalesforceModel(
@@ -42,7 +43,11 @@ export function getSalesforceModel(
       // explicit default
       break;
     case SALES_FORCE_DESTINATIONS.contact:
-      destinationOptionsMapping = getObjectsMapping(destinationOptions);
+      destinationOptionsMapping = getContactsMapping(destinationOptions);
+      break;
+    case SALES_FORCE_DESTINATIONS.accounts:
+      destinationOptionsMapping = getAccountsMapping(destinationOptions);
+      break;
   }
 
   const modelKeys = Object.keys(model);
@@ -81,7 +86,7 @@ export function getSalesforceModel(
   return model;
 }
 
-function getObjectsMapping(destinationOptions: SimpleDestinationOptions) {
+function getContactsMapping(destinationOptions: SimpleDestinationOptions) {
   const mapping = {};
   if (destinationOptions.primaryKey) {
     Object.assign(mapping, {
@@ -94,6 +99,17 @@ function getObjectsMapping(destinationOptions: SimpleDestinationOptions) {
       recordReferenceField: "AccountId",
       recordReferenceObject: "Account",
       recordReferenceMatchField: destinationOptions.accountKey,
+    });
+  }
+  return mapping;
+}
+
+function getAccountsMapping(destinationOptions: SimpleDestinationOptions) {
+  const mapping = {};
+  if (destinationOptions.primaryKey) {
+    Object.assign(mapping, {
+      recordObject: "Account",
+      recordMatchField: destinationOptions.primaryKey,
     });
   }
   return mapping;

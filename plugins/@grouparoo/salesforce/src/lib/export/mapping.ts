@@ -27,6 +27,7 @@ export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMe
       recordReferenceObject,
       recordReferenceMatchField,
     } = model;
+
     const cacheData = { appId, appOptions };
     const recordInfo = await describeObject(
       conn,
@@ -40,6 +41,7 @@ export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMe
     const groupInfo = groupObject
       ? await describeObject(conn, cacheData, groupObject, true)
       : null;
+
     const { known, required } = getFields(
       recordInfo,
       recordMatchField,

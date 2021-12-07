@@ -12,7 +12,7 @@ export const contactsSupportedSyncModes: DestinationSyncMode[] = [
 ];
 
 export const contactsDestinationConnection: PluginConnection = {
-  name: "salesforce-export-contact",
+  name: "salesforce-export-contacts",
   displayName: "Salesforce Export Contacts",
   direction: "export",
   description: "Export Records to Salesforce Contacts.",

@@ -13,6 +13,10 @@ import {
   objectsDestinationConnection,
   objectsSupportedSyncModes,
 } from "../lib/export-objects/connection";
+import {
+  accountsDestinationConnection,
+  accountsSupportedSyncModes,
+} from "../lib/export-account/connection";
 
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
@@ -27,7 +31,6 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
-    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/salesforce/salesforce.png",
@@ -44,6 +47,11 @@ export class Plugins extends Initializer {
           "salesforce:contacts",
           [path.join(templateRoot, "destination", "contacts", "*.template")],
           contactsSupportedSyncModes
+        ),
+        new DestinationTemplate(
+          "salesforce:accounts",
+          [path.join(templateRoot, "destination", "accounts", "*.template")],
+          accountsSupportedSyncModes
         ),
       ],
       apps: [
@@ -83,6 +91,7 @@ export class Plugins extends Initializer {
         },
       ],
       connections: [
+        accountsDestinationConnection,
         contactsDestinationConnection,
         objectsDestinationConnection,
       ],
