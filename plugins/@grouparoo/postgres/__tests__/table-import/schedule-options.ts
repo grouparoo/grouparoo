@@ -1,5 +1,4 @@
 import "@grouparoo/spec-helper";
-import path from "path";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
 

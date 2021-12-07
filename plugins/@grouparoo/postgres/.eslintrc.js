@@ -13,5 +13,5 @@ module.exports = {
   rules: {
     "@typescript-eslint/consistent-indexed-object-style": ["warn", "record"],
   },
-  ignorePatterns: ["/dist/"],
+  ignorePatterns: ["/dist/", "*.js"],
 };

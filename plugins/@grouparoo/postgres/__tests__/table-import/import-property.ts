@@ -4,20 +4,21 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, GrouparooRecord, Property } from "@grouparoo/core";
+import { GrouparooRecord, Property } from "@grouparoo/core";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
 
 import { getConnection } from "../../src/lib/table-import/connection";
+import { PostgresPoolClient } from "../../src/lib/connect";
 const recordProperty = getConnection().methods.recordProperty;
 
 // these used and set by test
 const { appOptions, usersTableName, purchasesTableName } = getConfig();
 let record: GrouparooRecord;
 
-let actionhero, client;
+let client: PostgresPoolClient;
 
-let sourceOptions;
+let sourceOptions: { table: string };
 async function getPropertyValue(
   { column, sourceMapping, aggregationMethod },
   usePropertyFilters?,
@@ -760,6 +761,9 @@ describe("postgres/table/recordProperty", () => {
   });
 });
 
-function fixedLengthFloat(value: any, decimalDigits = 2) {
+function fixedLengthFloat(
+  value: Awaited<ReturnType<typeof getPropertyValue>>,
+  decimalDigits = 2
+) {
   return parseFloat(parseFloat(value.toString()).toFixed(decimalDigits));
 }

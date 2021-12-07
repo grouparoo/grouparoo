@@ -11,11 +11,12 @@ import {
 import { afterData, beforeData, getConfig } from "../utils/data";
 import { helper } from "@grouparoo/spec-helper";
 import { App } from "@grouparoo/core";
+import { PostgresPoolClient } from "../../src/lib/connect";
 
 let app: App;
 let destination: Destination;
-let client: any;
-let user: any;
+let client: PostgresPoolClient;
+let user: unknown;
 const ipAddress = "127.0.0.1";
 const newIpAddress = "127.0.0.2";
 const email = "caio.silveira@mailinator.com";

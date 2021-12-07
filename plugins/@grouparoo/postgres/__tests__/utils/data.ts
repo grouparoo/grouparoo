@@ -1,4 +1,4 @@
-import { connect } from "../../src/lib/connect";
+import { connect, PostgresPoolClient } from "../../src/lib/connect";
 import path from "path";
 import fs from "fs";
 import parse from "csv-parse/lib/sync";
@@ -71,6 +71,7 @@ CREATE TABLE ${groupsDestinationTableName}(
 };
 
 export const appOptions = {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   user: config.sequelize.username || require("os").userInfo().username,
   password: config.sequelize.password || "password",
   host: config.sequelize.host,
@@ -79,7 +80,7 @@ export const appOptions = {
 };
 const appId = "app_31bb06e8-0a4e-49c3-ad42-545f2e8662e1";
 
-let client;
+let client: PostgresPoolClient;
 export async function getClient() {
   if (client) {
     return client;
@@ -151,7 +152,7 @@ export function getConfig() {
   };
 }
 export async function beforeData(): Promise<{
-  client: any;
+  client: PostgresPoolClient;
 }> {
   await populate();
   return { client };

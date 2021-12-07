@@ -16,10 +16,7 @@ import {
   SourceEdit,
   SourcePreview,
 } from "@grouparoo/core/src/actions/sources";
-import {
-  PropertyCreate,
-  PropertyEdit,
-} from "@grouparoo/core/src/actions/properties";
+import { PropertyCreate } from "@grouparoo/core/src/actions/properties";
 import {
   ScheduleCreate,
   ScheduleRun,

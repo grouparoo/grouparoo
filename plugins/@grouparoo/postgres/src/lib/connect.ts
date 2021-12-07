@@ -6,11 +6,12 @@ import format from "pg-format";
 import parseDate from "postgres-date";
 
 type PoolClient = Parameters<Parameters<InstanceType<typeof Pool>["on"]>[1]>[0];
-interface PostgresPoolClient extends PoolClient {
+export interface PostgresPoolClient extends PoolClient {
   setTypeParser: (
     type: TypeId,
     method: (text: string) => string | Date
   ) => void;
+  end: () => Promise<void>;
 }
 
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {

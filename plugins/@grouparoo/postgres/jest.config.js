@@ -1,4 +1,4 @@
-import { helper } from "@grouparoo/spec-helper";
+const { helper } = require("@grouparoo/spec-helper");
 
 module.exports = {
   testEnvironment: "node",

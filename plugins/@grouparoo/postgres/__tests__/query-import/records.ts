@@ -22,7 +22,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
   plugin.createImports = jest.fn(async function (
     mapping: Record<string, string>,
     run: Run,
-    rows: Record<string, any>[]
+    rows: Record<string, unknown>[]
   ): Promise<Import[]> {
     rows.forEach((r) => imports.push(r));
     return null;
