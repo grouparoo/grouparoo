@@ -95,9 +95,9 @@ describe("postgres/query/records", () => {
   });
 
   test("imports all records when no highWaterMark", async () => {
-    let limit = 100;
-    let highWaterMark = {};
-    let sourceOffset = 0;
+    const limit = 100;
+    const highWaterMark = {};
+    const sourceOffset = 0;
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
@@ -109,9 +109,9 @@ describe("postgres/query/records", () => {
   });
 
   test("handles getting no results", async () => {
-    let limit = 100;
-    let sourceOffset = 0;
-    let highWaterMark = { limit: 100, offset: 9999 }; // past the last one
+    const limit = 100;
+    const sourceOffset = 0;
+    const highWaterMark = { limit: 100, offset: 9999 }; // past the last one
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
@@ -125,8 +125,8 @@ describe("postgres/query/records", () => {
   test(
     "imports a page at a time",
     async () => {
-      let limit = 4;
-      let highWaterMark = { limit, offset: 0 };
+      const limit = 4;
+      const highWaterMark = { limit, offset: 0 };
       let importedIds;
 
       const page1 = await runIt({

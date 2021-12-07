@@ -31,7 +31,7 @@ import {
   QueryPropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
 
-const packageJSON = require("./../../package.json");
+import packageJSON from "./../../package.json";
 
 export class Plugins extends Initializer {
   constructor() {

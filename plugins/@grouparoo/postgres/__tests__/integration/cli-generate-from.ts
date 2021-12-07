@@ -33,7 +33,7 @@ describe("postgres cli tests", () => {
   afterAll(async () => await afterData());
 
   let messages = [];
-  let spies = [];
+  const spies = [];
 
   beforeEach(() => {
     messages = [];

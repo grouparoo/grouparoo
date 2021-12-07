@@ -39,6 +39,7 @@ async function getPropertyValue(query: string) {
 
 describe("postgres/integration/log-checking", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const actionhero = require("actionhero");
   const logMock = jest.fn();
   Object.defineProperty(actionhero, "log", { value: logMock, writable: false });

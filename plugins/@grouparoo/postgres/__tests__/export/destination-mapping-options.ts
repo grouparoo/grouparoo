@@ -8,7 +8,7 @@ const { appOptions, usersTableName } = getConfig();
 
 let client;
 
-async function runDestinationMappingOptions({}) {
+async function runDestinationMappingOptions() {
   return destinationMappingOptions({
     appOptions,
     app: null,
@@ -30,7 +30,7 @@ describe("postgres/destinationMappingOptions", () => {
   afterAll(async () => await afterData());
 
   test("can load all destinationMappingOptions", async () => {
-    const options = await runDestinationMappingOptions({});
+    const options = await runDestinationMappingOptions();
 
     const { properties } = options;
     const { required, known } = properties;

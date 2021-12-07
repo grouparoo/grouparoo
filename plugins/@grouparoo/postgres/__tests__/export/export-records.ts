@@ -58,7 +58,7 @@ async function getUser(userId) {
 }
 
 async function getUserGroups(userId) {
-  let { groupsTable, groupForeignKey, groupColumnName } =
+  const { groupsTable, groupForeignKey, groupColumnName } =
     await destination.parameterizedOptions();
   const result = await client.query(
     `SELECT "${groupColumnName}" FROM ${groupsTable} WHERE "${groupForeignKey}" = ${userId}`
@@ -506,7 +506,7 @@ describe("postgres/exportRecord", () => {
   });
 
   test("can add a user and add this user to a list at the same time.", async () => {
-    let user = await getUser(newId);
+    const user = await getUser(newId);
     expect(user).toBe(null);
 
     await runExport({

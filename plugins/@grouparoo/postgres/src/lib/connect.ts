@@ -1,11 +1,22 @@
-import { ConnectPluginAppMethod } from "@grouparoo/core";
+import { ConnectPluginAppMethod, SimpleAppOptions } from "@grouparoo/core";
 import { log } from "actionhero";
 import { Pool, types } from "pg";
+import { TypeId } from "pg-types";
 import format from "pg-format";
 import parseDate from "postgres-date";
 
+type PoolClient = Parameters<Parameters<InstanceType<typeof Pool>["on"]>[1]>[0];
+interface PostgresPoolClient extends PoolClient {
+  setTypeParser: (
+    type: TypeId,
+    method: (text: string) => string | Date
+  ) => void;
+}
+
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
-  const formattedOptions: any = Object.assign({}, appOptions);
+  const formattedOptions: SimpleAppOptions & {
+    ssl?: { rejectUnauthorized?: boolean } | boolean;
+  } = Object.assign({}, appOptions);
 
   // ensure that the "ssl" option by itself, if present, is a boolean
   if (formattedOptions["ssl"]) {
@@ -31,12 +42,9 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
 
   const pool = new Pool(formattedOptions);
 
-  pool.on("connect", async (client) => {
-    // @ts-ignore these are not on the types but exist on the object
+  pool.on("connect", async (client: PostgresPoolClient) => {
     client.setTypeParser(types.builtins.DATE, formatAsText); // Date
-    // @ts-ignore
     client.setTypeParser(types.builtins.TIMESTAMP, formatInUtcDefault); // Timestamp without zone
-    // @ts-ignore
     client.setTypeParser(types.builtins.TIMESTAMPTZ, formatInUtcDefault); // Timestamp without zone
 
     if (appOptions.schema) {
@@ -47,6 +55,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   // Unfortunately there's no event listener for queries so we have to intercept the call.
   // https://github.com/brianc/node-postgres/issues/2580
   const shim: typeof pool.query = pool.query.bind(pool);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (pool as any).query = (
     query: Parameters<typeof pool.query>[0],
     data?: Parameters<typeof pool.query>[1],
@@ -81,9 +90,9 @@ export function formatInUtcDefault(text: string) {
 
 // from parseDate library
 const TIME_ZONE = /([Z+-])(\d{2})?:?(\d{2})?:?(\d{2})?/;
-function timeZoneOffset(isoDate: String) {
+function timeZoneOffset(isoDate: string) {
   if (isoDate.endsWith("+00")) return true;
-  const zone: any = TIME_ZONE.exec(isoDate.split(" ")[1]);
+  const zone = TIME_ZONE.exec(isoDate.split(" ")[1]);
   if (!zone) {
     return false;
   }

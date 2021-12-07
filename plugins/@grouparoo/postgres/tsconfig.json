@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./dist",
     "allowJs": true,
     "module": "commonjs",
     "target": "es2019",
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true
   },
   "include": ["./src/**/*"],
   "exclude": ["./../node_modules"]
