@@ -140,11 +140,15 @@ export default function Page(props) {
                     <>
                       Query: {app.appRefreshQuery.refreshQuery}
                       <br />
-                      Value: {app.appRefreshQuery.value}
-                      <br />
-                      Last Checked:{" "}
-                      {formatTimestamp(app.appRefreshQuery.lastConfirmedAt)}
-                      <br />
+                      {grouparooUiEdition() !== "config" && (
+                        <>
+                          Value: {app.appRefreshQuery.value}
+                          <br />
+                          Last Checked:{" "}
+                          {formatTimestamp(app.appRefreshQuery.lastConfirmedAt)}
+                          <br />
+                        </>
+                      )}
                       Frequency: Every{" "}
                       {recurringFrequencyMinutes > 1 &&
                         recurringFrequencyMinutes}{" "}
