@@ -12,6 +12,7 @@ import StateBadge from "../badges/StateBadge";
 import ManagedCard from "../lib/ManagedCard";
 import SeparatedItems from "../lib/SeparatedItems";
 import LinkButton from "../LinkButton";
+import LoadingButton from "../LoadingButton";
 import AddSampleRecordModal from "./AddSampleRecordModal";
 import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 
@@ -164,8 +165,9 @@ const SampleRecordCard: React.FC<Props> = ({
   };
 
   const actions = [
-    <Button
-      disabled={!record || importing || loading}
+    <LoadingButton
+      disabled={disabled || !record || loading}
+      loading={importing}
       onClick={() => {
         importRecord();
       }}
@@ -173,9 +175,10 @@ const SampleRecordCard: React.FC<Props> = ({
       variant="outline-success"
     >
       Import Record data
-    </Button>,
-    <Button
-      disabled={loading || !hasRecords}
+    </LoadingButton>,
+    <LoadingButton
+      disabled={disabled || !hasRecords || loading || importing}
+      loading={loading && !recordId}
       size="sm"
       variant="outline-primary"
       onClick={() => {
@@ -183,19 +186,19 @@ const SampleRecordCard: React.FC<Props> = ({
       }}
     >
       Switch to random Record
-    </Button>,
+    </LoadingButton>,
   ];
 
   if (isConfigUI) {
     actions.push(
-      <Button
-        disabled={loading || disabled}
+      <LoadingButton
+        disabled={disabled || loading}
         size="sm"
         variant="outline-primary"
         onClick={() => setAddingRecord(true)}
       >
         Add Sample Record
-      </Button>
+      </LoadingButton>
     );
   }
 
