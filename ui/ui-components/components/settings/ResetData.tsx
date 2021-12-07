@@ -49,7 +49,7 @@ export default function ResetData(props) {
             onClick={reset}
             size="sm"
             variant="outline-danger"
-            disabled={loading}
+            loading={loading}
           >
             Reset Data
           </LoadingButton>

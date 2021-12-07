@@ -119,7 +119,7 @@ export default function SetupStepCard({
                           variant="outline-dark"
                           onClick={() => skip()}
                         >
-                          skip
+                          Skip
                         </LoadingButton>
                       )}
                     </Col>

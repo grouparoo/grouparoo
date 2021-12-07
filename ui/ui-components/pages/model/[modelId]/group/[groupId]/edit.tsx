@@ -173,7 +173,7 @@ export default function Page(props) {
                 </Form.Control>
               </Form.Group>
 
-              <LoadingButton variant="primary" type="submit" disabled={loading}>
+              <LoadingButton variant="primary" type="submit" loading={loading}>
                 Update
               </LoadingButton>
 
@@ -184,7 +184,7 @@ export default function Page(props) {
                 <>
                   <LoadingButton
                     variant="danger"
-                    disabled={loading}
+                    loading={loading}
                     size="sm"
                     onClick={() => {
                       handleDelete(true);
@@ -204,7 +204,7 @@ export default function Page(props) {
               ) : (
                 <LoadingButton
                   variant="danger"
-                  disabled={loading}
+                  loading={loading}
                   size="sm"
                   onClick={() => {
                     handleDelete(grouparooUiEdition() === "config");

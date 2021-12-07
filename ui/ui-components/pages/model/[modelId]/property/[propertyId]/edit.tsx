@@ -687,7 +687,7 @@ export default function Page(props) {
                 </>
               ) : null}
               <hr />
-              <LoadingButton variant="primary" type="submit" disabled={loading}>
+              <LoadingButton variant="primary" type="submit" loading={loading}>
                 Update
               </LoadingButton>
               <br />
@@ -695,7 +695,7 @@ export default function Page(props) {
               <LoadingButton
                 variant="danger"
                 size="sm"
-                disabled={loading}
+                loading={loading}
                 onClick={() => handleDelete()}
               >
                 Delete

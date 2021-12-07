@@ -116,7 +116,7 @@ export default function ResqueFailedList(props) {
         <Col md={12}>
           <ButtonToolbar>
             <LoadingButton
-              disabled={loading}
+              loading={loading}
               onClick={() => {
                 retryAllFailedJobs();
               }}
@@ -127,7 +127,7 @@ export default function ResqueFailedList(props) {
             </LoadingButton>
             &nbsp;
             <LoadingButton
-              disabled={loading}
+              loading={loading}
               onClick={() => {
                 removeAllFailedJobs();
               }}
@@ -196,7 +196,7 @@ export default function ResqueFailedList(props) {
                     </td>
                     <td>
                       <LoadingButton
-                        disabled={loading}
+                        loading={loading}
                         onClick={() => retryFailedJob(offset + idx)}
                         variant="warning"
                         size="sm"
@@ -206,7 +206,7 @@ export default function ResqueFailedList(props) {
                     </td>
                     <td>
                       <LoadingButton
-                        disabled={loading}
+                        loading={loading}
                         onClick={() => removeFailedJob(offset + idx)}
                         variant="danger"
                         size="sm"

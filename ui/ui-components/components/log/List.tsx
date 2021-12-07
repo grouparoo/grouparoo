@@ -159,7 +159,7 @@ export default function LogsList(props) {
       {newLogs > 0 ? (
         <Alert variant="secondary">
           {newLogs} new logs.{" "}
-          <LoadingButton size="sm" onClick={load} disabled={loading}>
+          <LoadingButton size="sm" onClick={load} loading={loading}>
             Load
           </LoadingButton>
         </Alert>

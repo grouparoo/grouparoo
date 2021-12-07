@@ -242,7 +242,7 @@ export default function Page(props) {
             <Col>
               <LoadingButton
                 variant="outline-primary"
-                disabled={loading}
+                loading={loading}
                 onClick={() => {
                   importRecord();
                 }}
@@ -251,7 +251,7 @@ export default function Page(props) {
               </LoadingButton>{" "}
               <LoadingButton
                 variant="outline-primary"
-                disabled={loading}
+                loading={loading}
                 onClick={exportRecord}
               >
                 Export
@@ -260,7 +260,7 @@ export default function Page(props) {
                 <>
                   {" "}
                   <LoadingButton
-                    disabled={loading}
+                    loading={loading}
                     variant="outline-danger"
                     onClick={() => {
                       handleDelete();
@@ -361,7 +361,7 @@ export default function Page(props) {
                 {group.type === "manual" ? (
                   <>
                     <LoadingButton
-                      disabled={loading}
+                      loading={loading}
                       size="sm"
                       variant="danger"
                       onClick={() => {
@@ -417,7 +417,7 @@ export default function Page(props) {
                     variant="outline-primary"
                     size="sm"
                     type="submit"
-                    disabled={loading}
+                    loading={loading}
                   >
                     Add
                   </LoadingButton>

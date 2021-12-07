@@ -61,7 +61,7 @@ export default function ResqueQueue(props) {
 
       <p>
         <LoadingButton
-          disabled={loading}
+          loading={loading}
           onClick={() => {
             delQueue();
           }}

@@ -811,7 +811,7 @@ export default function Page(props) {
                   <LoadingButton
                     type="submit"
                     variant="primary"
-                    disabled={loading}
+                    loading={loading}
                   >
                     Save Destination Data
                   </LoadingButton>

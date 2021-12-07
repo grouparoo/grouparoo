@@ -217,7 +217,7 @@ export default function RecordsList(props) {
             ) : null}
 
             <Col md={2} style={{ marginTop: 33 }}>
-              <LoadingButton size="sm" type="submit" disabled={loading}>
+              <LoadingButton size="sm" type="submit" loading={loading}>
                 Search
               </LoadingButton>
             </Col>

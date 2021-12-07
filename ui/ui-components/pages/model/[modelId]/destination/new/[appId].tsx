@@ -85,7 +85,7 @@ export default function Page(props) {
               <Card.Title>{humanizePluginName(connection.name)}</Card.Title>
               <Card.Text>{connection.description}</Card.Text>
               <LoadingButton
-                disabled={loading}
+                loading={loading}
                 variant="primary"
                 onClick={() => create(connection)}
               >

@@ -381,7 +381,7 @@ export default function Page(props) {
                       className="m-3 mx-auto"
                       variant="success"
                       onClick={runQuery}
-                      disabled={loading}
+                      loading={loading}
                       hidden={editing}
                     >
                       Run Refresh Query

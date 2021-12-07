@@ -121,7 +121,7 @@ export default function Page(props) {
             </fieldset>
 
             <fieldset disabled={model.locked !== null}>
-              <LoadingButton variant="primary" type="submit" disabled={loading}>
+              <LoadingButton variant="primary" type="submit" loading={loading}>
                 Update
               </LoadingButton>
 
@@ -132,7 +132,7 @@ export default function Page(props) {
                 variant="danger"
                 size="sm"
                 onClick={handleDelete}
-                disabled={loading}
+                loading={loading}
               >
                 Delete
               </LoadingButton>

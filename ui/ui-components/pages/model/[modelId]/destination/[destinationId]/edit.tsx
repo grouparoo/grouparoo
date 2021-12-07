@@ -407,7 +407,7 @@ export default function Page(props) {
 
               <br />
 
-              <LoadingButton variant="primary" type="submit" disabled={loading}>
+              <LoadingButton variant="primary" type="submit" loading={loading}>
                 Update
               </LoadingButton>
 
@@ -417,7 +417,7 @@ export default function Page(props) {
               <LoadingButton
                 variant="danger"
                 size="sm"
-                disabled={loading}
+                loading={loading}
                 onClick={() => {
                   handleDelete(grouparooUiEdition() === "config");
                 }}

@@ -91,7 +91,7 @@ export default function Page(props) {
                 <td>
                   <LoadingButton
                     size="sm"
-                    disabled={loading}
+                    loading={loading}
                     variant="danger"
                     onClick={() => {
                       handleDelete(teamMember);
@@ -108,7 +108,7 @@ export default function Page(props) {
 
       <LoadingButton
         variant="primary"
-        disabled={loading}
+        loading={loading}
         onClick={() => {
           router.push(`/team/${team.id}/teamMember/new`);
         }}

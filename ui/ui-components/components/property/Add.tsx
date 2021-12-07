@@ -51,7 +51,7 @@ export default function PropertyAddButton(props) {
     <LoadingButton
       size="sm"
       variant="outline-primary"
-      disabled={loading}
+      loading={loading}
       onClick={create}
     >
       Add Property

@@ -50,7 +50,7 @@ export default function ResetCache(props) {
             onClick={reset}
             size="sm"
             variant="outline-warning"
-            disabled={loading}
+            loading={loading}
           >
             Reset Cache
           </LoadingButton>

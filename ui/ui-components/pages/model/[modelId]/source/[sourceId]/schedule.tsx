@@ -576,14 +576,14 @@ export default function Page(props) {
                 </Alert>
               ) : null}
 
-              <LoadingButton variant="primary" type="submit" disabled={loading}>
+              <LoadingButton variant="primary" type="submit" loading={loading}>
                 Update
               </LoadingButton>
               <br />
               <br />
               <LoadingButton
                 variant="danger"
-                disabled={loading}
+                loading={loading}
                 size="sm"
                 onClick={handleDelete}
               >

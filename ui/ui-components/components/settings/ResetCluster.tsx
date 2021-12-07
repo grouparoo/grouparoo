@@ -52,7 +52,7 @@ export default function ResetCluster(props) {
         <Card.Text>
           <LoadingButton
             onClick={reset}
-            disabled={loading}
+            loading={loading}
             size="sm"
             variant="outline-danger"
           >

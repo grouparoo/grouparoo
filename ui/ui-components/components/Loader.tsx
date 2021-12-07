@@ -1,6 +1,11 @@
-import * as React from "react";
-import { Spinner } from "react-bootstrap";
+import { Spinner, SpinnerProps } from "react-bootstrap";
 
-export default function Loader({ size }: { size?: "sm" }) {
-  return <Spinner animation="grow" role="status" size={size} />;
+interface Props extends React.HTMLAttributes<HTMLElement> {
+  size?: SpinnerProps["size"];
 }
+
+const Loader: React.FC<Props> = (props) => (
+  <Spinner {...props} animation="border" role="status" />
+);
+
+export default Loader;

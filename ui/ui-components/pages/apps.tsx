@@ -154,7 +154,7 @@ export default function Page(props) {
                         <LoadingButton
                           variant="outline-success"
                           size="sm"
-                          disabled={loading}
+                          loading={loading}
                           onClick={() => runRefreshQuery(app)}
                         >
                           Run Now
