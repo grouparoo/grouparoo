@@ -274,7 +274,7 @@ export default function Page(props: Props & NextPageContext) {
               ) : (
                 <LoadingButton
                   type="submit"
-                  disabled={loading}
+                  loading={loading}
                   onClick={(e) => updateMapping(e)}
                 >
                   Save Mapping
@@ -416,7 +416,7 @@ export default function Page(props: Props & NextPageContext) {
                   <LoadingButton
                     size="sm"
                     variant="outline-primary"
-                    disabled={loading}
+                    loading={loading}
                     onClick={bootstrapUniqueProperty}
                   >
                     Create Property

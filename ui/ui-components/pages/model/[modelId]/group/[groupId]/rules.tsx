@@ -487,7 +487,7 @@ export default function Page(props) {
           </Button>
           &nbsp;
           <LoadingButton
-            disabled={loading}
+            loading={loading}
             variant="outline-dark"
             size="sm"
             hideOn={["config"]}
@@ -501,7 +501,7 @@ export default function Page(props) {
             <Button disabled>Save Rules</Button>
           ) : (
             <LoadingButton
-              disabled={loading}
+              loading={loading}
               variant="primary"
               onClick={async () => {
                 await updateRules();

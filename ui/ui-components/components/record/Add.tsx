@@ -21,7 +21,7 @@ export default function AddRecord(props) {
 
   return (
     <>
-      <LoadingButton variant="warning" disabled={loading} onClick={create}>
+      <LoadingButton variant="warning" loading={loading} onClick={create}>
         Add new Record
       </LoadingButton>
     </>

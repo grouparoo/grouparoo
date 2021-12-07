@@ -81,7 +81,7 @@ export default function NewGroup(props) {
           </Form.Control>
         </Form.Group>
 
-        <LoadingButton variant="primary" type="submit" disabled={loading}>
+        <LoadingButton variant="primary" type="submit" loading={loading}>
           Submit
         </LoadingButton>
       </Form>

@@ -60,7 +60,6 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: Setup</title>
       </Head>
-
       <h1 id="setup">Setup Grouparoo</h1>
       {currentStep ? (
         <p>
@@ -81,7 +80,6 @@ export default function Page(props) {
           <br />
         </Alert>
       )}
-
       <div>
         Progress: {completeStepsCount} / {totalStepsCount} steps completed
         <br />
@@ -91,9 +89,7 @@ export default function Page(props) {
           now={percentComplete}
         />
       </div>
-
       <br />
-
       <Row>
         <Col>
           {setupSteps.map((setupStep) => (
@@ -106,7 +102,6 @@ export default function Page(props) {
           ))}
         </Col>
       </Row>
-
       <br />
     </>
   );

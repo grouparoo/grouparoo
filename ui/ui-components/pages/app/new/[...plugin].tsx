@@ -94,7 +94,7 @@ export default function Page(props) {
                   ))}
               </Card.Text>
               <LoadingButton
-                disabled={loading}
+                loading={loading}
                 variant="primary"
                 onClick={() => create(app)}
               >

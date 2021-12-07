@@ -132,7 +132,7 @@ export default function Page(props) {
 
           {team.locked ? null : (
             <>
-              <LoadingButton disabled={loading} variant="primary" type="submit">
+              <LoadingButton loading={loading} variant="primary" type="submit">
                 Update
               </LoadingButton>
 
@@ -140,7 +140,7 @@ export default function Page(props) {
               <br />
 
               <LoadingButton
-                disabled={loading}
+                loading={loading}
                 variant="danger"
                 size="sm"
                 onClick={() => {

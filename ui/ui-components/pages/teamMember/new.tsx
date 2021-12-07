@@ -156,7 +156,7 @@ export default function Page(props) {
           </a>
         </p>
 
-        <LoadingButton variant="primary" type="submit" disabled={loading}>
+        <LoadingButton variant="primary" type="submit" loading={loading}>
           Submit
         </LoadingButton>
       </Form>

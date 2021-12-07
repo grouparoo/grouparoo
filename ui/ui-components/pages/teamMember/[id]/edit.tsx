@@ -164,13 +164,13 @@ export default function Page(props) {
                 />
               </Form.Group>
 
-              <LoadingButton variant="primary" disabled={loading} type="submit">
+              <LoadingButton variant="primary" loading={loading} type="submit">
                 Update
               </LoadingButton>
               <br />
               <br />
               <LoadingButton
-                disabled={loading}
+                loading={loading}
                 variant="danger"
                 size="sm"
                 onClick={() => {

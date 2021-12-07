@@ -72,7 +72,7 @@ export default function Page(props) {
                 <LoadingButton
                   variant="warning"
                   size="sm"
-                  disabled={loading}
+                  loading={loading}
                   onClick={stopRun}
                 >
                   Stop run

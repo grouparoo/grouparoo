@@ -91,7 +91,7 @@ export default function ResqueLocksList(props) {
                     <td>{l.at.toString()}</td>
                     <td>
                       <LoadingButton
-                        disabled={loading}
+                        loading={loading}
                         onClick={() => {
                           delLock(l.lock);
                         }}

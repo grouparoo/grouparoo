@@ -25,14 +25,14 @@ const RunAllSchedulesButton: React.FC<Props> = ({
   onSuccess,
   onComplete,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const hide = grouparooUiEdition() === "config";
 
   if (hide) {
     return null;
   }
 
-  if (disabled && !isLoading) {
+  if (disabled && !loading) {
     return (
       <Button variant="outline-primary" disabled={disabled} size={size}>
         Run all Schedules
@@ -42,7 +42,7 @@ const RunAllSchedulesButton: React.FC<Props> = ({
 
   async function enqueueAllSchedulesRun() {
     onStart?.();
-    setIsLoading(true);
+    setLoading(true);
     try {
       const { runs } = await execApi<Actions.SchedulesRun>(
         "post",
@@ -52,7 +52,7 @@ const RunAllSchedulesButton: React.FC<Props> = ({
       successHandler.set({ message: `${runs.length} runs enqueued` });
       onSuccess?.();
     } finally {
-      setIsLoading(false);
+      setLoading(false);
       onComplete?.();
     }
   }
@@ -61,7 +61,7 @@ const RunAllSchedulesButton: React.FC<Props> = ({
     <LoadingButton
       variant="outline-primary"
       size={size}
-      disabled={isLoading}
+      loading={loading}
       onClick={() => enqueueAllSchedulesRun()}
       hideOn={["config"]}
     >

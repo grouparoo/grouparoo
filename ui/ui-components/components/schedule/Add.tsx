@@ -30,7 +30,7 @@ export default function AddScheduleForm(props) {
     <LoadingButton
       size="sm"
       variant="outline-primary"
-      disabled={loading}
+      loading={loading}
       onClick={create}
     >
       Add Schedule

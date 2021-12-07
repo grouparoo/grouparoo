@@ -104,7 +104,7 @@ export default function SetupStepCard({
                       {step.skipped ? (
                         <LoadingButton
                           size="sm"
-                          disabled={loading}
+                          loading={loading}
                           className="m-1"
                           variant="outline-dark"
                           onClick={() => skip()}
@@ -114,12 +114,12 @@ export default function SetupStepCard({
                       ) : (
                         <LoadingButton
                           size="sm"
-                          disabled={loading}
+                          loading={loading}
                           className="m-1"
                           variant="outline-dark"
                           onClick={() => skip()}
                         >
-                          skip
+                          Skip
                         </LoadingButton>
                       )}
                     </Col>

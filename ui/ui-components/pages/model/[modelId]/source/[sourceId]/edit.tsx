@@ -431,13 +431,13 @@ export default function Page(props) {
 
               <br />
 
-              <LoadingButton variant="primary" type="submit" disabled={loading}>
+              <LoadingButton variant="primary" type="submit" loading={loading}>
                 Update
               </LoadingButton>
               <br />
               <br />
               <LoadingButton
-                disabled={loading}
+                loading={loading}
                 variant="danger"
                 size="sm"
                 onClick={() => {

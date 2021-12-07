@@ -42,7 +42,7 @@ export default function ImportAndUpdateRecord(props) {
         <Card.Text>
           <LoadingButton
             onClick={importAndUpdate}
-            disabled={loading}
+            loading={loading}
             size="sm"
             variant="outline-warning"
           >

@@ -2,22 +2,53 @@ import { Button, ButtonProps } from "react-bootstrap";
 import { GrouparooUIEdition, grouparooUiEdition } from "../utils/uiEdition";
 import Loader from "./Loader";
 
-export default function LoadingButton(
-  props: ButtonProps & {
-    displayOn?: GrouparooUIEdition[];
-    hideOn?: GrouparooUIEdition[];
-  }
-) {
-  const { children, displayOn, hideOn, ...buttonProps } = props;
+const uiEdition = grouparooUiEdition();
 
-  if (displayOn && !displayOn.includes(grouparooUiEdition())) {
-    return null;
-  }
-
-  if (hideOn && hideOn.includes(grouparooUiEdition())) {
-    return null;
-  }
-
-  const message = props.disabled ? <Loader size="sm" /> : children || "Submit";
-  return <Button {...buttonProps}>{message}</Button>;
+interface Props extends ButtonProps {
+  loading?: boolean;
+  displayOn?: GrouparooUIEdition[];
+  hideOn?: GrouparooUIEdition[];
 }
+
+const LoadingButton: React.FC<Props> = ({
+  children = "Submit",
+  disabled,
+  displayOn,
+  hideOn,
+  loading,
+  ...buttonProps
+}) => {
+  if (
+    (displayOn && !displayOn.includes(uiEdition)) ||
+    (hideOn && hideOn.includes(uiEdition))
+  ) {
+    return null;
+  }
+
+  return (
+    <Button
+      {...buttonProps}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        ...buttonProps.style,
+      }}
+      disabled={disabled || loading}
+    >
+      {loading && (
+        <Loader
+          size="sm"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            position: "absolute",
+          }}
+        />
+      )}
+      <span style={loading ? { opacity: 0 } : undefined}>{children}</span>
+    </Button>
+  );
+};
+
+export default LoadingButton;

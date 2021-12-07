@@ -169,7 +169,7 @@ export default function ResqueWorkersList(props) {
                     </td>
                     <td>
                       <LoadingButton
-                        disabled={loading}
+                        loading={loading}
                         onClick={() => {
                           forceCleanWorker(worker.name);
                         }}

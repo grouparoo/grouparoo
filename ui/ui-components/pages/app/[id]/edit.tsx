@@ -347,7 +347,7 @@ export default function Page(props) {
                   variant="outline-secondary"
                   size="sm"
                   onClick={test}
-                  disabled={testLoading}
+                  loading={testLoading}
                 >
                   Test Connection
                 </LoadingButton>
@@ -373,7 +373,7 @@ export default function Page(props) {
             </Row>
 
             <fieldset disabled={app.locked !== null}>
-              <LoadingButton variant="primary" type="submit" disabled={loading}>
+              <LoadingButton variant="primary" type="submit" loading={loading}>
                 Update
               </LoadingButton>
 
@@ -384,7 +384,7 @@ export default function Page(props) {
                 variant="danger"
                 size="sm"
                 onClick={handleDelete}
-                disabled={loading}
+                loading={loading}
               >
                 Delete
               </LoadingButton>

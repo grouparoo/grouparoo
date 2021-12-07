@@ -73,7 +73,7 @@ export default function SettingCard({
 
               <LoadingButton
                 style={{ marginTop: 5 }}
-                disabled={loading}
+                loading={loading}
                 size="sm"
                 type="submit"
                 variant="outline-secondary"

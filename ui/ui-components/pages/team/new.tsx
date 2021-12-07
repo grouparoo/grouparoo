@@ -50,7 +50,7 @@ export default function NewTeamPage(props) {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <LoadingButton variant="primary" type="submit" disabled={loading}>
+        <LoadingButton variant="primary" type="submit" loading={loading}>
           Submit
         </LoadingButton>
       </Form>

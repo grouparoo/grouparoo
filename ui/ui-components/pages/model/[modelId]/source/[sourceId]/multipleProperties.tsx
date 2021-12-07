@@ -231,7 +231,7 @@ export default function Page(props) {
             ) : (
               <LoadingButton
                 size="sm"
-                disabled={loading}
+                loading={loading}
                 onClick={() => createProperty()}
               >
                 Create

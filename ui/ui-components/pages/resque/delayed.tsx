@@ -152,7 +152,7 @@ export default function ResqueDelayedList(props) {
                                 </td>
                                 <td>
                                   <LoadingButton
-                                    disabled={loading}
+                                    loading={loading}
                                     onClick={() => runDelayed(t.key, jidx)}
                                     variant="warning"
                                     size="sm"
@@ -162,7 +162,7 @@ export default function ResqueDelayedList(props) {
                                 </td>
                                 <td>
                                   <LoadingButton
-                                    disabled={loading}
+                                    loading={loading}
                                     onClick={() => delDelayed(t.key, jidx)}
                                     variant="danger"
                                     size="sm"
