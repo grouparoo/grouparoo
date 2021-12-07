@@ -10,6 +10,7 @@ import path from "path";
 import fs from "fs-extra";
 import prettier from "prettier";
 import { getConfigDir } from "../modules/pluginDetails";
+import { Deprecation } from "../modules/deprecation";
 
 export class Generate extends CLI {
   constructor() {
@@ -113,6 +114,8 @@ Commands:
   };
 
   async run({ params }) {
+    Deprecation.warnReplaced("CLI", "grouparoo generate", "UI config");
+
     const [template, id] = params._arguments || [];
     if (template) params.template = template;
     if (id) params.id = id;
