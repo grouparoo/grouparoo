@@ -21,9 +21,9 @@ let sourceMapping;
 async function runIt({ highWaterMark, sourceOffset, limit, scheduleFilters }) {
   const imports = [];
   plugin.createImports = jest.fn(async function (
-    mapping: { [remoteKey: string]: string },
+    mapping: Record<string, string>,
     run: Run,
-    rows: { [remoteKey: string]: any }[]
+    rows: Record<string, any>[]
   ): Promise<Import[]> {
     rows.forEach((r) => imports.push(r));
     return null;
@@ -93,10 +93,10 @@ describe("postgres/table/records", () => {
   });
 
   test("imports all records when no highWaterMark", async () => {
-    let limit = 100;
-    let highWaterMark = {};
-    let sourceOffset = 0;
-    let scheduleFilters = [];
+    const limit = 100;
+    const highWaterMark = {};
+    const sourceOffset = 0;
+    const scheduleFilters = [];
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
@@ -109,10 +109,10 @@ describe("postgres/table/records", () => {
   });
 
   test("imports all records when there is a highWaterMark", async () => {
-    let limit = 100;
-    let highWaterMark = { stamp: "2020-02-07T12:13:14.000Z" };
-    let sourceOffset = 0;
-    let scheduleFilters = [];
+    const limit = 100;
+    const highWaterMark = { stamp: "2020-02-07T12:13:14.000Z" };
+    const sourceOffset = 0;
+    const scheduleFilters = [];
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
@@ -125,10 +125,10 @@ describe("postgres/table/records", () => {
   });
 
   test("handles getting no results", async () => {
-    let limit = 100;
-    let sourceOffset = 0;
-    let highWaterMark = { stamp: "2020-02-11T12:13:14.000Z" }; // past the last one
-    let scheduleFilters = [];
+    const limit = 100;
+    const sourceOffset = 0;
+    const highWaterMark = { stamp: "2020-02-11T12:13:14.000Z" }; // past the last one
+    const scheduleFilters = [];
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
@@ -143,9 +143,9 @@ describe("postgres/table/records", () => {
   test(
     "imports a page at a time",
     async () => {
-      let limit = 4;
-      let highWaterMark = {};
-      let scheduleFilters = [];
+      const limit = 4;
+      const highWaterMark = {};
+      const scheduleFilters = [];
       let importedIds;
 
       const page1 = await runIt({
@@ -190,12 +190,12 @@ describe("postgres/table/records", () => {
   );
 
   test("can be filtered", async () => {
-    let limit = 100;
-    let highWaterMark = {};
-    let sourceOffset = 0;
-    let scheduleFilters = [
-      { key: "id", op: "gt", match: 4 },
-      { key: "id", op: "lt", match: 7 },
+    const limit = 100;
+    const highWaterMark = {};
+    const sourceOffset = 0;
+    const scheduleFilters = [
+      { key: "id", op: "greater than", match: 4 },
+      { key: "id", op: "less than", match: 7 },
     ];
     const { imports, importsCount } = await runIt({
       limit,

@@ -90,7 +90,7 @@ describe("postgres/table/recordProperty", () => {
   afterAll(async () => await afterData());
 
   describe("exact primary tables", () => {
-    let aggregationMethod = "exact";
+    const aggregationMethod = "exact";
     beforeAll(() => {
       sourceOptions = { table: usersTableName };
     });

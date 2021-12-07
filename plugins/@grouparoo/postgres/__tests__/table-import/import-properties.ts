@@ -75,7 +75,7 @@ async function getPropertyArrays(
   ].filter((p, idx) => columns.length > idx);
 
   let counter = 0;
-  const propertyOptions: { [key: string]: SimplePropertyOptions } = {};
+  const propertyOptions: Record<string, SimplePropertyOptions> = {};
   for (const property of properties) {
     propertyOptions[property.id] = {
       column: columns[counter],
@@ -158,7 +158,7 @@ describe("postgres/table/recordProperties", () => {
   afterAll(async () => await afterData());
 
   describe("exact primary tables", () => {
-    let aggregationMethod = "exact";
+    const aggregationMethod = "exact";
 
     beforeAll(() => {
       sourceOptions = { table: usersTableName };
