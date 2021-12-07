@@ -146,6 +146,8 @@ export class RecordCreate extends AuthenticatedAction {
 
     await record.markPending();
     await record.import();
+    await record.updateGroupMembership();
+    await record.update({ state: "ready" });
 
     const properties = await record.getProperties();
     let allPropertiesNull = true;
