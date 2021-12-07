@@ -47,7 +47,7 @@ export default function Page(props) {
   const { id } = router.query;
   const { schedules, runs, sources } = props;
   const disabled = useMemo(
-    () => app?.locked !== null || appRefreshQuery?.locked !== null,
+    () => Boolean(app?.locked || appRefreshQuery?.locked),
     [app, appRefreshQuery]
   );
 
@@ -224,7 +224,7 @@ export default function Page(props) {
             <p>{app.name} has no App Refresh Query.</p>
             <Button
               onClick={create}
-              disabled={app.locked !== null}
+              disabled={Boolean(app.locked)}
               className="mx-auto"
             >
               Add an App Refresh Query
@@ -401,7 +401,7 @@ export default function Page(props) {
             runs={runs}
             sources={sources}
           />
-          <fieldset disabled={appRefreshQuery.locked !== null}>
+          <fieldset disabled={Boolean(appRefreshQuery.locked)}>
             <Row className="ml-2 my-3"></Row>
             <Row className="ml-2 my-3">
               <Button

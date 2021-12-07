@@ -55,7 +55,6 @@ export class App extends LoggedModel<App> {
     return "app";
   }
 
-  @AllowNull(true)
   @Length({ min: 0, max: 191 })
   @Default("")
   @Column
@@ -65,7 +64,6 @@ export class App extends LoggedModel<App> {
   @Column
   type: string;
 
-  @AllowNull(true)
   @Column
   locked: string;
 

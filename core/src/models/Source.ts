@@ -84,7 +84,6 @@ export class Source extends LoggedModel<Source> {
   @Column
   appId: string;
 
-  @AllowNull(true)
   @Length({ min: 0, max: 191 })
   @Default("")
   @Column
@@ -99,7 +98,6 @@ export class Source extends LoggedModel<Source> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @AllowNull(true)
   @Column
   locked: string;
 

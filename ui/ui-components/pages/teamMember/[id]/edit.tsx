@@ -92,7 +92,7 @@ export default function Page(props) {
         </Col>
         <Col md={10}>
           <Form id="form" onSubmit={submit} autoComplete="off">
-            <fieldset disabled={teamMember.locked !== null}>
+            <fieldset disabled={Boolean(teamMember.locked)}>
               <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control

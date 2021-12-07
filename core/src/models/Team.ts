@@ -32,15 +32,12 @@ export class Team extends LoggedModel<Team> {
   @Column
   name: string;
 
-  @AllowNull(true)
   @Column
   locked: string;
 
-  @AllowNull(true)
   @Column
   permissionAllRead: boolean;
 
-  @AllowNull(true)
   @Column
   permissionAllWrite: boolean;
 

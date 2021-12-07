@@ -91,7 +91,6 @@ export class Schedule extends LoggedModel<Schedule> {
   @ForeignKey(() => Source)
   sourceId: string;
 
-  @AllowNull(true)
   @Length({ min: 0, max: 191 })
   @Default("")
   @Column
@@ -102,7 +101,6 @@ export class Schedule extends LoggedModel<Schedule> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @AllowNull(true)
   @Column
   locked: string;
 

@@ -69,7 +69,6 @@ export class Permission extends LoggedModel<Permission> {
   @Column
   write: boolean;
 
-  @AllowNull(true)
   @Column
   locked: string;
 

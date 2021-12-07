@@ -99,7 +99,7 @@ export default function Page(props) {
       <LockedBadge object={team} />
 
       <Form id="form" onSubmit={updateTeam} autoComplete="off">
-        <fieldset disabled={team.locked !== null}>
+        <fieldset disabled={Boolean(team.locked)}>
           <Form.Group>
             <Form.Label>Name</Form.Label>
             <Form.Control

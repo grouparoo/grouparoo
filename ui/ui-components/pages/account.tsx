@@ -66,7 +66,7 @@ export default function Page(props) {
         </Col>
         <Col md={10}>
           <Form id="form" onSubmit={submit}>
-            <fieldset disabled={teamMember.locked !== null}>
+            <fieldset disabled={Boolean(teamMember.locked)}>
               <Form.Group controlId="firstName">
                 <Form.Label>First Name</Form.Label>
                 <Form.Control

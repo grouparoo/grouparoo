@@ -8,7 +8,6 @@ export default {
     await queryInterface.addColumn("exports", "errorLevel", {
       type: DataTypes.STRING(191),
       allowNull: true,
-      defaultValue: null,
     });
 
     await queryInterface.sequelize.query(

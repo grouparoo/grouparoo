@@ -78,7 +78,6 @@ export class Export extends CommonModel<Export> {
   @Column
   recordId: string;
 
-  @AllowNull(true)
   @ForeignKey(() => ExportProcessor)
   @Column
   exportProcessorId: string;

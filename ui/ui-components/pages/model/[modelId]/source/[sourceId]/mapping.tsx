@@ -215,7 +215,7 @@ export default function Page(props: Props & NextPageContext) {
         possible, choose to map though a unique Property.
       </p>
       <Form>
-        <fieldset disabled={source.locked !== null}>
+        <fieldset disabled={Boolean(source.locked)}>
           <Row>
             <Col>
               <p>

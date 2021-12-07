@@ -140,7 +140,6 @@ export class Destination extends LoggedModel<Destination> {
   @ForeignKey(() => App)
   appId: string;
 
-  @AllowNull(true)
   @Length({ min: 0, max: 191 })
   @Default("")
   @Column
@@ -150,7 +149,6 @@ export class Destination extends LoggedModel<Destination> {
   @Column
   type: string;
 
-  @AllowNull(true)
   @Column
   locked: string;
 
@@ -159,12 +157,10 @@ export class Destination extends LoggedModel<Destination> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @AllowNull(true)
   @Column
   @ForeignKey(() => Group)
   groupId: string;
 
-  @AllowNull(true)
   @Column(DataType.ENUM(...SYNC_MODES))
   syncMode: DestinationSyncMode;
 

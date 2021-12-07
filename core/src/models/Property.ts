@@ -103,7 +103,6 @@ export class Property extends LoggedModel<Property> {
     return "prp";
   }
 
-  @AllowNull(true)
   @Length({ min: 0, max: 191 })
   @Default("")
   @Column
@@ -133,7 +132,6 @@ export class Property extends LoggedModel<Property> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @AllowNull(true)
   @Column
   locked: string;
 

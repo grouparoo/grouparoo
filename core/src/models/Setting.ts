@@ -53,7 +53,6 @@ export class Setting extends LoggedModel<Setting> {
   @Column(DataType.ENUM(...settingTypes))
   type: typeof settingTypes[number];
 
-  @AllowNull(true)
   @Column
   locked: string;
 

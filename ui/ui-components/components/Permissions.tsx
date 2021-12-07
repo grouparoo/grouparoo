@@ -119,7 +119,7 @@ export default function PermissionsList({
                   <Form.Group controlId={`${permission.id}~read`}>
                     <Form.Check
                       checked={permission.read}
-                      disabled={permission.locked !== null}
+                      disabled={Boolean(permission.locked)}
                       type="checkbox"
                       label="Read Access"
                       onChange={() => {
@@ -136,7 +136,7 @@ export default function PermissionsList({
                   <Form.Group controlId={`${permission.id}~write`}>
                     <Form.Check
                       checked={permission.write}
-                      disabled={permission.locked !== null}
+                      disabled={Boolean(permission.locked)}
                       type="checkbox"
                       label="Write Access"
                       onChange={() => {
