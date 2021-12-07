@@ -6,7 +6,7 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { App } from "../..";
+import { App, SimpleAppOptions } from "../..";
 import { Op } from "sequelize";
 
 import { ConfigWriter } from "../configWriter";
@@ -45,7 +45,28 @@ export async function loadApp(
   });
 
   const options = extractNonNullParts(configObject, "options");
-  if (options) await app.setOptions(options);
+  const { pluginApp } = await app.getPlugin();
+  const pluginOptions = pluginApp.options;
+
+  const optionDefaultValues: SimpleAppOptions = pluginOptions.reduce(
+    (acc, pluginOption) => {
+      if (
+        pluginOption.defaultValue &&
+        !options?.hasOwnProperty(pluginOption.key)
+      ) {
+        acc[pluginOption.key] = pluginOption.defaultValue;
+      }
+      return acc;
+    },
+    {}
+  );
+
+  if (options || Object.keys(optionDefaultValues).length) {
+    await app.setOptions({
+      ...optionDefaultValues,
+      ...options,
+    });
+  }
 
   if (externallyValidate) {
     const response = await app.test(
