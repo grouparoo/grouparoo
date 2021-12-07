@@ -99,7 +99,7 @@ describe("actions/records", () => {
 
       expect(record.properties["userId"].state).toBe("ready");
       expect(record.properties["email"].state).toBe("ready");
-      expect(record.properties["purchases"].state).toBe("pending");
+      expect(record.properties["purchases"].state).toBe("ready");
 
       expect(groups).toEqual([]);
       expect(destinations).toEqual([]);

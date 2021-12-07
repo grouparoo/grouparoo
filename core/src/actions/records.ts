@@ -143,6 +143,24 @@ export class RecordCreate extends AuthenticatedAction {
     if (params.properties) {
       await record.addOrUpdateProperties(params.properties);
     }
+
+    await record.markPending();
+    await record.import();
+
+    const properties = await record.getProperties();
+    let allPropertiesNull = true;
+    for (const key of Object.keys(params.properties)) {
+      if (properties[key].values.find((v) => !!v)) allPropertiesNull = false;
+    }
+
+    if (allPropertiesNull) {
+      throw new Error(
+        `Record cannot be created because the primary source does not contain the values (${JSON.stringify(
+          params.properties
+        )})`
+      );
+    }
+
     const groups = await record.$get("groups");
     const destinations = await DestinationOps.relevantFor(record, groups);
 
