@@ -4,8 +4,8 @@ interface Props extends React.HTMLAttributes<HTMLElement> {
   size?: SpinnerProps["size"];
 }
 
-const Loader: React.FC<Props> = ({ size, ...props }) => (
-  <Spinner {...props} animation="border" role="status" size={size} />
+const Loader: React.FC<Props> = (props) => (
+  <Spinner {...props} animation="border" role="status" />
 );
 
 export default Loader;

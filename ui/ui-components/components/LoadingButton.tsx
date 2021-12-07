@@ -46,7 +46,7 @@ const LoadingButton: React.FC<Props> = ({
           }}
         />
       )}
-      <span style={loading ? { opacity: 0 } : undefined}>{children}</span>
+      <span style={{ opacity: loading ? 0 : 1 }}>{children}</span>
     </Button>
   );
 };
