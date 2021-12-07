@@ -24,7 +24,7 @@
     "prepare": "rm -rf dist && tsc --declaration",
     "test": "jest",
     "pretest": "npm run lint && npm run prepare",
-    "lint": "prettier --check src __tests__",
+    "lint": "eslint . && prettier --check src __tests__",
     "watch": "tsc --watch"
   },
   "dependencies": {
