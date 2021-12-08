@@ -41,7 +41,7 @@
     "actionhero": "28.0.2",
     "csv-parse": "4.16.3",
     "fs-extra": "10.0.0",
-    "jest": "27.3.1",
+    "jest": "27.4.3",
     "prettier": "2.5.0",
     "sequelize": "6.11.0",
     "ts-jest": "27.0.7",
