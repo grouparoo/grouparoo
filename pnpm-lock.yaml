@@ -1290,7 +1290,7 @@ importers:
       pg: 8.7.1
       pg-format: 1.0.4
       pg-hstore: 2.3.4
-      postgres-date: 2.0.1
+      postgres-date: 2.1.0
       prettier: 2.5.0
       sequelize: 6.11.0
       ts-jest: 27.1.1
@@ -1300,7 +1300,7 @@ importers:
       pg: 8.7.1
       pg-format: 1.0.4
       pg-hstore: 2.3.4
-      postgres-date: 2.0.1
+      postgres-date: 2.1.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -12124,8 +12124,8 @@ packages:
     resolution: {integrity: sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q==}
     engines: {node: '>=0.10.0'}
 
-  /postgres-date/2.0.1:
-    resolution: {integrity: sha512-YtMKdsDt5Ojv1wQRvUhnyDJNSr2dGIC96mQVKz7xufp07nfuFONzdaowrMHjlAzY6GDLd4f+LUHHAAM1h4MdUw==}
+  /postgres-date/2.1.0:
+    resolution: {integrity: sha512-K7Juri8gtgXVcDfZttFKVmhglp7epKb1K4pgrkLxehjqkrgPhfG6OO8LHLkfaqkbpjNRnra018XwAr1yQFWGcA==}
     engines: {node: '>=12'}
     dev: false
 
