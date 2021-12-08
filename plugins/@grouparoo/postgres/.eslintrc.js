@@ -13,6 +13,8 @@ module.exports = {
   rules: {
     "@typescript-eslint/consistent-indexed-object-style": ["warn", "record"],
     "object-shorthand": ["error", "always"],
+    "no-useless-computed-key": "error",
+    "prefer-arrow-callback": "error",
   },
   ignorePatterns: ["/dist/", "*.js"],
 };
