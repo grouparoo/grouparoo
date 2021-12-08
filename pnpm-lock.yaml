@@ -262,7 +262,7 @@ importers:
       jest: 27.4.3
       jest-fetch-mock: 3.0.3
       json5: 2.2.0
-      libphonenumber-js: 1.9.43
+      libphonenumber-js: 1.9.44
       moment: 2.29.1
       mustache: 4.2.0
       nock: 13.2.1
@@ -308,7 +308,7 @@ importers:
       ioredis-mock: 5.8.1_ioredis@4.28.2
       isomorphic-fetch: 3.0.0
       json5: 2.2.0
-      libphonenumber-js: 1.9.43
+      libphonenumber-js: 1.9.44
       moment: 2.29.1
       mustache: 4.2.0
       node-resque: 9.1.2
@@ -2559,16 +2559,6 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@jest/environment/27.3.1:
-    resolution: {integrity: sha512-BCKCj4mOVLme6Tanoyc9k0ultp3pnmuyHw73UHRPeeZxirsU/7E3HC4le/VDb/SMzE1JcPnto+XBKFOcoiJzVw==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    dependencies:
-      '@jest/fake-timers': 27.3.1
-      '@jest/types': 27.4.2
-      '@types/node': 16.9.1
-      jest-mock: 27.4.2
-    dev: true
-
   /@jest/environment/27.4.2:
     resolution: {integrity: sha512-uSljKxh/rGlHlmhyeG4ZoVK9hOec+EPBkwTHkHKQ2EqDu5K+MaG9uJZ8o1CbRsSdZqSuhXvJCYhBWsORPPg6qw==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
@@ -2577,18 +2567,6 @@ packages:
       '@jest/types': 27.4.2
       '@types/node': 16.9.1
       jest-mock: 27.4.2
-    dev: true
-
-  /@jest/fake-timers/27.3.1:
-    resolution: {integrity: sha512-M3ZFgwwlqJtWZ+QkBG5NmC23A9w+A6ZxNsO5nJxJsKYt4yguBd3i8TpjQz5NfCX91nEve1KqD9RA2Q+Q1uWqoA==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    dependencies:
-      '@jest/types': 27.4.2
-      '@sinonjs/fake-timers': 8.0.1
-      '@types/node': 16.9.1
-      jest-message-util: 27.4.2
-      jest-mock: 27.4.2
-      jest-util: 27.4.2
     dev: true
 
   /@jest/fake-timers/27.4.2:
@@ -9001,11 +8979,11 @@ packages:
     resolution: {integrity: sha512-+Vi6yLrPg/qC81jfXx3IBlVnDTI6kmRr08iVa2hFCWmJt4zha0XW7ucQltCAPhSR0FEKEoJ3i+W4E6T0s9is0w==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
-      '@jest/environment': 27.3.1
-      '@jest/fake-timers': 27.3.1
+      '@jest/environment': 27.4.2
+      '@jest/fake-timers': 27.4.2
       '@jest/types': 27.4.2
       '@types/node': 16.9.1
-      jest-mock: 27.3.0
+      jest-mock: 27.4.2
       jest-util: 27.4.2
     dev: true
 
@@ -9121,14 +9099,6 @@ packages:
     resolution: {integrity: sha512-7d+r1lY45V7x/8if5UjT9oNMd5FHJwQGp7UKLsgAAq+PQK17PbTqs5wp3mvCK18hLJYmytseXLZmLkCYHjking==}
     dependencies:
       synchronous-promise: 2.0.15
-    dev: true
-
-  /jest-mock/27.3.0:
-    resolution: {integrity: sha512-ziZiLk0elZOQjD08bLkegBzv5hCABu/c8Ytx45nJKkysQwGaonvmTxwjLqEA4qGdasq9o2I8/HtdGMNnVsMTGw==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    dependencies:
-      '@jest/types': 27.4.2
-      '@types/node': 16.9.1
     dev: true
 
   /jest-mock/27.4.2:
@@ -9795,8 +9765,8 @@ packages:
       - supports-color
     dev: true
 
-  /libphonenumber-js/1.9.43:
-    resolution: {integrity: sha512-tNB87ZutAiAkl3DE/Bo0Mxqn/XZbNxhPg4v9bYBwQQW4dlhBGqXl1vtmPxeDWbrijzwOA9vRjOOFm5V9SK/W3w==}
+  /libphonenumber-js/1.9.44:
+    resolution: {integrity: sha512-zhw8nUMJuQf7jG1dZfEOKKOS6M3QYIv3HnvB/vGohNd0QfxIQcObH3a6Y6s350H+9xgBeOXClOJkS0hJ0yvS3g==}
     dev: false
 
   /lie/3.3.0:
