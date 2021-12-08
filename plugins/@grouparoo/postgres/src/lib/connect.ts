@@ -66,10 +66,13 @@ export function formatAsText(text: string) {
 export function formatInUtcDefault(text: string) {
   if (!text) return null;
   const zone = timeZoneOffset(text);
-  let date: Date = parseDate(text);
+
+  let date: Date;
+  let parsed = parseDate(text);
+  date = parsed instanceof Date ? parsed : new Date(parsed);
 
   if (!zone) {
-    const dateInUTC: Date = parseDate(text + "+00");
+    const dateInUTC = parseDate(text + "+00");
     if (dateInUTC instanceof Date) date = dateInUTC;
   }
 
