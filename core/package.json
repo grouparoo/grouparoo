@@ -51,7 +51,7 @@
     "ioredis-mock": "5.8.1",
     "isomorphic-fetch": "3.0.0",
     "json5": "2.2.0",
-    "libphonenumber-js": "1.9.43",
+    "libphonenumber-js": "1.9.44",
     "moment": "2.29.1",
     "mustache": "4.2.0",
     "node-resque": "9.1.2",
