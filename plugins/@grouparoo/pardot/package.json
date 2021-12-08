@@ -41,7 +41,7 @@
     "actionhero": "28.0.2",
     "dotenv": "10.0.0",
     "fs-extra": "10.0.0",
-    "jest": "27.3.1",
+    "jest": "27.4.3",
     "nock": "13.2.1",
     "prettier": "2.5.0",
     "sequelize": "6.11.0",

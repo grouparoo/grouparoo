@@ -83,7 +83,7 @@
     "@types/semver": "7.3.9",
     "@types/tar": "6.1.1",
     "csv-parse": "4.16.3",
-    "jest": "27.3.1",
+    "jest": "27.4.3",
     "jest-fetch-mock": "3.0.3",
     "nock": "13.2.1",
     "ts-jest": "27.0.7",
