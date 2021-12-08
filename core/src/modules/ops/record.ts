@@ -684,7 +684,9 @@ export namespace RecordOps {
    *
    * **WARNING**: This method expects NOT to be used within a CLS-wrapped context
    */
-  export async function importAndUpdateInline(records: GrouparooRecord[]) {
+  export async function opportunisticallyImportAndUpdateInline(
+    records: GrouparooRecord[]
+  ) {
     const response: { recordId: string; error: string; success: boolean }[] =
       [];
 

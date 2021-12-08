@@ -91,7 +91,7 @@ describe("actions/records", () => {
       );
       expect(error).toBeUndefined();
       expect(record.id).toBeTruthy();
-      expect(record.state).toBe("pending");
+      expect(record.state).toBe("ready");
 
       id = record.id;
     });

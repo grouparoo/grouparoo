@@ -143,6 +143,26 @@ export class RecordCreate extends AuthenticatedAction {
     if (params.properties) {
       await record.addOrUpdateProperties(params.properties);
     }
+
+    await record.markPending();
+    await record.import();
+    await record.updateGroupMembership();
+    await record.update({ state: "ready" });
+
+    const properties = await record.getProperties();
+    let allPropertiesNull = true;
+    for (const key of Object.keys(params.properties)) {
+      if (properties[key].values.find((v) => !!v)) allPropertiesNull = false;
+    }
+
+    if (allPropertiesNull) {
+      throw new Error(
+        `Record cannot be created because the primary source does not contain the values (${JSON.stringify(
+          params.properties
+        )})`
+      );
+    }
+
     const groups = await record.$get("groups");
     const destinations = await DestinationOps.relevantFor(record, groups);
 
@@ -188,7 +208,9 @@ export class RecordImport extends Action {
       record = await GrouparooRecord.findById(params.id);
     });
 
-    const responses = await RecordOps.importAndUpdateInline([record]);
+    const responses = await RecordOps.opportunisticallyImportAndUpdateInline([
+      record,
+    ]);
     if (!responses[0].success) throw new Error(responses[0].error);
 
     await CLS.wrap(async () => {
@@ -235,7 +257,9 @@ export class RecordsImport extends Action {
       });
     });
 
-    const responses = await RecordOps.importAndUpdateInline(records);
+    const responses = await RecordOps.opportunisticallyImportAndUpdateInline(
+      records
+    );
     return { responses };
   }
 }

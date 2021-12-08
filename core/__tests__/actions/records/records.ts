@@ -84,7 +84,7 @@ describe("actions/records", () => {
         await specHelper.runAction<RecordCreate>("record:create", connection);
       expect(error).toBeUndefined();
       expect(record.id).toBeTruthy();
-      expect(record.state).toBe("pending");
+      expect(record.state).toBe("ready");
       expect(simpleRecordValues(record.properties)).toEqual({
         userId: [123],
         email: ["luigi@example.com"],
@@ -99,7 +99,7 @@ describe("actions/records", () => {
 
       expect(record.properties["userId"].state).toBe("ready");
       expect(record.properties["email"].state).toBe("ready");
-      expect(record.properties["purchases"].state).toBe("pending");
+      expect(record.properties["purchases"].state).toBe("ready");
 
       expect(groups).toEqual([]);
       expect(destinations).toEqual([]);
@@ -155,8 +155,8 @@ describe("actions/records", () => {
       };
       const { records: pendingProfilesA, total: pendingTotalA } =
         await specHelper.runAction<RecordsList>("records:list", connection);
-      expect(pendingProfilesA.length).toBe(1);
-      expect(pendingTotalA).toBe(1);
+      expect(pendingProfilesA.length).toBe(0);
+      expect(pendingTotalA).toBe(0);
 
       connection.params = {
         csrfToken,
@@ -164,8 +164,8 @@ describe("actions/records", () => {
       };
       const { records: readyProfilesA, total: readyTotalA } =
         await specHelper.runAction<RecordsList>("records:list", connection);
-      expect(readyProfilesA.length).toBe(0);
-      expect(readyTotalA).toBe(0);
+      expect(readyProfilesA.length).toBe(1);
+      expect(readyTotalA).toBe(1);
 
       const luigi = await GrouparooRecord.findOne();
       await RecordProperty.update(
