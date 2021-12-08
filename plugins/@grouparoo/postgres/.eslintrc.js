@@ -12,6 +12,7 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   rules: {
     "@typescript-eslint/consistent-indexed-object-style": ["warn", "record"],
+    "@typescript-eslint/array-type": "error",
     "object-shorthand": ["error", "always"],
     "no-useless-computed-key": "error",
     "prefer-arrow-callback": "error",
