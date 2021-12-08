@@ -15,6 +15,7 @@ module.exports = {
     "object-shorthand": ["error", "always"],
     "no-useless-computed-key": "error",
     "prefer-arrow-callback": "error",
+    "prefer-object-spread": "error",
   },
   ignorePatterns: ["/dist/", "*.js"],
 };
