@@ -3,7 +3,7 @@ import EnterpriseLink from "../../../../../components/GrouparooLink";
 import RecordTabs from "../../../../../components/tabs/Record";
 import { useState, useEffect } from "react";
 import { UseApi } from "../../../../../hooks/useApi";
-import { Row, Col, Form, ListGroup, Alert, Button } from "react-bootstrap";
+import { Row, Col, ListGroup, Alert } from "react-bootstrap";
 import LoadingButton from "../../../../../components/LoadingButton";
 import { useRouter } from "next/router";
 import LoadingTable from "../../../../../components/LoadingTable";
@@ -28,12 +28,10 @@ export default function Page(props) {
     successHandler,
     properties,
     recordHandler,
-    allGroups,
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     properties: Models.PropertyType[];
-    allGroups: Models.GroupType[];
     apps: Models.AppType[];
     sources: Models.SourceType[];
     recordHandler: RecordHandler;
@@ -385,46 +383,6 @@ export default function Page(props) {
               </ListGroup.Item>
             ))}
           </ListGroup>
-
-          <hr />
-          {grouparooUiEdition() !== "config" && (
-            <Form onSubmit={(event) => handleAdd(event)} autoComplete="off">
-              <Row>
-                <Col md={9}>
-                  <Form.Group controlId="groupId">
-                    <Form.Label>Add Group</Form.Label>
-                    <Form.Control as="select" disabled={loading}>
-                      {allGroups.map((group) => {
-                        const disabled =
-                          group.type !== "manual" ||
-                          groupMembershipIds.includes(group.id);
-                        return (
-                          <option
-                            disabled={disabled}
-                            value={group.id}
-                            key={`group-${group.id}`}
-                          >
-                            {group.name}
-                          </option>
-                        );
-                      })}
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col md={3}>
-                  <div style={{ paddingTop: 34 }} />
-                  <LoadingButton
-                    variant="outline-primary"
-                    size="sm"
-                    type="submit"
-                    loading={loading}
-                  >
-                    Add
-                  </LoadingButton>
-                </Col>
-              </Row>
-            </Form>
-          )}
         </Col>
 
         <Col>
@@ -467,8 +425,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { properties } = await execApi("get", `/properties`, {
     modelId: record?.modelId,
   });
-  const { groups: allGroups } = await execApi("get", `/groups`);
   const { apps } = await execApi("get", `/apps`);
   const { sources } = await execApi("get", `/sources`);
-  return { record, properties, groups, allGroups, destinations, sources, apps };
+  return { record, properties, groups, destinations, sources, apps };
 };
