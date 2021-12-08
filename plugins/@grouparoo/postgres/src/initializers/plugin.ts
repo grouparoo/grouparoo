@@ -31,7 +31,8 @@ import {
   QueryPropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
 
-import packageJSON from "./../../package.json";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const packageJSON = require("./../../package.json");
 
 export class Plugins extends Initializer {
   constructor() {
