@@ -1393,8 +1393,8 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       '@types/pg': '*'
-      '@typescript-eslint/eslint-plugin': ^5.6.0
-      '@typescript-eslint/parser': ^5.6.0
+      '@typescript-eslint/eslint-plugin': 5.6.0
+      '@typescript-eslint/parser': 5.6.0
       actionhero: 28.1.4
       csv-parse: 4.16.3
       eslint: 7.32.0
@@ -1404,7 +1404,7 @@ importers:
       pg-format: 1.0.4
       pg-hstore: 2.3.4
       postgres-date: 2.1.0
-      prettier: 2.5.1
+      prettier: 2.5.0
       sequelize: 6.11.0
       ts-jest: 27.1.2
       typescript: 4.5.4
