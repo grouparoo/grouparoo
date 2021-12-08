@@ -19,14 +19,16 @@ let sourceMapping;
 
 async function runIt({ highWaterMark, sourceOffset, limit }) {
   const imports = [];
-  plugin.createImports = jest.fn(async (
-    mapping: Record<string, string>,
-    run: Run,
-    rows: Record<string, unknown>[]
-  ): Promise<Import[]> => {
-    rows.forEach((r) => imports.push(r));
-    return null;
-  });
+  plugin.createImports = jest.fn(
+    async (
+      mapping: Record<string, string>,
+      run: Run,
+      rows: Record<string, unknown>[]
+    ): Promise<Import[]> => {
+      rows.forEach((r) => imports.push(r));
+      return null;
+    }
+  );
   const {
     highWaterMark: nextHighWaterMark,
     importsCount,
