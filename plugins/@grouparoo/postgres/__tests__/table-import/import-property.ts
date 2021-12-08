@@ -38,7 +38,7 @@ async function getPropertyArray(
 ) {
   const propertyOptions = {
     column,
-    aggregationMethod: aggregationMethod,
+    aggregationMethod,
   };
 
   if (!useRecord) {
