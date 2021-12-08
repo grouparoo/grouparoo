@@ -55,7 +55,7 @@ describe("calculated-property/recordProperty", () => {
 
   test("it evaluates string properties as expected", async () => {
     const fn = `() => {
-        return "hi {{firstName}}"
+        return "hi {{{firstName}}}"
     }`;
     const value = await getPropertyValue(fn);
     expect(value[0]).toEqual(`hi Mario`);
@@ -69,7 +69,7 @@ describe("calculated-property/recordProperty", () => {
   });
   test("it evaluates null properties as an empty string", async () => {
     const fn = `() => {
-        if ("{{purchases}}" === "") return true;
+        if ("{{{purchases}}}" === "") return true;
         return false;}`;
     const value = await getPropertyValue(fn);
     expect(value[0]).toEqual(true);

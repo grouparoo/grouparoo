@@ -7,7 +7,7 @@
   "unique": false,
   "isArray": false,
   "options": {
-    "customFunction": "() => \"{{ firstName }} {{ lastName }}\""
+    "customFunction": "() => \"{{{ firstName }}} {{{ lastName }}}\""
   },
   "filters": []
 }
