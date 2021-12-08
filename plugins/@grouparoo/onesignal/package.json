@@ -43,7 +43,7 @@
     "nock": "13.2.1",
     "prettier": "2.5.0",
     "sequelize": "6.11.0",
-    "ts-jest": "27.0.7",
+    "ts-jest": "27.1.1",
     "typescript": "4.5.2"
   },
   "gitHead": "fde75653f20bf5c26b7457ea37682d9ca55f0786"
