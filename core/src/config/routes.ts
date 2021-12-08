@@ -71,6 +71,7 @@ export const DEFAULT: { [namespace]: () => RoutesConfig } = {
         { path: "/v:apiVersion/schedule/:id/filterOptions", action: "schedule:filterOptions" },
         { path: "/v:apiVersion/schedules", action: "schedules:list" },
         { path: "/v:apiVersion/session", action: "session:view" },
+        { path: "/v:apiVersion/oauth/providers", action: "oAuth:listProviders" },
         { path: "/v:apiVersion/setupSteps", action: "setupSteps:list" },
         { path: "/v:apiVersion/setting/core/cluster-name", action: "setting:view:core:cluster-name" },
         { path: "/v:apiVersion/settings", action: "settings:list" },
