@@ -386,44 +386,47 @@ export default function Page(props) {
             ))}
           </ListGroup>
 
-          <hr />
           {grouparooUiEdition() !== "config" && (
-            <Form onSubmit={(event) => handleAdd(event)} autoComplete="off">
-              <Row>
-                <Col md={9}>
-                  <Form.Group controlId="groupId">
-                    <Form.Label>Add Group</Form.Label>
-                    <Form.Control as="select" disabled={loading}>
-                      {allGroups.map((group) => {
-                        const disabled =
-                          group.type !== "manual" ||
-                          groupMembershipIds.includes(group.id);
-                        return (
-                          <option
-                            disabled={disabled}
-                            value={group.id}
-                            key={`group-${group.id}`}
-                          >
-                            {group.name}
-                          </option>
-                        );
-                      })}
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col md={3}>
-                  <div style={{ paddingTop: 34 }} />
-                  <LoadingButton
-                    variant="outline-primary"
-                    size="sm"
-                    type="submit"
-                    loading={loading}
-                  >
-                    Add
-                  </LoadingButton>
-                </Col>
-              </Row>
-            </Form>
+            <>
+              <hr />
+
+              <Form onSubmit={(event) => handleAdd(event)} autoComplete="off">
+                <Row>
+                  <Col md={9}>
+                    <Form.Group controlId="groupId">
+                      <Form.Label>Add Group</Form.Label>
+                      <Form.Control as="select" disabled={loading}>
+                        {allGroups.map((group) => {
+                          const disabled =
+                            group.type !== "manual" ||
+                            groupMembershipIds.includes(group.id);
+                          return (
+                            <option
+                              disabled={disabled}
+                              value={group.id}
+                              key={`group-${group.id}`}
+                            >
+                              {group.name}
+                            </option>
+                          );
+                        })}
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col md={3}>
+                    <div style={{ paddingTop: 34 }} />
+                    <LoadingButton
+                      variant="outline-primary"
+                      size="sm"
+                      type="submit"
+                      loading={loading}
+                    >
+                      Add
+                    </LoadingButton>
+                  </Col>
+                </Row>
+              </Form>
+            </>
           )}
         </Col>
 
