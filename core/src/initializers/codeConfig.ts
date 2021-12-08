@@ -59,7 +59,9 @@ async function loadSampleProfiles() {
       `importing ${records.length} sample records from the ${model.name} model`
     );
 
-    const responses = await RecordOps.importAndUpdateInline(records);
+    const responses = await RecordOps.opportunisticallyImportAndUpdateInline(
+      records
+    );
     log(
       `imported ${responses.filter((r) => r.success).length}/${
         records.length

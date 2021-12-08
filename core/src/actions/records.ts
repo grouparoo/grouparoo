@@ -208,7 +208,9 @@ export class RecordImport extends Action {
       record = await GrouparooRecord.findById(params.id);
     });
 
-    const responses = await RecordOps.importAndUpdateInline([record]);
+    const responses = await RecordOps.opportunisticallyImportAndUpdateInline([
+      record,
+    ]);
     if (!responses[0].success) throw new Error(responses[0].error);
 
     await CLS.wrap(async () => {
@@ -255,7 +257,9 @@ export class RecordsImport extends Action {
       });
     });
 
-    const responses = await RecordOps.importAndUpdateInline(records);
+    const responses = await RecordOps.opportunisticallyImportAndUpdateInline(
+      records
+    );
     return { responses };
   }
 }
