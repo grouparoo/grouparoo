@@ -63,7 +63,7 @@ describe("mongo/query/recordProperty", () => {
     const query = [
       {
         $match: {
-          id: "{{userId}}",
+          id: "{{{userId}}}",
         },
       },
       {
@@ -74,8 +74,8 @@ describe("mongo/query/recordProperty", () => {
       },
     ];
     const queryString = JSON.stringify(query).replace(
-      /"{{userId}}"/,
-      "{{userId}}"
+      /"{{{userId}}}"/,
+      "{{{userId}}}"
     );
     const value = await getPropertyValue(queryString);
     expect(value).toEqual(["Erie"]);
@@ -85,7 +85,7 @@ describe("mongo/query/recordProperty", () => {
     const query = [
       {
         $match: {
-          id: "{{userId}}",
+          id: "{{{userId}}}",
         },
       },
       {
@@ -96,8 +96,8 @@ describe("mongo/query/recordProperty", () => {
       },
     ];
     const queryString = JSON.stringify(query).replace(
-      /"{{userId}}"/,
-      "{{userId}}"
+      /"{{{userId}}}"/,
+      "{{{userId}}}"
     );
     const value = await getPropertyValue(queryString);
     expect(value).toEqual([259.12]);
@@ -107,7 +107,7 @@ describe("mongo/query/recordProperty", () => {
     const query = [
       {
         $match: {
-          id: "{{userId}}",
+          id: "{{{userId}}}",
         },
       },
       {
@@ -118,8 +118,8 @@ describe("mongo/query/recordProperty", () => {
       },
     ];
     const queryString = JSON.stringify(query).replace(
-      /"{{userId}}"/,
-      "{{userId}}"
+      /"{{{userId}}}"/,
+      "{{{userId}}}"
     );
     const value = await getPropertyValue(queryString);
     expect(value).toEqual([true]);
@@ -129,7 +129,7 @@ describe("mongo/query/recordProperty", () => {
     const query = [
       {
         $match: {
-          email: "{{email}}",
+          email: "{{{email}}}",
         },
       },
       {
@@ -148,7 +148,7 @@ describe("mongo/query/recordProperty", () => {
     const query = [
       {
         $match: {
-          email: "{{email}}",
+          email: "{{{email}}}",
         },
       },
       {
@@ -167,7 +167,7 @@ describe("mongo/query/recordProperty", () => {
     const query = [
       {
         $match: {
-          email: "{{email}}",
+          email: "{{{email}}}",
         },
       },
       {
@@ -186,7 +186,7 @@ describe("mongo/query/recordProperty", () => {
     const query = [
       {
         $match: {
-          email: "{{email}}",
+          email: "{{{email}}}",
         },
       },
       {
@@ -204,7 +204,7 @@ describe("mongo/query/recordProperty", () => {
     const query = [
       {
         $match: {
-          email: "{{badName}}",
+          email: "{{{badName}}}",
         },
       },
       {

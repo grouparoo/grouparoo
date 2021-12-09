@@ -1038,7 +1038,7 @@ describe("models/source", () => {
 
     it("replaces mustache template strings with variables", async () => {
       await source.setOptions({
-        table: "{{ previousRun.createdAt.sql }}",
+        table: "{{{ previousRun.createdAt.sql }}}",
       });
       await source.setMapping({ id: "userId" });
 

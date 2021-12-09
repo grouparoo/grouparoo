@@ -60,7 +60,7 @@ describe("sqlite/integration/log-checking", () => {
   afterAll(async () => await afterData());
 
   it("should correctly do debug logging for sqlite queries", async () => {
-    const sql = `SELECT first_name FROM "${usersTableName}" WHERE id = {{ userId }}`;
+    const sql = `SELECT first_name FROM "${usersTableName}" WHERE id = {{{ userId }}}`;
     const value = await getPropertyValue(sql);
     expect(value).toEqual(["Erie"]);
 

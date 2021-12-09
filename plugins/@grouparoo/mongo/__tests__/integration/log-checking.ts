@@ -67,7 +67,7 @@ describe("mongo/integration/log-checking", () => {
     const query = [
       {
         $match: {
-          id: "{{userId}}",
+          id: "{{{userId}}}",
         },
       },
       {
@@ -78,8 +78,8 @@ describe("mongo/integration/log-checking", () => {
       },
     ];
     const queryString = JSON.stringify(query).replace(
-      /"{{userId}}"/,
-      "{{userId}}"
+      /"{{{userId}}}"/,
+      "{{{userId}}}"
     );
     const value = await getPropertyValue(queryString);
     expect(value).toEqual(["Erie"]);

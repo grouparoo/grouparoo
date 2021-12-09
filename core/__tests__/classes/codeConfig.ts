@@ -68,7 +68,8 @@ describe("classes/codeConfig", () => {
         unique: false,
         isArray: false,
         options: {
-          query: "SELECT SUM(price) from purchases where user_id = {{userId}}",
+          query:
+            "SELECT SUM(price) from purchases where user_id = {{{userId}}}",
         },
       };
 

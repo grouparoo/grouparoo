@@ -57,7 +57,7 @@ describe("bigquery/integration/log-checking", () => {
   });
 
   it("should correctly do debug logging for bigquery queries", async () => {
-    const sql = "SELECT first_name FROM test.records WHERE id = {{ userId }}";
+    const sql = "SELECT first_name FROM test.records WHERE id = {{{ userId }}}";
     const value = await getPropertyValue(sql);
     expect(value).toEqual(["Erie"]);
 

@@ -182,7 +182,7 @@ describe("modules/plugin", () => {
         });
 
         const initialString =
-          "select * from \"users\" where updatedAt >= '{{previousRun.createdAt.sql}}'; # The Previous Run Id is: {{previousRun.id}}";
+          "select * from \"users\" where updatedAt >= '{{{previousRun.createdAt.sql}}}'; # The Previous Run Id is: {{{previousRun.id}}}";
         const replacedString = await plugin.replaceTemplateRunVariables(
           initialString,
           run
@@ -199,7 +199,7 @@ describe("modules/plugin", () => {
         const schedule = await helper.factories.schedule();
 
         const initialString =
-          "select * from \"users\" where updatedAt >= '{{previousRun.createdAt.sql}}'; # The Previous Run Id is: {{previousRun.id}}";
+          "select * from \"users\" where updatedAt >= '{{{previousRun.createdAt.sql}}}'; # The Previous Run Id is: {{{previousRun.id}}}";
         const replacedString = await plugin.replaceTemplateRunVariables(
           initialString,
           run
@@ -214,7 +214,7 @@ describe("modules/plugin", () => {
       test("it throws an error if a template variable is missing", async () => {
         const run = await helper.factories.run();
         await expect(
-          plugin.replaceTemplateRunVariables(`hello {{world}}`, run)
+          plugin.replaceTemplateRunVariables(`hello {{{world}}}`, run)
         ).rejects.toThrow('missing mustache key "world"');
       });
     });
@@ -230,7 +230,7 @@ describe("modules/plugin", () => {
         });
 
         const initialString =
-          "select first_name from users where id = {{userId}} and email = '{{email}}' # GrouparooRecord Created at {{createdAt.sql}}";
+          "select first_name from users where id = {{{userId}}} and email = '{{{email}}}' # GrouparooRecord Created at {{{createdAt.sql}}}";
 
         const replacedString = await plugin.replaceTemplateRecordVariables(
           initialString,
@@ -249,7 +249,7 @@ describe("modules/plugin", () => {
         await record.addOrUpdateProperties({ userId: null });
         await expect(
           plugin.replaceTemplateRecordVariables(
-            `select email where id = {{userId}}`,
+            `select email where id = {{{userId}}}`,
             record
           )
         ).rejects.toThrow('missing mustache key "userId"');
@@ -269,7 +269,7 @@ describe("modules/plugin", () => {
             source.modelId
           );
         expect(replacedWithId).toEqual(
-          `select * from users where id = {{ ${property.id} }}`
+          `select * from users where id = {{{ ${property.id} }}}`
         );
 
         expect(
@@ -299,7 +299,7 @@ describe("modules/plugin", () => {
           where: { key: "userId" },
         });
         const source = await property.$get("source");
-        const initialString = `select * from users where id = {{ ${otherProperty.key} }}`;
+        const initialString = `select * from users where id = {{{ ${otherProperty.key} }}}`;
 
         await expect(
           plugin.replaceTemplateRecordPropertyKeysWithRecordPropertyId(

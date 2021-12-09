@@ -62,7 +62,7 @@ describe("calculated-property/recordProperty", () => {
   });
   test("it evaluates float properties as expected", async () => {
     const fn = `() => {
-        return {{ltv}} * 2
+        return {{{ltv}}} * 2
     }`;
     const value = await getPropertyValue(fn);
     expect(value[0]).toEqual(780.84);
@@ -76,7 +76,7 @@ describe("calculated-property/recordProperty", () => {
   });
   test("it evaluates boolean properties as expected", async () => {
     const fn = `() => {
-        if({{isVIP}} === true) return true;
+        if({{{isVIP}}} === true) return true;
         return false;
     }`;
     const value = await getPropertyValue(fn);
@@ -85,7 +85,7 @@ describe("calculated-property/recordProperty", () => {
 
   test("it evaluates date strings as expected", async () => {
     const fn = `() => {
-          const date = new Date("{{lastLoginAt.iso}}");
+          const date = new Date("{{{lastLoginAt.iso}}}");
           return date.toISOString();
       }`;
     const value = await getPropertyValue(fn);
@@ -106,7 +106,7 @@ describe("calculated-property/recordProperty", () => {
   });
   test("it throws if mustached property does not exist", async () => {
     const fn = `() => {
-      return {{fakeProperty}}
+      return {{{fakeProperty}}}
     }`;
     await expect(getPropertyValue(fn)).rejects.toThrowError(
       "Could not calculate property: Error: Calculated property's /`customFunction/` undefined"

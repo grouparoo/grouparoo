@@ -53,7 +53,7 @@ describe("snowflake/integration/log-checking", () => {
   });
 
   it("should correctly do debug logging for snowflake queries", async () => {
-    const sql = "SELECT first_name FROM profiles WHERE id = {{ userId }}";
+    const sql = "SELECT first_name FROM profiles WHERE id = {{{ userId }}}";
     const value = await getPropertyValue(sql);
     expect(value).toEqual(["Erie"]);
 
