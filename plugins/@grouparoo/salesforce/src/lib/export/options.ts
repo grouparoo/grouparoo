@@ -8,53 +8,67 @@ import { getSupportedSalesforceTypes } from "../export/mapping";
 import { getObjectMatchNames } from "../export-objects/options";
 import { SalesforceCacheData } from "../objects";
 
+export interface fieldsOptions {
+  fieldName: string;
+  fieldValue: string;
+  specialFields: string[];
+}
 interface SalesforceDestinationOptions {
   (argument: {
     appId: string;
     appOptions: SimpleAppOptions;
     destinationOptions: SimpleDestinationOptions;
+    fieldsOptions: fieldsOptions[];
   }): Promise<DestinationOptionsMethodResponse>;
 }
 export const getDestinationOptions: SalesforceDestinationOptions = async ({
   appId,
   appOptions,
   destinationOptions,
+  fieldsOptions,
 }) => {
   const cacheData: SalesforceCacheData = { appId, appOptions };
   const out: DestinationOptionsMethodResponse = {};
-
   const conn = await connect(appOptions);
-  Object.assign(
-    out,
-    await getPrimaryKeyOptions(conn, cacheData, destinationOptions)
-  );
+  fieldsOptions.map(async (fieldsOption) => {
+    Object.assign(
+      out,
+      await getOptions(
+        conn,
+        cacheData,
+        destinationOptions,
+        fieldsOption.fieldName,
+        fieldsOption.fieldValue,
+        fieldsOption.specialFields
+      )
+    );
+  });
   return out;
 };
 
-async function getPrimaryKeyOptions(
+async function getOptions(
   conn: any,
   cacheData: SalesforceCacheData,
-  destinationOptions: SimpleDestinationOptions
+  destinationOptions: SimpleDestinationOptions,
+  fieldName: string,
+  fieldValue: string,
+  specialFields: string[]
 ) {
-  const specialFields = ["AccountNumber", "Name"];
-  const account = "Account";
   const out: DestinationOptionsMethodResponse = {
-    primaryKey: { type: "list", options: [] },
+    [fieldName]: { type: "list", options: [] },
   };
-
-  // look up its fields
   const supportedTypes = getSupportedSalesforceTypes();
-  const fields = await getObjectMatchNames(
+  const refFields = await getObjectMatchNames(
     conn,
     cacheData,
-    account,
+    fieldValue,
     true,
     specialFields,
     supportedTypes
   );
-  out.primaryKey.options = fields;
-  if (!fields.includes(destinationOptions.primaryKey)) {
-    destinationOptions.primaryKey = null;
+  out[fieldName].options = refFields;
+  if (!refFields.includes(destinationOptions[fieldName])) {
+    destinationOptions[fieldName] = null;
   }
   return out;
 }

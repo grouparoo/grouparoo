@@ -1,15 +1,11 @@
-import {
-  getSalesforceModel,
-  SALES_FORCE_DESTINATIONS,
-  SalesforceModel,
-} from "../export/model";
+import { getSalesforceModel, SalesforceModel } from "../export/model";
 import { SimpleDestinationOptions } from "@grouparoo/core";
 
 export function destinationModel(
   destinationOptions: SimpleDestinationOptions
 ): SalesforceModel {
-  return getSalesforceModel(
-    destinationOptions,
-    SALES_FORCE_DESTINATIONS.accounts
-  );
+  return getSalesforceModel(destinationOptions, {
+    recordObject: "Account",
+    recordMatchField: destinationOptions.primaryKey as string,
+  });
 }

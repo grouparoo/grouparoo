@@ -1,4 +1,4 @@
-import { getDestinationOptions } from "./options";
+import { getDestinationOptions } from "../export/options";
 import { DestinationOptionsMethod } from "@grouparoo/core";
 
 export const destinationOptions: DestinationOptionsMethod = async ({
@@ -10,5 +10,12 @@ export const destinationOptions: DestinationOptionsMethod = async ({
     appId,
     appOptions,
     destinationOptions,
+    fieldsOptions: [
+      {
+        fieldName: "primaryKey",
+        fieldValue: "Account",
+        specialFields: ["AccountNumber", "Name"],
+      },
+    ],
   });
 };
