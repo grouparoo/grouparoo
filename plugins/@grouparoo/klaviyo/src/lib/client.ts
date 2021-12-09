@@ -30,4 +30,19 @@ export class KlaviyoClient extends Klaviyo {
 
     return data.id;
   }
+
+  async getListMapByName() {
+    const allLists = await this.lists.getLists();
+    return Object.fromEntries(
+      allLists.map(({ list_id, list_name }) => [list_name, list_id])
+    );
+  }
+
+  async isMemberOfList(listId: string, email: string) {
+    const results = await this.lists.getMembersFromList({
+      listId,
+      emails: [email],
+    });
+    return results.length === 1 && results[0].email === email;
+  }
 }

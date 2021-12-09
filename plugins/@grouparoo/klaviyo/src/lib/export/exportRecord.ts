@@ -3,10 +3,7 @@ import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 
 async function handleGroupsChanges(client, email, oldGroups, newGroups) {
-  const allLists = await client.lists.getLists();
-  const listMapByName = Object.fromEntries(
-    allLists.map(({ list_id, list_name }) => [list_name, list_id])
-  );
+  const listMapByName = await client.getListMapByName();
 
   // Unsubscribe from old groups
   for (const groupName of oldGroups) {
@@ -16,6 +13,13 @@ async function handleGroupsChanges(client, email, oldGroups, newGroups) {
         listId: listMapByName[groupName],
         emails: [email],
       });
+
+      const result = await client.lists.getAllMembers({
+        groupId: listMapByName[groupName],
+      });
+      if (result.records.length === 0) {
+        await client.lists.deleteList(listMapByName[groupName]);
+      }
     }
   }
 
@@ -34,7 +38,7 @@ async function handleGroupsChanges(client, email, oldGroups, newGroups) {
   }
 }
 
-const handlePersonChanges: ExportRecordPluginMethod = async ({
+export const handlePersonChanges: ExportRecordPluginMethod = async ({
   appOptions,
   syncOperations,
   export: {

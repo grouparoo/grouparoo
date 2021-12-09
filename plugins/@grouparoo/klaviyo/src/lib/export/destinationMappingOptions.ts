@@ -10,7 +10,7 @@ type KnownKlaviyoField = {
   required: boolean;
 };
 
-const fetchKnownFields = async (): Promise<KnownKlaviyoField[]> => {
+export const fetchKnownFields = async (): Promise<KnownKlaviyoField[]> => {
   const required = ["email"];
   const allowedFields = [
     ...required,

@@ -64,10 +64,10 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "klaviyo-export-persons",
-          displayName: "Klaviyo Export Persons",
+          name: "klaviyo-export-profiles",
+          displayName: "Klaviyo Export Profiles",
           direction: "export",
-          description: "Export records to Klaviyo as Person contacts",
+          description: "Export records to Klaviyo as Profiles",
           apps: ["klaviyo"],
           syncModes,
           defaultSyncMode,
