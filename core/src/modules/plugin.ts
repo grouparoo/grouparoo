@@ -377,7 +377,7 @@ export namespace plugin {
 
     const data = {};
     properties.forEach((rule) => {
-      data[rule.id] = `{{ ${rule.key} }}`;
+      data[rule.id] = `{{{ ${rule.key} }}}`;
     });
 
     return MustacheUtils.strictlyRender(string, data);

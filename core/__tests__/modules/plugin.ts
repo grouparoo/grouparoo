@@ -262,7 +262,7 @@ describe("modules/plugin", () => {
           where: { key: "userId" },
         });
         const source = await property.$get("source");
-        const initialString = "select * from users where id = {{ userId }}";
+        const initialString = "select * from users where id = {{{ userId }}}";
         const replacedWithId =
           await plugin.replaceTemplateRecordPropertyKeysWithRecordPropertyId(
             initialString,

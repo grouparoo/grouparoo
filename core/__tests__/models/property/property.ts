@@ -398,7 +398,7 @@ describe("models/property", () => {
       column: "{{   email}}@example.com",
     });
     let options = await property.getOptions();
-    expect(options).toEqual({ column: "{{ email }}@example.com" }); //appears normal (but formatted) to the user
+    expect(options).toEqual({ column: "{{{ email }}}@example.com" }); //appears normal (but formatted) to the user
 
     const rawOption = await Option.findOne({
       where: { ownerId: property.id },

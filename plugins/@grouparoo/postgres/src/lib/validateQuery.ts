@@ -4,7 +4,12 @@ export function validateQuery(sql: string, allowLimitAndOffset = true) {
   if (!lowerCaseSQL.trim()) {
     throw new Error("please provide a query");
   }
-  if (lowerCaseSQL.indexOf(";") >= 0) {
+  if (
+    lowerCaseSQL.lastIndexOf("select") !== 0 &&
+    lowerCaseSQL.lastIndexOf("insert") !== 0 &&
+    lowerCaseSQL.lastIndexOf("update") !== 0 &&
+    lowerCaseSQL.lastIndexOf("delete") !== 0
+  ) {
     throw new Error("only provide a single query");
   }
 

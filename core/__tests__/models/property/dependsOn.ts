@@ -1,6 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Property, Source } from "../../../src";
 import { PropertyOps } from "../../../src/modules/ops/property";
+import { Option } from "../../../src/models/option";
 
 describe("models/property", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -96,7 +97,7 @@ describe("models/property", () => {
       });
       await emailDomainProperty.setOptions({
         column:
-          "select split_part(email, '@', 2) AS domain from users where email = {{ email }}",
+          "select split_part(email, '@', 2) AS domain from users where email = {{{ email }}}",
       });
       await emailDomainProperty.update({ state: "ready" });
     });
@@ -125,7 +126,9 @@ describe("models/property", () => {
       expect(dependencies.map((rule) => rule.id)).toEqual([emailProperty.id]);
     });
 
-    test("mustache variables reference another rule", async () => {
+    test.only("mustache variables reference another rule", async () => {
+      // const _options = await emailDomainProperty.getOptions();
+      // console.info(_options);
       const dependencies = await PropertyOps.dependencies(emailDomainProperty);
       expect(dependencies.map((rule) => rule.id)).toEqual([
         userIdProperty.id, // from the mapping
