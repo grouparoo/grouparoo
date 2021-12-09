@@ -60,6 +60,8 @@ export { Errors } from "./modules/errors";
 export * from "./modules/cache";
 export * from "./modules/tableSpeculation";
 
+export * from "./modules/oAuth";
+
 // ensure config types are loaded
 import "./config/api";
 import "./config/batchSize";

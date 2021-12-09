@@ -29,6 +29,8 @@ import {
   Team,
   TeamMember,
   StatusMetric,
+  oAuthIdentity,
+  oAuthProvider,
 } from "@grouparoo/core";
 
 export namespace Models {
@@ -84,6 +86,13 @@ export namespace Models {
     | DestinationType
     | ScheduleType
     | GroupType;
+}
+
+// -----------------------------------------
+
+export namespace OAuth {
+  export type oAuthIdentityType = oAuthIdentity;
+  export type oAuthProviderType = oAuthProvider;
 }
 
 // -----------------------------------------
@@ -186,6 +195,12 @@ import {
   ConfigGenerate,
   ConfigUserCreate,
 } from "@grouparoo/core/src/actions/config";
+import {
+  OAuthListProviders,
+  OAuthClientStart,
+  OAuthClientView,
+  OAuthClientEdit,
+} from "@grouparoo/core/src/actions/oAuth";
 import {
   PropertyCreate,
   PropertyDestroy,
@@ -515,9 +530,19 @@ export namespace Actions {
     typeof ConfigUserCreate.prototype.runWithinTransaction
   >;
 
-  export type PropertyCreate = AsyncReturnType<
-    typeof PropertyCreate.prototype.runWithinTransaction
+  export type OAuthListProviders = AsyncReturnType<
+    typeof OAuthListProviders.prototype.run
   >;
+  export type OAuthClientStart = AsyncReturnType<
+    typeof OAuthClientStart.prototype.run
+  >;
+  export type OAuthClientView = AsyncReturnType<
+    typeof OAuthClientView.prototype.run
+  >;
+  export type OAuthClientEdit = AsyncReturnType<
+    typeof OAuthClientEdit.prototype.run
+  >;
+
   export type PropertyDestroy = AsyncReturnType<
     typeof PropertyDestroy.prototype.runWithinTransaction
   >;
