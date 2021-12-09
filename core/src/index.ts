@@ -25,6 +25,7 @@ export { Log } from "./models/Log";
 export { Notification } from "./models/Notification";
 export { Mapping } from "./models/Mapping";
 export { Option } from "./models/Option";
+export { OAuthRequest } from "./models/OAuthRequest";
 export { Permission } from "./models/Permission";
 export { GrouparooRecord } from "./models/GrouparooRecord";
 export { RecordProperty } from "./models/RecordProperty";

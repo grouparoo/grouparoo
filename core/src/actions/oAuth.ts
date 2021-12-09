@@ -104,10 +104,13 @@ export class OAuthClientEdit extends CLSAction {
     }).then((r) => r.json());
     throwTelemetryError(response);
 
-    await oAuthRequest.update({
-      identities: response.oAuthRequest.identities,
-      token: params.token,
-    });
+    // on a page reload, we don't want to erase any data we already have
+    if (params.token) await oAuthRequest.update({ token: params.token });
+    if (response.oAuthRequest.identities.length > 0) {
+      await oAuthRequest.update({
+        identities: response.oAuthRequest.identities,
+      });
+    }
 
     return { oAuthRequest: await oAuthRequest.apiData() };
   }

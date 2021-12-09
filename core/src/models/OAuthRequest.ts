@@ -9,7 +9,7 @@ import {
 } from "sequelize-typescript";
 import * as UUID from "uuid";
 import { App } from "./App";
-import { oAuthIdentity } from "../modules/oAuth";
+import { oAuthIdentity, oAuthType } from "../modules/oAuth";
 import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "oAuthRequests", paranoid: false })
@@ -23,8 +23,8 @@ export class OAuthRequest extends CommonModel<OAuthRequest> {
   provider: string;
 
   @AllowNull(false)
-  @Column
-  type: string;
+  @Column("string")
+  type: oAuthType;
 
   @Column(DataType.TEXT)
   get identities(): oAuthIdentity[] {

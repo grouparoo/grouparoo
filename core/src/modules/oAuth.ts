@@ -1,8 +1,10 @@
+export type oAuthType = "user" | "app";
+
 export type oAuthProvider = {
   name: string;
   description: string;
   icon: string;
-  authTypes: ("user" | "app")[];
+  authTypes: oAuthType[];
 };
 
 export type oAuthIdentity = {

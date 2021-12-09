@@ -1,4 +1,5 @@
 import { Action, api, Connection } from "actionhero";
+import { OAuthRequest } from "..";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { CLSAction } from "../classes/actions/clsAction";
 import { TeamMember } from "../models/TeamMember";
@@ -11,7 +12,8 @@ export class SessionCreate extends CLSAction {
     this.description = "to create a session and sign in";
     this.inputs = {
       email: { required: true },
-      password: { required: true },
+      password: { required: false },
+      requestId: { required: false },
     };
     this.outputExample = {};
   }
@@ -25,16 +27,33 @@ export class SessionCreate extends CLSAction {
     params,
   }: {
     connection: Connection;
-    params: { [key: string]: string };
+    params: { email: string; password?: string; requestId?: string };
   }) {
+    if (!params.password && !params.requestId) {
+      throw new Error(`password or an oAuth requestId is required`);
+    }
+
     const teamMember = await TeamMember.findOne({
       where: { email: params.email.toLocaleLowerCase() },
     });
-    if (!teamMember)
+    if (!teamMember) {
       throw new Errors.AuthenticationError("team member not found");
+    }
 
-    const match = await teamMember.checkPassword(params.password);
-    if (!match) throw new Errors.AuthenticationError("password does not match");
+    if (params.password) {
+      const match = await teamMember.checkPassword(params.password);
+      if (!match)
+        throw new Errors.AuthenticationError("password does not match");
+    } else {
+      const oauthRequest = await OAuthRequest.findById(params.requestId);
+      const identity = oauthRequest.identities.find(
+        (i) => i.email === teamMember.email
+      );
+      if (!identity)
+        throw new Error(
+          `${teamMember.email} was not returned in oAuth Request ${oauthRequest.id}`
+        );
+    }
 
     const session = await api.session.create(connection, teamMember);
 
