@@ -6,9 +6,8 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexUsers } from "../utils/shared";
 import { PipedriveClient } from "../../src/lib/client";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
-import { getExportRecord } from "../../src/lib/common/exportRecord";
 import { getKnownFieldMap } from "../../src/lib/common/destinationMappingOptions";
-import { handlePersonChanges } from "../../src/lib/export-persons/exportRecord";
+import { exportPersonRecord } from "../../src/lib/export-persons/exportRecord";
 
 let client: PipedriveClient;
 let fieldMap: { [fieldName: string]: string };
@@ -84,7 +83,7 @@ async function runExport({
   newGroups,
   toDelete,
 }) {
-  return getExportRecord(handlePersonChanges)({
+  return exportPersonRecord({
     appOptions,
     appId,
     connection: null,
