@@ -83,6 +83,7 @@ jobs:
             - plugins/@grouparoo/hubspot/node_modules
             - plugins/@grouparoo/intercom/node_modules
             - plugins/@grouparoo/iterable/node_modules
+            - plugins/@grouparoo/klaviyo/node_modules
             - plugins/@grouparoo/logger/node_modules
             - plugins/@grouparoo/mailchimp/node_modules
             - plugins/@grouparoo/mailjet/node_modules
@@ -134,6 +135,7 @@ jobs:
             - plugins/@grouparoo/hubspot/dist
             - plugins/@grouparoo/intercom/dist
             - plugins/@grouparoo/iterable/dist
+            - plugins/@grouparoo/klaviyo/dist
             - plugins/@grouparoo/logger/dist
       - save_cache:
           <<: *dist-3-cache
@@ -2202,6 +2204,61 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/iterable && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-klaviyo:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: circleci/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/klaviyo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-logger:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -3673,6 +3730,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-klaviyo:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-logger:
           filters:
             <<: *ignored-branches
@@ -3830,6 +3892,7 @@ workflows:
             - test-plugin-hubspot
             - test-plugin-intercom
             - test-plugin-iterable
+            - test-plugin-klaviyo
             - test-plugin-logger
             - test-plugin-mailchimp
             - test-plugin-mailjet
