@@ -6,7 +6,7 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "{{{__pluginName}}}",
       options: {
-        privateToken: "..." // Klaviyo Private token
+        privateToken: "...", // Klaviyo Private token
         publicToken: "..." // Klaviyo Public token
       }
     },
