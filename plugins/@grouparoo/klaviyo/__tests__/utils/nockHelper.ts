@@ -19,7 +19,7 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   }
   const parsed = readEnv(envFile);
   return {
-    privateToken: parsed.KLAVIYO_PRIVATE_TOKENN,
+    privateToken: parsed.KLAVIYO_PRIVATE_TOKEN,
     publicToken: parsed.KLAVIYO_PUBLIC_TOKEN,
   };
 }
@@ -30,8 +30,8 @@ export const updater = {
     const nockEnv = readEnv(nockPath);
 
     nockCall = nockCall.replaceAll(
-      realEnv.KLAVIYO_PRIVATE_TOKENN,
-      nockEnv.KLAVIYO_PRIVATE_TOKENN
+      realEnv.KLAVIYO_PRIVATE_TOKEN,
+      nockEnv.KLAVIYO_PRIVATE_TOKEN
     );
 
     nockCall = nockCall.replaceAll(
