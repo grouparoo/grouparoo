@@ -176,9 +176,11 @@ export default function Page(props) {
                       <p className="mb-0">
                         Available environment variables for apps:{" "}
                         {environmentVariableOptions.sort().map((envOpt) => (
-                          <Badge key={`envOpt-${envOpt}`} variant="info">
-                            {envOpt}
-                          </Badge>
+                          <>
+                            <Badge key={`envOpt-${envOpt}`} variant="info">
+                              {envOpt}
+                            </Badge>{" "}
+                          </>
                         ))}
                       </p>
                     )}
