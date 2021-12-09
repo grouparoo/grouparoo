@@ -22,7 +22,13 @@ export const fetchKnownFields = async (): Promise<KnownKlaviyoField[]> => {
     "country",
     "zip",
     "image",
-    // "consent",
+    "address1",
+    "address2",
+    "latitude",
+    "longitude",
+    "organization",
+    "title",
+    "timezone",
   ];
   return allowedFields.map((field) => ({
     key: field,

@@ -62,11 +62,11 @@ export const handlePersonChanges: ExportRecordPluginMethod = async ({
     throw new Error(`newRecordProperties[email] is a required mapping`);
   }
 
-  const newFoundId = await client.findPersonIdByEmail(newEmail);
+  const newFoundId = await client.findProfileIdByEmail(newEmail);
 
   let oldFoundId = null;
   if (oldEmail && oldEmail !== newEmail) {
-    oldFoundId = await client.findPersonIdByEmail(oldEmail);
+    oldFoundId = await client.findProfileIdByEmail(oldEmail);
   }
 
   const foundId = newFoundId || oldFoundId;

@@ -13,14 +13,16 @@ let client: KlaviyoClient;
 let fieldMap: { [fieldName: string]: string };
 let listMapByName: { [listName: string]: string };
 
-let personId = null;
-let personId2 = null;
-let personId3 = null;
+let profileId = null;
+let profileId2 = null;
+let profileId3 = null;
+
 const email1 = "grouparoo@demo.com";
 const email2 = "othergrouparoo@demo.com";
 const email3 = "notgrouparoo@demo.com";
 const email4 = "maybegrouparoo@demo.com";
 const nonexistentEmail = "fakegrouparoo@demo.com";
+
 const groupOne = "TEST High Value";
 const groupTwo = "TEST Spanish Speaking";
 const groupThree = "TEST Recently Added";
@@ -105,11 +107,11 @@ describe("pipedrive/exportRecord", () => {
 
     await indexUsers(newNock);
 
-    const newPersonId = await client.findPersonIdByEmail(email1);
-    expect(newPersonId).toBeTruthy();
+    const newProfileId = await client.findProfileIdByEmail(email1);
+    expect(newProfileId).toBeTruthy();
 
-    personId = newPersonId;
-    const data = await client.profiles.getProfile(personId);
+    profileId = newProfileId;
+    const data = await client.profiles.getProfile(profileId);
     expect(data.first_name).toBe("John");
     expect(data.last_name).toBe("Doe");
     expect(data.email).toBe(email1);
@@ -163,7 +165,7 @@ describe("pipedrive/exportRecord", () => {
       toDelete: false,
     });
 
-    const data = await client.profiles.getProfile(personId);
+    const data = await client.profiles.getProfile(profileId);
     expect(data.first_name).toBe("John");
     expect(data.last_name).toBe("Doe");
     expect(data.email).toBe(email1);
@@ -199,7 +201,7 @@ describe("pipedrive/exportRecord", () => {
       })
     ).rejects.toThrow(/sync mode does not update/);
 
-    const data = await client.profiles.getProfile(personId);
+    const data = await client.profiles.getProfile(profileId);
     expect(data.text_field).toBe("Some text"); // no change
   });
 
@@ -232,7 +234,7 @@ describe("pipedrive/exportRecord", () => {
       toDelete: false,
     });
 
-    const data = await client.profiles.getProfile(personId);
+    const data = await client.profiles.getProfile(profileId);
     expect(data.first_name).toBe("Johnny");
     expect(data.last_name).toBe("Doe");
     expect(data.email).toBe(email1);
@@ -279,7 +281,7 @@ describe("pipedrive/exportRecord", () => {
       toDelete: false,
     });
 
-    const data = await client.profiles.getProfile(personId);
+    const data = await client.profiles.getProfile(profileId);
     expect(data.first_name).toBe("Johnny");
     expect(data.last_name).toBe("Doe");
     expect(data.email).toBe(email1);
@@ -375,11 +377,11 @@ describe("pipedrive/exportRecord", () => {
 
     await indexUsers(newNock);
 
-    const data = await client.profiles.getProfile(personId);
+    const data = await client.profiles.getProfile(profileId);
     expect(data.email).toBe(email2);
   });
 
-  test("can remove person from group without creating it", async () => {
+  test("can remove profile from group without creating it", async () => {
     await runExport({
       oldRecordProperties: { Email: email2, Name: "Johnny Doe" },
       newRecordProperties: { Email: email2, Name: "Johnny Doe" },
@@ -406,10 +408,10 @@ describe("pipedrive/exportRecord", () => {
 
     await indexUsers(newNock);
 
-    personId2 = await client.findPersonIdByEmail(email3);
-    expect(personId2).toBeTruthy();
+    profileId2 = await client.findProfileIdByEmail(email3);
+    expect(profileId2).toBeTruthy();
 
-    const data = await client.profiles.getProfile(personId2);
+    const data = await client.profiles.getProfile(profileId2);
     expect(data.first_name).toBe("Bobby");
     expect(data.email).toBe(email3);
   });
@@ -430,18 +432,18 @@ describe("pipedrive/exportRecord", () => {
     await indexUsers(newNock);
 
     // Leave the old one untouched
-    let data = await client.profiles.getProfile(personId2);
+    let data = await client.profiles.getProfile(profileId2);
     expect(data.first_name).toBe("Bobby");
     expect(data.email).toBe(email3);
 
     // Update the new one
-    data = await client.profiles.getProfile(personId);
+    data = await client.profiles.getProfile(profileId);
     expect(data.first_name).toBe("Bobby");
     expect(data.last_name).toBe("Jones");
     expect(data.email).toBe(email2);
   });
 
-  test("cannot delete a Person if sync mode does not allow it", async () => {
+  test("cannot delete a Profile if sync mode does not allow it", async () => {
     await expect(
       runExport({
         syncOperations: {
@@ -468,13 +470,13 @@ describe("pipedrive/exportRecord", () => {
     await refreshListMap();
 
     // no effect
-    const data = await client.profiles.getProfile(personId);
+    const data = await client.profiles.getProfile(profileId);
     expect(listMapByName[groupOne]).toBeTruthy();
     expect(data.first_name).toBe("Bobby");
     expect(data.last_name).toBe("Jones");
   });
 
-  test("can delete a Person", async () => {
+  test("can delete a Profile", async () => {
     await runExport({
       oldRecordProperties: {
         email: email2,
@@ -491,7 +493,7 @@ describe("pipedrive/exportRecord", () => {
       toDelete: true,
     });
 
-    await expect(client.profiles.getProfile(personId)).rejects.toThrow(/404/);
+    await expect(client.profiles.getProfile(profileId)).rejects.toThrow(/404/);
   });
 
   test("can delete a Profile when syncing for the first time", async () => {
@@ -503,7 +505,7 @@ describe("pipedrive/exportRecord", () => {
       toDelete: true,
     });
 
-    await expect(client.profiles.getProfile(personId2)).rejects.toThrow(/404/);
+    await expect(client.profiles.getProfile(profileId2)).rejects.toThrow(/404/);
   });
 
   test("can add a Profile with a new group at the same time", async () => {
@@ -521,10 +523,10 @@ describe("pipedrive/exportRecord", () => {
 
     expect(listMapByName[groupThree]).toBeTruthy();
 
-    personId3 = await client.findPersonIdByEmail(email4);
-    expect(personId3).toBeTruthy();
+    profileId3 = await client.findProfileIdByEmail(email4);
+    expect(profileId3).toBeTruthy();
 
-    const data = await client.profiles.getProfile(personId3);
+    const data = await client.profiles.getProfile(profileId3);
     expect(data.first_name).toBe("Jill");
     expect(data.email).toBe(email4);
   });
@@ -545,8 +547,8 @@ describe("pipedrive/exportRecord", () => {
 
     await indexUsers(newNock);
 
-    const newPersonId = await client.findPersonIdByEmail(email1);
-    expect(newPersonId).toBeTruthy();
+    const newProfileId = await client.findProfileIdByEmail(email1);
+    expect(newProfileId).toBeTruthy();
 
     // delete them
     await runExport({
@@ -566,12 +568,12 @@ describe("pipedrive/exportRecord", () => {
     });
 
     // email1 is deleted
-    await expect(client.profiles.getProfile(newPersonId)).rejects.toThrow(
+    await expect(client.profiles.getProfile(newProfileId)).rejects.toThrow(
       /404/
     );
 
     // email4 is untouched
-    const data = await client.profiles.getProfile(personId3);
+    const data = await client.profiles.getProfile(profileId3);
     expect(data.first_name).toBe("Jill");
     expect(data.email).toBe(email4);
   });
@@ -585,7 +587,7 @@ describe("pipedrive/exportRecord", () => {
       toDelete: true,
     });
 
-    await expect(client.profiles.getProfile(personId3)).rejects.toThrow(/404/);
+    await expect(client.profiles.getProfile(profileId3)).rejects.toThrow(/404/);
   });
 
   test("can delete a nonexistent Profile", async () => {
@@ -599,7 +601,7 @@ describe("pipedrive/exportRecord", () => {
 
     await indexUsers(newNock);
 
-    const personId = await client.findPersonIdByEmail(nonexistentEmail);
-    expect(personId).toBeNull();
+    const profileId = await client.findProfileIdByEmail(nonexistentEmail);
+    expect(profileId).toBeNull();
   });
 });

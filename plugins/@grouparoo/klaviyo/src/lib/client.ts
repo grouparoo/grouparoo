@@ -17,7 +17,7 @@ export class KlaviyoClient extends Klaviyo {
     });
   }
 
-  async findPersonIdByEmail(email: string): Promise<number> {
+  async findProfileIdByEmail(email: string): Promise<number> {
     if (!email) return null;
 
     let data;
