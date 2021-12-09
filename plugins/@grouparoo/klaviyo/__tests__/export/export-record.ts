@@ -80,7 +80,7 @@ async function runExport({
   });
 }
 
-describe("pipedrive/exportRecord", () => {
+describe("klaviyo/exportRecord", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
     fieldMap = await getKnownFieldMap();
