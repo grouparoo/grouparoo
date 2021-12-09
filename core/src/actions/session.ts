@@ -1,5 +1,5 @@
 import { Action, api, Connection } from "actionhero";
-import { OAuthRequest } from "..";
+import { OAuthRequest } from "../models/OAuthRequest";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { CLSAction } from "../classes/actions/clsAction";
 import { TeamMember } from "../models/TeamMember";

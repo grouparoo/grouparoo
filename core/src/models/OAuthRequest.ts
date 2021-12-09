@@ -8,9 +8,11 @@ import {
   DataType,
 } from "sequelize-typescript";
 import * as UUID from "uuid";
+import Moment from "moment";
 import { App } from "./App";
 import { oAuthIdentity, oAuthType } from "../modules/oAuth";
 import { CommonModel } from "../classes/commonModel";
+import { Op } from "sequelize";
 
 @Table({ tableName: "oAuthRequests", paranoid: false })
 export class OAuthRequest extends CommonModel<OAuthRequest> {
@@ -74,5 +76,17 @@ export class OAuthRequest extends CommonModel<OAuthRequest> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  static async sweep(limit: number) {
+    const days = 1;
+    const count = await OAuthRequest.destroy({
+      where: {
+        createdAt: { [Op.lt]: Moment().subtract(days, "days").toDate() },
+      },
+      limit,
+    });
+
+    return { count, days };
   }
 }
