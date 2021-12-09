@@ -30,7 +30,9 @@ export class SessionCreate extends CLSAction {
     params: { email: string; password?: string; requestId?: string };
   }) {
     if (!params.password && !params.requestId) {
-      throw new Error(`password or an oAuth requestId is required`);
+      throw new Errors.AuthenticationError(
+        `password or an oAuth requestId is required`
+      );
     }
 
     const teamMember = await TeamMember.findOne({
@@ -45,13 +47,19 @@ export class SessionCreate extends CLSAction {
       if (!match)
         throw new Errors.AuthenticationError("password does not match");
     } else {
-      const oauthRequest = await OAuthRequest.findById(params.requestId);
+      const oauthRequest = await OAuthRequest.findOne({
+        where: { id: params.requestId },
+      });
+      if (!oauthRequest)
+        throw new Errors.AuthenticationError(
+          `cannot find OAuthRequest ${params.requestId}`
+        );
       const identity = oauthRequest.identities.find(
         (i) => i.email === teamMember.email
       );
       if (!identity)
-        throw new Error(
-          `${teamMember.email} was not returned in oAuth Request ${oauthRequest.id}`
+        throw new Errors.AuthenticationError(
+          `${teamMember.email} was not returned in oAuth request ${oauthRequest.id}`
         );
     }
 

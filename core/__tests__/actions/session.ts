@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper, api, config } from "actionhero";
-import { Team, TeamMember, Permission, ApiKey } from "../../src";
+import { Team, TeamMember, Permission, ApiKey, OAuthRequest } from "../../src";
 import fetch from "isomorphic-fetch";
 import {
   SessionCreate,
@@ -42,54 +42,163 @@ describe("session", () => {
     });
 
     describe("session:create", () => {
-      test("can log in", async () => {
-        const { success, teamMember, error } =
-          await specHelper.runAction<SessionCreate>("session:create", {
-            email: "peach@example.com",
-            password: "P@ssw0rd!",
-          });
+      test("a password or request id is required", async () => {
+        const { error } = await specHelper.runAction<SessionCreate>(
+          "session:create",
+          { email: "peach@example.com" }
+        );
 
-        expect(error).toBeUndefined();
-        expect(success).toEqual(true);
-        expect(teamMember.id).toBeTruthy();
+        expect(error.message).toEqual(
+          "password or an oAuth requestId is required"
+        );
       });
 
-      test("can log in with email not in lowercase", async () => {
-        const { success, teamMember, error } =
-          await specHelper.runAction<SessionCreate>("session:create", {
-            email: "PEACH@example.COM",
-            password: "P@ssw0rd!",
-          });
+      describe("email and password", () => {
+        test("can log in", async () => {
+          const { success, teamMember, error } =
+            await specHelper.runAction<SessionCreate>("session:create", {
+              email: "peach@example.com",
+              password: "P@ssw0rd!",
+            });
 
-        expect(error).toBeUndefined();
-        expect(success).toEqual(true);
-        expect(teamMember.id).toBeTruthy();
+          expect(error).toBeUndefined();
+          expect(success).toEqual(true);
+          expect(teamMember.id).toBeTruthy();
+        });
+
+        test("can log in with email not in lowercase", async () => {
+          const { success, teamMember, error } =
+            await specHelper.runAction<SessionCreate>("session:create", {
+              email: "PEACH@example.COM",
+              password: "P@ssw0rd!",
+            });
+
+          expect(error).toBeUndefined();
+          expect(success).toEqual(true);
+          expect(teamMember.id).toBeTruthy();
+        });
+
+        test("cannot log in with unknown user", async () => {
+          const { success, teamMember, error } =
+            await specHelper.runAction<SessionCreate>("session:create", {
+              email: "fff@example.com",
+              password: "x",
+            });
+
+          expect(error.message).toMatch(/team member not found/);
+          expect(error.code).toMatch("AUTHENTICATION_ERROR");
+          expect(success).toBeUndefined();
+          expect(teamMember).toBeUndefined();
+        });
+
+        test("cannot log in with bad password", async () => {
+          const { success, teamMember, error } =
+            await specHelper.runAction<SessionCreate>("session:create", {
+              email: "peach@example.com",
+              password: "x",
+            });
+
+          expect(error.message).toMatch(/password does not match/);
+          expect(error.code).toMatch("AUTHENTICATION_ERROR");
+          expect(success).toBeUndefined();
+          expect(teamMember).toBeUndefined();
+        });
       });
 
-      test("cannot log in with unknown user", async () => {
-        const { success, teamMember, error } =
-          await specHelper.runAction<SessionCreate>("session:create", {
-            email: "fff@example.com",
-            password: "x",
+      describe("with an oAuth request", () => {
+        let oAuthRequest: OAuthRequest;
+        beforeAll(async () => {
+          oAuthRequest = await OAuthRequest.create({
+            provider: "github",
+            type: "user",
+            token: "foo",
+            identities: [
+              {
+                email: "mario@example.com",
+                name: "mario",
+                description: "mario",
+              },
+              {
+                email: "peach@example.com",
+                name: "peach",
+                description: "peach",
+              },
+            ],
+          });
+        });
+
+        test("can log in", async () => {
+          const { success, teamMember, error } =
+            await specHelper.runAction<SessionCreate>("session:create", {
+              email: "peach@example.com",
+              requestId: oAuthRequest.id,
+            });
+
+          expect(error).toBeUndefined();
+          expect(success).toEqual(true);
+          expect(teamMember.id).toBeTruthy();
+        });
+
+        test("can log in with email not in lowercase", async () => {
+          const { success, teamMember, error } =
+            await specHelper.runAction<SessionCreate>("session:create", {
+              email: "PEACH@example.COM",
+              requestId: oAuthRequest.id,
+            });
+
+          expect(error).toBeUndefined();
+          expect(success).toEqual(true);
+          expect(teamMember.id).toBeTruthy();
+        });
+
+        test("cannot log in with unknown user", async () => {
+          const { success, teamMember, error } =
+            await specHelper.runAction<SessionCreate>("session:create", {
+              email: "fff@example.com",
+              requestId: oAuthRequest.id,
+            });
+
+          expect(error.message).toMatch(/team member not found/);
+          expect(error.code).toMatch("AUTHENTICATION_ERROR");
+          expect(success).toBeUndefined();
+          expect(teamMember).toBeUndefined();
+        });
+
+        test("cannot log in with bad requestId", async () => {
+          const { success, teamMember, error } =
+            await specHelper.runAction<SessionCreate>("session:create", {
+              email: "peach@example.com",
+              requestId: "foo",
+            });
+          expect(error.message).toMatch(/cannot find OAuthRequest foo/);
+          expect(error.code).toMatch("AUTHENTICATION_ERROR");
+          expect(success).toBeUndefined();
+          expect(teamMember).toBeUndefined();
+        });
+
+        test("cannot log in as a user that is not included within the oAuth request identities", async () => {
+          await oAuthRequest.update({
+            identities: [
+              {
+                email: "mario@example.com",
+                name: "mario",
+                description: "mario",
+              },
+            ],
           });
 
-        expect(error.message).toMatch(/team member not found/);
-        expect(error.code).toMatch("AUTHENTICATION_ERROR");
-        expect(success).toBeUndefined();
-        expect(teamMember).toBeUndefined();
-      });
-
-      test("cannot log in with bad password", async () => {
-        const { success, teamMember, error } =
-          await specHelper.runAction<SessionCreate>("session:create", {
-            email: "peach@example.com",
-            password: "x",
-          });
-
-        expect(error.message).toMatch(/password does not match/);
-        expect(error.code).toMatch("AUTHENTICATION_ERROR");
-        expect(success).toBeUndefined();
-        expect(teamMember).toBeUndefined();
+          const { success, teamMember, error } =
+            await specHelper.runAction<SessionCreate>("session:create", {
+              email: "peach@example.com",
+              requestId: oAuthRequest.id,
+            });
+          expect(error.message).toMatch(
+            /peach@example.com was not returned in oAuth request/
+          );
+          expect(error.code).toMatch("AUTHENTICATION_ERROR");
+          expect(success).toBeUndefined();
+          expect(teamMember).toBeUndefined();
+        });
       });
     });
 

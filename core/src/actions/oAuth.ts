@@ -2,7 +2,6 @@ import "isomorphic-fetch";
 import { Action, config } from "actionhero";
 import { oAuthProvider, telemetryOAuthRequest } from "../modules/oAuth";
 import { CLSAction } from "../classes/actions/clsAction";
-import * as uuid from "uuid";
 import { plugin } from "../modules/plugin";
 import { OAuthRequest } from "../models/OAuthRequest";
 
@@ -20,7 +19,7 @@ export class OAuthListProviders extends Action {
   }
 
   async run() {
-    const fullUrl = `${config.telemetry.host}/api/v1/oauth/providers`;
+    const fullUrl = `${config.oAuth.host}/api/v1/oauth/providers`;
     const response: { error?: TelemetryError; providers: oAuthProvider[] } =
       await fetch(fullUrl, {
         method: "GET",
@@ -54,7 +53,7 @@ export class OAuthClientStart extends CLSAction {
     const callbackUrl = `${process.env.WEB_URL}/oauth/callback`;
     const customerId = (await plugin.readSetting("telemetry", "customer-id"))
       .value;
-    const fullUrl = `${config.telemetry.host}/api/v1/oauth/${params.provider}/client/start`;
+    const fullUrl = `${config.oAuth.host}/api/v1/oauth/${params.provider}/client/start`;
     const response: {
       error?: TelemetryError;
       location: string;
@@ -70,7 +69,11 @@ export class OAuthClientStart extends CLSAction {
       }),
     }).then((r) => r.json());
     throwTelemetryError(response);
-    return { ...response };
+    return {
+      remoteOAuthRequest: response.oAuthRequest,
+      location: response.location,
+      error: response.error,
+    };
   }
 }
 
@@ -94,7 +97,7 @@ export class OAuthClientEdit extends CLSAction {
     const oAuthRequest = await OAuthRequest.findById(params.requestId);
     const customerId = (await plugin.readSetting("telemetry", "customer-id"))
       .value;
-    const fullUrl = `${config.telemetry.host}/api/v1/oauth/client/request/${params.requestId}/view?requestId=${oAuthRequest.id}&customerId=${customerId}`;
+    const fullUrl = `${config.oAuth.host}/api/v1/oauth/client/request/${params.requestId}/view?requestId=${oAuthRequest.id}&customerId=${customerId}`;
     const response: {
       error?: TelemetryError;
       oAuthRequest: telemetryOAuthRequest;
@@ -136,6 +139,6 @@ function throwTelemetryError(
   response: Record<string, any> & { error?: TelemetryError }
 ) {
   if (response.error?.message) {
-    throw new Error(`[telemetry] ${response.error.message}`);
+    throw new Error(`[ telemetry ] ${response.error.message}`);
   }
 }
