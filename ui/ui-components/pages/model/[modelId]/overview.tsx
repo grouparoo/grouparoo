@@ -99,6 +99,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
         <Row className="mb-4">
           <Col>
             <SampleRecordCard
+              modelId={model.id}
               properties={properties}
               execApi={execApi}
               disabled={!sources.length}

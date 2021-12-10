@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
-import { Button, Card, Col, Row, Table } from "react-bootstrap";
+import { Card, Col, Row, Table } from "react-bootstrap";
 import EnterpriseLink from "../../components/GrouparooLink";
-import { useGrouparooModelContext } from "../../contexts/grouparooModel";
 import { ApiHook } from "../../hooks/useApi";
 import { usePrevious } from "../../hooks/usePrevious";
 import { Actions, Models } from "../../utils/apiData";
@@ -13,10 +12,12 @@ import ManagedCard from "../lib/ManagedCard";
 import SeparatedItems from "../lib/SeparatedItems";
 import LinkButton from "../LinkButton";
 import LoadingButton from "../LoadingButton";
+import RecordImageFromEmail from "../visualizations/RecordImageFromEmail";
 import AddSampleRecordModal from "./AddSampleRecordModal";
 import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 
 interface Props {
+  modelId: string;
   execApi: ApiHook["execApi"];
   properties: Models.PropertyType[];
   disabled: boolean;
@@ -39,12 +40,12 @@ const clearCachedSampleRecordId = (modelId: string): void => {
 };
 
 const SampleRecordCard: React.FC<Props> = ({
+  modelId,
   properties,
   execApi,
   disabled,
 }) => {
-  const model = useGrouparooModelContext();
-  const prevModelId = usePrevious(model.id);
+  const prevModelId = usePrevious(modelId);
 
   const [loading, setLoading] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -54,7 +55,7 @@ const SampleRecordCard: React.FC<Props> = ({
   const [groups, setGroups] = useState<Models.GroupType[]>();
   const [destinations, setDestinations] = useState<Models.DestinationType[]>();
   const [recordId, setRecordId] = useState(() =>
-    getCachedSampleRecordId(model.id)
+    getCachedSampleRecordId(modelId)
   );
 
   const saveRecord = useCallback(
@@ -67,9 +68,9 @@ const SampleRecordCard: React.FC<Props> = ({
       setHasRecords(true);
       setLoading(false);
 
-      setCachedSampleRecordId(model.id, record.id);
+      setCachedSampleRecordId(modelId, record.id);
     },
-    [model]
+    [modelId]
   );
 
   const loadRecord = useCallback(async () => {
@@ -91,7 +92,7 @@ const SampleRecordCard: React.FC<Props> = ({
         {
           limit: 25,
           offset: 0,
-          modelId: model.id,
+          modelId: modelId,
         }
       ).then((response) => {
         if (response.total === 0) {
@@ -123,31 +124,41 @@ const SampleRecordCard: React.FC<Props> = ({
       saveRecord(record, groups, destinations);
     } else {
       // Got an invalid record. Let's clear this and start over.
-      clearCachedSampleRecordId(model.id);
+      clearCachedSampleRecordId(modelId);
       setRecordId(undefined);
     }
 
     setLoading(false);
-  }, [recordId, saveRecord, execApi, model]);
+  }, [recordId, saveRecord, execApi, modelId]);
 
   useEffect(() => {
     // Switched to another model
-    if (prevModelId && prevModelId !== model.id) {
+    if (prevModelId && prevModelId !== modelId) {
       setLoading(true);
-      setRecordId(getCachedSampleRecordId(model.id));
+      setRecordId(getCachedSampleRecordId(modelId));
       setRecord(undefined);
       setGroups(undefined);
       setDestinations(undefined);
       setHasRecords(true);
       setLoading(false);
     }
-  }, [record, model]);
+  }, [record, modelId]);
 
   useEffect(() => {
     if (!loading && hasRecords && (!record || record.id !== recordId)) {
       loadRecord();
     }
   }, [record, recordId, loading, loadRecord, hasRecords]);
+
+  const email = useMemo<string>(() => {
+    if (!record) return undefined;
+
+    const emailProperty = Object.values(record.properties).find(
+      (property) => property.type === "email" && property.values.length > 0
+    );
+
+    return emailProperty ? emailProperty.values[0].toString() : undefined;
+  }, [record]);
 
   const importRecord = async () => {
     setImporting(true);
@@ -205,7 +216,7 @@ const SampleRecordCard: React.FC<Props> = ({
 
   const content = record ? (
     <Row>
-      <Col md={9}>
+      <Col>
         <Table bordered>
           <colgroup>
             <col span={1} style={{ width: "35%" }} />
@@ -229,7 +240,7 @@ const SampleRecordCard: React.FC<Props> = ({
                   <tr key={key}>
                     <td>
                       <Link
-                        href={`/model/${model.id}/property/${property.id}/edit`}
+                        href={`/model/${modelId}/property/${property.id}/edit`}
                       >
                         <a>{key}</a>
                       </Link>
@@ -252,6 +263,9 @@ const SampleRecordCard: React.FC<Props> = ({
         </Table>
       </Col>
       <Col md={3} className={"text-center"}>
+        {email && (
+          <RecordImageFromEmail email={email} width={72} className="mb-4" />
+        )}
         <h6>Groups</h6>
         {
           <p>
@@ -316,7 +330,7 @@ const SampleRecordCard: React.FC<Props> = ({
       actions={[
         <LinkButton
           disabled={!record || disabled}
-          href={record ? `/model/${model.id}/record/${record.id}/edit` : "#"}
+          href={record ? `/model/${modelId}/record/${record.id}/edit` : "#"}
           size="sm"
           variant="outline-primary"
         >
@@ -324,7 +338,7 @@ const SampleRecordCard: React.FC<Props> = ({
         </LinkButton>,
         <LinkButton
           disabled={disabled}
-          href={`/model/${model.id}/records`}
+          href={`/model/${modelId}/records`}
           size="sm"
           variant="outline-primary"
         >
