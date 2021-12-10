@@ -169,9 +169,14 @@ export default function SignInForm(props) {
 
           <br />
 
+          {loadingOauthProviders === false && providers.length === 0 ? (
+            <p>Could not load oAuth providers</p>
+          ) : null}
+
           <div className="d-flex justify-content-center">
             {providers.map((provider) => (
               <LoadingButton
+                style={{ width: "100%" }}
                 loading={loading || loadingOauthProviders}
                 key={`provider-${provider.name}`}
                 variant="outline-primary"
