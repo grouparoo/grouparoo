@@ -467,10 +467,12 @@ export default function Page(props) {
                       </Form.Text>
                       <p>
                         Record Property Variables:{" "}
-                        <Badge variant="light">{`{{ now }}`}</Badge>
+                        <Badge variant="light">{`{{{ now }}}`}</Badge>
                         &nbsp;
-                        <Badge variant="light">{`{{ createdAt }}`}</Badge>&nbsp;
-                        <Badge variant="light">{`{{ updatedAt }}`}</Badge>&nbsp;
+                        <Badge variant="light">{`{{{ createdAt }}}`}</Badge>
+                        &nbsp;
+                        <Badge variant="light">{`{{{ updatedAt }}}`}</Badge>
+                        &nbsp;
                         {properties
                           .filter((rule) => rule.isArray === false)
                           .sort((a, b) => {
@@ -482,7 +484,7 @@ export default function Page(props) {
                           })
                           .map((ppr) => (
                             <Fragment key={`var-badge-${ppr.key}`}>
-                              <Badge variant="light">{`{{ ${ppr.key} }}`}</Badge>
+                              <Badge variant="light">{`{{{ ${ppr.key} }}}`}</Badge>
                               &nbsp;
                             </Fragment>
                           ))}
