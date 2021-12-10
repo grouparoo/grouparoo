@@ -44,7 +44,7 @@ describe("calculated-property/recordProperty", () => {
       userId: [1],
       email: ["ejervois0@example.com"],
       firstName: ["Mario"],
-      lastName: ["Jones"],
+      lastName: [`O'Donnell`],
       ltv: [390.42],
       lastLoginAt: ["2021-08-23 15:02:39.297-07"],
       isVIP: [true],
@@ -59,6 +59,13 @@ describe("calculated-property/recordProperty", () => {
     }`;
     const value = await getPropertyValue(fn);
     expect(value[0]).toEqual(`hi Mario`);
+  });
+  test("it evaluates string properties with escapable characters as expected", async () => {
+    const fn = `() => {
+        return "hi {{{firstName}}} {{{ lastName }}}"
+    }`;
+    const value = await getPropertyValue(fn);
+    expect(value[0]).toEqual(`hi Mario O'Donnell`);
   });
   test("it evaluates float properties as expected", async () => {
     const fn = `() => {
