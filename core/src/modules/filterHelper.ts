@@ -16,6 +16,10 @@ export namespace FilterHelper {
     relativeMatchDirection?: string;
   }
 
+  /**
+   * Get the existing filters for an instance
+   *
+   */
   export async function getFilters(instance: Property | Schedule) {
     const filtersWithCol: FiltersWithKey[] = [];
     const filters = instance.filters
@@ -42,6 +46,10 @@ export namespace FilterHelper {
     return filtersWithCol;
   }
 
+  /**
+   * Set the filters for an instance
+   *
+   */
   export async function setFilters(
     instance: Property | Schedule,
     filters: FiltersWithKey[],
@@ -90,6 +98,10 @@ export namespace FilterHelper {
     }
   }
 
+  /**
+   * Validate filters for a Property
+   *
+   */
   export async function validateFilters(
     instance: Property | Schedule,
     filters: FiltersWithKey[]

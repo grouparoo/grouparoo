@@ -111,15 +111,18 @@ export enum AggregationMethod {
 }
 
 export enum FilterOperation {
-  Equal = "equals",
-  NotEqual = "does not equal",
-  GreaterThan = "greater than",
-  GreaterThanOrEqual = "greater than or equal to",
-  LessThan = "less than",
-  LessThanOrEqual = "less than or equal to",
-  Contain = "contains",
-  NotContain = "does not contain",
+  Equal = "eq",
+  NotEqual = "ne",
+  GreaterThan = "gt",
+  GreaterThanOrEqual = "gte",
+  LessThan = "lt",
+  LessThanOrEqual = "lte",
+  Contain = "substring",
+  NotContain = "notSubstring",
   In = "in",
+  // TO DO: make these work...
+  // Exists = "exists",
+  // NotExists = "notExists", 
 }
 
 export type PluginOptionType =

@@ -13,6 +13,14 @@ export function makeWhereClause(
   let transform = null;
 
   switch (filterOperation) {
+    // TODO:
+    // case FilterOperation.Exists:
+    //   op = "IS NOT NULL";
+    //   break;
+    // case FilterOperation.NotExists:
+    //   // match = null;
+    //   op = "IS NULL";
+    //   break;
     case FilterOperation.Equal:
       op = "=";
       break;

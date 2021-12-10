@@ -50,7 +50,13 @@ const getTypeInfo = function (dataType: string): {
   type: ColumnType;
   filterOperations: FilterOperation[];
 } {
-  const ops = [FilterOperation.Equal, FilterOperation.NotEqual];
+  const ops = [
+    FilterOperation.Equal,
+    FilterOperation.NotEqual,
+    // TODO:
+    // FilterOperation.Exists,
+    // FilterOperation.NotExists,
+  ];
   let type: ColumnType = null;
   let compare = false;
   let contains = false;
