@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/pardot",
   "description": "The Grouparoo Pardot Plugin",
-  "version": "0.7.7-alpha.0",
+  "version": "0.7.7-alpha.1",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,14 +28,14 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.7.7-alpha.0",
+    "@grouparoo/app-templates": "0.7.7-alpha.1",
     "axios": "0.24.0",
     "form-data": "4.0.0",
     "jsforce": "1.11.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.7-alpha.0",
-    "@grouparoo/spec-helper": "0.7.7-alpha.0",
+    "@grouparoo/core": "0.7.7-alpha.1",
+    "@grouparoo/spec-helper": "0.7.7-alpha.1",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "28.0.3",
