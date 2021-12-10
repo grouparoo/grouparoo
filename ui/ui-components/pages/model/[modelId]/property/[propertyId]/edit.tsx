@@ -7,7 +7,6 @@ import Loader from "../../../../../components/Loader";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
-import RecordPreview from "../../../../../components/property/RecordPreview";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DatePicker from "../../../../../components/DatePicker";
 import LoadingButton from "../../../../../components/LoadingButton";
@@ -22,6 +21,7 @@ import { PropertiesHandler } from "../../../../../utils/propertiesHandler";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import SampleRecordCard from "../../../../../components/record/SampleRecordCard";
 
 export default function Page(props) {
   const {
@@ -513,7 +513,7 @@ export default function Page(props) {
               ))}
 
               {filterOptions.length > 0 ? (
-                <>
+                <div className="mb-4">
                   <hr />
                   <strong>Filters</strong>
                   <p>
@@ -686,9 +686,22 @@ export default function Page(props) {
                   <Button size="sm" variant="info" onClick={addRule}>
                     Add Filter
                   </Button>
-                </>
+                </div>
               ) : null}
-              <hr />
+            </Col>
+            <Col xl={5}>
+              <SampleRecordCard
+                modelId={source.modelId}
+                properties={properties}
+                execApi={execApi}
+                hideViewAllRecords
+                highlightProperty={property}
+              />
+            </Col>
+          </Row>
+          <hr />
+          <Row>
+            <Col>
               <LoadingButton variant="primary" type="submit" loading={loading}>
                 Update
               </LoadingButton>
@@ -702,13 +715,6 @@ export default function Page(props) {
               >
                 Delete
               </LoadingButton>
-            </Col>
-            <Col md={3}>
-              <RecordPreview
-                {...props}
-                localFilters={localFilters}
-                property={property}
-              />
             </Col>
           </Row>
         </fieldset>

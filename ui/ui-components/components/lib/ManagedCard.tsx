@@ -16,11 +16,11 @@ const ManagedCard: React.FC<Props> = ({
   <Card className={disabled ? "text-muted" : undefined}>
     <Card.Header>
       <Row>
-        <Col md={actions ? 6 : 12}>
+        <Col>
           <h5 className="my-1">{title}</h5>
         </Col>
         {actions && (
-          <Col className="text-right" md="6">
+          <Col className="text-right" md="7" lg="6" sm="12">
             <SeparatedItems items={actions} />
           </Col>
         )}

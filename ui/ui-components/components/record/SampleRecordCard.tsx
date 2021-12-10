@@ -21,6 +21,8 @@ interface Props {
   execApi: ApiHook["execApi"];
   properties: Models.PropertyType[];
   disabled: boolean;
+  hideViewAllRecords?: boolean;
+  highlightProperty?: Models.PropertyType;
 }
 
 const isConfigUI = grouparooUiEdition() === "config";
@@ -43,7 +45,9 @@ const SampleRecordCard: React.FC<Props> = ({
   modelId,
   properties,
   execApi,
-  disabled,
+  disabled = false,
+  hideViewAllRecords = false,
+  highlightProperty,
 }) => {
   const prevModelId = usePrevious(modelId);
 
@@ -131,6 +135,12 @@ const SampleRecordCard: React.FC<Props> = ({
     setLoading(false);
   }, [recordId, saveRecord, execApi, modelId]);
 
+  const recordPropertyKeys = useMemo(
+    () =>
+      record?.properties ? Object.keys(record.properties).sort() : undefined,
+    [record]
+  );
+
   useEffect(() => {
     // Switched to another model
     if (prevModelId && prevModelId !== modelId) {
@@ -216,7 +226,7 @@ const SampleRecordCard: React.FC<Props> = ({
 
   const content = record ? (
     <Row>
-      <Col>
+      <Col md={9}>
         <Table bordered>
           <colgroup>
             <col span={1} style={{ width: "35%" }} />
@@ -233,21 +243,32 @@ const SampleRecordCard: React.FC<Props> = ({
             </tr>
           </thead>
           <tbody>
-            {record.properties &&
-              Object.keys(record.properties).map((key) => {
+            {recordPropertyKeys &&
+              recordPropertyKeys.map((key) => {
                 const property = record.properties[key];
+                const isHighlightedProperty =
+                  highlightProperty?.id === property.id;
+                const trClassName =
+                  highlightProperty?.id === property.id
+                    ? "table-success"
+                    : undefined;
+
                 return (
-                  <tr key={key}>
-                    <td>
-                      <Link
-                        href={`/model/${modelId}/property/${property.id}/edit`}
-                      >
-                        <a>{key}</a>
-                      </Link>
+                  <tr key={key} className={trClassName}>
+                    <th scope="row">
+                      {isHighlightedProperty ? (
+                        key
+                      ) : (
+                        <Link
+                          href={`/model/${modelId}/property/${property.id}/edit`}
+                        >
+                          <a>{key}</a>
+                        </Link>
+                      )}
                       {property.state !== "ready" && (
                         <StateBadge state={property.state} marginBottom={0} />
                       )}
-                    </td>
+                    </th>
                     <td>
                       <ArrayRecordPropertyList
                         type={property.type}
@@ -262,7 +283,11 @@ const SampleRecordCard: React.FC<Props> = ({
           </tbody>
         </Table>
       </Col>
-      <Col md={3} className={"text-center"}>
+      <Col
+        className={"text-center"}
+        xs={{ order: "first" }}
+        md={{ order: "last" }}
+      >
         {email && (
           <RecordImageFromEmail email={email} width={72} className="mb-4" />
         )}
@@ -323,19 +348,19 @@ const SampleRecordCard: React.FC<Props> = ({
     </Row>
   );
 
-  return (
-    <ManagedCard
-      title="Sample Record"
-      disabled={disabled}
-      actions={[
-        <LinkButton
-          disabled={!record || disabled}
-          href={record ? `/model/${modelId}/record/${record.id}/edit` : "#"}
-          size="sm"
-          variant="outline-primary"
-        >
-          View Record
-        </LinkButton>,
+  const cardActions = useMemo(() => {
+    const result = [
+      <LinkButton
+        disabled={!record || disabled}
+        href={record ? `/model/${modelId}/record/${record.id}/edit` : "#"}
+        size="sm"
+        variant="outline-primary"
+      >
+        View Record
+      </LinkButton>,
+    ];
+    if (!hideViewAllRecords) {
+      result.push(
         <LinkButton
           disabled={disabled}
           href={`/model/${modelId}/records`}
@@ -343,8 +368,17 @@ const SampleRecordCard: React.FC<Props> = ({
           variant="outline-primary"
         >
           View all Records
-        </LinkButton>,
-      ]}
+        </LinkButton>
+      );
+    }
+    return result;
+  }, [modelId, disabled, record, hideViewAllRecords]);
+
+  return (
+    <ManagedCard
+      title="Sample Record"
+      disabled={disabled}
+      actions={cardActions}
     >
       <Card.Body>
         {content}
