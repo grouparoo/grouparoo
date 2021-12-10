@@ -16,15 +16,7 @@ let realRequestId: string;
 
 // These tests can be re-nocked against a locally-running telemetry server via:
 //  GROUPAROO_AUTH_URL="http://localhost:8080" NOCK=true pnpm jest __tests__/actions/oAuth.ts
-const updater = {
-  rewrite: function (nockCall: string) {
-    nockCall = nockCall.replace(/tcs_(\w|-)+/g, customerId);
-    nockCall = nockCall.replace(/req_(\w|-)+/g, requestId);
-
-    return nockCall;
-  },
-};
-helper.useNock(__filename, updater);
+helper.useNock(__filename);
 
 describe("actions/plugins", () => {
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
