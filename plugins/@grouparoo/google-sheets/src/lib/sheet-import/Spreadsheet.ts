@@ -1,7 +1,7 @@
 import { SimpleAppOptions } from "@grouparoo/core";
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 
-function parseUrl(sheetUrl: string) {
+function parseUrl(sheetUrl: string): Record<string, string> {
   // e.g. https://docs.google.com/spreadsheets/d/1-QDnY0N4obyqnyDpncfr6dooyC2mWw2hn1RY8XlZLWM/edit
   // e.g. https://docs.google.com/spreadsheets/d/1-QDnY0N4obyqnyDpncfr6dooyC2mWw2hn1RY8XlZLWM/edit#gid=0
   // e.g. https://docs.google.com/spreadsheets/d/1-QDnY0N4obyqnyDpncfr6dooyC2mWw2hn1RY8XlZLWM/edit#gid=1859698494
@@ -93,5 +93,10 @@ export default class Spreadsheet {
       results.push(result);
     }
     return results;
+  }
+
+  async getHeaders() {
+    const sheet = await this.load();
+    return sheet.headerValues;
   }
 }

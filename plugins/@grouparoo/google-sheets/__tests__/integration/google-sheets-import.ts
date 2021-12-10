@@ -210,7 +210,7 @@ describe("integration/runs/google-sheets", () => {
         key: "email",
         type: "string",
         unique: true,
-        options: { column: "email" },
+        options: { column: "email", aggregationMethod: "exact" },
         state: "ready",
       };
 
@@ -220,7 +220,7 @@ describe("integration/runs/google-sheets", () => {
       expect(property.id).toBeTruthy();
 
       // check the pluginOptions
-      expect(pluginOptions.length).toBe(1);
+      expect(pluginOptions.length).toBe(2);
       expect(pluginOptions[0].key).toBe("column");
       expect(pluginOptions[0].required).toBe(true);
       expect(pluginOptions[0].options[0].key).toBe("id");
@@ -230,7 +230,7 @@ describe("integration/runs/google-sheets", () => {
       session.params = {
         csrfToken,
         id: property.id,
-        options: { column: "email" },
+        options: { column: "email", aggregationMethod: "exact" },
       };
       const { error: editError } = await specHelper.runAction(
         "property:edit",
@@ -366,6 +366,9 @@ describe("integration/runs/google-sheets", () => {
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
           "import:associateRecord"
         );
+
+        console.log(foundAssociateTasks);
+
         expect(foundAssociateTasks.length).toEqual(20);
 
         await Promise.all(

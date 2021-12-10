@@ -1,38 +1,28 @@
-import Spreadsheet from "./spreadsheet";
-import { plugin, RecordsPluginMethod } from "@grouparoo/core";
+import { RecordsPluginMethod } from "@grouparoo/core";
+import { downloadAndRefreshFile } from "./downloadAndRefreshFile";
+import { parseProfiles } from "@grouparoo/csv/dist/lib/shared/parseProfiles";
 
 export const records: RecordsPluginMethod = async ({
-  run,
-  appOptions,
   source,
+  sourceId,
+  appOptions,
   sourceOptions,
   sourceMapping,
-  sourceOffset,
+  run,
   limit,
+  highWaterMark,
 }) => {
-  let combinedMapping = sourceMapping;
-  const properties = await source.$get("properties");
-  for (const rule of properties) {
-    const ruleOptions = await rule.getOptions();
-    const ruleMapping = {};
-    if (ruleOptions.column) {
-      ruleMapping[ruleOptions.column?.toString()] = rule.key;
-      combinedMapping = Object.assign(combinedMapping, ruleMapping);
-    }
-  }
-
-  const offset = sourceOffset ? parseInt(sourceOffset.toString()) : 0;
-  const sheet = new Spreadsheet(
+  const localPath = await downloadAndRefreshFile(
+    sourceId,
     appOptions,
-    sourceOptions.sheet_url?.toString()
+    sourceOptions
   );
-  const rows = await sheet.read({ limit, offset });
-
-  await plugin.createImports(combinedMapping, run, rows);
-
-  return {
-    importsCount: rows.length,
-    highWaterMark: {},
-    sourceOffset: offset + rows.length,
-  };
+  return parseProfiles({
+    localPath,
+    source,
+    sourceMapping,
+    run,
+    limit,
+    highWaterMark,
+  });
 };
