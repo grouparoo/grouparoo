@@ -549,6 +549,10 @@ export namespace Actions {
     typeof OAuthClientEdit.prototype.run
   >;
 
+  export type PropertyCreate = AsyncReturnType<
+    typeof PropertyCreate.prototype.runWithinTransaction
+  >;
+
   export type PropertyDestroy = AsyncReturnType<
     typeof PropertyDestroy.prototype.runWithinTransaction
   >;
