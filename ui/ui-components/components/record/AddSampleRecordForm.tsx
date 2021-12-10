@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useGrouparooModelContext } from "../../contexts/grouparooModel";
@@ -38,9 +38,7 @@ const AddSampleRecordForm: React.FC<Props> = ({
   );
 
   const [selectedUniquePropertyValue, setSelectedUniquePropertyValue] =
-    useState(() => {
-      return propertiesWithPrimaryKey?.[0]?.key || "";
-    });
+    useState(propertiesWithPrimaryKey?.[0]?.key || "");
 
   const selectedUniqueProperty = useMemo(() => {
     return propertiesWithPrimaryKey?.find(
@@ -54,15 +52,18 @@ const AddSampleRecordForm: React.FC<Props> = ({
     setSelectedUniquePropertyValue(event.target.value);
   };
 
-  const onSubmit: Parameters<typeof handleSubmit>[0] = async (data) => {
-    setSubmitting(true);
-    const response = await execApi<Actions.RecordCreate>("post", `/record`, {
-      modelId: model.id,
-      properties: { [data.uniqueProperty]: data.value },
-    });
-    setSubmitting(false);
-    onSubmitComplete(response?.record);
-  };
+  const onSubmit: Parameters<typeof handleSubmit>[0] = useCallback(
+    async (data) => {
+      setSubmitting(true);
+      const response = await execApi<Actions.RecordCreate>("post", `/record`, {
+        modelId: model.id,
+        properties: { [data.uniqueProperty]: data.value },
+      });
+      setSubmitting(false);
+      onSubmitComplete(response?.record);
+    },
+    [model]
+  );
 
   return (
     <Form id="form" onSubmit={handleSubmit(onSubmit)}>

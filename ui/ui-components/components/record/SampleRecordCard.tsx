@@ -29,8 +29,9 @@ const getCachedSampleRecordId = (modelId: string): string => {
 };
 
 const setCachedSampleRecordId = (modelId: string, recordId: string): void => {
-  recordId &&
+  if (recordId) {
     globalThis.localStorage?.setItem(`sampleRecord:${modelId}`, recordId);
+  }
 };
 
 const clearCachedSampleRecordId = (modelId: string): void => {
