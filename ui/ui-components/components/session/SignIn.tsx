@@ -192,9 +192,7 @@ export default function SignInForm(props) {
         {oAuthRequest ? (
           <>
             <Modal.Header closeButton>
-              <Modal.Title>
-                Select {oAuthRequest.provider} {oAuthRequest.type}
-              </Modal.Title>
+              <Modal.Title>Select Identity</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <ButtonGroup vertical style={{ width: "100%" }}>
