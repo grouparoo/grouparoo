@@ -28,8 +28,8 @@ export const updater = {
     const realEnv = readEnv(realPath);
     const nockEnv = readEnv(nockPath);
 
-    nockCall = nockCall.replaceAll(
-      realEnv.PIPEDRIVE_API_TOKEN,
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.PIPEDRIVE_API_TOKEN, "gi"),
       nockEnv.PIPEDRIVE_API_TOKEN
     );
 
