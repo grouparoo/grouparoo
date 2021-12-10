@@ -18,12 +18,12 @@ nock("http://localhost:8080", { encodedQueryParams: true })
         serverName: "@grouparoo-inc/telemetry",
         apiVersion: "0.1.0",
         requestDuration: 1,
-        currentTime: 1639080808880,
+        currentTime: 1639178518773,
       },
       requesterInformation: {
-        id: "bc0791de3da10b5d7a6ae64d1ea3c1b85d23df77-7dcb4d75-a9b7-4d99-954f-3ff35f4429bf",
-        fingerprint: "bc0791de3da10b5d7a6ae64d1ea3c1b85d23df77",
-        messageId: "7dcb4d75-a9b7-4d99-954f-3ff35f4429bf",
+        id: "29343ab5339520c8b33af1f97c6edc4cad5fd53b-f0c5c62a-8cfb-4c3d-b28a-db8a9fb51e67",
+        fingerprint: "29343ab5339520c8b33af1f97c6edc4cad5fd53b",
+        messageId: "f0c5c62a-8cfb-4c3d-b28a-db8a9fb51e67",
         remoteIP: "127.0.0.1",
         receivedParams: { action: "oAuth:listProviders", apiVersion: "1" },
       },
@@ -42,11 +42,11 @@ nock("http://localhost:8080", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "set-cookie",
-      "sessionID=bc0791de3da10b5d7a6ae64d1ea3c1b85d23df77;path=/;expires=Thu, 09 Dec 2021 21:13:28 GMT;",
+      "sessionID=29343ab5339520c8b33af1f97c6edc4cad5fd53b;path=/;expires=Sat, 11 Dec 2021 00:21:58 GMT;",
       "content-length",
       "748",
       "Date",
-      "Thu, 09 Dec 2021 20:13:28 GMT",
+      "Fri, 10 Dec 2021 23:21:58 GMT",
       "Connection",
       "close",
     ]
@@ -54,8 +54,8 @@ nock("http://localhost:8080", { encodedQueryParams: true })
 nock("http://localhost:8080", { encodedQueryParams: true })
   .post("/api/v1/oauth/github/client/start", {
     type: "user",
-    requestId: "req_2d4d5b0c-fb4d-4004-8386-7e41b8ba902f",
-    customerId: "tcs_38524ddf-8b23-468c-b9f4-e16ca456d7ca",
+    requestId: "req_123",
+    customerId: "tcs_abc",
     callbackUrl: "http://localhost:18081/oauth/callback",
   })
   .once()
@@ -63,13 +63,13 @@ nock("http://localhost:8080", { encodedQueryParams: true })
     200,
     {
       location:
-        "https://github.com/login/oauth/authorize?client_id=57b0d28f587fed66dead&scope=user%20user:email&state=req_2d4d5b0c-fb4d-4004-8386-7e41b8ba902f",
+        "https://github.com/login/oauth/authorize?client_id=57b0d28f587fed66dead&scope=user%20user:email&state=req_123",
       oAuthRequest: {
-        id: "req_6e043c49-fa08-450a-9f3b-513977921e96",
+        id: "req_123",
         type: "user",
         provider: "github",
-        requestId: "req_2d4d5b0c-fb4d-4004-8386-7e41b8ba902f",
-        telemetryCustomerId: "tcs_38524ddf-8b23-468c-b9f4-e16ca456d7ca",
+        requestId: "req_123",
+        telemetryCustomerId: "tcs_abc",
         callbackUrl: "http://localhost:18081/oauth/callback",
         identities: [],
         confirmed: false,
@@ -77,18 +77,18 @@ nock("http://localhost:8080", { encodedQueryParams: true })
       serverInformation: {
         serverName: "@grouparoo-inc/telemetry",
         apiVersion: "0.1.0",
-        requestDuration: 3,
-        currentTime: 1639080808891,
+        requestDuration: 4,
+        currentTime: 1639178518787,
       },
       requesterInformation: {
-        id: "3024f1b528a1f3811562422da9e4809176423bb2-42959c85-ef8d-4db3-9355-8ccf31c075b3",
-        fingerprint: "3024f1b528a1f3811562422da9e4809176423bb2",
-        messageId: "42959c85-ef8d-4db3-9355-8ccf31c075b3",
+        id: "ead237a77875e3279ee7222a7040064ca010865b-bdc56563-69c0-41fd-bbc1-33f6e534dcf5",
+        fingerprint: "ead237a77875e3279ee7222a7040064ca010865b",
+        messageId: "bdc56563-69c0-41fd-bbc1-33f6e534dcf5",
         remoteIP: "127.0.0.1",
         receivedParams: {
           type: "user",
-          requestId: "req_2d4d5b0c-fb4d-4004-8386-7e41b8ba902f",
-          customerId: "tcs_38524ddf-8b23-468c-b9f4-e16ca456d7ca",
+          requestId: "req_123",
+          customerId: "tcs_abc",
           callbackUrl: "http://localhost:18081/oauth/callback",
           action: "oAuth:client:start",
           apiVersion: "1",
@@ -110,33 +110,28 @@ nock("http://localhost:8080", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "set-cookie",
-      "sessionID=3024f1b528a1f3811562422da9e4809176423bb2;path=/;expires=Thu, 09 Dec 2021 21:13:28 GMT;",
+      "sessionID=ead237a77875e3279ee7222a7040064ca010865b;path=/;expires=Sat, 11 Dec 2021 00:21:58 GMT;",
       "content-length",
       "1290",
       "Date",
-      "Thu, 09 Dec 2021 20:13:28 GMT",
+      "Fri, 10 Dec 2021 23:21:58 GMT",
       "Connection",
       "close",
     ]
   );
 nock("http://localhost:8080", { encodedQueryParams: true })
-  .get(
-    "/api/v1/oauth/client/request/req_2d4d5b0c-fb4d-4004-8386-7e41b8ba902f/view"
-  )
-  .query({
-    requestId: "req_2d4d5b0c-fb4d-4004-8386-7e41b8ba902f",
-    customerId: "tcs_38524ddf-8b23-468c-b9f4-e16ca456d7ca",
-  })
+  .get("/api/v1/oauth/client/request/req_123/view")
+  .query({ requestId: "req_123", customerId: "tcs_abc" })
   .once()
   .reply(
     200,
     {
       oAuthRequest: {
-        id: "req_6e043c49-fa08-450a-9f3b-513977921e96",
+        id: "req_123",
         type: "user",
         provider: "github",
-        requestId: "req_2d4d5b0c-fb4d-4004-8386-7e41b8ba902f",
-        telemetryCustomerId: "tcs_38524ddf-8b23-468c-b9f4-e16ca456d7ca",
+        requestId: "req_123",
+        telemetryCustomerId: "tcs_abc",
         callbackUrl: "http://localhost:18081/oauth/callback",
         identities: [],
         confirmed: false,
@@ -145,16 +140,16 @@ nock("http://localhost:8080", { encodedQueryParams: true })
         serverName: "@grouparoo-inc/telemetry",
         apiVersion: "0.1.0",
         requestDuration: 2,
-        currentTime: 1639080808899,
+        currentTime: 1639178518795,
       },
       requesterInformation: {
-        id: "40875b16c72fc2b84a23fd32c10b72168f82d849-25ff1d10-22e3-4fa7-b9e8-1699e28a104f",
-        fingerprint: "40875b16c72fc2b84a23fd32c10b72168f82d849",
-        messageId: "25ff1d10-22e3-4fa7-b9e8-1699e28a104f",
+        id: "b93513c8b7348a62bbc3a68433fd289e5c0004c6-4485b9e0-1490-484f-a4c8-5a60a5bd9413",
+        fingerprint: "b93513c8b7348a62bbc3a68433fd289e5c0004c6",
+        messageId: "4485b9e0-1490-484f-a4c8-5a60a5bd9413",
         remoteIP: "127.0.0.1",
         receivedParams: {
-          requestId: "req_2d4d5b0c-fb4d-4004-8386-7e41b8ba902f",
-          customerId: "tcs_38524ddf-8b23-468c-b9f4-e16ca456d7ca",
+          requestId: "req_123",
+          customerId: "tcs_abc",
           action: "oAuth:client:view",
           apiVersion: "1",
         },
@@ -174,11 +169,11 @@ nock("http://localhost:8080", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "set-cookie",
-      "sessionID=40875b16c72fc2b84a23fd32c10b72168f82d849;path=/;expires=Thu, 09 Dec 2021 21:13:28 GMT;",
+      "sessionID=b93513c8b7348a62bbc3a68433fd289e5c0004c6;path=/;expires=Sat, 11 Dec 2021 00:21:58 GMT;",
       "content-length",
       "1017",
       "Date",
-      "Thu, 09 Dec 2021 20:13:28 GMT",
+      "Fri, 10 Dec 2021 23:21:58 GMT",
       "Connection",
       "close",
     ]

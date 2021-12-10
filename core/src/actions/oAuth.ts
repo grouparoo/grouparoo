@@ -1,6 +1,3 @@
-// TODO: Once we deploy the production auth server, we can nock that URL.  For now, we need to nock the localhost version
-process.env.GROUPAROO_AUTH_URL = "http://localhost:8080";
-
 import "isomorphic-fetch";
 import { Action, config } from "actionhero";
 import { oAuthProvider, telemetryOAuthRequest } from "../modules/oAuth";
@@ -40,15 +37,20 @@ export class OAuthClientStart extends CLSAction {
     this.description =
       "start the oauth flow and redirect the user to the oauth provider";
     this.outputExample = {};
-    this.inputs = { provider: { required: true }, type: { required: true } };
+    this.inputs = {
+      id: { required: false },
+      provider: { required: true },
+      type: { required: true },
+    };
   }
 
   async runWithinTransaction({
     params,
   }: {
-    params: { provider: string; type: string };
+    params: { id: string; provider: string; type: string };
   }) {
     const oauthRequest = await OAuthRequest.create({
+      id: params.id,
       type: params.type,
       provider: params.provider,
     });
