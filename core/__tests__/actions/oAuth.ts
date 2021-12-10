@@ -57,7 +57,7 @@ describe("actions/plugins", () => {
     realRequestId = localRequest.id;
 
     expect(location).toMatch(
-      /https:\/\/github.com\/login\/oauth\/authorize\?client_id=.*&scope=user%20user:email&state=/
+      /https:\/\/github.com\/login\/oauth\/authorize\?client_id=.*&scope=user%20user:email&state=req_123/
     );
     expect(location).toContain(remoteOAuthRequest.requestId);
     expect(remoteOAuthRequest).toEqual({
