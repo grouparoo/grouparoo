@@ -126,9 +126,7 @@ describe("models/property", () => {
       expect(dependencies.map((rule) => rule.id)).toEqual([emailProperty.id]);
     });
 
-    test.only("mustache variables reference another rule", async () => {
-      // const _options = await emailDomainProperty.getOptions();
-      // console.info(_options);
+    test("mustache variables reference another rule", async () => {
       const dependencies = await PropertyOps.dependencies(emailDomainProperty);
       expect(dependencies.map((rule) => rule.id)).toEqual([
         userIdProperty.id, // from the mapping

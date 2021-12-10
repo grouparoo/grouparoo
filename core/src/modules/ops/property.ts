@@ -134,7 +134,7 @@ export namespace PropertyOps {
     for (const key in ruleOptions) {
       const mustacheString = ruleOptions[key];
       const mustacheVariables: string[] = Mustache.parse(mustacheString)
-        .filter((chunk) => chunk[0] === "name")
+        .filter((chunk) => chunk[0] === "&")
         .map((chunk) => chunk[1]);
       properties
         .filter((p) => mustacheVariables.includes(p.key))
