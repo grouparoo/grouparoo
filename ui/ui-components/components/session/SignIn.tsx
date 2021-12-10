@@ -4,9 +4,7 @@ import { Form, Row, Col, Button, Modal, ButtonGroup } from "react-bootstrap";
 import LoadingButton from "../LoadingButton";
 import { useForm } from "react-hook-form";
 import { Actions, OAuth, Models } from "../../utils/apiData";
-import { SessionHandler } from "../../utils/sessionHandler";
 import Loader from "../Loader";
-import { string } from "prop-types";
 
 export default function SignInForm(props) {
   const { errorHandler, successHandler, sessionHandler, UseApi } = props;
