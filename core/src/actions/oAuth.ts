@@ -1,3 +1,6 @@
+// TODO: Once we deploy the production auth server, we can nock that URL.  For now, we need to nock the localhost version
+process.env.GROUPAROO_AUTH_URL = "http://localhost:8080";
+
 import "isomorphic-fetch";
 import { Action, config } from "actionhero";
 import { oAuthProvider, telemetryOAuthRequest } from "../modules/oAuth";
