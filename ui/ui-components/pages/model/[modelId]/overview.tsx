@@ -10,6 +10,7 @@ import ModelOverviewPrimarySource from "../../../components/model/overview/Model
 import ModelOverviewSchedules from "../../../components/model/overview/ModelOverviewSchedules";
 import ModelOverviewSecondarySources from "../../../components/model/overview/ModelOverviewSecondarySources";
 import PageHeader from "../../../components/PageHeader";
+import SampleRecordCard from "../../../components/record/SampleRecordCard";
 import { GrouparooModelContextProvider } from "../../../contexts/grouparooModel";
 import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
@@ -18,6 +19,7 @@ interface Props {
   model: Models.GrouparooModelType;
   primarySource?: Models.SourceType;
   secondarySources: Models.SourceType[];
+  properties: Models.PropertyType[];
   groups: Models.GroupType[];
   schedules: Models.ScheduleType[];
   destinations?: Models.DestinationType[];
@@ -29,6 +31,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
   model,
   primarySource,
   secondarySources,
+  properties,
   groups,
   schedules,
   destinations,
@@ -93,6 +96,15 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
             </ManagedCard>
           </Col>
         </Row>
+        <Row className="mb-4">
+          <Col>
+            <SampleRecordCard
+              properties={properties}
+              execApi={execApi}
+              disabled={!sources.length}
+            />
+          </Col>
+        </Row>
         <Row>
           <Col>
             <ModelOverviewDestinations
@@ -147,6 +159,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
       model,
       primarySource,
       secondarySources,
+      properties,
       groups,
       schedules,
       destinations,
