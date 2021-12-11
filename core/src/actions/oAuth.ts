@@ -1,6 +1,6 @@
 import "isomorphic-fetch";
 import { Action, config } from "actionhero";
-import { oAuthProvider, telemetryOAuthRequest } from "../modules/oAuth";
+import { oAuthProvider, oAuthIdentity } from "../modules/oAuth";
 import { CLSAction } from "../classes/actions/clsAction";
 import { plugin } from "../modules/plugin";
 import { OAuthRequest } from "../models/OAuthRequest";
@@ -62,7 +62,6 @@ export class OAuthClientStart extends CLSAction {
     const response: {
       error?: TelemetryError;
       location: string;
-      oAuthRequest: telemetryOAuthRequest;
     } = await fetch(fullUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -75,7 +74,6 @@ export class OAuthClientStart extends CLSAction {
     }).then((r) => r.json());
     throwTelemetryError(response);
     return {
-      remoteOAuthRequest: response.oAuthRequest,
       location: response.location,
       error: response.error,
     };
@@ -105,7 +103,7 @@ export class OAuthClientEdit extends CLSAction {
     const fullUrl = `${config.oAuth.host}/api/v1/oauth/client/request/${params.requestId}/view?requestId=${oAuthRequest.id}&customerId=${customerId}`;
     const response: {
       error?: TelemetryError;
-      oAuthRequest: telemetryOAuthRequest;
+      oAuthRequest: { identities: oAuthIdentity[] };
     } = await fetch(fullUrl, {
       method: "GET",
       headers: { "Content-Type": "application/json" },

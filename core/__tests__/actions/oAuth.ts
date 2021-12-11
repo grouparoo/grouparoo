@@ -16,7 +16,17 @@ let realRequestId: string;
 
 // These tests can be re-nocked against a locally-running telemetry server via:
 //  GROUPAROO_AUTH_URL="http://localhost:8080" NOCK=true pnpm jest __tests__/actions/oAuth.ts
-helper.useNock(__filename);
+const updater = {
+  rewrite: function (nockCall: string) {
+    nockCall = nockCall.replace(
+      new RegExp('"http://localhost:18081/oauth/callback"', "g"),
+      "/http:\\/\\/localhost:\\d+\\/oauth\\/callback/"
+    );
+
+    return nockCall;
+  },
+};
+helper.useNock(__filename, updater);
 
 describe("actions/plugins", () => {
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
@@ -41,35 +51,24 @@ describe("actions/plugins", () => {
   });
 
   test("an oauth request can be started", async () => {
-    const { remoteOAuthRequest, location, error } =
-      await specHelper.runAction<OAuthClientStart>("oAuth:client:start", {
+    const { location, error } = await specHelper.runAction<OAuthClientStart>(
+      "oAuth:client:start",
+      {
         id: requestId, // this id would not normally be passed, but we need it for the test & nocking
         provider: "github",
         type: "user",
-      });
+      }
+    );
 
     expect(error).toBeUndefined();
 
-    const localRequest = await OAuthRequest.findById(
-      remoteOAuthRequest.requestId
-    );
+    const localRequest = await OAuthRequest.findById(requestId);
     expect(localRequest).toBeTruthy();
     realRequestId = localRequest.id;
 
     expect(location).toMatch(
       /https:\/\/github.com\/login\/oauth\/authorize\?client_id=.*&scope=user%20user:email&state=req_123/
     );
-    expect(location).toContain(remoteOAuthRequest.requestId);
-    expect(remoteOAuthRequest).toEqual({
-      callbackUrl: "http://localhost:18081/oauth/callback",
-      id: expect.any(String),
-      telemetryCustomerId: expect.any(String),
-      provider: "github",
-      type: "user",
-      confirmed: false,
-      identities: [],
-      requestId: realRequestId,
-    });
   });
 
   // TODO: How can we test this without making real oAuth requests?
