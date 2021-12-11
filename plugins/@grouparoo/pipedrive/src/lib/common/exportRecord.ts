@@ -7,7 +7,7 @@ import { getGroupFieldKey } from "./listMethods";
 import { EntityType } from "./configMapping";
 import { ExportRecordPluginMethod } from "@grouparoo/core";
 
-export const getExportRecord: (
+export const getExportRecordWithErrorHandling: (
   callback: Function
 ) => ExportRecordPluginMethod = (callback: Function) => async (args) => {
   try {
