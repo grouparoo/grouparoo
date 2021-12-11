@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useRouter } from "next/router";
 import { Form, Row, Col, Button, Modal, ButtonGroup } from "react-bootstrap";
 import LoadingButton from "../LoadingButton";
@@ -88,7 +88,7 @@ export default function SignInForm(props) {
     const teamMember = await createSession(arg, type);
     setLoading(false);
     if (teamMember) {
-      successHandler.set({ message: "Welcome Back!" });
+      successHandler.set({ message: `Welcome Back, ${teamMember.firstName}!` });
       if (nextPage) {
         router.push(nextPage.toString());
       } else {
@@ -174,21 +174,24 @@ export default function SignInForm(props) {
           ) : null}
 
           <div className="d-flex justify-content-center">
-            {providers.map((provider) => (
-              <LoadingButton
-                style={{ width: "100%" }}
-                loading={loading || loadingOauthProviders}
-                key={`provider-${provider.name}`}
-                variant="outline-primary"
-                onClick={() => startOauthLogin(provider.name, "user")}
-              >
-                {provider.description}
-                <img
-                  style={{ margin: 10, height: 40, width: 40 }}
-                  src={provider.icon}
-                />
-              </LoadingButton>
-            ))}
+            <ButtonGroup vertical style={{ width: "100%" }}>
+              {providers.map((provider) => (
+                <Fragment key={`provider-${provider.name}`}>
+                  <LoadingButton
+                    disabled={loading}
+                    loading={loadingOauthProviders}
+                    variant="outline-primary"
+                    onClick={() => startOauthLogin(provider.name, "user")}
+                  >
+                    {provider.description}
+                    <img
+                      style={{ margin: 10, height: 40, width: 40 }}
+                      src={provider.icon}
+                    />
+                  </LoadingButton>
+                </Fragment>
+              ))}
+            </ButtonGroup>
           </div>
         </Col>
       </Row>
