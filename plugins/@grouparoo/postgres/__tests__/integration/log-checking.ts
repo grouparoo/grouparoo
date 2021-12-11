@@ -57,10 +57,10 @@ describe("postgres/integration/log-checking", () => {
   afterAll(async () => await afterData());
 
   it("should correctly do debug logging for postgres queries", async () => {
-    const sql = `SELECT first_name FROM ${usersTableName} WHERE id = {{ userId }}`;
+    const sql = `SELECT first_name FROM ${usersTableName} WHERE id = {{{ userId }}}`;
     const value = await getPropertyValue(sql);
     expect(value).toEqual(["Erie"]);
-    const expectedString = `[ postgres ] ${sql.replace("{{ userId }}", "1")}`;
+    const expectedString = `[ postgres ] ${sql.replace("{{{ userId }}}", "1")}`;
     const postgresCall = logMock.mock.calls.find(([c]) => c === expectedString);
     expect(postgresCall).toEqual([expectedString, "debug", undefined]);
   });

@@ -18,5 +18,5 @@ exports.default = async function buildConfig() {
 
 function customFunction () {
   // write your custom function here
-  // use mustache variables to reference the keys of any properties you would like to reference
+  // You can use mustache variables (https://github.com/janl/mustache.js#variables) to represent the keys of other properties in the system.  Our system defaults to the triple bracket (unescaped) version of mustache.
 }

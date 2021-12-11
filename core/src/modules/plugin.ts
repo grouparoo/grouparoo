@@ -343,12 +343,13 @@ export namespace plugin {
 
   /**
    * Takes a string with mustache variable (keys) and replaces them with the record property ids
-   * ie: `select * where id = {{ userId }}` => `select * where id = {{ ppr_abc123 }}`
+   * ie: `select * where id = {{{ userId }}}` => `select * where id = {{{ ppr_abc123 }}}`
    */
   export async function replaceTemplateRecordPropertyKeysWithRecordPropertyId(
     string: string,
     modelId: string
   ): Promise<string> {
+    //though we default to 3 brackets, if someone inputs the double bracket notation, we should accept it
     if (string.indexOf("{{") < 0) return string;
 
     const properties = (await Property.findAllWithCache(modelId)).filter(
@@ -357,7 +358,7 @@ export namespace plugin {
 
     const data = {};
     properties.forEach((rule) => {
-      data[rule.key] = `{{ ${rule.id} }}`;
+      data[rule.key] = `{{{ ${rule.id} }}}`;
     });
 
     return MustacheUtils.strictlyRender(string, data);
@@ -365,19 +366,20 @@ export namespace plugin {
 
   /**
    * Takes a string with mustache variable (ids) and replaces them with the record property keys
-   * ie: `select * where id = {{ ppr_abc123 }}` => `select * where id = {{ userId }}`
+   * ie: `select * where id = {{{ ppr_abc123 }}}` => `select * where id = {{{ userId }}}`
    */
   export async function replaceTemplateRecordPropertyIdsWithRecordPropertyKeys(
     string: string,
     modelId: string
   ): Promise<string> {
+    //though we default to 3 brackets, if someone inputs the double bracket notation, we should accept it
     if (string.indexOf("{{") < 0) return string;
 
     const properties = await Property.findAllWithCache(modelId);
 
     const data = {};
     properties.forEach((rule) => {
-      data[rule.id] = `{{ ${rule.key} }}`;
+      data[rule.id] = `{{{ ${rule.key} }}}`;
     });
 
     return MustacheUtils.strictlyRender(string, data);

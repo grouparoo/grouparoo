@@ -395,15 +395,15 @@ describe("models/property", () => {
   test("options will have mustache keys converted to mustache ids", async () => {
     const property = await Property.findOne({ where: { key: "email" } });
     await property.setOptions({
-      column: "{{   email}}@example.com",
+      column: "{{{ email }}}@example.com",
     });
     let options = await property.getOptions();
-    expect(options).toEqual({ column: "{{ email }}@example.com" }); //appears normal (but formatted) to the user
+    expect(options).toEqual({ column: "{{{ email }}}@example.com" }); //appears normal (but formatted) to the user
 
     const rawOption = await Option.findOne({
       where: { ownerId: property.id },
     });
-    expect(rawOption.value).toBe(`{{ ${property.id} }}@example.com`);
+    expect(rawOption.value).toBe(`{{{ ${property.id} }}}@example.com`);
   });
 
   test("an array property cannot be used as an option", async () => {
@@ -424,7 +424,7 @@ describe("models/property", () => {
     const property = await Property.findOne({ where: { key: "email" } });
     await expect(
       property.setOptions({
-        column: "{{carts}}@example.com",
+        column: "{{{carts}}}@example.com",
       })
     ).rejects.toThrow('missing mustache key "carts"');
 
@@ -684,7 +684,7 @@ describe("models/property", () => {
                 ];
               },
               recordProperty: async ({ property, propertyOptions, record }) => {
-                const s = `the time is {{now.sql}} + ${JSON.stringify(
+                const s = `the time is {{{now.sql}}} + ${JSON.stringify(
                   propertyOptions
                 )}`;
                 const q = await property.parameterizedQueryFromRecord(

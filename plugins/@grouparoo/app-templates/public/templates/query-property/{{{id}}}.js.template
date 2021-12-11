@@ -9,7 +9,7 @@ exports.default = async function buildConfig() {
       unique: false, // Will Records have unique records for this Property?
       isArray: false, // Is this an Array Property?
       options: {
-        query: "SELECT SUM(price) from purchases where user_id = \{\{user_id\}\}", // The query to extract the property.  You can use mustache variables (https://github.com/janl/mustache.js#variables) to represent the keys of other properties in the system.
+        query: "SELECT SUM(price) from purchases where user_id = \{\{\{user_id\}\}\}", // The query to extract the property.  You can use mustache variables (https://github.com/janl/mustache.js#variables) to represent the keys of other properties in the system.  Our system defaults to the triple bracket (unescaped) version of mustache.
       },
     },
   ];

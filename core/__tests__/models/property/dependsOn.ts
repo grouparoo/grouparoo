@@ -96,7 +96,7 @@ describe("models/property", () => {
       });
       await emailDomainProperty.setOptions({
         column:
-          "select split_part(email, '@', 2) AS domain from users where email = {{ email }}",
+          "select split_part(email, '@', 2) AS domain from users where email = {{{ email }}}",
       });
       await emailDomainProperty.update({ state: "ready" });
     });

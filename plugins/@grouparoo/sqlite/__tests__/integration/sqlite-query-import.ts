@@ -126,7 +126,7 @@ describe("integration/runs/sqlite", () => {
       csrfToken,
       id: property.id,
       options: {
-        query: `SELECT email FROM "${usersTableName}" WHERE id = {{ userId }}`,
+        query: `SELECT email FROM "${usersTableName}" WHERE id = {{{ userId }}}`,
       },
       state: "ready",
     };

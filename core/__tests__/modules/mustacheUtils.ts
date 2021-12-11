@@ -12,7 +12,7 @@ describe("modules/mustacheUtils", () => {
 
   describe("#strictlyRender", () => {
     test("works with a valid string and data", () => {
-      const result = MustacheUtils.strictlyRender("hello {{value}}", {
+      const result = MustacheUtils.strictlyRender("hello {{{value}}}", {
         value: "world",
       });
       expect(result).toEqual("hello world");
@@ -20,7 +20,7 @@ describe("modules/mustacheUtils", () => {
 
     test("throws a good error message if data is missing", () => {
       expect(() =>
-        MustacheUtils.strictlyRender("hello {{value}}", {
+        MustacheUtils.strictlyRender("hello {{{value}}}", {
           foo: "world",
         })
       ).toThrow(/missing mustache key "value"/);
@@ -29,7 +29,7 @@ describe("modules/mustacheUtils", () => {
     test("null values can be OK", () => {
       expect(() =>
         MustacheUtils.strictlyRender(
-          "hello {{value}}",
+          "hello {{{value}}}",
           {
             value: null,
           },
@@ -39,7 +39,7 @@ describe("modules/mustacheUtils", () => {
       ).toThrow('null "value"');
 
       const result = MustacheUtils.strictlyRender(
-        "hello {{value}}",
+        "hello {{{value}}}",
         {
           value: null,
         },
@@ -53,7 +53,7 @@ describe("modules/mustacheUtils", () => {
   describe("#getMustacheVariables", () => {
     test("the names of the mustache variables can be extracted", () => {
       const keys = MustacheUtils.getMustacheVariables(
-        "I need a {{foo}}, a {{{ bar }}} and one more {{    thing}}"
+        "I need a {{{foo}}}, a {{{ bar }}} and one more {{{    thing}}}"
       );
       expect(keys).toEqual(["foo", "bar", "thing"]);
     });
@@ -62,7 +62,7 @@ describe("modules/mustacheUtils", () => {
   describe("#getMustacheVariablesAsPropertyIds", () => {
     test("it works with existing properties", async () => {
       const property = await Property.findOne({ where: { key: "userId" } });
-      const string = "SELECT email from users where id = {{ userId }}";
+      const string = "SELECT email from users where id = {{{ userId }}}";
       const ids = await MustacheUtils.getMustacheVariablesAsPropertyIds(string);
       expect(ids).toEqual([property.id]);
     });
@@ -70,7 +70,7 @@ describe("modules/mustacheUtils", () => {
     test("it works with additional codeConfig objects", async () => {
       const property = await Property.findOne({ where: { key: "userId" } });
       const string =
-        "SELECT email from users where id = {{ userId }} and {{ subscribed }} = true";
+        "SELECT email from users where id = {{{ userId }}} and {{{ subscribed }}} = true";
       const configObjects: AnyConfigurationObject[] = [
         { class: "property", id: "subscribed_id", name: "subscribed" },
       ];

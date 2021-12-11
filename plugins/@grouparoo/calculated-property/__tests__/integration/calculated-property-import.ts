@@ -110,7 +110,7 @@ describe("integration/runs/calculated-property", () => {
       csrfToken,
       id: property.id,
       options: {
-        customFunction: `()=> { return "{{firstName}} {{lastName}}" }`,
+        customFunction: `()=> { return "{{{firstName}}} {{{lastName}}}" }`,
       },
       state: "ready",
     };
