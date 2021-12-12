@@ -8,23 +8,23 @@ import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 import { EventDispatcher } from "@grouparoo/ui-components/utils/eventDispatcher";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
-class CustomErrorHandler extends EventDispatcher<{ error: string }> {
-  error: Error | string | any;
+class CustomErrorHandler extends EventDispatcher<{ message: string }> {
+  message: Error | string | any;
   parentErrorHandler: ErrorHandler;
 
   constructor(parentErrorHandler: ErrorHandler) {
     super();
 
-    this.error = null;
+    this.message = null;
     this.parentErrorHandler = parentErrorHandler;
 
-    this.subscribe("_internal", ({ error }) => {
-      this.error = error;
+    this.subscribe("_internal", ({ message }) => {
+      this.message = message;
 
-      if (this.error?.config?.url === "/api/v1/status/public") {
-        console.info(`could not reach API: ${error}`);
+      if (this.message?.config?.url === "/api/v1/status/public") {
+        console.info(`could not reach API: ${message}`);
       } else {
-        parentErrorHandler.set({ error: this.error });
+        parentErrorHandler.set({ message: this.message });
       }
     });
   }

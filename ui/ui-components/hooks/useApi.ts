@@ -55,7 +55,7 @@ export function UseApi(
       return apiResponse;
     } catch (error) {
       if (errorHandler) {
-        errorHandler.set({ error: error });
+        errorHandler.set({ message: error });
         return {} as any;
       } else {
         throw error;
