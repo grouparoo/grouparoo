@@ -25,8 +25,20 @@ export default function GrouparooToast({
   }, []);
 
   function subscription({ message }) {
-    setMessage(String(message));
+    setMessage(formatMessage(message));
     setShow(true);
+  }
+
+  function formatMessage(message: unknown) {
+    let formattedMessage = String(message);
+    if (formattedMessage.startsWith("Error: ")) {
+      formattedMessage = formattedMessage.replace("Error: ", "");
+    }
+    if (formattedMessage.startsWith("error: ")) {
+      formattedMessage = formattedMessage.replace("error: ", "");
+    }
+
+    return formattedMessage;
   }
 
   if (!message) return null;
