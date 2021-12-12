@@ -4,8 +4,9 @@ import { ErrorHandler } from "../../utils/errorHandler";
 import { SuccessHandler } from "../../utils/successHandler";
 
 const secondsToShow = 1000 * 4; // show toasts for 4 seconds before hiding
+const subscriptionKey = "grouparoo-toast";
 
-export default function SuccessAlert({
+export default function GrouparooToast({
   handler,
   variant,
 }: {
@@ -16,10 +17,10 @@ export default function SuccessAlert({
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    handler.subscribe("success-alert", subscription.bind(this));
+    handler.subscribe(subscriptionKey, subscription.bind(this));
 
     return () => {
-      handler.unsubscribe("success-alert");
+      handler.unsubscribe(subscriptionKey);
     };
   }, []);
 
