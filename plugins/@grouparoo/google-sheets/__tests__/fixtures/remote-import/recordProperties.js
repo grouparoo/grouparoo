@@ -1,55 +1,6 @@
 const nock = require("nock");
-process.env.GOOGLE_SHEETS_JEST_TIMESTAMP = "1639437559361";
+process.env.GOOGLE_SHEETS_JEST_TIMESTAMP = "1639437938999";
 
-nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1dd0db7243400000d07fd9e73423ab6e7d238c105d915dacbeeca04be42282b875faefcdf413cef901699ef3ae63fdfdc26bf001e6146aeb7c9d093a1d848520c58b51eb176e50ab989a4f82bd4b83bcc3f6ede07bbae7b38cdaae76a5db64a397221f9424985103277c65a67dc6fc56bdc3733c7e5afaa814e3747a1244efbbfd6d3499eb4e0f9c201115aaa31afd361d8d40c0427cba40d1d6f6a3b961ddf75749824887061c52380f1922c7d072ca65d82d49224abda7f8d031436967434c6d620d023cc94416eb4c9bd2cc2a1b1c45321672f5412bb8892be946c30592a9b88315e05353b5bc63d5cb2d4a9ab602ff09ac9f1bfe9a3078daf216fcfe01af4a845b23010000",
-    ],
-    [
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Mon, 13 Dec 2021 23:19:22 GMT",
-      "Server",
-      "scaffolding on HTTPServer2",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Connection",
-      "close",
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
   .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
@@ -68,15 +19,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "cb",
-      "72",
-      "82",
-      "30",
-      "00",
-      "40",
-      "d1",
-      "7f",
-      "c95a1df015d39d1011548c5ac0c7260334c188424a82829dfe7b996eefee9e1f10a729538aea326705f8006d3c4483749018f3d3d378077e5b89c48f33bc5786436f0f8fcc619d17b56bbd5cbec5e436b626f6f1184a830d3f593ecba68ae30526a470ea45b833b36de1c175908752e134ba1c32da375bf7f4bc4a1f7d1fcbe22244999cfdcbb2d2e669e5afbf9ae6b070b42ac986f66fc384738130868e132f2373b61cddb97e8557bb89eaac4d26518cf8e36d9f0d8aef86b877ad40ee01cae9a624bb87ac1034bdd776ccdffd27d630c504e601b15763a6f7a007582345c51415ddf76882500ffc2350dd4ad649582cae58057eff008cae1b4c23010000",
+      "4d7282301800d0bb646d9c100953ba0344a8b55241d4e92603e12b8a0834e157a777afd323bcf7408910a0146feb2b54e8154d0935e7629e12ebd493fb3e2899f21725c563f5a17ccfbd6f3bcc425e302e999d0dc3f0e6f83f9b3e0c5ac35be487d45dabe86835d516d26e9a48622fddc0a8d8ba1e6b5816bec07b9c2531f19c2cdd8d37002fbad56d44ad6a6c865ddcf3ce5076285da275d4090be710e66d41057f099886e3cf78b096bcd7c9661f6464738662750fcbb5a0ef746b37049a6fac1757c9aeb630a6ecd83b66648e5a25270de7ba21e4ea1cc541f9951dbdd30ecd108ccd4582e297a77bc14c7386fe13783b35f09cb0219120d1ef1f6ea4d4dd23010000",
     ],
     [
       "Content-Type",
@@ -90,7 +33,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Mon, 13 Dec 2021 23:19:23 GMT",
+      "Mon, 13 Dec 2021 23:25:42 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -242,7 +185,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Mon, 13 Dec 2021 23:19:23 GMT",
+      "Mon, 13 Dec 2021 23:25:43 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -298,7 +241,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Mon, 13 Dec 2021 23:19:24 GMT",
+      "Mon, 13 Dec 2021 23:25:44 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -462,7 +405,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Mon, 13 Dec 2021 23:19:25 GMT",
+      "Mon, 13 Dec 2021 23:25:44 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -501,7 +444,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Mon, 13 Dec 2021 23:19:25 GMT",
+      "Mon, 13 Dec 2021 23:25:45 GMT",
       "Server",
       "ESF",
       "Cache-Control",

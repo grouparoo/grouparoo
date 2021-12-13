@@ -367,9 +367,7 @@ describe("integration/runs/google-sheets", () => {
           "import:associateRecord"
         );
 
-        console.log(foundAssociateTasks);
-
-        expect(foundAssociateTasks.length).toEqual(20);
+        expect(foundAssociateTasks.length).toEqual(10);
 
         await Promise.all(
           foundAssociateTasks.map((t) =>
@@ -411,10 +409,11 @@ describe("integration/runs/google-sheets", () => {
         expect(recordsCount).toBe(10);
 
         await run.updateTotals();
+
         expect(run.state).toBe("complete");
-        expect(run.importsCreated).toBe(10);
+        expect(run.importsCreated).toBe(0);
         expect(run.recordsCreated).toBe(0);
-        expect(run.recordsImported).toBe(10);
+        expect(run.recordsImported).toBe(0);
         expect(run.percentComplete).toBe(100);
       },
       helper.longTime
