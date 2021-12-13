@@ -171,7 +171,7 @@ export default function Main(props) {
           <div
             style={{
               position: "fixed",
-              top: 0,
+              bottom: 0,
               right: 0,
               padding: 20,
               zIndex: 99,
