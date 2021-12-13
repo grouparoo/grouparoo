@@ -30,7 +30,7 @@
   "dependencies": {
     "@grouparoo/app-templates": "0.7.7",
     "snowflake-promise": "4.5.0",
-    "snowflake-sdk": "1.6.0"
+    "snowflake-sdk": "1.6.5"
   },
   "devDependencies": {
     "@grouparoo/core": "0.7.7",
