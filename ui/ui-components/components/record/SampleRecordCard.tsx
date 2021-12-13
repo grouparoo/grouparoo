@@ -390,6 +390,7 @@ const SampleRecordCard: React.FC<Props> = ({
       </Card.Body>
       {isConfigUI && (
         <AddSampleRecordModal
+          modelId={modelId}
           properties={properties}
           execApi={execApi}
           show={addingRecord}
