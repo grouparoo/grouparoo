@@ -47,6 +47,12 @@ describe("actions/plugins", () => {
         icon: "http://localhost:8080/images/auth-providers/github.png",
         name: "github",
       },
+      {
+        authTypes: ["user"],
+        description: "Sign in with Google",
+        icon: "http://localhost:8080/images/auth-providers/google.png",
+        name: "google",
+      },
     ]);
   });
 
@@ -77,10 +83,7 @@ describe("actions/plugins", () => {
   test("an oAuthRequest can be edited", async () => {
     const { oAuthRequest, error } = await specHelper.runAction<OAuthClientEdit>(
       "oAuth:client:edit",
-      {
-        requestId: realRequestId,
-        token: "abc123",
-      }
+      { requestId: realRequestId }
     );
 
     expect(error).toBeUndefined();

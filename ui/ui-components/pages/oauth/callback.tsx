@@ -14,13 +14,11 @@ export default function OauthCallbackPage(props) {
   } = props;
   const { execApi } = UseApi(props, errorHandler);
   const requestId = String(router.query?.requestId ?? "");
-  const token = String(router.query?.token ?? "");
 
   const updateOAuthRequest = async () => {
     const response: Actions.OAuthClientEdit = await execApi(
       "put",
-      `/oauth/client/request/${requestId}/edit`,
-      { token }
+      `/oauth/client/request/${requestId}/edit`
     );
     if (response.oAuthRequest) {
       if (response.oAuthRequest.type === "user") {

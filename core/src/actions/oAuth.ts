@@ -88,22 +88,17 @@ export class OAuthClientEdit extends CLSAction {
       "edit an oAuth request given the requestId and token pair";
     this.inputs = {
       requestId: { required: true },
-      token: { required: true },
     };
   }
 
-  async runWithinTransaction({
-    params,
-  }: {
-    params: { requestId: string; token: string };
-  }) {
+  async runWithinTransaction({ params }: { params: { requestId: string } }) {
     const oAuthRequest = await OAuthRequest.findById(params.requestId);
     const customerId = (await plugin.readSetting("telemetry", "customer-id"))
       .value;
     const fullUrl = `${config.oAuth.host}/api/v1/oauth/client/request/${params.requestId}/view?requestId=${oAuthRequest.id}&customerId=${customerId}`;
     const response: {
       error?: TelemetryError;
-      oAuthRequest: { identities: oAuthIdentity[] };
+      oAuthRequest: { identities?: oAuthIdentity[]; token?: string };
     } = await fetch(fullUrl, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -111,7 +106,9 @@ export class OAuthClientEdit extends CLSAction {
     throwTelemetryError(response);
 
     // on a page reload, we don't want to erase any data we already have
-    if (params.token) await oAuthRequest.update({ token: params.token });
+    if (response.oAuthRequest.token) {
+      await oAuthRequest.update({ token: response.oAuthRequest.token });
+    }
     if (response.oAuthRequest.identities.length > 0) {
       await oAuthRequest.update({
         identities: response.oAuthRequest.identities,
