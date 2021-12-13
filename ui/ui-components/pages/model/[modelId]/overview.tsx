@@ -11,7 +11,6 @@ import ModelOverviewSampleRecord from "../../../components/model/overview/ModelO
 import ModelOverviewSchedules from "../../../components/model/overview/ModelOverviewSchedules";
 import ModelOverviewSecondarySources from "../../../components/model/overview/ModelOverviewSecondarySources";
 import PageHeader from "../../../components/PageHeader";
-import SampleRecordCard from "../../../components/record/SampleRecordCard";
 import { GrouparooModelContextProvider } from "../../../contexts/grouparooModel";
 import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
