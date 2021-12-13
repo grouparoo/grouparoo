@@ -17,29 +17,21 @@ export default function GrouparooToast({
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    handler.subscribe(subscriptionKey, subscription.bind(this));
+    function subscription({ message }: { message: Error | string }) {
+      setMessage(formatMessage(message));
+      setShow(true);
+    }
+
+    handler.subscribe(
+      subscriptionKey,
+      (messageObject: { message: string | Error }) =>
+        subscription(messageObject)
+    );
 
     return () => {
       handler.unsubscribe(subscriptionKey);
     };
   }, []);
-
-  function subscription({ message }) {
-    setMessage(formatMessage(message));
-    setShow(true);
-  }
-
-  function formatMessage(message: unknown) {
-    let formattedMessage = String(message);
-    if (formattedMessage.startsWith("Error: ")) {
-      formattedMessage = formattedMessage.replace("Error: ", "");
-    }
-    if (formattedMessage.startsWith("error: ")) {
-      formattedMessage = formattedMessage.replace("error: ", "");
-    }
-
-    return formattedMessage;
-  }
 
   if (!message) return null;
 
@@ -59,4 +51,13 @@ export default function GrouparooToast({
       <Toast.Body className="success">{message}</Toast.Body>
     </Toast>
   );
+}
+
+function formatMessage(message: string | Error) {
+  let formattedMessage = String(message);
+  if (formattedMessage.startsWith("Error: ")) {
+    formattedMessage = formattedMessage.replace("Error: ", "");
+  }
+
+  return formattedMessage;
 }
