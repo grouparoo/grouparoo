@@ -1,15 +1,15 @@
 import { EventDispatcher } from "./eventDispatcher";
 
-export class ErrorHandler extends EventDispatcher<{ error: string | Error }> {
-  error: { error: string | Error };
+export class ErrorHandler extends EventDispatcher<{ message: string | Error }> {
+  message: string | Error;
 
   constructor() {
     super();
 
-    this.error = null;
+    this.message = null;
 
     this.subscribe("_internal", (e) => {
-      this.error = e;
+      this.message = e.message;
     });
   }
 }

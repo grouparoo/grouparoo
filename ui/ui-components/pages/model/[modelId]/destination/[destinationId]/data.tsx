@@ -57,7 +57,7 @@ export default function Page(props) {
   const [unlockedGroups, setUnlockedGroups] = useState<string[]>([]);
   const { destinationId } = router.query;
 
-  if (hydrationError) errorHandler.set({ error: hydrationError });
+  if (hydrationError) errorHandler.set({ message: hydrationError });
 
   const update = async (event) => {
     event.preventDefault();

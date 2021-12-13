@@ -62,7 +62,7 @@ export default function Page(props) {
   const { propertyId } = router.query;
   const source = sources.find((s) => s.id === property.sourceId);
 
-  if (hydrationError) errorHandler.set({ error: hydrationError });
+  if (hydrationError) errorHandler.set({ message: hydrationError });
 
   useEffect(() => {
     newRuleDefaults();
