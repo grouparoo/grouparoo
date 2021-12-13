@@ -21,7 +21,7 @@ import { PropertiesHandler } from "../../../../../utils/propertiesHandler";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
-import SampleRecordCard from "../../../../../components/record/SampleRecordCard";
+import PropertySampleRecord from "../../../../../components/property/PropertySampleRecord";
 
 export default function Page(props) {
   const {
@@ -690,12 +690,13 @@ export default function Page(props) {
               ) : null}
             </Col>
             <Col xl={5}>
-              <SampleRecordCard
-                modelId={source.modelId}
-                properties={properties}
+              <PropertySampleRecord
                 execApi={execApi}
+                localFilters={localFilters}
+                modelId={source.modelId}
+                property={property}
+                properties={properties}
                 hideViewAllRecords
-                highlightProperty={property}
               />
             </Col>
           </Row>

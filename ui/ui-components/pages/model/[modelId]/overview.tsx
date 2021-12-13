@@ -7,6 +7,7 @@ import ManagedCard from "../../../components/lib/ManagedCard";
 import ModelOverviewDestinations from "../../../components/model/overview/ModelOverviewDestinations";
 import ModelOverviewGroups from "../../../components/model/overview/ModelOverviewGroups";
 import ModelOverviewPrimarySource from "../../../components/model/overview/ModelOverviewPrimarySource";
+import ModelOverviewSampleRecord from "../../../components/model/overview/ModelOverviewSampleRecord";
 import ModelOverviewSchedules from "../../../components/model/overview/ModelOverviewSchedules";
 import ModelOverviewSecondarySources from "../../../components/model/overview/ModelOverviewSecondarySources";
 import PageHeader from "../../../components/PageHeader";
@@ -98,7 +99,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
         </Row>
         <Row className="mb-4">
           <Col>
-            <SampleRecordCard
+            <ModelOverviewSampleRecord
               modelId={model.id}
               properties={properties}
               execApi={execApi}

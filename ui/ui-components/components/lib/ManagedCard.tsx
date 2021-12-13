@@ -2,7 +2,7 @@ import { Card, Col, Row } from "react-bootstrap";
 import SeparatedItems from "./SeparatedItems";
 
 interface Props {
-  title: string;
+  title: React.ReactNode;
   actions?: React.ReactNode[];
   disabled?: boolean;
 }

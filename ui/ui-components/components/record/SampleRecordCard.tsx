@@ -11,18 +11,25 @@ import StateBadge from "../badges/StateBadge";
 import ManagedCard from "../lib/ManagedCard";
 import SeparatedItems from "../lib/SeparatedItems";
 import LinkButton from "../LinkButton";
+import Loader from "../Loader";
 import LoadingButton from "../LoadingButton";
 import RecordImageFromEmail from "../visualizations/RecordImageFromEmail";
 import AddSampleRecordModal from "./AddSampleRecordModal";
 import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 
-interface Props {
+export interface SampleRecordCardProps {
   modelId: string;
   execApi: ApiHook["execApi"];
+  fetchRecord: (recordId: string) => Promise<{
+    record?: Models.GrouparooRecordType;
+    groups?: Models.GroupType[];
+    destinations?: Models.DestinationType[];
+  }>;
   properties: Models.PropertyType[];
-  disabled: boolean;
+  disabled?: boolean;
   hideViewAllRecords?: boolean;
   highlightProperty?: Models.PropertyType;
+  reloadKey?: string;
 }
 
 const isConfigUI = grouparooUiEdition() === "config";
@@ -41,15 +48,18 @@ const clearCachedSampleRecordId = (modelId: string): void => {
   globalThis.localStorage?.removeItem(`sampleRecord:${modelId}`);
 };
 
-const SampleRecordCard: React.FC<Props> = ({
+const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   modelId,
   properties,
   execApi,
+  fetchRecord,
   disabled = false,
   hideViewAllRecords = false,
   highlightProperty,
+  reloadKey,
 }) => {
   const prevModelId = usePrevious(modelId);
+  const prevReloadKey = usePrevious(reloadKey);
 
   const [loading, setLoading] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -85,10 +95,7 @@ const SampleRecordCard: React.FC<Props> = ({
     let destinations: Models.DestinationType[];
 
     if (recordId) {
-      ({ record, groups, destinations } = await execApi<Actions.RecordView>(
-        "get",
-        `/record/${recordId}`
-      ));
+      ({ record, groups, destinations } = await fetchRecord(recordId));
     } else {
       ({ record, groups, destinations } = await execApi<Actions.RecordsList>(
         "get",
@@ -109,10 +116,7 @@ const SampleRecordCard: React.FC<Props> = ({
             : undefined;
 
           if (randomRecord?.id) {
-            return execApi<Actions.RecordView>(
-              "get",
-              `/record/${randomRecord.id}`
-            );
+            return fetchRecord(randomRecord?.id);
           }
         }
 
@@ -133,7 +137,7 @@ const SampleRecordCard: React.FC<Props> = ({
     }
 
     setLoading(false);
-  }, [recordId, saveRecord, execApi, modelId]);
+  }, [recordId, saveRecord, execApi, modelId, fetchRecord]);
 
   const recordPropertyKeys = useMemo(
     () =>
@@ -155,10 +159,22 @@ const SampleRecordCard: React.FC<Props> = ({
   }, [record, modelId]);
 
   useEffect(() => {
-    if (!loading && hasRecords && (!record || record.id !== recordId)) {
+    if (
+      !loading &&
+      hasRecords &&
+      (!record || record.id !== recordId || reloadKey !== prevReloadKey)
+    ) {
       loadRecord();
     }
-  }, [record, recordId, loading, loadRecord, hasRecords]);
+  }, [
+    record,
+    recordId,
+    loading,
+    loadRecord,
+    hasRecords,
+    reloadKey,
+    prevReloadKey,
+  ]);
 
   const email = useMemo<string>(() => {
     if (!record) return undefined;
@@ -352,7 +368,7 @@ const SampleRecordCard: React.FC<Props> = ({
     const result = [
       <LinkButton
         disabled={!record || disabled}
-        href={record ? `/model/${modelId}/record/${record.id}/edit` : "#"}
+        href={`/model/${modelId}/record${record ? `/${record.id}/edit` : "s"}`}
         size="sm"
         variant="outline-primary"
       >
@@ -376,7 +392,7 @@ const SampleRecordCard: React.FC<Props> = ({
 
   return (
     <ManagedCard
-      title="Sample Record"
+      title={<>Sample Record {loading && <Loader size="sm" />}</>}
       disabled={disabled}
       actions={cardActions}
     >
