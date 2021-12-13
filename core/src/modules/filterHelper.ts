@@ -161,6 +161,7 @@ export namespace FilterHelper {
         instance instanceof Schedule ? instanceOptions : undefined,
     });
 
+    console.log(options);
     return options;
   }
 

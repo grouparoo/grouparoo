@@ -120,9 +120,8 @@ export enum FilterOperation {
   Contain = "substring",
   NotContain = "notSubstring",
   In = "in",
-  // TO DO: make these work...
-  // Exists = "exists",
-  // NotExists = "notExists", 
+  Exists = "exists",
+  NotExists = "notExists",
 }
 
 export type PluginOptionType =

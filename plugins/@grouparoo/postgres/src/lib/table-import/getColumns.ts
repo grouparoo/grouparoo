@@ -53,9 +53,8 @@ const getTypeInfo = function (dataType: string): {
   const ops = [
     FilterOperation.Equal,
     FilterOperation.NotEqual,
-    // TODO:
-    // FilterOperation.Exists,
-    // FilterOperation.NotExists,
+    FilterOperation.Exists,
+    FilterOperation.NotExists,
   ];
   let type: ColumnType = null;
   let compare = false;

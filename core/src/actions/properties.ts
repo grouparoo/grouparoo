@@ -8,6 +8,7 @@ import { GroupRule } from "../models/GroupRule";
 import { AsyncReturnType } from "type-fest";
 import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
+import { buildPropertyFilterOptions } from "../modules/filterOpsDictionary";
 import { APIData } from "../modules/apiData";
 import { Source } from "../models/Source";
 import { Includeable } from "sequelize/types";
@@ -268,7 +269,12 @@ export class PropertyFilterOptions extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const property = await Property.findById(params.id);
-    return { options: await FilterHelper.pluginFilterOptions(property) };
+
+    const options = await FilterHelper.pluginFilterOptions(property);
+    return {
+      options: options,
+      optionDescriptions: await buildPropertyFilterOptions(options),
+    };
   }
 }
 
