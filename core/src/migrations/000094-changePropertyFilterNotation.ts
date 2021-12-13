@@ -5,7 +5,7 @@ export default {
   up: async (queryInterface: Sequelize.QueryInterface) => {
     for (const op in filterOpsDescriptions) {
       await queryInterface.sequelize.query(
-        `UPDATE "filters" SET "op"='${filterOpsDescriptions[op]}' WHERE "op"='${op}'`
+        `UPDATE "filters" SET "op"='${op}' WHERE "op"='${filterOpsDescriptions[op]}'`
       );
     }
   },
@@ -13,7 +13,7 @@ export default {
   down: async (queryInterface: Sequelize.QueryInterface) => {
     for (const op in filterOpsDescriptions) {
       await queryInterface.sequelize.query(
-        `UPDATE "filters" SET "op"='${op}' WHERE "op"='${filterOpsDescriptions[op]}'`
+        `UPDATE "filters" SET "op"='${filterOpsDescriptions[op]}' WHERE "op"='${op}'`
       );
     }
   },
