@@ -373,12 +373,15 @@ describe("actions/properties", () => {
         csrfToken,
         id,
       };
-      const { error, record } =
+      const { error, record, groups, destinations } =
         await specHelper.runAction<PropertyRecordPreview>(
           "property:recordPreview",
           connection
         );
+
       expect(error).toBeUndefined();
+      expect(Array.isArray(groups)).toBeTruthy();
+      expect(Array.isArray(destinations)).toBeDefined();
       expect(record.id).toBe(_record.id);
       expect(record.properties["email"].values).toBeTruthy();
 

@@ -11,6 +11,7 @@ import { FilterHelper } from "../modules/filterHelper";
 import { APIData } from "../modules/apiData";
 import { Source } from "../models/Source";
 import { Includeable } from "sequelize/types";
+import { DestinationOps } from "../modules/ops/destination";
 
 export class PropertiesList extends AuthenticatedAction {
   constructor() {
@@ -381,7 +382,19 @@ export class PropertyRecordPreview extends AuthenticatedAction {
       updatedAt: null,
     };
 
-    return { errorMessage, record: apiData };
+    const groups = await record.$get("groups");
+    const destinations = await DestinationOps.relevantFor(record, groups);
+
+    await ConfigWriter.run();
+
+    return {
+      errorMessage,
+      record: apiData,
+      groups: await Promise.all(groups.map((group) => group.apiData())),
+      destinations: await Promise.all(
+        destinations.map((destination) => destination.apiData(false, false))
+      ),
+    };
   }
 }
 
