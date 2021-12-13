@@ -21,6 +21,7 @@ export async function loadProperty(
   let isNew = false;
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
+  // TODO: filters that use the old notation ("equals" not "eq") should now throw an error and direct to a link to the docs
   validateConfigObjectKeys(Property, configObject, [
     "options",
     "filters",

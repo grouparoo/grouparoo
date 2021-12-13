@@ -1,7 +1,7 @@
 import { config } from "actionhero";
 import { SourceFilterMethodResponseRow } from "../classes/plugin";
 
-const _filterOpsDescriptions = {
+export const filterOpsDescriptions = {
   eq: "equals",
   ne: "does not equal",
   exists: "exists",
@@ -10,8 +10,8 @@ const _filterOpsDescriptions = {
   gte: "greater than or equal to",
   lt: "less than",
   lte: "less than or equal to",
-  substring: "is a substring of",
-  notSubstring: "is not a substring of",
+  substring: "contains",
+  notSubstring: "does not contain",
 };
 
 export interface PropertyFilterOp {
@@ -29,7 +29,7 @@ export function buildPropertyFilterOptions(
     for (const op of option.ops) {
       propertyFilterOpsList.push({
         op: op,
-        description: _filterOpsDescriptions[op],
+        description: filterOpsDescriptions[op],
       });
     }
   }
