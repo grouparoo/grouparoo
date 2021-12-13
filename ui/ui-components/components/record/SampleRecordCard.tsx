@@ -103,7 +103,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         {
           limit: 25,
           offset: 0,
-          modelId: modelId,
+          modelId,
         }
       ).then((response) => {
         if (response.total === 0) {
