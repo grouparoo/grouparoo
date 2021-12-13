@@ -88,7 +88,11 @@ export default function SignInForm(props) {
     const teamMember = await createSession(arg, type);
     setLoading(false);
     if (teamMember) {
-      successHandler.set({ message: `Welcome Back, ${teamMember.firstName}!` });
+      successHandler.set({
+        message: `Welcome Back${
+          teamMember.firstName ? `, ${teamMember.firstName}` : ""
+        }!`,
+      });
       if (nextPage) {
         router.push(nextPage.toString());
       } else {
@@ -170,7 +174,7 @@ export default function SignInForm(props) {
           <br />
 
           {loadingOauthProviders === false && providers.length === 0 ? (
-            <p>Could not load oAuth providers</p>
+            <p>Could not load OAuth providers</p>
           ) : null}
 
           <div className="d-flex justify-content-center">
