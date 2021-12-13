@@ -139,11 +139,18 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     setLoading(false);
   }, [recordId, saveRecord, execApi, modelId, fetchRecord]);
 
-  const recordPropertyKeys = useMemo(
-    () =>
-      record?.properties ? Object.keys(record.properties).sort() : undefined,
-    [record]
-  );
+  const sortedPropertyKeys = useMemo(() => {
+    const highlightPropertyKey = highlightProperty?.key;
+    return record?.properties
+      ? Object.keys(record.properties).sort((a, b) =>
+          highlightPropertyKey === a
+            ? -1
+            : highlightPropertyKey === b
+            ? 1
+            : a.localeCompare(b)
+        )
+      : undefined;
+  }, [record, highlightProperty]);
 
   useEffect(() => {
     // Switched to another model
@@ -259,8 +266,8 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
             </tr>
           </thead>
           <tbody>
-            {recordPropertyKeys &&
-              recordPropertyKeys.map((key) => {
+            {sortedPropertyKeys &&
+              sortedPropertyKeys.map((key, index) => {
                 const property = record.properties[key];
                 const isHighlightedProperty =
                   highlightProperty?.id === property.id;
@@ -268,17 +275,21 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                   highlightProperty?.id === property.id
                     ? "table-success"
                     : undefined;
+                const name = key === "" ? "Draft" : key;
 
                 return (
-                  <tr key={key} className={trClassName}>
+                  <tr
+                    key={`property-${!key ? `draft-${index}` : key}`}
+                    className={trClassName}
+                  >
                     <th scope="row">
                       {isHighlightedProperty ? (
-                        key
+                        name
                       ) : (
                         <Link
                           href={`/model/${modelId}/property/${property.id}/edit`}
                         >
-                          <a>{key}</a>
+                          <a>{name}</a>
                         </Link>
                       )}
                       {property.state !== "ready" && (
@@ -286,12 +297,16 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                       )}
                     </th>
                     <td>
-                      <ArrayRecordPropertyList
-                        type={property.type}
-                        values={property.values}
-                        invalidValue={property.invalidValue}
-                        invalidReason={property.invalidReason}
-                      />
+                      {isHighlightedProperty && property.values.length === 0 ? (
+                        "..."
+                      ) : (
+                        <ArrayRecordPropertyList
+                          type={property.type}
+                          values={property.values}
+                          invalidValue={property.invalidValue}
+                          invalidReason={property.invalidReason}
+                        />
+                      )}
                     </td>
                   </tr>
                 );
