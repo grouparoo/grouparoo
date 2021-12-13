@@ -15,8 +15,7 @@ const PropertySampleRecord: React.FC<
 > = ({ property, localFilters, ...props }) => {
   const { execApi } = props;
   const debouncedProperty = useDebouncedValue(property, 1000);
-
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string>();
 
   const reloadKey = useMemo(() => {
     return JSON.stringify([
@@ -40,7 +39,7 @@ const PropertySampleRecord: React.FC<
 
   const fetchRecord = useCallback(
     async (recordId: string) => {
-      setErrorMessage("");
+      setErrorMessage(undefined);
 
       const response: Actions.PropertyRecordPreview = await execApi(
         "get",
@@ -58,9 +57,9 @@ const PropertySampleRecord: React.FC<
             ? response.errorMessage.match(
                 /is required for a property of type/ // ignore errors about missing options
               )
-              ? ""
+              ? undefined
               : response.errorMessage
-            : ""
+            : undefined
         );
         return response;
       }
@@ -78,6 +77,7 @@ const PropertySampleRecord: React.FC<
     <SampleRecordCard
       {...props}
       highlightProperty={debouncedProperty}
+      highlightPropertyError={errorMessage}
       fetchRecord={fetchRecord}
       reloadKey={reloadKey}
     />

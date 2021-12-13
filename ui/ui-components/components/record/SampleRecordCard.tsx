@@ -29,6 +29,7 @@ export interface SampleRecordCardProps {
   disabled?: boolean;
   hideViewAllRecords?: boolean;
   highlightProperty?: Models.PropertyType;
+  highlightPropertyError?: string;
   reloadKey?: string;
 }
 
@@ -56,6 +57,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   disabled = false,
   hideViewAllRecords = false,
   highlightProperty,
+  highlightPropertyError,
   reloadKey,
 }) => {
   const prevModelId = usePrevious(modelId);
@@ -273,7 +275,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                   highlightProperty?.id === property.id;
                 const trClassName =
                   highlightProperty?.id === property.id
-                    ? "table-success"
+                    ? `table-${highlightPropertyError ? "danger" : "success"}`
                     : undefined;
                 const name = key === "" ? "Draft" : key;
 
@@ -297,8 +299,14 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                       )}
                     </th>
                     <td>
-                      {isHighlightedProperty && property.values.length === 0 ? (
-                        "..."
+                      {isHighlightedProperty &&
+                      (property.values.length === 0 ||
+                        highlightPropertyError) ? (
+                        `${
+                          highlightPropertyError
+                            ? highlightPropertyError
+                            : "..."
+                        }`
                       ) : (
                         <ArrayRecordPropertyList
                           type={property.type}
