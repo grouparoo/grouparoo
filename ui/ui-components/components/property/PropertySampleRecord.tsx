@@ -17,25 +17,20 @@ const PropertySampleRecord: React.FC<
   const debouncedProperty = useDebouncedValue(property, 1000);
   const [errorMessage, setErrorMessage] = useState<string>();
 
-  const reloadKey = useMemo(() => {
-    return JSON.stringify([
-      debouncedProperty.id,
-      debouncedProperty.type,
-      debouncedProperty.unique,
-      debouncedProperty.isArray,
-      debouncedProperty.options,
-      debouncedProperty.filters,
-      JSON.stringify(localFilters),
-    ]);
-  }, [
-    debouncedProperty.id,
-    debouncedProperty.type,
-    debouncedProperty.unique,
-    debouncedProperty.isArray,
-    JSON.stringify(debouncedProperty.options),
-    JSON.stringify(debouncedProperty.filters),
-    JSON.stringify(localFilters),
-  ]);
+  const reloadKey = useMemo(
+    () =>
+      JSON.stringify([
+        debouncedProperty.id,
+        debouncedProperty.key,
+        debouncedProperty.type,
+        debouncedProperty.unique,
+        debouncedProperty.isArray,
+        debouncedProperty.options,
+        debouncedProperty.filters,
+        localFilters,
+      ]),
+    [debouncedProperty, localFilters]
+  );
 
   const fetchRecord = useCallback(
     async (recordId: string) => {
