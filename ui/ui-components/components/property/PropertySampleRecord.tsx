@@ -10,9 +10,20 @@ interface Props {
   localFilters: Actions.PropertyView["property"]["filters"];
 }
 
-const PropertySampleRecord: React.FC<
-  Props & Omit<SampleRecordCardProps, "fetchRecord" | "highlightProperty">
-> = ({ property, localFilters, ...props }) => {
+type SampleRecordOmittedProps = Omit<
+  SampleRecordCardProps,
+  | "fetchRecord"
+  | "reloadKey"
+  | "highlightProperty"
+  | "highlightPropertyError"
+  | "importDisabled"
+>;
+
+const PropertySampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
+  property,
+  localFilters,
+  ...props
+}) => {
   const { execApi } = props;
   const debouncedProperty = useDebouncedValue(property, 1000);
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -75,6 +86,7 @@ const PropertySampleRecord: React.FC<
       highlightPropertyError={errorMessage}
       fetchRecord={fetchRecord}
       reloadKey={reloadKey}
+      importDisabled
     />
   );
 };
