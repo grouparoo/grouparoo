@@ -111,6 +111,7 @@ async function createTables() {
   }
 }
 
+//TO DO: This needs to parse null values instead of empty strings when applicable (probably need to change the CREATE TABLE above too?)
 async function fillTable(tableName, fileName) {
   const filePath = path.resolve(path.join(__dirname, "..", "data", fileName));
   const rows = parse(fs.readFileSync(filePath), { columns: true });
