@@ -4,7 +4,6 @@ import { exportRecords } from "./exportRecords";
 import { destinationOptions } from "./destinationOptions";
 import { destinationMappingOptions } from "./destinationMappingOptions";
 import { exportArrayProperties } from "../export/exportArrayProperties";
-import { getDestinationMappingOptions } from "../export/mapping";
 
 export const accountsSupportedSyncModes: DestinationSyncMode[] = [
   "sync",
