@@ -35,11 +35,11 @@ describe("csv/remote/propertyOptions", () => {
       sourceOptions,
       appOptions,
       propertyId: "source",
+      sourceId: "sheets test",
       connection: null,
       app: null,
       appId: null,
       source: null,
-      sourceId: null,
       sourceMapping: null,
       property: null,
     });

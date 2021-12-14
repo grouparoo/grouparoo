@@ -28,6 +28,7 @@ async function getPropertyValues(column: string) {
 
   const values = await recordProperties({
     records: [record],
+    sourceId: "sheets test",
     propertyOptions,
     properties: [property],
     sourceOptions,
@@ -36,7 +37,7 @@ async function getPropertyValues(column: string) {
     connection: null,
     recordIds: null,
     source: null,
-    sourceId: null,
+
     app: null,
     appId: null,
     propertyFilters: null,

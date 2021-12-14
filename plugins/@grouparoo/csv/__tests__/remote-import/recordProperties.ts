@@ -25,6 +25,7 @@ async function getPropertyValues(column: string) {
     propertyOptions,
     properties: [property],
     sourceOptions,
+    sourceId: "sheets test",
     sourceMapping: { id: "userId" },
     appOptions: null,
     connection: null,
