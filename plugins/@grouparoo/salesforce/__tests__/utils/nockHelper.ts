@@ -34,20 +34,20 @@ export const updater = {
     const realEnv = readEnv(realPath);
     const nockEnv = readEnv(nockPath);
 
-    nockCall = nockCall.replace(
-      new RegExp(realEnv.SALESFORCE_USERNAME, "gi"),
+    nockCall = nockCall.replaceAll(
+      realEnv.SALESFORCE_USERNAME,
       nockEnv.SALESFORCE_USERNAME
     );
-    nockCall = nockCall.replace(
-      new RegExp(realEnv.SALESFORCE_PASSWORD, "gi"),
+    nockCall = nockCall.replaceAll(
+      realEnv.SALESFORCE_PASSWORD,
       nockEnv.SALESFORCE_PASSWORD
     );
-    nockCall = nockCall.replace(
-      new RegExp(realEnv.SALESFORCE_SECURITY_TOKEN, "gi"),
+    nockCall = nockCall.replaceAll(
+      realEnv.SALESFORCE_SECURITY_TOKEN,
       nockEnv.SALESFORCE_SECURITY_TOKEN
     );
-    nockCall = nockCall.replace(
-      new RegExp(realEnv.SALESFORCE_DOMAIN, "gi"),
+    nockCall = nockCall.replaceAll(
+      realEnv.SALESFORCE_DOMAIN,
       nockEnv.SALESFORCE_DOMAIN
     );
     // nockCall = nockCall.replace(

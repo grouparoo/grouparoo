@@ -3,6 +3,7 @@ import {
   ErrorWithRecordId,
   objectCache,
   SimpleAppOptions,
+  SimpleDestinationOptions,
 } from "@grouparoo/core";
 import { connect } from "../connect";
 import { describeObject, getFieldMap, SalesforceCacheData } from "../objects";
@@ -709,6 +710,7 @@ export interface ExportSalesforceMethod {
   (argument: {
     appId: string;
     appOptions: SimpleAppOptions;
+    destinationOptions: SimpleDestinationOptions;
     syncOperations: DestinationSyncOperations;
     exports: BatchExport[];
     model: SalesforceModel;
@@ -721,12 +723,27 @@ export interface ExportSalesforceMethod {
 export const exportSalesforceBatch: ExportSalesforceMethod = async ({
   appId,
   appOptions,
+  destinationOptions,
   syncOperations,
   exports,
   model,
 }) => {
   const connection = await connect(appOptions);
   const cacheData = { appId, appOptions };
+
+  exports.map((currentExport) => {
+    if (
+      !destinationOptions.groupObject ||
+      !destinationOptions.groupNameField ||
+      !destinationOptions.membershipObject ||
+      !destinationOptions.membershipRecordField ||
+      !destinationOptions.membershipGroupField
+    ) {
+      currentExport.oldGroups = [];
+      currentExport.newGroups = [];
+    }
+  });
+
   // use larger number if sales force api >= 42
   const batchSize = connection._supports("sobject-collection")
     ? 200
