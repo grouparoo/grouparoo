@@ -28,7 +28,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/csv": "0.7.7-alpha.1",
+    "@grouparoo/csv": "0.7.7",
     "google-spreadsheet": "3.2.0",
     "csv-write-stream": "2.0.0"
   },
