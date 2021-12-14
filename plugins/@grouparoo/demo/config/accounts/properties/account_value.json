@@ -13,7 +13,7 @@
   "filters": [
     {
       "key": "state",
-      "op": "equals",
+      "op": "eq",
       "match": "successful"
     }
   ]

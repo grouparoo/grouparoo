@@ -91,6 +91,14 @@ export function makeWhereClause(
       op = "NOT LIKE"; // case insensitive
       match = `%${match.toString().toLowerCase()}%`;
       break;
+    case FilterOperation.Exists:
+      op = "IS NOT NULL";
+      match = null;
+      break;
+    case FilterOperation.NotExists:
+      op = "IS NULL";
+      match = null;
+      break;
     case FilterOperation.In:
       // for BigQuery we need to use UNNEST: `id in UNNEST(1,2,3)`
       // See https://github.com/googleapis/nodejs-bigquery/blob/master/samples/queryParamsPositionalTypes.js#L37
@@ -104,11 +112,11 @@ export function makeWhereClause(
     ? `${transform}(\`${columnName}\`)`
     : `\`${columnName}\``;
 
-  // put the values and types in the array
-  params.push(match);
-  types.push(dataType);
+  // put the values and types in the array if there is a match
+  if (match) params.push(match);
+  if (match) types.push(dataType);
 
-  return ` ${key} ${op} ${Array.isArray(match) ? "(" : ""}?${
+  return ` ${key} ${op} ${Array.isArray(match) ? "(" : ""}${match ? "?" : ""}${
     Array.isArray(match) ? ")" : ""
   }`;
 }

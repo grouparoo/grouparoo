@@ -33,6 +33,5 @@ export function buildPropertyFilterOptions(
       });
     }
   }
-  console.log(propertyFilterOpsList);
   return propertyFilterOpsList;
 }
