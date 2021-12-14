@@ -530,160 +530,174 @@ export default function Page(props) {
                         <Badge variant="info">{property.key}</Badge>?
                       </p>
 
-                      <Table bordered size="sm">
-                        <thead>
-                          <tr>
-                            <th />
-                            <th>Key</th>
-                            <th>Operation</th>
-                            <th>Value</th>
-                            <th />
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {localFilters.map((localFilter, idx) => {
-                            let rowChanged = false;
-                            if (
-                              !filtersAreEqual(
-                                property.filters[idx],
-                                localFilters[idx]
-                              )
-                            ) {
-                              rowChanged = true;
-                              rowChanges = true;
-                            }
+                      {localFilters.length > 0 && (
+                        <Table bordered size="sm">
+                          <thead>
+                            <tr>
+                              <th />
+                              <th>Key</th>
+                              <th>Operation</th>
+                              <th>Value</th>
+                              <th />
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {localFilters.map((localFilter, idx) => {
+                              let rowChanged = false;
+                              if (
+                                !filtersAreEqual(
+                                  property.filters[idx],
+                                  localFilters[idx]
+                                )
+                              ) {
+                                rowChanged = true;
+                                rowChanges = true;
+                              }
 
-                            return (
-                              <tr key={`rule-${localFilter.key}-${idx}`}>
-                                <td>
-                                  <h5>
-                                    <Badge
-                                      variant={rowChanged ? "warning" : "light"}
-                                    >
-                                      {idx}
-                                    </Badge>
-                                  </h5>
-                                </td>
-                                <td>
-                                  <Form.Group
-                                    controlId={`${localFilter.key}-key-${idx}`}
-                                  >
-                                    <Form.Control
-                                      as="select"
-                                      value={localFilter.key}
-                                      disabled={loading}
-                                      onChange={(e: any) => {
-                                        const _localFilters = [...localFilters];
-                                        localFilter.key = e.target.value;
-                                        _localFilters[idx] = localFilter;
-                                        setLocalFilters(_localFilters);
-                                      }}
-                                    >
-                                      {filterOptions.map((filter) => (
-                                        <option
-                                          key={`ruleKeyOpt-${filter.key}-${idx}`}
-                                        >
-                                          {filter.key}
-                                        </option>
-                                      ))}
-                                    </Form.Control>
-                                  </Form.Group>
-                                </td>
-
-                                <td>
-                                  <Form.Group
-                                    controlId={`${localFilter.key}-op-${idx}`}
-                                  >
-                                    <Form.Control
-                                      as="select"
-                                      disabled={loading}
-                                      value={localFilter.op}
-                                      onChange={(e: any) => {
-                                        const _localFilters = [...localFilters];
-                                        localFilter.op = e.target.value;
-                                        _localFilters[idx] = localFilter;
-                                        setLocalFilters(_localFilters);
-                                      }}
-                                    >
-                                      {filterOptions.filter(
-                                        (fo) => fo.key === localFilter.key
-                                      ).length === 1
-                                        ? filterOptions
-                                            .filter(
-                                              (fo) => fo.key === localFilter.key
-                                            )[0]
-                                            .ops.map((op) => (
-                                              <option
-                                                key={`op-opt-${localFilter.key}-${op}`}
-                                              >
-                                                {op}
-                                              </option>
-                                            ))
-                                        : null}
-                                    </Form.Control>
-                                  </Form.Group>
-                                </td>
-
-                                <td>
-                                  {localFilter.key === "occurredAt" ? (
-                                    <DatePicker
-                                      selected={
-                                        localFilter.match &&
-                                        localFilter.match !== "null"
-                                          ? new Date(
-                                              parseInt(
-                                                localFilter.match.toString()
-                                              )
-                                            )
-                                          : new Date()
-                                      }
-                                      onChange={(d: Date) => {
-                                        const _localFilter = [...localFilters];
-                                        localFilter.match = d
-                                          .getTime()
-                                          .toString();
-                                        _localFilter[idx] = localFilter;
-                                        setLocalFilters(_localFilter);
-                                      }}
-                                    />
-                                  ) : (
+                              return (
+                                <tr key={`rule-${localFilter.key}-${idx}`}>
+                                  <td>
+                                    <h5>
+                                      <Badge
+                                        variant={
+                                          rowChanged ? "warning" : "light"
+                                        }
+                                      >
+                                        {idx}
+                                      </Badge>
+                                    </h5>
+                                  </td>
+                                  <td>
                                     <Form.Group
-                                      controlId={`${localFilter.key}-match-${idx}`}
+                                      controlId={`${localFilter.key}-key-${idx}`}
                                     >
                                       <Form.Control
-                                        required
-                                        type="text"
+                                        as="select"
+                                        value={localFilter.key}
                                         disabled={loading}
-                                        value={localFilter.match.toString()}
                                         onChange={(e: any) => {
+                                          const _localFilters = [
+                                            ...localFilters,
+                                          ];
+                                          localFilter.key = e.target.value;
+                                          _localFilters[idx] = localFilter;
+                                          setLocalFilters(_localFilters);
+                                        }}
+                                      >
+                                        {filterOptions.map((filter) => (
+                                          <option
+                                            key={`ruleKeyOpt-${filter.key}-${idx}`}
+                                          >
+                                            {filter.key}
+                                          </option>
+                                        ))}
+                                      </Form.Control>
+                                    </Form.Group>
+                                  </td>
+
+                                  <td>
+                                    <Form.Group
+                                      controlId={`${localFilter.key}-op-${idx}`}
+                                    >
+                                      <Form.Control
+                                        as="select"
+                                        disabled={loading}
+                                        value={localFilter.op}
+                                        onChange={(e: any) => {
+                                          const _localFilters = [
+                                            ...localFilters,
+                                          ];
+                                          localFilter.op = e.target.value;
+                                          _localFilters[idx] = localFilter;
+                                          setLocalFilters(_localFilters);
+                                        }}
+                                      >
+                                        {filterOptions.filter(
+                                          (fo) => fo.key === localFilter.key
+                                        ).length === 1
+                                          ? filterOptions
+                                              .filter(
+                                                (fo) =>
+                                                  fo.key === localFilter.key
+                                              )[0]
+                                              .ops.map((op) => (
+                                                <option
+                                                  key={`op-opt-${localFilter.key}-${op}`}
+                                                >
+                                                  {op}
+                                                </option>
+                                              ))
+                                          : null}
+                                      </Form.Control>
+                                    </Form.Group>
+                                  </td>
+
+                                  <td>
+                                    {localFilter.key === "occurredAt" ? (
+                                      <DatePicker
+                                        selected={
+                                          localFilter.match &&
+                                          localFilter.match !== "null"
+                                            ? new Date(
+                                                parseInt(
+                                                  localFilter.match.toString()
+                                                )
+                                              )
+                                            : new Date()
+                                        }
+                                        onChange={(d: Date) => {
                                           const _localFilter = [
                                             ...localFilters,
                                           ];
-                                          localFilter.match = e.target.value;
+                                          localFilter.match = d
+                                            .getTime()
+                                            .toString();
                                           _localFilter[idx] = localFilter;
                                           setLocalFilters(_localFilter);
                                         }}
                                       />
-                                    </Form.Group>
-                                  )}
-                                </td>
+                                    ) : (
+                                      <Form.Group
+                                        controlId={`${localFilter.key}-match-${idx}`}
+                                      >
+                                        <Form.Control
+                                          required
+                                          type="text"
+                                          disabled={loading}
+                                          value={localFilter.match.toString()}
+                                          onChange={(e: any) => {
+                                            const _localFilter = [
+                                              ...localFilters,
+                                            ];
+                                            localFilter.match = e.target.value;
+                                            _localFilter[idx] = localFilter;
+                                            setLocalFilters(_localFilter);
+                                          }}
+                                        />
+                                      </Form.Group>
+                                    )}
+                                  </td>
 
-                                <td>
-                                  <Button
-                                    variant="danger"
-                                    size="sm"
-                                    onClick={() => {
-                                      deleteRule(idx);
-                                    }}
-                                  >
-                                    <FontAwesomeIcon icon="times" fixedWidth />
-                                  </Button>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </Table>
+                                  <td>
+                                    <Button
+                                      variant="danger"
+                                      size="sm"
+                                      onClick={() => {
+                                        deleteRule(idx);
+                                      }}
+                                    >
+                                      <FontAwesomeIcon
+                                        icon="times"
+                                        fixedWidth
+                                      />
+                                    </Button>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </Table>
+                      )}
                       {localFilters.length < property.filters.length ||
                       rowChanges ? (
                         <p>
