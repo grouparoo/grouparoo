@@ -43,8 +43,8 @@ export default function GrouparooToast({
       autohide
       style={{ width: 300 }}
     >
-      <Toast.Header className={`bg-${variant}`} closeButton={false}>
-        <strong className="text-white">
+      <Toast.Header className={`bg-${variant}`}>
+        <strong className="text-white mr-auto">
           {variant === "success" ? "Success" : "Error"}
         </strong>
       </Toast.Header>
