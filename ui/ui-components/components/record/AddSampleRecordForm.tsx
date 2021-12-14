@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useGrouparooModelContext } from "../../contexts/grouparooModel";
 import { ApiHook } from "../../hooks/useApi";
 import { Actions, Models } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
@@ -17,17 +16,18 @@ const getInputType = (type?: Models.PropertyType["type"]): string => {
 };
 
 interface Props {
+  modelId: string;
   properties: Models.PropertyType[];
   onSubmitComplete: (record?: Models.GrouparooRecordType) => void;
   execApi: ApiHook["execApi"];
 }
 
 const AddSampleRecordForm: React.FC<Props> = ({
+  modelId,
   execApi,
   onSubmitComplete,
   properties,
 }) => {
-  const model = useGrouparooModelContext();
   const { handleSubmit, register } = useForm();
   const [submitting, setSubmitting] = useState(false);
 
@@ -56,13 +56,13 @@ const AddSampleRecordForm: React.FC<Props> = ({
     async (data) => {
       setSubmitting(true);
       const response = await execApi<Actions.RecordCreate>("post", `/record`, {
-        modelId: model.id,
+        modelId,
         properties: { [data.uniqueProperty]: data.value },
       });
       setSubmitting(false);
       onSubmitComplete(response?.record);
     },
-    [model]
+    [modelId]
   );
 
   return (

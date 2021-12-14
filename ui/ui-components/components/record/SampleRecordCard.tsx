@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
-import { Button, Card, Col, Row, Table } from "react-bootstrap";
+import { Card, Col, Row, Table } from "react-bootstrap";
 import EnterpriseLink from "../../components/GrouparooLink";
-import { useGrouparooModelContext } from "../../contexts/grouparooModel";
 import { ApiHook } from "../../hooks/useApi";
 import { usePrevious } from "../../hooks/usePrevious";
 import { Actions, Models } from "../../utils/apiData";
@@ -12,14 +11,26 @@ import StateBadge from "../badges/StateBadge";
 import ManagedCard from "../lib/ManagedCard";
 import SeparatedItems from "../lib/SeparatedItems";
 import LinkButton from "../LinkButton";
+import Loader from "../Loader";
 import LoadingButton from "../LoadingButton";
+import RecordImageFromEmail from "../visualizations/RecordImageFromEmail";
 import AddSampleRecordModal from "./AddSampleRecordModal";
 import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 
-interface Props {
+export interface SampleRecordCardProps {
+  modelId: string;
   execApi: ApiHook["execApi"];
+  fetchRecord: (recordId: string) => Promise<{
+    record?: Models.GrouparooRecordType;
+    groups?: Models.GroupType[];
+    destinations?: Models.DestinationType[];
+  }>;
   properties: Models.PropertyType[];
-  disabled: boolean;
+  disabled?: boolean;
+  hideViewAllRecords?: boolean;
+  highlightProperty?: Models.PropertyType;
+  highlightPropertyError?: string;
+  reloadKey?: string;
 }
 
 const isConfigUI = grouparooUiEdition() === "config";
@@ -38,13 +49,19 @@ const clearCachedSampleRecordId = (modelId: string): void => {
   globalThis.localStorage?.removeItem(`sampleRecord:${modelId}`);
 };
 
-const SampleRecordCard: React.FC<Props> = ({
+const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
+  modelId,
   properties,
   execApi,
-  disabled,
+  fetchRecord,
+  disabled = false,
+  hideViewAllRecords = false,
+  highlightProperty,
+  highlightPropertyError,
+  reloadKey,
 }) => {
-  const model = useGrouparooModelContext();
-  const prevModelId = usePrevious(model.id);
+  const prevModelId = usePrevious(modelId);
+  const prevReloadKey = usePrevious(reloadKey);
 
   const [loading, setLoading] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -54,7 +71,7 @@ const SampleRecordCard: React.FC<Props> = ({
   const [groups, setGroups] = useState<Models.GroupType[]>();
   const [destinations, setDestinations] = useState<Models.DestinationType[]>();
   const [recordId, setRecordId] = useState(() =>
-    getCachedSampleRecordId(model.id)
+    getCachedSampleRecordId(modelId)
   );
 
   const saveRecord = useCallback(
@@ -67,9 +84,9 @@ const SampleRecordCard: React.FC<Props> = ({
       setHasRecords(true);
       setLoading(false);
 
-      setCachedSampleRecordId(model.id, record.id);
+      setCachedSampleRecordId(modelId, record.id);
     },
-    [model]
+    [modelId]
   );
 
   const loadRecord = useCallback(async () => {
@@ -80,10 +97,7 @@ const SampleRecordCard: React.FC<Props> = ({
     let destinations: Models.DestinationType[];
 
     if (recordId) {
-      ({ record, groups, destinations } = await execApi<Actions.RecordView>(
-        "get",
-        `/record/${recordId}`
-      ));
+      ({ record, groups, destinations } = await fetchRecord(recordId));
     } else {
       ({ record, groups, destinations } = await execApi<Actions.RecordsList>(
         "get",
@@ -91,7 +105,7 @@ const SampleRecordCard: React.FC<Props> = ({
         {
           limit: 25,
           offset: 0,
-          modelId: model.id,
+          modelId,
         }
       ).then((response) => {
         if (response.total === 0) {
@@ -104,10 +118,7 @@ const SampleRecordCard: React.FC<Props> = ({
             : undefined;
 
           if (randomRecord?.id) {
-            return execApi<Actions.RecordView>(
-              "get",
-              `/record/${randomRecord.id}`
-            );
+            return fetchRecord(randomRecord?.id);
           }
         }
 
@@ -123,31 +134,66 @@ const SampleRecordCard: React.FC<Props> = ({
       saveRecord(record, groups, destinations);
     } else {
       // Got an invalid record. Let's clear this and start over.
-      clearCachedSampleRecordId(model.id);
+      clearCachedSampleRecordId(modelId);
       setRecordId(undefined);
     }
 
     setLoading(false);
-  }, [recordId, saveRecord, execApi, model]);
+  }, [recordId, saveRecord, execApi, modelId, fetchRecord]);
+
+  const sortedPropertyKeys = useMemo(() => {
+    const id = highlightProperty?.id;
+    return record?.properties
+      ? Object.keys(record.properties).sort((a, b) =>
+          id === record.properties[a].id
+            ? -1
+            : id === record.properties[b].id
+            ? 1
+            : a.localeCompare(b)
+        )
+      : undefined;
+  }, [record, highlightProperty]);
 
   useEffect(() => {
     // Switched to another model
-    if (prevModelId && prevModelId !== model.id) {
+    if (prevModelId && prevModelId !== modelId) {
       setLoading(true);
-      setRecordId(getCachedSampleRecordId(model.id));
+      setRecordId(getCachedSampleRecordId(modelId));
       setRecord(undefined);
       setGroups(undefined);
       setDestinations(undefined);
       setHasRecords(true);
       setLoading(false);
     }
-  }, [record, model]);
+  }, [record, modelId]);
 
   useEffect(() => {
-    if (!loading && hasRecords && (!record || record.id !== recordId)) {
+    if (
+      !loading &&
+      hasRecords &&
+      (!record || record.id !== recordId || reloadKey !== prevReloadKey)
+    ) {
       loadRecord();
     }
-  }, [record, recordId, loading, loadRecord, hasRecords]);
+  }, [
+    record,
+    recordId,
+    loading,
+    loadRecord,
+    hasRecords,
+    reloadKey,
+    prevReloadKey,
+  ]);
+
+  const email = useMemo<string>(() => {
+    if (!record) return undefined;
+
+    const emailProperty = Object.values(record.properties).find(
+      (property) => property.type === "email" && property.values.length > 0
+    );
+
+    return emailProperty ? emailProperty.values[0].toString() : undefined;
+  }, [record]);
 
   const importRecord = async () => {
     setImporting(true);
@@ -205,7 +251,7 @@ const SampleRecordCard: React.FC<Props> = ({
 
   const content = record ? (
     <Row>
-      <Col md={9}>
+      <Col style={{ minWidth: "75%" }}>
         <Table bordered>
           <colgroup>
             <col span={1} style={{ width: "35%" }} />
@@ -222,28 +268,57 @@ const SampleRecordCard: React.FC<Props> = ({
             </tr>
           </thead>
           <tbody>
-            {record.properties &&
-              Object.keys(record.properties).map((key) => {
+            {sortedPropertyKeys &&
+              sortedPropertyKeys.map((key, index) => {
                 const property = record.properties[key];
+                const isHighlightedProperty =
+                  highlightProperty?.id === property.id;
+                const trClassName = isHighlightedProperty
+                  ? `table-${highlightPropertyError ? "danger" : "success"}`
+                  : undefined;
+                const name =
+                  isHighlightedProperty && highlightProperty.key !== ""
+                    ? highlightProperty.key
+                    : key === ""
+                    ? "Draft"
+                    : key;
+
                 return (
-                  <tr key={key}>
-                    <td>
-                      <Link
-                        href={`/model/${model.id}/property/${property.id}/edit`}
-                      >
-                        <a>{key}</a>
-                      </Link>
+                  <tr
+                    key={`property-${!key ? `draft-${index}` : key}`}
+                    className={trClassName}
+                  >
+                    <th scope="row">
+                      {isHighlightedProperty ? (
+                        name
+                      ) : (
+                        <Link
+                          href={`/model/${modelId}/property/${property.id}/edit`}
+                        >
+                          <a>{name}</a>
+                        </Link>
+                      )}
                       {property.state !== "ready" && (
                         <StateBadge state={property.state} marginBottom={0} />
                       )}
-                    </td>
+                    </th>
                     <td>
-                      <ArrayRecordPropertyList
-                        type={property.type}
-                        values={property.values}
-                        invalidValue={property.invalidValue}
-                        invalidReason={property.invalidReason}
-                      />
+                      {isHighlightedProperty &&
+                      (property.values.length === 0 ||
+                        highlightPropertyError) ? (
+                        `${
+                          highlightPropertyError
+                            ? highlightPropertyError
+                            : "..."
+                        }`
+                      ) : (
+                        <ArrayRecordPropertyList
+                          type={property.type}
+                          values={property.values}
+                          invalidValue={property.invalidValue}
+                          invalidReason={property.invalidReason}
+                        />
+                      )}
                     </td>
                   </tr>
                 );
@@ -251,7 +326,14 @@ const SampleRecordCard: React.FC<Props> = ({
           </tbody>
         </Table>
       </Col>
-      <Col md={3} className={"text-center"}>
+      <Col
+        className={"text-center"}
+        xs={{ order: "first" }}
+        md={{ order: "last" }}
+      >
+        {email && (
+          <RecordImageFromEmail email={email} width={72} className="mb-4" />
+        )}
         <h6>Groups</h6>
         {
           <p>
@@ -309,28 +391,37 @@ const SampleRecordCard: React.FC<Props> = ({
     </Row>
   );
 
-  return (
-    <ManagedCard
-      title="Sample Record"
-      disabled={disabled}
-      actions={[
-        <LinkButton
-          disabled={!record || disabled}
-          href={record ? `/model/${model.id}/record/${record.id}/edit` : "#"}
-          size="sm"
-          variant="outline-primary"
-        >
-          View Record
-        </LinkButton>,
+  const cardActions = useMemo(() => {
+    const result = [
+      <LinkButton
+        disabled={!record || disabled}
+        href={`/model/${modelId}/record${record ? `/${record.id}/edit` : "s"}`}
+        size="sm"
+        variant="outline-primary"
+      >
+        View Record
+      </LinkButton>,
+    ];
+    if (!hideViewAllRecords) {
+      result.push(
         <LinkButton
           disabled={disabled}
-          href={`/model/${model.id}/records`}
+          href={`/model/${modelId}/records`}
           size="sm"
           variant="outline-primary"
         >
           View all Records
-        </LinkButton>,
-      ]}
+        </LinkButton>
+      );
+    }
+    return result;
+  }, [modelId, disabled, record, hideViewAllRecords]);
+
+  return (
+    <ManagedCard
+      title={<>Sample Record {loading && <Loader size="sm" />}</>}
+      disabled={disabled}
+      actions={cardActions}
     >
       <Card.Body>
         {content}
@@ -342,6 +433,7 @@ const SampleRecordCard: React.FC<Props> = ({
       </Card.Body>
       {isConfigUI && (
         <AddSampleRecordModal
+          modelId={modelId}
           properties={properties}
           execApi={execApi}
           show={addingRecord}

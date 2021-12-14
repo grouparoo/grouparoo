@@ -4,6 +4,7 @@ import { Models } from "../../utils/apiData";
 import AddSampleRecordForm from "./AddSampleRecordForm";
 
 interface Props {
+  modelId: string;
   show: boolean;
   onRecordCreated: (record: Models.GrouparooRecordType) => void;
   onHide: () => void;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const AddSampleRecordModal: React.FC<Props> = ({
+  modelId,
   properties,
   show,
   onHide,
@@ -25,6 +27,7 @@ const AddSampleRecordModal: React.FC<Props> = ({
       </Modal.Header>
       <Modal.Body>
         <AddSampleRecordForm
+          modelId={modelId}
           properties={properties}
           execApi={execApi}
           onSubmitComplete={(record) => {
