@@ -277,10 +277,10 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                   ? `table-${highlightPropertyError ? "danger" : "success"}`
                   : undefined;
                 const name =
-                  key === ""
-                    ? "Draft"
-                    : isHighlightedProperty
+                  isHighlightedProperty && highlightProperty.key !== ""
                     ? highlightProperty.key
+                    : key === ""
+                    ? "Draft"
                     : key;
 
                 return (
