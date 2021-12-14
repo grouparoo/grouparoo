@@ -26,7 +26,15 @@ const EntityInfoHeader: React.FC<Props> = ({
 
   return (
     <div>
-      {nameLink} <StateBadge state={entity.state} marginBottom={0} />
+      {nameLink}{" "}
+      <StateBadge
+        state={entity.state}
+        marginBottom={0}
+        style={{
+          verticalAlign: "middle",
+          marginTop: "-0.25em",
+        }}
+      />
     </div>
   );
 };
