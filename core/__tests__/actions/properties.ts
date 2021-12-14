@@ -380,8 +380,8 @@ describe("actions/properties", () => {
         );
 
       expect(error).toBeUndefined();
-      expect(Array.isArray(groups)).toBeTruthy();
-      expect(Array.isArray(destinations)).toBeDefined();
+      expect(groups).toEqual([]);
+      expect(destinations).toEqual([]);
       expect(record.id).toBe(_record.id);
       expect(record.properties["email"].values).toBeTruthy();
 
