@@ -142,12 +142,12 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   }, [recordId, saveRecord, execApi, modelId, fetchRecord]);
 
   const sortedPropertyKeys = useMemo(() => {
-    const highlightPropertyKey = highlightProperty?.key;
+    const id = highlightProperty?.id;
     return record?.properties
       ? Object.keys(record.properties).sort((a, b) =>
-          highlightPropertyKey === a
+          id === record.properties[a].id
             ? -1
-            : highlightPropertyKey === b
+            : id === record.properties[b].id
             ? 1
             : a.localeCompare(b)
         )
@@ -273,11 +273,15 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                 const property = record.properties[key];
                 const isHighlightedProperty =
                   highlightProperty?.id === property.id;
-                const trClassName =
-                  highlightProperty?.id === property.id
-                    ? `table-${highlightPropertyError ? "danger" : "success"}`
-                    : undefined;
-                const name = key === "" ? "Draft" : key;
+                const trClassName = isHighlightedProperty
+                  ? `table-${highlightPropertyError ? "danger" : "success"}`
+                  : undefined;
+                const name =
+                  key === ""
+                    ? "Draft"
+                    : isHighlightedProperty
+                    ? highlightProperty.key
+                    : key;
 
                 return (
                   <tr
