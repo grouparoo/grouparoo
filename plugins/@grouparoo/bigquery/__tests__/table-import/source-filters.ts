@@ -46,27 +46,27 @@ describe("bigquery/table/sourceFilters", () => {
 
     expect(columns[0]).toMatchObject({
       key: "amount",
-      ops: ["eq", "dne", "exists", "notExists", "gt", "gte", "lt", "lte"],
+      ops: ["eq", "ne", "exists", "notExists", "gt", "gte", "lt", "lte"],
     });
     expect(columns[1]).toMatchObject({
       key: "date",
-      ops: ["eq", "dne", "exists", "notExists", "gt", "gte", "lt", "lt"],
+      ops: ["eq", "ne", "exists", "notExists", "gt", "gte", "lt", "lte"],
     });
     expect(columns[2]).toMatchObject({
       key: "id",
-      ops: ["eq", "dne", "exists", "notExists", "gt", "gte", "lt", "lte"],
+      ops: ["eq", "ne", "exists", "notExists", "gt", "gte", "lt", "lte"],
     });
     expect(columns[3]).toMatchObject({
       key: "purchase",
-      ops: ["eq", "dne", "exists", "notExists", "substring", "notSubstring"],
+      ops: ["eq", "ne", "exists", "notExists", "substring", "notSubstring"],
     });
     expect(columns[4]).toMatchObject({
       key: "record_id",
-      ops: ["eq", "dne", "exists", "notExists", "gt", "gte", "lt", "lte"],
+      ops: ["eq", "ne", "exists", "notExists", "gt", "gte", "lt", "lte"],
     });
     expect(columns[5]).toMatchObject({
       key: "stamp",
-      ops: ["eq", "dne", "exists", "notExists", "gt", "gte", "lt", "lte"],
+      ops: ["eq", "ne", "exists", "notExists", "gt", "gte", "lt", "lte"],
     });
   });
 });

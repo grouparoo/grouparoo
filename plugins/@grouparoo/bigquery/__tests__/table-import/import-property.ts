@@ -344,7 +344,7 @@ describe("bigquery/table/recordProperty", () => {
     });
 
     describe("does not equal", () => {
-      const op = "dne";
+      const op = "ne";
       test("integer", async () => {
         const value = await getPropertyValue(
           {
