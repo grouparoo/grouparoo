@@ -45,6 +45,11 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
     return result;
   }, [primarySource, secondarySources]);
 
+  const hasReadyProperties = useMemo<boolean>(
+    () => !!properties.find((property) => property.state === "ready"),
+    [properties]
+  );
+
   return (
     <GrouparooModelContextProvider model={model}>
       <Head>
@@ -80,7 +85,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
               <ListGroupItem>
                 <ModelOverviewGroups
                   groups={groups}
-                  disabled={!sources.length}
+                  disabled={!sources.length || !hasReadyProperties}
                 />
               </ListGroupItem>
 
@@ -146,9 +151,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   ]);
 
   const primaryKeyProperty = properties.find((p) => p.isPrimaryKey);
-  const primarySource = primaryKeyProperty
-    ? sources.find(({ id }) => id === primaryKeyProperty.sourceId)
-    : null;
+  const primarySource =
+    sources.length === 1
+      ? sources[0] // If there is only one source this will be the primary source
+      : primaryKeyProperty
+      ? sources.find(({ id }) => id === primaryKeyProperty.sourceId)
+      : null;
   const secondarySources = primarySource
     ? sources.filter(({ id }) => id !== primarySource.id)
     : sources;
