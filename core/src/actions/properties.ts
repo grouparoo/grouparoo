@@ -385,8 +385,6 @@ export class PropertyRecordPreview extends AuthenticatedAction {
     const groups = await record.$get("groups");
     const destinations = await DestinationOps.relevantFor(record, groups);
 
-    await ConfigWriter.run();
-
     return {
       errorMessage,
       record: apiData,
