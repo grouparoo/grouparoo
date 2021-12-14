@@ -1,5 +1,5 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { specHelper, utils } from "actionhero";
 import { Run } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import { ModelCreate } from "../../src/actions/models";
@@ -16,11 +16,7 @@ import {
   RecordsList,
   RecordView,
 } from "../../src/actions/records";
-import {
-  GroupAddRecord,
-  GroupCreate,
-  GroupView,
-} from "../../src/actions/groups";
+import { GroupCreate, GroupView } from "../../src/actions/groups";
 import {
   SourceBootstrapUniqueProperty,
   SourceCreate,
@@ -229,8 +225,8 @@ describe("integration/happyPath", () => {
     expect(source.mapping).toEqual({ email: "email" });
   });
 
-  describe("manual group", () => {
-    let groupId;
+  describe("calculated group", () => {
+    let groupId: string;
 
     test("an admin can create a record", async () => {
       connection.params = {
@@ -259,85 +255,6 @@ describe("integration/happyPath", () => {
       recordId = record.id;
     });
 
-    test("an admin can create a manual group", async () => {
-      connection.params = {
-        csrfToken,
-        name: "manual group",
-        type: "manual",
-        modelId: modelId,
-        state: "ready",
-      };
-
-      const { error, group } = await specHelper.runAction<GroupCreate>(
-        "group:create",
-        connection
-      );
-      expect(error).toBeUndefined();
-      expect(group.id).toBeTruthy();
-      expect(group.name).toBe("manual group");
-      expect(group.type).toBe("manual");
-      expect(group.state).toBe("ready");
-      groupId = group.id;
-    });
-
-    test("an admin can add a record to a manual group", async () => {
-      connection.params = {
-        csrfToken,
-        id: groupId,
-        recordId,
-      };
-      const { error, success } = await specHelper.runAction<GroupAddRecord>(
-        "group:addRecord",
-        connection
-      );
-      expect(error).toBeUndefined();
-      expect(success).toBeTruthy();
-    });
-
-    test("the record lists group memberships", async () => {
-      connection.params = {
-        csrfToken,
-        id: recordId,
-      };
-      const { error, groups } = await specHelper.runAction<RecordView>(
-        "record:view",
-        connection
-      );
-      expect(error).toBeUndefined();
-      expect(groups.length).toBe(1);
-      expect(groups[0].id).toBeTruthy();
-      expect(groups[0].name).toBe("manual group");
-    });
-
-    test("the manual group lists the record as a member", async () => {
-      connection.params = {
-        csrfToken,
-        id: groupId,
-      };
-      const { error, group } = await specHelper.runAction<GroupView>(
-        "group:view",
-        connection
-      );
-      expect(error).toBeUndefined();
-      expect(group.recordsCount).toBe(1);
-
-      connection.params = {
-        csrfToken,
-        id: groupId,
-      };
-      const { error: listError, records } =
-        await specHelper.runAction<RecordsList>("records:list", connection);
-      expect(listError).toBeUndefined();
-      expect(records.length).toBe(1);
-      expect(simpleRecordValues(records[0].properties).email).toEqual([
-        "luigi@example.com",
-      ]);
-    });
-  });
-
-  describe("calculated group", () => {
-    let groupId: string;
-
     test("a calculated group can be created", async () => {
       connection.params = {
         csrfToken,
@@ -357,7 +274,6 @@ describe("integration/happyPath", () => {
       expect(error).toBeUndefined();
       expect(group.id).toBeTruthy();
       expect(group.name).toBe("calculated group");
-      expect(group.type).toBe("calculated");
       expect(group.state).not.toBe("draft");
       groupId = group.id;
     });
@@ -365,11 +281,11 @@ describe("integration/happyPath", () => {
     test("the run can be processed, along with the associated import chain", async () => {
       // group
       const runningRuns = await Run.findAll({
-        where: { state: "running", creatorType: "group" },
+        where: { state: "running", creatorId: groupId },
       });
       expect(runningRuns.length).toBe(1);
 
-      await specHelper.runTask("run:tick", {});
+      await specHelper.runTask("group:run", { runId: runningRuns[0].id });
       await ImportWorkflow();
     });
 

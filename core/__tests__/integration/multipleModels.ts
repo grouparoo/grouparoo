@@ -140,7 +140,6 @@ describe("multiple models", () => {
 
   test("manual groups can only have members added from the same model", async () => {
     const manualProfileGroup = await Group.create({
-      type: "manual",
       name: "manualProfileGroup",
       modelId: "mod_profiles",
       state: "ready",

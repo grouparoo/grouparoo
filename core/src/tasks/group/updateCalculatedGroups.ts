@@ -24,9 +24,7 @@ export class GroupsUpdateCalculatedGroups extends CLSTask {
     const lastCheckTime = Moment().subtract(delayMinutes, "minutes").toDate();
 
     const groupsToRun: Group[] = [];
-    const calculatedGroups = await Group.scope(null).findAll({
-      where: { type: "calculated" },
-    });
+    const calculatedGroups = await Group.scope(null).findAll();
 
     for (const group of calculatedGroups) {
       const calculatedAt = group.calculatedAt?.getTime() ?? 0;

@@ -80,7 +80,6 @@ export class GroupCreate extends AuthenticatedAction {
     this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       name: { required: true },
-      type: { required: true },
       modelId: { required: true },
       matchType: { required: true, default: "all" },
       rules: { required: false, formatter: APIData.ensureObject },
@@ -91,7 +90,6 @@ export class GroupCreate extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const group = await Group.create({
       name: params.name,
-      type: params.type,
       modelId: params.modelId,
       matchType: params.matchType,
       state: params.state,
@@ -116,7 +114,6 @@ export class GroupEdit extends AuthenticatedAction {
     this.inputs = {
       id: { required: true },
       name: { required: false },
-      type: { required: false },
       matchType: { required: false },
       rules: { required: false, formatter: APIData.ensureObject },
     };
@@ -149,59 +146,6 @@ export class GroupRun extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const group = await Group.findById(params.id);
     await group.run();
-    return { success: true };
-  }
-}
-
-export class GroupAddRecord extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "group:addRecord";
-    this.description = "add a record to a manual group";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      recordId: { required: true },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const group = await Group.findById(params.id);
-    if (group.type !== "manual") {
-      throw new Error(
-        "only manual groups can have membership manipulated by this action"
-      );
-    }
-    const record = await GrouparooRecord.findById(params.recordId);
-    await group.addRecord(record);
-    return { success: true };
-  }
-}
-
-export class GroupRemoveRecord extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "group:removeRecord";
-    this.description = "remove a record to a manual group";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      recordId: { required: true },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const group = await Group.findById(params.id);
-    if (group.type !== "manual") {
-      throw new Error(
-        "only manual groups can have membership manipulated by this action"
-      );
-    }
-
-    const record = await GrouparooRecord.findById(params.recordId);
-    await group.removeRecord(record);
     return { success: true };
   }
 }

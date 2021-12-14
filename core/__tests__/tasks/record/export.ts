@@ -11,6 +11,7 @@ import {
   Source,
   Property,
   GrouparooModel,
+  GroupMember,
 } from "../../../src";
 import { Op } from "sequelize";
 
@@ -63,10 +64,9 @@ describe("tasks/record:export", () => {
 
         group = await helper.factories.group({
           name: "test group",
-          type: "manual",
           matchType: "all",
         });
-        await group.addRecord(record);
+        await GroupMember.create({ recordId: record.id, groupId: group.id });
 
         plugin.registerPlugin({
           name: "test-plugin",

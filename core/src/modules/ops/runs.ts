@@ -192,10 +192,7 @@ export namespace RunOps {
       if (!run.method) return 0; // we are exporting the group to CSV or not yet set
 
       const group = await Group.findById(run.creatorId);
-      let totalGroupMembers =
-        group.type === "calculated"
-          ? await group.countPotentialMembers()
-          : await group.$count("groupMembers");
+      let totalGroupMembers = await group.countPotentialMembers();
 
       const membersAlreadyUpdated = await GroupMember.count({
         where: {

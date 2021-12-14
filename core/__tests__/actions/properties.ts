@@ -322,7 +322,7 @@ describe("actions/properties", () => {
     });
 
     test("an administrator can see groups which rely on a property", async () => {
-      const group = await helper.factories.group({ type: "calculated" });
+      const group = await helper.factories.group();
       await group.setRules([
         {
           key: "email",

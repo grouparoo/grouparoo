@@ -26,7 +26,12 @@ import { APIData } from "../modules/apiData";
 import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
 import { GroupOps } from "../modules/ops/group";
-import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
+import {
+  GroupRuleOpType,
+  PropertyOpsDictionary,
+  RelativeMatchDirectionType,
+  RelativeMatchUnitType,
+} from "../modules/ruleOpsDictionary";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
 import { StateMachine } from "./../modules/stateMachine";
 import { Destination } from "./Destination";
@@ -50,14 +55,13 @@ export interface GroupRuleWithKey {
   key?: string;
   type?: string;
   topLevel?: boolean;
-  operation: { op: string; description?: string };
+  operation: { op: GroupRuleOpType; description?: string };
   match?: string | number | boolean;
   relativeMatchNumber?: number;
-  relativeMatchUnit?: string;
-  relativeMatchDirection?: string;
+  relativeMatchUnit?: RelativeMatchUnitType;
+  relativeMatchDirection?: RelativeMatchDirectionType;
 }
 
-const groupTypes = ["calculated", "manual"] as const;
 const matchTypes = ["any", "all"] as const;
 
 const STATES = [
@@ -107,15 +111,6 @@ export class Group extends LoggedModel<Group> {
   @Default("")
   @Column
   name: string;
-
-  @AllowNull(false)
-  @Is("ofValidType", (value) => {
-    if (value !== "manual" && value !== "calculated") {
-      throw new Error("type must be one of: manual, calculated");
-    }
-  })
-  @Column(DataType.ENUM(...groupTypes))
-  type: typeof groupTypes[number];
 
   @AllowNull(false)
   @Default("all")
@@ -168,8 +163,6 @@ export class Group extends LoggedModel<Group> {
   }
 
   async getRules() {
-    if (this.type === "manual") return [];
-
     // We won't be deleting the model for GroupRule until the group is really deleted (to validate other models)
     // But we want to be sure that all membership matching will fail
     if (this.state === "deleted") return [];
@@ -212,10 +205,6 @@ export class Group extends LoggedModel<Group> {
   }
 
   async setRules(rules: GroupRuleWithKey[]) {
-    if (this.type !== "calculated") {
-      throw new Error("group type not calculated");
-    }
-
     if (Object.keys(rules).length > GROUP_RULE_LIMIT) {
       throw new Error("too many group rules");
     }
@@ -301,7 +290,6 @@ export class Group extends LoggedModel<Group> {
     return {
       id: this.id,
       name: this.name,
-      type: this.type,
       modelId: this.modelId,
       modelName: model.name,
       rules,
@@ -332,7 +320,10 @@ export class Group extends LoggedModel<Group> {
         rules[i].relativeMatchNumber &&
         rules[i].operation.op.match(/^relative_/)
       ) {
-        rules[i].operation.op = rules[i].operation.op.replace(/^relative_/, "");
+        rules[i].operation.op = rules[i].operation.op.replace(
+          /^relative_/,
+          ""
+        ) as GroupRuleOpType;
       }
     }
 
@@ -360,7 +351,8 @@ export class Group extends LoggedModel<Group> {
         rules[i].relativeMatchNumber &&
         !rules[i].operation.op.match(/^relative_/)
       ) {
-        rules[i].operation.op = `relative_${rules[i].operation.op}`;
+        rules[i].operation.op =
+          `relative_${rules[i].operation.op}` as GroupRuleOpType;
         rules[i].operation.description = PropertyOpsDictionary[
           rules[i].type
         ].filter(
@@ -374,8 +366,6 @@ export class Group extends LoggedModel<Group> {
   }
 
   async nextCalculatedAt() {
-    if (this.type === "manual") return null;
-
     let hasRelativeRule = false;
     const rules = await this.getRules();
     for (const rule of rules) {
@@ -397,27 +387,6 @@ export class Group extends LoggedModel<Group> {
 
   async stopPreviousRuns() {
     return RunOps.stopPreviousRuns(this);
-  }
-
-  async addRecord(record: GrouparooRecord) {
-    await GroupOps.updateRecords([record.id], "group", this.id);
-
-    await GroupMember.create({
-      groupId: this.id,
-      recordId: record.id,
-    });
-  }
-
-  async removeRecord(record: GrouparooRecord) {
-    const membership = await GroupMember.findOne({
-      where: { groupId: this.id, recordId: record.id },
-    });
-
-    if (!membership) throw new Error("record is not a member of this group");
-
-    await GroupOps.updateRecords([record.id], "group", this.id);
-
-    await membership.destroy();
   }
 
   async runAddGroupMembers(
@@ -471,10 +440,6 @@ export class Group extends LoggedModel<Group> {
     matchType: typeof matchTypes[number] = this.matchType,
     recordState?: string
   ) {
-    if (this.type !== "calculated") {
-      throw new Error("only calculated groups can be calculated");
-    }
-
     if (!rules) rules = await this.getRules();
 
     const include = [];
@@ -673,15 +638,13 @@ export class Group extends LoggedModel<Group> {
   }
 
   async getConfigObject(): Promise<GroupConfigurationObject> {
-    const { name, type } = this;
+    const { name } = this;
     this.model = await this.$get("model");
     const modelId = this.model?.getConfigId();
 
-    if (!name || !modelId) {
-      return;
-    }
+    if (!name || !modelId) return;
 
-    let rules = [];
+    const rules: Array<GroupRuleWithKey & { propertyId: string }> = [];
 
     const groupRules = await this.getRules();
     const convenientRules = this.toConvenientRules(groupRules);
@@ -702,24 +665,19 @@ export class Group extends LoggedModel<Group> {
       });
     }
 
-    let configObject: {
+    const configObject: {
       class: string;
       id: string;
       modelId: string;
       name: string;
-      type: string;
-      rules?: any[];
+      rules: any[];
     } = {
       class: "Group",
       id: this.getConfigId(),
       modelId,
       name,
-      type,
+      rules,
     };
-
-    if (type === "calculated") {
-      configObject.rules = rules;
-    }
 
     return configObject;
   }

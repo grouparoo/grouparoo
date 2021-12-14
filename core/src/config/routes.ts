@@ -131,8 +131,6 @@ export const DEFAULT: { [namespace]: () => RoutesConfig } = {
         { path: "/v:apiVersion/appRefreshQuery/:id/test", action: "appRefreshQuery:test" },
         { path: "/v:apiVersion/destination/:id", action: "destination:edit" },
         { path: "/v:apiVersion/group/:id", action: "group:edit" },
-        { path: "/v:apiVersion/group/:id/add", action: "group:addRecord" },
-        { path: "/v:apiVersion/group/:id/remove", action: "group:removeRecord" },
         { path: "/v:apiVersion/group/:id/run", action: "group:run" },
         { path: "/v:apiVersion/model/:id", action: "model:edit" },
         { path: "/v:apiVersion/property/:id", action: "property:edit" },
