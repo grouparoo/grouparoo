@@ -46,16 +46,16 @@ const PropertySampleRecord: React.FC<
         }
       );
 
+      if (
+        response?.errorMessage &&
+        !response.errorMessage.match(
+          /is required for a property of type/ // ignore errors about missing options
+        )
+      ) {
+        setErrorMessage(response.errorMessage);
+      }
+
       if (response?.record) {
-        setErrorMessage(
-          response.errorMessage
-            ? response.errorMessage.match(
-                /is required for a property of type/ // ignore errors about missing options
-              )
-              ? undefined
-              : response.errorMessage
-            : undefined
-        );
         return response;
       }
 
