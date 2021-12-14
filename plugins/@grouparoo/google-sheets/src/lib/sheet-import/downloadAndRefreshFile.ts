@@ -1,9 +1,12 @@
 import { log } from "actionhero";
 import fs from "fs-extra";
+import path from "path";
 import { tmpdir } from "os";
 import { SimpleSourceOptions } from "@grouparoo/core";
 import Spreadsheet from "./Spreadsheet";
 import csvWriter from "csv-write-stream";
+
+const CSV_CACHE_MILLISECONDS = 1000 * 60;
 
 export async function downloadAndRefreshFile(
   sourceId: string,
@@ -15,8 +18,8 @@ export async function downloadAndRefreshFile(
     sourceOptions.sheet_url?.toString()
   );
 
-  let localDir = `${tmpdir()}/google-sheets-cache/${sourceId}`;
-  let localPath = `${localDir}/${sheet.docId}.csv`;
+  let localDir = path.join(tmpdir(), "google-sheets-cache", sourceId);
+  let localPath = path.join(localDir, `${sheet.docId}.csv`);
 
   let toDownload = false;
   if (!fs.existsSync(localPath)) {
@@ -25,12 +28,12 @@ export async function downloadAndRefreshFile(
   } else {
     const stats = fs.statSync(localPath);
     const now = new Date();
-    if (now.getTime() - stats.birthtime.getTime() > 1000 * 60)
+    if (now.getTime() - stats.birthtime.getTime() > CSV_CACHE_MILLISECONDS)
       toDownload = true;
   }
 
   if (toDownload) {
-    log(`Saving Google Sheet to \`${localPath}\``);
+    log(`Saving Google Sheet to \`${localPath}\``, "debug");
     if (fs.existsSync(localPath)) fs.rmSync(localPath, { force: true });
     const writer = csvWriter({
       sendHeaders: true,
