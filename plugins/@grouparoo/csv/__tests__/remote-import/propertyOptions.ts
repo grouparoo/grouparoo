@@ -29,12 +29,12 @@ describe("csv/remote/propertyOptions", () => {
     const columnOptions = await options[0].options({
       sourceOptions,
       propertyId: "source",
-      sourceId: "sheets test",
       connection: null,
       app: null,
       appId: null,
       appOptions: null,
       source: null,
+      sourceId: null,
       sourceMapping: null,
       property: null,
     });
