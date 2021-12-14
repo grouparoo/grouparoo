@@ -251,7 +251,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 
   const content = record ? (
     <Row>
-      <Col md={9}>
+      <Col style={{ minWidth: "75%" }}>
         <Table bordered>
           <colgroup>
             <col span={1} style={{ width: "35%" }} />
