@@ -37,7 +37,7 @@ export interface SampleRecordCardProps {
   highlightProperty?: Models.PropertyType;
   highlightPropertyError?: string;
   propertyLinkDisabled?: boolean;
-  importDisabled: boolean;
+  importDisabled?: boolean;
   reloadKey?: string;
 }
 
