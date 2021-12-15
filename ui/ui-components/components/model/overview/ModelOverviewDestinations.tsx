@@ -1,4 +1,4 @@
-import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
+import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 import DestinationCollectionLink from "../../destination/DestinationCollectionLink";
@@ -30,7 +30,6 @@ const DestinationInfo: React.FC<{
         linkComponent={LinkComponent}
       />
       <div>{connection?.displayName}</div>
-      <div>Pending Exports: {exportTotals.pending}</div>
       <div>
         Collection Tracked:{" "}
         <DestinationCollectionLink destination={destination} />

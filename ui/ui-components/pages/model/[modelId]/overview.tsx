@@ -2,7 +2,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useMemo } from "react";
-import { Col, Container, ListGroup, ListGroupItem, Row } from "react-bootstrap";
+import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import ManagedCard from "../../../components/lib/ManagedCard";
 import ModelOverviewDestinations from "../../../components/model/overview/ModelOverviewDestinations";
 import ModelOverviewGroups from "../../../components/model/overview/ModelOverviewGroups";
@@ -45,76 +45,79 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
     return result;
   }, [primarySource, secondarySources]);
 
+  const hasReadyProperties = useMemo<boolean>(
+    () => !!properties.find((property) => property.state === "ready"),
+    [properties]
+  );
+
   return (
     <GrouparooModelContextProvider model={model}>
       <Head>
         <title>Grouparoo: {model.name}</title>
       </Head>
 
-      <Container>
-        <PageHeader
-          iconType="grouparooModel"
-          icon={model.icon}
-          title={model.name}
-          actions={[<Link href={`/model/${model.id}/edit`}>Edit</Link>]}
-        />
-        <p>
-          Define your {model.name} Model here with Sources, Groups, and
-          Destinations.
-        </p>
+      <PageHeader
+        iconType="grouparooModel"
+        icon={model.icon}
+        title={model.name}
+        actions={[<Link href={`/model/${model.id}/edit`}>Edit</Link>]}
+      />
+      <p>
+        Define your {model.name} Model here with Sources, Groups, and
+        Destinations.
+      </p>
 
-        <Row className="mb-4">
-          <Col>
-            <ManagedCard title="Model Data">
-              <ListGroup className="list-group-flush">
-                <ListGroupItem>
-                  <ModelOverviewPrimarySource source={primarySource} />
-                </ListGroupItem>
+      <Row className="mb-4">
+        <Col>
+          <ManagedCard title="Model Data">
+            <ListGroup className="list-group-flush">
+              <ListGroupItem>
+                <ModelOverviewPrimarySource source={primarySource} />
+              </ListGroupItem>
 
-                <ListGroupItem>
-                  <ModelOverviewSecondarySources
-                    sources={secondarySources}
-                    disabled={!primarySource}
-                  />
-                </ListGroupItem>
+              <ListGroupItem>
+                <ModelOverviewSecondarySources
+                  sources={secondarySources}
+                  disabled={!primarySource}
+                />
+              </ListGroupItem>
 
-                <ListGroupItem>
-                  <ModelOverviewGroups
-                    groups={groups}
-                    disabled={!sources.length}
-                  />
-                </ListGroupItem>
+              <ListGroupItem>
+                <ModelOverviewGroups
+                  groups={groups}
+                  disabled={!sources.length || !hasReadyProperties}
+                />
+              </ListGroupItem>
 
-                <ListGroupItem>
-                  <ModelOverviewSchedules
-                    schedules={schedules}
-                    sources={sources}
-                    execApi={execApi}
-                  />
-                </ListGroupItem>
-              </ListGroup>
-            </ManagedCard>
-          </Col>
-        </Row>
-        <Row className="mb-4">
-          <Col>
-            <ModelOverviewSampleRecord
-              modelId={model.id}
-              properties={properties}
-              execApi={execApi}
-              disabled={!sources.length}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <ModelOverviewDestinations
-              destinations={destinations}
-              disabled={!destinations.length && !groups.length}
-            />
-          </Col>
-        </Row>
-      </Container>
+              <ListGroupItem>
+                <ModelOverviewSchedules
+                  schedules={schedules}
+                  sources={sources}
+                  execApi={execApi}
+                />
+              </ListGroupItem>
+            </ListGroup>
+          </ManagedCard>
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <ModelOverviewSampleRecord
+            modelId={model.id}
+            properties={properties}
+            execApi={execApi}
+            disabled={!sources.length}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <ModelOverviewDestinations
+            destinations={destinations}
+            disabled={!destinations.length && !groups.length}
+          />
+        </Col>
+      </Row>
     </GrouparooModelContextProvider>
   );
 };
@@ -148,9 +151,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   ]);
 
   const primaryKeyProperty = properties.find((p) => p.isPrimaryKey);
-  const primarySource = primaryKeyProperty
-    ? sources.find(({ id }) => id === primaryKeyProperty.sourceId)
-    : null;
+  const primarySource =
+    sources.length === 1
+      ? sources[0] // If there is only one source this will be the primary source
+      : primaryKeyProperty
+      ? sources.find(({ id }) => id === primaryKeyProperty.sourceId)
+      : null;
   const secondarySources = primarySource
     ? sources.filter(({ id }) => id !== primarySource.id)
     : sources;
