@@ -75,8 +75,7 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
       } else if (
         collection === "group" &&
         groupId &&
-        response.record &&
-        !response.record.groupIds.includes(groupId)
+        (!response.record || !response.record.groupIds.includes(groupId))
       ) {
         warning = `
           This Grouparoo Record will not be sent to the Destination because it‘s not in the selected Group.
@@ -85,6 +84,8 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
       }
 
       setWarning(warning);
+
+      console.log(response);
 
       return response;
     },

@@ -5,7 +5,7 @@ import EnterpriseLink from "../../components/GrouparooLink";
 import { ApiHook } from "../../hooks/useApi";
 import { usePrevious } from "../../hooks/usePrevious";
 import { Actions, Models } from "../../utils/apiData";
-import { successHandler } from "../../utils/eventHandlers";
+import { errorHandler, successHandler } from "../../utils/eventHandlers";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 import StateBadge from "../badges/StateBadge";
 import ManagedCard from "../lib/ManagedCard";
@@ -114,6 +114,17 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 
     if (recordId || allowFetchWithoutRecordId) {
       ({ record, groups, destinations } = await fetchRecord(recordId));
+
+      if (allowFetchWithoutRecordId && !record && !recordId) {
+        setHasRecords(false);
+        errorHandler.set({
+          message:
+            "Could not switch Sample Record because no Records were found.",
+        });
+        setRecordId(getCachedSampleRecordId(modelId));
+        setLoading(false);
+        return;
+      }
     } else {
       ({ record, groups, destinations } = await execApi<Actions.RecordsList>(
         "get",
@@ -169,6 +180,12 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         )
       : undefined;
   }, [record, highlightProperty, allowFetchWithoutRecordId]);
+
+  useEffect(() => {
+    if (prevReloadKey !== reloadKey) {
+      setHasRecords(true);
+    }
+  }, [prevReloadKey, reloadKey, recordId]);
 
   useEffect(() => {
     // Switched to another model

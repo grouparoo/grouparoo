@@ -70,11 +70,7 @@ const PropertySampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
         return response;
       }
 
-      return {
-        record: undefined,
-        groups: undefined,
-        destinations: undefined,
-      };
+      return {};
     },
     [debouncedProperty]
   );
