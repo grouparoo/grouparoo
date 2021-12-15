@@ -64,6 +64,11 @@ export function makeWhereClause(
   const isCast = dataType === "Float32" || dataType.indexOf("Date") >= 0;
 
   switch (filterOperation) {
+    case FilterOperation.Exists:
+      op = "IS NOT NULL";
+      break;
+    case FilterOperation.NotExists:
+      op = "IS NULL";
     case FilterOperation.Equal:
       op = "==";
       break;
@@ -110,7 +115,7 @@ export function makeWhereClause(
     : `\`${columnName}\``;
 
   if (!isCast || transform) {
-    params.push(match);
+    if (match) params.push(match);
   }
 
   return ` ${key} ${op} ${
