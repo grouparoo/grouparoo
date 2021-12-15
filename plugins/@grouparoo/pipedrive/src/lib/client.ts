@@ -1,4 +1,6 @@
 import axios, { AxiosInstance } from "axios";
+import { objectCache } from "@grouparoo/core";
+import { PipedriveCacheData } from "./common/destinationMappingOptions";
 
 type Entity = "persons" | "organizations";
 type EntityField = "personFields" | "organizationFields";
@@ -151,7 +153,7 @@ export class PipedriveClient {
   persons: EntityCalls;
   organizations: EntityCalls;
 
-  constructor(apiToken: string) {
+  constructor(apiToken: string, cacheData: PipedriveCacheData) {
     this.request = axios.create({
       baseURL: "https://api.pipedrive.com/v1",
       params: {
@@ -160,7 +162,18 @@ export class PipedriveClient {
     });
 
     this.request.interceptors.response.use(
-      (response) => response,
+      async (response) => {
+        await objectCache(
+          {
+            objectId: cacheData.appId,
+            cacheKey: ["pipedrive:parallelism", cacheData.appOptions],
+            cacheDurationMs: 2000, // 2 seconds
+            read: false, // Write-only
+          },
+          async () => parseInt(response.headers["x-ratelimit-remaining"])
+        );
+        return response;
+      },
       (error) => {
         if (error.code === "ECONNRESET") {
           // console.log("ECONNRESET, retry after 2 seconds...");
