@@ -22,14 +22,12 @@ describe("models/group", () => {
   test("a group can be created", async () => {
     const group = new Group({
       name: "test group",
-      type: "manual",
       modelId: model.id,
     });
 
     await group.save();
 
     expect(group.id.length).toBe(40);
-    expect(group.type).toBe("manual");
     expect(group.createdAt).toBeTruthy();
     expect(group.updatedAt).toBeTruthy();
     expect(group.state).toBe("draft");
@@ -38,7 +36,6 @@ describe("models/group", () => {
   test("groups can be created in the ready state", async () => {
     const group = new Group({
       name: "test group ready",
-      type: "manual",
       state: "ready",
       modelId: model.id,
     });
@@ -51,7 +48,6 @@ describe("models/group", () => {
 
     const group = new Group({
       name: "test group",
-      type: "manual",
       modelId: model.id,
     });
 
@@ -65,7 +61,6 @@ describe("models/group", () => {
   test("a deleted group can be saved with a deleted state model", async () => {
     const group = new Group({
       name: "test group",
-      type: "manual",
       modelId: model.id,
     });
 
@@ -90,7 +85,6 @@ describe("models/group", () => {
   test("deleting a group creates a log entry with a relevant message", async () => {
     const group = await Group.create({
       name: "doomed group",
-      type: "manual",
       modelId: model.id,
     });
     await group.destroy();
@@ -109,7 +103,6 @@ describe("models/group", () => {
     expect(
       Group.create({
         name: "doomed group",
-        type: "manual",
         modelId: "foo",
       })
     ).rejects.toThrow(/cannot find model with id "foo"/);
@@ -118,7 +111,6 @@ describe("models/group", () => {
   test("groups cannot change models", async () => {
     const group = await Group.create({
       name: "doomed group",
-      type: "manual",
       modelId: model.id,
     });
     await expect(group.update({ modelId: "foo" })).rejects.toThrow(
@@ -142,7 +134,6 @@ describe("models/group", () => {
     test("creates a run and sets state to initialized", async () => {
       const group = await Group.create({
         name: "group that will create a run",
-        type: "manual",
         modelId: model.id,
       });
       let runs = await getRuns(group);
@@ -157,7 +148,6 @@ describe("models/group", () => {
 
       const group = await Group.create({
         name: "group that will not create a run",
-        type: "manual",
         modelId: model.id,
       });
       let runs = await getRuns(group);
@@ -171,7 +161,6 @@ describe("models/group", () => {
   describe("validations", () => {
     test("a new group will have a '' name", async () => {
       const group = await Group.create({
-        type: "manual",
         modelId: model.id,
       });
 
@@ -182,11 +171,9 @@ describe("models/group", () => {
 
     test("draft groups can share the same name, but not with ready groups", async () => {
       const groupOne = await Group.create({
-        type: "manual",
         modelId: model.id,
       });
       const groupTwo = await Group.create({
-        type: "manual",
         modelId: model.id,
       });
 
@@ -206,19 +193,16 @@ describe("models/group", () => {
 
     test("deleted groups can share the same name, but not with ready groups", async () => {
       const groupOne = await Group.create({
-        type: "manual",
         modelId: model.id,
         name: "1",
         state: "ready",
       });
       const groupTwo = await Group.create({
-        type: "manual",
         modelId: model.id,
         name: "2",
         state: "deleted",
       });
       const groupThree = await Group.create({
-        type: "manual",
         modelId: model.id,
         name: "3",
         state: "deleted",
@@ -256,33 +240,9 @@ describe("models/group", () => {
       );
     });
 
-    test("groups can only be of types manual and calculated", async () => {
-      const group = new Group({
-        name: "a new group",
-        type: "mysterious",
-        modelId: model.id,
-      });
-      await expect(group.save()).rejects.toThrow(
-        /type must be one of: manual, calculated/
-      );
-    });
-
-    test("manual groups cannot have rules set", async () => {
-      const group = new Group({
-        name: "a manual group with rules",
-        type: "manual",
-        modelId: model.id,
-      });
-      await group.save();
-      await expect(group.setRules([])).rejects.toThrow(
-        /group type not calculated/
-      );
-    });
-
     test("deleting a group creates a log entry", async () => {
       const group = await Group.create({
         name: "bye group",
-        type: "manual",
         modelId: model.id,
       });
       await group.destroy();
@@ -300,7 +260,6 @@ describe("models/group", () => {
       test("a group cannot be deleted if a destination is tracking it", async () => {
         const group = await Group.create({
           name: "tracked group",
-          type: "manual",
           modelId: model.id,
         });
 
@@ -319,7 +278,6 @@ describe("models/group", () => {
       test("a group cannot be deleted if a deleted destination is tracking it", async () => {
         const group = await Group.create({
           name: "tracked group",
-          type: "manual",
           modelId: model.id,
         });
 
@@ -340,7 +298,6 @@ describe("models/group", () => {
         async (destinationState) => {
           const group = await Group.create({
             name: "tracked group",
-            type: "manual",
             modelId: model.id,
             state: "ready",
           });
@@ -362,14 +319,12 @@ describe("models/group", () => {
         const trackedGroup = await Group.create({
           name: "tracked group",
           modelId: model.id,
-          type: "manual",
           state: "ready",
         });
 
         const taggedGroup = await Group.create({
           name: "taged group",
           modelId: model.id,
-          type: "manual",
           state: "ready",
         });
 
@@ -405,14 +360,12 @@ describe("models/group", () => {
         const trackedGroup = await Group.create({
           name: "tracked group",
           modelId: model.id,
-          type: "manual",
           state: "ready",
         });
 
         const taggedGroup = await Group.create({
           name: "taged group",
           modelId: model.id,
-          type: "manual",
           state: "ready",
         });
 
@@ -440,14 +393,20 @@ describe("models/group", () => {
     test("adding and removing a group member creates a custom log message and imports", async () => {
       const group: Group = await helper.factories.group();
       const record: GrouparooRecord = await helper.factories.record();
-      await group.addRecord(record);
+
+      await GroupOps.updateRecords([record.id], "group", group.id); // make an import
+      const groupMember = await GroupMember.create({
+        recordId: record.id,
+        groupId: group.id,
+      });
 
       let log = await Log.findOne({
         where: { topic: "groupMember", verb: "create" },
       });
       expect(log.message).toMatch(/added to group/);
 
-      await group.removeRecord(record);
+      await groupMember.destroy();
+      await GroupOps.updateRecords([record.id], "group", group.id); // make an import
 
       log = await Log.findOne({
         where: { topic: "groupMember", verb: "destroy" },
@@ -516,13 +475,12 @@ describe("models/group", () => {
   });
 
   describe("record helpers", () => {
-    let group;
-    let record;
-    let anotherProfile;
+    let group: Group;
+    let record: GrouparooRecord;
+    let anotherProfile: GrouparooRecord;
     beforeAll(async () => {
       group = new Group({
         name: "the group",
-        type: "manual",
         modelId: model.id,
       });
       await group.save();
@@ -533,7 +491,8 @@ describe("models/group", () => {
     });
 
     test("it can add a member", async () => {
-      await group.addRecord(record);
+      await GroupMember.create({ recordId: record.id, groupId: group.id });
+
       const records = await group.$get("records");
       expect(records.length).toBe(1);
       const recordIds = records.map((p) => p.id);
@@ -541,16 +500,20 @@ describe("models/group", () => {
     });
 
     test("it cannot add a member a second time", async () => {
-      await expect(group.addRecord(record)).rejects.toThrow(
-        /There is already a GroupMember/
-      );
+      await expect(
+        GroupMember.create({ recordId: record.id, groupId: group.id })
+      ).rejects.toThrow(/There is already a GroupMember/);
 
       const records = await group.$get("records");
       expect(records.length).toBe(1);
     });
 
     test("it can list members", async () => {
-      await group.addRecord(anotherProfile);
+      await GroupMember.create({
+        recordId: anotherProfile.id,
+        groupId: group.id,
+      });
+
       const records = await group.$get("records");
       expect(records.length).toBe(2);
     });
@@ -561,18 +524,13 @@ describe("models/group", () => {
     });
 
     test("it can remove a member", async () => {
-      await group.removeRecord(anotherProfile);
+      await GroupMember.destroy({ where: { recordId: anotherProfile.id } });
+
       const records = await group.$get("records");
       expect(records.length).toBe(1);
       const recordIds = records.map((p) => p.id);
       expect(recordIds).toContain(record.id);
       expect(recordIds).not.toContain(anotherProfile.id);
-    });
-
-    test("it cannot remove a non-member", async () => {
-      await expect(group.removeRecord(anotherProfile)).rejects.toThrow(
-        /record is not a member of this group/
-      );
     });
   });
 });

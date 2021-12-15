@@ -66,7 +66,9 @@ describe("tasks/record:export", () => {
           name: "test group",
           matchType: "all",
         });
-        await GroupMember.create({ recordId: record.id, groupId: group.id });
+        await group.setRules([
+          { key: "grouparooId", operation: { op: "exists" } },
+        ]);
 
         plugin.registerPlugin({
           name: "test-plugin",
@@ -296,7 +298,7 @@ describe("tasks/record:export", () => {
           lastName: "Koopa",
         });
         expect(_export.oldGroups).toEqual([]);
-        expect(_export.newGroups).toEqual([]);
+        expect(_export.newGroups).toEqual(["test group"]);
       });
 
       describe("with exportRecord", () => {

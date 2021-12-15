@@ -1,7 +1,9 @@
 import { helper } from "@grouparoo/spec-helper";
+import { group } from "console";
 import {
   GrouparooModel,
   App,
+  GroupMember,
   Source,
   Property,
   GrouparooRecord,
@@ -138,18 +140,21 @@ describe("multiple models", () => {
     ).rejects.toThrow(/does not belong/);
   });
 
-  test("manual groups can only have members added from the same model", async () => {
-    const manualProfileGroup = await Group.create({
+  test("groups can only have members added from the same model", async () => {
+    const newProfileGroup = await Group.create({
       name: "manualProfileGroup",
       modelId: "mod_profiles",
       state: "ready",
     });
 
-    await expect(manualProfileGroup.addRecord(adminRecord)).rejects.toThrow(
-      /do not match/
-    );
+    await expect(
+      GroupMember.create({
+        recordId: adminRecord.id,
+        groupId: newProfileGroup.id,
+      })
+    ).rejects.toThrow(/do not match/);
 
-    await manualProfileGroup.destroy();
+    await newProfileGroup.destroy();
   });
 
   test("destinations can be created for a model", async () => {

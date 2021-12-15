@@ -23,12 +23,11 @@ describe("bin/generate", () => {
 
   test("all the template can be loaded", async () => {
     const templateNames = templates.map((t) => t.name);
-    expect(templateNames).toContain("group:calculated");
-    expect(templateNames).toContain("group:manual");
+    expect(templateNames).toContain("group");
   });
 
   test("ConfigTemplates will check for missing args", async () => {
-    const template = templates.find((t) => t.name === "group:manual");
+    const template = templates.find((t) => t.name === "group");
 
     await expect(() =>
       template.run({ params: { path: tmpDir, name: "name" } })
@@ -36,7 +35,7 @@ describe("bin/generate", () => {
   });
 
   test("defaults can be applied", async () => {
-    const template = templates.find((t) => t.name === "group:manual");
+    const template = templates.find((t) => t.name === "group");
 
     const fileData = await template.run({
       params: template.prepareParams({ path: tmpDir, id: "test_group" }),
@@ -49,23 +48,8 @@ describe("bin/generate", () => {
   });
 
   describe("templates", () => {
-    test("group:manual", async () => {
-      const template = templates.find((t) => t.name === "group:manual");
-      const fileData = await template.run({
-        params: template.prepareParams({
-          path: tmpDir,
-          id: "test_group",
-          name: "test_name",
-        }),
-      });
-
-      const newFile = `${tmpDir}/groups/test_group.js`;
-      expect(fileData[newFile]).toBeTruthy();
-      expect(fileData[newFile]).toContain('id: "test_group"');
-    });
-
-    test("group:calculated", async () => {
-      const template = templates.find((t) => t.name === "group:calculated");
+    test("group", async () => {
+      const template = templates.find((t) => t.name === "group");
       const fileData = await template.run({
         params: template.prepareParams({
           path: tmpDir,

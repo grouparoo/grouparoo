@@ -277,7 +277,7 @@ export class Group extends LoggedModel<Group> {
           : "initializing";
       this.changed("updatedAt", true);
       await this.save();
-      await this.run();
+      return this.run();
     }
   }
 

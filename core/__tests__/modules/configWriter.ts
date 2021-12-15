@@ -888,13 +888,12 @@ describe("modules/configWriter", () => {
 
       expect(config.id).toBeTruthy();
 
-      const { name, type } = group;
+      const { name } = group;
 
       expect(config).toEqual({
         class: "Group",
         id: group.getConfigId(),
         modelId: "profiles",
-        type,
         name,
         rules: [
           {
@@ -906,23 +905,6 @@ describe("modules/configWriter", () => {
             relativeMatchUnit: null,
           },
         ],
-      });
-    });
-
-    test("manual groups do not provide rules", async () => {
-      const group: Group = await helper.factories.group({ type: "manual" });
-      const config = await group.getConfigObject();
-
-      expect(config.id).toBeTruthy();
-
-      const { name, type } = group;
-
-      expect(config).toEqual({
-        class: "Group",
-        id: group.getConfigId(),
-        modelId: "profiles",
-        type,
-        name,
       });
     });
 

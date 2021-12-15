@@ -791,44 +791,6 @@ describe("models/record", () => {
     });
   });
 
-  describe("with a manual group", () => {
-    let record: GrouparooRecord;
-    let group: Group;
-
-    beforeAll(async () => {
-      group = await Group.create({
-        name: "test group",
-        type: "manual",
-        state: "ready",
-        modelId: model.id,
-      });
-
-      record = await GrouparooRecord.create({ modelId: model.id });
-      await group.addRecord(record);
-    });
-
-    test("the record can return the groups it is a member of", async () => {
-      const groups = await record.$get("groups");
-      expect(groups.length).toBe(1);
-      expect(groups[0].name).toBe("test group");
-    });
-
-    test("calculating memberships will include the manual group", async () => {
-      const groups = await record.updateGroupMembership();
-      expect(groups[group.id]).toEqual(true);
-    });
-
-    test("deleting the record will also delete the groupMember", async () => {
-      let count = await GroupMember.count({ where: { groupId: group.id } });
-      expect(count).toBe(1);
-
-      await record.destroy();
-
-      count = await GroupMember.count({ where: { groupId: group.id } });
-      expect(count).toBe(0);
-    });
-  });
-
   describe("with a calculated group", () => {
     let group: Group;
     let record: GrouparooRecord;

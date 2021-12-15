@@ -8,6 +8,7 @@ import {
   Export,
   Group,
   GrouparooModel,
+  GroupMember,
   Log,
   Mapping,
   Option,
@@ -955,7 +956,7 @@ describe("models/destination", () => {
           userId: [1],
           email: ["yoshi@example.com"],
         });
-        await group.addRecord(record);
+        await GroupMember.create({ recordId: record.id, groupId: group.id });
         await destination.updateTracking("group", group.id);
 
         const mapping = {
@@ -985,7 +986,7 @@ describe("models/destination", () => {
           email: ["yoshi@example.com"],
           ltv: [123],
         });
-        await group.addRecord(record);
+        await GroupMember.create({ recordId: record.id, groupId: group.id });
         await destination.updateTracking("group", group.id);
 
         const mapping = {
@@ -1013,7 +1014,7 @@ describe("models/destination", () => {
           await irrelevantDestination.updateTracking("group", otherGroup.id);
 
           const record = await helper.factories.record();
-          await group.addRecord(record);
+          await GroupMember.create({ recordId: record.id, groupId: group.id });
 
           // before the destinations are ready
           await destination.updateTracking("group", group.id);
@@ -1047,7 +1048,8 @@ describe("models/destination", () => {
           );
 
           await destination.updateTracking("none");
-          await group.removeRecord(record);
+          await GroupMember.destroy({ where: { recordId: record.id } });
+
           await otherGroupDestination.updateTracking("none");
           await otherGroupDestination.destroy();
           await modelDestination.updateTracking("none");

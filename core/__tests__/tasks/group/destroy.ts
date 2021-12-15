@@ -9,6 +9,7 @@ import {
   GrouparooRecord,
   Run,
   GrouparooModel,
+  GroupMember,
 } from "./../../../src";
 import { GroupDestroy } from "../../../src/tasks/group/destroy";
 
@@ -63,7 +64,6 @@ describe("tasks/group:destroy", () => {
     it("will leave the group alone if it is not in the deleted state", async () => {
       const group = await Group.create({
         name: "test group 0",
-        type: "manual",
         state: "ready",
         modelId: model.id,
       });
@@ -80,7 +80,6 @@ describe("tasks/group:destroy", () => {
     it("will immediately delete the group if it has no members and there are no existing runs", async () => {
       const group = await Group.create({
         name: "test group",
-        type: "manual",
         state: "ready",
         modelId: model.id,
       });
@@ -95,16 +94,19 @@ describe("tasks/group:destroy", () => {
       await expect(group.reload()).rejects.toThrow(/does not exist anymore/);
     });
 
-    it("will make a new run to clear remainig group members if there is not an existing run", async () => {
+    it("will make a new run to clear remaining group members if there is not an existing run", async () => {
       const group = await Group.create({
         name: "test group 2",
-        type: "manual",
         state: "ready",
         modelId: model.id,
       });
+      const setRun = await group.setRules([
+        { key: "grouparooId", operation: { op: "exists" } },
+      ]);
+      await setRun.destroy();
 
-      await group.addRecord(mario);
-      await group.addRecord(luigi);
+      await GroupMember.create({ groupId: group.id, recordId: mario.id });
+      await GroupMember.create({ groupId: group.id, recordId: luigi.id });
 
       await group.update({ state: "deleted" }); // mark group as deleted
 
@@ -120,63 +122,6 @@ describe("tasks/group:destroy", () => {
       expect(run.memberLimit).toBe(100);
       expect(run.memberOffset).toBe(0);
       expect(run.method).toBe("runRemoveGroupMembers");
-    });
-
-    it("will remove all members in a manual group and then delete the group", async () => {
-      let _imports = [];
-      let groupMemberCount = 0;
-
-      const group = await Group.create({
-        name: "test group",
-        type: "manual",
-        state: "ready",
-        modelId: model.id,
-      });
-
-      await group.addRecord(mario);
-      await group.addRecord(luigi);
-
-      groupMemberCount = await group.$count("groupMembers");
-      expect(groupMemberCount).toBe(2);
-      _imports = await Import.findAll();
-      expect(_imports.length).toBe(2);
-      await Import.truncate();
-
-      await group.update({ state: "deleted" }); // mark group as deleted
-
-      // remove the records
-      let run: Run = await specHelper.runTask<GroupDestroy>("group:destroy", {
-        groupId: group.id,
-      });
-
-      const reloadedGroup = await Group.findById(group.id);
-      expect(reloadedGroup.state).toBe("deleted");
-
-      expect(run).toBeTruthy();
-      expect(run.state).toBe("running");
-      expect(run.memberLimit).toBe(100);
-      expect(run.memberOffset).toBe(0);
-      expect(run.method).toBe("runRemoveGroupMembers");
-
-      // process the run
-      await specHelper.runTask("group:run", { runId: run.id }); // runRemoveGroupMembers
-      await specHelper.runTask("group:run", { runId: run.id }); // removePreviousRunGroupMembers
-      await specHelper.runTask("group:run", { runId: run.id }); // wait for imports...
-      await ImportWorkflow();
-      await specHelper.runTask("group:run", { runId: run.id }); // mark done
-      await run.reload();
-      expect(run.state).toBe("complete");
-
-      groupMemberCount = await group.$count("groupMembers");
-      expect(groupMemberCount).toBe(0);
-
-      // remove the group
-      run = await specHelper.runTask<GroupDestroy>("group:destroy", {
-        groupId: group.id,
-      });
-      expect(run).toBeNull();
-
-      await expect(group.reload()).rejects.toThrow(/does not exist anymore/);
     });
 
     it("will remove all members in a calculated group and then delete the group", async () => {
@@ -251,7 +196,6 @@ describe("tasks/group:destroy", () => {
       async (destinationState) => {
         const group = await Group.create({
           name: "test group 4",
-          type: "manual",
           state: "ready",
           modelId: model.id,
         });
