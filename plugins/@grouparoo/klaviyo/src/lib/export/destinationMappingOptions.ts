@@ -11,30 +11,33 @@ type KnownKlaviyoField = {
 };
 
 export const fetchKnownFields = async (): Promise<KnownKlaviyoField[]> => {
-  const required = ["email"];
-  const allowedFields = [
+  const required: Record<string, DestinationMappingOptionsResponseType> = {
+    email: "email",
+  };
+  const allowedFields: Record<string, DestinationMappingOptionsResponseType> = {
     ...required,
-    "first_name",
-    "last_name",
-    "phone_number",
-    "city",
-    "region",
-    "country",
-    "zip",
-    "image",
-    "address1",
-    "address2",
-    "latitude",
-    "longitude",
-    "organization",
-    "title",
-    "timezone",
-  ];
-  return allowedFields.map((field) => ({
+    first_name: "string",
+    last_name: "string",
+    phone_number: "phoneNumber",
+    city: "string",
+    region: "string",
+    country: "string",
+    zip: "string",
+    image: "url",
+    address1: "string",
+    address2: "string",
+    latitude: "number",
+    longitude: "number",
+    organization: "string",
+    title: "string",
+    timezone: "string",
+  };
+
+  return Object.entries(allowedFields).map(([field, type]) => ({
     key: field,
     klaviyoKey: `$${field}`,
-    type: "string",
-    required: required.includes(field),
+    type: type,
+    required: required.hasOwnProperty(field),
   }));
 };
 
