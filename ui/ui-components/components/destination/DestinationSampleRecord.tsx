@@ -80,7 +80,7 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
       ) {
         warning = `
           This Grouparoo Record will not be sent to the Destination because it‘s not in the selected Group.
-          You can load a random Record to get one that will export.
+          You can switch to a random Record to get one that will export.
         `;
       }
 

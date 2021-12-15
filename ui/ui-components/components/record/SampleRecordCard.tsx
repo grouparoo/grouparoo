@@ -279,7 +279,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         setRecordId(undefined);
       }}
     >
-      Load Random Record
+      Switch to random Record
     </LoadingButton>,
   ];
 
