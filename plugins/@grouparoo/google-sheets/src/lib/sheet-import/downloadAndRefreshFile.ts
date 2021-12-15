@@ -18,8 +18,8 @@ export async function downloadAndRefreshFile(
     sourceOptions.sheet_url?.toString()
   );
 
-  let localDir = path.join(tmpdir(), "google-sheets-cache", sourceId);
-  let localPath = path.join(localDir, `${sheet.docId}.csv`);
+  const localDir = path.join(tmpdir(), "google-sheets-cache", sourceId);
+  const localPath = path.join(localDir, `${sheet.docId}.csv`);
 
   let toDownload = false;
   if (!fs.existsSync(localPath)) {
@@ -34,12 +34,14 @@ export async function downloadAndRefreshFile(
 
   if (toDownload) {
     log(`Saving Google Sheet to \`${localPath}\``, "debug");
-    if (fs.existsSync(localPath)) fs.rmSync(localPath, { force: true });
+    const localPathAux = path.join(localDir, `${sheet.docId}-aux.csv`);
+    if (fs.existsSync(localPathAux)) fs.rmSync(localPathAux, { force: true });
+
     const writer = csvWriter({
       sendHeaders: true,
       headers: await sheet.getHeaders(),
     });
-    writer.pipe(fs.createWriteStream(localPath));
+    writer.pipe(fs.createWriteStream(localPathAux));
     const limit = 900;
     let offset = 0;
     let rows = await sheet.read({ limit, offset });
@@ -52,6 +54,9 @@ export async function downloadAndRefreshFile(
       rows = await sheet.read({ limit, offset });
     }
     writer.end();
+
+    if (fs.existsSync(localPath)) fs.rmSync(localPath, { force: true });
+    fs.copySync(localPathAux, localPath);
   }
   return localPath;
 }
