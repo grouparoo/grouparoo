@@ -322,7 +322,7 @@ export default function Page(props) {
                       }
                     }}
                   >
-                    <option value="__none">No Group or Model</option>
+                    <option value="__none">No Model or Group</option>
                     <option disabled>--- Models ---</option>
                     <option value="__model">
                       All Records in the {destination.modelName} Model

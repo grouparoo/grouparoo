@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import SampleRecordCard, {
   SampleRecordCardProps,
 } from "../record/SampleRecordCard";
@@ -31,6 +31,7 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
 }) => {
   const { execApi, modelId } = props;
   const debouncedDestination = useDebouncedValue(destination, 1000);
+  const [warning, setWarning] = useState<string>();
 
   const reloadKey = useMemo(
     () =>
@@ -46,26 +47,48 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
   );
 
   const fetchRecord = useCallback<SampleRecordCardProps["fetchRecord"]>(
-    (recordId: string) => {
+    async (recordId: string) => {
       const destinationGroupMemberships: Record<string, string> =
         debouncedDestination.destinationGroupMemberships.reduce((acc, dgm) => {
           acc[dgm.groupId] = dgm.remoteKey;
           return acc;
         }, {} as Record<string, string>);
 
-      return execApi<Actions.DestinationRecordPreview>(
+      const response = await execApi<Actions.DestinationRecordPreview>(
         "get",
         `/destination/${debouncedDestination.id}/recordPreview`,
         {
-          groupId: groupId,
-          modelId: modelId,
+          groupId,
+          modelId,
+          collection,
           mapping: debouncedDestination.mapping,
           destinationGroupMemberships,
           recordId,
         }
       );
+
+      let warning: string;
+
+      if (collection === "none") {
+        warning =
+          "This Grouparoo Record will not be part of the export to the Destination because no Model or Group is selected.";
+      } else if (
+        collection === "group" &&
+        groupId &&
+        response.record &&
+        !response.record.groupIds.includes(groupId)
+      ) {
+        warning = `
+          This Grouparoo Record will not be sent to the Destination because it‘s not in the selected Group.
+          You can load a random Record to get one that will export.
+        `;
+      }
+
+      setWarning(warning);
+
+      return response;
     },
-    [execApi, debouncedDestination, modelId, groupId]
+    [execApi, debouncedDestination, modelId, groupId, collection]
   );
 
   return (
@@ -75,6 +98,7 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
       fetchRecord={fetchRecord}
       propertiesTitle={mappingOptions?.labels?.property?.plural}
       groupsTitle={mappingOptions?.labels?.group?.plural}
+      warning={warning}
       propertyLinkDisabled
       importDisabled
       allowFetchWithoutRecordId

@@ -40,6 +40,7 @@ export interface SampleRecordCardProps {
   propertyLinkDisabled?: boolean;
   importDisabled?: boolean;
   reloadKey?: string;
+  warning?: string;
 }
 
 const isConfigUI = grouparooUiEdition() === "config";
@@ -72,6 +73,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   highlightPropertyError,
   propertyLinkDisabled = false,
   allowFetchWithoutRecordId = false,
+  warning,
   reloadKey,
 }) => {
   const prevModelId = usePrevious(modelId);
@@ -277,7 +279,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         setRecordId(undefined);
       }}
     >
-      Switch to random Record
+      Load Random Record
     </LoadingButton>,
   ];
 
@@ -458,6 +460,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       title={<>Sample Record {loading && <Loader size="sm" />}</>}
       disabled={disabled}
       actions={cardActions}
+      border={warning ? "warning" : undefined}
     >
       <Card.Body>
         {content}
@@ -479,6 +482,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
           }}
         />
       )}
+      {warning && <Card.Footer>{warning}</Card.Footer>}
     </ManagedCard>
   );
 };
