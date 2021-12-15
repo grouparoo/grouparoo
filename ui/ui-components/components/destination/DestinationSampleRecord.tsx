@@ -77,6 +77,7 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
       groupsTitle={mappingOptions?.labels?.group?.plural}
       propertyLinkDisabled
       importDisabled
+      allowFetchWithoutRecordId
     />
   );
 };

@@ -24,11 +24,12 @@ type RecordType =
 export interface SampleRecordCardProps {
   modelId: string;
   execApi: ApiHook["execApi"];
-  fetchRecord: (recordId: string) => Promise<{
+  fetchRecord: (recordId?: string) => Promise<{
     record?: RecordType;
     groups?: Models.GroupType[];
     destinations?: Models.DestinationType[];
   }>;
+  allowFetchWithoutRecordId?: boolean;
   properties: Models.PropertyType[];
   propertiesTitle?: string;
   groupsTitle?: string;
@@ -70,6 +71,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   highlightProperty,
   highlightPropertyError,
   propertyLinkDisabled = false,
+  allowFetchWithoutRecordId = false,
   reloadKey,
 }) => {
   const prevModelId = usePrevious(modelId);
@@ -108,7 +110,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     let groups: Models.GroupType[];
     let destinations: Models.DestinationType[];
 
-    if (recordId) {
+    if (recordId || allowFetchWithoutRecordId) {
       ({ record, groups, destinations } = await fetchRecord(recordId));
     } else {
       ({ record, groups, destinations } = await execApi<Actions.RecordsList>(
@@ -164,7 +166,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
             : a.localeCompare(b)
         )
       : undefined;
-  }, [record, highlightProperty]);
+  }, [record, highlightProperty, allowFetchWithoutRecordId]);
 
   useEffect(() => {
     // Switched to another model
@@ -242,7 +244,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
               <Loader size="sm" />
             </div>
           ) : (
-            "The Sample Record preview is currently unavailable."
+            "At least one Grouparoo Property needs to be mapped before showing the Sample Record."
           )}
         </Card.Body>
       </ManagedCard>
