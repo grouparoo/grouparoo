@@ -1,44 +1,10 @@
 import { getKnownFieldMap } from "./destinationMappingOptions";
 import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
-
-async function handleGroupsChanges(client, email, oldGroups, newGroups) {
-  const listMapByName = await client.getListMapByName();
-
-  // Unsubscribe from old groups
-  for (const groupName of oldGroups) {
-    // Only if the group exists
-    if (listMapByName.hasOwnProperty(groupName)) {
-      await client.lists.removeMembersFromList({
-        listId: listMapByName[groupName],
-        emails: [email],
-      });
-
-      const result = await client.lists.getAllMembers({
-        groupId: listMapByName[groupName],
-      });
-      if (result.records.length === 0) {
-        await client.lists.deleteList(listMapByName[groupName]);
-      }
-    }
-  }
-
-  // Subscribe to new groups
-  for (const groupName of newGroups) {
-    // Create list if not exists
-    if (!listMapByName.hasOwnProperty(groupName)) {
-      const { list_id } = await client.lists.createList(groupName);
-      listMapByName[groupName] = list_id;
-    }
-
-    await client.lists.addMembersToList({
-      listId: listMapByName[groupName],
-      profiles: [{ email }],
-    });
-  }
-}
+import { handleGroupsChanges } from "./listMethods";
 
 export const handlePersonChanges: ExportRecordPluginMethod = async ({
+  appId,
   appOptions,
   syncOperations,
   export: {
@@ -110,7 +76,14 @@ export const handlePersonChanges: ExportRecordPluginMethod = async ({
       post: true,
     });
   }
-  await handleGroupsChanges(client, newEmail, oldGroups, newGroups);
+
+  await handleGroupsChanges(
+    client,
+    { appId, appOptions },
+    newEmail,
+    oldGroups,
+    newGroups
+  );
   return { success: true };
 };
 
