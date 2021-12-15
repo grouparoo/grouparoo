@@ -126,7 +126,7 @@ describe("integration/runs/mysql", () => {
       csrfToken,
       id: property.id,
       options: {
-        query: `select email from ${usersTableName} where id = {{ userId }}`,
+        query: `select email from ${usersTableName} where id = {{{ userId }}}`,
       },
       state: "ready",
     };

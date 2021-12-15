@@ -1,0 +1,45 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      id: {{{id}}},
+      name: {{{id}}},
+      class: "destination",
+      type: "salesforce-export-objects",
+      appId: {{{appId}}}, // The ID of the App this Destination uses - e.g. `appId: "salesforce_app"`
+      modelId: "mod_profiles", // The ID of the Grouparoo Model that this Destination will send
+      collection: "group", // What collection of Records should be sent?  "group" requires a groupId below, and "model" will sync all Records from "modelId"
+      groupId: "...", // The ID of the group whose members you want to export - e.g. `groupId: "high_value_customers"`
+      syncMode: {{{syncMode}}}, // How should Grouparoo sync with this destination? Options: "sync", "additive", "enrich"
+
+      // Note that depending on your Salesforce configuration, not all options are required
+      // Learn more @ https://www.grouparoo.com/blog/salesforce-destination
+
+      options: {
+        recordObject: "Contact", // Which object in Salesforce represents a Grouparoo record?
+        recordMatchField: "Email", // Which field in the record Object is used to match Grouparoo records?
+        groupObject: "Account", // Which object in Salesforce represents a Grouparoo group?
+        groupNameField: "Name", // Which field in the group Object is used for the name of a Grouparoo group?
+        membershipObject: "AccountContactRole", // Which object in Salesforce maps the record object to the group object?
+        membershipRecordField: "AccountId", // Which field in the membership Object is the reference to the record?
+        membershipGroupField: "ContactId", // Which field in the membership Object is the reference to the group?
+        recordReferenceField: "AccountId", // Is there a reference field on the record Object to fill out?
+        recordReferenceObject: "Account", // If there is a reference field, which Object should be created to apply to the record?
+        recordReferenceMatchField: undefined, // If there is a reference field, how should it be matched to Grouparoo record?
+      },
+
+      // Mappings are how you choose which properties to export to this destination.
+      // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
+      mapping: {
+        email: "email",
+        firstname: "firstName",
+        lastname: "lastName",
+      },
+
+      // You can export group memberships.
+      // Keys are the name to display in the destination, values are the IDs of the Groups in Grouparoo.
+      destinationGroupMemberships: {
+        "High Value Customers!": "highValueCustomers",
+      },
+    },
+  ];
+};

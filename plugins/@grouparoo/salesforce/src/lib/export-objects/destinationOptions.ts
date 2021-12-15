@@ -1,4 +1,4 @@
-import { getDestinationOptions } from "../export/options";
+import { getDestinationOptions } from "./options";
 import { DestinationOptionsMethod } from "@grouparoo/core";
 
 export const destinationOptions: DestinationOptionsMethod = async ({

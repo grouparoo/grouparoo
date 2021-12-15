@@ -71,11 +71,11 @@ export default function Page(props: Props & NextPageContext) {
     type: "",
   });
   const [source, setSource] = useState(props.source);
-  if (hydrationError) errorHandler.set({ error: hydrationError });
+  if (hydrationError) errorHandler.set({ message: hydrationError });
 
   const bootstrapUniqueProperty = async () => {
     if (newMappingKey === "") {
-      return errorHandler.set({ error: "select record identification" });
+      return errorHandler.set({ message: "select record identification" });
     }
 
     setLoading(true);

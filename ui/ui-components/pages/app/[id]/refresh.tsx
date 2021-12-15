@@ -131,7 +131,7 @@ export default function Page(props) {
             }`,
           });
         }
-        setAppRefreshQuery(response.appRefreshQuery);
+        setAppRefreshQuery(response?.appRefreshQuery);
       } finally {
         setLoading(false);
       }
@@ -142,7 +142,12 @@ export default function Page(props) {
   }
 
   async function cancelEdit() {
-    setAppRefreshQuery(props.appRefreshQuery);
+    const response: Actions.AppRefreshQueryView = await execApi(
+      "get",
+      `/appRefreshQuery/${appRefreshQuery.id}/`,
+      { id: appRefreshQuery.id }
+    );
+    if (response?.appRefreshQuery) setAppRefreshQuery(response.appRefreshQuery);
     setEditing(false);
   }
 

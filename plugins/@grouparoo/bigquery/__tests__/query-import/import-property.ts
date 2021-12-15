@@ -55,44 +55,45 @@ describe("bigquery/query/recordProperty", () => {
   });
 
   test("can run a integer query to get a string", async () => {
-    const sql = "SELECT first_name FROM test.records WHERE id = {{ userId }}";
+    const sql = "SELECT first_name FROM test.records WHERE id = {{{ userId }}}";
     const value = await getPropertyValue(sql);
     expect(value).toEqual(["Erie"]);
   });
 
   test("can run a integer query to get a float", async () => {
-    const sql = "SELECT ltv FROM test.records WHERE id = {{ userId }}";
+    const sql = "SELECT ltv FROM test.records WHERE id = {{{ userId }}}";
     const value = await getPropertyValue(sql);
     expect(value).toEqual([259.12]);
   });
 
   test("can run a integer query to get a boolean", async () => {
-    const sql = "SELECT ios_app FROM test.records WHERE id = {{ userId }}";
+    const sql = "SELECT ios_app FROM test.records WHERE id = {{{ userId }}}";
     const value = await getPropertyValue(sql);
     expect(value).toEqual([true]);
   });
 
   test("can run a string query to get a string", async () => {
     const sql =
-      "SELECT first_name FROM test.records WHERE email = '{{ email }}'";
+      "SELECT first_name FROM test.records WHERE email = '{{{ email }}}'";
     const value = await getPropertyValue(sql);
     expect(value).toEqual(["Erie"]);
   });
 
   test("can run a string query to get a float", async () => {
-    const sql = "SELECT ltv FROM test.records WHERE email = '{{ email }}'";
+    const sql = "SELECT ltv FROM test.records WHERE email = '{{{ email }}}'";
     const value = await getPropertyValue(sql);
     expect(value).toEqual([259.12]);
   });
 
   test("can run a string query to get a boolean", async () => {
-    const sql = "SELECT ios_app FROM test.records WHERE email = '{{ email }}'";
+    const sql =
+      "SELECT ios_app FROM test.records WHERE email = '{{{ email }}}'";
     const value = await getPropertyValue(sql);
     expect(value).toEqual([true]);
   });
 
   test("returns undefined when data is not available", async () => {
-    const sql = `SELECT ios_app FROM test.records WHERE email = '{{ badName }}'`;
+    const sql = `SELECT ios_app FROM test.records WHERE email = '{{{ badName }}}'`;
     const value = await getPropertyValue(sql);
     expect(value).toEqual(undefined);
   });

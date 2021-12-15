@@ -17,7 +17,7 @@ export default function ResetCluster(props) {
   async function reset() {
     if (!window.confirm("Are you sure?")) return;
     if (window.prompt("Type 'destroy' to proceed") !== "destroy") {
-      return errorHandler.set({ error: "not proceeding" });
+      return errorHandler.set({ message: "not proceeding" });
     }
 
     setLoading(true);

@@ -1,9 +1,16 @@
 import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { PipedriveCacheData } from "../common/destinationMappingOptions";
-import { makePayload } from "../common/exportRecord";
+import {
+  getExportRecordWithErrorHandling,
+  makePayload,
+} from "../common/exportRecord";
 
-export const handlePersonChanges: ExportRecordPluginMethod = async ({
+export const exportPersonRecord: ExportRecordPluginMethod = (arg) => {
+  return getExportRecordWithErrorHandling(handlePersonChanges)(arg);
+};
+
+const handlePersonChanges: ExportRecordPluginMethod = async ({
   appId,
   appOptions,
   syncOperations,

@@ -9,8 +9,8 @@ import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/t
 import { destinationOptions } from "../lib/common/destinationOptions";
 import { exportArrayProperties } from "../lib/common/exportArrayProperties";
 import { getDestinationMappingOptions } from "../lib/common/destinationMappingOptions";
-import { getExportRecord } from "../lib/common/exportRecord";
-import { handlePersonChanges } from "../lib/export-persons/exportRecord";
+import { exportPersonRecord } from "../lib/export-persons/exportRecord";
+import { exportOrganizationRecord } from "../lib/export-organizations/exportRecord";
 
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 
@@ -67,7 +67,7 @@ export class Plugins extends Initializer {
           defaultSyncMode,
           options: [],
           methods: {
-            exportRecord: getExportRecord(handlePersonChanges),
+            exportRecord: exportPersonRecord,
             destinationOptions,
             destinationMappingOptions: getDestinationMappingOptions("person"),
             exportArrayProperties,
@@ -83,7 +83,7 @@ export class Plugins extends Initializer {
           defaultSyncMode,
           options: [],
           methods: {
-            exportRecord: getExportRecord(handlePersonChanges),
+            exportRecord: exportOrganizationRecord,
             destinationOptions,
             destinationMappingOptions:
               getDestinationMappingOptions("organization"),

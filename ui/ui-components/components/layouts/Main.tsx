@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
-import { Row, Col } from "react-bootstrap";
 import { isBrowser } from "../../utils/isBrowser";
-import SuccessAlert from "../alerts/Success";
-import ErrorAlert from "../alerts/Error";
+import Toast from "../alerts/Toast";
 import Navigation from "../Navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HydrationError from "../alerts/HydrationError";
@@ -23,23 +21,14 @@ export default function Main(props) {
     hydrationError: string;
   } = props;
   const [navExpanded, setNavExpanded] = useState(true);
-  const [alertWidth, setAlertWidth] = useState(500);
   const contentAreaLeftPadding = 250;
 
   useEffect(setWidth, []);
-  useEffect(() => {
-    setAlertWidth(
-      window.innerWidth - (navExpanded ? contentAreaLeftPadding : 30) - 30
-    );
-  }, [navExpanded]);
 
   function setWidth() {
     if (isBrowser()) {
       const small = window.innerWidth < 780;
       if (small) setNavExpanded(false);
-      setAlertWidth(
-        window.innerWidth - (!small ? contentAreaLeftPadding : 30) - 30
-      );
     }
   }
 
@@ -177,25 +166,22 @@ export default function Main(props) {
           }}
         >
           <br />
-          <div>
-            <div
-              style={{
-                position: "fixed",
-                zIndex: 9,
-                width: alertWidth,
-                bottom: 5,
-              }}
-            >
-              <div>
-                <Row>
-                  <Col md={12}>
-                    <SuccessAlert successHandler={successHandler} />
-                    <ErrorAlert errorHandler={errorHandler} />
-                  </Col>
-                </Row>
-              </div>
-            </div>
+
+          {/* Toasts */}
+          <div
+            style={{
+              position: "fixed",
+              bottom: 0,
+              right: 0,
+              padding: 20,
+              zIndex: 99,
+            }}
+          >
+            <Toast variant="success" handler={successHandler} />
+            <Toast variant="danger" handler={errorHandler} />
           </div>
+
+          {/* Page Content  */}
           {hydrationError ? (
             <HydrationError hydrationError={hydrationError} />
           ) : (

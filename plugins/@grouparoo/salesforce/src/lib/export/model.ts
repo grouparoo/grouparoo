@@ -62,6 +62,7 @@ export function getSalesforceModel(
   }
   checkModelIntegrity(model, refKeys, "Reference");
   checkModelIntegrity(model, groupKeys, "Group");
+
   return model;
 }
 

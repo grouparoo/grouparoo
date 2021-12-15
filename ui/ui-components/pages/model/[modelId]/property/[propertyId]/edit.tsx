@@ -7,7 +7,6 @@ import Loader from "../../../../../components/Loader";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
-import RecordPreview from "../../../../../components/property/RecordPreview";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DatePicker from "../../../../../components/DatePicker";
 import LoadingButton from "../../../../../components/LoadingButton";
@@ -22,6 +21,8 @@ import { PropertiesHandler } from "../../../../../utils/propertiesHandler";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import PropertySampleRecord from "../../../../../components/property/PropertySampleRecord";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Page(props) {
   const {
@@ -62,7 +63,7 @@ export default function Page(props) {
   const { propertyId } = router.query;
   const source = sources.find((s) => s.id === property.sourceId);
 
-  if (hydrationError) errorHandler.set({ error: hydrationError });
+  if (hydrationError) errorHandler.set({ message: hydrationError });
 
   useEffect(() => {
     newRuleDefaults();
@@ -227,490 +228,525 @@ export default function Page(props) {
           <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
         ]}
       />
-
-      <Form id="form" onSubmit={onSubmit} autoComplete="off">
-        <fieldset disabled={Boolean(property.locked)}>
-          <Row>
-            <Col>
-              <Form.Group controlId="key">
-                <p>
-                  <strong>Source</strong>:{" "}
-                  <Link
-                    href={`/model/${source.modelId}/source/${source.id}/overview`}
-                  >
-                    <a>{source.name}</a>
-                  </Link>
-                </p>
-
-                <hr />
-
-                <Form.Label>Key</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  disabled={loading}
-                  value={property.key}
-                  onChange={(e) => update(e)}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Key is required
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group controlId="type">
-                <Form.Label>Record Property Type</Form.Label>
-                <Form.Control
-                  required
-                  as="select"
-                  value={property.type}
-                  onChange={(e) => update(e)}
-                  disabled={loading}
-                >
-                  <option value="" disabled>
-                    Choose a Type
-                  </option>
-                  {types.map((type) => (
-                    <option key={`type-${type}`}>{type}</option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-              <Form.Group controlId="unique">
-                <Form.Check
-                  type="checkbox"
-                  label="Unique"
-                  checked={property.unique}
-                  onChange={(e) => update(e)}
-                  disabled={loading}
-                />
-              </Form.Group>
-              <Form.Group controlId="isArray">
-                <Form.Check
-                  type="checkbox"
-                  label="Is Array?"
-                  checked={property.isArray}
-                  onChange={(e) => update(e)}
-                  disabled={loading}
-                />
-              </Form.Group>
-              <Form.Group controlId="sourceId">
-                <Form.Label>Property Source</Form.Label>
-                <Form.Control as="select" disabled value={source.id}>
-                  <option value={source.id}>{source.name}</option>
-                </Form.Control>
-              </Form.Group>
-              <hr />
-              <p>
-                <strong>
-                  Options for a <code>{source.connection.displayName}</code>{" "}
-                  Property
-                </strong>
-              </p>
-              {pluginOptions.map((opt, idx) => (
-                <div key={`opt-${idx}`}>
-                  <p>
-                    {opt.required ? (
-                      <>
-                        <Badge variant="info">required</Badge>&nbsp;
-                      </>
-                    ) : null}
-                    <code>{opt.displayName || opt.key}</code>
-                  </p>
-
-                  {/* typeahead options */}
-                  {opt.type === "typeahead" ? (
-                    <>
-                      <Typeahead
-                        id="typeahead"
-                        labelKey="key"
-                        disabled={loading}
-                        onChange={(selected) => {
-                          if (selected.length === 1 && selected[0].key) {
-                            updateOption(opt.key, selected[0].key);
-                          }
-                        }}
-                        options={opt?.options}
-                        placeholder={`Select ${opt.key}`}
-                        renderMenuItemChildren={(opt, props, idx) => {
-                          return [
-                            <span key={`opt-${idx}-key`}>
-                              {opt.key}
-                              <br />
-                            </span>,
-                            <small
-                              key={`opt-${idx}-examples`}
-                              className="text-small"
-                            >
-                              <em>
-                                Examples:{" "}
-                                {opt.examples
-                                  ? opt.examples.slice(0, 3).join("").trim() !==
-                                    ""
-                                    ? opt.examples.slice(0, 3).join(", ")
-                                    : "None"
-                                  : null}
-                              </em>
-                            </small>,
-                          ];
-                        }}
-                        defaultSelected={
-                          property.options[opt?.key]
-                            ? [property.options[opt?.key]]
-                            : undefined
-                        }
-                      />
-                      <Form.Text className="text-muted">
-                        {opt.description}
-                      </Form.Text>
-                      <br />
-                    </>
-                  ) : null}
-
-                  {/* list options */}
-                  {opt.type === "list" ? (
-                    <>
-                      <Form.Text className="text-muted">
-                        {opt.description}
-                      </Form.Text>
-                      <Table bordered striped size="sm" variant="light">
-                        <thead>
-                          <tr>
-                            <th></th>
-                            <th>Key</th>
-                            {opt?.options[0]?.description ? (
-                              <th>Description</th>
-                            ) : null}
-                            {opt?.options[0]?.examples ? (
-                              <th>Examples</th>
-                            ) : null}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {opt?.options?.map((col) => (
-                            <tr key={`source-${col.key}`}>
-                              <td>
-                                <Form.Check
-                                  inline
-                                  type="radio"
-                                  name={opt.key}
-                                  disabled={loading}
-                                  defaultChecked={
-                                    property.options[opt.key] === col.key
-                                  }
-                                  onClick={() => updateOption(opt.key, col.key)}
-                                />
-                              </td>
-                              <td>
-                                <strong>{col.key}</strong>
-                              </td>
-                              {col.description ? (
-                                <td>{col.description}</td>
-                              ) : null}
-
-                              {col.examples ? (
-                                <td>{col.examples.slice(0, 3).join(", ")}</td>
-                              ) : null}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    </>
-                  ) : null}
-
-                  {/* text options */}
-                  {opt.type === "text" || opt.type === "password" ? (
-                    <>
-                      <Form.Group controlId="key">
-                        <Form.Control
-                          required
-                          disabled={loading}
-                          type={opt.type}
-                          value={property.options[opt.key]?.toString()}
-                          onChange={(e) =>
-                            updateOption(opt.key, e.target.value)
-                          }
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Key is required
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <Form.Text className="text-muted">
-                        {opt.description}
-                      </Form.Text>
-                    </>
-                  ) : null}
-
-                  {/* textarea options */}
-                  {opt.type === "textarea" ? (
-                    <>
-                      <Form.Group controlId="key">
-                        <Form.Control
-                          required
-                          as="textarea"
-                          disabled={loading}
-                          rows={5}
-                          value={property.options[opt.key]?.toString()}
-                          onChange={(e) =>
-                            updateOption(opt.key, e.target["value"])
-                          }
-                          placeholder="select statement with mustache template"
-                          style={{
-                            fontFamily:
-                              'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                            color: "#e83e8c",
-                          }}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Key is required
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <Form.Text className="text-muted">
-                        {opt.description}
-                      </Form.Text>
-                      <p>
-                        Record Property Variables:{" "}
-                        <Badge variant="light">{`{{ now }}`}</Badge>
-                        &nbsp;
-                        <Badge variant="light">{`{{ createdAt }}`}</Badge>&nbsp;
-                        <Badge variant="light">{`{{ updatedAt }}`}</Badge>&nbsp;
-                        {properties
-                          .filter((rule) => rule.isArray === false)
-                          .sort((a, b) => {
-                            if (a.key > b.key) {
-                              return 1;
-                            } else {
-                              return -1;
-                            }
-                          })
-                          .map((ppr) => (
-                            <Fragment key={`var-badge-${ppr.key}`}>
-                              <Badge variant="light">{`{{ ${ppr.key} }}`}</Badge>
-                              &nbsp;
-                            </Fragment>
-                          ))}
-                      </p>
-                      <p>
-                        For dates, you can expand them to the <code>sql</code>,{" "}
-                        <code>date</code>, <code>time</code>, or{" "}
-                        <code>iso</code> formats, ie:{" "}
-                        <Badge variant="light">{`{{ now.sql }}`}</Badge>
-                      </p>
-                    </>
-                  ) : null}
-
-                  {/* pending options */}
-                  {opt.type === "pending" ? (
-                    <>
-                      <Form.Control
-                        size="sm"
-                        disabled
-                        type="text"
-                        value="pending another selection"
-                      ></Form.Control>
-                    </>
-                  ) : null}
-                </div>
-              ))}
-
-              {filterOptions.length > 0 ? (
-                <>
-                  <hr />
-                  <strong>Filters</strong>
-                  <p>
-                    Are there any criteria where you’d want to filter out rows
-                    from being included in{" "}
-                    <Badge variant="info">{property.key}</Badge>?
-                  </p>
-
-                  <Table bordered size="sm">
-                    <thead>
-                      <tr>
-                        <td />
-                        <td>
-                          <strong>Key</strong>
-                        </td>
-                        <td>
-                          <strong>Operation</strong>
-                        </td>
-                        <td>
-                          <strong>Value</strong>
-                        </td>
-                        <td>&nbsp;</td>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {localFilters.map((localFilter, idx) => {
-                        let rowChanged = false;
-                        if (
-                          !filtersAreEqual(
-                            property.filters[idx],
-                            localFilters[idx]
-                          )
-                        ) {
-                          rowChanged = true;
-                          rowChanges = true;
-                        }
-
-                        return (
-                          <tr key={`rule-${localFilter.key}-${idx}`}>
-                            <td>
-                              <h5>
-                                <Badge
-                                  variant={rowChanged ? "warning" : "light"}
-                                >
-                                  {idx}
-                                </Badge>
-                              </h5>
-                            </td>
-                            <td>
-                              <Form.Group
-                                controlId={`${localFilter.key}-key-${idx}`}
-                              >
-                                <Form.Control
-                                  as="select"
-                                  value={localFilter.key}
-                                  disabled={loading}
-                                  onChange={(e: any) => {
-                                    const _localFilters = [...localFilters];
-                                    localFilter.key = e.target.value;
-                                    _localFilters[idx] = localFilter;
-                                    setLocalFilters(_localFilters);
-                                  }}
-                                >
-                                  {filterOptions.map((filter) => (
-                                    <option
-                                      key={`ruleKeyOpt-${filter.key}-${idx}`}
-                                    >
-                                      {filter.key}
-                                    </option>
-                                  ))}
-                                </Form.Control>
-                              </Form.Group>
-                            </td>
-
-                            <td>
-                              <Form.Group
-                                controlId={`${localFilter.key}-op-${idx}`}
-                              >
-                                <Form.Control
-                                  as="select"
-                                  disabled={loading}
-                                  value={localFilter.op}
-                                  onChange={(e: any) => {
-                                    const _localFilters = [...localFilters];
-                                    localFilter.op = e.target.value;
-                                    _localFilters[idx] = localFilter;
-                                    setLocalFilters(_localFilters);
-                                  }}
-                                >
-                                  {filterOptions.filter(
-                                    (fo) => fo.key === localFilter.key
-                                  ).length === 1
-                                    ? filterOptions
-                                        .filter(
-                                          (fo) => fo.key === localFilter.key
-                                        )[0]
-                                        .ops.map((op) => (
-                                          <option
-                                            key={`op-opt-${localFilter.key}-${op}`}
-                                          >
-                                            {op}
-                                          </option>
-                                        ))
-                                    : null}
-                                </Form.Control>
-                              </Form.Group>
-                            </td>
-
-                            <td>
-                              {localFilter.key === "occurredAt" ? (
-                                <DatePicker
-                                  selected={
-                                    localFilter.match &&
-                                    localFilter.match !== "null"
-                                      ? new Date(
-                                          parseInt(localFilter.match.toString())
-                                        )
-                                      : new Date()
-                                  }
-                                  onChange={(d: Date) => {
-                                    const _localFilter = [...localFilters];
-                                    localFilter.match = d.getTime().toString();
-                                    _localFilter[idx] = localFilter;
-                                    setLocalFilters(_localFilter);
-                                  }}
-                                />
-                              ) : (
-                                <Form.Group
-                                  controlId={`${localFilter.key}-match-${idx}`}
-                                >
-                                  <Form.Control
-                                    required
-                                    type="text"
-                                    disabled={loading}
-                                    value={localFilter.match.toString()}
-                                    onChange={(e: any) => {
-                                      const _localFilter = [...localFilters];
-                                      localFilter.match = e.target.value;
-                                      _localFilter[idx] = localFilter;
-                                      setLocalFilters(_localFilter);
-                                    }}
-                                  />
-                                </Form.Group>
-                              )}
-                            </td>
-
-                            <td>
-                              <Button
-                                variant="danger"
-                                size="sm"
-                                onClick={() => {
-                                  deleteRule(idx);
-                                }}
-                              >
-                                x
-                              </Button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </Table>
-                  {localFilters.length < property.filters.length ||
-                  rowChanges ? (
+      <Row>
+        <Col>
+          <Form id="form" onSubmit={onSubmit} autoComplete="off">
+            <fieldset disabled={Boolean(property.locked)}>
+              <Row>
+                <Col>
+                  <Form.Group controlId="key">
                     <p>
-                      <Badge variant="warning">Unsaved Rule Changes</Badge>
+                      <strong>Source</strong>:{" "}
+                      <Link
+                        href={`/model/${source.modelId}/source/${source.id}/overview`}
+                      >
+                        <a>{source.name}</a>
+                      </Link>
                     </p>
+
+                    <hr />
+
+                    <Form.Label>Key</Form.Label>
+                    <Form.Control
+                      required
+                      type="text"
+                      disabled={loading}
+                      value={property.key}
+                      onChange={(e) => update(e)}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Key is required
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group controlId="type">
+                    <Form.Label>Record Property Type</Form.Label>
+                    <Form.Control
+                      required
+                      as="select"
+                      value={property.type}
+                      onChange={(e) => update(e)}
+                      disabled={loading}
+                    >
+                      <option value="" disabled>
+                        Choose a Type
+                      </option>
+                      {types.map((type) => (
+                        <option key={`type-${type}`}>{type}</option>
+                      ))}
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="unique">
+                    <Form.Check
+                      type="checkbox"
+                      label="Unique"
+                      checked={property.unique}
+                      onChange={(e) => update(e)}
+                      disabled={loading}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="isArray">
+                    <Form.Check
+                      type="checkbox"
+                      label="Is Array?"
+                      checked={property.isArray}
+                      onChange={(e) => update(e)}
+                      disabled={loading}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="sourceId">
+                    <Form.Label>Property Source</Form.Label>
+                    <Form.Control as="select" disabled value={source.id}>
+                      <option value={source.id}>{source.name}</option>
+                    </Form.Control>
+                  </Form.Group>
+                  <hr />
+                  <p>
+                    <strong>
+                      Options for a <code>{source.connection.displayName}</code>{" "}
+                      Property
+                    </strong>
+                  </p>
+                  {pluginOptions.map((opt, idx) => (
+                    <div key={`opt-${idx}`}>
+                      <p>
+                        {opt.required ? (
+                          <>
+                            <Badge variant="info">required</Badge>&nbsp;
+                          </>
+                        ) : null}
+                        <code>{opt.displayName || opt.key}</code>
+                      </p>
+
+                      {/* typeahead options */}
+                      {opt.type === "typeahead" ? (
+                        <>
+                          <Typeahead
+                            id="typeahead"
+                            labelKey="key"
+                            disabled={loading}
+                            onChange={(selected) => {
+                              if (selected.length === 1 && selected[0].key) {
+                                updateOption(opt.key, selected[0].key);
+                              }
+                            }}
+                            options={opt?.options}
+                            placeholder={`Select ${opt.key}`}
+                            renderMenuItemChildren={(opt, props, idx) => {
+                              return [
+                                <span key={`opt-${idx}-key`}>
+                                  {opt.key}
+                                  <br />
+                                </span>,
+                                <small
+                                  key={`opt-${idx}-examples`}
+                                  className="text-small"
+                                >
+                                  <em>
+                                    Examples:{" "}
+                                    {opt.examples
+                                      ? opt.examples
+                                          .slice(0, 3)
+                                          .join("")
+                                          .trim() !== ""
+                                        ? opt.examples.slice(0, 3).join(", ")
+                                        : "None"
+                                      : null}
+                                  </em>
+                                </small>,
+                              ];
+                            }}
+                            defaultSelected={
+                              property.options[opt?.key]
+                                ? [property.options[opt?.key]]
+                                : undefined
+                            }
+                          />
+                          <Form.Text className="text-muted">
+                            {opt.description}
+                          </Form.Text>
+                          <br />
+                        </>
+                      ) : null}
+
+                      {/* list options */}
+                      {opt.type === "list" ? (
+                        <>
+                          <Form.Text className="text-muted">
+                            {opt.description}
+                          </Form.Text>
+                          <Table bordered striped size="sm" variant="light">
+                            <thead>
+                              <tr>
+                                <th></th>
+                                <th>Key</th>
+                                {opt?.options[0]?.description ? (
+                                  <th>Description</th>
+                                ) : null}
+                                {opt?.options[0]?.examples ? (
+                                  <th>Examples</th>
+                                ) : null}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {opt?.options?.map((col) => (
+                                <tr key={`source-${col.key}`}>
+                                  <td>
+                                    <Form.Check
+                                      inline
+                                      type="radio"
+                                      name={opt.key}
+                                      disabled={loading}
+                                      defaultChecked={
+                                        property.options[opt.key] === col.key
+                                      }
+                                      onClick={() =>
+                                        updateOption(opt.key, col.key)
+                                      }
+                                    />
+                                  </td>
+                                  <td>
+                                    <strong>{col.key}</strong>
+                                  </td>
+                                  {col.description ? (
+                                    <td>{col.description}</td>
+                                  ) : null}
+
+                                  {col.examples ? (
+                                    <td>
+                                      {col.examples.slice(0, 3).join(", ")}
+                                    </td>
+                                  ) : null}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </Table>
+                        </>
+                      ) : null}
+
+                      {/* text options */}
+                      {opt.type === "text" || opt.type === "password" ? (
+                        <>
+                          <Form.Group controlId="key">
+                            <Form.Control
+                              required
+                              disabled={loading}
+                              type={opt.type}
+                              value={property.options[opt.key]?.toString()}
+                              onChange={(e) =>
+                                updateOption(opt.key, e.target.value)
+                              }
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Key is required
+                            </Form.Control.Feedback>
+                          </Form.Group>
+                          <Form.Text className="text-muted">
+                            {opt.description}
+                          </Form.Text>
+                        </>
+                      ) : null}
+
+                      {/* textarea options */}
+                      {opt.type === "textarea" ? (
+                        <>
+                          <Form.Group controlId="key">
+                            <Form.Control
+                              required
+                              as="textarea"
+                              disabled={loading}
+                              rows={5}
+                              value={property.options[opt.key]?.toString()}
+                              onChange={(e) =>
+                                updateOption(opt.key, e.target["value"])
+                              }
+                              placeholder="select statement with mustache template"
+                              style={{
+                                fontFamily:
+                                  'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                                color: "#e83e8c",
+                              }}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Key is required
+                            </Form.Control.Feedback>
+                          </Form.Group>
+                          <Form.Text className="text-muted">
+                            {opt.description}
+                          </Form.Text>
+                          <p>
+                            Record Property Variables:{" "}
+                            <Badge variant="light">{`{{{ now }}}`}</Badge>
+                            &nbsp;
+                            <Badge variant="light">{`{{{ createdAt }}}`}</Badge>
+                            &nbsp;
+                            <Badge variant="light">{`{{{ updatedAt }}}`}</Badge>
+                            &nbsp;
+                            {properties
+                              .filter((rule) => rule.isArray === false)
+                              .sort((a, b) => {
+                                if (a.key > b.key) {
+                                  return 1;
+                                } else {
+                                  return -1;
+                                }
+                              })
+                              .map((ppr) => (
+                                <Fragment key={`var-badge-${ppr.key}`}>
+                                  <Badge variant="light">{`{{{ ${ppr.key} }}}`}</Badge>
+                                  &nbsp;
+                                </Fragment>
+                              ))}
+                          </p>
+                          <p>
+                            For dates, you can expand them to the{" "}
+                            <code>sql</code>, <code>date</code>,{" "}
+                            <code>time</code>, or <code>iso</code> formats, ie:{" "}
+                            <Badge variant="light">{`{{ now.sql }}`}</Badge>
+                          </p>
+                        </>
+                      ) : null}
+
+                      {/* pending options */}
+                      {opt.type === "pending" ? (
+                        <>
+                          <Form.Control
+                            size="sm"
+                            disabled
+                            type="text"
+                            value="pending another selection"
+                          ></Form.Control>
+                        </>
+                      ) : null}
+                    </div>
+                  ))}
+
+                  {filterOptions.length > 0 ? (
+                    <div>
+                      <hr />
+                      <strong>Filters</strong>
+                      <p>
+                        Are there any criteria where you’d want to filter out
+                        rows from being included in{" "}
+                        <Badge variant="info">{property.key}</Badge>?
+                      </p>
+
+                      {localFilters.length > 0 && (
+                        <Table bordered size="sm">
+                          <thead>
+                            <tr>
+                              <th />
+                              <th>Key</th>
+                              <th>Operation</th>
+                              <th>Value</th>
+                              <th />
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {localFilters.map((localFilter, idx) => {
+                              let rowChanged = false;
+                              if (
+                                !filtersAreEqual(
+                                  property.filters[idx],
+                                  localFilters[idx]
+                                )
+                              ) {
+                                rowChanged = true;
+                                rowChanges = true;
+                              }
+
+                              return (
+                                <tr key={`rule-${localFilter.key}-${idx}`}>
+                                  <td>
+                                    <h5>
+                                      <Badge
+                                        variant={
+                                          rowChanged ? "warning" : "light"
+                                        }
+                                      >
+                                        {idx}
+                                      </Badge>
+                                    </h5>
+                                  </td>
+                                  <td>
+                                    <Form.Group
+                                      controlId={`${localFilter.key}-key-${idx}`}
+                                    >
+                                      <Form.Control
+                                        as="select"
+                                        value={localFilter.key}
+                                        disabled={loading}
+                                        onChange={(e: any) => {
+                                          const _localFilters = [
+                                            ...localFilters,
+                                          ];
+                                          localFilter.key = e.target.value;
+                                          _localFilters[idx] = localFilter;
+                                          setLocalFilters(_localFilters);
+                                        }}
+                                      >
+                                        {filterOptions.map((filter) => (
+                                          <option
+                                            key={`ruleKeyOpt-${filter.key}-${idx}`}
+                                          >
+                                            {filter.key}
+                                          </option>
+                                        ))}
+                                      </Form.Control>
+                                    </Form.Group>
+                                  </td>
+
+                                  <td>
+                                    <Form.Group
+                                      controlId={`${localFilter.key}-op-${idx}`}
+                                    >
+                                      <Form.Control
+                                        as="select"
+                                        disabled={loading}
+                                        value={localFilter.op}
+                                        onChange={(e: any) => {
+                                          const _localFilters = [
+                                            ...localFilters,
+                                          ];
+                                          localFilter.op = e.target.value;
+                                          _localFilters[idx] = localFilter;
+                                          setLocalFilters(_localFilters);
+                                        }}
+                                      >
+                                        {filterOptions.filter(
+                                          (fo) => fo.key === localFilter.key
+                                        ).length === 1
+                                          ? filterOptions
+                                              .filter(
+                                                (fo) =>
+                                                  fo.key === localFilter.key
+                                              )[0]
+                                              .ops.map((op) => (
+                                                <option
+                                                  key={`op-opt-${localFilter.key}-${op}`}
+                                                >
+                                                  {op}
+                                                </option>
+                                              ))
+                                          : null}
+                                      </Form.Control>
+                                    </Form.Group>
+                                  </td>
+
+                                  <td>
+                                    {localFilter.key === "occurredAt" ? (
+                                      <DatePicker
+                                        selected={
+                                          localFilter.match &&
+                                          localFilter.match !== "null"
+                                            ? new Date(
+                                                parseInt(
+                                                  localFilter.match.toString()
+                                                )
+                                              )
+                                            : new Date()
+                                        }
+                                        onChange={(d: Date) => {
+                                          const _localFilter = [
+                                            ...localFilters,
+                                          ];
+                                          localFilter.match = d
+                                            .getTime()
+                                            .toString();
+                                          _localFilter[idx] = localFilter;
+                                          setLocalFilters(_localFilter);
+                                        }}
+                                      />
+                                    ) : (
+                                      <Form.Group
+                                        controlId={`${localFilter.key}-match-${idx}`}
+                                      >
+                                        <Form.Control
+                                          required
+                                          type="text"
+                                          disabled={loading}
+                                          value={localFilter.match.toString()}
+                                          onChange={(e: any) => {
+                                            const _localFilter = [
+                                              ...localFilters,
+                                            ];
+                                            localFilter.match = e.target.value;
+                                            _localFilter[idx] = localFilter;
+                                            setLocalFilters(_localFilter);
+                                          }}
+                                        />
+                                      </Form.Group>
+                                    )}
+                                  </td>
+
+                                  <td>
+                                    <Button
+                                      variant="danger"
+                                      size="sm"
+                                      onClick={() => {
+                                        deleteRule(idx);
+                                      }}
+                                    >
+                                      <FontAwesomeIcon
+                                        icon="times"
+                                        fixedWidth
+                                      />
+                                    </Button>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </Table>
+                      )}
+                      {localFilters.length < property.filters.length ||
+                      rowChanges ? (
+                        <p>
+                          <Badge variant="warning">Unsaved Rule Changes</Badge>
+                        </p>
+                      ) : null}
+                      <Button size="sm" variant="info" onClick={addRule}>
+                        Add Filter
+                      </Button>
+                    </div>
                   ) : null}
-                  <Button size="sm" variant="info" onClick={addRule}>
-                    Add Filter
-                  </Button>
-                </>
-              ) : null}
+                </Col>
+              </Row>
               <hr />
-              <LoadingButton variant="primary" type="submit" loading={loading}>
-                Update
-              </LoadingButton>
-              <br />
-              <br />
-              <LoadingButton
-                variant="danger"
-                size="sm"
-                loading={loading}
-                onClick={() => handleDelete()}
-              >
-                Delete
-              </LoadingButton>
-            </Col>
-            <Col md={3}>
-              <RecordPreview
-                {...props}
-                localFilters={localFilters}
-                property={property}
-              />
-            </Col>
-          </Row>
-        </fieldset>
-      </Form>
+              <Row className="mb-4">
+                <Col>
+                  <LoadingButton
+                    variant="primary"
+                    type="submit"
+                    loading={loading}
+                  >
+                    Update
+                  </LoadingButton>
+                  <br />
+                  <br />
+                  <LoadingButton
+                    variant="danger"
+                    size="sm"
+                    loading={loading}
+                    onClick={() => handleDelete()}
+                  >
+                    Delete
+                  </LoadingButton>
+                </Col>
+              </Row>
+            </fieldset>
+          </Form>
+        </Col>
+        <Col xl={5}>
+          <PropertySampleRecord
+            execApi={execApi}
+            localFilters={localFilters}
+            modelId={source.modelId}
+            property={property}
+            properties={properties}
+            hideViewAllRecords
+          />
+        </Col>
+      </Row>
     </>
   );
 }

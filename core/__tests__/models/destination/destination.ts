@@ -1121,7 +1121,7 @@ describe("models/destination", () => {
         await destination.save();
 
         await destination.setOptions({
-          table: "thing-{{ now.sql }}",
+          table: "thing-{{{ now.sql }}}",
         });
 
         const parameterizedOptions = await destination.parameterizedOptions();
