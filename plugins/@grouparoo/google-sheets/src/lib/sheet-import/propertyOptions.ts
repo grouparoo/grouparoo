@@ -4,7 +4,7 @@ import { remoteImportPreview } from "./sourcePreview";
 export const propertyOptions: PropertyOptionsMethod = async () => [
   {
     key: "column",
-    displayName: "CSV Column",
+    displayName: "Google Sheet Column",
     required: true,
     primary: true,
     description: "where the data comes from",
