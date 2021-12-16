@@ -34,7 +34,9 @@ export default class CloudwatchInitializer extends Initializer {
         return `${name}-${id}-${date}`;
       },
       jsonMessage: true,
-      retentionInDays: 7, // store the logs for 7 days
+      retentionInDays: process.env.AWS_CLOUDWATCH_LOG_RETENTION_DAYS
+        ? parseInt(process.env.AWS_CLOUDWATCH_LOG_RETENTION_DAYS)
+        : 90, // store the logs for 90 days by default
       awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
       awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY,
       awsRegion: process.env.AWS_REGION,
