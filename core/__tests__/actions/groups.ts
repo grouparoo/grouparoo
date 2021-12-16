@@ -218,7 +218,6 @@ describe("actions/groups", () => {
       beforeEach(async () => {
         group = await Group.create({
           name: "test calculated group",
-          type: "calculated",
           modelId: model.id,
           rules: {},
         });

@@ -39,7 +39,6 @@ describe("tasks/group:run", () => {
 
       group = await Group.create({
         name: "test calculated group",
-        type: "calculated",
         modelId: model.id,
       });
       await group.update({ state: "ready" });

@@ -46,7 +46,6 @@ module.exports = async function getConfig() {
       id: "calculate_dates_2",
       name: "Calculated date group",
       class: "Group",
-      type: "calculated",
       modelId: "mod_profiles",
     },
     {

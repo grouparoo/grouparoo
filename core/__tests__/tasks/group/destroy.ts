@@ -124,12 +124,11 @@ describe("tasks/group:destroy", () => {
       expect(run.method).toBe("runRemoveGroupMembers");
     });
 
-    it("will remove all members in a calculated group and then delete the group", async () => {
+    it("will remove all members in a group and then delete the group", async () => {
       let groupMemberCount = 0;
 
       const group = await Group.create({
         name: "test group 3",
-        type: "calculated",
         state: "ready",
         modelId: model.id,
       });

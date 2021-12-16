@@ -30,7 +30,6 @@ describe("tasks/group:updateCalculatedGroups", () => {
 
     describe("calculated groups with relative rules", () => {
       beforeAll(async () => {
-        await group.update({ type: "calculated" });
         await group.setRules([
           {
             key: "lastLoginAt",
@@ -127,7 +126,6 @@ describe("tasks/group:updateCalculatedGroups", () => {
 
     describe("calculated groups without relative rules", () => {
       beforeAll(async () => {
-        await group.update({ type: "calculated" });
         await group.setRules([
           {
             key: "ltv",

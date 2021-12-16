@@ -486,7 +486,7 @@ describe("modules/configWriter", () => {
         { column: propertyCol }
       );
 
-      group = await helper.factories.group({ type: "calculated" });
+      group = await helper.factories.group();
       await group.setRules([
         { key: propertyKey, match: "nobody", operation: { op: "eq" } },
       ]);
@@ -865,7 +865,7 @@ describe("modules/configWriter", () => {
     });
 
     test("group rules properly set IDs for record column properties", async () => {
-      let group: Group = await helper.factories.group({ type: "calculated" });
+      let group: Group = await helper.factories.group();
       await group.setRules([
         { key: "grouparooId", match: "nobody", operation: { op: "eq" } },
       ]);

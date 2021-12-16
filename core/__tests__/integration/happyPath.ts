@@ -258,8 +258,7 @@ describe("integration/happyPath", () => {
     test("a calculated group can be created", async () => {
       connection.params = {
         csrfToken,
-        name: "calculated group",
-        type: "calculated",
+        name: "group",
         modelId: modelId,
         rules: [
           { key: "lastName", operation: { op: "iLike" }, match: "mario" },
@@ -273,7 +272,7 @@ describe("integration/happyPath", () => {
       );
       expect(error).toBeUndefined();
       expect(group.id).toBeTruthy();
-      expect(group.name).toBe("calculated group");
+      expect(group.name).toBe("group");
       expect(group.state).not.toBe("draft");
       groupId = group.id;
     });

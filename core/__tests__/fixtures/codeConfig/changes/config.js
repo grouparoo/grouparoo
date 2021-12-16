@@ -117,7 +117,6 @@ module.exports = async function getConfig() {
       name: "People who have Email Addresses",
       class: "Group",
       modelId: "mod_profiles",
-      type: "calculated",
       rules: [
         {
           propertyId: "email",

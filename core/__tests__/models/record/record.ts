@@ -830,7 +830,6 @@ describe("models/record", () => {
 
       group = await helper.factories.group({
         name: "calculated-group",
-        type: "calculated",
       });
 
       record = await GrouparooRecord.create({ modelId: model.id });

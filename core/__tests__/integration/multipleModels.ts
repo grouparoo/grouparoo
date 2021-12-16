@@ -98,13 +98,11 @@ describe("multiple models", () => {
 
   test("group members only collect records of matching modelIds", async () => {
     profileGroup = await Group.create({
-      type: "calculated",
       name: "profileGroup",
       modelId: "mod_profiles",
       state: "ready",
     });
     adminGroup = await Group.create({
-      type: "calculated",
       name: "adminGroup",
       modelId: model.id,
       state: "ready",
