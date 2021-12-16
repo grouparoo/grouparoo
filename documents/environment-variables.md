@@ -28,17 +28,17 @@ This document is an exhaustive list of all of the Environment Variables that can
 
 ## Plugins
 
-### `@grouparoo/dbt`
+### @grouparoo/dbt
 
 - `DBT_PROFILES_DIR`
 
-### `@grouparoo/cloudwatch`
+### @grouparoo/cloudwatch
 
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 - `AWS_REGION`
 
-### `@grouparoo/demo`
+### @grouparoo/demo
 
 - `DEMO_DATABASE_URL`
 - `DEMO_CLICKHOUSE_URL`
@@ -46,11 +46,11 @@ This document is an exhaustive list of all of the Environment Variables that can
 - `DEMO_MONGO_URI`
 - `DEMO_MONGO_DATABASE_NAME`
 
-### `@grouparoo/newrelic`
+### @grouparoo/newrelic
 
 - `NEW_RELIC_LICENSE_KEY`
 
-### `@grouparoo/sentry`
+### @grouparoo/sentry
 
 - `SENTRY_DSN`
 - `SENTRY_TRACE_SAMPLE_RATE`
