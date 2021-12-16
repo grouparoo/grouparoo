@@ -15,7 +15,7 @@ import { GroupRuleWithKey } from "../../../src/models/Group";
 describe("models/group", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
-  describe("calculated groups", () => {
+  describe("groups calculations", () => {
     let run: Run;
     let group: Group;
     let mario: GrouparooRecord;
