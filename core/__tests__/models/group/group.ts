@@ -232,7 +232,6 @@ describe("models/group", () => {
       const group = new Group({
         modelId: model.id,
         name: "calc-group",
-        type: "calculated",
         state: "bla",
       });
       await expect(group.save()).rejects.toThrow(
