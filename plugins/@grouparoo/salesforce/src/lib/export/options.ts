@@ -30,19 +30,17 @@ export const getDestinationOptions: SalesforceDestinationOptions = async ({
   const cacheData: SalesforceCacheData = { appId, appOptions };
   const out: DestinationOptionsMethodResponse = {};
   const conn = await connect(appOptions);
-  fieldsOptions.map(async (fieldsOption) => {
-    Object.assign(
-      out,
-      await getOptions(
-        conn,
-        cacheData,
-        destinationOptions,
-        fieldsOption.fieldName,
-        fieldsOption.fieldValue,
-        fieldsOption.specialFields
-      )
+  for (const fieldsOption of fieldsOptions) {
+    const options = await getOptions(
+      conn,
+      cacheData,
+      destinationOptions,
+      fieldsOption.fieldName,
+      fieldsOption.fieldValue,
+      fieldsOption.specialFields
     );
-  });
+    Object.assign(out, options);
+  }
   return out;
 };
 
