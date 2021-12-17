@@ -86,8 +86,6 @@ export namespace SharedGroupTests {
 
     await group.update({ matchType: "all" });
 
-    run = await helper.factories.run();
-
     await RecordProperty.update(
       { state: "ready" },
       { where: { recordId: [mario.id, luigi.id, peach.id, toad.id] } }
@@ -97,6 +95,11 @@ export namespace SharedGroupTests {
     await luigi.update({ state: "ready" });
     await peach.update({ state: "ready" });
     await toad.update({ state: "ready" });
+
+    run = await helper.factories.run(null, {
+      creatorId: group.id,
+      creatorType: "group",
+    });
 
     return { group, run };
   }
