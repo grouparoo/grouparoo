@@ -4,7 +4,7 @@ import { SourceFilterMethodResponseRow } from "../classes/plugin";
 export const filterOpsDescriptions = {
   eq: "equals",
   ne: "does not equal",
-  exists: "exists",
+  exists: "exists with any value",
   notExists: "does not exist",
   gt: "greater than",
   gte: "greater than or equal to",

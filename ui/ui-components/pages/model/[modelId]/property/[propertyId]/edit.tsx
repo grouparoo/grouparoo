@@ -197,11 +197,12 @@ export default function Page(props) {
 
     _localFilters.push({
       key: filterOptions[0].key,
-      op: filterOptions[0].ops[0],
+      op: "exists",
       match: "",
     });
 
     setLocalFilters(_localFilters);
+    console.log(_localFilters);
   }
 
   function deleteRule(idx: number) {
@@ -541,7 +542,6 @@ export default function Page(props) {
                               <th />
                               <th>Key</th>
                               <th>Operation</th>
-                              <th>Value</th>
                               <th />
                             </tr>
                           </thead>
@@ -607,12 +607,11 @@ export default function Page(props) {
                                       <Form.Control
                                         as="select"
                                         disabled={loading}
-                                        value={localFilter.op || ""}
+                                        value={localFilter.op}
                                         onChange={(e: any) => {
                                           const _localFilters = [
                                             ...localFilters,
                                           ];
-
                                           localFilter.op = e.target.value;
                                           _localFilters[idx] = localFilter;
                                           setLocalFilters(_localFilters);
@@ -629,6 +628,7 @@ export default function Page(props) {
                                               .ops.map((op) => (
                                                 <option
                                                   key={`op-opt-${localFilter.key}-${op}`}
+                                                  value={op}
                                                 >
                                                   {filterOptionDescriptions[op]}
                                                 </option>
@@ -636,60 +636,63 @@ export default function Page(props) {
                                           : null}
                                       </Form.Control>
                                     </Form.Group>
-                                  </td>
-                                  {/* match */}
-                                  <td>
-                                    {localFilter.key === "occurredAt" ? (
-                                      <DatePicker
-                                        selected={
-                                          localFilter.match &&
-                                          localFilter.match !== "null"
-                                            ? new Date(
-                                                parseInt(
-                                                  localFilter.match.toString()
+                                    {/* match */}
+                                    {!localFilter.op
+                                      .toLowerCase()
+                                      .includes("exist") &&
+                                      (localFilter.key === "occurredAt" ? (
+                                        <DatePicker
+                                          selected={
+                                            localFilter.match &&
+                                            localFilter.match !== "null"
+                                              ? new Date(
+                                                  parseInt(
+                                                    localFilter.match.toString()
+                                                  )
                                                 )
-                                              )
-                                            : new Date()
-                                        }
-                                        onChange={(d: Date) => {
-                                          const _localFilter = [
-                                            ...localFilters,
-                                          ];
-                                          localFilter.match = d
-                                            .getTime()
-                                            .toString();
-                                          _localFilter[idx] = localFilter;
-                                          setLocalFilters(_localFilter);
-                                        }}
-                                      />
-                                    ) : (
-                                      <Form.Group
-                                        controlId={`${localFilter.key}-match-${idx}`}
-                                      >
-                                        <Form.Control
-                                          required
-                                          type="text"
-                                          disabled={
-                                            loading ||
-                                            localFilter.op.includes("exist")
+                                              : new Date()
                                           }
-                                          value={
-                                            localFilter.match
-                                              ? localFilter.match.toString()
-                                              : ""
-                                          }
-                                          onChange={(e: any) => {
+                                          onChange={(d: Date) => {
                                             const _localFilter = [
                                               ...localFilters,
                                             ];
-                                            localFilter.match = e.target.value;
+                                            localFilter.match = d
+                                              .getTime()
+                                              .toString();
                                             _localFilter[idx] = localFilter;
                                             setLocalFilters(_localFilter);
                                           }}
                                         />
-                                      </Form.Group>
-                                    )}
+                                      ) : (
+                                        <Form.Group
+                                          controlId={`${localFilter.key}-match-${idx}`}
+                                        >
+                                          <Form.Control
+                                            required
+                                            type="text"
+                                            disabled={
+                                              loading ||
+                                              localFilter.op.includes("exist")
+                                            }
+                                            value={
+                                              localFilter.match
+                                                ? localFilter.match.toString()
+                                                : ""
+                                            }
+                                            onChange={(e: any) => {
+                                              const _localFilter = [
+                                                ...localFilters,
+                                              ];
+                                              localFilter.match =
+                                                e.target.value;
+                                              _localFilter[idx] = localFilter;
+                                              setLocalFilters(_localFilter);
+                                            }}
+                                          />
+                                        </Form.Group>
+                                      ))}{" "}
                                   </td>
+
                                   {/* delete */}
                                   <td>
                                     <Button
