@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useRouter } from "next/router";
@@ -18,14 +18,19 @@ import { SourceHandler } from "../../../../../utils/sourceHandler";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import FormMappingSelector from "../../../../../components/source/FormMappingSelector";
 
 export default function Page(props) {
   const {
+    properties,
+    propertyExamples,
     errorHandler,
     successHandler,
     sourceHandler,
     environmentVariableOptions,
   }: {
+    properties: Models.PropertyType[];
+    propertyExamples: Record<string, string[]>;
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     sourceHandler: SourceHandler;
@@ -42,6 +47,14 @@ export default function Page(props) {
     Actions.sourceConnectionOptions["options"]
   >({});
   const { sourceId } = router.query;
+  const mappingColumn = useMemo(
+    () => Object.keys(props.source.mapping)[0] as string,
+    [source]
+  );
+  const mappingPropertyKey = useMemo(
+    () => Object.values(props.source.mapping)[0] as string,
+    [source]
+  );
 
   useEffect(() => {
     loadPreview(source.previewAvailable);
@@ -394,6 +407,23 @@ export default function Page(props) {
               ) : null}
 
               <hr />
+              <h3>Mapping</h3>
+              <p>
+                Mapping is like setting a foreign key between your Source and
+                Grouparoo Properties. Whenever possible, map through a unique
+                Property.
+              </p>
+
+              <FormMappingSelector
+                columnName={mappingColumn}
+                propertyKey={mappingPropertyKey}
+                preview={preview}
+                properties={properties}
+                propertyExamples={propertyExamples}
+                source={source}
+              />
+
+              <hr />
 
               <h3>Example Data</h3>
 
@@ -464,7 +494,16 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     `/sources/connectionApps`
   );
 
+  const { properties, examples: propertyExamples } =
+    await execApi<Actions.PropertiesList>("get", `/properties`, {
+      includeExamples: true,
+      state: "ready",
+      modelId: source?.modelId,
+    });
+
   return {
+    properties,
+    propertyExamples,
     source,
     environmentVariableOptions,
   };
