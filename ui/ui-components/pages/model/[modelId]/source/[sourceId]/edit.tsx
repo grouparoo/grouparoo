@@ -407,21 +407,26 @@ export default function Page(props) {
               ) : null}
 
               <hr />
-              <h3>Mapping</h3>
-              <p>
-                Mapping is like setting a foreign key between your Source and
-                Grouparoo Properties. Whenever possible, map through a unique
-                Property.
-              </p>
 
-              <FormMappingSelector
-                columnName={mappingColumn}
-                propertyKey={mappingPropertyKey}
-                preview={preview}
-                properties={properties}
-                propertyExamples={propertyExamples}
-                source={source}
-              />
+              {source.previewAvailable && (
+                <>
+                  <h3>Mapping</h3>
+                  <p>
+                    Mapping is like setting a foreign key between your Source
+                    and Grouparoo Properties. Whenever possible, map through a
+                    unique Property.
+                  </p>
+
+                  <FormMappingSelector
+                    columnName={mappingColumn}
+                    propertyKey={mappingPropertyKey}
+                    preview={preview}
+                    properties={properties}
+                    propertyExamples={propertyExamples}
+                    source={source}
+                  />
+                </>
+              )}
 
               <hr />
 
