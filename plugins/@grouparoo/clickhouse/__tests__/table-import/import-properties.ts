@@ -506,8 +506,11 @@ describe("clickhouse/table/recordProperties", () => {
     //   relativeMatchUnit?: string;
     //   relativeMatchDirection?: string;
     // }
+
+    //TODO: EXISTS/NOTEXISTS
+
     describe("equals", () => {
-      const op = "equals";
+      const op = "eq";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -589,7 +592,7 @@ describe("clickhouse/table/recordProperties", () => {
     });
 
     describe("does not equal", () => {
-      const op = "does not equal";
+      const op = "ne";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -671,7 +674,7 @@ describe("clickhouse/table/recordProperties", () => {
     });
 
     describe("contains", () => {
-      const op = "contains";
+      const op = "substring";
       test("integer", async () => {
         await expect(
           getPropertyValues(
@@ -749,7 +752,7 @@ describe("clickhouse/table/recordProperties", () => {
     });
 
     describe("does not contain", () => {
-      const op = "does not contain";
+      const op = "notSubstring";
       test("integer", async () => {
         await expect(
           getPropertyValues(
@@ -827,7 +830,7 @@ describe("clickhouse/table/recordProperties", () => {
     });
 
     describe("equals", () => {
-      const op = "equals";
+      const op = "eq";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -909,7 +912,7 @@ describe("clickhouse/table/recordProperties", () => {
     });
 
     describe("greater than", () => {
-      const op = "greater than";
+      const op = "gt";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -989,7 +992,7 @@ describe("clickhouse/table/recordProperties", () => {
     });
 
     describe("less than", () => {
-      const op = "less than";
+      const op = "lt";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
