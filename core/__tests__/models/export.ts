@@ -535,7 +535,7 @@ describe("models/export", () => {
     });
   });
 
-  describe.only("with GROUPAROO_EXPORT_LOG set", () => {
+  describe("with GROUPAROO_EXPORT_LOG set", () => {
     let oldLogPath = process.env.GROUPAROO_EXPORT_LOG;
     const workerId = process.env.JEST_WORKER_ID;
 
