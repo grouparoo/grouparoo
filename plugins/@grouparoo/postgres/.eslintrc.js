@@ -17,6 +17,7 @@ module.exports = {
     "no-useless-computed-key": "error",
     "prefer-arrow-callback": "error",
     "prefer-object-spread": "error",
+    "no-useless-computed-key": "error",
   },
   ignorePatterns: ["/dist/", "*.js"],
 };
