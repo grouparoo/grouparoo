@@ -68,15 +68,15 @@ This document is an exhaustive list of all of the Environment Variables that can
 - `GROUPAROO_CLOUD_API_TOKEN` - The API token for this Grouparoo Cloud app
 - `GROUPAROO_CLOUD_API_URL` - Normally https://cloud.grouparoo.com
 
-### Internal Use
+## Internal Use
 
-#### Development
+### Development
 
 - `NEXT_DEVELOPMENT_MODE` = is next running in development mode?
 - `GROUPAROO_SPEC_HELPER_LOAD_PATH` - tell `@grouparoo/spec-helper` to load everything from `src` in core, so we can test without re-compiling
 - `GROUPAROO_INJECTED_PLUGINS` in tests, tell core to load a plugin
 - `GROUPAROO_PLUGIN_MANIFEST_URL` - the URL to load the list of available plugins (normally something like https://www.grouparoo.com/plugins/v1/manifest.json)
 
-#### Deployment
+### Deployment
 
 - `GROUPAROO_MONOREPO_APP` - When running monorepo applications (e.g. on staging) indicate which application we are running. Used by the `Procfile` mostly
