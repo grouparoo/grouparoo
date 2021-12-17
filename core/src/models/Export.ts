@@ -8,7 +8,10 @@ import {
   ForeignKey,
   DataType,
   Default,
+  AfterUpdate,
 } from "sequelize-typescript";
+import { appendFile } from "fs/promises";
+import { api, config, log } from "actionhero";
 import { Destination } from "./Destination";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { plugin } from "../modules/plugin";
@@ -17,7 +20,6 @@ import { QueryTypes } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
 import { APIData } from "../modules/apiData";
 import { StateMachine } from "../modules/stateMachine";
-import { api, config } from "actionhero";
 import { ExportProcessor } from "./ExportProcessor";
 import { Errors } from "../modules/errors";
 import { PropertyTypes } from "./Property";
@@ -288,6 +290,38 @@ export class Export extends CommonModel<Export> {
   static ensureErrorLevel(instance) {
     if (instance.errorMessage && !instance.errorLevel) {
       instance.errorLevel = "error";
+    }
+  }
+
+  @AfterUpdate
+  static async logExport(instance: Export) {
+    if (!process.env.GROUPAROO_EXPORT_LOG) return;
+
+    if (
+      instance.changed("state") &&
+      ["canceled", "failed", "complete"].includes(instance.state)
+    ) {
+      const exportData = {
+        id: instance.id,
+        state: instance.state,
+        recordId: instance.recordId,
+        modelId: (await instance.$get("record")).modelId,
+        destinationId: instance.destinationId,
+        newRecordProperties: instance.newRecordProperties,
+        newGroups: instance.newGroups,
+        toDelete: instance.toDelete,
+        errorMessage: instance.errorMessage,
+        errorLevel: instance.errorLevel,
+        timestamp: new Date().toISOString(),
+      };
+
+      const message = JSON.stringify(exportData);
+
+      if (process.env.GROUPAROO_EXPORT_LOG === "stdout") {
+        log(`[ export ] ${message}`);
+      } else {
+        await appendFile(process.env.GROUPAROO_EXPORT_LOG, `${message}\n`);
+      }
     }
   }
 

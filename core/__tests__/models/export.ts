@@ -1,11 +1,16 @@
+import os from "os";
+import fs from "fs";
+import path from "path";
+import { Op } from "sequelize";
+import { ensureDir } from "fs-extra";
 import { helper } from "@grouparoo/spec-helper";
 import {
   Destination,
   GrouparooRecord,
   Export,
   RecordProperty,
+  Errors,
 } from "../../src";
-import { Op } from "sequelize";
 
 describe("models/export", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -527,6 +532,96 @@ describe("models/export", () => {
       const remaining = await Export.findAll();
       expect(remaining.length).toBe(1);
       expect(remaining[0].id).toBe(exports[0].id);
+    });
+  });
+
+  describe.only("with GROUPAROO_EXPORT_LOG set", () => {
+    let oldLogPath = process.env.GROUPAROO_EXPORT_LOG;
+    const workerId = process.env.JEST_WORKER_ID;
+
+    const logPath = `${os.tmpdir()}/test/${workerId}/exports.log`;
+
+    let _export: Export;
+
+    beforeAll(async () => {
+      await ensureDir(path.dirname(logPath));
+      if (fs.existsSync(logPath)) fs.rmSync(logPath);
+      process.env.GROUPAROO_EXPORT_LOG = logPath;
+    });
+
+    afterAll(() => {
+      process.env.GROUPAROO_EXPORT_LOG = oldLogPath;
+    });
+
+    test("Exports will not be logged to file on creation or common updates", async () => {
+      _export = await helper.factories.export();
+      await _export.update({ startedAt: new Date(), sendAt: new Date() });
+
+      _export.force = true;
+      await _export.save();
+
+      expect(fs.existsSync(logPath)).toBe(false);
+    });
+
+    test("Exports will be logged to file when successfully completed", async () => {
+      await _export.complete();
+
+      expect(fs.existsSync(logPath)).toBe(true);
+
+      const logs = fs.readFileSync(logPath, "utf-8");
+      const lines = logs.split("\n");
+      expect(lines.length).toBe(2);
+
+      const loggedObj = JSON.parse(lines[0]);
+      expect(loggedObj.id).toBe(_export.id);
+      expect(loggedObj.state).toBe("complete");
+      expect(loggedObj.recordId).toBe(_export.recordId);
+      expect(loggedObj.timestamp).toBeDefined();
+    });
+
+    test("Exports will be logged to file when failed", async () => {
+      _export = await helper.factories.export();
+      await _export.setError(
+        new Errors.InfoError("Something terribly wrong happened")
+      );
+
+      const logs = fs.readFileSync(logPath, "utf-8");
+      const lines = logs.split("\n");
+      expect(lines.length).toBe(3);
+
+      const loggedObj = JSON.parse(lines[1]);
+      expect(loggedObj.id).toBe(_export.id);
+      expect(loggedObj.state).toBe("failed");
+      expect(loggedObj.errorMessage).toBe("Something terribly wrong happened");
+      expect(loggedObj.errorLevel).toBe("info");
+      expect(loggedObj.recordId).toBe(_export.recordId);
+      expect(loggedObj.timestamp).toBeDefined();
+    });
+
+    test("Exports will be logged to file when canceled", async () => {
+      _export = await helper.factories.export();
+      await _export.update({ state: "canceled" });
+
+      const logs = fs.readFileSync(logPath, "utf-8");
+      const lines = logs.split("\n");
+      expect(lines.length).toBe(4);
+
+      const loggedObj = JSON.parse(lines[2]);
+      expect(loggedObj.id).toBe(_export.id);
+      expect(loggedObj.state).toBe("canceled");
+      expect(loggedObj.recordId).toBe(_export.recordId);
+      expect(loggedObj.timestamp).toBeDefined();
+    });
+
+    test("Exports will not be logged if GROUPAROO_EXPORT_LOG is not set", async () => {
+      delete process.env.GROUPAROO_EXPORT_LOG;
+
+      fs.rmSync(logPath);
+
+      _export = await helper.factories.export();
+      await _export.complete();
+
+      expect(fs.existsSync(logPath)).toBe(false);
     });
   });
 
