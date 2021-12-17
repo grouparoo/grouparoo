@@ -32,6 +32,7 @@ export default function Page(props) {
     propertiesHandler,
     types,
     filterOptions,
+    filterOptionDescriptions,
     properties,
     hydrationError,
   }: {
@@ -40,7 +41,8 @@ export default function Page(props) {
     sources: Models.SourceType[];
     propertiesHandler: PropertiesHandler;
     types: Actions.PropertiesOptions["types"];
-    filterOptions: Actions.ScheduleFilterOptions["options"];
+    filterOptions: Actions.PropertyFilterOptions["options"];
+    filterOptionDescriptions: Actions.PropertyFilterOptions["optionDescriptions"];
     properties: Models.PropertyType[];
     hydrationError: Error;
   } = props;
@@ -213,7 +215,6 @@ export default function Page(props) {
   }
 
   let rowChanges = false;
-
   return (
     <>
       <Head>
@@ -611,6 +612,7 @@ export default function Page(props) {
                                           const _localFilters = [
                                             ...localFilters,
                                           ];
+
                                           localFilter.op = e.target.value;
                                           _localFilters[idx] = localFilter;
                                           setLocalFilters(_localFilters);
@@ -628,7 +630,7 @@ export default function Page(props) {
                                                 <option
                                                   key={`op-opt-${localFilter.key}-${op}`}
                                                 >
-                                                  {op}
+                                                  {filterOptionDescriptions[op]}
                                                 </option>
                                               ))
                                           : null}
@@ -774,6 +776,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   let pluginOptions = [];
   let filterOptions = {};
   let hydrationError: Error;
+  let filterOptionDescriptions = {};
 
   try {
     const getResponse = await execApi("get", `/property/${propertyId}`);
@@ -801,6 +804,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
       `/property/${propertyId}/filterOptions`
     );
     filterOptions = filterResponse.options;
+    filterOptionDescriptions = filterResponse.optionDescriptions;
   } catch (error) {
     hydrationError = error.toString();
   }
@@ -812,6 +816,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     pluginOptions,
     types,
     filterOptions,
+    filterOptionDescriptions,
     hydrationError,
   };
 };

@@ -14,24 +14,24 @@ export const filterOpsDescriptions = {
   notSubstring: "does not contain",
 };
 
-export interface PropertyFilterOp {
-  op: string;
-  description: string;
-}
+// export interface PropertyFilterOp {
+//   op: string;
+//   description: string;
+// }
 
-export function buildPropertyFilterOptions(
+export function buildPropertyFilterDictionary(
   options: SourceFilterMethodResponseRow[],
   cfg?: any
 ) {
-  const propertyFilterOpsList: PropertyFilterOp[] = [];
+  // const propertyFilterOpsList: PropertyFilterOp[] =[];
+
+  const propertyFilterDictionary: { [key: string]: string } = {};
 
   for (const option of options) {
     for (const op of option.ops) {
-      propertyFilterOpsList.push({
-        op: op,
-        description: filterOpsDescriptions[op],
-      });
+      if (!propertyFilterDictionary[op])
+        propertyFilterDictionary[op] = filterOpsDescriptions[op];
     }
   }
-  return propertyFilterOpsList;
+  return propertyFilterDictionary;
 }
