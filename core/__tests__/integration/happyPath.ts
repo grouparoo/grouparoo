@@ -255,7 +255,7 @@ describe("integration/happyPath", () => {
       recordId = record.id;
     });
 
-    test("a calculated group can be created", async () => {
+    test("a group can be created", async () => {
       connection.params = {
         csrfToken,
         name: "group",
