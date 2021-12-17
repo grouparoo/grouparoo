@@ -58,10 +58,11 @@ This document is an exhaustive list of all of the Environment Variables that can
 - `SENTRY_DSN`
 - `SENTRY_TRACE_SAMPLE_RATE`
 
-## Grouparoo Cloud & Telemetry
+## Grouparoo Services: Cloud, Authentication, and Telemetry
 
 - `GROUPAROO_TELEMETRY_ENABLED` - Toggle whether or not this instance reports to telemetry.grouparoo.com
 - `GROUPAROO_TELEMETRY_URL` - Normally https://telemetry.grouparoo.com
+- `GROUPAROO_AUTH_URL` - Normally https://auth.grouparoo.com
 - `GROUPAROO_CLOUD` - Enabled `true` or `false`
 - `GROUPAROO_DISTRIBUTION` - The version of Grouparoo running
 - `GROUPAROO_CLOUD_API_TOKEN` - The API token for this Grouparoo Cloud app
