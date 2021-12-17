@@ -38,7 +38,7 @@ describe("tasks/group:run", () => {
       helper.disableTestPluginImport();
 
       group = await Group.create({
-        name: "test calculated group",
+        name: "test group",
         modelId: model.id,
       });
       await group.update({ state: "ready" });

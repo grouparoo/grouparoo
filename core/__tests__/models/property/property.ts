@@ -514,7 +514,7 @@ describe("models/property", () => {
     await source.destroy();
   });
 
-  test("a property cannot be deleted if a calculated group is using it", async () => {
+  test("a property cannot be deleted if a group is using it", async () => {
     const source = await helper.factories.source();
     await source.setOptions({ table: "some table" });
     await source.setMapping({ id: "userId" });

@@ -135,7 +135,7 @@ export class GroupRun extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "group:run";
-    this.description = "recalculate the members for a calculated group";
+    this.description = "recalculate the members for a group";
     this.outputExample = {};
     this.permission = { topic: "group", mode: "write" };
     this.inputs = {

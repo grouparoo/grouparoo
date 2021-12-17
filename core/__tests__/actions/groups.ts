@@ -206,7 +206,7 @@ describe("actions/groups", () => {
       expect(configSpy).toBeCalledTimes(1);
     });
 
-    describe("calculated group", () => {
+    describe("rules", () => {
       let group: Group;
       let mario: GrouparooRecord;
       let luigi: GrouparooRecord;
@@ -217,7 +217,7 @@ describe("actions/groups", () => {
 
       beforeEach(async () => {
         group = await Group.create({
-          name: "test calculated group",
+          name: "test group",
           modelId: model.id,
           rules: {},
         });

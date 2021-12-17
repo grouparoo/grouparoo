@@ -791,7 +791,7 @@ describe("models/record", () => {
     });
   });
 
-  describe("with a calculated group", () => {
+  describe("with a group", () => {
     let group: Group;
     let record: GrouparooRecord;
     let app: App;

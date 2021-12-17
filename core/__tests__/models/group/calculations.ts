@@ -43,7 +43,7 @@ describe("models/group", () => {
       process.env.GROUPAROO_RUN_MODE = undefined;
     });
 
-    test("an empty calculated group can be created", async () => {
+    test("an empty group can be created", async () => {
       const members = await group.$get("groupMembers");
       expect(members.length).toBe(0);
       expect(group.state).toBe("draft");
@@ -317,7 +317,7 @@ describe("models/group", () => {
         );
       });
 
-      test("does not return for calculated groups without relative rules", async () => {
+      test("does not return for groups without relative rules", async () => {
         await group.setRules([
           {
             key: "ltv",
@@ -392,7 +392,7 @@ describe("models/group", () => {
       await secondRun.destroy();
     });
 
-    test("adding and removing members from a calculated group produces log entries", async () => {
+    test("adding and removing members from a group produces log entries", async () => {
       await Log.truncate();
 
       await group.update({ matchType: "all" });
@@ -631,7 +631,7 @@ describe("models/group", () => {
     });
 
     describe("#updateProfilesMembership", () => {
-      describe("calculated group", () => {
+      describe("group", () => {
         test("groups with no rules will not have members added", async () => {
           await group.setRules([]);
           const belongs = await group.updateRecordsMembership([mario]);

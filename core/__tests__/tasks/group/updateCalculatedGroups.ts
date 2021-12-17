@@ -28,7 +28,7 @@ describe("tasks/group:updateCalculatedGroups", () => {
       expect(setting.value).toBe("1440");
     });
 
-    describe("calculated groups with relative rules", () => {
+    describe("groups with relative rules", () => {
       beforeAll(async () => {
         await group.setRules([
           {
@@ -124,7 +124,7 @@ describe("tasks/group:updateCalculatedGroups", () => {
       });
     });
 
-    describe("calculated groups without relative rules", () => {
+    describe("groups without relative rules", () => {
       beforeAll(async () => {
         await group.setRules([
           {

@@ -8,8 +8,7 @@ export class GroupsUpdateCalculatedGroups extends CLSTask {
   constructor() {
     super();
     this.name = "group:updateCalculatedGroups";
-    this.description =
-      "enqueue an update of calculated groups that to be updated";
+    this.description = "enqueue an update of groups that to be updated";
     this.frequency =
       process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 5; // Run every 5 minutes
     this.queue = "groups";

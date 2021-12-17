@@ -225,7 +225,7 @@ describe("integration/happyPath", () => {
     expect(source.mapping).toEqual({ email: "email" });
   });
 
-  describe("calculated group", () => {
+  describe("group", () => {
     let groupId: string;
 
     test("an admin can create a record", async () => {
@@ -288,7 +288,7 @@ describe("integration/happyPath", () => {
       await ImportWorkflow();
     });
 
-    test("the record will be in the calculated group", async () => {
+    test("the record will be in the group", async () => {
       connection.params = {
         csrfToken,
         id: groupId,
