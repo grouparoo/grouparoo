@@ -33,11 +33,12 @@ describe("models/group", () => {
     beforeEach(async () => {
       const response = await SharedGroupTests.beforeEach();
       group = response.group;
-      run = response.run;
+      run = await helper.factories.run();
     });
 
     afterEach(async () => {
       await SharedGroupTests.afterEach();
+      await run.destroy();
       process.env.GROUPAROO_RUN_MODE = undefined;
     });
 
