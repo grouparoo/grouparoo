@@ -167,7 +167,8 @@ export class PipedriveClient {
           {
             objectId: cacheData.appId,
             cacheKey: ["pipedrive:parallelism", cacheData.appOptions],
-            cacheDurationMs: 2000, // 2 seconds
+            cacheDurationMs:
+              parseInt(response.headers["x-ratelimit-reset"] || "2") * 1000,
             read: false, // Write-only
           },
           async () => parseInt(response.headers["x-ratelimit-remaining"])

@@ -1,6 +1,6 @@
 import { AppParallelismMethod, objectCache } from "@grouparoo/core";
 
-const DEFAULT_VALUE = 10;
+const DEFAULT_VALUE = 7;
 
 export const parallelism: AppParallelismMethod = async ({
   app,
@@ -20,5 +20,5 @@ export const parallelism: AppParallelismMethod = async ({
     return DEFAULT_VALUE;
   }
 
-  return parseInt(cachedValue);
+  return Math.floor(parseInt(cachedValue) / 3);
 };
