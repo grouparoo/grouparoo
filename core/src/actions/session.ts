@@ -48,7 +48,7 @@ export class SessionCreate extends CLSAction {
         throw new Errors.AuthenticationError("password does not match");
     } else {
       const oauthRequest = await OAuthRequest.findOne({
-        where: { id: params.requestId },
+        where: { id: params.requestId, consumed: false },
       });
       if (!oauthRequest)
         throw new Errors.AuthenticationError(
@@ -61,6 +61,7 @@ export class SessionCreate extends CLSAction {
         throw new Errors.AuthenticationError(
           `${teamMember.email} was not returned in oAuth request ${oauthRequest.id}`
         );
+      await oauthRequest.update({ consumed: true });
     }
 
     const session = await api.session.create(connection, teamMember);

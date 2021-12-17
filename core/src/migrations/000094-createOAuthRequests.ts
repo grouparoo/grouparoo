@@ -31,6 +31,11 @@ export default {
         allowNull: true,
       },
 
+      consumed: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+
       appId: {
         type: DataTypes.STRING(191),
         allowNull: true,

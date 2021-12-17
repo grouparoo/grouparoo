@@ -6,6 +6,7 @@ import {
   ForeignKey,
   BelongsTo,
   DataType,
+  Default,
 } from "sequelize-typescript";
 import * as UUID from "uuid";
 import Moment from "moment";
@@ -40,6 +41,11 @@ export class OAuthRequest extends CommonModel<OAuthRequest> {
   @Column
   token: string;
 
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  consumed: boolean;
+
   @AllowNull(true)
   @ForeignKey(() => App)
   @Column
@@ -56,6 +62,7 @@ export class OAuthRequest extends CommonModel<OAuthRequest> {
     return {
       id: this.id,
       type: this.type,
+      consumed: this.consumed,
       provider: this.provider,
       identities: this.identities,
       appId: this.appId,

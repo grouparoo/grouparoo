@@ -107,7 +107,8 @@ describe("session", () => {
 
       describe("with an oAuth request", () => {
         let oAuthRequest: OAuthRequest;
-        beforeAll(async () => {
+        beforeEach(async () => {
+          await OAuthRequest.truncate();
           oAuthRequest = await OAuthRequest.create({
             provider: "github",
             type: "user",
@@ -137,6 +138,27 @@ describe("session", () => {
           expect(error).toBeUndefined();
           expect(success).toEqual(true);
           expect(teamMember.id).toBeTruthy();
+        });
+
+        test("cannot log in a second time with the same request", async () => {
+          const first = await specHelper.runAction<SessionCreate>(
+            "session:create",
+            {
+              email: "peach@example.com",
+              requestId: oAuthRequest.id,
+            }
+          );
+          expect(first.success).toBe(true);
+
+          const second = await specHelper.runAction<SessionCreate>(
+            "session:create",
+            {
+              email: "peach@example.com",
+              requestId: oAuthRequest.id,
+            }
+          );
+          expect(second.success).not.toBe(true);
+          expect(second.error.message).toMatch(/cannot find OAuthRequest/);
         });
 
         test("can log in with email not in lowercase", async () => {
