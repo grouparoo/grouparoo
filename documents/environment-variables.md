@@ -17,10 +17,12 @@ This document is an exhaustive list of all of the Environment Variables that can
 - `GROUPAROO_LOGS_STDOUT_DISABLE_COLOR` - disable colorizing STDOUT/STDERR logs
 - `GROUPAROO_LOGS_STDOUT_DISABLE_TIMESTAMP` - disable including the timestamp in log lines
 - `GROUPAROO_CONFIG_DIR` - Set the config directory path. Default is `${process.cwd()}/config`
+- `GROUPAROO_CONFIG_ARCHIVE` - The URL of a config Tarball which will be downloaded at boot and used to create `GROUPAROO_CONFIG_DIR`
 - `GROUPAROO_RUN_MODE` - What CLI command are we running? Usually set by the CLI
 - `GROUPAROO_IMPORTS_BATCH_SIZE` - How many to records to import at once? (default 1000)
 - `GROUPAROO_EXPORTS_BATCH_SIZE` - How many to records to export at once? (default 1000)
 - `GROUPAROO_DISABLE_EXPORTS` - Should we really send exports (normally configured via `grouparoo run` args)
+- `GROUPAROO_EXPORT_LOG` - The path to a log file which will contain all the data exported from Grouparoo
 
 ### Options
 
@@ -37,6 +39,7 @@ This document is an exhaustive list of all of the Environment Variables that can
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 - `AWS_REGION`
+- `AWS_CLOUDWATCH_LOG_RETENTION_DAYS` - How many days to keep Cloudwatch logs? Default 90.
 
 ### @grouparoo/demo
 
