@@ -55,6 +55,10 @@ export default function Page(props) {
     () => Object.values(props.source.mapping)[0] as string,
     [source]
   );
+  const hasPrimaryKeyProperty = useMemo(
+    () => properties.filter(({ isPrimaryKey }) => isPrimaryKey).length > 0,
+    [properties]
+  );
 
   useEffect(() => {
     loadPreview(source.previewAvailable);
@@ -410,7 +414,7 @@ export default function Page(props) {
 
               {source.previewAvailable && (
                 <>
-                  <h3>Mapping</h3>
+                  <h3>{hasPrimaryKeyProperty ? "Primary Key" : "Mapping"}</h3>
                   <p>
                     Mapping is like setting a foreign key between your Source
                     and Grouparoo Properties. Whenever possible, map through a
