@@ -26,7 +26,7 @@ This document is an exhaustive list of all of the Environment Variables that can
 
 ### Options
 
-- `GROUPAROO_OPTION__*__*` - Options for an App, Source, or Destination
+- `GROUPAROO_OPTION__*__*` - Options for an App, Source, or Destination. Learn more at https://www.grouparoo.com/docs/support/secrets
 
 ## Plugins
 
