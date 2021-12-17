@@ -16,7 +16,6 @@ import { PostgresPoolClient } from "../../src/lib/connect";
 let app: App;
 let destination: Destination;
 let client: PostgresPoolClient;
-let user: unknown;
 const ipAddress = "127.0.0.1";
 const newIpAddress = "127.0.0.2";
 const email = "caio.silveira@mailinator.com";
@@ -124,7 +123,7 @@ describe("postgres/exportRecord", () => {
   afterAll(async () => await afterData());
 
   test("cannot create record on postgres if sync mode does not allow it", async () => {
-    user = await getUser(id);
+    const user = await getUser(id);
     expect(user).toBe(null);
 
     await expect(
@@ -140,7 +139,7 @@ describe("postgres/exportRecord", () => {
   });
 
   test("can create record on postgres", async () => {
-    user = await getUser(id);
+    let user = await getUser(id);
     expect(user).toBe(null);
 
     await runExport({
