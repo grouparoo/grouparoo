@@ -93,6 +93,7 @@ describe("actions/plugins", () => {
       provider: "github",
       type: "user",
       identities: [],
+      consumed: false,
       appId: null,
       appOption: null,
     });
