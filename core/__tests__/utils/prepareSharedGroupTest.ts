@@ -3,7 +3,6 @@ import { GrouparooRecord, Group, Run, Import, RecordProperty } from "../../src";
 import { specHelper } from "actionhero";
 
 export namespace SharedGroupTests {
-  let run: Run;
   let group: Group;
   let mario: GrouparooRecord;
   let luigi: GrouparooRecord;
@@ -86,8 +85,6 @@ export namespace SharedGroupTests {
 
     await group.update({ matchType: "all" });
 
-    run = await helper.factories.run();
-
     await RecordProperty.update(
       { state: "ready" },
       { where: { recordId: [mario.id, luigi.id, peach.id, toad.id] } }
@@ -98,7 +95,7 @@ export namespace SharedGroupTests {
     await peach.update({ state: "ready" });
     await toad.update({ state: "ready" });
 
-    return { group, run };
+    return { group };
   }
 
   export async function afterEach() {
@@ -108,7 +105,6 @@ export namespace SharedGroupTests {
     const members = await group.$get("groupMembers");
     for (const m of members) await m.destroy();
     await group.destroy();
-    await run.destroy();
     await Import.truncate();
   }
 }

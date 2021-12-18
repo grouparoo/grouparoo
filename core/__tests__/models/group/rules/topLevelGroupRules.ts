@@ -19,6 +19,11 @@ describe("model/group", () => {
     toad = response.toad;
   }, helper.setupTime);
 
+  beforeAll(async () => {
+    const otherModel = await helper.factories.model({ name: "other model" });
+    await GrouparooRecord.create({ modelId: otherModel.id });
+  });
+
   beforeEach(async () => {
     const response = await SharedGroupTests.beforeEach();
     group = response.group;

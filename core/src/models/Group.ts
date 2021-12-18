@@ -566,7 +566,10 @@ export class Group extends LoggedModel<Group> {
           ).getTime();
         }
 
-        const topLevelWhere = { [topLevelGroupRule.column]: rawValueMatch };
+        const topLevelWhere = {
+          [topLevelGroupRule.column]: rawValueMatch,
+          modelId: this.modelId,
+        };
         localWhereGroup[Op.and] = [topLevelWhere];
       }
 
