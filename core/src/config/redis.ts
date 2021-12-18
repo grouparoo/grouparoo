@@ -12,7 +12,7 @@ export const DEFAULT = {
   [namespace]: () =>
     process.env.REDIS_URL === "redis://mock" || process.env.REDIS_URL === "mock"
       ? MockRedisConfig()
-      : process.env.REDIS_URL.includes("cluster=true")
+      : process.env?.REDIS_URL.includes("cluster=true")
       ? RedisClusterConfig()
       : RealRedisConfig(),
 };
