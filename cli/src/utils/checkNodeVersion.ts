@@ -4,7 +4,7 @@ import { readPackageJSON } from "./readPackageJSON";
 import Ora from "ora";
 
 export function checkNodeVersion() {
-  const requiredVersions: string = readPackageJSON(
+  const requiredVersions = readPackageJSON(
     path.join(__dirname, "..", "..", "package.json")
   ).engines.node;
   const currentVersion = process.version;

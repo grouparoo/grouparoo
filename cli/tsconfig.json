@@ -5,7 +5,8 @@
     "allowJs": true,
     "module": "commonjs",
     "target": "es2019",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noImplicitAny": true
   },
   "include": ["./src/**/*"],
   "exclude": ["./../node_modules"]

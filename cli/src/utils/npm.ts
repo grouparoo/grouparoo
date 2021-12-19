@@ -1,6 +1,7 @@
 import os from "os";
 import { spawnPromise } from "./spawnPromise";
 import Chalk from "chalk";
+import { Ora } from "ora";
 
 export namespace NPM {
   const NPM = /^win/.test(process.platform) ? "npm.cmd" : "npm";
@@ -74,8 +75,8 @@ export namespace NPM {
     }
   }
 
-  function exitWithError(logger, stdout: string, stderr: string) {
-    const lines = [];
+  function exitWithError(logger: Ora, stdout: string, stderr: string) {
+    const lines: string[] = [];
     function logUniqueLines(s: string, level: "warn" | "fail") {
       s.split(os.EOL).map((line) => {
         if (!lines.includes(line)) {

@@ -21,7 +21,7 @@ export default async function Update(pkg: string) {
 
   const packageFile = path.join(workDir, "package.json");
   let pkgJSONContents = readPackageJSON(packageFile);
-  let plugins: string[] = pkgJSONContents?.grouparoo?.plugins;
+  let plugins = pkgJSONContents?.grouparoo?.plugins;
 
   if (!plugins) {
     logger.fail(
