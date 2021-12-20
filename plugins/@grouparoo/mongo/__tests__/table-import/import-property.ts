@@ -297,7 +297,7 @@ describe("mongo/table/recordProperty", () => {
     });
 
     describe("equals", () => {
-      const op = "equals";
+      const op = "eq";
       test("integer", async () => {
         const value = await getPropertyValue(
           {
@@ -367,7 +367,7 @@ describe("mongo/table/recordProperty", () => {
     });
 
     describe("does not equal", () => {
-      const op = "does not equal";
+      const op = "ne";
       test("integer", async () => {
         const value = await getPropertyValue(
           {
@@ -437,7 +437,7 @@ describe("mongo/table/recordProperty", () => {
     });
 
     describe("contains", () => {
-      const op = "contains";
+      const op = "substring";
       test("string", async () => {
         const value = await getPropertyValue(
           {
@@ -463,7 +463,7 @@ describe("mongo/table/recordProperty", () => {
     });
 
     describe("does not contain", () => {
-      const op = "does not contain";
+      const op = "notSubstring";
       test("string", async () => {
         const value = await getPropertyValue(
           {
@@ -489,7 +489,7 @@ describe("mongo/table/recordProperty", () => {
     });
 
     describe("greater than", () => {
-      const op = "greater than";
+      const op = "gt";
       test("integer", async () => {
         const value = await getPropertyValue(
           {
@@ -559,7 +559,7 @@ describe("mongo/table/recordProperty", () => {
     });
 
     describe("less than", () => {
-      const op = "less than";
+      const op = "lt";
       test("integer", async () => {
         const value = await getPropertyValue(
           {
