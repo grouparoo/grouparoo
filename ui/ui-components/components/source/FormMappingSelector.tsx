@@ -3,6 +3,12 @@ import { Col, Form, Row } from "react-bootstrap";
 import FormInputContainer from "../lib/form/FormInputContainer";
 import { Models } from "../../utils/apiData";
 
+const renderExamples = (exampleText?: string) => (
+  <div style={{ visibility: exampleText ? "visible" : "hidden" }}>
+    <strong>Example Data:</strong> {exampleText}
+  </div>
+);
+
 interface Props {
   disabled?: boolean;
   columnName?: string;
@@ -16,7 +22,7 @@ interface Props {
 const FormMappingSelector: React.FC<Props> = ({
   columnName,
   propertyKey,
-  disabled,
+  disabled = false,
   preview,
   properties,
   propertyExamples,
@@ -84,12 +90,6 @@ const FormMappingSelector: React.FC<Props> = ({
     [properties, selectedProperty]
   );
 
-  const renderExamples = (exampleText?: string) => (
-    <div style={{ visibility: exampleText ? "visible" : "hidden" }}>
-      <strong>Examples:</strong> {exampleText}
-    </div>
-  );
-
   return (
     <Row>
       <Col lg={6} xs={12}>
@@ -102,7 +102,7 @@ const FormMappingSelector: React.FC<Props> = ({
             as="select"
             required
             disabled={disabled}
-            defaultValue={selectedColumn}
+            value={selectedColumn}
             onChange={(e) => {
               setSelectedColumn(e.target.value);
             }}
@@ -111,13 +111,13 @@ const FormMappingSelector: React.FC<Props> = ({
               Select an option
             </option>
             {previewColumns.map((col) => (
-              <option key={`source${col}`} value={col}>
+              <option key={`mapping-col-${col}`} value={col}>
                 {col}
               </option>
             ))}
           </Form.Control>
-          {renderExamples(columnExample)}
         </FormInputContainer>
+        {renderExamples(columnExample)}
       </Col>
       <Col>
         <FormInputContainer
@@ -129,7 +129,7 @@ const FormMappingSelector: React.FC<Props> = ({
             as="select"
             required
             disabled={disabled}
-            defaultValue={selectedProperty?.id}
+            value={selectedProperty?.id}
             onChange={(e) => {
               setSelectedProperty(
                 availableProperties.find(({ id }) => id === e.target.value)
@@ -140,13 +140,16 @@ const FormMappingSelector: React.FC<Props> = ({
               Select an option
             </option>
             {availableProperties.map((property) => (
-              <option key={`source${property.key}`} value={property.id}>
+              <option
+                key={`mapping-property-${property.key}`}
+                value={property.id}
+              >
                 {property.key} {property.unique && "(unique)"}
               </option>
             ))}
           </Form.Control>
-          {renderExamples(propertyExample)}
         </FormInputContainer>
+        {renderExamples(propertyExample)}
       </Col>
     </Row>
   );

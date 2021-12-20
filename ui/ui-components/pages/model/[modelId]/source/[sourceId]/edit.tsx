@@ -56,8 +56,11 @@ export default function Page(props) {
     [source]
   );
   const hasPrimaryKeyProperty = useMemo(
-    () => properties.filter(({ isPrimaryKey }) => isPrimaryKey).length > 0,
-    [properties]
+    () =>
+      properties.filter(
+        ({ isPrimaryKey, sourceId }) => isPrimaryKey && sourceId === source.id
+      ).length > 0,
+    [properties, source]
   );
 
   useEffect(() => {
@@ -416,8 +419,8 @@ export default function Page(props) {
                 <>
                   <h3>{hasPrimaryKeyProperty ? "Primary Key" : "Mapping"}</h3>
                   <p>
-                    Mapping is like setting a foreign key between your Source
-                    and Grouparoo Properties. Whenever possible, map through a
+                    Mapping sets the foreign key between your Source and
+                    Grouparoo Properties. Whenever possible, map through a
                     unique Property.
                   </p>
 
@@ -429,10 +432,9 @@ export default function Page(props) {
                     propertyExamples={propertyExamples}
                     source={source}
                   />
+                  <hr />
                 </>
               )}
-
-              <hr />
 
               <h3>Example Data</h3>
 
