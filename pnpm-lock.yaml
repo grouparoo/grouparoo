@@ -215,6 +215,7 @@ importers:
       prettier: 2.5.0
       semver: 7.3.5
       ts-node: 10.4.0
+      type-fest: 2.8.0
       typescript: 4.5.2
     dependencies:
       chalk: 4.1.2
@@ -230,6 +231,7 @@ importers:
       '@types/node': 16.9.1
       prettier: 2.5.0
       ts-node: 10.4.0_94768615125241dfd0d6b40408c0e763
+      type-fest: 2.8.0
       typescript: 4.5.2
 
   core:

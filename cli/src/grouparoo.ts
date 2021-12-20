@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 import { program } from "commander";
+import path from "path";
 import Ora from "ora";
 import { loadLocalCommands } from "./utils/loadLocalCommands";
 import { checkNodeVersion } from "./utils/checkNodeVersion";
@@ -9,8 +10,9 @@ import Initialize from "./lib/initialize";
 import Update from "./lib/update";
 import Install from "./lib/install";
 import Uninstall from "./lib/uninstall";
+import { readPackageJSON } from "./utils/readPackageJSON";
 
-const Package = require("../package.json");
+const Package = readPackageJSON(path.join(__dirname, "..", "package.json"));
 
 if (!process.env.INIT_CWD) process.env.INIT_CWD = process.cwd(); // used for monorepo app determination
 
