@@ -22,19 +22,21 @@ import FormMappingSelector from "../../../../../components/source/FormMappingSel
 
 export default function Page(props) {
   const {
+    environmentVariableOptions,
     properties,
     propertyExamples,
     errorHandler,
     successHandler,
     sourceHandler,
-    environmentVariableOptions,
+    types,
   }: {
+    environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
+    errorHandler: ErrorHandler;
     properties: Models.PropertyType[];
     propertyExamples: Record<string, string[]>;
-    errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     sourceHandler: SourceHandler;
-    environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
+    types: string[];
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
@@ -431,6 +433,7 @@ export default function Page(props) {
                     properties={properties}
                     propertyExamples={propertyExamples}
                     source={source}
+                    types={types}
                   />
                   <hr />
                 </>
@@ -512,10 +515,13 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
       modelId: source?.modelId,
     });
 
+  const { types } = await execApi("get", `/propertyOptions`);
+
   return {
+    environmentVariableOptions,
     properties,
     propertyExamples,
     source,
-    environmentVariableOptions,
+    types,
   };
 };

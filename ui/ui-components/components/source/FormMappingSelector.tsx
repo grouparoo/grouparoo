@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import FormInputContainer from "../lib/form/FormInputContainer";
 import { Models } from "../../utils/apiData";
 
@@ -17,6 +17,7 @@ interface Props {
   properties: Models.PropertyType[];
   propertyExamples: Record<string, string[]>;
   source: Models.SourceType;
+  types: string[];
 }
 
 const FormMappingSelector: React.FC<Props> = ({
@@ -27,14 +28,18 @@ const FormMappingSelector: React.FC<Props> = ({
   properties,
   propertyExamples,
   source,
+  types,
 }) => {
-  const [selectedColumn, setSelectedColumn] = useState<string>(columnName);
   const [selectedProperty, setSelectedProperty] = useState<Models.PropertyType>(
     () =>
       propertyKey
         ? properties.find(({ key }) => key === propertyKey)
         : undefined
   );
+  const [newProperty, setNewProperty] = useState({
+    key: "",
+    type: "",
+  });
 
   const previewColumns = useMemo<string[]>(() => {
     return preview
@@ -48,6 +53,10 @@ const FormMappingSelector: React.FC<Props> = ({
       }, [] as string[])
       .sort();
   }, [preview]);
+
+  const [selectedColumn, setSelectedColumn] = useState<string>(
+    () => columnName || previewColumns?.[0]
+  );
 
   const columnExample = useMemo<string>(
     () =>
@@ -90,9 +99,11 @@ const FormMappingSelector: React.FC<Props> = ({
     [properties, selectedProperty]
   );
 
+  const hasAvailableProperties = !!availableProperties.length;
+
   return (
     <Row>
-      <Col lg={6} xs={12}>
+      <Col xs={12} lg={6}>
         <FormInputContainer
           controlId="mapping_primary_key"
           label="Source Column"
@@ -120,36 +131,96 @@ const FormMappingSelector: React.FC<Props> = ({
         {renderExamples(columnExample)}
       </Col>
       <Col>
-        <FormInputContainer
-          controlId="mapping_property"
-          label="Grouparoo Property"
-          required
-        >
-          <Form.Control
-            as="select"
-            required
-            disabled={disabled}
-            value={selectedProperty?.id}
-            onChange={(e) => {
-              setSelectedProperty(
-                availableProperties.find(({ id }) => id === e.target.value)
-              );
-            }}
-          >
-            <option value={""} disabled>
-              Select an option
-            </option>
-            {availableProperties.map((property) => (
-              <option
-                key={`mapping-property-${property.key}`}
-                value={property.id}
+        {hasAvailableProperties ? (
+          <>
+            <FormInputContainer
+              controlId="mapping_property"
+              label="Grouparoo Property"
+              required
+            >
+              <Form.Control
+                as="select"
+                required
+                disabled={disabled}
+                value={selectedProperty?.id}
+                onChange={(e) => {
+                  setSelectedProperty(
+                    availableProperties.find(({ id }) => id === e.target.value)
+                  );
+                }}
               >
-                {property.key} {property.unique && "(unique)"}
-              </option>
-            ))}
-          </Form.Control>
-        </FormInputContainer>
-        {renderExamples(propertyExample)}
+                <option value={""} disabled>
+                  Select an option
+                </option>
+                {availableProperties.map((property) => (
+                  <option
+                    key={`mapping-property-${property.key}`}
+                    value={property.id}
+                  >
+                    {property.key} {property.unique && "(unique)"}
+                  </option>
+                ))}
+              </Form.Control>
+            </FormInputContainer>
+            {!!availableProperties.length && renderExamples(propertyExample)}
+          </>
+        ) : (
+          <>
+            <FormInputContainer
+              controlId="key"
+              label="Grouparoo Property Key"
+              required
+            >
+              <Form.Control
+                required
+                type="text"
+                placeholder="Property Key"
+                defaultValue={newProperty.key}
+                disabled={disabled}
+                onChange={(e) => {
+                  setNewProperty({
+                    ...newProperty,
+                    key: e.target.value,
+                  });
+                }}
+              />
+              <Form.Control.Feedback type="invalid">
+                Key is required
+              </Form.Control.Feedback>
+            </FormInputContainer>
+
+            <FormInputContainer controlId="type" label="Property Type" required>
+              <Form.Control
+                as="select"
+                required
+                defaultValue={newProperty.type}
+                disabled={disabled}
+                onChange={(e) => {
+                  setNewProperty({
+                    ...newProperty,
+                    //@ts-ignore
+                    type: e.target.value,
+                  });
+                }}
+              >
+                <option value={""} disabled>
+                  Select a type
+                </option>
+                {types?.map((type) => (
+                  <option key={`type-${type}`}>{type}</option>
+                ))}
+              </Form.Control>
+            </FormInputContainer>
+
+            <p>
+              This will create a Unique Property for{" "}
+              <code>{source.modelName}</code> Records that will be mapped to the
+              Source Column <code>{selectedColumn}</code>. This Record Property
+              must be mapped to a unique Source Column, meaning only one record
+              in the data will have this value. Usually, this is an ID or email.
+            </p>
+          </>
+        )}
       </Col>
     </Row>
   );
