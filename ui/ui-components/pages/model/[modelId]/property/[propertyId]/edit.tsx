@@ -530,9 +530,9 @@ export default function Page(props) {
                       <hr />
                       <strong>Filters</strong>
                       <p>
-                        Are there any criteria where you’d want to filter out
-                        rows from being included in{" "}
-                        <Badge variant="info">{property.key}</Badge>?
+                        Only include rows that meet the following criteria when
+                        populating
+                        <Badge variant="info">{property.key}</Badge>:
                       </p>
 
                       {localFilters.length > 0 && (
