@@ -305,7 +305,7 @@ export class Export extends CommonModel<Export> {
     ) {
       const exportData = {
         ...(await instance.apiData(false)),
-        timestamp: new Date().toISOString(),
+        timestamp: APIData.formatDate(new Date()),
       };
 
       const message = JSON.stringify(exportData);
