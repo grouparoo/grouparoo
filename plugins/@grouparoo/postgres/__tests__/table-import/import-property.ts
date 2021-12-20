@@ -287,8 +287,134 @@ describe("postgres/table/recordProperty", () => {
     //   relativeMatchUnit?: string;
     //   relativeMatchDirection?: string;
     // }
+    describe("exists", () => {
+      const op = "exists";
+      test("integer", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "id" }]
+        );
+        expect(value).toEqual(6);
+      });
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(value).toEqual(6);
+      });
+      test("date", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "date" }]
+        );
+        expect(value).toEqual(6);
+      });
+      test("timestamp", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "stamp" }]
+        );
+        expect(value).toEqual(6);
+      });
+      test("float", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "amount" }]
+        );
+        expect(value).toEqual(6);
+      });
+    });
 
-    //TO DO: exists/not exists
+    describe("does not exist", () => {
+      const op = "notExists";
+      test("integer", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "id" }]
+        );
+        expect(value).toEqual(0);
+      });
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(value).toEqual(0);
+      });
+      test("string is case sensitive", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(value).toEqual(0);
+      });
+      test("date", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "date" }]
+        );
+        expect(value).toEqual(0);
+      });
+      test("timestamp", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "stamp" }]
+        );
+        expect(value).toEqual(0);
+      });
+      test("float", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "amount" }]
+        );
+        expect(value).toEqual(0);
+      });
+    });
     describe("equals", () => {
       const op = "eq";
       test("integer", async () => {
@@ -566,76 +692,6 @@ describe("postgres/table/recordProperty", () => {
           [{ op, key: "amount", match: "1.54" }]
         );
         expect(value).toEqual(4);
-      });
-    });
-
-    describe("equals", () => {
-      const op = "eq";
-      test("integer", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "id", match: "15" }]
-        );
-        expect(value).toEqual(1);
-      });
-      test("string", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "purchase", match: "Apple" }]
-        );
-        expect(value).toEqual(2);
-      });
-      test("string is case sensitive", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "purchase", match: "apple" }]
-        );
-        expect(value).toEqual(0);
-      });
-      test("date", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "date", match: "2020-02-15" }]
-        );
-        expect(value).toEqual(1);
-      });
-      test("timestamp", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
-        );
-        expect(value).toEqual(1);
-      });
-      test("float", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "amount", match: "1.54" }]
-        );
-        expect(value).toEqual(2);
       });
     });
 
