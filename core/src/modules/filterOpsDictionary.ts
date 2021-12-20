@@ -1,4 +1,3 @@
-import { config } from "actionhero";
 import { SourceFilterMethodResponseRow } from "../classes/plugin";
 
 export const filterOpsDescriptions = {
@@ -14,17 +13,9 @@ export const filterOpsDescriptions = {
   notSubstring: "does not contain",
 };
 
-// export interface PropertyFilterOp {
-//   op: string;
-//   description: string;
-// }
-
 export function buildPropertyFilterDictionary(
-  options: SourceFilterMethodResponseRow[],
-  cfg?: any
+  options: SourceFilterMethodResponseRow[]
 ) {
-  // const propertyFilterOpsList: PropertyFilterOp[] =[];
-
   const propertyFilterDictionary: { [key: string]: string } = {};
 
   for (const option of options) {

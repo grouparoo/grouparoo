@@ -560,8 +560,79 @@ describe("postgres/table/recordProperties", () => {
     //   relativeMatchUnit?: string;
     //   relativeMatchDirection?: string;
     // }
+    //to do: exists/not exists
+    describe("exists", () => {
+      const op = "exists";
+      test("integer", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "id" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+      test("string", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+
+      test("date", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "date" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+      test("timestamp", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "stamp" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+      test("float", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "amount", match: "1.54" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([1]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+    });
+
     describe("equals", () => {
-      const op = "equals";
+      const op = "eq";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -643,7 +714,7 @@ describe("postgres/table/recordProperties", () => {
     });
 
     describe("does not equal", () => {
-      const op = "does not equal";
+      const op = "ne";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -725,7 +796,7 @@ describe("postgres/table/recordProperties", () => {
     });
 
     describe("contains", () => {
-      const op = "contains";
+      const op = "substring";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -807,7 +878,7 @@ describe("postgres/table/recordProperties", () => {
     });
 
     describe("does not contain", () => {
-      const op = "does not contain";
+      const op = "notSubstring";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -888,90 +959,8 @@ describe("postgres/table/recordProperties", () => {
       });
     });
 
-    describe("equals", () => {
-      const op = "equals";
-      test("integer", async () => {
-        const [values, properties] = await getPropertyValues(
-          {
-            columns,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "id", match: "15" }]
-        );
-        expect(values[record.id][properties[0].id]).toEqual([1]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
-      });
-      test("string", async () => {
-        const [values, properties] = await getPropertyValues(
-          {
-            columns,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "purchase", match: "Apple" }]
-        );
-        expect(values[record.id][properties[0].id]).toEqual([2]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
-        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
-      });
-      test("string is case sensitive", async () => {
-        const [values, properties] = await getPropertyValues(
-          {
-            columns,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "purchase", match: "apple" }]
-        );
-        expect(values[record.id][properties[0].id]).toEqual([0]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
-      });
-      test("date", async () => {
-        const [values, properties] = await getPropertyValues(
-          {
-            columns,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "date", match: "2020-02-15" }]
-        );
-        expect(values[record.id][properties[0].id]).toEqual([1]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
-      });
-      test("timestamp", async () => {
-        const [values, properties] = await getPropertyValues(
-          {
-            columns,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
-        );
-        expect(values[record.id][properties[0].id]).toEqual([1]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
-        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
-      });
-      test("float", async () => {
-        const [values, properties] = await getPropertyValues(
-          {
-            columns,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "amount", match: "1.54" }]
-        );
-        expect(values[record.id][properties[0].id]).toEqual([2]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([1]);
-        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
-      });
-    });
-
     describe("greater than", () => {
-      const op = "greater than";
+      const op = "gt";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -1054,7 +1043,7 @@ describe("postgres/table/recordProperties", () => {
     });
 
     describe("less than", () => {
-      const op = "less than";
+      const op = "lt";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
