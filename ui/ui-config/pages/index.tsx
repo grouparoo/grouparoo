@@ -62,7 +62,7 @@ export default function Page(props) {
           <Col style={{ textAlign: "center" }}>
             <Image
               alt="Grouparoo logo"
-              style={{ maxHeight: 50, margin: 40 }}
+              style={{ maxHeight: 80, margin: 40 }}
               src="/public/images/logo/logo-and-wordmark-black-words.svg"
             />
             <br />
