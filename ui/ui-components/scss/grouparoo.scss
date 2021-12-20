@@ -1,19 +1,5 @@
-// -- Colors --
-
-// Grouparoo Colors
-
-$grouparoo-light-gray: #adb5bd;
-$grouparoo-dark-gray: #242436;
-$grouparoo-yellow: #ff7518;
-$grouparoo-light-yellow: #fff8f1;
-$grouparoo-red: #ff0039;
-$grouparoo-blue: #29abe2;
-$grouparoo-light-blue: #b3e8ff;
-$grouparoo-blue-gray: #9b9db1;
-$grouparoo-violet: #9954bb;
-$grouparoo-light-violet: #d3d3ff;
-$grouparoo-background-blue: #f6fafb;
-$grouparoo-green: #3fb618;
+// -- Variables --
+@import "_variables.scss";
 
 // define colors we don't use elsewhere as bootstrap elements
 :root {
@@ -22,30 +8,13 @@ $grouparoo-green: #3fb618;
   --grouparoo-violet: #{$grouparoo-violet};
 }
 
-// Bootstrap Colors
-
-$primary: $grouparoo-blue;
-$secondary: $grouparoo-dark-gray;
-$success: $grouparoo-green;
-$info: $grouparoo-light-violet;
-$warning: $grouparoo-yellow;
-$danger: $grouparoo-red;
-$light: $grouparoo-light-gray;
-$dark: $grouparoo-dark-gray;
-
 @import "~bootstrap/scss/bootstrap";
-
-// -- Fonts --
-
-// prettier-ignore
-@import url(https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap);
-$font-stack: Roboto, sans-serif;
 
 // Page Defaults
 
 body {
   background-color: $grouparoo-background-blue;
-  font-family: $font-stack;
+  font-family: $font-body;
   font-weight: 300;
   font-size: 14px;
   color: $grouparoo-dark-gray;
@@ -66,19 +35,6 @@ header {
 
 table a {
   font-weight: 500;
-}
-
-// -- Footer --
-
-footer {
-  color: $light;
-  background-color: $grouparoo-dark-gray;
-  font-size: 14px;
-}
-
-footer a {
-  text-decoration: none;
-  color: $light;
 }
 
 // -- hr --

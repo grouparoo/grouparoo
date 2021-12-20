@@ -8,6 +8,15 @@ import HydrationError from "../alerts/HydrationError";
 import { SuccessHandler } from "../../utils/successHandler";
 import { ErrorHandler } from "../../utils/errorHandler";
 
+const fontFamilies = [
+  "IBM+Plex+Mono:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700",
+  "IBM+Plex+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400",
+  "Inter:wght@100;300;400;500;700;900",
+];
+const fontUrl = `https://fonts.googleapis.com/css2?${fontFamilies
+  .map((f) => `family=${f}`)
+  .join("&")}&display=swap`;
+
 export default function Main(props) {
   const {
     children,
@@ -40,6 +49,7 @@ export default function Main(props) {
         <meta name="application-name" content="Grouparoo" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+        {/* Favicon */}
         <link
           rel="apple-touch-icon-precomposed"
           sizes="57x57"
@@ -132,6 +142,10 @@ export default function Main(props) {
           content="/favicon/mstile-310x310.png"
         />
 
+        {/* Google Fonts */}
+        <link href={fontUrl} rel="stylesheet" />
+
+        {/* Websocket */}
         <script src="/public/client-js/grouparoo-websocket-client.js" />
       </Head>
 

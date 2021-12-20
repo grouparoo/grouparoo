@@ -119,7 +119,6 @@ export default function SetupStepsNavProgressBar({
             style={{
               paddingLeft: 0,
               paddingBottom: 10,
-              color: "var(--secondary)",
             }}
           >
             {activeStep?.title}
