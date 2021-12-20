@@ -26,7 +26,7 @@ export class OAuthListProviders extends Action {
         headers: { "Content-Type": "application/json" },
       }).then((r) => r.json());
     throwTelemetryError(response);
-    return { ...response };
+    return response;
   }
 }
 
@@ -56,8 +56,10 @@ export class OAuthClientStart extends CLSAction {
     });
 
     const callbackUrl = `${process.env.WEB_URL}/oauth/callback`;
-    const customerId = (await plugin.readSetting("telemetry", "customer-id"))
-      .value;
+    const { value: customerId } = await plugin.readSetting(
+      "telemetry",
+      "customer-id"
+    );
     const fullUrl = `${config.oAuth.host}/api/v1/oauth/${params.provider}/client/start`;
     const response: {
       error?: TelemetryError;

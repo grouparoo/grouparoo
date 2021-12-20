@@ -11,7 +11,8 @@ export default function SignInForm(props) {
   const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loadingEmail, setLoadingEmail] = useState(false);
+  const [loadingOAuth, setLoadingOAuth] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [providers, setProviders] = useState<OAuth.oAuthProviderType[]>([]);
   const [loadingOauthProviders, setLoadingOauthProviders] = useState(false);
@@ -48,7 +49,7 @@ export default function SignInForm(props) {
   };
 
   const startOauthLogin = async (provider: string, type: string) => {
-    setLoading(true);
+    setLoadingOAuth(true);
     const response: Actions.OAuthClientStart = await execApi(
       "post",
       `/oauth/${provider}/client/start`,
@@ -57,13 +58,13 @@ export default function SignInForm(props) {
     if (response.location) {
       window.location.assign(response.location);
     } else {
-      setLoading(false);
+      setLoadingOAuth(false);
     }
   };
 
   const loadOAuthRequest = async () => {
     if (!requestId) return;
-    setLoading(true);
+    setLoadingOAuth(true);
     const response: Actions.OAuthClientView = await execApi(
       "get",
       `/oauth/client/request/${requestId}/view`
@@ -77,16 +78,16 @@ export default function SignInForm(props) {
         setShowModal(true);
       }
     }
-    setLoading(false);
+    setLoadingOAuth(false);
   };
 
   const onSubmit = async (
     arg: Models.OAuthRequestType["identities"][number] | Record<string, any>,
     type: "password" | "requestId"
   ) => {
-    setLoading(true);
+    type === "password" ? setLoadingEmail(true) : setLoadingOAuth(true);
     const teamMember = await createSession(arg, type);
-    setLoading(false);
+    type === "password" ? setLoadingEmail(false) : setLoadingOAuth(false);
     if (teamMember) {
       successHandler.set({
         message: `Welcome Back${
@@ -123,53 +124,65 @@ export default function SignInForm(props) {
   return (
     <>
       <Row>
+        <Col>
+          <h1>Sign In</h1>
+        </Col>
+      </Row>
+      <Row>
         <Col className="border-right">
-          <h2>Sign in with Email</h2>
           <Form
             id="form"
             onSubmit={handleSubmit((data) => onSubmit(data, "password"))}
           >
-            <Form.Group>
-              <Form.Label>Email Address</Form.Label>
-              <Form.Control
-                disabled={loading}
-                autoFocus
-                required
-                name="email"
-                type="email"
-                placeholder="Email Address"
-                ref={register}
-              />
-              <Form.Control.Feedback type="invalid">
-                Email is required
-              </Form.Control.Feedback>
-            </Form.Group>
+            <fieldset disabled={loadingEmail || loadingOAuth}>
+              <Form.Group>
+                <Form.Label>Email Address</Form.Label>
+                <Form.Control
+                  autoFocus
+                  required
+                  name="email"
+                  type="email"
+                  placeholder="Email Address"
+                  ref={register}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Email is required
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <Form.Group>
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                required
-                disabled={loading}
-                name="password"
-                type="password"
-                placeholder="Password"
-                ref={register}
-              />
-              <Form.Control.Feedback type="invalid">
-                A password is required
-              </Form.Control.Feedback>
-            </Form.Group>
+              <Form.Group>
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  required
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  ref={register}
+                />
+                <Form.Control.Feedback type="invalid">
+                  A password is required
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <LoadingButton loading={loading} variant="primary" type="submit">
-              Sign In
-            </LoadingButton>
+              <LoadingButton
+                loading={loadingEmail}
+                variant="primary"
+                type="submit"
+              >
+                Sign In
+              </LoadingButton>
+            </fieldset>
           </Form>
         </Col>
 
-        <Col>
-          <h2>Sign in with oAuth</h2>
-
-          {loadingOauthProviders ? <Loader /> : null}
+        <Col style={{ textAlign: "center" }}>
+          {loadingOauthProviders ? (
+            <>
+              <br />
+              <br />
+              <Loader />
+            </>
+          ) : null}
 
           <br />
 
@@ -182,8 +195,9 @@ export default function SignInForm(props) {
               {providers.map((provider) => (
                 <Fragment key={`provider-${provider.name}`}>
                   <LoadingButton
-                    disabled={loading}
-                    loading={loadingOauthProviders}
+                    size="sm"
+                    disabled={loadingEmail || loadingOAuth}
+                    loading={loadingOAuth}
                     variant="outline-primary"
                     onClick={() => startOauthLogin(provider.name, "user")}
                   >
