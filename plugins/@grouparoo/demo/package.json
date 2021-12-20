@@ -48,7 +48,7 @@
     "@types/glob": "7.2.0",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "28.0.3",
+    "actionhero": "28.0.4",
     "jest": "27.4.3",
     "ts-jest": "27.1.1",
     "typescript": "4.5.2"
