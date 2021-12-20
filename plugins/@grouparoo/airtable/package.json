@@ -25,6 +25,7 @@
     "test": "jest",
     "pretest": "npm run lint && npm run prepare",
     "lint": "prettier --check src ",
+    "format": "prettier --write src",
     "watch": "tsc --watch"
   },
   "dependencies": {

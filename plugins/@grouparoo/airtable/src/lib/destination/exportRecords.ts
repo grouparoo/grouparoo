@@ -3,8 +3,8 @@ import {
   ExportRecordsPluginMethod,
   SimpleAppOptions,
   SimpleDestinationOptions,
-} from '@grouparoo/core';
-import { extractClient } from '../connect';
+} from "@grouparoo/core";
+import { extractClient } from "../connect";
 import {
   BatchConfig,
   BatchExport,
@@ -22,12 +22,12 @@ import {
   buildBatchExports,
   exportRecordsInBatch,
   GetForeignKeyMapMethod,
-} from '@grouparoo/app-templates/dist/destination/batch';
-import { IClient } from '../client/interfaces/iClient';
-import { AirtableDestinationOptions } from './destinationOptions';
-import { FieldSet, RecordData } from 'airtable';
-import AirtableError from 'airtable/lib/airtable_error';
-import { CreateRecord } from '../client/models';
+} from "@grouparoo/app-templates/dist/destination/batch";
+import { IClient } from "../client/interfaces/iClient";
+import { AirtableDestinationOptions } from "./destinationOptions";
+import { FieldSet, RecordData } from "airtable";
+import AirtableError from "airtable/lib/airtable_error";
+import { CreateRecord } from "../client/models";
 
 const getClient: BatchMethodGetClient = async ({ config }) => {
   if (config.appOptions) {
@@ -52,21 +52,21 @@ interface FindAndSetMethodOptions {
 }
 
 const deleteByDestinationIds: BatchMethodDeleteByDestinationIds = async (
-  methodOptions: MethodOptions,
+  methodOptions: MethodOptions
 ) => {
   const { config, users, client } = methodOptions;
   const { tableId } = config.destinationOptions as AirtableDestinationOptions;
   const recordIds = users
-    .map(value => value.destinationId)
+    .map((value) => value.destinationId)
     .filter((id: string | undefined): id is string => !!id);
 
   await client
     .deleteRecords(tableId, recordIds)
-    .catch(err => attachErrorsToErroneousRecords(users, err));
+    .catch((err) => attachErrorsToErroneousRecords(users, err));
 };
 
 const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async (
-  methodOptions: MethodOptions,
+  methodOptions: MethodOptions
 ) => {
   const { config, users, client } = methodOptions;
   const { tableId } = config.destinationOptions as AirtableDestinationOptions;
@@ -86,12 +86,12 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
     const { client, users, config, getByForeignKey } = options;
     const { tableId, primaryKey } =
       config.destinationOptions as AirtableDestinationOptions;
-    const inputs = users.map(record => buildCreatePayload(record));
+    const inputs = users.map((record) => buildCreatePayload(record));
     if (inputs.length > 0) {
       await client
         .createRecords(tableId.toString(), inputs)
-        .then(response => {
-          response.map(record => {
+        .then((response) => {
+          response.map((record) => {
             const key = record.fields[primaryKey];
             if (!key) {
               return;
@@ -111,7 +111,7 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
 // fetch using the keys to set destinationId and result on BatchExports
 // use the getByForeignKey to lookup results
 const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async (
-  options: FindAndSetMethodOptions,
+  options: FindAndSetMethodOptions
 ) => {
   const { config, client, getByForeignKey, foreignKeys } = options;
   const { tableId, primaryKey } =
@@ -119,9 +119,9 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async (
   const records = await client.listRecordsByField(
     tableId,
     primaryKey,
-    foreignKeys,
+    foreignKeys
   );
-  records.forEach(record => {
+  records.forEach((record) => {
     const key = record.fields[primaryKey.toString()];
     if (!key) {
       return;
@@ -129,26 +129,26 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async (
     const found = getByForeignKey(key.toString());
     if (found) {
       found.destinationId = record.id;
-      found.result = record.fields
+      found.result = record.fields;
     }
   });
 };
 
 function attachErrorsToErroneousRecords(
   records: BatchExport[],
-  error: AirtableError,
+  error: AirtableError
 ) {
-  records.map(record => {
+  records.map((record) => {
     record.error = error;
   });
 }
 
 function buildUpdatePayload(
-  exportedProfile: BatchExport,
+  exportedProfile: BatchExport
 ): RecordData<Partial<FieldSet>> {
   if (!exportedProfile.destinationId) {
     throw ReferenceError(
-      `Could not find destination ID in Batch Export with key ${exportedProfile.recordId}`,
+      `Could not find destination ID in Batch Export with key ${exportedProfile.recordId}`
     );
   }
   return {
@@ -158,7 +158,7 @@ function buildUpdatePayload(
 }
 
 function buildCreatePayload(
-  exportedProfile: BatchExport,
+  exportedProfile: BatchExport
 ): CreateRecord<FieldSet> {
   return {
     fields: exportedProfile.newRecordProperties,
@@ -221,7 +221,7 @@ export async function exportBatch(exportBatchOptions: ExportBatchOptions) {
       removeFromGroups,
       normalizeForeignKeyValue,
       normalizeGroupName,
-    },
+    }
   );
 }
 export const exportRecords: ExportRecordsPluginMethod = async ({

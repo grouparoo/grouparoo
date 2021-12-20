@@ -1,10 +1,10 @@
-import { Client } from './client/client';
-import { AirtableAppOptions } from './appOptions';
-import { ConnectPluginAppMethod, SimpleAppOptions } from '@grouparoo/core';
-import { IClient } from './client/interfaces/iClient';
+import { Client } from "./client/client";
+import { AirtableAppOptions } from "./appOptions";
+import { ConnectPluginAppMethod, SimpleAppOptions } from "@grouparoo/core";
+import { IClient } from "./client/interfaces/iClient";
 
 export async function extractClient(
-  appOptions: SimpleAppOptions,
+  appOptions: SimpleAppOptions
 ): Promise<IClient> {
   const airtableOptions = new AirtableAppOptions(appOptions);
   return new Client(airtableOptions);

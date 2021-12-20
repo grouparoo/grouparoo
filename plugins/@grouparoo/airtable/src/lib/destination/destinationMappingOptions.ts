@@ -1,13 +1,13 @@
 import {
   DestinationMappingOptionsMethod,
   DestinationMappingOptionsResponseType,
-} from '@grouparoo/core';
-import { AirtablePropertyTypes, Table } from '../client/models';
-import { IClient } from '../client/interfaces/iClient';
-import { AirtableDestinationOptions } from './destinationOptions';
+} from "@grouparoo/core";
+import { AirtablePropertyTypes, Table } from "../client/models";
+import { IClient } from "../client/interfaces/iClient";
+import { AirtableDestinationOptions } from "./destinationOptions";
 
-const singleAirtableProperty = 'Airtable Record Property';
-const pluralAirtableProperty = 'Airtable Record Properties';
+const singleAirtableProperty = "Airtable Record Property";
+const pluralAirtableProperty = "Airtable Record Properties";
 export const destinationMappingOptions: DestinationMappingOptionsMethod<IClient> =
   async ({ connection, destinationOptions }) => {
     const { tableId, primaryKey } =
@@ -15,7 +15,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod<IClient>
     const table: Table = await connection.getTable(tableId);
     const required = getRequiredFields(table, primaryKey);
     const requiredFieldsNames = required.map(
-      requiredField => requiredField.key,
+      (requiredField) => requiredField.key
     );
     const known = getTableFields(table, requiredFieldsNames);
     return {
@@ -35,7 +35,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod<IClient>
 
 function getRequiredFields(
   table: Table,
-  primaryKey: string,
+  primaryKey: string
 ): Array<{
   key: string;
   type: DestinationMappingOptionsResponseType;
@@ -45,8 +45,8 @@ function getRequiredFields(
     key: string;
     type: DestinationMappingOptionsResponseType;
   }> = [];
-  requiredFields.map(requiredField => {
-    const field = table.fields.find(field => field.name == requiredField);
+  requiredFields.map((requiredField) => {
+    const field = table.fields.find((field) => field.name == requiredField);
     if (!field) {
       return;
     }
@@ -60,7 +60,7 @@ function getRequiredFields(
 
 export const getTableFields = (
   table: Table,
-  requiredFields: string[],
+  requiredFields: string[]
 ): Array<{
   key: string;
   type: DestinationMappingOptionsResponseType;
@@ -86,22 +86,22 @@ export const getTableFields = (
 };
 
 function mapTypesFromAirtableToGrouparoo(
-  airtableType: string,
+  airtableType: string
 ): DestinationMappingOptionsResponseType {
   switch (airtableType) {
     case AirtablePropertyTypes.MULTISELECT:
-      return 'string';
+      return "string";
     case AirtablePropertyTypes.CHECKBOX:
-      return 'boolean';
+      return "boolean";
     case AirtablePropertyTypes.DATE:
-      return 'date';
+      return "date";
     case AirtablePropertyTypes.EMAIL:
-      return 'email';
+      return "email";
     case AirtablePropertyTypes.MULTILINE:
-      return 'string';
+      return "string";
     case AirtablePropertyTypes.SINGLELINE:
-      return 'string';
+      return "string";
     default:
-      return 'string';
+      return "string";
   }
 }

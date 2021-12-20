@@ -1,15 +1,15 @@
-import Airtable, { FieldSet, Record, RecordData, Records } from 'airtable';
-import { AirtableAppOptions } from '../appOptions';
-import Axios, { AxiosRequestHeaders, AxiosError } from 'axios';
-import { URL } from 'url';
+import Airtable, { FieldSet, Record, RecordData, Records } from "airtable";
+import { AirtableAppOptions } from "../appOptions";
+import Axios, { AxiosRequestHeaders, AxiosError } from "axios";
+import { URL } from "url";
 import {
   CreateRecord,
   HealthResponse,
   ListTablesResponse,
   Table,
-} from './models';
-import { IClient } from './interfaces/iClient';
-import AirtableError from 'airtable/lib/airtable_error';
+} from "./models";
+import { IClient } from "./interfaces/iClient";
+import AirtableError from "airtable/lib/airtable_error";
 
 export class Client implements IClient {
   private readonly apiKey: string;
@@ -31,11 +31,11 @@ export class Client implements IClient {
     };
   }
   async health(): Promise<HealthResponse> {
-    const healthEndpoint = new URL('/v0/meta/bases', this.apiURL);
+    const healthEndpoint = new URL("/v0/meta/bases", this.apiURL);
     return Axios.get<HealthResponse>(healthEndpoint.href, {
       headers: this.defaultHeaders(),
     })
-      .then(resp => {
+      .then((resp) => {
         return {
           body: resp.data,
           statusCode: resp.status,
@@ -57,11 +57,11 @@ export class Client implements IClient {
   async listTables(): Promise<Table[]> {
     const listTablesEndpoint = new URL(
       `/v0/meta/bases/${this.baseId}/tables`,
-      this.apiURL,
+      this.apiURL
     );
     return Axios.get<ListTablesResponse>(listTablesEndpoint.href, {
       headers: this.defaultHeaders(),
-    }).then(value => value.data.tables);
+    }).then((value) => value.data.tables);
   }
 
   /**
@@ -73,15 +73,15 @@ export class Client implements IClient {
    */
   async getTable(tableId: string): Promise<Table> {
     return this.listTables()
-      .then(tables => {
-        return tables.find(table => table.id === tableId);
+      .then((tables) => {
+        return tables.find((table) => table.id === tableId);
       })
-      .then(value => {
+      .then((value) => {
         if (!value) {
           throw new AirtableError(
-            'NOT FOUND',
+            "NOT FOUND",
             `Could not find table ${tableId}`,
-            404,
+            404
           );
         }
         return value;
@@ -99,10 +99,10 @@ export class Client implements IClient {
   async listRecordsByField(
     tableId: string,
     primaryKey: string,
-    foreignKeys: string[],
+    foreignKeys: string[]
   ): Promise<Records<FieldSet>> {
-    const conditionals = foreignKeys.map(key => `{${primaryKey}}="${key}"`);
-    const filterString = `OR(${conditionals.join(',')})`;
+    const conditionals = foreignKeys.map((key) => `{${primaryKey}}="${key}"`);
+    const filterString = `OR(${conditionals.join(",")})`;
     return this.baseClient(tableId)
       .select({
         filterByFormula: filterString,
@@ -119,7 +119,7 @@ export class Client implements IClient {
    */
   async deleteRecord(
     tableId: string,
-    recordId: string,
+    recordId: string
   ): Promise<Record<FieldSet>> {
     return this.baseClient(tableId).destroy(recordId);
   }
@@ -131,7 +131,7 @@ export class Client implements IClient {
    */
   async deleteRecords(
     tableId: string,
-    recordIds: string[],
+    recordIds: string[]
   ): Promise<Records<FieldSet>> {
     return this.baseClient(tableId).destroy(recordIds);
   }
@@ -153,7 +153,7 @@ export class Client implements IClient {
    */
   async updateRecords(
     tableId: string,
-    records: RecordData<Partial<FieldSet>>[],
+    records: RecordData<Partial<FieldSet>>[]
   ): Promise<Records<FieldSet>> {
     return this.baseClient(tableId).update(records);
   }
@@ -165,7 +165,7 @@ export class Client implements IClient {
    */
   async createRecord(
     tableId: string,
-    record: Partial<FieldSet>,
+    record: Partial<FieldSet>
   ): Promise<Record<FieldSet>> {
     return this.baseClient(tableId).create(record);
   }

@@ -1,6 +1,6 @@
-import { ExportArrayPropertiesMethod } from '@grouparoo/core';
-import { IClient } from '../client/interfaces/iClient';
-import { AirtablePropertyTypes, TableField } from '../client/models';
+import { ExportArrayPropertiesMethod } from "@grouparoo/core";
+import { IClient } from "../client/interfaces/iClient";
+import { AirtablePropertyTypes, TableField } from "../client/models";
 
 export const exportArrayProperties: ExportArrayPropertiesMethod<IClient> =
   async ({ connection, destinationOptions }) => {
@@ -9,9 +9,9 @@ export const exportArrayProperties: ExportArrayPropertiesMethod<IClient> =
       return [];
     }
     const table = await connection.getTable(
-      destinationOptions.tableId.toString(),
+      destinationOptions.tableId.toString()
     );
-    return table.fields.filter(isArrayType).map(field => field.name);
+    return table.fields.filter(isArrayType).map((field) => field.name);
   };
 
 export function isArrayType(field: TableField): boolean {

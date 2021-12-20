@@ -1,5 +1,5 @@
-import { CreateRecord, HealthResponse, Table } from '../models';
-import { FieldSet, Record, RecordData, Records } from 'airtable';
+import { CreateRecord, HealthResponse, Table } from "../models";
+import { FieldSet, Record, RecordData, Records } from "airtable";
 
 export interface IClient {
   health(): Promise<HealthResponse>;
@@ -15,33 +15,33 @@ export interface IClient {
   listRecordsByField(
     tableId: string,
     primaryKey: string,
-    foreignKeys: string[],
+    foreignKeys: string[]
   ): Promise<Records<FieldSet>>;
 
   deleteRecord(tableId: string, recordId: string): Promise<Record<FieldSet>>;
 
   deleteRecords(
     tableId: string,
-    recordIds: string[],
+    recordIds: string[]
   ): Promise<Records<FieldSet>>;
 
   updateRecord(
     tableId: string,
-    record: RecordData<Partial<FieldSet>>,
+    record: RecordData<Partial<FieldSet>>
   ): Promise<Record<FieldSet>>;
 
   updateRecords(
     tableId: string,
-    record: RecordData<Partial<FieldSet>>[],
+    record: RecordData<Partial<FieldSet>>[]
   ): Promise<Records<FieldSet>>;
 
   createRecord(
     tableId: string,
-    record: Partial<FieldSet>,
+    record: Partial<FieldSet>
   ): Promise<Record<FieldSet>>;
 
   createRecords(
     tableId: string,
-    record: CreateRecord<FieldSet>[],
+    record: CreateRecord<FieldSet>[]
   ): Promise<Records<FieldSet>>;
 }

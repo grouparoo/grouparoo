@@ -1,13 +1,13 @@
-import { Initializer } from 'actionhero';
-import { plugin } from '@grouparoo/core';
+import { Initializer } from "actionhero";
+import { plugin } from "@grouparoo/core";
 
-import { appTest } from '../lib/appTest';
-import { connect } from '../lib/connect';
-import { AirtableAppOptionsOptions } from '../lib/appOptions';
-import { objectsDestinationConnection } from '../lib/destination/connection';
-import { disconnect } from '../lib/disconnect';
+import { appTest } from "../lib/appTest";
+import { connect } from "../lib/connect";
+import { AirtableAppOptionsOptions } from "../lib/appOptions";
+import { objectsDestinationConnection } from "../lib/destination/connection";
+import { disconnect } from "../lib/disconnect";
 
-const packageJSON = require('./../../package.json');
+const packageJSON = require("./../../package.json");
 
 export class Plugins extends Initializer {
   constructor() {
@@ -18,11 +18,11 @@ export class Plugins extends Initializer {
   async initialize() {
     plugin.registerPlugin({
       name: packageJSON.name,
-      icon: '/public/@grouparoo/airtable/airtable.png',
+      icon: "/public/@grouparoo/airtable/airtable.png",
       apps: [
         {
-          name: 'airtable',
-          displayName: 'Airtable',
+          name: "airtable",
+          displayName: "Airtable",
           options: AirtableAppOptionsOptions,
           methods: {
             test: appTest,

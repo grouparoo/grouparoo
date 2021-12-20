@@ -1,5 +1,5 @@
-import { RecordData } from 'airtable/lib/record_data';
-import { FieldSet } from 'airtable';
+import { RecordData } from "airtable/lib/record_data";
+import { FieldSet } from "airtable";
 
 export interface HealthResponse {
   body: any;
@@ -20,14 +20,14 @@ export type TableField = {
   name: string;
 };
 export enum AirtablePropertyTypes {
-  SINGLELINE = 'singleLineText',
-  MULTILINE = 'multilineText',
-  CHECKBOX = 'checkbox',
-  DATE = 'date',
-  EMAIL = 'email',
-  MULTISELECT = 'multipleSelects',
+  SINGLELINE = "singleLineText",
+  MULTILINE = "multilineText",
+  CHECKBOX = "checkbox",
+  DATE = "date",
+  EMAIL = "email",
+  MULTISELECT = "multipleSelects",
 }
 export type CreateRecord<TFields> = Pick<
   RecordData<Partial<TFields>>,
-  'fields'
+  "fields"
 >;

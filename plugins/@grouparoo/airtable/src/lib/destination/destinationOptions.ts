@@ -2,9 +2,9 @@ import {
   DestinationOptionsMethod,
   DestinationOptionsMethodResponse,
   SimpleDestinationOptions,
-} from '@grouparoo/core';
-import { Table } from '../client/models';
-import { IClient } from '../client/interfaces/iClient';
+} from "@grouparoo/core";
+import { Table } from "../client/models";
+import { IClient } from "../client/interfaces/iClient";
 
 export interface AirtableDestinationOptions extends SimpleDestinationOptions {
   tableId: string;
@@ -18,7 +18,7 @@ export const destinationOptions: DestinationOptionsMethod<IClient> = async ({
   const optionHandler = new DestinationOptionsHandler(connection);
 
   return await optionHandler.getDestinationOptions(
-    destinationOptions as AirtableDestinationOptions,
+    destinationOptions as AirtableDestinationOptions
   );
 };
 
@@ -29,7 +29,7 @@ class DestinationOptionsHandler {
   }
 
   public async getDestinationOptions(
-    destinationOptions: AirtableDestinationOptions,
+    destinationOptions: AirtableDestinationOptions
   ): Promise<DestinationOptionsMethodResponse> {
     const out: DestinationOptionsMethodResponse = {};
     Object.assign(out, await this.getRecordOptions(destinationOptions));
@@ -38,7 +38,7 @@ class DestinationOptionsHandler {
 
   private async getTables(): Promise<Map<string, Table>> {
     const tables = await this.client.listTables();
-    return new Map(tables.map(table => [table.id, table]));
+    return new Map(tables.map((table) => [table.id, table]));
   }
 
   private async getSchema(tableId: string): Promise<string[]> {
@@ -46,11 +46,11 @@ class DestinationOptionsHandler {
   }
 
   private async getRecordOptions(
-    destinationOptions: AirtableDestinationOptions,
+    destinationOptions: AirtableDestinationOptions
   ): Promise<DestinationOptionsMethodResponse> {
     const out: DestinationOptionsMethodResponse = {
-      tableId: { type: 'list', options: [], descriptions: [] },
-      primaryKey: { type: 'pending', options: [] },
+      tableId: { type: "list", options: [], descriptions: [] },
+      primaryKey: { type: "pending", options: [] },
     };
     const tables = await this.getTables();
     const sortedTables = Array.from(tables)
@@ -62,20 +62,20 @@ class DestinationOptionsHandler {
       })
       .sort((a, b) => a.description.localeCompare(b.description));
 
-    out.tableId.options = sortedTables.map(value => value.option);
-    out.tableId.descriptions = sortedTables.map(value => value.description);
+    out.tableId.options = sortedTables.map((value) => value.option);
+    out.tableId.descriptions = sortedTables.map((value) => value.description);
 
     const tableId = destinationOptions.tableId;
     if (tableId) {
       const fields = await this.getSchema(tableId);
-      out.primaryKey.type = 'typeahead';
+      out.primaryKey.type = "typeahead";
       out.primaryKey.options = fields;
       if (!fields.includes(destinationOptions.primaryKey)) {
-        destinationOptions.primaryKey = '';
+        destinationOptions.primaryKey = "";
       }
     } else {
-      destinationOptions.tableId = '';
-      destinationOptions.primaryKey = '';
+      destinationOptions.tableId = "";
+      destinationOptions.primaryKey = "";
     }
     return out;
   }
