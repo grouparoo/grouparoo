@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import FormInputContainer from "../lib/form/FormInputContainer";
 import { Models } from "../../utils/apiData";
+import { useForm } from "react-hook-form";
 
 const renderExamples = (exampleText?: string) => (
   <div style={{ visibility: exampleText ? "visible" : "hidden" }}>
@@ -18,6 +19,7 @@ interface Props {
   propertyExamples: Record<string, string[]>;
   source: Models.SourceType;
   types: string[];
+  register: ReturnType<typeof useForm>["register"];
 }
 
 const FormMappingSelector: React.FC<Props> = ({
@@ -27,6 +29,7 @@ const FormMappingSelector: React.FC<Props> = ({
   preview,
   properties,
   propertyExamples,
+  register,
   source,
   types,
 }) => {
@@ -36,10 +39,6 @@ const FormMappingSelector: React.FC<Props> = ({
         ? properties.find(({ key }) => key === propertyKey)
         : undefined
   );
-  const [newProperty, setNewProperty] = useState({
-    key: "",
-    type: "",
-  });
 
   const previewColumns = useMemo<string[]>(() => {
     return preview
@@ -105,7 +104,7 @@ const FormMappingSelector: React.FC<Props> = ({
     <Row>
       <Col xs={12} lg={6}>
         <FormInputContainer
-          controlId="mapping_primary_key"
+          controlId="mapping_source_column"
           label="Source Column"
           required
         >
@@ -117,6 +116,8 @@ const FormMappingSelector: React.FC<Props> = ({
             onChange={(e) => {
               setSelectedColumn(e.target.value);
             }}
+            name="mapping.sourceColumn"
+            ref={register}
           >
             <option value={""} disabled>
               Select an option
@@ -142,12 +143,16 @@ const FormMappingSelector: React.FC<Props> = ({
                 as="select"
                 required
                 disabled={disabled}
-                value={selectedProperty?.id}
+                value={selectedProperty?.key}
                 onChange={(e) => {
                   setSelectedProperty(
-                    availableProperties.find(({ id }) => id === e.target.value)
+                    availableProperties.find(
+                      ({ key }) => key === e.target.value
+                    )
                   );
                 }}
+                name="mapping.propertyKey"
+                ref={register}
               >
                 <option value={""} disabled>
                   Select an option
@@ -155,7 +160,7 @@ const FormMappingSelector: React.FC<Props> = ({
                 {availableProperties.map((property) => (
                   <option
                     key={`mapping-property-${property.key}`}
-                    value={property.id}
+                    value={property.key}
                   >
                     {property.key} {property.unique && "(unique)"}
                   </option>
@@ -175,14 +180,9 @@ const FormMappingSelector: React.FC<Props> = ({
                 required
                 type="text"
                 placeholder="Property Key"
-                defaultValue={newProperty.key}
                 disabled={disabled}
-                onChange={(e) => {
-                  setNewProperty({
-                    ...newProperty,
-                    key: e.target.value,
-                  });
-                }}
+                name="bootstrap.propertyKey"
+                ref={register}
               />
               <Form.Control.Feedback type="invalid">
                 Key is required
@@ -193,15 +193,10 @@ const FormMappingSelector: React.FC<Props> = ({
               <Form.Control
                 as="select"
                 required
-                defaultValue={newProperty.type}
                 disabled={disabled}
-                onChange={(e) => {
-                  setNewProperty({
-                    ...newProperty,
-                    //@ts-ignore
-                    type: e.target.value,
-                  });
-                }}
+                name="bootstrap.propertyType"
+                ref={register}
+                defaultValue={types?.find((type) => type === "integer")}
               >
                 <option value={""} disabled>
                   Select a type

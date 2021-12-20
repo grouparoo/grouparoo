@@ -1,8 +1,9 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState, useEffect, useMemo } from "react";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
-import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
 import { UseApi } from "../../../../../hooks/useApi";
 import SourceTabs from "../../../../../components/tabs/Source";
 import PageHeader from "../../../../../components/PageHeader";
@@ -19,15 +20,15 @@ import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import FormMappingSelector from "../../../../../components/source/FormMappingSelector";
+import { createSchedule } from "../../../../../components/schedule/Add";
 
 export default function Page(props) {
   const {
     environmentVariableOptions,
-    properties,
-    propertyExamples,
     errorHandler,
     successHandler,
     sourceHandler,
+    scheduleCount,
     types,
   }: {
     environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
@@ -36,14 +37,22 @@ export default function Page(props) {
     propertyExamples: Record<string, string[]>;
     successHandler: SuccessHandler;
     sourceHandler: SourceHandler;
+    scheduleCount: number;
     types: string[];
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
+  const { handleSubmit, register } = useForm();
   const [preview, setPreview] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingOptions, setLoadingOptions] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
+  const [properties, setProperties] = useState<Models.PropertyType[]>(
+    props.properties
+  );
+  const [propertyExamples, setPropertyExamples] = useState<
+    Record<string, string[]>
+  >(props.propertyExamples);
   const [source, setSource] = useState<Models.SourceType>(props.source);
   const [connectionOptions, setConnectionOptions] = useState<
     Actions.sourceConnectionOptions["options"]
@@ -94,27 +103,88 @@ export default function Page(props) {
     }
   }
 
-  const onSubmit = async (event) => {
+  const onSubmit = async (data, event) => {
     event.preventDefault();
     setLoading(true);
-    const state = source.connection.skipSourceMapping
-      ? "ready"
-      : source.previewAvailable
-      ? undefined
-      : "ready";
 
-    const response: Actions.SourceEdit = await execApi(
+    const isBootstrappingUniqueProperty =
+      data.bootstrap?.propertyKey && data.bootstrap?.propertyType;
+    let bootstrapSuccess = false;
+
+    // Unique Property is being created and need to bootstrap?
+    if (isBootstrappingUniqueProperty) {
+      const payload = {
+        key: data.bootstrap.propertyKey,
+        type: data.bootstrap.propertyType,
+        mappedColumn: data.mapping.sourceColumn,
+      };
+
+      const bootstrapResponse: Actions.SourceBootstrapUniqueProperty =
+        await execApi(
+          "post",
+          `/source/${source.id}/bootstrapUniqueProperty`,
+          payload
+        );
+
+      if (bootstrapResponse?.property) {
+        bootstrapSuccess = true;
+        const prrResponse = await execApi<Actions.PropertiesList>(
+          "get",
+          `/properties`,
+          {
+            includeExamples: true,
+            unique: true,
+            state: "ready",
+            modelId: source.modelId,
+          }
+        );
+        if (prrResponse?.properties) {
+          setProperties(prrResponse.properties);
+          setPropertyExamples(prrResponse.examples);
+        }
+      }
+    }
+
+    const mapping = bootstrapSuccess
+      ? {
+          [data.mapping.sourceColumn]: data.bootstrap.propertyKey,
+        }
+      : data.mapping?.propertyKey
+      ? {
+          [data.mapping.sourceColumn]: data.mapping.propertyKey,
+        }
+      : source.mapping;
+
+    const state =
+      source.connection.skipSourceMapping ||
+      data.mapping?.propertyKey ||
+      bootstrapSuccess
+        ? "ready"
+        : source.previewAvailable
+        ? undefined
+        : "ready";
+
+    const response = await execApi<Actions.SourceEdit>(
       "put",
       `/source/${sourceId}`,
-      Object.assign({}, source, { state })
+      { ...source, state, mapping }
     );
+
     if (response?.source) {
       setSource(response.source);
       sourceHandler.set(response.source);
-      if (response.source.state !== "ready") {
+
+      // this source can have a schedule, and we have no schedules yet
+      if (scheduleCount === 0 && response.source.scheduleAvailable) {
+        await createSchedule({
+          router,
+          execApi,
+          source: response.source,
+          setLoading: () => {},
+        });
         router.push(
-          `/model/[modelId]/source/[sourceId]/mapping`,
-          `/model/${response.source.modelId}/source/${sourceId}/mapping`
+          "/model/[modelId]/source/[sourceId]/schedule",
+          `/model/${response.source.modelId}/source/${sourceId}/schedule`
         );
       } else if (
         response.source.state === "ready" &&
@@ -125,12 +195,11 @@ export default function Page(props) {
           `/model/${response.source.modelId}/source/${sourceId}/overview`
         );
       } else {
-        setLoading(false);
         successHandler.set({ message: "Source updated" });
       }
-    } else {
-      setLoading(false);
     }
+
+    setLoading(false);
   };
 
   async function loadOptions() {
@@ -210,7 +279,7 @@ export default function Page(props) {
 
       <Row>
         <Col>
-          <Form id="form" onSubmit={onSubmit} autoComplete="off">
+          <Form id="form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
             <fieldset disabled={Boolean(source.locked)}>
               <Form.Group controlId="name">
                 <Form.Label>Name</Form.Label>
@@ -221,6 +290,8 @@ export default function Page(props) {
                   placeholder="Source Name"
                   defaultValue={source.name}
                   onChange={(e) => update(e)}
+                  name="source.name"
+                  ref={register}
                 />
                 <Form.Control.Feedback type="invalid">
                   Name is required
@@ -305,6 +376,8 @@ export default function Page(props) {
                                   ? [source.options[opt.key]]
                                   : undefined
                               }
+                              name={`source.options.${opt.key}`}
+                              ref={register}
                             />
                             <Form.Text className="text-muted">
                               {opt.description}
@@ -327,6 +400,8 @@ export default function Page(props) {
                                   e.target.value
                                 )
                               }
+                              name={`source.options.${opt.key}`}
+                              ref={register}
                             >
                               <option value={""} disabled>
                                 Select an option
@@ -385,6 +460,8 @@ export default function Page(props) {
                                   e.target.value
                                 )
                               }
+                              name={`source.options.${opt.key}`}
+                              ref={register}
                             />
                             <Form.Text className="text-muted">
                               {opt.description}
@@ -432,6 +509,7 @@ export default function Page(props) {
                     preview={preview}
                     properties={properties}
                     propertyExamples={propertyExamples}
+                    register={register}
                     source={source}
                     types={types}
                   />
@@ -517,11 +595,20 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
 
   const { types } = await execApi("get", `/propertyOptions`);
 
+  const { total: scheduleCount } = await execApi<Actions.SchedulesList>(
+    "get",
+    `/schedules`,
+    {
+      modelId: source?.modelId,
+    }
+  );
+
   return {
     environmentVariableOptions,
     properties,
     propertyExamples,
     source,
+    scheduleCount,
     types,
   };
 };
