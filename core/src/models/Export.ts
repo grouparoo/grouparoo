@@ -10,7 +10,8 @@ import {
   Default,
   AfterUpdate,
 } from "sequelize-typescript";
-import { appendFile } from "fs/promises";
+import path from "path";
+import { appendFile } from "fs-extra";
 import { api, config, log } from "actionhero";
 import { Destination } from "./Destination";
 import { GrouparooRecord } from "./GrouparooRecord";
@@ -24,6 +25,7 @@ import { ExportProcessor } from "./ExportProcessor";
 import { Errors } from "../modules/errors";
 import { PropertyTypes } from "./Property";
 import { CommonModel } from "../classes/commonModel";
+import { getParentPath } from "../modules/pluginDetails";
 
 /**
  * The GrouparooRecord Properties in their normal data types (string, boolean, date, etc)
@@ -320,7 +322,11 @@ export class Export extends CommonModel<Export> {
       if (process.env.GROUPAROO_EXPORT_LOG === "stdout") {
         log(`[ export ] ${message}`);
       } else {
-        await appendFile(process.env.GROUPAROO_EXPORT_LOG, `${message}\n`);
+        const logPath = path.isAbsolute(process.env.GROUPAROO_EXPORT_LOG)
+          ? process.env.GROUPAROO_EXPORT_LOG
+          : path.join(getParentPath(), process.env.GROUPAROO_EXPORT_LOG);
+
+        await appendFile(logPath, `${message}\n`);
       }
     }
   }
