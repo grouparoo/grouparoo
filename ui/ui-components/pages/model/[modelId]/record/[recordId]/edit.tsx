@@ -87,13 +87,20 @@ export default function Page(props) {
   async function exportRecord() {
     setLoading(true);
     successHandler.set({ message: "enqueued for export..." });
-    const response: Actions.RecordImport = await execApi(
+    const response: Actions.RecordExport = await execApi(
       "post",
       `/record/${record.id}/export`
     );
     if (response?.record) {
+      const message =
+        response.exports.length === 0
+          ? "No Exports Created"
+          : `Exported To: ${response.exports
+              .map((e) => e.destination.name)
+              .sort()
+              .join(", ")}`;
       updateRecordState(response);
-      successHandler.set({ message: "Export Complete!" });
+      successHandler.set({ message });
     } else {
       load(); // we may have done a partial export
     }
