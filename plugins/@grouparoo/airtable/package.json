@@ -1,0 +1,55 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/airtable",
+  "description": "The Grouparoo airtable Plugin",
+  "version": "0.7.8-alpha.0",
+  "license": "MPL-2.0",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=12.0.0 <17.0.0"
+  },
+  "homepage": "https://www.grouparoo.com",
+  "bugs": {
+    "url": "https://github.com/grouparoo/grouparoo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grouparoo/grouparoo.git",
+    "directory": "plugins/@grouparoo/airtable"
+  },
+  "scripts": {
+    "prepare": "rm -rf dist && tsc --declaration",
+    "test": "jest",
+    "pretest": "npm run lint && npm run prepare",
+    "lint": "prettier --check src ",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "@grouparoo/app-templates": "0.7.6",
+    "@grouparoo/core": "0.7.6",
+    "actionhero": "27.2.0",
+    "airtable": "0.11.1",
+    "axios": "0.24.0"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "7.16.0",
+    "@babel/core": "7.16.5",
+    "@grouparoo/core": "0.7.6",
+    "@grouparoo/spec-helper": "0.7.6",
+    "@types/jest": "27.0.3",
+    "@types/node": "16.11.9",
+    "actionhero": "27.2.0",
+    "jest": "27.3.1",
+    "jest-mock-extended": "2.0.4",
+    "nock": "13.2.1",
+    "prettier": "2.4.1",
+    "ts-jest": "27.0.7",
+    "type-fest": "2.6.0",
+    "typescript": "4.5.2"
+  },
+
+  "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
+}
