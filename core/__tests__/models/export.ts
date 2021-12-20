@@ -4,6 +4,7 @@ import path from "path";
 import { Op } from "sequelize";
 import { ensureDir } from "fs-extra";
 import { helper } from "@grouparoo/spec-helper";
+import * as actionhero from "actionhero";
 import {
   Destination,
   GrouparooRecord,
@@ -535,7 +536,7 @@ describe("models/export", () => {
     });
   });
 
-  describe("with GROUPAROO_EXPORT_LOG set", () => {
+  describe("logExports", () => {
     let oldLogPath = process.env.GROUPAROO_EXPORT_LOG;
     const workerId = process.env.JEST_WORKER_ID;
 
@@ -551,6 +552,21 @@ describe("models/export", () => {
 
     afterAll(() => {
       process.env.GROUPAROO_EXPORT_LOG = oldLogPath;
+    });
+
+    let logMsgs: string[] = [];
+    let spies = [];
+    beforeEach(async () => {
+      logMsgs = [];
+      spies.push(
+        jest
+          .spyOn(actionhero, "log")
+          .mockImplementation((message) => logMsgs.push(message))
+      );
+    });
+
+    afterEach(async () => {
+      spies.map((s) => s.mockRestore());
     });
 
     test("Exports will not be logged to file on creation or common updates", async () => {
@@ -577,6 +593,8 @@ describe("models/export", () => {
       expect(loggedObj.state).toBe("complete");
       expect(loggedObj.recordId).toBe(_export.recordId);
       expect(loggedObj.timestamp).toBeDefined();
+
+      expect(logMsgs.join(" ")).not.toContain("[ export ]");
     });
 
     test("Exports will be logged to file when failed", async () => {
@@ -596,6 +614,8 @@ describe("models/export", () => {
       expect(loggedObj.errorLevel).toBe("info");
       expect(loggedObj.recordId).toBe(_export.recordId);
       expect(loggedObj.timestamp).toBeDefined();
+
+      expect(logMsgs.join(" ")).not.toContain("[ export ]");
     });
 
     test("Exports will be logged to file when canceled", async () => {
@@ -611,6 +631,8 @@ describe("models/export", () => {
       expect(loggedObj.state).toBe("canceled");
       expect(loggedObj.recordId).toBe(_export.recordId);
       expect(loggedObj.timestamp).toBeDefined();
+
+      expect(logMsgs.join(" ")).not.toContain("[ export ]");
     });
 
     test("Exports will not be logged if GROUPAROO_EXPORT_LOG is not set", async () => {
@@ -622,6 +644,25 @@ describe("models/export", () => {
       await _export.complete();
 
       expect(fs.existsSync(logPath)).toBe(false);
+      expect(logMsgs.join(" ")).not.toContain("[ export ]");
+    });
+
+    test("Exports will be logged to stdout if GROUPAROO_EXPORT_LOG is set to `stdout`", async () => {
+      process.env.GROUPAROO_EXPORT_LOG = "stdout";
+
+      _export = await helper.factories.export();
+      await _export.complete();
+
+      expect(fs.existsSync(logPath)).toBe(false);
+      const logMsg = logMsgs.find((m) => m.startsWith("[ export ]"));
+      expect(logMsg).toBeTruthy();
+      const data = logMsg.split("[ export ] ")[1];
+
+      const loggedObj = JSON.parse(data);
+      expect(loggedObj.id).toBe(_export.id);
+      expect(loggedObj.state).toBe("complete");
+      expect(loggedObj.recordId).toBe(_export.recordId);
+      expect(loggedObj.timestamp).toBeDefined();
     });
   });
 
