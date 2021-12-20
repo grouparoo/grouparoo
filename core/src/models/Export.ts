@@ -304,16 +304,7 @@ export class Export extends CommonModel<Export> {
       ["canceled", "failed", "complete"].includes(instance.state)
     ) {
       const exportData = {
-        id: instance.id,
-        state: instance.state,
-        recordId: instance.recordId,
-        modelId: (await instance.$get("record")).modelId,
-        destinationId: instance.destinationId,
-        newRecordProperties: instance.newRecordProperties,
-        newGroups: instance.newGroups,
-        toDelete: instance.toDelete,
-        errorMessage: instance.errorMessage,
-        errorLevel: instance.errorLevel,
+        ...(await instance.apiData(false)),
         timestamp: new Date().toISOString(),
       };
 
