@@ -2,7 +2,6 @@ import { useState, useRef } from "react";
 import { UseApi } from "../../../../../hooks/useApi";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
-import RecordPreview from "../../../../../components/destination/RecordPreview";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import DestinationTabs from "../../../../../components/tabs/Destination";
@@ -17,6 +16,8 @@ import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import DestinationSampleRecord from "../../../../../components/destination/DestinationSampleRecord";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Page(props) {
   const {
@@ -287,7 +288,7 @@ export default function Page(props) {
       />
 
       <Row>
-        <Col>
+        <Col className="mb-4">
           <Form id="form" onSubmit={update}>
             <fieldset disabled={Boolean(destination.locked)}>
               <Row>
@@ -321,7 +322,7 @@ export default function Page(props) {
                       }
                     }}
                   >
-                    <option value="__none">No Group or Model</option>
+                    <option value="__none">No Model or Group</option>
                     <option disabled>--- Models ---</option>
                     <option value="__model">
                       All Records in the {destination.modelName} Model
@@ -503,7 +504,10 @@ export default function Page(props) {
                                           updateMapping(key, "", key);
                                         }}
                                       >
-                                        X
+                                        <FontAwesomeIcon
+                                          icon="times"
+                                          fixedWidth
+                                        />
                                       </Button>
                                     ) : null}
                                   </td>
@@ -820,15 +824,16 @@ export default function Page(props) {
             </fieldset>
           </Form>
         </Col>
-        <Col md={3}>
-          <RecordPreview
-            {...props}
+        <Col xl={5}>
+          <DestinationSampleRecord
+            modelId={destination.modelId}
+            groupId={groupId}
+            collection={collection}
             mappingOptions={mappingOptions}
             destination={destination}
-            collection={collection}
-            groups={groups}
-            groupId={groupId}
-            modelId={destination.modelId}
+            execApi={execApi}
+            properties={properties}
+            hideViewAllRecords
           />
         </Col>
       </Row>
