@@ -329,7 +329,7 @@ describe("sqlite/table/recordProperties", () => {
           sourceMapping,
           aggregationMethod: AggregationMethod.MostRecentValue,
         });
-        expect(values[record.id][properties[0].id][0]).toEqual("Orange");
+        expect(values[record.id][properties[0].id][0]).toEqual("");
         expect(values[otherRecord.id][properties[0].id][0]).toEqual("Apple");
         expect(values[fourthRecord.id][properties[0].id][0]).toEqual(
           "Watermelon"
@@ -344,7 +344,7 @@ describe("sqlite/table/recordProperties", () => {
           aggregationMethod: AggregationMethod.LeastRecentValue,
         });
         expect(values[record.id][properties[0].id][0]).toEqual("Apple");
-        expect(values[otherRecord.id][properties[0].id][0]).toEqual("");
+        expect(values[otherRecord.id][properties[0].id][0]).toEqual("Pear");
         expect(values[fourthRecord.id][properties[0].id][0]).toEqual(
           "Blueberry"
         );
@@ -365,6 +365,7 @@ describe("sqlite/table/recordProperties", () => {
           "Apple",
           "Blueberry",
           "Orange",
+          "",
         ]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([
           "Pear",
@@ -372,7 +373,6 @@ describe("sqlite/table/recordProperties", () => {
           "Apple",
           "Pear",
           "Apple",
-          "",
         ]);
         expect(values[fourthRecord.id][properties[0].id]).toEqual([
           "Blueberry",
@@ -395,10 +395,10 @@ describe("sqlite/table/recordProperties", () => {
         });
         expect(
           fixedLengthFloat(values[record.id][properties[0].id][0])
-        ).toEqual(1.73);
+        ).toEqual(1.48);
         expect(
           fixedLengthFloat(values[otherRecord.id][properties[0].id][0])
-        ).toEqual(1.56);
+        ).toEqual(1.88);
         expect(values[thirdRecord.id]).toBeUndefined();
       });
       test("count", async () => {
@@ -407,8 +407,8 @@ describe("sqlite/table/recordProperties", () => {
           sourceMapping,
           aggregationMethod: "count",
         });
-        expect(values[record.id][properties[0].id]).toEqual([6]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([6]);
+        expect(values[record.id][properties[0].id]).toEqual([7]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("sum", async () => {
@@ -443,8 +443,8 @@ describe("sqlite/table/recordProperties", () => {
           sourceMapping,
           aggregationMethod: "max",
         });
-        expect(values[record.id][properties[0].id]).toEqual([2.23]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([""]);
+        expect(values[record.id][properties[0].id]).toEqual([""]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([3.14]);
         expect(values[thirdRecord.id]).toBeUndefined();
       });
 
@@ -456,8 +456,8 @@ describe("sqlite/table/recordProperties", () => {
             sourceMapping,
             aggregationMethod: "count",
           });
-          expect(values[record.id][properties[0].id]).toEqual([6]);
-          expect(values[otherRecord.id][properties[0].id]).toEqual([6]);
+          expect(values[record.id][properties[0].id]).toEqual([7]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
           expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
         });
         test("min", async () => {
@@ -466,8 +466,8 @@ describe("sqlite/table/recordProperties", () => {
             sourceMapping,
             aggregationMethod: "min",
           });
-          expect(values[record.id][properties[0].id]).toEqual(["2020/02/01"]);
-          expect(values[record.id][properties[0].id]).toEqual(["2020/02/01"]);
+          expect(values[record.id][properties[0].id]).toEqual([""]);
+          expect(values[record.id][properties[0].id]).toEqual([""]);
           expect(values[thirdRecord.id]).toBeUndefined();
         });
         test("max", async () => {
@@ -501,7 +501,146 @@ describe("sqlite/table/recordProperties", () => {
     //   relativeMatchUnit?: string;
     //   relativeMatchDirection?: string;
     // }
-    // TO DO: EXISTS/NOT EXISTS
+    describe("exists", () => {
+      const op = "exists";
+      test("integer", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "id" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([7]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+      test("string", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([7]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+      test("date", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "date" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([7]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+      test("timestamp", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "stamp" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([7]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+      test("float", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "amount" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([7]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+    });
+
+    ///TODO: NOT EXIST not behaving as expected
+    // describe.only("notExists", () => {
+    //   const op = "notExists";
+    //   test("integer", async () => {
+    //     const [values, properties] = await getPropertyValues(
+    //       {
+    //         columns,
+    //         sourceMapping,
+    //         aggregationMethod,
+    //       },
+    //       [{ op, key: "id" }]
+    //     );
+    //     expect(values[record.id][properties[0].id]).toEqual([0]);
+    //     expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+    //     expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+    //   });
+    //   test("string", async () => {
+    //     const [values, properties] = await getPropertyValues(
+    //       {
+    //         columns,
+    //         sourceMapping,
+    //         aggregationMethod,
+    //       },
+    //       [{ op, key: "purchase" }]
+    //     );
+    //     expect(values[record.id][properties[0].id]).toEqual([0]);
+    //     expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+    //     expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+    //   });
+    //   test("date", async () => {
+    //     const [values, properties] = await getPropertyValues(
+    //       {
+    //         columns,
+    //         sourceMapping,
+    //         aggregationMethod,
+    //       },
+    //       [{ op, key: "date" }]
+    //     );
+    //     expect(values[record.id][properties[0].id]).toEqual([0]);
+    //     expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+    //     expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+    //   });
+    //   test("timestamp", async () => {
+    //     const [values, properties] = await getPropertyValues(
+    //       {
+    //         columns,
+    //         sourceMapping,
+    //         aggregationMethod,
+    //       },
+    //       [{ op, key: "stamp" }]
+    //     );
+    //     expect(values[record.id][properties[0].id]).toEqual([0]);
+    //     expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+    //     expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+    //   });
+    //   test("float", async () => {
+    //     const [values, properties] = await getPropertyValues(
+    //       {
+    //         columns,
+    //         sourceMapping,
+    //         aggregationMethod,
+    //       },
+    //       [{ op, key: "amount" }]
+    //     );
+    //     expect(values[record.id][properties[0].id]).toEqual([0]);
+    //     expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+    //     expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+    //   });
+    // });
+    ///
+
     describe("equals", () => {
       const op = "eq";
       test("integer", async () => {
@@ -595,8 +734,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([5]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([6]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
@@ -608,8 +747,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([4]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
+        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
@@ -621,8 +760,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([6]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([6]);
+        expect(values[record.id][properties[0].id]).toEqual([7]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("date", async () => {
@@ -634,8 +773,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "date", match: "2020/02/15" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([5]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([6]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
@@ -647,8 +786,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([5]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([6]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
@@ -660,8 +799,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([4]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([4]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
     });
@@ -759,8 +898,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([5]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([6]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
@@ -772,8 +911,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "purchase", match: "Oran" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([4]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([6]);
+        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
@@ -785,8 +924,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "purchase", match: "oran" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([4]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([6]);
+        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("date", async () => {
@@ -798,8 +937,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "date", match: "2020/02/15" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([5]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([6]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
@@ -811,8 +950,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([5]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([6]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
@@ -824,8 +963,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([4]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([4]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
     });
@@ -923,8 +1062,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([2]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
+        expect(values[record.id][properties[0].id]).toEqual([3]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string", async () => {
@@ -977,7 +1116,7 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[record.id][properties[0].id]).toEqual([3]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
@@ -990,8 +1129,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([2]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
+        expect(values[record.id][properties[0].id]).toEqual([3]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
     });
@@ -1020,8 +1159,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([0]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([1]);
+        expect(values[record.id][properties[0].id]).toEqual([1]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("string is case sensitive", async () => {
@@ -1048,8 +1187,8 @@ describe("sqlite/table/recordProperties", () => {
           },
           [{ op, key: "date", match: "2020/02/15" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([3]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([4]);
+        expect(values[record.id][properties[0].id]).toEqual([4]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("timestamp", async () => {
@@ -1062,7 +1201,7 @@ describe("sqlite/table/recordProperties", () => {
           [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(values[record.id][properties[0].id]).toEqual([3]);
-        expect(values[otherRecord.id][properties[0].id]).toEqual([4]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([3]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
       test("float", async () => {
