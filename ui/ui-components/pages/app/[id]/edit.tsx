@@ -346,7 +346,7 @@ export default function Page(props) {
             <Row>
               <Col md={3}>
                 <LoadingButton
-                  variant="outline-secondary"
+                  variant="outline-info"
                   size="sm"
                   onClick={test}
                   loading={testLoading}

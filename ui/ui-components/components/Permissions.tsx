@@ -60,7 +60,7 @@ export default function PermissionsList({
               ) : (
                 <Button
                   size="sm"
-                  variant="outline-secondary"
+                  variant="outline-info"
                   onClick={() => updatePermissionAll(false, false)}
                 >
                   Permission Set per Topic
@@ -99,7 +99,7 @@ export default function PermissionsList({
               ) : (
                 <Button
                   size="sm"
-                  variant="outline-secondary"
+                  variant="outline-info"
                   onClick={() => updatePermissionAll(false, false)}
                 >
                   Permission Set per Topic

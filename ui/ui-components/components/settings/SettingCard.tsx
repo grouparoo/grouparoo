@@ -76,7 +76,7 @@ export default function SettingCard({
                 loading={loading}
                 size="sm"
                 type="submit"
-                variant="outline-secondary"
+                variant="outline-primary"
               >
                 Update
               </LoadingButton>
