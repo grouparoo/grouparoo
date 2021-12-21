@@ -503,7 +503,75 @@ describe("bigquery/table/recordProperties", () => {
     // }
 
     //TO DO: EXISTS/NOT EXISTS
-
+    describe("exists", () => {
+      const op = "exists";
+      test("integer", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "id" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+      test("string", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+      test("date", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "date" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+      test("timestamp", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "stamp" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+      test("float", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "amount" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+    });
+    //// todo: not exists
     describe("equals", () => {
       const op = "eq";
       test("integer", async () => {

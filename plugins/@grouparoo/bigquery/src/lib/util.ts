@@ -22,42 +22,46 @@ export function makeWhereClause(
 
   // interesting code in BigQuery library: function convert(schemaField, value)
   let match;
-  switch (dataType) {
-    case "DATE":
-      match = values
-        ? values.map((v) => BigQuery.date(v.toString()))
-        : BigQuery.date(value.toString());
-      break;
-    case "DATETIME":
-      match = values
-        ? values.map((v) => BigQuery.datetime(v.toString()))
-        : BigQuery.datetime(value.toString());
-      break;
-    case "TIME":
-      match = values
-        ? values.map((v) => BigQuery.time(v.toString()))
-        : BigQuery.time(value.toString());
-      break;
-    case "TIMESTAMP":
-      // @ts-ignore cast!
-      match = values ? values.map((v) => new Date(v)) : new Date(value);
-      if (!isFinite(match)) {
-        throw `invalid timestamp: ${value}`;
-      }
-      break;
-    case "BOOL":
-    case "NUMERIC":
-    case "INT64":
-    case "FLOAT64":
-    case "STRING":
-      match = values || value;
-      break;
-    case "GEOGRAPHY":
-    case "ARRAY":
-    case "STRUCT":
-    case "BYTES":
-    default:
-      throw `unsupported data type: ${dataType}`;
+  if (value || values) {
+    switch (dataType) {
+      case "DATE":
+        match = values
+          ? values.map((v) => BigQuery.date(v.toString()))
+          : BigQuery.date(value.toString());
+        break;
+      case "DATETIME":
+        match = values
+          ? values.map((v) => BigQuery.datetime(v.toString()))
+          : BigQuery.datetime(value.toString());
+        break;
+      case "TIME":
+        match = values
+          ? values.map((v) => BigQuery.time(v.toString()))
+          : BigQuery.time(value.toString());
+        break;
+      case "TIMESTAMP":
+        // @ts-ignore cast!
+        match = values ? values.map((v) => new Date(v)) : new Date(value);
+        if (!isFinite(match)) {
+          throw `invalid timestamp: ${value}`;
+        }
+        break;
+      case "BOOL":
+      case "NUMERIC":
+      case "INT64":
+      case "FLOAT64":
+      case "STRING":
+        match = values || value;
+        break;
+      case "GEOGRAPHY":
+      case "ARRAY":
+      case "STRUCT":
+      case "BYTES":
+      default:
+        throw `unsupported data type: ${dataType}`;
+    }
+  } else {
+    match = null;
   }
 
   let op;
