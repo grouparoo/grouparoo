@@ -29,6 +29,12 @@ import { FieldSet, RecordData } from "airtable";
 import AirtableError from "airtable/lib/airtable_error";
 import { CreateRecord } from "../client/models";
 
+/**
+ * Batch Size is the size of the batches sent to Airtable
+ * 10 is the maximum number of records that can be sent in any
+ */
+const BATCH_SIZE = 10
+
 const getClient: BatchMethodGetClient = async ({ config }) => {
   if (config.appOptions) {
     return extractClient(config.appOptions);
@@ -192,12 +198,13 @@ interface ExportBatchOptions {
   syncOperations?: DestinationSyncOperations;
   exports: BatchExport[];
 }
+
 export async function exportBatch(exportBatchOptions: ExportBatchOptions) {
   const { syncOperations, appOptions, destinationOptions, exports } =
     exportBatchOptions;
   const { primaryKey } = destinationOptions;
-  const batchSize = 10;
-  const findSize = 100;
+  const batchSize = BATCH_SIZE;
+  const findSize = BATCH_SIZE;
 
   return exportRecordsInBatch(
     exports,
