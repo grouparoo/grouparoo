@@ -106,6 +106,17 @@ export namespace FilterHelper {
     instance: Property | Schedule,
     filters: FiltersWithKey[]
   ) {
+    const deprecatedFilters = {
+      equals: "eq",
+      "does not equal": "ne",
+      "greater than": "gt",
+      "greater than or equal to": "gte",
+      "less than": "lt",
+      "less than or equal to": "lte",
+      contains: "substring",
+      "does not contain": "notSubstring",
+    };
+
     if (!filters) filters = await getFilters(instance);
     const _pluginFilterOptions = await pluginFilterOptions(instance);
 
@@ -117,6 +128,17 @@ export namespace FilterHelper {
       if (!relevantOption) {
         throw new Error(`${filter.key} is not filterable`);
       }
+
+      if (Object.keys(deprecatedFilters).includes(filter.op)) {
+        throw new Error(
+          `Property filter \`${
+            filter.op
+          }\` has been deprecated and replaced with \`${
+            deprecatedFilters[filter.op]
+          }\`. Read more at https://www.grouparoo.com/docs/config/code-config/properties`
+        );
+      }
+
       if (!relevantOption.ops.includes(filter.op)) {
         throw new Error(`"${filter.op}" cannot be applied to ${filter.key}`);
       }
