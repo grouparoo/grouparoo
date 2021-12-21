@@ -40,6 +40,7 @@ interface Props {
   propertyExamples: Record<string, string[]>;
   scheduleCount: number;
   source: Models.SourceType;
+  totalSources: number;
   types: string[];
 }
 
@@ -55,6 +56,7 @@ const Page: NextPage<Props & InjectedProps> = ({
   successHandler,
   sourceHandler,
   scheduleCount,
+  totalSources,
   types,
   ...props
 }) => {
@@ -84,8 +86,9 @@ const Page: NextPage<Props & InjectedProps> = ({
     () => Object.values(props.source.mapping)[0] as string,
     [source]
   );
-  const hasPrimaryKeyProperty = useMemo(
+  const isPrimarySource = useMemo(
     () =>
+      (totalSources === 1 && source.state !== "ready") ||
       properties.filter(
         ({ isPrimaryKey, sourceId }) => isPrimaryKey && sourceId === source.id
       ).length > 0,
@@ -98,11 +101,11 @@ const Page: NextPage<Props & InjectedProps> = ({
       <StateBadge state={source.state} />,
       <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
     ];
-    if (hasPrimaryKeyProperty) {
+    if (isPrimarySource) {
       badges.unshift(<Badge variant="info">primary source</Badge>);
     }
     return badges;
-  }, [source, hasPrimaryKeyProperty]);
+  }, [source, isPrimarySource]);
 
   useEffect(() => {
     loadPreview(source.previewAvailable);
@@ -529,7 +532,7 @@ const Page: NextPage<Props & InjectedProps> = ({
 
               {source.previewAvailable && (
                 <>
-                  <h3>{hasPrimaryKeyProperty ? "Primary Key" : "Mapping"}</h3>
+                  <h3>{isPrimarySource ? "Primary Key" : "Mapping"}</h3>
                   <p>
                     Mapping sets the foreign key between your Source and
                     Grouparoo Properties. Whenever possible, map through a
@@ -616,6 +619,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const { execApi } = UseApi(ctx);
   const { source } = await execApi("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
+
+  const { total: totalSources } = await execApi("get", `/sources`, {
+    modelId,
+    limit: 1,
+  });
+
   const { environmentVariableOptions } = await execApi(
     "get",
     `/sources/connectionApps`
@@ -645,6 +654,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
       propertyExamples,
       source,
       scheduleCount,
+      totalSources,
       types,
     },
   };

@@ -40,7 +40,7 @@ export default function Page({
     ? Math.round(source.schedule.recurringFrequency / 1000 / 60)
     : null;
 
-  const hasPrimaryKeyProperty = useMemo<boolean>(
+  const isPrimarySource = useMemo<boolean>(
     () =>
       (totalSources === 1 && source.state !== "ready") ||
       !!properties.find((property) => property.isPrimaryKey),
@@ -53,11 +53,11 @@ export default function Page({
       <StateBadge state={source.state} />,
       <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
     ];
-    if (hasPrimaryKeyProperty) {
+    if (isPrimarySource) {
       badges.unshift(<Badge variant="info">primary source</Badge>);
     }
     return badges;
-  }, [source, hasPrimaryKeyProperty]);
+  }, [source, isPrimarySource]);
 
   return (
     <>
@@ -324,12 +324,13 @@ export default function Page({
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sourceId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
+  const { source } = await execApi("get", `/source/${sourceId}`);
+  ensureMatchingModel("Source", source.modelId, modelId.toString());
+
   const { total: totalSources } = await execApi("get", `/sources`, {
     modelId,
     limit: 1,
   });
-  const { source } = await execApi("get", `/source/${sourceId}`);
-  ensureMatchingModel("Source", source.modelId, modelId.toString());
   const { properties } = await execApi("get", `/properties`, {
     sourceId,
   });
