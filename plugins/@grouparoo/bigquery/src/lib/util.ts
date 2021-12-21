@@ -22,51 +22,55 @@ export function makeWhereClause(
 
   // interesting code in BigQuery library: function convert(schemaField, value)
   let match;
-  if (value || values) {
-    switch (dataType) {
-      case "DATE":
-        match = values
-          ? values.map((v) => BigQuery.date(v.toString()))
-          : BigQuery.date(value.toString());
-        break;
-      case "DATETIME":
-        match = values
-          ? values.map((v) => BigQuery.datetime(v.toString()))
-          : BigQuery.datetime(value.toString());
-        break;
-      case "TIME":
-        match = values
-          ? values.map((v) => BigQuery.time(v.toString()))
-          : BigQuery.time(value.toString());
-        break;
-      case "TIMESTAMP":
-        // @ts-ignore cast!
-        match = values ? values.map((v) => new Date(v)) : new Date(value);
-        if (!isFinite(match)) {
-          throw `invalid timestamp: ${value}`;
-        }
-        break;
-      case "BOOL":
-      case "NUMERIC":
-      case "INT64":
-      case "FLOAT64":
-      case "STRING":
-        match = values || value;
-        break;
-      case "GEOGRAPHY":
-      case "ARRAY":
-      case "STRUCT":
-      case "BYTES":
-      default:
-        throw `unsupported data type: ${dataType}`;
-    }
-  } else {
-    match = null;
+  switch (dataType) {
+    case "DATE":
+      match = values
+        ? values.map((v) => BigQuery.date(v.toString()))
+        : BigQuery.date(value.toString());
+      break;
+    case "DATETIME":
+      match = values
+        ? values.map((v) => BigQuery.datetime(v.toString()))
+        : BigQuery.datetime(value.toString());
+      break;
+    case "TIME":
+      match = values
+        ? values.map((v) => BigQuery.time(v.toString()))
+        : BigQuery.time(value.toString());
+      break;
+    case "TIMESTAMP":
+      // @ts-ignore cast!
+      match = values ? values.map((v) => new Date(v)) : new Date(value);
+      if (!isFinite(match)) {
+        throw `invalid timestamp: ${value}`;
+      }
+      break;
+    case "BOOL":
+    case "NUMERIC":
+    case "INT64":
+    case "FLOAT64":
+    case "STRING":
+      match = values || value;
+      break;
+    case "GEOGRAPHY":
+    case "ARRAY":
+    case "STRUCT":
+    case "BYTES":
+    default:
+      throw `unsupported data type: ${dataType}`;
   }
 
   let op;
   let transform = null;
   switch (filterOperation) {
+    case FilterOperation.NotExists:
+      op = "IS NULL";
+      match = null;
+      break;
+    case FilterOperation.Exists:
+      op = "IS NOT NULL";
+      match = null;
+      break;
     case FilterOperation.Equal:
       op = "=";
       break;
@@ -95,14 +99,7 @@ export function makeWhereClause(
       op = "NOT LIKE"; // case insensitive
       match = `%${match.toString().toLowerCase()}%`;
       break;
-    case FilterOperation.Exists:
-      op = "IS NOT NULL";
-      match = null;
-      break;
-    case FilterOperation.NotExists:
-      op = "IS NULL";
-      match = null;
-      break;
+
     case FilterOperation.In:
       // for BigQuery we need to use UNNEST: `id in UNNEST(1,2,3)`
       // See https://github.com/googleapis/nodejs-bigquery/blob/master/samples/queryParamsPositionalTypes.js#L37
@@ -120,9 +117,9 @@ export function makeWhereClause(
   if (match) params.push(match);
   if (match) types.push(dataType);
 
-  return ` ${key} ${op} ${Array.isArray(match) ? "(" : ""}${match ? "?" : ""}${
-    Array.isArray(match) ? ")" : ""
-  }`;
+  return ` ${key} ${op} ${Array.isArray(match) ? "(" : ""}${
+    match !== null ? "?" : ""
+  }${Array.isArray(match) ? ")" : ""}`;
 }
 
 export function castRow(row) {

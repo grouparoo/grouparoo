@@ -15,9 +15,11 @@ export function makeWhereClause(
   switch (filterOperation) {
     case FilterOperation.Exists:
       op = "IS NOT NULL";
+      match = null;
       break;
     case FilterOperation.NotExists:
       op = "IS NULL";
+      match = null;
       break;
     case FilterOperation.Equal:
       op = "=";

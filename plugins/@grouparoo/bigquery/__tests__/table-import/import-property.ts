@@ -272,17 +272,6 @@ describe("bigquery/table/recordProperty", () => {
 
     describe("exists", () => {
       const op = "exists";
-      test("integer", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "id" }]
-        );
-        expect(value).toEqual([6]);
-      });
       test("string", async () => {
         const value = await getPropertyValue(
           {
@@ -294,100 +283,21 @@ describe("bigquery/table/recordProperty", () => {
         );
         expect(value).toEqual([6]);
       });
-      test("date", async () => {
+    });
+    describe("does not exist", () => {
+      const op = "notExists";
+      test("string", async () => {
         const value = await getPropertyValue(
           {
             column,
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "date" }]
+          [{ op, key: "purchase" }]
         );
-        expect(value).toEqual([6]);
-      });
-      test("timestamp", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "stamp" }]
-        );
-        expect(value).toEqual([6]);
-      });
-      test("float", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "amount" }]
-        );
-        expect(value).toEqual([6]);
+        expect(value).toEqual([1]);
       });
     });
-
-    //to do: most of these tests should be getting 1 back, not 0...
-    // describe("does not exist", () => {
-    //   const op = "notExists";
-    //   test("integer", async () => {
-    //     const value = await getPropertyValue(
-    //       {
-    //         column,
-    //         sourceMapping,
-    //         aggregationMethod,
-    //       },
-    //       [{ op, key: "id" }]
-    //     );
-    //     expect(value).toEqual([0]);
-    //   });
-    //   test("string", async () => {
-    //     const value = await getPropertyValue(
-    //       {
-    //         column,
-    //         sourceMapping,
-    //         aggregationMethod,
-    //       },
-    //       [{ op, key: "purchase" }]
-    //     );
-    //     expect(value).toEqual([0]);
-    //   });
-    //   test("date", async () => {
-    //     const value = await getPropertyValue(
-    //       {
-    //         column,
-    //         sourceMapping,
-    //         aggregationMethod,
-    //       },
-    //       [{ op, key: "date" }]
-    //     );
-    //     expect(value).toEqual([0]);
-    //   });
-    //   test("timestamp", async () => {
-    //     const value = await getPropertyValue(
-    //       {
-    //         column,
-    //         sourceMapping,
-    //         aggregationMethod,
-    //       },
-    //       [{ op, key: "stamp" }]
-    //     );
-    //     expect(value).toEqual([0]);
-    //   });
-    //   test("float", async () => {
-    //     const value = await getPropertyValue(
-    //       {
-    //         column,
-    //         sourceMapping,
-    //         aggregationMethod,
-    //       },
-    //       [{ op, key: "amount" }]
-    //     );
-    //     expect(value).toEqual([0]);
-    //   });
-    // });
 
     describe("equals", () => {
       const op = "eq";
