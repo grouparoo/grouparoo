@@ -138,10 +138,17 @@ export default function Page(props) {
             modelId: source.modelId,
           }
         );
+
         if (prrResponse?.properties) {
           setProperties(prrResponse.properties);
           setPropertyExamples(prrResponse.examples);
         }
+      } else if (!Object.keys(bootstrapResponse).length) {
+        errorHandler.set({
+          message: "Unable to create mapping.",
+        });
+        setLoading(false);
+        return;
       }
     }
 
