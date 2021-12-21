@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { UseApi } from "../../../../../hooks/useApi";
 import { Row, Col, Card } from "react-bootstrap";
 import LoadingButton from "../../../../../components/LoadingButton";
@@ -17,10 +17,12 @@ export default function Page(props) {
     errorHandler,
     connectionApps,
     model,
+    isPrimarySourceNotReady,
   }: {
     errorHandler: ErrorHandler;
     connectionApps: Actions.SourceConnectionApps["connectionApps"];
     model: Actions.ModelView["model"];
+    isPrimarySourceNotReady: boolean;
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
@@ -30,6 +32,20 @@ export default function Page(props) {
   const relevantConnectionApps = connectionApps.filter(
     (ca) => ca.app.id === appId
   );
+
+  useEffect(() => {
+    if (isPrimarySourceNotReady) {
+      router.push(`/model/${model.id}/sources`);
+    }
+  }, [isPrimarySourceNotReady, model]);
+
+  if (isPrimarySourceNotReady) {
+    return null;
+  }
+
+  if (relevantConnectionApps.length === 0) {
+    return <p>No Source Connections for this App</p>;
+  }
 
   const create = async (connection) => {
     setLoading(true);
@@ -46,10 +62,6 @@ export default function Page(props) {
       setLoading(false);
     }
   };
-
-  if (relevantConnectionApps.length === 0) {
-    return <p>No Source Connections for this App</p>;
-  }
 
   return (
     <>
@@ -101,5 +113,13 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { modelId } = ctx.query;
   const { connectionApps } = await execApi("get", `/sources/connectionApps`);
   const { model } = await execApi("get", `/model/${modelId}`);
-  return { connectionApps, model };
+  const { sources, total: totalSources } = await execApi<Actions.SourcesList>(
+    "get",
+    "/sources",
+    { modelId, limit: 1 }
+  );
+  const isPrimarySourceNotReady =
+    totalSources === 1 && sources[0].state !== "ready";
+
+  return { connectionApps, model, isPrimarySourceNotReady };
 };

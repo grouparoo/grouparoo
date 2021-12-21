@@ -99,6 +99,11 @@ export interface PluginConnection {
   };
 }
 
+export interface PluginConnectionApiData
+  extends Omit<PluginConnection, "methods"> {
+  methods?: string[];
+}
+
 export enum AggregationMethod {
   Exact = "exact",
   Average = "average",

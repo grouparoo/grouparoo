@@ -2,7 +2,11 @@ import { api } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { App } from "../models/App";
 import { Source } from "../models/Source";
-import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
+import {
+  GrouparooPlugin,
+  PluginConnection,
+  PluginConnectionApiData,
+} from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
 import { ConfigWriter } from "../modules/configWriter";
 import { PropertyTypes } from "../models/Property";
@@ -71,7 +75,7 @@ export class SourceConnectionApps extends AuthenticatedAction {
 
     const connectionApps: Array<{
       app: AsyncReturnType<App["apiData"]>;
-      connection: PluginConnection;
+      connection: PluginConnectionApiData;
     }> = [];
 
     let importConnections: PluginConnection[] = [];
@@ -93,9 +97,15 @@ export class SourceConnectionApps extends AuthenticatedAction {
     for (const app of apps) {
       for (const connection of importConnections) {
         if (connection.apps.includes(app.type)) {
+          const methods = Object.keys(connection.methods).filter(
+            (key) => typeof connection.methods[key] === "function"
+          );
           connectionApps.push({
             app: await app.apiData(),
-            connection,
+            connection: {
+              ...connection,
+              methods,
+            },
           });
         }
       }
