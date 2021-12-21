@@ -29,20 +29,20 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.7.6",
-    "@grouparoo/core": "0.7.6",
-    "actionhero": "27.2.0",
+    "@grouparoo/app-templates": "0.7.8-alpha.0",
+    "@grouparoo/core": "0.7.8-alpha.0",
+    "actionhero": "28.0.4",
     "airtable": "0.11.1",
     "axios": "0.24.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "7.16.0",
     "@babel/core": "7.16.5",
-    "@grouparoo/core": "0.7.6",
-    "@grouparoo/spec-helper": "0.7.6",
+    "@grouparoo/core": "0.7.8-alpha.0",
+    "@grouparoo/spec-helper": "0.7.8-alpha.0",
     "@types/jest": "27.0.3",
     "@types/node": "16.11.9",
-    "actionhero": "27.2.0",
+    "actionhero": "28.0.4",
     "jest": "27.3.1",
     "jest-mock-extended": "2.0.4",
     "nock": "13.2.1",
