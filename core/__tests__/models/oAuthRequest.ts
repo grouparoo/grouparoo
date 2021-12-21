@@ -28,4 +28,24 @@ describe("models/oAuthRequest", () => {
       { email: "2@demo.com", name: "person", description: "bar" },
     ]);
   });
+
+  test("consumed OAuth Requests do not return identities with apiData", async () => {
+    const request = await OAuthRequest.create({
+      provider: "github",
+      type: "user",
+      identities: [
+        { email: "1@demo.com", name: "person", description: "foo" },
+        { email: "2@demo.com", name: "person", description: "bar" },
+      ],
+    });
+
+    expect((await request.apiData()).identities).toEqual([
+      { email: "1@demo.com", name: "person", description: "foo" },
+      { email: "2@demo.com", name: "person", description: "bar" },
+    ]);
+
+    await request.update({ consumed: true });
+
+    expect((await request.apiData()).identities).toEqual([]);
+  });
 });

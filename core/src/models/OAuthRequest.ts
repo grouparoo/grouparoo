@@ -64,7 +64,7 @@ export class OAuthRequest extends CommonModel<OAuthRequest> {
       type: this.type,
       consumed: this.consumed,
       provider: this.provider,
-      identities: this.identities,
+      identities: this.consumed ? [] : this.identities,
       appId: this.appId,
       appOption: this.appOption,
     };

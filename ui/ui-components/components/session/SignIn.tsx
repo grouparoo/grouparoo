@@ -4,10 +4,22 @@ import { Form, Row, Col, Button, Modal, ButtonGroup } from "react-bootstrap";
 import LoadingButton from "../LoadingButton";
 import { useForm } from "react-hook-form";
 import { Actions, OAuth, Models } from "../../utils/apiData";
+import { UseApi } from "../../hooks/useApi";
 import Loader from "../Loader";
+import { ErrorHandler } from "../../utils/errorHandler";
+import { SuccessHandler } from "../../utils/successHandler";
+import { SessionHandler } from "../../utils/sessionHandler";
 
 export default function SignInForm(props) {
-  const { errorHandler, successHandler, sessionHandler, UseApi } = props;
+  const {
+    errorHandler,
+    successHandler,
+    sessionHandler,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    sessionHandler: SessionHandler;
+  } = props;
   const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const router = useRouter();
@@ -72,7 +84,12 @@ export default function SignInForm(props) {
 
     if (response.oAuthRequest) {
       setOAuthRequest(response.oAuthRequest);
-      if (response.oAuthRequest.identities.length === 1) {
+      if (response.oAuthRequest.identities.length === 0) {
+        router.replace("/session/sign-in", undefined, { shallow: true });
+        errorHandler.set({
+          message: `No identities returned from ${response.oAuthRequest.provider}`,
+        });
+      } else if (response.oAuthRequest.identities.length === 1) {
         onSubmit(response.oAuthRequest.identities[0], "requestId");
       } else {
         setShowModal(true);

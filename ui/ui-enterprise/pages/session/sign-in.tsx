@@ -1,6 +1,5 @@
 import { Row, Col } from "react-bootstrap";
 import Head from "next/head";
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import SignIn from "@grouparoo/ui-components/components/session/SignIn";
 
 export default function SignInPage(props) {
@@ -12,7 +11,7 @@ export default function SignInPage(props) {
       <div style={{ width: "100%", height: "100%" }}>
         <Row className="border-between-columns">
           <Col>
-            <SignIn {...props} UseApi={UseApi} />
+            <SignIn {...props} />
           </Col>
         </Row>
       </div>
