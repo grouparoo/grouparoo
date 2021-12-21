@@ -1,3 +1,4 @@
+import { GetServerSideProps, NextPage, NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect, useMemo } from "react";
@@ -17,7 +18,6 @@ import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { SuccessHandler } from "../../../../../utils/successHandler";
 import { SourceHandler } from "../../../../../utils/sourceHandler";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
-import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import FormMappingSelector from "../../../../../components/source/FormMappingSelector";
 import { createSchedule } from "../../../../../components/schedule/Add";
@@ -34,24 +34,30 @@ interface FormData {
   source: Pick<Models.SourceType, "name" | "options">;
 }
 
-export default function Page(props) {
-  const {
-    environmentVariableOptions,
-    errorHandler,
-    successHandler,
-    sourceHandler,
-    scheduleCount,
-    types,
-  }: {
-    environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
-    errorHandler: ErrorHandler;
-    properties: Models.PropertyType[];
-    propertyExamples: Record<string, string[]>;
-    successHandler: SuccessHandler;
-    sourceHandler: SourceHandler;
-    scheduleCount: number;
-    types: string[];
-  } = props;
+interface Props {
+  environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
+  properties: Models.PropertyType[];
+  propertyExamples: Record<string, string[]>;
+  scheduleCount: number;
+  source: Models.SourceType;
+  types: string[];
+}
+
+interface InjectedProps extends NextPageContext {
+  errorHandler: ErrorHandler;
+  successHandler: SuccessHandler;
+  sourceHandler: SourceHandler;
+}
+
+const Page: NextPage<Props & InjectedProps> = ({
+  environmentVariableOptions,
+  errorHandler,
+  successHandler,
+  sourceHandler,
+  scheduleCount,
+  types,
+  ...props
+}) => {
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
@@ -593,9 +599,11 @@ export default function Page(props) {
       </Row>
     </>
   );
-}
+};
 
-Page.getInitialProps = async (ctx: NextPageContext) => {
+export default Page;
+
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const { sourceId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { source } = await execApi("get", `/source/${sourceId}`);
@@ -623,11 +631,13 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   );
 
   return {
-    environmentVariableOptions,
-    properties,
-    propertyExamples,
-    source,
-    scheduleCount,
-    types,
+    props: {
+      environmentVariableOptions,
+      properties,
+      propertyExamples,
+      source,
+      scheduleCount,
+      types,
+    },
   };
 };
