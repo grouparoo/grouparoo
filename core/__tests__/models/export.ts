@@ -60,6 +60,11 @@ describe("models/export", () => {
     expect(apiData.destinationName).toBe(destination.name);
   });
 
+  test("export apiData includes the model id", async () => {
+    const apiData = await _export.apiData();
+    expect(apiData.modelId).toBe(record.modelId);
+  });
+
   test("apiData can be retrieved for an export with a null destination", async () => {
     const oldExport = await helper.factories.export();
     await oldExport.update({ destinationId: null });

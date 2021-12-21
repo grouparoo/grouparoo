@@ -236,6 +236,8 @@ export class Export extends CommonModel<Export> {
     const destination =
       this.destination ?? (await this.$get("destination", { scope: null }));
 
+    const record = this.record ?? (await this.$get("record"));
+
     return {
       id: this.id,
       destination:
@@ -250,6 +252,7 @@ export class Export extends CommonModel<Export> {
           : undefined,
       destinationName: destination ? destination.name : null,
       recordId: this.recordId,
+      modelId: record?.modelId,
       exportProcessorId: this.exportProcessorId,
       state: this.state,
       force: this.force,
