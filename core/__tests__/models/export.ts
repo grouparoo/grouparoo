@@ -60,6 +60,16 @@ describe("models/export", () => {
     expect(apiData.destinationName).toBe(destination.name);
   });
 
+  test("apiData can be retrieved for an export with a null destination", async () => {
+    const oldExport = await helper.factories.export();
+    await oldExport.update({ destinationId: null });
+
+    const apiData = await oldExport.apiData(true);
+    expect(apiData.id).toBe(oldExport.id);
+    expect(apiData.destination).toBeUndefined();
+    expect(apiData.destinationName).toBeNull();
+  });
+
   test("an export can be deserialized returning Grouparoo types", async () => {
     const _export = await Export.findOne();
     expect(_export.oldRecordProperties).toEqual({

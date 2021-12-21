@@ -68,7 +68,6 @@ export class Export extends CommonModel<Export> {
     return "exp";
   }
 
-  @AllowNull(false)
   @ForeignKey(() => Destination)
   @Column
   destinationId: string;
@@ -239,15 +238,16 @@ export class Export extends CommonModel<Export> {
 
     return {
       id: this.id,
-      destination: includeDestination
-        ? {
-            id: destination.id,
-            state: destination.state,
-            name: destination.name,
-            groupId: destination.groupId,
-            modelId: destination.modelId,
-          }
-        : undefined,
+      destination:
+        includeDestination && destination
+          ? {
+              id: destination.id,
+              state: destination.state,
+              name: destination.name,
+              groupId: destination.groupId,
+              modelId: destination.modelId,
+            }
+          : undefined,
       destinationName: destination ? destination.name : null,
       recordId: this.recordId,
       exportProcessorId: this.exportProcessorId,
@@ -302,7 +302,7 @@ export class Export extends CommonModel<Export> {
     let responseCountWithNoRecord: number;
     let responseCountWithNoDestination: number;
 
-    // 1. Delete Complete Exports for the GrouparooRecord older than the oldest complete Export for this Record+Destination
+    // 1. Delete Complete Exports for the GrouparooRecord older than the newest complete Export for this Record+Destination
     const rowsWithCompleteExport: { id: string }[] = await api.sequelize.query(
       `
       DELETE FROM exports
