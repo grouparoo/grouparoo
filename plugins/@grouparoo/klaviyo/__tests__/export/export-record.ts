@@ -355,7 +355,11 @@ describe("klaviyo/exportRecord", () => {
     );
     expect(isMemberOfGroupOne).toBeTruthy();
 
-    expect(listMapByName[groupTwo]).toBeUndefined();
+    const isMemberOfGroupTwo = await client.isMemberOfList(
+      listMapByName[groupTwo],
+      email1
+    );
+    expect(isMemberOfGroupTwo).toBeFalsy();
   });
 
   test("can change email", async () => {
@@ -383,8 +387,16 @@ describe("klaviyo/exportRecord", () => {
 
   test("can remove profile from group without creating it", async () => {
     await runExport({
-      oldRecordProperties: { Email: email2, Name: "Johnny Doe" },
-      newRecordProperties: { Email: email2, Name: "Johnny Doe" },
+      oldRecordProperties: {
+        email: email2,
+        first_name: "Johnny",
+        last_name: "Doe",
+      },
+      newRecordProperties: {
+        email: email2,
+        first_name: "Johnny",
+        last_name: "Doe",
+      },
       oldGroups: [groupOne, groupThree],
       newGroups: [groupOne],
       toDelete: false,
