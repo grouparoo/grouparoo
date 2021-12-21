@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useMemo } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import type { NextPageContext } from "next";
@@ -44,6 +44,14 @@ export default function Page(props) {
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
+
+  const hasSchedules = useMemo(
+    () =>
+      sources.reduce((acc, source) => {
+        return acc || !!source.schedule;
+      }, false),
+    [sources]
+  );
 
   useSecondaryEffect(() => {
     load();
@@ -197,16 +205,26 @@ export default function Page(props) {
           </LinkButton>{" "}
         </>
       )}
-      <RunAllSchedulesButton
-        modelId={modelId}
-        execApi={execApi}
-        disabled={loading}
-        onStart={() => setLoading(true)}
-        onComplete={() => {
-          setLoading(false);
-          load();
-        }}
-      />
+      {hasSchedules && (
+        <RunAllSchedulesButton
+          modelId={modelId}
+          execApi={execApi}
+          disabled={loading}
+          onStart={() => setLoading(true)}
+          onComplete={() => {
+            setLoading(false);
+            load();
+          }}
+        />
+      )}
+      {!canCreateNewSource && (
+        <p>
+          <small>
+            Cannot create new Sources for this Model until the first Source is
+            <StateBadge state="ready" marginBottom={0} />.
+          </small>
+        </p>
+      )}
     </>
   );
 }
