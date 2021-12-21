@@ -59,8 +59,8 @@ export function makeWhereClause(
     : `"${columnName}"`;
 
   // put the values in the array
-  if (match) params.push(match);
-  return ` ${key} ${op} ${Array.isArray(match) ? "(" : ""}${match ? "%L" : ""}${
-    Array.isArray(match) ? ")" : ""
-  }`;
+  if (match !== null) params.push(match);
+  return ` ${key} ${op} ${Array.isArray(match) ? "(" : ""}${
+    match !== null ? "%L" : ""
+  }${Array.isArray(match) ? ")" : ""}`;
 }

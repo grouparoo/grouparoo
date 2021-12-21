@@ -15,9 +15,11 @@ export function makeWhereClause(
   switch (filterOperation) {
     case FilterOperation.Exists:
       op = "IS NOT NULL";
+      match = null;
       break;
     case FilterOperation.NotExists:
       op = "IS NULL";
+      match = null;
       break;
     case FilterOperation.Equal:
       op = "=";
@@ -59,8 +61,9 @@ export function makeWhereClause(
     : `\`${columnName}\``;
 
   // put the values in the array
-  if (match) params.push(match);
-  return ` ${key} ${op} ${Array.isArray(match) ? "(" : ""}${match ? "?" : ""}${
-    Array.isArray(match) ? ")" : ""
-  }`;
+  if (match !== null) params.push(match);
+
+  return ` ${key} ${op} ${Array.isArray(match) ? "(" : ""}${
+    match !== null ? "?" : ""
+  }${Array.isArray(match) ? ")" : ""}`;
 }

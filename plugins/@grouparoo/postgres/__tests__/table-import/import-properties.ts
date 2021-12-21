@@ -155,7 +155,7 @@ describe("postgres/table/recordProperties", () => {
     });
   });
 
-  // afterAll(async () => await afterData());
+  afterAll(async () => await afterData());
 
   describe("exact primary tables", () => {
     let aggregationMethod = "exact";
