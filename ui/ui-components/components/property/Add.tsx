@@ -42,12 +42,10 @@ export default function PropertyAddButton(props) {
 
   if (source.state === "draft") {
     return (
-      <p>
-        <small>
-          Cannot add Properties until Source is
-          <StateBadge state="ready" marginBottom={0} />
-        </small>
-      </p>
+      <span>
+        Cannot add Properties until Source is
+        <StateBadge state="ready" marginBottom={0} />
+      </span>
     );
   }
 

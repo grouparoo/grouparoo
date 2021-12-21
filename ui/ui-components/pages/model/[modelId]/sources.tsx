@@ -219,10 +219,8 @@ export default function Page(props) {
       )}
       {!canCreateNewSource && (
         <p>
-          <small>
-            Cannot create new Sources for this Model until the first Source is
-            <StateBadge state="ready" marginBottom={0} />.
-          </small>
+          Cannot create new Sources for this Model until the first Source is
+          <StateBadge state="ready" marginBottom={0} />.
         </p>
       )}
     </>

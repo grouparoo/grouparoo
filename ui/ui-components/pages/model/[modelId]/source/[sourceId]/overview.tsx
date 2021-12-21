@@ -59,6 +59,11 @@ export default function Page({
     return badges;
   }, [source, isPrimarySource]);
 
+  const optionKeys = useMemo(
+    () => Object.keys(source.options),
+    [source.options]
+  );
+
   return (
     <>
       <Head>
@@ -85,16 +90,18 @@ export default function Page({
             <code>{source.connection.displayName}</code>.{" "}
             {source.connection.description}
           </p>
-          <p>
-            <strong>Options:</strong>
-            <br />
-            {Object.keys(source.options).map((k) => (
-              <span key={`opt-${k}`}>
-                <strong>{k}</strong>: {source.options[k]}
-                <br />
-              </span>
-            ))}
-          </p>
+          {!!optionKeys.length && (
+            <p>
+              <strong>Options:</strong>
+              <br />
+              {optionKeys.map((k) => (
+                <span key={`opt-${k}`}>
+                  <strong>{k}</strong>: {source.options[k]}
+                  <br />
+                </span>
+              ))}
+            </p>
+          )}
           {source.previewAvailable && !source.connection.skipSourceMapping ? (
             Object.keys(source.mapping).length === 1 ? (
               <p>
@@ -115,9 +122,7 @@ export default function Page({
           ) : source.connection.skipSourceMapping ? (
             <Alert variant="info">Automatic</Alert>
           ) : (
-            <Alert variant="warning">
-              Mapping not available for this connection type
-            </Alert>
+            <p>Mapping is not available for this connection type.</p>
           )}
         </Col>
       </Row>
@@ -125,51 +130,57 @@ export default function Page({
         <Col>
           <ManagedCard title="Properties">
             <Card.Body>
-              <Table>
-                <thead>
-                  <tr>
-                    <th>Key</th>
-                    <th>Type</th>
-                    <th>Unique</th>
-                    <th>State</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {properties.map((rule) => (
-                    <tr key={`rule-${rule.id}`}>
-                      <td>
-                        <Link
-                          href={`/model/${source.modelId}/property/${rule.id}/edit`}
-                        >
-                          <a>
-                            <strong>
-                              {rule.key ||
-                                `${rule.state} created on ${
-                                  new Date(rule.createdAt)
-                                    .toLocaleString()
-                                    .split(",")[0]
-                                }`}
-                            </strong>
-                          </a>
-                        </Link>
-                        {rule.isPrimaryKey && (
-                          <>
-                            {" "}
-                            <Badge variant="info">primary</Badge>
-                          </>
-                        )}
-                      </td>
-                      <td>{rule.type}</td>
-                      <td>
-                        <input disabled type="checkbox" checked={rule.unique} />
-                      </td>
-                      <td>
-                        <StateBadge state={rule.state} />
-                      </td>
+              {!!properties.length && (
+                <Table>
+                  <thead>
+                    <tr>
+                      <th>Key</th>
+                      <th>Type</th>
+                      <th>Unique</th>
+                      <th>State</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
+                  </thead>
+                  <tbody>
+                    {properties.map((rule) => (
+                      <tr key={`rule-${rule.id}`}>
+                        <td>
+                          <Link
+                            href={`/model/${source.modelId}/property/${rule.id}/edit`}
+                          >
+                            <a>
+                              <strong>
+                                {rule.key ||
+                                  `${rule.state} created on ${
+                                    new Date(rule.createdAt)
+                                      .toLocaleString()
+                                      .split(",")[0]
+                                  }`}
+                              </strong>
+                            </a>
+                          </Link>
+                          {rule.isPrimaryKey && (
+                            <>
+                              {" "}
+                              <Badge variant="info">primary</Badge>
+                            </>
+                          )}
+                        </td>
+                        <td>{rule.type}</td>
+                        <td>
+                          <input
+                            disabled
+                            type="checkbox"
+                            checked={rule.unique}
+                          />
+                        </td>
+                        <td>
+                          <StateBadge state={rule.state} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
               <div>
                 <PropertyAddButton
                   source={source}
@@ -308,10 +319,10 @@ export default function Page({
                   />
                 )
               ) : (
-                <Alert variant="warning">
+                <div>
                   Schedule not available for this connection type or mapping
-                  configuration
-                </Alert>
+                  configuration.
+                </div>
               )}
             </Card.Body>
           </ManagedCard>

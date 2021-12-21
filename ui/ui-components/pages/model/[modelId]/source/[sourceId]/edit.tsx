@@ -532,7 +532,7 @@ const Page: NextPage<Props & InjectedProps> = ({
 
               {source.previewAvailable && (
                 <>
-                  <h3>{isPrimarySource ? "Primary Key" : "Mapping"}</h3>
+                  <h3>{isPrimarySource ? "Primary Key Mapping" : "Mapping"}</h3>
                   <p>
                     Mapping sets the foreign key between your Source and
                     Grouparoo Properties. Whenever possible, map through a
