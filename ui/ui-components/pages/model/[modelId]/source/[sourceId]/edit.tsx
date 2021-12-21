@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useMemo } from "react";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { UseApi } from "../../../../../hooks/useApi";
 import SourceTabs from "../../../../../components/tabs/Source";
 import PageHeader from "../../../../../components/PageHeader";
@@ -21,6 +21,18 @@ import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import FormMappingSelector from "../../../../../components/source/FormMappingSelector";
 import { createSchedule } from "../../../../../components/schedule/Add";
+
+interface FormData {
+  bootstrap?: {
+    propertyKey: string;
+    propertyType: string;
+  };
+  mapping?: {
+    sourceColumn: string;
+    propertyKey: string;
+  };
+  source: Pick<Models.SourceType, "name" | "options">;
+}
 
 export default function Page(props) {
   const {
@@ -103,7 +115,7 @@ export default function Page(props) {
     }
   }
 
-  const onSubmit = async (data, event) => {
+  const onSubmit: SubmitHandler<FormData> = async (data, event) => {
     event.preventDefault();
     setLoading(true);
 
