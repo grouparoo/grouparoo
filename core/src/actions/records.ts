@@ -14,7 +14,6 @@ import {
   ActionPermissionMode,
   ActionPermissionTopic,
 } from "../models/Permission";
-import { CLSAction } from "../classes/actions/clsAction";
 import { CLS } from "../modules/cls";
 import { AsyncReturnType } from "type-fest";
 import { DestinationOps } from "../modules/ops/destination";
@@ -264,7 +263,7 @@ export class RecordsImport extends Action {
   }
 }
 
-export class RecordExport extends CLSAction {
+export class RecordExport extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "record:export";

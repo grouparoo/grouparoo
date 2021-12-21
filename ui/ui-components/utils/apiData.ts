@@ -16,6 +16,8 @@ import {
   Import,
   Log,
   Notification,
+  Option,
+  OAuthRequest,
   Permission,
   GrouparooModel,
   GrouparooRecord,
@@ -29,6 +31,8 @@ import {
   Team,
   TeamMember,
   StatusMetric,
+  oAuthIdentity,
+  oAuthProvider,
 } from "@grouparoo/core";
 
 export namespace Models {
@@ -57,6 +61,10 @@ export namespace Models {
   export type GroupRuleType = Partial<AsyncReturnType<GroupRule["apiData"]>>;
   export type ImportType = Partial<AsyncReturnType<Import["apiData"]>>;
   export type LogType = Partial<AsyncReturnType<Log["apiData"]>>;
+  export type OptionType = Partial<AsyncReturnType<Option["apiData"]>>;
+  export type OAuthRequestType = Partial<
+    AsyncReturnType<OAuthRequest["apiData"]>
+  >;
   export type NotificationType = Partial<
     AsyncReturnType<Notification["apiData"]>
   >;
@@ -84,6 +92,13 @@ export namespace Models {
     | DestinationType
     | ScheduleType
     | GroupType;
+}
+
+// -----------------------------------------
+
+export namespace OAuth {
+  export type oAuthIdentityType = oAuthIdentity;
+  export type oAuthProviderType = oAuthProvider;
 }
 
 // -----------------------------------------
@@ -184,6 +199,12 @@ import {
   ConfigGenerate,
   ConfigUserCreate,
 } from "@grouparoo/core/src/actions/config";
+import {
+  OAuthListProviders,
+  OAuthClientStart,
+  OAuthClientView,
+  OAuthClientEdit,
+} from "@grouparoo/core/src/actions/oAuth";
 import {
   PropertyCreate,
   PropertyDestroy,
@@ -507,9 +528,23 @@ export namespace Actions {
     typeof ConfigUserCreate.prototype.runWithinTransaction
   >;
 
+  export type OAuthListProviders = AsyncReturnType<
+    typeof OAuthListProviders.prototype.run
+  >;
+  export type OAuthClientStart = AsyncReturnType<
+    typeof OAuthClientStart.prototype.run
+  >;
+  export type OAuthClientView = AsyncReturnType<
+    typeof OAuthClientView.prototype.run
+  >;
+  export type OAuthClientEdit = AsyncReturnType<
+    typeof OAuthClientEdit.prototype.run
+  >;
+
   export type PropertyCreate = AsyncReturnType<
     typeof PropertyCreate.prototype.runWithinTransaction
   >;
+
   export type PropertyDestroy = AsyncReturnType<
     typeof PropertyDestroy.prototype.runWithinTransaction
   >;

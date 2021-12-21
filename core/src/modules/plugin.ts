@@ -16,6 +16,7 @@ import { Import } from "../models/Import";
 import { Log } from "../models/Log";
 import { Mapping } from "../models/Mapping";
 import { Option } from "../models/Option";
+import { OAuthRequest } from "../models/OAuthRequest";
 import { Permission } from "../models/Permission";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
@@ -44,6 +45,7 @@ const models = [
   Destination,
   DestinationGroupMembership,
   Option,
+  OAuthRequest,
   Filter,
   Import,
   Run,

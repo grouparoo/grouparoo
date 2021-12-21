@@ -25,6 +25,7 @@ export { Log } from "./models/Log";
 export { Notification } from "./models/Notification";
 export { Mapping } from "./models/Mapping";
 export { Option } from "./models/Option";
+export { OAuthRequest } from "./models/OAuthRequest";
 export { Permission } from "./models/Permission";
 export { GrouparooRecord } from "./models/GrouparooRecord";
 export { RecordProperty } from "./models/RecordProperty";
@@ -59,6 +60,8 @@ export { waitForLock } from "./modules/locks";
 export { Errors } from "./modules/errors";
 export * from "./modules/cache";
 export * from "./modules/tableSpeculation";
+
+export * from "./modules/oAuth";
 
 // ensure config types are loaded
 import "./config/api";

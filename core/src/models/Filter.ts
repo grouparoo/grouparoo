@@ -1,15 +1,10 @@
 import {
   Table,
-  Model,
   Column,
   AllowNull,
   ForeignKey,
-  CreatedAt,
-  UpdatedAt,
   BelongsTo,
-  BeforeCreate,
 } from "sequelize-typescript";
-import * as uuid from "uuid";
 import { Property } from "./Property";
 import { Schedule } from "./Schedule";
 import { APIData } from "../modules/apiData";
