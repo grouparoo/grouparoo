@@ -33,7 +33,7 @@ import { CreateRecord } from "../client/models";
  * Batch Size is the size of the batches sent to Airtable
  * 10 is the maximum number of records that can be sent in any
  */
-const BATCH_SIZE = 10
+const BATCH_SIZE = 10;
 
 const getClient: BatchMethodGetClient = async ({ config }) => {
   if (config.appOptions) {

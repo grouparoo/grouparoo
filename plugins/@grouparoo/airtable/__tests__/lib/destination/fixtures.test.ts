@@ -1,10 +1,14 @@
-import { AirtablePropertyTypes, Table, TableField } from '../../../src/lib/client/models';
+import {
+  AirtablePropertyTypes,
+  Table,
+  TableField,
+} from "../../../src/lib/client/models";
 
-export const primaryFieldID = 'fld1234';
-export const name = 'Fake Table';
-export const tableId = 'tbl1234';
-export const primaryKeyName = 'fake field';
-export const badField = "UNKNOWN"
+export const primaryFieldID = "fld1234";
+export const name = "Fake Table";
+export const tableId = "tbl1234";
+export const primaryKeyName = "fake field";
+export const badField = "UNKNOWN";
 export const successfulGetTableFields: TableField[] = [
   {
     type: AirtablePropertyTypes.SINGLELINE,
@@ -58,14 +62,14 @@ export const successfulListTableResponses: Table[] = [
   successfulGetTableResponses,
   {
     fields: successfulGetTableFields,
-    id: 'table2',
-    name: 'table 2',
+    id: "table2",
+    name: "table 2",
     primaryFieldId: primaryFieldID,
   },
   {
     fields: successfulGetTableFields,
-    id: 'table3',
-    name: 'table 3',
+    id: "table3",
+    name: "table 3",
     primaryFieldId: primaryFieldID,
   },
 ];
