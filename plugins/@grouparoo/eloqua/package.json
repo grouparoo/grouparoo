@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/eloqua",
   "description": "The Grouparoo Eloqua Plugin",
-  "version": "0.7.8-alpha.0",
+  "version": "0.7.8",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,12 +28,12 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.7.8-alpha.0",
+    "@grouparoo/app-templates": "0.7.8",
     "axios": "0.24.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.8-alpha.0",
-    "@grouparoo/spec-helper": "0.7.8-alpha.0",
+    "@grouparoo/core": "0.7.8",
+    "@grouparoo/spec-helper": "0.7.8",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "28.0.4",
