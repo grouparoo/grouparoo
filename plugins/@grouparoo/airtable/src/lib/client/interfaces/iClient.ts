@@ -4,8 +4,6 @@ import { FieldSet, Record, RecordData, Records } from "airtable";
 export interface IClient {
   health(): Promise<HealthResponse>;
 
-  close(): Promise<void>;
-
   listTables(): Promise<Table[]>;
 
   getTable(tableId: string): Promise<Table>;

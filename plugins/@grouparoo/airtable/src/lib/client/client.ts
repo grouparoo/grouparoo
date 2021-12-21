@@ -178,11 +178,4 @@ export class Client implements IClient {
   async createRecords(tableId: string, records: CreateRecord<FieldSet>[]) {
     return this.baseClient(tableId).create(records);
   }
-
-  /**
-   * NOOP method for mocking out a clossing of the client
-   */
-  async close(): Promise<void> {
-    return Promise.resolve();
-  }
 }
