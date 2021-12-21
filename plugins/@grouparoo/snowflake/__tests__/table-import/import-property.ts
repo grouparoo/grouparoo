@@ -285,6 +285,47 @@ describe("snowflake/table/recordProperty", () => {
     // }
 
     //TO DO: EXISTS/NOTEXISTS
+    // describe("exists", () => {
+    //   const op = "exists";
+    //   test("integer", async () => {
+    //     const value = await getPropertyValue(
+    //       {
+    //         column,
+    //         sourceMapping,
+    //         aggregationMethod,
+    //       },
+    //       [{ op, key: "id" }]
+    //     );
+    //     expect(value).toEqual(7);
+    //   });
+    //   test("string", async () => {
+    //     const value = await getPropertyValue(
+    //       {
+    //         column,
+    //         sourceMapping,
+    //         aggregationMethod,
+    //       },
+    //       [{ op, key: "purchase" }]
+    //     );
+    //     expect(value).toEqual(6);
+    //   });
+    // });
+
+    // describe("does not exist", () => {
+    //   const op = "notExists";
+    //   test("string", async () => {
+    //     const value = await getPropertyValue(
+    //       {
+    //         column,
+    //         sourceMapping,
+    //         aggregationMethod,
+    //       },
+    //       [{ op, key: "purchase" }]
+    //     );
+    //     expect(value).toEqual(1);
+    //   });
+    // });
+
     describe("equals", () => {
       const op = "eq";
       test("integer", async () => {

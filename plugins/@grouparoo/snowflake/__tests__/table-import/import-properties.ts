@@ -537,6 +537,40 @@ describe("snowflake/table/recordProperties", () => {
 
     //TO DO: EXISTS/NOT EXISTS
 
+    // describe("exists", () => {
+    //   const op = "exists";
+    //   test("string", async () => {
+    //     const [values, properties] = await getPropertyValues(
+    //       {
+    //         columns,
+    //         sourceMapping,
+    //         aggregationMethod,
+    //       },
+    //       [{ op, key: "purchase" }]
+    //     );
+    //     expect(values[record.id][properties[0].id]).toEqual([6]);
+    //     expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+    //     expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+    //   });
+    // });
+
+    // describe("does not exist", () => {
+    //   test("string", async () => {
+    //     const op = "notExists";
+    //     const [values, properties] = await getPropertyValues(
+    //       {
+    //         columns,
+    //         sourceMapping,
+    //         aggregationMethod,
+    //       },
+    //       [{ op, key: "purchase" }]
+    //     );
+    //     expect(values[record.id][properties[0].id]).toEqual([1]);
+    //     expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+    //     expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+    //   });
+    // });
+
     describe("equals", () => {
       const op = "eq";
       test("integer", async () => {

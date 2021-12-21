@@ -14,11 +14,13 @@ export function makeWhereClause(
   let match = values || value;
 
   switch (filterOperation) {
-    case FilterOperation.Exists:
-      op = "IS NOT NULL";
-      break;
     case FilterOperation.NotExists:
       op = "IS NULL";
+      match = null;
+      break;
+    case FilterOperation.Exists:
+      op = "IS NOT NULL";
+      match = null;
       break;
     case FilterOperation.Equal:
       op = "=";
@@ -55,7 +57,7 @@ export function makeWhereClause(
 
   const replacementString = Array.isArray(match)
     ? `(${match.map((_, idx) => `:${params.length + idx + 1}`).join(", ")})`
-    : match
+    : match !== null
     ? `:${params.length + 1}`
     : "";
 
