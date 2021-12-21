@@ -26,7 +26,7 @@ const handlePersonChanges: ExportRecordPluginMethod = async ({
     return { success: true };
   }
 
-  const client = await connect(appOptions);
+  const client = await connect(appId, appOptions);
   const cacheData: PipedriveCacheData = { appId, appOptions };
 
   const newEmail = newRecordProperties["Email"];

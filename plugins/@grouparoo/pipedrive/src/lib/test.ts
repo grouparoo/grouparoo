@@ -1,8 +1,8 @@
 import { TestPluginMethod } from "@grouparoo/core";
 import { connect } from "./connect";
 
-export const test: TestPluginMethod = async ({ appOptions }) => {
-  const client = await connect(appOptions);
+export const test: TestPluginMethod = async ({ appId, appOptions }) => {
+  const client = await connect(appId, appOptions);
 
   try {
     const user = await client.getCurrentUser();
