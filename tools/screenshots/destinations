@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+const argv = require("yargs")
+  .help("h")
+  .alias("h", "help")
+  .example("$0", "generate screenshots for destinations")
+  .usage("Usage: $0").argv;
+
+require("./src/destinations")
+  .cmd(argv)
+  .then(
+    () => {
+      process.exit(0);
+    },
+    (error) => {
+      console.error(`ERROR! ${error}`);
+      process.exit(1);
+    }
+  );
