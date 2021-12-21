@@ -98,7 +98,7 @@ class DestinationOptionsHandler {
   }
 }
 
-function tableFieldIsWritable(field: TableField): boolean {
+export const tableFieldIsWritable = (field: TableField): boolean => {
   switch (field.type) {
     case AirtablePropertyTypes.EMAIL:
       return true;
@@ -109,6 +109,6 @@ function tableFieldIsWritable(field: TableField): boolean {
     default:
       return false;
   }
-}
+};
 
 export { DestinationOptionsHandler };

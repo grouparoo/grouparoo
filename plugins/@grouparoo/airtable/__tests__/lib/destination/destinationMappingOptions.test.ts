@@ -1,6 +1,6 @@
 import { mock, mockReset } from 'jest-mock-extended';
 import { IClient } from '../../../src/lib/client/interfaces/iClient';
-import { primaryKeyName, successfulGetTableResponses } from './fixtures.test';
+import {badField, primaryKeyName, successfulGetTableResponses} from './fixtures.test';
 import { destinationMappingOptions } from '../../../src/lib/destination/destinationMappingOptions';
 import { App, Destination } from '@grouparoo/core';
 import { AirtableDestinationOptions } from '../../../src/lib/destination/destinationOptions';
@@ -43,12 +43,14 @@ describe('Test Destination Mapping Options Method', () => {
       .calledWith(tableId)
       .mockResolvedValue(successfulGetTableResponses);
     const value = await destinationMappingOptions(args);
+    const expectedFieldCount = successfulGetTableResponses.fields.length -
+        successfulGetTableResponses.fields.filter(value=> value.name == badField).length -
+        value.properties.required.length
     expect(value.properties.required.map(value => value.key)).toContain(
       primaryKeyName,
     );
     expect(value.properties.known.length).toEqual(
-      successfulGetTableResponses.fields.length -
-        value.properties.required.length,
+        expectedFieldCount
     );
     expect(value.properties.allowOptionalFromProperties).toBeFalsy();
     expect(

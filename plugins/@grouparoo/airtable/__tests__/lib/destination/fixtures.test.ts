@@ -1,13 +1,10 @@
 import { AirtablePropertyTypes, Table, TableField } from '../../../src/lib/client/models';
-import { FieldSet, Records } from 'airtable';
-import { BatchExport } from '@grouparoo/app-templates/dist/destination/batch';
-import { GrouparooRecord } from '@grouparoo/core';
-import Record from 'airtable/lib/record';
 
 export const primaryFieldID = 'fld1234';
 export const name = 'Fake Table';
 export const tableId = 'tbl1234';
 export const primaryKeyName = 'fake field';
+export const badField = "UNKNOWN"
 export const successfulGetTableFields: TableField[] = [
   {
     type: AirtablePropertyTypes.SINGLELINE,
@@ -45,9 +42,9 @@ export const successfulGetTableFields: TableField[] = [
     id: AirtablePropertyTypes.SINGLELINE,
   },
   {
-    type: 'UNKNOWN',
-    name: 'UNKNOWN',
-    id: 'UNKNOWN',
+    type: badField,
+    name: badField,
+    id: badField,
   },
 ];
 
