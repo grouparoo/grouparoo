@@ -410,6 +410,8 @@ describe("integration/runs/google-sheets", () => {
 
         await run.updateTotals();
 
+        console.log(run);
+
         expect(run.state).toBe("complete");
         expect(run.importsCreated).toBe(0);
         expect(run.recordsCreated).toBe(0);

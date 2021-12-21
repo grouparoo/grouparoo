@@ -1,6 +1,6 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/csv": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/google-sheets": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
 import { SimpleSourceOptions, Import, plugin, Run } from "@grouparoo/core";
@@ -64,7 +64,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
   };
 }
 
-describe("csv/table/records", () => {
+describe("google-sheets/table/records", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {

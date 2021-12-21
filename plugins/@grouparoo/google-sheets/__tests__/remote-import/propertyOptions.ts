@@ -1,6 +1,6 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/csv": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/google-sheets": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
 import { SimpleSourceOptions } from "@grouparoo/core";
@@ -16,7 +16,7 @@ const sourceOptions: SimpleSourceOptions = {
     "https://docs.google.com/spreadsheets/d/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/edit#gid=0",
 };
 
-describe("csv/remote/propertyOptions", () => {
+describe("google-sheets/remote/propertyOptions", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {

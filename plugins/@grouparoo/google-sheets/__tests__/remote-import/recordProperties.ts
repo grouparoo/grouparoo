@@ -1,6 +1,6 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/csv": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/google-sheets": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
 import {
@@ -47,7 +47,7 @@ async function getPropertyValues(column: string) {
   return [values, property];
 }
 
-describe("csv/remote/recordProperty", () => {
+describe("google-sheets/remote/recordProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {

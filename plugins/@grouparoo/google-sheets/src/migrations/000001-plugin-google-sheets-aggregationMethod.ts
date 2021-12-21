@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import crypto from "crypto";
+import * as uuid from "uuid";
 
 export default {
   up: async (queryInterface: Sequelize.QueryInterface) => {
@@ -8,17 +8,15 @@ export default {
     const [sources] = await queryInterface.sequelize.query(
       `SELECT * FROM "sources" WHERE type = 'google-sheet-import'`
     );
-    console.log(sources);
     for (const source of sources) {
       const [properties] = await queryInterface.sequelize.query(
         `SELECT * FROM "properties" WHERE "sourceId" = '${source["id"]}'`
       );
       allProperties.push(...properties);
     }
-
     for (const property of allProperties) {
       newOptions.push({
-        id: `opt_${crypto.randomBytes(16).toString("hex")}`,
+        id: `opt_${uuid.v4()}`,
         createdAt: new Date(),
         updatedAt: new Date(),
         ownerId: property["id"],
