@@ -43,7 +43,7 @@ describe("actions/sources", () => {
     configSpy.mockClear();
   });
 
-  describe.only("administrator signed in", () => {
+  describe("administrator signed in", () => {
     let connection;
     let csrfToken;
 
