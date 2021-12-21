@@ -53,7 +53,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
   );
 
   const canCreateSecondarySource =
-    !totalSources || sources[0].state === "ready";
+    !!totalSources && sources[0].state === "ready";
 
   return (
     <GrouparooModelContextProvider model={model}>
