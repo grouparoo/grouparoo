@@ -49,6 +49,8 @@ export default function Page(props) {
     load();
   }, [offset, limit, modelId]);
 
+  const canCreateNewSource = !total || sources[0].state === "ready";
+
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
@@ -184,14 +186,17 @@ export default function Page(props) {
         onPress={setOffset}
       />
       <br />
-      <LinkButton
-        variant="primary"
-        href={`/model/${router.query.modelId}/source/new`}
-        hideOn={["community"]}
-      >
-        Add new Source
-      </LinkButton>
-      &nbsp;
+      {canCreateNewSource && (
+        <>
+          <LinkButton
+            variant="primary"
+            href={`/model/${router.query.modelId}/source/new`}
+            hideOn={["community"]}
+          >
+            Add new Source
+          </LinkButton>{" "}
+        </>
+      )}
       <RunAllSchedulesButton
         modelId={modelId}
         execApi={execApi}

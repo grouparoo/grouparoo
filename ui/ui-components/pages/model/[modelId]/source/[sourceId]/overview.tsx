@@ -78,6 +78,37 @@ export default function Page({
             ))}
           </p>
           <hr />
+          <h2>Record Identification</h2>
+          {source.previewAvailable && !source.connection.skipSourceMapping ? (
+            Object.keys(source.mapping).length === 1 ? (
+              <Row>
+                <Col>
+                  Remote Column: <code>{Object.keys(source.mapping)[0]}</code>
+                </Col>
+                <Col>▶</Col>
+                <Col>
+                  Record Property:{" "}
+                  <code>{source.mapping[Object.keys(source.mapping)[0]]}</code>
+                </Col>
+              </Row>
+            ) : (
+              <Alert variant="warning">
+                Mapping not set.{" "}
+                <Link
+                  href={`/model/${source.modelId}/source/${source.id}/edit`}
+                >
+                  <a>Set mapping</a>
+                </Link>
+              </Alert>
+            )
+          ) : source.connection.skipSourceMapping ? (
+            <Alert variant="info">Automatic</Alert>
+          ) : (
+            <Alert variant="warning">
+              Mapping not available for this connection type
+            </Alert>
+          )}
+          <hr />
           <h2>Properties</h2>
           <Table>
             <thead>
@@ -250,30 +281,6 @@ export default function Page({
             <Alert variant="warning">
               Schedule not available for this connection type or mapping
               configuration
-            </Alert>
-          )}
-          <hr />
-          <h2>Record Identification</h2>
-          {source.previewAvailable && !source.connection.skipSourceMapping ? (
-            Object.keys(source.mapping).length === 1 ? (
-              <Row>
-                <Col>
-                  Remote Column: <code>{Object.keys(source.mapping)[0]}</code>
-                </Col>
-                <Col>▶</Col>
-                <Col>
-                  Record Property:{" "}
-                  <code>{source.mapping[Object.keys(source.mapping)[0]]}</code>
-                </Col>
-              </Row>
-            ) : (
-              <Alert variant="warning">Mapping not set yet</Alert>
-            )
-          ) : source.connection.skipSourceMapping ? (
-            <Alert variant="info">Automatic</Alert>
-          ) : (
-            <Alert variant="warning">
-              Mapping not available for this connection type
             </Alert>
           )}
         </Col>

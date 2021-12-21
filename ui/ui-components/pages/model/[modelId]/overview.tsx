@@ -19,6 +19,7 @@ interface Props {
   model: Models.GrouparooModelType;
   primarySource?: Models.SourceType;
   secondarySources: Models.SourceType[];
+  totalSources: number;
   properties: Models.PropertyType[];
   groups: Models.GroupType[];
   schedules: Models.ScheduleType[];
@@ -31,6 +32,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
   model,
   primarySource,
   secondarySources,
+  totalSources,
   properties,
   groups,
   schedules,
@@ -49,6 +51,9 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
     () => !!properties.find((property) => property.state === "ready"),
     [properties]
   );
+
+  const canCreateSecondarySource =
+    !totalSources || sources[0].state === "ready";
 
   return (
     <GrouparooModelContextProvider model={model}>
@@ -78,14 +83,14 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
               <ListGroupItem>
                 <ModelOverviewSecondarySources
                   sources={secondarySources}
-                  disabled={!primarySource}
+                  disabled={!canCreateSecondarySource}
                 />
               </ListGroupItem>
 
               <ListGroupItem>
                 <ModelOverviewGroups
                   groups={groups}
-                  disabled={!sources.length || !hasReadyProperties}
+                  disabled={!canCreateSecondarySource || !hasReadyProperties}
                 />
               </ListGroupItem>
 
@@ -135,7 +140,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   };
 
   const [
-    { sources },
+    { sources, total: totalSources },
     { destinations },
     { properties },
     { groups },
@@ -166,6 +171,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
       model,
       primarySource,
       secondarySources,
+      totalSources,
       properties,
       groups,
       schedules,
