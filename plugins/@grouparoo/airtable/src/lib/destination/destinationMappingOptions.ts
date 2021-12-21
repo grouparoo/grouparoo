@@ -8,31 +8,30 @@ import { AirtableDestinationOptions } from "./destinationOptions";
 
 const singleAirtableProperty = "Airtable Record Property";
 const pluralAirtableProperty = "Airtable Record Properties";
-export const destinationMappingOptions: DestinationMappingOptionsMethod<
-  IClient
-> = async ({ connection, destinationOptions }) => {
-  const { tableId, primaryKey } =
-    destinationOptions as AirtableDestinationOptions;
-  const table: Table = await connection.getTable(tableId);
-  const required = getRequiredFields(table, primaryKey);
-  const requiredFieldsNames = required.map(
-    (requiredField) => requiredField.key
-  );
-  const known = getTableFields(table, requiredFieldsNames);
-  return {
-    labels: {
-      property: {
-        singular: singleAirtableProperty,
-        plural: pluralAirtableProperty,
+export const destinationMappingOptions: DestinationMappingOptionsMethod<IClient> =
+  async ({ connection, destinationOptions }) => {
+    const { tableId, primaryKey } =
+      destinationOptions as AirtableDestinationOptions;
+    const table: Table = await connection.getTable(tableId);
+    const required = getRequiredFields(table, primaryKey);
+    const requiredFieldsNames = required.map(
+      (requiredField) => requiredField.key
+    );
+    const known = getTableFields(table, requiredFieldsNames);
+    return {
+      labels: {
+        property: {
+          singular: singleAirtableProperty,
+          plural: pluralAirtableProperty,
+        },
       },
-    },
-    properties: {
-      required: required,
-      known: known,
-      allowOptionalFromProperties: false,
-    },
+      properties: {
+        required: required,
+        known: known,
+        allowOptionalFromProperties: false,
+      },
+    };
   };
-};
 
 function getRequiredFields(
   table: Table,
