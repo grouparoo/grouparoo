@@ -3,7 +3,7 @@ import {
   DestinationOptionsMethodResponse,
   SimpleDestinationOptions,
 } from "@grouparoo/core";
-import { Table } from "../client/models";
+import { AirtablePropertyTypes, Table, TableField } from "../client/models";
 import { IClient } from "../client/interfaces/iClient";
 
 export interface AirtableDestinationOptions extends SimpleDestinationOptions {
@@ -85,7 +85,9 @@ class DestinationOptionsHandler {
     const names = [];
     if (table.fields) {
       for (const property of table.fields) {
-        names.push(property.name);
+        if (tableFieldIsWritable(property)) {
+          names.push(property.name);
+        }
       }
     }
     return [...new Set(names.sort())];
@@ -93,6 +95,19 @@ class DestinationOptionsHandler {
 
   private async getTableById(tableId: string): Promise<Table> {
     return this.client.getTable(tableId);
+  }
+}
+
+function tableFieldIsWritable(field: TableField): boolean {
+  switch (field.type) {
+    case AirtablePropertyTypes.EMAIL:
+      return true;
+    case AirtablePropertyTypes.SINGLELINE:
+      return true;
+    case AirtablePropertyTypes.DATE:
+      return true;
+    default:
+      return false;
   }
 }
 
