@@ -13,6 +13,7 @@ import {
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 import { Models } from "../../../utils/apiData";
 import { formatName } from "../../../utils/formatName";
+import StateBadge from "../../badges/StateBadge";
 import SeparatedItems from "../SeparatedItems";
 
 const renderNameList = function <T extends Models.EntityTypes>(
@@ -27,6 +28,12 @@ const renderNameList = function <T extends Models.EntityTypes>(
       ? "overview"
       : "edit";
   const itemPath = itemType === "schedule" ? "source" : itemType;
+  const style: React.CSSProperties = {
+    verticalAlign: "middle",
+    marginTop: "-0.25em",
+    marginRight: 0,
+    marginBottom: 0,
+  };
 
   const links = items.map((item, index) => {
     const itemId =
@@ -34,9 +41,14 @@ const renderNameList = function <T extends Models.EntityTypes>(
         ? (item as Models.ScheduleType).sourceId
         : item.id;
     return (
-      <Link href={`/model/${model.id}/${itemPath}/${itemId}/${page}`}>
-        <a>{formatName(item)}</a>
-      </Link>
+      <>
+        <Link href={`/model/${model.id}/${itemPath}/${itemId}/${page}`}>
+          <a>{formatName(item)}</a>
+        </Link>
+        {item.state !== "ready" && (
+          <StateBadge state={item.state} style={style} />
+        )}
+      </>
     );
   });
 

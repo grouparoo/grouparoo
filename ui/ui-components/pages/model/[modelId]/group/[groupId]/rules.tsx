@@ -173,7 +173,7 @@ export default function Page(props) {
         ]}
       />
 
-      {grouparooUiEdition()! == "config" && (
+      {grouparooUiEdition() !== "config" && (
         <p>
           Total Records in this group: &nbsp;
           <Badge style={{ fontSize: 16 }} variant="info">

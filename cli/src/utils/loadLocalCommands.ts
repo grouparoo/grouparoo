@@ -4,8 +4,34 @@ import Ora from "ora";
 import * as glob from "glob";
 import { readPackageJSON } from "./readPackageJSON";
 import { ensureNoTsHeaderFiles } from "./ensureNoTsHeaderFiles";
+import { Command } from "commander";
 
-export async function loadLocalCommands(program): Promise<boolean> {
+// We don't want to require actionhero in the project (so we can rely on core's version), so we need to stub this type
+type ActionheroCLIStub = {
+  name: string;
+  description: string;
+  example?: string;
+  help?: () => string;
+  inputs: {
+    [key: string]: ActionheroCLIInputStub;
+  };
+  preInitialize: () => Promise<void>;
+  initialize: (() => Promise<void>) | boolean;
+  start: (() => Promise<void>) | boolean;
+  run: (args: Record<string, unknown>) => Promise<boolean>;
+};
+
+type ActionheroCLIInputStub = {
+  description?: string;
+  default?: boolean;
+  required?: boolean;
+  letter?: string;
+  flag?: string;
+  placeholder?: string;
+  variadic?: boolean;
+};
+
+export async function loadLocalCommands(program: Command): Promise<boolean> {
   // are we in a grouparoo project directory?
   const localPackageFile = path.join(process.env.INIT_CWD, "package.json");
   if (!fs.existsSync(localPackageFile)) return false;
@@ -115,7 +141,7 @@ function clearRequireCache() {
 }
 
 async function loadDirectory(
-  program,
+  program: Command,
   dir: string,
   pathsLoaded: string[],
   match = "*"
@@ -136,7 +162,10 @@ async function loadDirectory(
   }
 }
 
-async function convertCLIToCommanderAction(cli, program) {
+async function convertCLIToCommanderAction(
+  cli: new () => ActionheroCLIStub,
+  program: Command
+) {
   if (Object.getPrototypeOf(cli?.prototype?.constructor || {}).name !== "CLI") {
     return;
   }
@@ -176,15 +205,20 @@ async function convertCLIToCommanderAction(cli, program) {
   }
 }
 
-async function runCommand(instance, _arg1, _arg2, _arg3, _arg4) {
+async function runCommand(
+  instance: ActionheroCLIStub,
+  _arg1: string | { opts: () => Record<string, unknown> },
+  _arg2: string | { opts: () => Record<string, unknown> },
+  _arg3: string | { opts: () => Record<string, unknown> },
+  _arg4: string | { opts: () => Record<string, unknown> }
+) {
   // arg1, arg2, or _arg3 might be the _program, depending on if there's an ARG in the command
-
   let toStop = false;
+  let _arguments: string[] = [];
+  let params: Record<string, unknown> = {};
 
-  let _arguments = [];
-  let params = {};
   [_arg1, _arg2, _arg3, _arg4].forEach((arg) => {
-    if (typeof arg?.opts === "function") {
+    if (typeof arg === "object" && typeof arg?.opts === "function") {
       params = arg.opts();
     } else if (arg !== null && arg !== undefined && typeof arg !== "object") {
       _arguments.push(arg);

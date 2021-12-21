@@ -1,21 +1,13 @@
-import { Badge } from "react-bootstrap";
+import { Badge, BadgeProps } from "react-bootstrap";
 
-export default function StateBadge({
-  state,
-  marginBottom,
-}: {
+interface Props {
   state: string;
   marginBottom?: number;
-}) {
-  let variant:
-    | "primary"
-    | "secondary"
-    | "success"
-    | "danger"
-    | "warning"
-    | "info"
-    | "light"
-    | "dark";
+  style?: React.CSSProperties;
+}
+
+const StateBadge: React.FC<Props> = ({ state, marginBottom, style }) => {
+  let variant: BadgeProps["variant"];
 
   switch (state) {
     case "ready":
@@ -56,10 +48,13 @@ export default function StateBadge({
         marginLeft: 3,
         marginRight: 3,
         marginBottom: marginBottom ?? 20,
+        ...style,
       }}
       variant={variant}
     >
       {state}
     </Badge>
   );
-}
+};
+
+export default StateBadge;

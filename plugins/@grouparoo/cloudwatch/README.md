@@ -14,4 +14,6 @@ The following environment variables are required:
 - `AWS_SECRET_ACCESS_KEY`
 - `AWS_REGION`
 
+By default, logs have a 90 day retention period. You can customize this setting by using the `AWS_CLOUDWATCH_LOG_RETENTION_DAYS` environment variable.
+
 Note that, `GROUPAROO_LOG_LEVEL` also effects this logger. By default, the log-level of this logger is is "notice" NOT "info".

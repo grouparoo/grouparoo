@@ -5,7 +5,7 @@ import EnterpriseLink from "../../components/GrouparooLink";
 import { ApiHook } from "../../hooks/useApi";
 import { usePrevious } from "../../hooks/usePrevious";
 import { Actions, Models } from "../../utils/apiData";
-import { successHandler } from "../../utils/eventHandlers";
+import { errorHandler, successHandler } from "../../utils/eventHandlers";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 import StateBadge from "../badges/StateBadge";
 import ManagedCard from "../lib/ManagedCard";
@@ -17,20 +17,30 @@ import RecordImageFromEmail from "../visualizations/RecordImageFromEmail";
 import AddSampleRecordModal from "./AddSampleRecordModal";
 import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 
+type RecordType =
+  | Models.GrouparooRecordType
+  | Models.DestinationRecordPreviewType;
+
 export interface SampleRecordCardProps {
   modelId: string;
   execApi: ApiHook["execApi"];
-  fetchRecord: (recordId: string) => Promise<{
-    record?: Models.GrouparooRecordType;
+  fetchRecord: (recordId?: string) => Promise<{
+    record?: RecordType;
     groups?: Models.GroupType[];
     destinations?: Models.DestinationType[];
   }>;
+  allowFetchWithoutRecordId?: boolean;
   properties: Models.PropertyType[];
+  propertiesTitle?: string;
+  groupsTitle?: string;
   disabled?: boolean;
   hideViewAllRecords?: boolean;
   highlightProperty?: Models.PropertyType;
   highlightPropertyError?: string;
+  propertyLinkDisabled?: boolean;
+  importDisabled?: boolean;
   reloadKey?: string;
+  warning?: string;
 }
 
 const isConfigUI = grouparooUiEdition() === "config";
@@ -52,12 +62,18 @@ const clearCachedSampleRecordId = (modelId: string): void => {
 const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   modelId,
   properties,
+  propertiesTitle,
   execApi,
   fetchRecord,
+  groupsTitle = "Groups",
   disabled = false,
+  importDisabled = false,
   hideViewAllRecords = false,
   highlightProperty,
   highlightPropertyError,
+  propertyLinkDisabled = false,
+  allowFetchWithoutRecordId = false,
+  warning,
   reloadKey,
 }) => {
   const prevModelId = usePrevious(modelId);
@@ -67,7 +83,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   const [importing, setImporting] = useState(false);
   const [addingRecord, setAddingRecord] = useState(false);
   const [hasRecords, setHasRecords] = useState(true);
-  const [record, setRecord] = useState<Models.GrouparooRecordType>();
+  const [record, setRecord] = useState<RecordType>();
   const [groups, setGroups] = useState<Models.GroupType[]>();
   const [destinations, setDestinations] = useState<Models.DestinationType[]>();
   const [recordId, setRecordId] = useState(() =>
@@ -96,8 +112,19 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     let groups: Models.GroupType[];
     let destinations: Models.DestinationType[];
 
-    if (recordId) {
+    if (recordId || allowFetchWithoutRecordId) {
       ({ record, groups, destinations } = await fetchRecord(recordId));
+
+      if (allowFetchWithoutRecordId && !record && !recordId) {
+        setHasRecords(false);
+        errorHandler.set({
+          message:
+            "Could not switch Sample Record because no Records were found.",
+        });
+        setRecordId(getCachedSampleRecordId(modelId));
+        setLoading(false);
+        return;
+      }
     } else {
       ({ record, groups, destinations } = await execApi<Actions.RecordsList>(
         "get",
@@ -152,7 +179,13 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
             : a.localeCompare(b)
         )
       : undefined;
-  }, [record, highlightProperty]);
+  }, [record, highlightProperty, allowFetchWithoutRecordId]);
+
+  useEffect(() => {
+    if (prevReloadKey !== reloadKey) {
+      setHasRecords(true);
+    }
+  }, [prevReloadKey, reloadKey, recordId]);
 
   useEffect(() => {
     // Switched to another model
@@ -195,6 +228,48 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     return emailProperty ? emailProperty.values[0].toString() : undefined;
   }, [record]);
 
+  const cardActions = useMemo(() => {
+    const result = [
+      <LinkButton
+        disabled={!record || disabled}
+        href={`/model/${modelId}/record${record ? `/${record.id}/edit` : "s"}`}
+        size="sm"
+        variant="outline-primary"
+      >
+        View Record
+      </LinkButton>,
+    ];
+    if (!hideViewAllRecords) {
+      result.push(
+        <LinkButton
+          disabled={disabled}
+          href={`/model/${modelId}/records`}
+          size="sm"
+          variant="outline-primary"
+        >
+          View all Records
+        </LinkButton>
+      );
+    }
+    return result;
+  }, [modelId, disabled, record, hideViewAllRecords]);
+
+  if (!sortedPropertyKeys?.length) {
+    return (
+      <ManagedCard title="Sample Record">
+        <Card.Body>
+          {loading ? (
+            <div className="text-center">
+              <Loader size="sm" />
+            </div>
+          ) : (
+            "At least one Grouparoo Property needs to be mapped before showing the Sample Record."
+          )}
+        </Card.Body>
+      </ManagedCard>
+    );
+  }
+
   const importRecord = async () => {
     setImporting(true);
     const response = await execApi<Actions.RecordImport>(
@@ -213,17 +288,6 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 
   const actions = [
     <LoadingButton
-      disabled={disabled || !record || loading}
-      loading={importing}
-      onClick={() => {
-        importRecord();
-      }}
-      size="sm"
-      variant="outline-success"
-    >
-      Import Record data
-    </LoadingButton>,
-    <LoadingButton
       disabled={disabled || !hasRecords || loading || importing}
       loading={loading && !recordId}
       size="sm"
@@ -235,6 +299,22 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       Switch to random Record
     </LoadingButton>,
   ];
+
+  if (!importDisabled) {
+    actions.unshift(
+      <LoadingButton
+        disabled={disabled || !record || loading}
+        loading={importing}
+        onClick={() => {
+          importRecord();
+        }}
+        size="sm"
+        variant="outline-success"
+      >
+        Import Record data
+      </LoadingButton>
+    );
+  }
 
   if (isConfigUI) {
     actions.push(
@@ -252,21 +332,12 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   const content = record ? (
     <Row>
       <Col style={{ minWidth: "75%" }}>
+        {propertiesTitle && <h6>{propertiesTitle}</h6>}
         <Table bordered>
           <colgroup>
             <col span={1} style={{ width: "35%" }} />
             <col span={1} style={{ width: "65%" }} />
           </colgroup>
-          <thead>
-            <tr>
-              <th>
-                <strong>Property</strong>
-              </th>
-              <th>
-                <strong>Value</strong>
-              </th>
-            </tr>
-          </thead>
           <tbody>
             {sortedPropertyKeys &&
               sortedPropertyKeys.map((key, index) => {
@@ -289,7 +360,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                     className={trClassName}
                   >
                     <th scope="row">
-                      {isHighlightedProperty ? (
+                      {isHighlightedProperty || propertyLinkDisabled ? (
                         name
                       ) : (
                         <Link
@@ -334,50 +405,60 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         {email && (
           <RecordImageFromEmail email={email} width={72} className="mb-4" />
         )}
-        <h6>Groups</h6>
-        {
-          <p>
-            {groups?.length
-              ? groups.map((group) => {
-                  return (
-                    <Fragment key={`group-${group.id}`}>
-                      <Link
-                        href={`/model/${group.modelId}/group/${group.id}/${
-                          group.type === "calculated" ? "rules" : "edit"
-                        }`}
-                      >
-                        {group.name}
-                      </Link>
-                      <br />
-                    </Fragment>
-                  );
-                })
-              : "None"}
-          </p>
-        }
-        <h6>Destinations</h6>
-        {
-          <p>
-            {destinations?.length
-              ? destinations.map((destination) => {
-                  return (
-                    <Fragment key={`destination-${destination.id}`}>
-                      {isConfigUI ? (
-                        destination.name
-                      ) : (
-                        <EnterpriseLink
-                          href={`/model/${destination.modelId}/destination/${destination.id}/data`}
-                        >
-                          <a>{destination.name}</a>
-                        </EnterpriseLink>
-                      )}
-                      <br />
-                    </Fragment>
-                  );
-                })
-              : "None"}
-          </p>
-        }
+        <h6>{groupsTitle}</h6>
+        <p>
+          {groups?.length
+            ? groups.map((group) => {
+                return (
+                  <Fragment key={`group-${group.id}`}>
+                    <Link
+                      href={`/model/${group.modelId}/group/${group.id}/${
+                        group.type === "calculated" ? "rules" : "edit"
+                      }`}
+                    >
+                      {group.name}
+                    </Link>
+                    <br />
+                  </Fragment>
+                );
+              })
+            : (record as Models.DestinationRecordPreviewType)?.groupNames
+                ?.length
+            ? (record as Models.DestinationRecordPreviewType).groupNames.map(
+                (groupName) => (
+                  <Fragment key={`group-name-${groupName}`}>
+                    {groupName}
+                    <br />
+                  </Fragment>
+                )
+              )
+            : "None"}
+        </p>
+        {destinations && (
+          <>
+            <h6>Destinations</h6>
+            <p>
+              {destinations?.length
+                ? destinations.map((destination) => {
+                    return (
+                      <Fragment key={`destination-${destination.id}`}>
+                        {isConfigUI ? (
+                          destination.name
+                        ) : (
+                          <EnterpriseLink
+                            href={`/model/${destination.modelId}/destination/${destination.id}/data`}
+                          >
+                            <a>{destination.name}</a>
+                          </EnterpriseLink>
+                        )}
+                        <br />
+                      </Fragment>
+                    );
+                  })
+                : "None"}
+            </p>
+          </>
+        )}
       </Col>
     </Row>
   ) : (
@@ -391,37 +472,12 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     </Row>
   );
 
-  const cardActions = useMemo(() => {
-    const result = [
-      <LinkButton
-        disabled={!record || disabled}
-        href={`/model/${modelId}/record${record ? `/${record.id}/edit` : "s"}`}
-        size="sm"
-        variant="outline-primary"
-      >
-        View Record
-      </LinkButton>,
-    ];
-    if (!hideViewAllRecords) {
-      result.push(
-        <LinkButton
-          disabled={disabled}
-          href={`/model/${modelId}/records`}
-          size="sm"
-          variant="outline-primary"
-        >
-          View all Records
-        </LinkButton>
-      );
-    }
-    return result;
-  }, [modelId, disabled, record, hideViewAllRecords]);
-
   return (
     <ManagedCard
       title={<>Sample Record {loading && <Loader size="sm" />}</>}
       disabled={disabled}
       actions={cardActions}
+      border={warning ? "warning" : undefined}
     >
       <Card.Body>
         {content}
@@ -443,6 +499,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
           }}
         />
       )}
+      {warning && <Card.Footer>{warning}</Card.Footer>}
     </ManagedCard>
   );
 };

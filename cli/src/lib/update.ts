@@ -20,7 +20,7 @@ export default async function Update() {
     upgrade: true,
     jsonUpgraded: true,
     silent: true,
-  })) as PackageFile;
+  })) as Record<string, string>;
 
   const upgradedPackages = Object.keys(upgraded);
 
