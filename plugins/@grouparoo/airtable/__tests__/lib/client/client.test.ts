@@ -24,14 +24,6 @@ const airtableOptions: AirtableAppOptions = new AirtableAppOptions({
   airtableHost: DEFAULT_AIRTABLE_API,
 });
 describe('Our Client Functions', () => {
-  describe('Closing the client', () => {
-    test('Close the client', async () => {
-      const client = new Client(airtableOptions);
-      client.close().then(value => {
-        expect(value).toBeUndefined();
-      });
-    });
-  });
   describe('Metadata Calls', () => {
     test('Successful Health', async () => {
       nock(DEFAULT_AIRTABLE_API)
