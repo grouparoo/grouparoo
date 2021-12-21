@@ -92,6 +92,18 @@ const Page: NextPage<Props & InjectedProps> = ({
     [properties, source]
   );
 
+  const sourceBadges = useMemo(() => {
+    const badges = [
+      <LockedBadge object={source} />,
+      <StateBadge state={source.state} />,
+      <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
+    ];
+    if (hasPrimaryKeyProperty) {
+      badges.unshift(<Badge variant="info">primary source</Badge>);
+    }
+    return badges;
+  }, [source, hasPrimaryKeyProperty]);
+
   useEffect(() => {
     loadPreview(source.previewAvailable);
     loadOptions();
@@ -295,11 +307,7 @@ const Page: NextPage<Props & InjectedProps> = ({
       <PageHeader
         icon={source.app.icon}
         title={source.name}
-        badges={[
-          <LockedBadge object={source} />,
-          <StateBadge state={source.state} />,
-          <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
-        ]}
+        badges={sourceBadges}
       />
 
       <Row>
