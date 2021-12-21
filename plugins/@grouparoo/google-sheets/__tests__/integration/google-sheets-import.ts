@@ -407,10 +407,7 @@ describe("integration/runs/google-sheets", () => {
         // check the results of the run
         const recordsCount = await GrouparooRecord.count();
         expect(recordsCount).toBe(10);
-
         await run.updateTotals();
-
-        console.log(run);
 
         expect(run.state).toBe("complete");
         expect(run.importsCreated).toBe(0);
