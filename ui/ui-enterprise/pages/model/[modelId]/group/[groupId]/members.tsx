@@ -66,7 +66,7 @@ export default function Page(props) {
             />
 
             <Button
-              variant="outline-secondary"
+              variant="outline-info"
               size="sm"
               onClick={() => {
                 run();
